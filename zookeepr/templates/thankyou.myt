@@ -1,0 +1,2 @@
+Thanks for registering!
+
