@@ -1,7 +1,7 @@
 <& head.myt &>
 
 <&| MODULE:mylib:formfill, defaults=defaults, errors=errors &>
-<form action="<% h.url_for('register') %>" method="post">
+<form action="<% h.url_for('register', action='new') %>" method="post">
 Username: <input type="text" name="username" size="26" />
 <form:error name="username">
 Age: <input type="text" name="age" size="3" />

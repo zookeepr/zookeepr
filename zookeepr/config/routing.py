@@ -11,7 +11,10 @@ def make_map():
     m = Mapper(directory=root_path+'/controllers')
     
     # Define your routes
+
+    # the top level controller is named home
     m.connect('home', '', controller='home')
+    
     m.connect(':controller/:action/:id')
     m.connect('*url', controller='template', action='view')
 
