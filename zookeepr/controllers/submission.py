@@ -9,6 +9,10 @@ class SubmissionController(BaseController):
         """View a submission."""
         m.write("you're viewing submission %s" % id)
 
+    def new(self):
+        """Create a new submission"""
+        m.write("you're creating a new submission")
+
     def edit(self, id):
         """Edit a submission."""
         m.write("you're editing submission %s" % id)
