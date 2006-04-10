@@ -8,7 +8,7 @@ class RegisterController(BaseController):
             if not errors:
                 model.UserInfo(**form_result) # database insert
                 return m.subexec('thankyou.myt')
-        m.subexec('myform.myt', defaults=defaults, errors=errors)
+        m.subexec('register.myt', defaults=defaults, errors=errors)
 
     def new(self, name):
         m.write("huzzah you are called %s and you registered lol" % name)
