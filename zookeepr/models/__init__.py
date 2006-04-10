@@ -11,3 +11,4 @@
 # from myclass import MyDataClass
 
 from userinfo import UserInfo, UserInfoSchema
+from person import Person, PersonSchema
