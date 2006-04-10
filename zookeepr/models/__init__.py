@@ -11,5 +11,3 @@
 # from myclass import MyDataClass
 
 from userinfo import UserInfo, UserInfoSchema
-
-#UserInfo.createTable(ifNotExists=True)
