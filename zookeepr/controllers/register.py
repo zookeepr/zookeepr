@@ -12,3 +12,12 @@ class RegisterController(BaseController):
 
     def new(self, name):
         m.write("huzzah you are called %s and you registered lol" % name)
+
+    def remove(self, id):
+        m.write("you're removing registration %s" % id)
+
+    def edit(self, id):
+        m.write("you're editing registration %s" % id)
+
+    def view(self, id):
+        m.write("you're viewing registratoin %s" % id)
