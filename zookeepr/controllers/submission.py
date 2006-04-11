@@ -4,6 +4,11 @@ class SubmissionController(BaseController):
     def index(self):
         """List all submissions"""
         m.write("you're listing all submissions")
+        errors, defaults = {}, m.request_args
+        if defaults:
+            # FIXME: flesh out
+            m.subexec('thankyou.myt')
+        m.subexec('cfp.myt', defaults=defaults, errors=errors)
 
     def view(self, id):
         """View a submission."""
