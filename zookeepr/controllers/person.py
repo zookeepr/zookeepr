@@ -11,7 +11,7 @@ class PersonController(BaseController):
         # POST -> NO-OP
         m.write("you're viewing person %s" % id)
 
-    def update(self, id):
+    def edit(self, id):
         # GET -> return 'edit' form
         # POST -> update with contents of form
         m.write("you're editing person %s" % id)
