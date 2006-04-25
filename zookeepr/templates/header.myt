@@ -3,5 +3,6 @@
 #<title><& REQUEST:title &></title>
 <title>FIXME</title>
 #<link rel="stylesheet" media="screen" href="/spacepants.css" type="text/css"/>
+<link rel="icon" type="image/png" href="/seven-head.png" />
 </head>
 <body>
