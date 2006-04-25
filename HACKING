@@ -1,0 +1,1 @@
+'nosetests' to run the test suite.  Must pass all the time or else!
