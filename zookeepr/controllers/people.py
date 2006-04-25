@@ -3,7 +3,7 @@ from zookeepr.lib.base import *
 class PeopleController(BaseController):
     def index(self):
         # so the default actoin for a person is to view your own person, right?
-        pass
+        m.write("people index")
 
     def view(self, id):
         m.write("you're viewing person %s" % id)
@@ -14,4 +14,3 @@ class PeopleController(BaseController):
     def delete(self, id):
         m.write("you're deleting person %s" % id)
 
-    def 

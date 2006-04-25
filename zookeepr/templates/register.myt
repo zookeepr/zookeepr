@@ -1,4 +1,6 @@
-<& head.myt &>
+<%flags>
+	inherit="/layout.myt"
+</%flags>
 
 <&| MODULE:mylib:formfill, defaults=defaults, errors=errors &>
 <form action="<% h.url_for('register', action='new') %>" method="post">
@@ -9,8 +11,6 @@ Age: <input type="text" name="age" size="3" />
 <input type="submit" value="Send it" />
 </form>
 </&>
-
-<& tail.myt &>
 
 <%args>
 defaults
