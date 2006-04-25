@@ -12,3 +12,9 @@ class TestCfpController(TestController):
 
         res.mustcontain("you're creating a new submission")
         res.mustcontain("powered by zookeepr")
+
+        res = self.app.post(url_for(controller='cfp', action='new'),
+                            params={'firstname': 'snuh',
+                                    'submit': 'Submit'})
+
+        res.mustcontain("Thanks for registering")
