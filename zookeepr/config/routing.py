@@ -14,8 +14,11 @@ def make_map():
 
     # the top level controller is named home
     m.connect('home', '', controller='home')
+
+    # default url scheme
+    m.connect(':conroller/new', action='new')
+    m.connect(':controller/:id/:action', action='view', id=None)
     
-    m.connect(':controller/:action/:id')
     m.connect('*url', controller='template', action='view')
 
     return m

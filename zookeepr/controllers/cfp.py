@@ -16,7 +16,11 @@ class CfpController(BaseController):
         errors, defaults = {}, m.request_args
         if defaults:
             # FIXME: flesh out
-            m.subexec('thankyou.myt')
+            h.log(defaults)
+
+            # snuh insert
+            
+            h.redirect_to('profile', id=defaults['handle'])
         m.subexec('cfp/new.myt', defaults=defaults, errors=errors)
 
     def edit(self, id):
