@@ -10,6 +10,6 @@
 # You should then import your SQLObject classes
 # from myclass import MyDataClass
 
-from userinfo import UserInfo, UserInfoSchema
-from person import Person, PersonSchema
-from title import Title, TitleSchema
+#from userinfo import UserInfo, UserInfoSchema
+#from person import Person, PersonSchema
+#from title import Title, TitleSchema
