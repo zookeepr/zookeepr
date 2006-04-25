@@ -1,6 +1,6 @@
 from zookeepr.lib.base import *
 
-class SubmissionController(BaseController):
+class CfpController(BaseController):
     def index(self):
         """List all submissions"""
         m.write("you're listing all submissions")
