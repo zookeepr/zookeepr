@@ -16,9 +16,8 @@ def make_map():
     m.connect('home', '', controller='home')
 
     # default url scheme
-    m.connect(':conroller/new', action='new')
-    m.connect(':controller/:id', action='view')
-    m.connect(':controller/:id/:action')
+    m.connect(':controller/new', action='new')
+    m.connect(':controller/:id/:action', action='view')
     
     m.connect('*url', controller='template', action='view')
 

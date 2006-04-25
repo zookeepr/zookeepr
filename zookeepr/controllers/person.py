@@ -1,10 +1,11 @@
 from zookeepr.lib.base import *
 
 class PersonController(BaseController):
+
     def index(self):
         # so the default action for a person is to view your own
         # person, right?
-        m.write("people index")
+        m.write("person index")
 
     def view(self, id):
         # GET -> return person profile
@@ -25,3 +26,8 @@ class PersonController(BaseController):
         # GET -> get 'new' form
         # POST -> create new
         m.write("you're creating a person")
+
+    def list(self):
+        # GET -> retun list of persons?
+        # POST -> NO-OP
+        m.write("you're getting the list of persons")
