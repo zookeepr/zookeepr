@@ -4,11 +4,8 @@ class CfpController(BaseController):
     def index(self):
         """List all submissions"""
         m.write("you're listing all submissions")
-        errors, defaults = {}, m.request_args
-        if defaults:
-            # FIXME: flesh out
-            m.subexec('thankyou.myt')
-        m.subexec('cfp.myt', defaults=defaults, errors=errors)
+        m.write("perhaps you'd like to ")
+        m.write('<a href="%s">submit something</a>' % h.url_for(action='new'))
 
     def view(self, id):
         """View a submission."""
@@ -17,6 +14,11 @@ class CfpController(BaseController):
     def new(self):
         """Create a new submission"""
         m.write("you're creating a new submission")
+        errors, defaults = {}, m.request_args
+        if defaults:
+            # FIXME: flesh out
+            m.subexec('thankyou.myt')
+        m.subexec('cfp/new.myt', defaults=defaults, errors=errors)
 
     def edit(self, id):
         """Edit a submission."""
