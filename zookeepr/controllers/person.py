@@ -25,9 +25,16 @@ class PersonController(BaseController):
     def new(self):
         # GET -> get 'new' form
         # POST -> create new
-        m.write("you're creating a person")
+
+        errors, defaults = {}, m.request_args
+        if defaults:
+            # create some object
+            # insert into database
+            # redirect somewhere with a thanks message
+            return h.redirect_to(action='view', id=defaults['handle'])
+        m.subexec('person/new.myt', defaults=defaults, errors=errors)
 
     def list(self):
         # GET -> retun list of persons?
-        # POST -> NO-OP
+        # POST -> NO-OP, do same as GET
         m.write("you're getting the list of persons")
