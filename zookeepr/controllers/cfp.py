@@ -13,7 +13,6 @@ class CfpController(BaseController):
 
     def new(self):
         """Create a new submission"""
-        m.write("you're creating a new submission")
         errors, defaults = {}, m.request_args
         if defaults:
             # FIXME: flesh out

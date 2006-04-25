@@ -6,6 +6,8 @@ defaults
 errors
 </%args>
 
+you're creating a new submission
+
 <&| MODULE:mylib:formfill, defaults=defaults, errors=errors &>
 <form action="<% h.url_for('submission') %>" method="post" >
 
