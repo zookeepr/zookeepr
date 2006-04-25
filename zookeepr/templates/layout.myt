@@ -1,6 +1,5 @@
 <& doctype.myt &>
 <& header.myt &>
-<body>
 
 #<div class="title">
 #<h1><& SELF:title &></h1>
@@ -15,5 +14,3 @@
 </div>
 
 <& footer.myt &>
-</body>
-</html>
