@@ -9,7 +9,7 @@ errors
 you're creating a new submission
 
 <&| MODULE:mylib:formfill, defaults=defaults, errors=errors &>
-<form action="<% h.url_for('submission') %>" method="post" >
+<form action="<% h.url_for(action='new') %>" method="post" >
 
 <& /forms/person.myt &>
 <& /forms/address.myt &>
