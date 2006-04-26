@@ -1,5 +1,3 @@
-from sqlalchemy import *
-
 from zookeepr.lib.base import *
 
 class SubmissiontypeController(BaseController):
@@ -30,7 +28,7 @@ class SubmissiontypeController(BaseController):
             st = model.SubmissionType(**defaults)
 
             # put in db
-            objectstore.commit()
+            st.commit()
 
             # redirect to.. somewhere
             return h.redirect_to(action='view', id=st.id)
