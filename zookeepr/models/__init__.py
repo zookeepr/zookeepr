@@ -42,10 +42,10 @@ person = Table('person', snuh_engine,
                Column('phone', String())
 )
 
-submission_types = Table('submission_type', snuh_engine,
-                         Column('id', Integer, primary_key=True),
-                         Column('name', String(40), unique=True)
-                         )
+submission_type = Table('submission_type', snuh_engine,
+                        Column('id', Integer, primary_key=True),
+                        Column('name', String(40), unique=True)
+                        )
 
 submission = Table('submission', snuh_engine,
                    Column('id', Integer, primary_key=True),
@@ -60,7 +60,7 @@ submission = Table('submission', snuh_engine,
                    )
 
 person.create()
-submission_types.create()
+submission_type.create()
 submission.create()
 
 class SubmissionType(object):
@@ -86,28 +86,13 @@ class Submission(object):
         self.url = url
 
 
-SubmissionType.mapper = mapper(SubmissionType, submission_types)
-Submission.mapper = mapper(Submission, submission, properties = {
-    'submission_type': relation(SubmissionType.mapper)
-    }
-                           )
+SubmissionType.mapper = mapper(SubmissionType, submission_type)
+
+Submission.mapper = mapper(Submission, submission, properties = dict(
+    submission_type = relation(SubmissionType.mapper),
+    ))
+
 Person.mapper = mapper(Person, person, properties = {
     'submissions': relation(Submission.mapper, private=True, backref='person')
     }
                        )
-
-
-#paper = SubType('Paper')
-#SubType("Rock")
-#SubType("scissors")
-#
-#submission = Submission('sub 1', paper, 'bleh', 'poo', 'h://')
-#
-#jaq.submissions.append(Submission('foo', paper, 'bar', 'sod', 'http://'))
-#
-#objectstore.commit()
-#
-#print jaq.submissions[0].title
-#
-#print jaq.submissions[0].person.handle
-
