@@ -16,5 +16,4 @@ class TemplateController(BaseController):
         The default is just to abort the request with a 404 File not found
         status message.
         """
-        h.log("template controller called looking for %s" % url)
         m.abort(404, "File not found: %s" % url)
