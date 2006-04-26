@@ -63,7 +63,7 @@ person.create()
 submission_types.create()
 submission.create()
 
-class SubType(object):
+class SubmissionType(object):
     def __init__(self, name):
         self.name = name
 
@@ -86,9 +86,9 @@ class Submission(object):
         self.url = url
 
 
-SubType.mapper = mapper(SubType, submission_types)
+SubmissionType.mapper = mapper(SubmissionType, submission_types)
 Submission.mapper = mapper(Submission, submission, properties = {
-    'submission_type': relation(SubType.mapper)
+    'submission_type': relation(SubmissionType.mapper)
     }
                            )
 Person.mapper = mapper(Person, person, properties = {
@@ -96,8 +96,7 @@ Person.mapper = mapper(Person, person, properties = {
     }
                        )
 
-#jaq = Person('jaq', 'jaq@spacepants.org', 'snuh')
-#
+
 #paper = SubType('Paper')
 #SubType("Rock")
 #SubType("scissors")
