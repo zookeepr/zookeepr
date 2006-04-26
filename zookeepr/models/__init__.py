@@ -11,6 +11,7 @@
 # from myclass import MyDataClass
 
 import os
+import md5
 
 from sqlalchemy import *
 
@@ -68,8 +69,13 @@ class SubType(object):
 
 
 class Person(object):
-    def __init__(self, handle):
+    def __init__(self, handle, email_address, password, firstname, lastname, phone):
         self.handle = handle
+        self.email_address = email_address
+        self.password_hash = md5.new(password).hexdigest()
+        self.firstname = firstname
+        self.lastname = lastname
+        self.phone = phone
 
 class Submission(object):
     def __init__(self, title, submission_type, abstract, experience, url):
