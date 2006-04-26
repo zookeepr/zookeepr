@@ -42,31 +42,39 @@ person = Table('person', snuh_engine,
                Column('phone', String())
 )
 
+# types of submissions: typically 'paper', 'miniconf', etc
 submission_type = Table('submission_type', snuh_engine,
                         Column('id', Integer, primary_key=True),
                         Column('name', String(40), unique=True)
                         )
 
+# submissions to the conference
 submission = Table('submission', snuh_engine,
                    Column('id', Integer, primary_key=True),
+
+                   # title of submission
                    Column('title', String()),
+                   # abstract or description
+                   Column('abstract', String()),
+
+                   # type, enumerated in the submission_type table
                    Column('submission_type_id', Integer,
                           ForeignKey('submission_type.id')),
-                   Column('abstract', String()),
+
+                   # person submitting
                    Column('person_id', Integer,
                           ForeignKey('person.id')),
+
+                   # their bio/experience presenting this topic
                    Column('experience', String()),
+
+                   # url to a project page
                    Column('url', String())
                    )
 
 person.create()
 submission_type.create()
 submission.create()
-
-class SubmissionType(object):
-    def __init__(self, name):
-        self.name = name
-
 
 class Person(object):
     def __init__(self, handle, email_address, password, firstname, lastname, phone):
@@ -77,6 +85,12 @@ class Person(object):
         self.lastname = lastname
         self.phone = phone
 
+
+class SubmissionType(object):
+    def __init__(self, name):
+        self.name = name
+
+
 class Submission(object):
     def __init__(self, title, submission_type, abstract, experience, url):
         self.title = title
@@ -86,13 +100,12 @@ class Submission(object):
         self.url = url
 
 
-SubmissionType.mapper = mapper(SubmissionType, submission_type)
+assign_mapper(SubmissionType, submission_type)
 
-Submission.mapper = mapper(Submission, submission, properties = dict(
-    submission_type = relation(SubmissionType.mapper),
+assign_mapper(Submission, submission, properties = dict(
+    submission_type = relation(SubmissionType.mapper)
     ))
 
-Person.mapper = mapper(Person, person, properties = {
-    'submissions': relation(Submission.mapper, private=True, backref='person')
-    }
-                       )
+assign_mapper(Person, person, properties = dict(
+    submissions = relation(Submission.mapper, private=True, backref='person')
+    ))
