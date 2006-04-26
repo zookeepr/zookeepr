@@ -16,8 +16,11 @@ class SubmissiontypeController(BaseController):
 
     def delete(self, id):
         # GET -> return 'delete' formm
-        # POST -> act on results of delete formn
-        m.write('delete subtype %s' % id)
+        # POST -> act on results of delete form
+        errors, defaults = {}, m.request_args
+        if defaults:
+            return h.redirect_to(action='list', id=None)
+        m.subexec('submissiontype/delete.myt', defaults=defaults, errors=errors)
 
     def new(self):
         # GET -> return 'new' form

@@ -6,7 +6,7 @@ from zookeepr.models import *
 
 class TestSubmissionTypeModel(unittest.TestCase):
     def test_new(self):
-        """Test basic operations on a SubmissionType"""
+        """Test basic operations on a SubmissionType model"""
         paper = SubmissionType('Paper')
 
         objectstore.commit()
