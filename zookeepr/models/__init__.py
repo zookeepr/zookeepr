@@ -100,6 +100,7 @@ class Submission(object):
         self.url = url
 
 
+# Use assign_mapper to monkeypatch the classes with useful methods
 assign_mapper(SubmissionType, submission_type)
 
 assign_mapper(Submission, submission, properties = dict(
