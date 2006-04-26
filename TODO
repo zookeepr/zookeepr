@@ -3,3 +3,4 @@
 
  * make subtype interface accessible only by conf admin
 
+ * test for error conditions: deleting nonexistent records
