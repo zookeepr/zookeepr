@@ -26,9 +26,13 @@ class TestSubmissionTypeModel(unittest.TestCase):
 
         self.assert_(SubmissionType.get(paperid) is None)
 
-        sts = SubmissionType.select(SubmissionType.c.id>=0)
+        result = submission_type.select().execute().fetchall()
+        
+        print "result is %s" % result
 
-        assert len(sts) == 0
+        assert len(result) == 0
 
     def setUp(self):
         objectstore.clear()
+        # clear out all submissions from the db
+        submission_type.delete(exists())
