@@ -6,9 +6,9 @@ class TestSubmissiontypeController(TestController):
         # Test response...
 
     def test_new(self):
-        res = self.app.get(url_for(controller='submissiontype'))
-        f = res.form[0]
+        res = self.app.get(url_for(controller='submissiontype', action='new'))
 
-        f['name'] = 'Paper'
+        res.mustcontain('Name:')
 
-        res = f.submit()
+        res = self.app.get(url_for(controller='submissiontype', action='new'), params=dict(name='Paper'))
+        res.mustcontain('Name:')

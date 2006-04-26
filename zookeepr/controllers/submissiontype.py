@@ -9,7 +9,6 @@ class SubmissiontypeController(BaseController):
         # POST -> NOOP, do GET
         m.write('view subtype %s' % id)
 
-
     def edit(self, id):
         # GET -> return 'edit' form
         # POST -> update entry with form results
@@ -23,7 +22,11 @@ class SubmissiontypeController(BaseController):
     def new(self):
         # GET -> return 'new' form
         # POST -> create new with results of form
-        m.write('new subtype')
+        errors, defaults = {}, m.request_args
+        if defaults:
+            # create, etc
+            pass
+        m.subexec('submissiontype/new.myt', defaults=defaults, errors=errors)
 
     def list(self):
         # GET -> return list of subtypes
