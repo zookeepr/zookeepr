@@ -82,7 +82,7 @@ class TestSubmissiontypeController(TestController):
 
         # check db
         subs = SubmissionType.select_by(name='Asterisk Talk')
-        self.failUnless(len(subs) == 0)
+        self.failUnless(len(subs) == 0, "still subtypes left in the db")
 
 
     def setUp(self):
