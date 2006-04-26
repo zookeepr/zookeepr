@@ -1,3 +1,5 @@
+from sqlalchemy import *
+
 from zookeepr.lib.base import *
 
 class SubmissiontypeController(BaseController):
@@ -25,7 +27,14 @@ class SubmissiontypeController(BaseController):
         errors, defaults = {}, m.request_args
         if defaults:
             # create, etc
-            pass
+            st = model.SubmissionType(**defaults)
+
+            # put in db
+            objectstore.commit()
+
+            # redirect to.. somewhere
+            return h.redirect_to(action='view', id=st.id)
+        
         m.subexec('submissiontype/new.myt', defaults=defaults, errors=errors)
 
     def list(self):

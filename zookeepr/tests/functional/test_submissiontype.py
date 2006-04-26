@@ -1,4 +1,5 @@
 from zookeepr.tests import *
+from zookeepr.models import *
 
 class TestSubmissiontypeController(TestController):
     def test_index(self):
@@ -11,4 +12,10 @@ class TestSubmissiontypeController(TestController):
         res.mustcontain('Name:')
 
         res = self.app.get(url_for(controller='submissiontype', action='new'), params=dict(name='Paper'))
-        res.mustcontain('Name:')
+
+        # follow redirect
+        res = res.follow()
+
+        res.mustcontain('view subtype Paper')
+
+        

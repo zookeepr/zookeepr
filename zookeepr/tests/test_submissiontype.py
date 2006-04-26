@@ -1,6 +1,7 @@
 import unittest
 
 from sqlalchemy import *
+
 from zookeepr.models import *
 
 class TestSubmissionType(unittest.TestCase):
