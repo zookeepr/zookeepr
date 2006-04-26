@@ -38,9 +38,19 @@ class TestSubmission(unittest.TestCase):
 
         # verify that it's in the database?
 
+        # clean up
+        subid = sub.id
+        vid = v.id
+        bofid = bof.id
+
+        bof.delete()
+        v.delete()
+        
+        objectstore.commit()
+
+        self.assert_(Submission.get(subid) is None)
+        self.assert_(Person.get(vid) is None)
+
 
     def setUp(self):
         objectstore.clear()
-
-    def tearDown(self):
-        clear_mappers()
