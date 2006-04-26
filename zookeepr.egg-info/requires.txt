@@ -1,1 +1,2 @@
 Pylons==dev,>=0.8dev-r292
+SQLAlchemy==0.1.6
