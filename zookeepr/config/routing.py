@@ -15,13 +15,16 @@ def make_map():
     # the top level controller is named home
     m.connect('home', '', controller='home')
 
+    m.connect('/error/:action', controller='error')
+
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
     m.connect(':controller/new', action='new', id=None)
+    m.connect(':controller', action='index', id=None)
     # default action when not specified is 'view'
     m.connect(':controller/:id', action='view')
     # default url scheme
-    m.connect(':controller/:id/:action')
+    m.connect(':controller/:id/:action', action='index', id=None)
 
     m.connect('*url', controller='template', action='view')
 

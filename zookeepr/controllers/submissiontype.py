@@ -1,8 +1,12 @@
 from zookeepr.lib.base import *
 
 class SubmissiontypeController(BaseController):
+    
     def index(self):
-        pass
+        # index action lists
+        # GET -> return list of subtypes
+        # POST -> NOOP, do GET
+        m.write('list subtypes')
 
     def view(self, id):
         # GET -> return subtype
@@ -18,8 +22,13 @@ class SubmissiontypeController(BaseController):
         # GET -> return 'delete' formm
         # POST -> act on results of delete form
         errors, defaults = {}, m.request_args
+        #h.log(defaults)
         if defaults:
-            return h.redirect_to(action='list', id=None)
+            #h.log(defaults)
+            st = model.SubmissionType.get(id)
+            st.delete()
+            st.commit()
+            return h.redirect_to(action='index', id=None)
         m.subexec('submissiontype/delete.myt', defaults=defaults, errors=errors)
 
     def new(self):
@@ -37,8 +46,3 @@ class SubmissiontypeController(BaseController):
             return h.redirect_to(action='view', id=st.id)
         
         m.subexec('submissiontype/new.myt', defaults=defaults, errors=errors)
-
-    def list(self):
-        # GET -> return list of subtypes
-        # POST -> NOOP, do GET
-        m.write('list subtypes')
