@@ -15,7 +15,10 @@ def make_map():
     # the top level controller is named home
     m.connect('home', '', controller='home')
 
-    m.connect('/error/:action', controller='error')
+    # hack the old error handler back in, using the style of the old
+    # routes controller.  this is necessary to get the error handler
+    # to not 404 when calling itself
+    m.connect('/error/:action/:id', controller='error')
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
