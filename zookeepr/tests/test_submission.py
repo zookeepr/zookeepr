@@ -28,6 +28,8 @@ class TestSubmission(unittest.TestCase):
         
         objectstore.commit()
 
+        assert len(v.submissions) == 1
+
         assert v.submissions[0].title == sub.title
         # check references
         assert v.submissions[0].person.handle == v.handle
