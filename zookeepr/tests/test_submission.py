@@ -34,7 +34,6 @@ class TestSubmission(unittest.TestCase):
         # check references
         assert v.submissions[0].person.handle == v.handle
 
-        print v.submissions[0].submission_type
         assert v.submissions[0].submission_type.name == bof.name
 
         # verify that it's in the database?
