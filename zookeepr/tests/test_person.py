@@ -29,3 +29,40 @@ class TestPersonModel(unittest.TestCase):
         
         # verify that it's in the database?
         
+
+    def test_unique_handle(self):
+        p1 = Person('test_unique_handle',
+                    'test_uq_h1@example.org',
+                    'p4ssw0rd',
+                    'Testguy',
+                    'McTest',
+                    '37')
+        objectstore.commit()
+        
+        p2 = Person('test_unique_handle',
+                    'test_uq_h2@example.org',
+                    'p4ssw0rd',
+                    'Testguy',
+                    'McTest',
+                    '37')
+        # handle is the same, so throw integrityerror
+        self.assertRaises(SQLError, objectstore.commit)
+
+        # clean up
+        del p2
+        objectstore.clear()
+
+#     def test_too_long_handle(self):
+#         # this doesn't work with sqlite due to this FAQ:
+#         # http://www.sqlite.org/faq.html#q11
+#         p = Person('a'*42,
+#                    'test_too_long@example.org',
+#                    'p4ssw0rd',
+#                    'Testguy',
+#                    'McTest',
+#                    '+61295555555')
+
+#         objectstore.commit()
+
+#         p1 = Person.mapper.select_by(email_address='test_too_long@example.org')
+#         assert p1[0].handle == 'a'*40

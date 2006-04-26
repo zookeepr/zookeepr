@@ -12,4 +12,3 @@ class TestSubmissionType(unittest.TestCase):
         assert p.name == 'Paper'
 
         # verify that it's in the database?
-        
