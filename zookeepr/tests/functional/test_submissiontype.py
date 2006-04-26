@@ -80,6 +80,10 @@ class TestSubmissiontypeController(TestController):
         res = res.follow()
         res.mustcontain('list subtypes')
 
+        # check db
+        subs = SubmissionType.select_by(name='Asterisk Talk')
+        self.failUnless(len(subs) == 0)
+
 
     def setUp(self):
         objectstore.clear()
