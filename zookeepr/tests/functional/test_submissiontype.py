@@ -30,12 +30,12 @@ class TestSubmissionTypeController(TestController):
             self.failUnless(u == '/submissiontype/1/%s' % action)
 
 
-    def test_index(self):
-        print
-        print "url for submission type is %s" % url_for(controller='submissiontype')
-        response = self.app.get(url_for(controller='submissiontype'))
-        # Test response...
-        print response
+#     def test_index(self):
+#         print
+#         print "url for submission type is %s" % url_for(controller='submissiontype')
+#         response = self.app.get(url_for(controller='submissiontype'))
+#         # Test response...
+#         print response
 
 #     def test_new(self):
 #         """Test basic operations on /submissiontype controller"""
