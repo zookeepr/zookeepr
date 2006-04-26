@@ -1,1 +1,4 @@
 'nosetests' to run the test suite.  Must pass all the time or else!
+
+PEP-8 is your new god, even the parts that are based on myth and are
+self-perpetuating.
