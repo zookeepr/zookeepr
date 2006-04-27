@@ -98,7 +98,7 @@ class TestSubmissiontypeController(TestController):
         res.mustcontain('Delete submission type')
 
         sub = SubmissionType.get(subid)
-        self.failUnless(sub is not None)
+        self.failIf(sub is None)
         
         # clean up
         sub.delete()
@@ -127,6 +127,16 @@ class TestSubmissiontypeController(TestController):
         u = url_for(controller='/submissiontype', action='delete', id=1)
         res = self.app.post(u, params=dict(delete='ok'), status=404)
 
+    def test_delete_requires_ok(self):
+        """Test that you can't delete on POST unless delete=ok"""
+
+        sub = SubmissionType(name='delete_req_ok')
+        objectstore.commit()
+        subid = sub.id
+        u = url_for(controller='/submissiontype', action='delete', id=subid)
+        res = self.app.post(u, dict(id=subid))
+        sub = SubmissionType.get(subid)
+        self.failIf(sub is None, "submission was deleted without approval")
 
     def setUp(self):
         objectstore.clear()
