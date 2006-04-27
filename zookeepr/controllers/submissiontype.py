@@ -11,7 +11,12 @@ class SubmissiontypeController(BaseController):
     def view(self, id):
         # GET -> return subtype
         # POST -> NOOP, do GET
-        m.write('view subtype %s' % id)
+
+        # assign to the template global
+        c.submissiontype = model.SubmissionType.get(id)
+
+        # call the template
+        m.subexec('submissiontype/view.myt')
 
     def edit(self, id):
         # GET -> return 'edit' form

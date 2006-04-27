@@ -57,7 +57,10 @@ class TestSubmissiontypeController(TestController):
 
         # follow redirect
         res = res.follow()
-        res.mustcontain('view subtype')
+        # check that we're viewing the correct id!
+        res.mustcontain('View submission type')
+        res.mustcontain('Name:')
+        res.mustcontain('Asterisk Talk')
 
         # check that it's in the database!
         subs = SubmissionType.select_by(name='Asterisk Talk')
@@ -65,9 +68,6 @@ class TestSubmissiontypeController(TestController):
         sub = subs[0]
 
         subid = sub.id
-
-        # check that we're viewing the correct id!
-        res.mustcontain('view subtype %d' % subid)
 
         ## edit it
         ed_url = url_for(controller='/submissiontype', action='edit', id=subid)
