@@ -59,7 +59,7 @@ class TestSubmissiontypeController(TestController):
         res.mustcontain('Delete submission type')
         res.mustcontain('Are you sure?')
 
-        res = self.app.post(del_url, params=dict(id=subid))
+        res = self.app.post(del_url, params=dict(delete='ok', id=subid))
         res = res.follow()
         res.mustcontain('List submission types')
 
@@ -67,6 +67,56 @@ class TestSubmissiontypeController(TestController):
         subs = SubmissionType.select_by(name='Asterisk Talk')
         self.failUnless(len(subs) == 0, "still subtypes left in the db")
 
+    def test_invalid_get_on_edit(self):
+        """Test that GET requests on edit action don't modify data"""
+        # create some data
+        sub = SubmissionType(name='buzz')
+        objectstore.commit()
+
+        u = url_for(controller='/submissiontype', action='edit', id=sub.id)
+        res = self.app.get(u, params=dict(name='feh'))
+        res.mustcontain('Edit submission type')
+
+        self.failUnless(sub.name == 'buzz')
+
+        # clean up
+        sub.delete()
+        objectstore.commit()
+        # doublecheck
+        subs = SubmissionType.select()
+        assert len(subs) == 0
+
+    def test_invalid_get_on_delete(self):
+        """Test that GET requests on delete action don't modify data"""
+        # create some data
+        sub = SubmissionType(name='buzzd')
+        objectstore.commit()
+
+        subid = sub.id
+        u = url_for(controller='/submissiontype', action='delete', id=subid)
+        res = self.app.get(u, params=dict(delete='ok', id=subid))
+        res.mustcontain('Delete submission type')
+
+        sub = SubmissionType.get(subid)
+        self.failUnless(sub is not None)
+        
+        # clean up
+        sub.delete()
+        objectstore.commit()
+        # doublecheck
+        subs = SubmissionType.select()
+        assert len(subs) == 0
+
+    def test_invalid_get_on_new(self):
+        """Test that GET requests on new action don't modify data"""
+
+        u = url_for(controller='/submissiontype', action='new')
+        res = self.app.get(u, params=dict(name='buzzn'))
+        res.mustcontain('New submission type')
+
+        subs = SubmissionType.select()
+        assert len(subs) == 0
+    
 
     def setUp(self):
         objectstore.clear()

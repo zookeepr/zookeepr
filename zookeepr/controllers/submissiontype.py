@@ -60,13 +60,13 @@ class SubmissiontypeController(BaseController):
         errors, defaults = {}, m.request_args
         
         #h.log(defaults)
-        if defaults:
-            #h.log(defaults)
-            st = model.SubmissionType.get(id)
+        if request.method == 'POST':
+            if defaults:
+                st = model.SubmissionType.get(id)
 
-            st.delete()
-            st.commit()
-            return h.redirect_to(action='index', id=None)
+                st.delete()
+                st.commit()
+                return h.redirect_to(action='index', id=None)
         m.subexec('submissiontype/delete.myt', defaults=defaults, errors=errors)
 
     def new(self):
@@ -78,14 +78,15 @@ class SubmissiontypeController(BaseController):
         to view the new SubType.
         """
         errors, defaults = {}, m.request_args
-        if defaults:
-            # create, etc
-            st = model.SubmissionType(**defaults)
+        if request.method == 'POST':
+            if defaults:
+                # create, etc
+                st = model.SubmissionType(**defaults)
 
-            # put in db
-            st.commit()
+                # put in db
+                st.commit()
 
-            # redirect to.. somewhere
-            return h.redirect_to(action='view', id=st.id)
+                # redirect to.. somewhere
+                return h.redirect_to(action='view', id=st.id)
         
         m.subexec('submissiontype/new.myt', defaults=defaults, errors=errors)
