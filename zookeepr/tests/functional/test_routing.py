@@ -1,5 +1,4 @@
 from zookeepr.tests import *
-from zookeepr.models import *
 
 class TestRouting(TestController):
     def test_routing(self):
