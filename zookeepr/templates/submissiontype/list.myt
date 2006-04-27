@@ -18,10 +18,13 @@ List submission types
 % for st in c.submissiontypes:
 <tr>
 
-% for key in ['name']:
+%	for key in ['name']:
 <td><a href="<% h.url_for(action='view', id=st.id) %>"><% st.name %></a></td>
+%	#endfor
 
-% #endfor
+%	for action in ['view', 'edit', 'delete']:
+<td><a href="<% h.url_for(action=action, id=st.id) %>"><% action %></a></td>
+%	#endfor
 
 </tr>
 % #endfor
