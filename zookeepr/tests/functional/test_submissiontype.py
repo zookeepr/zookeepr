@@ -79,7 +79,8 @@ class TestSubmissiontypeController(TestController):
 
         # follow redirect?
         res = res.follow()
-        res.mustcontain('list subtypes')
+        res.mustcontain('List submission types')
+        res.mustcontain('Feh fuh')
 
         # check db
         sub = SubmissionType.get(subid)
@@ -93,7 +94,7 @@ class TestSubmissiontypeController(TestController):
 
         res = self.app.post(del_url, params=dict(id=subid))
         res = res.follow()
-        res.mustcontain('list subtypes')
+        res.mustcontain('List submission types')
 
         # check db
         subs = SubmissionType.select_by(name='Asterisk Talk')
