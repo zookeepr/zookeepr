@@ -63,7 +63,7 @@ class SubmissiontypeController(BaseController):
         if defaults:
             #h.log(defaults)
             st = model.SubmissionType.get(id)
-            h.log(st)
+
             st.delete()
             st.commit()
             return h.redirect_to(action='index', id=None)

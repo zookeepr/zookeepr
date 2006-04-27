@@ -2,39 +2,6 @@ from zookeepr.tests import *
 from zookeepr.models import *
 
 class TestSubmissiontypeController(TestController):
-    def test_routing(self):
-        """Test url routing for /submissiontype controller"""
-
-        # print to clear output when running verbose
-        print
-        
-        # controller w/o action or id
-        u = url_for(controller='/submissiontype')
-        print "base controller url: %s" % u
-        self.failUnless(u == '/submissiontype')
-
-        # controller w/ index action
-        u = url_for(controller='/submissiontype', action='index')
-        print "index action url: %s" % u
-        self.failUnless(u == '/submissiontype')
-        
-        # controller w/ new action
-        u = url_for(controller='/submissiontype', action='new')
-        print "new action url: %s" % u
-        self.failUnless(u == '/submissiontype/new')
-
-        # controller w/ view action
-        u = url_for(controller='/submissiontype', action='view', id=1)
-        print "view action url: %s" % u
-        self.failUnless(u == '/submissiontype/1')
-
-        # controller w/ other actions and id
-        for action in ['edit', 'update', 'delete']:
-            u = url_for(controller='/submissiontype', action=action, id=1)
-            print "%s action url: %s" % (action, u)
-            self.failUnless(u == '/submissiontype/1/%s' % action)
-
-
 #     def test_index(self):
 #         print
 #         print "url for submission type is %s" % url_for(controller='submissiontype')
