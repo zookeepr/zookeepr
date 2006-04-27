@@ -8,7 +8,7 @@ class SubmissiontypeController(BaseController):
         # POST -> NOOP, do GET
 
         # get submission types and assign to thingy
-        c.submissiontypes = model.SubmissionType.mapper.select(model.submission_type.c.id>=0)
+        c.submissiontypes = model.SubmissionType.select()
         
         m.subexec('submissiontype/list.myt')
 
