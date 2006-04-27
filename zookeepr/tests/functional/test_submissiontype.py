@@ -137,6 +137,9 @@ class TestSubmissiontypeController(TestController):
         res = self.app.post(u, dict(id=subid))
         sub = SubmissionType.get(subid)
         self.failIf(sub is None, "submission was deleted without approval")
+        # clean up
+        sub.delete()
+        objectstore.commit()
 
     def setUp(self):
         objectstore.clear()
