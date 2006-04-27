@@ -6,7 +6,11 @@ class SubmissiontypeController(BaseController):
         # index action lists
         # GET -> return list of subtypes
         # POST -> NOOP, do GET
-        m.write('list subtypes')
+
+        # get submission types and assign to thingy
+        c.submissiontypes = model.SubmissionType.mapper.select(model.submission_type.c.id>=0)
+        
+        m.subexec('submissiontype/list.myt')
 
     def view(self, id):
         # GET -> return subtype
