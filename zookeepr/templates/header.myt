@@ -2,7 +2,7 @@
 <head>
 #<title><& REQUEST:title &></title>
 <title>zookeepr - FIXME in templates/header.myt</title>
-#<link rel="stylesheet" media="screen" href="/spacepants.css" type="text/css"/>
+<link rel="stylesheet" media="screen" href="/zookeepr.css" type="text/css"/>
 <link rel="icon" type="image/png" href="/seven-head.png" />
 </head>
 <body>
