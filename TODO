@@ -8,6 +8,4 @@
 
  * work out how to autogenerate forms because I'm lazy
 
- * test that GET can't update or delete or create anything.
-
  * Should an invalid GET (i.e. with request args) abort with 401 or something?
