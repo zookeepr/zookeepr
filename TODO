@@ -10,3 +10,5 @@
  * throw bad shit at forms to make sure we're using formencode :-)
 
  * work out how to autogenerate forms because I'm lazy
+
+ * test that GET can't update or delete or create anything
