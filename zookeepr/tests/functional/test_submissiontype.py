@@ -116,7 +116,17 @@ class TestSubmissiontypeController(TestController):
 
         subs = SubmissionType.select()
         assert len(subs) == 0
-    
+
+    def test_invalid_delete(self):
+        """Test that deletes of nonexistent objects are handled gracefully"""
+
+        # make sure there's nothing in there
+        subs = SubmissionType.select()
+        self.failUnless(len(subs) == 0)
+        
+        u = url_for(controller='/submissiontype', action='delete', id=1)
+        res = self.app.post(u, params=dict(delete='ok'), status=404)
+
 
     def setUp(self):
         objectstore.clear()

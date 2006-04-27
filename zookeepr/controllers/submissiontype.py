@@ -64,6 +64,9 @@ class SubmissiontypeController(BaseController):
             if defaults:
                 st = model.SubmissionType.get(id)
 
+                if st is None:
+                    m.abort(404)
+
                 st.delete()
                 st.commit()
                 return h.redirect_to(action='index', id=None)
