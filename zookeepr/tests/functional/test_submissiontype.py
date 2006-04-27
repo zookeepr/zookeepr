@@ -45,7 +45,8 @@ class TestSubmissiontypeController(TestController):
     def test_new(self):
         """Test basic operations on /submissiontype controller"""
         print
-        
+
+        ## create a new one
         new_url = url_for(controller='/submissiontype', action='new')
         res = self.app.get(new_url)
         res.mustcontain('New submission type')
@@ -56,8 +57,6 @@ class TestSubmissiontypeController(TestController):
 
         # follow redirect
         res = res.follow()
-
-        # viewing a subtype
         res.mustcontain('view subtype')
 
         # check that it's in the database!
@@ -70,7 +69,23 @@ class TestSubmissiontypeController(TestController):
         # check that we're viewing the correct id!
         res.mustcontain('view subtype %d' % subid)
 
-        # delete it
+        ## edit it
+        ed_url = url_for(controller='/submissiontype', action='edit', id=subid)
+        res = self.app.get(ed_url)
+        res.mustcontain('Edit submission type')
+        res.mustcontain('Name:')
+        res = self.app.post(ed_url,
+                            params=dict(name='Feh fuh'))
+
+        # follow redirect?
+        res = res.follow()
+        res.mustcontain('list subtypes')
+
+        # check db
+        sub = SubmissionType.get(subid)
+        self.failUnless(sub.name == 'Feh fuh')
+
+        ## delete it
         del_url = url_for(controller='/submissiontype', action='delete', id=subid)
         res = self.app.get(del_url)
         res.mustcontain('Delete submission type')

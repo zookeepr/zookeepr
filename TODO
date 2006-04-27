@@ -8,3 +8,5 @@
  * use FormEncode to validate the input from forms
 
  * throw bad shit at forms to make sure we're using formencode :-)
+
+ * work out how to autogenerate forms because I'm lazy

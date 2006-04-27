@@ -16,7 +16,23 @@ class SubmissiontypeController(BaseController):
     def edit(self, id):
         # GET -> return 'edit' form
         # POST -> update entry with form results
-        m.write('edit subtype %s' % id)
+        st = model.SubmissionType.get(id)
+        defaults, errors = {}, {}
+        
+        # FIXME: gotta be a better way to seed the form
+        for k in ['name']:
+            defaults[k] = getattr(st, k)
+            
+        if request.method == 'POST':
+            errors, defaults = {}, m.request_args
+            if defaults:
+                # FIXME: is there a better way to reflect form data into object
+                for (k, v) in defaults.items():
+                    setattr(st, k, v)
+                st.commit()
+                return h.redirect_to(action='index', id=None)
+
+        m.subexec('submissiontype/edit.myt', defaults=defaults, errors=errors)
 
     def delete(self, id):
         # GET -> return 'delete' formm
