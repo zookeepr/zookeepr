@@ -59,7 +59,6 @@ class SubmissiontypeController(BaseController):
         """
         errors, defaults = {}, m.request_args
         
-        #h.log(defaults)
         if request.method == 'POST':
             if defaults and defaults.has_key('delete') and defaults['delete'] == 'ok':
                 st = model.SubmissionType.get(id)
