@@ -1,7 +1,3 @@
-<%flags>
-	inherit="/layout.myt"
-</%flags>
-
 View submission type
 
 (<a href="<% h.url_for(action='new') %>">new stype</a>)

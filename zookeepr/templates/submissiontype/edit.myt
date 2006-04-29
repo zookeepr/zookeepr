@@ -1,6 +1,3 @@
-<%flags>
-	inherit="/layout.myt"
-</%flags>
 <%args>
 defaults
 errors
