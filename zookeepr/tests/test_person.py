@@ -7,7 +7,6 @@ from zookeepr.models import *
 class TestPersonModel(unittest.TestCase):
     def test_new(self):
         """Test simple creation of a Person object"""
-        print
 
         # first let's assert that theres nothing in there
         ps = Person.select()
@@ -49,7 +48,7 @@ class TestPersonModel(unittest.TestCase):
 
     def test_unique_handle(self):
         """Test that the handle attribute of Person is unique"""
-        print
+
         # assert that the database is empty so as not to fuck us up
         ps = Person.select()
         self.failIf(len(ps) > 0, "database is not empty")
