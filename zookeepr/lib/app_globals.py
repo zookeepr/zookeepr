@@ -1,4 +1,6 @@
-import pylons.middleware 
+import pylons.middleware
+
+from zookeepr.models import create_model_backend
 
 class Globals(pylons.middleware.Globals):
 
@@ -26,7 +28,7 @@ class Globals(pylons.middleware.Globals):
             
         """
         pass
-        
+
     def __del__(self):
         """
         Put any cleanup code to be run when the application finally exits 
