@@ -123,5 +123,29 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
+    def test_invalid_get_on_delete(self):
+        """Test that GET requests on delete actions are idempotent"""
+        print
+        # create some data
+        p = Person(handle='testguy',
+                   email_address='testguy@example.org')
+        objectstore.commit()
+        pid = p.id
+
+        u = url_for(controller='/person', action='delete', id='testguy')
+        res = self.app.get(u,
+                           params=dict(delete='ok'))
+        res.mustcontain('Delete')
+
+        p = Person.get(pid)
+        self.failIf(p is None)
+
+        # clean up
+        p.delete()
+        objectstore.commit()
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0)
+
     def setUp(self):
         objectstore.clear()
