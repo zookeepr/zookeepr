@@ -1,2 +1,2 @@
-Pylons==dev,>=0.8dev-r292
+Pylons==0.8
 SQLAlchemy==0.1.6
