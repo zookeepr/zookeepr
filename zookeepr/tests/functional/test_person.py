@@ -8,7 +8,7 @@ class TestPersonController(TestController):
 #         response.mustcontain("person index")
 
     def test_new(self):
-        """Test basic operations on /person URL"""
+        """Test basic creation operation on /person URL"""
         print
 
         # create a new person
@@ -36,26 +36,43 @@ class TestPersonController(TestController):
         # clean up
         ps[0].delete()
         objectstore.commit()
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0)
 
-#     def test_edit(self)
-        
+    def test_edit(self):
+        """Test basic edit operation on /person URL"""
+        print
 
-#         ## edit
-#         u = url_for(controller='/person', action='edit', id=pid)
-#         print "ed_url is %s" % u
-#         res = self.app.get(u)
-#         res.mustcontain('Edit person')
-#         res.mustcontain('Handle:')
-#         res = self.app.post(u,
-#                             params=dict(email_address='zoinks@example.org'))
+        # create something in the db
+        p = Person(handle='testguy',
+                   email_address='testguy@example.org')
+        objectstore.commit()
+        pid = p.id
 
-#         # follow redirect, check it's the list page
-#         res = res.follow()
-#         res.mustcontain('List persons')
+        ## edit
+        u = url_for(controller='/person', action='edit', id='testguy')
+        print "ed_url is %s" % u
+        res = self.app.get(u)
+        res.mustcontain('Edit person')
+        res.mustcontain('Handle:')
+        res = self.app.post(u,
+                            params=dict(email_address='zoinks@example.org'))
 
-#         # check DB
-#         p = Person.get(pid)
-#         self.failUnless(p.email_address == 'zoinks@example.org')
+        # follow redirect, check it's the list page
+        res = res.follow()
+        res.mustcontain('List persons')
+
+        # check DB
+        p = Person.get(pid)
+        self.failUnless(p.email_address == 'zoinks@example.org')
+
+        # clean up
+        p.delete()
+        objectstore.commit()
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0)
 
 #         ## delete
 #         u = url_for(controller='/person', action='delete', id=pid)

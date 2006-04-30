@@ -79,7 +79,7 @@ class PersonController(BaseController):
                 p.commit()
                 
                 # redirect somewhere with a thanks message
-                return h.redirect_to(action='view', id=defaults['handle'])
+                return h.redirect_to(action='view', id=p.handle)
 
         m.subexec('person/new.myt', defaults=defaults, errors=errors)
 
