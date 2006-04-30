@@ -56,9 +56,29 @@ class PersonController(BaseController):
         m.subexec('person/edit.myt', defaults=defaults, errors=errors)
 
     def delete(self, id):
-        # GET -> return delete approval form
-        # POST -> do delete
-        m.write("you're deleting person %s" % id)
+        """Delete a person.
+
+        GET will return a form asking for approval.
+
+        POST requests with a key 'delete' set to 'ok' will delete the item.
+
+        Invalid ids will return a 404 not found.
+        """
+        ps = model.Person.select_by(handle=id)
+        if len(ps) == 0:
+            m.abort(404, "No person '%s' found" % id)
+
+        p = ps[0]
+        
+        errors, defaults = {}, m.request_args
+        if request.method == 'POST':
+            if defaults and defaults.has_key('delete') and defaults['delete'] == 'ok':
+                p.delete()
+                p.commit()
+
+                return h.redirect_to(action='index', id=None)
+
+        m.subexec('person/delete.myt', defaults=defaults, errors=errors)
 
     def new(self):
         """Create a new person.
