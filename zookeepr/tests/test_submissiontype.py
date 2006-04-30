@@ -30,7 +30,7 @@ class TestSubmissionTypeModel(unittest.TestCase):
         
         print "result is %s" % result
 
-        assert len(result) == 0
+        self.failUnless(len(result) == 0)
 
     def setUp(self):
         objectstore.clear()
