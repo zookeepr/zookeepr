@@ -20,7 +20,6 @@ class PersonController(BaseController):
         results = model.Person.select_by(handle=id)
         if len(results) == 0:
             m.abort(404)
-        h.log(results[0])
         c.person = results[0]
         m.subexec('person/view.myt')
 

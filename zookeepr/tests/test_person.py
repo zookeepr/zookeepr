@@ -28,7 +28,17 @@ class TestPersonModel(unittest.TestCase):
         assert p.phone == '+61295555555'
         
         # verify that it's in the database?
-        
+
+        pid = p.id
+        p = Person.get(pid)
+        self.failUnless(p.handle == 'testguy')
+
+        # clean up
+        p.delete()
+        objectstore.commit()
+        # check
+        ps = Person.select()
+        assert len(ps) == 0
 
     def test_unique_handle(self):
         p1 = Person('test_unique_handle',
@@ -38,6 +48,7 @@ class TestPersonModel(unittest.TestCase):
                     'McTest',
                     '37')
         objectstore.commit()
+        p1id = p1.id
         
         p2 = Person('test_unique_handle',
                     'test_uq_h2@example.org',
@@ -51,6 +62,12 @@ class TestPersonModel(unittest.TestCase):
         # clean up
         del p2
         objectstore.clear()
+        p1 = Person.get(p1id)
+        p1.delete()
+        objectstore.commit()
+        # check
+        ps = Person.select()
+        assert len(ps) == 0
 
 #     def test_too_long_handle(self):
 #         # this doesn't work with sqlite due to this FAQ:

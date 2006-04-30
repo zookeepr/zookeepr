@@ -7,7 +7,7 @@ View person
 (<a href="<% h.url_for(action='delete') %>">delete this person</a>)
 
 
-% for (label, key) in [('handle', 'handle')]:
+% for (label, key) in [('Handle', 'handle')]:
 <div class="formlabel"><% label %>:</div>
 <div class="formfield"><% getattr(c.person, key) %></div>
 % #endfor

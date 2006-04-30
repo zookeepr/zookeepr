@@ -1,34 +1,43 @@
 from zookeepr.tests import *
+from zookeepr.models import *
 
 class TestPersonController(TestController):
-    def test_index(self):
-        response = self.app.get(url_for(controller='person'))
-        # Test response...
-        response.mustcontain("person index")
+#     def test_index(self):
+#         response = self.app.get(url_for(controller='person'))
+#         # Test response...
+#         response.mustcontain("person index")
 
     def test_new(self):
-        res = self.app.get(url_for(controller='person', action='new'))
-        res.mustcontain("you're creating a person")
+        """Test basic operations on /person URL"""
+        print
 
-        res = self.app.post(url_for(controller='person', action='new'),
-                            params=dict(handle='testguy'))
+        # create a new person
+        new_url = url_for(controller='person', action='new')
+        res = self.app.get(new_url)
+        res.mustcontain("New person")
+        res.mustcontain('Handle:')
 
+        res = self.app.post(new_url,
+                            params=dict(handle='testguy',
+                                        email_address='testguy@example.org'))
+
+        # follow redirect
         res = res.follow()
-        res.mustcontain("you're viewing person testguy")
+        # check we're viewing the right page
+        res.mustcontain('View person')
+        res.mustcontain('Handle:')
+        res.mustcontain('testguy')
 
-    def test_view(self):
-        response = self.app.get(url_for(controller='person', action='view', id='jaq'))
-        response.mustcontain("you're viewing person jaq")
+        # check that it's in the dataase
+        ps = Person.select_by(handle='testguy')
+        assert len(ps) == 1
+        p = ps[0]
 
-    def test_edit(self):
-        response = self.app.get(url_for(controller='person', action='edit', id='jaq'))
-        response.mustcontain("you're editing person jaq")
+        pid = p.id
 
-    def test_delete(self):
-        response = self.app.get(url_for(controller='person', action='delete', id='jaq'))
-        response.mustcontain("you're deleting person jaq")
-
-    def test_list(self):
-        response = self.app.get(url_for(controller='person', action='list'))
-        response.mustcontain("you're getting the list of persons")
-
+        # clean up
+        p.delete()
+        objectstore.commit()
+        # check
+        ps = Person.select()
+        assert len(ps) == 0
