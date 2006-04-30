@@ -48,7 +48,7 @@ class TestPersonModel(unittest.TestCase):
         assert len(ps) == 0
 
     def test_unique_handle(self):
-        """Test that the handle attribute is unique."""
+        """Test that the handle attribute of Person is unique"""
         print
         # assert that the database is empty so as not to fuck us up
         ps = Person.select()
