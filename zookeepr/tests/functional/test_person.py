@@ -99,5 +99,29 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
+    def test_invalid_get_on_edit(self):
+        """Test that GET requests on edit actions are idempotent"""
+        print
+        # create some data
+        p = Person(handle='testguy',
+                   email_address='testguy@example.org')
+        objectstore.commit()
+        pid = p.id
+
+        u = url_for(controller='/person', action='edit', id='testguy')
+        res = self.app.get(u,
+                           params=dict(email_address='testguy1@example.org'))
+        res.mustcontain('Edit')
+
+        p = Person.get(pid)
+        self.failUnless(p.email_address == 'testguy@example.org')
+
+        # clean up
+        p.delete()
+        objectstore.commit()
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0)
+
     def setUp(self):
         objectstore.clear()
