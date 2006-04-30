@@ -5,6 +5,7 @@ from zookeepr.models import *
 
 class TestSubmission(unittest.TestCase):
     def test_new(self):
+        """Test creation of a Submission object"""
         # set up some subtypes
         bof = SubmissionType(name='BOF')
 
