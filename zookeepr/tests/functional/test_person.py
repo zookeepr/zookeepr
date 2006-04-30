@@ -12,12 +12,12 @@ class TestPersonController(TestController):
         print
 
         # create a new person
-        new_url = url_for(controller='/person', action='new')
-        res = self.app.get(new_url)
+        u = url_for(controller='/person', action='new')
+        res = self.app.get(u)
         res.mustcontain("New person")
         res.mustcontain('Handle:')
 
-        res = self.app.post(new_url,
+        res = self.app.post(u,
                             params=dict(handle='testguy',
                                         email_address='testguy@example.org'))
 
@@ -30,17 +30,18 @@ class TestPersonController(TestController):
 
         # check that it's in the dataase
         ps = Person.select_by(handle='testguy')
-        assert len(ps) == 1
+        self.failUnless(len(ps) == 1)
         p = ps[0]
 
         pid = p.id
 
         ## edit
-        ed_url = url_for(controller='/person', action='edit', id=pid)
-        res = self.app.get(ed_url)
+        u = url_for(controller='/person', action='edit', id=pid)
+        print "ed_url is %s" % u
+        res = self.app.get(u)
         res.mustcontain('Edit person')
         res.mustcontain('Handle:')
-        res = self.app.post(ed_url,
+        res = self.app.post(u,
                             params=dict(email_address='zoinks@example.org'))
 
         # follow redirect, check it's the list page
@@ -52,10 +53,10 @@ class TestPersonController(TestController):
         self.failUnless(p.email_address == 'zoinks@example.org')
 
         ## delete
-        del_url = url_for(controller='/person', action='delete', id=pid)
-        res = self.app.get(del_url)
+        u = url_for(controller='/person', action='delete', id=pid)
+        res = self.app.get(u)
         res.mustcontain('Delete person')
-        res = self.app.post(del_url, params=dict(delete='ok'))
+        res = self.app.post(u, params=dict(delete='ok'))
         res = res.follow()
         res.mustcontain("List")
         # check db

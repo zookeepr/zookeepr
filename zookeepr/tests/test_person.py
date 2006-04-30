@@ -6,6 +6,13 @@ from zookeepr.models import *
 
 class TestPersonModel(unittest.TestCase):
     def test_new(self):
+        """Test simple creation of a Person object"""
+        print
+
+        # first let's assert that theres nothing in there
+        ps = Person.select()
+        self.failUnless(len(ps) == 0, "database is not empty")
+
         p = Person('testguy',
                    'testguy@example.org',
                    'p4ssw0rd',
@@ -41,6 +48,12 @@ class TestPersonModel(unittest.TestCase):
         assert len(ps) == 0
 
     def test_unique_handle(self):
+        """Test that the handle attribute is unique."""
+        print
+        # assert that the database is empty so as not to fuck us up
+        ps = Person.select()
+        self.failIf(len(ps) > 0, "database is not empty")
+        
         p1 = Person('test_unique_handle',
                     'test_uq_h1@example.org',
                     'p4ssw0rd',
@@ -67,7 +80,7 @@ class TestPersonModel(unittest.TestCase):
         objectstore.commit()
         # check
         ps = Person.select()
-        assert len(ps) == 0
+        self.failUnless(len(ps) == 0, "database was not left clean")
 
 #     def test_too_long_handle(self):
 #         # this doesn't work with sqlite due to this FAQ:
