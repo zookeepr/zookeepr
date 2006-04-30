@@ -24,9 +24,36 @@ class PersonController(BaseController):
         m.subexec('person/view.myt')
 
     def edit(self, id):
-        # GET -> return 'edit' form
-        # POST -> update with contents of form
-        m.write("you're editing person %s" % id)
+        """Edit a specific person
+
+        GET requests return an 'edit' form, prefilled with the current
+        data.
+
+        POST requests update the Person with the data posted.
+        """
+        # get the Person
+        ps = model.Person.select_by(handle=id)
+        if len(ps) == 0:
+            m.abort(404, 'No such person "%s"' % (id,))
+        p = ps[0]
+
+        # initialise variables
+        defaults, errors = {}, {}
+
+        # FIXME: gotta be a better way to seed the form
+        for k in ['handle', 'email_address', 'firstname', 'lastname', 'phone', 'fax']:
+            defaults[k] = getattr(p, k)
+
+        if request.method == 'POST':
+            errors, defaults = {}, m.request_args
+            if defaults:
+                # FIXME: need a better way to reflect form into object
+                for (k, v) in defaults.items():
+                    setattr(p, k, v)
+                p.commit()
+                return h.redirect_to(action='index', id=None)
+
+        m.subexec('person/edit.myt', defaults=defaults, errors=errors)
 
     def delete(self, id):
         # GET -> return delete approval form

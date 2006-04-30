@@ -12,7 +12,7 @@ class TestPersonController(TestController):
         print
 
         # create a new person
-        new_url = url_for(controller='person', action='new')
+        new_url = url_for(controller='/person', action='new')
         res = self.app.get(new_url)
         res.mustcontain("New person")
         res.mustcontain('Handle:')
@@ -35,9 +35,33 @@ class TestPersonController(TestController):
 
         pid = p.id
 
-        # clean up
-        p.delete()
-        objectstore.commit()
+        ## edit
+        ed_url = url_for(controller='/person', action='edit', id=pid)
+        res = self.app.get(ed_url)
+        res.mustcontain('Edit person')
+        res.mustcontain('Handle:')
+        res = self.app.post(ed_url,
+                            params=dict(email_address='zoinks@example.org'))
+
+        # follow redirect, check it's the list page
+        res = res.follow()
+        res.mustcontain('List persons')
+
+        # check DB
+        p = Person.get(pid)
+        self.failUnless(p.email_address == 'zoinks@example.org')
+
+        ## delete
+        del_url = url_for(controller='/person', action='delete', id=pid)
+        res = self.app.get(del_url)
+        res.mustcontain('Delete person')
+        res = self.app.post(del_url, params=dict(delete='ok'))
+        res = res.follow()
+        res.mustcontain("List")
+        # check db
+        p = Person.get(pid)
+        self.failUnless(p is None)
+
         # check
         ps = Person.select()
         assert len(ps) == 0

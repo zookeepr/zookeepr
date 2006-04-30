@@ -15,7 +15,7 @@ List persons
 <tr>
 
 %	for key in ['name']:
-<td><a href="<% h.url_for(action='view', id=p.id) %>"><% p.name %></a></td>
+<td><a href="<% h.url_for(action='view', id=p.id) %>"><% p.handle %></a></td>
 %	#endfor
 
 %	for action in ['view', 'edit', 'delete']:
