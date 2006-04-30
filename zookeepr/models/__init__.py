@@ -39,7 +39,8 @@ person = Table('person', snuh_engine,
                # other personal details
                Column('firstname', String()),
                Column('lastname', String()),
-               Column('phone', String())
+               Column('phone', String()),
+               Column('fax', String())
 )
 
 # types of submissions: typically 'paper', 'miniconf', etc
@@ -77,17 +78,19 @@ submission_type.create()
 submission.create()
 
 class Person(object):
-    def __init__(self, handle, email_address, password, firstname, lastname, phone):
+    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
         self.handle = handle
         self.email_address = email_address
-        self.password_hash = md5.new(password).hexdigest()
+        if password is not None:
+            self.password_hash = md5.new(password).hexdigest()
         self.firstname = firstname
         self.lastname = lastname
         self.phone = phone
+        self.fax = fax
 
 
 class SubmissionType(object):
-    def __init__(self, name):
+    def __init__(self, name=None):
         self.name = name
 
 
