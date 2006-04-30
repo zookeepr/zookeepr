@@ -165,5 +165,26 @@ class TestPersonController(TestController):
         u = url_for(controller='/person', action='delete', id='testguy')
         res = self.app.post(u, params=dict(delete='ok'), status=404)
 
+    def test_delete_requires_ok(self):
+        """Test that delete requires simple authorisation key"""
+
+        p = Person(handle='testguy')
+        objectstore.commit()
+        pid = p.id
+
+        u = url_for(controller='/person', action='delete', id='testguy')
+        res = self.app.post(u, dict(submit='submit'))
+
+        p = Person.get(pid)
+        self.failIf(p is None, "person was deleted without approval")
+
+        res = self.app.post(u, dict(delete='ok'))
+        p = Person.get(pid)
+        self.failUnless(p is None, "person was not deleted with approval")
+        
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0)
+        
     def setUp(self):
         objectstore.clear()
