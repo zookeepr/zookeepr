@@ -74,20 +74,30 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
-#         ## delete
-#         u = url_for(controller='/person', action='delete', id=pid)
-#         res = self.app.get(u)
-#         res.mustcontain('Delete person')
-#         res = self.app.post(u, params=dict(delete='ok'))
-#         res = res.follow()
-#         res.mustcontain("List")
-#         # check db
-#         p = Person.get(pid)
-#         self.failUnless(p is None)
+    def test_delete(self):
+        """Test basic delete operation on /person URL"""
+        print
 
-#         # check
-#         ps = Person.select()
-#         assert len(ps) == 0
+        # create something
+        p = Person(handle='testguy',
+                   email_address='testguy@example.org')
+        objectstore.commit()
+        pid = p.id
+
+        ## delete
+        u = url_for(controller='/person', action='delete', id='testguy')
+        res = self.app.get(u)
+        res.mustcontain('Delete person')
+        res = self.app.post(u, params=dict(delete='ok'))
+        res = res.follow()
+        res.mustcontain("List")
+        # check db
+        p = Person.get(pid)
+        self.failUnless(p is None)
+
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0)
 
     def setUp(self):
         objectstore.clear()
