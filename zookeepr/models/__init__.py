@@ -10,19 +10,11 @@
 # You should then import your SQLObject classes
 # from myclass import MyDataClass
 
-import os
 import md5
 
 from sqlalchemy import *
 
-try:
-    os.unlink('somedb.db')
-except OSError:
-    pass
-
-snuh_engine = create_engine('sqlite', dict(filename='somedb.db'))
-
-person = Table('person', snuh_engine,
+person = Table('person',
                Column('id', Integer, primary_key=True),
                
                # unique identifier within the zookeepr app
@@ -44,13 +36,13 @@ person = Table('person', snuh_engine,
 )
 
 # types of submissions: typically 'paper', 'miniconf', etc
-submission_type = Table('submission_type', snuh_engine,
+submission_type = Table('submission_type',
                         Column('id', Integer, primary_key=True),
                         Column('name', String(40), unique=True)
                         )
 
 # submissions to the conference
-submission = Table('submission', snuh_engine,
+submission = Table('submission',
                    Column('id', Integer, primary_key=True),
 
                    # title of submission
@@ -73,9 +65,6 @@ submission = Table('submission', snuh_engine,
                    Column('url', String())
                    )
 
-person.create()
-submission_type.create()
-submission.create()
 
 class Person(object):
     def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):

@@ -1,7 +1,5 @@
 import pylons.middleware
 
-from zookeepr.models import create_model_backend
-
 class Globals(pylons.middleware.Globals):
 
     def __init__(self, global_conf, app_conf, **extra):
