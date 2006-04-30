@@ -31,38 +31,46 @@ class TestPersonController(TestController):
         # check that it's in the dataase
         ps = Person.select_by(handle='testguy')
         self.failUnless(len(ps) == 1)
-        p = ps[0]
+        self.failUnless(ps[0].email_address == 'testguy@example.org')
 
-        pid = p.id
+        # clean up
+        ps[0].delete()
+        objectstore.commit()
 
-        ## edit
-        u = url_for(controller='/person', action='edit', id=pid)
-        print "ed_url is %s" % u
-        res = self.app.get(u)
-        res.mustcontain('Edit person')
-        res.mustcontain('Handle:')
-        res = self.app.post(u,
-                            params=dict(email_address='zoinks@example.org'))
+#     def test_edit(self)
+        
 
-        # follow redirect, check it's the list page
-        res = res.follow()
-        res.mustcontain('List persons')
+#         ## edit
+#         u = url_for(controller='/person', action='edit', id=pid)
+#         print "ed_url is %s" % u
+#         res = self.app.get(u)
+#         res.mustcontain('Edit person')
+#         res.mustcontain('Handle:')
+#         res = self.app.post(u,
+#                             params=dict(email_address='zoinks@example.org'))
 
-        # check DB
-        p = Person.get(pid)
-        self.failUnless(p.email_address == 'zoinks@example.org')
+#         # follow redirect, check it's the list page
+#         res = res.follow()
+#         res.mustcontain('List persons')
 
-        ## delete
-        u = url_for(controller='/person', action='delete', id=pid)
-        res = self.app.get(u)
-        res.mustcontain('Delete person')
-        res = self.app.post(u, params=dict(delete='ok'))
-        res = res.follow()
-        res.mustcontain("List")
-        # check db
-        p = Person.get(pid)
-        self.failUnless(p is None)
+#         # check DB
+#         p = Person.get(pid)
+#         self.failUnless(p.email_address == 'zoinks@example.org')
 
-        # check
-        ps = Person.select()
-        assert len(ps) == 0
+#         ## delete
+#         u = url_for(controller='/person', action='delete', id=pid)
+#         res = self.app.get(u)
+#         res.mustcontain('Delete person')
+#         res = self.app.post(u, params=dict(delete='ok'))
+#         res = res.follow()
+#         res.mustcontain("List")
+#         # check db
+#         p = Person.get(pid)
+#         self.failUnless(p is None)
+
+#         # check
+#         ps = Person.select()
+#         assert len(ps) == 0
+
+    def setUp(self):
+        objectstore.clear()
