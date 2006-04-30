@@ -2,5 +2,6 @@
 
  * if we use :controller/:id/:action instead of :controller/:action/:id (for RESTful urls ala flickr and launchpad, then we can't have a user or id anywhere called 'new'.  Perhaps this is why launchpad names their actions '+action'?
 
+ * Should an invalid GET (i.e. with request args) abort with 401 or something? no because one might want to send a get to prefill the form?  that's not a bad vfeature to have is it?
 
-
+ * Groovie Ben's user_example.zip code uses session to pass result messages to pages, i.e. if you delete a nonexistent item, the delete page sets session['message'] to 'No such id' and redirects you to the list page.  One assumes then that the list page looks for a session message and displays it.  This sounds bad because you're relying on storing the message in the client, and then accepting that and printing it out again.  Can anyone explain why it's not a bad idea to trust the session?
