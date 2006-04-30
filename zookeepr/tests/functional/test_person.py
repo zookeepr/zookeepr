@@ -8,8 +8,7 @@ class TestPersonController(TestController):
 #         response.mustcontain("person index")
 
     def test_new(self):
-        """Test basic creation operation on /person URL"""
-        print
+        """Test create action on /person"""
 
         # create a new person
         u = url_for(controller='/person', action='new')
@@ -41,8 +40,7 @@ class TestPersonController(TestController):
         self.failUnless(len(ps) == 0)
 
     def test_edit(self):
-        """Test basic edit operation on /person URL"""
-        print
+        """Test basic edit operation on /person"""
 
         # create something in the db
         p = Person(handle='testguy',
@@ -52,7 +50,6 @@ class TestPersonController(TestController):
 
         ## edit
         u = url_for(controller='/person', action='edit', id='testguy')
-        print "ed_url is %s" % u
         res = self.app.get(u)
         res.mustcontain('Edit person')
         res.mustcontain('Handle:')
@@ -75,8 +72,7 @@ class TestPersonController(TestController):
         self.failUnless(len(ps) == 0)
 
     def test_delete(self):
-        """Test basic delete operation on /person URL"""
-        print
+        """Test basic delete operation on /person"""
 
         # create something
         p = Person(handle='testguy',
@@ -101,7 +97,7 @@ class TestPersonController(TestController):
 
     def test_invalid_get_on_edit(self):
         """Test that GET requests on edit actions are idempotent"""
-        print
+
         # create some data
         p = Person(handle='testguy',
                    email_address='testguy@example.org')
@@ -125,7 +121,7 @@ class TestPersonController(TestController):
 
     def test_invalid_get_on_delete(self):
         """Test that GET requests on delete actions are idempotent"""
-        print
+
         # create some data
         p = Person(handle='testguy',
                    email_address='testguy@example.org')
@@ -149,7 +145,6 @@ class TestPersonController(TestController):
 
     def test_invalid_get_on_new(self):
         """Test that GET requests on create actions are idempotent"""
-        print
 
         u = url_for(controller='/person', action='new')
         res = self.app.get(u,
@@ -160,6 +155,15 @@ class TestPersonController(TestController):
         # check DB
         ps = Person.select()
         self.failUnless(len(ps) == 0)
+
+    def test_invalid_delete(self):
+        """Test that delete action on nonexistent person is caught"""
+
+        ps = Person.select_by(handle='testguy')
+        self.failUnless(len(ps) == 0, "database already has a testguy person")
+        
+        u = url_for(controller='/person', action='delete', id='testguy')
+        res = self.app.post(u, params=dict(delete='ok'), status=404)
 
     def setUp(self):
         objectstore.clear()
