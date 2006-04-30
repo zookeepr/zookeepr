@@ -1,2 +1,3 @@
 Pylons==0.8
 SQLAlchemy==0.1.6
+FormEncode==0.4
