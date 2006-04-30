@@ -1,4 +1,4 @@
- * make subtype interface accessible only by conf admin
+ * make submissiontype interface accessible only by conf admin
 
  * test for error conditions: deleting nonexistent records
 
@@ -6,6 +6,8 @@
 
  * throw bad shit at forms to make sure we're using formencode :-)
 
- * work out how to autogenerate forms because I'm lazy
+ * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
 
- * Should an invalid GET (i.e. with request args) abort with 401 or something?
+ * Should an invalid GET (i.e. with request args) abort with 401 or something? no because one might want to send a get to prefill the form?  that's not a bad vfeature to have is it?
+
+ * refactor the submissiontype and person interfaces to share the common code; CRUD controllers have the same behaviours, but on different objects
