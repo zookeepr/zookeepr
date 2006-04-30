@@ -3,11 +3,9 @@ defaults
 errors
 </%args>
 
-you're creating a person
+New person
 
 <&| MODULE:mylib:formfill, defaults=defaults, errors=errors &>
-
-<div class="new">
 <form name="new_person" action="<% h.url_for(action='new') %>" method="post" >
 
 <table>
@@ -21,9 +19,7 @@ you're creating a person
 <tr><td>Fax number</td><td><input type="text" name="fax" /></td></tr>
 
 <tr><td></td><td><input type="submit" value="insert arse" /></td></tr>
-
 </table>
-</form>
-</div>
 
+</form>
 </&>

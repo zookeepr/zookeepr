@@ -3,14 +3,26 @@ from zookeepr.lib.base import *
 class PersonController(BaseController):
 
     def index(self):
-        # so the default action for a person is to view your own
-        # person, right?
-        m.write("person index")
+        """Show a list of all persons in the system"""
+        # GET -> return a list of persons
+        # POST -> NO-OP, do GET
+
+        # get persons and assign to the magical template global thing
+        c.persons = model.Person.select()
+        m.subexec('person/list.myt')
 
     def view(self, id):
+        """View a specific person"""
         # GET -> return person profile
         # POST -> NO-OP
-        m.write("you're viewing person %s" % id)
+
+        # assign to the template global
+        results = model.Person.select_by(handle=id)
+        if len(results) == 0:
+            m.abort(404)
+        h.log(results[0])
+        c.person = results[0]
+        m.subexec('person/view.myt')
 
     def edit(self, id):
         # GET -> return 'edit' form
@@ -23,15 +35,26 @@ class PersonController(BaseController):
         m.write("you're deleting person %s" % id)
 
     def new(self):
-        # GET -> get 'new' form
-        # POST -> create new
+        """Create a new person.
+
+        GET requests will return a blank form for submitting all attributes.
+
+        POST requests will create the Person and return a redirect to the
+        Person view page.
+        """
 
         errors, defaults = {}, m.request_args
-        if defaults:
-            # create some object
-            # insert into database
-            # redirect somewhere with a thanks message
-            return h.redirect_to(action='view', id=defaults['handle'])
+        if request.method == 'POST':
+            if defaults:
+                # create some object
+                p = model.Person(**defaults)
+                
+                # insert into database
+                p.commit()
+                
+                # redirect somewhere with a thanks message
+                return h.redirect_to(action='view', id=defaults['handle'])
+
         m.subexec('person/new.myt', defaults=defaults, errors=errors)
 
     def list(self):
