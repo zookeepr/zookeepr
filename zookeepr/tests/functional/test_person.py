@@ -147,5 +147,19 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
+    def test_invalid_get_on_new(self):
+        """Test that GET requests on create actions are idempotent"""
+        print
+
+        u = url_for(controller='/person', action='new')
+        res = self.app.get(u,
+                           params=dict(handle='testguy',
+                                       email_address='testguy@example.org'))
+        res.mustcontain('New')
+
+        # check DB
+        ps = Person.select()
+        self.failUnless(len(ps) == 0)
+
     def setUp(self):
         objectstore.clear()
