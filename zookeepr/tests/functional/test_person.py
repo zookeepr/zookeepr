@@ -8,7 +8,7 @@ class TestPersonController(TestController):
 #         response.mustcontain("person index")
 
     def test_new(self):
-        """Test create action on /person"""
+        """Test basic create action on /person"""
 
         # create a new person
         u = url_for(controller='/person', action='new')
@@ -96,7 +96,7 @@ class TestPersonController(TestController):
         self.failUnless(len(ps) == 0)
 
     def test_invalid_get_on_edit(self):
-        """Test that GET requests on edit actions are idempotent"""
+        """Test that GET requests on person edit are idempotent"""
 
         # create some data
         p = Person(handle='testguy',
@@ -120,7 +120,7 @@ class TestPersonController(TestController):
         self.failUnless(len(ps) == 0)
 
     def test_invalid_get_on_delete(self):
-        """Test that GET requests on delete actions are idempotent"""
+        """Test that GET requests on person delete are idempotent"""
 
         # create some data
         p = Person(handle='testguy',
@@ -144,7 +144,7 @@ class TestPersonController(TestController):
         self.failUnless(len(ps) == 0)
 
     def test_invalid_get_on_new(self):
-        """Test that GET requests on create actions are idempotent"""
+        """Test that GET requests on person create are idempotent"""
 
         u = url_for(controller='/person', action='new')
         res = self.app.get(u,
@@ -166,7 +166,7 @@ class TestPersonController(TestController):
         res = self.app.post(u, params=dict(delete='ok'), status=404)
 
     def test_delete_requires_ok(self):
-        """Test that delete requires simple authorisation key"""
+        """Test that person delete requires simple authorisation key"""
 
         p = Person(handle='testguy')
         objectstore.commit()

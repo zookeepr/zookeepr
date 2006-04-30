@@ -118,7 +118,7 @@ class TestSubmissiontypeController(TestController):
         assert len(subs) == 0
 
     def test_invalid_delete(self):
-        """Test that deletes of nonexistent objects are handled gracefully"""
+        """Test that deletes of nonexistent subtypes are handled gracefully"""
 
         # make sure there's nothing in there
         subs = SubmissionType.select()
@@ -128,7 +128,7 @@ class TestSubmissiontypeController(TestController):
         res = self.app.post(u, params=dict(delete='ok'), status=404)
 
     def test_delete_requires_ok(self):
-        """Test that you can't delete on POST unless delete=ok"""
+        """Test that you can't delete subtype on POST unless delete=ok"""
 
         sub = SubmissionType(name='delete_req_ok')
         objectstore.commit()
