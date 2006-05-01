@@ -1,7 +1,9 @@
-import unittest
 import md5
+import os
+import unittest
 
 from sqlalchemy import *
+
 from zookeepr.models import *
 
 class TestPersonModel(unittest.TestCase):
@@ -95,6 +97,3 @@ class TestPersonModel(unittest.TestCase):
 
 #         p1 = Person.mapper.select_by(email_address='test_too_long@example.org')
 #         assert p1[0].handle == 'a'*40
-
-    def setUp(self):
-        objectstore.clear()

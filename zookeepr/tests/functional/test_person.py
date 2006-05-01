@@ -185,6 +185,3 @@ class TestPersonController(TestController):
         # check
         ps = Person.select()
         self.failUnless(len(ps) == 0)
-        
-    def setUp(self):
-        objectstore.clear()

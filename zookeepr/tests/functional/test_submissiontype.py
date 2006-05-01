@@ -140,7 +140,3 @@ class TestSubmissiontypeController(TestController):
         # clean up
         sub.delete()
         objectstore.commit()
-
-    def setUp(self):
-        objectstore.clear()
-        submission_type.delete(exists())

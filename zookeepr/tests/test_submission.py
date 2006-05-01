@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from sqlalchemy import *
@@ -51,7 +52,3 @@ class TestSubmission(unittest.TestCase):
 
         self.assert_(Submission.get(subid) is None)
         self.assert_(Person.get(vid) is None)
-
-
-    def setUp(self):
-        objectstore.clear()

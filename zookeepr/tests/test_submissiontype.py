@@ -1,3 +1,4 @@
+import os
 import unittest
 
 from sqlalchemy import *
@@ -31,8 +32,3 @@ class TestSubmissionTypeModel(unittest.TestCase):
         print "result is %s" % result
 
         self.failUnless(len(result) == 0)
-
-    def setUp(self):
-        objectstore.clear()
-        # clear out all submissions from the db
-        submission_type.delete(exists())
