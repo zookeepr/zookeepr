@@ -22,7 +22,7 @@ from routes import request_config, url_for
 
 class TestController(TestCase):
     def __init__(self, *args):
-        wsgiapp = loadapp('config:testing.ini', relative_to=conf_dir)
+        wsgiapp = loadapp('config:development.ini', relative_to=conf_dir)
         self.app = paste.fixture.TestApp(wsgiapp)
         TestCase.__init__(self, *args)
 
