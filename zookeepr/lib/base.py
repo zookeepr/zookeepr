@@ -6,12 +6,12 @@ import sqlalchemy
 class BaseController(Controller):
     def __call__(self, action, **params):
         # Insert any code to be run per request here
-        print "basecontroller call"
 
         # Connect the ORM to the database
-        sqlalchemy.global_connect(g.pylons_config.app_conf['dburi'])
+        #print "connecting db in Basecontroller.__call__"
+        #sqlalchemy.global_connect(g.pylons_config.app_conf['dburi'])
         # clear the objectstore session
-        sqlalchemy.objectstore.clear()
+        #sqlalchemy.objectstore.clear()
 
         # Use FormEncode to decode the request args automagically
         if m.request_args:
