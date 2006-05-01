@@ -1,5 +1,5 @@
 from pylons import Controller, m, h, c, g, session, request, params
-#from webhelpers.pagination import paginate, Paginator
+from webhelpers.pagination import paginate
 from sqlalchemy import objectstore
 
 class Modify(object):
@@ -7,21 +7,27 @@ class Modify(object):
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         errors = {}
         new_data = self.model()
+
+        h.log(m.request_args)
         
         if request.method == 'POST':
-            
+
+            h.log(m.request_args[model_name])
             new_data.update(**m.request_args[model_name])
             
             if new_data.validate():
                 session['message'] = 'Object has been created, now editing.'
                 session.save()
-                objectstore.commit()
+                objectstore.flush()
                 h.redirect_to(action='edit', id=new_data.id)
-        
+            else:
+                h.log('data not validated')
+
         setattr(c, model_name, new_data)
         m.subexec(getattr(self, 'template_prefix', '') + '/%s/new.myt' % model_name)
         
     def edit(self, id):
+        h.log(m.request_args)
         obj = self.model.get(id)
         if not obj:
             session['message'] = 'No such id.'
@@ -31,6 +37,7 @@ class Modify(object):
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         
         if request.method == 'POST':
+            print m.request_args
             
             obj.update(**m.request_args[model_name])
             
@@ -39,6 +46,7 @@ class Modify(object):
                 objectstore.commit()
             else:
                 session['message'] = 'Object failed to update, errors present.'
+                objectstore.clear()
         setattr(c, model_name, obj)
         m.subexec(getattr(self, 'template_prefix', '') + '/%s/edit.myt' % model_name)
     
@@ -63,11 +71,11 @@ class View(object):
     
     def index(self):
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
-        options = getattr(self, 'conditions', {})
         
-        #pages, collection = paginate(self.model.mapper, m.request_args.get('page', 0), **options)
-        #setattr(c, model_name + '_pages', pages)
-        #setattr(c, model_name + '_collection', collection)
+        options = getattr(self, 'conditions', {})
+        pages, collection = paginate(self.model.mapper, m.request_args.get('page', 0), **options)
+        setattr(c, model_name + '_pages', pages)
+        setattr(c, model_name + '_collection', collection)
         
         c.can_edit = self._can_edit()
         m.subexec(getattr(self, 'template_prefix', '') + '/%s/list.myt' % model_name)
