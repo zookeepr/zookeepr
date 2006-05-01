@@ -70,19 +70,32 @@ class View(object):
         return issubclass(self.__class__, Modify)
     
     def index(self):
+        """Show a list of all objects currently in the system."""
+        # GET, POST -> return list of objects
+
+        # get name we refer to the model by in the controller
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         
         #options = getattr(self, 'conditions', {})
         #pages, collection = paginate(self.model.mapper, m.request_args.get('page', 0), **options)
         #setattr(c, model_name + '_pages', pages)
         #setattr(c, model_name + '_collection', collection)
+
+        # assign list of objects to template global
         setattr(c, model_name + '_collection', self.model.select())
         
         c.can_edit = self._can_edit()
-        m.subexec(getattr(self, 'template_prefix', '') + '/%s/list.myt' % model_name)
+        # exec the template
+        m.subexec('%s/list.myt' % model_name)
     
     def view(self, id):
+        """View a specific object"""
+        # GET, POST -> return subtype
+
+        # get the name we're referring this object to by from the model
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
+        # assign to the template global
         setattr(c, model_name, self.model.get(id))
         c.can_edit = self._can_edit()
-        m.subexec(getattr(self, 'template_prefix', '') + '/%s/view.myt' % model_name)
+        # exec the template
+        m.subexec('%s/view.myt' % model_name)
