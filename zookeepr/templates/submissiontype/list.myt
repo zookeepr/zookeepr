@@ -22,10 +22,10 @@
 
 
 <%python>
-if c.submissiontype_pages.current.previous:
-    m.write(h.link_to('Previous page', url=h.url(page=c.submissiontype_pages.current.previous)) + '  ')
-if c.submissiontype_pages.current.next:
-    m.write(h.link_to('Next page', url=h.url(page=c.submissiontype_pages.current.next)))
+#if c.submissiontype_pages.current.previous:
+#    m.write(h.link_to('Previous page', url=h.url(page=c.submissiontype_pages.current.previous)) + '  ')
+#if c.submissiontype_pages.current.next:
+#    m.write(h.link_to('Next page', url=h.url(page=c.submissiontype_pages.current.next)))
 
 m.write('<br />')
 if c.can_edit:

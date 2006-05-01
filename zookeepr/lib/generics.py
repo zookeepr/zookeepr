@@ -1,5 +1,5 @@
 from pylons import Controller, m, h, c, g, session, request, params
-from webhelpers.pagination import paginate
+#from webhelpers.pagination import paginate
 from sqlalchemy import objectstore
 
 class Modify(object):
@@ -72,10 +72,11 @@ class View(object):
     def index(self):
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         
-        options = getattr(self, 'conditions', {})
-        pages, collection = paginate(self.model.mapper, m.request_args.get('page', 0), **options)
-        setattr(c, model_name + '_pages', pages)
-        setattr(c, model_name + '_collection', collection)
+        #options = getattr(self, 'conditions', {})
+        #pages, collection = paginate(self.model.mapper, m.request_args.get('page', 0), **options)
+        #setattr(c, model_name + '_pages', pages)
+        #setattr(c, model_name + '_collection', collection)
+        setattr(c, model_name + '_collection', self.model.select())
         
         c.can_edit = self._can_edit()
         m.subexec(getattr(self, 'template_prefix', '') + '/%s/list.myt' % model_name)
