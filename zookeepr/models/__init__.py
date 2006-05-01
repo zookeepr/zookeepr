@@ -11,6 +11,7 @@
 # from myclass import MyDataClass
 
 import md5
+import os.path
 
 from sqlalchemy import *
 
@@ -65,7 +66,13 @@ submission = Table('submission',
                    Column('url', String())
                    )
 
-
+if not os.path.exists('somedb.db'):
+    print "creating db"
+    global_connect('sqlite', dict(filename='somedb.db'))
+    person.create()
+    submission_type.create()
+    submission.create()
+                  
 class Person(object):
     def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
         self.handle = handle
