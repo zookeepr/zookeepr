@@ -11,19 +11,22 @@ class CfpController(BaseController):
 
     def new(self):
         """Create a new submission"""
-        c.errors, c.defaults = {}, m.request_args
+        new_person = model.Person()
+        new_submission = model.Submission()
+
+        if request.method == 'POST':
+            new_person.update(**m.request_args['person'])
+            new_submission.update(**m.request_args['submission'])
+            new_submission.person = new_person
+
+            if new_person.validate() and new_submission.validate():
+                # save to database
+                objectstore.flush()
+                return h.redirect_to(controller='person', action='view', id=new_person.handle)
 
         c.submissiontypes = model.SubmissionType.select()
-
-        h.log(c.submisiontypes)
-        
-        if c.defaults:
-            # FIXME: flesh out
-            h.log(c.defaults)
-
-            # snuh insert
-            
-            h.redirect_to('profile', id=c.defaults['handle'])
+        c.person = new_person
+        setattr(c, 'submission', new_submission)
         m.subexec('cfp/new.myt')
 
     def edit(self, id):
