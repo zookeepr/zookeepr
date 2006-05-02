@@ -4,8 +4,18 @@ from sqlalchemy import objectstore
 
 class Modify(object):
     def new(self):
+        """Create a new object.
+
+        GET requests will return a blank form for submitting all
+        attributes.
+
+        POST requests will create the object, and return a redirect to
+        view the new object.
+        """
+        # Get the name we refer to the model by
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         errors = {}
+        # instantiate a new model object
         new_data = self.model()
 
         h.log(m.request_args)
@@ -13,57 +23,80 @@ class Modify(object):
         if request.method == 'POST':
 
             h.log(m.request_args[model_name])
+            # update this new model object with the form data
             new_data.update(**m.request_args[model_name])
             
             if new_data.validate():
-                session['message'] = 'Object has been created, now editing.'
-                session.save()
+                #session['message'] = 'Object has been created, now editing.'
+                #session.save()
+                # save to database
                 objectstore.flush()
-                h.redirect_to(action='edit', id=new_data.id)
+                return h.redirect_to(action='edit', id=new_data.id)
             else:
                 h.log('data not validated')
 
+        # assign to the template global
         setattr(c, model_name, new_data)
-        m.subexec(getattr(self, 'template_prefix', '') + '/%s/new.myt' % model_name)
+        # call the template
+        m.subexec('%s/new.myt' % model_name)
         
     def edit(self, id):
-        h.log(m.request_args)
+        """Allow editing of an object.
+
+        GET requests return an 'edit' form, prefilled with the current
+        data.
+
+        POST requests update the object with the data posted.
+        """
+        # Get the object
         obj = self.model.get(id)
         if not obj:
-            session['message'] = 'No such id.'
-            session.save()
-            h.redirect_to(action='index', id=None)
-        
+            #session['message'] = 'No such id.'
+            #session.save()
+            return h.redirect_to(action='index', id=None)
+
+        # get the name we refer to it by
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         
         if request.method == 'POST':
-            print m.request_args
-            
+            # update the object with the posted data
             obj.update(**m.request_args[model_name])
             
             if obj.validate():
-                session['message'] = 'Object has been updated successfully.'
+                #session['message'] = 'Object has been updated successfully.'
                 objectstore.commit()
             else:
-                session['message'] = 'Object failed to update, errors present.'
+                #session['message'] = 'Object failed to update, errors present.'
                 objectstore.clear()
+
+        # assign to the template global
         setattr(c, model_name, obj)
-        m.subexec(getattr(self, 'template_prefix', '') + '/%s/edit.myt' % model_name)
+        # call the template
+        m.subexec('%s/edit.myt' % model_name)
     
     def delete(self, id):
+        """Delete the submission type
+
+        GET will return a form asking for approval.
+
+        POST requests will delete the item.
+        """
+        # Get the object
         obj = self.model.get(id)
         if not obj:
-            session['message'] = 'No such id.'
-            session.save()
-            h.redirect_to(action='index', id=None)
+            #session['message'] = 'No such id.'
+            #session.save()
+            return h.redirect_to(action='index', id=None)
         
         if request.method == 'POST':
             objectstore.delete(obj)
             objectstore.commit()
-            h.redirect_to(action='index')
+            return h.redirect_to(action='index', id=None)
 
+        # get the model name
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
-        m.subexec(getattr(self, 'template_prefix', '') + '/%s/confirm_delete.myt' % model_name)
+        # call the template
+        m.subexec('%s/confirm_delete.myt' % model_name)
 
 class View(object):
     def _can_edit(self):
