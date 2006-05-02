@@ -42,4 +42,3 @@ contentstor.modelise(Submission, submission, SubmissionSchema, dict(
 contentstor.modelise(Person, person, PersonSchema, properties = dict(
     submissions = relation(Submission.mapper, private=True, backref='person')
     ))
-

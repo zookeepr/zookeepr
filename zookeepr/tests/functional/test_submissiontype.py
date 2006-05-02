@@ -14,13 +14,14 @@ class TestSubmissiontypeController(TestController):
 
         ## create a new one
         u = url_for(controller='/submissiontype', action='new')
-        print u
+        print 'url for create is %s' % u
         res = self.app.post(u,
                             params=dict(name='Asterisk Talk'))
 
         # check that it's in the database
         sts = SubmissionType.select_by(name='Asterisk Talk')
-        assert len(sts) == 1
+        self.failIf(len(sts) == 0, "object not in database")
+        self.failUnless(len(sts) == 1, "too many objects in database")
         st = sts[0]
 
         # clean up
@@ -52,6 +53,7 @@ class TestSubmissiontypeController(TestController):
         objectstore.commit()
         # check
         sts = SubmissionType.select()
+        print 'remaining in db: %s' % sts
         self.failUnless(len(sts) == 0, "database is not empty")
 
     def test_delete(self):

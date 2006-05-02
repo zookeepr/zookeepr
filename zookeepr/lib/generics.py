@@ -18,11 +18,8 @@ class Modify(object):
         # instantiate a new model object
         new_data = self.model()
 
-        h.log(m.request_args)
-        
         if request.method == 'POST':
 
-            h.log(m.request_args[model_name])
             # update this new model object with the form data
             new_data.update(**m.request_args[model_name])
             
@@ -32,8 +29,6 @@ class Modify(object):
                 # save to database
                 objectstore.flush()
                 return h.redirect_to(action='edit', id=new_data.id)
-            else:
-                h.log('data not validated')
 
         # assign to the template global
         setattr(c, model_name, new_data)
