@@ -7,7 +7,7 @@ class TestPersonController(TestController):
 #         # Test response...
 #         response.mustcontain("person index")
 
-    def test_new(self):
+    def test_create(self):
         """Test create action on /person"""
 
         # create a new person
@@ -95,7 +95,7 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
-    def test_invalid_get_on_edit(self):
+    def test_edit_invalid_get(self):
         """Test that GET requests on person edit are idempotent"""
 
         # create some data
@@ -119,7 +119,7 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
-    def test_invalid_get_on_delete(self):
+    def test_delete_invalid_get(self):
         """Test that GET requests on person delete are idempotent"""
 
         # create some data
@@ -143,7 +143,7 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
-    def test_invalid_get_on_new(self):
+    def test_create_invalid_get(self):
         """Test that GET requests on person create are idempotent"""
 
         u = url_for(controller='/person', action='new')
@@ -156,7 +156,7 @@ class TestPersonController(TestController):
         ps = Person.select()
         self.failUnless(len(ps) == 0)
 
-    def test_invalid_delete(self):
+    def test_delete_nonexistent(self):
         """Test that delete action on nonexistent person is caught"""
 
         ps = Person.select_by(handle='testguy')
@@ -164,24 +164,3 @@ class TestPersonController(TestController):
         
         u = url_for(controller='/person', action='delete', id='testguy')
         res = self.app.post(u, params=dict(delete='ok'), status=404)
-
-    def test_delete_requires_ok(self):
-        """Test that person delete requires simple authorisation key"""
-
-        p = Person(handle='testguy')
-        objectstore.commit()
-        pid = p.id
-
-        u = url_for(controller='/person', action='delete', id='testguy')
-        res = self.app.post(u, dict(submit='submit'))
-
-        p = Person.get(pid)
-        self.failIf(p is None, "person was deleted without approval")
-
-        res = self.app.post(u, dict(delete='ok'))
-        p = Person.get(pid)
-        self.failUnless(p is None, "person was not deleted with approval")
-        
-        # check
-        ps = Person.select()
-        self.failUnless(len(ps) == 0)
