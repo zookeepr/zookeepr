@@ -8,47 +8,43 @@ class Modify(object):
         errors = {}
         new_data = self.model()
 
-        #h.log(m.request_args)
-        
         if request.method == 'POST':
 
-            #h.log(m.request_args[model_name])
             new_data.update(**m.request_args[model_name])
             
             if new_data.validate():
-                session['message'] = 'Object has been created, now editing.'
-                session.save()
+                #session['message'] = 'Object has been created, now editing.'
+                #session.save()
                 objectstore.flush()
-                h.redirect_to(action='edit', id=new_data.id)
-            #else:
-                #h.log('data not validated')
+                
+                return h.redirect_to(action='edit', id=new_data.id)
 
         setattr(c, model_name, new_data)
-        m.subexec(getattr(self, 'template_prefix', '') + '/%s/new.myt' % model_name)
+        m.subexec('%s/new.myt' % model_name)
         
     def edit(self, id):
-        #h.log(m.request_args)
+
         obj = self.model.get(id)
         if not obj:
-            session['message'] = 'No such id.'
-            session.save()
+            #session['message'] = 'No such id.'
+            #session.save()
             h.redirect_to(action='index', id=None)
         
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         
         if request.method == 'POST':
-            print m.request_args
             
             obj.update(**m.request_args[model_name])
             
             if obj.validate():
-                session['message'] = 'Object has been updated successfully.'
+                #session['message'] = 'Object has been updated successfully.'
                 objectstore.commit()
             else:
-                session['message'] = 'Object failed to update, errors present.'
+                #session['message'] = 'Object failed to update, errors present.'
                 objectstore.clear()
+
         setattr(c, model_name, obj)
-        m.subexec(getattr(self, 'template_prefix', '') + '/%s/edit.myt' % model_name)
+        m.subexec('%s/edit.myt' % model_name)
     
     def delete(self, id):
         obj = self.model.get(id)
