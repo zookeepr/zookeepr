@@ -1,6 +1,6 @@
 from formencode.variabledecode import variable_decode
 from pylons import Controller, m, h, c, g, session, request, params
-#import sqlalchemy
+import sqlalchemy
 
 import zookeepr.models as model
 from zookeepr.lib.generics import *
@@ -12,8 +12,9 @@ class BaseController(Controller):
         # Connect the ORM to the database
         #print "connecting db in Basecontroller.__call__"
         #sqlalchemy.global_connect(g.pylons_config.app_conf['dburi'])
+        sqlalchemy.global_connect('sqlite', dict(filename='somedb.db'))
         # clear the objectstore session
-        #sqlalchemy.objectstore.clear()
+        sqlalchemy.objectstore.clear()
 
         # Use FormEncode to decode the request args automagically
         if m.request_args:
