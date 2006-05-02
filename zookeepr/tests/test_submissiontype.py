@@ -9,6 +9,10 @@ class TestSubmissionTypeModel(unittest.TestCase):
     def test_basic(self):
         """Test basic operations on SubmissionType model"""
 
+        # assert that the table is empty
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database was not left empty")
+
         # create
         st = SubmissionType('Paper')
         objectstore.commit()
