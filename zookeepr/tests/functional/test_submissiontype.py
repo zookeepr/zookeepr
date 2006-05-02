@@ -102,26 +102,25 @@ class TestSubmissiontypeController(TestController):
         sts = SubmissionType.select()
         assert len(sts) == 0
 
-#     def test_invalid_get_on_delete(self):
-#         """Test that GET requests on delete action don't modify data"""
-#         # create some data
-#         sub = SubmissionType(name='buzzd')
-#         objectstore.commit()
+    def test_invalid_get_on_delete(self):
+        """Test that GET requests on delete action don't modify data"""
+        # create some data
+        st = SubmissionType(name='buzzd')
+        objectstore.commit()
+        stid = st.id
 
-#         subid = sub.id
-#         u = url_for(controller='/submissiontype', action='delete', id=subid)
-#         res = self.app.get(u, params=dict(delete='ok', id=subid))
-#         res.mustcontain('Delete submission type')
-
-#         sub = SubmissionType.get(subid)
-#         self.failIf(sub is None)
+        u = url_for(controller='/submissiontype', action='delete', id=stid)
+        res = self.app.get(u, params={'submissiontype.id': stid})
+        # check
+        st = SubmissionType.get(stid)
+        self.failIf(st is None, "object was deleted")
         
-#         # clean up
-#         sub.delete()
-#         objectstore.commit()
-#         # doublecheck
-#         subs = SubmissionType.select()
-#         assert len(subs) == 0
+        # clean up
+        st.delete()
+        objectstore.commit()
+        # doublecheck
+        sts = SubmissionType.select()
+        assert len(sts) == 0
 
 #     def test_invalid_get_on_new(self):
 #         """Test that GET requests on new action don't modify data"""
