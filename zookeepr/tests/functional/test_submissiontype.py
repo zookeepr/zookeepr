@@ -9,134 +9,143 @@ class TestSubmissiontypeController(TestController):
 #         # Test response...
 #         print response
 
-    def test_new(self):
-        """Test basic operations on /submissiontype controller"""
-        print
+    def test_create(self):
+        """Test create action on /submissiontype"""
 
         ## create a new one
-        new_url = url_for(controller='/submissiontype', action='new')
-        res = self.app.get(new_url)
-        res.mustcontain('New submission type')
-        res.mustcontain('Name:')
+        u = url_for(controller='/submissiontype', action='new')
+        print 'url for create is %s' % u
+        res = self.app.post(u,
+                            params={'submissiontype.name': 'Asterisk Talk'})
 
-        res = self.app.post(new_url,
-                            params=dict(name='Asterisk Talk'))
+        # check that it's in the database
+        sts = SubmissionType.select_by(name='Asterisk Talk')
+        self.failIf(len(sts) == 0, "object not in database")
+        self.failUnless(len(sts) == 1, "too many objects in database")
+        st = sts[0]
 
-        # follow redirect
-        res = res.follow()
-        # check that we're viewing the correct id!
-        res.mustcontain('View submission type')
-        res.mustcontain('Name:')
-        res.mustcontain('Asterisk Talk')
+        # clean up
+        st.delete()
+        objectstore.commit()
+        # check
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database is not empty")
 
-        # check that it's in the database!
-        subs = SubmissionType.select_by(name='Asterisk Talk')
-        assert len(subs) == 1
-        sub = subs[0]
+    def test_edit(self):
+        """Test edit operation on /submissiontype"""
 
-        subid = sub.id
+        # create something in the db
+        st = SubmissionType(name='paper')
+        objectstore.commit()
+        stid = st.id
 
         ## edit it
-        ed_url = url_for(controller='/submissiontype', action='edit', id=subid)
-        res = self.app.get(ed_url)
-        res.mustcontain('Edit submission type')
-        res.mustcontain('Name:')
-        res = self.app.post(ed_url,
-                            params=dict(name='Feh fuh'))
-
-        # follow redirect?
-        res = res.follow()
-        res.mustcontain('List submission types')
-        res.mustcontain('Feh fuh')
+        u = url_for(controller='/submissiontype', action='edit', id=stid)
+        res = self.app.post(u,
+                            params={'submissiontype.name': 'lightning talk'})
 
         # check db
-        sub = SubmissionType.get(subid)
-        self.failUnless(sub.name == 'Feh fuh')
+        st = SubmissionType.get(stid)
+        self.failUnless(st.name == 'lightning talk', "edit failed")
+
+        # clean up
+        st.delete()
+        objectstore.commit()
+        # check
+        sts = SubmissionType.select()
+        print 'remaining in db: %s' % sts
+        self.failUnless(len(sts) == 0, "database is not empty")
+
+    def test_delete(self):
+        """Test delete operation on /submissiontype"""
+
+        # create something
+        st = SubmissionType(name='scissors')
+        objectstore.commit()
+        stid = st.id
 
         ## delete it
-        del_url = url_for(controller='/submissiontype', action='delete', id=subid)
-        res = self.app.get(del_url)
-        res.mustcontain('Delete submission type')
-        res.mustcontain('Are you sure?')
+        u = url_for(controller='/submissiontype', action='delete', id=stid)
+        #res = self.app.get(del_url)
+        #res.mustcontain('Delete submission type')
+        #res.mustcontain('Are you sure?')
 
-        res = self.app.post(del_url, params=dict(delete='ok', id=subid))
-        res = res.follow()
-        res.mustcontain('List submission types')
+        res = self.app.post(u)
+        #res = res.follow()
+        #res.mustcontain('List submission types')
 
         # check db
-        subs = SubmissionType.select_by(name='Asterisk Talk')
-        self.failUnless(len(subs) == 0, "still subtypes left in the db")
+        st = SubmissionType.get(stid)
+        self.failUnless(st is None, "object was not deleted")
+        # check
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database is not empty")
 
     def test_invalid_get_on_edit(self):
-        """Test that GET requests on edit action don't modify data"""
+        """Test that GET requests on submission type edit don't modify data"""
         # create some data
-        sub = SubmissionType(name='buzz')
+        st = SubmissionType(name='buzz')
         objectstore.commit()
+        stid = st.id
 
-        u = url_for(controller='/submissiontype', action='edit', id=sub.id)
-        res = self.app.get(u, params=dict(name='feh'))
-        res.mustcontain('Edit submission type')
+        u = url_for(controller='/submissiontype', action='edit', id=stid)
+        res = self.app.get(u, params={'submissiontype.name':'feh'})
 
-        self.failUnless(sub.name == 'buzz')
+        # check db
+        st = SubmissionType.get(stid)
+        self.failUnless(st.name == 'buzz')
 
         # clean up
-        sub.delete()
+        st.delete()
         objectstore.commit()
         # doublecheck
-        subs = SubmissionType.select()
-        assert len(subs) == 0
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "dtabase is not empty")
 
     def test_invalid_get_on_delete(self):
-        """Test that GET requests on delete action don't modify data"""
+        """Test that GET requests on submission type delete don't modify data"""
         # create some data
-        sub = SubmissionType(name='buzzd')
+        st = SubmissionType(name='buzzd')
         objectstore.commit()
+        stid = st.id
 
-        subid = sub.id
-        u = url_for(controller='/submissiontype', action='delete', id=subid)
-        res = self.app.get(u, params=dict(delete='ok', id=subid))
-        res.mustcontain('Delete submission type')
-
-        sub = SubmissionType.get(subid)
-        self.failIf(sub is None)
+        u = url_for(controller='/submissiontype', action='delete', id=stid)
+        res = self.app.get(u)
+        # check
+        st = SubmissionType.get(stid)
+        self.failIf(st is None, "object was deleted")
         
         # clean up
-        sub.delete()
+        st.delete()
         objectstore.commit()
         # doublecheck
-        subs = SubmissionType.select()
-        assert len(subs) == 0
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database is not empty")
 
     def test_invalid_get_on_new(self):
-        """Test that GET requests on new action don't modify data"""
+        """Test that GET requests on submission type new don't modify data"""
 
+        # verify there's nothing in there
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database was not empty")
+        
         u = url_for(controller='/submissiontype', action='new')
-        res = self.app.get(u, params=dict(name='buzzn'))
-        res.mustcontain('New submission type')
-
-        subs = SubmissionType.select()
-        assert len(subs) == 0
+        res = self.app.get(u, params={'submissiontype.name': 'buzzn'})
+        # check
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database is not empty")
 
     def test_invalid_delete(self):
-        """Test that deletes of nonexistent subtypes are handled gracefully"""
+        """Test delete of nonexistent submission types is caught"""
 
         # make sure there's nothing in there
-        subs = SubmissionType.select()
-        self.failUnless(len(subs) == 0)
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database was not empty")
         
         u = url_for(controller='/submissiontype', action='delete', id=1)
-        res = self.app.post(u, params=dict(delete='ok'), status=404)
+        res = self.app.post(u)
 
-    def test_delete_requires_ok(self):
-        """Test that you can't delete subtype on POST unless delete=ok"""
-
-        sub = SubmissionType(name='delete_req_ok')
-        objectstore.commit()
-        subid = sub.id
-        u = url_for(controller='/submissiontype', action='delete', id=subid)
-        res = self.app.post(u, dict(id=subid))
-        sub = SubmissionType.get(subid)
-        self.failIf(sub is None, "submission was deleted without approval")
-        # clean up
-        sub.delete()
-        objectstore.commit()
+        # check
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database is not empty")
+        

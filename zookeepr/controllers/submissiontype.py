@@ -1,94 +1,98 @@
 from zookeepr.lib.base import *
 
-class SubmissiontypeController(BaseController):
+class SubmissiontypeController(BaseController, View, Modify):
+    model = model.SubmissionType
+    individual = 'submissiontype'
+    conditions = dict(order_by='name')
     
-    def index(self):
-        """Show a list of all submission types currently in the system."""
-        # GET -> return list of subtypes
-        # POST -> NOOP, do GET
+    
+#     def index(self):
+#         """Show a list of all submission types currently in the system."""
+#         # GET -> return list of subtypes
+#         # POST -> NOOP, do GET
 
-        # get submission types and assign to the magical template global
-        c.submissiontypes = model.SubmissionType.select()
-        m.subexec('submissiontype/list.myt')
+#         # get submission types and assign to the magical template global
+#         c.submissiontypes = model.SubmissionType.select()
+#         m.subexec('submissiontype/list.myt')
 
-    def view(self, id):
-        """View a specific submission type."""
-        # GET -> return subtype
-        # POST -> NOOP, do GET
+#     def view(self, id):
+#         """View a specific submission type."""
+#         # GET -> return subtype
+#         # POST -> NOOP, do GET
 
-        # assign to the template global
-        c.submissiontype = model.SubmissionType.get(id)
-        m.subexec('submissiontype/view.myt')
+#         # assign to the template global
+#         c.submissiontype = model.SubmissionType.get(id)
+#         m.subexec('submissiontype/view.myt')
 
-    def edit(self, id):
-        """Allow editing of a specific submission type.
+#     def edit(self, id):
+#         """Allow editing of a specific submission type.
 
-        GET requests return an 'edit' form, prefilled with the current
-        data.
+#         GET requests return an 'edit' form, prefilled with the current
+#         data.
 
-        POST requests update the SubmissionType with the data posted.
-        """
-        # get us this SubType
-        st = model.SubmissionType.get(id)
-        # initialise variables
-        defaults, errors = {}, {}
+#         POST requests update the SubmissionType with the data posted.
+#         """
+#         # get us this SubType
+#         st = model.SubmissionType.get(id)
+#         # initialise variables
+#         defaults, errors = {}, {}
         
-        # FIXME: gotta be a better way to seed the form
-        for k in ['name']:
-            defaults[k] = getattr(st, k)
+#         # FIXME: gotta be a better way to seed the form
+#         for k in ['name']:
+#             defaults[k] = getattr(st, k)
             
-        if request.method == 'POST':
-            errors, defaults = {}, m.request_args
-            if defaults:
-                # FIXME: is there a better way to reflect form data into object
-                for (k, v) in defaults.items():
-                    setattr(st, k, v)
-                st.commit()
-                return h.redirect_to(action='index', id=None)
+#         if request.method == 'POST':
+#             errors, defaults = {}, m.request_args
+#             if defaults:
+#                 # FIXME: is there a better way to reflect form data into object
+#                 for (k, v) in defaults.items():
+#                     setattr(st, k, v)
+#                 st.commit()
+#                 return h.redirect_to(action='index', id=None)
 
-        m.subexec('submissiontype/edit.myt', defaults=defaults, errors=errors)
+#         m.subexec('submissiontype/edit.myt', defaults=defaults, errors=errors)
 
-    def delete(self, id):
-        """Delete a submission type.
+#     def delete(self, id):
+#         """Delete a submission type.
 
-        GET will return a form asking for approval.
+#         GET will return a form asking for approval.
 
-        POST requests with a key 'delete' set to 'ok' will delete the item.
+#         POST requests with a key 'delete' set to 'ok' will delete the item.
 
-        Invalid ids will return a 404 not found.
-        """
-        errors, defaults = {}, m.request_args
+#         Invalid ids will return a 404 not found.
+#         """
+#         errors, defaults = {}, m.request_args
         
-        if request.method == 'POST':
-            if defaults and defaults.has_key('delete') and defaults['delete'] == 'ok':
-                st = model.SubmissionType.get(id)
+#         if request.method == 'POST':
+#             if defaults and defaults.has_key('delete') and defaults['delete'] == 'ok':
+#                 st = model.SubmissionType.get(id)
 
-                if st is None:
-                    m.abort(404)
+#                 if st is None:
+#                     m.abort(404)
 
-                st.delete()
-                st.commit()
-                return h.redirect_to(action='index', id=None)
-        m.subexec('submissiontype/delete.myt', defaults=defaults, errors=errors)
+#                 st.delete()
+#                 st.commit()
+#                 return h.redirect_to(action='index', id=None)
+#         m.subexec('submissiontype/delete.myt', defaults=defaults, errors=errors)
 
-    def new(self):
-        """Create a new submission type.
+#     def new(self):
+#         """Create a new submission type.
 
-        GET requests will return a blank form for submitting all attributes.
+#         GET requests will return a blank form for submitting all attributes.
 
-        POST requests will create the submission type, and return a redirect
-        to view the new SubType.
-        """
-        errors, defaults = {}, m.request_args
-        if request.method == 'POST':
-            if defaults:
-                # create, etc
-                st = model.SubmissionType(**defaults)
+#         POST requests will create the submission type, and return a redirect
+#         to view the new SubType.
+#         """
+#         errors, defaults = {}, m.request_args
+#         if request.method == 'POST':
+#             if defaults:
+#                 # create, etc
+#                 st = model.SubmissionType(**defaults)
 
-                # put in db
-                st.commit()
+#                 # put in db
+#                 st.commit()
 
-                # redirect to.. somewhere
-                return h.redirect_to(action='view', id=st.id)
+#                 # redirect to.. somewhere
+#                 return h.redirect_to(action='view', id=st.id)
         
-        m.subexec('submissiontype/new.myt', defaults=defaults, errors=errors)
+#         m.subexec('submissiontype/new.myt', defaults=defaults, errors=errors)

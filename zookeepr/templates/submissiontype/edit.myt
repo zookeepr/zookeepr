@@ -1,17 +1,7 @@
-<%args>
-defaults
-errors
-</%args>
+<h1>Edit submission type</h1>
 
-Edit submission type
-
-<&| MODULE:mylib:formfill, defaults=defaults, errors=errors &>
-<form name="edit_subtype" action="<% h.url_for(action='edit') %>" method="post" >
-
-<div class="formlabel">Name:</div>
-<div class="formfield"><input type="text" name="name" /></div>
-
-<div class="submit"><input type="submit" value="Submit" /></div>
-
-</form>
-</&>
+<% h.form(h.url(id=c.submissiontype.id)) %>
+<& form.myt &>
+<% h.submit('Update') %>
+<% h.end_form() %>
+<% h.link_to('back', url=h.url(action='index', id=None)) %>
