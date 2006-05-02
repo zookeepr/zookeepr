@@ -16,7 +16,7 @@ class TestSubmissiontypeController(TestController):
         u = url_for(controller='/submissiontype', action='new')
         print 'url for create is %s' % u
         res = self.app.post(u,
-                            params=dict(name='Asterisk Talk'))
+                            params={'submissiontype.name': 'Asterisk Talk'})
 
         # check that it's in the database
         sts = SubmissionType.select_by(name='Asterisk Talk')
@@ -42,7 +42,7 @@ class TestSubmissiontypeController(TestController):
         ## edit it
         u = url_for(controller='/submissiontype', action='edit', id=stid)
         res = self.app.post(u,
-                            params=dict(name='lightning talk'))
+                            params={'submissiontype.name': 'lightning talk'})
 
         # check db
         st = SubmissionType.get(stid)
@@ -70,7 +70,7 @@ class TestSubmissiontypeController(TestController):
         #res.mustcontain('Delete submission type')
         #res.mustcontain('Are you sure?')
 
-        res = self.app.post(u, params=dict(submit='submit'))
+        res = self.app.post(u)
         #res = res.follow()
         #res.mustcontain('List submission types')
 
@@ -139,4 +139,4 @@ class TestSubmissiontypeController(TestController):
         self.failUnless(len(subs) == 0, "database was not empty")
         
         u = url_for(controller='/submissiontype', action='delete', id=1)
-        res = self.app.post(u, params=dict(submit='submit'), status=302)
+        res = self.app.post(u, status=302)
