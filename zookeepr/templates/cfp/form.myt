@@ -1,6 +1,7 @@
 <table>
 
 <fieldset>
+stuff about you
 <p><label for="person.handle">Handle:</label><br />
 <% h.text_field('person.handle', c.person.handle) %></p>
 
@@ -12,6 +13,7 @@
 </fieldset>
 
 <fieldset>
+stuff about your submission
 <p><label for="submission.title">Title:</label><br />
 <% h.text_field('submission.title', c.submission.title) %></p>
 
