@@ -14,7 +14,7 @@ class BaseController(Controller):
         #sqlalchemy.global_connect(g.pylons_config.app_conf['dburi'])
         sqlalchemy.global_connect('sqlite', dict(filename='somedb.db'))
         # clear the objectstore session
-        #sqlalchemy.objectstore.clear()
+        sqlalchemy.objectstore.clear()
 
         # Use FormEncode to decode the request args automagically
         if m.request_args:
