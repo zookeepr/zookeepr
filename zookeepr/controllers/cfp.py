@@ -1,11 +1,9 @@
 from zookeepr.lib.base import *
 
 class CfpController(BaseController):
+    """Controller for submitting something to the conference"""
     def index(self):
-        """List all submissions"""
-        m.write("you're listing all submissions")
-        m.write("perhaps you'd like to ")
-        m.write('<a href="%s">submit something</a>' % h.url_for(action='new'))
+        return h.redirect_to(action='new')
 
     def view(self, id):
         """View a submission."""
@@ -13,15 +11,20 @@ class CfpController(BaseController):
 
     def new(self):
         """Create a new submission"""
-        errors, defaults = {}, m.request_args
-        if defaults:
+        c.errors, c.defaults = {}, m.request_args
+
+        c.submissiontypes = model.SubmissionType.select()
+
+        h.log(c.submisiontypes)
+        
+        if c.defaults:
             # FIXME: flesh out
-            h.log(defaults)
+            h.log(c.defaults)
 
             # snuh insert
             
-            h.redirect_to('profile', id=defaults['handle'])
-        m.subexec('cfp/new.myt', defaults=defaults, errors=errors)
+            h.redirect_to('profile', id=c.defaults['handle'])
+        m.subexec('cfp/new.myt')
 
     def edit(self, id):
         """Edit a submission."""
