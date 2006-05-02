@@ -64,3 +64,6 @@
 #         self.failUnless(len(sts) == 0, "submission_type table not empty")
 #         ps = Person.select()
 #         self.failUnless(len(ps) == 0, "person table not empty")
+#
+#def setUp(self):
+#objectstore.clear()

@@ -32,3 +32,6 @@ class TestSubmissionTypeModel(unittest.TestCase):
         # check table is empty when we leave
         sts = SubmissionType.select()
         self.failUnless(len(sts) == 0, "database is not empty")
+
+    def setUp(self):
+        objectstore.clear()

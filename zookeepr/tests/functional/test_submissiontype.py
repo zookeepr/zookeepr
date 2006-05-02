@@ -110,7 +110,7 @@ class TestSubmissiontypeController(TestController):
         stid = st.id
 
         u = url_for(controller='/submissiontype', action='delete', id=stid)
-        res = self.app.get(u, params={'submissiontype.id': stid})
+        res = self.app.get(u)
         # check
         st = SubmissionType.get(stid)
         self.failIf(st is None, "object was deleted")
@@ -136,14 +136,14 @@ class TestSubmissiontypeController(TestController):
         self.failUnless(len(sts) == 0, "database is not empty")
 
     def test_invalid_delete(self):
-        """Test that deletes of nonexistent submission types are handled gracefully"""
+        """Test delete of nonexistent submission types is caught"""
 
         # make sure there's nothing in there
         sts = SubmissionType.select()
         self.failUnless(len(sts) == 0, "database was not empty")
         
         u = url_for(controller='/submissiontype', action='delete', id=1)
-        res = self.app.post(u, status=302)
+        res = self.app.post(u)
 
         # check
         sts = SubmissionType.select()

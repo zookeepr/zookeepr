@@ -20,10 +20,15 @@ from zookeepr.config.routing import *
 from pylons.myghtyroutes import RoutesResolver
 from routes import request_config, url_for
 
+from sqlalchemy import objectstore
+
 class TestController(TestCase):
     def __init__(self, *args):
         wsgiapp = loadapp('config:development.ini', relative_to=conf_dir)
         self.app = paste.fixture.TestApp(wsgiapp)
         TestCase.__init__(self, *args)
+
+    def setUp(self):
+        objectstore.clear()
 
 __all__ = ['url_for', 'TestController']
