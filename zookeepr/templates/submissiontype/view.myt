@@ -1,13 +1,11 @@
-View submission type
+<h1>View submission type</h1>
 
-(<a href="<% h.url_for(action='new') %>">new stype</a>)
-(<a href="<% h.url_for(action='index') %>">list stypes</a>)
+<p>
+   <b>Name:</b>
+    <% c.submissiontype.name | h %><br />
+</p>
 
-(<a href="<% h.url_for(action='edit') %>">edit this stype</a>)
-(<a href="<% h.url_for(action='delete') %>">delete this stype</a>)
-
-
-% for (label, key) in [('Name', 'name')]:
-<div class="formlabel"><% label %>:</div>
-<div class="formfield"><% getattr(c.submissiontype, key) %></div>
-% #endfor
+% if c.can_edit:
+<% h.link_to('Edit', url=h.url(action='edit',id=c.submissiontype.id)) %> |
+% #end if
+<% h.link_to('Back', url=h.url(action='index', id=None)) %>
