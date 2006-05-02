@@ -82,7 +82,7 @@ class TestSubmissiontypeController(TestController):
         self.failUnless(len(sts) == 0, "database is not empty")
 
     def test_invalid_get_on_edit(self):
-        """Test that GET requests on edit action don't modify data"""
+        """Test that GET requests on submission type edit don't modify data"""
         # create some data
         st = SubmissionType(name='buzz')
         objectstore.commit()
@@ -100,10 +100,10 @@ class TestSubmissiontypeController(TestController):
         objectstore.commit()
         # doublecheck
         sts = SubmissionType.select()
-        assert len(sts) == 0
+        self.failUnless(len(sts) == 0, "dtabase is not empty")
 
     def test_invalid_get_on_delete(self):
-        """Test that GET requests on delete action don't modify data"""
+        """Test that GET requests on submission type delete don't modify data"""
         # create some data
         st = SubmissionType(name='buzzd')
         objectstore.commit()
@@ -120,24 +120,32 @@ class TestSubmissiontypeController(TestController):
         objectstore.commit()
         # doublecheck
         sts = SubmissionType.select()
-        assert len(sts) == 0
+        self.failUnless(len(sts) == 0, "database is not empty")
 
-#     def test_invalid_get_on_new(self):
-#         """Test that GET requests on new action don't modify data"""
+    def test_invalid_get_on_new(self):
+        """Test that GET requests on submission type new don't modify data"""
 
-#         u = url_for(controller='/submissiontype', action='new')
-#         res = self.app.get(u, params=dict(name='buzzn'))
-#         #res.mustcontain('New submission type')
-
-#         subs = SubmissionType.select()
-#         self.failUnless(len(subs) == 0, "database is not empty")
+        # verify there's nothing in there
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database was not empty")
+        
+        u = url_for(controller='/submissiontype', action='new')
+        res = self.app.get(u, params={'submissiontype.name': 'buzzn'})
+        # check
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database is not empty")
 
     def test_invalid_delete(self):
-        """Test that deletes of nonexistent subtypes are handled gracefully"""
+        """Test that deletes of nonexistent submission types are handled gracefully"""
 
         # make sure there's nothing in there
-        subs = SubmissionType.select()
-        self.failUnless(len(subs) == 0, "database was not empty")
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database was not empty")
         
         u = url_for(controller='/submissiontype', action='delete', id=1)
         res = self.app.post(u, status=302)
+
+        # check
+        sts = SubmissionType.select()
+        self.failUnless(len(sts) == 0, "database is not empty")
+        
