@@ -16,12 +16,13 @@ class TestCfpController(TestController):
         
         ## submit the form
         u = url_for(controller='/cfp', action='new')
-        params = {'cfp.handle': 'testguy',
-                  'cfp.firstname': 'Testguy',
-                  'cfp.lastname': 'McTest',
-                  'cfp.type': 'Paper',
-                  'cfp.title': 'My Awesome Paper',
-                  'cfp.abstract': 'Some abstract'}
+        params = {'person.handle': 'testguy',
+                  'person.firstname': 'Testguy',
+                  'person.lastname': 'McTest',
+                  'person.email_address': 'testguy@example.org',
+                  'submission.submission_type': 'Paper',
+                  'submission.title': 'My Awesome Paper',
+                  'submission.abstract': 'Some abstract'}
         res = self.app.post(u, params=params)
 
         ## check that it's in the database
