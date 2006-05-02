@@ -81,24 +81,26 @@ class TestSubmissiontypeController(TestController):
         sts = SubmissionType.select()
         self.failUnless(len(sts) == 0, "database is not empty")
 
-#     def test_invalid_get_on_edit(self):
-#         """Test that GET requests on edit action don't modify data"""
-#         # create some data
-#         sub = SubmissionType(name='buzz')
-#         objectstore.commit()
+    def test_invalid_get_on_edit(self):
+        """Test that GET requests on edit action don't modify data"""
+        # create some data
+        st = SubmissionType(name='buzz')
+        objectstore.commit()
+        stid = st.id
 
-#         u = url_for(controller='/submissiontype', action='edit', id=sub.id)
-#         res = self.app.get(u, params=dict(name='feh'))
-#         res.mustcontain('Edit submission type')
+        u = url_for(controller='/submissiontype', action='edit', id=stid)
+        res = self.app.get(u, params={'submissiontype.name':'feh'})
 
-#         self.failUnless(sub.name == 'buzz')
+        # check db
+        st = SubmissionType.get(stid)
+        self.failUnless(st.name == 'buzz')
 
-#         # clean up
-#         sub.delete()
-#         objectstore.commit()
-#         # doublecheck
-#         subs = SubmissionType.select()
-#         assert len(subs) == 0
+        # clean up
+        st.delete()
+        objectstore.commit()
+        # doublecheck
+        sts = SubmissionType.select()
+        assert len(sts) == 0
 
 #     def test_invalid_get_on_delete(self):
 #         """Test that GET requests on delete action don't modify data"""
