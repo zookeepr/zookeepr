@@ -25,7 +25,7 @@ class SubmissionType(object):
 
 
 class Submission(object):
-    def __init__(self, title, submission_type, abstract, experience, url):
+    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None):
         self.title = title
         self.submission_type = submission_type
         self.abstract = abstract
