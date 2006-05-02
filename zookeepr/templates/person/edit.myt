@@ -17,7 +17,7 @@ Edit person
 <label for="firstname">First name:</label>
 <input type="text" name="firstname" />
 
-<label for="lastname">Handle:</label>
+<label for="lastname">Last name:</label>
 <input type="text" name="lastname" />
 
 <label for="phone">Phone number:</label>
