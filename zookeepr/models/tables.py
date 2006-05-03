@@ -5,13 +5,13 @@ from sqlalchemy import *
 person = Table('person',
                Column('id', Integer, primary_key=True),
                
-               # unique identifier within the zookeepr app
+               # secondary key, unique identifier within the zookeepr app
                # useful for URLs
                Column('handle', String(40), unique=True),
                
                # login identifier and primary method of communicating
                # with person
-               Column('email_address', String(512)),
+               Column('email_address', String(512), unique=True),
                
                # password hash
                Column('password_hash', String(32)),

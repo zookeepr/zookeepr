@@ -1,6 +1,6 @@
-<h1>Edit person</h1>
+<h1>Edit submission</h1>
 
-<% h.form(h.url(id=c.person.handle)) %>
+<% h.form(h.url(id=c.submission.id)) %>
 <& form.myt &>
 <% h.submit('Update') %>
 <% h.end_form() %>
