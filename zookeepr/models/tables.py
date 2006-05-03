@@ -7,11 +7,11 @@ person = Table('person',
                
                # secondary key, unique identifier within the zookeepr app
                # useful for URLs
-               Column('handle', String(40), unique=True),
+               Column('handle', String(40), unique=True, nullable=False),
                
                # login identifier and primary method of communicating
                # with person
-               Column('email_address', String(512), unique=True),
+               Column('email_address', String(512), unique=True, nullable=False),
                
                # password hash
                Column('password_hash', String(32)),
