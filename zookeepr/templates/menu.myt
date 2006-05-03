@@ -1,12 +1,12 @@
 # app-wide menu
-<div id="menu">
+<div id="menubar">
 
 <div id="logo">
 # a dirty hack
 <img src="/seven-head.png" nwidth="32" height="32">
 </div>
 
-<div>
+<div id="menu">
 i'm at templates/menu.myt
 
 <br />
@@ -21,4 +21,13 @@ i'm at templates/menu.myt
 
 </div>
 
+<div id="signin">
+<% h.link_to('Log in', url=h.url(controller='/account', action='login')) %> or
+<% h.link_to('Sign up', url=h.url(controller='/account', action='new')) %>
 </div>
+
+<div class="clear">&nbsp;</div>
+
+</div>
+
+<div class="clear">&nbsp;</div>
