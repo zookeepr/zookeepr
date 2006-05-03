@@ -1,7 +1,6 @@
-<table>
-
 <fieldset>
-stuff about you
+
+<p>First, tell us a bit about yourself.</p>
 
 <p>
 <span class="mandatory">*</span>
@@ -25,10 +24,17 @@ stuff about you
 <span class="mandatory">*</span>
 <label for="person.password">Password (confirm):</label><br />
 <% h.password_field('person.password') %></p>
+
+<p>
+<span class="mandatory">*</span>
+<span class="fielddesc"> - Mandatory field</span>
+</p>
 </fieldset>
 
 <fieldset>
-stuff about your submission
+
+<p>Now tell us a bit about your submission.</p>
+
 <p><label for="submission.title">Title:</label><br />
 <% h.text_field('submission.title', c.submission.title) %></p>
 
