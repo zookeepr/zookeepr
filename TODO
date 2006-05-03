@@ -3,3 +3,5 @@
  * throw bad shit at forms to make sure we're using formencode :-)
 
  * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
+
+ * Put engine.create_tables() in app_globals.Globals.__init__
