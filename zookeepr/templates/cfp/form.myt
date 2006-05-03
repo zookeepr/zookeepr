@@ -1,3 +1,5 @@
+<div style="width: 400px; margin: auto;">
+
 <fieldset>
 
 <p>First, tell us a bit about yourself.</p>
@@ -54,3 +56,5 @@
 <p><label for="submission.abstract">Abstract:</label><br />
 <% h.text_area('submission.abstract') %></p>
 </fieldset>
+
+</div>
