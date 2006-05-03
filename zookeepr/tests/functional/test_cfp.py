@@ -16,7 +16,7 @@ class TestCfpController(TestController):
         st = SubmissionType('Paper')
         
         ## submit the form
-        u = url_for(controller='/cfp', action='new')
+        u = url_for(controller='/cfp')
         params = {'person.handle': 'testguy',
                   'person.firstname': 'Testguy',
                   'person.lastname': 'McTest',
