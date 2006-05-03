@@ -6,6 +6,12 @@ BODY {
   border: 1px solid #000;
 }
 
+#logo {
+  border: 0px;
+  padding: 0px;
+  float: left;
+}
+
 #footer {
   font-size: 80%;
 }
