@@ -3,3 +3,5 @@
  * throw bad shit at forms to make sure we're using formencode :-)
 
  * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
+
+ * find out how to NOT NULL columns in the sqlalchemy schema, and not nullify handle and email address
