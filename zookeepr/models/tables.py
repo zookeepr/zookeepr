@@ -11,7 +11,7 @@ person = Table('person',
                
                # login identifier and primary method of communicating
                # with person
-               Column('email_address', String(512), unique=True),
+               Column('email_address', String(512), unique=True, nullable=False),
                
                # password hash
                Column('password_hash', String(32)),
