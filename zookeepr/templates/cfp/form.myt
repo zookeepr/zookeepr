@@ -5,8 +5,11 @@ stuff about you
 
 <p>
 <span class="mandatory">*</span>
-<label for="person.handle">Username:</label><span class="fielddesc"> - the way we'll refer to you</span><br />
-<% h.text_field('person.handle', c.person.handle) %></p>
+<label for="person.handle">Username:</label>
+<span class="fielddesc"> - the way we'll refer to you</span>
+<br />
+<% h.text_field('person.handle', c.person.handle) %>
+</p>
 
 <p>
 <span class="mandatory">*</span>
