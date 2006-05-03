@@ -86,7 +86,6 @@ class TestPersonController(TestController):
         u = url_for(controller='/person', action='edit', id='testguy')
         params = {'person.email_address': 'testguy1@example.org'}
         res = self.app.get(u, params=params)
-        res.mustcontain('Edit')
 
         p = Person.get(pid)
         self.failUnless(p.email_address == 'testguy@example.org')
@@ -109,7 +108,6 @@ class TestPersonController(TestController):
 
         u = url_for(controller='/person', action='delete', id='testguy')
         res = self.app.get(u)
-        res.mustcontain('Delete')
 
         p = Person.get(pid)
         self.failIf(p is None)
@@ -125,10 +123,9 @@ class TestPersonController(TestController):
         """Test that GET requests on person create are idempotent"""
 
         u = url_for(controller='/person', action='new')
-        res = self.app.get(u,
-                           params=dict(handle='testguy',
-                                       email_address='testguy@example.org'))
-        res.mustcontain('New')
+        params = {'person.handle': 'testguy',
+                  'person.email_address': 'testguy@example.org'}
+        res = self.app.get(u, params=params)
 
         # check DB
         ps = Person.select()
