@@ -12,20 +12,9 @@ class TestPersonController(TestController):
 
         # create a new person
         u = url_for(controller='/person', action='new')
-        #res = self.app.get(u)
-        #res.mustcontain("New person")
-        #res.mustcontain('Handle:')
-
-        res = self.app.post(u,
-                            params=dict(handle='testguy',
-                                        email_address='testguy@example.org'))
-
-        # follow redirect
-        #res = res.follow()
-        # check we're viewing the right page
-        #res.mustcontain('View person')
-        #res.mustcontain('Handle:')
-        #res.mustcontain('testguy')
+        params = {'person.handle': 'testguy',
+                  'person.email_address': 'testguy@example.org'}
+        res = self.app.post(u, params=params)
 
         # check that it's in the dataase
         ps = Person.select_by(handle='testguy')
@@ -37,7 +26,7 @@ class TestPersonController(TestController):
         objectstore.commit()
         # check
         ps = Person.select()
-        self.failUnless(len(ps) == 0)
+        self.failUnless(len(ps) == 0, "database was not empty")
 
     def test_edit(self):
         """Test edit operation on /person"""
@@ -50,19 +39,12 @@ class TestPersonController(TestController):
 
         ## edit
         u = url_for(controller='/person', action='edit', id='testguy')
-        #res = self.app.get(u)
-        #res.mustcontain('Edit person')
-        #res.mustcontain('Handle:')
-        res = self.app.post(u,
-                            params=dict(email_address='zoinks@example.org'))
-
-        # follow redirect, check it's the list page
-        #res = res.follow()
-        #res.mustcontain('List persons')
+        params = {'person.email_address': 'zoinks@example.org'}
+        res = self.app.post(u, params=params)
 
         # check DB
         p = Person.get(pid)
-        self.failUnless(p.email_address == 'zoinks@example.org')
+        self.failUnless(p.email_address == 'zoinks@example.org', "edit failed")
 
         # clean up
         p.delete()
@@ -82,14 +64,11 @@ class TestPersonController(TestController):
 
         ## delete
         u = url_for(controller='/person', action='delete', id='testguy')
-        #res = self.app.get(u)
-        #res.mustcontain('Delete person')
-        res = self.app.post(u, params=dict(delete='ok'))
-        #res = res.follow()
-        #res.mustcontain("List")
+        res = self.app.post(u)
+
         # check db
         p = Person.get(pid)
-        self.failUnless(p is None)
+        self.failUnless(p is None, "object was not deleted")
 
         # check
         ps = Person.select()
@@ -105,8 +84,8 @@ class TestPersonController(TestController):
         pid = p.id
 
         u = url_for(controller='/person', action='edit', id='testguy')
-        res = self.app.get(u,
-                           params=dict(email_address='testguy1@example.org'))
+        params = {'person.email_address': 'testguy1@example.org'}
+        res = self.app.get(u, params=params)
         res.mustcontain('Edit')
 
         p = Person.get(pid)
@@ -129,8 +108,7 @@ class TestPersonController(TestController):
         pid = p.id
 
         u = url_for(controller='/person', action='delete', id='testguy')
-        res = self.app.get(u,
-                           params=dict(delete='ok'))
+        res = self.app.get(u)
         res.mustcontain('Delete')
 
         p = Person.get(pid)
@@ -159,12 +137,12 @@ class TestPersonController(TestController):
     def test_delete_nonexistent(self):
         """Test that delete action on nonexistent person is caught"""
 
-        ps = Person.select_by(handle='testguy')
-        self.failUnless(len(ps) == 0, "database already has a testguy person")
+        ps = Person.select()
+        self.failUnless(len(ps) == 0, "database was not left empty")
         
         u = url_for(controller='/person', action='delete', id='testguy')
         res = self.app.post(u)
 
         # check
         ps = Person.select()
-        self.failUnless(len(ss) == 0, "database is not empty")
+        self.failUnless(len(ps) == 0, "database is not empty")

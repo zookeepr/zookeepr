@@ -1,27 +1,38 @@
-View person
+<h1>View person</h1>
 
-(<a href="<% h.url_for(action='new') %>">new person</a>)
-(<a href="<% h.url_for(action='index') %>">list persons</a>)
-
-(<a href="<% h.url_for(action='edit') %>">edit this person</a>)
-(<a href="<% h.url_for(action='delete') %>">delete this person</a>)
-
-% for (label, key) in [('Handle', 'handle'), ('Firstname', 'firstname'), ('Lastname', 'lastname'), ('Email', 'email_address')]:
 <p>
-	<b><% label %>:</b>
-	<% getattr(c.person, key) | h %>
+   <b>handle:</b>
+    <% c.person.handle | h %><br />
 </p>
-% #endfor
 
 <p>
-	<b>Submissions:</b>
-% for s in c.person.submissions:
-<% h.link_to(s.title, url=h.url(controller='submission', action='view', id=s.id)) %>
-% #end for
+   <b>Email:</b>
+    <% c.person.email_address | h %><br />
+</p>
+
+<p>
+   <b>First name:</b>
+    <% c.person.firstname | h %><br />
+</p>
+
+<p>
+   <b>Last name:</b>
+    <% c.person.lastname | h %><br />
+</p>
+
+<p>
+   <b>Phone:</b>
+<% c.person.phone %><br />
+</p>
+
+<p>
+<b>Fax:</b>
+<% c.person.fax %>
+</p>
 
 <hr />
 
 % if c.can_edit:
-<% h.link_to('Edit', url=h.url(action='edit', id=c.person.id)) %>
+<% h.link_to('Edit', url=h.url(action='edit',id=c.person.handle)) %> |
 % #end if
-<% h.link_to('back', url=h.url(action='index')) %>
+<% h.link_to('Back', url=h.url(action='index')) %>
