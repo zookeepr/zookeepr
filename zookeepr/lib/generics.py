@@ -3,6 +3,24 @@ from pylons import Controller, m, h, c, g, session, request, params
 from sqlalchemy import objectstore
 
 class Modify(object):
+    def _oid(self, obj):
+        """Return the ID for the model."""
+        field_name = getattr(self, 'key', 'id')
+        oid = getattr(obj, field_name)
+        return oid
+
+    def get(self, obj, id):
+        if not hasattr(self, 'key'):
+            obj = self.model.get(id)
+        else:
+            objs = self.model.select(getattr(self.model.c, self.key)==id)
+            if len(objs) == 0:
+                obj = None
+            else:
+                obj = objs[0]
+        return obj
+                                       
+        
     def new(self):
         """Create a new object.
 
@@ -28,7 +46,7 @@ class Modify(object):
                 #session.save()
                 # save to database
                 objectstore.flush()
-                return h.redirect_to(action='edit', id=new_data.id)
+                return h.redirect_to(action='edit', id=self._oid(new_data))
 
         # assign to the template global
         setattr(c, model_name, new_data)
@@ -44,7 +62,7 @@ class Modify(object):
         POST requests update the object with the data posted.
         """
         # Get the object
-        obj = self.model.get(id)
+        obj = self.get(self.model, id)
         if not obj:
             #session['message'] = 'No such id.'
             #session.save()
@@ -77,7 +95,7 @@ class Modify(object):
         POST requests will delete the item.
         """
         # Get the object
-        obj = self.model.get(id)
+        obj = self.get(self.model, id)
         if not obj:
             #session['message'] = 'No such id.'
             #session.save()
@@ -123,7 +141,7 @@ class View(object):
         # get the name we're referring this object to by from the model
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         # assign to the template global
-        setattr(c, model_name, self.model.get(id))
+        setattr(c, model_name, self.get(self.model, id))
         c.can_edit = self._can_edit()
         # exec the template
         m.subexec('%s/view.myt' % model_name)

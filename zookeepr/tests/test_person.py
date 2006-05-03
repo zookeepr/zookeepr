@@ -83,6 +83,41 @@ class TestPersonModel(unittest.TestCase):
         ps = Person.select()
         self.failUnless(len(ps) == 0, "database was not left clean")
 
+    def test_email_address_unique(self):
+        """Test that the email_address attribute of Person is unique"""
+
+        # assert that the database is empty so as not to fuck us up
+        ps = Person.select()
+        self.failUnless(len(ps) == 0, "database is not empty")
+        
+        p1 = Person('test_email_1',
+                    'testguy@example.org',
+                    'p4ssw0rd',
+                    'Testguy',
+                    'McTest',
+                    '37')
+        objectstore.commit()
+        p1id = p1.id
+        
+        p2 = Person('test_email_2',
+                    'testguy@example.org',
+                    'p4ssw0rd',
+                    'Testguy',
+                    'McTest',
+                    '37')
+        # email is the same, so throw integrityerror
+        self.assertRaises(SQLError, objectstore.commit)
+
+        # clean up
+        del p2
+        objectstore.clear()
+        p1 = Person.get(p1id)
+        p1.delete()
+        objectstore.commit()
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0, "database was not left clean")
+
 #     def test_too_long_handle(self):
 #         # this doesn't work with sqlite due to this FAQ:
 #         # http://www.sqlite.org/faq.html#q11
