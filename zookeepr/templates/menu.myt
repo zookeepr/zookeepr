@@ -21,10 +21,7 @@ i'm at templates/menu.myt
 
 </div>
 
-<div id="signin">
-<% h.link_to('Log in', url=h.url(controller='/account', action='login')) %> or
-<% h.link_to('Sign up', url=h.url(controller='/account', action='new')) %>
-</div>
+<& account.myc:signin &>
 
 <div class="clear">&nbsp;</div>
 

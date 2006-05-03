@@ -1,0 +1,6 @@
+<%method signin trim="both">
+<div id="signin">
+<% h.link_to('Log in', url=h.url(controller='/account', action='login')) %> or
+<% h.link_to('Sign up', url=h.url(controller='/account', action='new')) %>
+</div>
+</%method>
