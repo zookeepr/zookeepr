@@ -2,13 +2,25 @@
 
 <fieldset>
 stuff about you
-<p><label for="person.handle">Handle:</label><br />
+
+<p>
+<span class="mandatory">*</span>
+<label for="person.handle">Username:</label><span class="fielddesc"> - the way we'll refer to you</span><br />
 <% h.text_field('person.handle', c.person.handle) %></p>
 
-<p><label for="person.email_address">Email address:</label><br />
+<p>
+<span class="mandatory">*</span>
+<label for="person.email_address">Email address:</label><span class="fielddesc"> - this will be the primary way of contacting you</span><br />
 <% h.text_field('person.email_address', c.person.email_address) %></p>
 
-<p><label for="person.password">Password:</label><br />
+<p>
+<span class="mandatory">*</span>
+<label for="person.password">Password:</label><br />
+<% h.password_field('person.password') %></p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="person.password">Password (confirm):</label><br />
 <% h.password_field('person.password') %></p>
 </fieldset>
 

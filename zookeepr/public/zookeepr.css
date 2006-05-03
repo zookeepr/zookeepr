@@ -5,3 +5,16 @@
 #footer {
   font-size: 80%;
 }
+
+FORM LABEL {
+  font-weight: bold;
+}
+
+FORM SPAN.fielddesc {
+  font-style: italic;
+  font-size: 80%;
+}
+
+FORM SPAN.mandatory {
+  color: red;
+}
