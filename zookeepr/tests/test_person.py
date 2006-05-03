@@ -133,5 +133,15 @@ class TestPersonModel(unittest.TestCase):
 #         p1 = Person.mapper.select_by(email_address='test_too_long@example.org')
 #         assert p1[0].handle == 'a'*40
 
+    def test_handle_not_null(self):
+        """Test person.handle attribute is not null"""
+        p = Person(email_address='test@example.org')
+        self.assertRaises(SQLError, objectstore.flush)
+        objectstore.clear()
+
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0, "database was not left clean")
+        
     def setUp(self):
         objectstore.clear()
