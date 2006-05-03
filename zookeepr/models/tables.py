@@ -5,7 +5,7 @@ from sqlalchemy import *
 person = Table('person',
                Column('id', Integer, primary_key=True),
                
-               # unique identifier within the zookeepr app
+               # secondary key, unique identifier within the zookeepr app
                # useful for URLs
                Column('handle', String(40), unique=True),
                
