@@ -143,5 +143,15 @@ class TestPersonModel(unittest.TestCase):
         ps = Person.select()
         self.failUnless(len(ps) == 0, "database was not left clean")
         
+    def test_email_address_not_null(self):
+        """Test person.email_address attribute is not null"""
+        p = Person(handle='testguy')
+        self.assertRaises(SQLError, objectstore.flush)
+        objectstore.clear()
+
+        # check
+        ps = Person.select()
+        self.failUnless(len(ps) == 0, "database was not left clean")
+        
     def setUp(self):
         objectstore.clear()
