@@ -7,7 +7,7 @@ person = Table('person',
                
                # secondary key, unique identifier within the zookeepr app
                # useful for URLs
-               Column('handle', String(40), unique=True),
+               Column('handle', String(40), unique=True, nullable=False),
                
                # login identifier and primary method of communicating
                # with person
