@@ -163,4 +163,8 @@ class TestPersonController(TestController):
         self.failUnless(len(ps) == 0, "database already has a testguy person")
         
         u = url_for(controller='/person', action='delete', id='testguy')
-        res = self.app.post(u, params=dict(delete='ok'), status=404)
+        res = self.app.post(u)
+
+        # check
+        ps = Person.select()
+        self.failUnless(len(ss) == 0, "database is not empty")
