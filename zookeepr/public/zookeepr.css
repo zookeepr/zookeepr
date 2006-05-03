@@ -11,6 +11,7 @@ DIV.clear {
 /* menu bar */
 
 #menubar {
+  margin: 0px;
   border: 1px solid #000;
 }
 
@@ -25,8 +26,10 @@ DIV.clear {
   float: left;
 }
 
-#menubar #signin {
+#menubar #account {
   float: right;
+  font-size: 80%;
+  margin-right: 5px;
 }
 
 /* footer */
