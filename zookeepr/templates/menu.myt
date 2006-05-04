@@ -1,12 +1,12 @@
 # app-wide menu
-<div id="menu">
+<div id="menubar">
 
 <div id="logo">
 # a dirty hack
 <img src="/seven-head.png" nwidth="32" height="32">
 </div>
 
-<div>
+<div id="menu">
 i'm at templates/menu.myt
 
 <br />
@@ -21,4 +21,10 @@ i'm at templates/menu.myt
 
 </div>
 
+<& account.myc:signin &>
+
+<div class="clear">&nbsp;</div>
+
 </div>
+
+<div class="clear">&nbsp;</div>
