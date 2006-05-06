@@ -1,6 +1,8 @@
 BODY {
   font-family: Helvetica;
   font-size: 90%;
+  padding: 0;
+  margin: 0;
 }
 
 DIV.clear {
@@ -8,28 +10,35 @@ DIV.clear {
   height: 0;
 }
 
-/* menu bar */
+
+/* masthead */
 
 #masthead {
   margin: 0px;
+  /* debug */
   border: 1px solid #000;
 }
 
-#menubar #logo {
-  border: 0px;
-  padding: 0px;
-  float: left;
+/* sidebar */
+
+#sidebar-container {
+  float: right;
+  
+  /* debug */
+  border: 1px solid #000;
 }
+
+/* menu bar */
 
 #menubar #menu {
   width: 500px;
-  float: left;
+  margin: auto;
+  float: center;
 }
 
-#menubar #account {
-  float: right;
+#masthead #account {
+  float: left;
   font-size: 80%;
-  margin-right: 5px;
 }
 
 /* footer */

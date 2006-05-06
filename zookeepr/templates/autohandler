@@ -14,8 +14,12 @@
 
 <& masthead.myt &>
 
-<div id="content-body">
-% m.call_next()
+<div id="sidebar-container">
+<& sidebar.myt &>
+</div>
+
+<div id="content-container">
+<& content-body.myt &>
 </div>
 
 <div id="footer">
