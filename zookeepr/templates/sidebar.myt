@@ -1,3 +1,7 @@
+<div class="sidebarbox">
+
+Welcome, X, if this site had auth capabilities, it'd tell you who you are here!
+
 <p><% h.link_to('Register now!', url=h.url(controller='register')) %></p>
 
 <ul>
@@ -8,3 +12,4 @@
 <p>September 3, 2006</p>
 </li>
 </ul>
+</div>
