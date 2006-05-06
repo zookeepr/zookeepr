@@ -28,6 +28,14 @@ DIV.clear {
   border: 1px solid #000;
 }
 
+/* content body */
+
+#content-container {
+  float: left;
+
+  /* debug */
+  border: 1px solid #F00;
+}
 /* menu bar */
 
 #menubar #menu {
