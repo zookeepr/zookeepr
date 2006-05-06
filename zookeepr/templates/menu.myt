@@ -11,13 +11,15 @@ i'm at templates/menu.myt
 
 <br />
 
-<% h.link_to('Home', url=h.url('home')) %>
+<% h.link_to('home', url=h.url('home')) %>
 
-<% h.link_to('CFP', url=h.url(controller='cfp')) %>
+<% h.link_to('cfp', url=h.url(controller='cfp')) %>
 
-<% h.link_to('Submissions', url=h.url(controller='/submission', action='index')) %>
+<% h.link_to('submissions', url=h.url(controller='/submission', action='index')) %>
 
-<% h.link_to('People', url=h.url(controller='/person', action='index')) %>
+<% h.link_to('people', url=h.url(controller='/person', action='index')) %>
+
+<% h.link_to('sponsors') %>
 
 </div>
 
