@@ -8,18 +8,18 @@
 </head>
 <body>
 
-#<div class="title">
-#<h1><& SELF:title &></h1>
-#</div>
-
+<div id="masthead">
 <& masthead.myt &>
+</div>
 
-<div id="sidebar-container">
+<div id="sidebar-container" class="column">
 <& sidebar.myt &>
 </div>
 
-<div id="content-container">
+<div id="content-container" class="column">
 <& content-body.myt &>
+</div>
+
 </div>
 
 <div id="footer">
@@ -28,5 +28,6 @@ powered by the four Ps: <a href="http://pylonshq.com">pylons</a>,
 <a href="http://python.org">python</a>,
 and <a href="http://sqlalchemy.org">psqlalchemy</a>
 </div>
+
 </body>
 </html>

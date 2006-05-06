@@ -1,50 +1,94 @@
+/** Layout components **/
+
 BODY {
-  font-family: Helvetica;
-  font-size: 90%;
   padding: 0;
   margin: 0;
 }
 
-DIV.clear {
-  clear: both;
-  height: 0;
+#sidebar-container {
+  float: right;
+  width: 267px; /* where masthead_bottom joins masthead_right.png */
 }
 
+#content-container {
+  margin-right: 267px;
+}
+
+#footer {
+  clear:both;
+}
+
+/** pretty design bits follow **/
+
+BODY {
+  font-family: Helvetica, sans-serif;
+  font-size: 90%;
+}
 
 /* masthead */
 
 #masthead {
-  margin: 0px;
-  /* debug */
-  border: 1px solid #000;
+  height: 102px;
+  background: url('masthead_right.png') top right no-repeat;
+}
+
+#masthead-image {
+  height: 102px;
+  background: url(masthead_top.png) repeat-x;
+  margin-right: 274px; /* width of masthead_right.png */
+}
+
+#masthead H1 {
+  height: 102px;
+
+  font-size: 33pt;
+
+  float: right;
 }
 
 /* sidebar */
 
+/*
 #sidebar-container {
-  float: right;
-  
-  /* debug */
-  border: 1px solid #000;
+  border: 1px solid #c9c;
 }
+*/
 
 /* content body */
 
+/*
 #content-container {
-  float: left;
-
-  /* debug */
-  border: 1px solid #F00;
+  background: url('masthead_mid.png') top right no-repeat;
 }
+*/
+
+/* footer */
+
+#footer {
+  float: right;
+  font-size: 80%;
+
+  border: 1px solid #ccc;
+}
+
+/** Specific components **/
+
 /* menu bar */
 
+#menubar {
+  height: 30px;
+  background: url('masthead_mid.png') no-repeat top right;
+}
+
 #menubar #menu {
-  width: 500px;
-  margin: auto;
-  float: center;
+  height: 30px;
+  background: url('masthead_bottom.png') repeat-x;
+  margin-right: 81px;
 }
 
 #menubar #menu UL {
+  float: center;
+
   list-style: none;
   margin: 0;
   padding: 0;
@@ -56,14 +100,6 @@ DIV.clear {
 
 #menubar #account {
   float: left;
-  font-size: 80%;
-}
-
-/* footer */
-
-#footer {
-  clear: both;
-  float: right;
   font-size: 80%;
 }
 
