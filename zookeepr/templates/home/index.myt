@@ -1,11 +1,12 @@
-<blockquote class="withquote">
-<p class="withendquote">You know how it goes. You spend a few
+<blockquote><p>
+You know how it goes. You spend a few
 days immersed in talks about clusters and networking, surrounded by kernel
 hackers, getting three hours sleep per night and living on pizza and
 caffeine. You return home only to spend the next few weeks in a nocturnal
 daze of debugging symbols as you flitter between purging your email backlog
 and coding up that long, inspired list of new features you jotted down on
-the return journey.</p></blockquote>
+the return journey.
+</p></blockquote>
 
 <div id="alertsbar">
 #FIXME: move to own template?

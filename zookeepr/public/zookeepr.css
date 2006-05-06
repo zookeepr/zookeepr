@@ -62,7 +62,7 @@ FORM SPAN.mandatory {
   margin: auto;
 }
 
-BLOCKQUOTE.withquote {
+BLOCKQUOTE {
   font-style: italic;
   font-size: 110%;
   font-family: Georgia, Times New Roman, Times, serif;
@@ -72,7 +72,7 @@ BLOCKQUOTE.withquote {
   text-align: justify;
 }
 
-BLOCKQUOTE P.withendquote {
+BLOCKQUOTE P {
   background: url('bigquote_right.gif') no-repeat;
   background-position: bottom right;
   padding-right: 5px;
