@@ -10,7 +10,7 @@ DIV.clear {
 
 /* menu bar */
 
-#menubar {
+#masthead {
   margin: 0px;
   border: 1px solid #000;
 }
@@ -53,4 +53,27 @@ FORM SPAN.fielddesc {
 
 FORM SPAN.mandatory {
   color: red;
+}
+
+/* front page */
+
+#content-body {
+  width: 590px;
+  margin: auto;
+}
+
+BLOCKQUOTE.withquote {
+  font-style: italic;
+  font-size: 110%;
+  font-family: Georgia, Times New Roman, Times, serif;
+  background: url('bigquote_left.gif') no-repeat;
+  background-position: top left;
+  padding-left: 20px;
+  text-align: justify;
+}
+
+BLOCKQUOTE P.withendquote {
+  background: url('bigquote_right.gif') no-repeat;
+  background-position: bottom right;
+  padding-right: 5px;
 }
