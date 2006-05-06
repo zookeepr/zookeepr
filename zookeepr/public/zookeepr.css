@@ -3,21 +3,44 @@ BODY {
   font-size: 90%;
 }
 
-#menu {
+DIV.clear {
+  clear: both;
+  height: 0;
+}
+
+/* menu bar */
+
+#menubar {
+  margin: 0px;
   border: 1px solid #000;
 }
 
-#logo {
+#menubar #logo {
   border: 0px;
   padding: 0px;
   float: left;
 }
+
+#menubar #menu {
+  width: 500px;
+  float: left;
+}
+
+#menubar #account {
+  float: right;
+  font-size: 80%;
+  margin-right: 5px;
+}
+
+/* footer */
 
 #footer {
   clear: both;
   float: right;
   font-size: 80%;
 }
+
+/* form */
 
 FORM LABEL {
   font-weight: bold;
