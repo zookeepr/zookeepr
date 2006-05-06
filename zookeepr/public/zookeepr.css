@@ -113,6 +113,19 @@ BODY {
   padding: 10px;
 }
 
+/* content body */
+
+.contentbox {
+  border: 1px solid black;
+  margin: 10px;
+  padding: 10px;
+}
+
+.contentbox H2 {
+  text-align: right;
+  font-size: 200%;
+}
+
 /* form */
 
 FORM LABEL {
@@ -149,4 +162,10 @@ BLOCKQUOTE P.endquote {
   background: url('bigquote_right.gif') no-repeat;
   background-position: bottom right;
   padding-right: 20px;
+}
+
+/* generic */
+
+SPAN.highlight {
+  color: red;
 }
