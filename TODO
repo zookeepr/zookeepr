@@ -7,3 +7,9 @@
  * Put engine.create_tables() in app_globals.Globals.__init__
 
  * make account.myc:signin show who's logged in, and a logout button
+
+ * sidebar style
+
+ * content body style
+
+ * feet logo

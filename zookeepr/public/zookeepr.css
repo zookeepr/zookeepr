@@ -1,43 +1,129 @@
+/** Layout components **/
+
 BODY {
-  font-family: Helvetica;
+  padding: 0;
+  margin: 0;
+}
+
+#sidebar-container {
+  float: right;
+  width: 267px; /* where masthead_bottom joins masthead_right.png */
+}
+
+#content-container {
+  margin-right: 267px;
+}
+
+#footer {
+  clear:both;
+}
+
+/** pretty design bits follow **/
+
+BODY {
+  font-family: Helvetica, sans-serif;
   font-size: 90%;
 }
 
-DIV.clear {
-  clear: both;
-  height: 0;
+/* masthead */
+
+#masthead {
+  height: 102px;
+  background: url('masthead_right.png') top right no-repeat;
 }
 
-/* menu bar */
-
-#menubar {
-  margin: 0px;
-  border: 1px solid #000;
+#masthead-image {
+  height: 102px;
+  margin-right: 274px; /* width of mastheadright.png */
+  background: url(masthead_top.png) repeat-x;
 }
 
-#menubar #logo {
-  border: 0px;
-  padding: 0px;
-  float: left;
-}
+#masthead H1 {
+  position: absolute;
+  right: 40px;
+  top: 20px;
 
-#menubar #menu {
-  width: 500px;
-  float: left;
-}
+  margin: 0;
+  padding: 0;
 
-#menubar #account {
-  float: right;
-  font-size: 80%;
-  margin-right: 5px;
+  font-size: 30pt;
+  font-family: Bitstream Vera Sans Mono, Courier, monospace;
+  color: #FFF;
 }
 
 /* footer */
 
 #footer {
-  clear: both;
   float: right;
   font-size: 80%;
+
+  border: 1px solid #ccc;
+}
+
+/* menu bar */
+
+#menubar {
+  height: 30px;
+  background: url('masthead_mid.png') no-repeat top right;
+}
+
+#menubar #menu {
+  height: 30px;
+  background: url('masthead_bottom.png') repeat-x;
+  margin-right: 81px;
+
+  color: #FFF;
+  font-weight: bold;
+}
+
+#menubar #menu UL {
+  list-style: none;
+  margin: auto;
+  padding-top: 3px;
+}
+
+#menubar #menu UL LI {
+    display: inline;
+}
+
+#menubar #menu UL LI:after {
+  content: " | ";
+}
+
+#menubar #menu UL LI.last:after {
+  content: "";
+}
+
+#menubar #menu A {
+  color: #FFF;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#menubar #menu A:hover {
+  text-decoration: underline;
+}
+
+/* sidebar */
+
+.sidebarbox {
+  border: 1px solid black;
+  margin: 10px;
+
+  padding: 10px;
+}
+
+/* content body */
+
+.contentbox {
+  border: 1px solid black;
+  margin: 10px;
+  padding: 10px;
+}
+
+.contentbox H2 {
+  text-align: right;
+  font-size: 200%;
 }
 
 /* form */
@@ -52,5 +138,34 @@ FORM SPAN.fielddesc {
 }
 
 FORM SPAN.mandatory {
+  color: red;
+}
+
+/* front page */
+
+#content-body {
+  width: 590px;
+  margin: auto;
+}
+
+BLOCKQUOTE {
+  font-style: italic;
+  font-size: 110%;
+  font-family: Georgia, Times New Roman, Times, serif;
+  background: url('bigquote_left.gif') no-repeat;
+  background-position: top left;
+  padding-left: 20px;
+  text-align: justify;
+}
+
+BLOCKQUOTE P.endquote {
+  background: url('bigquote_right.gif') no-repeat;
+  background-position: bottom right;
+  padding-right: 20px;
+}
+
+/* generic */
+
+SPAN.highlight {
   color: red;
 }
