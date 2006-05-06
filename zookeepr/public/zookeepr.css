@@ -72,8 +72,8 @@ BLOCKQUOTE {
   text-align: justify;
 }
 
-BLOCKQUOTE P {
+BLOCKQUOTE P.endquote {
   background: url('bigquote_right.gif') no-repeat;
   background-position: bottom right;
-  padding-right: 5px;
+  padding-right: 20px;
 }
