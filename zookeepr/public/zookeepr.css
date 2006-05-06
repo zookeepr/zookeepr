@@ -79,6 +79,9 @@ BODY {
   height: 30px;
   background: url('masthead_bottom.png') repeat-x;
   margin-right: 81px;
+
+  color: #FFF;
+  font-weight: bold;
 }
 
 #menubar #menu UL {
@@ -87,8 +90,16 @@ BODY {
   padding-top: 3px;
 }
 
-#menubar #menu LI {
+#menubar #menu UL LI {
     display: inline;
+}
+
+#menubar #menu UL LI:after {
+  content: " | ";
+}
+
+#menubar #menu UL LI.last:after {
+  content: "";
 }
 
 #menubar #menu A {

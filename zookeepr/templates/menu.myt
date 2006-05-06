@@ -9,7 +9,7 @@
 <li><% h.link_to('sydney') %></li>
 <li><% h.link_to('contact') %></li>
 <li><% h.link_to('sponsors') %></li>
-<li><% h.link_to('home', url=h.url('home')) %></li>
+<li class="last"><% h.link_to('home', url=h.url('home')) %></li>
 </ul>
 
 </div>
