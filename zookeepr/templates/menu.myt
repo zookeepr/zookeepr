@@ -1,5 +1,3 @@
-<div id="menubar">
-
 <div id="menu">
 
 <ul>
@@ -13,7 +11,5 @@
 <li><% h.link_to('sponsors') %></li>
 <li><% h.link_to('home', url=h.url('home')) %></li>
 </ul>
-
-</div>
 
 </div>

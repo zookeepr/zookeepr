@@ -34,37 +34,28 @@ BODY {
 
 #masthead-image {
   height: 102px;
+  margin-right: 274px; /* width of mastheadright.png */
   background: url(masthead_top.png) repeat-x;
-  margin-right: 274px; /* width of masthead_right.png */
 }
 
 #masthead H1 {
   position: absolute;
-  right: 0;
-  top: 0;
+  right: 40px;
+  top: 20px;
 
   margin: 0;
   padding: 0;
 
-  font-size: 36pt;
+  font-size: 30pt;
+  font-family: Bitstream Vera Sans Mono, Courier, monospace;
   color: #FFF;
 }
 
 /* sidebar */
 
-/*
-#sidebar-container {
-  border: 1px solid #c9c;
-}
-*/
 
 /* content body */
 
-/*
-#content-container {
-  background: url('masthead_mid.png') top right no-repeat;
-}
-*/
 
 /* footer */
 
@@ -91,20 +82,23 @@ BODY {
 }
 
 #menubar #menu UL {
-  float: center;
-
   list-style: none;
-  margin: 0;
-  padding: 0;
+  margin: auto;
+  padding-top: 3px;
 }
 
 #menubar #menu LI {
     display: inline;
 }
 
-#menubar #account {
-  float: left;
-  font-size: 80%;
+#menubar #menu A {
+  color: #FFF;
+  font-weight: bold;
+  text-decoration: none;
+}
+
+#menubar #menu A:hover {
+  text-decoration: underline;
 }
 
 /* form */
