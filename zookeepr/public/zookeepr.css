@@ -39,11 +39,15 @@ BODY {
 }
 
 #masthead H1 {
-  height: 102px;
+  position: absolute;
+  right: 0;
+  top: 0;
 
-  font-size: 33pt;
+  margin: 0;
+  padding: 0;
 
-  float: right;
+  font-size: 36pt;
+  color: #FFF;
 }
 
 /* sidebar */

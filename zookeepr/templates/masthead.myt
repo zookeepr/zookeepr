@@ -1,2 +1,4 @@
-<h1><span style="color: red">linux</span><span style="color: #FFF">.conf.au 7</span></h1>
+<div id="masthead-image">
+</div>
+<h1><span style="color: red">linux</span>.conf.au 7</h1>
 
