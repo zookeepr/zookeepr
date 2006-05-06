@@ -5,16 +5,17 @@ i'm at templates/menu.myt
 
 <br />
 
-<% h.link_to('login') %>
-<% h.link_to("what's on?") %>
-<% h.link_to('programme') %>
-<% h.link_to('dates') %>
-<% h.link_to('press') %>
-<% h.link_to('sydney') %>
-<% h.link_to('contact') %>
-<% h.link_to('sponsors') %>
-<% h.link_to('home', url=h.url('home')) %>
-
+<ul>
+<li><% h.link_to('login') %></li></li>
+<li><% h.link_to("what's on?") %></li>
+<li><% h.link_to('programme') %></li>
+<li><% h.link_to('dates') %></li>
+<li><% h.link_to('press') %></li>
+<li><% h.link_to('sydney') %></li>
+<li><% h.link_to('contact') %></li>
+<li><% h.link_to('sponsors') %></li>
+<li><% h.link_to('home', url=h.url('home')) %></li>
+</ul>
 #<% h.link_to('cfp', url=h.url(controller='cfp')) %>
 
 #<% h.link_to('submissions', url=h.url(controller='/submission', action='index')) %>

@@ -44,6 +44,16 @@ DIV.clear {
   float: center;
 }
 
+#menubar #menu UL {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+#menubar #menu LI {
+    display: inline;
+}
+
 #menubar #account {
   float: left;
   font-size: 80%;
