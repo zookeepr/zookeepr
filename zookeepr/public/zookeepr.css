@@ -21,8 +21,8 @@ BODY {
 /** pretty design bits follow **/
 
 BODY {
-  font-family: Helvetica, sans-serif;
-  font-size: 90%;
+  font-family: Bitstream Vera Sans, Sans, sans-serif;
+  font-size: 70%;
 }
 
 /* masthead */
@@ -32,23 +32,28 @@ BODY {
   background: url('masthead_right.png') top right no-repeat;
 }
 
-#masthead-image {
+#masthead #title {
   height: 102px;
   margin-right: 274px; /* width of mastheadright.png */
   background: url(masthead_top.png) repeat-x;
+
+  color: #FFF;
 }
 
-#masthead H1 {
-  position: absolute;
-  right: 40px;
-  top: 20px;
-
+#masthead #title H1 {
   margin: 0;
-  padding: 0;
+/*  padding: 0;*/
 
+  font-family: Bitstream Vera Sans Mono, monospace;
   font-size: 30pt;
-  font-family: Bitstream Vera Sans Mono, Courier, monospace;
-  color: #FFF;
+}
+
+#masthead #title H2 { 
+  margin: 0;
+/*
+  padding: 0;
+*/
+  font-size: 12pt;
 }
 
 /* footer */
@@ -73,7 +78,7 @@ BODY {
   margin-right: 81px;
 
   color: #FFF;
-  font-weight: bold;
+  /*font-weight: bold;*/
 }
 
 #menubar #menu UL {
@@ -150,7 +155,7 @@ FORM SPAN.mandatory {
 
 BLOCKQUOTE {
   font-style: italic;
-  font-size: 110%;
+  font-size: 150%;
   font-family: Georgia, Times New Roman, Times, serif;
   background: url('bigquote_left.gif') no-repeat;
   background-position: top left;
