@@ -1,4 +1,9 @@
+import os
+
 import pylons.middleware
+import sqlalchemy
+
+import zookeepr.models as model
 
 class Globals(pylons.middleware.Globals):
 
@@ -25,7 +30,17 @@ class Globals(pylons.middleware.Globals):
             your global variables.
             
         """
-        pass
+        sqlalchemy.global_connect(app_conf['dburi'])
+        # FIXME: this method for creating the tables if the databsae was just created is not very
+        # robust; currently it's trapping an exception created by pysqlite2
+        try:
+            model.person.create()
+            model.submission_type.create()
+            model.submission.create()
+        except sqlalchemy.SQLError, e:
+            # we only want to pass on operational errors
+            if not e.args[0].startswith('(OperationalError) table person already exists'):
+                raise e
 
     def __del__(self):
         """

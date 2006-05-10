@@ -4,7 +4,7 @@
 
  * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
 
- * Put engine.create_tables() in app_globals.Globals.__init__
+ * With SQLAlchemy 0.2, replace the try/except in Globals.__init__() with engine.create_tables().
 
  * make account.myc:signin show who's logged in, and a logout button
 
