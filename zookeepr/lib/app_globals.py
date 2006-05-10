@@ -30,7 +30,7 @@ class Globals(pylons.middleware.Globals):
             your global variables.
             
         """
-        sqlalchemy.global_connect('sqlite', dict(filename='somedb.db'))
+        sqlalchemy.global_connect(app_conf['dburi'])
         # FIXME: this method for creating the tables if the databsae was just created is not very
         # robust; currently it's trapping an exception created by pysqlite2
         try:
