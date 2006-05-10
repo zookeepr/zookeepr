@@ -4,6 +4,24 @@
 
  * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
 
- * Put engine.create_tables() in app_globals.Globals.__init__
+ * With SQLAlchemy 0.2, replace the try/except in Globals.__init__() with engine.create_tables().
 
  * make account.myc:signin show who's logged in, and a logout button
+
+ * sidebar style
+
+ * content body style
+
+ * feet logo
+
+ * Auth/login - authkit will not be ready.  two options:
+  * hack own middleware, with intent to replace with AuthKit in future.
+  * no auth, only signup, and do auth after release
+
+ * date-based release of CFP and Rego on front page requires interfaces to set these conf-wide dates (and other config)
+  * how do you test that?
+
+ * email notifications for signup and announcements.
+
+ * CFP review interface with dhtml stars from yahoo site.  must be accessible w/o js though.
+
