@@ -3,3 +3,4 @@ somedb.db
 zookeepr.egg-info/PKG-INFO
 zookeepr.egg-info/SOURCES.txt
 zookeepr.egg-info/requires.txt
+zookeepr.egg-info/entry_points.txt
