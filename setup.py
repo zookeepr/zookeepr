@@ -1,8 +1,10 @@
+#!/usr/bin/env python
+
 from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1dev",
+    version="0.1",
     #description="",
     #author="",
     #author_email="",
