@@ -1,13 +1,15 @@
+#!/usr/bin/env python2.3
+
 from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="",
+    version="0.1",
     #description="",
     #author="",
     #author_email="",
     #url="",
-    install_requires=["Pylons==dev,>=0.8dev-r292"],
+    install_requires=["Pylons==0.8.1","SQLAlchemy==0.1.7"],
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',

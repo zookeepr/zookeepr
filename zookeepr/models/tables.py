@@ -52,15 +52,3 @@ submission = Table('submission',
                    # url to a project page
                    Column('url', String())
                    )
-
-
-if os.path.exists('somedb.db'):
-    # we do this inside the 'if' because global_connect on an sqlite
-    # db creates the file
-    global_connect('sqlite', dict(filename='somedb.db'))
-else:    
-    print "creating db"
-    global_connect('sqlite', dict(filename='somedb.db'))
-    person.create()
-    submission_type.create()
-    submission.create()

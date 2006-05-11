@@ -10,9 +10,7 @@ class BaseController(Controller):
         # Insert any code to be run per request here
 
         # Connect the ORM to the database
-        #print "connecting db in Basecontroller.__call__"
-        #sqlalchemy.global_connect(g.pylons_config.app_conf['dburi'])
-        sqlalchemy.global_connect('sqlite', dict(filename='somedb.db'))
+        sqlalchemy.global_connect(g.pylons_config.app_conf['dburi'])
         # clear the objectstore session
         sqlalchemy.objectstore.clear()
 
