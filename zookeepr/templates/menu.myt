@@ -5,7 +5,7 @@
 % if session.has_key('username'):
 <li><% h.link_to(session['username'], url=h.url(controller='person', action='view', id=session['username'])) %></li>
 % else:
-<li><% h.link_to('login', url=h.url(controller='account', action='login')) %></li>
+<li><% h.link_to('sign in', url=h.url(controller='security', action='signin')) %></li>
 % #endif
 
 <li><% h.link_to("what's on?") %></li>
