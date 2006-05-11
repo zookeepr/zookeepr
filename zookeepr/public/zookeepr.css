@@ -152,11 +152,6 @@ FORM SPAN.mandatory {
 
 /* front page */
 
-#content-body {
-  width: 60%;
-  margin: auto;
-}
-
 BLOCKQUOTE {
   font-style: italic;
   font-size: 150%;
