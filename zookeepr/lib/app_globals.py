@@ -39,7 +39,7 @@ class Globals(pylons.middleware.Globals):
             model.submission.create()
         except sqlalchemy.SQLError, e:
             # we only want to pass on operational errors
-            if not e.args[0].startswith('(OperationalError) table person already exists'):
+            if not e.args[0].startswith('(OperationalError) table person already exists') and not e.args[0].startswith('(DatabaseError) table person already exists'):
                 raise e
 
     def __del__(self):
