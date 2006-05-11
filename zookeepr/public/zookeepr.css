@@ -121,9 +121,13 @@ BODY {
 /* content body */
 
 .contentbox {
+  width: 60%;
+  margin: auto;
+  margin-top: 20px;
+  margin-bottom: 20px;
   border: 1px solid black;
-  margin: 10px;
   padding: 10px;
+
 }
 
 .contentbox H2 {
@@ -149,7 +153,7 @@ FORM SPAN.mandatory {
 /* front page */
 
 #content-body {
-  width: 590px;
+  width: 60%;
   margin: auto;
 }
 
