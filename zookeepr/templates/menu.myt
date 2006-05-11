@@ -1,7 +1,13 @@
 <div id="menu">
 
 <ul>
-<li><% h.link_to('login') %></li>
+
+% if session.has_key('username'):
+<li><% h.link_to(session['username'], url=h.url(controller='person', action='view', id=session['username'])) %></li>
+% else:
+<li><% h.link_to('login', url=h.url(controller='account', action='login')) %></li>
+% #endif
+
 <li><% h.link_to("what's on?") %></li>
 <li><% h.link_to('programme') %></li>
 <li><% h.link_to('dates') %></li>
