@@ -13,3 +13,15 @@
  * content body style
 
  * feet logo
+
+ * Auth/login - authkit will not be ready.  two options:
+  * hack own middleware, with intent to replace with AuthKit in future.
+  * no auth, only signup, and do auth after release
+
+ * date-based release of CFP and Rego on front page requires interfaces to set these conf-wide dates (and other config)
+  * how do you test that?
+
+ * email notifications for signup and announcements.
+
+ * CFP review interface with dhtml stars from yahoo site.  must be accessible w/o js though.
+
