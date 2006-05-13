@@ -5,6 +5,16 @@ import sqlalchemy
 
 import zookeepr.models as model
 
+class FakeAuthStore(object):
+    def user_exists(self, value):
+        return True
+
+    def sign_in(self, username):
+        pass
+
+    def sign_out(self, username):
+        pass
+
 class Globals(pylons.middleware.Globals):
 
     def __init__(self, global_conf, app_conf, **extra):
@@ -41,6 +51,8 @@ class Globals(pylons.middleware.Globals):
             # we only want to pass on operational errors
             if not e.args[0].startswith('(OperationalError) table person already exists') and not e.args[0].startswith('(DatabaseError) table person already exists'):
                 raise e
+
+        self.auth = FakeAuthStore()
 
     def __del__(self):
         """
