@@ -1,6 +1,6 @@
 <h1>Sign In</h1>
 
-<% c.form.start(name="signin", action="", method="post") %>
+<% c.form.start(name="signin", action=h.url_for(controller='/security', action='signin'), method="POST") %>
 <% c.form.layout.simple_start() %>
 <% c.form.layout.entry(
     content=c.form.field.text(name="username"),
