@@ -83,8 +83,8 @@ BODY {
 
 #menubar #menu UL {
   list-style: none;
-  margin-top: 5px;
-  float: right;
+  margin: 0;
+  padding-top: 5px;
 }
 
 #menubar #menu UL LI {
@@ -107,13 +107,6 @@ BODY {
 
 #menubar #menu A:hover {
   text-decoration: underline;
-}
-
-#menubar #account {
-  margin-top: 5px;
-  margin-left: 5px;
-  float: left;
-  display: inline;
 }
 
 /* sidebar */
