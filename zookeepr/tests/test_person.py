@@ -166,7 +166,7 @@ class TestPersonModel(unittest.TestCase):
         p.update(**d)
         objectstore.flush()
 
-        self.failUnless(p.password_hash == md5.new('p4ssw0rd').hexdigest().
+        self.failUnless(p.password_hash == md5.new('p4ssw0rd').hexdigest(),
                         "password was not set")
 
         # clean up
