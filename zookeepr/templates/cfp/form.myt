@@ -24,8 +24,8 @@
 
 <p>
 <span class="mandatory">*</span>
-<label for="person.password">Password (confirm):</label><br />
-<% h.password_field('person.password') %></p>
+<label for="person.password_confirm">Password (confirm):</label><br />
+<% h.password_field('person.password_confirm') %></p>
 
 <p>
 <span class="mandatory">*</span>
