@@ -5,3 +5,4 @@ zookeepr.egg-info/SOURCES.txt
 zookeepr.egg-info/requires.txt
 zookeepr.egg-info/entry_points.txt
 zookeepr.egg-info/top_level.txt
+test.db

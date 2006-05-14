@@ -27,3 +27,4 @@
 
  * flow of security/signin and signout, redirect to home or show result page?
 
+ * don't use test.ini for the test suite, construct a whole paste config in tests/__init__.py using appconfig or however paste does it
