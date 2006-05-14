@@ -1,6 +1,9 @@
-from lib.app_globals import Globals
-from paste.deploy import appconfig
 import os
+
+from paste.deploy import appconfig
+import sqlalchemy
+
+from lib.app_globals import Globals
 
 def setup_config(command, filename, section, vars):
     """Place any commands to set up zookeepr here.
