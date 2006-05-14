@@ -7,6 +7,9 @@
 <p><label for="person.password">Password:</label><br />
 <% h.password_field('person.password') %></p>
 
+<p><label for="person.password_confirm">Password (confirm):</label><br />
+<% h.password_field('person.password_confirm') %></p>
+
 <p><label for="person.firstname">First name:</label><br />
 <% h.text_field('person.firstname', c.person.firstname) %></p>
 

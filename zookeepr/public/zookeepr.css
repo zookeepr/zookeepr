@@ -83,8 +83,8 @@ BODY {
 
 #menubar #menu UL {
   list-style: none;
-  margin: auto;
-  padding-top: 3px;
+  margin: 0;
+  padding-top: 5px;
 }
 
 #menubar #menu UL LI {

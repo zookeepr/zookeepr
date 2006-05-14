@@ -1,7 +1,15 @@
 <div id="menu">
 
 <ul>
-<li><% h.link_to('login') %></li>
+
+<li>
+% if r.environ.has_key('REMOTE_USER'):
+<% h.link_to('sign out', url=h.url(controller='account', action='signout')) %>
+% else:
+<% h.link_to('sign in', url=h.url(controller='account', action='signin')) %>
+% #endif
+</li>
+
 <li><% h.link_to("what's on?") %></li>
 <li><% h.link_to('programme') %></li>
 <li><% h.link_to('dates') %></li>

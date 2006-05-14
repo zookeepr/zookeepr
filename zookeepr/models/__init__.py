@@ -11,12 +11,21 @@ class Person(object):
     def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
         self.handle = handle
         self.email_address = email_address
+
         if password is not None:
             self.password_hash = md5.new(password).hexdigest()
         self.firstname = firstname
         self.lastname = lastname
         self.phone = phone
         self.fax = fax
+
+    def _set_password(self, password):
+        self.password_hash = md5.new(password).hexdigest()
+
+    def _get_password(self, value):
+        return self.password_hash
+
+    password = property(_get_password, _set_password)
 
 
 class SubmissionType(object):

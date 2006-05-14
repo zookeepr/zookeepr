@@ -6,17 +6,11 @@
 
  * With SQLAlchemy 0.2, replace the try/except in Globals.__init__() with engine.create_tables().
 
- * make account.myc:signin show who's logged in, and a logout button
-
  * sidebar style
 
  * content body style
 
  * feet logo
-
- * Auth/login - authkit will not be ready.  two options:
-  * hack own middleware, with intent to replace with AuthKit in future.
-  * no auth, only signup, and do auth after release
 
  * date-based release of CFP and Rego on front page requires interfaces to set these conf-wide dates (and other config)
   * how do you test that?
@@ -25,3 +19,12 @@
 
  * CFP review interface with dhtml stars from yahoo site.  must be accessible w/o js though.
 
+ * fix cfp submission process
+
+ * fix front page for unlogged and logged in users
+  - usual front page for unlogged
+  - personal summary for logged in users
+
+ * flow of security/signin and signout, redirect to home or show result page?
+
+ * don't use test.ini for the test suite, construct a whole paste config in tests/__init__.py using appconfig or however paste does it
