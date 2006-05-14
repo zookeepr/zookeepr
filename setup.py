@@ -13,7 +13,12 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',
-    package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo']},
+    package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo',
+                               'templates/*.myt',
+                               'templates/*/*.myt',
+                               'public/*.css',
+                               'public/*.png',
+                               'public/*.gif']},
     entry_points="""
     [paste.app_factory]
     main=zookeepr:make_app
