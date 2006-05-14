@@ -22,6 +22,7 @@ class TestSecurityController(TestController):
                   'go': 'Submit'}
         res = self.app.post(u, params)
         self.failUnless(res.request.environ['REMOTE_USER'] == 'testguy')
+        
         # clean up
         p.delete()
         objectstore.flush()
