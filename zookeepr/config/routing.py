@@ -20,9 +20,9 @@ def make_map():
     # to not 404 when calling itself
     m.connect('/error/:action/:id', controller='error')
 
-    # special case for security controller, again in the style of the
+    # special case for account controller, again in the style of the
     # original routes controller
-    m.connect('/security/:action', controller='security')
+    m.connect('/account/:action', controller='account')
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule

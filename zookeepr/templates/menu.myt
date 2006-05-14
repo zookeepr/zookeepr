@@ -4,9 +4,9 @@
 
 <li>
 % if r.environ.has_key('REMOTE_USER'):
-<% h.link_to('sign out', url=h.url(controller='security', action='signout')) %>
+<% h.link_to('sign out', url=h.url(controller='account', action='signout')) %>
 % else:
-<% h.link_to('sign in', url=h.url(controller='security', action='signin')) %>
+<% h.link_to('sign in', url=h.url(controller='account', action='signin')) %>
 % #endif
 </li>
 

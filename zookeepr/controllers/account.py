@@ -2,7 +2,7 @@ from authkit.controllers import *
 
 from zookeepr.lib.base import *
 
-class SecurityController(BaseController, PylonsSecureController):
+class AccountController(BaseController, PylonsSecureController):
 
     def index(self, **params):
         return self.signin(**params)
@@ -24,17 +24,17 @@ class SecurityController(BaseController, PylonsSecureController):
                 if not e.error_dict:
                     errors = {'password':str(e)}
                 self.c.form = formbuild.Form(defaults=ARGS, errors=errors)
-                m.subexec('/security/signin.myt')
+                m.subexec('/account/signin.myt')
             else:
                 self.__signin__(username=ARGS.get('username'))
-                m.subexec('/security/signedin.myt', **ARGS)
+                m.subexec('/account/signedin.myt', **ARGS)
         else:
             self.c.form = formbuild.Form(defaults=ARGS)
-            m.subexec('/security/signin.myt')
+            m.subexec('/account/signin.myt')
 
     def signout(self, ARGS, **params):
         if request.environ.has_key('REMOTE_USER'):
             self.__signout__(request.environ['REMOTE_USER'])
-            m.subexec('/security/signedout.myt', **ARGS)
+            m.subexec('/account/signedout.myt', **ARGS)
         else:
-            m.subexec('/security/alreadyout.myt', **ARGS)
+            m.subexec('/account/alreadyout.myt', **ARGS)

@@ -1,7 +1,7 @@
 from zookeepr.tests import *
 from zookeepr.models import *
 
-class TestSecurityController(TestController):
+class TestAccountController(TestController):
 #     def test_index(self):
 #         response = self.app.get(url_for(controller='person'))
 #         # Test response...
@@ -16,7 +16,7 @@ class TestSecurityController(TestController):
         objectstore.flush()
         
         # try to log in
-        u = url_for(controller='/security', action='signin')
+        u = url_for(controller='/account', action='signin')
         params = {'username': 'testguy',
                   'password': 'p4ssw0rd',
                   'go': 'Submit'}
@@ -37,14 +37,14 @@ class TestSecurityController(TestController):
         objectstore.flush()
 
         # login
-        u = url_for(controller='/security', action='signin')
+        u = url_for(controller='/account', action='signin')
         params = {'username': 'testguy',
                   'password': 'p4ssw0rd',
                   'go': 'Submit'}
         res = self.app.post(u, params)
 
         # logout
-        u = url_for(controller='/security', action='signout')
+        u = url_for(controller='/account', action='signout')
         res = self.app.get(u)
         self.failIf(res.request.environ.has_key('REMOTE_USER'))
 
@@ -55,7 +55,7 @@ class TestSecurityController(TestController):
     def test_signin_invalid(self):
         """Test invalid login details"""
         # login
-        u = url_for(controller='/security', action='signin')
+        u = url_for(controller='/account', action='signin')
         params = {'username': 'testguy',
                   'password': 'p4ssw0rd',
                   'go': 'Submit'}

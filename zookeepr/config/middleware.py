@@ -1,11 +1,10 @@
+from authkit.middleware import Security, ShowSignInOn403
 from paste import httpexceptions
 from paste.cascade import Cascade
 from paste.urlparser import StaticURLParser
-
 from pylons.error import error_template
 from pylons.middleware import ErrorHandler, ErrorDocuments, error_mapper
 import pylons.wsgiapp
-from authkit.middleware import Security, Authenticator, ShowSignInOn403
 
 from zookeepr.config.environment import load_environment
 from zookeepr.lib.auth import UserModelAuthenticator
@@ -36,7 +35,7 @@ def make_app(global_conf, **app_conf):
     
     # security
     app = ShowSignInOn403(app)
-    app = Security(app, global_conf=global_conf, http_login=False, cookie_prefix='', login_page='security/signin', logout_page='security/signout', secret=None, authenticator=UserModelAuthenticator)
+    app = Security(app, global_conf=global_conf, http_login=False, cookie_prefix='', login_page='account/signin', logout_page='account/signout', secret=None, authenticator=UserModelAuthenticator)
 
     # @@@ Error Handling @@@
     app = ErrorHandler(app, global_conf, error_template=error_template, **config.errorware)
