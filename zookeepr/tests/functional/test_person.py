@@ -13,7 +13,9 @@ class TestPersonController(TestController):
         # create a new person
         u = url_for(controller='/person', action='new')
         params = {'person.handle': 'testguy',
-                  'person.email_address': 'testguy@example.org'}
+                  'person.email_address': 'testguy@example.org',
+                  'person.password': 'p4ssw0rd',
+                  'person.password_confirm': 'p4ssw0rd'}
         res = self.app.post(u, params=params)
 
         # check that it's in the dataase
