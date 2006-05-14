@@ -2,7 +2,8 @@
 
 % if r.environ.has_key('REMOTE_USER'):
 <p>
-logged in as <% h.link_to(r.environ['REMOTE_USER'], url=h.url(controller='person', action='view', id=r.environ['REMOTE_USER'])) %>
+logged in as <% h.link_to(r.environ['REMOTE_USER'], url=h.url(controller='person', action='view', id=r.environ['REMOTE_USER'])) %>.
+<% h.link_to('sign out', url=h.url(controller='/security', action='signout')) %>
 </p>
 % #endif
 
