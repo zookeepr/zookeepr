@@ -4,16 +4,7 @@ import pylons.middleware
 import sqlalchemy
 
 import zookeepr.models as model
-
-class FakeAuthStore(object):
-    def user_exists(self, value):
-        return True
-
-    def sign_in(self, username):
-        pass
-
-    def sign_out(self, username):
-        pass
+from zookeepr.lib.auth import UserModelAuthStore
 
 class Globals(pylons.middleware.Globals):
 
@@ -52,7 +43,7 @@ class Globals(pylons.middleware.Globals):
             if not e.args[0].startswith('(OperationalError) table person already exists') and not e.args[0].startswith('(DatabaseError) table person already exists'):
                 raise e
 
-        self.auth = FakeAuthStore()
+        self.auth = UserModelAuthStore()
 
     def __del__(self):
         """
