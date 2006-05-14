@@ -40,7 +40,7 @@ class Globals(pylons.middleware.Globals):
             model.submission.create()
         except sqlalchemy.SQLError, e:
             # we only want to pass on operational errors
-            if not e.args[0].startswith('(OperationalError) table person already exists') and not e.args[0].startswith('(DatabaseError) table person already exists'):
+            if e.args[0].find('table person already exists') == -1:
                 raise e
 
         self.auth = UserModelAuthStore()
