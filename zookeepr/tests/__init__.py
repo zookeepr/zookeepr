@@ -29,6 +29,9 @@ class TestController(TestCase):
         TestCase.__init__(self, *args)
 
     def setUp(self):
+        # clear the objectstore at the start of each test because
+        # we might not have deleted objects from the session at the
+        # end of each test
         objectstore.clear()
 
 __all__ = ['url_for', 'TestController']
