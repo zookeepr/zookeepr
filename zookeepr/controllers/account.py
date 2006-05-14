@@ -11,6 +11,7 @@ class AccountController(BaseController, PylonsSecureController):
         if len(ARGS):
             from authkit.validators import SignIn
             validator = SignIn()
+
             try:
                 if not request.environ.has_key('paste.login.http_login'):
                     raise Exception('Action permissions specified but security middleware not present.')

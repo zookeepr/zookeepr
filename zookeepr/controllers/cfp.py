@@ -15,8 +15,6 @@ class CfpController(BaseController):
             new_submission.update(**m.request_args['submission'])
             new_submission.person = new_person
 
-            print new_person.handle
-
             if new_person.validate() and new_submission.validate():
                 # save to database
                 objectstore.flush()
