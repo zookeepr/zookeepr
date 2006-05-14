@@ -155,3 +155,20 @@ class TestPersonModel(unittest.TestCase):
         
     def setUp(self):
         objectstore.clear()
+
+    def test_password_set(self):
+        """Test person password setting works after object creation"""
+        p = Person(handle='testguy',
+                   email_address='testguy@example.org')
+        objectstore.flush()
+        
+        d = {'password': 'p4ssw0rd'}
+        p.update(**d)
+        objectstore.flush()
+
+        self.failUnless(p.password_hash == md5.new('p4ssw0rd').hexdigest().
+                        "password was not set")
+
+        # clean up
+        p.delete()
+        objectstore.flush()
