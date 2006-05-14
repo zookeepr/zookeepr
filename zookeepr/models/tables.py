@@ -1,5 +1,3 @@
-import os.path
-
 from sqlalchemy import *
 
 person = Table('person',
@@ -11,7 +9,9 @@ person = Table('person',
                
                # login identifier and primary method of communicating
                # with person
-               Column('email_address', String(512), unique=True, nullable=False),
+               Column('email_address', String(512),
+                      unique=True,
+                      nullable=False),
                
                # password hash
                Column('password_hash', String(32)),

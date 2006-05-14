@@ -30,6 +30,10 @@ class Modify(object):
         POST requests will create the object, and return a redirect to
         view the new object.
         """
+
+        # clear the store
+        objectstore.clear()
+                          
         # Get the name we refer to the model by
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         errors = {}
@@ -61,6 +65,10 @@ class Modify(object):
 
         POST requests update the object with the data posted.
         """
+
+        # clear the store
+        objectstore.clear()
+        
         # Get the object
         obj = self.get(self.model, id)
         if not obj:
@@ -94,6 +102,9 @@ class Modify(object):
 
         POST requests will delete the item.
         """
+        # clear the store
+        objectstore.clear()
+        
         # Get the object
         obj = self.get(self.model, id)
         if not obj:

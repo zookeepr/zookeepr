@@ -1,12 +1,7 @@
+interface
+=========
+
  * make submissiontype interface accessible only by conf admin
-
- * throw bad shit at forms to make sure we're using formencode :-)
-
- * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
-
- * With SQLAlchemy 0.2, replace the try/except in Globals.__init__() with engine.create_tables().
-
- * make account.myc:signin show who's logged in, and a logout button
 
  * sidebar style
 
@@ -14,14 +9,31 @@
 
  * feet logo
 
- * Auth/login - authkit will not be ready.  two options:
-  * hack own middleware, with intent to replace with AuthKit in future.
-  * no auth, only signup, and do auth after release
-
  * date-based release of CFP and Rego on front page requires interfaces to set these conf-wide dates (and other config)
   * how do you test that?
 
- * email notifications for signup and announcements.
-
  * CFP review interface with dhtml stars from yahoo site.  must be accessible w/o js though.
 
+ * fix front page for unlogged and logged in users
+  - usual front page for unlogged
+  - personal summary for logged in users
+
+ * flow of security/signin and signout, redirect to home or show result page?
+
+== "business" logic ==
+
+ * fix cfp submission process
+
+ * email notifications for signup and announcements.
+
+== code refactoring ==
+
+ * With SQLAlchemy 0.2, replace the try/except in Globals.__init__() with engine.create_tables().
+
+ * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
+
+== testing ==
+
+ * throw bad shit at forms to make sure we're using formencode :-)
+
+ * don't use test.ini for the test suite, construct a whole paste config in tests/__init__.py using appconfig or however paste does it

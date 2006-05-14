@@ -1,3 +1,4 @@
-<div id="masthead-image"></div>
-<h1><span style="color: red">linux</span>.conf.au <span style="font-size: 120%">7</span></h1>
-
+<div id="title">
+<h1>linux.conf.au 2007</h1>
+<h2>University of NSW: January 15-20th</h2>
+</div>

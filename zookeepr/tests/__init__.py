@@ -24,11 +24,14 @@ from sqlalchemy import objectstore
 
 class TestController(TestCase):
     def __init__(self, *args):
-        wsgiapp = loadapp('config:development.ini', relative_to=conf_dir)
+        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
         self.app = paste.fixture.TestApp(wsgiapp)
         TestCase.__init__(self, *args)
 
     def setUp(self):
+        # clear the objectstore at the start of each test because
+        # we might not have deleted objects from the session at the
+        # end of each test
         objectstore.clear()
 
 __all__ = ['url_for', 'TestController']
