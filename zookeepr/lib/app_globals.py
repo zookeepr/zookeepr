@@ -42,8 +42,8 @@ class Globals(pylons.middleware.Globals):
             model.submission.create()
         except sqlalchemy.SQLError, e:
             # we only want to pass on operational errors
-            if e.args[0].find('table person already exists') == -1 or \
-               e.args[0].find("Relation 'person_id_seq' already exists") == 1:
+            if e.args[0].find('table person already exists') == -1 and \
+               e.args[0].find("Relation 'person_id_seq' already exists") == -1:
                 raise e
 
 
