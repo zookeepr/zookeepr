@@ -3,6 +3,7 @@
 == interface ==
 
  * make submissiontype interface accessible only by conf admin
+  * apply permissions to all CRUD interfaces
 
  * sidebar style
 
@@ -18,6 +19,8 @@
   * personal summary for logged in users
 
  * flow of security/signin and signout, redirect to home or show result page?
+
+ * 'edit paper' doesn't show submission types
 
 == "business" logic ==
 
