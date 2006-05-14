@@ -19,8 +19,6 @@
 
  * CFP review interface with dhtml stars from yahoo site.  must be accessible w/o js though.
 
- * fix authenticate function to use user model
-
  * fix cfp submission process
 
  * fix front page for unlogged and logged in users
