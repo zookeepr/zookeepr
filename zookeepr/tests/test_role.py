@@ -32,4 +32,4 @@ class TestRoleModel(unittest.TestCase):
 
         # check
         rs = Role.select()
-        self.assertEqual(len(ps), 0)
+        self.assertEqual(len(rs), 0)
