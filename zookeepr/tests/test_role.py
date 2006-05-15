@@ -5,6 +5,9 @@ from sqlalchemy import *
 from zookeepr.models import *
 
 class TestRoleModel(unittest.TestCase):
+
+    def setUp(self):
+        objectstore.clear()
     
     def test_create(self):
         """Test simple creation of a Role object"""
@@ -33,3 +36,14 @@ class TestRoleModel(unittest.TestCase):
         # check
         rs = Role.select()
         self.assertEqual(len(rs), 0)
+
+    def test_name_not_null(self):
+        """Test that the name attribute of a role is not null"""
+
+        r = Role()
+        self.assertRaises(SQLError, objectstore.flush)
+        objectstore.clear()
+        
+        # check
+        rs = Role.select()
+        self.assertEqual(len(rs), 0, "database was not left clean")

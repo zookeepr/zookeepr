@@ -53,7 +53,7 @@ contentstor.modelise(Person, person, PersonSchema, properties = dict(
     ))
 
 class Role(object):
-    def __init__(self, name):
+    def __init__(self, name=None):
         self.name = name
 
 contentstor.modelise(Role, role, RoleSchema)
