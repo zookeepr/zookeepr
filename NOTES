@@ -1,5 +1,3 @@
- * how big is a name?  we don't want to let people put in a 2GiB name
-
  * if we use :controller/:id/:action instead of :controller/:action/:id (for RESTful urls ala flickr and launchpad, then we can't have a user or id anywhere called 'new'.  Perhaps this is why launchpad names their actions '+action'?
 
  * Should an invalid GET (i.e. with request args) abort with 401 or something? no because one might want to send a get to prefill the form?  that's not a bad vfeature to have is it?
