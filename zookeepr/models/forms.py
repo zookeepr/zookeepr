@@ -9,10 +9,10 @@ class PersonSchema(FormSchema):
     password = String()
     password_confirm = String()
     
-    firstname = String()
-    lastname = String()
-    phone = String()
-    fax = String()
+    firstname = String(maxlength=1024)
+    lastname = String(maxlength=1024)
+    phone = String(maxlength=32)
+    fax = String(maxlength=32)
 
     chained_validators = [
         FieldsMatch('password', 'password_confirm')
