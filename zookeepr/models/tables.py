@@ -63,3 +63,8 @@ role = Table('role',
                     unique='role_ux_name',
                     nullable=False)
              )
+
+person_role_map = Table('person_role_map',
+                        Column('person_id', Integer, ForeignKey('person.id')),
+                        Column('role_id', Integer, ForeignKey('role.id'))
+                        )

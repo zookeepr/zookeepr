@@ -56,4 +56,7 @@ class Role(object):
     def __init__(self, name=None):
         self.name = name
 
-contentstor.modelise(Role, role, RoleSchema)
+contentstor.modelise(Role, role, RoleSchema, properties = dict(
+    people = relation(Person.mapper, person_role_map,
+                      lazy=False, backref='roles')
+    ))

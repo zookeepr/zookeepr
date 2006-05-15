@@ -47,3 +47,20 @@ class TestRoleModel(unittest.TestCase):
         # check
         rs = Role.select()
         self.assertEqual(len(rs), 0, "database was not left clean")
+
+    def test_map_person(self):
+        """Test mapping persons to roles"""
+
+        p = Person(handle='testguy',
+                   email_address='testguy@example.org')
+        r = Role('admin')
+
+        p.roles.append(r)
+        objectstore.flush()
+
+        self.assertEqual(['admin'], [r.name for r in p.roles])
+
+        # clean up
+        p.delete()
+        r.delete()
+        objectstore.flush()

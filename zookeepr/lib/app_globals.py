@@ -41,6 +41,7 @@ class Globals(pylons.middleware.Globals):
             model.submission_type.create()
             model.submission.create()
             model.role.create()
+            model.person_role_map.create()
         except sqlalchemy.SQLError, e:
             # we only want to pass on operational errors
             if e.args[0].find('table person already exists') == -1 and \
