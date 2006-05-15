@@ -22,14 +22,17 @@
 
  * 'edit paper' doesn't show submission types
 
+ * cfp submission process
+  * check for fields: title, submission type, experience, url, upload file
+  * check send confirmation email
+  * check for fields: handle, lastname, firstname, email, password, confirm
+
+ * cfp upload file, magical js that greys out box if peer reviewed paper not selected
+
 == "business" logic ==
 
  * cfp submission process
-  * title
-  * submission type
-  * experience
-  * url
-  * upload file (with magical js that greys out box if peer reviewed paper not selected)
+  * upload file
   * send confirmation email
  * sign up for a login
   * firstname, lastname, handle, email, password
