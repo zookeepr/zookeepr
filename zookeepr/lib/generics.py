@@ -1,3 +1,4 @@
+import authkit
 from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
 from sqlalchemy import objectstore
@@ -56,6 +57,8 @@ class Modify(object):
         setattr(c, model_name, new_data)
         # call the template
         m.subexec('%s/new.myt' % model_name)
+
+    new.permissions = authkit.permissions(signed_in=True)
         
     def edit(self, id):
         """Allow editing of an object.
@@ -94,6 +97,8 @@ class Modify(object):
         setattr(c, model_name, obj)
         # call the template
         m.subexec('%s/edit.myt' % model_name)
+        
+    edit.permissions = authkit.permissions(signed_in=True)
     
     def delete(self, id):
         """Delete the submission type
@@ -122,6 +127,8 @@ class Modify(object):
         # call the template
         m.subexec('%s/confirm_delete.myt' % model_name)
 
+    delete.permissions = authkit.permissions(signed_in=True)
+
 class View(object):
     def _can_edit(self):
         return issubclass(self.__class__, Modify)
@@ -144,6 +151,8 @@ class View(object):
         c.can_edit = self._can_edit()
         # exec the template
         m.subexec('%s/list.myt' % model_name)
+
+    index.permissions = authkit.permissions(signed_in=True)
     
     def view(self, id):
         """View a specific object"""
@@ -156,3 +165,5 @@ class View(object):
         c.can_edit = self._can_edit()
         # exec the template
         m.subexec('%s/view.myt' % model_name)
+
+    view.permissions = authkit.permissions(signed_in=True)
