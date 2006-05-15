@@ -53,3 +53,10 @@ submission = Table('submission',
                    # url to a project page
                    Column('url', String())
                    )
+
+role = Table('role',
+             Column('id', Integer, primary_key=True),
+
+             # name of role
+             Column('name', String)
+             )

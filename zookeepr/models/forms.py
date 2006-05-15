@@ -28,3 +28,6 @@ class SubmissionSchema(FormSchema):
     person = String()
     experience = String()
     url = String()
+
+class RoleSchema(FormSchema):
+    name = String()

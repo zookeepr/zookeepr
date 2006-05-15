@@ -51,3 +51,9 @@ contentstor.modelise(Submission, submission, SubmissionSchema, dict(
 contentstor.modelise(Person, person, PersonSchema, properties = dict(
     submissions = relation(Submission.mapper, private=True, backref='person')
     ))
+
+class Role(object):
+    def __init__(self, name):
+        self.name = name
+
+contentstor.modelise(Role, role, RoleSchema)
