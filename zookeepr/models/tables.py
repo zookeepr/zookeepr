@@ -17,10 +17,11 @@ person = Table('person',
                Column('password_hash', String(32)),
 
                # other personal details
-               Column('firstname', String()),
-               Column('lastname', String()),
-               Column('phone', String()),
-               Column('fax', String())
+               # the lengths of the fields are chosen arbitrarily
+               Column('firstname', String(1024)),
+               Column('lastname', String(1024)),
+               Column('phone', String(32)),
+               Column('fax', String(32))
 )
 
 # types of submissions: typically 'paper', 'miniconf', etc
