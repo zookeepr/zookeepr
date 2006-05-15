@@ -58,5 +58,8 @@ role = Table('role',
              Column('id', Integer, primary_key=True),
 
              # name of role
-             Column('name', String)
+             Column('name', String,
+                    # FIXME: workaround a bug in SQLAlchemy 0.1.7
+                    unique='role_ux_name',
+                    nullable=False)
              )
