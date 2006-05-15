@@ -15,15 +15,23 @@ class TestCfpController(TestController):
         ## set us up a submission type
         st = SubmissionType('Paper')
         
-        ## submit the form
         u = url_for(controller='/cfp')
+
+        # get the form
+        res = self.app.get(u)
+
+        ## submit the form
         params = {'person.handle': 'testguy',
                   'person.firstname': 'Testguy',
                   'person.lastname': 'McTest',
                   'person.email_address': 'testguy@example.org',
+                  'person.password': 'p4ssw0rd',
+                  'person.password_confirm': 'p4ssw0rd',
                   'submission.submission_type': 'Paper',
                   'submission.title': 'My Awesome Paper',
-                  'submission.abstract': 'Some abstract'}
+                  'submission.experience': 'Plenty',
+                  'submission.url': 'http://example.org',
+                  'submission.abstract': 'Very'}
         res = self.app.post(u, params=params)
 
         ## check that it's in the database
@@ -31,9 +39,22 @@ class TestCfpController(TestController):
         self.failIf(len(ps) == 0, "person object not in database")
         self.failUnless(len(ps) == 1, "too many person objects in database")
 
+        self.failUnless(ps[0].handle == 'testguy')
+        self.failUnless(ps[0].firstname == 'Testguy')
+        self.failUnless(ps[0].lastname == 'McTest')
+        self.failUnless(ps[0].email_address == 'testguy@example.org')
+        self.failUnless(ps[0].password_hash == md5.new('p4ssw0rd').hexdigest())
+
         ss = Submission.select_by(title='My Awesome Paper')
         self.failIf(len(ss) == 0, "submission object not in database")
         self.failUnless(len(ss) == 1, "too many submission objects in database")
+
+        self.failUnless(ss[0].title == 'My Awesome Paper')
+        self.failUnless(ss[0].experience == 'Plenty')
+        self.failUnless(ss[0].url == 'http://example.org')
+        self.failUnless(ss[0].abstract == 'Very')
+        self.failUnless(ss[0].submission_type == 'Paper')
+        
         self.failUnless(ss[0] in ps[0].submissions, "submission not attributed to person")
 
         # clean up
