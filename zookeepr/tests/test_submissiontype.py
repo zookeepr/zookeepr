@@ -34,5 +34,17 @@ class TestSubmissionTypeModel(unittest.TestCase):
         # check table is empty when we leave
         self.check()
 
+    def test_name_not_null(self):
+        """Test that submission_type.name is not null"""
+
+        self.check()
+        
+        st = SubmissionType()
+
+        self.assertRaises(SQLError, objectstore.flush)
+        
+        objectstore.clear()
+        self.check()
+
     def setUp(self):
         objectstore.clear()
