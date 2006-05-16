@@ -12,6 +12,8 @@ class TestSubmissiontypeController(TestController):
     def setUp(self):
         TestController.setUp(self)
 
+        objectstore.clear()
+
         p = Person(handle='root',
                    password='root',
                    email_address='')
@@ -157,6 +159,7 @@ class TestSubmissiontypeController(TestController):
 
         u = url_for(controller='/submissiontype', action='delete', id=stid)
         res = self.app.get(u)
+        
         # check
         st = SubmissionType.get(stid)
         self.failIf(st is None, "object was deleted")
@@ -175,7 +178,9 @@ class TestSubmissiontypeController(TestController):
         self.signin()
         
         u = url_for(controller='/submissiontype', action='new')
-        res = self.app.get(u, params={'submissiontype.name': 'buzzn'})
+        p = {'submissiontype.name': 'buzzn'}
+        
+        res = self.app.get(u, params=p)
 
         self.check()
 
