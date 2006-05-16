@@ -1,8 +1,7 @@
-from authkit.controllers import *
-
+from zookeepr.lib.auth imort SecureController
 from zookeepr.lib.base import *
 
-class AccountController(BaseController, PylonsSecureController):
+class AccountController(BaseController, SecureController):
 
     def index(self, **params):
         return self.signin(**params)
