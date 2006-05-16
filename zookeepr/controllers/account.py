@@ -1,4 +1,6 @@
-from zookeepr.lib.auth imort SecureController
+from authkit.controllers import *
+
+from zookeepr.lib.auth import SecureController
 from zookeepr.lib.base import *
 
 class AccountController(BaseController, SecureController):
