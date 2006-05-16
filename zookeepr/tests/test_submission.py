@@ -10,8 +10,6 @@ class TestSubmission(unittest.TestCase):
     def setUp(self):
         objectstore.clear()
 
-        
-        
     def test_create(self):
         """Test creation of a Submission object"""
 
