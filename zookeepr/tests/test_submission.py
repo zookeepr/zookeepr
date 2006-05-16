@@ -4,8 +4,21 @@ from sqlalchemy import *
 from zookeepr.models import *
 
 class TestSubmission(unittest.TestCase):
+    def check(self):
+        self.assertEqual(len(Submission.select()), 0)
+
+    def setUp(self):
+        objectstore.clear()
+
+        
+        
     def test_create(self):
         """Test creation of a Submission object"""
+
+        self.check()
+
+        self.assertEqual(len(SubmissionType.select()), 0)
+        
         # set up some subtypes
         st = SubmissionType(name='BOF')
 
@@ -53,17 +66,16 @@ class TestSubmission(unittest.TestCase):
         # clean up
         s = Submission.get(sid)
         self.failUnless(s is None, "submission still in database")
+
         v = Person.get(vid)
         self.failUnless(v is None, "person still in database")
+        
         st = SubmissionType.get(stid)
         self.failUnless(st is None, "subtype still in database")
-        # check
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "submission table not empty")
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "submission_type table not empty")
-        ps = Person.select()
-        self.failUnless(len(ps) == 0, "person table not empty")
 
-    def setUp(self):
-        objectstore.clear()
+        
+        # check
+        self.check()
+
+        self.assertEqual(len(SubmissionType.select()), 0)
+        self.assertEqual(len(Person.select()), 0)

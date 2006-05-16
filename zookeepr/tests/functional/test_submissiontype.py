@@ -41,6 +41,8 @@ class TestSubmissiontypeController(TestController):
     def test_create(self):
         """Test create action on /submissiontype"""
 
+        self.check()
+
         self.signin()
 
         ## create a new one
@@ -64,6 +66,8 @@ class TestSubmissiontypeController(TestController):
     def test_edit(self):
         """Test edit operation on /submissiontype"""
 
+        self.check()
+        
         self.signin()
         
         # create something in the db
@@ -89,6 +93,8 @@ class TestSubmissiontypeController(TestController):
     def test_delete(self):
         """Test delete operation on /submissiontype"""
 
+        self.check()
+        
         self.signin()
 
         # create something
@@ -114,6 +120,9 @@ class TestSubmissiontypeController(TestController):
 
     def test_invalid_get_on_edit(self):
         """Test that GET requests on submission type edit don't modify data"""
+
+        self.check()
+        
         # create some data
         st = SubmissionType(name='buzz')
         objectstore.commit()
@@ -136,6 +145,9 @@ class TestSubmissiontypeController(TestController):
 
     def test_invalid_get_on_delete(self):
         """Test that GET requests on submission type delete don't modify data"""
+
+        self.check()
+        
         # create some data
         st = SubmissionType(name='buzzd')
         objectstore.commit()
@@ -158,9 +170,7 @@ class TestSubmissiontypeController(TestController):
     def test_invalid_get_on_new(self):
         """Test that GET requests on submission type new don't modify data"""
 
-        # verify there's nothing in there
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database was not empty")
+        self.check()
 
         self.signin()
         

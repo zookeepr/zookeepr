@@ -6,12 +6,14 @@ from sqlalchemy import *
 from zookeepr.models import *
 
 class TestSubmissionTypeModel(unittest.TestCase):
+    def check(self):
+        self.assertEqual(len(SubmissionType.select()), 0)
+        
     def test_basic(self):
         """Test basic operations on SubmissionType model"""
 
         # assert that the table is empty
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database was not left empty")
+        self.check()
 
         # create
         st = SubmissionType('Paper')
@@ -30,8 +32,7 @@ class TestSubmissionTypeModel(unittest.TestCase):
         self.failUnless(st is None, "did not delete submissinotype")
 
         # check table is empty when we leave
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database is not empty")
+        self.check()
 
     def setUp(self):
         objectstore.clear()
