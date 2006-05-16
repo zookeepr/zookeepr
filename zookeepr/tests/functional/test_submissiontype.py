@@ -35,6 +35,9 @@ class TestSubmissiontypeController(TestController):
         res = self.app.post(signin_u, params=signin_p)
         self.assertEqual(res.request.environ['REMOTE_USER'], 'root')
 
+    def check(self):
+        self.assertEqual(len(SubmissionType.select()), 0)
+
     def test_create(self):
         """Test create action on /submissiontype"""
 
@@ -55,8 +58,8 @@ class TestSubmissiontypeController(TestController):
         # clean up
         st.delete()
         objectstore.flush()
-        # check
-        self.assertEqual(len(SubmissionType.select()), 0)
+
+        self.check()
 
     def test_edit(self):
         """Test edit operation on /submissiontype"""
@@ -80,10 +83,8 @@ class TestSubmissiontypeController(TestController):
         # clean up
         st.delete()
         objectstore.commit()
-        # check
-        sts = SubmissionType.select()
-        print 'remaining in db: %s' % sts
-        self.failUnless(len(sts) == 0, "database is not empty")
+
+        self.check()
 
     def test_delete(self):
         """Test delete operation on /submissiontype"""
@@ -108,9 +109,8 @@ class TestSubmissiontypeController(TestController):
         # check db
         st = SubmissionType.get(stid)
         self.failUnless(st is None, "object was not deleted")
-        # check
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database is not empty")
+
+        self.check()
 
     def test_invalid_get_on_edit(self):
         """Test that GET requests on submission type edit don't modify data"""
@@ -131,9 +131,8 @@ class TestSubmissiontypeController(TestController):
         # clean up
         st.delete()
         objectstore.commit()
-        # doublecheck
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "dtabase is not empty")
+
+        self.check()
 
     def test_invalid_get_on_delete(self):
         """Test that GET requests on submission type delete don't modify data"""
@@ -153,9 +152,8 @@ class TestSubmissiontypeController(TestController):
         # clean up
         st.delete()
         objectstore.commit()
-        # doublecheck
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database is not empty")
+
+        self.check()
 
     def test_invalid_get_on_new(self):
         """Test that GET requests on submission type new don't modify data"""
@@ -168,23 +166,18 @@ class TestSubmissiontypeController(TestController):
         
         u = url_for(controller='/submissiontype', action='new')
         res = self.app.get(u, params={'submissiontype.name': 'buzzn'})
-        # check
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database is not empty")
+
+        self.check()
 
     def test_invalid_delete(self):
         """Test delete of nonexistent submission types is caught"""
 
         # make sure there's nothing in there
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database was not empty")
+        self.check()
 
         self.signin()
         
         u = url_for(controller='/submissiontype', action='delete', id=1)
         res = self.app.post(u)
 
-        # check
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database is not empty")
-        
+        self.check()
