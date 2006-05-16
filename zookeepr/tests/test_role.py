@@ -13,9 +13,9 @@ class TestRoleModel(unittest.TestCase):
         """Test simple creation of a Role object"""
 
         # first let's assert that theres nothing in there
-        rs = Role.select()
-        self.failUnless(len(rs) == 0, "database is not empty")
+        self.assertEqual(len(Role.select()), 0)
 
+        # create
         r = Role('site admin')
         objectstore.flush()
 
@@ -34,8 +34,7 @@ class TestRoleModel(unittest.TestCase):
         objectstore.flush()
 
         # check
-        rs = Role.select()
-        self.assertEqual(len(rs), 0)
+        self.assertEqual(len(Role.select()), 0)
 
     def test_name_not_null(self):
         """Test that the name attribute of a role is not null"""
@@ -45,8 +44,7 @@ class TestRoleModel(unittest.TestCase):
         objectstore.clear()
         
         # check
-        rs = Role.select()
-        self.assertEqual(len(rs), 0, "database was not left clean")
+        self.assertEqual(len(Role.select()))
 
     def test_map_person(self):
         """Test mapping persons to roles"""
@@ -54,7 +52,6 @@ class TestRoleModel(unittest.TestCase):
         p = Person(handle='testguy',
                    email_address='testguy@example.org')
         r = Role('admin')
-
         p.roles.append(r)
         objectstore.flush()
 
@@ -64,3 +61,6 @@ class TestRoleModel(unittest.TestCase):
         p.delete()
         r.delete()
         objectstore.flush()
+        # check
+        self.assertEqual(len(Role.select()), 0)
+        self.assertEqual(len(Person.select()), 0)
