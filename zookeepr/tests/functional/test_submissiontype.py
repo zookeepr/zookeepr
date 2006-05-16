@@ -9,31 +9,60 @@ class TestSubmissiontypeController(TestController):
 #         # Test response...
 #         print response
 
+    def setUp(self):
+        TestController.setUp(self)
+
+        p = Person(handle='root',
+                   password='root',
+                   email_address='')
+        r = Role('admin')
+        p.roles.append(r)
+
+        objectstore.flush()
+        self.pid = p.id
+        self.rid = r.id
+
+    def tearDown(self):
+        p = Person.get(self.pid)
+        r = Role.get(self.rid)
+        p.delete()
+        r.delete()
+        objectstore.flush()
+
+    def signin(self):
+        signin_u = url_for(controller='/account', action='signin')
+        signin_p = dict(username='root', password='root', go='Submit')
+        res = self.app.post(signin_u, params=signin_p)
+        self.assertEqual(res.request.environ['REMOTE_USER'], 'root')
+
     def test_create(self):
         """Test create action on /submissiontype"""
+
+        self.signin()
 
         ## create a new one
         u = url_for(controller='/submissiontype', action='new')
         print 'url for create is %s' % u
-        res = self.app.post(u,
-                            params={'submissiontype.name': 'Asterisk Talk'})
+        params = {'submissiontype.name': 'Asterisk Talk'}
+        res = self.app.post(u, params)
 
         # check that it's in the database
         sts = SubmissionType.select_by(name='Asterisk Talk')
-        self.failIf(len(sts) == 0, "object not in database")
-        self.failUnless(len(sts) == 1, "too many objects in database")
+        self.assertNotEqual(len(sts), 0)
+        self.assertEqual(len(sts), 1)
         st = sts[0]
 
         # clean up
         st.delete()
-        objectstore.commit()
+        objectstore.flush()
         # check
-        sts = SubmissionType.select()
-        self.failUnless(len(sts) == 0, "database is not empty")
+        self.assertEqual(len(SubmissionType.select()), 0)
 
     def test_edit(self):
         """Test edit operation on /submissiontype"""
 
+        self.signin()
+        
         # create something in the db
         st = SubmissionType(name='paper')
         objectstore.commit()
@@ -58,6 +87,8 @@ class TestSubmissiontypeController(TestController):
 
     def test_delete(self):
         """Test delete operation on /submissiontype"""
+
+        self.signin()
 
         # create something
         st = SubmissionType(name='scissors')
@@ -88,6 +119,8 @@ class TestSubmissiontypeController(TestController):
         objectstore.commit()
         stid = st.id
 
+        self.signin()
+
         u = url_for(controller='/submissiontype', action='edit', id=stid)
         res = self.app.get(u, params={'submissiontype.name':'feh'})
 
@@ -109,6 +142,8 @@ class TestSubmissiontypeController(TestController):
         objectstore.commit()
         stid = st.id
 
+        self.signin()
+
         u = url_for(controller='/submissiontype', action='delete', id=stid)
         res = self.app.get(u)
         # check
@@ -128,6 +163,8 @@ class TestSubmissiontypeController(TestController):
         # verify there's nothing in there
         sts = SubmissionType.select()
         self.failUnless(len(sts) == 0, "database was not empty")
+
+        self.signin()
         
         u = url_for(controller='/submissiontype', action='new')
         res = self.app.get(u, params={'submissiontype.name': 'buzzn'})
@@ -141,6 +178,8 @@ class TestSubmissiontypeController(TestController):
         # make sure there's nothing in there
         sts = SubmissionType.select()
         self.failUnless(len(sts) == 0, "database was not empty")
+
+        self.signin()
         
         u = url_for(controller='/submissiontype', action='delete', id=1)
         res = self.app.post(u)
