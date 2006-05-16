@@ -1,8 +1,8 @@
 import md5
 
-import pylons
 from authkit.middleware import Authenticator
 from authkit.controllers import PylonsSecureController
+import pylons
 
 from zookeepr.models import Person
 
@@ -18,15 +18,29 @@ class UserModelAuthenticator(Authenticator):
         return password_hash == ps[0].password_hash
 
 class UserModelAuthStore(object):
+    def __init__(self):
+        self.status = {}
+        
     def user_exists(self, value):
         ps = Person.select_by(handle=value)
         return len(ps) > 0
 
     def sign_in(self, username):
-        pass
+        self.status[username] = ()
 
     def sign_out(self, username):
-        pass
+        if self.status.has_key(username):
+            del self.status[username]
+
+    def authorise(self, username, role=None, signed_in=None):
+        if signed_in is not None:
+            is_signed_in = False
+            if self.status.has_key(username):
+                is_signed_in = True
+
+            return signed_in and is_signed_in
+        
+        return True
 
 class SecureController(PylonsSecureController):
     def __granted__(self, action):
@@ -47,7 +61,7 @@ class SecureController(PylonsSecureController):
 
     def __authorize__(self, signed_in_user, ps):
         permissions = {}
-        g = request.environ['pylons.g']
+        g = pylons.request.environ['pylons.g']
         
         for k, v in ps.items():
             permissions[k] = v
