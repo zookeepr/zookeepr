@@ -44,7 +44,7 @@ class TestRoleModel(unittest.TestCase):
         objectstore.clear()
         
         # check
-        self.assertEqual(len(Role.select()))
+        self.assertEqual(len(Role.select()), 0)
 
     def test_map_person(self):
         """Test mapping persons to roles"""
