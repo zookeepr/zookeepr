@@ -20,7 +20,9 @@ from zookeepr.config.routing import *
 from pylons.myghtyroutes import RoutesResolver
 from routes import request_config, url_for
 
-from sqlalchemy import objectstore
+import sqlalchemy
+
+import zookeepr.models as model
 
 class TestController(TestCase):
     def __init__(self, *args):
@@ -32,6 +34,20 @@ class TestController(TestCase):
         # clear the objectstore at the start of each test because
         # we might not have deleted objects from the session at the
         # end of each test
-        objectstore.clear()
+        sqlalchemy.objectstore.clear()
+
+
+def setUp():
+    try:
+        os.unlink('test.db')
+    except OSError:
+        pass
+    sqlalchemy.global_connect('sqlite', dict(filename='test.db'))
+
+    model.person.create()
+    model.submission_type.create()
+    model.submission.create()
+    model.role.create()
+    model.person_role_map.create()
 
 __all__ = ['url_for', 'TestController']

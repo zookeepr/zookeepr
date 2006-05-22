@@ -1,6 +1,7 @@
 import os
 
 from paste.deploy import appconfig
+import sqlalchemy
 
 from lib.app_globals import Globals
 
@@ -16,3 +17,9 @@ def setup_config(command, filename, section, vars):
     #g = Globals({}, app)
     #g.auth.create_store()
     #g.auth.add_user('jaq', password='bananas')
+
+    
+    #r = model.Person(handle='root', password='root', email_address='')
+    #a = model.Role('admin')
+    #r.roles.append(a)
+    #sqlalchemy.objectstore.flush()

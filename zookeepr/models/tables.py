@@ -27,7 +27,10 @@ person = Table('person',
 # types of submissions: typically 'paper', 'miniconf', etc
 submission_type = Table('submission_type',
                         Column('id', Integer, primary_key=True),
-                        Column('name', String(40), unique=True)
+                        Column('name', String(40),
+                               # FIXME workaround bug in sqlalchemy 0.1.7
+                               unique='submission_type_name_unique',
+                               nullable=False)
                         )
 
 # submissions to the conference

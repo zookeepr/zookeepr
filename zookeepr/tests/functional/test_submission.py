@@ -7,6 +7,9 @@ class TestSubmissionController(TestController):
 #         # Test response...
 #         print response
 
+    def check(self):
+        self.assertEqual(len(Submission.select()), 0)
+
     def test_create(self):
         """Test create action on /submission"""
 
@@ -25,9 +28,8 @@ class TestSubmissionController(TestController):
         # clean up
         s.delete()
         objectstore.commit()
-        # check
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "database is not empty")
+
+        self.check()
 
     def test_edit(self):
         """Test edit operation on /submission"""
@@ -49,10 +51,8 @@ class TestSubmissionController(TestController):
         # clean up
         s.delete()
         objectstore.commit()
-        # check
-        ss = Submission.select()
-        print 'remaining in db: %s' % ss
-        self.failUnless(len(ss) == 0, "database is not empty")
+
+        self.check()
 
     def test_delete(self):
         """Test delete operation on /submission"""
@@ -69,9 +69,8 @@ class TestSubmissionController(TestController):
         # check db
         s = Submission.get(sid)
         self.failUnless(s is None, "object was not deleted")
-        # check
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "database is not empty")
+
+        self.check()
 
     def test_edit_invalid_get(self):
         """Test GET requests on submission edit are idempotent"""
@@ -91,9 +90,8 @@ class TestSubmissionController(TestController):
         # clean up
         s.delete()
         objectstore.commit()
-        # doublecheck
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "dtabase is not empty")
+
+        self.check()
 
     def test_delete_invalid_get(self):
         """Test GET requests on submission delete are idempotent"""
@@ -111,24 +109,20 @@ class TestSubmissionController(TestController):
         # clean up
         s.delete()
         objectstore.commit()
-        # doublecheck
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "database is not empty")
+
+        self.check()
 
     def test_create_invalid_get(self):
         """Test GET requests on submission new are idempotent"""
 
         # verify there's nothing in there
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "database was not empty")
+        self.check()
         
         u = url_for(controller='/submission', action='new')
         params = {'submission.title': 'create'}
         res = self.app.get(u, params=params)
         
-        # check
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "database is not empty")
+        self.check()
 
     def test_delete_nonexistent(self):
         """Test delete of nonexistent submission types is caught"""
@@ -140,7 +134,4 @@ class TestSubmissionController(TestController):
         u = url_for(controller='/submission', action='delete', id=1)
         res = self.app.post(u)
 
-        # check
-        ss = Submission.select()
-        self.failUnless(len(ss) == 0, "database is not empty")
-        
+        self.check()
