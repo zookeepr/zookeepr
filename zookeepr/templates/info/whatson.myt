@@ -1,2 +1,3 @@
-<h1>what's on</h1>
-
+<&| /contentbox.myt, title="what's on" &>
+something
+</&>

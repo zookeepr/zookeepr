@@ -1,1 +1,3 @@
-programme
+<& /contentbox.myc, title="programme" &>
+</&>
+
