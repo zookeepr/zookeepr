@@ -25,6 +25,8 @@ class TestSubmissiontypeController(TestController):
         self.rid = r.id
 
     def tearDown(self):
+        objectstore.clear()
+        
         p = Person.get(self.pid)
         r = Role.get(self.rid)
         p.delete()

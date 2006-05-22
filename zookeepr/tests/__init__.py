@@ -43,6 +43,7 @@ def setUp():
     except OSError:
         pass
     sqlalchemy.global_connect('sqlite', dict(filename='test.db'))
+
     model.person.create()
     model.submission_type.create()
     model.submission.create()

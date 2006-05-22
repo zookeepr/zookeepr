@@ -34,7 +34,7 @@ class Modify(object):
 
         # clear the store
         objectstore.clear()
-                          
+
         # Get the name we refer to the model by
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         errors = {}
