@@ -24,6 +24,9 @@ def make_map():
     # original routes controller
     m.connect('/account/:action', controller='account')
 
+    # special case for the info controller
+    m.connect('/info/:action', controller='info')
+
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
     m.connect(':controller/new', action='new', id=None)
