@@ -50,8 +50,8 @@
 <p><label for="submission.url">URL:</label><br />
 <% h.text_field('submission.url', c.submission.url) %></p>
 
-<p><label for="submission.file">File:</label><br />
-<% h.file_field('submission.file') %></p>
+<p><label for="submission.attachment">File:</label><br />
+<% h.file_field('submission.attachment') %></p>
 
 <p><label for="submission.abstract">Abstract:</label><br />
 <% h.text_area('submission.abstract') %></p>

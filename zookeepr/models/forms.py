@@ -27,7 +27,8 @@ class SubmissionSchema(FormSchema):
     submission_type = String()
     person = String()
     experience = String()
-    url = String()
-
+    url = URL()
+    attachment = FieldStorageUploadConverter()
+    
 class RoleSchema(FormSchema):
     name = String()

@@ -32,7 +32,8 @@ class TestCfpController(TestController):
                   'submission.experience': 'Plenty',
                   'submission.url': 'http://example.org',
                   'submission.abstract': 'Very'}
-        res = self.app.post(u, params=params)
+        files = [('submission.attachment', 'test.txt', """I am a test file""")]
+        res = self.app.post(u, params=params, upload_files=files)
 
         ## check that it's in the database
         ps = Person.select_by(handle='testguy')
@@ -54,6 +55,7 @@ class TestCfpController(TestController):
         self.failUnless(ss[0].url == 'http://example.org')
         self.failUnless(ss[0].abstract == 'Very')
         self.failUnless(ss[0].submission_type == 'Paper')
+        self.assertEqual(ss[0].attachment, """I am a test file""")
         
         self.failUnless(ss[0] in ps[0].submissions, "submission not attributed to person")
 
