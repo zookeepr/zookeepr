@@ -23,6 +23,7 @@
 </div>
 
 <div id="footer">
+<hr />
 powered by the four Ps: <a href="http://pylonshq.com">pylons</a>,
 <a href="http://pythonpaste.org">paste</a>,
 <a href="http://python.org">python</a>,
