@@ -65,6 +65,10 @@ BODY {
   border: 1px solid #ccc;
 }
 
+#footer HR {
+  display: none;
+}
+
 /* menu bar */
 
 #menubar {
