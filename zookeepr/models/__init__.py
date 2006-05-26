@@ -44,7 +44,8 @@ class Submission(object):
 
 contentstor.modelise(SubmissionType, submission_type, SubmissionTypeSchema)
 
-contentstor.modelise(Submission, submission, SubmissionSchema, dict(
+contentstor.modelise(Submission, submission, SubmissionSchema,
+                     properties = dict(
     submission_type = relation(SubmissionType.mapper)
     ))
 
@@ -60,3 +61,14 @@ contentstor.modelise(Role, role, RoleSchema, properties = dict(
     people = relation(Person.mapper, person_role_map,
                       lazy=False, backref='roles')
     ))
+
+class Registration(object):
+    def __init__(self, timestamp=None, url_hash=None):
+        self.timestamp = timestamp
+        self.url_hash = url_hash
+
+contentstor.modelise(Registration, registration, None,
+                     properties = {
+    'person': relation(Person.mapper)
+    })
+

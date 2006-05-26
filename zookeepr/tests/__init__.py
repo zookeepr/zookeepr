@@ -49,5 +49,6 @@ def setUp():
     model.submission.create()
     model.role.create()
     model.person_role_map.create()
+    model.registration.create()
 
 __all__ = ['url_for', 'TestController']

@@ -71,3 +71,24 @@ person_role_map = Table('person_role_map',
                         Column('person_id', Integer, ForeignKey('person.id')),
                         Column('role_id', Integer, ForeignKey('role.id'))
                         )
+
+registration = Table('registration',
+                     Column('id', Integer, primary_key=True),
+                     
+                     # timestamp of the registration for expiration
+                     # FIXME: expiration of rows not currently implemented
+                     Column('timestamp', DateTime,
+                            nullable=False,
+                            ),
+
+                     # link to the account details
+                     Column('person_id', Integer,
+                            ForeignKey('person.id'),
+                            ),
+
+                     # hash of the url generated for easy lookup
+                     Column('url_hash', String(32),
+                            nullable=False,
+                            index=True,
+                            ),
+                     )

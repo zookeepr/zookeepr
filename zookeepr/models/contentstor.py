@@ -34,11 +34,11 @@ def validate(self, input=None):
     else:
         return newvals, errors
 
-def modelise(class_, table, form, properties=None):
+def modelise(class_, table, form, **kwargs):
     #class._table = table
     class_._form_schema = form
     # Use assign_mapper to monkeypatch the classes with useful methods
-    assign_mapper(class_, table, properties=properties)
+    assign_mapper(class_, table, **kwargs)
     # monkeypatch a validator and updater method
     class_.validate = validate
     class_.update = update
