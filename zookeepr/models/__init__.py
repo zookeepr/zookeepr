@@ -8,7 +8,7 @@ from forms import *
 
 
 class Person(object):
-    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
+    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None, active=None):
         self.handle = handle
         self.email_address = email_address
 
@@ -18,6 +18,8 @@ class Person(object):
         self.lastname = lastname
         self.phone = phone
         self.fax = fax
+
+        self.active = active
 
     def _set_password(self, password):
         self.password_hash = md5.new(password).hexdigest()

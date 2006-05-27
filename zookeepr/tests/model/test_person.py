@@ -172,3 +172,31 @@ class TestPersonModel(unittest.TestCase):
         # clean up
         p.delete()
         objectstore.flush()
+
+    def test_activation(self):
+        """Test that a person has an activation field, a necessary part of the registration/confirmation subsystem"""
+        p = Person(handle='testguy',
+                   email_address='testguy@example.org',
+                   active=True)
+        objectstore.flush()
+        pid = p.id
+
+        # clear the object store so we aren't looking in the cache
+        objectstore.clear()
+
+        p1 = Person.get(pid)
+        self.assertEqual(True, p1.active)
+
+        p1.active = False
+        objectstore.flush()
+
+        # clear cache again
+        objectstore.clear()
+
+        p2 = Person.get(pid)
+        self.assertEqual(False, p1.active)
+
+        p2.delete()
+        objectstore.flush()
+
+        self.assertEqual(0, len(Person.select()))

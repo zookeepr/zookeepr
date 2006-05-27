@@ -21,7 +21,9 @@ person = Table('person',
                Column('firstname', String(1024)),
                Column('lastname', String(1024)),
                Column('phone', String(32)),
-               Column('fax', String(32))
+               Column('fax', String(32)),
+
+               Column('active', Boolean),
 )
 
 # types of submissions: typically 'paper', 'miniconf', etc
