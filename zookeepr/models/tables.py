@@ -9,7 +9,10 @@ person = Table('person',
                
                # secondary key, unique identifier within the zookeepr app
                # useful for URLs, not required though (a-la flickr)
-               Column('handle', String(40), unique=True),
+               Column('handle', String(40),
+                      # FIXME: replace when using SA 0.2
+                      unique='ux_person_handle',
+                      ),
                
                # other personal details
                # the lengths of the fields are chosen arbitrarily
