@@ -8,12 +8,10 @@
     <div class="contentboxC" id="contentboxTR"></div>
   </div>  
 
- <div class="contentboxR" id="contentboxM">
   <div id="contentboxMR">
     <h2><% title %></h2>
     <% m.content() %>
   </div>  
- </div>
 
   <div class="contentboxR" id="contentboxB">
     <div class="contentboxC" id="contentboxBL"></div>

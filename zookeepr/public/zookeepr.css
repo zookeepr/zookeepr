@@ -129,7 +129,7 @@ BODY {
   margin: auto;
   margin-top: 20px;
   margin-bottom: 20px;
-  padding: 10px;
+  background: url(box-left.png) left repeat-y;
 }
 
 .contentbox H2 {
