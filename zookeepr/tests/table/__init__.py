@@ -1,7 +1,7 @@
 import new
 import unittest
 
-from sqlalchemy import objectstore, SQLError
+from sqlalchemy import select, func
 
 import zookeepr.models as model
 
@@ -11,12 +11,8 @@ class TableTestGenerator(type):
     table tests written.  How awesome is that for TDD? :-)
     """
     def __init__(cls, name, bases, dict):
-        print "new table test generator"
-
         if dict.has_key('table'):
             if dict.has_key('not_nullables'):
-                print "setting test_not_nullable to not_nulable method"
-
                 # patch the child class with the test_not_nullable function
                 # now that we know it contains enough data to do so.
                 #
@@ -75,9 +71,14 @@ class TableTestBase(unittest.TestCase):
     """
     __metaclass__ = TableTestGenerator
 
-    def __init__(self, *args, **kwargs):
-        unittest.TestCase.__init__(self, *args, **kwargs)
-        print "snuh"
+    def assertRaisesAny(self, callable, *args, **kwargs):
+        try:
+            callable(*args, **kwargs)
+        except:
+            pass
+        else:
+            self.fail("function failed to raise any exception")
+        
 
     def get_table(self):
         """Return the table, coping with scoping.
@@ -93,9 +94,8 @@ class TableTestBase(unittest.TestCase):
         
     def check_empty_database(self):
         """Check that the database was left empty after the test"""
-        x= select([func.count(self.get_table().c.id)]).execute()
-        print x
-        self.assertEqual(0, len(self.get_table().select()))
+        r = select([func.count(self.get_table().c.id)]).execute()
+        self.assertEqual(0, r.fetchone()[0])
 
 #     def insert(self):
 #         """Insert a row into the table, check that it was
@@ -138,6 +138,8 @@ class TableTestBase(unittest.TestCase):
         """
     
         for col in self.not_nullables:
+            print "testing that %s is not nullable" % col
+            
             # construct an attribute dictionary without the 'not null' attribute
             coldata = {}
             coldata.update(self.sample)
@@ -145,16 +147,14 @@ class TableTestBase(unittest.TestCase):
             self.failIf(col in coldata.keys())
     
             # create the model object
-            o = self.get_table().insert(coldata)
-    
-            #testing for not null
-            #self.assertRaises(SQLError, objectstore.flush)
-    
-            # clearing session
-            objectstore.clear()
+            print coldata
 
-        # checking
-        self.check_empty_database()
+            q = self.get_table().insert()
+            self.assertRaisesAny(q.execute, coldata)
+
+            self.get_table().delete().execute()
+
+            self.check_empty_database()
 
 #     def unique(self):
 #         """Check that certain attributes of a model object are unique.

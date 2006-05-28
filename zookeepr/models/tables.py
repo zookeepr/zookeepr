@@ -94,3 +94,13 @@ registration = Table('registration',
                             index=True,
                             ),
                      )
+
+account = Table('account',
+                Column('id', Integer, primary_key=True),
+
+                Column('email_address', String,
+                       nullable=False),
+                Column('password', String),
+                
+                Column('active', Boolean),
+                )

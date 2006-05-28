@@ -44,6 +44,7 @@ def setUp():
         pass
     sqlalchemy.global_connect('sqlite', dict(filename='test.db'))
 
+    model.account.create()
     model.person.create()
     model.submission_type.create()
     model.submission.create()
