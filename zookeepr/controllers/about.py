@@ -1,6 +1,6 @@
 from zookeepr.lib.base import *
 
-class InfoController(BaseController):
+class AboutController(BaseController):
     def index(self):
         h.redirect_to(action='whatson')
 
