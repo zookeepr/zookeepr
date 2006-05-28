@@ -94,3 +94,16 @@ registration = Table('registration',
                             index=True,
                             ),
                      )
+
+account = Table('account',
+                Column('id', Integer, primary_key=True),
+
+                Column('email_address', String,
+                       nullable=False,
+                       # FIXME: when sqla 0.2 comes out, change this to True
+                       unique='account_email_address_ux'),
+                Column('password', String),
+                
+                Column('active', Boolean,
+                       nullable=False),
+                )
