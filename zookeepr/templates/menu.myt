@@ -10,13 +10,13 @@
 % #endif
 </li>
 
-<li><% h.link_to("what's on?", url=h.url(controller='about'g, action='whatson')) %></li>
-<li><% h.link_to('programme', url=h.url(controller='about'g, action='programme')) %></li>
-<li><% h.link_to('dates', url=h.url(controller='about'g, action='dates')) %></li>
-<li><% h.link_to('press', url=h.url(controller='about'g, action='press')) %></li>
-<li><% h.link_to('sydney', url=h.url(controller='about'g, action='sydney')) %></li>
-<li><% h.link_to('contact', url=h.url(controller='about'g, action='contact')) %></li>
-<li><% h.link_to('sponsors', url=h.url(controller='about'g, action='sponsors')) %></li>
+<li><% h.link_to("what's on?", url=h.url(controller='about', action='whatson')) %></li>
+<li><% h.link_to('programme', url=h.url(controller='about', action='programme')) %></li>
+<li><% h.link_to('dates', url=h.url(controller='about', action='dates')) %></li>
+<li><% h.link_to('press', url=h.url(controller='about', action='press')) %></li>
+<li><% h.link_to('sydney', url=h.url(controller='about', action='sydney')) %></li>
+<li><% h.link_to('contact', url=h.url(controller='about', action='contact')) %></li>
+<li><% h.link_to('sponsors', url=h.url(controller='about', action='sponsors')) %></li>
 <li class="last"><% h.link_to('home', url=h.url('home')) %></li>
 </ul>
 
