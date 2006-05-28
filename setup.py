@@ -10,7 +10,7 @@ setup(
     #author_email="",
     #url="",
     install_requires=["Pylons==0.8.1",
-                      "SQLAlchemy==0.1.7",
+                      "SQLAlchemy==0.2",
                       "FormEncode==0.5.1"],
     packages=find_packages(),
     include_package_data=True,
