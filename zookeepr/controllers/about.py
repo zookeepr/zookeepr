@@ -5,22 +5,22 @@ class InfoController(BaseController):
         h.redirect_to(action='whatson')
 
     def whatson(self):
-        m.subexec('info/whatson.myt')
+        m.subexec('about/whatson.myt')
 
     def programme(self):
-        m.subexec('info/programme.myt')
+        m.subexec('about/programme.myt')
 
     def dates(self):
-        m.subexec('info/dates.myt')
+        m.subexec('about/dates.myt')
 
     def press(self):
-        m.subexec('info/press.myt')
+        m.subexec('about/press.myt')
 
     def sydney(self):
-        m.subexec('info/sydney.myt')
+        m.subexec('about/sydney.myt')
 
     def contact(self):
-        m.subexec('info/contact.myt')
+        m.subexec('about/contact.myt')
 
     def sponsors(self):
-        m.subexec('info/sponsors.myt')
+        m.subexec('about/sponsors.myt')
