@@ -103,7 +103,9 @@ account = Table('account',
                        # FIXME: when sqla 0.2 comes out, change this to True
                        unique='account_email_address_ux'),
                 Column('password', String),
-                
-                Column('active', Boolean,
+
+                # flag that the account has been activated by the user
+                # (responded to their confirmation email)
+                Column('activated', Boolean,
                        nullable=False),
                 )

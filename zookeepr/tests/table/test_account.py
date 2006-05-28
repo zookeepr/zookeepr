@@ -17,10 +17,10 @@ class TestAccountTable(TableTestBase):
     table = 'account'
     sample = [dict(email_address='testguy@example.org',
                    password='test',
-                   active=False),
+                   activated=False),
               dict(email_address='testgirl@examplr.com',
                    password='p4ssw0rd',
-                   active=True)]
-    not_nullables = ['email_address', 'active']
+                   activated=True)]
+    not_nullables = ['email_address', 'activated']
     uniques = ['email_address']
     
