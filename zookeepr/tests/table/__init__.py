@@ -10,13 +10,14 @@ class TableTestGenerator(type):
     test methods so that one doesn't actually need to do any work to get
     table tests written.  How awesome is that for TDD? :-)
     """
-    def __init__(cls, name, bases, classdict):
+    def __init__(mcs, name, bases, classdict):
+        type.__init__(mcs, name, bases, classdict)
         if 'table' in classdict:
-            monkeypatch(cls, 'test_insert', 'insert')
+            monkeypatch(mcs, 'test_insert', 'insert')
             
             for k in ['not_nullable', 'unique']:
                 if k + 's' in classdict:
-                    monkeypatch(cls, 'test_' + k, k)
+                    monkeypatch(mcs, 'test_' + k, k)
 
 
 class TableTest(TestBase):
@@ -27,7 +28,7 @@ class TableTest(TestBase):
     ``table`` is a string containing the name of the table being tested,
     scoped relative to anchor.model.
 
-    ``sample`` is a list of dictionaries of columns and their values to use
+    ``samples`` is a list of dictionaries of columns and their values to use
     when inserting a row into the table.
 
     ``not_nullables`` is a list of column names that must not be undefined
@@ -40,7 +41,7 @@ class TableTest(TestBase):
 
     class TestSomeTable(TestTable):
         table = 'module.SomeTable'
-        sample = [dict(name='testguy', email_address='test@example.org')]
+        samples = [dict(name='testguy', email_address='test@example.org')]
         not_nullables = ['name']
         uniques = ['name', 'email_address']
     """
@@ -54,14 +55,14 @@ class TableTest(TestBase):
         """
         module = model
         # cope with classes in sub-models
-        for m in self.table.split('.'):
-            module = getattr(module, m)
+        for submodule in self.table.split('.'):
+            module = getattr(module, submodule)
         return module
         
     def check_empty_table(self):
         """Check that the database was left empty after the test"""
-        r = select([func.count(self.get_table().c.id)]).execute()
-        self.assertEqual(0, r.fetchone()[0])
+        result = select([func.count(self.get_table().c.id)]).execute()
+        self.assertEqual(0, result.fetchone()[0])
 
     def insert(self):
         """Test insertion of sample data
@@ -73,41 +74,39 @@ class TableTest(TestBase):
         variable.
         """
 
-        t = self.get_table()
+        for sample in self.samples:
+            print "testing insert of s %s" % sample
+            query = self.get_table().insert()
+            print query
+            query.execute(sample)
 
-        for s in self.sample:
-            print "testing insert of s %s" % s
-            q = t.insert()
-            print q
-            q.execute(s)
-
-            for k in s.keys():
-                q = select([getattr(t.column, k)])
-                print "query", q
-                r = q.execute()
-                print r
-                row = r.fetchone()
+            for key in sample.keys():
+                query = select([getattr(self.get_table().c, key)])
+                print "query", query
+                result = query.execute()
+                print result
+                row = result.fetchone()
                 print "row", row
-                self.assertEqual(s[k], row[0])
+                self.assertEqual(sample[key], row[0])
 
-            t.delete().execute()
+            self.get_table().delete().execute()
 
         # do this again to make sure the test data is all able to go into
         # the db, so that we know it's good to do uniqueness tests, for example
-        for s in self.sample:
-            q = t.insert()
-            q.execute(s)
+        for sample in self.samples:
+            query = self.get_table().insert()
+            query.execute(sample)
 
         # get the count of rows
-        r = select([func.count(t.c.id)]).execute()
+        result = select([func.count(self.get_table().c.id)]).execute()
         # check that it's the same length as the sample data
-        self.assertEqual(len(self.sample), r.fetchone()[0])
+        self.assertEqual(len(self.samples), result.fetchone()[0])
 
         # ok, delete it
-        t.delete().execute()
+        self.get_table().delete().execute()
 
         self.check_empty_table()
-    
+
     def not_nullable(self):
         """Check that certain columns of a table are not nullable.
     
@@ -116,21 +115,21 @@ class TableTest(TestBase):
         with each set to null and test for an exception from the database layer.
         """
 
-        self.failIf(len(self.sample) < 1, "not enough data to test not-nullable columns")
-        
+        self.failIf(len(self.samples) < 1, "not enough sample data")
+
         for col in self.not_nullables:
             print "testing that %s is not nullable" % col
             
             # construct an attribute dictionary without the 'not null' attribute
             coldata = {}
-            coldata.update(self.sample[0])
+            coldata.update(self.samples[0])
             coldata[col] = None
     
             # create the model object
             print coldata
 
-            q = self.get_table().insert()
-            self.assertRaisesAny(q.execute, coldata)
+            query = self.get_table().insert()
+            self.assertRaisesAny(query.execute, coldata)
 
             self.get_table().delete().execute()
 
@@ -145,19 +144,19 @@ class TableTest(TestBase):
         from the database layer.
         """
 
-        self.failIf(len(self.sample) < 2, "not enough sample data in the self.sample list to test uniqueness")
+        self.failIf(len(self.samples) < 2, "not enough sample data")
 
         for col in self.uniques:
 
-            self.get_table().insert().execute(self.sample[0])
+            self.get_table().insert().execute(self.samples[0])
 
             attr = {}
-            attr.update(self.sample[1])
+            attr.update(self.samples[1])
 
-            attr[col] = self.sample[0][col]
+            attr[col] = self.samples[0][col]
 
-            q = self.get_table().insert()
-            self.assertRaisesAny(q.execute, attr)
+            query = self.get_table().insert()
+            self.assertRaisesAny(query.execute, attr)
 
             self.get_table().delete().execute()
 
