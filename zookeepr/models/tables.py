@@ -2,19 +2,16 @@ from sqlalchemy import *
 
 person = Table('person',
                Column('id', Integer, primary_key=True),
+
+               Column('account_id', Integer,
+                      ForeignKey('account.id'),
+                      ),
                
                # secondary key, unique identifier within the zookeepr app
                # useful for URLs
                Column('handle', String(40), unique=True, nullable=False),
                
                # login identifier and primary method of communicating
-               # with person
-               Column('email_address', String(512),
-                      unique=True,
-                      nullable=False),
-               
-               # password hash
-               Column('password_hash', String(32)),
 
                # other personal details
                # the lengths of the fields are chosen arbitrarily
@@ -22,8 +19,6 @@ person = Table('person',
                Column('lastname', String(1024)),
                Column('phone', String(32)),
                Column('fax', String(32)),
-
-               Column('active', Boolean),
 )
 
 # types of submissions: typically 'paper', 'miniconf', etc
@@ -102,10 +97,12 @@ account = Table('account',
                        nullable=False,
                        # FIXME: when sqla 0.2 comes out, change this to True
                        unique='account_email_address_ux'),
-                Column('password', String),
+                
+                Column('password_hash', String),
 
                 # flag that the account has been activated by the user
                 # (responded to their confirmation email)
                 Column('activated', Boolean,
+                       PassiveDefault("false"),
                        nullable=False),
                 )
