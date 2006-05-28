@@ -1,6 +1,6 @@
 from zookeepr.tests.table import *
 
-class TestPersonTable(TableTestBase):
+class TestPerson(TableTest):
     """Test the ``person`` table.
 
     This table stores auxiliary information about a person: their name,
