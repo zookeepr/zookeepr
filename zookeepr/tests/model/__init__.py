@@ -1,10 +1,21 @@
-import unittest
-
 from sqlalchemy import objectstore, SQLError
 
 import zookeepr.models as model
+from zookeepr.tests import TestBase, monkeypatch
 
-class TestModel(unittest.TestCase):
+class ModelTestGenerator(type):
+    """Monkeypatching metaclass for data model test classes.
+
+    This metaclass generates test methods in the target class based on the
+    class attributes set, to reduce the amount of code needed to be written
+    to do common model tests, thus improving TDD!
+    """
+    def __init__(cls, name, bases, classdict):
+        if 'model' in classdict:
+            monkeypatch(cls, 'test_create', 'create')
+
+
+class ModelTest(TestBase):
     """Base class for testing the data model.
 
     Derived classes should set the following attributes:
@@ -12,38 +23,16 @@ class TestModel(unittest.TestCase):
     ``model`` is a string containing the name of the class being tested,
     scoped relative to anchor.model.
 
-    ``attrs`` is a dictionary of attributes to use when creating the
-    model object.
-
-    ``not_nulls`` is a list of attribute names that must not be undefined
-    in the object.
-
-    ``uniques`` is a list of attribute names that must uniquely identify
-    the object.
-
-    Once set, test methods should call each of ``create()``,
-    ``not_nullable()``, and ``unique()``.
+    ``sample`` is a list of dictionaries of attributes to use when creating
+    test model objects.
 
     An example using this base class:
 
     class TestSomeModel(TestModel):
         model = 'module.User'
-        attrs = dict(name='testguy', email_address='test@example.org')
-        not_nulls = ['name']
-        uniques = ['name', 'email_address']
-
-        def test_create(self):
-            self.create()
-
-        def test_not_nullables(self):
-            self.not_nullable()
-
-        def test_uniques(self):
-            self.unique()
-
-    Hopefully a future version will eliminate the need for writing the test
-    functions.
+        sample = [dict(name='testguy', email_address='test@example.org')]
     """
+    __metaclass__ = ModelTestGenerator
 
     def get_model(self):
         """Return the model object, coping with scoping.
@@ -57,7 +46,7 @@ class TestModel(unittest.TestCase):
             module = getattr(module, m)
         return module
         
-    def check_empty_database(self):
+    def check_empty_objectstore(self):
         """Check that the database was left empty after the test"""
         self.assertEqual(0, len(self.get_model().select()))
 
@@ -91,7 +80,7 @@ class TestModel(unittest.TestCase):
         objectstore.flush()
     
         # checking db
-        self.check_empty_database()
+        self.check_empty_objectstore()
     
     def not_nullable(self):
         """Check that certain attributes of a model object are not nullable.
@@ -118,7 +107,7 @@ class TestModel(unittest.TestCase):
             objectstore.clear()
 
         # checking
-        self.check_empty_database()
+        self.check_empty_objectstore()
 
     def unique(self):
         """Check that certain attributes of a model object are unique.
@@ -176,4 +165,6 @@ class TestModel(unittest.TestCase):
             objectstore.flush()
            
         # check db
-        self.check_empty_database()
+        self.check_empty_objectstore()
+
+__all__ = ['ModelTest', 'model']

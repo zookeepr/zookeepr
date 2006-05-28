@@ -3,7 +3,7 @@ import md5
 
 from zookeepr.tests.model import *
 
-class TestRegistrationModel(TestModel):
+class TestRegistrationModel(ModelTest):
     model = 'Registration'
     attrs = dict(timestamp=datetime.datetime.now(),
                  url_hash=md5.new("snuh").hexdigest())

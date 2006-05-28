@@ -1,6 +1,6 @@
 from zookeepr.tests.model import *
 
-class TestSubmissionTypeModel(TestModel):
+class TestSubmissionTypeModel(ModelTest):
     model = 'SubmissionType'
     attrs = dict(name='example')
     not_null = ['name']

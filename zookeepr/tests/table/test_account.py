@@ -1,6 +1,6 @@
 from zookeepr.tests.table import *
 
-class TestAccountTable(TableTestBase):
+class TestAccount(TableTest):
     """Test the ``account`` table.
 
     This table stores the basic login information for a user,
@@ -23,4 +23,3 @@ class TestAccountTable(TableTestBase):
                    activated=True)]
     not_nullables = ['email_address', 'activated']
     uniques = ['email_address']
-    

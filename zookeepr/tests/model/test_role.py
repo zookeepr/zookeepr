@@ -1,6 +1,6 @@
 from zookeepr.tests.model import *
 
-class TestRoleModel(TestModel):
+class TestRoleModel(ModelTest):
     model = 'Role'
     attrs = dict(name='site admin')
     not_null = ['name']

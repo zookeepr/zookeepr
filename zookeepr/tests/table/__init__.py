@@ -1,55 +1,25 @@
-import new
-import unittest
-
 from sqlalchemy import select, func
 
 import zookeepr.models as model
+from zookeepr.tests import TestBase, monkeypatch
 
 class TableTestGenerator(type):
-    """This metaclass does some funky class method rewriting to generate
+    """Monkeypatching metaclass for table schema test classes.
+    
+    This metaclass does some funky class method rewriting to generate
     test methods so that one doesn't actually need to do any work to get
     table tests written.  How awesome is that for TDD? :-)
     """
-    def __init__(cls, name, bases, dict):
-        if dict.has_key('table'):
+    def __init__(cls, name, bases, classdict):
+        if 'table' in classdict:
             monkeypatch(cls, 'test_insert', 'insert')
             
             for k in ['not_nullable', 'unique']:
-                if k + 's' in dict:
+                if k + 's' in classdict:
                     monkeypatch(cls, 'test_' + k, k)
 
-def monkeypatch(cls, test_name, func_name):
-    """
-    patch the child class with the test_not_nullable function
-    now that we know it contains enough data to do so.
-    
-    rather than do something sensible like use setattr,
-    we create a new function and hack the __module__ attribute
-    so that when nose runs, it doesn't skip the test because
-    it thinks it is in the parent.  This is in
-    nose.selector.wantMethod, anytests, and callableInTests.
-    
-    You can't set __module__ directly because it's a r/o attribute.
-    
-    The __module__ attribute is set by the new.function method
-    from the globals dict, so here we make a shallow copy and
-    override the __name__ attribute to point to the module of the
-    class we're actually testing.
-    
-    By this stage, you may think that this is crack.  You're right.
-    But at least I don't have to repeat the same code over and
-    over in the actual tests ;-)
-    """
-    g = globals().copy()
-    g['__name__'] = cls.__module__
-    code = getattr(cls, func_name).im_func.func_code
-    # create a new function with:
-    # the code of the original function,
-    # our patched globals,
-    # and the new name of the function
-    setattr(cls, test_name, new.function(code, g, test_name))
 
-class TableTestBase(unittest.TestCase):
+class TableTest(TestBase):
     """Base class for testing the database schema.
 
     Derived classes should set the following attributes:
@@ -57,10 +27,10 @@ class TableTestBase(unittest.TestCase):
     ``table`` is a string containing the name of the table being tested,
     scoped relative to anchor.model.
 
-    ``attrs`` is a dictionary of columns and their values to use when inserting
-    a row into the table.
+    ``sample`` is a list of dictionaries of columns and their values to use
+    when inserting a row into the table.
 
-    ``not_nulls`` is a list of column names that must not be undefined
+    ``not_nullables`` is a list of column names that must not be undefined
     in the table.
 
     ``uniques`` is a list of column names that must uniquely identify
@@ -69,21 +39,12 @@ class TableTestBase(unittest.TestCase):
     An example using this base class:
 
     class TestSomeTable(TestTable):
-        model = 'module.SomeTable'
-        attrs = dict(name='testguy', email_address='test@example.org')
-        not_nulls = ['name']
+        table = 'module.SomeTable'
+        sample = [dict(name='testguy', email_address='test@example.org')]
+        not_nullables = ['name']
         uniques = ['name', 'email_address']
     """
     __metaclass__ = TableTestGenerator
-
-    def assertRaisesAny(self, callable, *args, **kwargs):
-        try:
-            callable(*args, **kwargs)
-        except:
-            pass
-        else:
-            self.fail("function failed to raise any exception")
-        
 
     def get_table(self):
         """Return the table, coping with scoping.
@@ -97,7 +58,7 @@ class TableTestBase(unittest.TestCase):
             module = getattr(module, m)
         return module
         
-    def check_empty_database(self):
+    def check_empty_table(self):
         """Check that the database was left empty after the test"""
         r = select([func.count(self.get_table().c.id)]).execute()
         self.assertEqual(0, r.fetchone()[0])
@@ -121,9 +82,8 @@ class TableTestBase(unittest.TestCase):
             q.execute(s)
 
             for k in s.keys():
-                q = select([getattr(t.c, k)])
+                q = select([getattr(t.column, k)])
                 print "query", q
-                
                 r = q.execute()
                 print r
                 row = r.fetchone()
@@ -146,7 +106,7 @@ class TableTestBase(unittest.TestCase):
         # ok, delete it
         t.delete().execute()
 
-        self.check_empty_database()
+        self.check_empty_table()
     
     def not_nullable(self):
         """Check that certain columns of a table are not nullable.
@@ -174,7 +134,7 @@ class TableTestBase(unittest.TestCase):
 
             self.get_table().delete().execute()
 
-            self.check_empty_database()
+            self.check_empty_table()
 
     def unique(self):
         """Check that certain attributes of a model object are unique.
@@ -201,6 +161,8 @@ class TableTestBase(unittest.TestCase):
 
             self.get_table().delete().execute()
 
-            self.check_empty_database()
+            self.check_empty_table()
 
-            
+
+__all__ = ['TableTest', 'model']
+

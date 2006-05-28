@@ -8,7 +8,7 @@ from forms import *
 
 
 class Person(object):
-    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None, active=None):
+    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
         self.handle = handle
         self.email_address = email_address
 
@@ -18,8 +18,6 @@ class Person(object):
         self.lastname = lastname
         self.phone = phone
         self.fax = fax
-
-        self.active = active
 
     def _set_password(self, password):
         self.password_hash = md5.new(password).hexdigest()
@@ -51,9 +49,12 @@ contentstor.modelise(Submission, submission, SubmissionSchema,
     submission_type = relation(SubmissionType.mapper)
     ))
 
-contentstor.modelise(Person, person, PersonSchema, properties = dict(
+p_join = join(account, person)
+
+contentstor.modelise(Person, p_join, PersonSchema, properties = dict(
     submissions = relation(Submission.mapper, private=True, backref='person')
-    ))
+    ),
+                     primary_key = [person.c.id])
 
 class Role(object):
     def __init__(self, name=None):
