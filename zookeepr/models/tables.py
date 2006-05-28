@@ -102,5 +102,6 @@ account = Table('account',
                        nullable=False),
                 Column('password', String),
                 
-                Column('active', Boolean),
+                Column('active', Boolean,
+                       nullable=False),
                 )
