@@ -164,8 +164,7 @@ class TableTestBase(unittest.TestCase):
             # construct an attribute dictionary without the 'not null' attribute
             coldata = {}
             coldata.update(self.sample[0])
-            del coldata[col]
-            self.failIf(col in coldata.keys())
+            coldata[col] = None
     
             # create the model object
             print coldata
