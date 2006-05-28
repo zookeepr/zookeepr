@@ -1,4 +1,5 @@
-from sqlalchemy import objectstore, SQLError
+import sqlalchemy.mods.threadlocal
+from sqlalchemy import *
 
 import zookeepr.models as model
 from zookeepr.tests import TestBase, monkeypatch

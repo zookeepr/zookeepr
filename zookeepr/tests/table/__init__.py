@@ -1,4 +1,4 @@
-from sqlalchemy import select, func
+import sqlalchemy
 
 import zookeepr.models as model
 from zookeepr.tests import TestBase, monkeypatch
@@ -61,7 +61,8 @@ class TableTest(TestBase):
         
     def check_empty_table(self):
         """Check that the database was left empty after the test"""
-        result = select([func.count(self.get_table().c.id)]).execute()
+        query = sqlalchemy.select([sqlalchemy.func.count(self.get_table().c.id)])
+        result = query.execute()
         self.assertEqual(0, result.fetchone()[0])
 
     def insert(self):
@@ -81,7 +82,8 @@ class TableTest(TestBase):
             query.execute(sample)
 
             for key in sample.keys():
-                query = select([getattr(self.get_table().c, key)])
+                col = getattr(self.get_table().c, key)
+                query = sqlalchemy.select([col])
                 print "query", query
                 result = query.execute()
                 print result
@@ -98,7 +100,8 @@ class TableTest(TestBase):
             query.execute(sample)
 
         # get the count of rows
-        result = select([func.count(self.get_table().c.id)]).execute()
+        query = sqlalchemy.select([sqlalchemy.func.count(self.get_table().c.id)])
+        result = query.execute()
         # check that it's the same length as the sample data
         self.assertEqual(len(self.samples), result.fetchone()[0])
 
@@ -163,5 +166,5 @@ class TableTest(TestBase):
             self.check_empty_table()
 
 
-__all__ = ['TableTest', 'model']
+
 

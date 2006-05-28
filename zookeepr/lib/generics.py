@@ -1,6 +1,7 @@
 import authkit
 from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
+import sqlalchemy.mods.threadlocal
 from sqlalchemy import objectstore
 
 class Modify(object):

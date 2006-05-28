@@ -40,13 +40,15 @@ class TestController(TestBase):
     def __init__(self, *args):
         wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
         self.app = paste.fixture.TestApp(wsgiapp)
-        TestCase.__init__(self, *args)
+        TestBase.__init__(self, *args)
 
     def setUp(self):
         # clear the objectstore at the start of each test because
         # we might not have deleted objects from the session at the
         # end of each test
-        sqlalchemy.objectstore.clear()
+        #sqlalchemy.objectstore.clear()
+        # FIXME
+        pass
 
 
 def monkeypatch(cls, test_name, func_name):
@@ -91,18 +93,16 @@ def monkeypatch(cls, test_name, func_name):
 
 
 def setUp():
+    print "package setUp"
     try:
         os.unlink('test.db')
     except OSError:
         pass
-    sqlalchemy.global_connect('sqlite', dict(filename='test.db'))
 
-    model.account.create()
-    model.person.create()
-    model.submission_type.create()
-    model.submission.create()
-    model.role.create()
-    model.person_role_map.create()
-    model.registration.create()
+    print "create engine"
+    eng = sqlalchemy.create_engine('sqlite:///test.db', echo=True)
+    print "create all"
+    model.metadata.connect(eng)
+    model.metadata.create_all()
 
 __all__ = ['url_for', 'TestBase', 'TestController', 'monkeypatch']

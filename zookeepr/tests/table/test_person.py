@@ -8,19 +8,19 @@ class TestPerson(TableTest):
     contains the person's login details.
     """
     table = 'person'
-    sample = [dict(handle='testguy',
-                   account_id=1,
-                   firstname='Testguy',
-                   lastname='McTest',
-                   phone='+61295555555',
-                   fax='+61295555556',
-                   ),
-              dict(handle='testgirl',
-                   account_id=2,
-                   firstname='Testgirl',
-                   lastname='Van Test',
-                   phone='+37',
-                   fax='42',
-                   )
-              ]
+    samples = [dict(handle='testguy',
+                    account_id=1,
+                    firstname='Testguy',
+                    lastname='McTest',
+                    phone='+61295555555',
+                    fax='+61295555556',
+                    ),
+               dict(handle='testgirl',
+                    account_id=2,
+                    firstname='Testgirl',
+                    lastname='Van Test',
+                    phone='+37',
+                    fax='42',
+                    )
+               ]
     uniques = ['handle']
