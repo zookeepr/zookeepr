@@ -8,11 +8,9 @@ person = Table('person',
                       ),
                
                # secondary key, unique identifier within the zookeepr app
-               # useful for URLs
-               Column('handle', String(40), unique=True, nullable=False),
+               # useful for URLs, not required though (a-la flickr)
+               Column('handle', String(40), unique=True),
                
-               # login identifier and primary method of communicating
-
                # other personal details
                # the lengths of the fields are chosen arbitrarily
                Column('firstname', String(1024)),
