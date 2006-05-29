@@ -81,7 +81,7 @@ class ModelTest(TestBase):
             del o
     
             # check it's in the database
-            o = self.get_model().get(oid)
+            o = session.get(self.get_model(), oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
