@@ -4,14 +4,19 @@ from formencode.validators import *
 from contentstor import FormSchema
 
 class PersonSchema(FormSchema):
-    handle = String(not_empty=True)
+    handle = PlainText(not_empty=True)
     email_address = String()
     password = String()
+    password_confirm = String()
+    
+    firstname = String(maxlength=1024)
+    lastname = String(maxlength=1024)
+    phone = String(maxlength=32)
+    fax = String(maxlength=32)
 
-    firstname = String()
-    lastname = String()
-    phone = String()
-    fax = String()
+    chained_validators = [
+        FieldsMatch('password', 'password_confirm')
+        ]
 
 class SubmissionTypeSchema(FormSchema):
     name = String(maxlength=40)
@@ -22,4 +27,8 @@ class SubmissionSchema(FormSchema):
     submission_type = String()
     person = String()
     experience = String()
-    url = String()
+    url = URL()
+    attachment = FieldStorageUploadConverter()
+    
+class RoleSchema(FormSchema):
+    name = String()

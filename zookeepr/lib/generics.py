@@ -1,6 +1,7 @@
+import authkit
 from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
-from sqlalchemy import objectstore
+from sqlalchemy import create_session
 
 class Modify(object):
     def _oid(self, obj):
@@ -30,6 +31,10 @@ class Modify(object):
         POST requests will create the object, and return a redirect to
         view the new object.
         """
+
+        # create new session
+        session = create_session()
+
         # Get the name we refer to the model by
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         errors = {}
@@ -45,13 +50,18 @@ class Modify(object):
                 #session['message'] = 'Object has been created, now editing.'
                 #session.save()
                 # save to database
-                objectstore.flush()
+                session.save(new_data)
+                session.flush()
+                session.close()
                 return h.redirect_to(action='edit', id=self._oid(new_data))
 
         # assign to the template global
         setattr(c, model_name, new_data)
+        session.close()
         # call the template
         m.subexec('%s/new.myt' % model_name)
+
+    new.permissions = authkit.permissions(signed_in=True)
         
     def edit(self, id):
         """Allow editing of an object.
@@ -61,6 +71,10 @@ class Modify(object):
 
         POST requests update the object with the data posted.
         """
+
+        # clear the store
+        session = create_session()
+        
         # Get the object
         obj = self.get(self.model, id)
         if not obj:
@@ -77,15 +91,19 @@ class Modify(object):
             
             if obj.validate():
                 #session['message'] = 'Object has been updated successfully.'
-                objectstore.commit()
+                session.save(obj)
+                session.flush()
             else:
                 #session['message'] = 'Object failed to update, errors present.'
-                objectstore.clear()
+                session.clear()
 
+        session.close()
         # assign to the template global
         setattr(c, model_name, obj)
         # call the template
         m.subexec('%s/edit.myt' % model_name)
+        
+    edit.permissions = authkit.permissions(signed_in=True)
     
     def delete(self, id):
         """Delete the submission type
@@ -94,6 +112,9 @@ class Modify(object):
 
         POST requests will delete the item.
         """
+        # clear the store
+        session = create_session()
+        
         # Get the object
         obj = self.get(self.model, id)
         if not obj:
@@ -102,14 +123,16 @@ class Modify(object):
             return h.redirect_to(action='index', id=None)
         
         if request.method == 'POST':
-            objectstore.delete(obj)
-            objectstore.commit()
+            session.delete(obj)
+            session.flush()
             return h.redirect_to(action='index', id=None)
 
         # get the model name
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
         # call the template
         m.subexec('%s/confirm_delete.myt' % model_name)
+
+    delete.permissions = authkit.permissions(signed_in=True)
 
 class View(object):
     def _can_edit(self):
@@ -133,6 +156,8 @@ class View(object):
         c.can_edit = self._can_edit()
         # exec the template
         m.subexec('%s/list.myt' % model_name)
+
+    index.permissions = authkit.permissions(signed_in=True)
     
     def view(self, id):
         """View a specific object"""
@@ -145,3 +170,5 @@ class View(object):
         c.can_edit = self._can_edit()
         # exec the template
         m.subexec('%s/view.myt' % model_name)
+
+    view.permissions = authkit.permissions(signed_in=True)

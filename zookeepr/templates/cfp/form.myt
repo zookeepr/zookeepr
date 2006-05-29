@@ -24,8 +24,8 @@
 
 <p>
 <span class="mandatory">*</span>
-<label for="person.password">Password (confirm):</label><br />
-<% h.password_field('person.password') %></p>
+<label for="person.password_confirm">Password (confirm):</label><br />
+<% h.password_field('person.password_confirm') %></p>
 
 <p>
 <span class="mandatory">*</span>
@@ -50,8 +50,8 @@
 <p><label for="submission.url">URL:</label><br />
 <% h.text_field('submission.url', c.submission.url) %></p>
 
-<p><label for="submission.file">File:</label><br />
-<% h.file_field('submission.file') %></p>
+<p><label for="submission.attachment">File:</label><br />
+<% h.file_field('submission.attachment') %></p>
 
 <p><label for="submission.abstract">Abstract:</label><br />
 <% h.text_area('submission.abstract') %></p>

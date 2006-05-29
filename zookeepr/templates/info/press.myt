@@ -1,0 +1,2 @@
+<&| /contentbox.myt, title="press" &>
+</&>
