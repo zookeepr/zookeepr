@@ -22,16 +22,16 @@ class ModelTest(TestBase):
     Derived classes should set the following attributes:
 
     ``model`` is a string containing the name of the class being tested,
-    scoped relative to anchor.model.
+    scoped relative to the module ``zookeepr.models``.
 
-    ``sample`` is a list of dictionaries of attributes to use when creating
+    ``samples`` is a list of dictionaries of attributes to use when creating
     test model objects.
 
     An example using this base class:
 
     class TestSomeModel(TestModel):
         model = 'module.User'
-        sample = [dict(name='testguy', email_address='test@example.org')]
+        samples = [dict(name='testguy', email_address='test@example.org')]
     """
     __metaclass__ = ModelTestGenerator
 
@@ -43,8 +43,8 @@ class ModelTest(TestBase):
         """
         module = model
         # cope with classes in sub-models
-        for m in self.model.split('.'):
-            module = getattr(module, m)
+        for submodule in self.model.split('.'):
+            module = getattr(module, submodule)
         return module
         
     def check_empty_objectstore(self):
@@ -58,30 +58,38 @@ class ModelTest(TestBase):
         Set the attributes for this model object in the ``attrs`` class
         variable.
         """
+
+        self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
+
+        for sample in self.samples:
+
+            # instantiating model
+            o = self.get_model()(**sample)
     
-        # instantiating model
-        o = self.get_model()(**self.attrs)
+            # committing to db
+            objectstore.flush()
+            oid = o.id
+
+            # clear the objectstore, invalidating o
+            objectstore.clear()
     
-        # committing to db
-        objectstore.flush()
-        oid = o.id
-    
-        # check it's in the database
-        o1 = self.get_model().get(oid)
-        self.failIfEqual(o1, None, "object not in database")
+            # check it's in the database
+            o1 = self.get_model().get(oid)
+            self.failIfEqual(o1, None, "object not in database")
         
-        # checking attributes
-        for k in self.attrs.keys():
-            self.assertEqual(getattr(o1, k), self.attrs[k], "object data invalid")
+            # checking attributes
+            for k in self.attrs.keys():
+                self.assertEqual(getattr(o1, k), self.attrs[k],
+                                 "object data invalid")
     
-        # deleting object
-        o.delete()
+            # deleting object
+            o.delete()
     
-        # flushing store
-        objectstore.flush()
+            # flushing store
+            objectstore.flush()
     
-        # checking db
-        self.check_empty_objectstore()
+            # checking db
+            self.check_empty_objectstore()
     
     def not_nullable(self):
         """Check that certain attributes of a model object are not nullable.
