@@ -183,5 +183,3 @@ class ModelTest(TestBase):
            
 #         # check db
 #         self.check_empty_objectstore()
-
-__all__ = ['ModelTest', 'model']
