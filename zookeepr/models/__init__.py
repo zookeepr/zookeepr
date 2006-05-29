@@ -26,11 +26,7 @@ class Person(object):
 
     password = property(_get_password, _set_password)
 
-person_join = join(account, person)
-mapper(Person, person_join)
-
-
-
+mapper(Person, join(account, person))
 
 # class SubmissionType(object):
 #     def __init__(self, name=None):
