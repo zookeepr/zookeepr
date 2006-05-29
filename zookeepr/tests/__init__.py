@@ -72,19 +72,21 @@ def monkeypatch(cls, test_name, func_name):
     this writing).)
 
     You can't set __module__ directly because it's a r/o attribute, so we
-    call ``new.function`` to create a new function with the same code as the
-    original.  The __module__ attribute is set by the new.function method
-    from the globals dict that it is passed, so here we make a shallow copy
-    and override the __name__ attribute to point to the module of the
-    class we're actually testing.
+    call ``new.function`` to create a new function with the same code as
+    the original.  The __module__ attribute is set by the new.function
+    method from the globals dict that it is passed, so here we make a
+    shallow copy of the original and override the __name__ attribute to
+    point to the module of the class we're actually testing.
     
     By this stage, you may think that this is crack.  You're right.
     But at least I don't have to repeat the same code over and
     over in the actual tests ;-)
     """
-    g = globals().copy()
-    g['__name__'] = cls.__module__
+    # get the code
     code = getattr(cls, func_name).im_func.func_code
+    # get the function globals so we can overwrite the module
+    g = getattr(cls, func_name).im_func.func_globals.copy()
+    g['__name__'] = cls.__module__
     # create a new function with:
     # the code of the original function,
     # our patched globals,
