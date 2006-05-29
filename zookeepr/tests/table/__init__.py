@@ -26,7 +26,7 @@ class TableTest(TestBase):
     Derived classes should set the following attributes:
 
     ``table`` is a string containing the name of the table being tested,
-    scoped relative to anchor.model.
+    scoped relative to the module ``zookeepr.models``.
 
     ``samples`` is a list of dictionaries of columns and their values to use
     when inserting a row into the table.
@@ -75,6 +75,8 @@ class TableTest(TestBase):
         variable.
         """
 
+        self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
+        
         for sample in self.samples:
             print "testing insert of s %s" % sample
             query = self.get_table().insert()
@@ -118,7 +120,7 @@ class TableTest(TestBase):
         with each set to null and test for an exception from the database layer.
         """
 
-        self.failIf(len(self.samples) < 1, "not enough sample data")
+        self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
 
         for col in self.not_nullables:
             print "testing that %s is not nullable" % col
@@ -147,7 +149,7 @@ class TableTest(TestBase):
         from the database layer.
         """
 
-        self.failIf(len(self.samples) < 2, "not enough sample data")
+        self.failIf(len(self.samples) < 2, "not enough sample data, stranger")
 
         for col in self.uniques:
 
