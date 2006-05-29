@@ -1,4 +1,4 @@
-from sqlalchemy import session
+from sqlalchemy import create_session
 
 import zookeepr.models as model
 from zookeepr.tests import TestBase, monkeypatch
@@ -49,6 +49,7 @@ class ModelTest(TestBase):
         
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
+        session = create_session()
         results = session.query(self.get_model()).select()
         self.assertEqual(0, len(results))
 
@@ -63,6 +64,8 @@ class ModelTest(TestBase):
         self.failIf(len(self.samples) < 1,
                     "not enough sample data, stranger")
 
+        session = create_session()
+        
         for sample in self.samples:
 
             # instantiating model
@@ -92,91 +95,93 @@ class ModelTest(TestBase):
     
             # checking db
             self.check_empty_session()
-    
-    def not_nullable(self):
-        """Check nullability of certain attributes of a model object.
-    
-        Specify the ``not_null`` class variable with a list of attributes
-        that must not be null, and this method will create the model
-        object with each set to null and test for an exception from the
-        database layer.
-        """
-    
-        for attr in self.not_null:
-            # construct an attribute dictionary without the 'not null' attribute
-            attrs = {}
-            attrs.update(self.attrs)
-            del attrs[attr]
-            self.failIf(attr in attrs.keys())
-    
-            # create the model object
-            o = self.get_model()(**attrs)
-    
-            #testing for not null
-            self.assertRaises(SQLError, objectstore.flush)
-    
-            # clearing session
-            objectstore.clear()
 
-        # checking
-        self.check_empty_objectstore()
+        session.close()
+    
+#     def not_nullable(self):
+#         """Check nullability of certain attributes of a model object.
+    
+#         Specify the ``not_null`` class variable with a list of attributes
+#         that must not be null, and this method will create the model
+#         object with each set to null and test for an exception from the
+#         database layer.
+#         """
+    
+#         for attr in self.not_null:
+#             # construct an attribute dictionary without the 'not null' attribute
+#             attrs = {}
+#             attrs.update(self.attrs)
+#             del attrs[attr]
+#             self.failIf(attr in attrs.keys())
+    
+#             # create the model object
+#             o = self.get_model()(**attrs)
+    
+#             #testing for not null
+#             self.assertRaises(SQLError, objectstore.flush)
+    
+#             # clearing session
+#             objectstore.clear()
 
-    def unique(self):
-        """Check that certain attributes of a model object are unique.
+#         # checking
+#         self.check_empty_objectstore()
 
-        Specify the ``uniques`` class variable with a list of attributes
-        that must be unique, and this method will create two copies of the
-        model object with that attribute the same and test for an exception
-        from the database layer.
-        """
+#     def unique(self):
+#         """Check that certain attributes of a model object are unique.
 
-        for attr in self.uniques:
-            # construct an attribute dictionary
-            attrs = {}
-            attrs.update(self.attrs)
+#         Specify the ``uniques`` class variable with a list of attributes
+#         that must be unique, and this method will create two copies of the
+#         model object with that attribute the same and test for an exception
+#         from the database layer.
+#         """
 
-            #
-            o = self.get_model()(**attrs)
+#         for attr in self.uniques:
+#             # construct an attribute dictionary
+#             attrs = {}
+#             attrs.update(self.attrs)
+
+#             #
+#             o = self.get_model()(**attrs)
             
-            objectstore.flush()
-            oid = o.id
+#             objectstore.flush()
+#             oid = o.id
 
-            attrs1 = {}
-            attrs1.update(self.attrs)
+#             attrs1 = {}
+#             attrs1.update(self.attrs)
 
-            # ugh, this sucks
-            for k in attrs.keys():
-                if k <> attr:
-                    if type(attrs1[k], types.IntType):
-                        attr1[k] += 1
-                    elif type(attrs1[k]) == types.StringType:
-                        attr1[k].append('1')
-                    else:
-                        raise RuntimeError, "don't know how to un-unique a %s type, %s" % (type(attrs1[k]), k)
+#             # ugh, this sucks
+#             for k in attrs.keys():
+#                 if k <> attr:
+#                     if type(attrs1[k], types.IntType):
+#                         attr1[k] += 1
+#                     elif type(attrs1[k]) == types.StringType:
+#                         attr1[k].append('1')
+#                     else:
+#                         raise RuntimeError, "don't know how to un-unique a %s type, %s" % (type(attrs1[k]), k)
 
-            # assert that the two attr dicts are different the way we want them
-            del attrs[attr]
-            del attrs1[attr]
+#             # assert that the two attr dicts are different the way we want them
+#             del attrs[attr]
+#             del attrs1[attr]
 
-            if attrs <> {} and attrs1 <> {}:
-                self.failIfEqual(attrs, attrs1)
+#             if attrs <> {} and attrs1 <> {}:
+#                 self.failIfEqual(attrs, attrs1)
             
-            attrs[attr] = self.attrs[attr]
-            attrs1[attr] = self.attrs[attr]
-            self.assertEqual(attrs[attr], attrs1[attr])
+#             attrs[attr] = self.attrs[attr]
+#             attrs1[attr] = self.attrs[attr]
+#             self.assertEqual(attrs[attr], attrs1[attr])
 
-            o1 = self.get_model()(**attrs1)
+#             o1 = self.get_model()(**attrs1)
             
-            self.assertRaises(SQLError, objectstore.flush)
+#             self.assertRaises(SQLError, objectstore.flush)
 
-            objectstore.clear()
+#             objectstore.clear()
             
-            # clean up
-            o = self.get_model().get(oid)
-            o.delete()
-            objectstore.flush()
+#             # clean up
+#             o = self.get_model().get(oid)
+#             o.delete()
+#             objectstore.flush()
            
-        # check db
-        self.check_empty_objectstore()
+#         # check db
+#         self.check_empty_objectstore()
 
 __all__ = ['ModelTest', 'model']

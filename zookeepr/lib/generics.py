@@ -1,8 +1,7 @@
 import authkit
 from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
-import sqlalchemy.mods.threadlocal
-from sqlalchemy import objectstore
+from sqlalchemy import create_session
 
 class Modify(object):
     def _oid(self, obj):
@@ -33,8 +32,8 @@ class Modify(object):
         view the new object.
         """
 
-        # clear the store
-        objectstore.clear()
+        # create new session
+        session = create_session()
 
         # Get the name we refer to the model by
         model_name = getattr(self, 'individual', self.model.mapper.table.name)
@@ -51,11 +50,14 @@ class Modify(object):
                 #session['message'] = 'Object has been created, now editing.'
                 #session.save()
                 # save to database
-                objectstore.flush()
+                session.save(new_data)
+                session.flush()
+                session.close()
                 return h.redirect_to(action='edit', id=self._oid(new_data))
 
         # assign to the template global
         setattr(c, model_name, new_data)
+        session.close()
         # call the template
         m.subexec('%s/new.myt' % model_name)
 
@@ -71,7 +73,7 @@ class Modify(object):
         """
 
         # clear the store
-        objectstore.clear()
+        session = create_session()
         
         # Get the object
         obj = self.get(self.model, id)
@@ -89,11 +91,13 @@ class Modify(object):
             
             if obj.validate():
                 #session['message'] = 'Object has been updated successfully.'
-                objectstore.commit()
+                session.save(obj)
+                session.flush()
             else:
                 #session['message'] = 'Object failed to update, errors present.'
-                objectstore.clear()
+                session.clear()
 
+        session.close()
         # assign to the template global
         setattr(c, model_name, obj)
         # call the template
@@ -109,7 +113,7 @@ class Modify(object):
         POST requests will delete the item.
         """
         # clear the store
-        objectstore.clear()
+        session = create_session()
         
         # Get the object
         obj = self.get(self.model, id)
@@ -119,8 +123,8 @@ class Modify(object):
             return h.redirect_to(action='index', id=None)
         
         if request.method == 'POST':
-            objectstore.delete(obj)
-            objectstore.commit()
+            session.delete(obj)
+            session.flush()
             return h.redirect_to(action='index', id=None)
 
         # get the model name

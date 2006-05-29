@@ -26,6 +26,11 @@ class Person(object):
 
     password = property(_get_password, _set_password)
 
+person_join = join(account, person)
+mapper(Person, person_join)
+
+
+
 
 # class SubmissionType(object):
 #     def __init__(self, name=None):
@@ -47,8 +52,6 @@ class Person(object):
 #                      properties = dict(
 #     submission_type = relation(SubmissionType.mapper)
 #     ))
-
-# p_join = join(account, person)
 
 # contentstor.modelise(Person, p_join, PersonSchema, properties = dict(
 #     submissions = relation(Submission.mapper, private=True, backref='person')

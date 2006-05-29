@@ -21,7 +21,7 @@ from zookeepr.config.routing import *
 from pylons.myghtyroutes import RoutesResolver
 from routes import request_config, url_for
 
-import sqlalchemy
+from sqlalchemy import create_engine
 
 import zookeepr.models as model
 
@@ -100,7 +100,7 @@ def setUp():
         pass
 
     print "create engine"
-    eng = sqlalchemy.create_engine('sqlite:///test.db', echo=True)
+    eng = create_engine('sqlite:///test.db', echo=True)
     print "create all"
     model.metadata.connect(eng)
     model.metadata.create_all()
