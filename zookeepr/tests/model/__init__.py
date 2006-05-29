@@ -1,5 +1,4 @@
-import sqlalchemy.mods.threadlocal
-from sqlalchemy import *
+from sqlalchemy import session
 
 import zookeepr.models as model
 from zookeepr.tests import TestBase, monkeypatch
@@ -8,8 +7,8 @@ class ModelTestGenerator(type):
     """Monkeypatching metaclass for data model test classes.
 
     This metaclass generates test methods in the target class based on the
-    class attributes set, to reduce the amount of code needed to be written
-    to do common model tests, thus improving TDD!
+    class attributes set, to reduce the amount of code needed to be
+    written to do common model tests, thus improving TDD!
     """
     def __init__(cls, name, bases, classdict):
         if 'model' in classdict:
@@ -24,14 +23,15 @@ class ModelTest(TestBase):
     ``model`` is a string containing the name of the class being tested,
     scoped relative to the module ``zookeepr.models``.
 
-    ``samples`` is a list of dictionaries of attributes to use when creating
-    test model objects.
+    ``samples`` is a list of dictionaries of attributes to use when
+    creating test model objects.
 
     An example using this base class:
 
     class TestSomeModel(TestModel):
         model = 'module.User'
-        samples = [dict(name='testguy', email_address='test@example.org')]
+        samples = [dict(name='testguy',
+                        email_address='test@example.org')]
     """
     __metaclass__ = ModelTestGenerator
 
@@ -47,9 +47,10 @@ class ModelTest(TestBase):
             module = getattr(module, submodule)
         return module
         
-    def check_empty_objectstore(self):
+    def check_empty_session(self):
         """Check that the database was left empty after the test"""
-        self.assertEqual(0, len(self.get_model().select()))
+        results = session.query(self.get_model()).select()
+        self.assertEqual(0, len(results))
 
     def create(self):
         """Create an object of the data model, check that it was
@@ -59,7 +60,8 @@ class ModelTest(TestBase):
         variable.
         """
 
-        self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
+        self.failIf(len(self.samples) < 1,
+                    "not enough sample data, stranger")
 
         for sample in self.samples:
 
@@ -67,36 +69,37 @@ class ModelTest(TestBase):
             o = self.get_model()(**sample)
     
             # committing to db
-            objectstore.flush()
+            session.save(o)
+            session.flush()
             oid = o.id
 
-            # clear the objectstore, invalidating o
-            objectstore.clear()
+            # clear the session, invalidating o
+            session.clear()
+            del o
     
             # check it's in the database
-            o1 = self.get_model().get(oid)
-            self.failIfEqual(o1, None, "object not in database")
+            o = self.get_model().get(oid)
+            self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
-            for k in self.attrs.keys():
-                self.assertEqual(getattr(o1, k), self.attrs[k],
+            for key in self.attrs.keys():
+                self.assertEqual(sample[key], getattr(o, key),
                                  "object data invalid")
     
             # deleting object
-            o.delete()
-    
-            # flushing store
-            objectstore.flush()
+            session.delete(o)
+            session.flush()
     
             # checking db
-            self.check_empty_objectstore()
+            self.check_empty_session()
     
     def not_nullable(self):
-        """Check that certain attributes of a model object are not nullable.
+        """Check nullability of certain attributes of a model object.
     
         Specify the ``not_null`` class variable with a list of attributes
-        that must not be null, and this method will create the model object
-        with each set to null and test for an exception from the database layer.
+        that must not be null, and this method will create the model
+        object with each set to null and test for an exception from the
+        database layer.
         """
     
         for attr in self.not_null:
