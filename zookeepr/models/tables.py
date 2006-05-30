@@ -84,10 +84,10 @@ role = Table('role', metadata,
                      nullable=False)
               )
 
-# person_role_map = Table('person_role_map',
-#                         Column('person_id', Integer, ForeignKey('person.id')),
-#                         Column('role_id', Integer, ForeignKey('role.id'))
-#                         )
+person_role_map = Table('person_role_map', metadata,
+                        Column('person_id', Integer, ForeignKey('person.id')),
+                        Column('role_id', Integer, ForeignKey('role.id'))
+                        )
 
 registration = Table('registration', metadata,
                      Column('id', Integer, primary_key=True),

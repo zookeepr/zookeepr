@@ -66,14 +66,16 @@ mapper(Person, join(account, person), extension=NToOneMapperExtension(),
     )
        )
 
-# class Role(object):
-#     def __init__(self, name=None):
-#         self.name = name
+class Role(object):
+    def __init__(self, name=None):
+        self.name = name
 
-# contentstor.modelise(Role, role, RoleSchema, properties = dict(
-#     people = relation(Person.mapper, person_role_map,
-#                       lazy=False, backref='roles')
-#     ))
+mapper(Role, role, properties = dict(
+    people = relation(Person,
+                      secondary=person_role_map,
+                      lazy=False,
+                      backref='roles')
+    ))
 
 # class Registration(object):
 #     def __init__(self, timestamp=None, url_hash=None):
