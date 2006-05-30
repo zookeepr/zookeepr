@@ -1,6 +1,7 @@
 from formencode.variabledecode import variable_decode
 from pylons import Controller, m, h, c, g, session, request, params
-import sqlalchemy
+
+from sqlalchemy import create_engine
 
 import zookeepr.models as model
 from zookeepr.lib.generics import *
@@ -8,9 +9,11 @@ from zookeepr.lib.generics import *
 class BaseController(Controller):
     def __before__(self, **kwargs):
         # Insert any code to be run per request here
+
         
         # Connect the ORM to the database
-        sqlalchemy.global_connect(g.pylons_config.app_conf['dburi'])
+        eng = create_engine(g.pylons_config.app_conf['dburi'])
+        model.metadata.connect(eng)
         
         # Use FormEncode to decode the request args automagically
         if m.request_args:
