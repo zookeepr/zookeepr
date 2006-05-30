@@ -1,49 +1,47 @@
-import unittest
-
-from sqlalchemy import objectstore, SQLError
+from sqlalchemy import create_session
 
 import zookeepr.models as model
+from zookeepr.tests import TestBase, monkeypatch
 
-class TestModel(unittest.TestCase):
-    """Base class for testing the data model.
+class ModelTestGenerator(type):
+    """Monkeypatching metaclass for data model test classes.
+
+    This metaclass generates test methods in the target class based on the
+    class attributes set, to reduce the amount of code needed to be
+    written to do common model tests, thus improving TDD!
+    """
+    def __init__(cls, name, bases, classdict):
+        if 'model' in classdict:
+            monkeypatch(cls, 'test_crud', 'crud')
+
+
+class ModelTest(TestBase):
+    """Base class for testing the data model classes.
 
     Derived classes should set the following attributes:
 
     ``model`` is a string containing the name of the class being tested,
-    scoped relative to anchor.model.
+    scoped relative to the module ``zookeepr.models``.
 
-    ``attrs`` is a dictionary of attributes to use when creating the
-    model object.
+    ``samples`` is a list of dictionaries of attributes to use when
+    creating test model objects.
 
-    ``not_nulls`` is a list of attribute names that must not be undefined
-    in the object.
+    ``mangles`` is a dictionary mapping attributes to functions, for
+    attributes that are modified by the model object so that the value
+    returned is not the same as the one set.  Set the function to
+    somethign that mangles the value as you expect, and the test will
+    check that the returned result is correct.
 
-    ``uniques`` is a list of attribute names that must uniquely identify
-    the object.
-
-    Once set, test methods should call each of ``create()``,
-    ``not_nullable()``, and ``unique()``.
-
-    An example using this base class:
+    An example using this base class follows.
 
     class TestSomeModel(TestModel):
         model = 'module.User'
-        attrs = dict(name='testguy', email_address='test@example.org')
-        not_nulls = ['name']
-        uniques = ['name', 'email_address']
-
-        def test_create(self):
-            self.create()
-
-        def test_not_nullables(self):
-            self.not_nullable()
-
-        def test_uniques(self):
-            self.unique()
-
-    Hopefully a future version will eliminate the need for writing the test
-    functions.
+        samples = [dict(name='testguy',
+                        email_address='test@example.org',
+                        password='test')]
+        mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
+    __metaclass__ = ModelTestGenerator
 
     def get_model(self):
         """Return the model object, coping with scoping.
@@ -53,127 +51,96 @@ class TestModel(unittest.TestCase):
         """
         module = model
         # cope with classes in sub-models
-        for m in self.model.split('.'):
-            module = getattr(module, m)
+        for submodule in self.model.split('.'):
+            module = getattr(module, submodule)
         return module
         
-    def check_empty_database(self):
+    def check_empty_session(self):
         """Check that the database was left empty after the test"""
-        self.assertEqual(0, len(self.get_model().select()))
+        session = create_session()
+        results = session.query(self.get_model()).select()
+        self.assertEqual(0, len(results))
 
-    def create(self):
-        """Create an object of the data model, check that it was
-        inserted into the database, and then delete it.
+    def crud(self):
+        """Test CRUD operations on data model object.
+
+        This test creates an object of the data model, checks that it was
+        inserted into the database, and then deletes it.  We don't bother
+        testing 'update' because it's assumed that SQLAlchemy provides
+        this for us already.  We only want to test that our class behaves
+        the way we expect it (i.e. contains the data we want, and any
+        property methods do the right thing).
     
-        Set the attributes for this model object in the ``attrs`` class
+        Set the attributes for this model object in the ``samples`` class
         variable.
-        """
-    
-        # instantiating model
-        o = self.get_model()(**self.attrs)
-    
-        # committing to db
-        objectstore.flush()
-        oid = o.id
-    
-        # check it's in the database
-        o1 = self.get_model().get(oid)
-        self.failIfEqual(o1, None, "object not in database")
+
+        If an attribute goes through a mangle process, list it in the
+        ``mangles`` dictionary, keyed on the attribute name, and make
+        the value on that key a callable that mangles the sample
+        data as expected.
+
+        For example,
+
+        class TestSomeModel(ModelTest):
+            model = 'mod'
+            samples = [dict(password='test')]
+            mangles = dict(password=lambda p: md5.new(p).hexdigest())
         
-        # checking attributes
-        for k in self.attrs.keys():
-            self.assertEqual(getattr(o1, k), self.attrs[k], "object data invalid")
-    
-        # deleting object
-        o.delete()
-    
-        # flushing store
-        objectstore.flush()
-    
-        # checking db
-        self.check_empty_database()
-    
-    def not_nullable(self):
-        """Check that certain attributes of a model object are not nullable.
-    
-        Specify the ``not_null`` class variable with a list of attributes
-        that must not be null, and this method will create the model object
-        with each set to null and test for an exception from the database layer.
         """
+        self.failIf(len(self.samples) < 1,
+            "not enough sample data, stranger")
+
+        session = create_session()
+        
+        for sample in self.samples:
+            # instantiating model
+            o = self.get_model()(**sample)
     
-        for attr in self.not_null:
-            # construct an attribute dictionary without the 'not null' attribute
-            attrs = {}
-            attrs.update(self.attrs)
-            del attrs[attr]
-            self.failIf(attr in attrs.keys())
-    
-            # create the model object
-            o = self.get_model()(**attrs)
-    
-            #testing for not null
-            self.assertRaises(SQLError, objectstore.flush)
-    
-            # clearing session
-            objectstore.clear()
-
-        # checking
-        self.check_empty_database()
-
-    def unique(self):
-        """Check that certain attributes of a model object are unique.
-
-        Specify the ``uniques`` class variable with a list of attributes
-        that must be unique, and this method will create two copies of the
-        model object with that attribute the same and test for an exception
-        from the database layer.
-        """
-
-        for attr in self.uniques:
-            # construct an attribute dictionary
-            attrs = {}
-            attrs.update(self.attrs)
-
-            #
-            o = self.get_model()(**attrs)
-            
-            objectstore.flush()
+            # committing to db
+            session.save(o)
+            session.flush()
             oid = o.id
 
-            attrs1 = {}
-            attrs1.update(self.attrs)
+            # clear the session, invalidating o
+            session.clear()
+            del o
+    
+            # check it's in the database
+            o = session.get(self.get_model(), oid)
+            self.failIfEqual(None, o, "object not in database")
+        
+            # checking attributes
+            for key in sample.keys():
+                # test each attribute
+                self.check_attribute(o, key, sample[key])
+    
+            # deleting object
+            session.delete(o)
+            session.flush()
+    
+            # checking db
+            self.check_empty_session()
 
-            # ugh, this sucks
-            for k in attrs.keys():
-                if k <> attr:
-                    if type(attrs1[k], types.IntType):
-                        attr1[k] += 1
-                    elif type(attrs1[k]) == types.StringType:
-                        attr1[k].append('1')
-                    else:
-                        raise RuntimeError, "don't know how to un-unique a %s type, %s" % (type(attrs1[k]), k)
+        session.close()
 
-            # assert that the two attr dicts are different the way we want them
-            del attrs[attr]
-            del attrs1[attr]
+    def check_attribute(self, obj, key, value):
+        """Check that the attribute has the correct value.
 
-            if attrs <> {} and attrs1 <> {}:
-                self.failIfEqual(attrs, attrs1)
-            
-            attrs[attr] = self.attrs[attr]
-            attrs1[attr] = self.attrs[attr]
-            self.assertEqual(attrs[attr], attrs1[attr])
+        ``obj`` is the model class being tested.
 
-            o1 = self.get_model()(**attrs1)
-            
-            self.assertRaises(SQLError, objectstore.flush)
+        ``key`` is the name of the attribute being tested.
 
-            objectstore.clear()
-            
-            # clean up
-            o = self.get_model().get(oid)
-            o.delete()
-            objectstore.flush()
-           
-        # check db
-        self.check_empty_database()
+        ``value`` is the expected value of the attribute.
+
+        This function checks the test's ``mangle`` class dictionary to
+        modify the ``value if necessary.
+        """
+        print "testing %s.%s is %s" % (obj.__class__.__name__, key, value)
+        if hasattr(self, 'mangles'):
+            if key in self.mangles.keys():
+                value = self.mangles[key](value)
+        result = getattr(obj, key)
+        self.assertEqual(value, result,
+                         "unexpected value on attribute '%s': expected '%s', got '%s'" % (key, value, result))
+
+__all__ = ['ModelTest', 'model', 'create_session']

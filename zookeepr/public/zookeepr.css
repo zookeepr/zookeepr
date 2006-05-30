@@ -56,6 +56,14 @@ BODY {
   font-size: 12pt;
 }
 
+/* logo */
+
+#logo {
+  position: absolute;
+  right: 10px;
+  top: -5px;
+}
+
 /* footer */
 
 #footer {
@@ -118,6 +126,7 @@ BODY {
 .sidebarbox {
   border: 1px solid black;
   margin: 10px;
+  margin-top: 70px;
 
   padding: 10px;
 }
@@ -129,14 +138,67 @@ BODY {
   margin: auto;
   margin-top: 20px;
   margin-bottom: 20px;
-  border: 1px solid black;
-  padding: 10px;
-
+  background: url(box-left.png) left repeat-y;
 }
 
 .contentbox H2 {
   text-align: right;
   font-size: 200%;
+  margin-top: 0;
+  margin-right: 1em;
+}
+
+.contentboxR, .contentboxC {
+  float: left;
+}
+
+.contentboxR {
+  width: 100%;
+  margin: 0;
+  padding: 0;
+}
+
+.contentboxC {
+  height: 25px;
+  width: 25px;
+}
+
+#contentboxTL {
+  background: url(box-topleft.png) top left no-repeat;
+}
+
+#contentboxTR {
+  float: right;
+  background: url(box-topright.png) top right no-repeat;
+}
+
+#contentboxT {
+  background: url(box-top.png) repeat-x;
+}
+
+#contentboxBL {
+  background: url(box-bottomleft.png) bottom left no-repeat;
+}
+
+#contentboxBR {
+  float: right;
+  background: url(box-bottomright.png) bottom right no-repeat;
+}
+
+#contentboxB {
+  background: url(box-bottom.png) bottom repeat-x;
+}
+
+#contentboxM {
+  background: url(box-left.png) left repeat-y;
+}
+
+#contentboxMR {
+  background: url(box-right.png) right repeat-y;
+}
+
+#contentboxMR * {
+  margin-bottom: 0;
 }
 
 /* form */
@@ -164,6 +226,7 @@ BLOCKQUOTE {
   background-position: top left;
   padding-left: 20px;
   text-align: justify;
+  margin: 0 25px 0 15px;
 }
 
 BLOCKQUOTE P.endquote {

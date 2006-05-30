@@ -31,24 +31,9 @@ class Globals(pylons.middleware.Globals):
             your global variables.
             
         """
-        sqlalchemy.global_connect(app_conf['dburi'])
-
-        # FIXME: this method for creating the tables if the databsae was just created is not very
-        # robust; currently it's trapping an exception created by pysqlite2
-        # or a postgresql one
-        try:
-            model.person.create()
-            model.submission_type.create()
-            model.submission.create()
-            model.role.create()
-            model.person_role_map.create()
-
-        except sqlalchemy.SQLError, e:
-            # we only want to pass on operational errors
-            if e.args[0].find('table person already exists') == -1 and \
-               e.args[0].find("Relation 'person_id_seq' already exists") == -1:
-                raise e
-
+        print app_conf['dburi']
+        model.metadata.connect(app_conf['dburi'])
+        model.metadata.create_all()
 
         self.auth = UserModelAuthStore()
 

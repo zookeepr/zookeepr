@@ -2,39 +2,19 @@ import md5
 
 from sqlalchemy import *
 
-import contentstor
+#import contentstor
 from tables import *
-from forms import *
+#from forms import *
 
-
-class Person(object):
-    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None, active=None):
-        self.handle = handle
-        self.email_address = email_address
-
-        if password is not None:
-            self.password_hash = md5.new(password).hexdigest()
-        self.firstname = firstname
-        self.lastname = lastname
-        self.phone = phone
-        self.fax = fax
-
-        self.active = active
-
-    def _set_password(self, password):
-        self.password_hash = md5.new(password).hexdigest()
-
-    def _get_password(self, value):
-        return self.password_hash
-
-    password = property(_get_password, _set_password)
-
-
+## Submission Types
 class SubmissionType(object):
     def __init__(self, name=None):
         self.name = name
 
+mapper(SubmissionType, submission_type)
 
+
+## Submissions
 class Submission(object):
     def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None):
         self.title = title
@@ -43,34 +23,73 @@ class Submission(object):
         self.experience = experience
         self.url = url
 
-
-contentstor.modelise(SubmissionType, submission_type, SubmissionTypeSchema)
-
-contentstor.modelise(Submission, submission, SubmissionSchema,
-                     properties = dict(
-    submission_type = relation(SubmissionType.mapper)
+mapper(Submission, submission,
+       properties = dict(
+    submission_type = relation(SubmissionType)
     ))
 
-contentstor.modelise(Person, person, PersonSchema, properties = dict(
-    submissions = relation(Submission.mapper, private=True, backref='person')
-    ))
+
+## Persons
+class Person(object):
+    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
+        self.handle = handle
+        self.email_address = email_address
+
+        if password is not None:
+            self.password = password
+        self.firstname = firstname
+        self.lastname = lastname
+        self.phone = phone
+        self.fax = fax
+
+    def _set_password(self, password):
+        self.password_hash = md5.new(password).hexdigest()
+
+    def _get_password(self):
+        return self.password_hash
+
+    password = property(_get_password, _set_password)
+
+# FIXME: hack to work around bug 191 in SQLAlchemy
+class AccountMapperExtension(MapperExtension):
+    def after_insert(self, mapper, connection, instance):
+        for table in mapper.tables:
+            if table.name == 'account':
+                for col in mapper.pks_by_table[table]:
+                    account_id = mapper._getattrbycolumn(instance, col)
+                    break
+        instance.account_id = account_id
+        
+mapper(Person, join(account, person), extension=AccountMapperExtension(),
+       properties = dict(
+    submissions = relation(Submission, private=True, backref='person')
+    )
+       )
 
 class Role(object):
     def __init__(self, name=None):
         self.name = name
 
-contentstor.modelise(Role, role, RoleSchema, properties = dict(
-    people = relation(Person.mapper, person_role_map,
-                      lazy=False, backref='roles')
+mapper(Role, role, properties = dict(
+    people = relation(Person,
+                      secondary=person_role_map,
+                      lazy=False,
+                      backref='roles')
     ))
 
 class Registration(object):
-    def __init__(self, timestamp=None, url_hash=None):
-        self.timestamp = timestamp
-        self.url_hash = url_hash
+     def __init__(self, timestamp=None, url_hash=None, email_address=None, password=None):
+         self.timestamp = timestamp
+         self.url_hash = url_hash
+         self.email_address = email_address
+         self.password = password
 
-contentstor.modelise(Registration, registration, None,
-                     properties = {
-    'person': relation(Person.mapper)
-    })
+     def _set_password(self, value):
+         self.password_hash = md5.new(value).hexdigest()
 
+     def _get_password(self):
+         return self.password_hash
+
+     password = property(_get_password, _set_password)
+
+mapper(Registration, join(account, registration), extension=AccountMapperExtension())

@@ -5,7 +5,7 @@ class CfpController(BaseController):
     def index(self):
         """Create a new submission"""
 
-        objectstore.clear()
+        session = create_session()
         
         new_person = model.Person()
         new_submission = model.Submission()
@@ -17,10 +17,11 @@ class CfpController(BaseController):
 
             if new_person.validate() and new_submission.validate():
                 # save to database
-                objectstore.flush()
+                session.save()
+                session.flush()
                 return h.redirect_to(controller='person', action='view', id=new_person.handle)
             else:
-                objectstore.clear()
+                session.clear()
 
         # set up for the cfp form
         c.submissiontypes = model.SubmissionType.select()

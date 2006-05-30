@@ -1,79 +1,70 @@
-import unittest
+from zookeepr.tests.model import *
 
-from sqlalchemy import *
-from zookeepr.models import *
-
-class TestSubmission(unittest.TestCase):
-    def check(self):
-        self.assertEqual(len(Submission.select()), 0)
-
-    def setUp(self):
-        objectstore.clear()
-
+class TestSubmission(ModelTest):
     def test_create(self):
         """Test creation of a Submission object"""
-
-        self.check()
-
-        self.assertEqual(len(SubmissionType.select()), 0)
         
-        # set up some subtypes
-        st = SubmissionType(name='BOF')
+        self.model = 'Submission'
+
+        self.check_empty_session()
+
+        session = create_session()
+
+        st = model.SubmissionType(name='BOF')
 
         # create a person to submit with
-        v = Person('hacker', 'hacker@example.org',
-                   'p4ssw0rd',
-                   'E.',
-                   'Leet',
-                   '+6125555555')
+        v = model.Person('hacker', 'hacker@example.org',
+                         'p4ssw0rd',
+                         'E.',
+                         'Leet',
+                         '+6125555555')
 
-        # all this should just work
-        objectstore.commit()
+        print v
+        
+        session.save(st)
+        session.save(v)
+        session.flush()
 
-        s = Submission('Venal Versimilitude: Vast vocation or violition of volition?',
-                       st,
-                       'This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
-                       'Vaudeville',
-                       None)
+        s = model.Submission('Venal Versimilitude: Vast vocation or violition of volition?',
+                             st,
+                             'This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
+                             'Vaudeville',
+                             None)
+        
         # give this sub to v
         v.submissions.append(s)
-        
-        objectstore.commit()
 
-        assert len(v.submissions) == 1
+        session.save(s)
+        session.flush()
 
-        assert v.submissions[0].title == s.title
-        # check references
-        assert v.submissions[0].person.handle == v.handle
-
-        assert v.submissions[0].submission_type.name == st.name
-
-        # verify that it's in the database?
-
-        # clean up
-        sid = s.id
         vid = v.id
         stid = st.id
-
-        s.delete()
-        st.delete()
-        v.delete()
+        sid = s.id
         
-        objectstore.commit()
-
-        # clean up
-        s = Submission.get(sid)
-        self.failUnless(s is None, "submission still in database")
-
-        v = Person.get(vid)
-        self.failUnless(v is None, "person still in database")
+        session.clear()
         
-        st = SubmissionType.get(stid)
-        self.failUnless(st is None, "subtype still in database")
-
+        v = session.get(model.Person, vid)
+        s = session.get(model.Submission, sid)
+        st = session.get(model.SubmissionType, stid)
         
-        # check
-        self.check()
+        self.assertEqual(1, len(v.submissions))
+        self.assertEqual(s.title, v.submissions[0].title)
+        # check references
+        self.assertEqual(v.handle, v.submissions[0].person.handle)
+        self.assertEqual(st.name, v.submissions[0].submission_type.name)
 
-        self.assertEqual(len(SubmissionType.select()), 0)
-        self.assertEqual(len(Person.select()), 0)
+        session.delete(s)
+        session.delete(st)
+        session.delete(v)
+        session.flush()
+        
+        v = session.get(model.Person, vid)
+        self.failUnlessEqual(None, v)
+        s = session.get(model.Submission, sid)
+        self.failUnlessEqual(None, s)
+        st = session.get(model.SubmissionType, stid)
+        self.failUnlessEqual(None, st)
+        
+        session.close()
+        
+        self.check_empty_session()

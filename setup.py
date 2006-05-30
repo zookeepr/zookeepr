@@ -1,4 +1,4 @@
-#!/usr/bin/env python2.3
+#!/usr/bin/env python
 
 from setuptools import setup, find_packages
 
@@ -10,12 +10,13 @@ setup(
     #author_email="",
     #url="",
     install_requires=["Pylons==0.8.1",
-                      "SQLAlchemy==0.1.7",
+                      "SQLAlchemy==0.2.1",
                       "FormEncode==0.5.1"],
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',
     package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo',
+                               'templates/autohandler',
                                'templates/*.myt',
                                'templates/*/*.myt',
                                'public/*.css',

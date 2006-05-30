@@ -1,6 +1,6 @@
 from zookeepr.tests.table import *
 
-class TestAccountTable(TableTestBase):
+class TestAccount(TableTest):
     """Test the ``account`` table.
 
     This table stores the basic login information for a user,
@@ -15,12 +15,12 @@ class TestAccountTable(TableTestBase):
     is stored hashed in this table (but we don't care how here).
     """
     table = 'account'
-    sample = [dict(email_address='testguy@example.org',
-                   password='test',
-                   activated=False),
-              dict(email_address='testgirl@examplr.com',
-                   password='p4ssw0rd',
-                   activated=True)]
+    samples = [dict(email_address='testguy@example.org',
+                    password_hash='test',
+                    activated=False),
+               dict(email_address='testgirl@examplr.com',
+                    password_hash='p4ssw0rd',
+                    activated=True),
+               ]
     not_nullables = ['email_address', 'activated']
     uniques = ['email_address']
-    

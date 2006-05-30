@@ -2,3 +2,154 @@
 
 PEP-8 is your new god, even the parts that are based on myth and are
 self-perpetuating.
+
+
+setting up a dev environment
+++++++++++++++++++++++++++++
+
+obviously you have a checkout of zookeepr
+
+
+(where i say python2.3 here, you can replcae wuith python2.4 if you so desire.  currently the live deployment runs ina 2.3 environment so don't write code that python2.3's butt can't cash)
+
+Set up setuptools so you have a 'virtual python' (as described at the easy_install docs at peak.telecommunity.com)
+
+ * As root, you need a /usr/lib/python2.3/site-packages/altinstall.pth which tells python that you have another directory in your sys.path.  it contains:
+
+import os, site; site.addsitedir(os.path.expanduser('~/lib/python2.3'))
+
+ * You also need to tell distutils (which setuptools builds on) where to insall stuff, so make a ~/.pydistutils.cfg with the following contents:
+
+[install]
+install_lib = ~/lib/python2.3
+install_scripts = ~/bin
+
+
+Obviously, change paths to suit and make sure they're the same.
+
+ * If you have debian's python-setuptools package installed, chances are it's 0.6a9, which isn't good enough for the `nose` package (the test runner).  We need to install a new setuptools, which we can do with the existing setuptools ;-)
+
+easy_install -U -Z setuptools==0.6a11
+
+it is imperative that you get 0.6a11 because setuptools is broken and if you install 0.6b1 then nose will blow up because it can't tell that 0.6b1 is newer than 0.6a11.  Fuck my arse.
+
+(If this didn't work, you can paste the URL to 0.6a11 egg from python's cheeseshop to easy_install in place of the pacakge name and it'll DTRT)
+
+http://cheeseshop.python.org/packages/2.3/s/setuptools/setuptools-0.6a11-py2.3.egg
+
+
+ * there's a bug in easy_install now, that didn't occur when i first set it up, but bit jeff and benno.  create easy-install.pth in your lib dir: ~/lib/python2.3/easy-install.pth:
+
+import sys; sys.__plen = len(sys.path)
+setuptools-0.6a11-py2.3.egg
+import sys; new=sys.path[sys.__plen:]; del sys.path[sys.__plen:]; p=getattr(sys,'__egginsert',0); sys.path[p:p]=new; sys.__egginsert = p+len(new)
+
+
+for some reason this file always existed for me.
+
+ * you should now have a ~/bin/easy_install which you can use to install our packages in ~/lib/python2.3
+
+ * Get Pylons and SQLAlchemy, and Paste
+
+~/bin/easy_install -U -Z Paste==0.9.1 Pylons==0.8.1 SQLAlchemy==0.2.1
+
+these should pull in the packages and their dependencies.
+
+ * You also need some unstable softwares :(  Because I suck and haven't yet pulled out the useful pieces of these libraries into our tree, you have to get AuthKit and FormBuild from SVN:
+
+svn co http://pylonshq.com/svn/FormBuild/trunk FormBuild
+svn co http://pylonshq.com/svn/AuthKit/trunk AuthKit
+
+and because AuthKit is broken, you also need to apply this patch to your authkit checkout.  The reason this patch hasn't been applied upstream is because development on this version of Authkit has stopped as a new more flexible and better version is worked on.
+
+Index: authkit/middleware.py
+===================================================================
+--- authkit/middleware.py	(revision 803)
++++ authkit/middleware.py	(working copy)
+@@ -37,9 +37,10 @@
+ NOT YET FINISHED
+ """
+ 
+-import paste.wsgilib as wsgilib # JG Modified
+ import sha
++
+ from paste.deploy import converters
++from paste.request import get_cookies
+ from paste.util import import_string
+ 
+ def middleware(
+@@ -147,7 +148,7 @@
+     def login_application(environ, start_response):
+         orig_script_name = environ['SCRIPT_NAME']
+         orig_path_info = environ['PATH_INFO']
+-        cookies = wsgilib.get_cookies(environ)
++        cookies = get_cookies(environ)
+         cookie = cookies.get(cookie_name)
+         username = None
+         environ['paste.login.signer'] = signer
+@@ -330,4 +331,4 @@
+             return start_response(status, headers)
+         return self.app(environ, authkit_start_response)
+ 
+-Security = middleware
+\ No newline at end of file
++Security = middleware
+Index: authkit/controllers/__init__.py
+===================================================================
+--- authkit/controllers/__init__.py	(revision 803)
++++ authkit/controllers/__init__.py	(working copy)
+@@ -60,7 +60,7 @@
+             '/',
+         )
+         pylons.request.headers_out['Set-Cookie'] = str(cookie)
+-        pylons.request.environ['REMOTE_USER'] = ''
++        del pylons.request.environ['REMOTE_USER']
+         
+     def __signin__(self, username):
+         from authkit.middleware import SimpleCookie
+
+
+ * oh it's not over yet.  you can't install authkit without setuptools 0.6b1, so before going any further, upgrade setuptools:
+
+~/bin/easy_install -U -Z setuptools==0.6b1
+
+ * once you've checked out and patched these two, run setup.py develop from within them both, do formbuild first
+
+cd FormBuild; python setup.py develop; cd ..
+cd AuthKit; python setup.py develop
+
+ * now if all has gone to plan you have enough to start developing on zookeepr.  The standard method of setting up a dev env is to run 'setup.py develop' , like so:
+
+python2.3 setup.py develop
+
+This will make sure that you have the right versions of things installed, pulling in any extra deps that I may have missed.  In a perfect world, you wouldn't need to do any of the above setps and just run 'setup.py develop' to pull in all the deps.  unfortunately this world isn't perfect and easy_install sucks.
+
+
+
+*FINALLY*
+
+you need a DBAPI driver.  the tests use sqlite so make sure the python-sqlite2 package is installed (the other sqlite is full of bugs).
+
+the live env uses psycopg2 to connect to postgresql.
+
+RUNNING
++++++++
+
+paster serve -v --reload development.ini
+
+point your browser to localhost:5000
+
+TESTING
++++++++
+
+nosetests
+
+runs all tests
+
+nosetests --stop
+
+runs all and stops at the first error
+
+nosetests -s -v
+
+print out output as it installs
