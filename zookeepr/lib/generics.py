@@ -10,18 +10,6 @@ class Modify(object):
         oid = getattr(obj, field_name)
         return oid
 
-#     def get(self, obj, id):
-#         if not hasattr(self, 'key'):
-#             obj = self.model.get(id)
-#         else:
-#             objs = self.model.select(getattr(self.model.c, self.key)==id)
-#             if len(objs) == 0:
-#                 obj = None
-#             else:
-#                 obj = objs[0]
-#         return obj
-                                       
-        
     def new(self):
         """Create a new object.
 
@@ -44,9 +32,10 @@ class Modify(object):
         if request.method == 'POST':
 
             # update this new model object with the form data
-            new_data.update(**m.request_args[model_name])
+            for k in m.request_args[model_name]:
+                setattr(new_data, k, m.request_args[model_name][k])
             
-            if new_data.validate():
+            if True: #new_data.validate():
                 #session['message'] = 'Object has been created, now editing.'
                 #session.save()
                 # save to database
@@ -87,9 +76,10 @@ class Modify(object):
         
         if request.method == 'POST':
             # update the object with the posted data
-            obj.update(**m.request_args[model_name])
+            for k in m.request_args[model_name]:
+                setattr(obj, k, m.request_args[model_name][k])
             
-            if obj.validate():
+            if True: #obj.validate():
                 #session['message'] = 'Object has been updated successfully.'
                 session.save(obj)
                 session.flush()
