@@ -1,4 +1,4 @@
-from sqlalchemy import *
+from sqlalchemy import DynamicMetaData, Table, Column, Integer, Boolean, ForeignKey, String, PassiveDefault, DateTime
 
 metadata = DynamicMetaData(name="zookeepr core")
 
@@ -110,3 +110,5 @@ registration = Table('registration', metadata,
                             index=True,
                             ),
                      )
+
+__all__ = ['account', 'person', 'submission_type', 'submission', 'registration', 'person_role_map', 'role', 'metadata']

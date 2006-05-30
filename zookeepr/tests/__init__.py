@@ -6,7 +6,7 @@ from sqlalchemy import create_engine
 
 import zookeepr.models as model
 
-print "model:", dir(model)
+print "test init: model:", dir(model)
 
 class TestBase(TestCase):
     def assertRaisesAny(self, callable_obj, *args, **kwargs):

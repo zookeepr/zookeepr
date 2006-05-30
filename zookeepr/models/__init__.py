@@ -1,9 +1,9 @@
 import md5
 
-from sqlalchemy import *
+from sqlalchemy import mapper, relation, MapperExtension, join
 
 #import contentstor
-from tables import *
+from zookeepr.models.tables import *
 #from forms import *
 
 ## Submission Types
@@ -94,4 +94,4 @@ class Registration(object):
 
 mapper(Registration, join(account, registration), extension=AccountMapperExtension())
 
-__all__ = ['Person', 'person', 'account', 'Registration', 'Role', 'role', 'Submission', 'submission', 'SubmissionType', 'submission_type']
+__all__ = ['Person', 'person', 'account']
