@@ -2,3 +2,36 @@
 
 PEP-8 is your new god, even the parts that are based on myth and are
 self-perpetuating.
+
+
+setting up a dev environment
+++++++++++++++++++++++++++++
+
+obviously you have a checkout of zookeepr
+
+Set up setuptools so you have a 'virtual python' (as described at the easy_install docs at peak.telecommunity.com)
+
+ * As root, you need a /usr/lib/python2.3/site-packages/altinstall.pth which tells python that you have another directory in your sys.path.  it contains:
+
+import os, site; site.addsitedir(os.path.expanduser('~/lib/python2.3'))
+
+ * You also need to tell distutils (which setuptools builds on) where to insall stuff, so make a ~/.pydistutils.cfg with the following contents:
+
+[install]
+install_lib = ~/lib/python2.3
+install_scripts = ~/bin
+
+
+Obviously, change paths to suit and make sure they're the same.
+
+ * If you have debian's python-setuptools package installed, chances are it's 0.6a9, which isn't good enough for the `nose` package (the test runner).  We need to install a new setuptools, which we can do with the existing setuptools ;-)
+
+easy_install -U -Z setuptools==0.6a11
+
+(If this didn't work, you can paste the URL to 0.6a11 egg from python's cheeseshop to easy_install in place of the pacakge name and it'll DTRT)
+
+
+asdfasdf
+
+ * Make sure you have a version of setuptools that's capable of installing 
+ * Get Pylons and SQLA
