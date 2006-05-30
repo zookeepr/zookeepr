@@ -143,4 +143,4 @@ class ModelTest(TestBase):
         self.assertEqual(value, result,
                          "unexpected value on attribute '%s': got '%s', expected '%s'" % (key, result, value))
 
-__all__ = ['ModelTest', 'model']
+__all__ = ['ModelTest', 'model', 'create_session']
