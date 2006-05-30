@@ -80,13 +80,11 @@ class TableTest(TestBase):
         for sample in self.samples:
             print "testing insert of s %s" % sample
             query = self.get_table().insert()
-            print query
             query.execute(sample)
 
             for key in sample.keys():
                 col = getattr(self.get_table().c, key)
                 query = sqlalchemy.select([col])
-                print "query", query
                 result = query.execute()
                 print result
                 row = result.fetchone()
