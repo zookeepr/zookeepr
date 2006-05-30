@@ -48,21 +48,18 @@ class SubmissionType(object):
 mapper(SubmissionType, submission_type)
 
 
-# class Submission(object):
-#     def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None):
-#         self.title = title
-#         self.submission_type = submission_type
-#         self.abstract = abstract
-#         self.experience = experience
-#         self.url = url
+class Submission(object):
+    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None):
+        self.title = title
+        self.submission_type = submission_type
+        self.abstract = abstract
+        self.experience = experience
+        self.url = url
 
-
-# contentstor.modelise(SubmissionType, submission_type, SubmissionTypeSchema)
-
-# contentstor.modelise(Submission, submission, SubmissionSchema,
-#                      properties = dict(
-#     submission_type = relation(SubmissionType.mapper)
-#     ))
+mapper(Submission, submission,
+       properties = dict(
+    submission_type = relation(SubmissionType)
+    ))
 
 # contentstor.modelise(Person, p_join, PersonSchema, properties = dict(
 #     submissions = relation(Submission.mapper, private=True, backref='person')
