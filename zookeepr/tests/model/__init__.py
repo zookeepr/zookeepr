@@ -12,7 +12,7 @@ class ModelTestGenerator(type):
     """
     def __init__(cls, name, bases, classdict):
         if 'model' in classdict:
-            monkeypatch(cls, 'test_create', 'create')
+            monkeypatch(cls, 'test_crud', 'crud')
 
 
 class ModelTest(TestBase):
