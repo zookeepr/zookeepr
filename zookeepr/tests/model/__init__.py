@@ -32,7 +32,7 @@ class ModelTest(TestBase):
     somethign that mangles the value as you expect, and the test will
     check that the returned result is correct.
 
-    An example using this base class:
+    An example using this base class follows.
 
     class TestSomeModel(TestModel):
         model = 'module.User'
@@ -62,8 +62,10 @@ class ModelTest(TestBase):
         self.assertEqual(0, len(results))
 
     def create(self):
-        """Create an object of the data model, check that it was
-        inserted into the database, and then delete it.
+        """Test creation of data model object.
+
+        This test creates an object of the data model, checks that it was
+        inserted into the database, and then deletes it.
     
         Set the attributes for this model object in the ``samples`` class
         variable.
@@ -73,21 +75,21 @@ class ModelTest(TestBase):
         the value on that key a callable that mangles the sample
         data as expected.
 
-        For example:
+        For example,
 
         class TestSomeModel(ModelTest):
             model = 'mod'
             samples = [dict(password='test')]
             mangles = dict(password=lambda p: md5.new(p).hexdigest())
+        
         """
-
         self.failIf(len(self.samples) < 1,
-                    "not enough sample data, stranger")
+            "not enough sample data, stranger")
 
         session = create_session()
         
         for sample in self.samples:
-
+        
             # instantiating model
             o = self.get_model()(**sample)
     
@@ -106,12 +108,8 @@ class ModelTest(TestBase):
         
             # checking attributes
             for key in sample.keys():
-                if hasattr(self, 'mangles') and key in self.mangles.keys():
-                    value = self.mangles[key](sample[key])
-                else:
-                    value = sample[key]
-                self.assertEqual(value, getattr(o, key),
-                                 "object data invalid")
+                # generate a test on this attribute
+                self.check_attribute(o, key, sample[key])
     
             # deleting object
             session.delete(o)
@@ -121,6 +119,26 @@ class ModelTest(TestBase):
             self.check_empty_session()
 
         session.close()
+
+    def check_attribute(self, obj, key, value):
+        """Check that the attribute has the correct value.
+
+        ``obj`` is the model class being tested.
+
+        ``key`` is the name of the attribute being tested.
+
+        ``value`` is the expected value of the attribute.
+
+        This function checks the test's ``mangle`` class dictionary to
+        modify the ``value if necessary.
+        """
+        print "testing %s.%s is %s" % (obj.__class__.__name__, key, value)
+        if hasattr(self, 'mangles'):
+            if key in self.mangles.keys():
+                value = self.mangles[key](value)
+        result = getattr(obj, key)
+        self.assertEqual(value, result,
+                         "unexpected value on attribute '%s': got '%s', expected '%s'" % (key, result, value))
     
 #     def not_nullable(self):
 #         """Check nullability of certain attributes of a model object.
