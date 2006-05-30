@@ -16,7 +16,7 @@ class ModelTestGenerator(type):
 
 
 class ModelTest(TestBase):
-    """Base class for testing the data model.
+    """Base class for testing the data model classes.
 
     Derived classes should set the following attributes:
 
@@ -61,11 +61,15 @@ class ModelTest(TestBase):
         results = session.query(self.get_model()).select()
         self.assertEqual(0, len(results))
 
-    def create(self):
-        """Test creation of data model object.
+    def crud(self):
+        """Test CRUD operations on data model object.
 
         This test creates an object of the data model, checks that it was
-        inserted into the database, and then deletes it.
+        inserted into the database, and then deletes it.  We don't bother
+        testing 'update' because it's assumed that SQLAlchemy provides
+        this for us already.  We only want to test that our class behaves
+        the way we expect it (i.e. contains the data we want, and any
+        property methods do the right thing).
     
         Set the attributes for this model object in the ``samples`` class
         variable.
@@ -89,7 +93,6 @@ class ModelTest(TestBase):
         session = create_session()
         
         for sample in self.samples:
-        
             # instantiating model
             o = self.get_model()(**sample)
     
@@ -108,7 +111,7 @@ class ModelTest(TestBase):
         
             # checking attributes
             for key in sample.keys():
-                # generate a test on this attribute
+                # test each attribute
                 self.check_attribute(o, key, sample[key])
     
             # deleting object
@@ -139,89 +142,3 @@ class ModelTest(TestBase):
         result = getattr(obj, key)
         self.assertEqual(value, result,
                          "unexpected value on attribute '%s': got '%s', expected '%s'" % (key, result, value))
-    
-#     def not_nullable(self):
-#         """Check nullability of certain attributes of a model object.
-    
-#         Specify the ``not_null`` class variable with a list of attributes
-#         that must not be null, and this method will create the model
-#         object with each set to null and test for an exception from the
-#         database layer.
-#         """
-    
-#         for attr in self.not_null:
-#             # construct an attribute dictionary without the 'not null' attribute
-#             attrs = {}
-#             attrs.update(self.attrs)
-#             del attrs[attr]
-#             self.failIf(attr in attrs.keys())
-    
-#             # create the model object
-#             o = self.get_model()(**attrs)
-    
-#             #testing for not null
-#             self.assertRaises(SQLError, objectstore.flush)
-    
-#             # clearing session
-#             objectstore.clear()
-
-#         # checking
-#         self.check_empty_objectstore()
-
-#     def unique(self):
-#         """Check that certain attributes of a model object are unique.
-
-#         Specify the ``uniques`` class variable with a list of attributes
-#         that must be unique, and this method will create two copies of the
-#         model object with that attribute the same and test for an exception
-#         from the database layer.
-#         """
-
-#         for attr in self.uniques:
-#             # construct an attribute dictionary
-#             attrs = {}
-#             attrs.update(self.attrs)
-
-#             #
-#             o = self.get_model()(**attrs)
-            
-#             objectstore.flush()
-#             oid = o.id
-
-#             attrs1 = {}
-#             attrs1.update(self.attrs)
-
-#             # ugh, this sucks
-#             for k in attrs.keys():
-#                 if k <> attr:
-#                     if type(attrs1[k], types.IntType):
-#                         attr1[k] += 1
-#                     elif type(attrs1[k]) == types.StringType:
-#                         attr1[k].append('1')
-#                     else:
-#                         raise RuntimeError, "don't know how to un-unique a %s type, %s" % (type(attrs1[k]), k)
-
-#             # assert that the two attr dicts are different the way we want them
-#             del attrs[attr]
-#             del attrs1[attr]
-
-#             if attrs <> {} and attrs1 <> {}:
-#                 self.failIfEqual(attrs, attrs1)
-            
-#             attrs[attr] = self.attrs[attr]
-#             attrs1[attr] = self.attrs[attr]
-#             self.assertEqual(attrs[attr], attrs1[attr])
-
-#             o1 = self.get_model()(**attrs1)
-            
-#             self.assertRaises(SQLError, objectstore.flush)
-
-#             objectstore.clear()
-            
-#             # clean up
-#             o = self.get_model().get(oid)
-#             o.delete()
-#             objectstore.flush()
-           
-#         # check db
-#         self.check_empty_objectstore()
