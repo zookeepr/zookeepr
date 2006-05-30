@@ -56,6 +56,14 @@ BODY {
   font-size: 12pt;
 }
 
+/* logo */
+
+#logo {
+  position: absolute;
+  right: 10px;
+  top: -5px;
+}
+
 /* footer */
 
 #footer {
@@ -118,6 +126,7 @@ BODY {
 .sidebarbox {
   border: 1px solid black;
   margin: 10px;
+  margin-top: 70px;
 
   padding: 10px;
 }
