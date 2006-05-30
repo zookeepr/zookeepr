@@ -49,29 +49,29 @@ submission_type = Table('submission_type', metadata,
                                nullable=False),
                         )
 
-# # submissions to the conference
-# submission = Table('submission',
-#                    Column('id', Integer, primary_key=True),
+# submissions to the conference
+submission = Table('submission', metadata,
+                   Column('id', Integer, primary_key=True),
 
-#                    # title of submission
-#                    Column('title', String()),
-#                    # abstract or description
-#                    Column('abstract', String()),
+                   # title of submission
+                   Column('title', String()),
+                   # abstract or description
+                   Column('abstract', String()),
 
-#                    # type, enumerated in the submission_type table
-#                    Column('submission_type_id', Integer,
-#                           ForeignKey('submission_type.id')),
+                   # type, enumerated in the submission_type table
+                   Column('submission_type_id', Integer,
+                          ForeignKey('submission_type.id')),
 
-#                    # person submitting
-#                    Column('person_id', Integer,
-#                           ForeignKey('person.id')),
+                   # person submitting
+                   Column('person_id', Integer,
+                          ForeignKey('person.id')),
 
-#                    # their bio/experience presenting this topic
-#                    Column('experience', String()),
+                   # their bio/experience presenting this topic
+                   Column('experience', String()),
 
-#                    # url to a project page
-#                    Column('url', String())
-#                    )
+                   # url to a project page
+                   Column('url', String())
+                   )
 
 # role = Table('role',
 #              Column('id', Integer, primary_key=True),
