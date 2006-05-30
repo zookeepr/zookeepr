@@ -73,15 +73,16 @@ submission = Table('submission', metadata,
                    Column('url', String())
                    )
 
-# role = Table('role',
-#              Column('id', Integer, primary_key=True),
+# describe account roles to grant levels of access
+role = Table('role', metadata,
+              Column('id', Integer, primary_key=True),
 
-#              # name of role
-#              Column('name', String,
-#                     # FIXME: workaround a bug in SQLAlchemy 0.1.7
-#                     unique='role_ux_name',
-#                     nullable=False)
-#              )
+              # name of role
+              Column('name', String,
+                     # FIXME: workaround a bug in SQLAlchemy 0.1.7
+                     unique='role_ux_name',
+                     nullable=False)
+              )
 
 # person_role_map = Table('person_role_map',
 #                         Column('person_id', Integer, ForeignKey('person.id')),
