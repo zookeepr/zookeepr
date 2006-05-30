@@ -141,6 +141,6 @@ class ModelTest(TestBase):
                 value = self.mangles[key](value)
         result = getattr(obj, key)
         self.assertEqual(value, result,
-                         "unexpected value on attribute '%s': got '%s', expected '%s'" % (key, result, value))
+                         "unexpected value on attribute '%s': expected '%s', got '%s'" % (key, value, result))
 
 __all__ = ['ModelTest', 'model', 'create_session']

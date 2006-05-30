@@ -51,7 +51,7 @@ class Person(object):
     password = property(_get_password, _set_password)
 
 # FIXME: hack to work around bug 191 in SQLAlchemy
-class NToOneMapperExtension(MapperExtension):
+class AccountMapperExtension(MapperExtension):
     def after_insert(self, mapper, connection, instance):
         for table in mapper.tables:
             if table.name == 'account':
@@ -60,7 +60,7 @@ class NToOneMapperExtension(MapperExtension):
                     break
         instance.account_id = account_id
         
-mapper(Person, join(account, person), extension=NToOneMapperExtension(),
+mapper(Person, join(account, person), extension=AccountMapperExtension(),
        properties = dict(
     submissions = relation(Submission, private=True, backref='person')
     )
@@ -77,13 +77,19 @@ mapper(Role, role, properties = dict(
                       backref='roles')
     ))
 
-# class Registration(object):
-#     def __init__(self, timestamp=None, url_hash=None):
-#         self.timestamp = timestamp
-#         self.url_hash = url_hash
+class Registration(object):
+     def __init__(self, timestamp=None, url_hash=None, email_address=None, password=None):
+         self.timestamp = timestamp
+         self.url_hash = url_hash
+         self.email_address = email_address
+         self.password = password
 
-# contentstor.modelise(Registration, registration, None,
-#                      properties = {
-#     'person': relation(Person.mapper)
-#     })
+     def _set_password(self, value):
+         self.password_hash = md5.new(value).hexdigest()
 
+     def _get_password(self):
+         return self.password_hash
+
+     password = property(_get_password, _set_password)
+
+mapper(Registration, join(account, registration), extension=AccountMapperExtension())

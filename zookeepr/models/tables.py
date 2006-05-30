@@ -99,8 +99,9 @@ registration = Table('registration', metadata,
                             ),
 
                      # link to the account details
-                     Column('person_id', Integer,
-                            ForeignKey('person.id'),
+                     Column('account_id', Integer,
+                            ForeignKey('account.id'),
+                            nullable=False,
                             ),
 
                      # hash of the url generated for easy lookup
