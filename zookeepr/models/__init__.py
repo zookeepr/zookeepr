@@ -6,6 +6,8 @@ from sqlalchemy import *
 from tables import *
 #from forms import *
 
+
+# Persons
 class Person(object):
     def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
         self.handle = handle
@@ -38,9 +40,12 @@ class NToOneMapperExtension(MapperExtension):
         
 mapper(Person, join(account, person), extension=NToOneMapperExtension())
 
-# class SubmissionType(object):
-#     def __init__(self, name=None):
-#         self.name = name
+## Submission Types
+class SubmissionType(object):
+    def __init__(self, name=None):
+        self.name = name
+
+mapper(SubmissionType, submission_type)
 
 
 # class Submission(object):

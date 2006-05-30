@@ -3,7 +3,9 @@ import unittest
 from sqlalchemy import *
 from zookeepr.models import *
 
-# class TestSubmission(unittest.TestCase):
+#class TestSubmission(ModelTest):
+#    model = 'Submission'
+#    samples = [dict(
 #     def check(self):
 #         self.assertEqual(len(Submission.select()), 0)
 
