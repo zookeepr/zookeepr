@@ -1,3 +1,7 @@
+<div id="logo">
+<img src="sicktux.png" alt="lca 2k7 logo" />
+</div>
+
 <div class="sidebarbox">
 
 % if r.environ.has_key('REMOTE_USER'):
