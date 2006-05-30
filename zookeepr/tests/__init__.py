@@ -6,6 +6,8 @@ from sqlalchemy import create_engine
 
 import zookeepr.models as model
 
+print "model:", dir(model)
+
 class TestBase(TestCase):
     def assertRaisesAny(self, callable_obj, *args, **kwargs):
         """Assert that the ``callable_obj`` raises any exception."""

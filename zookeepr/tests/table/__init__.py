@@ -2,6 +2,8 @@ import sqlalchemy
 
 from zookeepr.tests import TestBase, monkeypatch, model
 
+print "table.init model:", dir(model)
+
 class TableTestGenerator(type):
     """Monkeypatching metaclass for table schema test classes.
     
@@ -54,6 +56,7 @@ class TableTest(TestBase):
         """
         module = model
         # cope with classes in sub-models
+        print dir(module)
         for submodule in self.table.split('.'):
             module = getattr(module, submodule)
         return module

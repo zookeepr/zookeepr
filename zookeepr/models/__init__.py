@@ -93,3 +93,5 @@ class Registration(object):
      password = property(_get_password, _set_password)
 
 mapper(Registration, join(account, registration), extension=AccountMapperExtension())
+
+__all__ = ['Person', 'person', 'account', 'Registration', 'Role', 'role', 'Submission', 'submission', 'SubmissionType', 'submission_type']
