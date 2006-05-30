@@ -142,3 +142,5 @@ class ModelTest(TestBase):
         result = getattr(obj, key)
         self.assertEqual(value, result,
                          "unexpected value on attribute '%s': got '%s', expected '%s'" % (key, result, value))
+
+__all__ = ['ModelTest', 'model']

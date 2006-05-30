@@ -167,6 +167,4 @@ class TableTest(TestBase):
 
             self.check_empty_table()
 
-
-
-
+__all__ = ['TableTest', 'model']
