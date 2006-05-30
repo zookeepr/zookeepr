@@ -26,12 +26,20 @@ class ModelTest(TestBase):
     ``samples`` is a list of dictionaries of attributes to use when
     creating test model objects.
 
+    ``mangles`` is a dictionary mapping attributes to functions, for
+    attributes that are modified by the model object so that the value
+    returned is not the same as the one set.  Set the function to
+    somethign that mangles the value as you expect, and the test will
+    check that the returned result is correct.
+
     An example using this base class:
 
     class TestSomeModel(TestModel):
         model = 'module.User'
         samples = [dict(name='testguy',
-                        email_address='test@example.org')]
+                        email_address='test@example.org',
+                        password='test')]
+        mangles = dict(password=lambda p: return md5.new(p).hexdigest())
     """
     __metaclass__ = ModelTestGenerator
 
@@ -57,8 +65,20 @@ class ModelTest(TestBase):
         """Create an object of the data model, check that it was
         inserted into the database, and then delete it.
     
-        Set the attributes for this model object in the ``attrs`` class
+        Set the attributes for this model object in the ``samples`` class
         variable.
+
+        If an attribute goes through a mangle process, list it in the
+        ``mangles`` dictionary, keyed on the attribute name, and make
+        the value on that key a callable that mangles the sample
+        data as expected.
+
+        For example:
+
+        class TestSomeModel(ModelTest):
+            model = 'mod'
+            samples = [dict(password='test')]
+            mangles = dict(password=lambda p: return md5.new(p).hexdigest())
         """
 
         self.failIf(len(self.samples) < 1,
@@ -85,8 +105,12 @@ class ModelTest(TestBase):
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
-            for key in self.attrs.keys():
-                self.assertEqual(sample[key], getattr(o, key),
+            for key in sample.keys():
+                if hasattr(self, 'mangles') and key in self.mangles.keys():
+                    value = self.mangles[key](sample[key])
+                else:
+                    value = sample[key]
+                self.assertEqual(value, getattr(o, key),
                                  "object data invalid")
     
             # deleting object
