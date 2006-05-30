@@ -26,7 +26,17 @@ class Person(object):
 
     password = property(_get_password, _set_password)
 
-mapper(Person, join(account, person))
+# FIXME: hack to work around bug 191 in SQLAlchemy
+class NToOneMapperExtension(MapperExtension):
+    def after_insert(self, mapper, connection, instance):
+        for table in mapper.tables:
+            if table.name == 'account':
+                for col in mapper.pks_by_table[table]:
+                    account_id = mapper._getattrbycolumn(instance, col)
+                    break
+        instance.account_id = account_id
+        
+mapper(Person, join(account, person), extension=NToOneMapperExtension())
 
 # class SubmissionType(object):
 #     def __init__(self, name=None):
