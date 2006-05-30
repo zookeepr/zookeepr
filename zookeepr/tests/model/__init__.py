@@ -39,7 +39,7 @@ class ModelTest(TestBase):
         samples = [dict(name='testguy',
                         email_address='test@example.org',
                         password='test')]
-        mangles = dict(password=lambda p: return md5.new(p).hexdigest())
+        mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
     __metaclass__ = ModelTestGenerator
 
@@ -78,7 +78,7 @@ class ModelTest(TestBase):
         class TestSomeModel(ModelTest):
             model = 'mod'
             samples = [dict(password='test')]
-            mangles = dict(password=lambda p: return md5.new(p).hexdigest())
+            mangles = dict(password=lambda p: md5.new(p).hexdigest())
         """
 
         self.failIf(len(self.samples) < 1,
