@@ -1,5 +1,5 @@
 <div id="logo">
-<img src="sicktux.png" alt="lca 2k7 logo" />
+<img src="/sicktux.png" alt="lca 2k7 logo" />
 </div>
 
 <div class="sidebarbox">
