@@ -62,8 +62,52 @@ svn co http://pylonshq.com/svn/FormBuild/trunk FormBuild
 
 and because AuthKit is broken, you also need to apply this patch to your authkit checkout.  The reason this patch hasn't been applied upstream is because development on this version of Authkit has stopped as a new more flexible and better version is worked on.
 
+Index: authkit/middleware.py
+===================================================================
+--- authkit/middleware.py	(revision 803)
++++ authkit/middleware.py	(working copy)
+@@ -37,9 +37,10 @@
+ NOT YET FINISHED
+ """
+ 
+-import paste.wsgilib as wsgilib # JG Modified
+ import sha
++
+ from paste.deploy import converters
++from paste.request import get_cookies
+ from paste.util import import_string
+ 
+ def middleware(
+@@ -147,7 +148,7 @@
+     def login_application(environ, start_response):
+         orig_script_name = environ['SCRIPT_NAME']
+         orig_path_info = environ['PATH_INFO']
+-        cookies = wsgilib.get_cookies(environ)
++        cookies = get_cookies(environ)
+         cookie = cookies.get(cookie_name)
+         username = None
+         environ['paste.login.signer'] = signer
+@@ -330,4 +331,4 @@
+             return start_response(status, headers)
+         return self.app(environ, authkit_start_response)
+ 
+-Security = middleware
+\ No newline at end of file
++Security = middleware
+Index: authkit/controllers/__init__.py
+===================================================================
+--- authkit/controllers/__init__.py	(revision 803)
++++ authkit/controllers/__init__.py	(working copy)
+@@ -60,7 +60,7 @@
+             '/',
+         )
+         pylons.request.headers_out['Set-Cookie'] = str(cookie)
+-        pylons.request.environ['REMOTE_USER'] = ''
++        del pylons.request.environ['REMOTE_USER']
+         
+     def __signin__(self, username):
+         from authkit.middleware import SimpleCookie
 
-PATCH HERE
 
  * now if all has gone to plan you have enough to start developing on zookeepr.  The standard method of setting up a dev env is to run 'setup.py develop' , like so:
 
