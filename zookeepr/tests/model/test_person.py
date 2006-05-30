@@ -1,6 +1,5 @@
 import md5
 
-from zookeepr.models import *
 from zookeepr.tests.model import *
 
 class TestPerson(ModelTest):
@@ -26,53 +25,6 @@ class TestPerson(ModelTest):
     mangles = dict(password=lambda p: md5.new(p).hexdigest())
 
 # class TestPersonModel(unittest.TestCase):
-#     def test_new(self):
-#         """Test simple creation of a Person object"""
-
-#         # first let's assert that theres nothing in there
-#         ps = Person.select()
-#         self.failUnless(len(ps) == 0, "database is not empty")
-
-#         p = Person('testguy',
-#                    'testguy@example.org',
-#                    'p4ssw0rd',
-#                    'Testguy',
-#                    'McTest',
-#                    '+61295555555')
-
-#         objectstore.commit()
-#         pid = p.id
-
-#         objectstore.clear()
-
-#         p = Person.get(pid)
-
-#         print pid
-
-#         assert p.handle == 'testguy'
-#         assert p.email_address == 'testguy@example.org'
-
-#         # check password was hashed:
-#         hasher = md5.new('p4ssw0rd')
-#         assert p.password_hash == hasher.hexdigest()
-
-#         assert p.firstname == 'Testguy'
-#         assert p.lastname == 'McTest'
-
-#         assert p.phone == '+61295555555'
-        
-#         # verify that it's in the database?
-
-#         p = Person.get(pid)
-#         self.failUnless(p.handle == 'testguy')
-
-#         # clean up
-#         p.delete()
-#         objectstore.commit()
-#         # check
-#         ps = Person.select()
-#         assert len(ps) == 0
-
 #     def test_unique_handle(self):
 #         """Test that the handle attribute of Person is unique"""
 
