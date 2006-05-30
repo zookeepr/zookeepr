@@ -125,6 +125,13 @@ python2.3 setup.py develop
 This will make sure that you have the right versions of things installed, pulling in any extra deps that I may have missed.  In a perfect world, you wouldn't need to do any of the above setps and just run 'setup.py develop' to pull in all the deps.  unfortunately this world isn't perfect and easy_install sucks.
 
 
+
+*FINALLY*
+
+you need a DBAPI driver.  the tests use sqlite so make sure the python-sqlite2 package is installed (the other sqlite is full of bugs).
+
+the live env uses psycopg2 to connect to postgresql.
+
 RUNNING
 +++++++
 
