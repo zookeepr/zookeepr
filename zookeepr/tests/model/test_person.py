@@ -1,5 +1,4 @@
 import md5
-import os
 
 from zookeepr.models import *
 from zookeepr.tests.model import *
@@ -23,10 +22,8 @@ class TestPerson(ModelTest):
                     fax="42",
                     ),
                ]
-    
 
-               
-                    
+    mangles = dict(password=lambda p: md5.new(p).hexdigest())
 
 # class TestPersonModel(unittest.TestCase):
 #     def test_new(self):
