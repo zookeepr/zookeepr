@@ -109,7 +109,14 @@ Index: authkit/controllers/__init__.py
          from authkit.middleware import SimpleCookie
 
 
+ * oh it's not over yet.  you can't install authkit without setuptools 0.6b1, so before going any further, upgrade setuptools:
+
+~/bin/easy_install -U -Z setuptools==0.6b1
+
  * once you've checked out and patched these two, run setup.py develop from within them both, do formbuild first
+
+cd FormBuild; python setup.py develop; cd ..
+cd AuthKit; python setup.py develop
 
  * now if all has gone to plan you have enough to start developing on zookeepr.  The standard method of setting up a dev env is to run 'setup.py develop' , like so:
 
