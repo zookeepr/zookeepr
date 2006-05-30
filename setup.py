@@ -16,6 +16,7 @@ setup(
     include_package_data=True,
     test_suite = 'nose.collector',
     package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo',
+                               'templates/autohandler',
                                'templates/*.myt',
                                'templates/*/*.myt',
                                'public/*.css',
