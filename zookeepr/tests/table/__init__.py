@@ -1,7 +1,6 @@
 import sqlalchemy
 
-import zookeepr.models as model
-from zookeepr.tests import TestBase, monkeypatch
+from zookeepr.tests import TestBase, monkeypatch, model
 
 class TableTestGenerator(type):
     """Monkeypatching metaclass for table schema test classes.

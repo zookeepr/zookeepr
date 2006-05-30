@@ -1,9 +1,6 @@
-from sqlalchemy import create_session
+from zookeepr.tests.functional import *
 
-from zookeepr.tests import *
-from zookeepr.models import *
-
-class TestRoleController(TestController):
+class TestRoleController(ControllerTest):
 #     def test_index(self):
 #         print
 #         print "url for role is %s" % url_for(controller='role')
@@ -11,13 +8,10 @@ class TestRoleController(TestController):
 #         # Test response...
 #         print response
 
-    def setUp(self):
-        self.session = create_session()
-
-    def tearDown(self):
-        self.assertEqual([], self.session.query(Role).select())
-        self.session.close()
-        del self.session
+#     def tearDown(self):
+#         self.assertEqual([], self.session.query(model.Role).select())
+#         self.session.close()
+#         del self.session
 
     def test_create(self):
         """Test create action on /role"""
@@ -31,7 +25,7 @@ class TestRoleController(TestController):
                             params={'role.name': 'admin'})
 
         # check that it's in the database
-        rs = self.session.query(Role).select_by(name='admin')
+        rs = self.session.query(model.Role).select_by(name='admin')
         self.failIf(len(rs) == 0, "object not in database")
         self.failUnless(len(rs) == 1, "too many objects in database")
         r = rs[0]
@@ -43,10 +37,8 @@ class TestRoleController(TestController):
     def test_edit(self):
         """Test edit operation on /role"""
 
-        session = create_session()
-
         # create something in the db
-        r = Role(name='admin')
+        r = model.Role(name='admin')
         self.session.save(r)
         self.session.flush()
         rid = r.id
@@ -60,7 +52,7 @@ class TestRoleController(TestController):
                             params={'role.name': 'speaker'})
 
         # check db
-        r = self.session.get(Role, rid)
+        r = self.session.get(model.Role, rid)
         self.assertEqual(r.name, "speaker")
 
         # clean up
@@ -68,16 +60,14 @@ class TestRoleController(TestController):
         self.session.flush()
 
         # check
-        self.assertEqual([], self.session.query(Role).select())
+        self.assertEqual([], self.session.query(model.Role).select())
         self.session.close()
 
     def test_delete(self):
         """Test delete operation on /role"""
 
-        self.session = create_session()
-
         # create something
-        r = Role(name='admin')
+        r = model.Role(name='admin')
         self.session.save(r)
         self.session.flush()
         rid = r.id
@@ -90,17 +80,17 @@ class TestRoleController(TestController):
         res = self.app.post(u)
 
         # check db
-        r = self.session.get(Role, rid)
+        r = self.session.get(model.Role, rid)
         self.failUnless(r is None, "object was not deleted")
 
         # check
-        self.assertEqual([], self.session.query(Role).select())
+        self.assertEqual([], self.session.query(model.Role).select())
         self.session.close()
 
     def test_invalid_get_on_edit(self):
         """Test that GET requests on role edit don't modify data"""
         # create some data
-        r = Role(name='admin')
+        r = model.Role(name='admin')
         self.session.save(r)
         self.session.flush()
         rid = r.id
@@ -110,7 +100,7 @@ class TestRoleController(TestController):
         res = self.app.get(u, params={'role.name':'feh'})
 
         # check db
-        r = self.session.get(Role, rid)
+        r = self.session.get(model.Role, rid)
         self.failUnless(r.name == 'admin')
 
         # clean up
@@ -120,7 +110,7 @@ class TestRoleController(TestController):
     def test_invalid_get_on_delete(self):
         """Test that GET requests on role delete don't modify data"""
         # create some data
-        r = Role(name='admin')
+        r = model.Role(name='admin')
         self.session.save(r)
         self.session.flush()
         rid = r.id
@@ -129,11 +119,11 @@ class TestRoleController(TestController):
         u = url_for(controller='/role', action='delete', id=rid)
         res = self.app.get(u)
         # check
-        self.session.get(Role, rid)
+        self.session.get(model.Role, rid)
         self.failIf(r is None, "object was deleted")
         
         # clean up
-        r = self.session.get(Role, rid)
+        r = self.session.get(model.Role, rid)
         self.session.delete(r)
         self.session.flush()
 
@@ -141,7 +131,7 @@ class TestRoleController(TestController):
         """Test that GET requests on role new don't modify data"""
 
         # verify there's nothing in there
-        self.assertEqual([], self.session.query(Role).select())
+        self.assertEqual([], self.session.query(model.Role).select())
         
         u = url_for(controller='/role', action='new')
         res = self.app.get(u, params={'role.name': 'buzzn'})
@@ -150,8 +140,7 @@ class TestRoleController(TestController):
         """Test delete of nonexistent roles is caught"""
 
         # verify there's nothing in there
-        self.assertEqual([], self.session.query(Role).select())
+        self.assertEqual([], self.session.query(model.Role).select())
         
         u = url_for(controller='/role', action='delete', id=1)
         res = self.app.post(u)
-
