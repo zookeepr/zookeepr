@@ -57,8 +57,8 @@ these should pull in the packages and their dependencies.
 
  * You also need some unstable softwares :(  Because I suck and haven't yet pulled out the useful pieces of these libraries into our tree, you have to get AuthKit and FormBuild from SVN:
 
-svn co http://pylonshq.com/svn/AuthKit/trunk AuthKit
 svn co http://pylonshq.com/svn/FormBuild/trunk FormBuild
+svn co http://pylonshq.com/svn/AuthKit/trunk AuthKit
 
 and because AuthKit is broken, you also need to apply this patch to your authkit checkout.  The reason this patch hasn't been applied upstream is because development on this version of Authkit has stopped as a new more flexible and better version is worked on.
 
@@ -108,6 +108,8 @@ Index: authkit/controllers/__init__.py
      def __signin__(self, username):
          from authkit.middleware import SimpleCookie
 
+
+ * once you've checked out and patched these two, run setup.py develop from within them both, do formbuild first
 
  * now if all has gone to plan you have enough to start developing on zookeepr.  The standard method of setting up a dev env is to run 'setup.py develop' , like so:
 
