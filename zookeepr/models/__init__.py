@@ -21,7 +21,7 @@ class Person(object):
     def _set_password(self, password):
         self.password_hash = md5.new(password).hexdigest()
 
-    def _get_password(self, value):
+    def _get_password(self):
         return self.password_hash
 
     password = property(_get_password, _set_password)
