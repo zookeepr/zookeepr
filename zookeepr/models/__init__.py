@@ -6,8 +6,30 @@ from sqlalchemy import *
 from tables import *
 #from forms import *
 
+## Submission Types
+class SubmissionType(object):
+    def __init__(self, name=None):
+        self.name = name
 
-# Persons
+mapper(SubmissionType, submission_type)
+
+
+## Submissions
+class Submission(object):
+    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None):
+        self.title = title
+        self.submission_type = submission_type
+        self.abstract = abstract
+        self.experience = experience
+        self.url = url
+
+mapper(Submission, submission,
+       properties = dict(
+    submission_type = relation(SubmissionType)
+    ))
+
+
+## Persons
 class Person(object):
     def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
         self.handle = handle
@@ -38,33 +60,11 @@ class NToOneMapperExtension(MapperExtension):
                     break
         instance.account_id = account_id
         
-mapper(Person, join(account, person), extension=NToOneMapperExtension())
-
-## Submission Types
-class SubmissionType(object):
-    def __init__(self, name=None):
-        self.name = name
-
-mapper(SubmissionType, submission_type)
-
-
-class Submission(object):
-    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None):
-        self.title = title
-        self.submission_type = submission_type
-        self.abstract = abstract
-        self.experience = experience
-        self.url = url
-
-mapper(Submission, submission,
+mapper(Person, join(account, person), extension=NToOneMapperExtension(),
        properties = dict(
-    submission_type = relation(SubmissionType)
-    ))
-
-# contentstor.modelise(Person, p_join, PersonSchema, properties = dict(
-#     submissions = relation(Submission.mapper, private=True, backref='person')
-#     ),
-#                      primary_key = [person.c.id])
+    submissions = relation(Submission, private=True, backref='person')
+    )
+       )
 
 # class Role(object):
 #     def __init__(self, name=None):

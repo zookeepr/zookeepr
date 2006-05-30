@@ -52,12 +52,10 @@ class TestSubmission(ModelTest):
         # check references
         self.assertEqual(v.handle, v.submissions[0].person.handle)
         self.assertEqual(st.name, v.submissions[0].submission_type.name)
-        
-        s.delete()
-        st.delete()
-        v.delete()
-        
-        session.save([s, st, v])
+
+        session.delete(s)
+        session.delete(st)
+        session.delete(v)
         session.flush()
         
         v = session.get(model.Person, vid)
