@@ -12,7 +12,7 @@ class Person(object):
         self.email_address = email_address
 
         if password is not None:
-            self.password_hash = md5.new(password).hexdigest()
+            self.password = password
         self.firstname = firstname
         self.lastname = lastname
         self.phone = phone
