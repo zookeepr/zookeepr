@@ -21,8 +21,9 @@ class ControllerTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
-        if 'url' in classdict and 'model' in classdict:
-            monkeypatch(mcs, 'test_create', 'create')
+
+        for t in ['create', 'edit', 'delete']:
+            monkeypatch(mcs, 'test_' + t, t)
 
 class ControllerTest(TestBase):
     __metaclass__ = ControllerTestGenerator
@@ -44,6 +45,13 @@ class ControllerTest(TestBase):
         self.assertEqual([], self.session.query(self.model).select())
 
 
+    def form_params(self, params):
+        result = {}
+        for key in params.keys():
+            result[self.name + '.' + key] = params[key]
+        print result
+        return result
+    
     def create(self):
         """Test create action on controller"""
 
@@ -57,14 +65,63 @@ class ControllerTest(TestBase):
         response = self.app.get(url)
 
         # post some sample data
-        response = self.app.post(url, params=self.sample)
+        response = self.app.post(url, params=self.form_params(self.samples[0]))
 
         # now check that the data is in the database
         os = self.session.query(self.model).select()
         self.assertNotEqual(0, len(os))
         self.assertEqual(1, len(os))
 
+        for key in self.samples[0].keys():
+            self.assertEqual(self.samples[0][key], getattr(os[0], key))
+
         self.session.delete(os[0])
         self.session.flush()
+
+    def edit(self):
+        """Test edit action on controller"""
+
+        # create an instance of the model
+        o = self.model(**self.samples[0])
+        self.session.save(o)
+        self.session.flush()
+        oid = o.id
+        self.session.clear()
+
+        # 
+        url = url_for(controller=self.url, action='edit', id=oid)
+
+        # get the page before posting, see create above for details
+        response = self.app.get(url)
+
+        response = self.app.post(url, params=self.form_params(self.samples[1]))
+
+        # test
+        o = self.session.get(self.model, oid)
+        for k in self.samples[1].keys():
+            self.assertEqual(self.samples[1][k], getattr(o, k))
+
+        self.session.delete(o)
+        self.session.flush()
+
+    def delete(self):
+        """Test delete action on controller"""
+
+        # create something
+        o = self.model(**self.samples[0])
+        self.session.save(o)
+        self.session.flush()
+        oid = o.id
+        self.session.clear()
+
+        ## delete it
+        url = url_for(controller=self.url, action='delete', id=oid)
+        # get the form
+        response = self.app.get(url)
+        response = self.app.post(url)
+
+        # check db
+        o = self.session.get(self.model, oid)
+        self.assertEqual(None, o)
 
 __all__ = ['ControllerTest', 'model', 'url_for']
