@@ -21,6 +21,7 @@ class CfpController(BaseController):
                 # save to database
                 session.save(new_person)
                 session.save(new_submission)
+                print "things flushed"
                 session.flush()
                 session.close()
                 

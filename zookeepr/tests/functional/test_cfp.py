@@ -1,3 +1,5 @@
+import md5
+
 from zookeepr.tests.functional import *
 
 class TestCfpController(ControllerTest):
@@ -37,7 +39,7 @@ class TestCfpController(ControllerTest):
         res = self.app.post(u, params=params, upload_files=files)
 
         ## check that it's in the database
-        ps = session.query(Person).select_by(handle='testguy')
+        ps = self.session.query(model.Person).select_by(handle='testguy')
         self.failIf(len(ps) == 0, "person object not in database")
         self.failUnless(len(ps) == 1, "too many person objects in database")
 
@@ -47,7 +49,7 @@ class TestCfpController(ControllerTest):
         self.failUnless(ps[0].email_address == 'testguy@example.org')
         self.failUnless(ps[0].password_hash == md5.new('p4ssw0rd').hexdigest())
 
-        ss = Submission.select_by(title='My Awesome Paper')
+        ss = self.session.query(model.Submission).select_by(title='My Awesome Paper')
         self.failIf(len(ss) == 0, "submission object not in database")
         self.failUnless(len(ss) == 1, "too many submission objects in database")
 
@@ -65,9 +67,9 @@ class TestCfpController(ControllerTest):
         self.session.delete(st)
         self.session.flush()
         # check
-        ss = session.query(Submission).select()
+        ss = self.session.query(Submission).select()
         self.failUnless(len(ss) == 0, "submission database not empty")
-        ps = session.query(Person).select()
+        ps = self.session.query(Person).select()
         self.failUnless(len(ps) == 0, "person database not empty")
-        sts = session.query(SubmissionType).select()
+        sts = self.session.query(SubmissionType).select()
         self.failUnless(len(sts) == 0, "submissino type database not empty")
