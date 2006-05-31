@@ -46,14 +46,27 @@ class ControllerTest(TestBase):
     ``samples`` is a list of dictionaries of data to use when testing
     CRUD operations.
 
+    ``no_test`` is a list of attributes that should not be compared when
+    comparing the model to the form data, e.g. password confirmation
+    boxes.
+
+    ``mangles`` is a dictionary of attributes that are mangled by the
+    form submission process, e.g. passwords that are hashed.
+
     An example using this base class:
 
     class TestSomeController(ControllerTest):
         name = 'Person'
         model = model.Person
         url = '/person'
-        samples = [dict(name='testguy'),
-                   dict(name='testgirl')]
+        samples = [dict(name='testguy',
+                        password='test',
+                        password_confirm='test'),
+                   dict(name='testgirl',
+                        password='stuff',
+                        password_confirm='stuff')]
+        no_test = ['password_confirm']
+        mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
     __metaclass__ = ControllerTestGenerator
     
