@@ -16,6 +16,7 @@ BODY {
 
 #footer {
   clear:both;
+  margin-top: 20px;
 }
 
 /** pretty design bits follow **/
@@ -124,11 +125,43 @@ BODY {
 /* sidebar */
 
 .sidebarbox {
-  border: 1px solid black;
   margin: 10px;
   margin-top: 70px;
 
-  padding: 10px;
+  border: none;
+
+  padding: 0;
+  color: white;
+  background: url(side-right.png) repeat-y right black;
+}
+
+.sidebarcontent {
+  padding: 20px;
+  min-height: 300px;
+}
+
+#sidebarboxTR, #sidebarboxBR {
+  float: right;
+}
+
+#sidebarboxTR {
+  background: url(side-topright.png) no-repeat top right;
+}
+
+#sidebarboxTL {
+  background: url(side-topleft.png) no-repeat top left;
+}
+
+#sidebarboxBR {
+  background: url(side-bottomright.png) no-repeat bottom right;
+}
+
+#sidebarboxBL {
+  background: url(side-bottomleft.png) no-repeat bottom left;
+}
+
+#sidebarboxB {
+  background: url(side-bottom.png) repeat-x bottom black;
 }
 
 /* content body */
