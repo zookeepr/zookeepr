@@ -12,9 +12,18 @@ class CfpController(BaseController):
 
         if request.method == 'POST':
             for k in m.request_args['person']:
-                setattr(new_person, k, m.request_args['person'][k])
+                if hasattr(m.request_args['person'][k], 'value'):
+                    v = m.request_args['person'][k].value
+                else:
+                    v = m.request_args['person'][k]
+                setattr(new_person, k, v)
+                
             for k in m.request_args['submission']:
-                setattr(new_submission, k, m.request_args['submission'][k])
+                if hasattr(m.request_args['submission'][k], 'value'):
+                    v = m.request_args['submission'][k].value
+                else:
+                    v = m.request_args['submission'][k]
+                setattr(new_submission, k, v)
                 
             new_submission.person = new_person
 
