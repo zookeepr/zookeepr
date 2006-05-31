@@ -73,7 +73,8 @@ class ControllerTest(TestBase):
 
     def assertEmptyModel(self):
         """Check that there are no models"""
-        self.assertEqual([], self.session.query(self.model).select())
+        if hasattr(self, 'model'):
+            self.assertEqual([], self.session.query(self.model).select())
 
 
     def form_params(self, params):
