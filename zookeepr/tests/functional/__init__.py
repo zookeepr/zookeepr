@@ -28,7 +28,7 @@ class ControllerTestGenerator(type):
                       'invalid_get_on_edit',
                       'invalid_get_on_delete',
                       'invalid_get_on_new',
-                      'invalid_delete']:
+                      'delete_nonexistent']:
                 monkeypatch(mcs, 'test_' + t, t)
 
 class ControllerTest(TestBase):
@@ -253,7 +253,7 @@ class ControllerTest(TestBase):
         url = url_for(controller=self.url, action='new')
         res = self.app.get(url, params=self.form_params(self.samples[0]))
 
-    def invalid_delete(self):
+    def delete_nonexistent(self):
         #"""Test delete of nonexistent object is caught"""
 
         # verify there's nothing in there
