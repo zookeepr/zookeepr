@@ -25,8 +25,6 @@
 <% h.link_to(c.submission.url) %><br />
 </p>
 
-% h.log(c.submission.person)
-
 % if c.submission.person:
 <p>
 <b>Person:</b>
