@@ -11,11 +11,13 @@ class CfpController(BaseController):
         new_submission = model.Submission()
 
         if request.method == 'POST':
-            new_person.update(**m.request_args['person'])
-            new_submission.update(**m.request_args['submission'])
+            for k in m.request_args['person']:
+                setattr(new_person, k, m.request_args['person'][k])
+            for k in m.request_args['submission']:
+                setattr(new_person, k, m.request_args['submission'][k])
             new_submission.person = new_person
 
-            if new_person.validate() and new_submission.validate():
+            if True: #new_person.validate() and new_submission.validate():
                 # save to database
                 session.save()
                 session.flush()

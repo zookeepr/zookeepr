@@ -1,6 +1,6 @@
-from zookeepr.tests import *
+from zookeepr.tests.functional import *
 
-class TestRegisterController(TestController):
+class TestRegisterController(ControllerTest):
     def test_index(self):
         #response = self.app.get(url_for(controller='register'))
         # Test response...
