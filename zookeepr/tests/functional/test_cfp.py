@@ -35,7 +35,7 @@ class TestCfpController(ControllerTest):
                   'submission.experience': 'Plenty',
                   'submission.url': 'http://example.org',
                   'submission.abstract': 'Very'}
-        files = [('submission.attachment', 'test.txt', """I am a test file""")]
+        files = [('submission.attachment', 'test.txt', "I am a test file")]
         res = self.app.post(u, params=params, upload_files=files)
 
         ## check that it's in the database
