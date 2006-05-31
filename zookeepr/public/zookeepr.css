@@ -138,6 +138,38 @@ BODY {
 .sidebarcontent {
   padding: 20px;
   min-height: 300px;
+  text-align: center;
+}
+
+#sidebarregisternow {
+  color: black;
+  background-color: #b0df29;
+  line-height: 2em;
+}
+
+#sidebarregisternow a {
+  color: black;
+}
+
+.sidebarcontent ul {
+  list-style: none;
+  text-align: right;
+  padding: 0px;
+  margin-top: 25px;
+}
+
+.sidebarcontent li p {
+  font-style: italic;
+}
+
+.sidebarcontent a {
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+}
+
+.sidebarcontent a:hover {
+  text-decoration: underline;
 }
 
 #sidebarboxTR, #sidebarboxBR {
