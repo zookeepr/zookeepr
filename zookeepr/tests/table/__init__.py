@@ -39,7 +39,7 @@ class TableTest(TestBase):
 
     An example using this base class:
 
-    class TestSomeTable(TestTable):
+    class TestSomeTable(TableTest):
         table = 'module.SomeTable'
         samples = [dict(name='testguy', email_address='test@example.org')]
         not_nullables = ['name']

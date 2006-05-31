@@ -34,7 +34,7 @@ class ModelTest(TestBase):
 
     An example using this base class follows.
 
-    class TestSomeModel(TestModel):
+    class TestSomeModel(ModelTest):
         model = 'module.User'
         samples = [dict(name='testguy',
                         email_address='test@example.org',

@@ -22,10 +22,39 @@ class ControllerTestGenerator(type):
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
 
-        for t in ['create', 'edit', 'delete']:
-            monkeypatch(mcs, 'test_' + t, t)
+        # patch if we have a model defined
+        if 'model' in classdict:
+            for t in ['create', 'edit', 'delete',
+                      'invalid_get_on_edit',
+                      'invalid_get_on_delete',
+                      'invalid_get_on_new',
+                      'invalid_delete']:
+                monkeypatch(mcs, 'test_' + t, t)
 
 class ControllerTest(TestBase):
+    """Base class for testing CRUD on controller objects.
+
+    Derived classes should set the following attributes:
+
+    ``url`` is the first part of the URL that is mapped to this
+    controller.
+    
+    ``name`` is the prefix used in forms, as decoded by FormEncode.
+
+    ``model`` is the class that this controller acts on.
+
+    ``samples`` is a list of dictionaries of data to use when testing
+    CRUD operations.
+
+    An example using this base class:
+
+    class TestSomeController(ControllerTest):
+        name = 'Person'
+        model = model.Person
+        url = '/person'
+        samples = [dict(name='testguy'),
+                   dict(name='testgirl')]
+    """
     __metaclass__ = ControllerTestGenerator
     
     def __init__(self, *args):
@@ -35,6 +64,7 @@ class ControllerTest(TestBase):
 
     def setUp(self):
         self.session = create_session()
+        self.assertEmptyModel()
 
     def tearDown(self):
         self.assertEmptyModel()
@@ -42,10 +72,13 @@ class ControllerTest(TestBase):
         del self.session
 
     def assertEmptyModel(self):
+        """Check that there are no models"""
         self.assertEqual([], self.session.query(self.model).select())
 
 
     def form_params(self, params):
+        """Prepend the controller's name to the param dict for use
+        when posting into the form."""
         result = {}
         for key in params.keys():
             result[self.name + '.' + key] = params[key]
@@ -53,7 +86,7 @@ class ControllerTest(TestBase):
         return result
     
     def create(self):
-        """Test create action on controller"""
+        #"""Test create action on controller"""
 
         url = url_for(controller=self.url, action='new')
         print "url for create is", url
@@ -79,7 +112,7 @@ class ControllerTest(TestBase):
         self.session.flush()
 
     def edit(self):
-        """Test edit action on controller"""
+        #"""Test edit action on controller"""
 
         # create an instance of the model
         o = self.model(**self.samples[0])
@@ -105,7 +138,7 @@ class ControllerTest(TestBase):
         self.session.flush()
 
     def delete(self):
-        """Test delete action on controller"""
+        #"""Test delete action on controller"""
 
         # create something
         o = self.model(**self.samples[0])
@@ -123,5 +156,65 @@ class ControllerTest(TestBase):
         # check db
         o = self.session.get(self.model, oid)
         self.assertEqual(None, o)
+
+    def invalid_get_on_edit(self):
+        #"""Test that GET requests on edit action don't modify"""
+
+        # create some data
+        o = self.model(**self.samples[0])
+        self.session.save(o)
+        self.session.flush()
+        oid = o.id
+        self.session.clear()
+
+        url = url_for(controller=self.url, action='edit', id=oid)
+
+        response = self.app.get(url, params=self.form_params(self.samples[1]))
+
+        o = self.session.get(self.model, oid)
+        for key in self.samples[1].keys():
+            self.failIfEqual(self.samples[1][key], getattr(o, key))
+
+        self.session.delete(o)
+        self.session.flush()
+
+    def invalid_get_on_delete(self):
+        #"""Test that GET requests on delete action don't modify"""
+        
+        # create some data
+        o = self.model(**self.samples[0])
+        self.session.save(o)
+        self.session.flush()
+        oid = o.id
+        self.session.clear()
+
+        url = url_for(controller=self.url, action='delete', id=oid)
+        res = self.app.get(url)
+        
+        # check
+        o = self.session.get(self.model, oid)
+        self.failIfEqual(None, o)
+        
+        # clean up
+        self.session.delete(o)
+        self.session.flush()
+
+    def invalid_get_on_new(self):
+        #"""Test that GET requests on new action don't modify"""
+
+        # verify there's nothing in there
+        self.assertEmptyModel()
+
+        url = url_for(controller=self.url, action='new')
+        res = self.app.get(url, params=self.form_params(self.samples[0]))
+
+    def invalid_delete(self):
+        #"""Test delete of nonexistent object is caught"""
+
+        # verify there's nothing in there
+        self.assertEmptyModel()
+        
+        url = url_for(controller=self.url, action='delete', id=1)
+        res = self.app.post(url)
 
 __all__ = ['ControllerTest', 'model', 'url_for']
