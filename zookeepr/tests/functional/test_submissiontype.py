@@ -1,7 +1,12 @@
-from zookeepr.tests import *
-from zookeepr.models import *
+from zookeepr.tests.functional import *
 
-# class TestSubmissiontypeController(TestController):
+class TestSubmissionType(ControllerTest):
+    model = model.SubmissionType
+    name = 'submissiontype'
+    url = '/submissiontype'
+    samples = [dict(name='Paper'),
+               dict(name='BOF')]
+    
 # #     def test_index(self):
 # #         print
 # #         print "url for submission type is %s" % url_for(controller='submissiontype')
