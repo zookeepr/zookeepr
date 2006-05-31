@@ -107,16 +107,46 @@ class ControllerTest(TestBase):
         self.assertEqual(1, len(os))
 
         for key in self.samples[0].keys():
-            self.assertEqual(self.samples[0][key], getattr(os[0], key))
+            self.check_attribute(os[0], key, self.samples[0][key])
 
         self.session.delete(os[0])
         self.session.flush()
+
+    def check_attribute(self, obj, attr, expected):
+        """check that the attribute has the correct value.
+
+        ``obj`` is the model class being tested.
+
+        ``attr`` is the name of the attribute being tested.
+
+        ``expected`` is the expected value of the attribute.
+
+        The function checks the test's ``mangles`` class dictionary to
+        modify ``expected``, and ignores attributes listed in the test's
+        ``no_test`` class list.
+        """
+        if hasattr(self, 'no_test') and attr in self.no_test:
+            return
+        
+        if hasattr(self, 'mangles'):
+            if attr in self.mangles.keys():
+                expected = self.mangles[attr](expected)
+        result = getattr(obj, attr)
+        self.assertEqual(expected, result,
+                         "unexpected value of attribute '%s.%s': expected '%s', got '%s'" % (obj.__class__.__name__, attr, expected, result))
+
+    def make_model_data(self):
+        result = {}
+        for key in self.samples[0].keys():
+            if not hasattr(self, 'no_test') or key not in self.no_test:
+                result[key] = self.samples[0][key]
+        return result
 
     def edit(self):
         #"""Test edit action on controller"""
 
         # create an instance of the model
-        o = self.model(**self.samples[0])
+        o = self.model(**self.make_model_data())
         self.session.save(o)
         self.session.flush()
         oid = o.id
@@ -133,7 +163,7 @@ class ControllerTest(TestBase):
         # test
         o = self.session.get(self.model, oid)
         for k in self.samples[1].keys():
-            self.assertEqual(self.samples[1][k], getattr(o, k))
+            self.check_attribute(o, k, self.samples[1][k])
 
         self.session.delete(o)
         self.session.flush()
@@ -142,7 +172,7 @@ class ControllerTest(TestBase):
         #"""Test delete action on controller"""
 
         # create something
-        o = self.model(**self.samples[0])
+        o = self.model(**self.make_model_data())
         self.session.save(o)
         self.session.flush()
         oid = o.id
@@ -162,7 +192,7 @@ class ControllerTest(TestBase):
         #"""Test that GET requests on edit action don't modify"""
 
         # create some data
-        o = self.model(**self.samples[0])
+        o = self.model(**self.make_model_data())
         self.session.save(o)
         self.session.flush()
         oid = o.id
@@ -174,7 +204,8 @@ class ControllerTest(TestBase):
 
         o = self.session.get(self.model, oid)
         for key in self.samples[1].keys():
-            self.failIfEqual(self.samples[1][key], getattr(o, key))
+            if not hasattr(self, 'no_test') or key not in self.no_test:
+                self.failIfEqual(self.samples[1][key], getattr(o, key))
 
         self.session.delete(o)
         self.session.flush()
@@ -183,7 +214,7 @@ class ControllerTest(TestBase):
         #"""Test that GET requests on delete action don't modify"""
         
         # create some data
-        o = self.model(**self.samples[0])
+        o = self.model(**self.make_model_data())
         self.session.save(o)
         self.session.flush()
         oid = o.id
