@@ -12,15 +12,18 @@ class CfpController(BaseController):
 
         if request.method == 'POST':
             for k in m.request_args['person']:
-                setattr(new_person, k, m.request_args['person'][k])
+                setattr(new_person, k, m.request_args['person'][k].value)
             for k in m.request_args['submission']:
-                setattr(new_person, k, m.request_args['submission'][k])
+                setattr(new_person, k, m.request_args['submission'][k].value)
             new_submission.person = new_person
 
             if True: #new_person.validate() and new_submission.validate():
                 # save to database
-                session.save()
+                session.save(new_person)
+                session.save(new_submission)
                 session.flush()
+                session.close()
+                
                 return h.redirect_to(controller='person', action='view', id=new_person.handle)
             else:
                 session.clear()
