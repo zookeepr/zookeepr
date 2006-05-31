@@ -17,7 +17,8 @@ class TestSubmission(ModelTest):
                          'p4ssw0rd',
                          'E.',
                          'Leet',
-                         '+6125555555')
+                         '+6125555555',
+                         )
 
         print v
         
@@ -29,7 +30,8 @@ class TestSubmission(ModelTest):
                              st,
                              'This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
                              'Vaudeville',
-                             None)
+                             attachment="some attachment",
+                             )
         
         # give this sub to v
         v.submissions.append(s)
@@ -52,6 +54,8 @@ class TestSubmission(ModelTest):
         # check references
         self.assertEqual(v.handle, v.submissions[0].person.handle)
         self.assertEqual(st.name, v.submissions[0].submission_type.name)
+
+        self.assertEqual(str(s.attachment), "some attachment")
 
         session.delete(s)
         session.delete(st)
