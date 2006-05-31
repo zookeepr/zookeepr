@@ -31,7 +31,6 @@ class Globals(pylons.middleware.Globals):
             your global variables.
             
         """
-        print app_conf['dburi']
         model.metadata.connect(app_conf['dburi'])
         model.metadata.create_all()
 

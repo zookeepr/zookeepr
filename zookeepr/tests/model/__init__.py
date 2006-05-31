@@ -1,6 +1,7 @@
 from sqlalchemy import create_session
 
-from zookeepr.tests import TestBase, monkeypatch, model
+import zookeepr.models as model
+from zookeepr.tests import TestBase, monkeypatch
 
 class ModelTestGenerator(type):
     """Monkeypatching metaclass for data model test classes.

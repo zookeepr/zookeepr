@@ -1,8 +1,7 @@
 import sqlalchemy
 
-from zookeepr.tests import TestBase, monkeypatch, model
-
-print "table.init model:", dir(model)
+import zookeepr.models as model
+from zookeepr.tests import TestBase, monkeypatch
 
 class TableTestGenerator(type):
     """Monkeypatching metaclass for table schema test classes.
@@ -56,7 +55,6 @@ class TableTest(TestBase):
         """
         module = model
         # cope with classes in sub-models
-        print dir(module)
         for submodule in self.table.split('.'):
             module = getattr(module, submodule)
         return module
@@ -80,7 +78,7 @@ class TableTest(TestBase):
         self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
         
         for sample in self.samples:
-            print "testing insert of s %s" % sample
+            print "testing insert of sample data:", sample
             query = self.get_table().insert()
             query.execute(sample)
 
@@ -88,9 +86,8 @@ class TableTest(TestBase):
                 col = getattr(self.get_table().c, key)
                 query = sqlalchemy.select([col])
                 result = query.execute()
-                print result
                 row = result.fetchone()
-                print "row", row
+                print "row:", row
                 self.assertEqual(sample[key], row[0])
 
             self.get_table().delete().execute()

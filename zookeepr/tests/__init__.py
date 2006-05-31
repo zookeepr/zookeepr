@@ -6,8 +6,6 @@ from sqlalchemy import create_engine
 
 import zookeepr.models as model
 
-print "test init: model:", dir(model)
-
 class TestBase(TestCase):
     def assertRaisesAny(self, callable_obj, *args, **kwargs):
         """Assert that the ``callable_obj`` raises any exception."""
@@ -71,4 +69,4 @@ def setUp():
     model.metadata.connect(eng)
     model.metadata.create_all()
 
-__all__ = ['TestBase', 'monkeypatch', 'model']
+__all__ = ['TestBase', 'monkeypatch']
