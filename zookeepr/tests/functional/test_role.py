@@ -8,31 +8,31 @@ class TestRoleController(ControllerTest):
 #         # Test response...
 #         print response
 
-#     def tearDown(self):
-#         self.assertEqual([], self.session.query(model.Role).select())
-#         self.session.close()
-#         del self.session
+    model = model.Role
+    url = '/role'
 
-    def test_create(self):
-        """Test create action on /role"""
+    sample = {'role.name': 'admin'}
 
-        ## create a new one
-        u = url_for(controller='/role', action='new')
-        # emulate first browser request
-        res = self.app.get(u)
-        print 'url for create is %s' % u
-        res = self.app.post(u,
-                            params={'role.name': 'admin'})
+#     def test_create(self):
+#         """Test create action on /role"""
 
-        # check that it's in the database
-        rs = self.session.query(model.Role).select_by(name='admin')
-        self.failIf(len(rs) == 0, "object not in database")
-        self.failUnless(len(rs) == 1, "too many objects in database")
-        r = rs[0]
+#         ## create a new one
+#         u = url_for(controller='/role', action='new')
+#         # emulate first browser request
+#         res = self.app.get(u)
+#         print 'url for create is %s' % u
+#         res = self.app.post(u,
+#                             params={'role.name': 'admin'})
 
-        # clean up
-        self.session.delete(r)
-        self.session.flush()
+#         # check that it's in the database
+#         rs = self.session.query(model.Role).select_by(name='admin')
+#         self.failIf(len(rs) == 0, "object not in database")
+#         self.failUnless(len(rs) == 1, "too many objects in database")
+#         r = rs[0]
+
+#         # clean up
+#         self.session.delete(r)
+#         self.session.flush()
 
     def test_edit(self):
         """Test edit operation on /role"""
