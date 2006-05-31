@@ -141,13 +141,19 @@ BODY {
   text-align: center;
 }
 
-#sidebarregisternow {
-  color: black;
-  background-color: #b0df29;
-  line-height: 2em;
+#sidebarRN {
+  background: url(rn-left.png) no-repeat left #b0df29;
+  height: 26px;
+  padding: 0px;
 }
 
-#sidebarregisternow a {
+#sidebarRN p {
+  color: black;
+  background: url(rn-right.png) no-repeat right;
+  line-height: 26px;
+}
+
+#sidebarRN a {
   color: black;
 }
 

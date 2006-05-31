@@ -16,7 +16,7 @@ logged in as <% h.link_to(r.environ['REMOTE_USER'], url=h.url(controller='person
 </p>
 % #endif
 
-<p id="sidebarregisternow"><% h.link_to('Register now!', url=h.url(controller='register')) %></p>
+<div id="sidebarRN"><p><% h.link_to('Register now!', url=h.url(controller='register')) %></p></div>
 
 <ul>
 <li><% h.link_to('Call for Participation open', h.url(controller='cfp')) %>
