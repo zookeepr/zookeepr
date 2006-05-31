@@ -24,7 +24,7 @@ class CfpController(BaseController):
                 session.clear()
 
         # set up for the cfp form
-        c.submissiontypes = model.SubmissionType.select()
+        c.submissiontypes = session.query(model.SubmissionType).select()
         c.person = new_person
         setattr(c, 'submission', new_submission)
         m.subexec('cfp/new.myt')

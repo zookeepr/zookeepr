@@ -1,7 +1,6 @@
-from zookeepr.tests import *
-from zookeepr.models import *
+from zookeepr.tests.functional import *
 
-class TestCfpController(TestController):
+class TestCfpController(ControllerTest):
     
     #def test_index(self):
         #response = self.app.get(url_for(controller='cfp'))
@@ -13,7 +12,9 @@ class TestCfpController(TestController):
         """Test create action on /cfp"""
 
         ## set us up a submission type
-        st = SubmissionType('Paper')
+        st = model.SubmissionType('Paper')
+        self.session.save(st)
+        self.session.flush()
         
         u = url_for(controller='/cfp')
 
@@ -36,7 +37,7 @@ class TestCfpController(TestController):
         res = self.app.post(u, params=params, upload_files=files)
 
         ## check that it's in the database
-        ps = Person.select_by(handle='testguy')
+        ps = session.query(Person).select_by(handle='testguy')
         self.failIf(len(ps) == 0, "person object not in database")
         self.failUnless(len(ps) == 1, "too many person objects in database")
 
@@ -60,13 +61,13 @@ class TestCfpController(TestController):
         self.failUnless(ss[0] in ps[0].submissions, "submission not attributed to person")
 
         # clean up
-        ps[0].delete()
-        st.delete()
-        objectstore.commit()
+        self.session.delete(ps[0])
+        self.session.delete(st)
+        self.session.flush()
         # check
-        ss = Submission.select()
+        ss = session.query(Submission).select()
         self.failUnless(len(ss) == 0, "submission database not empty")
-        ps = Person.select()
+        ps = session.query(Person).select()
         self.failUnless(len(ps) == 0, "person database not empty")
-        sts = SubmissionType.select()
+        sts = session.query(SubmissionType).select()
         self.failUnless(len(sts) == 0, "submissino type database not empty")

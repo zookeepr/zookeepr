@@ -3,6 +3,7 @@ import md5
 from authkit.middleware import Authenticator
 from authkit.controllers import PylonsSecureController
 import pylons
+from sqlalchemy import create_session
 
 from zookeepr.models import Person
 
@@ -10,20 +11,26 @@ class UserModelAuthenticator(Authenticator):
     """Look up the user in the database"""
 
     def check_auth(self, username, password):
-        ps = Person.select_by(handle=username)
+        session = create_session()
+        ps = session.query(Person).select_by(handle=username)
         if len(ps) <> 1:
             return False
 
         password_hash = md5.new(password).hexdigest()
-        return password_hash == ps[0].password_hash
+        
+        result = password_hash == ps[0].password_hash
+        session.close()
+        return result
 
 class UserModelAuthStore(object):
     def __init__(self):
         self.status = {}
         
     def user_exists(self, value):
-        ps = Person.select_by(handle=value)
-        return len(ps) > 0
+        session = create_session()
+        ps = session.query(Person).select_by(handle=value)
+        result = len(ps) > 0
+        return result
 
     def sign_in(self, username):
         self.status[username] = ()
