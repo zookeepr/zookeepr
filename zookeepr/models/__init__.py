@@ -16,12 +16,13 @@ mapper(SubmissionType, submission_type)
 
 ## Submissions
 class Submission(object):
-    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None):
+    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None, attachment=None):
         self.title = title
         self.submission_type = submission_type
         self.abstract = abstract
         self.experience = experience
         self.url = url
+        self.attachment = attachment
 
 mapper(Submission, submission,
        properties = dict(

@@ -25,12 +25,12 @@
 <% h.link_to(c.submission.url) %><br />
 </p>
 
+% if c.submission.person:
 <p>
 <b>Person:</b>
-% if c.submission.person:
 <% h.link_to(c.submission.person.handle, url=h.url(controller='person', action='view', id=c.submission.person.handle)) %>
-% #endif
 </p>
+% #endif
 
 <hr />
 
