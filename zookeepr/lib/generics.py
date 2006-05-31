@@ -176,8 +176,6 @@ class View(object):
         setattr(c, model_name, obj)
         c.can_edit = self._can_edit()
 
-        session.close()
-        
         # exec the template
         m.subexec('%s/view.myt' % model_name)
 
