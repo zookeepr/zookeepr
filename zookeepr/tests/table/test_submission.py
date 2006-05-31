@@ -1,3 +1,5 @@
+import StringIO
+
 from zookeepr.tests.table import *
 
 class TestSubmission(TableTest):
@@ -12,6 +14,7 @@ class TestSubmission(TableTest):
                     url='gopher://',
                     submission_type_id=1,
                     person_id=1,
+                    attachment="attachment", #StringIO.StringIO("attachment"),
                     ),
                dict(title='Test BOF',
                     abstract='some bof',
@@ -19,5 +22,6 @@ class TestSubmission(TableTest):
                     url="sqlite:////somedb.db",
                     submission_type_id=2,
                     person_id=37,
+                    attachment="snuh", #StringIO.StringIO("snuh"),
                     ),
                ]

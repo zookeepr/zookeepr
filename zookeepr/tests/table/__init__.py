@@ -88,7 +88,12 @@ class TableTest(TestBase):
                 result = query.execute()
                 row = result.fetchone()
                 print "row:", row
-                self.assertEqual(sample[key], row[0])
+                # FIXME: i suspect that this is SQLite specific
+                if isinstance(row[0], buffer):
+                    value = str(row[0])
+                else:
+                    value = row[0]
+                self.assertEqual(sample[key], value)
 
             self.get_table().delete().execute()
 

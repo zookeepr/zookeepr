@@ -1,4 +1,4 @@
-from sqlalchemy import DynamicMetaData, Table, Column, Integer, Boolean, ForeignKey, String, PassiveDefault, DateTime
+from sqlalchemy import *
 
 metadata = DynamicMetaData(name="zookeepr core")
 
@@ -57,6 +57,8 @@ submission = Table('submission', metadata,
                    Column('title', String()),
                    # abstract or description
                    Column('abstract', String()),
+                   # attachment, if they've submitted a paper
+                   Column('attachment', Binary()),
 
                    # type, enumerated in the submission_type table
                    Column('submission_type_id', Integer,
