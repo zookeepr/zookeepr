@@ -11,20 +11,35 @@ class CfpController(BaseController):
         new_submission = model.Submission()
 
         if request.method == 'POST':
-            new_person.update(**m.request_args['person'])
-            new_submission.update(**m.request_args['submission'])
+            for k in m.request_args['person']:
+                if hasattr(m.request_args['person'][k], 'value'):
+                    v = m.request_args['person'][k].value
+                else:
+                    v = m.request_args['person'][k]
+                setattr(new_person, k, v)
+                
+            for k in m.request_args['submission']:
+                if hasattr(m.request_args['submission'][k], 'value'):
+                    v = m.request_args['submission'][k].value
+                else:
+                    v = m.request_args['submission'][k]
+                setattr(new_submission, k, v)
+                
             new_submission.person = new_person
 
-            if new_person.validate() and new_submission.validate():
+            if True: #new_person.validate() and new_submission.validate():
                 # save to database
-                session.save()
+                session.save(new_person)
+                session.save(new_submission)
                 session.flush()
+                session.close()
+                
                 return h.redirect_to(controller='person', action='view', id=new_person.handle)
             else:
                 session.clear()
 
         # set up for the cfp form
-        c.submissiontypes = model.SubmissionType.select()
+        c.submissiontypes = session.query(model.SubmissionType).select()
         c.person = new_person
         setattr(c, 'submission', new_submission)
         m.subexec('cfp/new.myt')

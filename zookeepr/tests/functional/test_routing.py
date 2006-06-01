@@ -1,6 +1,6 @@
-from zookeepr.tests import *
+from zookeepr.tests.functional import *
 
-class TestRouting(TestController):
+class TestRouting(ControllerTest):
     def test_routing(self):
         """Test url routing"""
 

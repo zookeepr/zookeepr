@@ -1,4 +1,4 @@
-from zookeepr.tests import *
+from zookeepr.tests.functional import *
 
 class TestAboutController(TestController):
     def test_index(self):

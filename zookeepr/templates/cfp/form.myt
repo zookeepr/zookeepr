@@ -41,10 +41,10 @@
 <% h.text_field('submission.title', c.submission.title) %></p>
 
 <p><label for="submission.submission_type">Type:</label><br />
-% for st in c.submissiontypes:
-<% h.radio_button('type', st.name) %>
-<label for="type"><% st.name %></label><br />
-% #endfor
+#% for st in c.submissiontypes:
+#<% h.radio_button('type', st.name) %>
+#<label for="type"><% st.name %></label><br />
+#% #endfor
 </p>
 
 <p><label for="submission.url">URL:</label><br />
