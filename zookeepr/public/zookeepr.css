@@ -16,6 +16,7 @@ BODY {
 
 #footer {
   clear:both;
+  margin-top: 20px;
 }
 
 /** pretty design bits follow **/
@@ -124,11 +125,81 @@ BODY {
 /* sidebar */
 
 .sidebarbox {
-  border: 1px solid black;
   margin: 10px;
   margin-top: 70px;
 
-  padding: 10px;
+  border: none;
+
+  padding: 0;
+  color: white;
+  background: url(side-right.png) repeat-y right black;
+}
+
+.sidebarcontent {
+  padding: 20px;
+  min-height: 300px;
+  text-align: center;
+}
+
+#sidebarRN {
+  background: url(rn-left.png) no-repeat left #b0df29;
+  height: 26px;
+  padding: 0px;
+}
+
+#sidebarRN p {
+  color: black;
+  background: url(rn-right.png) no-repeat right;
+  line-height: 26px;
+}
+
+#sidebarRN a {
+  color: black;
+}
+
+.sidebarcontent ul {
+  list-style: none;
+  text-align: right;
+  padding: 0px;
+  margin-top: 25px;
+}
+
+.sidebarcontent li p {
+  font-style: italic;
+}
+
+.sidebarcontent a {
+  text-decoration: none;
+  font-weight: bold;
+  color: white;
+}
+
+.sidebarcontent a:hover {
+  text-decoration: underline;
+}
+
+#sidebarboxTR, #sidebarboxBR {
+  float: right;
+}
+
+#sidebarboxTR {
+  background: url(side-topright.png) no-repeat top right;
+}
+
+#sidebarboxTL {
+  background: url(side-topleft.png) no-repeat top left;
+}
+
+#sidebarboxBR {
+  background: url(side-bottomright.png) no-repeat bottom right;
+}
+
+#sidebarboxBL {
+  background: url(side-bottomleft.png) no-repeat bottom left;
+}
+
+#sidebarboxB {
+  background: url(side-bottom.png) repeat-x bottom black;
 }
 
 /* content body */
@@ -141,11 +212,18 @@ BODY {
   background: url(box-left.png) left repeat-y;
 }
 
+#contentboxcontent {
+  padding: 0 20px 0 20px;
+  margin: 0;
+}
+
+#contentboxstomp {
+  height: 0;
+}
+
 .contentbox H2 {
   text-align: right;
   font-size: 200%;
-  margin-top: 0;
-  margin-right: 1em;
 }
 
 .contentboxR, .contentboxC {
@@ -195,10 +273,6 @@ BODY {
 
 #contentboxMR {
   background: url(box-right.png) right repeat-y;
-}
-
-#contentboxMR * {
-  margin-bottom: 0;
 }
 
 /* form */
