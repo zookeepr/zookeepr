@@ -41,6 +41,7 @@ class Modify(object):
                 # save to database
                 session.save(new_data)
                 session.flush()
+                
                 session.close()
                 return h.redirect_to(action='edit', id=self._oid(new_data))
 
@@ -163,12 +164,18 @@ class View(object):
 
         # get the name we're referring this object to by from the model
         model_name = self.individual
+        # if the 'key' class variable is set, then use that:
+        if hasattr(self, 'key'):
+            query_dict = {self.key: id}
+            os = session.query(self.model).select_by(**query_dict)
+            if len(os):
+                obj = os[0]
+        else:
+            obj = session.get(self.model, id)
         # assign to the template global
-        setattr(c, model_name, session.get(self.model, id))
+        setattr(c, model_name, obj)
         c.can_edit = self._can_edit()
 
-        session.close()
-        
         # exec the template
         m.subexec('%s/view.myt' % model_name)
 

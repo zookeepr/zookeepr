@@ -9,8 +9,11 @@
   </div>  
 
   <div id="contentboxMR">
+  <div id="contentboxcontent">
     <h2><% title %></h2>
     <% m.content() %>
+  </div>
+  <div id="contentboxstomp">&nbsp;</div>
   </div>  
 
   <div class="contentboxR" id="contentboxB">

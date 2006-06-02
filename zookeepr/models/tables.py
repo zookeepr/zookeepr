@@ -57,6 +57,8 @@ submission = Table('submission', metadata,
                    Column('title', String()),
                    # abstract or description
                    Column('abstract', String()),
+                   # attachment, if they've submitted a paper
+                   Column('attachment', Binary()),
 
                    # type, enumerated in the submission_type table
                    Column('submission_type_id', Integer,
@@ -110,3 +112,5 @@ registration = Table('registration', metadata,
                             index=True,
                             ),
                      )
+
+__all__ = ['account', 'person', 'submission_type', 'submission', 'registration', 'person_role_map', 'role', 'metadata']

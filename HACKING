@@ -3,6 +3,9 @@
 PEP-8 is your new god, even the parts that are based on myth and are
 self-perpetuating.
 
+PyLint can be used to enforce PEP-8.
+
+
 
 setting up a dev environment
 ++++++++++++++++++++++++++++

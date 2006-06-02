@@ -39,7 +39,7 @@ class TableTest(TestBase):
 
     An example using this base class:
 
-    class TestSomeTable(TestTable):
+    class TestSomeTable(TableTest):
         table = 'module.SomeTable'
         samples = [dict(name='testguy', email_address='test@example.org')]
         not_nullables = ['name']
@@ -78,7 +78,7 @@ class TableTest(TestBase):
         self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
         
         for sample in self.samples:
-            print "testing insert of s %s" % sample
+            print "testing insert of sample data:", sample
             query = self.get_table().insert()
             query.execute(sample)
 
@@ -86,9 +86,8 @@ class TableTest(TestBase):
                 col = getattr(self.get_table().c, key)
                 query = sqlalchemy.select([col])
                 result = query.execute()
-                print result
                 row = result.fetchone()
-                print "row", row
+                print "row:", row
                 self.assertEqual(sample[key], row[0])
 
             self.get_table().delete().execute()
