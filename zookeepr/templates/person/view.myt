@@ -74,8 +74,6 @@ profile</h2>
 Profile -
 % if c.person.handle is not None:
 <% c.person.handle %> -
-% elif c.person.firstname and c.person.lastname:
-<% c.person.firstname %> <% c.person.lastname %> -
 %
 <& PARENT:title &>
 </%method>
