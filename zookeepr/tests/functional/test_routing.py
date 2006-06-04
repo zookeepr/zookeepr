@@ -33,3 +33,14 @@ class TestRouting(ControllerTest):
             u = url_for(controller=ctlr, action=action, id=1)
             print "%s action url: %s" % (action, u)
             self.failUnless(u == ctlr + '/1/%s' % action)
+
+    def test_about(self):
+        """Test the about sub-url"""
+
+        ctlr = '/about'
+        
+        print
+        u = url_for(controller=ctlr, action='view', id='programme')
+        print "programme url:", u
+        self.assertEqual(ctlr + '/programme', u)
+        
