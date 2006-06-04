@@ -1,4 +1,12 @@
-<h2>Profile</h2>
+<h2>
+% if c.person.handle:
+% 	if c.person.handle.endswith("s"):
+<% c.person.handle %>'
+%	else:
+<% c.person.handle %>'s
+%	#endif
+% #endif
+profile</h2>
 
 <div class="boxed">
 
@@ -61,3 +69,13 @@
 <% h.link_to('Edit', url=h.url(action='edit',id=c.person.get_unique())) %> |
 % #end if
 <% h.link_to('Back', url=h.url(action='index')) %>
+
+<%method title>
+Profile -
+% if c.person.handle is not None:
+<% c.person.handle %> -
+% elif c.person.firstname and c.person.lastname:
+<% c.person.firstname %> <% c.person.lastname %> -
+%
+<& PARENT:title &>
+</%method>
