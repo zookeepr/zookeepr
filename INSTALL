@@ -38,18 +38,3 @@ From within zookeepr/
  * Run `paster server -v --reload development.ini`
  * Point your browser to http://localhost:5000/
 
-====== How to start hacking ======
-
- * Refer to the docstrings to familiarise yourself with the code
- * PEP-8 is your new god. PyLint can be used to enforce it. Refer to http://www.python.org/dev/peps/pep-0008/
- * run `nosetests --stop` from within zookeepr source tree to get an initial starting point on all bugs you should be fixing
-
-
-====== Testing ======
-
-Run `nosetests` to run the test suite.  They must ust pass all the time or else!
-
- * `nosetests` - runs all tests
- * `nosetests --stop` - runs all tests and stops at the first error
- * `nosetests -sv` - print output as zookeer installs
-
