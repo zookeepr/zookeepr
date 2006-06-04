@@ -60,7 +60,7 @@ class Modify(IdHandler):
         # instantiate a new model object
         new_data = self.model()
 
-        if request.method == 'POST' and m.errors == None:
+        if request.method == 'POST' and m.errors is None:
             # update this new model object with the form data
             for k in m.request_args[model_name]:
                 setattr(new_data, k, m.request_args[model_name][k])
@@ -84,7 +84,8 @@ class Modify(IdHandler):
         # call the template
         if m.errors:
             print "ERRORS", m.errors
-            print "ERRORS UNPACKED", m.errors.unpack_errors()
+            if hasattr(m.errors, 'unpack_errors'):
+                print "ERRORS UNPACKED", m.errors.unpack_errors()
         c.errors = m.errors
         m.subexec('%s/new.myt' % model_name)
 
@@ -106,18 +107,24 @@ class Modify(IdHandler):
         # get the name we refer to it by
         model_name = self.individual
         
-        if request.method == 'POST':
+        if request.method == 'POST' and m.errors is None:
             # update the object with the posted data
             for k in m.request_args[model_name]:
                 setattr(obj, k, m.request_args[model_name][k])
+
+            session.save(obj)
+
+            print "saving"
             
-            if True: #obj.validate():
-                #session['message'] = 'Object has been updated successfully.'
-                session.save(obj)
+            e = False
+            try:
                 session.flush()
-            else:
-                #session['message'] = 'Object failed to update, errors present.'
-                session.clear()
+            except SQLError, e:
+                # how could this have happened? we suck and for now assume
+                # that it could only happen by it being a duplicate
+                # p.s. benno sucks
+                m.errors = e
+                e = True
 
         session.close()
         # assign to the template global

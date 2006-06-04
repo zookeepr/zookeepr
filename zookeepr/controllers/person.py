@@ -20,7 +20,7 @@ class NewPersonValidator(schema.Schema):
 
 class EditPersonValidator(schema.Schema):
     person = PersonValidator()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [Strip('commit'), variabledecode.NestedVariables]
 
 class PersonController(BaseController, View, Modify):
     validator = {"new" : NewPersonValidator(),
