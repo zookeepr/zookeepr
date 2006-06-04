@@ -1,5 +1,6 @@
-from zookeepr.lib.base import *
 import new
+
+from zookeepr.lib.base import *
 
 class SubExec:
     """This class is used to return a callabled that subexec-s a
