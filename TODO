@@ -110,8 +110,6 @@
 
 == code refactoring ==
 
- * With SQLAlchemy 0.2, replace the try/except in Globals.__init__() with engine.create_tables().
-
  * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
 
 == testing ==

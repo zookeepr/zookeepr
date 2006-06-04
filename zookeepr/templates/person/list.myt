@@ -4,7 +4,7 @@
 
 % if len(c.person_collection) > 0:
 <tr>
-<th>Handle</th>
+<th>id</th>
 <th>Email</th>
 <th>First Name</th>
 <th>Last Name</th>

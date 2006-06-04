@@ -9,15 +9,14 @@ class TestAccountController(ControllerTest):
     def test_signin(self):
         """Test account sign in"""
         # create a user
-        p = model.Person(handle='testguy',
-                         email_address='testguy@example.org',
+        p = model.Person(email_address='testguy@example.org',
                          password='p4ssw0rd')
         self.session.save(p)
         self.session.flush()
         
         # try to log in
         u = url_for(controller='/account', action='signin')
-        params = {'username': 'testguy',
+        params = {'email_address': 'testguy@example.org',
                   'password': 'p4ssw0rd',
                   'go': 'Submit'}
         res = self.app.post(u, params)
@@ -58,7 +57,7 @@ class TestAccountController(ControllerTest):
         """Test invalid login details"""
         # login
         u = url_for(controller='/account', action='signin')
-        params = {'username': 'testguy',
+        params = {'email_address': 'testguy',
                   'password': 'p4ssw0rd',
                   'go': 'Submit'}
         res = self.app.post(u, params)
