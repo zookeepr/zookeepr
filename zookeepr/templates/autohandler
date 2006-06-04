@@ -3,20 +3,21 @@
 <head>
 #<title><& REQUEST:title &></title>
 <title>zookeepr - FIXME in templates/autohandler</title>
-<link rel="stylesheet" media="screen" href="/zookeepr.css" type="text/css"/>
+#<link rel="stylesheet" media="screen" href="/zookeepr.css" type="text/css"/>
 <link rel="icon" type="image/png" href="/seven-head.png" />
 </head>
 <body>
 
 <div id="masthead">
 <& masthead.myt &>
+<& menu.myt &>
 </div>
 
 <div id="sidebar-container" class="column">
 <& sidebar.myt &>
 </div>
 
-<div id="content-container" class="column">
+<div id="body" class="">
 <& content-body.myt &>
 </div>
 
@@ -24,12 +25,7 @@
 
 <div id="footer">
 <hr />
-<p>peanut butter jelly time</p>
-<p>
-powered by the four Ps: <a href="http://pylonshq.com">pylons</a>,
-<a href="http://pythonpaste.org">paste</a>,
-<a href="http://python.org">python</a>,
-and <a href="http://sqlalchemy.org">psqlalchemy</a></p>
+<p>Copyright &copy; 2006-2007, The Seven Team</p>
 </div>
 
 </body>
