@@ -115,7 +115,7 @@ class ControllerTest(TestBase):
 
         # now check that the data is in the database
         os = self.session.query(self.model).select()
-        self.assertEqual(1, len(os))
+        self.assertEqual(1, len(os), "data object not in database")
 
         for key in self.samples[0].keys():
             self.check_attribute(os[0], key, self.samples[0][key])
