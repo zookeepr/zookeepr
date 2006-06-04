@@ -28,9 +28,7 @@ class SubExec:
         m.subexec(self.filename)
 
 class AboutController(BaseController):
-    templates = ["index",
-                 "press", "sydney", "contact",
-                 "sponsors"]
+    templates = ["index", "cfp", "contact", "sponsors"]
 
     def __getattr__(self, name):
         if name in self.templates:
