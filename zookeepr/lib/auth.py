@@ -2,6 +2,7 @@ import md5
 
 from authkit.middleware import Authenticator
 from authkit.controllers import PylonsSecureController
+import formencode
 import pylons
 from sqlalchemy import create_session
 
@@ -10,9 +11,9 @@ from zookeepr.models import Person
 class UserModelAuthenticator(Authenticator):
     """Look up the user in the database"""
 
-    def check_auth(self, username, password):
+    def check_auth(self, email_address, password):
         session = create_session()
-        ps = session.query(Person).select_by(handle=username)
+        ps = session.query(Person).select_by(email_address=email_address)
         if len(ps) <> 1:
             return False
 
@@ -22,13 +23,38 @@ class UserModelAuthenticator(Authenticator):
         session.close()
         return result
 
+class AuthenticateValidator(formencode.FancyValidator):
+    def _to_python(self, value, state):
+        if state.authenticate(value['email_address'], value['password']):
+            return value
+        else:
+            raise formencode.Invalid('Incorrect password', value, state)
+
+class ExistingEmailAddress(formencode.FancyValidator):
+    def _to_python(self, value, state):
+        auth = state.auth
+        if not value:
+            raise formencode.Invalid('Please enter a value',
+                                     value, state)
+        elif not auth.user_exists(value):
+            raise formencode.Invalid('No such user', value, state)
+        return value
+    
+class SignIn(formencode.Schema):
+    go = formencode.validators.String()
+    email_address = ExistingEmailAddress()
+    password = formencode.validators.String(not_empty=True)
+    chained_validators = [
+        AuthenticateValidator()
+        ]
+
 class UserModelAuthStore(object):
     def __init__(self):
         self.status = {}
         
     def user_exists(self, value):
         session = create_session()
-        ps = session.query(Person).select_by(handle=value)
+        ps = session.query(Person).select_by(email_address=value)
         result = len(ps) > 0
         return result
 
@@ -39,10 +65,10 @@ class UserModelAuthStore(object):
         if self.status.has_key(username):
             del self.status[username]
 
-    def authorise(self, username, role=None, signed_in=None):
+    def authorise(self, email_address, role=None, signed_in=None):
         if signed_in is not None:
             is_signed_in = False
-            if self.status.has_key(username):
+            if self.status.has_key(email_address):
                 is_signed_in = True
 
             return signed_in and is_signed_in
@@ -74,13 +100,13 @@ class SecureController(PylonsSecureController):
             permissions[k] = v
 
         def valid():
-            if permissions.has_key('username'):
-                if signed_in_user.lower() <> permissions['username'].lower():
+            if permissions.has_key('email_address'):
+                if signed_in_user.lower() <> permissions['email_address'].lower():
                     return False
             else:
-                permissions['username'] = signed_in_user
+                permissions['email_address'] = signed_in_user
 
-            if not g.auth.user_exists(permissions['username']):
+            if not g.auth.user_exists(permissions['email_address']):
                 return False
             else:
                 return g.auth.authorise(**permissions)
@@ -88,5 +114,5 @@ class SecureController(PylonsSecureController):
         if valid():
             return True
         else:
-            self.__signout__(permissions['username'])
+            self.__signout__(permissions['email_address'])
             return False

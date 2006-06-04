@@ -5,6 +5,12 @@ from sqlalchemy import create_session
 from sqlalchemy.exceptions import SQLError
 
 class IdHandler(object):
+    """Handle object retrieval.
+
+    This class retrieves objects from the data model, by either the OID,
+    or the secondary key as specified by the ``key`` class attribute on the
+    controller.
+    """
     def _oid(self, obj):
         """Return the ID for the model."""
         field_name = getattr(self, 'key', 'id')
@@ -114,8 +120,6 @@ class Modify(IdHandler):
 
             session.save(obj)
 
-            print "saving"
-            
             e = False
             try:
                 session.flush()

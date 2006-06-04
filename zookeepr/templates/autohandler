@@ -9,8 +9,10 @@
 
 <div id="header">
 <& header.myt &>
+#<& sponsors.myt &>
 <& menu.myt &>
 </div>
+<hr />
 
 <div id="body" class="">
 <& content-body.myt &>
