@@ -25,7 +25,8 @@ def make_map():
     m.connect('/account/:action', controller='account')
 
     # special case for the about controller
-    m.connect('/about/:action', controller='about')
+    m.connect('/about/', controller='about', action='view', id='index')
+    m.connect('/about/:id', controller='about', action='view')
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
