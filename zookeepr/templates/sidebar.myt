@@ -5,12 +5,28 @@
 </div>
 
 <div class="sidebarcontent">
-% if r.environ.has_key('REMOTE_USER'):
-<p>
-logged in as <% h.link_to(r.environ['REMOTE_USER'], url=h.url(controller='person', action='view', id=r.environ['REMOTE_USER'])) %>.
-<% h.link_to('sign out', url=h.url(controller='/account', action='signout')) %>
-</p>
-% #endif
+
+<%python>
+if r.environ.has_key('REMOTE_USER'):
+	from sqlalchemy import create_session
+	from zookeepr.models import Person
+	
+	session = create_session()
+	users = session.query(Person).select_by(email_address=r.environ['REMOTE_USER'])
+	user = users[0]
+
+	if user.handle is not None:
+		id = user.handle
+		display = user.handle
+	else:
+		id = user.id
+		display = user.email_address
+
+	m.write("logged in as ")
+	m.write(h.link_to(display, url=h.url(controller='person', action='view', id=id)))
+	m.write(". ")
+	m.write(h.link_to('sign out', url=h.url(controller='/account', action='signout')))
+</%python>
 
 
 <ul>
