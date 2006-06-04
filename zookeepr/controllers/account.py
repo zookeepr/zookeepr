@@ -1,6 +1,6 @@
 from authkit.controllers import *
 
-from zookeepr.lib.auth import SecureController
+from zookeepr.lib.auth import SecureController, SignIn
 from zookeepr.lib.base import *
 
 class AccountController(BaseController, SecureController):
@@ -10,7 +10,6 @@ class AccountController(BaseController, SecureController):
 
     def signin(self, ARGS, **params):
         if len(ARGS):
-            from authkit.validators import SignIn
             validator = SignIn()
 
             try:
@@ -28,7 +27,7 @@ class AccountController(BaseController, SecureController):
                 self.c.form = formbuild.Form(defaults=ARGS, errors=errors)
                 m.subexec('/account/signin.myt')
             else:
-                self.__signin__(username=ARGS.get('username'))
+                self.__signin__(username=ARGS.get('email_address'))
                 m.subexec('/account/signedin.myt', **ARGS)
         else:
             self.c.form = formbuild.Form(defaults=ARGS)
