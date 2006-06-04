@@ -16,8 +16,7 @@
 <li><% h.link_to('press', url=h.url(controller='about', action='press')) %></li>
 <li><% h.link_to('sydney', url=h.url(controller='about', action='sydney')) %></li>
 <li><% h.link_to('contact', url=h.url(controller='about', action='contact')) %></li>
-<li><% h.link_to('sponsors', url=h.url(controller='about', action='sponsors')) %></li>
-<li class="last"><% h.link_to('home', url=h.url('home')) %></li>
+<li class="last"><% h.link_to('sponsors', url=h.url(controller='about', action='sponsors')) %></li>
 </ul>
 
 </div>
