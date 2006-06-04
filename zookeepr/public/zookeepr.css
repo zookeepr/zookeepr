@@ -11,8 +11,30 @@ body {
 	padding: 0;
 }
 
+#footer {
+	text-align: center;
+}
+
 /* generic */
 
 a img {
 	border: 0;
+}
+
+hr {
+	clear: both;
+	display: none;
+}
+
+/* forms */
+label {
+	font-weight: bold;
+}
+
+input, textarea {
+	border: 1px solid #cccccc;
+}
+
+.fieldRequired {
+	color: #cccccc;
 }
