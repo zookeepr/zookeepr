@@ -1,5 +1,6 @@
-% if r.environ.has_key('REMOTE_USER') and r.environ['REMOTE_USER'] == 'erik@meganerd.net':
-<h1><% h.link_to('<img src="/sicktux.png" alt="linux.conf.au 2007" />', url=h.url('home')) %></h1>
+% if r.environ.has_key('REMOTE_USER') and r.environ['REMOTE_USER'] == 'erikd@mega-nerd.net':
+%   logo = '/sicktux.png'
 % else:
-<h1><% h.link_to('<img src="/lca2007.png" alt="linux.conf.au 2007" />', url=h.url('home')) %></h1>
+%   logo = '/lca2007.png'
 %
+<h1><% h.link_to('<img src=' + logo + ' alt="linux.conf.au 2007" />', url=h.url('home')) %></h1>
