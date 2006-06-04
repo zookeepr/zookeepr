@@ -1,7 +1,31 @@
+import types
+from formencode import validators, compound, schema, variabledecode
 from zookeepr.lib.base import *
+
+class PersonValidator(schema.Schema):
+    handle = validators.PlainText()
+    password = validators.PlainText()
+    password_confirm = validators.PlainText()    
+    email_address = validators.Email()
+
+class SubmissionValidator(schema.Schema):
+    title = validators.PlainText()
+    url = validators.URL()
+    abstract = validators.PlainText()
+    attachment = compound.Any(
+        validators.ConfirmType(type=types.FileType),
+        validators.String())
+
+class CfpValidator(schema.Schema):
+    person = PersonValidator()
+    submission = SubmissionValidator()
+    commit = validators.String()
+    pre_validators = [variabledecode.NestedVariables]
 
 class CfpController(BaseController):
     """Controller for submitting something to the conference"""
+    validator = {"index" : CfpValidator()}
+    
     def index(self):
         """Create a new submission"""
 

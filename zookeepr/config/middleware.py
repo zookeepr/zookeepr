@@ -35,10 +35,14 @@ def make_app(global_conf, **app_conf):
     
     # security
     app = ShowSignInOn403(app)
-    app = Security(app, global_conf=global_conf, http_login=False, cookie_prefix='', login_page='account/signin', logout_page='account/signout', secret=None, authenticator=UserModelAuthenticator)
+    app = Security(app, global_conf=global_conf,
+                   http_login=False, cookie_prefix='',
+                   login_page='account/signin', logout_page='account/signout',
+                   secret=None, authenticator=UserModelAuthenticator)
 
     # @@@ Error Handling @@@
-    app = ErrorHandler(app, global_conf, error_template=error_template, **config.errorware)
+    app = ErrorHandler(app, global_conf, error_template=error_template,
+                       **config.errorware)
     
     # @@@ Static Files in public directory @@@
     staticapp = StaticURLParser(config.paths['static_files'])
