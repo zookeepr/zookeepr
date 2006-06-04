@@ -15,7 +15,7 @@ logged in as <% h.link_to(r.environ['REMOTE_USER'], url=h.url(controller='person
 
 <ul>
 <li><% h.link_to('Sign up', url=h.url(controller='person', action='new')) %></li>
-<li><% h.link_to('Call for Participation', h.url(controller='about', action='cfp')) %></li>
+<li><% h.link_to('Call for Participation', h.url(controller='about', action='view', id='cfp')) %></li>
 <li><% h.link_to('Submit a proposal', h.url(controller='submission', action='new')) %></li>
 </ul>
 </div>
