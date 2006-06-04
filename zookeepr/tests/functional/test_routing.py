@@ -1,6 +1,12 @@
-from zookeepr.tests.functional import *
+import unittest
 
-class TestRouting(ControllerTest):
+from zookeepr.config.routing import make_map
+from zookeepr.tests.functional import url_for
+
+class TestRouting(unittest.TestCase):
+    def setUp(self):
+        self.map = make_map()
+
     def test_routing(self):
         """Test url routing"""
 
@@ -44,3 +50,10 @@ class TestRouting(ControllerTest):
         print "programme url:", u
         self.assertEqual(ctlr + '/programme', u)
         
+
+    def test_home_routing(self):
+        """Test the routing of the home controller"""
+        u = '/'
+        self.assertEqual(dict(controller='home',
+                              action='index'),
+                         self.map.match(u))
