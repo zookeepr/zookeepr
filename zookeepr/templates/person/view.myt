@@ -1,4 +1,4 @@
-<h1>View person</h1>
+<h2>View person</h2>
 
 <p>
    <b>handle:</b>
