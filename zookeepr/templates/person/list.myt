@@ -1,4 +1,4 @@
-<h1>List person</h1>
+<h2>People</h2>
 
 <table>
 
@@ -15,7 +15,7 @@
 
 % for p in c.person_collection:
 <tr>
-	<td><% h.link_to(p.handle, url=h.url(action='view', id=p.handle)) %></td>
+	<td><% h.link_to(p.get_unique(), url=h.url(action='view', id=p.get_unique())) %></td>
 	<td><% p.email_address %></td>
 	<td><% p.firstname %></td>
 	<td><% p.lastname %></td>
@@ -24,7 +24,7 @@
 
 % 	if c.can_edit:
 %		for action in ['edit', 'delete']:
-	<td><% h.link_to(action, url=h.url(action=action, id=p.handle)) %></td>
+	<td><% h.link_to(action, url=h.url(action=action, id=p.get_unique())) %></td>
 %		# endif
 %	 #endfor
 </tr>

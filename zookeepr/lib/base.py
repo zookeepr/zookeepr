@@ -37,8 +37,10 @@ class BaseController(Controller):
         # validator (if it has one.)
         # Right now, we don't do anything sensible if the validation
         # fails. This obviously needs to be done.
+        m.errors = None
         if m.request_args and self.validator.has_key(action):
             try:
-                m.request_args = self.validator[action].to_python(m.request_args)
+                m.request_args = \
+                               self.validator[action].to_python(m.request_args)
             except Invalid, e:
-                print "FIXME: INVALID!!! do some stuff!!", e
+                m.errors = e
