@@ -75,13 +75,16 @@ class Modify(IdHandler):
                 e = True
             if not e:
                 session.close()
-                return h.redirect_to(action='edit', id=self._oid(new_data))
+                return h.redirect_to(action='view', id=self._oid(new_data))
 
         # assign to the template global
         setattr(c, model_name, new_data)
 
         session.close()
         # call the template
+        if m.errors:
+            print "ERRORS", m.errors
+            print "ERRORS UNPACKED", m.errors.unpack_errors()
         c.errors = m.errors
         m.subexec('%s/new.myt' % model_name)
 
