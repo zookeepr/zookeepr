@@ -1,9 +1,9 @@
 <h2>
 % if c.person.handle:
 % 	if c.person.handle.endswith("s"):
-<% c.person.handle %>'
+<% c.person.handle |h %>'
 %	else:
-<% c.person.handle %>'s
+<% c.person.handle |h %>'s
 %	#endif
 % #endif
 profile</h2>
@@ -73,7 +73,7 @@ profile</h2>
 <%method title>
 Profile -
 % if c.person.handle is not None:
-<% c.person.handle %> -
+<% c.person.handle |h %> -
 %
 <& PARENT:title &>
 </%method>
