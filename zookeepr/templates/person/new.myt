@@ -1,7 +1,8 @@
-<h2>Create a myLCA account</h2>
+<h2>Sign up!</h2>
 
-<p>Someone write something cool about what this account gives you and
-stuff like that.</p>
+<p>
+You must sign up to register or submit an event proposal.
+</p>
 
 <% c.errors %>
 
@@ -9,3 +10,7 @@ stuff like that.</p>
 <& form.myt &>
 <% h.submit("Create") %>
 <% h.end_form() %>
+
+<%method title>
+Sign up! - <& PARENT:title &>
+</%method>

@@ -8,3 +8,4 @@ zookeepr.egg-info/top_level.txt
 test.db
 build
 dist
+zookeepr/config.ini

@@ -1,5 +1,7 @@
 from formencode import validators, compound, schema, variabledecode
+
 from zookeepr.lib.base import *
+from zookeepr.lib.validators import Strip
 
 class PersonValidator(schema.Schema):
     password = validators.PlainText()
@@ -14,11 +16,11 @@ class PersonValidator(schema.Schema):
 
 class NewPersonValidator(schema.Schema):
     person = PersonValidator()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [Strip("commit"), variabledecode.NestedVariables]
 
 class EditPersonValidator(schema.Schema):
     person = PersonValidator()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [Strip('commit'), variabledecode.NestedVariables]
 
 class PersonController(BaseController, View, Modify):
     validator = {"new" : NewPersonValidator(),

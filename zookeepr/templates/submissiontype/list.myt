@@ -1,4 +1,4 @@
-<h1>List submission types</h1>
+<h2>List submission types</h2>
 
 <table>
 

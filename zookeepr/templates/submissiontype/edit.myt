@@ -1,4 +1,4 @@
-<h1>Edit submission type</h1>
+<h2>Edit submission type</h2>
 
 <% h.form(h.url(id=c.submissiontype.id)) %>
 <& form.myt &>

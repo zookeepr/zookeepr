@@ -1,4 +1,4 @@
-<h1>View submission type</h1>
+<h2>View submission type</h2>
 
 <p>
    <b>Name:</b>

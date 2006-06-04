@@ -5,6 +5,12 @@ from sqlalchemy import create_session
 from sqlalchemy.exceptions import SQLError
 
 class IdHandler(object):
+    """Handle object retrieval.
+
+    This class retrieves objects from the data model, by either the OID,
+    or the secondary key as specified by the ``key`` class attribute on the
+    controller.
+    """
     def _oid(self, obj):
         """Return the ID for the model."""
         field_name = getattr(self, 'key', 'id')
@@ -60,7 +66,7 @@ class Modify(IdHandler):
         # instantiate a new model object
         new_data = self.model()
 
-        if request.method == 'POST' and m.errors == None:
+        if request.method == 'POST' and m.errors is None:
             # update this new model object with the form data
             for k in m.request_args[model_name]:
                 setattr(new_data, k, m.request_args[model_name][k])
@@ -75,13 +81,17 @@ class Modify(IdHandler):
                 e = True
             if not e:
                 session.close()
-                return h.redirect_to(action='edit', id=self._oid(new_data))
+                return h.redirect_to(action='view', id=self._oid(new_data))
 
         # assign to the template global
         setattr(c, model_name, new_data)
 
         session.close()
         # call the template
+        if m.errors:
+            print "ERRORS", m.errors
+            if hasattr(m.errors, 'unpack_errors'):
+                print "ERRORS UNPACKED", m.errors.unpack_errors()
         c.errors = m.errors
         m.subexec('%s/new.myt' % model_name)
 
@@ -103,20 +113,26 @@ class Modify(IdHandler):
         # get the name we refer to it by
         model_name = self.individual
         
-        if request.method == 'POST':
+        if request.method == 'POST' and m.errors is None:
             # update the object with the posted data
             for k in m.request_args[model_name]:
                 setattr(obj, k, m.request_args[model_name][k])
-            
-            if True: #obj.validate():
-                #session['message'] = 'Object has been updated successfully.'
-                session.save(obj)
-                session.flush()
-            else:
-                #session['message'] = 'Object failed to update, errors present.'
-                session.clear()
 
-        session.close()
+            session.save(obj)
+
+            e = False
+            try:
+                session.flush()
+            except SQLError, e:
+                # how could this have happened? we suck and for now assume
+                # that it could only happen by it being a duplicate
+                # p.s. benno sucks
+                m.errors = e
+                e = True
+            if not e:
+                session.close()
+                return h.redirect_to(action='view', id=self._oid(obj))
+
         # assign to the template global
         setattr(c, model_name, obj)
         # call the template
