@@ -1,4 +1,4 @@
-<div id="mainmenu">
+<div id="mainmenu" class"linkmenu">
 
 <ul>
 <li><% h.link_to('about', url=h.url(controller='about', action='view', id='index')) %></li>
@@ -9,7 +9,7 @@
 
 </div>
 
-<ul id="usermenu">
+<ul id="usermenu" class="linkmenu">
 
 % if r.environ.has_key('REMOTE_USER'):
 <li><% h.link_to('my profile', url=h.url(controller='person', action='view', id=r.environ['REMOTE_USER'])) %></li>
