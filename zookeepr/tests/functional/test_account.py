@@ -20,7 +20,8 @@ class TestAccountController(ControllerTest):
                   'password': 'p4ssw0rd',
                   'go': 'Submit'}
         res = self.app.post(u, params)
-        self.failUnless(res.request.environ['REMOTE_USER'] == 'testguy')
+        self.assertEqual('testguy@example.org',
+                         res.request.environ['REMOTE_USER'])
         
         # clean up
         self.session.delete(p)
