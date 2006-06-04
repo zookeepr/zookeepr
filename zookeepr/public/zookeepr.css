@@ -1,21 +1,38 @@
 /* layout */
 
 body {
-	background: url("/greydient.png") top left repeat-x;
+	background: url("/greydient-top.png") top left repeat-x;
 	margin: 0;
 	padding: 0;
 }
 
-#masthead h1 {
+#header h1 {
 	margin: 20px;
 	padding: 0;
 }
 
+#body {
+	margin: 2em;
+	clear: both;
+}
+
 #footer {
+	background: #eeeeee;
+	border-top: 1px solid #cccccc;
+	padding: 1ex;
 	text-align: center;
 }
 
+#footer p {
+	margin: 0;
+	padding: 0;
+}
+
 /* generic */
+
+h1, h2, h3, h4, h5 {
+	color: #ce5c00;
+}
 
 a img {
 	border: 0;
@@ -24,6 +41,31 @@ a img {
 hr {
 	clear: both;
 	display: none;
+}
+
+.hidden {
+	display: none;
+}
+
+/* menus */
+.linkmenu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	clear: both;
+}
+
+.linkmenu li {
+	float: left;
+	padding-right: 0.5ex;
+}
+
+.linkmenu li:after {
+	content: " ·";
+}
+
+.linkmenu li:last-child:after {
+	content: "";
 }
 
 /* forms */

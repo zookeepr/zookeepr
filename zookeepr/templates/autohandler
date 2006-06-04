@@ -7,19 +7,15 @@
 </head>
 <body>
 
-<div id="masthead">
-<& masthead.myt &>
+<div id="header">
+<& header.myt &>
+#<& sponsors.myt &>
 <& menu.myt &>
 </div>
-
-<div id="sidebar-container" class="column">
-<& sidebar.myt &>
-</div>
+<hr />
 
 <div id="body" class="">
 <& content-body.myt &>
-</div>
-
 </div>
 
 <div id="footer">
@@ -29,7 +25,6 @@
 
 </body>
 </html>
-
 
 <%method title>
 linux.conf.au 2007
