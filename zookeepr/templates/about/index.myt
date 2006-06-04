@@ -1,0 +1,3 @@
+<&| /contentbox.myt, title="About linux.conf.au" &>
+I am magic...
+</&>

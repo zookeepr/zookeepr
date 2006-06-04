@@ -28,12 +28,9 @@ class SubExec:
         m.subexec(self.filename)
 
 class AboutController(BaseController):
-    templates = ["whatson", "programme", "dates",
+    templates = ["index",
                  "press", "sydney", "contact",
                  "sponsors"]
-
-    def index(self):
-        h.redirect_to(action='whatson')
 
     def __getattr__(self, name):
         if name in self.templates:
