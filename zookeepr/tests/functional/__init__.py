@@ -96,14 +96,13 @@ class ControllerTest(TestBase):
         result = {}
         for key in params.keys():
             result[self.name + '.' + key] = params[key]
-        print result
+
         return result
     
     def create(self):
         #"""Test create action on controller"""
 
         url = url_for(controller=self.url, action='new')
-        print "url for create is", url
 
         # emulate the first browser request; the client browser
         # will GET the page before POSTing the form data, and
@@ -116,7 +115,6 @@ class ControllerTest(TestBase):
 
         # now check that the data is in the database
         os = self.session.query(self.model).select()
-        self.assertNotEqual(0, len(os))
         self.assertEqual(1, len(os))
 
         for key in self.samples[0].keys():
@@ -183,22 +181,25 @@ class ControllerTest(TestBase):
 
     def delete(self):
         #"""Test delete action on controller"""
-
         # create something
         o = self.model(**self.make_model_data())
         self.session.save(o)
         self.session.flush()
         oid = o.id
+
         self.session.clear()
 
         ## delete it
         url = url_for(controller=self.url, action='delete', id=oid)
+
         # get the form
         response = self.app.get(url)
+
         response = self.app.post(url)
 
         # check db
         o = self.session.get(self.model, oid)
+        print o
         self.assertEqual(None, o)
 
     def invalid_get_on_edit(self):
@@ -216,12 +217,14 @@ class ControllerTest(TestBase):
         response = self.app.get(url, params=self.form_params(self.samples[1]))
 
         o = self.session.get(self.model, oid)
+
         for key in self.samples[1].keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
                 self.failIfEqual(self.samples[1][key], getattr(o, key))
 
         self.session.delete(o)
         self.session.flush()
+
 
     def invalid_get_on_delete(self):
         #"""Test that GET requests on delete action don't modify"""
@@ -260,6 +263,6 @@ class ControllerTest(TestBase):
         self.assertEmptyModel()
         
         url = url_for(controller=self.url, action='delete', id=1)
-        res = self.app.post(url)
+        res = self.app.post(url, status=404)
 
 __all__ = ['ControllerTest', 'model', 'url_for']

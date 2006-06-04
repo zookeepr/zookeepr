@@ -1,4 +1,4 @@
-<&| /contentbox.myt, title="LCA: STARTS HERE" &>
+<&| /contentbox.myt, title="About linux.conf.au" &>
 <blockquote><p>
 You know how it goes. You spend a few
 days immersed in talks about clusters and networking, surrounded by kernel
@@ -11,5 +11,7 @@ the return journey.
 <p class="endquote">
 A few weeks later, over breakfast, you suddenly realise what the heck Dave Miller was going on about in his talk...
 </p></blockquote>
+
+To find out about <% h.link_to('sponsorship', url=h.url(controller='about', action='sponsors')) %> opportunities.
 
 </&>

@@ -32,24 +32,38 @@ mapper(Submission, submission,
 
 ## Persons
 class Person(object):
-    def __init__(self, handle=None, email_address=None, password=None, firstname=None, lastname=None, phone=None, fax=None):
+    def __init__(self, handle=None, email_address=None, password=None,
+                 firstname=None, lastname=None, phone=None, fax=None):
+
         self.handle = handle
         self.email_address = email_address
 
-        if password is not None:
-            self.password = password
+        self.password = password
         self.firstname = firstname
         self.lastname = lastname
         self.phone = phone
         self.fax = fax
 
+    def get_unique(self):
+        if self.handle:
+            return self.handle
+        else:
+            return self.id
+
     def _set_password(self, password):
-        self.password_hash = md5.new(password).hexdigest()
+        if password is None:
+            self.password_hash = None
+        else:
+            self.password_hash = md5.new(password).hexdigest()
 
     def _get_password(self):
         return self.password_hash
 
     password = property(_get_password, _set_password)
+
+    def __repr__(self):
+        return "<Person id=%s handle=%s>" % (self.id, self.handle)
+
 
 # FIXME: hack to work around bug 191 in SQLAlchemy
 class AccountMapperExtension(MapperExtension):
@@ -61,10 +75,12 @@ class AccountMapperExtension(MapperExtension):
                     break
         instance.account_id = account_id
         
-mapper(Person, join(account, person), extension=AccountMapperExtension(),
-       properties = dict(
-    submissions = relation(Submission, private=True, backref='person')
-    )
+mapper(Person, join(account, person),
+       extension=AccountMapperExtension(),
+       properties = dict(submissions = relation(Submission,
+                                                private=True,
+                                                backref='person')
+                         )
        )
 
 class Role(object):

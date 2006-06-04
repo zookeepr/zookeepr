@@ -2,13 +2,45 @@ import authkit
 from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
 from sqlalchemy import create_session
+from sqlalchemy.exceptions import SQLError
 
-class Modify(object):
+class IdHandler(object):
     def _oid(self, obj):
         """Return the ID for the model."""
         field_name = getattr(self, 'key', 'id')
         oid = getattr(obj, field_name)
-        return oid
+        if oid is None:
+            return obj.id
+        else:
+            return oid
+
+    def get_obj(self, id):
+        use_oid = False # Determines if we look up on a key or the OID
+        obj = None
+
+        # If we can convert this to an integer then we look up based on the OID
+        try:
+            id = int(id)
+            use_oid = True
+        except ValueError:
+            pass
+
+        session = create_session()
+
+        # get the name we're referring this object to by from the model
+        model_name = self.individual
+
+        if use_oid:
+            obj = session.get(self.model, id)
+        elif hasattr(self, 'key'):
+            query_dict = {self.key: id}
+            os = session.query(self.model).select_by(**query_dict)
+            if len(os) == 1:
+                obj = os[0]
+
+        return obj, session
+
+class Modify(IdHandler):
 
     def new(self):
         """Create a new object.
@@ -19,7 +51,6 @@ class Modify(object):
         POST requests will create the object, and return a redirect to
         view the new object.
         """
-
         # create new session
         session = create_session()
 
@@ -29,26 +60,29 @@ class Modify(object):
         # instantiate a new model object
         new_data = self.model()
 
-        if request.method == 'POST':
-
+        if request.method == 'POST' and m.errors == None:
             # update this new model object with the form data
             for k in m.request_args[model_name]:
                 setattr(new_data, k, m.request_args[model_name][k])
-            
-            if True: #new_data.validate():
-                #session['message'] = 'Object has been created, now editing.'
-                #session.save()
-                # save to database
-                session.save(new_data)
+            session.save(new_data)
+            e = False
+            try:
                 session.flush()
-                
+            except SQLError, e:
+                # How could this have happened? We suck and for now assume
+                # it could only happen by it being a duplicate
+                m.errors = e
+                e = True
+            if not e:
                 session.close()
                 return h.redirect_to(action='edit', id=self._oid(new_data))
 
         # assign to the template global
         setattr(c, model_name, new_data)
+
         session.close()
         # call the template
+        c.errors = m.errors
         m.subexec('%s/new.myt' % model_name)
 
     new.permissions = authkit.permissions(signed_in=True)
@@ -61,16 +95,10 @@ class Modify(object):
 
         POST requests update the object with the data posted.
         """
+        obj, session = self.get_obj(id)
 
-        # clear the store
-        session = create_session()
-        
-        # Get the object
-        obj = session.get(self.model, id)
-        if not obj:
-            #session['message'] = 'No such id.'
-            #session.save()
-            return h.redirect_to(action='index', id=None)
+        if obj is None:
+            raise "Badness"
 
         # get the name we refer to it by
         model_name = self.individual
@@ -103,15 +131,9 @@ class Modify(object):
 
         POST requests will delete the item.
         """
-        # clear the store
-        session = create_session()
-        
-        # Get the object
-        obj = session.get(self.model, id)
-        if not obj:
-            #session['message'] = 'No such id.'
-            #session.save()
-            return h.redirect_to(action='index', id=None)
+        obj, session = self.get_obj(id)
+        if obj is None:
+            m.abort(404, "Computer says no")
         
         if request.method == 'POST':
             session.delete(obj)
@@ -158,25 +180,16 @@ class View(object):
     
     def view(self, id):
         """View a specific object"""
-        # GET, POST -> return subtype
+        obj, session = self.get_obj(id)
+        
+        if obj is None:
+            raise "Badness"
 
-        session = create_session()
-
-        # get the name we're referring this object to by from the model
-        model_name = self.individual
-        # if the 'key' class variable is set, then use that:
-        if hasattr(self, 'key'):
-            query_dict = {self.key: id}
-            os = session.query(self.model).select_by(**query_dict)
-            if len(os):
-                obj = os[0]
-        else:
-            obj = session.get(self.model, id)
         # assign to the template global
-        setattr(c, model_name, obj)
+        setattr(c, self.individual, obj)
         c.can_edit = self._can_edit()
 
         # exec the template
-        m.subexec('%s/view.myt' % model_name)
+        m.subexec('%s/view.myt' % self.individual)
 
     view.permissions = authkit.permissions(signed_in=True)

@@ -1,4 +1,1 @@
-<div id="title">
-<h1>linux.conf.au 2007</h1>
-<h2>University of NSW: January 15-20th</h2>
-</div>
+<h1><% h.link_to('linux.conf.au 2007', url=h.url('home')) %></h1>
