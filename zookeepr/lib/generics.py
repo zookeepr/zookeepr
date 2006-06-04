@@ -129,8 +129,10 @@ class Modify(IdHandler):
                 # p.s. benno sucks
                 m.errors = e
                 e = True
+            if not e:
+                session.close()
+                return h.redirect_to(action='view', id=self._oid(obj))
 
-        session.close()
         # assign to the template global
         setattr(c, model_name, obj)
         # call the template

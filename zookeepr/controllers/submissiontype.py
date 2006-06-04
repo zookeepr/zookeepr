@@ -14,7 +14,7 @@ class NewSubmissionTypeValidator(schema.Schema):
 
 class EditSubmissionTypeValidator(schema.Schema):
     submissiontype = SubmissionTypeValidator()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [Strip('commit'), variabledecode.NestedVariables]
 
 
 class SubmissiontypeController(BaseController, SecureController, View, Modify):
