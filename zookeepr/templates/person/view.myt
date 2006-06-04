@@ -1,13 +1,15 @@
-<h2>View person</h2>
+<h2>Profile</h2>
 
-<p>
-   <b>handle:</b>
-    <% c.person.handle | h %><br />
-</p>
+<div class="boxed">
 
 <p>
    <b>Email:</b>
     <% c.person.email_address | h %><br />
+</p>
+
+<p>
+   <b>Display name:</b>
+    <% c.person.handle | h %><br />
 </p>
 
 <p>
@@ -19,6 +21,8 @@
    <b>Last name:</b>
     <% c.person.lastname | h %><br />
 </p>
+
+</div>
 
 <p>
    <b>Phone:</b>

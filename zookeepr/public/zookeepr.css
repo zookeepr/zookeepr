@@ -80,3 +80,8 @@ input, textarea {
 .fieldRequired {
 	color: #cccccc;
 }
+
+/* A box containing a group of related info */
+DIV.boxed {
+  border: 1px solid grey;
+}
