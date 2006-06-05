@@ -1,0 +1,40 @@
+====== Zookeepr Install Documentation ======
+Authors: Lindsay Holmwood <auxesis@gmail.com>, Jamie Wilkinson <jaq@spacepants.org>
+
+This document details how to set up the zookeepr development environment, installing zookeepr, and running zookeepr.
+
+====== Setting up the development environment for Python 2.4 ======
+
+These steps will set up the development environment under Ubuntu Dapper in your home directory. It assumes that you have sudo access to your machine. 
+
+Requirements:
+ * Ubuntu Dapper
+ * bzr installed
+
+Steps:
+ * Remove python-setuptools, python2.4-setuptools if they are installed
+ * Check that python2.4-dev, python2.4-profiler, python-pysqlite2, python2.4-paramiko are installed
+ * Download virtual Python from http://peak.telecommunity.com/dist/virtual-python.py. 
+ * Run `python virtual-python.py`. This will set up a Python installation in your home directory.
+ * Download ez_setup.py from http://peak.telecommunity.com/dist/ez_setup.py
+ * Run python `ez_setup.py`. This will install setup_tool, the Python package manager.
+ * Check out zookeepr `bzr branch http://repo.spacepants.org/zookeepr/zookeepr.dev zookeepr`
+ * run `python setup.py develop` from within the zookeepr source tree. This will pull down all necessary dependencies for zookeepr
+ * run `nosetests` to see whether you have any libraries missing
+
+====== Installing and setting up Zookeepr ======
+
+From within zookeepr/zookeepr:
+ * Install zookeepr using easy_install: `easy_install zookeepr`
+ * Make a config file as follows: `paster make-config zookeepr config.ini`
+ * Tweak config.ini file as appropriate 
+ * Setup the application: `paster setup-app config.ini`
+
+You are good to go!
+
+====== Running zookeepr ======
+
+From within zookeepr/
+ * Run `paster server -v --reload development.ini`
+ * Point your browser to http://localhost:5000/
+
