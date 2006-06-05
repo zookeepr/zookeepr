@@ -38,10 +38,10 @@ Users</a> (CALU) held in Melbourne in July, 1999.</p>
 <div class="column-b"><div class="inner">
 
 <ul id="aboutlinks">
-<li>Check out the <% h.link_to('programme', url=h.url(controller='about', action='programme')) %>!</li>
-<li>Learn about travel and accomodation in <% h.link_to('Sydney', url=h.url(controller='about', action='sydney')) %>.</li>
-<li>Find out about <% h.link_to('sponsorship', url=h.url(controller='about', action='sponsors')) %> opportunities.</li>
-<li>Information for members of the <% h.link_to('press', url=h.url(controller='about', action='press')) %>.</li>
+<li>Check out the <% h.link_to('programme', url=h.url(controller='about', action='view', id='programme')) %>!</li>
+<li>Learn about travel and accomodation in <% h.link_to('Sydney', url=h.url(controller='about', action='view', id='sydney')) %>.</li>
+<li>Find out about <% h.link_to('sponsorship', url=h.url(controller='about', action='view', id='sponsors')) %> opportunities.</li>
+<li>Information for members of the <% h.link_to('press', url=h.url(controller='about', action='view', id='press')) %>.</li>
 </ul>
 
 <p>linux.conf.au is a four day conference in January 2001, concentrating on
