@@ -1,13 +1,23 @@
-<h2>View person</h2>
+<h2>
+% if c.person.handle:
+% 	if c.person.handle.endswith("s"):
+<% c.person.handle |h %>'
+%	else:
+<% c.person.handle |h %>'s
+%	#endif
+% #endif
+profile</h2>
 
-<p>
-   <b>handle:</b>
-    <% c.person.handle | h %><br />
-</p>
+<div class="boxed">
 
 <p>
    <b>Email:</b>
     <% c.person.email_address | h %><br />
+</p>
+
+<p>
+   <b>Display name:</b>
+    <% c.person.handle | h %><br />
 </p>
 
 <p>
@@ -19,6 +29,8 @@
    <b>Last name:</b>
     <% c.person.lastname | h %><br />
 </p>
+
+</div>
 
 <p>
    <b>Phone:</b>
@@ -57,3 +69,11 @@
 <% h.link_to('Edit', url=h.url(action='edit',id=c.person.get_unique())) %> |
 % #end if
 <% h.link_to('Back', url=h.url(action='index')) %>
+
+<%method title>
+Profile -
+% if c.person.handle is not None:
+<% c.person.handle |h %> -
+%
+<& PARENT:title &>
+</%method>

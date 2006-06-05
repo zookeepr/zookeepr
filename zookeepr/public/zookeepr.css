@@ -1,4 +1,6 @@
-/* layout */
+/**
+ * layout
+ */
 
 body {
 	background: url("/greydient-top.png") top left repeat-x;
@@ -28,7 +30,9 @@ body {
 	padding: 0;
 }
 
-/* columns */
+/**
+ * columns
+ */
 
 div.column-a {
 	float: left;
@@ -48,7 +52,9 @@ div.column-b div.inner {
 	padding-left: 2em;
 }
 
-/* generic */
+/**
+ * generic
+ */
 
 h1, h2, h3, h4, h5 {
 	color: #ce5c00;
@@ -71,7 +77,10 @@ hr {
 	display: none;
 }
 
-/* menus */
+/**
+ * menus
+ */
+
 .linkmenu {
 	list-style: none;
 	margin: 0;
@@ -92,7 +101,10 @@ hr {
 	content: "";
 }
 
-/* forms */
+/**
+ * forms
+ */
+
 label {
 	font-weight: bold;
 }
@@ -103,4 +115,9 @@ input, textarea {
 
 .fieldRequired {
 	color: #cccccc;
+}
+
+/* A box containing a group of related info */
+DIV.boxed {
+  border: 1px solid grey;
 }

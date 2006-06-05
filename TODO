@@ -5,12 +5,6 @@
  * make submissiontype interface accessible only by conf admin
   * apply permissions to all CRUD interfaces. recreate PylonsSecureController to use a class property instead of method properties to controll access so that generics can still work
 
- * sidebar style
-
- * content body style
-
- * feet logo
-
  * date-based release of CFP and Rego on front page requires interfaces to set these conf-wide dates (and other config)
   * how do you test that?
 
