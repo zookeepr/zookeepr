@@ -19,8 +19,8 @@
 <& content-body.myt &>
 </div>
 
-<div id="footer">
 <hr />
+<div id="footer">
 <p>Copyright &copy; 2006-2007, The Seven Team</p>
 </div>
 

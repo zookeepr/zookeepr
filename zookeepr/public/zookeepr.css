@@ -31,11 +31,36 @@ body {
 }
 
 /**
+ * columns
+ */
+
+div.column-a {
+	float: left;
+	width: 49%;
+}
+
+div.column-b {
+	border-left: 1px dashed #cccccc;
+	margin-left: 49%;
+}
+
+div.column-a div.inner {
+	padding-right: 2em;
+}
+
+div.column-b div.inner {
+	padding-left: 2em;
+}
+
+/**
  * generic
  */
 
 h1, h2, h3, h4, h5 {
 	color: #ce5c00;
+	padding: 0;
+	margin: 0;
+	margin-bottom: 1ex;
 }
 
 a img {
@@ -44,7 +69,8 @@ a img {
 
 hr {
 	clear: both;
-	display: none;
+	display: hidden;
+	border: none;
 }
 
 .hidden {
