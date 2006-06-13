@@ -111,4 +111,8 @@ class Registration(object):
 
 mapper(Registration, join(account, registration), extension=AccountMapperExtension())
 
+class CFP(object):
+    def __init__(self):
+        pass
+
 __all__ = ['Person', 'person', 'account']
