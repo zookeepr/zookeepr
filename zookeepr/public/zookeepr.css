@@ -39,13 +39,17 @@ body {
 	width: 49%;
 }
 
+#column-a div.inner {
+	padding-right: 2em;
+}
+
 #column-b {
 	border-left: 1px dashed #cccccc;
 	margin-left: 49%;
 }
 
-div.column div.inner {
-	padding-right: 2em;
+#column-b div.inner {
+	padding-left: 2em;
 }
 
 /**
@@ -59,10 +63,6 @@ h1, h2, h3, h4, h5 {
 	margin-bottom: 1ex;
 }
 
-a img {
-	border: 0;
-}
-
 hr {
 	clear: both;
 	display: hidden;
@@ -71,6 +71,22 @@ hr {
 
 .hidden {
 	display: none;
+}
+
+a:link {
+	color: #ce5c00;
+}
+
+a:active {
+	color: #f57900;
+}
+
+a:visited {
+	color: #a04700;
+}
+
+a img {
+	border: 0;
 }
 
 /**
