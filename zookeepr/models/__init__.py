@@ -112,7 +112,15 @@ class Registration(object):
 mapper(Registration, join(account, registration), extension=AccountMapperExtension())
 
 class CFP(object):
-    def __init__(self):
-        pass
+    def __init__(self, email_address=None, password=None, handle=None, firstname=None, lastname=None, title=None, abstract=None, experience=None, url=None):
+        self.email_address = email_address
+        self.password = password
+        self.handle = handle
+        self.firstname = firstname
+        self.lastname = lastname
+        self.title = title
+        self.abstract = abstract
+        self.experience = experience
+        self.url = url
 
 __all__ = ['Person', 'person', 'account']
