@@ -57,3 +57,26 @@ class TestRouting(unittest.TestCase):
         self.assertEqual(dict(controller='home',
                               action='index'),
                          self.map.match(u))
+
+    def test_cfp_routing(self):
+        """test the routing of the cfp urls"""
+        u = '/cfp'
+        self.assertEqual(dict(controller='cfp',
+                              action='index'),
+                         self.map.match(u))
+
+        cfp = url_for('cfp')
+        self.assertEqual(u, cfp)
+
+    def test_cfp_submission_url(self):
+        """test the routing of the cfp submit url"""
+
+        # test the mapper
+        u = '/cfp/submit'
+        self.assertEqual(dict(controller='cfp',
+                              action='submit'),
+                         self.map.match(u))
+
+        # test the named route
+        submit_cfp = url_for('submit_cfp')
+        self.assertEqual(u, submit_cfp)

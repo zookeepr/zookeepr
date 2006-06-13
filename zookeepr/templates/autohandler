@@ -10,6 +10,7 @@
 
 <div id="header">
 <& header.myt &>
+# FIXME: show our sponsors in the header area
 #<& sponsors.myt &>
 <& menu.myt &>
 </div>

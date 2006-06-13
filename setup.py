@@ -11,7 +11,7 @@ setup(
     #url="",
     install_requires=["Pylons==0.8.2",
                       "Paste==0.9.3",
-                      "SQLAlchemy==0.2.1",
+                      "SQLAlchemy==0.2.2",
                       "FormEncode==0.5.1",
                       "AuthKit==0.1.4alphadev-r745",
                       "FormBuild==0.1.1dev-r681"],
