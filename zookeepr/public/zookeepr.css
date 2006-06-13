@@ -34,22 +34,18 @@ body {
  * columns
  */
 
-div.column-a {
+#column-a {
 	float: left;
 	width: 49%;
 }
 
-div.column-b {
+#column-b {
 	border-left: 1px dashed #cccccc;
 	margin-left: 49%;
 }
 
-div.column-a div.inner {
+div.column div.inner {
 	padding-right: 2em;
-}
-
-div.column-b div.inner {
-	padding-left: 2em;
 }
 
 /**

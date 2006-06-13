@@ -1,4 +1,4 @@
-<div class="column-a"><div class="inner">
+<div id="column-a" class="column"><div class="inner">
 
 <h2>linux.conf.au 2007</h2>
 <h3>January 15th-20th, 2007 &middot; University of New South Wales</h3>
@@ -35,7 +35,7 @@ Users</a> (CALU) held in Melbourne in July, 1999.</p>
 
 </div></div>
 
-<div class="column-b"><div class="inner">
+<div id="column-b" class="column"><div class="inner">
 
 <ul id="aboutlinks">
 <li>Check out the <% h.link_to('programme', url=h.url(controller='about', action='view', id='programme')) %>!</li>
