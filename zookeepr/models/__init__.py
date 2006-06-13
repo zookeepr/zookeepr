@@ -65,22 +65,12 @@ class Person(object):
         return "<Person id=%s handle=%s>" % (self.id, self.handle)
 
 
-# FIXME: hack to work around bug 191 in SQLAlchemy
-class AccountMapperExtension(MapperExtension):
-    def after_insert(self, mapper, connection, instance):
-        for table in mapper.tables:
-            if table.name == 'account':
-                for col in mapper.pks_by_table[table]:
-                    account_id = mapper._getattrbycolumn(instance, col)
-                    break
-        instance.account_id = account_id
-        
 mapper(Person, join(account, person),
-       extension=AccountMapperExtension(),
-       properties = dict(submissions = relation(Submission,
+       properties = dict(account_id = [account.c.id, person.c.account_id],
+                         submissions = relation(Submission,
                                                 private=True,
                                                 backref='person')
-                         )
+                         ),
        )
 
 class Role(object):
@@ -109,7 +99,9 @@ class Registration(object):
 
      password = property(_get_password, _set_password)
 
-mapper(Registration, join(account, registration), extension=AccountMapperExtension())
+mapper(Registration, join(account, registration),
+       properties = dict(account_id = [account.c.id, registration.c.account_id])
+       )
 
 class CFP(object):
     def __init__(self, email_address=None, password=None, handle=None, firstname=None, lastname=None, title=None, abstract=None, experience=None, url=None):
@@ -123,6 +115,11 @@ class CFP(object):
         self.experience = experience
         self.url = url
 
-mapper(CFP, join(person, submission))
+#mapper(CFP, join(account, person, submission),
+#       properties = {
+#    'account_id': [account.c.id, person.c.account_id],
+#    'person_id': [person.c.id, submission.c.person_id],
+#    }
+#       )
 
 __all__ = ['Person', 'person', 'account']
