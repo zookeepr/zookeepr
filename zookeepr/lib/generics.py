@@ -108,7 +108,7 @@ class Modify(IdHandler):
         obj, session = self.get_obj(id)
 
         if obj is None:
-            raise "Badness"
+            raise "cannot edit nonexistent object for id = '%s'" % (id,)
 
         # get the name we refer to it by
         model_name = self.individual
@@ -199,7 +199,7 @@ class View(object):
         obj, session = self.get_obj(id)
         
         if obj is None:
-            raise "Badness"
+            raise "cannot view nonexistent object for id = '%s'" % (id,)
 
         # assign to the template global
         setattr(c, self.individual, obj)
