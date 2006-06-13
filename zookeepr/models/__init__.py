@@ -123,4 +123,6 @@ class CFP(object):
         self.experience = experience
         self.url = url
 
+mapper(CFP, join(person, submission))
+
 __all__ = ['Person', 'person', 'account']
