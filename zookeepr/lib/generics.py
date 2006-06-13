@@ -148,6 +148,7 @@ class Modify(IdHandler):
         POST requests will delete the item.
         """
         obj, session = self.get_obj(id)
+
         if obj is None:
             m.abort(404, "Computer says no")
         
