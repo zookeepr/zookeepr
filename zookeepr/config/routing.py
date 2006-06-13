@@ -15,6 +15,9 @@ def make_map():
     # the top level controller is named home
     m.connect('home', '', controller='home')
 
+    # The CFP named route
+    m.connect('cfp', '/cfp', controller='cfp', action='index')
+
     # hack the old error handler back in, using the style of the old
     # routes controller.  this is necessary to get the error handler
     # to not 404 when calling itself
