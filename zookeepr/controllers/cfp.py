@@ -8,7 +8,7 @@ class CFPValidator(Schema):
 
 class CfpController(BaseController, View, Modify):
     validator = {
-        'new': CFPValidator,
+        'new': CFPValidator(),
         }
 
     model = model.CFP
