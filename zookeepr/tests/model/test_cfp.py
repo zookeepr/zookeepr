@@ -15,4 +15,5 @@ class TestCFP(ModelTest):
                     experience="some",
                     url="url"),
                ]
-    
+
+    mangles = dict(password=lambda p: md5.new(p).hexdigest())

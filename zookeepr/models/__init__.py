@@ -115,11 +115,22 @@ class CFP(object):
         self.experience = experience
         self.url = url
 
-#mapper(CFP, join(account, person, submission),
-#       properties = {
-#    'account_id': [account.c.id, person.c.account_id],
-#    'person_id': [person.c.id, submission.c.person_id],
-#    }
-#       )
+    def _set_password(self, password):
+        if password is None:
+            self.password_hash = None
+        else:
+            self.password_hash = md5.new(password).hexdigest()
+
+    def _get_password(self):
+        return self.password_hash
+
+    password = property(_get_password, _set_password)
+
+mapper(CFP, join(account, person).join(submission),
+       properties = {
+    'account_id': [account.c.id, person.c.account_id],
+    'person_id': [person.c.id, submission.c.person_id],
+    }
+       )
 
 __all__ = ['Person', 'person', 'account']
