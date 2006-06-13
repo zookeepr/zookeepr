@@ -23,5 +23,7 @@ class TestCFP(ControllerTest):
                     attachment='bar',
                     ),
                ]
-    no_test = ['password_confirm', 'attachment']
-    mangles = dict(password = lambda p: md5.new(p).hexdigest())
+    no_test = ['password_confirm']
+    mangles = dict(password = lambda p: md5.new(p).hexdigest(),
+                   attachment = lambda a: buffer(a),
+                   )
