@@ -24,3 +24,4 @@ class SubmissiontypeController(BaseController, SecureController, View, Modify):
     model = model.SubmissionType
     individual = 'submissiontype'
     conditions = dict(order_by='name')
+    redirect_map = dict(new=dict(action='index'))
