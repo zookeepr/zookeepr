@@ -104,7 +104,7 @@ mapper(Registration, join(account, registration),
        )
 
 class CFP(object):
-    def __init__(self, email_address=None, password=None, handle=None, firstname=None, lastname=None, title=None, abstract=None, experience=None, url=None, attachment=None):
+    def __init__(self, email_address=None, password=None, handle=None, firstname=None, lastname=None, title=None, abstract=None, type=None, experience=None, url=None, attachment=None):
         self.email_address = email_address
         self.password = password
         self.handle = handle
@@ -112,6 +112,7 @@ class CFP(object):
         self.lastname = lastname
         self.title = title
         self.abstract = abstract
+        self.type = type
         self.experience = experience
         self.url = url
         self.attachment = attachment
@@ -131,6 +132,7 @@ mapper(CFP, join(account, person).join(submission),
        properties = {
     'account_id': [account.c.id, person.c.account_id],
     'person_id': [person.c.id, submission.c.person_id],
+    'type': submission.c.submission_type_id,
     }
        )
 

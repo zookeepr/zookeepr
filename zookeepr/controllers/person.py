@@ -1,6 +1,8 @@
 from formencode import validators, compound, schema, variabledecode
 
-from zookeepr.lib.base import *
+from zookeepr.lib.base import BaseController
+from zookeepr.lib.generics import View, Modify
+from zookeepr.models import Person
 from zookeepr.lib.validators import Strip
 
 class PersonValidator(schema.Schema):
@@ -26,6 +28,6 @@ class PersonController(BaseController, View, Modify):
     validator = {"new" : NewPersonValidator(),
                  "edit" : EditPersonValidator()}
 
-    model = model.Person
+    model = Person
     individual = 'person'
     key = 'handle'

@@ -11,6 +11,7 @@ class TestCFP(ModelTest):
                     firstname='Firstname',
                     lastname='Lastname',
                     title="title yo",
+                    type=1,
                     abstract="abstract yo",
                     experience="some",
                     url="url"),
