@@ -1,4 +1,4 @@
-<h1>Edit person</h1>
+<h2>Edit person</h2>
 
 <% h.form(h.url(id=c.person.handle)) %>
 <& form.myt &>

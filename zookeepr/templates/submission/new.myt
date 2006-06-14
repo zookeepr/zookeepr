@@ -1,4 +1,4 @@
-<h1>New submission</h1>
+<h2>New submission</h2>
 
 <% h.form(h.url(action='new')) %>
 <& form.myt &>

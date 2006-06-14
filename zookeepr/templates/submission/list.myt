@@ -1,4 +1,4 @@
-<h1>List submissions</h1>
+<h2>List submissions</h2>
 
 <table>
 
