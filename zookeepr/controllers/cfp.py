@@ -1,11 +1,12 @@
 from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
+from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController
+from zookeepr.lib.base import BaseController, c
 from zookeepr.lib.generics import View, Modify
-import zookeepr.models as model
 from zookeepr.lib.validators import Strip
+from zookeepr.models import CFP, SubmissionType
 
 class CFPValidator(Schema):
     email_address = validators.Email()
@@ -13,6 +14,8 @@ class CFPValidator(Schema):
     password_confirm = validators.String()
     title = validators.String()
     abstract = validators.String()
+    type = validators.String()
+    experience = validators.String()
     url = validators.String()
     attachment = validators.String()
     
@@ -37,9 +40,12 @@ class CfpController(BaseController, View, Modify):
         'edit': EditCFPValidator(),
         }
 
-    model = model.CFP
+    model = CFP
     individual = 'cfp'
     redirect_map = dict(new=dict(action='index'))
 
     def submit(self):
+        session = create_session()
+        c.cfptypes = session.query(SubmissionType).select()
+        session.close()
         self.new()

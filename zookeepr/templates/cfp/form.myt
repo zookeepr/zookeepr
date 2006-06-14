@@ -41,10 +41,10 @@
 <% h.text_field('cfp.title', c.cfp.title) %></p>
 
 <p><label for="cfp.cfp_type">Type:</label><br />
-#% for st in c.cfptypes:
-#<% h.radio_button('type', st.name) %>
-#<label for="type"><% st.name %></label><br />
-#% #endfor
+% for st in c.cfptypes:
+<% h.radio_button('type', st.name) %>
+<label for="type"><% st.name %></label><br />
+% #endfor
 </p>
 
 <p><label for="cfp.url">URL:</label><br />
