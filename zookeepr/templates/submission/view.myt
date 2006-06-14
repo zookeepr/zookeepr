@@ -1,4 +1,4 @@
-<h1>View submission</h1>
+<h2>View submission</h2>
 
 <p>
    <b>Title:</b>

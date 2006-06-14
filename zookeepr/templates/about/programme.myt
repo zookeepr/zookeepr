@@ -1,4 +1,4 @@
-<h1>Programme</h1>
+<h2>Programme</h2>
 
 <p>10am: conference open</p>
 

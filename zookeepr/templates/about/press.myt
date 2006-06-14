@@ -1,4 +1,4 @@
-<h1>Press Information</h1>
+<h2>Press Information</h2>
 
 <p>Press!</p>
 

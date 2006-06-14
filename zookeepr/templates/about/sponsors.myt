@@ -1,4 +1,4 @@
-<h1>Sponsors</h1>
+<h2>Sponsors</h2>
 
 <p>ka-ching!</p>
 
