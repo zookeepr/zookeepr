@@ -6,7 +6,6 @@ from pylons import Controller, m, h, c, g, session, request, params
 from sqlalchemy import create_engine
 
 import zookeepr.models as model
-from zookeepr.lib.generics import *
 
 class BaseController(Controller):
     validator = {}
