@@ -4,6 +4,8 @@ from pylons import Controller, m, h, c, g, session, request, params
 from sqlalchemy import create_session
 from sqlalchemy.exceptions import SQLError
 
+# FIXME: Find somewhere to document the class attributes used by the generics.
+
 class IdHandler(object):
     """Handle object retrieval.
 
@@ -81,7 +83,15 @@ class Modify(IdHandler):
                 e = True
             if not e:
                 session.close()
-                return h.redirect_to(action='view', id=self._oid(new_data))
+
+                # if we have a redirect map in the child class,
+                # and it has an entry for 'new', then redirect using the
+                # details in there.  Otherwise go to the default destination.
+                if hasattr(self, 'redirect_map') and 'new' in self.redirect_map:
+                    redirect_args = self.redirect_map['new']
+                else:
+                    redirect_args = dict(action='view', id=self._oid(new_data))
+                return h.redirect_to(**redirect_args)
 
         # assign to the template global
         setattr(c, model_name, new_data)
