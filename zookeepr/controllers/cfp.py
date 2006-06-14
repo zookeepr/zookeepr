@@ -36,4 +36,5 @@ class CfpController(BaseController, View, Modify):
     individual = 'cfp'
 
     def submit(self):
+        print m.request_args
         self.new()

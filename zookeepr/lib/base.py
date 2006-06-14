@@ -39,8 +39,10 @@ class BaseController(Controller):
         # fails. This obviously needs to be done.
         m.errors = None
         if m.request_args and self.validator.has_key(action):
+            print "woo", m.request_args
             try:
                 m.request_args = \
                                self.validator[action].to_python(m.request_args)
             except Invalid, e:
                 m.errors = e
+            print "bah", m.request_args
