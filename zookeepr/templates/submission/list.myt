@@ -28,7 +28,7 @@
 	<td><% str(s.attachment)[:30] %></td>
 	<td>
 % 	if s.person:
-<% h.link_to(s.person.handle, url=h.url(controller='person', action='view', id=s.person.handle)) %>
+<% h.link_to(s.person.id, url=h.url(controller='person', action='view', id=s.person.id)) %>
 %	# endif
 </td>
 
