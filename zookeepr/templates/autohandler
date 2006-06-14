@@ -12,8 +12,10 @@
 <& header.myt &>
 # FIXME: show our sponsors in the header area
 #<& sponsors.myt &>
-<& usermenu.myt &>
+<div id="menus">
 <& mainmenu.myt &>
+<& usermenu.myt &>
+</div>
 </div>
 <hr />
 
