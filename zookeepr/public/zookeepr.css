@@ -11,6 +11,7 @@ body {
 #header h1 {
 	margin: 0;
 	padding: 0;
+	margin-bottom: 20px;
 }
 
 #usermenu, #mainmenu {
@@ -28,7 +29,8 @@ body {
 }
 
 #body {
-	margin: 2em;
+	margin: 20px;
+	margin-top: 0;
 	clear: both;
 }
 
@@ -54,7 +56,7 @@ body {
 }
 
 #column-a div.inner {
-	padding-right: 2em;
+	padding-right: 20px;
 }
 
 #column-b {
@@ -63,7 +65,7 @@ body {
 }
 
 #column-b div.inner {
-	padding-left: 2em;
+	padding-left: 20px;
 }
 
 /**
@@ -100,6 +102,10 @@ a:active {
 
 a:visited {
 	color: #a04700;
+}
+
+a:hover {
+	color: #f57900;
 }
 
 a img {
