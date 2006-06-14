@@ -3,14 +3,28 @@
  */
 
 body {
-	background: url("/greydient-top.png") top left repeat-x;
+	background: url("/greydient-top.png") top left repeat-x white;
 	margin: 0;
 	padding: 0;
 }
 
 #header h1 {
-	margin: 20px;
+	margin: 0;
 	padding: 0;
+}
+
+#usermenu, #mainmenu {
+	font-size: 200%;
+	font-weight: bold;
+}
+#usermenu {
+	font-size: 150%;
+}
+
+#menus {
+	position: absolute;
+	top: 20px;
+	right: 20px;
 }
 
 #body {
@@ -65,8 +79,11 @@ h1, h2, h3, h4, h5 {
 
 hr {
 	clear: both;
-	display: hidden;
+	display: none;
 	border: none;
+	height: 0;
+	padding: 0;
+	margin: 0;
 }
 
 .hidden {
@@ -83,6 +100,10 @@ a:active {
 
 a:visited {
 	color: #a04700;
+}
+
+a:hover {
+	color: #f57900;
 }
 
 a img {
@@ -112,6 +133,8 @@ a img {
 .linkmenu li:last-child:after {
 	content: "";
 }
+
+.linkmenu a { text-decoration: none; }
 
 /**
  * forms

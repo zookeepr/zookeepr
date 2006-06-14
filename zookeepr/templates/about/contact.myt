@@ -1,3 +1,7 @@
-<&| /contentbox.myt, title="contact" &>
-who you gunna call
-</&>
+<h1>Contact</h1>
+
+<p>who you gunna call</p>
+
+<%method title>
+Contact - <& PARENT:title &>
+</%method>

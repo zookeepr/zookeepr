@@ -1,4 +1,5 @@
-<&| /contentbox.myt, title="programme" &>
+<h1>Programme</h1>
+
 <p>10am: conference open</p>
 
 <p>11am: asterisk talk</p>
@@ -9,5 +10,6 @@
 
 <p>4am: bedtime</p>
 
-</&>
-
+<%method title>
+Programme - <& PARENT:title &>
+</%method>
