@@ -18,7 +18,6 @@
 <tr>
 	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
 	<td>
-% h.log("sub type: %r" % s.submission_type)
 % if s.submission_type:
 <% s.submission_type.name %>
 % #endif
