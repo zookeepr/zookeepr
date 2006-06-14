@@ -12,7 +12,8 @@
 <& header.myt &>
 # FIXME: show our sponsors in the header area
 #<& sponsors.myt &>
-<& menu.myt &>
+<& usermenu.myt &>
+<& mainmenu.myt &>
 </div>
 <hr />
 
@@ -22,7 +23,7 @@
 
 <hr />
 <div id="footer">
-<p>Copyright &copy; 2006-2007, The Seven Team</p>
+<p>Copyright &copy; 2006-2007, <a href="/about/contact">The Seven Team</a></p>
 </div>
 
 </body>
