@@ -4,6 +4,8 @@ from pylons import Controller, m, h, c, g, session, request, params
 from sqlalchemy import create_session
 from sqlalchemy.exceptions import SQLError
 
+# FIXME: Find somewhere to document the class attributes used by the generics.
+
 class IdHandler(object):
     """Handle object retrieval.
 
