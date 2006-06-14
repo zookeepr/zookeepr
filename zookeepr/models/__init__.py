@@ -104,7 +104,7 @@ mapper(Registration, join(account, registration),
        )
 
 class CFP(object):
-    def __init__(self, email_address=None, password=None, handle=None, firstname=None, lastname=None, title=None, abstract=None, experience=None, url=None):
+    def __init__(self, email_address=None, password=None, handle=None, firstname=None, lastname=None, title=None, abstract=None, experience=None, url=None, attachment=None):
         self.email_address = email_address
         self.password = password
         self.handle = handle
@@ -114,6 +114,7 @@ class CFP(object):
         self.abstract = abstract
         self.experience = experience
         self.url = url
+        self.attachment = attachment
 
     def _set_password(self, password):
         if password is None:

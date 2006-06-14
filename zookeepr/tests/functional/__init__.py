@@ -144,7 +144,7 @@ class ControllerTest(TestBase):
                 expected = self.mangles[attr](expected)
         result = getattr(obj, attr)
         self.assertEqual(expected, result,
-                         "unexpected value of attribute '%s.%s': expected '%s', got '%s'" % (obj.__class__.__name__, attr, expected, result))
+                         "unexpected value of attribute '%s.%s': expected %r, got %r" % (obj.__class__.__name__, attr, expected, result))
 
     def make_model_data(self):
         result = {}

@@ -108,7 +108,7 @@ class Modify(IdHandler):
         obj, session = self.get_obj(id)
 
         if obj is None:
-            raise "Badness"
+            raise "cannot edit nonexistent object for id = '%s'" % (id,)
 
         # get the name we refer to it by
         model_name = self.individual
@@ -148,6 +148,7 @@ class Modify(IdHandler):
         POST requests will delete the item.
         """
         obj, session = self.get_obj(id)
+
         if obj is None:
             m.abort(404, "Computer says no")
         
@@ -199,7 +200,7 @@ class View(object):
         obj, session = self.get_obj(id)
         
         if obj is None:
-            raise "Badness"
+            raise "cannot view nonexistent object for id = '%s'" % (id,)
 
         # assign to the template global
         setattr(c, self.individual, obj)
