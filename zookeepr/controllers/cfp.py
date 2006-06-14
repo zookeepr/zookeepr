@@ -28,6 +28,9 @@ class EditCFPValidator(Schema):
     
 class CfpController(BaseController, View, Modify):
     validator = {
+        # FIXME: The automagic test looks for the 'new' action, so map
+        # that as well as 'submit', which only calls new()
+        'new': NewCFPValidator(),
         'submit': NewCFPValidator(),
         'edit': EditCFPValidator(),
         }
