@@ -8,12 +8,19 @@ This document details how to set up the zookeepr development environment, instal
 These steps will set up the development environment under Ubuntu Dapper in your home directory. It assumes that you have sudo access to your machine. 
 
 Requirements:
- * Ubuntu Dapper
  * bzr installed
+
+Tested on:
+ * Ubuntu Dapper
+ * Debian Testing
+
+Debian-specific notes:
+ * Repoint the /usr/bin/python symlink to /usr/bin/python2.4
+ * Remove python2.4-sqlalchemy
 
 Steps:
  * Remove python-setuptools, python2.4-setuptools if they are installed
- * Check that python2.4-dev, python2.4-profiler, python-pysqlite2, python2.4-paramiko are installed
+ * Check that python2.4-dev, python2.4-profiler, python2.4-pysqlite2, python2.4-paramiko are installed
  * Download virtual Python from http://peak.telecommunity.com/dist/virtual-python.py. 
  * Run `python virtual-python.py`. This will set up a Python installation in your home directory.
  * Download ez_setup.py from http://peak.telecommunity.com/dist/ez_setup.py
@@ -35,6 +42,6 @@ You are good to go!
 ====== Running zookeepr ======
 
 From within zookeepr/
- * Run `paster server -v --reload development.ini`
+ * Run `paster serve -v --reload development.ini`
  * Point your browser to http://localhost:5000/
 
