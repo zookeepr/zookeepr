@@ -28,7 +28,7 @@ class EditCFPValidator(Schema):
     
 class CfpController(BaseController, View, Modify):
     validator = {
-        'new': NewCFPValidator(),
+        'submit': NewCFPValidator(),
         'edit': EditCFPValidator(),
         }
 
@@ -36,5 +36,4 @@ class CfpController(BaseController, View, Modify):
     individual = 'cfp'
 
     def submit(self):
-        print m.request_args
         self.new()
