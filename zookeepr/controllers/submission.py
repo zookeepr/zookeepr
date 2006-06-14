@@ -1,5 +1,8 @@
 from formencode import validators, compound, schema, variabledecode
-from zookeepr.lib.base import *
+
+from zookeepr.lib.base import BaseController
+from zookeepr.lib.generics import Modify, View
+from zookeepr.models import Submission
 
 class SubmissionValidator(schema.Schema):
     title = validators.String()
@@ -16,6 +19,6 @@ class SubmissionController(BaseController, View, Modify):
     validator = {"new" : NewSubmissionValidator(),
                  "edit" : EditSubmissionValidator()}
 
+    model = Submission
     individual = 'submission'
-    model = model.Submission
     conditions = dict(order_by='title')

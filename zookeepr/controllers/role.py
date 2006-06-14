@@ -1,5 +1,8 @@
 from formencode import validators, compound, schema, variabledecode
-from zookeepr.lib.base import *
+
+from zookeepr.lib.base import BaseController
+from zookeepr.lib.generics import View, Modify
+from zookeepr.models import Role
 
 class RoleValidator(schema.Schema):
     name = validators.PlainText()
@@ -16,6 +19,6 @@ class RoleController(BaseController, View, Modify):
     validator = {"new" : NewRoleValidator(),
                  "edit" : EditRoleValidator()}
 
-    model = model.Role
+    model = Role
     individual = 'role'
     conditions = dict(order_by='name')
