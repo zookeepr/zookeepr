@@ -48,6 +48,28 @@ class IdHandler(object):
 
         return obj, session
 
+    def redirect_to(self, action, default):
+        """Redirect to the preferred controller/action target.
+
+        Used to redirect the browser after a successful POST.
+    
+        If ``self`` has an attribute ``redirect_map``, then that is used as
+        a map to look up the destination for the redirect for this ``action``.
+
+        If the ``redirect_map`` doesn't exist, or has no preference for
+        the current ``action``, then the ``default`` target is used instead.
+
+        The values of the ``redirect_map``, and ``default``, should be a
+        dictionary of arguments as one would normally pass to the
+        ``h.redirect_to`` call from WebHelpers.
+        """
+        if hasattr(self, 'redirect_map') and action in self.redirect_map:
+            redirect_args = self.redirect_map[action]
+        else:
+            redirect_args = default
+        return h.redirect_to(**redirect_args)
+
+
 class Modify(IdHandler):
 
     def new(self):
@@ -84,14 +106,8 @@ class Modify(IdHandler):
             if not e:
                 session.close()
 
-                # if we have a redirect map in the child class,
-                # and it has an entry for 'new', then redirect using the
-                # details in there.  Otherwise go to the default destination.
-                if hasattr(self, 'redirect_map') and 'new' in self.redirect_map:
-                    redirect_args = self.redirect_map['new']
-                else:
-                    redirect_args = dict(action='view', id=self._oid(new_data))
-                return h.redirect_to(**redirect_args)
+                default_redirect = dict(action='view', id=self._oid(new_data))
+                return self.redirect_to('new', default_redirect)
 
         # assign to the template global
         setattr(c, model_name, new_data)
@@ -175,6 +191,7 @@ class Modify(IdHandler):
         m.subexec('%s/confirm_delete.myt' % model_name)
 
     delete.permissions = authkit.permissions(signed_in=True)
+
 
 class View(object):
     def _can_edit(self):
