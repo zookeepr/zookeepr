@@ -2,7 +2,9 @@ from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import *
+from zookeepr.lib.base import BaseController
+from zookeepr.lib.generics import View, Modify
+import zookeepr.models as model
 from zookeepr.lib.validators import Strip
 
 class CFPValidator(Schema):
