@@ -37,6 +37,7 @@ class CfpController(BaseController, View, Modify):
 
     model = model.CFP
     individual = 'cfp'
+    redirect_map = dict(new=dict(action='index'))
 
     def submit(self):
         self.new()
