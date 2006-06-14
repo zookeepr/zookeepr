@@ -40,9 +40,9 @@
 <p><label for="cfp.title">Title:</label><br />
 <% h.text_field('cfp.title', c.cfp.title) %></p>
 
-<p><label for="cfp.cfp_type">Type:</label><br />
+<p><label for="cfp.type">Type:</label><br />
 % for st in c.cfptypes:
-<% h.radio_button('type', st.name) %>
+<% h.radio_button('cfp.type', st.name) %>
 <label for="type"><% st.name %></label><br />
 % #endfor
 </p>
@@ -55,6 +55,10 @@
 
 <p><label for="cfp.abstract">Abstract:</label><br />
 <% h.text_area('cfp.abstract') %></p>
+
+<p><label for="cfp.experience">Experience:</label><br />
+<% h.text_area('cfp.experience') %></p>
+
 </fieldset>
 
 </div>
