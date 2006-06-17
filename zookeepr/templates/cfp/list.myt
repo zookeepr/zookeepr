@@ -154,9 +154,7 @@ information:
 </ul>
 
 <p>
-Proposals and papers and should be submitted through our webform:
-
-<% h.link_to(h.url_for('submit_cfp'), url=h.url_for('submit_cfp')) %>
+Proposals and papers and should be <% h.link_to('submitted through our webform', url=h.url_for('submit_cfp')) %>
 </p>
 
 <p>
