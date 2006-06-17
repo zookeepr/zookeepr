@@ -105,6 +105,8 @@ Submissions on the following topics are encouraged:
 <p>Anything which doesn't fall under one of the other topics, as open-source.</p>
 </li>
 
+</ul>
+
 <h3>Submission Guidelines</h3>
 
 <p>
