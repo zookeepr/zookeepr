@@ -34,12 +34,13 @@ class TestCFP(ControllerTest):
 
     def setUp(self):
         ControllerTest.setUp(self)
-        self.subtype = model.SubmissionType('Paper')
-        self.session.save(self.subtype)
+        st = model.SubmissionType('Paper')
+        self.session.save(st)
         self.session.flush()
-        print self.subtype
+        self.stid = st.id
 
     def tearDown(self):
-        self.session.delete(self.subtype)
+        st = self.session.get(model.SubmissionType, self.stid)
+        self.session.delete(st)
         self.session.flush()
         ControllerTest.tearDown(self)
