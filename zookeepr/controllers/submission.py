@@ -6,6 +6,8 @@ from zookeepr.models import Submission
 
 class SubmissionValidator(schema.Schema):
     title = validators.String()
+    abstract = validators.String()
+    experience = validators.String()
 
 class NewSubmissionValidator(schema.Schema):
     submission = SubmissionValidator()
