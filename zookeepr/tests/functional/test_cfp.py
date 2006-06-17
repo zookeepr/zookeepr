@@ -31,3 +31,15 @@ class TestCFP(ControllerTest):
     mangles = dict(password = lambda p: md5.new(p).hexdigest(),
                    attachment = lambda a: buffer(a),
                    )
+
+    def setUp(self):
+        ControllerTest.setUp(self)
+        self.subtype = model.SubmissionType('Paper')
+        self.session.save(self.subtype)
+        self.session.flush()
+        print self.subtype
+
+    def tearDown(self):
+        self.session.delete(self.subtype)
+        self.session.flush()
+        ControllerTest.tearDown(self)
