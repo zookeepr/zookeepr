@@ -9,11 +9,11 @@ from zookeepr.lib.validators import Strip
 from zookeepr.models import CFP, SubmissionType
 
 class CFPValidator(Schema):
-    email_address = validators.Email()
-    password = validators.String()
-    password_confirm = validators.String()
-    title = validators.String()
-    abstract = validators.String()
+    email_address = validators.Email(not_empty=True)
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    title = validators.String(not_empty=True)
+    abstract = validators.String(not_empty=True)
     type = validators.Int()
     experience = validators.String()
     url = validators.String()
