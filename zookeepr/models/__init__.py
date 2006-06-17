@@ -6,30 +6,6 @@ from sqlalchemy import mapper, relation, MapperExtension, join
 from zookeepr.models.tables import *
 #from forms import *
 
-## Submission Types
-class SubmissionType(object):
-    def __init__(self, name=None):
-        self.name = name
-
-mapper(SubmissionType, submission_type)
-
-
-## Submissions
-class Submission(object):
-    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None, attachment=None):
-        self.title = title
-        self.submission_type = submission_type
-        self.abstract = abstract
-        self.experience = experience
-        self.url = url
-        self.attachment = attachment
-
-mapper(Submission, submission,
-       properties = dict(
-    submission_type = relation(SubmissionType)
-    ))
-
-
 ## Persons
 class Person(object):
     def __init__(self, handle=None, email_address=None, password=None,
@@ -67,11 +43,38 @@ class Person(object):
 
 mapper(Person, join(account, person),
        properties = dict(account_id = [account.c.id, person.c.account_id],
-                         submissions = relation(Submission,
-                                                private=True,
-                                                backref='person')
+#                          submissions = relation(Submission,
+#                                                 private=True,
+#                                                 lazy=False,
+#                                                 backref='person')
                          ),
        )
+
+## Submission Types
+class SubmissionType(object):
+    def __init__(self, name=None):
+        self.name = name
+
+mapper(SubmissionType, submission_type)
+
+
+## Submissions
+class Submission(object):
+    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None, attachment=None):
+        self.title = title
+        self.submission_type = submission_type
+        self.abstract = abstract
+        self.experience = experience
+        self.url = url
+        self.attachment = attachment
+
+mapper(Submission, submission,
+       properties = dict(
+    submission_type = relation(SubmissionType, lazy=False),
+    person = relation(Person, lazy=False, backref='submissions')
+    ))
+
+
 
 class Role(object):
     def __init__(self, name=None):
