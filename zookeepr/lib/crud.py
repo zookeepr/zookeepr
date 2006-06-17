@@ -6,7 +6,7 @@
 
 # FIXME: Find somewhere to document the class attributes used by the generics.
 
-from pylons import m, request
+from pylons import h, m, request
 from sqlalchemy import create_session
 
 class CRUDBase(object):
@@ -276,3 +276,5 @@ class Create(CRUDBase):
 #         m.subexec('%s/view.myt' % self.individual)
 
 #     view.permissions = authkit.permissions(signed_in=True)
+
+__all__ = ['CRUDBase', 'Create']
