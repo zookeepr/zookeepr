@@ -44,8 +44,11 @@ class CfpController(BaseController, View, Modify):
     individual = 'cfp'
     redirect_map = dict(new=dict(action='index'))
 
-    def submit(self):
+    def new(self):
         session = create_session()
         c.cfptypes = session.query(SubmissionType).select()
         session.close()
+        Modify.new(self)
+
+    def submit(self):
         self.new()
