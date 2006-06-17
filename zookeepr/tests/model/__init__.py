@@ -62,31 +62,32 @@ class ModelTest(TestBase):
         self.assertEqual(0, len(results))
 
     def crud(self):
-        """Test CRUD operations on data model object.
+        #
+#         """Test CRUD operations on data model object.
 
-        This test creates an object of the data model, checks that it was
-        inserted into the database, and then deletes it.  We don't bother
-        testing 'update' because it's assumed that SQLAlchemy provides
-        this for us already.  We only want to test that our class behaves
-        the way we expect it (i.e. contains the data we want, and any
-        property methods do the right thing).
+#         This test creates an object of the data model, checks that it was
+#         inserted into the database, and then deletes it.  We don't bother
+#         testing 'update' because it's assumed that SQLAlchemy provides
+#         this for us already.  We only want to test that our class behaves
+#         the way we expect it (i.e. contains the data we want, and any
+#         property methods do the right thing).
     
-        Set the attributes for this model object in the ``samples`` class
-        variable.
+#         Set the attributes for this model object in the ``samples`` class
+#         variable.
 
-        If an attribute goes through a mangle process, list it in the
-        ``mangles`` dictionary, keyed on the attribute name, and make
-        the value on that key a callable that mangles the sample
-        data as expected.
+#         If an attribute goes through a mangle process, list it in the
+#         ``mangles`` dictionary, keyed on the attribute name, and make
+#         the value on that key a callable that mangles the sample
+#         data as expected.
 
-        For example,
+#         For example,
 
-        class TestSomeModel(ModelTest):
-            model = 'mod'
-            samples = [dict(password='test')]
-            mangles = dict(password=lambda p: md5.new(p).hexdigest())
+#         class TestSomeModel(ModelTest):
+#             model = 'mod'
+#             samples = [dict(password='test')]
+#             mangles = dict(password=lambda p: md5.new(p).hexdigest())
         
-        """
+#         """
         self.failIf(len(self.samples) < 1,
             "not enough sample data, stranger")
 

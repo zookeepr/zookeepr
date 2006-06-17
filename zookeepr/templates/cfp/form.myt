@@ -42,8 +42,8 @@
 
 <p><label>Type:</label><br />
 % for st in c.cfptypes:
-<% h.radio_button('cfp.type', st.name, id="cfp.type." + st.name) %>
-<label for="cfp.type.<% st.name %>"><% st.name %></label><br />
+<% h.radio_button('cfp.type', st.id) %>
+<label for="type"><% st.name %></label><br />
 % #endfor
 </p>
 

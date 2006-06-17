@@ -21,4 +21,4 @@ class SubmissionController(BaseController, View, Modify):
 
     model = Submission
     individual = 'submission'
-    conditions = dict(order_by='title')
+    #conditions = dict(order_by='title')

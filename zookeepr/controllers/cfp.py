@@ -14,7 +14,7 @@ class CFPValidator(Schema):
     password_confirm = validators.String()
     title = validators.String()
     abstract = validators.String()
-    type = validators.String()
+    type = validators.Int()
     experience = validators.String()
     url = validators.String()
     attachment = validators.String()

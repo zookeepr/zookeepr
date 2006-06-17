@@ -57,6 +57,13 @@ class TestSubmission(ModelTest):
 
         self.assertEqual(buffer("some attachment"), s.attachment)
 
+        # check the submission relations
+        self.assertEqual(st.name, s.submission_type.name)
+        self.assertEqual(v.handle, s.person.handle)
+
+        print s.submission_type
+        print s.person
+
         session.delete(s)
         session.delete(st)
         session.delete(v)
