@@ -20,6 +20,30 @@ class CRUDBase(object):
         else:
             return oid
         
+    def get_obj(self, id, session):
+        use_oid = False # Determines if we look up on a key or the OID
+        obj = None
+
+        # If we can convert this to an integer then we look up based on the OID
+        try:
+            id = int(id)
+            use_oid = True
+        except ValueError:
+            pass
+
+        # get the name we're referring this object to by from the model
+        model_name = self.individual
+
+        if use_oid:
+            obj = session.get(self.model, id)
+        elif hasattr(self, 'key'):
+            query_dict = {self.key: id}
+            os = session.query(self.model).select_by(**query_dict)
+            if len(os) == 1:
+                obj = os[0]
+
+        return obj
+
     def redirect_to(self, action, default):
         """Redirect to the preferred controller/action target.
 
@@ -40,6 +64,7 @@ class CRUDBase(object):
         else:
             redirect_args = default
         return h.redirect_to(**redirect_args)
+    
 
 class Create(CRUDBase):
     def new(self):
@@ -72,41 +97,6 @@ class Create(CRUDBase):
         session.close()
         
         m.subexec('%s/new.myt' % model_name)
-
-
-# class IdHandler(object):
-#     """Handle object retrieval.
-
-#     This class retrieves objects from the data model, by either the OID,
-#     or the secondary key as specified by the ``key`` class attribute on the
-#     controller.
-#     """
-
-#     def get_obj(self, id):
-#         use_oid = False # Determines if we look up on a key or the OID
-#         obj = None
-
-#         # If we can convert this to an integer then we look up based on the OID
-#         try:
-#             id = int(id)
-#             use_oid = True
-#         except ValueError:
-#             pass
-
-#         session = create_session()
-
-#         # get the name we're referring this object to by from the model
-#         model_name = self.individual
-
-#         if use_oid:
-#             obj = session.get(self.model, id)
-#         elif hasattr(self, 'key'):
-#             query_dict = {self.key: id}
-#             os = session.query(self.model).select_by(**query_dict)
-#             if len(os) == 1:
-#                 obj = os[0]
-
-#         return obj, session
 
 
 # class Modify(IdHandler):
@@ -161,120 +151,136 @@ class Create(CRUDBase):
 # #         m.subexec('%s/new.myt' % model_name)
 
 # #     new.permissions = authkit.permissions(signed_in=True)
+
+class Update(CRUDBase):
+    def edit(self, id):
+        """Allow editing of an object.
+
+        GET requests return an 'edit' form, prefilled with the current
+        data.
+
+        POST requests update the object with the data posted.
+        """
+        obj, session = self.get_obj(id)
+
+        if obj is None:
+            raise "cannot edit nonexistent object for id = '%s'" % (id,)
+
+        # get the name we refer to it by
+        model_name = self.individual
         
-#     def edit(self, id):
-#         """Allow editing of an object.
+        if request.method == 'POST' and m.errors is None:
+            # update the object with the posted data
+            for k in m.request_args[model_name]:
+                setattr(obj, k, m.request_args[model_name][k])
 
-#         GET requests return an 'edit' form, prefilled with the current
-#         data.
+            session.save(obj)
 
-#         POST requests update the object with the data posted.
-#         """
-#         obj, session = self.get_obj(id)
+            e = False
+            try:
+                session.flush()
+            except SQLError, e:
+                # how could this have happened? we suck and for now assume
+                # that it could only happen by it being a duplicate
+                # p.s. benno sucks
+                m.errors = e
+                e = True
+            if not e:
+                session.close()
+                return h.redirect_to(action='view', id=self._oid(obj))
 
-#         if obj is None:
-#             raise "cannot edit nonexistent object for id = '%s'" % (id,)
-
-#         # get the name we refer to it by
-#         model_name = self.individual
-        
-#         if request.method == 'POST' and m.errors is None:
-#             # update the object with the posted data
-#             for k in m.request_args[model_name]:
-#                 setattr(obj, k, m.request_args[model_name][k])
-
-#             session.save(obj)
-
-#             e = False
-#             try:
-#                 session.flush()
-#             except SQLError, e:
-#                 # how could this have happened? we suck and for now assume
-#                 # that it could only happen by it being a duplicate
-#                 # p.s. benno sucks
-#                 m.errors = e
-#                 e = True
-#             if not e:
-#                 session.close()
-#                 return h.redirect_to(action='view', id=self._oid(obj))
-
-#         # assign to the template global
-#         setattr(c, model_name, obj)
-#         # call the template
-#         m.subexec('%s/edit.myt' % model_name)
+        # assign to the template global
+        setattr(c, model_name, obj)
+        # call the template
+        m.subexec('%s/edit.myt' % model_name)
         
 #     edit.permissions = authkit.permissions(signed_in=True)
-    
-#     def delete(self, id):
-#         """Delete the submission type
 
-#         GET will return a form asking for approval.
+class Delete(CRUDBase):
+    def delete(self, id):
+        """Delete the submission type
 
-#         POST requests will delete the item.
-#         """
-#         obj, session = self.get_obj(id)
+        GET will return a form asking for approval.
 
-#         if obj is None:
-#             m.abort(404, "Computer says no")
+        POST requests will delete the item.
+        """
         
-#         if request.method == 'POST':
-#             session.delete(obj)
-#             session.flush()
-#             return h.redirect_to(action='index', id=None)
-
-#         session.close()
+        session = create_session()
         
-#         # get the model name
-#         model_name = self.individual
-#         # call the template
-#         m.subexec('%s/confirm_delete.myt' % model_name)
+        obj = self.get_obj(id, session)
 
-#     delete.permissions = authkit.permissions(signed_in=True)
+        if obj is None:
+            m.abort(404, "Computer says no")
+        
+        if request.method == 'POST':
+            session.delete(obj)
+            session.flush()
+            return h.redirect_to(action='index', id=None)
+
+        session.close()
+        
+        # get the model name
+        model_name = self.individual
+        # call the template
+        m.subexec('%s/confirm_delete.myt' % model_name)
+
+#    delete.permissions = authkit.permissions(signed_in=True)
 
 
-# class View(object):
+class List(CRUDBase):
 #     def _can_edit(self):
 #         return issubclass(self.__class__, Modify)
     
-#     def index(self):
-#         """Show a list of all objects currently in the system."""
-#         # GET, POST -> return list of objects
+    def index(self):
+        """Show a list of all objects currently in the system."""
+        # GET, POST -> return list of objects
 
-#         session = create_session()
+        session = create_session()
 
-#         # get name we refer to the model by in the controller
-#         model_name = self.individual
+        # get name we refer to the model by in the controller
+        model_name = self.individual
         
-#         #options = getattr(self, 'conditions', {})
-#         #pages, collection = paginate(object_mapper(self.model), m.request_args.get('page', 0), **options)
-#         #setattr(c, model_name + '_pages', pages)
-#         #setattr(c, model_name + '_collection', collection)
+        #options = getattr(self, 'conditions', {})
+        #pages, collection = paginate(object_mapper(self.model), m.request_args.get('page', 0), **options)
+        #setattr(c, model_name + '_pages', pages)
+        #setattr(c, model_name + '_collection', collection)
 
-#         # assign list of objects to template global
-#         setattr(c, model_name + '_collection', session.query(self.model).select())
+        # assign list of objects to template global
+        setattr(c, model_name + '_collection', session.query(self.model).select())
 
-#         session.close()
+        session.close()
         
-#         c.can_edit = self._can_edit()
-#         # exec the template
-#         m.subexec('%s/list.myt' % model_name)
+        c.can_edit = self._can_edit()
+        # exec the template
+        m.subexec('%s/list.myt' % model_name)
 
 #     index.permissions = authkit.permissions(signed_in=True)
-    
-#     def view(self, id):
-#         """View a specific object"""
-#         obj, session = self.get_obj(id)
+
+class Read(CRUDBase):
+    def view(self, id):
+        """View a specific object"""
+        obj, session = self.get_obj(id)
         
-#         if obj is None:
-#             raise "cannot view nonexistent object for id = '%s'" % (id,)
+        if obj is None:
+            raise "cannot view nonexistent object for id = '%s'" % (id,)
 
-#         # assign to the template global
-#         setattr(c, self.individual, obj)
-#         c.can_edit = self._can_edit()
+        # assign to the template global
+        setattr(c, self.individual, obj)
+        c.can_edit = self._can_edit()
 
-#         # exec the template
-#         m.subexec('%s/view.myt' % self.individual)
+        # exec the template
+        m.subexec('%s/view.myt' % self.individual)
 
 #     view.permissions = authkit.permissions(signed_in=True)
 
-__all__ = ['CRUDBase', 'Create']
+# legacy classes
+class View(Read, List):
+    pass
+
+class Modify(Create, Update, Delete):
+    pass
+
+
+__all__ = ['Create', 'Read', 'Update', 'Delete', 'List',
+           'View', 'Modify',
+           ]
