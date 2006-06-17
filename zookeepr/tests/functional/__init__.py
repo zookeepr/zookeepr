@@ -104,14 +104,19 @@ class ControllerTest(TestBase):
 
         url = url_for(controller=self.url, action='new')
 
-        # emulate the first browser request; the client browser
-        # will GET the page before POSTing the form data, and
-        # we might have some weird session errors that we'd like to
-        # catch here in the test.
+        # get the form
         response = self.app.get(url)
+        form = response.forms[0]
 
-        # post some sample data
-        response = self.app.post(url, params=self.form_params(self.samples[0]))
+        print form.text
+        print form.fields
+        # fill it out
+        params = self.form_params(self.samples[0])
+        for k in params.keys():
+            form[k] = params[k]
+
+        # submit
+        form.submit()
 
         # now check that the data is in the database
         os = self.session.query(self.model).select()
