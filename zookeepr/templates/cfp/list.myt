@@ -117,7 +117,7 @@ Submissions on the following topics are encouraged:
 Proposals for presentations and tutorials should be around 400 words
 and should detail the subject you want to talk about and include links
 to any other relevant details, such as a project home page.
-Rember this proposal needs to convince our programme committe that you
+Rember this proposal needs to convince our programme committee that you
 should be talking at linux.conf.au 2007.
 </p>
 
