@@ -3,6 +3,7 @@ from zookeepr.lib.base import *
 class HomeController(BaseController):
 
     def index(self):
-        # FIMXE (benno). We need to display something
-        # much different if the person is logged in.
-        m.subexec('about/index.myt')
+        if request.environ.has_key('REMOTE_USER'):
+            m.subexec('home.myt')
+        else:
+            m.subexec('about/index.myt')
