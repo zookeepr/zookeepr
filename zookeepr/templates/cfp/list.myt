@@ -150,7 +150,7 @@ information:
 </ul>
 
 <p>
-Proposals and papers and should be <% h.link_to('submitted through our webform', url=h.url_for('submit_cfp')) %>
+Proposals and papers and should be <% h.link_to('submitted through our web form', url=h.url_for('submit_cfp')) %>
 </p>
 
 <p>
