@@ -175,7 +175,7 @@ place an undue burden on our formatting team.
 </p>
 
 <p>
-Import dates:
+Important dates:
 
 <ul>
 <li>Call for participation announced:
