@@ -1,9 +1,3 @@
-Yo!  The CFP is full of awesome.
-
-Why don't you <% h.link_to('submit something', url=h.url('submit_cfp')) %>?
-
-
-
 <h2>Call for Participation</h2>
 
 <h3>Overview</h3>
