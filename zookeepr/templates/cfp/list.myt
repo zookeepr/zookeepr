@@ -155,7 +155,7 @@ Proposals and papers and should be <% h.link_to('submitted through our web form'
 
 <p>
 Any featured software in papers must be available under a licence
-compatible with the link:[Open Source Definition]. Any papers that are
+compatible with the <% h.link_to('Open Source Definition', url='http://www.opensource.org/docs/definition.php') %>. Any papers that are
 accompanied by non-disclosure agreement forms will be rejected.  All
 successful papers must be eligible for republication on-line and on
 distribution media given to conference attendees. linux.conf.au
