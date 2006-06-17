@@ -106,7 +106,7 @@ class ControllerTest(TestBase):
 
         # get the form
         response = self.app.get(url)
-        form = response.forms[0]
+        form = response.form
 
         print form.text
         print form.fields
