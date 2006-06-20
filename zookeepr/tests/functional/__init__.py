@@ -168,13 +168,20 @@ class ControllerTest(TestBase):
         oid = o.id
         self.session.clear()
 
-        # 
+        # get the form
         url = url_for(controller=self.url, action='edit', id=oid)
-
-        # get the page before posting, see create above for details
         response = self.app.get(url)
+        form = response.form
+        print form.text
+        print form.fields
 
-        response = self.app.post(url, params=self.form_params(self.samples[1]))
+        # fill it out
+        params = self.form_params(self.samples[1])
+        for k in params.keys():
+            form[k] = params[k]
+
+        # submit!
+        form.submit()
 
         # test
         o = self.session.get(self.model, oid)
@@ -199,8 +206,10 @@ class ControllerTest(TestBase):
 
         # get the form
         response = self.app.get(url)
+        form = response.form
 
-        response = self.app.post(url)
+        # send it
+        form.submit()
 
         # check db
         o = self.session.get(self.model, oid)
