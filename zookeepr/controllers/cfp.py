@@ -52,3 +52,10 @@ class CfpController(BaseController, View, Modify):
 
     def submit(self):
         self.new()
+
+    def edit(self, id):
+        # XXX dirty hack to make tests pass
+        session = create_session()
+        c.cfptypes = session.query(SubmissionType).select()
+        session.close()
+        Modify.edit(self, id)
