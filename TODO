@@ -5,15 +5,15 @@
  * Redirect to a THANKYOU page after submission.
    Refer the user to their email to check registration.
 
+ * Update dates on cfp
+
  * make submissiontype interface accessible only by conf admin
   * apply permissions to all CRUD interfaces. recreate PylonsSecureController to use a class property instead of method properties to controll access so that generics can still work
 
  * flow of security/signin and signout, redirect to home or show result page?
 
  * cfp submission process
-  * check for fields: title, submission type, experience, url, upload file
   * check send confirmation email
-  * check for fields: handle, lastname, firstname, email, password, confirm
 
 == "business" logic ==
 
