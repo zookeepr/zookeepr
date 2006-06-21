@@ -158,3 +158,11 @@ input, textarea {
 DIV.boxed {
   border: 1px solid grey;
 }
+
+/* CFP */
+
+#cfpbutton {
+  position: absolute;
+  right: 180px;
+  top: 80px;
+}
