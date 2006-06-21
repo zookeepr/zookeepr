@@ -172,6 +172,7 @@ class ControllerTest(TestBase):
         url = url_for(controller=self.url, action='edit', id=oid)
         response = self.app.get(url)
         form = response.form
+        
         print form.text
         print form.fields
 
