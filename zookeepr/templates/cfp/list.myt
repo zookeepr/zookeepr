@@ -1,5 +1,7 @@
 <h2>Call for Participation</h2>
 
+<div id="cfpbutton"><% h.link_to('<img src="/cfp.png" alt="submit" />', url=h.url_for('submit_cfp')) %></div>
+
 <h3>Overview</h3>
 
 <p>
