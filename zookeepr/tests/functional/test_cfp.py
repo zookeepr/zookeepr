@@ -34,13 +34,17 @@ class TestCFP(ControllerTest):
 
     def setUp(self):
         ControllerTest.setUp(self)
-        st = model.SubmissionType('Paper')
-        self.session.save(st)
+        st1 = model.SubmissionType('Paper')
+        st2 = model.SubmissionType('Scissors')
+        self.session.save(st1)
+        self.session.save(st2)
         self.session.flush()
-        self.stid = st.id
+        self.stid = (st1.id, st2.id)
 
     def tearDown(self):
-        st = self.session.get(model.SubmissionType, self.stid)
-        self.session.delete(st)
+        st1 = self.session.get(model.SubmissionType, self.stid[0])
+        st2 = self.session.get(model.SubmissionType, self.stid[1])
+        self.session.delete(st1)
+        self.session.delete(st2)
         self.session.flush()
         ControllerTest.tearDown(self)
