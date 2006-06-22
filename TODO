@@ -18,8 +18,8 @@
 == "business" logic ==
 
  * cfp submission process
-  * upload file
   * send confirmation email
+
  * sign up for a login
   * firstname, lastname, handle, email, password
   * optionally any other personal details
