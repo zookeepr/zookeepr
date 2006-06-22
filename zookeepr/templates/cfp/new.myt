@@ -1,6 +1,6 @@
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
-<% h.submit('New') %>
+<% h.submit('Participate!') %>
 <% h.end_form() %>
 
 

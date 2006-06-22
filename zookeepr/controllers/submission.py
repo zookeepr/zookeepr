@@ -6,6 +6,8 @@ from zookeepr.models import Submission
 
 class SubmissionValidator(schema.Schema):
     title = validators.String()
+    abstract = validators.String()
+    experience = validators.String()
 
 class NewSubmissionValidator(schema.Schema):
     submission = SubmissionValidator()
@@ -21,4 +23,4 @@ class SubmissionController(BaseController, View, Modify):
 
     model = Submission
     individual = 'submission'
-    conditions = dict(order_by='title')
+    #conditions = dict(order_by='title')

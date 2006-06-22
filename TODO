@@ -2,32 +2,24 @@
 
 == interface ==
 
+ * Redirect to a THANKYOU page after submission.
+   Refer the user to their email to check registration.
+
+ * Update dates on cfp
+
  * make submissiontype interface accessible only by conf admin
   * apply permissions to all CRUD interfaces. recreate PylonsSecureController to use a class property instead of method properties to controll access so that generics can still work
 
- * date-based release of CFP and Rego on front page requires interfaces to set these conf-wide dates (and other config)
-  * how do you test that?
-
- * fix front page for unlogged and logged in users
-  * usual front page for unlogged
-  * personal summary for logged in users
-
  * flow of security/signin and signout, redirect to home or show result page?
 
- * 'edit paper' doesn't show submission types
-
  * cfp submission process
-  * check for fields: title, submission type, experience, url, upload file
   * check send confirmation email
-  * check for fields: handle, lastname, firstname, email, password, confirm
-
- * cfp upload file, magical js that greys out box if peer reviewed paper not selected
 
 == "business" logic ==
 
  * cfp submission process
-  * upload file
   * send confirmation email
+
  * sign up for a login
   * firstname, lastname, handle, email, password
   * optionally any other personal details
@@ -68,7 +60,12 @@
 
 == interface ==
 
+ * date-based release of CFP and Rego on front page requires interfaces to set these conf-wide dates (and other config)
+  * how do you test that?
+
  * CFP review interface with dhtml stars from yahoo site.  must be accessible w/o js though.
+
+ * cfp upload file, magical js that greys out box if peer reviewed paper not selected
 
 == "business" logic ==
 

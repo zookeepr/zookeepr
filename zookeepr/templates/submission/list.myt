@@ -18,25 +18,25 @@
 <tr>
 	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
 	<td>
-% if s.submission_type:
+% 	if s.submission_type:
 <% s.submission_type.name %>
-% #endif
+% 	#endif
 </td>
 	<td><% str(s.abstract)[:30] %></td>
 	<td><% str(s.experience)[:30] %></td>
-	<td><% h.link_to(s.url) %></td>
+	<td><% h.link_to(s.url, url=s.url) %></td>
 	<td><% str(s.attachment)[:30] %></td>
 	<td>
 % 	if s.person:
-<% h.link_to(s.person.handle, url=h.url(controller='person', action='view', id=s.person.handle)) %>
+<% h.link_to(s.person.handle or s.person.id, url=h.url(controller='person', action='view', id=s.person.id)) %>
 %	# endif
 </td>
 
 % 	if c.can_edit:
 %		for action in ['edit', 'delete']:
 	<td><% h.link_to(action, url=h.url(action=action, id=s.id)) %></td>
-%		# endif
-%	 #endfor
+%		# endfor
+%	#endif
 </tr>
 % #endfor
 </table>
