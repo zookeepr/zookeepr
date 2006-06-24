@@ -34,3 +34,9 @@ class TestRegisterController(ControllerTest):
         r = self.session.get(model.Registration, rid)
         self.session.delete(r)
         self.session.flush()
+
+    def test_registration_confirmation_invalid_url_hash(self):
+        """test that an invalid has doesn't activate anything"""
+        self.assertEmptyModel(model.Registration)
+
+        response = self.app.get('/register/confirm/nonexistent', status=404)
