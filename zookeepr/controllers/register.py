@@ -19,7 +19,12 @@ class RegisterController(BaseController):
 
         if len(r) < 1:
             m.abort(404)
-        
-        #print r
 
+        r[0].activated = True
+
+        session.save(r[0])
+        session.flush()
+
+        print r[0]
+        
         m.subexec('register/confirmed.myt')
