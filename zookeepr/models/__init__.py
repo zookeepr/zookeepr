@@ -104,7 +104,7 @@ class Registration(object):
     password = property(_get_password, _set_password)
 
     def __repr__(self):
-        return '<Registration email_address="%s" timestamp="%s" url_hash="%s">' % (self.email_address, self.timestamp, self.url_hash)
+        return '<Registration email_address="%s" timestamp="%s" url_hash="%s" activated=%s>' % (self.email_address, self.timestamp, self.url_hash, self.activated)
 
 mapper(Registration, join(account, registration),
        properties = dict(account_id = [account.c.id, registration.c.account_id])
