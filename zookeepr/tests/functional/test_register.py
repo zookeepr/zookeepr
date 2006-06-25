@@ -18,17 +18,23 @@ class TestRegisterController(ControllerTest):
         r = model.Registration(timestamp=timestamp,
                                email_address=email_address,
                                password=password,
-                               url_hash=url_hash)
+                               url_hash=url_hash,
+                               activated=False)
         self.session.save(r)
         self.session.flush()
         rid = r.id
         print r
-
+        # clear so that we reload the object later
+        self.session.clear()
+        
         # visit the link
         response = self.app.get('/register/confirm/' + url_hash)
         response.mustcontain('registration is confirmed')
 
+        
         # test that it's activated
+        r = self.session.get(model.Registration, rid)
+        self.assertEqual(True, r.activated, "registration was not activated")
 
         # clean up
         r = self.session.get(model.Registration, rid)
