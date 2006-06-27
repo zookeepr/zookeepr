@@ -1,22 +1,29 @@
 = Milestones for 0.1, CFP, 24 May =
 
-== interface ==
-
  * update thankyou page to refer the user to their email to check registration.
 
+ * send confirmation email after cfp submission
+
  * Update dates on cfp
+
+
+= Milestones for 0.2 =
 
  * make submissiontype interface accessible only by conf admin
   * apply permissions to all CRUD interfaces. recreate PylonsSecureController to use a class property instead of method properties to controll access so that generics can still work
 
  * flow of security/signin and signout, redirect to home or show result page?
 
- * send confirmation email after cfp submission
-
-== "business" logic ==
-
- * cfp submission process
-  * send confirmation email
+ * MyLCA administration
+   * Participation module
+     * list of submissions
+     * submission information
+   * User administration
+     * list/search, add, modify, delete
+ * User logins
+  * edit personal settings, submit participations, list submissions, edit submissions, conference registration
+  * informational module (explain MyLCA box, Jeff's giant arrow)
+  * planet feed
 
  * sign up for a login
   * firstname, lastname, handle, email, password
@@ -35,23 +42,6 @@
   * public profile - "profile in a biscuit"
   * editable box on MyLCA front page
   * privacy option
-
-== model ==
-
-=== Uncategorised ===
-
-== By June ==
- * MyLCA administration
-   * Participation module
-     * list of submissions
-     * submission information
-   * User administration
-     * list/search, add, modify, delete
- * User logins
-  * edit personal settings, submit participations, list submissions, edit submissions, conference registration
-  * informational module (explain MyLCA box, Jeff's giant arrow)
-  * planet feed
-
 
 
 = Future milestones =
