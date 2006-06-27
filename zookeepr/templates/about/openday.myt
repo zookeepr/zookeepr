@@ -1,8 +1,14 @@
 <h2>Open Day</h2>
 
-<h3>experience - learn - participate</h3>
+<h3>experience &middot; learn &middot; participate</h3>
 
-<p>Open Day is the perfect holiday event for students and young people to learn about Open Source. You'll discover why technology freedom is important and meet some great people and projects along the way. We have a wonderful line-up of technologies including movie making, 3D virtual gaming, robots, solar panel cars and digital music exhibitions just to name a few. This is a day for you to get your hands dirty with some of the best technologies around today!</p>
+<p>Open Day is the perfect holiday event for students and young people to
+learn about Open Source. You'll discover why technology freedom is important
+and meet some great people and projects along the way. We have a wonderful
+line-up of technologies including movie making, 3D virtual gaming, robots,
+solar panel cars and digital music exhibitions just to name a few. This is a
+day for you to get your hands dirty with some of the best technologies around
+today!</p>
 
 <p><b>experience</b> the wonder of Linux and Open Source</p>
 
@@ -23,7 +29,7 @@
 
 <p><b>Food:</b> A sausage sizzle and drinks will be available</p>
 
-<p><b>Pamphlet:</b> Download the <a href="open-day.pdf">event pamphlet</a></p>
+<p><b>Pamphlet:</b> Download the <a href="/lca2007-open-day.pdf">event pamphlet</a></p>
 
 <p><b>Contact:</b> Pia Waugh on <a href="mailto:pia@linux.org.au">pia@linux.org.au</a> or call for details at 0400 966 453</p>
 
