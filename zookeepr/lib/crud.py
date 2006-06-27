@@ -85,8 +85,6 @@ class Create(CRUDBase):
         if request.method == 'POST' and defaults:
             result, errors = self.validators['new'].validate(defaults)
 
-            print "result is", result
-
             if not errors:
                 # update the new object with the form data
                 for k in result[model_name]:
