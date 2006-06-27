@@ -27,7 +27,7 @@ href="mailto:seven-contact@waugh.id.au">seven-contact@waugh.id.au</a>.</p>
 <li>e: <a href="mailto:skaan@abdcomputers.net">skaan@abdcomputers.net</a></li>
 </ul>
 
-<h4><a href="/about/cfp">Miniconfs and CFP</a> - Jamie Wilkinson</h4>
+<h4><a href="/cfp">Miniconfs and CFP</a> - Jamie Wilkinson</h4>
 <ul>
 <li>m: +61 421 426 257</li>
 <li>e: <a href="mailto:jaq@spacepants.org">jaq@spacepants.org</a></li>
