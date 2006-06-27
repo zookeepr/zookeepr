@@ -5,6 +5,7 @@ from sqlalchemy import create_session
 
 from zookeepr.lib.base import BaseController, c, m
 from zookeepr.lib.crud import View, Modify
+from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import CFP, SubmissionType
 
 class CFPValidator(Schema):
@@ -19,8 +20,7 @@ class CFPValidator(Schema):
     attachment = validators.String()
     assistance = validators.Bool()
     
-class NewCFPValidator(Schema):
-    filter_extra_fields = True
+class NewCFPValidator(BaseSchema):
     cfp = CFPValidator()
     pre_validators = [NestedVariables]
 
@@ -28,17 +28,13 @@ class NewCFPValidator(Schema):
 # instead we should probably split the generics up into more granular crud
 # and make the test suite only test those that shold be there (or better work
 # it out and ensure the ones that shouldn't be here don't work)
-class EditCFPValidator(Schema):
-    filter_extra_fields = True
+class EditCFPValidator(BaseSchema):
     cfp = CFPValidator()
     pre_validators = [NestedVariables]
     
 class CfpController(BaseController, View, Modify):
-    validator = {
-        # FIXME: The automagic test looks for the 'new' action, so map
-        # that as well as 'submit', which only calls new()
+    validators = {
         'new': NewCFPValidator(),
-        'submit': NewCFPValidator(),
         'edit': EditCFPValidator(),
         }
 

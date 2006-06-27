@@ -6,6 +6,7 @@
 
 # FIXME: Find somewhere to document the class attributes used by the generics.
 
+from formencode import Invalid
 from pylons import c, h, m, request
 from sqlalchemy import create_session
 
@@ -78,25 +79,32 @@ class Create(CRUDBase):
 
         model_name = self.individual
         errors = {}
+        defaults = m.request_args
 
         new_object = self.model()
         if request.method == 'POST':
-            # update the new object with the form data
-            for k in m.request_args[model_name]:
-                setattr(new_object, k, m.request_args[model_name][k])
-            session.save(new_object)
-            session.flush()
-            session.close()
+            result, errors = self.validators['new'].validate(c.defaults)
 
-            default_redirect = dict(action='view', id=self.identifier(new_object))
-            return self.redirect_to('new', default_redirect)
+            print "result is", result
+
+            if not errors:
+                # update the new object with the form data
+                for k in result[model_name]:
+                    setattr(new_object, k, result[model_name][k])
+        
+                session.save(new_object)
+                session.flush()
+                session.close()
+
+                default_redirect = dict(action='view', id=self.identifier(new_object))
+                return self.redirect_to('new', default_redirect)
 
         # make new_object accessible to the template
         setattr(c, model_name, new_object)
 
         session.close()
         
-        m.subexec('%s/new.myt' % model_name)
+        m.subexec('%s/new.myt' % model_name, defaults=defaults, errors=errors)
 
 
 # class Modify(IdHandler):
