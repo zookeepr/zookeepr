@@ -14,7 +14,7 @@
 #<& sponsors.myt &>
 <div id="menus">
 <& mainmenu.myt &>
-<& usermenu.myt &>
+#<& usermenu.myt &>
 </div>
 </div>
 <hr />

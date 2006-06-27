@@ -46,7 +46,7 @@ that caters to kids and partners of all ages.</p>
 #<div id="column-b" class="column"><div class="inner">
 
 #<ul id="aboutlinks">
-#<li>The <a href="/about/cfp">call for papers</a> is currently open!</li>
+#<li>The <a href="/cfp">call for papers</a> is currently open!</li>
 #<li>Find out about <a href="/about/sponsors">sponsorship</a> opportunities</li>
 #<li>Information for the <a href="/about/press">press</a></li>
 #<li>The <a href="/about/partners">partners programme</a></li>
