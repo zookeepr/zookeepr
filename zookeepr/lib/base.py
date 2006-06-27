@@ -31,15 +31,3 @@ class BaseController(Controller):
                         m.request_args[key] = m.request_args[key].file
                     else:
                         m.request_args[key] = m.request_args[key].value
-
-        # Here we convert the request args using the controllers
-        # validator (if it has one.)
-        # Right now, we don't do anything sensible if the validation
-        # fails. This obviously needs to be done.
-        m.errors = None
-        if m.request_args and self.validator.has_key(action):
-            try:
-                m.request_args = \
-                               self.validator[action].to_python(m.request_args)
-            except Invalid, e:
-                m.errors = e

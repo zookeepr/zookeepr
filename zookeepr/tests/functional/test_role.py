@@ -1,6 +1,6 @@
 from zookeepr.tests.functional import *
 
-class TestRole(ControllerTest):
+#class TestRole(ControllerTest):
 #     def test_index(self):
 #         print
 #         print "url for role is %s" % url_for(controller='role')
@@ -8,9 +8,9 @@ class TestRole(ControllerTest):
 #         # Test response...
 #         print response
 
-    name = 'role'
-    model = model.Role
-    url = '/role'
+#     name = 'role'
+#     model = model.Role
+#     url = '/role'
 
-    samples = [{'name': 'admin'},
-               {'name': 'speaker'}]
+#     samples = [{'name': 'admin'},
+#                {'name': 'speaker'}]

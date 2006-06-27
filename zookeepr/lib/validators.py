@@ -1,9 +1,13 @@
-class Strip:
-    def __init__(self, *args):
-        self.to_strip = args
+from formencode.schema import Schema
+from formencode import Invalid
 
-    def to_python(self, value_dict, state):
-        for strip in self.to_strip:
-            if strip in value_dict:
-                del value_dict[strip]
-        return value_dict
+class BaseSchema(Schema):
+    allow_extra_fields = True
+    filter_extra_fields = True
+
+    def validate(self, input):
+        try:
+            result = self.to_python(input)
+            return result, {}
+        except Invalid, e:
+            return {}, e.unpack_errors()
