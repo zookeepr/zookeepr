@@ -11,8 +11,7 @@
 
  * flow of security/signin and signout, redirect to home or show result page?
 
- * cfp submission process
-  * check send confirmation email
+ * send confirmation email after cfp submission
 
 == "business" logic ==
 
