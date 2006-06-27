@@ -161,7 +161,8 @@ class Update(CRUDBase):
 
         POST requests update the object with the data posted.
         """
-        obj, session = self.get_obj(id)
+        session = create_session()
+        obj = self.get_obj(id, session)
 
         if obj is None:
             raise "cannot edit nonexistent object for id = '%s'" % (id,)
@@ -187,7 +188,7 @@ class Update(CRUDBase):
                 e = True
             if not e:
                 session.close()
-                return h.redirect_to(action='view', id=self._oid(obj))
+                return h.redirect_to(action='view', id=self.identifier(obj))
 
         # assign to the template global
         setattr(c, model_name, obj)
@@ -259,7 +260,8 @@ class List(CRUDBase):
 class Read(CRUDBase):
     def view(self, id):
         """View a specific object"""
-        obj, session = self.get_obj(id)
+        session = create_session()
+        obj = self.get_obj(id, session)
         
         if obj is None:
             raise "cannot view nonexistent object for id = '%s'" % (id,)
