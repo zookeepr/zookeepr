@@ -15,6 +15,7 @@ class TestCFP(ControllerTest):
                     experience="some",
                     url='http://example.org',
                     attachment='foo',
+                    assistance=True,
                     ),
                dict(email_address='testgirl@example.org',
                     password='snuh',
@@ -25,6 +26,7 @@ class TestCFP(ControllerTest):
                     experience="none",
                     url='http://example.com',
                     attachment='bar',
+                    assistance=False,
                     ),
                ]
     no_test = ['password_confirm']
