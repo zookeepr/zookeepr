@@ -72,7 +72,10 @@ submission = Table('submission', metadata,
                    Column('experience', String()),
 
                    # url to a project page
-                   Column('url', String())
+                   Column('url', String()),
+
+                   # do they need assistance?
+                   Column('assistance', Boolean),
                    )
 
 # describe account roles to grant levels of access
