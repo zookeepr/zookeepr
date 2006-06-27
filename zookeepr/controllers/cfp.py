@@ -3,7 +3,7 @@ from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController, c
+from zookeepr.lib.base import BaseController, c, m
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import Strip
 from zookeepr.models import CFP, SubmissionType
@@ -43,7 +43,7 @@ class CfpController(BaseController, View, Modify):
 
     model = CFP
     individual = 'cfp'
-    redirect_map = dict(new=dict(action='index'))
+    redirect_map = dict(new=dict(action='thankyou'))
 
     def new(self):
         session = create_session()
@@ -60,3 +60,6 @@ class CfpController(BaseController, View, Modify):
         c.cfptypes = session.query(SubmissionType).select()
         session.close()
         Modify.edit(self, id)
+
+    def thankyou(self):
+        m.subexec('cfp/thankyou.myt')
