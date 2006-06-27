@@ -124,31 +124,29 @@ class Update(CRUDBase):
 
         # get the name we refer to it by
         model_name = self.individual
+
+        errors = {}
+        defaults = m.request_args
         
-        if request.method == 'POST':
-            # update the object with the posted data
-            for k in m.request_args[model_name]:
-                setattr(obj, k, m.request_args[model_name][k])
+        if request.method == 'POST' and defaults:
+            result, errors = self.validators['edit'].validate(defaults)
 
-            session.save(obj)
+            if not errors:
+                
+                # update the object with the posted data
+                for k in result[model_name]:
+                    setattr(obj, k, result[model_name][k])
 
-            e = False
-            try:
+                session.save(obj)
                 session.flush()
-            except SQLError, e:
-                # how could this have happened? we suck and for now assume
-                # that it could only happen by it being a duplicate
-                # p.s. benno sucks
-                m.errors = e
-                e = True
-            if not e:
                 session.close()
+                
                 return h.redirect_to(action='view', id=self.identifier(obj))
 
         # assign to the template global
         setattr(c, model_name, obj)
         # call the template
-        m.subexec('%s/edit.myt' % model_name)
+        m.subexec('%s/edit.myt' % model_name, defaults=defaults, errors=errors)
         
 #     edit.permissions = authkit.permissions(signed_in=True)
 
