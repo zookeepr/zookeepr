@@ -6,7 +6,7 @@
 
 # FIXME: Find somewhere to document the class attributes used by the generics.
 
-from pylons import h, m, request
+from pylons import c, h, m, request
 from sqlalchemy import create_session
 
 class CRUDBase(object):
@@ -76,7 +76,7 @@ class Create(CRUDBase):
         """
         session = create_session()
 
-        model_name = self.model_name
+        model_name = self.individual
         errors = {}
 
         new_object = self.model()
@@ -228,8 +228,8 @@ class Delete(CRUDBase):
 
 
 class List(CRUDBase):
-#     def _can_edit(self):
-#         return issubclass(self.__class__, Modify)
+    def _can_edit(self):
+	return issubclass(self.__class__, Modify)
     
     def index(self):
         """Show a list of all objects currently in the system."""

@@ -1,7 +1,7 @@
 from formencode import validators, compound, schema, variabledecode
 
 from zookeepr.lib.base import BaseController
-from zookeepr.lib.generics import Modify, View
+from zookeepr.lib.crud import Modify, View
 from zookeepr.models import Submission
 
 class SubmissionValidator(schema.Schema):
