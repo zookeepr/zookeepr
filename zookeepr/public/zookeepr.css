@@ -39,6 +39,7 @@ body {
 	border-top: 1px solid #cccccc;
 	padding: 1ex;
 	text-align: center;
+	clear: both;
 }
 
 #footer p {

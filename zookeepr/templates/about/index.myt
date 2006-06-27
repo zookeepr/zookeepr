@@ -4,7 +4,7 @@
 <h3>January 15th-20th, 2007 &middot; University of New South Wales</h3>
 
 <blockquote>
-<p>
+<p><i>
 You know how it goes. You spend a few
 days immersed in talks about clusters and networking, surrounded by kernel
 hackers, getting three hours sleep per night and living on pizza and
@@ -12,81 +12,32 @@ caffeine. You return home only to spend the next few weeks in a nocturnal
 daze of debugging symbols as you flitter between purging your email backlog
 and coding up that long, inspired list of new features you jotted down on
 the return journey.
-</p>
-<p class="endquote">
-A few weeks later, over breakfast, you suddenly realise what the heck Dave Miller was going on about in his talk...
-</p>
+</i></p>
+<p class="endquote"><i>
+A few weeks later, over breakfast, you suddenly realise what the heck Van Jacobson was going on about in his talk...
+</i></p>
+
 </blockquote>
 
-<p>linux.conf.au is a four day conference in January 2001, concentrating on
-issues related to the development of Linux and Free Software, held at the <a
-href="http://www.unsw.edu.au/">University of New South Wales</a>, Sydney,
-Australia.</p>
+<p>linux.conf.au is a five day conference in January 2007, and one of the best technical Linux and FOSS conferences in the world! It is run all around Australia, and has returned to Sydney for the first time in 6 years. linux.conf.au attracts some of the best FOSS minds in the world, so make sure you don't miss the chance to hang out and learn with the best.</p>
 
-<p>The conference is a collaborative effort by <a
-href="http://linux.org.au/">Linux Australia</a>, the <a
-href="http://slug.org.au/">Sydney Linux Users Group</a> and affiliated
-organisations. It is supported by the <a
-href="http://www.cse.unsw.edu.au/">School of Computer Science and
-Engineering</a>, <a href="http://www.unsw.edu.au/">University of New South
-Wales</a>, and is a successor to the <a
-href="http://www.linux.org.au/projects/calu/">Conference for Australian Linux
-Users</a> (CALU) held in Melbourne in July, 1999.</p>
+<p>The conference includes a range of community driven mini-confs, two days of planned talks, a tutorials day and many excellent social events to bring the community together. It also includes <a href="/about/openday">Open Day</a>, a community outreach event for high school students, young people, our families and friends to come along and find out about our world through some of the coolest technology available.</p>
+
+<p>This year will be held at the <a
+href="http://www.unsw.edu.au/">University of New South Wales</a> in Sydney,
+Australia. Sydney is a beautiful place to visit, and we look forward to showing our speakers and attendees some of the sights. We have an excellent partners programme that caters to kids and partners of all ages.</p>
 
 </div></div>
+
 
 <div id="column-b" class="column"><div class="inner">
 
 <ul id="aboutlinks">
-<li>Check out the <% h.link_to('programme', url=h.url(controller='about', action='view', id='programme')) %>!</li>
-<li>Learn about travel and accomodation in <% h.link_to('Sydney', url=h.url(controller='about', action='view', id='sydney')) %>.</li>
-<li>Find out about <% h.link_to('sponsorship', url=h.url(controller='about', action='view', id='sponsors')) %> opportunities.</li>
-<li>Information for members of the <% h.link_to('press', url=h.url(controller='about', action='view', id='press')) %>.</li>
+<li>The <a href="/about/cfp">call for papers</a> is currently open!</li>
+<li>Find out about <a href="/about/sponsors">sponsorship</a> opportunities</li>
+<li>Information for the <a href="/about/press">press</a></li>
+<li>The <a href="/about/partners">partners programme</a></li>
+<li>Travel and accomodation in <a href="/about/sydney">Sydney</a></li>
 </ul>
-
-<p>linux.conf.au is a four day conference in January 2001, concentrating on
-issues related to the development of Linux and Free Software, held at the <a
-href="http://www.unsw.edu.au/">University of New South Wales</a>, Sydney,
-Australia.</p>
-
-<p>The conference is a collaborative effort by <a
-href="http://linux.org.au/">Linux Australia</a>, the <a
-href="http://slug.org.au/">Sydney Linux Users Group</a> and affiliated
-organisations. It is supported by the <a
-href="http://www.cse.unsw.edu.au/">School of Computer Science and
-Engineering</a>, <a href="http://www.unsw.edu.au/">University of New South
-Wales</a>, and is a successor to the <a
-href="http://www.linux.org.au/projects/calu/">Conference for Australian Linux
-Users</a> (CALU) held in Melbourne in July, 1999.</p>
-
-<p>The conference is a collaborative effort by <a
-href="http://linux.org.au/">Linux Australia</a>, the <a
-href="http://slug.org.au/">Sydney Linux Users Group</a> and affiliated
-organisations. It is supported by the <a
-href="http://www.cse.unsw.edu.au/">School of Computer Science and
-Engineering</a>, <a href="http://www.unsw.edu.au/">University of New South
-Wales</a>, and is a successor to the <a
-href="http://www.linux.org.au/projects/calu/">Conference for Australian Linux
-Users</a> (CALU) held in Melbourne in July, 1999.</p>
-
-<p>The conference is a collaborative effort by <a
-href="http://linux.org.au/">Linux Australia</a>, the <a
-href="http://slug.org.au/">Sydney Linux Users Group</a> and affiliated
-organisations. It is supported by the <a
-href="http://www.cse.unsw.edu.au/">School of Computer Science and
-Engineering</a>, <a href="http://www.unsw.edu.au/">University of New South
-Wales</a>, and is a successor to the <a
-href="http://www.linux.org.au/projects/calu/">Conference for Australian Linux
-Users</a> (CALU) held in Melbourne in July, 1999.</p>
-
-<p>The conference is a collaborative effort by <a
-href="http://linux.org.au/">Linux Australia</a>, the <a
-href="http://slug.org.au/">Sydney Linux Users Group</a> and affiliated
-organisations. It is supported by the <a
-href="http://www.cse.unsw.edu.au/">School of Computer Science and
-Engineering</a>, <a href="http://www.unsw.edu.au/">University of New South
-Wales</a>, and is a successor to the <a
-href="http://www.linux.org.au/projects/calu/">Conference for Australian Linux
-Users</a> (CALU) held in Melbourne in July, 1999.</p>
 
 </div></div>
