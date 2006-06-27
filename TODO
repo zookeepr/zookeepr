@@ -2,8 +2,7 @@
 
 == interface ==
 
- * Redirect to a THANKYOU page after submission.
-   Refer the user to their email to check registration.
+ * update thankyou page to refer the user to their email to check registration.
 
  * Update dates on cfp
 
@@ -12,8 +11,7 @@
 
  * flow of security/signin and signout, redirect to home or show result page?
 
- * cfp submission process
-  * check send confirmation email
+ * send confirmation email after cfp submission
 
 == "business" logic ==
 
