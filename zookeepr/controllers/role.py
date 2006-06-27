@@ -1,7 +1,7 @@
 from formencode import validators, compound, schema, variabledecode
 
 from zookeepr.lib.base import BaseController
-from zookeepr.lib.generics import View, Modify
+from zookeepr.lib.crud import View, Modify
 from zookeepr.models import Role
 
 class RoleValidator(schema.Schema):
