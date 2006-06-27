@@ -2,7 +2,7 @@
 
 <p>We welcome members of the press to participate and capture the spirit of
 linux.conf.au. We have complimentary media passes available so please <a
-href="mailto:seven-contact@waugh.id.au">contact us</a> while we still have
+href="mailto:seven-contact@lca2007.linux.org.au">contact us</a> while we still have
 some left. Simply let us know which publication you are from and we'll sort
 it out from there. Media passes include access to all talks, keynotes,
 tutorials, miniconfs and the Professional Delegates Networking Session. If
@@ -15,8 +15,9 @@ speakers may not be willing or available to speak or be photographed at any
 particular time. We will provide a dedicated press room for interviews and
 such to take place.</p>
 
-<p><b>Contact us</b> by <a href="mailto:seven-contact@waugh.id.au">email</a>
-or call our press officer, Pia Waugh, for details on +61 400 966 453.</p>
+<p><b>Contact us</b> by <a
+href="mailto:seven-contact@lca2007.linux.org.au">email</a> or call our press
+officer, Pia Waugh, for details on +61 400 966 453.</p>
 
 <p>We highly recommend joining the lca-announce mailing list in order to keep
 up with latest announcements about the conference. You can subscribe to it on
