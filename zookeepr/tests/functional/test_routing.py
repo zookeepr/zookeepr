@@ -80,3 +80,15 @@ class TestRouting(unittest.TestCase):
         # test the named route
         submit_cfp = url_for('submit_cfp')
         self.assertEqual(u, submit_cfp)
+
+    def test_registration_confirmation_url(self):
+        """test the routing of the registration confirmation url"""
+        u = '/register/confirm/N'
+        self.assertEqual(dict(controller='register',
+                              action='confirm',
+                              id='N'),
+                         self.map.match(u))
+
+        # test the named route
+        reg_confirm = url_for('reg_confirm', id='N')
+        self.assertEqual(u, reg_confirm)

@@ -15,7 +15,7 @@ account = Table('account', metadata,
                 # flag that the account has been activated by the user
                 # (responded to their confirmation email)
                 Column('activated', Boolean,
-                       PassiveDefault("false"),
+                       default=False,
                        nullable=False),
                 )
 

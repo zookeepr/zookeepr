@@ -11,10 +11,11 @@ a day. For example, visit attractions like the Aquarium, Chinese Gardens,
 Paddy's Markets or the PowerHouse Museum around Darling Harbour. For the
 adventurous, a thrilling jet boat ride through the waters of Cockle Bay might
 be your cup of tea. We are also able to provide some childrens activities,
-but let us know well in advance about the child/ren you are bringing :) It's
-your choice, and the organisers of linux.conf.au 2007 want to ensure you have
-a fun and relaxing time while your geek is doing their thing! Here are some
-of the more famous Sydney attractions:</p>
+but <a href="/about/contact">let us know</a> well in advance about the
+children you are bringing. It's your choice, and the organisers of
+linux.conf.au 2007 want to ensure you have a fun and relaxing time while your
+geek is doing their thing! Here are some of the more famous Sydney
+attractions:</p>
 
 <ul>
 <li>Darling Harbour and China Town</li>

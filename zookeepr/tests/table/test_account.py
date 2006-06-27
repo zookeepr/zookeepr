@@ -22,5 +22,6 @@ class TestAccount(TableTest):
                     password_hash='p4ssw0rd',
                     activated=True),
                ]
-    not_nullables = ['email_address', 'activated']
+    not_nullables = ['email_address']
+    # FIXME: activated should be not nullable but also carries a default
     uniques = ['email_address']

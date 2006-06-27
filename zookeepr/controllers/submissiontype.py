@@ -2,7 +2,7 @@ from formencode import validators, compound, schema, variabledecode
 
 from zookeepr.lib.auth import SecureController
 from zookeepr.lib.base import BaseController
-from zookeepr.lib.generics import Modify, View
+from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import Strip
 from zookeepr.models import SubmissionType
 
@@ -19,11 +19,11 @@ class EditSubmissionTypeValidator(schema.Schema):
     pre_validators = [Strip('commit'), variabledecode.NestedVariables]
 
 
-class SubmissiontypeController(BaseController, SecureController, View, Modify):
-    validator = {"new" : NewSubmissionTypeValidator(),
-                 "edit" : EditSubmissionTypeValidator()}
+# class SubmissiontypeController(BaseController, SecureController, View, Modify):
+#     validator = {"new" : NewSubmissionTypeValidator(),
+#                  "edit" : EditSubmissionTypeValidator()}
 
-    model = SubmissionType
-    individual = 'submissiontype'
-    conditions = dict(order_by='name')
-    redirect_map = dict(new=dict(action='index'))
+#     model = SubmissionType
+#     individual = 'submissiontype'
+#     conditions = dict(order_by='name')
+#     redirect_map = dict(new=dict(action='index'))
