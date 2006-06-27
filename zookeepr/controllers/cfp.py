@@ -18,7 +18,7 @@ class CFPValidator(Schema):
     experience = validators.String()
     url = validators.String()
     attachment = validators.String()
-    assistance = validators.StringBoolean()
+    assistance = validators.Bool()
     
 class NewCFPValidator(Schema):
     cfp = CFPValidator()
