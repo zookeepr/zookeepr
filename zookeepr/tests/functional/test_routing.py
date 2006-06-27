@@ -92,3 +92,10 @@ class TestRouting(unittest.TestCase):
         # test the named route
         reg_confirm = url_for('reg_confirm', id='N')
         self.assertEqual(u, reg_confirm)
+
+    def test_cfp_thankyou(self):
+        u = '/cfp/thankyou'
+        self.assertEqual(dict(controller='cfp',
+                              action='thankyou',
+                              ),
+                         self.map.match(u))

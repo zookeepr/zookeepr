@@ -18,6 +18,7 @@ def make_map():
     # The CFP named routes
     m.connect('cfp', '/cfp', controller='cfp', action='index')
     m.connect('submit_cfp', '/cfp/submit', controller='cfp', action='submit')
+    m.connect('/cfp/thankyou', controller='cfp', action='thankyou')
 
     # Register confirmation named route
     m.connect('reg_confirm', '/register/confirm/:id',
