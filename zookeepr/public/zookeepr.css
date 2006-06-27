@@ -39,6 +39,7 @@ body {
 	border-top: 1px solid #cccccc;
 	padding: 1ex;
 	text-align: center;
+	clear: both;
 }
 
 #footer p {
@@ -90,6 +91,14 @@ hr {
 
 .hidden {
 	display: none;
+}
+
+.left {
+	float: left;
+}
+
+.right {
+	float: right;
 }
 
 a:link {
@@ -155,14 +164,19 @@ input, textarea {
 }
 
 /* A box containing a group of related info */
-DIV.boxed {
+div.boxed {
   border: 1px solid grey;
 }
 
-/* CFP */
+/**
+ * custom stuff
+ */
 
 #cfpbutton {
-  position: absolute;
-  right: 180px;
-  top: 80px;
+	width: 222px;
+	text-align: center;
+}
+#cfpbutton a {
+	text-decoration: none;
+	font-weight: bold;
 }
