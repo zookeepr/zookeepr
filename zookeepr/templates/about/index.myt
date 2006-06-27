@@ -1,6 +1,6 @@
 #<div id="column-a" class="column"><div class="inner">
 
-<p id="cfpbutton" class="right"><% h.link_to('<img src="/cfp.png" alt="Call for Papers" /><br />Submit a paper for linux.conf.au 2007!', url=h.url_for('cfp')) %></p>
+<p id="cfpbutton" class="right"><% h.link_to('<img src="/cfp.png" alt="Call for Papers" /><br />The linux.conf.au 2007 Call for Participation is open!', url=h.url_for('cfp')) %></p>
 
 <h2>linux.conf.au 2007</h2>
 <h3>January 15th-20th, 2007 &middot; University of New South Wales</h3>
@@ -34,11 +34,12 @@ community outreach event for high school students, young people, our families
 and friends to come along and find out about our world through some of the
 coolest technology available.</p>
 
-<p>This year will be held at the <a href="http://www.unsw.edu.au/">University
-of New South Wales</a> in Sydney, Australia. Sydney is a beautiful place to
-visit, and we look forward to showing our speakers and attendees some of the
-sights. We have an excellent <a href="/about/partners">partners programme</a>
-that caters to kids and partners of all ages.</p>
+<p>linux.conf.au 2007 will be held at the <a
+href="http://www.unsw.edu.au/">University of New South Wales</a> in Sydney,
+Australia. Sydney is a beautiful place to visit, and we look forward to
+showing our speakers and attendees some of the sights. We have an excellent
+<a href="/about/partners">partners programme</a> that caters to kids and
+partners of all ages.</p>
 
 #</div></div>
 
@@ -53,4 +54,4 @@ that caters to kids and partners of all ages.</p>
 #<li>Travel and accomodation in <a href="/about/sydney">Sydney</a></li>
 #</ul>
 
-</div></div>
+#</div></div>

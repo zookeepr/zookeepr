@@ -2,7 +2,7 @@
 
 <p>Meet the linux.conf.au team! Please contact the relevant people to your
 enquiry, or the entire committee at <a
-href="mailto:seven-contact@waugh.id.au">seven-contact@waugh.id.au</a>.</p>
+href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>.</p>
 
 
 <h3>The Seven</h3>
