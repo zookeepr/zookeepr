@@ -107,59 +107,6 @@ class Create(CRUDBase):
         m.subexec('%s/new.myt' % model_name, defaults=defaults, errors=errors)
 
 
-# class Modify(IdHandler):
-
-# #     def new(self):
-# #         """Create a new object.
-
-# #         GET requests will return a blank form for submitting all
-# #         attributes.
-
-# #         POST requests will create the object, and return a redirect to
-# #         view the new object.
-# #         """
-# #         # create new session
-# #         session = create_session()
-
-# #         # Get the name we refer to the model by
-# #         model_name = self.individual
-# #         errors = {}
-# #         # instantiate a new model object
-# #         new_data = self.model()
-
-# #         if request.method == 'POST' and m.errors is None:
-# #             # update this new model object with the form data
-# #             for k in m.request_args[model_name]:
-# #                 setattr(new_data, k, m.request_args[model_name][k])
-# #             session.save(new_data)
-# #             e = False
-# #             try:
-# #                 session.flush()
-# #             except SQLError, e:
-# #                 # How could this have happened? We suck and for now assume
-# #                 # it could only happen by it being a duplicate
-# #                 m.errors = e
-# #                 e = True
-# #             if not e:
-# #                 session.close()
-
-# #                 default_redirect = dict(action='view', id=self._oid(new_data))
-# #                 return self.redirect_to('new', default_redirect)
-
-# #         # assign to the template global
-# #         setattr(c, model_name, new_data)
-
-# #         session.close()
-# #         # call the template
-# #         if m.errors:
-# #             print "ERRORS", m.errors
-# #             if hasattr(m.errors, 'unpack_errors'):
-# #                 print "ERRORS UNPACKED", m.errors.unpack_errors()
-# #         c.errors = m.errors
-# #         m.subexec('%s/new.myt' % model_name)
-
-# #     new.permissions = authkit.permissions(signed_in=True)
-
 class Update(CRUDBase):
     def edit(self, id):
         """Allow editing of an object.
@@ -178,7 +125,7 @@ class Update(CRUDBase):
         # get the name we refer to it by
         model_name = self.individual
         
-        if request.method == 'POST' and m.errors is None:
+        if request.method == 'POST':
             # update the object with the posted data
             for k in m.request_args[model_name]:
                 setattr(obj, k, m.request_args[model_name][k])

@@ -4,8 +4,6 @@
 You must sign up to register or submit an event proposal.
 </p>
 
-<% c.errors %>
-
 <% h.form(h.url(action='new')) %>
 <& form.myt &>
 <% h.submit("Create") %>
