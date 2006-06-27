@@ -15,6 +15,7 @@ class TestSubmission(TableTest):
                     submission_type_id=1,
                     person_id=1,
                     attachment=buffer("attachment"), #StringIO.StringIO("attachment"),
+                    assistance=True,
                     ),
                dict(title='Test BOF',
                     abstract='some bof',
@@ -23,5 +24,6 @@ class TestSubmission(TableTest):
                     submission_type_id=2,
                     person_id=37,
                     attachment=buffer("snuh"), #StringIO.StringIO("snuh"),
+                    assistance=False,
                     ),
                ]

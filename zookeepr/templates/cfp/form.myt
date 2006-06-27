@@ -59,6 +59,10 @@
 <p><label for="cfp.experience">Experience:</label><br />
 <% h.text_area('cfp.experience', cols=50, rows=5) %></p>
 
+<p><label>Do you require travel assistance?</label><br />
+<% h.radio_button('cfp.assistance', True) %><label for="cfp.assistance">Yes</label>
+<% h.radio_button('cfp.assistance', False) %><label for="cfp.assistance">No</label>
+
 </fieldset>
 
 </div>
