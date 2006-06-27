@@ -82,8 +82,8 @@ class Create(CRUDBase):
         defaults = m.request_args
 
         new_object = self.model()
-        if request.method == 'POST':
-            result, errors = self.validators['new'].validate(c.defaults)
+        if request.method == 'POST' and defaults:
+            result, errors = self.validators['new'].validate(defaults)
 
             print "result is", result
 
