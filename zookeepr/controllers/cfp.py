@@ -5,7 +5,6 @@ from sqlalchemy import create_session
 
 from zookeepr.lib.base import BaseController, c, m
 from zookeepr.lib.crud import View, Modify
-from zookeepr.lib.validators import Strip
 from zookeepr.models import CFP, SubmissionType
 
 class CFPValidator(Schema):
@@ -21,16 +20,18 @@ class CFPValidator(Schema):
     assistance = validators.Bool()
     
 class NewCFPValidator(Schema):
+    filter_extra_fields = True
     cfp = CFPValidator()
-    pre_validators = [Strip("commit"), NestedVariables]
+    pre_validators = [NestedVariables]
 
 # FIXME: the edit validator shouldn't exist!
 # instead we should probably split the generics up into more granular crud
 # and make the test suite only test those that shold be there (or better work
 # it out and ensure the ones that shouldn't be here don't work)
 class EditCFPValidator(Schema):
+    filter_extra_fields = True
     cfp = CFPValidator()
-    pre_validators = [Strip("commit"), NestedVariables]
+    pre_validators = [NestedVariables]
     
 class CfpController(BaseController, View, Modify):
     validator = {
