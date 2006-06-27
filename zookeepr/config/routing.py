@@ -19,6 +19,11 @@ def make_map():
     m.connect('cfp', '/cfp', controller='cfp', action='index')
     m.connect('submit_cfp', '/cfp/submit', controller='cfp', action='submit')
 
+    # Register confirmation named route
+    m.connect('reg_confirm', '/register/confirm/:id',
+              controller='register',
+              action='confirm')
+
     # hack the old error handler back in, using the style of the old
     # routes controller.  this is necessary to get the error handler
     # to not 404 when calling itself

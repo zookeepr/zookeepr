@@ -4,7 +4,7 @@ from formencode.variabledecode import NestedVariables
 from sqlalchemy import create_session
 
 from zookeepr.lib.base import BaseController, c
-from zookeepr.lib.generics import View, Modify
+from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import Strip
 from zookeepr.models import CFP, SubmissionType
 

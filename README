@@ -8,7 +8,7 @@ It assumes that you have the necessary dependencies installed and the developmen
 ====== Running zookeepr ======
 
 From within zookeepr/
- * Run `paster server -v --reload development.ini`
+ * Run `paster serve -v --reload development.ini`
  * Point your browser to http://localhost:5000/
 
 ====== Where to start hacking ======
