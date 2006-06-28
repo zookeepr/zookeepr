@@ -43,10 +43,6 @@ class Person(object):
 
 mapper(Person, join(account, person),
        properties = dict(account_id = [account.c.id, person.c.account_id],
-#                          submissions = relation(Submission,
-#                                                 private=True,
-#                                                 lazy=False,
-#                                                 backref='person')
                          ),
        )
 
