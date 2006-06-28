@@ -43,3 +43,12 @@ registration/person/account already exists and allow them a second
 submission.  it's a bit dodgy though, to accept a password twice.
 so do we then wait for the user to log in, or suggest doing so?  we
 need the rego confirmation bit to work then.
+
+so, in my mind, the right way to do multiple submission is to require
+them to log in for the second, which means we need the email bit
+working.  if they try to submit without logging in, then the ISE 500
+turns into a warning that they've already got an account, please log
+in to submit additional submissions.
+
+i'm still not 100% comfortable with this, because does it set the
+barrier to submission too high?
