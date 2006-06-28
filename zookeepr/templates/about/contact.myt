@@ -56,7 +56,7 @@ href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org
 
 <h3>Helpers</h3>
 
-<h4>Speaker Liason - Alison Russell</h4>
+<h4>Speaker Liaison - Alison Russell</h4>
 <ul>
 <li>e: <a href="mailto:alison@rustcorp.com.au">alison@rustcorp.com.au</a></li>
 <li>w: Alli's <a href="http://ozlabs.org/~alli/">blog</a></li>
