@@ -101,8 +101,14 @@ class Create(CRUDBase):
         setattr(c, model_name, new_object)
 
         session.close()
-        
-        m.subexec('%s/new.myt' % model_name, defaults=defaults, errors=errors)
+
+	# unmangle the errors
+	good_errors = {}
+	for key in errors.keys():
+	   for subkey in errors[key].keys():
+	   	good_errors[key + "." + subkey] = errors[key][subkey]
+
+        m.subexec('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
 
 
 class Update(CRUDBase):
