@@ -7,8 +7,7 @@ account = Table('account', metadata,
 
                 Column('email_address', String,
                        nullable=False,
-                       # FIXME: when sqla 0.2 comes out, change this to True
-                       unique='account_email_address_ux'),
+                       unique=True),
                 
                 Column('password_hash', String),
 
@@ -29,8 +28,7 @@ person = Table('person', metadata,
                # secondary key, unique identifier within the zookeepr app
                # useful for URLs, not required though (a-la flickr)
                Column('handle', String(40),
-                      # FIXME: replace when using SA 0.2
-                      unique='ux_person_handle',
+                      unique=True,
                       ),
                
                # other personal details
@@ -84,8 +82,7 @@ role = Table('role', metadata,
 
               # name of role
               Column('name', String,
-                     # FIXME: workaround a bug in SQLAlchemy 0.1.7
-                     unique='role_ux_name',
+                     unique=True,
                      nullable=False)
               )
 
