@@ -7,6 +7,14 @@
  * Update dates on cfp
 
 
+== todo from the flight
+
+ * test registration actually creates a person object with it.
+   investigate sqlalchemy inherited mappers, see if that's what we want here.
+   also look at wether that can be used to collapse the repeated password
+   properties
+
+
 = Milestones for 0.2 =
 
  * make submissiontype interface accessible only by conf admin
