@@ -1,0 +1,24 @@
+submission process
+
+goals:
+
+ * submission form takes in details
+ * at end of submission we should have:
+   * submisison data (title, etc)
+   * an account (email address, password)
+   * a registration linked to this account
+
+we need to be able to accept multiple submissions from the same email
+address.
+
+current objects look like:
+
+ account + person tables => person object
+ account + registration tables => registration object
+ account + person + submission => CFP object
+
+currently this falls down because the account has a requirement for a
+uique email address.
+
+also falls down ebcause a person isn't created with a registration,
+and a rego isn't created with a submission.
