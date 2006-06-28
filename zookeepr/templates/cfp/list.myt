@@ -181,13 +181,13 @@ Important dates:
 
 <ul>
 <li>Call for participation announced:
-    June 1, 2006</li>
+    June 28, 2006</li>
 <li>Submissions open:
     July 1, 2006</li>
 <li>Submission deadline:
     September 1, 2006</li>
 <li>Notifications by review committee:
-    October 15, 2005</li>
+    October 15, 2006</li>
 <li>Conference begins:
     January 15, 2007</li>
 </ul>
