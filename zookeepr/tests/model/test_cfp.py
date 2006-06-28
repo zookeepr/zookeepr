@@ -20,3 +20,6 @@ class TestCFP(ModelTest):
                ]
 
     mangles = dict(password=lambda p: md5.new(p).hexdigest())
+
+    def test_cfp_registration(self):
+        pass
