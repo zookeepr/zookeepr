@@ -102,11 +102,11 @@ class Create(CRUDBase):
 
         session.close()
 
-	# unmangle the errors
-	good_errors = {}
-	for key in errors.keys():
-	   for subkey in errors[key].keys():
-	   	good_errors[key + "." + subkey] = errors[key][subkey]
+        # unmangle the errors
+        good_errors = {}
+        for key in errors.keys():
+           for subkey in errors[key].keys():
+               good_errors[key + "." + subkey] = errors[key][subkey]
 
         m.subexec('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
 
@@ -187,7 +187,7 @@ class Delete(CRUDBase):
 
 class List(CRUDBase):
     def _can_edit(self):
-	return issubclass(self.__class__, Modify)
+        return issubclass(self.__class__, Modify)
     
     def index(self):
         """Show a list of all objects currently in the system."""
