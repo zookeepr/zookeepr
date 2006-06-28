@@ -51,7 +51,7 @@ partners of all ages.</p>
 #<li>Find out about <a href="/about/sponsors">sponsorship</a> opportunities</li>
 #<li>Information for the <a href="/about/press">press</a></li>
 #<li>The <a href="/about/partners">partners programme</a></li>
-#<li>Travel and accomodation in <a href="/about/sydney">Sydney</a></li>
+#<li>Travel and accommodation in <a href="/about/sydney">Sydney</a></li>
 #</ul>
 
 #</div></div>
