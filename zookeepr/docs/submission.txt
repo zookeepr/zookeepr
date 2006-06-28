@@ -22,3 +22,22 @@ uique email address.
 
 also falls down ebcause a person isn't created with a registration,
 and a rego isn't created with a submission.
+
+
+suggested course of action
+
+* i don't want to join the person and account details, but it looks
+like it is necessary to make that just work.
+
+* the submisison and registration creation shouldn't be linked in a
+single model object CFP, unless the CFP is a superset of
+both... having a single model makes the use of generics crud very
+easy, otherwise we'd need a way to hook in model creation to cope with
+the crosslinks in the two model objects.  that said, i think if the
+registration contains a person and rego table, and person is now
+account too, then this should just work.
+
+* the lsat note falls down again at multiple submission; we do
+actually want to cope with the case where a
+registration/person/account already exists and allow them a second
+submission.  it's a bit dodgy though, to accept a password twice.
