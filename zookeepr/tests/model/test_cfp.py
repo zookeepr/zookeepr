@@ -20,3 +20,11 @@ class TestCFP(ModelTest):
                ]
 
     mangles = dict(password=lambda p: md5.new(p).hexdigest())
+
+    def test_cfp_registration(self):
+        # submit to the cfp
+        # get out the url hash because i don't know how to trap smtplib
+        # visit the url
+        # check the rego worked
+
+        pass
