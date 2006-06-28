@@ -41,3 +41,5 @@ account too, then this should just work.
 actually want to cope with the case where a
 registration/person/account already exists and allow them a second
 submission.  it's a bit dodgy though, to accept a password twice.
+so do we then wait for the user to log in, or suggest doing so?  we
+need the rego confirmation bit to work then.
