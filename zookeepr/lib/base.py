@@ -28,6 +28,6 @@ class BaseController(Controller):
                 if isinstance(m.request_args[key], cgi.FieldStorage):
                     if m.request_args[key].file and \
                            type(m.request_args[key].file) == types.FileType:
-                        m.request_args[key] = m.request_args[key].file
+                        m.request_args[key] = m.request_args[key].value
                     else:
                         m.request_args[key] = m.request_args[key].value
