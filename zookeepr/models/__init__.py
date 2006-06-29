@@ -134,8 +134,6 @@ class Registration(object):
                               nonce)
         self._url_hash = md5.new(magic).hexdigest()
 
-        
-
     def __repr__(self):
         return '<Registration email_address="%s" timestamp="%s" url_hash="%s" activated=%s>' % (self.email_address, self.timestamp, self.url_hash, self.activated)
 
