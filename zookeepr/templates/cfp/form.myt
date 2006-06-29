@@ -4,14 +4,6 @@
 
 <p>First, tell us a bit about yourself.</p>
 
-#<p>
-#<span class="mandatory">*</span>
-#<label for="cfp.handle">Username:</label>
-#<span class="fielddesc"> - the way we'll refer to you</span>
-#<br />
-#<% h.text_field('cfp.handle', c.cfp.handle) %>
-#</p>
-
 <p>
 <span class="mandatory">*</span>
 <label for="cfp.email_address">Email address:</label><span class="fielddesc"> - this will be the primary way of contacting you</span><br />

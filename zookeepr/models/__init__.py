@@ -118,11 +118,7 @@ class Registration(object):
     def _get_url_hash(self):
         return self._url_hash
 
-    def _set_url_hash(self, value):
-        """do not set the url hash"""
-        pass
-
-    url_hash = property(_get_url_hash, _set_url_hash)
+    url_hash = property(_get_url_hash)
     
     def _update_url_hash(self):
         """Call this when an element of the url hash is changed
