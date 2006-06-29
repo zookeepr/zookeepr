@@ -96,7 +96,8 @@ class Registration(object):
         self._update_url_hash()
         
     def _set_password(self, value):
-        self.password_hash = md5.new(value).hexdigest()
+        if value is not None:
+            self.password_hash = md5.new(value).hexdigest()
 
     def _get_password(self):
         return self.password_hash
@@ -134,7 +135,9 @@ class Registration(object):
         return '<Registration email_address="%s" timestamp="%s" url_hash="%s" activated=%s>' % (self.email_address, self.timestamp, self.url_hash, self.activated)
 
 mapper(Registration, join(account, person).join(registration),
-       properties = dict(account_id = [account.c.id, person.c.account_id, registration.c.account_id])
+       properties = dict(account_id = [account.c.id, person.c.account_id, registration.c.account_id],
+                         submissions = relation(Submission, lazy=True),
+                         )
        )
 
 __all__ = ['Person', 'person', 'account']

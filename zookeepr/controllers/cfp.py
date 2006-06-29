@@ -3,15 +3,17 @@ from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController, c, m
+from zookeepr.lib.base import BaseController, c, m, request
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import SubmissionType
+from zookeepr.models import SubmissionType, Submission, Registration
 
-class CFPValidator(Schema):
+class RegistrationValidator(Schema):
     email_address = validators.Email(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
+
+class SubmissionValidator(Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = validators.Int()
@@ -21,42 +23,52 @@ class CFPValidator(Schema):
     assistance = validators.Bool()
     
 class NewCFPValidator(BaseSchema):
-    cfp = CFPValidator()
+    registration = RegistrationValidator()
+    submission = SubmissionValidator()
     pre_validators = [NestedVariables]
 
-# FIXME: the edit validator shouldn't exist!
-# instead we should probably split the generics up into more granular crud
-# and make the test suite only test those that shold be there (or better work
-# it out and ensure the ones that shouldn't be here don't work)
-class EditCFPValidator(BaseSchema):
-    cfp = CFPValidator()
-    pre_validators = [NestedVariables]
-    
-class CfpController(BaseController, View, Modify):
-    validators = {
-        'new': NewCFPValidator(),
-        'edit': EditCFPValidator(),
-        }
-
-    #model = CFP
-    individual = 'cfp'
-    redirect_map = dict(new=dict(action='thankyou'))
-
-    def new(self):
-        session = create_session()
-        c.cfptypes = session.query(SubmissionType).select()
-        session.close()
-        Modify.new(self)
+class CfpController(BaseController):
 
     def submit(self):
-        self.new()
-
-    def edit(self, id):
-        # XXX dirty hack to make tests pass
         session = create_session()
         c.cfptypes = session.query(SubmissionType).select()
+
+        errors = {}
+        defaults = m.request_args
+
+        new_reg = Registration()
+        new_sub = Submission()
+        new_reg.submissions.append(new_sub)
+        
+        if request.method == 'POST' and defaults:
+            result, errors = NewCFPValidator().validate(defaults)
+
+            if not errors:
+                # update the objects with the validated form data
+                for k in result['submission']:
+                    setattr(new_sub, k, result['submission'][k])
+                for k in result['registration']:
+                    setattr(new_reg, k, result['registration'][k])
+
+                session.save(new_reg)
+                session.save(new_sub)
+                session.flush()
+                session.close()
+
+                return h.redirect_to(action='thankyou')
+
+        c.registration = new_reg
+        c.submission = new_sub
+        
         session.close()
-        Modify.edit(self, id)
+
+        # unmangle the errors
+        good_errors = {}
+        for key in errors.keys():
+            for subkey in errors[key].keys():
+                good_errors[key + "." + subkey] = errors[key][subkey]
+
+        m.subexec("cfp/new.myt", defaults=defaults, errors=errors)
 
     def thankyou(self):
         m.subexec('cfp/thankyou.myt')
