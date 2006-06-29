@@ -98,6 +98,7 @@ registration = Table('registration', metadata,
                      # FIXME: expiration of rows not currently implemented
                      Column('timestamp', DateTime,
                             nullable=False,
+                            key='_timestamp',
                             ),
 
                      # link to the account details
@@ -110,6 +111,7 @@ registration = Table('registration', metadata,
                      Column('url_hash', String(32),
                             nullable=False,
                             index=True,
+                            key='_url_hash',
                             ),
                      )
 

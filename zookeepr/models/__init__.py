@@ -1,4 +1,6 @@
+import datetime
 import md5
+import random
 
 from sqlalchemy import mapper, relation, MapperExtension, join
 
@@ -84,12 +86,14 @@ mapper(Role, role, properties = dict(
     ))
 
 class Registration(object):
-    def __init__(self, timestamp=None, url_hash=None, email_address=None, password=None, activated=None):
+    def __init__(self, timestamp=None, email_address=None, password=None, activated=None):
         self.timestamp = timestamp
-        self.url_hash = url_hash
         self.email_address = email_address
         self.password = password
         self.activated = activated
+
+        # url hash should never be modifiable by the caller directly
+        self._update_url_hash()
         
     def _set_password(self, value):
         self.password_hash = md5.new(value).hexdigest()
@@ -99,45 +103,44 @@ class Registration(object):
 
     password = property(_get_password, _set_password)
 
+    def _set_timestamp(self, value):
+        if value is None:
+            self._timestamp = datetime.datetime.now()
+        else:
+            self._timestamp = value
+        self._update_url_hash()
+
+    def _get_timestamp(self):
+        return self._timestamp
+
+    timestamp = property(_get_timestamp, _set_timestamp)
+
+    def _get_url_hash(self):
+        return self._url_hash
+
+    def _set_url_hash(self, value):
+        """do not set the url hash"""
+        pass
+
+    url_hash = property(_get_url_hash, _set_url_hash)
+    
+    def _update_url_hash(self):
+        """Call this when an element of the url hash is changed
+        (i.e. either set email address or timestamp)
+        """
+        nonce = random.randrange(0, 2**30)
+        magic = "%s&%s&%s" % (self.email_address,
+                              self.timestamp,
+                              nonce)
+        self._url_hash = md5.new(magic).hexdigest()
+
+        
+
     def __repr__(self):
         return '<Registration email_address="%s" timestamp="%s" url_hash="%s" activated=%s>' % (self.email_address, self.timestamp, self.url_hash, self.activated)
 
 mapper(Registration, join(account, person).join(registration),
        properties = dict(account_id = [account.c.id, person.c.account_id, registration.c.account_id])
-       )
-
-class CFP(object):
-    def __init__(self, email_address=None, password=None, handle=None, firstname=None, lastname=None, title=None, abstract=None, type=None, experience=None, url=None, attachment=None, assistance=None):
-        self.email_address = email_address
-        self.password = password
-        self.handle = handle
-        self.firstname = firstname
-        self.lastname = lastname
-        self.title = title
-        self.abstract = abstract
-        self.type = type
-        self.experience = experience
-        self.url = url
-        self.attachment = attachment
-        self.assistance = assistance
-
-    def _set_password(self, password):
-        if password is None:
-            self.password_hash = None
-        else:
-            self.password_hash = md5.new(password).hexdigest()
-
-    def _get_password(self):
-        return self.password_hash
-
-    password = property(_get_password, _set_password)
-
-mapper(CFP, join(account, person).join(submission),
-       properties = {
-    'account_id': [account.c.id, person.c.account_id],
-    'person_id': [person.c.id, submission.c.person_id],
-    'type': submission.c.submission_type_id,
-    }
        )
 
 __all__ = ['Person', 'person', 'account']

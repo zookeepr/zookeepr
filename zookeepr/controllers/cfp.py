@@ -6,7 +6,7 @@ from sqlalchemy import create_session
 from zookeepr.lib.base import BaseController, c, m
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import CFP, SubmissionType
+from zookeepr.models import SubmissionType
 
 class CFPValidator(Schema):
     email_address = validators.Email(not_empty=True)
@@ -38,7 +38,7 @@ class CfpController(BaseController, View, Modify):
         'edit': EditCFPValidator(),
         }
 
-    model = CFP
+    #model = CFP
     individual = 'cfp'
     redirect_map = dict(new=dict(action='thankyou'))
 
