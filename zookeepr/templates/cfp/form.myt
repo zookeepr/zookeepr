@@ -30,7 +30,7 @@
 <p>Now tell us a bit about your submission:</p>
 
 <p><label for="submission.title">Title:</label>
-<div class="formdesc">e.g. the name of your paper, or talk title.</a>
+<div class="formdesc">e.g. the name of your paper, or talk title.</div>
 <br />
 <% h.text_field('submission.title', c.submission.title, size=50) %>
 </p>
