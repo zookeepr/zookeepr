@@ -12,6 +12,7 @@
    also look at wether that can be used to collapse the repeated password
    properties
 
+ * getter and setter properties in a mapper, c.f. url_hash test failure
 
 = Milestones for 0.2 =
 
