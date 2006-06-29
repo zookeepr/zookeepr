@@ -68,7 +68,7 @@ class CfpController(BaseController):
             for subkey in errors[key].keys():
                 good_errors[key + "." + subkey] = errors[key][subkey]
 
-        m.subexec("cfp/new.myt", defaults=defaults, errors=errors)
+        m.subexec("cfp/new.myt", defaults=defaults, errors=good_errors)
 
     def thankyou(self):
         m.subexec('cfp/thankyou.myt')
