@@ -8,7 +8,7 @@ from sqlalchemy import create_engine
 import zookeepr.models as model
 
 class BaseController(Controller):
-    validator = {}
+
     def __before__(self, **kwargs):
         """__before__ is run on every requet, before passing control
         to the controller. Here we do anything that needs work
