@@ -169,7 +169,7 @@ div.boxed {
 }
 
 /* description of form field input expected */
-.fielddesc {
+SPAN.fielddesc {
   font-style: italic;
   font-size: 80%;
 }
