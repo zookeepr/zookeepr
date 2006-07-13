@@ -1,8 +1,8 @@
 import cgi
 import types
-from formencode.api import Invalid
-from pylons import Controller, m, h, c, g, session, request, params
 
+from formencode.api import Invalid
+from pylons import Controller, m, h, c, g, session, request
 from sqlalchemy import create_engine
 
 import zookeepr.models as model
