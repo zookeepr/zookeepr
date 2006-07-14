@@ -1,0 +1,7 @@
+(12:12:54) johnf: Paste-0.9.3_zookeepr2-py2.3  SQLAlchemy-0.2.4-py2.3
+Pylons-0.8.2-py2.3    I tried SQLAlchemy-0.2.5 no difference    to
+test I was doing  /usr/sbin/ab -c 20 -n 100 -v 1
+http://dev.lca2007.linux.org.au/cfp/submit    I know that the 1000
+connections thing is fixed. Thats because we were calling
+create_engine inside __before    If you move create engine to __before
+the test above will mean you have 100+ postgres processes  with it
