@@ -25,6 +25,7 @@ setup(
                                'templates/*/*.myt',
                                'public/*.css',
                                'public/*.png',
+                               'public/*.pdf',
                                'public/*.gif']},
     entry_points="""
     [paste.app_factory]

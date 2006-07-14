@@ -6,7 +6,7 @@
 
 <p>
 Members of the Linux and open-source community are invited to submit
-papers and proposals for presentations, tutorials and mini-confs for
+papers and proposals for presentations, tutorials and miniconfs for
 linux.conf.au 2007.
 </p>
 
@@ -42,7 +42,7 @@ and an appropriate room will be provided by the linux.conf.au team.
 </p>
 
 <p>
-There will be other opportinuties to partipicate in linux.conf.au
+There will be other opportunities to participate in linux.conf.au
 2007, such as poster sessions, lighting talks and BOFs however
 organisation of these events will happen immediately before, or at the
 conference.
@@ -115,12 +115,12 @@ Submissions on the following topics are encouraged:
 Proposals for presentations and tutorials should be around 400 words
 and should detail the subject you want to talk about and include links
 to any other relevant details, such as a project home page.
-Rember this proposal needs to convince our programme committee that you
+Remember this proposal needs to convince our programme committee that you
 should be talking at linux.conf.au 2007.
 </p>
 
 <p>
-Proposals for mini-confs can be up to 2000 words, and should detail
+Proposals for miniconfs can be up to 2000 words, and should detail
 the community involved, the expected number of attendees, proposed
 activities and detail any support you would like from the organising
 committee. This proposal needs to convince us that you can organise
@@ -181,13 +181,13 @@ Important dates:
 
 <ul>
 <li>Call for participation announced:
-    June 1, 2006</li>
+    June 28, 2006</li>
 <li>Submissions open:
     July 1, 2006</li>
 <li>Submission deadline:
     September 1, 2006</li>
 <li>Notifications by review committee:
-    October 15, 2005</li>
+    October 15, 2006</li>
 <li>Conference begins:
     January 15, 2007</li>
 </ul>
