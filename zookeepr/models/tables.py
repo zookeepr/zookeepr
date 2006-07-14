@@ -1,8 +1,12 @@
 from sqlalchemy import *
 
-metadata = DynamicMetaData(name="zookeepr core")
+# FIXME - EVIL HACK
+# For some unknown reason _engine disappears
+# So we save it in evil_jf and and restore it each request in __before__
+evil_jf = {}
 
-account = Table('account', metadata,
+
+account = Table('account',
                 Column('id', Integer, primary_key=True),
 
                 Column('email_address', String,
@@ -19,7 +23,7 @@ account = Table('account', metadata,
                        nullable=False),
                 )
 
-person = Table('person', metadata,
+person = Table('person',
                Column('id', Integer, primary_key=True),
 
                Column('account_id', Integer,
@@ -42,7 +46,7 @@ person = Table('person', metadata,
 )
 
 # types of submissions: typically 'paper', 'miniconf', etc
-submission_type = Table('submission_type', metadata,
+submission_type = Table('submission_type',
                         Column('id', Integer, primary_key=True),
                         Column('name', String(40),
                                unique=True,
@@ -50,7 +54,7 @@ submission_type = Table('submission_type', metadata,
                         )
 
 # submissions to the conference
-submission = Table('submission', metadata,
+submission = Table('submission', 
                    Column('id', Integer, primary_key=True),
 
                    # title of submission
@@ -78,8 +82,10 @@ submission = Table('submission', metadata,
                    Column('assistance', Boolean),
                    )
 
+
+
 # describe account roles to grant levels of access
-role = Table('role', metadata,
+role = Table('role',
               Column('id', Integer, primary_key=True),
 
               # name of role
@@ -89,12 +95,12 @@ role = Table('role', metadata,
                      nullable=False)
               )
 
-person_role_map = Table('person_role_map', metadata,
+person_role_map = Table('person_role_map',
                         Column('person_id', Integer, ForeignKey('person.id')),
                         Column('role_id', Integer, ForeignKey('role.id'))
                         )
 
-registration = Table('registration', metadata,
+registration = Table('registration',
                      Column('id', Integer, primary_key=True),
                      
                      # timestamp of the registration for expiration
@@ -116,4 +122,4 @@ registration = Table('registration', metadata,
                             ),
                      )
 
-__all__ = ['account', 'person', 'submission_type', 'submission', 'registration', 'person_role_map', 'role', 'metadata']
+__all__ = ['account', 'person', 'submission_type', 'submission', 'registration', 'person_role_map', 'role']
