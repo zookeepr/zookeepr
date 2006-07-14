@@ -187,3 +187,28 @@ div.boxed {
 	margin: 0;
 	margin-bottom: 1ex;
 }
+
+.sublinkmenu {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	clear: both;
+}
+
+.sublinkmenu li {
+	font-size: 80%;
+	float: left;
+	padding-right: 0.5ex;
+}
+
+.sublinkmenu li:after {
+	content: " ·";
+}
+
+.sublinkmenu li:last-child:after {
+	content: "";
+}
+
+.sublinkmenu a { text-decoration: none; }
+
+

@@ -91,6 +91,8 @@
 
  * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
 
+ * Remove the evil_jf hack which fixes the sqlalchemy wierdness where _engine disapears
+
 == testing ==
 
  * throw bad shit at forms to make sure we're using formencode :-)
