@@ -2,7 +2,7 @@ import new
 import os
 from unittest import TestCase
 
-from sqlalchemy import create_engine
+from sqlalchemy import create_engine, global_connect, default_metadata
 
 import zookeepr.models as model
 
@@ -66,7 +66,7 @@ def setUp():
         pass
 
     eng = create_engine('sqlite:///test.db', echo=True)
-    model.metadata.connect(eng)
-    model.metadata.create_all()
+    global_connect(eng);
+    default_metadata.create_all()
 
 __all__ = ['TestBase', 'monkeypatch']

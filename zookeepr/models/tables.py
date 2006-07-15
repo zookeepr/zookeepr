@@ -82,8 +82,6 @@ submission = Table('submission',
                    Column('assistance', Boolean),
                    )
 
-
-
 # describe account roles to grant levels of access
 role = Table('role',
               Column('id', Integer, primary_key=True),
