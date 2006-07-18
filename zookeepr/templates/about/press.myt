@@ -10,7 +10,7 @@ you would like to attend the Penguin Dinner, it will be $60.</p>
 
 <p>We'll have a press conference during linux.conf.au and we can also set up
 personal interviews for you. Just let us know who you are interested in
-chatting and we'll make sure it happens. We ask that you respect that some
+chatting to and we'll make sure it happens. We ask that you respect that some
 speakers may not be willing or available to speak or be photographed at any
 particular time. We will provide a dedicated press room for interviews and
 such to take place.</p>

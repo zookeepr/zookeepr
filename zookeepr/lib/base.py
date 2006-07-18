@@ -3,7 +3,8 @@ import types
 
 from formencode.api import Invalid
 from pylons import Controller, m, h, c, g, session, request
-from sqlalchemy import create_engine
+
+from sqlalchemy import default_metadata
 
 import zookeepr.models as model
 
@@ -15,9 +16,10 @@ class BaseController(Controller):
         per request."""
         action = kwargs["action"]
 
-        # Connect the ORM to the database
-        eng = create_engine(g.pylons_config.app_conf['dburi'])
-        model.metadata.connect(eng)
+	# FIXME - EVIL HACK
+	# For some unknown reason _engine disappears
+	# So we save it at initialisation and restore it each request
+	default_metadata.context._engine = model.evil_jf
 
         # Convert the request_args into something sane. Basically what
         # I am doing here is finding anything encoded as FieldStorage
@@ -28,6 +30,6 @@ class BaseController(Controller):
                 if isinstance(m.request_args[key], cgi.FieldStorage):
                     if m.request_args[key].file and \
                            type(m.request_args[key].file) == types.FileType:
-                        m.request_args[key] = m.request_args[key].file
+                        m.request_args[key] = m.request_args[key].value
                     else:
                         m.request_args[key] = m.request_args[key].value
