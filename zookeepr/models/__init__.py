@@ -137,6 +137,7 @@ class Registration(object):
 mapper(Registration, join(account, person).join(registration),
        properties = dict(account_id = [account.c.id, person.c.account_id, registration.c.account_id],
                          submissions = relation(Submission, lazy=True),
+                         _url_hash = registration.c.url_hash,
                          )
        )
 

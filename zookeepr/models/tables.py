@@ -111,7 +111,6 @@ registration = Table('registration', metadata,
                      Column('url_hash', String(32),
                             nullable=False,
                             index=True,
-                            key='_url_hash',
                             ),
                      )
 
