@@ -38,3 +38,9 @@ class TestRegistrationModel(ModelTest):
         self.assertEqual(1, len(s))
         # and it looks like r
         self.assertEqual(r, s[0])
+
+        # clean up
+        session.delete(r)
+        session.flush()
+
+        self.check_empty_session()
