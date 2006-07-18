@@ -2,7 +2,9 @@ import new
 import os
 from unittest import TestCase
 
-from sqlalchemy import create_engine, default_metadata
+from sqlalchemy import create_engine, global_connect, default_metadata
+
+import zookeepr.models as model
 
 class TestBase(TestCase):
     def assertRaisesAny(self, callable_obj, *args, **kwargs):
@@ -64,7 +66,7 @@ def setUp():
         pass
 
     eng = create_engine('sqlite:///test.db', echo=True)
-    default_metadata.connect(eng)
+    global_connect(eng);
     default_metadata.create_all()
 
 __all__ = ['TestBase', 'monkeypatch']
