@@ -32,6 +32,9 @@ class TestRegistrationModel(ModelTest):
         session.save(r)
         session.flush()
 
-        s = session.query(Registration).select_by_url_hash(r.url_hash)
+        s = session.query(Registration).select_by(_url_hash=r.url_hash)
 
-        self.assertEqual(r, s)
+        # only one element
+        self.assertEqual(1, len(s))
+        # and it looks like r
+        self.assertEqual(r, s[0])
