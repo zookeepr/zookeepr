@@ -119,6 +119,9 @@ class Registration(object):
     def _get_url_hash(self):
         return self._url_hash
 
+    # Please note that url_hash can't be select_by()'d, instead you need to
+    # select_by(_url_hash=...) (see the properties in the mapper below).  This
+    # is ugly but is the recommended way to do this in SQLAlchemy.
     url_hash = property(_get_url_hash)
     
     def _update_url_hash(self):
