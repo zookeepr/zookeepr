@@ -1,0 +1,54 @@
+submission process
+
+goals:
+
+ * submission form takes in details
+ * at end of submission we should have:
+   * submisison data (title, etc)
+   * an account (email address, password)
+   * a registration linked to this account
+
+we need to be able to accept multiple submissions from the same email
+address.
+
+current objects look like:
+
+ account + person tables => person object
+ account + registration tables => registration object
+ account + person + submission => CFP object
+
+currently this falls down because the account has a requirement for a
+uique email address.
+
+also falls down ebcause a person isn't created with a registration,
+and a rego isn't created with a submission.
+
+
+suggested course of action
+
+* i don't want to join the person and account details, but it looks
+like it is necessary to make that just work.
+
+* the submisison and registration creation shouldn't be linked in a
+single model object CFP, unless the CFP is a superset of
+both... having a single model makes the use of generics crud very
+easy, otherwise we'd need a way to hook in model creation to cope with
+the crosslinks in the two model objects.  that said, i think if the
+registration contains a person and rego table, and person is now
+account too, then this should just work.
+
+* the lsat note falls down again at multiple submission; we do
+actually want to cope with the case where a
+registration/person/account already exists and allow them a second
+submission.  it's a bit dodgy though, to accept a password twice.
+so do we then wait for the user to log in, or suggest doing so?  we
+need the rego confirmation bit to work then.
+
+so, in my mind, the right way to do multiple submission is to require
+them to log in for the second, which means we need the email bit
+working.  if they try to submit without logging in, then the ISE 500
+turns into a warning that they've already got an account, please log
+in to submit additional submissions.
+
+i'm still not 100% comfortable with this, because does it set the
+barrier to submission too high?

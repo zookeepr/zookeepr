@@ -20,8 +20,8 @@ class ErrorController(BaseController):
         else:
             page = error_document_template % {
                 'prefix':get_prefix(request.environ),
-                'code':params.get('code', ''), 
-                'message':params.get('message', ''),
+                'code':ARGS.get('code', ''), 
+                'message':ARGS.get('message', ''),
                 }
             m.write(page)
 

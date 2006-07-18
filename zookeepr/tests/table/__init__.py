@@ -66,14 +66,14 @@ class TableTest(TestBase):
         self.assertEqual(0, result.fetchone()[0])
 
     def insert(self):
-        """Test insertion of sample data
-
-        Insert a row into the table, check that it was
-        inserted into the database, and then delete it.
-    
-        Set the attributes for this model object in the ``attrs`` class
-        variable.
-        """
+        #"""Test insertion of sample data
+        #
+        #Insert a row into the table, check that it was
+        #inserted into the database, and then delete it.
+        #
+        #Set the attributes for this model object in the ``attrs`` class
+        #variable.
+        #"""
 
         self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
         

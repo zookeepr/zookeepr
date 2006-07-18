@@ -1,14 +1,15 @@
 import cgi
 import types
+
 from formencode.api import Invalid
-from pylons import Controller, m, h, c, g, session, request, params
+from pylons import Controller, m, h, c, g, session, request
 
 from sqlalchemy import default_metadata
 
 import zookeepr.models as model
 
 class BaseController(Controller):
-    validator = {}
+
     def __before__(self, **kwargs):
         """__before__ is run on every requet, before passing control
         to the controller. Here we do anything that needs work

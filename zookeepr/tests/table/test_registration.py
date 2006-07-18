@@ -17,13 +17,13 @@ class TestRegistration(TableTest):
     identify this registration.
     """
     table = 'registration'
-    samples = [dict(timestamp=datetime.datetime.now(),
+    samples = [dict(_timestamp=datetime.datetime.now(),
                     url_hash=md5.new("snuh").hexdigest(),
                     account_id=1,
                     ),
-               dict(timestamp=datetime.datetime(2006,05,30,14,31,37),
+               dict(_timestamp=datetime.datetime(2006,05,30,14,31,37),
                     url_hash='winnebago',
                     account_id=1,
                     ),
                ]
-    not_nullables=['timestamp', 'url_hash', 'account_id']
+    not_nullables=['_timestamp', 'url_hash', 'account_id']

@@ -15,7 +15,7 @@ class RegisterController(BaseController):
         """
         session = create_session()
 
-        r = session.query(model.Registration).select_by(url_hash=id)
+        r = session.query(model.Registration).select_by(_url_hash=id)
 
         if len(r) < 1:
             m.abort(404)

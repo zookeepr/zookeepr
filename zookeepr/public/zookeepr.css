@@ -168,6 +168,12 @@ div.boxed {
   border: 1px solid grey;
 }
 
+/* description of form field input expected */
+SPAN.fielddesc {
+  font-style: italic;
+  font-size: 80%;
+}
+
 /**
  * custom stuff
  */

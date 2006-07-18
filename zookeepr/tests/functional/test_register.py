@@ -14,12 +14,12 @@ class TestRegisterController(ControllerTest):
         timestamp = datetime.datetime.now()
         email_address = 'testguy@testguy.org'
         password = 'password'
-        url_hash = md5.new(email_address + str(timestamp)).hexdigest()
         r = model.Registration(timestamp=timestamp,
                                email_address=email_address,
                                password=password,
-                               url_hash=url_hash,
                                activated=False)
+        url_hash = r.url_hash
+        print url_hash
         self.session.save(r)
         self.session.flush()
         rid = r.id
