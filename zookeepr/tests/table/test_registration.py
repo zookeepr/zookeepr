@@ -18,12 +18,12 @@ class TestRegistration(TableTest):
     """
     table = 'registration'
     samples = [dict(_timestamp=datetime.datetime.now(),
-                    _url_hash=md5.new("snuh").hexdigest(),
+                    url_hash=md5.new("snuh").hexdigest(),
                     account_id=1,
                     ),
                dict(_timestamp=datetime.datetime(2006,05,30,14,31,37),
-                    _url_hash='winnebago',
+                    url_hash='winnebago',
                     account_id=1,
                     ),
                ]
-    not_nullables=['_timestamp', '_url_hash', 'account_id']
+    not_nullables=['_timestamp', 'url_hash', 'account_id']
