@@ -50,3 +50,12 @@ from zookeepr.tests.functional import *
 #         self.session.delete(st2)
 #         self.session.flush()
 #         ControllerTest.tearDown(self)
+                           
+        
+    #def test_cfp_registration(self):
+        # submit to the cfp
+        # get out the url hash because i don't know how to trap smtplib
+        # visit the url
+        # check the rego worked
+
+    #    pass
