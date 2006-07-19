@@ -1,39 +1,41 @@
 from zookeepr.tests.model import *
 
-# class TestRoleModel(ModelTest):
-#      model = 'Role'
-#      samples = [dict(name='site admin'),
-#                 dict(name='speaker'),
-#                 ]
-#      not_nullables = ['name']
-#      uniques = ['name']
+class TestRoleModel(ModelTest):
+     model = 'Role'
+     samples = [dict(name='site admin'),
+                dict(name='speaker'),
+                ]
+     not_nullables = ['name']
+     uniques = ['name']
 
-#      def test_map_person(self):
-#          """Test mapping persons to roles"""
-#          session = create_session()
+     def test_map_person(self):
+         """Test mapping persons to roles"""
+         session = create_session()
 
-#          p = model.Person(handle='testguy',
-#                           email_address='testguy@example.org')
-#          r = model.Role('admin')
-#          p.roles.append(r)
+         p = model.Person(handle='testguy',
+                          email_address='testguy@example.org')
+         r = model.Role('admin')
          
-#          session.save(p)
-#          session.save(r)
-#          session.flush()
+         session.save(p)
+         session.save(r)
          
-#          rid = r.id
-#          pid = p.id
+         p.roles.append(r)
+
+         session.flush()
          
-#          session.clear()
+         rid = r.id
+         pid = p.id
          
-#          p = session.get(model.Person, pid)
-#          self.assertEqual(['admin'], [r.name for r in p.roles])
+         session.clear()
          
-#          # clean up
-#          session.delete(p)
-#          session.delete(session.get(model.Role, rid))
-#          session.flush()
+         p = session.get(model.Person, pid)
+         self.assertEqual(['admin'], [r.name for r in p.roles])
          
-#          # check
-#          self.assertEqual(0, len(session.query(model.Role).select()))
-#          self.check_empty_session()
+         # clean up
+         session.delete(p)
+         session.delete(session.get(model.Role, rid))
+         session.flush()
+         
+         # check
+         self.assertEqual(0, len(session.query(model.Role).select()))
+         self.check_empty_session()
