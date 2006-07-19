@@ -23,6 +23,4 @@ class RegisterController(BaseController):
         session.save(r[0])
         session.flush()
 
-        #print r[0]
-        
         m.subexec('register/confirmed.myt')
