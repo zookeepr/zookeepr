@@ -1,5 +1,6 @@
 import md5
 
+from zookeepr.models import Registration, Submission
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
@@ -16,7 +17,7 @@ class TestCFP(ControllerTest):
                    }
         sub_data = {'title': 'title',
                     'abstract': 'abstract',
-                    'type': 1,
+                    #'type': 1,
                     'experience': 'some',
                     'url': 'http://example.org',
                     'attachment': 'foo',
