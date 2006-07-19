@@ -15,9 +15,16 @@ class TestCFP(ModelTest):
                                abstract="abstract",
                                )
 
-        reg.submissions.append(sub)
-
         session.save(reg)
         session.save(sub)
 
+        reg.submissions.append(sub)
+
         session.flush()
+
+
+        # clean up
+        session.delete(sub)
+        session.delete(reg)
+        session.flush()
+
