@@ -1,11 +1,13 @@
 from zookeepr.lib.base import *
 
 class AboutController(BaseController):
-    #templates = ["index", "cfp", "contact", "sponsors"]
-
+    """Display information about a specific part of the conference.
+    """
     def view(self, id):
-        #if id in self.templates:
-        #    m.subexec("about/%s.myt" % id)
-        #else:
-        #    m.abort(404, "Object not found")
+        """View the information.
+
+        ``view`` is the primary action associated with this controller.
+        It does no processing of information, only returns a response
+        from the templates.
+        """
         m.subexec("about/%s.myt" % id)
