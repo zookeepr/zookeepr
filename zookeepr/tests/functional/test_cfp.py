@@ -4,9 +4,7 @@ from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
     def test_create(self):
-        url = url_for(controller='cfp', action='new')
-
-        response = self.app.get(url)
+        response = self.app.get('/cfp/submit')
         form = response.form
 
         print form.text
