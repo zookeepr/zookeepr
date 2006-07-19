@@ -7,49 +7,32 @@ class TestRouting(unittest.TestCase):
     def setUp(self):
         self.map = make_map()
 
-    def test_routing(self):
-        """Test url routing"""
+    def test_default_controller_url(self):
+        self.failUnless('/c',
+                        url_for(controller='c'))
 
-        ctlr = '/ctlr'
-        # print to clear output when running verbose
-        print
-        
-        # controller w/o action or id
-        u = url_for(controller=ctlr)
-        print "base controller url: %s" % u
-        self.failUnless(u == ctlr)
+    def test_default_controller_index_url(self):
+        self.assertEqual('/c',
+                         url_for(controller='c', action='index'))
 
-        # controller w/ index action
-        u = url_for(controller=ctlr, action='index')
-        print "index action url: %s" % u
-        self.failUnless(u == ctlr)
-        
-        # controller w/ new action
-        u = url_for(controller=ctlr, action='new')
-        print "new action url: %s" % u
-        self.failUnless(u == ctlr + '/new')
+    def test_default_controller_new_url(self):
+        self.assertEqual('/c/new',
+                         url_for(controller='c', action='new'))
 
-        # controller w/ view action
-        u = url_for(controller=ctlr, action='view', id=1)
-        print "view action url: %s" % u
-        self.failUnless(u == ctlr + '/1')
+    def test_default_controller_view_url(self):
+        self.assertEqual('/c/1',
+                         url_for(controller='c', action='view', id=1))
 
-        # controller w/ other actions and id
+    def test_default_controller_action_url(self):
         for action in ['edit', 'update', 'delete']:
-            u = url_for(controller=ctlr, action=action, id=1)
-            print "%s action url: %s" % (action, u)
-            self.failUnless(u == ctlr + '/1/%s' % action)
+            self.assertEqual('/c/1/%s' % action,
+                             url_for(controller='c', action=action, id=1))
 
-    def test_about(self):
-        """Test the about sub-url"""
-
-        ctlr = '/about'
-        
-        print
-        u = url_for(controller=ctlr, action='view', id='programme')
-        print "programme url:", u
-        self.assertEqual(ctlr + '/programme', u)
-        
+    def test_about_controller_id_url(self):
+        self.assertEqual('/about/programme',
+                         url_for(controller='about',
+                                 action='view',
+                                 id='programme'))
 
     def test_home_routing(self):
         """Test the routing of the home controller"""
