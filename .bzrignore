@@ -9,3 +9,6 @@ test.db
 build
 dist
 zookeepr/config.ini
+*.pyc
+*.pyo
+*~
