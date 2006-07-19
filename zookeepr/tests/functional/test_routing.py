@@ -53,33 +53,34 @@ class TestRouting(unittest.TestCase):
 
     def test_home_routing(self):
         """Test the routing of the home controller"""
-        u = '/'
         self.assertEqual(dict(controller='home',
                               action='index'),
-                         self.map.match(u))
+                         self.map.match('/'))
+
+    def test_home_named_route(self):
+        self.assertEqual('/',
+                         url_for('home'))
 
     def test_cfp_routing(self):
         """test the routing of the cfp urls"""
-        u = '/cfp'
         self.assertEqual(dict(controller='cfp',
                               action='index'),
-                         self.map.match(u))
+                         self.map.match('/cfp'))
 
-        cfp = url_for('cfp')
-        self.assertEqual(u, cfp)
+    def test_cfp_named_route(self):
+        self.assertEqual('/cfp',
+                         url_for('cfp'))
 
     def test_cfp_submission_url(self):
         """test the routing of the cfp submit url"""
-
-        # test the mapper
-        u = '/cfp/submit'
         self.assertEqual(dict(controller='cfp',
                               action='submit'),
-                         self.map.match(u))
+                         self.map.match('/cfp/submit'))
 
-        # test the named route
+    def test_cfp_submission_named_route(self):
         submit_cfp = url_for('submit_cfp')
-        self.assertEqual(u, submit_cfp)
+        self.assertEqual('/cfp/submit',
+                         submit_cfp)
 
     def test_registration_confirmation_url(self):
         """test the routing of the registration confirmation url"""
@@ -89,7 +90,6 @@ class TestRouting(unittest.TestCase):
                          self.map.match('/register/confirm/N'))
 
     def test_registratrion_confirmation_named_route(self):
-        # test the named route
         reg_confirm = url_for('reg_confirm', id='N')
         self.assertEqual('/register/confirm/N',
                          reg_confirm)
