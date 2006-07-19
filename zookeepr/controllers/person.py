@@ -1,10 +1,13 @@
-from formencode import validators, compound, schema, variabledecode
+from formencode import validators
+from formencode.schema import Schema
+from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController
 from zookeepr.lib.crud import View, Modify
+from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import Person
 
-class PersonValidator(schema.Schema):
+class PersonValidator(Schema):
     password = validators.PlainText()
     password_confirm = validators.PlainText()    
     email_address = validators.Email()
@@ -15,18 +18,18 @@ class PersonValidator(schema.Schema):
     firstname = validators.String()
     lastname = validators.String()
 
-class NewPersonValidator(schema.Schema):
+class NewPersonValidator(BaseSchema):
     person = PersonValidator()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class EditPersonValidator(schema.Schema):
+class EditPersonValidator(BaseSchema):
     person = PersonValidator()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-#class PersonController(BaseController, View, Modify):
-#    validator = {"new" : NewPersonValidator(),
-#                 "edit" : EditPersonValidator()}
-#
-#    model = Person
-#    individual = 'person'
-#    key = 'handle'
+class PersonController(BaseController, View, Modify):
+    validators = {"new" : NewPersonValidator(),
+                  "edit" : EditPersonValidator()}
+
+    model = Person
+    individual = 'person'
+    key = 'handle'
