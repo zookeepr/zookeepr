@@ -38,7 +38,6 @@ class CfpController(BaseController):
 
         new_reg = Registration()
         new_sub = Submission()
-        new_reg.submissions.append(new_sub)
         
         if request.method == 'POST' and defaults:
             result, errors = NewCFPValidator().validate(defaults)
@@ -52,6 +51,9 @@ class CfpController(BaseController):
 
                 session.save(new_reg)
                 session.save(new_sub)
+
+                new_reg.submissions.append(new_sub)
+                
                 session.flush()
                 session.close()
 
