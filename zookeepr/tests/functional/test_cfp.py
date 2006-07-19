@@ -2,7 +2,7 @@ import md5
 
 from zookeepr.tests.functional import *
 
-# class TestCFP(ControllerTest):
+class TestCFP(ControllerTest):
 #     model = model.CFP
 #     name = 'cfp'
 #     url = '/cfp'
