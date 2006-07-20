@@ -1,4 +1,5 @@
 import md5
+import re
 
 from paste.fixture import Dummy_smtplib
 
@@ -95,8 +96,18 @@ class TestCFP(ControllerTest):
         # get out the url hash because i don't know how to trap smtplib
         self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from submission")
         
-        #message = Dummy_smtplib.existing
-        #print Dummy_smtplib.existing.message
+        message = Dummy_smtplib.existing
+
+        # check that the message goes to the right place
+        self.assertEqual("testguy@example.org", message.to_addresses)
+
+        # check that the message has a url hash in it
+        match = re.match('/register/confirm/.+', message.message, re.M)
+        print "message:", message.message
+        print "match:", match
+        self.failIfEqual(None, match, "url not found")
+
+        
         
         # visit the url
         # check the rego worked

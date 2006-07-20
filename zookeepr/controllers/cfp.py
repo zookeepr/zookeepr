@@ -59,9 +59,10 @@ class CfpController(BaseController):
                 session.flush()
                 session.close()
 
-                #s = smtplib.SMTP("localhost")
-                #s.sendmail(new_reg.email_address, "lca2007", "hi!")
-                #s.quit()
+                s = smtplib.SMTP("localhost")
+                msg = "ahr: %s" % h.url_for(controller='register', action='confirm', id=new_reg.url_hash)
+                s.sendmail("lca2007", new_reg.email_address, msg)
+                s.quit()
                 
                 return h.redirect_to(action='thankyou')
 
