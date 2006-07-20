@@ -92,6 +92,16 @@ class TestCFP(ControllerTest):
         res1 = form.submit()
         res1 = res1.follow() # expecting a redirect to a thankyou page
         #print "form submit result", res1
+
+        # grab it from the db
+        regs = self.session.query(Registration).select()
+        self.assertEqual(1, len(regs))
+        # make sure that it's inactive
+        self.assertEqual(False, regs[0].activated)
+
+        # clear this session, we want to reselect this data later
+        self.session.clear()
+        
         
         # get out the url hash because i don't know how to trap smtplib
         self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from submission")
@@ -102,13 +112,22 @@ class TestCFP(ControllerTest):
         self.assertEqual("testguy@example.org", message.to_addresses)
 
         # check that the message has a url hash in it
-        match = re.match('/register/confirm/.+', message.message, re.M)
-        print "message:", message.message
+        match = re.match(r'^.*/register/confirm/([^ ]*)', message.message)
+        print "message: '''%s'''" % message.message
         print "match:", match
         self.failIfEqual(None, match, "url not found")
 
-        
-        
         # visit the url
+        res = self.app.get('/register/confirm/%s' % match.group(1))
+        print res
+        
         # check the rego worked
-        pass
+        regs = self.session.query(Registration).select()
+        self.assertEqual(1, len(regs))
+        print regs[0]
+        self.assertEqual(True, regs[0].activated, "registration was not activated!")
+
+        # clean up
+        self.session.delete(regs[0])
+        self.session.delete(self.session.query(Submission).select()[0])
+        self.session.flush()
