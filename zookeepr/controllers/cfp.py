@@ -1,3 +1,5 @@
+import smtplib
+
 from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
@@ -57,6 +59,10 @@ class CfpController(BaseController):
                 session.flush()
                 session.close()
 
+                #s = smtplib.SMTP("localhost")
+                #s.sendmail(new_reg.email_address, "lca2007", "hi!")
+                #s.quit()
+                
                 return h.redirect_to(action='thankyou')
 
         c.registration = new_reg

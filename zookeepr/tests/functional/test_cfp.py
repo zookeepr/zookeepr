@@ -1,5 +1,7 @@
 import md5
 
+from paste.fixture import Dummy_smtplib
+
 from zookeepr.models import Registration, Submission
 from zookeepr.tests.functional import *
 
@@ -70,8 +72,32 @@ class TestCFP(ControllerTest):
                            
         
     def test_cfp_registration(self):
+        # set up the smtp catcher
+        Dummy_smtplib.install()
+        
         # submit to the cfp
+        res = self.app.get('/cfp/submit')
+        form = res.form
+        d = {'registration.email_address': 'testguy@example.org',
+             'registration.password': 'test',
+             'registration.password_confirm': 'test',
+             'submission.title': 'title',
+             'submission.abstract': 'abstract',
+             'submission.attachment': '',
+             'submission.assistance': False,
+             }
+        for k in d.keys():
+            form[k] = d[k]
+        res1 = form.submit()
+        res1 = res1.follow() # expecting a redirect to a thankyou page
+        #print "form submit result", res1
+        
         # get out the url hash because i don't know how to trap smtplib
+        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from submission")
+        
+        #message = Dummy_smtplib.existing
+        #print Dummy_smtplib.existing.message
+        
         # visit the url
         # check the rego worked
         pass
