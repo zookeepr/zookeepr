@@ -128,6 +128,7 @@ class TestCFP(ControllerTest):
         self.assertEqual(True, regs[0].activated, "registration was not activated!")
 
         # clean up
+        Dummy_smtplib.existing.reset()
         self.session.delete(regs[0])
         self.session.delete(self.session.query(Submission).select()[0])
         self.session.flush()
