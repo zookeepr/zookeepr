@@ -178,6 +178,8 @@ place an undue burden on our formatting team.
 
 <p>
 <strong>All</strong> submissions must be complete by the closing date -- that is, the 1st of September is not merely a closing date for abstracts.
+
+You will be able to modify your submissions Real Soon Now.
 </p>
 
 <p>
