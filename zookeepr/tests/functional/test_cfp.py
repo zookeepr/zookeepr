@@ -7,6 +7,9 @@ from zookeepr.models import Registration, Submission
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
+    def test_index(self):
+        res = self.app.get('/cfp')
+        
     def test_create(self):
         response = self.app.get('/cfp/submit')
         form = response.form
