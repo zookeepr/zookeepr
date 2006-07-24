@@ -3,8 +3,6 @@ from sqlalchemy import create_session
 from zookeepr.lib.base import *
 
 class RegisterController(BaseController):
-    #def index(self):
-    #    m.subexec('register/new.myt')
 
     def confirm(self, id):
         """Confirm a registration with the given ID.
@@ -25,6 +23,4 @@ class RegisterController(BaseController):
         session.save(r[0])
         session.flush()
 
-        #print r[0]
-        
         m.subexec('register/confirmed.myt')

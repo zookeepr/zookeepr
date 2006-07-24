@@ -4,6 +4,7 @@
 
  * send confirmation email after cfp submission
 
+ * Remove dependency on AuthKit, SQLObject, FormBuild
 
 == todo from the flight
 

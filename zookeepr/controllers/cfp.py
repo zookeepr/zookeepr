@@ -1,10 +1,11 @@
+import smtplib
+
 from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 from sqlalchemy import create_session
 
 from zookeepr.lib.base import BaseController, c, m, request, h
-from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import SubmissionType, Submission, Registration
 
@@ -28,6 +29,8 @@ class NewCFPValidator(BaseSchema):
     pre_validators = [NestedVariables]
 
 class CfpController(BaseController):
+    def index(self):
+        m.subexec("cfp/list.myt")
 
     def submit(self):
         session = create_session()
@@ -38,7 +41,6 @@ class CfpController(BaseController):
 
         new_reg = Registration()
         new_sub = Submission()
-        new_reg.submissions.append(new_sub)
         
         if request.method == 'POST' and defaults:
             result, errors = NewCFPValidator().validate(defaults)
@@ -52,9 +54,17 @@ class CfpController(BaseController):
 
                 session.save(new_reg)
                 session.save(new_sub)
+
+                new_reg.submissions.append(new_sub)
+                
                 session.flush()
                 session.close()
 
+                s = smtplib.SMTP("localhost")
+                msg = "ahr: %s" % h.url_for(controller='register', action='confirm', id=new_reg.url_hash)
+                s.sendmail("lca2007", new_reg.email_address, msg)
+                s.quit()
+                
                 return h.redirect_to(action='thankyou')
 
         c.registration = new_reg
