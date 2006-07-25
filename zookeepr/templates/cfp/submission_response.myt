@@ -1,5 +1,7 @@
 Subject: Confirmation of your submission to the LCA 2007 CFP
-To: <% c.registration.email_address %>
+To: <% c.registration.fullname %> <<% c.registration.email_address %>>
+
+Dear <% c.registration.fullname %>,
 
 Thankyou for your submission entitled "<% c.submission.title %>".
 
@@ -16,6 +18,7 @@ into the site with the password you provided with your submission.
 
 Thanks again, and have a great day!
 
+The LCA 2007 Organising Committee
 <%args>
 id
 </%args>

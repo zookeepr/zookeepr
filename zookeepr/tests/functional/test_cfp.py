@@ -85,6 +85,7 @@ class TestCFP(ControllerTest):
         d = {'registration.email_address': 'testguy@example.org',
              'registration.password': 'test',
              'registration.password_confirm': 'test',
+             'registration.fullname': 'Testguy McTest',
              'submission.title': 'title',
              'submission.abstract': 'abstract',
              'submission.attachment': '',
@@ -120,6 +121,10 @@ class TestCFP(ControllerTest):
         # check that the message has the to address in it
         to_match = re.match(r'^.*To:.*testguy@example.org.*', message.message, re.DOTALL)
         self.failIfEqual(None, to_match, "to address not in headers")
+
+        # check that the message has the submitter's name
+        name_match = re.match(r'^.*Testguy McTest', message.message, re.DOTALL)
+        self.failIfEqual(None, name_match, "submitter's name not in headers")
 
         # check that the message has a url hash in it
         match = re.match(r'^.*/register/confirm/(\S+)', message.message, re.DOTALL)

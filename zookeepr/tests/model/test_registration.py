@@ -10,11 +10,13 @@ class TestRegistrationModel(ModelTest):
                     email_address='testguy@example.org',
                     password='password',
                     activated=True,
+                    fullname='testguy mctest',
                     ),
                dict(timestamp=datetime.datetime(2006, 6, 25, 10, 11, 37),
                     email_address='testgirl@example.org',
                     password='password1',
                     activated=False,
+                    fullname='test3',
                     ),
                ]
     mangles = dict(password=lambda p: md5.new(p).hexdigest())

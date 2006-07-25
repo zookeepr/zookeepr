@@ -13,6 +13,7 @@ class RegistrationValidator(Schema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
+    fullname = validators.String()
 
 class SubmissionValidator(Schema):
     title = validators.String(not_empty=True)

@@ -6,6 +6,13 @@
 
 <p>
 <span class="mandatory">*</span>
+<label for="registration.fullname">Your name:</label>
+<% h.text_field('registration.fullname', c.registration.fullname, size=40) %>
+<br />
+</p>
+
+<p>
+<span class="mandatory">*</span>
 <label for="registration.email_address">Email address:</label>
 <% h.text_field('registration.email_address', c.registration.email_address, size=40) %>
 <br />
