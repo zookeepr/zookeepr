@@ -118,15 +118,16 @@ class TestCFP(ControllerTest):
         self.assertEqual("testguy@example.org", message.to_addresses)
 
         # check that the message has the to address in it
-        to_match = re.match(r'^.*To:.*testguy@example.org', message.message, re.M)
+        to_match = re.match(r'^.*To:.*testguy@example.org.*', message.message, re.DOTALL)
         self.failIfEqual(None, to_match, "to address not in headers")
 
         # check that the message has a url hash in it
-        match = re.match(r'^.*/register/confirm/([^ ]*)', message.message, re.M)
+        match = re.match(r'^.*/register/confirm/(\S+)', message.message, re.DOTALL)
         print "match:", match
         self.failIfEqual(None, match, "url not found")
 
         # visit the url
+        print "match: '''%s'''" % match.group(1)
         res = self.app.get('/register/confirm/%s' % match.group(1))
         print res
         
