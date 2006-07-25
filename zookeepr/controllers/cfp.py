@@ -10,7 +10,7 @@ from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import SubmissionType, Submission, Registration
 
 class RegistrationValidator(Schema):
-    email_address = validators.Email(not_empty=True)
+    email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
 
@@ -41,6 +41,9 @@ class CfpController(BaseController):
 
         new_reg = Registration()
         new_sub = Submission()
+
+        c.registration = new_reg
+        c.submission = new_sub
         
         if request.method == 'POST' and defaults:
             result, errors = NewCFPValidator().validate(defaults)
@@ -61,20 +64,16 @@ class CfpController(BaseController):
                 session.close()
 
                 s = smtplib.SMTP("localhost")
-                msg = "ahr: %s" % h.url_for(controller='register', action='confirm', id=new_reg.url_hash)
-                s.sendmail("lca2007", new_reg.email_address, msg)
+                # generate the message from a template
+                body = m.scomp('cfp/submission_response.myt', id=new_reg.url_hash)
+                s.sendmail("lca2007", new_reg.email_address, body)
                 s.quit()
-
-                c.email_address = new_reg.email_address
 
                 m.subexec('cfp/thankyou.myt')
                 
                 session.close()
                 return
 
-        c.registration = new_reg
-        c.submission = new_sub
-        
         session.close()
 
         # unmangle the errors

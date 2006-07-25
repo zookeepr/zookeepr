@@ -112,12 +112,17 @@ class TestCFP(ControllerTest):
         
         message = Dummy_smtplib.existing
 
+        print "message: '''%s'''" % message.message
+
         # check that the message goes to the right place
         self.assertEqual("testguy@example.org", message.to_addresses)
 
+        # check that the message has the to address in it
+        to_match = re.match(r'^.*To:.*testguy@example.org', message.message, re.M)
+        self.failIfEqual(None, to_match, "to address not in headers")
+
         # check that the message has a url hash in it
-        match = re.match(r'^.*/register/confirm/([^ ]*)', message.message)
-        print "message: '''%s'''" % message.message
+        match = re.match(r'^.*/register/confirm/([^ ]*)', message.message, re.M)
         print "match:", match
         self.failIfEqual(None, match, "url not found")
 
