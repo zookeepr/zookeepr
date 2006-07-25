@@ -64,8 +64,13 @@ class CfpController(BaseController):
                 msg = "ahr: %s" % h.url_for(controller='register', action='confirm', id=new_reg.url_hash)
                 s.sendmail("lca2007", new_reg.email_address, msg)
                 s.quit()
+
+                c.email_address = new_reg.email_address
+
+                m.subexec('cfp/thankyou.myt')
                 
-                return h.redirect_to(action='thankyou')
+                session.close()
+                return
 
         c.registration = new_reg
         c.submission = new_sub
@@ -79,6 +84,3 @@ class CfpController(BaseController):
                 good_errors[key + "." + subkey] = errors[key][subkey]
 
         m.subexec("cfp/new.myt", defaults=defaults, errors=good_errors)
-
-    def thankyou(self):
-        m.subexec('cfp/thankyou.myt')

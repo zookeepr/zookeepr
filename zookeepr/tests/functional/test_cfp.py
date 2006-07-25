@@ -93,8 +93,9 @@ class TestCFP(ControllerTest):
         for k in d.keys():
             form[k] = d[k]
         res1 = form.submit()
-        res1 = res1.follow() # expecting a redirect to a thankyou page
-        #print "form submit result", res1
+
+        # thankyou page says what email address got sent to
+        res1.mustcontain('testguy@example.org')
 
         # grab it from the db
         regs = self.session.query(Registration).select()
