@@ -1,7 +1,5 @@
 = Milestones for 0.1, CFP, 24 May =
 
- * update thankyou page to refer the user to their email to check registration.
-
  * send confirmation email after cfp submission
 
  * Remove dependency on AuthKit, SQLObject, FormBuild
