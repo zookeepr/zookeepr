@@ -1,4 +1,3 @@
-#import authkit
 #from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
 #from sqlalchemy import create_session
@@ -152,7 +151,6 @@ class Update(CRUDBase):
         # call the template
         m.subexec('%s/edit.myt' % model_name, defaults=defaults, errors=errors)
         
-#     edit.permissions = authkit.permissions(signed_in=True)
 
 class Delete(CRUDBase):
     def delete(self, id):
@@ -182,8 +180,6 @@ class Delete(CRUDBase):
         # call the template
         m.subexec('%s/confirm_delete.myt' % model_name)
 
-#    delete.permissions = authkit.permissions(signed_in=True)
-
 
 class List(CRUDBase):
     def _can_edit(self):
@@ -212,7 +208,6 @@ class List(CRUDBase):
         # exec the template
         m.subexec('%s/list.myt' % model_name)
 
-#     index.permissions = authkit.permissions(signed_in=True)
 
 class Read(CRUDBase):
     def view(self, id):
@@ -230,7 +225,6 @@ class Read(CRUDBase):
         # exec the template
         m.subexec('%s/view.myt' % self.individual)
 
-#     view.permissions = authkit.permissions(signed_in=True)
 
 # legacy classes
 class View(Read, List):

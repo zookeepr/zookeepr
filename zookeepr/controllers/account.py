@@ -1,7 +1,10 @@
-from zookeepr.lib.auth import SecureController, SignIn
+import formencode
+
+#from zookeepr.lib.auth import SecureController, SignIn
+from zookeepr.lib.auth import SignIn
 from zookeepr.lib.base import *
 
-class AccountController(BaseController, SecureController):
+class AccountController(BaseController):
 
     def index(self, **params):
         return self.signin(**params)
@@ -11,8 +14,8 @@ class AccountController(BaseController, SecureController):
             validator = SignIn()
 
             try:
-                if not request.environ.has_key('paste.login.http_login'):
-                    raise Exception('Action permissions specified but security middleware not present.')
+                #if not request.environ.has_key('paste.login.http_login'):
+                #    raise Exception('Action permissions specified but security middleware not present.')
                 state = State()
                 state.auth = g.auth
                 state.authenticate = request.environ['paste.login.authenticator']().check_auth

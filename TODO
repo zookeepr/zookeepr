@@ -1,6 +1,6 @@
 = Milestones for 0.1, CFP, 24 May =
 
- * Remove dependency on AuthKit, SQLObject, FormBuild
+ * Remove dependency on SQLObject, FormBuild
 
 == todo from the flight
 

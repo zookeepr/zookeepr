@@ -6,7 +6,6 @@ from pylons.middleware import ErrorHandler, ErrorDocuments, error_mapper
 import pylons.wsgiapp
 
 from zookeepr.config.environment import load_environment
-from zookeepr.lib.auth import UserModelAuthenticator
 
 def make_app(global_conf, **app_conf):
     """
