@@ -1,5 +1,3 @@
-from authkit.controllers import *
-
 from zookeepr.lib.auth import SecureController, SignIn
 from zookeepr.lib.base import *
 
