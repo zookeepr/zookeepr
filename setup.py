@@ -13,7 +13,7 @@ setup(
                       "Paste==0.9.3-zookeepr2",
                       "SQLAlchemy>=0.2.3",
                       "FormEncode==0.5.1",
-                      "FormBuild==0.1.1dev-r681"],
+                      ],
     dependency_links=["http://gnaw.yi.org/~ycros/zookeepr-deps/"],
     packages=find_packages(),
     include_package_data=True,
