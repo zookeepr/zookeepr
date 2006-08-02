@@ -1,7 +1,6 @@
 <h2>Contact Us</h2>
 
-<p>Contact us at <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a> for all your lca2007 inquiries and the appropriate person will be in contact with you. You can als
-+o join the <a href="http://lists.linux.org.au/listinfo/lca-announce/">lca-announce</a> mailing list to keep up with news and information about lca2007.</p>
+<p>Contact us at <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a> for all your lca2007 inquiries and the appropriate person will be in contact with you. You can also join the <a href="http://lists.linux.org.au/listinfo/lca-announce/">lca-announce</a> mailing list to keep up with news and information about lca2007.</p>
 
 <p>Speakers can contact our speaker liason at <a href="mailto:seven-speakers@lca2007.linux.org.au">seven-speakers@lca2007.linux.org.au</a> for speaker specific information.</p>
 
