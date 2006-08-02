@@ -1,124 +1,124 @@
 import md5
 
-#from authkit.middleware import Authenticator
-#from authkit.controllers import PylonsSecureController
-import formencode
-import pylons
 from sqlalchemy import create_session
 
+from zookeepr.lib.base import BaseController, c, redirect_to, session
 from zookeepr.models import Person
 
-# class UserModelAuthenticator(Authenticator):
-#     """Look up the user in the database"""
+class retcode:
+    """Enumerations of authentication return codes"""
+    # daily wtf eat your heart out
+    SUCCESS = True
+    FAILURE = False
+    TRY_AGAIN = 3
 
-#     def check_auth(self, email_address, password):
-#         session = create_session()
-#         ps = session.query(Person).select_by(email_address=email_address)
-#         if len(ps) <> 1:
-#             return False
+class PersonAuthenticator(object):
+    """Look up the Person in the data store"""
 
-#         password_hash = md5.new(password).hexdigest()
+    def authenticate(self, username, password):
+        objectstore = create_session()
         
-#         result = password_hash == ps[0].password_hash
-#         session.close()
-#         return result
+        ps = objectstore.query(Person).select_by(email_address=email_address)
+        
+        if len(ps) <> 1:
+            return retcode.FAILURE
 
-class AuthenticateValidator(formencode.FancyValidator):
-    def _to_python(self, value, state):
-        if state.authenticate(value['email_address'], value['password']):
-            return value
+        password_hash = md5.new(password).hexdigest()
+        
+        if password_hash == ps[0].password_hash:
+            result = retcode.SUCCESS
         else:
-            raise formencode.Invalid('Incorrect password', value, state)
-
-class ExistingEmailAddress(formencode.FancyValidator):
-    def _to_python(self, value, state):
-        auth = state.auth
-        if not value:
-            raise formencode.Invalid('Please enter a value',
-                                     value, state)
-        elif not auth.user_exists(value):
-            raise formencode.Invalid('No such user', value, state)
-        return value
-    
-class SignIn(formencode.Schema):
-    go = formencode.validators.String()
-    email_address = ExistingEmailAddress()
-    password = formencode.validators.String(not_empty=True)
-    chained_validators = [
-        AuthenticateValidator()
-        ]
-
-class UserModelAuthStore(object):
-    def __init__(self):
-        self.status = {}
+            result = retcode.FAILURE
         
-    def user_exists(self, value):
-        session = create_session()
-        ps = session.query(Person).select_by(email_address=value)
-        result = len(ps) > 0
+        objectstore.close()
+
         return result
 
-    def sign_in(self, username):
-        self.status[username] = ()
 
-    def sign_out(self, username):
-        if self.status.has_key(username):
-            del self.status[username]
-
-    def authorise(self, email_address, role=None, signed_in=None):
-        if signed_in is not None:
-            is_signed_in = False
-            if self.status.has_key(email_address):
-                is_signed_in = True
-
-            return signed_in and is_signed_in
-        
-        return True
-
-# class SecureController(PylonsSecureController):
-#     def __granted__(self, action):
-#         action_ = getattr(self, action)
-
-#         # FIXME: this is a dirty hack so that the test suite doesn't have to
-#         # log in to test that the behaviour is correct.  I suspect that
-#         # special-casing for the test suite means that it'll mask some bugs
-#         if pylons.request.environ.has_key('paste.testing'):
-#             return True
-        
-#         if hasattr(action_, 'permissions'):
-#             if not pylons.request.environ.has_key('paste.login.http_login'):
-#                 raise Exception("action permissions specified but security middleware not present")
-#             if pylons.request.environ.has_key('REMOTE_USER'):
-#                 if self.__authorize__(pylons.request.environ['REMOTE_USER'], action_.permissions):
-#                     return True
-#                 else:
-#                     pylons.m.abort(403, 'Computer says no')
-#             else:
-#                 pylons.m.abort(401, 'Not signed in')
+# class AuthenticateValidator(formencode.FancyValidator):
+#     def _to_python(self, value, state):
+#         if state.authenticate(value['email_address'], value['password']):
+#             return value
 #         else:
-#             return True
+#             raise formencode.Invalid('Incorrect password', value, state)
 
-#     def __authorize__(self, signed_in_user, ps):
-#         permissions = {}
-#         g = pylons.request.environ['pylons.g']
+# class ExistingEmailAddress(formencode.FancyValidator):
+#     def _to_python(self, value, state):
+#         auth = state.auth
+#         if not value:
+#             raise formencode.Invalid('Please enter a value',
+#                                      value, state)
+#         elif not auth.user_exists(value):
+#             raise formencode.Invalid('No such user', value, state)
+#         return value
+    
+# class SignIn(formencode.Schema):
+#     go = formencode.validators.String()
+#     email_address = ExistingEmailAddress()
+#     password = formencode.validators.String(not_empty=True)
+#     chained_validators = [
+#         AuthenticateValidator()
+#         ]
+
+# class UserModelAuthStore(object):
+#     def __init__(self):
+#         self.status = {}
         
-#         for k, v in ps.items():
-#             permissions[k] = v
+#     def user_exists(self, value):
+#         session = create_session()
+#         ps = session.query(Person).select_by(email_address=value)
+#         result = len(ps) > 0
+#         return result
 
-#         def valid():
-#             if permissions.has_key('email_address'):
-#                 if signed_in_user.lower() <> permissions['email_address'].lower():
-#                     return False
-#             else:
-#                 permissions['email_address'] = signed_in_user
+#     def sign_in(self, username):
+#         self.status[username] = ()
 
-#             if not g.auth.user_exists(permissions['email_address']):
-#                 return False
-#             else:
-#                 return g.auth.authorise(**permissions)
+#     def sign_out(self, username):
+#         if self.status.has_key(username):
+#             del self.status[username]
 
-#         if valid():
-#             return True
-#         else:
-#             self.__signout__(permissions['email_address'])
-#             return False
+#     def authorise(self, email_address, role=None, signed_in=None):
+#         if signed_in is not None:
+#             is_signed_in = False
+#             if self.status.has_key(email_address):
+#                 is_signed_in = True
+
+#             return signed_in and is_signed_in
+        
+#         return True
+
+class SecureController(BaseController):
+    """Restrict controller access to people who are logged in.
+
+    Controllers that require someone to be logged in can inherit
+    from this class instead of `BaseController`.
+
+    As a bonus, they will have access to `c.person` which is a
+    `skypanel.model.Person` object that will identify the user
+    who is currently logged in.
+    """
+
+    def logged_in(self):
+        # check that the user is logged in.
+        # We can tell if someone is logged in by the presence
+        # of the 'person_id' field in the browser session.
+        return 'person_id' in session
+
+    def __before__(self, **kwargs):
+        # Call the parent __before__ method to ensure the common pre-call code
+        # is run
+        BaseController.__before__(self, **kwargs)
+
+        if self.logged_in():
+            # Retrieve the Person object from the object store
+            # and attach it to the magic 'c' global.
+            c.person = self.objectstore.get(Person, session['person_id'])
+        else:
+            # No-one's logged in, so send them to the signin
+            # page.
+            # If we were being nice and WSGIy, we'd raise a 403 or 401 error
+            # (depending) and let a security middleware layer take care
+            # of the redirect.  Save that for a rainy day...
+            redirect_to(controller='account',
+                        action='signin',
+                        id=None)
