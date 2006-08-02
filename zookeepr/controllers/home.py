@@ -4,6 +4,6 @@ class HomeController(BaseController):
 
     def index(self):
         if request.environ.has_key('REMOTE_USER'):
-            m.subexec('home.myt')
+            return render_response('home.myt')
         else:
-            m.subexec('about/index.myt')
+            return render_response('about/index.myt')

@@ -1,4 +1,3 @@
-#from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
 #from sqlalchemy import create_session
 #from sqlalchemy.exceptions import SQLError
@@ -6,8 +5,9 @@
 # FIXME: Find somewhere to document the class attributes used by the generics.
 
 from formencode import Invalid
-from pylons import c, h, m, request
 from sqlalchemy import create_session
+
+from zookeepr.lib.base import *
 
 class CRUDBase(object):
     def identifier(self, obj):
@@ -78,7 +78,7 @@ class Create(CRUDBase):
 
         model_name = self.individual
         errors = {}
-        defaults = m.request_args
+        defaults = dict(request.POST)
 
         new_object = self.model()
         if request.method == 'POST' and defaults:
@@ -107,7 +107,7 @@ class Create(CRUDBase):
            for subkey in errors[key].keys():
                good_errors[key + "." + subkey] = errors[key][subkey]
 
-        m.subexec('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
+        return render_response('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
 
 
 class Update(CRUDBase):
@@ -129,7 +129,7 @@ class Update(CRUDBase):
         model_name = self.individual
 
         errors = {}
-        defaults = m.request_args
+        defaults = dict(request.POST)
         
         if request.method == 'POST' and defaults:
             result, errors = self.validators['edit'].validate(defaults)
@@ -149,7 +149,7 @@ class Update(CRUDBase):
         # assign to the template global
         setattr(c, model_name, obj)
         # call the template
-        m.subexec('%s/edit.myt' % model_name, defaults=defaults, errors=errors)
+        return render_response('%s/edit.myt' % model_name, defaults=defaults, errors=errors)
         
 
 class Delete(CRUDBase):
@@ -166,19 +166,19 @@ class Delete(CRUDBase):
         obj = self.get_obj(id, session)
 
         if obj is None:
-            m.abort(404, "Computer says no")
+            abort(404, "Computer says no")
         
         if request.method == 'POST':
             session.delete(obj)
             session.flush()
-            return h.redirect_to(action='index', id=None)
+            redirect_to(action='index', id=None)
 
         session.close()
         
         # get the model name
         model_name = self.individual
         # call the template
-        m.subexec('%s/confirm_delete.myt' % model_name)
+        return render_response('%s/confirm_delete.myt' % model_name)
 
 
 class List(CRUDBase):
@@ -206,7 +206,7 @@ class List(CRUDBase):
         
         c.can_edit = self._can_edit()
         # exec the template
-        m.subexec('%s/list.myt' % model_name)
+        return render_response('%s/list.myt' % model_name)
 
 
 class Read(CRUDBase):
@@ -223,7 +223,7 @@ class Read(CRUDBase):
         c.can_edit = self._can_edit()
 
         # exec the template
-        m.subexec('%s/view.myt' % self.individual)
+        return render_response('%s/view.myt' % self.individual)
 
 
 # legacy classes

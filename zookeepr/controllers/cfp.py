@@ -5,7 +5,7 @@ from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController, c, request, h
+from zookeepr.lib.base import BaseController, c, h, render, render_response, request
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import SubmissionType, Submission, Registration
 
@@ -31,14 +31,14 @@ class NewCFPValidator(BaseSchema):
 
 class CfpController(BaseController):
     def index(self):
-        m.subexec("cfp/list.myt")
+        return render_response("cfp/list.myt")
 
     def submit(self):
         session = create_session()
         c.cfptypes = session.query(SubmissionType).select()
 
         errors = {}
-        defaults = m.request_args
+        defaults = dict(request.POST)
 
         new_reg = Registration()
         new_sub = Submission()
@@ -66,11 +66,11 @@ class CfpController(BaseController):
 
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template
-                body = m.scomp('cfp/submission_response.myt', id=new_reg.url_hash)
+                body = render('cfp/submission_response.myt', id=new_reg.url_hash)
                 s.sendmail("lca2007", new_reg.email_address, body)
                 s.quit()
 
-                m.subexec('cfp/thankyou.myt')
+                return render_response('cfp/thankyou.myt')
                 
                 session.close()
                 return
@@ -83,4 +83,4 @@ class CfpController(BaseController):
             for subkey in errors[key].keys():
                 good_errors[key + "." + subkey] = errors[key][subkey]
 
-        m.subexec("cfp/new.myt", defaults=defaults, errors=good_errors)
+        return render_response("cfp/new.myt", defaults=defaults, errors=good_errors)

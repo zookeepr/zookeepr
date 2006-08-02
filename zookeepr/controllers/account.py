@@ -26,17 +26,17 @@ class AccountController(BaseController):
 #                 if not e.error_dict:
 #                     errors = {'password':str(e)}
 #                 self.c.form = formbuild.Form(defaults=ARGS, errors=errors)
-#                 m.subexec('/account/signin.myt')
+#                 return render_response('/account/signin.myt')
 #             else:
 #                 self.__signin__(username=ARGS.get('email_address'))
-#                 m.subexec('/account/signedin.myt', **ARGS)
+#                 return render_response('/account/signedin.myt', **ARGS)
 #         else:
 #             self.c.form = formbuild.Form(defaults=ARGS)
-#             m.subexec('/account/signin.myt')
+#             return render_response('/account/signin.myt')
 
 #     def signout(self, ARGS, **params):
 #         if request.environ.has_key('REMOTE_USER'):
 #             self.__signout__(request.environ['REMOTE_USER'])
-#             m.subexec('/account/signedout.myt', **ARGS)
+#             return render_response('/account/signedout.myt', **ARGS)
 #         else:
-#             m.subexec('/account/alreadyout.myt', **ARGS)
+#             return render_response('/account/alreadyout.myt', **ARGS)

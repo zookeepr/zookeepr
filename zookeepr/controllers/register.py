@@ -16,11 +16,11 @@ class RegisterController(BaseController):
         r = session.query(model.Registration).select_by(_url_hash=id)
 
         if len(r) < 1:
-            m.abort(404)
+            abort(404)
 
         r[0].activated = True
 
         session.save(r[0])
         session.flush()
 
-        m.subexec('register/confirmed.myt')
+        return render_response('register/confirmed.myt')

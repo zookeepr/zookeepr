@@ -16,7 +16,7 @@ class ErrorController(BaseController):
         Change this method to change how error documents are displayed
         """
         #if ARGS.get('code', '') == "500":
-        #    m.subexec('error/500.myt')
+        #    return render_response('error/500.myt')
 
         page = error_document_template % {
             'prefix': get_prefix(request.environ),
