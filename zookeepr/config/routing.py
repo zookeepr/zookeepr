@@ -2,15 +2,16 @@
 Setup your Routes options here
 """
 import sys, os
-
-from routes.base import Mapper
+from routes import Mapper
 
 def make_map():
     root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-    m = Mapper(directory=root_path+'/controllers')
+    m = Mapper(directory=os.path.join(root_path, 'controllers'))
     
-    # Define your routes
+    # Define your routes. The more specific and detailed routes should be defined first,
+    # so they may take precedent over the more generic routes. For more information, refer
+    # to the routes manual @ http://routes.groovie.org/docs/
 
     # the top level controller is named home
     m.connect('home', '', controller='home')

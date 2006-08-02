@@ -5,7 +5,7 @@ from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController, c, m, request, h
+from zookeepr.lib.base import BaseController, c, request, h
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import SubmissionType, Submission, Registration
 

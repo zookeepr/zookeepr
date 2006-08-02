@@ -2,13 +2,21 @@ import cgi
 import types
 
 from formencode.api import Invalid
-from pylons import Controller, m, h, c, g, session, request
-
+from pylons import Response, c, g, h, cache, request, session
+from pylons.controllers import WSGIController
+from pylons.decorators import jsonify, rest, validate
+from pylons.templating import render, render_response
+from pylons.helpers import abort, redirect_to, etag_cache
 from sqlalchemy import default_metadata
 
 import zookeepr.models as model
 
-class BaseController(Controller):
+class BaseController(WSGIController):
+    def __call__(self, environ, start_response):
+        # Insert any code to be run per request here. The Routes match
+        # is under environ['pylons.routes_dict'] should you want to check
+        # the action or route vars here
+        return WSGIController.__call__(self, environ, start_response)
 
     def __before__(self, **kwargs):
         """__before__ is run on every requet, before passing control
@@ -16,20 +24,21 @@ class BaseController(Controller):
         per request."""
         action = kwargs["action"]
 
-	# FIXME - EVIL HACK
-	# For some unknown reason _engine disappears
-	# So we save it at initialisation and restore it each request
-	default_metadata.context._engine = model.evil_jf
+        # FIXME - EVIL HACK
+        # For some unknown reason _engine disappears
+        # So we save it at initialisation and restore it each request
+        default_metadata.context._engine = model.evil_jf
 
         # Convert the request_args into something sane. Basically what
         # I am doing here is finding anything encoded as FieldStorage
         # rather than a plain string and then encoding it as either a
         # a string, or a file
-        if m.request_args:
-            for key in m.request_args:
-                if isinstance(m.request_args[key], cgi.FieldStorage):
-                    if m.request_args[key].file and \
-                           type(m.request_args[key].file) == types.FileType:
-                        m.request_args[key] = m.request_args[key].value
+        request_args = dict(request.POST)
+        if request_args:
+            for key in request_args:
+                if isinstance(request_args[key], cgi.FieldStorage):
+                    if request_args[key].file and \
+                           type(request_args[key].file) == types.FileType:
+                        request_args[key] = request_args[key].value
                     else:
-                        m.request_args[key] = m.request_args[key].value
+                        request_args[key] = request_args[key].value

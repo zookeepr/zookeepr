@@ -1,8 +1,8 @@
-from zookeepr.lib.base import *
-from paste import fileapp
-from pylons.middleware import media_path, error_document_template, run_wsgi
 import os.path
+from paste import fileapp
+from pylons.middleware import media_path, error_document_template
 from pylons.util import get_prefix
+from zookeepr.lib.base import *
 
 class ErrorController(BaseController):
     """
@@ -11,25 +11,26 @@ class ErrorController(BaseController):
     your config/middleware.py file.
     """
 
-    def document(self, ARGS):
+    def document(self):
         """
         Change this method to change how error documents are displayed
         """
-        if ARGS.get('code', '') == "500":
-            m.subexec('error/500.myt')
-        else:
-            page = error_document_template % {
-                'prefix':get_prefix(request.environ),
-                'code':ARGS.get('code', ''), 
-                'message':ARGS.get('message', ''),
-                }
-            m.write(page)
+        #if ARGS.get('code', '') == "500":
+        #    m.subexec('error/500.myt')
+
+        page = error_document_template % {
+            'prefix': get_prefix(request.environ),
+            'code': request.params.get('code', ''),
+            'message': request.params.get('message', ''),
+        }
+        return Response(page)
 
     def img(self, id):
-        self._serve_file(os.path.join(media_path, 'img', id))
+        return self._serve_file(os.path.join(media_path, 'img', id))
         
     def style(self, id):
-        self._serve_file(os.path.join(media_path, 'style', id))
+        return self._serve_file(os.path.join(media_path, 'style', id))
 
     def _serve_file(self, path):
-        run_wsgi(fileapp.FileApp(path), m, request)
+        fapp = fileapp.FileApp(path)
+        return fapp(request.environ, self.start_response)

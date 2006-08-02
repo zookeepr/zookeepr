@@ -1,30 +1,17 @@
-#!/usr/bin/env python
-
 from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1",
+    version="",
     #description="",
     #author="",
     #author_email="",
     #url="",
-    install_requires=["Pylons>=0.9",
-                      "SQLAlchemy>=0.2.3",
-                      "FormEncode==0.5.1",
-                      ],
-    dependency_links=["http://gnaw.yi.org/~ycros/zookeepr-deps/"],
+    install_requires=["Pylons==dev,>=0.9dev-r742"],
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',
-    package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo',
-                               'templates/autohandler',
-                               'templates/*.myt',
-                               'templates/*/*.myt',
-                               'public/*.css',
-                               'public/*.png',
-                               'public/*.pdf',
-                               'public/*.gif']},
+    package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo']},
     entry_points="""
     [paste.app_factory]
     main=zookeepr:make_app

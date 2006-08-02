@@ -1,13 +1,9 @@
 import os
 
-import pylons.middleware
-import sqlalchemy
-
 import zookeepr.models as model
-from zookeepr.lib.auth import UserModelAuthStore
 from sqlalchemy import global_connect, default_metadata
 
-class Globals(pylons.middleware.Globals):
+class Globals(object):
 
     def __init__(self, global_conf, app_conf, **extra):
         """
@@ -38,8 +34,6 @@ class Globals(pylons.middleware.Globals):
 	# For some unknown reason _engine disappears
 	# So we save it here and and restore it each request in __before__
 	model.evil_jf = default_metadata.context._engine
-
-        self.auth = UserModelAuthStore()
 
     def __del__(self):
         """
