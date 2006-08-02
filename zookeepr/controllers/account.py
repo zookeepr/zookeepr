@@ -1,42 +1,58 @@
-import formencode
+from formencode import validators, Invalid
 
-#from zookeepr.lib.auth import SecureController, SignIn
+from zookeepr.lib.auth import PersonAuthenticator, retcode
 from zookeepr.lib.base import *
+from zookeepr.lib.validators import BaseSchema
+from zookeepr.models import Person
+
+class AuthenticationValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        l = PersonAuthenticator()
+        r = l.authenticate(value['email_address'], value['password'])
+        if r == retcode.FAILURE:
+            raise Invalid("Incorrect email address or password", value, state)
+        elif r == retcode.TRY_AGAIN:
+            raise Invalid("A problem occurred during sign in; please try again later", value, state)
+        else:
+            pass
+
+class LoginValidator(BaseSchema):
+    email_address = validators.String(not_empty=True)
+    password = validators.String(not_empty=True)
+
+    chained_validators = [AuthenticationValidator()]
 
 class AccountController(BaseController):
 
-    def index(self, **params):
-        #return self.signin(**params)
-        pass
+    def signin(self):
+        defaults = dict(request.POST)
+        errors = {}
 
-#     def signin(self, ARGS, **params):
-#         if len(ARGS):
-#             validator = SignIn()
+        if defaults:
+            result, errors = LoginValidator().validate(defaults)
 
-#             try:
-#                 #if not request.environ.has_key('paste.login.http_login'):
-#                 #    raise Exception('Action permissions specified but security middleware not present.')
-#                 state = State()
-#                 state.auth = g.auth
-#                 state.authenticate = request.environ['paste.login.authenticator']().check_auth
-#                 results = validator.to_python(ARGS, state=state)
-#             except formencode.Invalid, e:
-#                 # Note error_dict doesn't contain strings
-#                 errors = e.error_dict
-#                 if not e.error_dict:
-#                     errors = {'password':str(e)}
-#                 self.c.form = formbuild.Form(defaults=ARGS, errors=errors)
-#                 return render_response('/account/signin.myt')
-#             else:
-#                 self.__signin__(username=ARGS.get('email_address'))
-#                 return render_response('/account/signedin.myt', **ARGS)
-#         else:
-#             self.c.form = formbuild.Form(defaults=ARGS)
-#             return render_response('/account/signin.myt')
+            if not errors:
+                # do the authorisation here or in validator?
+                # get account
+                # check auth
+                # set session cookies
+                persons = self.objectstore.query(Person).select_by(email_address=result['email_address'])
+                if len(persons) < 1:
+                    # Don't raise an exception, handle gracefully
+                    errors = {'x': 'Invalid login'}
+                else:
+                    # at least one Person matches, save it
+                    session['person_id'] = persons[0].id
+                    session.save()
 
-#     def signout(self, ARGS, **params):
-#         if request.environ.has_key('REMOTE_USER'):
-#             self.__signout__(request.environ['REMOTE_USER'])
-#             return render_response('/account/signedout.myt', **ARGS)
-#         else:
-#             return render_response('/account/alreadyout.myt', **ARGS)
+                    # return home
+                    redirect_to('home')
+
+        return render_response('account/signin.myt', defaults=defaults, errors=errors)
+
+    def signout(self):
+        # delete and invalidate the session
+        session.delete()
+        session.invalidate()
+        # return home
+        redirect_to('home')

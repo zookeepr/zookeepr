@@ -18,7 +18,7 @@ class PersonAuthenticator(object):
     def authenticate(self, username, password):
         objectstore = create_session()
         
-        ps = objectstore.query(Person).select_by(email_address=email_address)
+        ps = objectstore.query(Person).select_by(email_address=username)
         
         if len(ps) <> 1:
             return retcode.FAILURE
