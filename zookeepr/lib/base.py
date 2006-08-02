@@ -7,7 +7,7 @@ from pylons.controllers import WSGIController
 from pylons.decorators import jsonify, rest, validate
 from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
-from sqlalchemy import default_metadata
+from sqlalchemy import default_metadata, create_session
 
 import zookeepr.models as model
 
@@ -42,3 +42,14 @@ class BaseController(WSGIController):
                         request_args[key] = request_args[key].value
                     else:
                         request_args[key] = request_args[key].value
+
+
+        # Create a connection to the object store that we can use for the
+        # life of the request.
+        self.objectstore = create_session()
+
+    def __after__(self, **kwargs):
+        # Close the connection to the objectstore
+        self.objectstore.close()
+        # and invalidate it so there's no chance of using it incorrectly
+        self.objectstore = None
