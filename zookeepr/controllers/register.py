@@ -1,5 +1,3 @@
-from sqlalchemy import create_session
-
 from zookeepr.lib.base import *
 
 class RegisterController(BaseController):
@@ -11,16 +9,14 @@ class RegisterController(BaseController):
         they regsitered, and a nonce.
 
         """
-        session = create_session()
-
-        r = session.query(model.Registration).select_by(_url_hash=id)
+        r = self.objectstore.query(model.Registration).select_by(_url_hash=id)
 
         if len(r) < 1:
             abort(404)
 
         r[0].activated = True
 
-        session.save(r[0])
-        session.flush()
+        self.objectstore.save(r[0])
+        self.objectstore.flush()
 
         return render_response('register/confirmed.myt')

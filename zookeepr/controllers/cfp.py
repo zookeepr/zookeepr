@@ -3,7 +3,6 @@ import smtplib
 from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
-from sqlalchemy import create_session
 
 from zookeepr.lib.base import BaseController, c, h, render, render_response, request
 from zookeepr.lib.validators import BaseSchema
@@ -34,8 +33,7 @@ class CfpController(BaseController):
         return render_response("cfp/list.myt")
 
     def submit(self):
-        session = create_session()
-        c.cfptypes = session.query(SubmissionType).select()
+        c.cfptypes = self.objectstore.query(SubmissionType).select()
 
         errors = {}
         defaults = dict(request.POST)
@@ -56,13 +54,12 @@ class CfpController(BaseController):
                 for k in result['registration']:
                     setattr(new_reg, k, result['registration'][k])
 
-                session.save(new_reg)
-                session.save(new_sub)
+                self.objectstore.save(new_reg)
+                self.objectstore.save(new_sub)
 
                 new_reg.submissions.append(new_sub)
                 
-                session.flush()
-                session.close()
+                self.objectstore.flush()
 
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template
@@ -72,10 +69,8 @@ class CfpController(BaseController):
 
                 return render_response('cfp/thankyou.myt')
                 
-                session.close()
+                self.objectstore.close()
                 return
-
-        session.close()
 
         # unmangle the errors
         good_errors = {}
