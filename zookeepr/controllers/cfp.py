@@ -64,7 +64,7 @@ class CfpController(BaseController):
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template
                 body = render('cfp/submission_response.myt', id=new_reg.url_hash, fragment=True)
-                s.sendmail("lca2007", new_reg.email_address, body)
+                s.sendmail("seven-contact@lca2007.linux.org.au", new_reg.email_address, body)
                 s.quit()
 
                 return render_response('cfp/thankyou.myt')
