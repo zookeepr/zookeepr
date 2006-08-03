@@ -58,3 +58,25 @@ class TestAccountController(ControllerTest):
         f.submit()
 
         self.failIf('contact_id' in resp.session)
+
+    def test_signin_unconfirmed(self):
+        # create an account
+        p = model.Person(email_address='testguy@example.org',
+                         password='p4ssw0rd')
+        self.session.save(p)
+        self.session.flush()
+        
+        # try to login
+        resp = self.app.get(url_for(controller='account',
+                                    action='signin'))
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f['password'] = 'p4ssw0rd'
+        resp = f.submit()
+    
+        # test that login is refused
+        self.failIf('person_id' in resp.session)
+        
+        # clean up
+        self.session.delete(p)
+        self.session.flush()
