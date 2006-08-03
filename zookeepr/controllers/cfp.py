@@ -63,7 +63,7 @@ class CfpController(BaseController):
 
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template
-                body = render('cfp/submission_response.myt', id=new_reg.url_hash)
+                body = render('cfp/submission_response.myt', id=new_reg.url_hash, fragment=True)
                 s.sendmail("lca2007", new_reg.email_address, body)
                 s.quit()
 

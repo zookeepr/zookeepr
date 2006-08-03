@@ -126,6 +126,11 @@ class TestCFP(ControllerTest):
         name_match = re.match(r'^.*Testguy McTest', message.message, re.DOTALL)
         self.failIfEqual(None, name_match, "submitter's name not in headers")
 
+        # check that the message was renderered without HTML, i.e.
+        # as a fragment and thus no autohandler crap
+        html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
+        self.failUnlessEqual(None, html_match, "HTML in message!")
+        
         # check that the message has a url hash in it
         match = re.match(r'^.*/register/confirm/(\S+)', message.message, re.DOTALL)
         print "match:", match
