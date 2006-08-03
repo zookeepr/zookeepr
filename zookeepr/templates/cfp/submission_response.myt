@@ -1,11 +1,11 @@
-Subject: Confirmation of your submission to the LCA 2007 CFP
+Subject: Confirmation of your submission to the linux.conf.au 2007 CFP
 To: <% c.registration.fullname %> <<% c.registration.email_address %>>
 
 Dear <% c.registration.fullname %>,
 
 Thankyou for your submission entitled "<% c.submission.title %>".
 
-If you would like to log into the LCA 2007 site, please
+If you would like to log into the linux.conf.au 2007 site, please
 start by confirming your registration by clicking on the URL
 below:
 
@@ -18,7 +18,7 @@ into the site with the password you provided with your submission.
 
 Thanks again, and have a great day!
 
-The LCA 2007 Organising Committee
+The linux.conf.au 2007 Organising Committee
 <%args>
 id
 </%args>
