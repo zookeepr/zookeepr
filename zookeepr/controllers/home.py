@@ -1,9 +1,12 @@
 from zookeepr.lib.base import *
+from zookeepr.lib.auth import SecureController
 
-class HomeController(BaseController):
+class HomeController(SecureController):
 
     def index(self):
-        if request.environ.has_key('REMOTE_USER'):
-            return render_response('home.myt')
+        if c.person:
+            resp = render_response('home.myt')
         else:
-            return render_response('about/index.myt')
+            resp = render_response('about/index.myt')
+
+        return resp
