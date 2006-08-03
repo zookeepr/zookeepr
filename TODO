@@ -100,3 +100,6 @@
  * don't use test.ini for the test suite, construct a whole paste config in tests/__init__.py using appconfig or however paste does it
 
  * case where: people sign up for account, go through non-signed in registration, two confirmation emails get sent out, two outstanding confirmation emails on the wire
+
+ * test validators:
+displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have quoted chars
