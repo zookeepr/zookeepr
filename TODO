@@ -20,8 +20,6 @@
  * make submissiontype interface accessible only by conf admin
   * apply permissions to all CRUD interfaces. recreate PylonsSecureController to use a class property instead of method properties to controll access so that generics can still work
 
- * flow of security/signin and signout, redirect to home or show result page?
-
  * MyLCA administration
    * Participation module
      * list of submissions
@@ -68,8 +66,6 @@
  * register for the conference
 
  * at the cfp close, the submission is locked, "pens down"
-
- * email notifications for signup and announcements.
 
  * Sign up for a login now autofills information for "register"
 
