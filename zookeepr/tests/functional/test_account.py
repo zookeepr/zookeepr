@@ -20,6 +20,7 @@ class TestAccountController(ControllerTest):
         # create a user
         p = model.Person(email_address='testguy@example.org',
                          password='p4ssw0rd')
+        p.activated = True
         self.session.save(p)
         self.session.flush()
         
