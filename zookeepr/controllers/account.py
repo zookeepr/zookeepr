@@ -9,12 +9,16 @@ class AuthenticationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         l = PersonAuthenticator()
         r = l.authenticate(value['email_address'], value['password'])
-        if r == retcode.FAILURE:
+        if r == retcode.SUCCESS:
+            pass
+        elif r == retcode.FAILURE:
             raise Invalid("Incorrect email address or password", value, state)
         elif r == retcode.TRY_AGAIN:
             raise Invalid("A problem occurred during sign in; please try again later", value, state)
+        elif r == retcode.INACTIVE:
+            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions", value, state)
         else:
-            pass
+            raise RuntimeError, "Unhandled authentication return code: '%r'" % r
 
 class LoginValidator(BaseSchema):
     email_address = validators.String(not_empty=True)
