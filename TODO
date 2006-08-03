@@ -1,5 +1,13 @@
 = TODO =
 
+ * Restrict access to submissions.  Modify SecureController to add authorisation controls. + test obviously.
+
+ * Test submission edits.
+
+ * Test submission deletes.
+
+ * Add ability to add co-speakers to submissions.
+
 == todo from the flight
 
  * test registration actually creates a person object with it.
