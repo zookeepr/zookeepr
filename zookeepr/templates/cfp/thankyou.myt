@@ -11,6 +11,10 @@ An email has been sent to you at <em><% c.registration.email_address | h %></em>
 </p>
 
 <p>
+If you wish to make a second submission, or modify the one you have just made, please first complete the registration, and <% h.link_to('sign in', url=h.url(controller='account', action='signin', id=None)) %>.
+</p>
+
+<p>
 If you do not receive this message in a reasonable timeframe, please contact us at <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
 </p>
 
