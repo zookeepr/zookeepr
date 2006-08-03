@@ -11,6 +11,7 @@ class retcode:
     SUCCESS = True
     FAILURE = False
     TRY_AGAIN = 3
+    INACTIVE = 4
 
 class PersonAuthenticator(object):
     """Look up the Person in the data store"""
@@ -24,8 +25,10 @@ class PersonAuthenticator(object):
             return retcode.FAILURE
 
         password_hash = md5.new(password).hexdigest()
-        
-        if password_hash == ps[0].password_hash:
+
+        if not ps[0].activated:
+            result = retcode.INACTIVE
+        elif password_hash == ps[0].password_hash:
             result = retcode.SUCCESS
         else:
             result = retcode.FAILURE
