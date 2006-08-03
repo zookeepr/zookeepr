@@ -257,3 +257,16 @@ h2{color:#999;}
 .sublinkmenu li {
   border-right: 1px dotted #fff;
 }
+
+
+/**
+ * CRUD actions
+ */
+
+#submissions LI:before {
+  content: "";
+}
+
+SPAN.actions {
+  font-size: 70%;
+}
