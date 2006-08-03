@@ -1,6 +1,6 @@
 <h2>Sign in!</h2>
 
-<p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='person', action='new')) %> now!</p>
+#<p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='person', action='new')) %> now!</p>
 
 <% h.form(h.url_for(controller='/account', action='signin')) %>
 
