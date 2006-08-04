@@ -270,3 +270,27 @@ h2{color:#999;}
 SPAN.actions {
   font-size: 70%;
 }
+
+/**
+ * Submission pages
+ */
+
+#submission P.submitted {
+  font-family: italic;
+  font-size: 90%;
+}
+
+#submission P.abstract {
+  font-size: 110%;
+}
+
+#submission P.experience {
+  margin: 0.5em;
+  padding: 0.5ex;
+  border: 1px dashed grey;
+}
+
+#submission P.actions {
+  font-size: 80%;
+  text-align: center;
+}

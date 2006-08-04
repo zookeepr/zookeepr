@@ -1,7 +1,10 @@
-<h2 id="title"><% c.submission.title | h %></h2>
+<h2><% c.submission.title | h %></h2>
 
-<p>
-Submitted by
+<div id="submission">
+
+<p class="submitted">
+<% c.submission.submission_type.name %> 
+submitted by
 % if c.person and (c.person == c.submission.person):
 you!
 % else:
@@ -9,27 +12,28 @@ you!
 % #endif
 </p>
 
-<p id="submission_type">
-(<% c.submission.submission_type.name | h %>)
+% if c.submission.url:
+<p class="url">
+<b>Project URL:</b><% h.link_to(c.submission.url) %>
 </p>
+% #endif
 
-<p id="abstract">
+<p class="abstract">
 <% c.submission.abstract | h %>
 </p>
 
-<p id="experience">
-<% c.submission.experience | h %><br />
-</p>
-
-<p>
-<b>URL:</b><% h.link_to(c.submission.url) %>
+<p class="experience">
+<em>Speaking experience:</em><br />
+<% c.submission.experience | h %>
 </p>
 
 <hr />
 
-<p id="actions">
+<p class="actions">
 % if c.can_edit:
 <% h.link_to('Edit', url=h.url(action='edit',id=c.submission.id)) %> |
 % #end if
 <% h.link_to('Back', url=h.url(action='index')) %>
 </p>
+
+</div>
