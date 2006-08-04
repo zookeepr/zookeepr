@@ -5,7 +5,8 @@
 <p class="submitted">
 <% c.submission.submission_type.name %> 
 submitted by
-<% c.submission.person.email_address %>
+<% c.submission.person.firstname %> <% c.submission.person.lastname %>
+&lt;<% c.submission.person.email_address %>&gt;
 </p>
 
 <p class="abstract">
