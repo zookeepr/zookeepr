@@ -19,8 +19,13 @@ submitted by
 % #endif
 
 <p class="experience">
-<em>Speaking experience:</em><br />
+<em>Speaking experience:</em>
+% if c.submission.experience:
+<br />
 <% c.submission.experience | h %>
+% else:
+[none provided]
+% #endif
 </p>
 
 <hr />
