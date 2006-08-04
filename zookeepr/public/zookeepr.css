@@ -187,6 +187,11 @@ input, textarea {
   color: #cccccc;
 }
 
+SPAN.fielddesc {
+  font-size: 80%;
+  font-style: italic;
+}
+
 /* A box containing a group of related info */
 div.boxed {
   border: 1px solid grey;

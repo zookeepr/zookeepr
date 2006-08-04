@@ -1,9 +1,9 @@
 from formencode import validators, compound, schema, variabledecode
 
-from zookeepr.lib.base import BaseController
+from zookeepr.lib.base import BaseController, c
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import Submission
+from zookeepr.models import Submission, SubmissionType
 
 class SubmissionValidator(schema.Schema):
     title = validators.String()
@@ -24,3 +24,7 @@ class SubmissionController(BaseController, View, Modify):
 
     model = Submission
     individual = 'submission'
+
+    def edit(self, id):
+        c.submission_types = self.objectstore.query(SubmissionType).select()
+        return Modify.edit(self, id)
