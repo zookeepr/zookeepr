@@ -7,7 +7,7 @@
 
 <p>
    <b>Type:</b>
-    <% c.submission.submission_type | h %><br />
+    <% c.submission.submission_type.name | h %><br />
 </p>
 
 <p>
