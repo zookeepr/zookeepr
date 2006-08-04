@@ -104,8 +104,11 @@ class Create(CRUDBase):
         # unmangle the errors
         good_errors = {}
         for key in errors.keys():
-           for subkey in errors[key].keys():
-               good_errors[key + "." + subkey] = errors[key][subkey]
+            try:
+                for subkey in errors[key].keys():
+                    good_errors[key + "." + subkey] = errors[key][subkey]
+            except AttributeError:
+                good_errors[key] = errors[key]
 
         return render_response('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
 
