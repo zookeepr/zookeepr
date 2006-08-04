@@ -25,6 +25,7 @@ class SubmissionController(BaseController, View, Modify):
     model = Submission
     individual = 'submission'
 
-    def edit(self, id):
+    def __before__(self, **kwargs):
+        BaseController.__before__(self, **kwargs)
+        
         c.submission_types = self.objectstore.query(SubmissionType).select()
-        return Modify.edit(self, id)
