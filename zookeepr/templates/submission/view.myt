@@ -32,9 +32,10 @@ submitted by
 
 <p class="actions">
 % if c.can_edit:
-<% h.link_to('Edit', url=h.url(action='edit',id=c.submission.id)) %> |
+<% h.link_to('Edit', url=h.url(action='edit',id=c.submission.id)) %>
+# |
 % #end if
-<% h.link_to('Back', url=h.url(action='index')) %>
+#<% h.link_to('Back', url=h.url(action='index')) %>
 </p>
 
 </div>
