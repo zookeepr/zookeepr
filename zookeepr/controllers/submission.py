@@ -5,24 +5,24 @@ from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import Submission, SubmissionType
 
-class SubmissionValidator(schema.Schema):
+class SubmissionSchema(schema.Schema):
     title = validators.String()
     abstract = validators.String()
     experience = validators.String()
     url = validators.String()
-    submission_type_id = validators.Int()
+    submission_type = validators.Int()
 
-class NewSubmissionValidator(BaseSchema):
-    submission = SubmissionValidator()
+class NewSubmissionSchema(BaseSchema):
+    submission = SubmissionSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class EditSubmissionValidator(BaseSchema):
-    submission = SubmissionValidator()
+class EditSubmissionSchema(BaseSchema):
+    submission = SubmissionSchema()
     pre_validators = [variabledecode.NestedVariables]
 
 class SubmissionController(BaseController, View, Modify):
-    validators = {"new" : NewSubmissionValidator(),
-                  "edit" : EditSubmissionValidator()}
+    validators = {"new" : NewSubmissionSchema(),
+                  "edit" : EditSubmissionSchema()}
 
     model = Submission
     individual = 'submission'
