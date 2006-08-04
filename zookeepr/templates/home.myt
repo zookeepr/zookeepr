@@ -5,7 +5,7 @@ Welcome, <strong><% c.person.firstname %></strong>!
 </p>
 
 <p>
-This is... MyLCA!
+This is... MyLCA!  (Pronounced 'milka'.)
 </p>
 
 <div id="submissions">
