@@ -10,7 +10,7 @@ This is... MyLCA!  (Pronounced 'milka'.)
 
 <div id="submissions">
 
-<p>Your current list of submissions:
+<p>You've made the following submissions to the CFP:
 <ul>
 
 % for s in c.person.submissions:

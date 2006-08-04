@@ -263,9 +263,11 @@ h2{color:#999;}
  * CRUD actions
  */
 
+/*
 #submissions LI:before {
   content: "";
 }
+*/
 
 SPAN.actions {
   font-size: 70%;
