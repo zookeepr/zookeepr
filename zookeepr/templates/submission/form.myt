@@ -2,7 +2,7 @@
 <% h.text_field('submission.title', c.submission.title, size=80) %></p>
 
 <p><label for="submission.submission_type">Type:</label><br />
-<% h.text_field('submission.submission_type', c.submission.submission_type) %></p>
+<% h.text_field('submission.submission_type', c.submission.submission_type.id) %></p>
 
 <p><label for="submission.abstract">Abstract:</label><br />
 <% h.text_area('submission.abstract', c.submission.abstract, size="80x10") %></p>
