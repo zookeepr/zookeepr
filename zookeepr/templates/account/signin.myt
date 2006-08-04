@@ -1,4 +1,4 @@
-<h2>Sign in!</h2>
+<h2>Sign in to your MyLCA</h2>
 
 #<p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='person', action='new')) %> now!</p>
 
@@ -6,8 +6,15 @@
 
 <% h.form(h.url_for(controller='/account', action='signin')) %>
 
+<p>
+<label for="email_address">Email address:</label>
 <% h.text_field('email_address') %>
+</p>
+
+<p>
+<label for="password">Password:</label>
 <% h.password_field('password') %>
+</p>
 
 <% h.submit('Sign in') %>
 
