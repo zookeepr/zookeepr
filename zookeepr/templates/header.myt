@@ -3,4 +3,4 @@
 % else:
 %   logo = '/lca2007-header.png'
 % #endif
-<h1><% h.link_to('<img src="' + logo + '" alt="linux.conf.au 2007" />', url=h.url('home')) %></h1>
+<h1><% h.link_to(h.image_tag(logo, alt="linux.conf.au 2007"), url=h.url('home')) %></h1>
