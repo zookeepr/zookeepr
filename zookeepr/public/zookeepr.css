@@ -276,7 +276,7 @@ SPAN.actions {
  */
 
 #submission P.submitted {
-  font-family: italic;
+  font-style: italic;
   font-size: 90%;
 }
 
@@ -285,7 +285,7 @@ SPAN.actions {
 }
 
 #submission P.experience {
-  margin: 0.5em;
+  margin: 1em;
   padding: 0.5ex;
   border: 1px dashed grey;
 }
