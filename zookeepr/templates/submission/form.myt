@@ -5,12 +5,13 @@
 #<span class="fielddesc">What sort of submission is this?</span>
 <br />
 
-<input type="radio" name="submission.submission_type" id="submission.submission_type" value="foo" checked /> <label for="submission.submission_type">foo</label><br />
 % for st in c.submission_types:
-%	print "id: %s, sid: %s" % (st.id, c.submission.submission_type.id)
-%	checked = st.id == c.submission.submission_type.id
-%	print checked
-<% h.radio_button('submission.submission_type', st.id) %>
+%	if c.submission.submission_type:
+%		checked = st.id == c.submission.submission_type.id
+%	else:
+%		checked = False
+%	#endif
+<% h.radio_button('submission.submission_type', st.id, checked=checked) %>
 <label for="submission.submission_type"><% st.name |h %></label><br />
 % #endfor
 
