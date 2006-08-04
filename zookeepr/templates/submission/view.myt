@@ -14,7 +14,7 @@ submitted by
 
 % if c.submission.url:
 <p class="url">
-<% h.link_to(c.submission.url) %>
+<% h.link_to(c.submission.url, url=c.submission.url) %>
 </p>
 % #endif
 
