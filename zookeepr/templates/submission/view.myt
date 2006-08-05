@@ -9,9 +9,9 @@ submitted by
 &lt;<% c.submission.person.email_address %>&gt;
 </p>
 
-<p class="abstract">
-<% c.submission.abstract | h %>
-</p>
+<div class="abstract">
+<% h.simple_format(c.submission.abstract) %>
+</div>
 
 % if c.submission.url:
 <p class="url">
