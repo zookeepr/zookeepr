@@ -60,7 +60,7 @@ class CRUDBase(object):
             redirect_args = self.redirect_map[action]
         else:
             redirect_args = default
-        return h.redirect_to(**redirect_args)
+        redirect_to(**redirect_args)
     
 
 class Create(CRUDBase):
@@ -87,15 +87,12 @@ class Create(CRUDBase):
         
                 self.objectstore.save(new_object)
                 self.objectstore.flush()
-                self.objectstore.close()
 
                 default_redirect = dict(action='view', id=self.identifier(new_object))
-                return self.redirect_to('new', default_redirect)
+                self.redirect_to('new', default_redirect)
 
         # make new_object accessible to the template
         setattr(c, model_name, new_object)
-
-        self.objectstore.close()
 
         # unmangle the errors
         good_errors = {}
@@ -140,9 +137,8 @@ class Update(CRUDBase):
 
                 self.objectstore.save(obj)
                 self.objectstore.flush()
-                self.objectstore.close()
                 
-                return h.redirect_to(action='view', id=self.identifier(obj))
+                redirect_to(action='view', id=self.identifier(obj))
 
         # assign to the template global
         setattr(c, model_name, obj)
@@ -169,8 +165,6 @@ class Delete(CRUDBase):
             self.objectstore.flush()
             redirect_to(action='index', id=None)
 
-        self.objectstore.close()
-        
         # get the model name
         model_name = self.individual
         # call the template
