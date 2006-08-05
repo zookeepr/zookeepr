@@ -1,6 +1,7 @@
 from zookeepr.tests.model import *
 
 class TestSubmission(ModelTest):
+        
     def test_create(self):
         """Test creation of a Submission object"""
         
@@ -78,4 +79,57 @@ class TestSubmission(ModelTest):
         
         session.close()
         
+        self.check_empty_session()
+
+
+    def test_multiple_persons(self):
+        session = create_session()
+
+        r1 = model.Registration(email_address='testguy@example.org',
+                                password='p')
+        r2 = model.Registration(email_address='testgirl@example.com',
+                                password='q')
+        st = model.SubmissionType('Presentation')
+
+        session.save(r1)
+        session.save(r2)
+        session.save(st)
+        session.flush()
+        
+        s1 = model.Submission(title='foo',
+                              abstract='bar',
+                              submission_type_id=st.id)
+
+        r1.submissions.append(s1)
+
+        session.save(s1)
+        session.flush()
+
+        self.failUnless(s1 in r1.submissions)
+
+        s2 = model.Submission(title='bar',
+                              abstract='some abstract',
+                              submission_type_id=st.id)
+
+        r2.submissions.append(s2)
+        session.save(s2)
+        session.flush()
+
+        self.failUnless(s1 in r1.submissions)
+        self.failUnless(s2 in r2.submissions)
+
+        # now make sure the converse is true
+        self.failIf(s1 in r2.submissions, "invalid submission in r2.submissions: %r" % s1)
+        self.failIf(s2 in r1.submissions, "invalid submission in r1.submissions: %r" % s2)
+
+        # clean up
+        session.delete(s2)
+        session.delete(s1)
+        session.delete(r2)
+        session.delete(r1)
+        session.delete(st)
+        session.flush()
+
+        # check
+        self.model = 'Submission'
         self.check_empty_session()
