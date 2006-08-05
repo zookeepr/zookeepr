@@ -4,9 +4,7 @@ import random
 
 from sqlalchemy import mapper, relation, MapperExtension, join
 
-#import contentstor
 from zookeepr.models.tables import *
-#from forms import *
 
 ## Submission Types
 class SubmissionType(object):
