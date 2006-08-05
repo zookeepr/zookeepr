@@ -45,14 +45,14 @@ class TestSubmission(ControllerTest):
         self.session.save(s)
         self.session.flush()
 
-
         resp = self.app.get(url_for(controller='submission',
                                     action='edit',
                                     id=s.id))
 
         f = resp.form
 
-        self.assertEqual(3, f.fields['submission.submission_type_id'][0].value)
+        # the value being returned is a string, from the form defaults
+        self.assertEqual('3', f.fields['submission.submission_type_id'][0].value)
         
         # clean up
         self.session.delete(s)
