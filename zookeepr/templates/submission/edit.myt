@@ -17,3 +17,13 @@
 defaults
 errors
 </%args>
+
+<%init>
+if not defaults:
+	defaults = {'submission.title': c.submission.title,
+		    'submission.submission_type_id': c.submission.submission_type_id,
+		    'submission.abstract': c.submission.abstract,
+                    'submission.experience': c.submission.experience,
+                    'submission.url': c.submission.url,
+                   }
+</%init>
