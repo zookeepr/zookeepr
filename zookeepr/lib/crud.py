@@ -1,14 +1,10 @@
-#import authkit
-#from pylons import Controller, m, h, c, g, session, request, params
 #from webhelpers.pagination import paginate
-#from sqlalchemy import create_session
-#from sqlalchemy.exceptions import SQLError
 
 # FIXME: Find somewhere to document the class attributes used by the generics.
 
 from formencode import Invalid
-from pylons import c, h, m, request
-from sqlalchemy import create_session
+
+from zookeepr.lib.base import *
 
 class CRUDBase(object):
     def identifier(self, obj):
@@ -21,7 +17,7 @@ class CRUDBase(object):
         else:
             return oid
         
-    def get_obj(self, id, session):
+    def get_obj(self, id):
         use_oid = False # Determines if we look up on a key or the OID
         obj = None
 
@@ -36,10 +32,10 @@ class CRUDBase(object):
         model_name = self.individual
 
         if use_oid:
-            obj = session.get(self.model, id)
+            obj = self.objectstore.get(self.model, id)
         elif hasattr(self, 'key'):
             query_dict = {self.key: id}
-            os = session.query(self.model).select_by(**query_dict)
+            os = self.objectstore.query(self.model).select_by(**query_dict)
             if len(os) == 1:
                 obj = os[0]
 
@@ -75,11 +71,10 @@ class Create(CRUDBase):
 
         POST requests will create the object, if the validators pass.
         """
-        session = create_session()
 
         model_name = self.individual
         errors = {}
-        defaults = m.request_args
+        defaults = dict(request.POST)
 
         new_object = self.model()
         if request.method == 'POST' and defaults:
@@ -90,9 +85,9 @@ class Create(CRUDBase):
                 for k in result[model_name]:
                     setattr(new_object, k, result[model_name][k])
         
-                session.save(new_object)
-                session.flush()
-                session.close()
+                self.objectstore.save(new_object)
+                self.objectstore.flush()
+                self.objectstore.close()
 
                 default_redirect = dict(action='view', id=self.identifier(new_object))
                 return self.redirect_to('new', default_redirect)
@@ -100,15 +95,18 @@ class Create(CRUDBase):
         # make new_object accessible to the template
         setattr(c, model_name, new_object)
 
-        session.close()
+        self.objectstore.close()
 
         # unmangle the errors
         good_errors = {}
         for key in errors.keys():
-           for subkey in errors[key].keys():
-               good_errors[key + "." + subkey] = errors[key][subkey]
+            try:
+                for subkey in errors[key].keys():
+                    good_errors[key + "." + subkey] = errors[key][subkey]
+            except AttributeError:
+                good_errors[key] = errors[key]
 
-        m.subexec('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
+        return render_response('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
 
 
 class Update(CRUDBase):
@@ -120,8 +118,7 @@ class Update(CRUDBase):
 
         POST requests update the object with the data posted.
         """
-        session = create_session()
-        obj = self.get_obj(id, session)
+        obj = self.get_obj(id)
 
         if obj is None:
             raise "cannot edit nonexistent object for id = '%s'" % (id,)
@@ -130,7 +127,7 @@ class Update(CRUDBase):
         model_name = self.individual
 
         errors = {}
-        defaults = m.request_args
+        defaults = dict(request.POST)
         
         if request.method == 'POST' and defaults:
             result, errors = self.validators['edit'].validate(defaults)
@@ -141,18 +138,17 @@ class Update(CRUDBase):
                 for k in result[model_name]:
                     setattr(obj, k, result[model_name][k])
 
-                session.save(obj)
-                session.flush()
-                session.close()
+                self.objectstore.save(obj)
+                self.objectstore.flush()
+                self.objectstore.close()
                 
                 return h.redirect_to(action='view', id=self.identifier(obj))
 
         # assign to the template global
         setattr(c, model_name, obj)
         # call the template
-        m.subexec('%s/edit.myt' % model_name, defaults=defaults, errors=errors)
+        return render_response('%s/edit.myt' % model_name, defaults=defaults, errors=errors)
         
-#     edit.permissions = authkit.permissions(signed_in=True)
 
 class Delete(CRUDBase):
     def delete(self, id):
@@ -163,26 +159,22 @@ class Delete(CRUDBase):
         POST requests will delete the item.
         """
         
-        session = create_session()
-        
-        obj = self.get_obj(id, session)
+        obj = self.get_obj(id)
 
         if obj is None:
-            m.abort(404, "Computer says no")
+            abort(404, "Computer says no")
         
         if request.method == 'POST':
-            session.delete(obj)
-            session.flush()
-            return h.redirect_to(action='index', id=None)
+            self.objectstore.delete(obj)
+            self.objectstore.flush()
+            redirect_to(action='index', id=None)
 
-        session.close()
+        self.objectstore.close()
         
         # get the model name
         model_name = self.individual
         # call the template
-        m.subexec('%s/confirm_delete.myt' % model_name)
-
-#    delete.permissions = authkit.permissions(signed_in=True)
+        return render_response('%s/confirm_delete.myt' % model_name)
 
 
 class List(CRUDBase):
@@ -193,8 +185,6 @@ class List(CRUDBase):
         """Show a list of all objects currently in the system."""
         # GET, POST -> return list of objects
 
-        session = create_session()
-
         # get name we refer to the model by in the controller
         model_name = self.individual
         
@@ -204,21 +194,17 @@ class List(CRUDBase):
         #setattr(c, model_name + '_collection', collection)
 
         # assign list of objects to template global
-        setattr(c, model_name + '_collection', session.query(self.model).select())
+        setattr(c, model_name + '_collection', self.objectstore.query(self.model).select())
 
-        session.close()
-        
         c.can_edit = self._can_edit()
         # exec the template
-        m.subexec('%s/list.myt' % model_name)
+        return render_response('%s/list.myt' % model_name)
 
-#     index.permissions = authkit.permissions(signed_in=True)
 
 class Read(CRUDBase):
     def view(self, id):
         """View a specific object"""
-        session = create_session()
-        obj = self.get_obj(id, session)
+        obj = self.get_obj(id)
         
         if obj is None:
             raise "cannot view nonexistent object for id = '%s'" % (id,)
@@ -228,9 +214,8 @@ class Read(CRUDBase):
         c.can_edit = self._can_edit()
 
         # exec the template
-        m.subexec('%s/view.myt' % self.individual)
+        return render_response('%s/view.myt' % self.individual)
 
-#     view.permissions = authkit.permissions(signed_in=True)
 
 # legacy classes
 class View(Read, List):

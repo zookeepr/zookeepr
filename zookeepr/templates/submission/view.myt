@@ -1,40 +1,42 @@
-<h2>View submission</h2>
+<h2><% c.submission.title | h %></h2>
 
-<p>
-   <b>Title:</b>
-    <% c.submission.title | h %><br />
+<div id="submission">
+
+<p class="submitted">
+<% c.submission.submission_type.name %> 
+submitted by
+<% c.submission.person.firstname %> <% c.submission.person.lastname %>
+&lt;<% c.submission.person.email_address %>&gt;
 </p>
 
-<p>
-   <b>Type:</b>
-    <% c.submission.submission_type | h %><br />
+<p class="abstract">
+<% c.submission.abstract | h %>
 </p>
 
-<p>
-   <b>abstract:</b>
-    <% c.submission.abstract | h %><br />
-</p>
-
-<p>
-   <b>Experience:</b>
-    <% c.submission.experience | h %><br />
-</p>
-
-<p>
-   <b>URL:</b>
-<% h.link_to(c.submission.url) %><br />
-</p>
-
-% if c.submission.person:
-<p>
-<b>Person:</b>
-<% h.link_to(c.submission.person.handle, url=h.url(controller='person', action='view', id=c.submission.person.handle)) %>
+% if c.submission.url:
+<p class="url">
+<% h.link_to(c.submission.url, url=c.submission.url) %>
 </p>
 % #endif
 
+<p class="experience">
+<em>Speaking experience:</em>
+% if c.submission.experience:
+<br />
+<% c.submission.experience | h %>
+% else:
+[none provided]
+% #endif
+</p>
+
 <hr />
 
+<p class="actions">
 % if c.can_edit:
-<% h.link_to('Edit', url=h.url(action='edit',id=c.submission.id)) %> |
+<% h.link_to('Edit', url=h.url(action='edit',id=c.submission.id)) %>
+# |
 % #end if
-<% h.link_to('Back', url=h.url(action='index')) %>
+#<% h.link_to('Back', url=h.url(action='index')) %>
+</p>
+
+</div>

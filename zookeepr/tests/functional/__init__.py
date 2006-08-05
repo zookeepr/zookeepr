@@ -239,7 +239,7 @@ class ControllerTest(TestBase):
 
         for key in self.samples[1].keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
-                self.failIfEqual(self.samples[1][key], getattr(o, key))
+                self.failIfEqual(self.samples[1][key], getattr(o, key), "key '%s' was unchanged after edit (%r == %r)" % (key, self.samples[1][key], getattr(o, key)))
 
         self.session.delete(o)
         self.session.flush()

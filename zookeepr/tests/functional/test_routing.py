@@ -8,7 +8,7 @@ class TestRouting(unittest.TestCase):
         self.map = make_map()
 
     def test_default_controller_url(self):
-        self.failUnless('/c',
+        self.assertEqual('/c',
                         url_for(controller='c'))
 
     def test_default_controller_index_url(self):

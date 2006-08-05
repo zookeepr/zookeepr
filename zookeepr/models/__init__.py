@@ -58,9 +58,9 @@ mapper(SubmissionType, submission_type)
 
 ## Submissions
 class Submission(object):
-    def __init__(self, title=None, submission_type=None, abstract=None, experience=None, url=None, attachment=None):
+    def __init__(self, title=None, submission_type_id=None, abstract=None, experience=None, url=None, attachment=None):
         self.title = title
-        self.submission_type = submission_type
+        self.submission_type_id = submission_type_id
         self.abstract = abstract
         self.experience = experience
         self.url = url
@@ -86,11 +86,12 @@ mapper(Role, role, properties = dict(
     ))
 
 class Registration(object):
-    def __init__(self, timestamp=None, email_address=None, password=None, activated=None):
+    def __init__(self, timestamp=None, email_address=None, password=None, activated=None, fullname=None):
         self.timestamp = timestamp
         self.email_address = email_address
         self.password = password
         self.activated = activated
+        self.fullname = fullname
 
         # url hash should never be modifiable by the caller directly
         self._update_url_hash()
@@ -136,6 +137,22 @@ class Registration(object):
 
     def __repr__(self):
         return '<Registration email_address="%s" timestamp="%s" url_hash="%s" activated=%s>' % (self.email_address, self.timestamp, self.url_hash, self.activated)
+
+    def _set_fullname(self, value):
+        if value is not None:
+            self.firstname = value.split(' ')[0]
+            self.lastname = ' '.join(value.split(' ')[1:])
+        else:
+            self.firstname = None
+            self.lastname = None
+
+    def _get_fullname(self):
+        r = self.firstname
+        if self.lastname:
+            r = r + ' ' + self.lastname
+        return r
+
+    fullname = property(_get_fullname, _set_fullname)
 
 mapper(Registration, join(account, person).join(registration),
        properties = dict(account_id = [account.c.id, person.c.account_id, registration.c.account_id],

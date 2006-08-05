@@ -1,10 +1,12 @@
-= Milestones for 0.1, CFP, 24 May =
+= TODO =
 
- * update thankyou page to refer the user to their email to check registration.
+ * Restrict access to submissions.  Modify SecureController to add authorisation controls. + test obviously.
 
- * send confirmation email after cfp submission
+ * Test submission edits.
 
- * Remove dependency on AuthKit, SQLObject, FormBuild
+ * Test submission deletes.
+
+ * Add ability to add co-speakers to submissions.
 
 == todo from the flight
 
@@ -17,8 +19,6 @@
 
  * make submissiontype interface accessible only by conf admin
   * apply permissions to all CRUD interfaces. recreate PylonsSecureController to use a class property instead of method properties to controll access so that generics can still work
-
- * flow of security/signin and signout, redirect to home or show result page?
 
  * MyLCA administration
    * Participation module
@@ -67,8 +67,6 @@
 
  * at the cfp close, the submission is locked, "pens down"
 
- * email notifications for signup and announcements.
-
  * Sign up for a login now autofills information for "register"
 
  * RSS
@@ -106,3 +104,6 @@
  * don't use test.ini for the test suite, construct a whole paste config in tests/__init__.py using appconfig or however paste does it
 
  * case where: people sign up for account, go through non-signed in registration, two confirmation emails get sent out, two outstanding confirmation emails on the wire
+
+ * test validators:
+displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have quoted chars

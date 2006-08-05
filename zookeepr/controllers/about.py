@@ -10,4 +10,4 @@ class AboutController(BaseController):
         It does no processing of information, only returns a response
         from the templates.
         """
-        m.subexec("about/%s.myt" % id)
+        return render_response("about/%s.myt" % id)

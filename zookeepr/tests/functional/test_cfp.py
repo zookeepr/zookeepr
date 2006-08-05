@@ -85,6 +85,7 @@ class TestCFP(ControllerTest):
         d = {'registration.email_address': 'testguy@example.org',
              'registration.password': 'test',
              'registration.password_confirm': 'test',
+             'registration.fullname': 'Testguy McTest',
              'submission.title': 'title',
              'submission.abstract': 'abstract',
              'submission.attachment': '',
@@ -93,8 +94,9 @@ class TestCFP(ControllerTest):
         for k in d.keys():
             form[k] = d[k]
         res1 = form.submit()
-        res1 = res1.follow() # expecting a redirect to a thankyou page
-        #print "form submit result", res1
+
+        # thankyou page says what email address got sent to
+        res1.mustcontain('testguy@example.org')
 
         # grab it from the db
         regs = self.session.query(Registration).select()
@@ -111,16 +113,31 @@ class TestCFP(ControllerTest):
         
         message = Dummy_smtplib.existing
 
+        print "message: '''%s'''" % message.message
+
         # check that the message goes to the right place
         self.assertEqual("testguy@example.org", message.to_addresses)
 
+        # check that the message has the to address in it
+        to_match = re.match(r'^.*To:.*testguy@example.org.*', message.message, re.DOTALL)
+        self.failIfEqual(None, to_match, "to address not in headers")
+
+        # check that the message has the submitter's name
+        name_match = re.match(r'^.*Testguy McTest', message.message, re.DOTALL)
+        self.failIfEqual(None, name_match, "submitter's name not in headers")
+
+        # check that the message was renderered without HTML, i.e.
+        # as a fragment and thus no autohandler crap
+        html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
+        self.failUnlessEqual(None, html_match, "HTML in message!")
+        
         # check that the message has a url hash in it
-        match = re.match(r'^.*/register/confirm/([^ ]*)', message.message)
-        print "message: '''%s'''" % message.message
+        match = re.match(r'^.*/register/confirm/(\S+)', message.message, re.DOTALL)
         print "match:", match
         self.failIfEqual(None, match, "url not found")
 
         # visit the url
+        print "match: '''%s'''" % match.group(1)
         res = self.app.get('/register/confirm/%s' % match.group(1))
         print res
         

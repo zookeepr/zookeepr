@@ -25,7 +25,7 @@ class TestRegisterController(ControllerTest):
         
         # visit the link
         response = self.app.get('/register/confirm/' + url_hash)
-        response.mustcontain('registration is confirmed')
+        response.mustcontain('Thanks for confirming your registration')
         
         # test that it's activated
         r = self.session.get(model.Registration, rid)

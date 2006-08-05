@@ -3,16 +3,16 @@ import smtplib
 from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
-from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController, c, m, request, h
+from zookeepr.lib.base import BaseController, c, h, render, render_response, request
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.models import SubmissionType, Submission, Registration
 
 class RegistrationValidator(Schema):
-    email_address = validators.Email(not_empty=True)
+    email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
+    fullname = validators.String()
 
 class SubmissionValidator(Schema):
     title = validators.String(not_empty=True)
@@ -30,17 +30,19 @@ class NewCFPValidator(BaseSchema):
 
 class CfpController(BaseController):
     def index(self):
-        m.subexec("cfp/list.myt")
+        return render_response("cfp/list.myt")
 
     def submit(self):
-        session = create_session()
-        c.cfptypes = session.query(SubmissionType).select()
+        c.cfptypes = self.objectstore.query(SubmissionType).select()
 
         errors = {}
-        defaults = m.request_args
+        defaults = dict(request.POST)
 
         new_reg = Registration()
         new_sub = Submission()
+
+        c.registration = new_reg
+        c.submission = new_sub
         
         if request.method == 'POST' and defaults:
             result, errors = NewCFPValidator().validate(defaults)
@@ -52,25 +54,23 @@ class CfpController(BaseController):
                 for k in result['registration']:
                     setattr(new_reg, k, result['registration'][k])
 
-                session.save(new_reg)
-                session.save(new_sub)
+                self.objectstore.save(new_reg)
+                self.objectstore.save(new_sub)
 
                 new_reg.submissions.append(new_sub)
                 
-                session.flush()
-                session.close()
+                self.objectstore.flush()
 
                 s = smtplib.SMTP("localhost")
-                msg = "ahr: %s" % h.url_for(controller='register', action='confirm', id=new_reg.url_hash)
-                s.sendmail("lca2007", new_reg.email_address, msg)
+                # generate the message from a template
+                body = render('cfp/submission_response.myt', id=new_reg.url_hash, fragment=True)
+                s.sendmail("seven-contact@lca2007.linux.org.au", new_reg.email_address, body)
                 s.quit()
-                
-                return h.redirect_to(action='thankyou')
 
-        c.registration = new_reg
-        c.submission = new_sub
-        
-        session.close()
+                return render_response('cfp/thankyou.myt')
+                
+                self.objectstore.close()
+                return
 
         # unmangle the errors
         good_errors = {}
@@ -78,7 +78,4 @@ class CfpController(BaseController):
             for subkey in errors[key].keys():
                 good_errors[key + "." + subkey] = errors[key][subkey]
 
-        m.subexec("cfp/new.myt", defaults=defaults, errors=good_errors)
-
-    def thankyou(self):
-        m.subexec('cfp/thankyou.myt')
+        return render_response("cfp/new.myt", defaults=defaults, errors=good_errors)

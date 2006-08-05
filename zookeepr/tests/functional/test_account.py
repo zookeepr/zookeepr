@@ -1,53 +1,49 @@
 from zookeepr.tests.functional import *
 
 class TestAccountController(ControllerTest):
-#     def test_index(self):
-#         response = self.app.get(url_for(controller='person'))
-#         # Test response...
-#         response.mustcontain("person index")
+    
+#     def test_account_signin_routing(self):
+#         self.assertEqual(dict(controller='account',
+#                               action='signin'),
+#                          self.map.match('/account/signin'))
 
-    def test_signin(self):
+#     def test_account_signin_url(self):
+#         self.assertEqual('/account/signin',
+#                          url_for(controller='account', action='signin'))
+
+#     def test_account_signout_url(self):
+#         self.assertEqual('/account/signout',
+#                          url_for(controller='account', action='signout'))
+
+    def test_signin_signout(self):
         """Test account sign in"""
         # create a user
         p = model.Person(email_address='testguy@example.org',
                          password='p4ssw0rd')
+        p.activated = True
         self.session.save(p)
         self.session.flush()
         
         # try to log in
-        u = url_for(controller='/account', action='signin')
-        params = {'email_address': 'testguy@example.org',
-                  'password': 'p4ssw0rd',
-                  'go': 'Submit'}
-        res = self.app.post(u, params)
-        self.assertEqual('testguy@example.org',
-                         res.request.environ['REMOTE_USER'])
+        resp = self.app.get(url_for(controller='account',
+                                    action='signin'))
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f['password'] = 'p4ssw0rd'
+        resp = f.submit()
+
+        self.failUnless('person_id' in resp.session)
+        self.assertEqual(p.id,
+                         resp.session['person_id'])
+
+        # sign out
+        resp = resp.goto(url_for(controller='account',
+                                 action='signout'))
+
+        print "resp.session", resp.session
+
+        self.failIf('contact_id' in resp.session)
         
-        # clean up
-        self.session.delete(p)
-        self.session.flush()
-
-    def test_signout(self):
-        """Test account sign out"""
-
-        # create a user
-        p = model.Person(email_address='testguy@example.org',
-                         password='p4ssw0rd')
-        self.session.save(p)
-        self.session.flush()
-
-        # login
-        u = url_for(controller='/account', action='signin')
-        params = {'email_address': 'testguy@example.org',
-                  'password': 'p4ssw0rd',
-                  'go': 'Submit'}
-        res = self.app.post(u, params)
-
-        # logout
-        u = url_for(controller='/account', action='signout')
-        res = self.app.get(u)
-        self.failIf(res.request.environ.has_key('REMOTE_USER'))
-
         # clean up
         self.session.delete(p)
         self.session.flush()
@@ -55,10 +51,33 @@ class TestAccountController(ControllerTest):
     def test_signin_invalid(self):
         """Test invalid login details"""
         # login
-        u = url_for(controller='/account', action='signin')
-        params = {'email_address': 'testguy',
-                  'password': 'p4ssw0rd',
-                  'go': 'Submit'}
-        res = self.app.post(u, params)
+        resp = self.app.get(url_for(controller='/account', action='signin'))
+        f = resp.form
+        f['email_address'] = 'testguy'
+        f['password'] = 'password'
 
-        self.failIf(res.request.environ.has_key('REMOTE_USER'))
+        f.submit()
+
+        self.failIf('contact_id' in resp.session)
+
+    def test_signin_unconfirmed(self):
+        # create an account
+        p = model.Person(email_address='testguy@example.org',
+                         password='p4ssw0rd')
+        self.session.save(p)
+        self.session.flush()
+        
+        # try to login
+        resp = self.app.get(url_for(controller='account',
+                                    action='signin'))
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f['password'] = 'p4ssw0rd'
+        resp = f.submit()
+    
+        # test that login is refused
+        self.failIf('person_id' in resp.session)
+        
+        # clean up
+        self.session.delete(p)
+        self.session.flush()

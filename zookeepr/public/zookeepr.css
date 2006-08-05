@@ -3,48 +3,61 @@
  */
 
 body {
-	background: url("/greydient-top.png") top left repeat-x white;
-	margin: 0;
-	padding: 0;
+  font-family: sans-serif;
+  color: #333;
+  background: url("/greydient-top.png") top left repeat-x white;
+  line-height: 1.5em;
+  max-width: 63em;
+  margin: 0 auto;
+  position:relative;
+  padding: 0;
 }
 
 #header h1 {
-	margin: 0;
-	padding: 0;
-	margin-bottom: 20px;
+  margin: 0;
+  padding: 0;
+  margin-bottom: 20px;
 }
 
 #usermenu, #mainmenu {
-	font-size: 160%;
-	font-weight: bold;
+  font-size: 160%;
+  font-weight: bold;
 }
+
 #usermenu {
-	font-size: 120%;
+  font-size: 120%;
 }
 
 #menus {
-	position: absolute;
-	top: 20px;
-	right: 20px;
+  position: absolute;
+  top: 20px;
+  right: 20px;
 }
 
 #body {
-	margin: 20px;
-	margin-top: 0;
-	clear: both;
+  margin: 20px;
+  margin-top: 0;
+  clear: both;
 }
 
 #footer {
-	background: #eeeeee;
-	border-top: 1px solid #cccccc;
-	padding: 1ex;
-	text-align: center;
-	clear: both;
+  background: fff;
+  border-top: 1px dotted #ccc;
+  line-height:3em;
+  color: #666;
+  padding: 1ex;
+  text-align: center;
+  clear: both;
+}
+
+h1, h2, h3, h4 {
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
 }
 
 #footer p {
-	margin: 0;
-	padding: 0;
+  margin: 0;
+  padding: 0;
 }
 
 /**
@@ -52,21 +65,32 @@ body {
  */
 
 #column-a {
-	float: left;
-	width: 49%;
+  float: left;
+  width: 49%;
 }
 
 #column-a div.inner {
-	padding-right: 20px;
+  padding-right: 20px;
 }
 
 #column-b {
-	border-left: 1px dashed #cccccc;
-	margin-left: 49%;
+  border-left: 1px dashed #cccccc;
+  margin-left: 49%;
 }
 
 #column-b div.inner {
-	padding-left: 20px;
+  padding-left: 20px;
+}
+
+blockquote{
+  margin: 0em;
+  padding: 2em;
+  background-color: #444;
+  color: #fff;
+}
+
+blockquote i {
+  font-style: normal;
 }
 
 /**
@@ -74,51 +98,51 @@ body {
  */
 
 h1, h2, h3, h4, h5 {
-	color: #ce5c00;
-	padding: 0;
-	margin: 0;
-	margin-bottom: 1ex;
+  color: #ce5c00;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 1ex;
 }
 
 hr {
-	clear: both;
-	display: none;
-	border: none;
-	height: 0;
-	padding: 0;
-	margin: 0;
+  clear: both;
+  display: none;
+  border: none;
+  height: 0;
+  padding: 0;
+  margin: 0;
 }
 
 .hidden {
-	display: none;
+  display: none;
 }
 
 .left {
-	float: left;
+  float: left;
 }
 
 .right {
-	float: right;
+  float: right;
 }
 
 a:link {
-	color: #ce5c00;
+  color: #ce5c00;
 }
 
 a:active {
-	color: #f57900;
+  color: #f57900;
 }
 
 a:visited {
-	color: #a04700;
+  color: #a04700;
 }
 
 a:hover {
-	color: #f57900;
+  color: #f57900;
 }
 
 a img {
-	border: 0;
+  border: 0;
 }
 
 /**
@@ -126,41 +150,46 @@ a img {
  */
 
 .linkmenu {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	clear: both;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  clear: both;
 }
 
-.linkmenu li {
-	float: left;
-	padding-right: 0.5ex;
+#mainmenu li {
+  text-transform: capitalize;
+  float: left;
+  padding: 0.1em .5em;
 }
 
-.linkmenu li:after {
-	content: " ·";
+.linkmenu a {
+  text-decoration: none;
 }
 
-.linkmenu li:last-child:after {
-	content: "";
+#mainmenu {
+  display:block;
+  width: 15em;
 }
-
-.linkmenu a { text-decoration: none; }
 
 /**
  * forms
  */
 
 label {
-	font-weight: bold;
+  font-weight: bold;
 }
 
 input, textarea {
-	border: 1px solid #cccccc;
+  border: 1px solid #cccccc;
 }
 
 .fieldRequired {
-	color: #cccccc;
+  color: #cccccc;
+}
+
+SPAN.fielddesc {
+  font-size: 80%;
+  font-style: italic;
 }
 
 /* A box containing a group of related info */
@@ -168,53 +197,107 @@ div.boxed {
   border: 1px solid grey;
 }
 
-/* description of form field input expected */
-SPAN.fielddesc {
-  font-style: italic;
-  font-size: 80%;
-}
-
 /**
  * custom stuff
  */
 
 #cfpbutton {
-	width: 222px;
-	text-align: center;
+  width: 222px;
+  padding: 2em;
+  text-align: center;
 }
+
 #cfpbutton a {
-	text-decoration: none;
-	font-weight: bold;
+  text-decoration: none;
+  font-weight: bold;
+}
+
+#cfpbutton a:visited, #cfpbutton a:link {
+  color:#fcaf3e;
 }
 
 .error-message {
-	color: #ff0000;
-	padding: 0;
-	margin: 0;
-	margin-bottom: 1ex;
+  color: #ff0000;
+  padding: 0;
+  margin: 0;
+  margin-bottom: 1ex;
 }
 
 .sublinkmenu {
-	list-style: none;
-	margin: 0;
-	padding: 0;
-	clear: both;
+  margin: 0;
+  padding: 0;
+  clear: both;
 }
 
 .sublinkmenu li {
-	font-size: 80%;
-	float: left;
-	padding-right: 0.5ex;
+  font-size: 80%;
+  float: left;
 }
 
-.sublinkmenu li:after {
-	content: " ·";
+.sublinkmenu a {
+  text-decoration: none;
 }
 
-.sublinkmenu li:last-child:after {
-	content: "";
+ul {
+  margin: 0em;
+  padding-left: 1.5em;
 }
 
-.sublinkmenu a { text-decoration: none; }
+ul li{
+  list-style: none;
+}
+
+ul li:before {
+  content:"\00BB \0020 ";
+  color: #aaa;
+  padding-right: 0.5em;
+}
+
+h2{color:#999;}
+
+#mainmenu li:before {
+  content: "";
+}
+
+.sublinkmenu li {
+  border-right: 1px dotted #fff;
+}
 
 
+/**
+ * CRUD actions
+ */
+
+/*
+#submissions LI:before {
+  content: "";
+}
+*/
+
+SPAN.actions {
+  font-size: 70%;
+}
+
+/**
+ * Submission pages
+ */
+
+#submission P.submitted {
+  font-style: italic;
+  font-size: 90%;
+}
+
+#submission P.abstract {
+  font-size: 110%;
+}
+
+#submission P.experience {
+  margin: 1em;
+  padding: 0.5ex;
+  border: 1px dashed grey;
+}
+
+#submission P.actions {
+  font-size: 80%;
+  text-align: center;
+}
