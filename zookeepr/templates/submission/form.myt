@@ -12,10 +12,7 @@
 %	else:
 %		czeched = False
 %	#endif
-
-# WHY THE FUCK DOESN'T THIS LINE DO WHAT I WANT?  FUCK FUCK FUCK.
 <% h.radio_button('submission.submission_type_id', st.id, checked=czeched) %>
-
 <label for="submission.submission_type_id"><% st.name |h %></label>
 <br />
 % #endfor
