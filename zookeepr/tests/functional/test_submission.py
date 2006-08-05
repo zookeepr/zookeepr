@@ -7,14 +7,14 @@ class TestSubmission(ControllerTest):
     samples = [dict(title='test',
                     abstract='abstract 1',
                     experience='experience 1',
-                    url='',
-                    submission_type=1,
+                    url='http://example.org',
+                    submission_type_id=1,
                     ),
                dict(title='not a test',
                     abstract='abstract 2',
                     experience='experience 2',
-                    submission_type=1,
-                    url='',
+                    submission_type_id=2,
+                    url='http://lca2007.linux.org.au',
                     ),
                ]
 
