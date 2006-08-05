@@ -33,3 +33,27 @@ class TestSubmission(ControllerTest):
     def tearDown(self):
         model.submission_type.delete().execute()
         ControllerTest.tearDown(self)
+
+    def test_selected_radio_button_in_edit(self):
+        # Test that a radio button is checked when editing a submission
+        s = model.Submission(id=1,
+                             submission_type_id=3,
+                             title='foo',
+                             abstract='bar',
+                             experience='',
+                             url='')
+        self.session.save(s)
+        self.session.flush()
+
+
+        resp = self.app.get(url_for(controller='submission',
+                                    action='edit',
+                                    id=s.id))
+
+        f = resp.form
+
+        self.assertEqual(3, f.fields['submission.submission_type_id'][0].value)
+        
+        # clean up
+        self.session.delete(s)
+        self.session.flush()
