@@ -22,7 +22,6 @@ class BaseController(WSGIController):
         """__before__ is run on every requet, before passing control
         to the controller. Here we do anything that needs work
         per request."""
-        action = kwargs["action"]
 
         # FIXME - EVIL HACK
         # For some unknown reason _engine disappears
