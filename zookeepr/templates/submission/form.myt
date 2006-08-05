@@ -1,7 +1,8 @@
 <p><label for="submission.title">Title:</label><br />
 <% h.text_field('submission.title', c.submission.title, size=80) %></p>
 
-<p><label for="submission.submission_type_id">Type:</label>
+<p>
+<label for="submission.submission_type_id">Type:</label>
 #<span class="fielddesc">What sort of submission is this?</span>
 <br />
 
@@ -13,7 +14,8 @@
 %	#endif
 %	print checked
 <% h.radio_button('submission.submission_type_id', st.id, checked=checked ) %>
-<label for="submission.submission_type_id"><% st.name |h %></label><br />
+<label for="submission.submission_type_id"><% st.name |h %></label>
+<br />
 
 % #endfor
 
