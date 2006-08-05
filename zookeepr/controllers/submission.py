@@ -10,7 +10,7 @@ class SubmissionSchema(schema.Schema):
     abstract = validators.String()
     experience = validators.String()
     url = validators.String()
-    submission_type = validators.Int()
+    submission_type_id = validators.Int()
 
 class NewSubmissionSchema(BaseSchema):
     submission = SubmissionSchema()
