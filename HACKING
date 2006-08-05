@@ -1,0 +1,45 @@
+HACKING
+=======
+
+Welcome to the HACKING ON ZOOKEEPR document.
+
+* Structure
+
+MVC and Request/Response wrt Pylons
+
+lots of urls to pylons examples
+
+* Layout
+
+controllers directory, models, templates directories.
+
+* Libraries
+
+what are we relying on?
+
+libraries and urls to documentation on these libraries
+
+* How to add functionality
+
+short howto on writing a controller and stuff
+
+hello world example. emphasis on test driven development.  and documentation.
+
+* best practices
+
+ * documentation
+ * pylint
+ * how we use bzr
+ * running tests
+ * buildbot
+ * trac
+
+* Useful things:
+
+ repositories
+
+   mainline
+
+   integration branches
+
+   development branches
