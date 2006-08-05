@@ -157,7 +157,6 @@ a img {
 }
 
 #mainmenu li {
-  text-transform: capitalize;
   float: left;
   padding: 0.1em .5em;
 }
@@ -167,7 +166,7 @@ a img {
 }
 
 #mainmenu {
-  display:block;
+  display: block;
   width: 15em;
 }
 
