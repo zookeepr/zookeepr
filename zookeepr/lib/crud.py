@@ -167,6 +167,7 @@ class Delete(CRUDBase):
         # get the model name
         model_name = self.individual
         # call the template
+        setattr(c, model_name, obj)
         return render_response('%s/confirm_delete.myt' % model_name)
 
 
