@@ -125,8 +125,7 @@ class Update(CRUDBase):
 
         errors = {}
         defaults = dict(request.POST)
-        
-        if request.method == 'POST' and defaults:
+        if defaults:
             result, errors = self.validators['edit'].validate(defaults)
 
             if not errors:
