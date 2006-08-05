@@ -6,13 +6,15 @@
 <br />
 
 % for st in c.submission_types:
-%	if c.submission.submission_type:
-%		checked = st.id == c.submission.submission_type.id
+%	if c.submission.submission_type_id:
+%		checked = st.id == c.submission.submission_type_id
 %	else:
 %		checked = False
 %	#endif
-<% h.radio_button('submission.submission_type_id', st.id, checked=checked) %>
+%	print checked
+<% h.radio_button('submission.submission_type_id', st.id, checked=checked ) %>
 <label for="submission.submission_type_id"><% st.name |h %></label><br />
+
 % #endfor
 
 </p>
