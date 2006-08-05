@@ -14,6 +14,9 @@ This is... MyLCA!  (Pronounced 'milka'.)
 <ul>
 
 % for s in c.person.submissions:
+
+# FIXME: dirty hack
+%	if s.person == c.person:
 <li>
 <% h.link_to(s.title, url=h.url(controller='submission', action='view', id=s.id)) %>
 
@@ -27,6 +30,7 @@ This is... MyLCA!  (Pronounced 'milka'.)
 
 </li>
 % #endif
+% #endfor
 
 </ul>
 
