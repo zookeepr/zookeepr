@@ -7,11 +7,11 @@ class TestCFP(ModelTest):
     def test_create(self):
         session = create_session()
 
-        reg = model.Registration(email_address='testguy@example.org',
+        reg = model.core.domain.Registration(email_address='testguy@example.org',
                                  password='password',
                            )
 
-        sub = model.Submission(title="title",
+        sub = model.submission.domain.Submission(title="title",
                                abstract="abstract",
                                )
 
