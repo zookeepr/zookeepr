@@ -1,1 +1,1 @@
-from zookeepr.model.domain import Person
+from zookeepr.model.core.domain import Person
