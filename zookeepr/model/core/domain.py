@@ -2,8 +2,6 @@ import datetime
 import md5
 import random
 
-from zookeepr.model.tables import *
-
 ## Persons
 class Person(object):
     def __init__(self, handle=None, email_address=None, password=None,
@@ -42,13 +40,6 @@ class Person(object):
 class Role(object):
     def __init__(self, name=None):
         self.name = name
-
-mapper(Role, role, properties = dict(
-    people = relation(Person,
-                      secondary=person_role_map,
-                      lazy=False,
-                      backref='roles')
-    ))
 
 class Registration(object):
     def __init__(self, timestamp=None, email_address=None, password=None, activated=None, fullname=None):
