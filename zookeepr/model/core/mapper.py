@@ -1,16 +1,9 @@
-import datetime
-import md5
-import random
+from sqlalchemy import join, mapper
 
-from sqlalchemy import mapper, relation, MapperExtension, join
+from zookeepr.model.core.tables import account, person
+from zookeepr.model.core.domain import Person
 
-from zookeepr.model.submission.tables import *
-from zookeepr.model.submission.domain import *
-
-mapper(SubmissionType, submission_type)
-
-
-mapper(Submission, submission,
-       properties = dict(
-    submission_type = relation(SubmissionType, lazy=False),
-    ))
+# Map the Person object onto both the account and person tables
+mapper(Person, join(account, person),
+    properties = {'account_id': [account.c.id, person.c.account_id]}
+    )
