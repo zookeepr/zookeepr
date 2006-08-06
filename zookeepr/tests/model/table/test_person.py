@@ -1,4 +1,4 @@
-from zookeepr.tests.table import *
+from zookeepr.tests.model.table import *
 
 class TestPerson(TableTest):
     """Test the ``person`` table.
@@ -7,7 +7,7 @@ class TestPerson(TableTest):
     their contact details, etc, and references an account table that
     contains the person's login details.
     """
-    table = 'person'
+    table = 'core.tables.person'
     samples = [dict(handle='testguy',
                     account_id=1,
                     firstname='Testguy',

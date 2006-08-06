@@ -1,11 +1,11 @@
-from zookeepr.tests.table import *
+from zookeepr.tests.model.table import *
 
 class TestRole(TableTest):
     """Test the ``role`` table.
 
     This table describes roles to use with an ACL system.
     """
-    table = 'role'
+    table = 'core.tables.role'
     samples = [dict(name='test'),
                dict(name='test1'),
                ]

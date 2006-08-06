@@ -3,7 +3,7 @@ from formencode import validators, compound, schema, variabledecode
 from zookeepr.lib.base import BaseController
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.model import Role
+from zookeepr.model.core.domain import Role
 
 class RoleValidator(schema.Schema):
     name = validators.PlainText()

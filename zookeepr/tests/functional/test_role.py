@@ -9,7 +9,7 @@ class TestRole(ControllerTest):
         print response
 
     name = 'role'
-    model = model.Role
+    model = model.core.domain.Role
     url = '/role'
 
     samples = [{'name': 'admin'},

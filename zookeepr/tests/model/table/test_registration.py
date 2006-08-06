@@ -1,7 +1,7 @@
 import datetime
 import md5
 
-from zookeepr.tests.table import *
+from zookeepr.tests.model.table import *
 
 class TestRegistration(TableTest):
     """Test the ``registration`` table.
@@ -16,7 +16,7 @@ class TestRegistration(TableTest):
     ``url_hash`` stores a hash used by the confirmation system to
     identify this registration.
     """
-    table = 'registration'
+    table = 'core.tables.registration'
     samples = [dict(_timestamp=datetime.datetime.now(),
                     url_hash=md5.new("snuh").hexdigest(),
                     account_id=1,

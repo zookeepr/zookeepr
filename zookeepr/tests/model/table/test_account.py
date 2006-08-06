@@ -1,4 +1,4 @@
-from zookeepr.tests.table import *
+from zookeepr.tests.model.table import *
 
 class TestAccount(TableTest):
     """Test the ``account`` table.
@@ -14,7 +14,7 @@ class TestAccount(TableTest):
     Users log in with only their ``email_address`` and a ``password``, which
     is stored hashed in this table (but we don't care how here).
     """
-    table = 'account'
+    table = 'core.tables.account'
     samples = [dict(email_address='testguy@example.org',
                     password_hash='test',
                     activated=False),

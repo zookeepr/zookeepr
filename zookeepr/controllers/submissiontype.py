@@ -3,7 +3,7 @@ from formencode import validators, compound, schema, variabledecode
 from zookeepr.lib.base import BaseController
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.model import SubmissionType
+from zookeepr.model.submission.domain import SubmissionType
 
 class SubmissionTypeValidator(schema.Schema):
     name = validators.String()

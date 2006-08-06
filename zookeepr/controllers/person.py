@@ -5,7 +5,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.model import Person
+from zookeepr.model.core.domain import Person
 
 class PersonValidator(Schema):
     password = validators.PlainText()

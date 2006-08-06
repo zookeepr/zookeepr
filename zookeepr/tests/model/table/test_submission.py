@@ -1,13 +1,13 @@
 import StringIO
 
-from zookeepr.tests.table import *
+from zookeepr.tests.model.table import *
 
 class TestSubmission(TableTest):
     """Test the ``submission`` table.
 
     This table stores submissions made by candidate speakers.
     """
-    table = 'submission'
+    table = 'submission.tables.submission'
     samples = [dict(title='Test Paper',
                     abstract='Test Abstract',
                     experience='None at all',
