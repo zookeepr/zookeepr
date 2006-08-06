@@ -3,7 +3,7 @@ import md5
 from zookeepr.tests.model import *
 
 class TestPerson(ModelTest):
-    model = 'Person'
+    model = 'core.domain.Person'
 
     samples = [dict(handle='testguy',
                     email_address='testguy@example.org',
