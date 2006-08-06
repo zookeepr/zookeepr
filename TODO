@@ -8,17 +8,11 @@
 
  * write more docs ;-)
 
- * permissions/acls on all controllers
-
- * multiple speakers per submission
-
  * limit submission list bound to person to only their submissions (bug in model)  refactor model to work with both thi sand previous item
 
  * clicking on 'about' from my home page seems to sign out; make the authbar do the right thing regardless of wether securecontroller is used or not.
 
  * prettify the profile page
-
- * apachebench on zookeepr
 
 == todo from the flight
 
@@ -119,3 +113,6 @@
 
  * test validators:
 displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have quoted chars
+
+ * apachebench on zookeepr
+
