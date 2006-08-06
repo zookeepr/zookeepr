@@ -16,25 +16,25 @@ class TestRegisterController(ControllerTest):
                                activated=False)
         url_hash = r.url_hash
         print url_hash
-        self.session.save(r)
-        self.session.flush()
+        self.objectstore.save(r)
+        self.objectstore.flush()
         rid = r.id
         print r
         # clear so that we reload the object later
-        self.session.clear()
+        self.objectstore.clear()
         
         # visit the link
         response = self.app.get('/register/confirm/' + url_hash)
         response.mustcontain('Thanks for confirming your registration')
         
         # test that it's activated
-        r = self.session.get(model.Registration, rid)
+        r = self.objectstore.get(model.Registration, rid)
         self.assertEqual(True, r.activated, "registration was not activated")
 
         # clean up
-        r = self.session.get(model.Registration, rid)
-        self.session.delete(r)
-        self.session.flush()
+        r = self.objectstore.get(model.Registration, rid)
+        self.objectstore.delete(r)
+        self.objectstore.flush()
 
     def test_registration_confirmation_invalid_url_hash(self):
         """test that an invalid has doesn't activate anything"""

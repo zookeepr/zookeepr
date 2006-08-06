@@ -21,8 +21,8 @@ class TestAccountController(ControllerTest):
         p = model.Person(email_address='testguy@example.org',
                          password='p4ssw0rd')
         p.activated = True
-        self.session.save(p)
-        self.session.flush()
+        self.objectstore.save(p)
+        self.objectstore.flush()
         
         # try to log in
         resp = self.app.get(url_for(controller='account',
@@ -45,8 +45,8 @@ class TestAccountController(ControllerTest):
         self.failIf('contact_id' in resp.session)
         
         # clean up
-        self.session.delete(p)
-        self.session.flush()
+        self.objectstore.delete(p)
+        self.objectstore.flush()
 
     def test_signin_invalid(self):
         """Test invalid login details"""
@@ -64,8 +64,8 @@ class TestAccountController(ControllerTest):
         # create an account
         p = model.Person(email_address='testguy@example.org',
                          password='p4ssw0rd')
-        self.session.save(p)
-        self.session.flush()
+        self.objectstore.save(p)
+        self.objectstore.flush()
         
         # try to login
         resp = self.app.get(url_for(controller='account',
@@ -79,5 +79,5 @@ class TestAccountController(ControllerTest):
         self.failIf('person_id' in resp.session)
         
         # clean up
-        self.session.delete(p)
-        self.session.flush()
+        self.objectstore.delete(p)
+        self.objectstore.flush()

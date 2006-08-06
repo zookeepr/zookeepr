@@ -42,8 +42,8 @@ class TestSubmission(ControllerTest):
                              abstract='bar',
                              experience='',
                              url='')
-        self.session.save(s)
-        self.session.flush()
+        self.objectstore.save(s)
+        self.objectstore.flush()
 
         resp = self.app.get(url_for(controller='submission',
                                     action='edit',
@@ -55,5 +55,5 @@ class TestSubmission(ControllerTest):
         self.assertEqual('3', f.fields['submission.submission_type_id'][0].value)
         
         # clean up
-        self.session.delete(s)
-        self.session.flush()
+        self.objectstore.delete(s)
+        self.objectstore.flush()

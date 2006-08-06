@@ -6,6 +6,7 @@ from routes import url_for
 from sqlalchemy import create_session
 
 import zookeepr.models as model
+from zookeepr.config.routing import make_map
 from zookeepr.tests import TestBase, monkeypatch
 
 here_dir = os.path.dirname(__file__)
@@ -76,13 +77,19 @@ class ControllerTest(TestBase):
         TestBase.__init__(self, *args)
 
     def setUp(self):
-        self.session = create_session()
+        # add a routing map for testing routes within the controller tests
+        self.map = make_map()
+
+        # open a session to the object store to make assertions with
+        self.objectstore = create_session()
+
+        # check that the objectstore is currently empty
         self.assertEmptyModel()
 
     def tearDown(self):
         self.assertEmptyModel()
-        self.session.close()
-        del self.session
+        self.objectstore.close()
+        del self.objectstore
 
     def assertEmptyModel(self, model=None):
         """Check that there are no models"""
@@ -91,7 +98,7 @@ class ControllerTest(TestBase):
                 model = self.model
                 
         if model:
-            self.assertEqual([], self.session.query(model).select())
+            self.assertEqual([], self.objectstore.query(model).select())
 
 
     def form_params(self, params):
@@ -123,14 +130,14 @@ class ControllerTest(TestBase):
         form.submit()
 
         # now check that the data is in the database
-        os = self.session.query(self.model).select()
+        os = self.objectstore.query(self.model).select()
         self.assertEqual(1, len(os), "data object not in database")
 
         for key in self.samples[0].keys():
             self.check_attribute(os[0], key, self.samples[0][key])
 
-        self.session.delete(os[0])
-        self.session.flush()
+        self.objectstore.delete(os[0])
+        self.objectstore.flush()
 
     def check_attribute(self, obj, attr, expected):
         """check that the attribute has the correct value.
@@ -167,10 +174,10 @@ class ControllerTest(TestBase):
 
         # create an instance of the model
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
-        self.session.clear()
+        self.objectstore.clear()
 
         # get the form
         url = url_for(controller=self.url, action='edit', id=oid)
@@ -189,22 +196,22 @@ class ControllerTest(TestBase):
         form.submit()
 
         # test
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
         for k in self.samples[1].keys():
             self.check_attribute(o, k, self.samples[1][k])
 
-        self.session.delete(o)
-        self.session.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
     def delete(self):
         #"""Test delete action on controller"""
         # create something
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
 
-        self.session.clear()
+        self.objectstore.clear()
 
         ## delete it
         url = url_for(controller=self.url, action='delete', id=oid)
@@ -217,7 +224,7 @@ class ControllerTest(TestBase):
         form.submit()
 
         # check db
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
         print o
         self.assertEqual(None, o)
 
@@ -226,23 +233,23 @@ class ControllerTest(TestBase):
 
         # create some data
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
-        self.session.clear()
+        self.objectstore.clear()
 
         url = url_for(controller=self.url, action='edit', id=oid)
 
         response = self.app.get(url, params=self.form_params(self.samples[1]))
 
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
 
         for key in self.samples[1].keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
                 self.failIfEqual(self.samples[1][key], getattr(o, key), "key '%s' was unchanged after edit (%r == %r)" % (key, self.samples[1][key], getattr(o, key)))
 
-        self.session.delete(o)
-        self.session.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
 
     def invalid_get_on_delete(self):
@@ -250,21 +257,21 @@ class ControllerTest(TestBase):
         
         # create some data
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
-        self.session.clear()
+        self.objectstore.clear()
 
         url = url_for(controller=self.url, action='delete', id=oid)
         res = self.app.get(url)
         
         # check
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
         self.failIfEqual(None, o)
         
         # clean up
-        self.session.delete(o)
-        self.session.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
     def invalid_get_on_new(self):
         #"""Test that GET requests on new action don't modify"""
