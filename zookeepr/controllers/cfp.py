@@ -7,7 +7,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, c, h, render, render_response, request
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model.core.domain import Registration
-from zookeepr.model.submission.domain import SubmissionType, Submission, Registration
+from zookeepr.model.submission.domain import SubmissionType, Submission
 
 class RegistrationValidator(Schema):
     email_address = validators.String(not_empty=True)
