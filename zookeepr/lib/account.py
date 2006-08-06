@@ -1,7 +1,7 @@
 from pylons import h
 from sqlalchemy import create_session
 
-from zookeepr.models import Person
+from zookeepr.model import Person
 
 def profile_url(email_address):
     """Retrieve the url for a person's profile, given only their email address"""

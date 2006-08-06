@@ -1,6 +1,6 @@
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController
-from zookeepr.models import Person
+from zookeepr.model import Person
 
 class HomeController(BaseController):
 

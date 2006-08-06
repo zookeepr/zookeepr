@@ -1,7 +1,7 @@
 import datetime
 import md5
 
-from zookeepr.models import Registration
+from zookeepr.model import Registration
 from zookeepr.tests.model import *
 
 class TestRegistrationModel(ModelTest):

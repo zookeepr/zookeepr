@@ -5,7 +5,7 @@ from paste.fixture import TestApp
 from routes import url_for
 from sqlalchemy import create_session
 
-import zookeepr.models as model
+from zookeepr import model
 from zookeepr.config.routing import make_map
 from zookeepr.tests import TestBase, monkeypatch
 

@@ -9,7 +9,7 @@ from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
 from sqlalchemy import default_metadata, create_session
 
-import zookeepr.models as model
+from zookeepr import model
 
 class BaseController(WSGIController):
     def __call__(self, environ, start_response):

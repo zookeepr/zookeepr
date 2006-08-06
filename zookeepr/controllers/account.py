@@ -3,7 +3,7 @@ from formencode import validators, Invalid
 from zookeepr.lib.auth import PersonAuthenticator, retcode
 from zookeepr.lib.base import *
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import Person
+from zookeepr.model import Person
 
 class AuthenticationValidator(validators.FancyValidator):
     def validate_python(self, value, state):

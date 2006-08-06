@@ -1,6 +1,6 @@
 import os
 
-import zookeepr.models as model
+from zookeepr import model
 from sqlalchemy import global_connect, default_metadata
 
 class Globals(object):

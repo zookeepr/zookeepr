@@ -1,6 +1,6 @@
 from sqlalchemy import create_session
 
-import zookeepr.models as model
+from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
 
 class ModelTestGenerator(type):
@@ -21,7 +21,7 @@ class ModelTest(TestBase):
     Derived classes should set the following attributes:
 
     ``model`` is a string containing the name of the class being tested,
-    scoped relative to the module ``zookeepr.models``.
+    scoped relative to the module ``zookeepr.model``.
 
     ``samples`` is a list of dictionaries of attributes to use when
     creating test model objects.

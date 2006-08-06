@@ -1,6 +1,6 @@
 import sqlalchemy
 
-import zookeepr.models as model
+from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
 
 class TableTestGenerator(type):
@@ -26,7 +26,7 @@ class TableTest(TestBase):
     Derived classes should set the following attributes:
 
     ``table`` is a string containing the name of the table being tested,
-    scoped relative to the module ``zookeepr.models``.
+    scoped relative to the module ``zookeepr.model``.
 
     ``samples`` is a list of dictionaries of columns and their values to use
     when inserting a row into the table.
