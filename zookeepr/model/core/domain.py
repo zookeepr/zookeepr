@@ -41,6 +41,7 @@ class Role(object):
     def __init__(self, name=None):
         self.name = name
 
+
 class Registration(object):
     def __init__(self, timestamp=None, email_address=None, password=None, activated=None, fullname=None):
         self.timestamp = timestamp
