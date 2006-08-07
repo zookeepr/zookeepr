@@ -27,7 +27,7 @@ hello world example. emphasis on test driven development.  and documentation.
 
 * best practices
 
- * documentation
+ * documentation + pudge and pydoc
  * pylint
  * how we use bzr
  * running tests
