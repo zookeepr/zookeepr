@@ -7,7 +7,11 @@ setup(
     #author="",
     #author_email="",
     #url="",
-    install_requires=["Pylons==dev,>=0.9dev-r742"],
+    install_requires=[
+        "Pylons==dev,>=0.9dev-r742",
+        "SQLAlchemy>=0.2.3",
+        "pysqlite>=2.2.2",
+    ],
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',
