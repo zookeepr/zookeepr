@@ -1,4 +1,4 @@
-from zookeepr.tests.model.table import *
+from zookeepr.tests.model import *
 
 class TestSubmissionType(TableTest):
     """Test the ``submission_type`` table.

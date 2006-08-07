@@ -1,7 +1,7 @@
 import datetime
 import md5
 
-from zookeepr.tests.model.table import *
+from zookeepr.tests.model import *
 
 class TestRegistration(TableTest):
     """Test the ``registration`` table.

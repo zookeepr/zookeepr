@@ -1,4 +1,4 @@
-from zookeepr.tests.model.table import *
+from zookeepr.tests.model import *
 
 class TestPerson(TableTest):
     """Test the ``person`` table.

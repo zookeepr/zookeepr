@@ -1,3 +1,4 @@
+import sqlalchemy
 from sqlalchemy import create_session
 
 from zookeepr import model

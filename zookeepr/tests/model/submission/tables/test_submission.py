@@ -1,6 +1,6 @@
 import StringIO
 
-from zookeepr.tests.model.table import *
+from zookeepr.tests.model import *
 
 class TestSubmission(TableTest):
     """Test the ``submission`` table.
