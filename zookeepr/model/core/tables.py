@@ -81,4 +81,4 @@ registration = Table('registration',
                             ),
                      )
 
-__all__ = ['account', 'person', 'submission_type', 'submission', 'registration', 'person_role_map', 'role']
+__all__ = ['account', 'person']
