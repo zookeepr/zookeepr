@@ -23,10 +23,6 @@ submission = Table('submission',
                    Column('submission_type_id', Integer,
                           ForeignKey('submission_type.id')),
 
-                   # person submitting
-                   Column('person_id', Integer,
-                          ForeignKey('person.id')),
-
                    # their bio/experience presenting this topic
                    Column('experience', String()),
 
@@ -36,3 +32,13 @@ submission = Table('submission',
                    # do they need assistance?
                    Column('assistance', Boolean),
                    )
+
+# for doing n-n mappings of people and submissions
+person_submission_map = Table('person_submission_map',
+    Column('id', Integer, primary_key=True),
+
+    Column('person_id', Integer, ForeignKey('person.id'),
+        nullable=False),
+    Column('submission_id', Integer, ForeignKey('submission.id'),
+        nullable=False),
+    )
