@@ -1,7 +1,7 @@
 #from zookeepr.tests.functional import *
 #
 #class TestSubmission(ControllerTest):
-#    model = model.Submission
+#    model = model.submission.Submission
 #    name = 'submission'
 #    url = '/submission'
 #    samples = [dict(title='test',
@@ -36,7 +36,7 @@
 #
 #    def test_selected_radio_button_in_edit(self):
 #        # Test that a radio button is checked when editing a submission
-#        s = model.Submission(id=1,
+#        s = model.submission.Submission(id=1,
 #                             submission_type_id=3,
 #                             title='foo',
 #                             abstract='bar',

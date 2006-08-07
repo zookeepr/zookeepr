@@ -12,7 +12,7 @@
 #         """Test mapping persons to roles"""
 #         session = create_session()
 #
-#         p = model.Person(handle='testguy',
+#         p = model.core.Person(handle='testguy',
 #                          email_address='testguy@example.org')
 #         r = model.Role('admin')
 #         
@@ -28,7 +28,7 @@
 #         
 #         session.clear()
 #         
-#         p = session.get(model.Person, pid)
+#         p = session.get(model.core.Person, pid)
 #         self.assertEqual(['admin'], [r.name for r in p.roles])
 #         
 #         # clean up

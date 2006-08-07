@@ -60,16 +60,16 @@ class TestCFP(ControllerTest):
 
     def setUp(self):
         ControllerTest.setUp(self)
-        st1 = model.SubmissionType('Paper')
-        st2 = model.SubmissionType('Scissors')
+        st1 = model.submission.SubmissionType('Paper')
+        st2 = model.submission.SubmissionType('Scissors')
         self.objectstore.save(st1)
         self.objectstore.save(st2)
         self.objectstore.flush()
         self.stid = (st1.id, st2.id)
 
     def tearDown(self):
-        st1 = self.objectstore.get(model.SubmissionType, self.stid[0])
-        st2 = self.objectstore.get(model.SubmissionType, self.stid[1])
+        st1 = self.objectstore.get(model.submission.SubmissionType, self.stid[0])
+        st2 = self.objectstore.get(model.submission.SubmissionType, self.stid[1])
         self.objectstore.delete(st1)
         self.objectstore.delete(st2)
         self.objectstore.flush()

@@ -18,7 +18,7 @@ class TestAccountController(ControllerTest):
     def test_signin_signout(self):
         """Test account sign in"""
         # create a user
-        p = model.Person(email_address='testguy@example.org',
+        p = model.core.Person(email_address='testguy@example.org',
                          password='p4ssw0rd')
         p.activated = True
         self.objectstore.save(p)
@@ -62,7 +62,7 @@ class TestAccountController(ControllerTest):
 
     def test_signin_unconfirmed(self):
         # create an account
-        p = model.Person(email_address='testguy@example.org',
+        p = model.core.Person(email_address='testguy@example.org',
                          password='p4ssw0rd')
         self.objectstore.save(p)
         self.objectstore.flush()

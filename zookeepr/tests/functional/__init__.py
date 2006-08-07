@@ -58,7 +58,7 @@ class ControllerTest(TestBase):
 
     class TestSomeController(ControllerTest):
         name = 'Person'
-        model = model.Person
+        model = model.core.Person
         url = '/person'
         samples = [dict(name='testguy',
                         password='test',
