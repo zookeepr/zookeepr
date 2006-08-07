@@ -10,6 +10,7 @@ setup(
     install_requires=[
         "Pylons==dev,>=0.9dev-r742",
         "SQLAlchemy>=0.2.3",
+        "nose>=0.9.0",
     ],
     packages=find_packages(),
     include_package_data=True,
