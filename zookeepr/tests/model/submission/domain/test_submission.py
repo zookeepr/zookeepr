@@ -26,7 +26,7 @@ class TestSubmission(ModelTest):
         session.flush()
 
         s = model.submission.Submission(title='Venal Versimilitude: Vast vocation or violition of volition?',
-                             submission_type_id=st.id, #FIXME: this exposes knowledge of the table structure to the data model
+                             type=st,
                              abstract='This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
                              experience='Vaudeville',
                              attachment="some attachment",
@@ -53,15 +53,15 @@ class TestSubmission(ModelTest):
         # check references
         self.assertEqual(v, v.submissions[0].people[0])
         self.assertEqual(v.handle, v.submissions[0].people[0].handle)
-        self.assertEqual(st.name, v.submissions[0].submission_type.name)
+        self.assertEqual(st.name, v.submissions[0].type.name)
 
         self.assertEqual(buffer("some attachment"), s.attachment)
 
         # check the submission relations
-        self.assertEqual(st.name, s.submission_type.name)
+        self.assertEqual(st.name, s.type.name)
         self.assertEqual(v.handle, s.people[0].handle)
 
-        print s.submission_type
+        print s.type
         print s.people[0]
 
         session.delete(s)
@@ -97,7 +97,7 @@ class TestSubmission(ModelTest):
         
         s1 = model.submission.Submission(title='one',
                               abstract='bar',
-                              submission_type=st)
+                              type=st)
         session.save(s1)
 
         r1.submissions.append(s1)
@@ -108,7 +108,7 @@ class TestSubmission(ModelTest):
 
         s2 = model.submission.Submission(title='two',
                               abstract='some abstract',
-                              submission_type=st)
+                              type=st)
         session.save(s2)
 
         r2.submissions.append(s2)

@@ -5,10 +5,10 @@ class SubmissionType(object):
 
 ## Submissions
 class Submission(object):
-    def __init__(self, id=None, title=None, submission_type=None, abstract=None, experience=None, url=None, attachment=None):
+    def __init__(self, id=None, title=None, type=None, abstract=None, experience=None, url=None, attachment=None):
         self.id = id
         self.title = title
-        self.type = submission_type
+        self.type = type
         self.abstract = abstract
         self.experience = experience
         self.url = url
