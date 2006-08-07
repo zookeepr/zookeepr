@@ -12,6 +12,7 @@ setup(
         "SQLAlchemy>=0.2.3",
         "pysqlite==2.2.2",
     ],
+    dependency_links=["http://initd.org/pub/software/pysqlite/releases/2.2/2.2.2/"],
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',
