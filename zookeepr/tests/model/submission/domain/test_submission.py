@@ -5,7 +5,7 @@ class TestSubmission(ModelTest):
     def test_create(self):
         """Test creation of a Submission object"""
         
-        self.model = 'Submission'
+        self.model = 'submission.Submission'
 
         self.check_empty_session()
 
