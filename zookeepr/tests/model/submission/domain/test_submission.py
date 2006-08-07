@@ -11,10 +11,10 @@ class TestSubmission(ModelTest):
 
         session = create_session()
 
-        st = model.SubmissionType(name='BOF')
+        st = model.submission.SubmissionType(name='BOF')
 
         # create a person to submit with
-        v = model.Person('hacker', 'hacker@example.org',
+        v = model.core.Person('hacker', 'hacker@example.org',
                          'p4ssw0rd',
                          'E.',
                          'Leet',
@@ -27,7 +27,7 @@ class TestSubmission(ModelTest):
         session.save(v)
         session.flush()
 
-        s = model.Submission(title='Venal Versimilitude: Vast vocation or violition of volition?',
+        s = model.submission.Submission(title='Venal Versimilitude: Vast vocation or violition of volition?',
                              submission_type_id=st.id, #FIXME: this exposes knowledge of the table structure to the data model
                              abstract='This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
                              experience='Vaudeville',
@@ -46,9 +46,9 @@ class TestSubmission(ModelTest):
         
         session.clear()
         
-        v = session.get(model.Person, vid)
-        s = session.get(model.Submission, sid)
-        st = session.get(model.SubmissionType, stid)
+        v = session.get(model.core.Person, vid)
+        s = session.get(model.submission.Submission, sid)
+        st = session.get(model.submission.SubmissionType, stid)
         
         self.assertEqual(1, len(v.submissions))
         self.assertEqual(s.title, v.submissions[0].title)
@@ -70,11 +70,11 @@ class TestSubmission(ModelTest):
         session.delete(v)
         session.flush()
         
-        v = session.get(model.Person, vid)
+        v = session.get(model.core.Person, vid)
         self.failUnlessEqual(None, v)
-        s = session.get(model.Submission, sid)
+        s = session.get(model.submission.Submission, sid)
         self.failUnlessEqual(None, s)
-        st = session.get(model.SubmissionType, stid)
+        st = session.get(model.submission.SubmissionType, stid)
         self.failUnlessEqual(None, st)
         
         session.close()
@@ -89,14 +89,14 @@ class TestSubmission(ModelTest):
 #                                password='p')
 #        r2 = model.Registration(email_address='testgirl@example.com',
 #                                password='q')
-#        st = model.SubmissionType('Presentation')
+#        st = model.submission.SubmissionType('Presentation')
 #
 #        session.save(r1)
 #        session.save(r2)
 #        session.save(st)
 #        session.flush()
 #        
-#        s1 = model.Submission(title='foo',
+#        s1 = model.submission.Submission(title='foo',
 #                              abstract='bar',
 #                              submission_type_id=st.id)
 #
@@ -107,7 +107,7 @@ class TestSubmission(ModelTest):
 #
 #        self.failUnless(s1 in r1.submissions)
 #
-#        s2 = model.Submission(title='bar',
+#        s2 = model.submission.Submission(title='bar',
 #                              abstract='some abstract',
 #                              submission_type_id=st.id)
 #
