@@ -3,8 +3,6 @@ from zookeepr.tests.model import *
 class TestSubmission(ModelTest):
         
     def test_create(self):
-        """Test creation of a Submission object"""
-        
         self.model = 'submission.Submission'
 
         self.check_empty_session()
@@ -53,17 +51,18 @@ class TestSubmission(ModelTest):
         self.assertEqual(1, len(v.submissions))
         self.assertEqual(s.title, v.submissions[0].title)
         # check references
-        self.assertEqual(v.handle, v.submissions[0].person.handle)
+        self.assertEqual(v, v.submissions[0].people[0])
+        self.assertEqual(v.handle, v.submissions[0].people[0].handle)
         self.assertEqual(st.name, v.submissions[0].submission_type.name)
 
         self.assertEqual(buffer("some attachment"), s.attachment)
 
         # check the submission relations
         self.assertEqual(st.name, s.submission_type.name)
-        self.assertEqual(v.handle, s.person.handle)
+        self.assertEqual(v.handle, s.people[0].handle)
 
         print s.submission_type
-        print s.person
+        print s.people[0]
 
         session.delete(s)
         session.delete(st)
@@ -82,54 +81,63 @@ class TestSubmission(ModelTest):
         self.check_empty_session()
 
 
-#    def test_multiple_persons(self):
-#        session = create_session()
-#
-#        r1 = model.Registration(email_address='testguy@example.org',
-#                                password='p')
-#        r2 = model.Registration(email_address='testgirl@example.com',
-#                                password='q')
-#        st = model.submission.SubmissionType('Presentation')
-#
-#        session.save(r1)
-#        session.save(r2)
-#        session.save(st)
-#        session.flush()
-#        
-#        s1 = model.submission.Submission(title='foo',
-#                              abstract='bar',
-#                              submission_type_id=st.id)
-#
-#        r1.submissions.append(s1)
-#
-#        session.save(s1)
-#        session.flush()
-#
-#        self.failUnless(s1 in r1.submissions)
-#
-#        s2 = model.submission.Submission(title='bar',
-#                              abstract='some abstract',
-#                              submission_type_id=st.id)
-#
-#        r2.submissions.append(s2)
-#        session.save(s2)
-#        session.flush()
-#
-#        self.failUnless(s1 in r1.submissions)
-#        self.failUnless(s2 in r2.submissions)
-#
-#        # now make sure the converse is true
-#        self.failIf(s1 in r2.submissions, "invalid submission in r2.submissions: %r" % s1)
-#        self.failIf(s2 in r1.submissions, "invalid submission in r1.submissions: %r" % s2)
-#
-#        # clean up
-#        session.delete(s2)
-#        session.delete(s1)
-#        session.delete(r2)
-#        session.delete(r1)
-#        session.delete(st)
-#        session.flush()
-#
-#        # check
-#        self.model = 'Submission'
-#        self.check_empty_session()
+    def test_double_person_submission_mapping(self):
+        session = create_session()
+
+        r1 = model.core.Person(email_address='testguy@example.org',
+                                password='p')
+        r2 = model.core.Person(email_address='testgirl@example.com',
+                                password='q')
+        st = model.submission.SubmissionType('Presentation')
+
+        session.save(r1)
+        session.save(r2)
+        session.save(st)
+        session.flush()
+        
+        s1 = model.submission.Submission(title='one',
+                              abstract='bar',
+                              submission_type=st)
+        session.save(s1)
+
+        r1.submissions.append(s1)
+        # FIXME: this flush blows things up!
+        #session.flush()
+
+        self.failUnless(s1 in r1.submissions)
+
+        s2 = model.submission.Submission(title='two',
+                              abstract='some abstract',
+                              submission_type=st)
+        session.save(s2)
+
+        r2.submissions.append(s2)
+        session.flush()
+
+        self.failUnless(s2 in r2.submissions)
+
+        print "r1", r1, r1.submissions
+
+        print "r2", r2, r2.submissions
+
+        session.flush()
+
+        # assert positives
+        self.failUnless(s1 in r1.submissions)
+        self.failUnless(s2 in r2.submissions)
+
+        # now make sure the converse is true
+        self.failIf(s1 in r2.submissions, "invalid submission in r2.submissions: %r" % s1)
+        self.failIf(s2 in r1.submissions, "invalid submission in r1.submissions: %r" % s2)
+
+        # clean up
+        session.delete(s2)
+        session.delete(s1)
+        session.delete(r2)
+        session.delete(r1)
+        session.delete(st)
+        session.flush()
+
+        # check
+        self.model = 'submission.Submission'
+        self.check_empty_session()

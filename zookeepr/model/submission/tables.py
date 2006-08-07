@@ -35,8 +35,6 @@ submission = Table('submission',
 
 # for doing n-n mappings of people and submissions
 person_submission_map = Table('person_submission_map',
-    Column('id', Integer, primary_key=True),
-
     Column('person_id', Integer, ForeignKey('person.id'),
         nullable=False),
     Column('submission_id', Integer, ForeignKey('submission.id'),
