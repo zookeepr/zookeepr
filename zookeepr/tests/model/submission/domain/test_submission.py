@@ -141,3 +141,51 @@ class TestSubmission(ModelTest):
         # check
         self.model = 'submission.Submission'
         self.check_empty_session()
+
+    def test_multiple_persons_per_submission(self):
+        session = create_session()
+
+        p1 = model.core.Person(email_address='one@example.org',
+            password='foo')
+        st = model.submission.SubmissionType('Presentation')
+        session.save(p1)
+        session.save(st)
+        session.flush()
+        s = model.submission.Submission(title='a sub')
+        p1.submissions.append(s)
+        session.save(s)
+        session.flush()
+
+        p2 = model.core.Person(email_address='two@example.org',
+            password='bar')
+        s.people.append(p2)
+
+        session.save(p2)
+        session.flush()
+
+        p3 = model.core.Person(email_address='three@example.org',
+            password='quux')
+        session.save(p3)
+        session.flush()
+
+        self.failUnless(s in p1.submissions)
+        self.failUnless(s in p2.submissions)
+
+        self.failUnless(p1 in s.people)
+        self.failUnless(p2 in s.people)
+
+        print p3.submissions
+        print s.people
+        self.failIf(s in p3.submissions)
+        self.failIf(p3 in s.people)
+
+        # clean up
+        session.delete(s)
+        session.delete(p1)
+        session.delete(p2)
+        session.delete(st)
+        session.flush()
+
+        # check
+        self.model = 'submission.Submission'
+        self.check_empty_session()
