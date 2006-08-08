@@ -174,8 +174,8 @@ class TestSubmission(ModelTest):
         self.failUnless(p1 in s.people)
         self.failUnless(p2 in s.people)
 
-        print p3.submissions
-        print s.people
+        print "p3 subs:", p3.submissions
+        print "s.peopl", s.people
         self.failIf(s in p3.submissions)
         self.failIf(p3 in s.people)
 
