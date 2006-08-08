@@ -10,7 +10,7 @@ mapper(SubmissionType, submission_type)
 # Map the Submission object onto the submission table
 mapper(Submission, submission,
     properties = {
-        'type': relation(SubmissionType, lazy=False),
+        'type': relation(SubmissionType, lazy=True),
         'people': relation(Person, secondary=person_submission_map,
             backref='submissions')
     }
