@@ -151,6 +151,7 @@ class TestSubmission(ModelTest):
         session.save(p1)
         session.save(st)
         session.flush()
+
         s = model.submission.Submission(title='a sub')
         p1.submissions.append(s)
         session.save(s)
@@ -175,7 +176,7 @@ class TestSubmission(ModelTest):
         self.failUnless(p2 in s.people)
 
         print "p3 subs:", p3.submissions
-        print "s.peopl", s.people
+        print "s.people:", s.people
         self.failIf(s in p3.submissions)
         self.failIf(p3 in s.people)
 
