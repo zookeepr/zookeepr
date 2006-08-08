@@ -34,7 +34,7 @@ class Person(object):
     password = property(_get_password, _set_password)
 
     def __repr__(self):
-        return "<Person id=%s handle=%s>" % (self.id, self.handle)
+        return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 
 
 class Role(object):
