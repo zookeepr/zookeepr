@@ -42,7 +42,7 @@ class Role(object):
         self.name = name
 
 
-class Registration(object):
+class Account(object):
     def __init__(self, timestamp=None, email_address=None, password=None, activated=None, fullname=None):
         self.timestamp = timestamp
         self.email_address = email_address

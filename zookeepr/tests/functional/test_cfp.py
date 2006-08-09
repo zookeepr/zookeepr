@@ -3,8 +3,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model.core.domain import Registration
-from zookeepr.model.submission.domain import Submission
+from zookeepr.model import Account, Submission
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):

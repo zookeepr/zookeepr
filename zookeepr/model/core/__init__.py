@@ -1,4 +1,4 @@
-from zookeepr.model.core.domain import Person
+from zookeepr.model.core.domain import Person, Account
 
-__all__ = ['Person']
+__all__ = ['Person', 'Account']
 
