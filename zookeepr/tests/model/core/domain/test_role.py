@@ -39,13 +39,20 @@ class TestRoleModel(ModelTest):
          print "pre get p:", p
          
          p = Person.get(pid)
+         r = Role.get(rid)
          print "new p:", p
          print "p.roles:", p.roles
 
          print "r:", r
          print "r:", r.people
 
+         print "p.roles:", [id(x) for x in p.roles]
+         print "r:", id(r)
+
          self.failUnless(r in p.roles, "%r not in p.roles (currently %r)" % (r, p.roles))
+
+         # test people
+         self.failUnless(p in r.people, "%r not in r.people (currently %r)" % (p, r.people))
          
          # clean up
          p.delete()
