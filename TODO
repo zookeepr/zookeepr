@@ -1,5 +1,7 @@
 = TODO =
 
+ * do the apachebench thing and see if threadlocal has fixed the need for evil_jf
+
  * Restrict access to submissions.  Modify SecureController to add authorisation controls. + test obviously.
 
  * Add ability to add co-speakers to submissions.
