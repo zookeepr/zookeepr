@@ -7,13 +7,13 @@
 <br />
 
 % for st in c.submission_types:
-%	if c.submission.submission_type:
-%		czeched = st == c.submission.submission_type
+%	if c.submission.type:
+%		czeched = st == c.submission.type
 %	else:
 %		czeched = False
 %	#endif
-<% h.radio_button('submission.submission_type_id', st.id, checked=czeched) %>
-<label for="submission.submission_type_id"><% st.name |h %></label>
+<% h.radio_button('submission.type', st.id, checked=czeched) %>
+<label for="submission.type"><% st.name |h %></label>
 <br />
 % #endfor
 
