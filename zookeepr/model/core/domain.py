@@ -99,3 +99,5 @@ class Role(object):
     def __init__(self, name=None):
         self.name = name
 
+    def __repr__(self):
+        return '<Role id="%s" name="%s">' % (self.id, self.name)
