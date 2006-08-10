@@ -37,7 +37,7 @@ class TestPerson(TableTest):
                     password_hash='test',
                     activated=False,
                     _creation_timestamp=datetime.datetime.now(),
-                    url_hash=md5.new("snuh").hexdigest(),
+                    _url_hash=md5.new("snuh").hexdigest(),
                     ),
                dict(handle='testgirl',
                     firstname='Testgirl',
@@ -48,9 +48,9 @@ class TestPerson(TableTest):
                     password_hash='p4ssw0rd',
                     activated=True,
                     _creation_timestamp=datetime.datetime(2006,05,30,14,31,37),
-                    url_hash='winnebago',
+                    _url_hash='winnebago',
                     ),
                ]
-    not_nullables = ['email_address', '_creation_timestamp', 'url_hash', 'account_id']
+    not_nullables = ['email_address', '_creation_timestamp', 'url_hash']
     # FIXME: activated should be not nullable but also carries a default
     uniques = ['email_address', 'handle']
