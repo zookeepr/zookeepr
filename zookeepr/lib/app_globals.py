@@ -1,7 +1,7 @@
 import os
 
 from zookeepr import model
-from sqlalchemy import global_connect, default_metadata
+from sqlalchemy import default_metadata
 
 class Globals(object):
 
@@ -28,7 +28,7 @@ class Globals(object):
             your global variables.
             
         """
-    	global_connect(app_conf['dburi'])
+    	default_metadata.connect(app_conf['dburi'], strategy='threadlocal')
         default_metadata.create_all()
 
     def __del__(self):
