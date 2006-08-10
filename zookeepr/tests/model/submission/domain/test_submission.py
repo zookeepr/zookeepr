@@ -183,14 +183,12 @@ class TestSubmission(ModelTest):
 
         # clean up
         s.delete()
-        s.flush()
         p1.delete()
-        p1.flush()
         p2.delete()
-        p2.flush()
         st.delete()
-        st.flush()
 
+        objectstore.flush()
+        
         # check
         self.model = 'Submission'
         self.check_empty_session()
