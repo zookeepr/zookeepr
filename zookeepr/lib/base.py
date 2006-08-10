@@ -23,6 +23,11 @@ class BaseController(WSGIController):
         to the controller. Here we do anything that needs work
         per request."""
 
+        # FIXME - EVIL HACK
+        # For some unknown reason _engine disappears
+        # So we save it at initialisation and restore it each request
+        default_metadata.context._engine = g.engine
+
         # Convert the request_args into something sane. Basically what
         # I am doing here is finding anything encoded as FieldStorage
         # rather than a plain string and then encoding it as either a
