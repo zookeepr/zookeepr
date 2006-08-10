@@ -30,10 +30,6 @@ class Globals(object):
         """
     	global_connect(app_conf['dburi'])
         default_metadata.create_all()
-        # FIXME - EVIL HACK
-        # For some unknown reason _engine disappears
-        # So we save it here and and restore it each request in __before__
-        model.evil_jf = default_metadata.context._engine
 
     def __del__(self):
         """

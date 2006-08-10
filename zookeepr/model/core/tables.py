@@ -1,10 +1,5 @@
 from sqlalchemy import *
 
-# FIXME - EVIL HACK
-# For some unknown reason _engine disappears
-# So we save it in evil_jf and and restore it each request in __before__
-evil_jf = {}
-
 person = Table('person',
                Column('id', Integer, primary_key=True),
 
