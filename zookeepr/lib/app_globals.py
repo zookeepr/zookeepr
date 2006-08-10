@@ -28,7 +28,7 @@ class Globals(object):
             your global variables.
             
         """
-    	default_metadata.connect(app_conf['dburi'], strategy='threadlocal')
+        default_metadata.connect(app_conf['dburi'], strategy='threadlocal')
         default_metadata.create_all()
         self.engine = default_metadata.context._engine
 
