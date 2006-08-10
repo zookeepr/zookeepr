@@ -1,3 +1,4 @@
+import sqlalchemy.mods.threadlocal
 from sqlalchemy import mapper
 
 from zookeepr.model.core.tables import person
