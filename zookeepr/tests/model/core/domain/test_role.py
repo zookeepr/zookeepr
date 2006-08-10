@@ -11,7 +11,6 @@ class TestRoleModel(ModelTest):
 
      def test_map_person(self):
          """Test mapping persons to roles"""
-         session = create_session()
 
          p = Person(handle='testguy',
                     email_address='testguy@example.org')
@@ -33,6 +32,9 @@ class TestRoleModel(ModelTest):
          objectstore.clear()
          
          p = Person.get(pid)
+         print p.roles
+
+         self.failUnless(r in p.roles)
          self.assertEqual(['admin'], [r.name for r in p.roles])
          
          # clean up
