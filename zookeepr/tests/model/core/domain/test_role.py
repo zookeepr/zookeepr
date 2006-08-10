@@ -17,25 +17,35 @@ class TestRoleModel(ModelTest):
          r = Role('admin')
 
          p.save()
-         r.save()
          p.flush()
+
+         r.save()
          r.flush()
          
          p.roles.append(r)
 
+         print "pre clear, p.roles:", p.roles
+
          p.save()
          p.flush()
+
+         print "p saved:", p
          
          rid = r.id
          pid = p.id
          
          objectstore.clear()
+
+         print "pre get p:", p
          
          p = Person.get(pid)
-         print p.roles
+         print "new p:", p
+         print "p.roles:", p.roles
 
-         self.failUnless(r in p.roles)
-         self.assertEqual(['admin'], [r.name for r in p.roles])
+         print "r:", r
+         print "r:", r.people
+
+         self.failUnless(r in p.roles, "%r not in p.roles (currently %r)" % (r, p.roles))
          
          # clean up
          p.delete()
