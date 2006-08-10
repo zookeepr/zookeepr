@@ -32,18 +32,15 @@ class TestPerson(ModelTest):
     def test_select_by_url(self):
         self.check_empty_session()
 
-        session = create_session()
-
         r = Person(email_address='testguy@testguy.org',
                    password='password')
 
         print r
 
-        session.save(r)
+        r.save()
+        r.flush()
 
-        session.flush()
-
-        s = session.query(Person).select_by(_url_hash=r.url_hash)
+        s = Person.select_by(_url_hash=r.url_hash)
 
         # only one element
         self.assertEqual(1, len(s))
@@ -52,6 +49,7 @@ class TestPerson(ModelTest):
         self.assertEqual(r, s[0])
 
         # clean up
-        session.delete(r)
-        session.flush()
+        r.delete()
+        r.flush()
+
         self.check_empty_session()

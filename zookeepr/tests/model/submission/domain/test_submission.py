@@ -1,52 +1,54 @@
+from zookeepr.model import Submission, SubmissionType, Person
 from zookeepr.tests.model import *
 
 class TestSubmission(ModelTest):
         
     def test_create(self):
-        self.model = 'submission.Submission'
+        self.model = 'Submission'
 
         self.check_empty_session()
 
-        session = create_session()
-
-        st = model.submission.SubmissionType(name='BOF')
+        st = SubmissionType(name='BOF')
 
         # create a person to submit with
-        v = model.core.Person('hacker', 'hacker@example.org',
-                         'p4ssw0rd',
-                         'E.',
-                         'Leet',
-                         '+6125555555',
-                         )
+        v = Person('hacker', 'hacker@example.org',
+                   'p4ssw0rd',
+                   'E.',
+                   'Leet',
+                   '+6125555555',
+                   )
 
         print v
-        
-        session.save(st)
-        session.save(v)
-        session.flush()
 
-        s = model.submission.Submission(title='Venal Versimilitude: Vast vocation or violition of volition?',
-                             type=st,
-                             abstract='This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
-                             experience='Vaudeville',
-                             attachment="some attachment",
-                             )
+        st.save()
+        st.flush()
+        v.save()
+        v.flush()
+
+        s = Submission(title='Venal Versimilitude: Vast vocation or violition of volition?',
+                       type=st,
+                       abstract='This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
+                       experience='Vaudeville',
+                       attachment="some attachment",
+                       )
         
         # give this sub to v
         v.submissions.append(s)
 
-        session.save(s)
-        session.flush()
+        s.save()
+        s.flush()
 
         vid = v.id
         stid = st.id
         sid = s.id
-        
-        session.clear()
-        
-        v = session.get(model.core.Person, vid)
-        s = session.get(model.submission.Submission, sid)
-        st = session.get(model.submission.SubmissionType, stid)
+
+        objectstore.clear()
+
+        print vid, stid, sid
+
+        v = Person.get(vid)
+        st = SubmissionType.get(stid)
+        s = Submission.get(sid)
         
         self.assertEqual(1, len(v.submissions))
         self.assertEqual(s.title, v.submissions[0].title)
@@ -64,63 +66,60 @@ class TestSubmission(ModelTest):
         print s.type
         print s.people[0]
 
-        session.delete(s)
-        session.delete(st)
-        session.delete(v)
-        session.flush()
+        s.delete()
+        s.flush()
+        st.delete()
+        st.flush()
+        v.delete()
+        v.flush()
         
-        v = session.get(model.core.Person, vid)
+        v = Person.get(vid)
         self.failUnlessEqual(None, v)
-        s = session.get(model.submission.Submission, sid)
+        s = Submission.get(sid)
         self.failUnlessEqual(None, s)
-        st = session.get(model.submission.SubmissionType, stid)
+        st = SubmissionType.get(stid)
         self.failUnlessEqual(None, st)
-        
-        session.close()
         
         self.check_empty_session()
 
 
     def test_double_person_submission_mapping(self):
-        session = create_session()
+        r1 = Person(email_address='testguy@example.org',
+                    password='p')
+        r2 = Person(email_address='testgirl@example.com',
+                    password='q')
+        st = SubmissionType('Presentation')
 
-        r1 = model.core.Person(email_address='testguy@example.org',
-                                password='p')
-        r2 = model.core.Person(email_address='testgirl@example.com',
-                                password='q')
-        st = model.submission.SubmissionType('Presentation')
-
-        session.save(r1)
-        session.save(r2)
-        session.save(st)
-        session.flush()
+        r1.save()
+        r1.flush()
+        r2.save()
+        r2.flush()
+        st.save()
+        st.flush()
         
-        s1 = model.submission.Submission(title='one',
-                              abstract='bar',
-                              type=st)
-        session.save(s1)
+        s1 = Submission(title='one',
+                        abstract='bar',
+                        type=st)
+        s1.save()
 
         r1.submissions.append(s1)
-        # FIXME: this flush blows things up!
-        #session.flush()
+        s1.flush()
 
         self.failUnless(s1 in r1.submissions)
 
-        s2 = model.submission.Submission(title='two',
-                              abstract='some abstract',
-                              type=st)
-        session.save(s2)
+        s2 = Submission(title='two',
+                        abstract='some abstract',
+                        type=st)
 
+        s2.save()
         r2.submissions.append(s2)
-        session.flush()
+        s2.flush()
 
         self.failUnless(s2 in r2.submissions)
 
         print "r1", r1, r1.submissions
 
         print "r2", r2, r2.submissions
-
-        session.flush()
 
         # assert positives
         self.failUnless(s1 in r1.submissions)
@@ -131,43 +130,45 @@ class TestSubmission(ModelTest):
         self.failIf(s2 in r1.submissions, "invalid submission in r1.submissions: %r" % s2)
 
         # clean up
-        session.delete(s2)
-        session.delete(s1)
-        session.delete(r2)
-        session.delete(r1)
-        session.delete(st)
-        session.flush()
+        s2.delete()
+        s2.flush()
+        s1.delete()
+        s1.flush()
+        r2.delete()
+        r2.flush()
+        r1.delete()
+        r1.flush()
+        st.delete()
+        st.flush()
 
         # check
-        self.model = 'submission.Submission'
+        self.model = 'Submission'
         self.check_empty_session()
 
     def test_multiple_persons_per_submission(self):
-        session = create_session()
+        p1 = Person(email_address='one@example.org',
+                    password='foo')
+        st = SubmissionType('Presentation')
+        p1.save()
+        p1.flush()
+        st.save()
+        st.flush()
 
-        p1 = model.core.Person(email_address='one@example.org',
-            password='foo')
-        st = model.submission.SubmissionType('Presentation')
-        session.save(p1)
-        session.save(st)
-        session.flush()
-
-        s = model.submission.Submission(title='a sub')
+        s = Submission(title='a sub')
         p1.submissions.append(s)
-        session.save(s)
-        session.flush()
+        s.save()
+        s.flush()
 
-        p2 = model.core.Person(email_address='two@example.org',
-            password='bar')
+        p2 = Person(email_address='two@example.org',
+                    password='bar')
         s.people.append(p2)
+        p2.save()
+        p2.flush()
 
-        session.save(p2)
-        session.flush()
-
-        p3 = model.core.Person(email_address='three@example.org',
-            password='quux')
-        session.save(p3)
-        session.flush()
+        p3 = Person(email_address='three@example.org',
+                    password='quux')
+        p3.save()
+        p3.flush()
 
         self.failUnless(s in p1.submissions)
         self.failUnless(s in p2.submissions)
@@ -181,12 +182,15 @@ class TestSubmission(ModelTest):
         self.failIf(p3 in s.people)
 
         # clean up
-        session.delete(s)
-        session.delete(p1)
-        session.delete(p2)
-        session.delete(st)
-        session.flush()
+        s.delete()
+        s.flush()
+        p1.delete()
+        p1.flush()
+        p2.delete()
+        p2.flush()
+        st.delete()
+        st.flush()
 
         # check
-        self.model = 'submission.Submission'
+        self.model = 'Submission'
         self.check_empty_session()

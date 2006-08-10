@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import create_session
+from sqlalchemy import objectstore
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -58,9 +58,10 @@ class ModelTest(TestBase):
         
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
-        session = create_session()
+        session = sqlalchemy.create_session()
         results = session.query(self.get_model()).select()
         self.assertEqual(0, len(results))
+        session.close()
 
     def crud(self):
         #
@@ -92,23 +93,23 @@ class ModelTest(TestBase):
         self.failIf(len(self.samples) < 1,
             "not enough sample data, stranger")
 
-        session = create_session()
-        
         for sample in self.samples:
             # instantiating model
             o = self.get_model()(**sample)
     
             # committing to db
-            session.save(o)
-            session.flush()
+            o.save()
+            o.flush()
             oid = o.id
 
             # clear the session, invalidating o
-            session.clear()
+            objectstore.clear()
             del o
     
             # check it's in the database
-            o = session.get(self.get_model(), oid)
+            print self.get_model()
+            print oid
+            o = self.get_model().get(oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
@@ -117,13 +118,11 @@ class ModelTest(TestBase):
                 self.check_attribute(o, key, sample[key])
     
             # deleting object
-            session.delete(o)
-            session.flush()
+            o.delete()
+            o.flush()
     
             # checking db
             self.check_empty_session()
-
-        session.close()
 
     def check_attribute(self, obj, key, value):
         """Check that the attribute has the correct value.
@@ -309,4 +308,4 @@ class TableTest(TestBase):
             self.check_empty_table()
 
 
-__all__ = ['TableTest', 'ModelTest', 'model', 'create_session']
+__all__ = ['TableTest', 'ModelTest', 'model', 'objectstore']

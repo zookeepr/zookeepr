@@ -23,11 +23,6 @@ class BaseController(WSGIController):
         to the controller. Here we do anything that needs work
         per request."""
 
-        # FIXME - EVIL HACK
-        # For some unknown reason _engine disappears
-        # So we save it at initialisation and restore it each request
-        default_metadata.context._engine = model.evil_jf
-
         # Convert the request_args into something sane. Basically what
         # I am doing here is finding anything encoded as FieldStorage
         # rather than a plain string and then encoding it as either a
@@ -41,14 +36,3 @@ class BaseController(WSGIController):
                         request_args[key] = request_args[key].value
                     else:
                         request_args[key] = request_args[key].value
-
-
-        # Create a connection to the object store that we can use for the
-        # life of the request.
-        self.objectstore = create_session()
-
-    def __after__(self, **kwargs):
-        # Close the connection to the objectstore
-        self.objectstore.close()
-        # and invalidate it so there's no chance of using it incorrectly
-        self.objectstore = None
