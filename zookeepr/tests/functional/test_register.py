@@ -1,6 +1,7 @@
 import datetime
 import md5
 
+from zookeepr.model import Person
 from zookeepr.tests.functional import *
 
 class TestRegisterController(ControllerTest):
@@ -10,34 +11,34 @@ class TestRegisterController(ControllerTest):
         timestamp = datetime.datetime.now()
         email_address = 'testguy@testguy.org'
         password = 'password'
-        r = model.Registration(timestamp=timestamp,
-                               email_address=email_address,
-                               password=password,
-                               activated=False)
+        r = Person(creation_timestamp=timestamp,
+                   email_address=email_address,
+                   password=password,
+                   activated=False)
         url_hash = r.url_hash
         print url_hash
-        self.objectstore.save(r)
-        self.objectstore.flush()
+        r.save()
+        r.flush()
         rid = r.id
         print r
         # clear so that we reload the object later
-        self.objectstore.clear()
+        objectstore.clear()
         
         # visit the link
         response = self.app.get('/register/confirm/' + url_hash)
         response.mustcontain('Thanks for confirming your registration')
         
         # test that it's activated
-        r = self.objectstore.get(model.Registration, rid)
+        r = Person.get(rid)
         self.assertEqual(True, r.activated, "registration was not activated")
 
         # clean up
-        r = self.objectstore.get(model.Registration, rid)
-        self.objectstore.delete(r)
-        self.objectstore.flush()
+        r = Person.get(rid)
+        r.delete()
+        r.flush()
 
     def test_registration_confirmation_invalid_url_hash(self):
         """test that an invalid has doesn't activate anything"""
-        self.assertEmptyModel(model.Registration)
+        self.assertEmptyModel(Person)
 
         response = self.app.get('/register/confirm/nonexistent', status=404)

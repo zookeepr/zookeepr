@@ -86,6 +86,7 @@ class Create(CRUDBase):
                     setattr(new_object, k, result[model_name][k])
 
                 new_object.save()
+                new_object.flush()
 
                 default_redirect = dict(action='view', id=self.identifier(new_object))
                 self.redirect_to('new', default_redirect)
@@ -159,6 +160,7 @@ class Delete(CRUDBase):
         
         if request.method == 'POST':
             obj.delete()
+            obj.flush()
 
             redirect_to(action='index', id=None)
 

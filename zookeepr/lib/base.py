@@ -19,7 +19,7 @@ class BaseController(WSGIController):
         return WSGIController.__call__(self, environ, start_response)
 
     def __before__(self, **kwargs):
-        """__before__ is run on every requet, before passing control
+        """__before__ is run on every request, before passing control
         to the controller. Here we do anything that needs work
         per request."""
 

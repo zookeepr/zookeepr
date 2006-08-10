@@ -1,4 +1,5 @@
 from zookeepr.lib.base import *
+from zookeepr.model import Person
 
 class RegisterController(BaseController):
 
@@ -9,14 +10,14 @@ class RegisterController(BaseController):
         they regsitered, and a nonce.
 
         """
-        r = self.objectstore.query(model.Registration).select_by(_url_hash=id)
+        r = Person.select_by(_url_hash=id)
 
         if len(r) < 1:
             abort(404)
 
         r[0].activated = True
 
-        self.objectstore.save(r[0])
-        self.objectstore.flush()
+        r[0].save()
+        r[0].flush()
 
         return render_response('register/confirmed.myt')
