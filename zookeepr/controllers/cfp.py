@@ -8,6 +8,13 @@ from zookeepr.lib.base import BaseController, c, h, render, render_response, req
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import Person, SubmissionType, Submission
 
+# class SubmissionTypeValidator(validators.FancyValidator):
+#     def _to_python(self, value, state):
+#         objectstore = create_session()
+        
+
+#         return SubmissionType.get(value)
+    
 class RegistrationValidator(Schema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
@@ -17,6 +24,7 @@ class RegistrationValidator(Schema):
 class SubmissionValidator(Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
+    #type = SubmissionTypeValidator()
     type = validators.Int()
     experience = validators.String()
     url = validators.String()
