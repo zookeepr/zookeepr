@@ -23,7 +23,7 @@ class TestCFP(ControllerTest):
                    }
         sub_data = {'title': 'title',
                     'abstract': 'abstract',
-                    #'type': 1,
+                    'type': 1,
                     'experience': 'some',
                     'url': 'http://example.org',
                     'attachment': 'foo',
@@ -88,6 +88,7 @@ class TestCFP(ControllerTest):
              'registration.fullname': 'Testguy McTest',
              'submission.title': 'title',
              'submission.abstract': 'abstract',
+             'submission.type': 1,
              'submission.attachment': '',
              'submission.assistance': False,
              }
