@@ -4,7 +4,7 @@ from zookeepr.lib.auth import SecureController
 from zookeepr.lib.base import c
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.model.submission.domain import Submission, SubmissionType
+from zookeepr.model import Submission, SubmissionType
 
 class SubmissionSchema(schema.Schema):
     title = validators.String()
