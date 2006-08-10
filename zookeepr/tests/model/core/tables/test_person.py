@@ -1,3 +1,6 @@
+import datetime
+import md5
+
 from zookeepr.tests.model import *
 
 class TestPerson(TableTest):
@@ -26,7 +29,6 @@ class TestPerson(TableTest):
     """
     table = 'core.tables.person'
     samples = [dict(handle='testguy',
-                    account_id=1,
                     firstname='Testguy',
                     lastname='McTest',
                     phone='+61295555555',
@@ -36,10 +38,8 @@ class TestPerson(TableTest):
                     activated=False,
                     _creation_timestamp=datetime.datetime.now(),
                     url_hash=md5.new("snuh").hexdigest(),
-                    account_id=1,
                     ),
                dict(handle='testgirl',
-                    account_id=2,
                     firstname='Testgirl',
                     lastname='Van Test',
                     phone='+37',
@@ -49,9 +49,8 @@ class TestPerson(TableTest):
                     activated=True,
                     _creation_timestamp=datetime.datetime(2006,05,30,14,31,37),
                     url_hash='winnebago',
-                    account_id=1,
                     ),
                ]
     not_nullables = ['email_address', '_creation_timestamp', 'url_hash', 'account_id']
     # FIXME: activated should be not nullable but also carries a default
-    uniques = ['email_address', 'handle'
+    uniques = ['email_address', 'handle']

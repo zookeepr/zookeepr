@@ -1,4 +1,4 @@
-from sqlalchemy import join, mapper
+from sqlalchemy import mapper
 
 from zookeepr.model.core.tables import person
 from zookeepr.model.core.domain import Person
