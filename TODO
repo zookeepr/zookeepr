@@ -14,6 +14,8 @@
 
  * prettify the profile page
 
+ * rename /register/confirm to /account/confirm and use new Account data model
+
 == todo from the flight
 
  * test registration actually creates a person object with it.
