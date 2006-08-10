@@ -1,10 +1,10 @@
 from formencode import validators, compound, schema, variabledecode
 
-from zookeepr.lib.auth import SecureController
+from zookeepr.lib.auth import BaseController
 from zookeepr.lib.base import c
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import Submission, SubmissionType
+from zookeepr.model import Submission, SubmissionType
 
 class SubmissionSchema(schema.Schema):
     title = validators.String()
@@ -21,7 +21,7 @@ class EditSubmissionSchema(BaseSchema):
     submission = SubmissionSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class SubmissionController(SecureController, View, Modify):
+class SubmissionController(BaseController, View, Modify):
     validators = {"new" : NewSubmissionSchema(),
                   "edit" : EditSubmissionSchema()}
 
@@ -29,6 +29,6 @@ class SubmissionController(SecureController, View, Modify):
     individual = 'submission'
 
     def __before__(self, **kwargs):
-        SecureController.__before__(self, **kwargs)
+        BaseController.__before__(self, **kwargs)
         
-        c.submission_types = self.objectstore.query(SubmissionType).select()
+        c.submission_types = SubmissionType.select()

@@ -1,6 +1,6 @@
 import os
 
-import zookeepr.models as model
+from zookeepr import model
 from sqlalchemy import global_connect, default_metadata
 
 class Globals(object):
@@ -28,12 +28,12 @@ class Globals(object):
             your global variables.
             
         """
-	global_connect(app_conf['dburi'])
-	default_metadata.create_all()
+    	global_connect(app_conf['dburi'])
+        default_metadata.create_all()
         # FIXME - EVIL HACK
-	# For some unknown reason _engine disappears
-	# So we save it here and and restore it each request in __before__
-	model.evil_jf = default_metadata.context._engine
+        # For some unknown reason _engine disappears
+        # So we save it here and and restore it each request in __before__
+        model.evil_jf = default_metadata.context._engine
 
     def __del__(self):
         """

@@ -1,11 +1,11 @@
-from zookeepr.tests.table import *
+from zookeepr.tests.model import *
 
 class TestSubmissionType(TableTest):
     """Test the ``submission_type`` table.
 
     This table stores the list of types that a submission can be.
     """
-    table = 'submission_type'
+    table = 'submission.tables.submission_type'
     samples = [dict(name='test'),
                dict(name='test1'),
                ]

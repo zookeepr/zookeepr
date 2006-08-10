@@ -7,7 +7,7 @@ class TestPerson(ControllerTest):
 #         response = self.app.get(url_for(controller='person'))
 #         # Test response...
 #         response.mustcontain("person index")
-    model = model.Person
+    model = model.core.domain.Person
     name = 'person'
     url = '/person'
     samples = [dict(handle='testguy',

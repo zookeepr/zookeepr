@@ -3,7 +3,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.models import Registration, Submission
+from zookeepr.model import Person, Submission, SubmissionType
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
@@ -23,7 +23,7 @@ class TestCFP(ControllerTest):
                    }
         sub_data = {'title': 'title',
                     'abstract': 'abstract',
-                    #'type': 1,
+                    'type': 1,
                     'experience': 'some',
                     'url': 'http://example.org',
                     'attachment': 'foo',
@@ -36,42 +36,46 @@ class TestCFP(ControllerTest):
 
         form.submit()
 
-        regs = self.objectstore.query(Registration).select()
+        regs = Person.select()
         self.assertEqual(1, len(regs))
 
         for key in reg_data.keys():
             self.check_attribute(regs[0], key, reg_data[key])
 
-        subs = self.objectstore.query(Submission).select()
+        subs = Submission.select()
         self.assertEqual(1, len(subs))
 
         for key in sub_data.keys():
             self.check_attribute(subs[0], key, sub_data[key])
 
-        self.objectstore.delete(regs[0])
-        self.objectstore.delete(subs[0])
-        self.objectstore.flush()
+        regs[0].delete()
+        regs[0].flush()
+        subs[0].delete()
+        subs[0].flush()
 
     no_test = ['password_confirm']
     mangles = dict(password = lambda p: md5.new(p).hexdigest(),
-                   attachment = lambda a: buffer(a),
+                   #attachment = lambda a: buffer(a),
+                   type = lambda t: SubmissionType.get(1),
                    )
 
     def setUp(self):
         ControllerTest.setUp(self)
-        st1 = model.SubmissionType('Paper')
-        st2 = model.SubmissionType('Scissors')
-        self.objectstore.save(st1)
-        self.objectstore.save(st2)
-        self.objectstore.flush()
+        st1 = SubmissionType('Paper')
+        st2 = SubmissionType('Scissors')
+        st1.save()
+        st1.flush()
+        st2.save()
+        st2.flush()
         self.stid = (st1.id, st2.id)
 
     def tearDown(self):
-        st1 = self.objectstore.get(model.SubmissionType, self.stid[0])
-        st2 = self.objectstore.get(model.SubmissionType, self.stid[1])
-        self.objectstore.delete(st1)
-        self.objectstore.delete(st2)
-        self.objectstore.flush()
+        st1 = SubmissionType.get(self.stid[0])
+        st2 = SubmissionType.get(self.stid[1])
+        st1.delete()
+        st1.flush()
+        st2.delete()
+        st2.flush()
         ControllerTest.tearDown(self)
                            
         
@@ -88,6 +92,7 @@ class TestCFP(ControllerTest):
              'registration.fullname': 'Testguy McTest',
              'submission.title': 'title',
              'submission.abstract': 'abstract',
+             'submission.type': 1,
              'submission.attachment': '',
              'submission.assistance': False,
              }
@@ -99,13 +104,13 @@ class TestCFP(ControllerTest):
         res1.mustcontain('testguy@example.org')
 
         # grab it from the db
-        regs = self.objectstore.query(Registration).select()
+        regs = Person.select()
         self.assertEqual(1, len(regs))
         # make sure that it's inactive
         self.assertEqual(False, regs[0].activated)
 
         # clear this session, we want to reselect this data later
-        self.objectstore.clear()
+        objectstore.clear()
         
         
         # get out the url hash because i don't know how to trap smtplib
@@ -142,13 +147,14 @@ class TestCFP(ControllerTest):
         print res
         
         # check the rego worked
-        regs = self.objectstore.query(Registration).select()
+        regs = Person.select()
         self.assertEqual(1, len(regs))
         print regs[0]
         self.assertEqual(True, regs[0].activated, "registration was not activated!")
 
         # clean up
         Dummy_smtplib.existing.reset()
-        self.objectstore.delete(regs[0])
-        self.objectstore.delete(self.objectstore.query(Submission).select()[0])
-        self.objectstore.flush()
+        regs[0].delete()
+        regs[0].flush()
+        Submission.select()[0].delete()
+        Submission.select()[0].flush()

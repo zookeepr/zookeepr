@@ -6,8 +6,12 @@ from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, c, h, render, render_response, request
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import SubmissionType, Submission, Registration
+from zookeepr.model import Person, SubmissionType, Submission
 
+class SubmissionTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return SubmissionType.get(value)
+    
 class RegistrationValidator(Schema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
@@ -17,7 +21,7 @@ class RegistrationValidator(Schema):
 class SubmissionValidator(Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
-    type = validators.Int()
+    type = SubmissionTypeValidator()
     experience = validators.String()
     url = validators.String()
     attachment = validators.String()
@@ -33,12 +37,12 @@ class CfpController(BaseController):
         return render_response("cfp/list.myt")
 
     def submit(self):
-        c.cfptypes = self.objectstore.query(SubmissionType).select()
+        c.cfptypes = SubmissionType.select()
 
         errors = {}
         defaults = dict(request.POST)
 
-        new_reg = Registration()
+        new_reg = Person()
         new_sub = Submission()
 
         c.registration = new_reg
@@ -54,12 +58,13 @@ class CfpController(BaseController):
                 for k in result['registration']:
                     setattr(new_reg, k, result['registration'][k])
 
-                self.objectstore.save(new_reg)
-                self.objectstore.save(new_sub)
+                new_reg.save()
+                new_sub.save()
 
                 new_reg.submissions.append(new_sub)
                 
-                self.objectstore.flush()
+                new_reg.flush()
+                new_sub.flush()
 
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template
@@ -68,9 +73,6 @@ class CfpController(BaseController):
                 s.quit()
 
                 return render_response('cfp/thankyou.myt')
-                
-                self.objectstore.close()
-                return
 
         # unmangle the errors
         good_errors = {}

@@ -19,9 +19,11 @@ errors
 </%args>
 
 <%init>
+# Working around a bug in formencode, we need to set the defaults to the c.submission
+# values
 if not defaults:
 	defaults = {'submission.title': c.submission.title,
-		    'submission.submission_type_id': c.submission.submission_type_id,
+		    'submission.type': c.submission.type.id,
 		    'submission.abstract': c.submission.abstract,
                     'submission.experience': c.submission.experience,
                     'submission.url': c.submission.url,

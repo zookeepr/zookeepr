@@ -1,0 +1,17 @@
+Based on the SQLAlchemy zblog example.
+
+Model is broken up into conceptual submodules:
+
+ core - bits that everything relies on
+ submission - bits necessary for the CFP process?  or just submission handling
+
+Within each submodule, the data model is broken up into an MVC-like pattern (which is heavily supported by the SQLAlchemy ORM):
+
+ tables.py - SQLAlchemy table schema definition, the 'model' of the model.
+ domain.py - Python classes representing the data model we want to present
+             to the application, the 'view' of the model.
+ mapper.py - The heavy lifting, which maps the table schemas to
+             the view layer, i.e. the 'controller' of the model.
+
+ __init__.py - Exposes only the Python classes to the application.
+

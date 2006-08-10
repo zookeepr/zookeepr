@@ -32,10 +32,10 @@ class CRUDBase(object):
         model_name = self.individual
 
         if use_oid:
-            obj = self.objectstore.get(self.model, id)
+            obj = self.model.get(id)
         elif hasattr(self, 'key'):
             query_dict = {self.key: id}
-            os = self.objectstore.query(self.model).select_by(**query_dict)
+            os = self.model.select_by(**query_dict)
             if len(os) == 1:
                 obj = os[0]
 
@@ -84,9 +84,9 @@ class Create(CRUDBase):
                 # update the new object with the form data
                 for k in result[model_name]:
                     setattr(new_object, k, result[model_name][k])
-        
-                self.objectstore.save(new_object)
-                self.objectstore.flush()
+
+                new_object.save()
+                new_object.flush()
 
                 default_redirect = dict(action='view', id=self.identifier(new_object))
                 self.redirect_to('new', default_redirect)
@@ -134,8 +134,7 @@ class Update(CRUDBase):
                 for k in result[model_name]:
                     setattr(obj, k, result[model_name][k])
 
-                self.objectstore.save(obj)
-                self.objectstore.flush()
+                obj.save()
                 
                 redirect_to(action='view', id=self.identifier(obj))
 
@@ -160,8 +159,9 @@ class Delete(CRUDBase):
             abort(404, "Computer says no")
         
         if request.method == 'POST':
-            self.objectstore.delete(obj)
-            self.objectstore.flush()
+            obj.delete()
+            obj.flush()
+
             redirect_to(action='index', id=None)
 
         # get the model name
@@ -188,7 +188,7 @@ class List(CRUDBase):
         #setattr(c, model_name + '_collection', collection)
 
         # assign list of objects to template global
-        setattr(c, model_name + '_collection', self.objectstore.query(self.model).select())
+        setattr(c, model_name + '_collection', self.model.select())
 
         c.can_edit = self._can_edit()
         # exec the template

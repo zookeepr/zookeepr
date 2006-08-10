@@ -3,7 +3,7 @@ import md5
 from sqlalchemy import create_session
 
 from zookeepr.lib.base import BaseController, c, redirect_to, session
-from zookeepr.models import Person
+from zookeepr.model.core.domain import Person
 
 class retcode:
     """Enumerations of authentication return codes"""
