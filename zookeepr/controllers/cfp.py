@@ -6,7 +6,7 @@ from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, c, h, render, render_response, request
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.model import Account, SubmissionType, Submission
+from zookeepr.model import Person, SubmissionType, Submission
 
 class RegistrationValidator(Schema):
     email_address = validators.String(not_empty=True)
@@ -38,7 +38,7 @@ class CfpController(BaseController):
         errors = {}
         defaults = dict(request.POST)
 
-        new_reg = Registration()
+        new_reg = Person()
         new_sub = Submission()
 
         c.registration = new_reg

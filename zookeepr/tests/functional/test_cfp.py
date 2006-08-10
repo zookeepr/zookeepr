@@ -3,7 +3,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model import Account, Submission
+from zookeepr.model import Person, Submission
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
@@ -36,7 +36,7 @@ class TestCFP(ControllerTest):
 
         form.submit()
 
-        regs = self.objectstore.query(Registration).select()
+        regs = self.objectstore.query(Person).select()
         self.assertEqual(1, len(regs))
 
         for key in reg_data.keys():
