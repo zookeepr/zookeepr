@@ -3,10 +3,12 @@
 <div id="submission">
 
 <p class="submitted">
-<% c.submission.submission_type.name %> 
+<% c.submission.type.name %> 
 submitted by
-<% c.submission.person.firstname %> <% c.submission.person.lastname %>
-&lt;<% c.submission.person.email_address %>&gt;
+% for p in c.submission.people:
+<% p.fullname %>
+&lt;<% p.email_address %>&gt;
+% #endfor
 </p>
 
 <div class="abstract">

@@ -5,12 +5,8 @@ from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, c, h, render, render_response, request
-from zookeepr.lib.validators import BaseSchema
+from zookeepr.lib.validators import BaseSchema, SubmissionTypeValidator
 from zookeepr.model import Person, SubmissionType, Submission
-
-class SubmissionTypeValidator(validators.FancyValidator):
-    def _to_python(self, value, state):
-        return SubmissionType.get(value)
     
 class RegistrationValidator(Schema):
     email_address = validators.String(not_empty=True)

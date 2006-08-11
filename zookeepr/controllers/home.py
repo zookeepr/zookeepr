@@ -17,7 +17,7 @@ class HomeController(BaseController):
         """
 
         if 'person_id' in session:
-            c.person = self.objectstore.get(Person, session['person_id'])
+            c.person = Person.get(session['person_id'])
 
             resp = render_response('home.myt')
 

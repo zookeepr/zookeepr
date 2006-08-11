@@ -8,7 +8,7 @@
 
 % for st in c.submission_types:
 %	if c.submission.type:
-%		czeched = st == c.submission.type
+%		czeched = c.submission.type == st
 %	else:
 %		czeched = False
 %	#endif
