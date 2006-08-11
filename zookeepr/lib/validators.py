@@ -1,6 +1,6 @@
 from formencode import Invalid, validators, schema
 
-from zookeepr.model import SubmissionType
+from zookeepr.model import Person, SubmissionType
 
 class BaseSchema(schema.Schema):
     allow_extra_fields = True
