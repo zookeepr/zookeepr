@@ -14,6 +14,11 @@ class BaseSchema(schema.Schema):
             return {}, e.unpack_errors()
 
 
+class PersonValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Person.get(value)
+
+
 class SubmissionTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return SubmissionType.get(value)

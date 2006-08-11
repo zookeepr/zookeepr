@@ -3,7 +3,7 @@ from formencode import validators, compound, schema, variabledecode
 from zookeepr.lib.auth import BaseController
 from zookeepr.lib.base import c
 from zookeepr.lib.crud import Modify, View
-from zookeepr.lib.validators import BaseSchema, SubmissionTypeValidator
+from zookeepr.lib.validators import BaseSchema, PersonValidator, SubmissionTypeValidator
 from zookeepr.model import Submission, SubmissionType
 
 class SubmissionSchema(schema.Schema):
@@ -12,6 +12,7 @@ class SubmissionSchema(schema.Schema):
     experience = validators.String()
     url = validators.String()
     type = SubmissionTypeValidator
+    person = PersonValidator()
 
 class NewSubmissionSchema(BaseSchema):
     submission = SubmissionSchema()
