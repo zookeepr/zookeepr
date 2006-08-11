@@ -38,4 +38,5 @@ class TestHomeController(ControllerTest):
         
         p.delete()
         s.delete()
-        objectstore.flush()
+        p.flush()
+        s.flush()
