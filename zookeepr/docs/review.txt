@@ -1,0 +1,8 @@
+* review model
+
+fkey on submission, reviewer, stream
+
+fields: fmailiarity, trech q, expereince, exciretment, comments
+
+link to timetableable thing for acceptance
+
