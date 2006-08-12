@@ -19,8 +19,8 @@ class EditSubmissionTypeValidator(BaseSchema):
 
 
 class SubmissiontypeController(BaseController, View, Modify):
-    validators = {"new" : NewSubmissionTypeValidator(),
-                  "edit" : EditSubmissionTypeValidator()}
+    schemas = {"new" : NewSubmissionTypeValidator(),
+               "edit" : EditSubmissionTypeValidator()}
 
     model = SubmissionType
     individual = 'submissiontype'

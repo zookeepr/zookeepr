@@ -17,9 +17,9 @@ class EditRoleValidator(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 class RoleController(BaseController, View, Modify):
-    validators = {"new" : NewRoleValidator(),
-                  "edit" : EditRoleValidator()}
+    schemas = {"new" : NewRoleValidator(),
+               "edit" : EditRoleValidator()}
 
     model = Role
     individual = 'role'
-    conditions = dict(order_by='name')
+    #conditions = dict(order_by='name')

@@ -23,8 +23,8 @@ class EditSubmissionSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 class SubmissionController(SecureController, View, Modify):
-    validators = {"new" : NewSubmissionSchema(),
-                  "edit" : EditSubmissionSchema()}
+    schemas = {"new" : NewSubmissionSchema(),
+               "edit" : EditSubmissionSchema()}
 
     model = Submission
     individual = 'submission'

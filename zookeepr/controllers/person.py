@@ -27,8 +27,8 @@ class EditPersonValidator(BaseSchema):
     pre_validators = [NestedVariables]
 
 class PersonController(BaseController, View, Modify):
-    validators = {"new" : NewPersonValidator(),
-                  "edit" : EditPersonValidator()}
+    schemas = {"new" : NewPersonValidator(),
+               "edit" : EditPersonValidator()}
 
     model = Person
     individual = 'person'

@@ -8,7 +8,7 @@ setup(
     #author_email="",
     #url="",
     install_requires=["Pylons==0.9",
-                      "SQLAlchemy>=0.2.5"],
+                      "SQLAlchemy>=0.2.6"],
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',

@@ -69,7 +69,7 @@ class Create(CRUDBase):
 
         GET requests will return a blank for for submitting all attributes.
 
-        POST requests will create the object, if the validators pass.
+        POST requests will create the object, if the schemas validate.
         """
 
         model_name = self.individual
@@ -78,7 +78,7 @@ class Create(CRUDBase):
 
         new_object = self.model()
         if request.method == 'POST' and defaults:
-            result, errors = self.validators['new'].validate(defaults)
+            result, errors = self.schemas['new'].validate(defaults)
 
             if not errors:
                 # update the new object with the form data
@@ -126,7 +126,7 @@ class Update(CRUDBase):
         errors = {}
         defaults = dict(request.POST)
         if defaults:
-            result, errors = self.validators['edit'].validate(defaults)
+            result, errors = self.schemas['edit'].validate(defaults)
 
             if not errors:
                 
