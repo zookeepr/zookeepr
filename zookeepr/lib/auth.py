@@ -123,27 +123,19 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-        print "about to check perms"
         if self.check_permissions(kwargs['action']):
-            print "ok!"
             return
         else:
-            print "failed!"
             abort(403, "computer says no")
 
     def check_permissions(self, action):
-        print "i'm checking permissions"
-
         if not hasattr(self, 'permissions'):
              # Open access by default
-            print 'no perms'
-
             return True
 
         if not action in self.permissions.keys():
+            # open access by default
             return True
-
-        print self.permissions
 
         results = map(lambda x: x.authorise(self), self.permissions[action])
         return reduce(lambda x, y: x or y, results, False)
