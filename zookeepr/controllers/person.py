@@ -7,7 +7,7 @@ from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import Person
 
-class PersonValidator(Schema):
+class PersonSchema(Schema):
     password = validators.PlainText()
     password_confirm = validators.PlainText()    
     email_address = validators.Email()
@@ -18,17 +18,17 @@ class PersonValidator(Schema):
     firstname = validators.String()
     lastname = validators.String()
 
-class NewPersonValidator(BaseSchema):
-    person = PersonValidator()
+class NewPersonSchema(BaseSchema):
+    person = PersonSchema()
     pre_validators = [NestedVariables]
 
-class EditPersonValidator(BaseSchema):
-    person = PersonValidator()
+class EditPersonSchema(BaseSchema):
+    person = PersonSchema()
     pre_validators = [NestedVariables]
 
 class PersonController(BaseController, View, Modify):
-    schemas = {"new" : NewPersonValidator(),
-               "edit" : EditPersonValidator()}
+    schemas = {"new" : NewPersonSchema(),
+               "edit" : EditPersonSchema()}
 
     model = Person
     individual = 'person'
