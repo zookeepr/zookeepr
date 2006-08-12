@@ -1,6 +1,6 @@
 from formencode import validators, compound, schema, variabledecode
 
-from zookeepr.lib.auth import SecureController
+from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse
 from zookeepr.lib.base import c
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, SubmissionTypeValidator
@@ -25,8 +25,7 @@ class EditSubmissionSchema(BaseSchema):
 class SubmissionController(SecureController, View, Modify):
     schemas = {"new" : NewSubmissionSchema(),
                "edit" : EditSubmissionSchema()}
-    permissions = {"new": [],
-                   "edit": ['submitter']}
+    permissions = {"edit": [AuthFalse()]}
 
     model = Submission
     individual = 'submission'

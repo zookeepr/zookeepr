@@ -2,7 +2,7 @@ import md5
 
 from sqlalchemy import create_session, objectstore
 
-from zookeepr.lib.base import BaseController, c, redirect_to, session
+from zookeepr.lib.base import BaseController, c, redirect_to, session, abort
 from zookeepr.model.core.domain import Person
 
 class retcode:
@@ -123,18 +123,38 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-#     def _granted(self):
-#         if not hasattr(self, 'permissions'):
-#             # Open access by default
-#             return True
+        print "about to check perms"
+        if self.check_permissions(kwargs['action']):
+            print "ok!"
+            return
+        else:
+            print "failed!"
+            abort(403, "computer says no")
 
-#         if len(
-#             return False
-#         else:
-#             return True
-#         if self.permissions
-#     def check_permissions(self, permission_list):
-#         ret
-#         if 'submitter' in permission_list:
-#             return self.is_submitter()
-#         return False
+    def check_permissions(self, action):
+        print "i'm checking permissions"
+
+        if not hasattr(self, 'permissions'):
+             # Open access by default
+            print 'no perms'
+            return True
+
+        print self.permissions
+
+        results = map(lambda x: x.authorise(), self.permissions[action])
+        return reduce(lambda x, y: x or y, results, False)
+
+class AuthFunc(object):
+    def __init__(self, callable):
+        self.callable = callable
+
+    def authorise(self):
+        return self.callable()
+
+class AuthTrue(object):
+    def authorise(self):
+        return True
+
+class AuthFalse(object):
+    def authorise(self):
+        return False
