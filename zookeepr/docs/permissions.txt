@@ -1,3 +1,5 @@
+= Extension of permission system =
+
 We need to be able to provide a way for controllers to hook into our permissions system:
  * add function (or decorator for python2.4) to controller
  * function returns a dictionary of the permissions of each method
