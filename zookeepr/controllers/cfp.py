@@ -8,13 +8,13 @@ from zookeepr.lib.base import BaseController, c, h, render, render_response, req
 from zookeepr.lib.validators import BaseSchema, SubmissionTypeValidator
 from zookeepr.model import Person, SubmissionType, Submission
     
-class RegistrationValidator(Schema):
+class RegistrationSchema(Schema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     fullname = validators.String()
 
-class SubmissionValidator(Schema):
+class SubmissionSchema(Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = SubmissionTypeValidator()
@@ -23,9 +23,9 @@ class SubmissionValidator(Schema):
     attachment = validators.String()
     assistance = validators.Bool()
     
-class NewCFPValidator(BaseSchema):
-    registration = RegistrationValidator()
-    submission = SubmissionValidator()
+class NewCFPSchema(BaseSchema):
+    registration = RegistrationSchema()
+    submission = SubmissionSchema()
     pre_validators = [NestedVariables]
 
 class CfpController(BaseController):
@@ -45,7 +45,7 @@ class CfpController(BaseController):
         c.submission = new_sub
         
         if request.method == 'POST' and defaults:
-            result, errors = NewCFPValidator().validate(defaults)
+            result, errors = NewCFPSchema().validate(defaults)
 
             if not errors:
                 # update the objects with the validated form data
