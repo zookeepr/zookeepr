@@ -137,19 +137,23 @@ class SecureController(BaseController):
         if not hasattr(self, 'permissions'):
              # Open access by default
             print 'no perms'
+
+            return True
+
+        if not action in self.permissions.keys():
             return True
 
         print self.permissions
 
-        results = map(lambda x: x.authorise(), self.permissions[action])
+        results = map(lambda x: x.authorise(self), self.permissions[action])
         return reduce(lambda x, y: x or y, results, False)
 
 class AuthFunc(object):
     def __init__(self, callable):
         self.callable = callable
 
-    def authorise(self):
-        return self.callable()
+    def authorise(self, cls):
+        return getattr(cls, self.callable)()
 
 class AuthTrue(object):
     def authorise(self):

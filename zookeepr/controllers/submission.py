@@ -25,7 +25,7 @@ class EditSubmissionSchema(BaseSchema):
 class SubmissionController(SecureController, View, Modify):
     schemas = {"new" : NewSubmissionSchema(),
                "edit" : EditSubmissionSchema()}
-    permissions = {"edit": [AuthFalse()]}
+    permissions = {"edit": [AuthFunc('is_submitter')]}
 
     model = Submission
     individual = 'submission'
@@ -36,4 +36,5 @@ class SubmissionController(SecureController, View, Modify):
         c.submission_types = SubmissionType.select()
 
     def is_submitter(self):
+        print "is submitter"
         return c.person in c.submission.people
