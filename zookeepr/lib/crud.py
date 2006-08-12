@@ -61,7 +61,7 @@ class CRUDBase(object):
         else:
             redirect_args = default
         redirect_to(**redirect_args)
-    
+
 
 class Create(CRUDBase):
     def new(self):
@@ -104,6 +104,30 @@ class Create(CRUDBase):
                 good_errors[key] = errors[key]
 
         return render_response('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
+
+
+class List(CRUDBase):
+    def _can_edit(self):
+        return issubclass(self.__class__, Modify)
+    
+    def index(self):
+        """Show a list of all objects currently in the system."""
+        # GET, POST -> return list of objects
+
+        # get name we refer to the model by in the controller
+        model_name = self.individual
+        
+        #options = getattr(self, 'conditions', {})
+        #pages, collection = paginate(object_mapper(self.model), m.request_args.get('page', 0), **options)
+        #setattr(c, model_name + '_pages', pages)
+        #setattr(c, model_name + '_collection', collection)
+
+        # assign list of objects to template global
+        setattr(c, model_name + '_collection', self.model.select())
+
+        c.can_edit = self._can_edit()
+        # exec the template
+        return render_response('%s/list.myt' % model_name)
 
 
 class Update(CRUDBase):
@@ -169,30 +193,6 @@ class Delete(CRUDBase):
         # call the template
         setattr(c, model_name, obj)
         return render_response('%s/confirm_delete.myt' % model_name)
-
-
-class List(CRUDBase):
-    def _can_edit(self):
-        return issubclass(self.__class__, Modify)
-    
-    def index(self):
-        """Show a list of all objects currently in the system."""
-        # GET, POST -> return list of objects
-
-        # get name we refer to the model by in the controller
-        model_name = self.individual
-        
-        #options = getattr(self, 'conditions', {})
-        #pages, collection = paginate(object_mapper(self.model), m.request_args.get('page', 0), **options)
-        #setattr(c, model_name + '_pages', pages)
-        #setattr(c, model_name + '_collection', collection)
-
-        # assign list of objects to template global
-        setattr(c, model_name + '_collection', self.model.select())
-
-        c.can_edit = self._can_edit()
-        # exec the template
-        return render_response('%s/list.myt' % model_name)
 
 
 class Read(CRUDBase):
