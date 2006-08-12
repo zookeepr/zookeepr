@@ -68,6 +68,7 @@ class TestSubmission(ControllerTest):
                        experience='',
                        url='')
         s.save()
+        self.p.submissions.append(s)
         s.flush()
 
         resp = self.app.get(url_for(controller='submission',
@@ -91,3 +92,5 @@ class TestSubmission(ControllerTest):
         s.flush()
 
         self.log_out()
+
+    
