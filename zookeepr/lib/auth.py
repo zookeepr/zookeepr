@@ -122,3 +122,19 @@ class SecureController(BaseController):
             redirect_to(controller='account',
                         action='signin',
                         id=None)
+
+    def _granted(self):
+        if not hasattr(self, 'permissions'):
+            # Open access by default
+            return True
+
+        if len(
+            return False
+        else:
+            return True
+        if self.permissions
+    def check_permissions(self, permission_list):
+        ret
+        if 'submitter' in permission_list:
+            return self.is_submitter()
+        return False

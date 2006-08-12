@@ -1,0 +1,49 @@
+how to do authorisation in zookeepr
+
+you want to restrict access to methods in the controllers (i.e certain
+urls) to:
+
+ logged in users
+
+ site administrators
+
+ speakers
+
+ reviewers
+
+ the creator of an X
+
+we want to mark up these methods using a decorator-like method:
+
+ (we use python2.3 so not actual decorators)
+
+class FooController(SecureController):
+      permissions = {"new": [...]}
+
+      def new(self):
+	  x
+
+ (rather than, say:)
+
+	 @permissions([...])
+	 def new(self):
+	     pass
+
+how do we infer each of the cases above?
+
+
+ * logged in users:
+
+   c.person is a Person object
+   'person_id' in session
+
+ * roles (site admin, speaker, reviewer):
+
+   Role.select_by_name(role)[0] in c.person.roles
+
+   (name is unique on roles)
+
+   Q: is name a good way to define what roles?  that's kinda sucky and
+hardcoded.
+
+ * a creator... we need some function to define how to return the 
