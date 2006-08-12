@@ -58,4 +58,23 @@ how do we infer each of the cases above?
    Q: is name a good way to define what roles?  that's kinda sucky and
 hardcoded.
 
- * a creator... we need some function to define how to return the 
+ * a creator... we need some function to define whether c.person is
+the creator of an object.
+
+  we also need this object to exist before the permissions are
+checked, otherwise we have nothing to compare to.
+
+  BaseController.__call__ calls __before__ before calling the method,
+and then __after__ after.  we can override either __before__,
+__call__, or __after__ to insert our permissions checking logic, but
+we still don't have control over when the object is retrieved.
+
+  Enter crud...  the crud mixins know what the model is called
+(self.model) and know what the unique id is (id passed in to
+edit/delete/read), so this can be pushed up the stack to __before__ in
+the crud base... IFF we have an id field then we can retrieve the
+object.
+
+even better, an intermediate class that implments our retrieving
+__before__, which only Edit, Read, and Delete inherit from... then if
+id is not present we can throw an exception
