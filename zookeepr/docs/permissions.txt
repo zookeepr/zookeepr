@@ -1,0 +1,7 @@
+We need to be able to provide a way for controllers to hook into our permissions system:
+ * add function (or decorator for python2.4) to controller
+ * function returns a dictionary of the permissions of each method
+
+The SecureController can be modified to recognise these permissions and apply restrictions accordingly. 
+
+The controller permissions will be modifiable through the admin interface (through some sort of abstraction).
