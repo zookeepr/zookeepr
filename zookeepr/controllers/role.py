@@ -1,24 +1,25 @@
-from formencode import validators, compound, schema, variabledecode
+from formencode import validators, compound, variabledecode
+from formencode.schema import Schema
 
 from zookeepr.lib.base import BaseController
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import Role
 
-class RoleValidator(schema.Schema):
+class RoleSchema(Schema):
     name = validators.PlainText()
 
-class NewRoleValidator(BaseSchema):
-    role = RoleValidator()
+class NewRoleSchema(BaseSchema):
+    role = RoleSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class EditRoleValidator(BaseSchema):
-    role = RoleValidator()
+class EditRoleSchema(BaseSchema):
+    role = RoleSchema()
     pre_validators = [variabledecode.NestedVariables]
 
 class RoleController(BaseController, View, Modify):
-    schemas = {"new" : NewRoleValidator(),
-               "edit" : EditRoleValidator()}
+    schemas = {"new" : NewRoleSchema(),
+               "edit" : EditRoleSchema()}
 
     model = Role
     individual = 'role'
