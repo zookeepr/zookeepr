@@ -110,7 +110,7 @@ class ControllerTest(TestBase):
         #"""Test create action on controller"""
 
         url = url_for(controller=self.url, action='new')
-
+        print "url", url
         # get the form
         response = self.app.get(url)
         form = response.form

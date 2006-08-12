@@ -107,7 +107,7 @@ class SecureController(BaseController):
     def __before__(self, **kwargs):
         # Call the parent __before__ method to ensure the common pre-call code
         # is run
-        BaseController.__before__(self, **kwargs)
+        super(BaseController, self).__before__(**kwargs)
 
         if self.logged_in():
             # Retrieve the Person object from the object store
@@ -123,18 +123,18 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-    def _granted(self):
-        if not hasattr(self, 'permissions'):
-            # Open access by default
-            return True
+#     def _granted(self):
+#         if not hasattr(self, 'permissions'):
+#             # Open access by default
+#             return True
 
-        if len(
-            return False
-        else:
-            return True
-        if self.permissions
-    def check_permissions(self, permission_list):
-        ret
-        if 'submitter' in permission_list:
-            return self.is_submitter()
-        return False
+#         if len(
+#             return False
+#         else:
+#             return True
+#         if self.permissions
+#     def check_permissions(self, permission_list):
+#         ret
+#         if 'submitter' in permission_list:
+#             return self.is_submitter()
+#         return False

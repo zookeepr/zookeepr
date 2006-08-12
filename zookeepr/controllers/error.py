@@ -4,7 +4,7 @@ from pylons.middleware import media_path, error_document_template
 from pylons.util import get_prefix
 from zookeepr.lib.base import *
 
-class ErrorController(BaseController):
+class ErrorController(WSGIController):
     """
     Class to generate error documents as and when they are required. This behaviour of this
     class can be altered by changing the parameters to the ErrorDocuments middleware in 

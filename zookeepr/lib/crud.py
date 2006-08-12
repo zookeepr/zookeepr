@@ -17,30 +17,6 @@ class CRUDBase(object):
         else:
             return oid
         
-    def get_obj(self, id):
-        use_oid = False # Determines if we look up on a key or the OID
-        obj = None
-
-        # If we can convert this to an integer then we look up based on the OID
-        try:
-            id = int(id)
-            use_oid = True
-        except ValueError:
-            pass
-
-        # get the name we're referring this object to by from the model
-        model_name = self.individual
-
-        if use_oid:
-            obj = self.model.get(id)
-        elif hasattr(self, 'key'):
-            query_dict = {self.key: id}
-            os = self.model.select_by(**query_dict)
-            if len(os) == 1:
-                obj = os[0]
-
-        return obj
-
     def redirect_to(self, action, default):
         """Redirect to the preferred controller/action target.
 
@@ -130,7 +106,52 @@ class List(CRUDBase):
         return render_response('%s/list.myt' % model_name)
 
 
-class Update(CRUDBase):
+class RUDBase(CRUDBase):
+    """Retrieve the CRUD object given an ID.
+
+    This intermediate class overrides the __before__ method to retrieve the
+    CRUD object and attach it to the controller.  This carries meaning only to
+    RUD methods -- Read, Update, and Delete.
+    """
+
+    def __before__(self, **kwargs):
+        if 'id' not in kwargs.keys():
+            raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
+        
+        use_oid = False # Determines if we look up on a key or the OID
+        obj = None
+
+        # FIXME: wtf.
+        # Apparenlty this method gets called from classes that don't even inherit
+        # from us... e.g. Create.  Return if id is None.
+        if kwargs['id'] is None:
+            #print "action is %s, we're in RUDBase.__before__, wtf, wah wah wah" % kwargs['action']
+            return
+        
+        # If we can convert this to an integer then we look up based on the OID
+        try:
+            id = int(kwargs['id'])
+            use_oid = True
+        except ValueError:
+            pass
+
+        if use_oid:
+            obj = self.model.get(id)
+        elif hasattr(self, 'key'):
+            query_dict = {self.key: kwargs['id']}
+            os = self.model.select_by(**query_dict)
+            if len(os) == 1:
+                obj = os[0]
+
+        if obj is None:
+            abort(404, "cannot %s nonexistent object for id = %r" % (kwargs['action'],
+                                                                     kwargs['id']))
+
+
+        setattr(c, self.individual, obj)
+
+
+class Update(RUDBase):
     def edit(self, id):
         """Allow editing of an object.
 
@@ -139,13 +160,6 @@ class Update(CRUDBase):
 
         POST requests update the object with the data posted.
         """
-        obj = self.get_obj(id)
-
-        if obj is None:
-            raise "cannot edit nonexistent object for id = '%s'" % (id,)
-
-        # get the name we refer to it by
-        model_name = self.individual
 
         errors = {}
         defaults = dict(request.POST)
@@ -155,20 +169,18 @@ class Update(CRUDBase):
             if not errors:
                 
                 # update the object with the posted data
-                for k in result[model_name]:
-                    setattr(obj, k, result[model_name][k])
+                for k in result[self.individual]:
+                    setattr(getattr(c, self.individual), k, result[self.individual][k])
 
-                obj.save()
+                getattr(c, self.individual).save()
                 
-                redirect_to(action='view', id=self.identifier(obj))
+                redirect_to(action='view', id=self.identifier(getattr(c, self.individual)))
 
-        # assign to the template global
-        setattr(c, model_name, obj)
         # call the template
-        return render_response('%s/edit.myt' % model_name, defaults=defaults, errors=errors)
+        return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
         
 
-class Delete(CRUDBase):
+class Delete(RUDBase):
     def delete(self, id):
         """Delete the submission type
 
@@ -177,34 +189,18 @@ class Delete(CRUDBase):
         POST requests will delete the item.
         """
         
-        obj = self.get_obj(id)
-
-        if obj is None:
-            abort(404, "Computer says no")
-        
-        if request.method == 'POST':
-            obj.delete()
-            obj.flush()
+        if request.method == 'POST' and getattr(c, self.individual):
+            getattr(c, self.individual).delete()
+            getattr(c, self.individual).flush()
 
             redirect_to(action='index', id=None)
 
-        # get the model name
-        model_name = self.individual
-        # call the template
-        setattr(c, model_name, obj)
-        return render_response('%s/confirm_delete.myt' % model_name)
+        return render_response('%s/confirm_delete.myt' % self.individual)
 
 
-class Read(CRUDBase):
+class Read(RUDBase):
     def view(self, id):
         """View a specific object"""
-        obj = self.get_obj(id)
-        
-        if obj is None:
-            raise "cannot view nonexistent object for id = '%s'" % (id,)
-
-        # assign to the template global
-        setattr(c, self.individual, obj)
         c.can_edit = self._can_edit()
 
         # exec the template

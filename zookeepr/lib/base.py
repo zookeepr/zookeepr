@@ -41,3 +41,11 @@ class BaseController(WSGIController):
                         request_args[key] = request_args[key].value
                     else:
                         request_args[key] = request_args[key].value
+
+        # I really don't know what I'm doing; trapped in a maze of twisty
+        # little method-resolution-orders.
+        # Apparently things that don't have __before__ will still try to
+        # do the wrong thing, so we explicitly check for a __before__ method
+        # to prevent half of the controllers from boning themselves.
+        if hasattr(super(WSGIController, self), '__before__'):
+            return super(WSGIController, self).__before__(**kwargs)
