@@ -27,6 +27,8 @@ class SubmissionController(SecureController, View, Modify):
                "edit" : EditSubmissionSchema()}
     permissions = {"edit": [AuthFunc('is_submitter')],
                    "view": [AuthFunc('is_submitter')],
+                   "new": [],
+                   "delete": [AuthFunc('is_submitter')],
                    }
 
     model = Submission
