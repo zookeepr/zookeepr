@@ -307,16 +307,14 @@ class ControllerTest(TestBase):
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'
         resp = f.submit()
-        print "login, resp"
-        print resp
+        #print resp
         self.failUnless('person_id' in resp.session)
         self.assertEqual(self.p.id,
                          resp.session['person_id'])
         return resp
 
     def log_out(self):
-        print "logging out"
-        self.objectstore.delete(self.p)
+        self.objectstore.delete(self.objectstore.get(model.Person, self.p.id))
         self.objectstore.flush()
 
 __all__ = ['ControllerTest', 'model', 'url_for']
