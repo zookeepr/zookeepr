@@ -105,7 +105,7 @@ class SecureController(BaseController):
         return 'person_id' in session
 
     def __before__(self, **kwargs):
-        print "secure before"
+        print "secure before!"
         # Call the parent __before__ method to ensure the common pre-call code
         # is run
         super(BaseController, self).__before__(**kwargs)

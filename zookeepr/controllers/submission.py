@@ -35,7 +35,7 @@ class SubmissionController(SecureController, View, Modify):
     individual = 'submission'
 
     def __before__(self, **kwargs):
-        print "sub before"
+        print "sub before!"
         super(SecureController, self).__before__(**kwargs)
         
         c.submission_types = SubmissionType.select()
