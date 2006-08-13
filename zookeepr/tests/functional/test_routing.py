@@ -65,18 +65,6 @@ class TestRouting(unittest.TestCase):
         self.assertEqual('/cfp/submit',
                          submit_cfp)
 
-    def test_registration_confirmation_url(self):
-        """test the routing of the registration confirmation url"""
-        self.assertEqual(dict(controller='account',
-                              action='confirm',
-                              id='N'),
-                         self.map.match('/account/confirm/N'))
-
-    def test_registratrion_confirmation_named_route(self):
-        reg_confirm = url_for('acct_confirm', id='N')
-        self.assertEqual('/account/confirm/N',
-                         reg_confirm)
-
     def test_cfp_thankyou_routing(self):
         u = '/cfp/thankyou'
         self.assertEqual(dict(controller='cfp',
