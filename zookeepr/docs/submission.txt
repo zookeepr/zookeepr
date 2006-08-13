@@ -1,4 +1,4 @@
-proposal process
+submission process
 
 goals:
 
@@ -29,7 +29,7 @@ suggested course of action
 * i don't want to join the person and account details, but it looks
 like it is necessary to make that just work.
 
-* the submisison and registration creation shouldn't be linked in a
+* the proposal and registration creation shouldn't be linked in a
 single model object CFP, unless the CFP is a superset of
 both... having a single model makes the use of generics crud very
 easy, otherwise we'd need a way to hook in model creation to cope with
