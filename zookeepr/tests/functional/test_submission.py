@@ -43,7 +43,6 @@ class TestSubmission(ControllerTest):
         super(TestSubmission, self).tearDown()
 
     def test_selected_radio_button_in_edit(self):
-        self.log_in()
         
         # Test that a radio button is checked when editing a submission
         s = Submission(id=1,
@@ -78,12 +77,9 @@ class TestSubmission(ControllerTest):
         self.objectstore.delete(s)
         self.objectstore.flush()
 
-        self.log_out()
-
 
     def test_submission_view_lockdown(self):
         # we got one person already with login
-        self.log_in()
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
@@ -104,11 +100,9 @@ class TestSubmission(ControllerTest):
         self.objectstore.delete(s)
         self.objectstore.flush()
 
-        self.log_out()
 
     def test_submission_edit_lockdown(self):
         # we got one person already with login
-        self.log_in()
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
@@ -136,11 +130,9 @@ class TestSubmission(ControllerTest):
         self.objectstore.delete(s)
         self.objectstore.flush()
 
-        self.log_out()
 
     def test_submission_delete_lockdown(self):
         # we got one person already with login
-        self.log_in()
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
@@ -169,11 +161,9 @@ class TestSubmission(ControllerTest):
         self.objectstore.delete(s)
         self.objectstore.flush()
 
-        self.log_out()
 
     def test_submission_list_lockdown(self):
         # we got one person already with login
-        self.log_in()
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
@@ -193,12 +183,9 @@ class TestSubmission(ControllerTest):
         self.objectstore.delete(s)
         self.objectstore.flush()
 
-        self.log_out()
-
 
     def test_submit_another(self):
-        # create our guy
-        self.log_in()
+        # created guy with login
         # and a submission
         s1 = Submission(title='sub one')
         self.objectstore.save(s1)
@@ -230,4 +217,3 @@ class TestSubmission(ControllerTest):
         self.objectstore.delete(s2)
         self.objectstore.delete(s1)
         self.objectstore.flush()
-        self.log_out()
