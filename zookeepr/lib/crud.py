@@ -115,10 +115,8 @@ class RUDBase(CRUDBase):
     """
 
     def __before__(self, **kwargs):
-        print 'rudbase before super'
         if hasattr(super(RUDBase, self), '__before__'):
             super(RUDBase, self).__before__(**kwargs)
-        print "rudbase before"
         if 'id' not in kwargs.keys():
             raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
         
