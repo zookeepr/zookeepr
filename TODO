@@ -11,6 +11,8 @@ merge Register controller into Account.
 
 == next ==
 
+ * HACKING document
+
  * Update CFP with review details.
 
  * group crud controller tests (person, role, submission, stype), vs others (home, register, cfp, about)
