@@ -9,7 +9,7 @@ setup(
     #url="",
     install_requires=[
         "Pylons==0.9",
-        "SQLAlchemy>=0.2.5",
+        "SQLAlchemy>=0.2.7",
         "nose>=0.9.0",
     ],
     packages=find_packages(),
