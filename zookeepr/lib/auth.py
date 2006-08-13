@@ -105,15 +105,13 @@ class SecureController(BaseController):
         return 'person_id' in session
 
     def __before__(self, **kwargs):
-        print "secure before!"
         # Call the parent __before__ method to ensure the common pre-call code
         # is run
-        super(BaseController, self).__before__(**kwargs)
+        super(SecureController, self).__before__(**kwargs)
 
         if self.logged_in():
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
-            print "getting person"
             c.person = Person.get(session['person_id'])
         else:
             # No-one's logged in, so send them to the signin
@@ -125,7 +123,6 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-        print "checking person"
         if self.check_permissions(kwargs['action']):
             return
         else:
