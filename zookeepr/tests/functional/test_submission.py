@@ -18,9 +18,6 @@ class TestSubmission(ControllerTest):
                     url='http://lca2007.linux.org.au',
                     ),
                ]
-    # FIXME: ignoring type
-    # ignoring person id so we don't care about it when editing
-    no_test = ['type', 'person_id']
 
     def additional(self, obj):
         obj.people.append(self.p)
