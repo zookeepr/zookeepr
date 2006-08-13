@@ -3,7 +3,7 @@
 <div id="proposal">
 
 <p class="submitted">
-Proposal for 
+Proposal for a
 <% c.proposal.type.name %> 
 submitted by
 % for p in c.proposal.people:
