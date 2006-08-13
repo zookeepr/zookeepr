@@ -20,11 +20,14 @@ class TestSubmission(ControllerTest):
                     url='http://lca2007.linux.org.au',
                     ),
                ]
-    additional = {'person_id': 1}
     # FIXME: ignoring type
     # ignoring person id so we don't care about it when editing
     no_test = ['type', 'person_id']
 
+    def additional(self, obj):
+        obj.people.append(self.p)
+        return obj
+    
     def setUp(self):
         super(TestSubmission, self).setUp()
         model.submission.tables.submission_type.insert().execute(

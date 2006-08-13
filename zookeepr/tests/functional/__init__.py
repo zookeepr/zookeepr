@@ -108,6 +108,14 @@ class ControllerTest(TestBase):
             result[self.name + '.' + key] = params[key]
 
         return result
+
+    def additional(self, obj):
+        """Modify the object further before saving.
+
+        Child classes can override this method to add additional data to the object
+        before it is saved.
+        """
+        return obj
     
     def create(self):
         #"""Test create action on controller"""
@@ -174,11 +182,12 @@ class ControllerTest(TestBase):
 
         # create an instance of the model
         o = self.model(**self.make_model_data())
-        o.save()
-        o.flush()
+        o = self.additional(o)
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
         
-        objectstore.clear()
+        self.objectstore.clear()
 
         # get the form
         url = url_for(controller=self.url, action='edit', id=oid)
@@ -197,7 +206,7 @@ class ControllerTest(TestBase):
         form.submit()
 
         # test
-        o = self.model.get(oid)
+        o = self.objectstore.get(self.model, oid)
         for k in self.samples[1].keys():
             self.check_attribute(o, k, self.samples[1][k])
 
@@ -208,9 +217,7 @@ class ControllerTest(TestBase):
         #"""Test delete action on controller"""
         # create something
         o = self.model(**self.make_model_data())
-        if hasattr(self, 'additional'):
-            for k in self.additional:
-                setattr(o, k, self.additional[k])
+        o = self.additional(o)
         self.objectstore.save(o)
         self.objectstore.flush()
         oid = o.id
