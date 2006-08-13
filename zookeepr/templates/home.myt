@@ -10,7 +10,7 @@ This is... MyLCA!  (Pronounced 'milka'.)
 
 <div id="proposals">
 
-<p>You've made the following proposals to the CFP:
+<p>You've submitted the following proposals to the CFP:
 <ul>
 
 % for s in c.person.proposals:
