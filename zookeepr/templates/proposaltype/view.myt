@@ -1,4 +1,4 @@
-<h1>View proposal type</h1>
+<h2>View proposal type</h2>
 
 <p>
    <b>Name:</b>

@@ -1,4 +1,4 @@
-<h2>Delete submission type</h2>
+<h2>Delete proposal type</h2>
 
 <% h.form(h.url_for()) %>
 <p> Are you sure you want to delete this object?</p>

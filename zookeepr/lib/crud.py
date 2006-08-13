@@ -182,7 +182,7 @@ class Update(RUDBase):
 
 class Delete(RUDBase):
     def delete(self, id):
-        """Delete the submission type
+        """Delete the proposal type
 
         GET will return a form asking for approval.
 

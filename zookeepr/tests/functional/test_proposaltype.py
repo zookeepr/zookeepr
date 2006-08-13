@@ -1,10 +1,10 @@
-# from zookeepr.model import SubmissionType, Role
+# from zookeepr.model import ProposalType, Role
 # from zookeepr.tests.functional import *
 
-# class TestSubmissionType(ControllerTest):
-#     model = SubmissionType
-#     name = 'submissiontype'
-#     url = '/submissiontype'
+# class TestProposalType(ControllerTest):
+#     model = ProposalType
+#     name = 'proposaltype'
+#     url = '/proposaltype'
 #     samples = [dict(name='Paper'),
 #                dict(name='BOF')]
 
@@ -22,19 +22,19 @@
 #         self.log_out()
 #         super(ControllerTest, self).tearDown()
 
-#     def test_submission_view_lockdown(self):
+#     def test_proposal_view_lockdown(self):
 #         # we got one person
 #         #self.log_in()
 #         # create roles
 #         #r = Role('site-admin')
 #         #r.save()
 #         #r.flush()
-#         # create a submission_type
-#         st = SubmissionType('foo')
+#         # create a proposal_type
+#         st = ProposalType('foo')
 #         st.save()
 #         st.flush()
-#         # try to view the submission, we're not a site-admin
-#         resp = self.app.get(url_for(controller='submissiontype',
+#         # try to view the proposal, we're not a site-admin
+#         resp = self.app.get(url_for(controller='proposaltype',
 #                                     action='view',
 #                                     id=st.id),
 #                             status=403)

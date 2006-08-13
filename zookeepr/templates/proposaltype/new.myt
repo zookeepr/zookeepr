@@ -1,4 +1,4 @@
-<h2>New submission type</h2>
+<h2>New proposal type</h2>
 
 <% h.form(h.url(action='new')) %>
 <& form.myt &>

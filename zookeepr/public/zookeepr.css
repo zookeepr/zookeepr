@@ -268,7 +268,7 @@ h2{color:#999;}
  */
 
 /*
-#submissions LI:before {
+#proposals LI:before {
   content: "";
 }
 */
@@ -278,25 +278,25 @@ SPAN.actions {
 }
 
 /**
- * Submission pages
+ * Proposal pages
  */
 
-#submission P.submitted {
+#proposal P.submitted {
   font-style: italic;
   font-size: 90%;
 }
 
-#submission DIV.abstract {
+#proposal DIV.abstract {
   font-size: 110%;
 }
 
-#submission P.experience {
+#proposal P.experience {
   margin: 1em;
   padding: 0.5ex;
   border: 1px dashed grey;
 }
 
-#submission P.actions {
+#proposal P.actions {
   font-size: 80%;
   text-align: center;
 }
