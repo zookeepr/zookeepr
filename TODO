@@ -7,10 +7,6 @@ merge Register controller into Account.
 
  * Add ability to add co-speakers to submissions.
 
- * Proofread the Home page.
-
- * Integrate Andy's CSS changes.
-
  * Bump version number.
 
 == next ==
