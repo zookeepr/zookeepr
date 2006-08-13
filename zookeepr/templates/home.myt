@@ -5,7 +5,7 @@ Welcome, <strong><% c.person.firstname %></strong>!
 </p>
 
 <p>
-This is... MyLCA!  (Pronounced 'milka'.)
+This is MyLCA, a site designed to tailor LCA to you!
 </p>
 
 <div id="proposals">
