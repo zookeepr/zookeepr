@@ -163,17 +163,11 @@ class Update(RUDBase):
         if defaults:
             result, errors = self.schemas['edit'].validate(defaults)
 
-            print result
-
             if not errors:
-
-                print "pre edit:", self.obj
-                
                 # update the object with the posted data
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[self.individual][k])
 
-                print "post edit:", self.obj
                 g.objectstore.save(self.obj)
                 g.objectstore.flush()
 
@@ -210,8 +204,6 @@ class Read(RUDBase):
     def view(self):
         """View a specific object"""
         c.can_edit = self._can_edit()
-
-        print "view:", self.obj
 
         # save obj onto the magical c
         setattr(c, self.individual, self.obj)
