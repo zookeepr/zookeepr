@@ -1,11 +1,17 @@
 = TODO =
 
+== mon aug 14 ==
+
  * Refactor Person to use person and account tables, add Account controller,
 merge Register controller into Account.
 
  * Rename Submission to Proposal.
 
  * Add ability to add co-speakers to submissions.
+
+ * Proofread the Home page.
+
+== next ==
 
  * do the apachebench thing and see if threadlocal has fixed the need for evil_jf
 
