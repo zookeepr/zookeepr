@@ -3,31 +3,31 @@ from formencode import validators, compound, schema, variabledecode
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse
 from zookeepr.lib.base import c, g, redirect_to, request, render_response
 from zookeepr.lib.crud import Modify, View
-from zookeepr.lib.validators import BaseSchema, PersonValidator, SubmissionTypeValidator
-from zookeepr.model import Submission, SubmissionType
+from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator
+from zookeepr.model import Proposal, ProposalType
 
-class SubmissionSchema(schema.Schema):
+class ProposalSchema(schema.Schema):
     title = validators.String()
     abstract = validators.String()
     experience = validators.String()
     url = validators.String()
-    type = SubmissionTypeValidator()
+    type = ProposalTypeValidator()
     #person_id = 
 
-class NewSubmissionSchema(BaseSchema):
-    submission = SubmissionSchema()
+class NewProposalSchema(BaseSchema):
+    proposal = ProposalSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class EditSubmissionSchema(BaseSchema):
-    submission = SubmissionSchema()
+class EditProposalSchema(BaseSchema):
+    proposal = ProposalSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class SubmissionController(SecureController, View, Modify):
-    model = Submission
-    individual = 'submission'
+class ProposalController(SecureController, View, Modify):
+    model = Proposal
+    individual = 'proposal'
 
-    schemas = {"new" : NewSubmissionSchema(),
-               "edit" : EditSubmissionSchema()}
+    schemas = {"new" : NewProposalSchema(),
+               "edit" : EditProposalSchema()}
     permissions = {"edit": [AuthFunc('is_submitter')],
                    "view": [AuthFunc('is_submitter')],
                    "delete": [AuthFunc('is_submitter')],
@@ -35,9 +35,9 @@ class SubmissionController(SecureController, View, Modify):
                    }
 
     def __before__(self, **kwargs):
-        super(SubmissionController, self).__before__(**kwargs)
+        super(ProposalController, self).__before__(**kwargs)
 
-        c.submission_types = g.objectstore.query(SubmissionType).select()
+        c.proposal_types = g.objectstore.query(ProposalType).select()
 
     def new(self, id):
         self.obj = self.model()
@@ -47,8 +47,8 @@ class SubmissionController(SecureController, View, Modify):
             result, errors = self.schemas['new'].validate(defaults)
 
             if not errors:
-                for k in result['submission']:
-                    setattr(self.obj, k, result['submission'][k])
+                for k in result['proposal']:
+                    setattr(self.obj, k, result['proposal'][k])
 
                 self.obj.people.append(c.person)
 
@@ -57,7 +57,7 @@ class SubmissionController(SecureController, View, Modify):
 
                 redirect_to(action='view', id=self.obj.id)
 
-        c.submission = self.obj
+        c.proposal = self.obj
 
         good_errors = {}
         for key in errors.keys():
@@ -67,7 +67,7 @@ class SubmissionController(SecureController, View, Modify):
             except AttributeError:
                 good_errors[key] = errors[key]
 
-        return render_response('submission/new.myt', defaults=defaults, errors=good_errors)
+        return render_response('proposal/new.myt', defaults=defaults, errors=good_errors)
 
     def is_submitter(self):
         return c.person in self.obj.people

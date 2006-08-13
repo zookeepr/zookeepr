@@ -42,17 +42,17 @@ profile</h2>
 <% c.person.fax %>
 </p>
 
-#<h2>submissions</h2>
+#<h2>proposals</h2>
 
 #<table>
 
-#% for s in c.person.submissions:
+#% for s in c.person.proposals:
 #<tr>
-#<td><% h.link_to(s.title, h.url_for(controller='/submission', action='view', id=s.id)) %></td>
+#<td><% h.link_to(s.title, h.url_for(controller='/proposal', action='view', id=s.id)) %></td>
 #<td><% s.abstract %></td>
 #<td>
-#%	if s.submission_type:
-#<% s.submission_type.name %>
+#%	if s.proposal_type:
+#<% s.proposal_type.name %>
 #%
 #</td>
 #<td>

@@ -1,7 +1,7 @@
 from formencode import Invalid, validators, schema
 from sqlalchemy import create_session
 
-from zookeepr.model import Person, SubmissionType
+from zookeepr.model import Person, ProposalType
 
 class BaseSchema(schema.Schema):
     allow_extra_fields = True
@@ -20,7 +20,7 @@ class PersonValidator(validators.FancyValidator):
         return Person.get(value)
 
 
-class SubmissionTypeValidator(validators.FancyValidator):
+class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         s = create_session()
-        return s.query(SubmissionType).get(value)
+        return s.query(ProposalType).get(value)

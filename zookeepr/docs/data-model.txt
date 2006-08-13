@@ -3,7 +3,7 @@ Based on the SQLAlchemy zblog example.
 Model is broken up into conceptual submodules:
 
  core - bits that everything relies on
- submission - bits necessary for the CFP process?  or just submission handling
+ proposal - bits necessary for the CFP process?  or just proposal handling
 
 Within each submodule, the data model is broken up into an MVC-like pattern (which is heavily supported by the SQLAlchemy ORM):
 

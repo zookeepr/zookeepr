@@ -1,8 +1,8 @@
-<h2>List submissions</h2>
+<h2>List proposals</h2>
 
 <table>
 
-% if len(c.submission_collection) > 0:
+% if len(c.proposal_collection) > 0:
 <tr>
 <th>Title</th>
 <th>Type</th>
@@ -14,7 +14,7 @@
 </tr>
 % #endif
 
-% for s in c.submission_collection:
+% for s in c.proposal_collection:
 <tr>
 	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
 	<td>
@@ -44,13 +44,13 @@
 
 
 <%python>
-#if c.submission_pages.current.previous:
-#    m.write(h.link_to('Previous page', url=h.url(page=c.submission_pages.current.previous)) + '  ')
-#if c.submission_pages.current.next:
-#    m.write(h.link_to('Next page', url=h.url(page=c.submission_pages.current.next)))
+#if c.proposal_pages.current.previous:
+#    m.write(h.link_to('Previous page', url=h.url(page=c.proposal_pages.current.previous)) + '  ')
+#if c.proposal_pages.current.next:
+#    m.write(h.link_to('Next page', url=h.url(page=c.proposal_pages.current.next)))
 
 m.write('<br />')
 if c.can_edit:
-    m.write(h.link_to('New submission', url=h.url(action='new')))
+    m.write(h.link_to('New proposal', url=h.url(action='new')))
 </%python>
  

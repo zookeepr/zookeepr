@@ -54,13 +54,13 @@ class TestRouting(unittest.TestCase):
         self.assertEqual('/cfp',
                          url_for('cfp'))
 
-    def test_cfp_submission_url(self):
+    def test_cfp_proposal_url(self):
         """test the routing of the cfp submit url"""
         self.assertEqual(dict(controller='cfp',
                               action='submit'),
                          self.map.match('/cfp/submit'))
 
-    def test_cfp_submission_named_route(self):
+    def test_cfp_proposal_named_route(self):
         submit_cfp = url_for('submit_cfp')
         self.assertEqual('/cfp/submit',
                          submit_cfp)

@@ -1,7 +1,7 @@
 from zookeepr.tests.model import *
 
-class TestSubmissionTypeModel(ModelTest):
-    model = 'submission.SubmissionType'
+class TestProposalTypeModel(ModelTest):
+    model = 'proposal.ProposalType'
     samples = [dict(name='example1'),
                dict(name='example2'),
                ]

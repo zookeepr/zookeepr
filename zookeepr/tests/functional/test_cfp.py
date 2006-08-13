@@ -3,7 +3,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model import Person, Submission, SubmissionType
+from zookeepr.model import Person, Proposal, ProposalType
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
@@ -32,7 +32,7 @@ class TestCFP(ControllerTest):
         for k in reg_data.keys():
             form['registration.' + k] = reg_data[k]
         for k in sub_data.keys():
-            form['submission.' + k] = sub_data[k]
+            form['proposal.' + k] = sub_data[k]
 
         form.submit()
 
@@ -42,7 +42,7 @@ class TestCFP(ControllerTest):
         for key in reg_data.keys():
             self.check_attribute(regs[0], key, reg_data[key])
 
-        subs = self.objectstore.query(Submission).select()
+        subs = self.objectstore.query(Proposal).select()
         self.assertEqual(1, len(subs))
 
         for key in sub_data.keys():
@@ -56,21 +56,21 @@ class TestCFP(ControllerTest):
     no_test = ['password_confirm', 'type']
     mangles = dict(password = lambda p: md5.new(p).hexdigest(),
                    attachment = lambda a: buffer(a),
-                   #type = lambda t: TestCFP.objectstore.query(SubmissionType).get(1),
+                   #type = lambda t: TestCFP.objectstore.query(ProposalType).get(1),
                    )
 
     def setUp(self):
         ControllerTest.setUp(self)
-        st1 = SubmissionType('Paper')
-        st2 = SubmissionType('Scissors')
+        st1 = ProposalType('Paper')
+        st2 = ProposalType('Scissors')
         self.objectstore.save(st1)
         self.objectstore.save(st2)
         self.objectstore.flush()
         self.stid = (st1.id, st2.id)
 
     def tearDown(self):
-        st1 = self.objectstore.query(SubmissionType).get(self.stid[0])
-        st2 = self.objectstore.query(SubmissionType).get(self.stid[1])
+        st1 = self.objectstore.query(ProposalType).get(self.stid[0])
+        st2 = self.objectstore.query(ProposalType).get(self.stid[1])
         self.objectstore.delete(st2)
         self.objectstore.delete(st1)
         self.objectstore.flush()
@@ -88,11 +88,11 @@ class TestCFP(ControllerTest):
              'registration.password': 'test',
              'registration.password_confirm': 'test',
              'registration.fullname': 'Testguy McTest',
-             'submission.title': 'title',
-             'submission.abstract': 'abstract',
-             'submission.type': 1,
-             'submission.attachment': '',
-             'submission.assistance': False,
+             'proposal.title': 'title',
+             'proposal.abstract': 'abstract',
+             'proposal.type': 1,
+             'proposal.attachment': '',
+             'proposal.assistance': False,
              }
         for k in d.keys():
             form[k] = d[k]
@@ -112,7 +112,7 @@ class TestCFP(ControllerTest):
         
         
         # get out the url hash because i don't know how to trap smtplib
-        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from submission")
+        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from proposal")
         
         message = Dummy_smtplib.existing
 
@@ -154,8 +154,8 @@ class TestCFP(ControllerTest):
         Dummy_smtplib.existing.reset()
 
         self.objectstore.delete(regs[0])
-        self.objectstore.delete(self.objectstore.query(Submission).select()[0])
+        self.objectstore.delete(self.objectstore.query(Proposal).select()[0])
         self.objectstore.flush()
 
-        self.assertEmptyModel(Submission)
+        self.assertEmptyModel(Proposal)
         self.assertEmptyModel(Person)

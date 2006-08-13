@@ -1,7 +1,7 @@
-<h2>Delete submission <% c.submission.id %></h2>
+<h2>Delete proposal <% c.proposal.id %></h2>
 
 <% h.form(h.url_for()) %>
-<p> Are you sure you want to delete the submission entitled '<% c.submission.title %>'?</p>
+<p> Are you sure you want to delete the proposal entitled '<% c.proposal.title %>'?</p>
 <% h.hidden_field('delete', 'ok') %>
 <% h.submit('Delete') %>
 <% h.end_form() %>

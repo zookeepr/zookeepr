@@ -52,7 +52,7 @@ class ControllerTest(TestBase):
     boxes.
 
     ``mangles`` is a dictionary of attributes that are mangled by the
-    form submission process, e.g. passwords that are hashed.
+    form proposal process, e.g. passwords that are hashed.
 
     An example using this base class:
 
@@ -98,7 +98,8 @@ class ControllerTest(TestBase):
                 model = self.model
                 
         if model:
-            self.assertEqual([], self.objectstore.query(model).select())
+            contents = self.objectstore.query(model).select()
+            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
     def form_params(self, params):
         """Prepend the controller's name to the param dict for use

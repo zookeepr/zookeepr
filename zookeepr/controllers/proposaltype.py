@@ -4,22 +4,22 @@ from formencode.schema import Schema
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.model import SubmissionType
+from zookeepr.model import ProposalType
 
-class SubmissionTypeSchema(Schema):
+class ProposalTypeSchema(Schema):
     name = validators.String(not_empty=True)
 
-class NewSubmissionTypeSchema(BaseSchema):
-    submissiontype = SubmissionTypeSchema()
+class NewProposalTypeSchema(BaseSchema):
+    proposaltype = ProposalTypeSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class EditSubmissionTypeSchema(BaseSchema):
-    submissiontype = SubmissionTypeSchema()
+class EditProposalTypeSchema(BaseSchema):
+    proposaltype = ProposalTypeSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class SubmissiontypeController(SecureController, View, Modify):
-    schemas = {"new" : NewSubmissionTypeSchema(),
-               "edit" : EditSubmissionTypeSchema()}
+class ProposaltypeController(SecureController, View, Modify):
+    schemas = {"new" : NewProposalTypeSchema(),
+               "edit" : EditProposalTypeSchema()}
     permissions = {"view": [AuthRole('site-admin')],
                    "index": [AuthRole('site-admin')],
                    "edit": [],
@@ -27,6 +27,6 @@ class SubmissiontypeController(SecureController, View, Modify):
                    "new": [],
                    }
 
-    model = SubmissionType
-    individual = 'submissiontype'
+    model = ProposalType
+    individual = 'proposaltype'
     redirect_map = dict(new=dict(action='index'))

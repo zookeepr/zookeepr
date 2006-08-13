@@ -1,9 +1,9 @@
-Subject: Confirmation of your submission to the linux.conf.au 2007 CFP
+Subject: Confirmation of your proposal to the linux.conf.au 2007 CFP
 To: <% c.registration.fullname %> <<% c.registration.email_address %>>
 
 Dear <% c.registration.fullname %>,
 
-Thankyou for your submission entitled "<% c.submission.title %>".
+Thankyou for your proposal entitled "<% c.proposal.title %>".
 
 If you would like to log into the linux.conf.au 2007 site, please
 start by confirming your registration by clicking on the URL
@@ -14,7 +14,7 @@ http://lca2007.linux.org.au<% h.url_for(controller='register', action='confirm',
 (If clicking does not work, please clag it into your web browser.)
 
 Once your account has been confirmed, you will be able to log
-into the site with the password you provided with your submission.
+into the site with the password you provided with your proposal.
 
 Thanks again, and have a great day!
 

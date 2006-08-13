@@ -1,6 +1,6 @@
-<h2>Edit submission type</h2>
+<h2>Edit proposal type</h2>
 
-<% h.form(h.url(id=c.submissiontype.id)) %>
+<% h.form(h.url(id=c.proposaltype.id)) %>
 <& form.myt &>
 <% h.submit('Update') %>
 <% h.end_form() %>

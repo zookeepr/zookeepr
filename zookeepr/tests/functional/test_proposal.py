@@ -1,12 +1,12 @@
 import pprint
 
-from zookeepr.model import Submission, SubmissionType, Person
+from zookeepr.model import Proposal, ProposalType, Person
 from zookeepr.tests.functional import *
 
-class TestSubmission(ControllerTest):
-    model = Submission
-    name = 'submission'
-    url = '/submission'
+class TestProposal(ControllerTest):
+    model = Proposal
+    name = 'proposal'
+    url = '/proposal'
     samples = [dict(title='test',
                     abstract='abstract 1',
                     experience='experience 1',
@@ -21,43 +21,43 @@ class TestSubmission(ControllerTest):
 
     def additional(self, obj):
         obj.people.append(self.p)
-        obj.type = self.objectstore.get(SubmissionType, 1)
+        obj.type = self.objectstore.get(ProposalType, 1)
         return obj
     
     def setUp(self):
-        super(TestSubmission, self).setUp()
-        model.submission.tables.submission_type.insert().execute(
+        super(TestProposal, self).setUp()
+        model.proposal.tables.proposal_type.insert().execute(
             dict(id=1, name='Paper'),
             )
-        model.submission.tables.submission_type.insert().execute(
+        model.proposal.tables.proposal_type.insert().execute(
             dict(id=2, name='Presentation'),
             )
-        model.submission.tables.submission_type.insert().execute(
+        model.proposal.tables.proposal_type.insert().execute(
             dict(id=3, name='Miniconf'),
             )
         self.log_in()
 
     def tearDown(self):
         self.log_out()
-        model.submission.tables.submission_type.delete().execute()
-        super(TestSubmission, self).tearDown()
+        model.proposal.tables.proposal_type.delete().execute()
+        super(TestProposal, self).tearDown()
 
     def test_selected_radio_button_in_edit(self):
         
-        # Test that a radio button is checked when editing a submission
-        s = Submission(id=1,
-                       type=self.objectstore.get(SubmissionType, 3),
+        # Test that a radio button is checked when editing a proposal
+        s = Proposal(id=1,
+                       type=self.objectstore.get(ProposalType, 3),
                        title='foo',
                        abstract='bar',
                        experience='',
                        url='')
         self.objectstore.save(s)
         
-        self.p.submissions.append(s)
+        self.p.proposals.append(s)
         
         self.objectstore.flush()
 
-        resp = self.app.get(url_for(controller='submission',
+        resp = self.app.get(url_for(controller='proposal',
                                     action='edit',
                                     id=s.id))
 
@@ -71,26 +71,26 @@ class TestSubmission(ControllerTest):
         pprint.pprint(f.fields)
 
         # the value being returned is a string, from the form defaults
-        self.assertEqual('3', f.fields['submission.type'][0].value)
+        self.assertEqual('3', f.fields['proposal.type'][0].value)
 
         # clean up
         self.objectstore.delete(s)
         self.objectstore.flush()
 
 
-    def test_submission_view_lockdown(self):
+    def test_proposal_view_lockdown(self):
         # we got one person already with login
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
         self.objectstore.save(p2)
-        # create a submission
-        s = Submission(title='foo')
+        # create a proposal
+        s = Proposal(title='foo')
         self.objectstore.save(s)
-        p2.submissions.append(s)
+        p2.proposals.append(s)
         self.objectstore.flush()
-        # try to view the submission as the other person
-        resp = self.app.get(url_for(controller='submission',
+        # try to view the proposal as the other person
+        resp = self.app.get(url_for(controller='proposal',
                                     action='view',
                                     id=s.id),
                             status=403)
@@ -101,25 +101,25 @@ class TestSubmission(ControllerTest):
         self.objectstore.flush()
 
 
-    def test_submission_edit_lockdown(self):
+    def test_proposal_edit_lockdown(self):
         # we got one person already with login
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
         self.objectstore.save(p2)
-        # create a submission
-        s = Submission(title='foo')
+        # create a proposal
+        s = Proposal(title='foo')
         self.objectstore.save(s)
-        p2.submissions.append(s)
+        p2.proposals.append(s)
         self.objectstore.flush()
-        # try to view the submission as the other person
-        resp = self.app.get(url_for(controller='submission',
+        # try to view the proposal as the other person
+        resp = self.app.get(url_for(controller='proposal',
                                     action='edit',
                                     id=s.id),
                             status=403)
 
         # also try to post to it
-        resp = self.app.post(url_for(controller='submission',
+        resp = self.app.post(url_for(controller='proposal',
                                      action='edit',
                                      id=s.id),
                              params={},
@@ -131,26 +131,26 @@ class TestSubmission(ControllerTest):
         self.objectstore.flush()
 
 
-    def test_submission_delete_lockdown(self):
+    def test_proposal_delete_lockdown(self):
         # we got one person already with login
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
         self.objectstore.save(p2)
         self.objectstore.flush()
-        # create a submission
-        s = Submission(title='foo')
+        # create a proposal
+        s = Proposal(title='foo')
         self.objectstore.save(s)
-        p2.submissions.append(s)
+        p2.proposals.append(s)
         self.objectstore.flush()
-        # try to view the submission as the other person
-        resp = self.app.get(url_for(controller='submission',
+        # try to view the proposal as the other person
+        resp = self.app.get(url_for(controller='proposal',
                                     action='delete',
                                     id=s.id),
                             status=403)
 
         # also try to post to it
-        resp = self.app.post(url_for(controller='submission',
+        resp = self.app.post(url_for(controller='proposal',
                                      action='delete',
                                      id=s.id),
                              params={},
@@ -162,19 +162,19 @@ class TestSubmission(ControllerTest):
         self.objectstore.flush()
 
 
-    def test_submission_list_lockdown(self):
+    def test_proposal_list_lockdown(self):
         # we got one person already with login
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
         self.objectstore.save(p2)
-        # create a submission
-        s = Submission(title='foo')
+        # create a proposal
+        s = Proposal(title='foo')
         self.objectstore.save(s)
-        p2.submissions.append(s)
+        p2.proposals.append(s)
         self.objectstore.flush()
-        # try to view the submission as the other person
-        resp = self.app.get(url_for(controller='submission',
+        # try to view the proposal as the other person
+        resp = self.app.get(url_for(controller='proposal',
                                     action='index'),
                             status=403)
 
@@ -186,8 +186,8 @@ class TestSubmission(ControllerTest):
 
     def test_submit_another(self):
         # created guy with login
-        # and a submission
-        s1 = Submission(title='sub one')
+        # and a proposal
+        s1 = Proposal(title='sub one')
         self.objectstore.save(s1)
         self.objectstore.flush()
 
@@ -197,21 +197,21 @@ class TestSubmission(ControllerTest):
         resp = resp.click(description='submit another')
         #print resp
         f = resp.form
-        f['submission.title'] = 'sub two'
-        f['submission.type'] = 1
-        f['submission.abstract'] = "cubist"
-        f['submission.experience'] = "n"
+        f['proposal.title'] = 'sub two'
+        f['proposal.type'] = 1
+        f['proposal.abstract'] = "cubist"
+        f['proposal.experience'] = "n"
         print f.submit_fields()
         resp = f.submit()
         resp = resp.follow()
 
         # does it exist?
-        subs = self.objectstore.query(Submission).select_by(title='sub two')
+        subs = self.objectstore.query(Proposal).select_by(title='sub two')
         self.assertEqual(1, len(subs))
 
         s2 = subs[0]
         # is it attached to our guy?
-        self.failUnless(s2 in self.p.submissions, "s2 not in p.submissions (currently %r)" % self.p.submissions)
+        self.failUnless(s2 in self.p.proposals, "s2 not in p.proposals (currently %r)" % self.p.proposals)
         
         # clean up
         self.objectstore.delete(s2)

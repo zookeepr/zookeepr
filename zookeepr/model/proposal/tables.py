@@ -1,27 +1,27 @@
 from sqlalchemy import *
 
-# types of submissions: typically 'paper', 'miniconf', etc
-submission_type = Table('submission_type',
+# types of proposals: typically 'paper', 'miniconf', etc
+proposal_type = Table('proposal_type',
                         Column('id', Integer, primary_key=True),
                         Column('name', String(40),
                                unique=True,
                                nullable=False),
                         )
 
-# submissions to the conference
-submission = Table('submission', 
+# proposals to the conference
+proposal = Table('proposal', 
                    Column('id', Integer, primary_key=True),
 
-                   # title of submission
+                   # title of proposal
                    Column('title', String()),
                    # abstract or description
                    Column('abstract', String()),
                    # attachment, if they've submitted a paper
                    Column('attachment', Binary()),
 
-                   # type, enumerated in the submission_type table
-                   Column('submission_type_id', Integer,
-                          ForeignKey('submission_type.id')),
+                   # type, enumerated in the proposal_type table
+                   Column('proposal_type_id', Integer,
+                          ForeignKey('proposal_type.id')),
 
                    # their bio/experience presenting this topic
                    Column('experience', String()),
@@ -33,10 +33,10 @@ submission = Table('submission',
                    Column('assistance', Boolean),
                    )
 
-# for doing n-n mappings of people and submissions
-person_submission_map = Table('person_submission_map',
+# for doing n-n mappings of people and proposals
+person_proposal_map = Table('person_proposal_map',
     Column('person_id', Integer, ForeignKey('person.id'),
         nullable=False),
-    Column('submission_id', Integer, ForeignKey('submission.id'),
+    Column('proposal_id', Integer, ForeignKey('proposal.id'),
         nullable=False),
     )

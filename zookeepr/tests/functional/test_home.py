@@ -1,4 +1,4 @@
-from zookeepr.model import Person, Submission
+from zookeepr.model import Person, Proposal
 from zookeepr.tests.functional import *
 
 class TestHomeController(ControllerTest):
@@ -12,9 +12,9 @@ class TestHomeController(ControllerTest):
         p.activated = True
         self.objectstore.save(p)
         print p
-        s = Submission(title='foo')
+        s = Proposal(title='foo')
         self.objectstore.save(s)
-        p.submissions.append(s)
+        p.proposals.append(s)
 
         self.objectstore.flush()
 
