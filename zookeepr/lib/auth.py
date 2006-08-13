@@ -3,7 +3,7 @@ import md5
 from sqlalchemy import create_session, objectstore
 
 from zookeepr.lib.base import BaseController, c, redirect_to, session, abort
-from zookeepr.model.core.domain import Person
+from zookeepr.model import Person, Role
 
 class retcode:
     """Enumerations of authentication return codes"""
@@ -154,3 +154,17 @@ class AuthTrue(object):
 class AuthFalse(object):
     def authorise(self):
         return False
+
+class AuthRole(object):
+    def __init__(self, role_name):
+        self.role_name = role_name
+
+    def authorise(self, cls):
+        print Role.select()
+        roles = Role.select_by(name=self.role_name)
+        print "roles:", roles
+        if len(roles) == 0:
+            role = None
+        else:
+            role = roles[0]
+        return role in c.person.roles

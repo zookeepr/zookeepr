@@ -1,26 +1,31 @@
-from formencode import validators, compound, schema, variabledecode
+from formencode import validators, compound, variabledecode
+from formencode.schema import Schema
 
-from zookeepr.lib.base import BaseController
+from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import SubmissionType
 
-class SubmissionTypeValidator(schema.Schema):
-    name = validators.String()
+class SubmissionTypeSchema(Schema):
+    name = validators.String(not_empty=True)
 
-class NewSubmissionTypeValidator(BaseSchema):
-    submissiontype = SubmissionTypeValidator()
+class NewSubmissionTypeSchema(BaseSchema):
+    submissiontype = SubmissionTypeSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-
-class EditSubmissionTypeValidator(BaseSchema):
-    submissiontype = SubmissionTypeValidator()
+class EditSubmissionTypeSchema(BaseSchema):
+    submissiontype = SubmissionTypeSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-
-class SubmissiontypeController(BaseController, View, Modify):
-    schemas = {"new" : NewSubmissionTypeValidator(),
-               "edit" : EditSubmissionTypeValidator()}
+class SubmissiontypeController(SecureController, View, Modify):
+    schemas = {"new" : NewSubmissionTypeSchema(),
+               "edit" : EditSubmissionTypeSchema()}
+    permissions = {"view": [AuthRole('site-admin')],
+                   "index": [AuthRole('site-admin')],
+                   "edit": [],
+                   "delete": [],
+                   "new": [],
+                   }
 
     model = SubmissionType
     individual = 'submissiontype'

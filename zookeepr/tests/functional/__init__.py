@@ -113,6 +113,7 @@ class ControllerTest(TestBase):
         print "url", url
         # get the form
         response = self.app.get(url)
+        print response
         form = response.form
 
         print form.text
