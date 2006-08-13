@@ -1,4 +1,5 @@
-<ul id="usermenu" class="linkmenu">
+<br />
+<ul id="usermenu" class="sublinkmenu">
 
 % if c.person:
 <li><% h.link_to('my home', url=h.url('home')) %></li>
