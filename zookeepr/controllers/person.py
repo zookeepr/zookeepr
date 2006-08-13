@@ -2,7 +2,8 @@ from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.auth import SecureController
+from zookeepr.lib.auth import SecureController, AuthFunc
+from zookeepr.lib.base import c, session
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import Person
@@ -29,7 +30,16 @@ class EditPersonSchema(BaseSchema):
 class PersonController(SecureController, View, Modify):
     schemas = {"new" : NewPersonSchema(),
                "edit" : EditPersonSchema()}
+    permissions = {"view": [],
+                   "new": [],
+                   "edit": [],
+                   "delete": [],
+                   "index": [],
+                   }
 
     model = Person
     individual = 'person'
     key = 'handle'
+
+    def is_same_person(self):
+        return c.person.id == session['person_id']
