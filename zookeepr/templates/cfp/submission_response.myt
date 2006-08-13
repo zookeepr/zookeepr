@@ -9,7 +9,7 @@ If you would like to log into the linux.conf.au 2007 site, please
 start by confirming your registration by clicking on the URL
 below:
 
-http://lca2007.linux.org.au<% h.url_for(controller='register', action='confirm', id=id) %>
+http://lca2007.linux.org.au<% h.url_for('acct_confirm', id=id) %>
 
 (If clicking does not work, please clag it into your web browser.)
 
