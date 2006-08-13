@@ -65,10 +65,10 @@ profile</h2>
 
 <hr />
 
-% if c.can_edit:
-<% h.link_to('Edit', url=h.url(action='edit',id=c.person.get_unique())) %> |
-% #end if
-<% h.link_to('Back', url=h.url(action='index')) %>
+#% if c.can_edit:
+#<% h.link_to('Edit', url=h.url(action='edit',id=c.person.get_unique())) %> |
+#% #end if
+#<% h.link_to('Back', url=h.url(action='index')) %>
 
 <%method title>
 Profile -
