@@ -41,14 +41,16 @@ class TestSubmission(ControllerTest):
         
         # Test that a radio button is checked when editing a submission
         s = Submission(id=1,
-                       type=SubmissionType.get(3),
+                       type=self.objectstore.get(SubmissionType, 3),
                        title='foo',
                        abstract='bar',
                        experience='',
                        url='')
-        s.save()
+        self.objectstore.save(s)
+        
         self.p.submissions.append(s)
-        s.flush()
+        
+        self.objectstore.flush()
 
         resp = self.app.get(url_for(controller='submission',
                                     action='edit',
@@ -67,8 +69,8 @@ class TestSubmission(ControllerTest):
         self.assertEqual('3', f.fields['submission.type'][0].value)
 
         # clean up
-        s.delete()
-        s.flush()
+        self.objectstore.delete(s)
+        self.objectstore.flush()
 
         self.log_out()
 
@@ -79,13 +81,12 @@ class TestSubmission(ControllerTest):
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
-        p2.save()
-        p2.flush()
+        self.objectstore.save(p2)
         # create a submission
         s = Submission(title='foo')
-        s.save()
+        self.objectstore.save(s)
         p2.submissions.append(s)
-        s.flush()
+        self.objectstore.flush()
         # try to view the submission as the other person
         resp = self.app.get(url_for(controller='submission',
                                     action='view',
@@ -93,10 +94,9 @@ class TestSubmission(ControllerTest):
                             status=403)
 
         # clean up
-        p2.delete()
-        p2.flush()
-        s.delete()
-        s.flush()
+        self.objectstore.delete(p2)
+        self.objectstore.delete(s)
+        self.objectstore.flush()
 
         self.log_out()
 
@@ -106,13 +106,12 @@ class TestSubmission(ControllerTest):
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
-        p2.save()
-        p2.flush()
+        self.objectstore.save(p2)
         # create a submission
         s = Submission(title='foo')
-        s.save()
+        self.objectstore.save(s)
         p2.submissions.append(s)
-        s.flush()
+        self.objectstore.flush()
         # try to view the submission as the other person
         resp = self.app.get(url_for(controller='submission',
                                     action='edit',
@@ -127,10 +126,9 @@ class TestSubmission(ControllerTest):
                              status=403)
 
         # clean up
-        p2.delete()
-        p2.flush()
-        s.delete()
-        s.flush()
+        self.objectstore.delete(p2)
+        self.objectstore.delete(s)
+        self.objectstore.flush()
 
         self.log_out()
 
@@ -140,13 +138,13 @@ class TestSubmission(ControllerTest):
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
-        p2.save()
-        p2.flush()
+        self.objectstore.save(p2)
+        self.objectstore.flush()
         # create a submission
         s = Submission(title='foo')
-        s.save()
+        self.objectstore.save(s)
         p2.submissions.append(s)
-        s.flush()
+        self.objectstore.flush()
         # try to view the submission as the other person
         resp = self.app.get(url_for(controller='submission',
                                     action='delete',
@@ -161,13 +159,11 @@ class TestSubmission(ControllerTest):
                              status=403)
 
         # clean up
-        p2.delete()
-        p2.flush()
-        s.delete()
-        s.flush()
+        self.objectstore.delete(p2)
+        self.objectstore.delete(s)
+        self.objectstore.flush()
 
         self.log_out()
-
 
     def test_submission_list_lockdown(self):
         # we got one person already with login
@@ -175,23 +171,21 @@ class TestSubmission(ControllerTest):
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
-        p2.save()
-        p2.flush()
+        self.objectstore.save(p2)
         # create a submission
         s = Submission(title='foo')
-        s.save()
+        self.objectstore.save(s)
         p2.submissions.append(s)
-        s.flush()
+        self.objectstore.flush()
         # try to view the submission as the other person
         resp = self.app.get(url_for(controller='submission',
                                     action='index'),
                             status=403)
 
         # clean up
-        p2.delete()
-        p2.flush()
-        s.delete()
-        s.flush()
+        self.objectstore.delete(p2)
+        self.objectstore.delete(s)
+        self.objectstore.flush()
 
         self.log_out()
 

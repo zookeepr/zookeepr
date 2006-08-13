@@ -37,10 +37,10 @@ class TestPerson(ModelTest):
 
         print r
 
-        r.save()
-        r.flush()
+        self.objectstore.save(r)
+        self.objectstore.flush()
 
-        s = Person.select_by(_url_hash=r.url_hash)
+        s = self.objectstore.query(Person).select_by(_url_hash=r.url_hash)
 
         # only one element
         self.assertEqual(1, len(s))
@@ -49,7 +49,7 @@ class TestPerson(ModelTest):
         self.assertEqual(r, s[0])
 
         # clean up
-        r.delete()
-        r.flush()
+        self.objectstore.delete(r)
+        self.objectstore.flush()
 
         self.check_empty_session()

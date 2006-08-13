@@ -1,4 +1,5 @@
 from formencode import Invalid, validators, schema
+from sqlalchemy import create_session
 
 from zookeepr.model import Person, SubmissionType
 
@@ -21,4 +22,5 @@ class PersonValidator(validators.FancyValidator):
 
 class SubmissionTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return SubmissionType.get(value)
+        s = create_session()
+        return s.query(SubmissionType).get(value)

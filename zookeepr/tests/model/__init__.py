@@ -1,5 +1,5 @@
 import sqlalchemy
-from sqlalchemy import objectstore
+from sqlalchemy import create_session
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -44,6 +44,15 @@ class ModelTest(TestBase):
     """
     __metaclass__ = ModelTestGenerator
 
+    def setUp(self):
+        super(ModelTest, self).setUp()
+        self.objectstore = create_session()
+
+    def tearDown(self):
+        self.objectstore.close()
+        del self.objectstore
+        super(ModelTest, self).tearDown()
+
     def get_model(self):
         """Return the model object, coping with scoping.
 
@@ -58,7 +67,7 @@ class ModelTest(TestBase):
         
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
-        session = sqlalchemy.create_session()
+        session = create_session()
         results = session.query(self.get_model()).select()
         self.assertEqual(0, len(results))
         session.close()
@@ -98,18 +107,18 @@ class ModelTest(TestBase):
             o = self.get_model()(**sample)
     
             # committing to db
-            o.save()
-            o.flush()
+            self.objectstore.save(o)
+            self.objectstore.flush()
             oid = o.id
 
             # clear the session, invalidating o
-            objectstore.clear()
+            self.objectstore.clear()
             del o
     
             # check it's in the database
             print self.get_model()
             print oid
-            o = self.get_model().get(oid)
+            o = self.objectstore.get(self.get_model(), oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
@@ -118,11 +127,13 @@ class ModelTest(TestBase):
                 self.check_attribute(o, key, sample[key])
     
             # deleting object
-            o.delete()
-            o.flush()
+            self.objectstore.delete(o)
+            self.objectstore.flush()
     
             # checking db
             self.check_empty_session()
+
+        self.objectstore.close()
 
     def check_attribute(self, obj, key, value):
         """Check that the attribute has the correct value.
@@ -308,4 +319,4 @@ class TableTest(TestBase):
             self.check_empty_table()
 
 
-__all__ = ['TableTest', 'ModelTest', 'model', 'objectstore']
+__all__ = ['TableTest', 'ModelTest', 'model', 'create_session']

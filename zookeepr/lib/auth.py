@@ -1,8 +1,8 @@
 import md5
 
-from sqlalchemy import create_session, objectstore
+from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController, c, redirect_to, session, abort
+from zookeepr.lib.base import BaseController, c, g, redirect_to, session, abort
 from zookeepr.model import Person, Role
 
 class retcode:
@@ -17,8 +17,10 @@ class PersonAuthenticator(object):
     """Look up the Person in the data store"""
 
     def authenticate(self, username, password):
+
+        objectstore = create_session()
         
-        ps = Person.select_by(email_address=username)
+        ps = objectstore.query(Person).select_by(email_address=username)
         
         if len(ps) <> 1:
             return retcode.FAILURE
@@ -31,6 +33,8 @@ class PersonAuthenticator(object):
             result = retcode.SUCCESS
         else:
             result = retcode.FAILURE
+
+        objectstore.close()
         
         return result
 
@@ -112,7 +116,7 @@ class SecureController(BaseController):
         if self.logged_in():
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
-            c.person = Person.get(session['person_id'])
+            c.person = g.objectstore.get(Person, session['person_id'])
         else:
             # No-one's logged in, so send them to the signin
             # page.

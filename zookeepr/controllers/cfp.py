@@ -4,7 +4,7 @@ from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, c, h, render, render_response, request
+from zookeepr.lib.base import BaseController, c, g, h, render, render_response, request
 from zookeepr.lib.validators import BaseSchema, SubmissionTypeValidator
 from zookeepr.model import Person, SubmissionType, Submission
     
@@ -33,7 +33,7 @@ class CfpController(BaseController):
         return render_response("cfp/list.myt")
 
     def submit(self):
-        c.cfptypes = SubmissionType.select()
+        c.cfptypes = g.objectstore.query(SubmissionType).select()
 
         errors = {}
         defaults = dict(request.POST)
@@ -54,13 +54,12 @@ class CfpController(BaseController):
                 for k in result['registration']:
                     setattr(new_reg, k, result['registration'][k])
 
-                new_reg.save()
-                new_sub.save()
+                g.objectstore.save(new_reg)
+                g.objectstore.save(new_sub)
 
                 new_reg.submissions.append(new_sub)
-                
-                new_reg.flush()
-                new_sub.flush()
+
+                g.objectstore.flush()
 
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template

@@ -10,13 +10,13 @@ class TestHomeController(ControllerTest):
                    password='test',
                    firstname='Testguy')
         p.activated = True
-        p.save()
+        self.objectstore.save(p)
         print p
         s = Submission(title='foo')
-        s.save()
+        self.objectstore.save(s)
         p.submissions.append(s)
-        p.flush()
-        s.flush()
+
+        self.objectstore.flush()
 
         print p
 
@@ -35,8 +35,7 @@ class TestHomeController(ControllerTest):
         self.assertEqual('/', resp.request.url)
         resp.mustcontain("Welcome, <strong>Testguy</strong>!")
         resp.mustcontain("foo")
-        
-        p.delete()
-        s.delete()
-        p.flush()
-        s.flush()
+
+        self.objectstore.delete(p)
+        self.objectstore.delete(s)
+        self.objectstore.flush()
