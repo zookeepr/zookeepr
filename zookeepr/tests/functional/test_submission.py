@@ -1,6 +1,6 @@
 import pprint
 
-from zookeepr.model import Submission, SubmissionType
+from zookeepr.model import Submission, SubmissionType, Person
 from zookeepr.tests.functional import *
 
 class TestSubmission(ControllerTest):
@@ -37,6 +37,8 @@ class TestSubmission(ControllerTest):
         ControllerTest.tearDown(self)
 
     def test_selected_radio_button_in_edit(self):
+        self.log_in()
+        
         # Test that a radio button is checked when editing a submission
         s = Submission(id=1,
                        type=SubmissionType.get(3),
@@ -45,11 +47,14 @@ class TestSubmission(ControllerTest):
                        experience='',
                        url='')
         s.save()
+        self.p.submissions.append(s)
         s.flush()
 
         resp = self.app.get(url_for(controller='submission',
                                     action='edit',
                                     id=s.id))
+
+        print resp.session
 
         f = resp.form
 
@@ -60,7 +65,133 @@ class TestSubmission(ControllerTest):
 
         # the value being returned is a string, from the form defaults
         self.assertEqual('3', f.fields['submission.type'][0].value)
-        
+
         # clean up
         s.delete()
         s.flush()
+
+        self.log_out()
+
+
+    def test_submission_view_lockdown(self):
+        # we got one person already with login
+        self.log_in()
+        # create a sceond
+        p2 = Person(email_address='test2@example.org',
+                    password='test')
+        p2.save()
+        p2.flush()
+        # create a submission
+        s = Submission(title='foo')
+        s.save()
+        p2.submissions.append(s)
+        s.flush()
+        # try to view the submission as the other person
+        resp = self.app.get(url_for(controller='submission',
+                                    action='view',
+                                    id=s.id),
+                            status=403)
+
+        # clean up
+        p2.delete()
+        p2.flush()
+        s.delete()
+        s.flush()
+
+        self.log_out()
+
+    def test_submission_edit_lockdown(self):
+        # we got one person already with login
+        self.log_in()
+        # create a sceond
+        p2 = Person(email_address='test2@example.org',
+                    password='test')
+        p2.save()
+        p2.flush()
+        # create a submission
+        s = Submission(title='foo')
+        s.save()
+        p2.submissions.append(s)
+        s.flush()
+        # try to view the submission as the other person
+        resp = self.app.get(url_for(controller='submission',
+                                    action='edit',
+                                    id=s.id),
+                            status=403)
+
+        # also try to post to it
+        resp = self.app.post(url_for(controller='submission',
+                                     action='edit',
+                                     id=s.id),
+                             params={},
+                             status=403)
+
+        # clean up
+        p2.delete()
+        p2.flush()
+        s.delete()
+        s.flush()
+
+        self.log_out()
+
+    def test_submission_delete_lockdown(self):
+        # we got one person already with login
+        self.log_in()
+        # create a sceond
+        p2 = Person(email_address='test2@example.org',
+                    password='test')
+        p2.save()
+        p2.flush()
+        # create a submission
+        s = Submission(title='foo')
+        s.save()
+        p2.submissions.append(s)
+        s.flush()
+        # try to view the submission as the other person
+        resp = self.app.get(url_for(controller='submission',
+                                    action='delete',
+                                    id=s.id),
+                            status=403)
+
+        # also try to post to it
+        resp = self.app.post(url_for(controller='submission',
+                                     action='delete',
+                                     id=s.id),
+                             params={},
+                             status=403)
+
+        # clean up
+        p2.delete()
+        p2.flush()
+        s.delete()
+        s.flush()
+
+        self.log_out()
+
+
+    def test_submission_list_lockdown(self):
+        # we got one person already with login
+        self.log_in()
+        # create a sceond
+        p2 = Person(email_address='test2@example.org',
+                    password='test')
+        p2.save()
+        p2.flush()
+        # create a submission
+        s = Submission(title='foo')
+        s.save()
+        p2.submissions.append(s)
+        s.flush()
+        # try to view the submission as the other person
+        resp = self.app.get(url_for(controller='submission',
+                                    action='index'),
+                            status=403)
+
+        # clean up
+        p2.delete()
+        p2.flush()
+        s.delete()
+        s.flush()
+
+        self.log_out()
+

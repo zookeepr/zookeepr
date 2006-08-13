@@ -18,8 +18,8 @@
 <tr>
 	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
 	<td>
-% 	if s.submission_type:
-<% s.submission_type.name %>
+% 	if s.type:
+<% s.type.name %>
 % 	#endif
 </td>
 	<td><% str(s.abstract)[:30] %></td>
@@ -27,9 +27,10 @@
 	<td><% h.link_to(s.url, url=s.url) %></td>
 	<td><% str(s.attachment)[:30] %></td>
 	<td>
-% 	if s.person:
-<% h.link_to(s.person.handle or s.person.id, url=h.url(controller='person', action='view', id=s.person.id)) %>
-%	# endif
+% 	for p in s.people:
+
+<% h.link_to(p.handle or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
+%	# endfor
 </td>
 
 % 	if c.can_edit:

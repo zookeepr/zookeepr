@@ -1,7 +1,8 @@
-from formencode.schema import Schema
-from formencode import Invalid
+from formencode import Invalid, validators, schema
 
-class BaseSchema(Schema):
+from zookeepr.model import Person, SubmissionType
+
+class BaseSchema(schema.Schema):
     allow_extra_fields = True
     filter_extra_fields = True
 
@@ -11,3 +12,13 @@ class BaseSchema(Schema):
             return result, {}
         except Invalid, e:
             return {}, e.unpack_errors()
+
+
+class PersonValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Person.get(value)
+
+
+class SubmissionTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return SubmissionType.get(value)

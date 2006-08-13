@@ -1,3 +1,5 @@
+#<% h.hidden_field('submission.person_id', c.person.id) %>
+
 <p><label for="submission.title">Title:</label><br />
 <% h.text_field('submission.title', c.submission.title, size=80) %></p>
 
@@ -8,7 +10,7 @@
 
 % for st in c.submission_types:
 %	if c.submission.type:
-%		czeched = st == c.submission.type
+%		czeched = c.submission.type == st
 %	else:
 %		czeched = False
 %	#endif

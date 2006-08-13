@@ -1,5 +1,7 @@
 = TODO =
 
+ * submit anthoer button doesn't link it to the current person
+
  * do the apachebench thing and see if threadlocal has fixed the need for evil_jf
 
  * Restrict access to submissions.  Modify SecureController to add authorisation controls. + test obviously.
