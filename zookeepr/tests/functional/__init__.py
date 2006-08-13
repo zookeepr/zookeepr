@@ -136,8 +136,8 @@ class ControllerTest(TestBase):
         for key in self.samples[0].keys():
             self.check_attribute(os[0], key, self.samples[0][key])
 
-        os[0].delete()
-        os[0].flush()
+        self.objectstore.delete(os[0])
+        self.objectstore.flush()
 
     def check_attribute(self, obj, attr, expected):
         """check that the attribute has the correct value.
@@ -208,11 +208,14 @@ class ControllerTest(TestBase):
         #"""Test delete action on controller"""
         # create something
         o = self.model(**self.make_model_data())
-        o.save()
-        o.flush()
+        if hasattr(self, 'additional'):
+            for k in self.additional:
+                setattr(o, k, self.additional[k])
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
 
-        objectstore.clear()
+        self.objectstore.clear()
 
         ## delete it
         url = url_for(controller=self.url, action='delete', id=oid)
@@ -225,7 +228,7 @@ class ControllerTest(TestBase):
         form.submit()
 
         # check db
-        o = self.model.get(oid)
+        o = self.objectstore.get(self.model, oid)
         print o
         self.assertEqual(None, o)
 
@@ -304,13 +307,15 @@ class ControllerTest(TestBase):
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'
         resp = f.submit()
-        #print resp
+        print "login, resp"
+        print resp
         self.failUnless('person_id' in resp.session)
         self.assertEqual(self.p.id,
                          resp.session['person_id'])
         return resp
 
     def log_out(self):
+        print "logging out"
         self.objectstore.delete(self.p)
         self.objectstore.flush()
 

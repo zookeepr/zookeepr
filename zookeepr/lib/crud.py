@@ -52,23 +52,23 @@ class Create(CRUDBase):
         errors = {}
         defaults = dict(request.POST)
 
-        new_object = self.model()
+        self.obj = self.model()
         if request.method == 'POST' and defaults:
             result, errors = self.schemas['new'].validate(defaults)
 
             if not errors:
                 # update the new object with the form data
                 for k in result[model_name]:
-                    setattr(new_object, k, result[model_name][k])
+                    setattr(self.obj, k, result[model_name][k])
 
-                g.objectstore.save(new_object)
+                g.objectstore.save(self.obj)
                 g.objectstore.flush()
 
-                default_redirect = dict(action='view', id=self.identifier(new_object))
+                default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('new', default_redirect)
 
         # make new_object accessible to the template
-        setattr(c, model_name, new_object)
+        setattr(c, model_name, self.obj)
 
         # unmangle the errors
         good_errors = {}
@@ -115,11 +115,14 @@ class RUDBase(CRUDBase):
     """
 
     def __before__(self, **kwargs):
+        print 'rudbase before super'
+        if hasattr(super(RUDBase, self), '__before__'):
+            super(RUDBase, self).__before__(**kwargs)
+        print "rudbase before"
         if 'id' not in kwargs.keys():
             raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
         
         use_oid = False # Determines if we look up on a key or the OID
-        obj = None
 
         # FIXME: wtf.
         # Apparenlty this method gets called from classes that don't even inherit

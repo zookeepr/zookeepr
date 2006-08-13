@@ -4,6 +4,7 @@ from zookeepr.model import Submission, SubmissionType, Person
 from zookeepr.tests.functional import *
 
 class TestSubmission(ControllerTest):
+    model = Submission
     name = 'submission'
     url = '/submission'
     samples = [dict(title='test',
@@ -19,9 +20,13 @@ class TestSubmission(ControllerTest):
                     url='http://lca2007.linux.org.au',
                     ),
                ]
+    additional = {'person_id': 1}
+    # FIXME: ignoring type
+    # ignoring person id so we don't care about it when editing
+    no_test = ['type', 'person_id']
 
     def setUp(self):
-        ControllerTest.setUp(self)
+        super(TestSubmission, self).setUp()
         model.submission.tables.submission_type.insert().execute(
             dict(id=1, name='Paper'),
             )
@@ -31,10 +36,12 @@ class TestSubmission(ControllerTest):
         model.submission.tables.submission_type.insert().execute(
             dict(id=3, name='Miniconf'),
             )
+        self.log_in()
 
     def tearDown(self):
+        self.log_out()
         model.submission.tables.submission_type.delete().execute()
-        ControllerTest.tearDown(self)
+        super(TestSubmission, self).tearDown()
 
     def test_selected_radio_button_in_edit(self):
         self.log_in()
@@ -189,3 +196,39 @@ class TestSubmission(ControllerTest):
 
         self.log_out()
 
+
+    def test_submit_another(self):
+        # create our guy
+        self.log_in()
+        # and a submission
+        s1 = Submission(title='sub one')
+        self.objectstore.save(s1)
+        self.objectstore.flush()
+
+        # now go home, click on the submit another link, and do so
+        resp = self.app.get('/')
+        print resp
+        resp = resp.click(description='submit another')
+        #print resp
+        f = resp.form
+        f['submission.title'] = 'sub two'
+        f['submission.type'] = 1
+        f['submission.abstract'] = "cubist"
+        f['submission.experience'] = "n"
+        print f.submit_fields()
+        resp = f.submit()
+        resp = resp.follow()
+
+        # does it exist?
+        subs = self.objectstore.query(Submission).select_by(title='sub two')
+        self.assertEqual(1, len(subs))
+
+        s2 = subs[0]
+        # is it attached to our guy?
+        self.failUnless(s2 in self.p.submissions, "s2 not in p.submissions (currently %r)" % self.p.submissions)
+        
+        # clean up
+        self.objectstore.delete(s2)
+        self.objectstore.delete(s1)
+        self.objectstore.flush()
+        self.log_out()
