@@ -2,7 +2,7 @@ from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController
+from zookeepr.lib.auth import SecureController
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import Person
@@ -26,7 +26,7 @@ class EditPersonSchema(BaseSchema):
     person = PersonSchema()
     pre_validators = [NestedVariables]
 
-class PersonController(BaseController, View, Modify):
+class PersonController(SecureController, View, Modify):
     schemas = {"new" : NewPersonSchema(),
                "edit" : EditPersonSchema()}
 
