@@ -11,12 +11,10 @@ class TestSubmission(ControllerTest):
                     abstract='abstract 1',
                     experience='experience 1',
                     url='http://example.org',
-                    type=1,
                     ),
                dict(title='not a test',
                     abstract='abstract 2',
                     experience='experience 2',
-                    type=2,
                     url='http://lca2007.linux.org.au',
                     ),
                ]
@@ -26,6 +24,7 @@ class TestSubmission(ControllerTest):
 
     def additional(self, obj):
         obj.people.append(self.p)
+        obj.type = self.objectstore.get(SubmissionType, 1)
         return obj
     
     def setUp(self):
