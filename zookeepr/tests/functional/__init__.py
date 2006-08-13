@@ -289,4 +289,25 @@ class ControllerTest(TestBase):
         url = url_for(controller=self.url, action='delete', id=1)
         res = self.app.post(url, status=404)
 
+    def log_in(self):
+        self.p = model.Person(email_address='testguy@example.org',
+                              password='test')
+        self.p.activated = True
+        self.p.save()
+        self.p.flush()
+        resp = self.app.get(url_for(controller='account', action='signin'))
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f['password'] = 'test'
+        resp = f.submit()
+        print resp
+        self.failUnless('person_id' in resp.session)
+        self.assertEqual(self.p.id,
+                         resp.session['person_id'])
+        return resp
+
+    def log_out(self):
+        self.p.delete()
+        self.p.flush()
+
 __all__ = ['ControllerTest', 'model', 'url_for', 'objectstore']

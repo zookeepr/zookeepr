@@ -20,27 +20,6 @@ class TestSubmission(ControllerTest):
                     ),
                ]
 
-    def log_in(self):
-        self.p = Person(email_address='testguy@example.org',
-                        password='test')
-        self.p.activated = True
-        self.p.save()
-        self.p.flush()
-        resp = self.app.get(url_for(controller='account', action='signin'))
-        f = resp.form
-        f['email_address'] = 'testguy@example.org'
-        f['password'] = 'test'
-        resp = f.submit()
-        print resp
-        self.failUnless('person_id' in resp.session)
-        self.assertEqual(self.p.id,
-                         resp.session['person_id'])
-        return resp
-
-    def log_out(self):
-        self.p.delete()
-        self.p.flush()
-
     def setUp(self):
         ControllerTest.setUp(self)
         model.submission.tables.submission_type.insert().execute(
