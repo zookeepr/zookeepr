@@ -304,7 +304,7 @@ class ControllerTest(TestBase):
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'
         resp = f.submit()
-        print resp
+        #print resp
         self.failUnless('person_id' in resp.session)
         self.assertEqual(self.p.id,
                          resp.session['person_id'])
