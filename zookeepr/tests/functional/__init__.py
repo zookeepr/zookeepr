@@ -210,8 +210,8 @@ class ControllerTest(TestBase):
         for k in self.samples[1].keys():
             self.check_attribute(o, k, self.samples[1][k])
 
-        o.delete()
-        o.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
     def delete(self):
         #"""Test delete action on controller"""
@@ -244,23 +244,24 @@ class ControllerTest(TestBase):
 
         # create some data
         o = self.model(**self.make_model_data())
-        o.save()
-        o.flush()
+        o = self.additional(o)
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
-        objectstore.clear()
+        self.objectstore.clear()
 
         url = url_for(controller=self.url, action='edit', id=oid)
 
         response = self.app.get(url, params=self.form_params(self.samples[1]))
 
-        o = self.model.get(oid)
+        o = self.objectstore.get(self.model, oid)
 
         for key in self.samples[1].keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
                 self.failIfEqual(self.samples[1][key], getattr(o, key), "key '%s' was unchanged after edit (%r == %r)" % (key, self.samples[1][key], getattr(o, key)))
 
-        o.delete()
-        o.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
 
     def invalid_get_on_delete(self):
@@ -268,22 +269,23 @@ class ControllerTest(TestBase):
         
         # create some data
         o = self.model(**self.make_model_data())
-        o.save()
-        o.flush()
+        o = self.additional(o)
+        self.objectstore.save(o)
+        self.objectstore.flush()
 
         oid = o.id
-        objectstore.clear()
+        self.objectstore.clear()
 
         url = url_for(controller=self.url, action='delete', id=oid)
         res = self.app.get(url)
         
         # check
-        o = self.model.get(oid)
+        o = self.objectstore.get(self.model, oid)
         self.failIfEqual(None, o)
         
         # clean up
-        o.delete()
-        o.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
     def invalid_get_on_new(self):
         #"""Test that GET requests on new action don't modify"""
