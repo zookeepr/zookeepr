@@ -11,6 +11,10 @@ merge Register controller into Account.
 
  * Proofread the Home page.
 
+ * Integrate Andy's CSS changes.
+
+ * Bump version number.
+
 == next ==
 
  * do the apachebench thing and see if threadlocal has fixed the need for evil_jf
