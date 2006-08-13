@@ -17,19 +17,18 @@ class TestAccountController(ControllerTest):
         self.assertEqual('/account/confirm/N',
                          reg_confirm)
 
-    
-#     def test_account_signin_routing(self):
-#         self.assertEqual(dict(controller='account',
-#                               action='signin'),
-#                          self.map.match('/account/signin'))
+    def test_account_signin_routing(self):
+        self.assertEqual(dict(controller='account',
+                              action='signin'),
+                         self.map.match('/account/signin'))
+        
+    def test_account_signin_url(self):
+        self.assertEqual('/account/signin',
+                         url_for(controller='account', action='signin', id=None))
 
-#     def test_account_signin_url(self):
-#         self.assertEqual('/account/signin',
-#                          url_for(controller='account', action='signin'))
-
-#     def test_account_signout_url(self):
-#         self.assertEqual('/account/signout',
-#                          url_for(controller='account', action='signout'))
+    def test_account_signout_url(self):
+        self.assertEqual('/account/signout',
+                         url_for(controller='account', action='signout', id=None))
 
     def test_signin_signout(self):
         """Test account sign in"""
