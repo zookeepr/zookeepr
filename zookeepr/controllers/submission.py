@@ -12,7 +12,7 @@ class SubmissionSchema(schema.Schema):
     experience = validators.String()
     url = validators.String()
     type = SubmissionTypeValidator
-    person_id = validators.Int()
+    #person_id = validators.Int()
 
 class NewSubmissionSchema(BaseSchema):
     submission = SubmissionSchema()
@@ -35,7 +35,8 @@ class SubmissionController(SecureController, View, Modify):
     individual = 'submission'
 
     def __before__(self, **kwargs):
-        SecureController.__before__(self, **kwargs)
+        print "sub before"
+        super(SecureController, self).__before__(**kwargs)
         
         c.submission_types = SubmissionType.select()
 

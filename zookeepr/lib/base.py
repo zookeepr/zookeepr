@@ -23,6 +23,9 @@ class BaseController(WSGIController):
         to the controller. Here we do anything that needs work
         per request."""
 
+        print "base before"
+
+        print "connecting engine"
         # FIXME - EVIL HACK
         # For some unknown reason _engine disappears
         # So we save it at initialisation and restore it each request

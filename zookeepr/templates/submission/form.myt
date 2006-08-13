@@ -1,4 +1,4 @@
-<% h.hidden_field('submission.person_id', c.person.id) %>
+#<% h.hidden_field('submission.person_id', c.person.id) %>
 
 <p><label for="submission.title">Title:</label><br />
 <% h.text_field('submission.title', c.submission.title, size=80) %></p>
