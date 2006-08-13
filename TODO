@@ -17,7 +17,7 @@ merge Register controller into Account.
 
 == next ==
 
- * do the apachebench thing and see if threadlocal has fixed the need for evil_jf
+ * Update CFP with review details.
 
  * group crud controller tests (person, role, submission, stype), vs others (home, register, cfp, about)
 
