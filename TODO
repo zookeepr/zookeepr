@@ -1,7 +1,5 @@
 = TODO =
 
- * submit anthoer button doesn't link it to the current person
-
  * do the apachebench thing and see if threadlocal has fixed the need for evil_jf
 
  * Add ability to add co-speakers to submissions.
@@ -15,6 +13,8 @@
  * prettify the profile page
 
  * rename /register/confirm to /account/confirm and use new Account data model
+
+ * rename submission to proposal
 
 = Milestones for 0.2 =
 
