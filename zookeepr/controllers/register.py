@@ -10,14 +10,14 @@ class RegisterController(BaseController):
         they regsitered, and a nonce.
 
         """
-        r = Person.select_by(_url_hash=id)
+        r = g.objectstore.query(Person).select_by(_url_hash=id)
 
         if len(r) < 1:
             abort(404)
 
         r[0].activated = True
 
-        r[0].save()
-        r[0].flush()
+        g.objectstore.save(r[0])
+        g.objectstore.flush()
 
         return render_response('register/confirmed.myt')

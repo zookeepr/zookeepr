@@ -28,5 +28,15 @@ class BaseController(WSGIController):
         # So we save it at initialisation and restore it each request
         default_metadata.context._engine = g.engine
 
+        # create a connection to the objectstore that we can use for
+        # the life of the request
+        g.objectstore = create_session()
+
         if hasattr(super(BaseController, self), '__before__'):
             return super(BaseController, self).__before__(**kwargs)
+
+    def __after__(self, **kwargs):
+        # close the connection to the objectstore
+        g.objectstore.close()
+        # invalidate it so there's no chance of using it again
+        del g.objectstore

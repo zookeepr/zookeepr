@@ -40,7 +40,7 @@ class AccountController(BaseController):
                 # get account
                 # check auth
                 # set session cookies
-                persons = Person.select_by(email_address=result['email_address'])
+                persons = g.objectstore.query(Person).select_by(email_address=result['email_address'])
                 if len(persons) < 1:
                     # Don't raise an exception, handle gracefully
                     errors = {'x': 'Invalid login'}

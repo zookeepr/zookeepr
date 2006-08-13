@@ -20,10 +20,9 @@ class TestSubmission(ModelTest):
 
         print v
 
-        st.save()
-        st.flush()
-        v.save()
-        v.flush()
+        self.objectstore.save(st)
+        self.objectstore.save(v)
+        self.objectstore.flush()
 
         s = Submission(title='Venal Versimilitude: Vast vocation or violition of volition?',
                        type=st,
@@ -35,20 +34,20 @@ class TestSubmission(ModelTest):
         # give this sub to v
         v.submissions.append(s)
 
-        s.save()
-        s.flush()
+        self.objectstore.save(s)
+        self.objectstore.flush()
 
         vid = v.id
         stid = st.id
         sid = s.id
 
-        objectstore.clear()
+        self.objectstore.clear()
 
         print vid, stid, sid
 
-        v = Person.get(vid)
-        st = SubmissionType.get(stid)
-        s = Submission.get(sid)
+        v = self.objectstore.get(Person, vid)
+        st = self.objectstore.get(SubmissionType, stid)
+        s = self.objectstore.get(Submission, sid)
         
         self.assertEqual(1, len(v.submissions))
         self.assertEqual(s.title, v.submissions[0].title)
@@ -66,18 +65,16 @@ class TestSubmission(ModelTest):
         print s.type
         print s.people[0]
 
-        s.delete()
-        s.flush()
-        st.delete()
-        st.flush()
-        v.delete()
-        v.flush()
+        self.objectstore.delete(s)
+        self.objectstore.delete(st)
+        self.objectstore.delete(v)
+        self.objectstore.flush()
         
-        v = Person.get(vid)
+        v = self.objectstore.get(Person, vid)
         self.failUnlessEqual(None, v)
-        s = Submission.get(sid)
+        s = self.objectstore.get(Submission, sid)
         self.failUnlessEqual(None, s)
-        st = SubmissionType.get(stid)
+        st = self.objectstore.get(SubmissionType, stid)
         self.failUnlessEqual(None, st)
         
         self.check_empty_session()
@@ -90,20 +87,19 @@ class TestSubmission(ModelTest):
                     password='q')
         st = SubmissionType('Presentation')
 
-        r1.save()
-        r1.flush()
-        r2.save()
-        r2.flush()
-        st.save()
-        st.flush()
+        self.objectstore.save(r1)
+        self.objectstore.save(r2)
+        self.objectstore.save(st)
+        
+        self.objectstore.flush()
         
         s1 = Submission(title='one',
                         abstract='bar',
                         type=st)
-        s1.save()
+        self.objectstore.save(s1)
 
         r1.submissions.append(s1)
-        s1.flush()
+        self.objectstore.flush()
 
         self.failUnless(s1 in r1.submissions)
 
@@ -111,9 +107,9 @@ class TestSubmission(ModelTest):
                         abstract='some abstract',
                         type=st)
 
-        s2.save()
+        self.objectstore.save(s2)
         r2.submissions.append(s2)
-        s2.flush()
+        self.objectstore.flush()
 
         self.failUnless(s2 in r2.submissions)
 
@@ -130,16 +126,12 @@ class TestSubmission(ModelTest):
         self.failIf(s2 in r1.submissions, "invalid submission in r1.submissions: %r" % s2)
 
         # clean up
-        s2.delete()
-        s2.flush()
-        s1.delete()
-        s1.flush()
-        r2.delete()
-        r2.flush()
-        r1.delete()
-        r1.flush()
-        st.delete()
-        st.flush()
+        self.objectstore.delete(s2)
+        self.objectstore.delete(s1)
+        self.objectstore.delete(r2)
+        self.objectstore.delete(r1)
+        self.objectstore.delete(st)
+        self.objectstore.flush()
 
         # check
         self.model = 'Submission'
@@ -149,26 +141,25 @@ class TestSubmission(ModelTest):
         p1 = Person(email_address='one@example.org',
                     password='foo')
         st = SubmissionType('Presentation')
-        p1.save()
-        p1.flush()
-        st.save()
-        st.flush()
+        self.objectstore.save(p1)
+        self.objectstore.save(st)
 
         s = Submission(title='a sub')
         p1.submissions.append(s)
-        s.save()
-        s.flush()
+        self.objectstore.save(s)
+        self.objectstore.flush()
 
         p2 = Person(email_address='two@example.org',
                     password='bar')
         s.people.append(p2)
-        p2.save()
-        p2.flush()
+        self.objectstore.save(p2)
+        self.objectstore.flush()
 
         p3 = Person(email_address='three@example.org',
                     password='quux')
-        p3.save()
-        p3.flush()
+        self.objectstore.save(p3)
+        self.objectstore.flush()
+
 
         self.failUnless(s in p1.submissions)
         self.failUnless(s in p2.submissions)
@@ -182,12 +173,12 @@ class TestSubmission(ModelTest):
         self.failIf(p3 in s.people)
 
         # clean up
-        s.delete()
-        p1.delete()
-        p2.delete()
-        st.delete()
+        self.objectstore.delete(s)
+        self.objectstore.delete(p1)
+        self.objectstore.delete(p2)
+        self.objectstore.delete(st)
 
-        objectstore.flush()
+        self.objectstore.flush()
         
         # check
         self.model = 'Submission'

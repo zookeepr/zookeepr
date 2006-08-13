@@ -3,7 +3,7 @@ import os
 from paste.deploy import loadapp
 from paste.fixture import TestApp
 from routes import url_for
-from sqlalchemy import create_session, objectstore
+from sqlalchemy import create_session
 
 from zookeepr import model
 from zookeepr.config.routing import make_map
@@ -80,11 +80,16 @@ class ControllerTest(TestBase):
         # add a routing map for testing routes within the controller tests
         self.map = make_map()
 
+        # open a session to the objectstore
+        self.objectstore = create_session()
+
         # check that the objectstore is currently empty
         self.assertEmptyModel()
 
     def tearDown(self):
         self.assertEmptyModel()
+        self.objectstore.close()
+        del self.objectstore
 
     def assertEmptyModel(self, model=None):
         """Check that there are no models"""
@@ -93,9 +98,7 @@ class ControllerTest(TestBase):
                 model = self.model
                 
         if model:
-            session = create_session()
-            self.assertEqual([], session.query(model).select())
-            session.close()
+            self.assertEqual([], self.objectstore.query(model).select())
 
     def form_params(self, params):
         """Prepend the controller's name to the param dict for use
@@ -127,7 +130,7 @@ class ControllerTest(TestBase):
         form.submit()
 
         # now check that the data is in the database
-        os = self.model.select()
+        os = self.objectstore.query(self.model).select()
         self.assertEqual(1, len(os), "data object not in database")
 
         for key in self.samples[0].keys():
@@ -294,8 +297,8 @@ class ControllerTest(TestBase):
         self.p = model.Person(email_address='testguy@example.org',
                               password='test')
         self.p.activated = True
-        self.p.save()
-        self.p.flush()
+        self.objectstore.save(self.p)
+        self.objectstore.flush()
         resp = self.app.get(url_for(controller='account', action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'
@@ -308,7 +311,7 @@ class ControllerTest(TestBase):
         return resp
 
     def log_out(self):
-        self.p.delete()
-        self.p.flush()
+        self.objectstore.delete(self.p)
+        self.objectstore.flush()
 
-__all__ = ['ControllerTest', 'model', 'url_for', 'objectstore']
+__all__ = ['ControllerTest', 'model', 'url_for']

@@ -61,8 +61,8 @@ class Create(CRUDBase):
                 for k in result[model_name]:
                     setattr(new_object, k, result[model_name][k])
 
-                new_object.save()
-                new_object.flush()
+                g.objectstore.save(new_object)
+                g.objectstore.flush()
 
                 default_redirect = dict(action='view', id=self.identifier(new_object))
                 self.redirect_to('new', default_redirect)
@@ -136,19 +136,16 @@ class RUDBase(CRUDBase):
             pass
 
         if use_oid:
-            obj = self.model.get(id)
+            self.obj = g.objectstore.get(self.model, id)
         elif hasattr(self, 'key'):
             query_dict = {self.key: kwargs['id']}
-            os = self.model.select_by(**query_dict)
+            os = g.objectstore.query(self.model).select_by(**query_dict)
             if len(os) == 1:
-                obj = os[0]
+                self.obj = os[0]
 
-        if obj is None:
+        if self.obj is None:
             abort(404, "cannot %s nonexistent object for id = %r" % (kwargs['action'],
                                                                      kwargs['id']))
-
-
-        setattr(c, self.individual, obj)
 
 
 class Update(RUDBase):
@@ -166,16 +163,24 @@ class Update(RUDBase):
         if defaults:
             result, errors = self.schemas['edit'].validate(defaults)
 
+            print result
+
             if not errors:
+
+                print "pre edit:", self.obj
                 
                 # update the object with the posted data
                 for k in result[self.individual]:
-                    setattr(getattr(c, self.individual), k, result[self.individual][k])
+                    setattr(self.obj, k, result[self.individual][k])
 
-                getattr(c, self.individual).save()
-                
-                redirect_to(action='view', id=self.identifier(getattr(c, self.individual)))
+                print "post edit:", self.obj
+                g.objectstore.save(self.obj)
+                g.objectstore.flush()
 
+                redirect_to(action='view', id=self.identifier(self.obj))
+
+        # save obj onto the magical c
+        setattr(c, self.individual, self.obj)
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
         
@@ -189,20 +194,27 @@ class Delete(RUDBase):
         POST requests will delete the item.
         """
         
-        if request.method == 'POST' and getattr(c, self.individual):
-            getattr(c, self.individual).delete()
-            getattr(c, self.individual).flush()
+        if request.method == 'POST' and self.obj is not None:
+            g.objectstore.delete(self.obj)
+            g.objectstore.flush()
 
-            redirect_to(action='index', id=None)
+            redirect_to(controller='home', action='index', id=None)
 
+        # save obj onto the magical c
+        setattr(c, self.individual, self.obj)
+        # call the template
         return render_response('%s/confirm_delete.myt' % self.individual)
 
 
 class Read(RUDBase):
-    def view(self, id):
+    def view(self):
         """View a specific object"""
         c.can_edit = self._can_edit()
 
+        print "view:", self.obj
+
+        # save obj onto the magical c
+        setattr(c, self.individual, self.obj)
         # exec the template
         return render_response('%s/view.myt' % self.individual)
 
