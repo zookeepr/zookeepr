@@ -12,7 +12,7 @@ class ProposalSchema(schema.Schema):
     experience = validators.String()
     url = validators.String()
     type = ProposalTypeValidator()
-    #person_id = 
+    attachment = validators.String()
 
 class NewProposalSchema(BaseSchema):
     proposal = ProposalSchema()

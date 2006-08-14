@@ -203,6 +203,7 @@ class TestProposal(ControllerTest):
         f['proposal.type'] = 1
         f['proposal.abstract'] = "cubist"
         f['proposal.experience'] = "n"
+        f['proposal.attachment'] = buffer("foo")
         print f.submit_fields()
         resp = f.submit()
         resp = resp.follow()
