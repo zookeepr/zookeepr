@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1",
+    version="0.1.1",
     #description="",
     #author="",
     #author_email="",
@@ -16,7 +16,16 @@ setup(
     packages=find_packages(),
     include_package_data=True,
     test_suite = 'nose.collector',
-    package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo']},
+    package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo',
+        'templates/autohandler',
+        'templates/*.myt',
+        'templates/*/*.myt',
+        'public/*.css',
+        'public/*.png',
+        'public/*.gif',
+        'public/*.pdf',
+        'public/sponsors/*.gif',
+        ]}, 
     entry_points="""
     [paste.app_factory]
     main=zookeepr:make_app
