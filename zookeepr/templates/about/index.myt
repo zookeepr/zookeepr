@@ -7,7 +7,12 @@
 
 <blockquote>
 <p><i>
-You know how it goes. You spend a few days immersed in talks about clusters
+You know how it goes.
+</i>
+</p>
+
+<p>
+<i>You spend a few days immersed in talks about clusters
 and networking, laptops and video drivers, surrounded by the hackers who
 inspired you to start coding in the first place, getting three hours sleep
 per night and living on pizza and caffeine. You return home only to spend the
