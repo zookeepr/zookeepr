@@ -44,4 +44,4 @@ class TestAccountTable(TableTest):
     # These fields must not be null
     not_nullables = ['email_address', 'creation_timestamp', 'url_hash', 'activated']
     # These fields must have a unique index
-    uniques = ['email_address', 'handle']
+    uniques = ['email_address']
