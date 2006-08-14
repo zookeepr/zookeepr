@@ -11,6 +11,7 @@ setup(
         "Pylons>=0.9.1",
         "SQLAlchemy>=0.2.7",
         "nose>=0.9.0",
+        "FormEncode>=0.5.1",
     ],
     packages=find_packages(),
     include_package_data=True,
