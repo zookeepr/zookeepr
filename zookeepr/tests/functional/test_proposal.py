@@ -11,11 +11,13 @@ class TestProposal(ControllerTest):
                     abstract='abstract 1',
                     experience='experience 1',
                     url='http://example.org',
+                    attachment=buffer('foo'),
                     ),
                dict(title='not a test',
                     abstract='abstract 2',
                     experience='experience 2',
                     url='http://lca2007.linux.org.au',
+                    attachment=buffer('bar'),
                     ),
                ]
 
