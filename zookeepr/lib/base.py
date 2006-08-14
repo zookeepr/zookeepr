@@ -32,6 +32,7 @@ class BaseController(WSGIController):
         # the life of the request
         g.objectstore = create_session()
 
+        # call super
         if hasattr(super(BaseController, self), '__before__'):
             return super(BaseController, self).__before__(**kwargs)
 
