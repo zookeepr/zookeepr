@@ -40,7 +40,7 @@ class TestPerson(ModelTest):
         self.objectstore.save(r)
         self.objectstore.flush()
 
-        s = self.objectstore.query(Person).select_by(_url_hash=r.url_hash)
+        s = self.objectstore.query(Person).select_by(url_hash=r.url_hash)
 
         # only one element
         self.assertEqual(1, len(s))
