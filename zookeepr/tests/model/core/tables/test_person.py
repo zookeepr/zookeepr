@@ -23,3 +23,4 @@ class TestPerson(TableTest):
                     account_id=2,
                     ),
                ]
+    uniques = ['handle']
