@@ -8,7 +8,7 @@ setup(
     #author_email="",
     #url="",
     install_requires=[
-        "Pylons==0.9",
+        "Pylons>=0.9.1",
         "SQLAlchemy>=0.2.7",
         "nose>=0.9.0",
     ],
