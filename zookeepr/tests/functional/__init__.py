@@ -128,19 +128,20 @@ class ControllerTest(TestBase):
         print response
         form = response.form
 
-        print form.text
-        print form.fields
         # fill it out
         params = self.form_params(self.samples[0])
         for k in params.keys():
             form[k] = params[k]
+
+        print "about to submit with these fields:", form.submit_fields()
 
         # submit
         form.submit()
 
         # now check that the data is in the database
         os = self.objectstore.query(self.model).select()
-        self.assertEqual(1, len(os), "data object not in database")
+        self.failIfEqual(0, len(os), "data object %r not in database" % (self.model,))
+        self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
         for key in self.samples[0].keys():
             self.check_attribute(os[0], key, self.samples[0][key])
