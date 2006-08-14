@@ -1,3 +1,5 @@
+import cgi
+
 from formencode import validators, compound, schema, variabledecode
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse
@@ -6,13 +8,22 @@ from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator
 from zookeepr.model import Proposal, ProposalType
 
+class FileUploadValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        r = None
+        if isinstance(value, cgi.FieldStorage):
+            r = value.value
+        else:
+            r = value
+        return r
+
 class ProposalSchema(schema.Schema):
     title = validators.String()
     abstract = validators.String()
     experience = validators.String()
     url = validators.String()
     type = ProposalTypeValidator()
-    attachment = validators.String()
+    attachment = FileUploadValidator()
 
 class NewProposalSchema(BaseSchema):
     proposal = ProposalSchema()
