@@ -1,21 +1,10 @@
-import cgi
-
 from formencode import validators, compound, schema, variabledecode
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse
 from zookeepr.lib.base import c, g, redirect_to, request, render_response
 from zookeepr.lib.crud import Modify, View
-from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator
+from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
 from zookeepr.model import Proposal, ProposalType
-
-class FileUploadValidator(validators.FancyValidator):
-    def _to_python(self, value, state):
-        r = None
-        if isinstance(value, cgi.FieldStorage):
-            r = value.value
-        else:
-            r = value
-        return r
 
 class ProposalSchema(schema.Schema):
     title = validators.String()
