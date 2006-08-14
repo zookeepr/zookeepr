@@ -2,8 +2,6 @@
 
 == mon aug 14 ==
 
- * Add Account domain object.
-
  * Add ability to add co-speakers to submissions.
 
  * Bump version number.
