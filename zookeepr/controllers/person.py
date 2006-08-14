@@ -2,12 +2,13 @@ from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController
+from zookeepr.lib.auth import SecureController, AuthFunc
+from zookeepr.lib.base import c, session
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import Person
+from zookeepr.model import Person
 
-class PersonValidator(Schema):
+class PersonSchema(Schema):
     password = validators.PlainText()
     password_confirm = validators.PlainText()    
     email_address = validators.Email()
@@ -18,18 +19,27 @@ class PersonValidator(Schema):
     firstname = validators.String()
     lastname = validators.String()
 
-class NewPersonValidator(BaseSchema):
-    person = PersonValidator()
+class NewPersonSchema(BaseSchema):
+    person = PersonSchema()
     pre_validators = [NestedVariables]
 
-class EditPersonValidator(BaseSchema):
-    person = PersonValidator()
+class EditPersonSchema(BaseSchema):
+    person = PersonSchema()
     pre_validators = [NestedVariables]
 
-class PersonController(BaseController, View, Modify):
-    validators = {"new" : NewPersonValidator(),
-                  "edit" : EditPersonValidator()}
+class PersonController(SecureController, View, Modify):
+    schemas = {"new" : NewPersonSchema(),
+               "edit" : EditPersonSchema()}
+    permissions = {"view": [],
+                   "new": [],
+                   "edit": [],
+                   "delete": [],
+                   "index": [],
+                   }
 
     model = Person
     individual = 'person'
     key = 'handle'
+
+    def is_same_person(self):
+        return c.person.id == session['person_id']

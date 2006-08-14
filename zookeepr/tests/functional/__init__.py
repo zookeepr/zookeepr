@@ -5,7 +5,8 @@ from paste.fixture import TestApp
 from routes import url_for
 from sqlalchemy import create_session
 
-import zookeepr.models as model
+from zookeepr import model
+from zookeepr.config.routing import make_map
 from zookeepr.tests import TestBase, monkeypatch
 
 here_dir = os.path.dirname(__file__)
@@ -51,13 +52,13 @@ class ControllerTest(TestBase):
     boxes.
 
     ``mangles`` is a dictionary of attributes that are mangled by the
-    form submission process, e.g. passwords that are hashed.
+    form proposal process, e.g. passwords that are hashed.
 
     An example using this base class:
 
     class TestSomeController(ControllerTest):
         name = 'Person'
-        model = model.Person
+        model = model.core.Person
         url = '/person'
         samples = [dict(name='testguy',
                         password='test',
@@ -76,13 +77,19 @@ class ControllerTest(TestBase):
         TestBase.__init__(self, *args)
 
     def setUp(self):
-        self.session = create_session()
+        # add a routing map for testing routes within the controller tests
+        self.map = make_map()
+
+        # open a session to the objectstore
+        self.objectstore = create_session()
+
+        # check that the objectstore is currently empty
         self.assertEmptyModel()
 
     def tearDown(self):
         self.assertEmptyModel()
-        self.session.close()
-        del self.session
+        self.objectstore.close()
+        del self.objectstore
 
     def assertEmptyModel(self, model=None):
         """Check that there are no models"""
@@ -91,8 +98,8 @@ class ControllerTest(TestBase):
                 model = self.model
                 
         if model:
-            self.assertEqual([], self.session.query(model).select())
-
+            contents = self.objectstore.query(model).select()
+            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
     def form_params(self, params):
         """Prepend the controller's name to the param dict for use
@@ -102,35 +109,45 @@ class ControllerTest(TestBase):
             result[self.name + '.' + key] = params[key]
 
         return result
+
+    def additional(self, obj):
+        """Modify the object further before saving.
+
+        Child classes can override this method to add additional data to the object
+        before it is saved.
+        """
+        return obj
     
     def create(self):
         #"""Test create action on controller"""
 
         url = url_for(controller=self.url, action='new')
-
+        print "url", url
         # get the form
         response = self.app.get(url)
+        print response
         form = response.form
 
-        print form.text
-        print form.fields
         # fill it out
         params = self.form_params(self.samples[0])
         for k in params.keys():
             form[k] = params[k]
 
+        print "about to submit with these fields:", form.submit_fields()
+
         # submit
         form.submit()
 
         # now check that the data is in the database
-        os = self.session.query(self.model).select()
-        self.assertEqual(1, len(os), "data object not in database")
+        os = self.objectstore.query(self.model).select()
+        self.failIfEqual(0, len(os), "data object %r not in database" % (self.model,))
+        self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
         for key in self.samples[0].keys():
             self.check_attribute(os[0], key, self.samples[0][key])
 
-        self.session.delete(os[0])
-        self.session.flush()
+        self.objectstore.delete(os[0])
+        self.objectstore.flush()
 
     def check_attribute(self, obj, attr, expected):
         """check that the attribute has the correct value.
@@ -167,10 +184,12 @@ class ControllerTest(TestBase):
 
         # create an instance of the model
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        o = self.additional(o)
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
-        self.session.clear()
+        
+        self.objectstore.clear()
 
         # get the form
         url = url_for(controller=self.url, action='edit', id=oid)
@@ -189,22 +208,23 @@ class ControllerTest(TestBase):
         form.submit()
 
         # test
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
         for k in self.samples[1].keys():
             self.check_attribute(o, k, self.samples[1][k])
 
-        self.session.delete(o)
-        self.session.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
     def delete(self):
         #"""Test delete action on controller"""
         # create something
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        o = self.additional(o)
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
 
-        self.session.clear()
+        self.objectstore.clear()
 
         ## delete it
         url = url_for(controller=self.url, action='delete', id=oid)
@@ -217,7 +237,7 @@ class ControllerTest(TestBase):
         form.submit()
 
         # check db
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
         print o
         self.assertEqual(None, o)
 
@@ -226,23 +246,24 @@ class ControllerTest(TestBase):
 
         # create some data
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        o = self.additional(o)
+        self.objectstore.save(o)
+        self.objectstore.flush()
         oid = o.id
-        self.session.clear()
+        self.objectstore.clear()
 
         url = url_for(controller=self.url, action='edit', id=oid)
 
         response = self.app.get(url, params=self.form_params(self.samples[1]))
 
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
 
         for key in self.samples[1].keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
                 self.failIfEqual(self.samples[1][key], getattr(o, key), "key '%s' was unchanged after edit (%r == %r)" % (key, self.samples[1][key], getattr(o, key)))
 
-        self.session.delete(o)
-        self.session.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
 
     def invalid_get_on_delete(self):
@@ -250,21 +271,23 @@ class ControllerTest(TestBase):
         
         # create some data
         o = self.model(**self.make_model_data())
-        self.session.save(o)
-        self.session.flush()
+        o = self.additional(o)
+        self.objectstore.save(o)
+        self.objectstore.flush()
+
         oid = o.id
-        self.session.clear()
+        self.objectstore.clear()
 
         url = url_for(controller=self.url, action='delete', id=oid)
         res = self.app.get(url)
         
         # check
-        o = self.session.get(self.model, oid)
+        o = self.objectstore.get(self.model, oid)
         self.failIfEqual(None, o)
         
         # clean up
-        self.session.delete(o)
-        self.session.flush()
+        self.objectstore.delete(o)
+        self.objectstore.flush()
 
     def invalid_get_on_new(self):
         #"""Test that GET requests on new action don't modify"""
@@ -283,5 +306,26 @@ class ControllerTest(TestBase):
         
         url = url_for(controller=self.url, action='delete', id=1)
         res = self.app.post(url, status=404)
+
+    def log_in(self):
+        self.p = model.Person(email_address='testguy@example.org',
+                              password='test')
+        self.p.activated = True
+        self.objectstore.save(self.p)
+        self.objectstore.flush()
+        resp = self.app.get(url_for(controller='account', action='signin'))
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f['password'] = 'test'
+        resp = f.submit()
+        #print resp
+        self.failUnless('person_id' in resp.session)
+        self.assertEqual(self.p.id,
+                         resp.session['person_id'])
+        return resp
+
+    def log_out(self):
+        self.objectstore.delete(self.objectstore.get(model.Person, self.p.id))
+        self.objectstore.flush()
 
 __all__ = ['ControllerTest', 'model', 'url_for']

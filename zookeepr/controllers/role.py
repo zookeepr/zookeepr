@@ -1,25 +1,32 @@
-from formencode import validators, compound, schema, variabledecode
+from formencode import validators, compound, variabledecode
+from formencode.schema import Schema
 
-from zookeepr.lib.base import BaseController
+from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import Role
+from zookeepr.model import Role
 
-class RoleValidator(schema.Schema):
+class RoleSchema(Schema):
     name = validators.PlainText()
 
-class NewRoleValidator(BaseSchema):
-    role = RoleValidator()
+class NewRoleSchema(BaseSchema):
+    role = RoleSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class EditRoleValidator(BaseSchema):
-    role = RoleValidator()
+class EditRoleSchema(BaseSchema):
+    role = RoleSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class RoleController(BaseController, View, Modify):
-    validators = {"new" : NewRoleValidator(),
-                  "edit" : EditRoleValidator()}
+class RoleController(SecureController, View, Modify):
+    schemas = {"new" : NewRoleSchema(),
+               "edit" : EditRoleSchema()}
+    permissions = {"new": [],
+                   "view": [],
+                   "edit": [],
+                   "delete": [],
+                   "index": [],
+                   }
 
     model = Role
     individual = 'role'
-    conditions = dict(order_by='name')
+    #conditions = dict(order_by='name')

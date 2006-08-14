@@ -6,7 +6,7 @@
 <p>
 You can also <strong>join</strong> the <a href="http://lists.linux.org.au/listinfo/lca-announce/">lca-announce</a> mailing list to keep up with news and information about linux.conf.au 2007.</p>
 
-<p><strong>Speakers</strong> can contact our speaker liason at <a href="mailto:seven-speakers@lca2007.linux.org.au">seven-speakers@lca2007.linux.org.au</a> for <em>speaker specific information</em>.</p>
+#<p><strong>Speakers</strong> can contact our speaker liason at <a href="mailto:seven-speakers@lca2007.linux.org.au">seven-speakers@lca2007.linux.org.au</a> for <em>speaker specific information</em>.</p>
 
 <p>Meet the team!</p>
 <ul>

@@ -21,9 +21,9 @@ def make_map():
     m.connect('submit_cfp', '/cfp/submit', controller='cfp', action='submit')
     m.connect('/cfp/thankyou', controller='cfp', action='thankyou')
 
-    # Register confirmation named route
-    m.connect('reg_confirm', '/register/confirm/:id',
-              controller='register',
+    # account confirmation named route
+    m.connect('acct_confirm', '/account/confirm/:id',
+              controller='account',
               action='confirm')
 
     # hack the old error handler back in, using the style of the old

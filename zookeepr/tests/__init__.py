@@ -4,7 +4,7 @@ from unittest import TestCase
 
 from sqlalchemy import create_engine, global_connect, default_metadata
 
-import zookeepr.models as model
+from zookeepr import model
 
 class TestBase(TestCase):
     def assertRaisesAny(self, callable_obj, *args, **kwargs):

@@ -1,6 +1,6 @@
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController
-from zookeepr.models import Person
+from zookeepr.model import Person
 
 class HomeController(BaseController):
 
@@ -17,7 +17,7 @@ class HomeController(BaseController):
         """
 
         if 'person_id' in session:
-            c.person = self.objectstore.get(Person, session['person_id'])
+            c.person = g.objectstore.get(Person, session['person_id'])
 
             resp = render_response('home.myt')
 

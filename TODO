@@ -1,20 +1,24 @@
 = TODO =
 
- * Restrict access to submissions.  Modify SecureController to add authorisation controls. + test obviously.
+== next ==
 
  * Add ability to add co-speakers to submissions.
 
-== todo from the flight
+ * HACKING document
 
- * test registration actually creates a person object with it.
-   investigate sqlalchemy inherited mappers, see if that's what we want here.
-   also look at wether that can be used to collapse the repeated password
-   properties
+ * Paper upload doesn't store filename or content type.
+
+ * Update CFP with review details.
+
+ * group crud controller tests (person, role, submission, stype), vs others (home, register, cfp, about)
+
+ * write more docs ;-)
+
+ * clicking on 'about' from my home page seems to sign out; make the authbar do the right thing regardless of wether securecontroller is used or not.
+
+ * prettify the profile page
 
 = Milestones for 0.2 =
-
- * make submissiontype interface accessible only by conf admin
-  * apply permissions to all CRUD interfaces. recreate PylonsSecureController to use a class property instead of method properties to controll access so that generics can still work
 
  * MyLCA administration
    * Participation module
@@ -91,8 +95,6 @@
 
  * work out how to autogenerate forms because I'm lazy and writing the templates is fucking tedious and boring
 
- * Remove the evil_jf hack which fixes the sqlalchemy wierdness where _engine disapears
-
 == testing ==
 
  * throw bad shit at forms to make sure we're using formencode :-)
@@ -103,3 +105,7 @@
 
  * test validators:
 displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have quoted chars
+
+ * apachebench on zookeepr
+
+ * autocreate roles and submission types at server startup

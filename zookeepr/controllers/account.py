@@ -3,7 +3,7 @@ from formencode import validators, Invalid
 from zookeepr.lib.auth import PersonAuthenticator, retcode
 from zookeepr.lib.base import *
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.models import Person
+from zookeepr.model import Person
 
 class AuthenticationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -40,7 +40,7 @@ class AccountController(BaseController):
                 # get account
                 # check auth
                 # set session cookies
-                persons = self.objectstore.query(Person).select_by(email_address=result['email_address'])
+                persons = g.objectstore.query(Person).select_by(email_address=result['email_address'])
                 if len(persons) < 1:
                     # Don't raise an exception, handle gracefully
                     errors = {'x': 'Invalid login'}
@@ -60,3 +60,22 @@ class AccountController(BaseController):
         session.invalidate()
         # return home
         redirect_to('home')
+
+    def confirm(self, id):
+        """Confirm a registration with the given ID.
+
+        `id` is a md5 hash of the email address of the registrant, the time
+        they regsitered, and a nonce.
+
+        """
+        r = g.objectstore.query(Person).select_by(url_hash=id)
+
+        if len(r) < 1:
+            abort(404)
+
+        r[0].activated = True
+
+        g.objectstore.save(r[0])
+        g.objectstore.flush()
+
+        return render_response('account/confirmed.myt')

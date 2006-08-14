@@ -46,7 +46,7 @@ scan)
 
  * user doesn't visit url
   * no activation
-  * do not expire submissions, or account data, but flag as inactive.
+  * do not expire proposals, or account data, but flag as inactive.
   * if user registers a second time with same email address, then
 original account is re-confirmed with new password?
 
