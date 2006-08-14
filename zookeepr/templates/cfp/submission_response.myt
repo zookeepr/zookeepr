@@ -1,4 +1,4 @@
-Subject: Confirmation of your proposal to the linux.conf.au 2007 CFP
+Subject: Confirmation of your submission to the linux.conf.au 2007 CFP
 To: <% c.registration.fullname %> <<% c.registration.email_address %>>
 
 Dear <% c.registration.fullname %>,
