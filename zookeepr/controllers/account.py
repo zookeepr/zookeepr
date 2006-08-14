@@ -68,7 +68,7 @@ class AccountController(BaseController):
         they regsitered, and a nonce.
 
         """
-        r = g.objectstore.query(Person).select_by(_url_hash=id)
+        r = g.objectstore.query(Person).select_by(url_hash=id)
 
         if len(r) < 1:
             abort(404)
