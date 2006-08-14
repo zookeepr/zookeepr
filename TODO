@@ -2,9 +2,6 @@
 
 == mon aug 14 ==
 
- * Refactor Person to use person and account tables, add Account controller,
-merge Register controller into Account.
-
  * Add ability to add co-speakers to submissions.
 
  * Bump version number.

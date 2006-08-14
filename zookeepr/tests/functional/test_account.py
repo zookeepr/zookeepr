@@ -1,19 +1,34 @@
+import datetime
+
+from zookeepr.model import Person
 from zookeepr.tests.functional import *
 
 class TestAccountController(ControllerTest):
-    
-#     def test_account_signin_routing(self):
-#         self.assertEqual(dict(controller='account',
-#                               action='signin'),
-#                          self.map.match('/account/signin'))
 
-#     def test_account_signin_url(self):
-#         self.assertEqual('/account/signin',
-#                          url_for(controller='account', action='signin'))
+    def test_registration_confirmation_url(self):
+        """test the routing of the registration confirmation url"""
+        self.assertEqual(dict(controller='account',
+                              action='confirm',
+                              id='N'),
+                         self.map.match('/account/confirm/N'))
 
-#     def test_account_signout_url(self):
-#         self.assertEqual('/account/signout',
-#                          url_for(controller='account', action='signout'))
+    def test_registratrion_confirmation_named_route(self):
+        reg_confirm = url_for('acct_confirm', id='N')
+        self.assertEqual('/account/confirm/N',
+                         reg_confirm)
+
+    def test_account_signin_routing(self):
+        self.assertEqual(dict(controller='account',
+                              action='signin'),
+                         self.map.match('/account/signin'))
+        
+    def test_account_signin_url(self):
+        self.assertEqual('/account/signin',
+                         url_for(controller='account', action='signin', id=None))
+
+    def test_account_signout_url(self):
+        self.assertEqual('/account/signout',
+                         url_for(controller='account', action='signout', id=None))
 
     def test_signin_signout(self):
         """Test account sign in"""
@@ -82,3 +97,39 @@ class TestAccountController(ControllerTest):
         # clean up
         self.objectstore.delete(p)
         self.objectstore.flush()
+
+    def test_registration_confirmation(self):
+        # insert registration model object
+        timestamp = datetime.datetime.now()
+        email_address = 'testguy@testguy.org'
+        password = 'password'
+        r = Person(creation_timestamp=timestamp,
+                   email_address=email_address,
+                   password=password,
+                   activated=False)
+        url_hash = r.url_hash
+        print url_hash
+        self.objectstore.save(r)
+        self.objectstore.flush()
+        rid = r.id
+        print r
+        # clear so that we reload the object later
+        self.objectstore.clear()
+        
+        # visit the link
+        response = self.app.get('/account/confirm/' + url_hash)
+        response.mustcontain('Thanks for confirming your registration')
+        
+        # test that it's activated
+        r = self.objectstore.get(Person,rid)
+        self.assertEqual(True, r.activated, "registration was not activated")
+
+        # clean up
+        self.objectstore.delete(self.objectstore.get(Person, rid))
+        self.objectstore.flush()
+
+    def test_registration_confirmation_invalid_url_hash(self):
+        """test that an invalid has doesn't activate anything"""
+        self.assertEmptyModel(Person)
+
+        response = self.app.get('/account/confirm/nonexistent', status=404)

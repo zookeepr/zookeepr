@@ -2,7 +2,6 @@ import datetime
 import md5
 import random
 
-
 class Person(object):
     """Stores both account login details and personal information.
 
@@ -18,8 +17,8 @@ class Person(object):
         # account information
         self.email_address = email_address
         self.password = password
-        self.creation_timestamp = creation_timestamp
-        self.activated = activated
+        self.activated = activated or False
+        self.creation_timestamp = creation_timestamp or datetime.datetime.now()
 
         self.handle = handle
         if self.fullname is not None:
@@ -73,7 +72,7 @@ class Person(object):
         magic = "%s&%s&%s" % (self.email_address,
                               self.creation_timestamp,
                               nonce)
-        self._url_hash = md5.new(magic).hexdigest()
+        self.url_hash = md5.new(magic).hexdigest()
 
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)

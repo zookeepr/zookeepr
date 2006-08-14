@@ -135,20 +135,20 @@ class TestCFP(ControllerTest):
         self.failUnlessEqual(None, html_match, "HTML in message!")
         
         # check that the message has a url hash in it
-        match = re.match(r'^.*/register/confirm/(\S+)', message.message, re.DOTALL)
+        match = re.match(r'^.*/account/confirm/(\S+)', message.message, re.DOTALL)
         print "match:", match
         self.failIfEqual(None, match, "url not found")
 
         # visit the url
         print "match: '''%s'''" % match.group(1)
-        res = self.app.get('/register/confirm/%s' % match.group(1))
+        res = self.app.get('/account/confirm/%s' % match.group(1))
         print res
         
         # check the rego worked
         regs = self.objectstore.query(Person).select()
         self.assertEqual(1, len(regs))
         print regs[0]
-        self.assertEqual(True, regs[0].activated, "registration was not activated!")
+        self.assertEqual(True, regs[0].activated, "account was not activated!")
 
         # clean up
         Dummy_smtplib.existing.reset()
