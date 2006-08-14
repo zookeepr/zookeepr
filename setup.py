@@ -20,7 +20,11 @@ setup(
         'templates/autohandler',
         'templates/*.myt',
         'templates/*/*.myt',
-        'public/*',
+        'public/*.css',
+        'public/*.png',
+        'public/*.gif',
+        'public/*.pdf',
+        'public/sponsors/*.gif',
         ]}, 
     entry_points="""
     [paste.app_factory]
