@@ -4,6 +4,8 @@
 
  * timestamps on proposals
 
+ * look at using Paste@http isntead of PsateScriupt@wsgiutils
+
 == next ==
 
  * Add ability to add co-speakers to submissions.
