@@ -99,7 +99,7 @@ class List(CRUDBase):
         #setattr(c, model_name + '_collection', collection)
 
         # assign list of objects to template global
-        setattr(c, model_name + '_collection', self.model.select())
+        setattr(c, model_name + '_collection', g.objectstore.query(self.model).select())
 
         c.can_edit = self._can_edit()
         # exec the template

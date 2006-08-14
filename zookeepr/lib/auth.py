@@ -116,7 +116,9 @@ class SecureController(BaseController):
         if self.logged_in():
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
-            c.person = g.objectstore.get(Person, session['person_id'])
+            # FIXME get is boned on the live site
+            #c.person = g.objectstore.get(Person, session['person_id'])
+            c.person = g.objectstore.query(Person).select_by(id=session['person_id'])[0]
         else:
             # No-one's logged in, so send them to the signin
             # page.
