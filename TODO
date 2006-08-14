@@ -6,6 +6,8 @@
 
  * look at using Paste@http isntead of PsateScriupt@wsgiutils
 
+ * Fix url_hash for existing submitters and mail out rego confirmation emails.
+
 == next ==
 
  * Add ability to add co-speakers to submissions.
