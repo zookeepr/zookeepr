@@ -37,7 +37,6 @@ class BaseController(WSGIController):
             return super(BaseController, self).__before__(**kwargs)
 
     def __after__(self, **kwargs):
-        # close the connection to the objectstore
-        g.objectstore.close()
-        # invalidate it so there's no chance of using it again
-        del g.objectstore
+        if hasattr(g, 'objectstore'):
+            # close the connection to the objectstore
+            g.objectstore.close()
