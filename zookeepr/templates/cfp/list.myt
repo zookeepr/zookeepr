@@ -190,8 +190,8 @@ Important dates:
     June 28, 2006</li>
 <li>Proposals open:
     July 1, 2006</li>
-<li>Proposal deadline:
-    September 1, 2006</li>
+<li>Extended proposal deadline:
+    September 15, 2006</li>
 <li>Notifications by review committee:
     October 15, 2006</li>
 <li>Conference begins:
