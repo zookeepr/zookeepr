@@ -7,13 +7,15 @@ from zookeepr.model.proposal.domain import Proposal, ProposalType, Attachment
 # Map the ProposalType object onto the submision_type table
 mapper(ProposalType, proposal_type)
 
+# Map the Attachment object onto the attachment table
+mapper(Attachment, attachment)
+
 # Map the Proposal object onto the proposal table
 mapper(Proposal, proposal,
     properties = {
         'type': relation(ProposalType, lazy=True),
         'people': relation(Person, secondary=person_proposal_map,
-            backref='proposals')
+            backref='proposals'),
+        'attachments': relation(Attachment, lazy=True),
     }
     )
-
-mapper(Attachment, attachment)

@@ -1,4 +1,6 @@
-from zookeepr.model import Proposal, ProposalType, Person
+import datetime
+
+from zookeepr.model import Proposal, ProposalType, Person, Attachment
 from zookeepr.tests.model import *
 
 class TestProposal(ModelTest):
@@ -183,3 +185,32 @@ class TestProposal(ModelTest):
         # check
         self.model = 'Proposal'
         self.check_empty_session()
+
+    def test_proposal_with_attachment(self):
+        p = Proposal(title='prop 1')
+        self.objectstore.save(p)
+
+        a = Attachment(name='a', content_type='text/plain',
+                       creation_timestamp=datetime.datetime.now(),
+                       content="foobar")
+        self.objectstore.save(a)
+        self.objectstore.flush()
+
+        p.attachments.append(a)
+        self.objectstore.flush()
+
+        pid = p.id
+        aid = a.id
+
+        self.objectstore.clear()
+
+        p = self.objectstore.get(Proposal, pid)
+        a = self.objectstore.get(Attachment, aid)
+        self.assertEqual(p.attachments[0], a)
+
+        self.objectstore.delete(a)
+        self.objectstore.delete(p)
+        self.objectstore.flush()
+
+        #self.assertEmptyModel(Attachment)
+        #self.assertEmptyModel(Proposal)

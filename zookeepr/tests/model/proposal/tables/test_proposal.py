@@ -1,8 +1,6 @@
-import StringIO
-
 from zookeepr.tests.model import *
 
-class TestProposal(TableTest):
+class TestProposalTable(TableTest):
     """Test the ``proposal`` table.
 
     This table stores proposals made by candidate speakers.
