@@ -1,5 +1,6 @@
 import cgi
 import types
+from wiki import get_wiki_response
 
 from formencode.api import Invalid
 from pylons import Response, c, g, h, cache, request, session

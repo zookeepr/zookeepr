@@ -1,0 +1,35 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+== Horizontal Rules ==
+You can insert a horizontal rule across the page by typing four or more dashes.  The number of dashes in a horizontal rule markup determines how thick it is, up to a limit of 10.
+
+For more information on the possible markup, see HelpOnEditing. 
+
+=== Example ===
+{{{
+--- (not a rule)
+----
+-----
+------
+-------
+--------
+---------
+----------
+-------------------------------------------- (not thicker than 10)
+}}} 
+
+=== Display ===
+--- (not a rule)
+----
+-----
+------
+-------
+--------
+---------
+----------
+-------------------------------------------- (not thicker than 10)

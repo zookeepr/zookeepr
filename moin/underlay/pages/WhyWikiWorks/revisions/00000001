@@ -1,0 +1,297 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+= Why wiki works =
+
+== Arguments ==
+
+ * Any and all information can be deleted by anyone. Wiki pages represent nothing but discussion and consensus because it's much easier to delete flames, spam and trivia than to indulge them. What remains is naturally meaningful.  Probably. 
+ * wiki is not wysiwyg. It's an intelligence test of sorts to be able to edit a wiki page. It's not rocket science, but it doesn't appeal to the TV watchers. If it doesn't appeal, they don't participate, which leaves those of us who read and write to get on with rational discourse.
+ 
+ * wiki is far from real time. Folk have time to think, often days or weeks, before they follow up some wiki page. So what people write is well-considered.
+ 
+ * wiki participants are, by nature, a pedantic, ornery, and unreasonable bunch. So there's a camaraderie here we seldom see outside of our professional contacts.
+ 
+See http://www.c2.com/cgi/wiki?WhyWikiWorks for more.
+
+== Different Points of View ==
+
+Notice though that the owners of this Wiki have chosen to disable the DeletePage feature.  This can be interpreted one of two ways:
+ * The owners of this Wiki don't believe their own hype.
+ * There is a mis-feature/bug: you can't restore a page that was deleted.  CVS has the concept of an Attic for deleted files.  Maybe something similar is needed for the Wiki.
+
+ ''Both claims are simply wrong. And the initial assumption is, too.''
+
+----
+
+So that's it - insecure, indiscriminate, user-hostile, slow, and full of difficult, nit-picking people. Any other online community would count each of these strengths as a terrible flaw. Perhaps wiki works because the other online communities don't. --PeterMerel
+ 
+I think Wiki is weird and prone to sabotage. It presently works, because it's not well known and no one really cares. But try implementing Wiki on a Yahoo-level site--it would be total chaos! '''(anonymous Wiki opponent)'''
+
+Your change was 4 minutes old when I saw it. If it had been real sabotage, I would have removed it. -- ThomasWaldmann [[DateTime(2002-03-22T09:56:53)]]
+ 
+I agree with anonymous, '''if I wished''', I could have deleted this whole page. Perhaps a user base system with logins would make more sense.
+
+  ''I've had things like the Thinki Thinki:FrontPage wiped out in the middle of summer, and then restored to its old self by some anonymous friend. So far, I deny access to a handful of ip-addresses, because they have deliberately messed things up. That seems to work. The amount ot useful additions outweigh the work to fix vandalism. And the fact that it's easy to contribute is important.''
+
+''With MoinMoin it is ok. Some versions like OpenWiki and Ward's Wiki only keep a couple of recent versions and then recovering stuff is very hard. I am still trying to recover some of the syndicate lists on the former overwritten with spam. You need a pretty plugged in community if you depend on them to recover rapidly-- AndrewCates''
+ 
+If you click on the "info" icon, you can access any old revision of this page. So even wiping a page does no permanent damage as one can easily restore an undamaged older revision. -- ThomasWaldmann [[DateTime(2002-05-12T10:19:54)]]
+
+We use Wiki on an internal site at work that is for documentation - the precise qualities of Wiki make it very well suited for this purpose - it's editable by anyone, at any time, for any reason.  There is a revision history of all of the pages in the web.  As for the concept of user accountability - we require login to edit, but logins are open to anyone..... - JonStanley
+ 
+How far back in history can you go with the diff's? Can you set somewhere on MoinMoin how many revisions to keep? -- -- -- DavidCollantes [[DateTime(2002-05-21T10:38:57)]]
+ 
+Firstly, Wiki is not meant for Yahoo! level sites. It is just for people to put in their
+thoughts. Somebody wants to delete the whole site, that is his thought. - general_failure
+
+''Maybe but the defences at Wikipedia (which is more than one million pages) see to work well on vandalism and spam. Defences against claptrap are another matter --AndrewCates''
+
+The shortcomings of Usenet are obvious, and thereby the need for a new collaboration paradigm is equally obvious.. but we still need hierarchal-like organization (or perhaps something better?), and rather than the ridiculous prospect that any idiot can come by and destroy stuff for kicks (be it reversible or not) what is needed is a simple authentication method, not blocking IP?s or Browsers, but user accounts, and if the user has the motivation necessary to create a new account so that s/he can destroy something again, then s/he?ll be blocked again.  What?s important is that the process cannot be automated; people who get their kicks from doing stupid crap like that wouldn?t think it was fun if they had to come-up with a new username/password every time they did it. 
+
+
+I guess a constant supervising is very needed in any Wiki site... If not, I think a Wiki site would kill itself pretty easily... Brrrrrlbllb.... I don't know..... - ceefour
+
+I think that the Wiki is a good forum and given the way in which the page is changed, people are inclined to change it in ways that are non-destructive -Jason
+
+ * ''All users, esp. RecentChangesJunkies '''are''' supervisors. And if you have no reasonable users, your site is dead anyway.'' -- ThomasWaldmann [[DateTime(2002-07-24T06:15:12)]]
+ 
+"Opponents" to Wiki's always amaze me. It's the greatest example of fear of freedom. "You mean, anyone can do whatever they want!? NO, I'm opposed to it!" Fear of the unknown. Fear that an unsupervised, uncontrolled system can actually work. Fear of loss of control. Reminds me of the cries we are hearing from the RIAA with regard to sharing.
+
+Your note reminds me so much of Monty Python's "Life of Brian":{{{(Brian)-"You are all individuals!"
+(crowd)-"We are all individuals!"
+(Brian)-"You have to be different!"
+(crowd)-"Yes, we are all different!"
+(loner)-"I'm not."}}}(This is my first encounter of Wiki, and within a minutes of reading this page, I edited some grammar, snuck in a couple of winks, and gave the above comment. BTW, found about wiki via the comedi project...) '''I''am''Sil'''
+
+----
+
+Don't forget my favorite... Brian: You have to work it out for yourselves!  Crowd: Yes, we have to work it out for ourselves... Tell us more!
+
+----
+
+They're not saying they're opposed--only that they think such attempts are doomed to failure. I'm fascinated by the concept of anarchism, and the idea of a wiki, but looking at a site like [http://www.metababy.com/ Metababy]--an HTML wiki, with a bug that allows one to completely delete pages--gives me pause.
+
+Yuck! I had a look at Metababy, and really regretted the experience. Looks like wiki could become just another way for sickos to get their kicks.
+
+Wasn't it de Tocqueville who said something like, "America is great because its people are good. If its people cease to be good, it will cease to be great"? A community prospers or fails by the acts of its constituents. If a wiki can be sabotaged by one bad actor, what chance can it have?
+
+
+== A Deliberate Sabotage ==
+
+This page '''deliberately sabotaged'''... with the best of intentions.
+
+On the original version of the page an opponent of Wiki claimed ''if I wished I could have deleted this whole page''.
+However Wikis survive such things because, I suppose, people who care about a page restore them. Since there are old established Wikis out there, and they dont get trashed, I assume it works.
+
+So I have '''deleted the whole of the WhyWikiWorks page''' and replaced it with this test.
+My guess is that the old page will be restored reasonably promptly.
+If not I will restore the old page myself in a day or two.
+Either way I will report on whether the test worked.
+
+NickHollingsworth 08 Jul 2002.
+
+----
+
+I have restored the original content of this page on the same day on which it was sabotaged. I had never used a Wiki before, I was just curious about this concept and wanted to know WhyWikiWorks. The challenge above immediately made me want to prove that such a sabotage would not succeed. I quickly learned how to view a diff and how to restore the page's previous content. However, I do not know how I would have reacted had I been confronted with a real, malicious sabotage. Perhaps I would not have looked further into Wiki, convinced on my first visit that it does not work.
+
+FelixBreuer 08 Jul 2002
+
+----
+
+A different result from the one that I expected! I had noticed that at least one person was subscribed to the page and thought they would see the change and replace the original. Instead a passerby replaces it. Same outcome I guess; and a lot sooner than I was expecting.
+
+NickHollingsworth 08 Jul 2002.
+
+----
+
+Wiki's strength is just an issue of balance. The balance of good and bad. Currently,
+the bad ones are too few to constantly destroy the things built by the good ones.
+Hence, as long as the good ones represent the majority of the population Wikis will live. A Wiki turns the balance towards the constructive people, giving them the means to overcome the destructive people by sheer speed of the reconstruction of torn down infra-
+structure. - dat.r0x@gmx.net 15 Sep 2002 (It's just like Star Wars except with Jedi Gnomes.)
+
+----
+
+Destructive actions against a wiki are like kids with spraycans tagging your fence.  They get the most reward if the tag stays there a while.  If you clean it the very next day, they are less likely to bother doing it again.  While this psycology protects a wiki from individuals and small groups, there is the possibility that large gangs could take turns keeping a site in disrepait - but its the sort of thing that once you've got you kicks it could easily turn boring.  However, a wiki is probably best for consensus information.  Running one as a minority on a generally unpoplular topic would be lot harder.  --Ben Coman, Perth Western Australia, 16 Sept 2004  - ''hey, it seems this comment is exactly two years after the one below.  Another strength of wiki?  ''  
+
+----
+
+I like Wikis because they remind me of Hypercard. I have a personal wiki running on my Laptop, and a Group Wiki on our Intranet, and there are even Open Wikis like this one. All in all they can be quite useful - and who said that you can replace everything else with it??? -- HeyHey 16 Sept 2002
+
+----
+
+Talking about hypercard and information organization, I wanted to add - I used to use a program called "info-select" for managing my information. It had a very convenient interface.  But it was always a pain in the ass to share.
+
+Since moving over to Linux, I started using Jedit. Now that's my information organization program - I just arrange things in files and use jedit's searching facilities and macros/shortcuts/plugins to find the info I need. 
+
+I also started writing Docbook. Jedit and Docbook both have moin pages.  And the real cool synergy comes from a couple of places - first, the ability edit pages directly inside Jedit thanks to the moinmoin plugin. Very cool. I just started running my own moin and I am kicking myself for not doing it sooner! The possibilities for information organization and sharing are endless.
+
+But now, I'm using moin to plugin non-editable content. I have a book I am writing which I plan to publish. I want to make the content available inside the wiki and allow people to make comments. I embedded the generated HTML from a docbook inside a moin page by writing just a few lines of python code in a macro. You can add comments below the macro, but you can't touch the book.
+
+Moin is not just editable pages - it's an OO framework for building webapps too. Very flexible if you know python.
+
+--AlanEzust 2004-07-24
+
+I like Wikis too, even though I heard about it yesterday for the first time - but what about the dangers? Anybody who reaches this site could change my '''('''(and your)''' and yours too!)''' texts, nobody can be sure if he/she'''(or ''it!'')''' wouldn?t be traduced by changing his/her text, for example into something racist...
+
+I think I wouldn?t start up my own public Wiki, but I think I?ll visit some Wikis in the future.
+Greetz from Berlin/Germany -- [mailto:ratatosk@ratatosk.de Oli] 16 Sept 2002
+
+----
+Well, I am just a day old in wiki .. I dont think there are too many people who really want to sabotage this concept .. after all we live in a free world with all kinds of people around .. look at our sysadmin .. there is always a good for bad .. tit for tat kind of thing .. if someone deletes this page , he would restore it and the sabotage will be unsuccessful .. long live wiki =)
+----
+
+I am completely fascinated by the Wiki...
+B-)
+----
+I love Wiki, but one thing that has struck my mind: what if someone decides to edit the front page and insert some horribly gross illegal porn picture or whatever? Sure, it will be deleted as soon as someone comes along, but in the case of a smaller Wiki, this can be hours, and during those hours random people can come by and visit, be offended and never visit that site again. I think the answer this though: If the Wiki is big, it will be removed within seconds/minutes; if the wiki is small, sabotagers will not care. Or something. --SimonK?gedal
+
+Yes. It can take some hours if you have a very small, not often visited wiki. But then it won't be seen by many users anyway (it is not often visited ;) ). If you have a well-known wiki that is often visited, it will only last some minutes and won't be seen by much people, too. So it is a bit annoying but not a big problem anyway. You also may put the FrontPage into read-only mode, because that page needs not to be changed often, but is the most ''inviting'' one for various idiots doing dumb stuff. -- ThomasWaldmann [[DateTime(2002-12-01T11:44:15)]]
+
+why bother?
+
+----
+
+This wiki thingy is absolutely incredible. ''Totally configurable'', '''conveniently editable''', and ''completely based on the '''honor''' system''. It's an intr'''-a-'''net's best friend.
+
+= LONG LIVE WIKI = -- JimmyMiller [[DateTime(2003-01-06T17:03:00)]] .
+
+----
+Thoroughly confused by WikiWikiWeb stuff. Very haphazard navigation, no centralised focal point. No wonder it works so well. It's like some kind of nerdish cult. Only smart types will get involved and so you don't get the people who want to sabotage it. However, the integrity of what people say can be questioned. Someone could just as easily come in here and edit my words,***oooh I almost did, but I think I'll settle for a deranged digression: really, maybe the wiki just challenges the ego concept of words. I mean, they certainly aren't mine anymore, now that they are yours (or yours). This wiki stuff rocks. Now back to your regularly scheduled broadcast (now was that so bad? and really, how much of what we (i you) say and write is really holy enough to worry to much that it might get edited or even mangled?)*** negate my statements with a single word and I'll be none the wiser. I couldn't be bothered to put back what had been erased or ruined. I'd just leave it and do something else. Perhaps I would eat beef stroganoff. Perhaps I would take up the trombone. Perhaps I would write that single word on a single sheet of paper, take the paper out into a green field alone, and contemplate the idea of the internet. Perhaps I did not even write this sentence, or paragraph, but then... who or what am "I" after all, in a place such as this?
+
+Tried just this sort of thing at school with a wordpad file left open on the screen. People just added stuff to it all day. Then the saboteurs entered and started paki-bashing a friend of mine so they took it off. Didn't work.
+
+Make it easier, make it auditable, give it some integrity. Nice idea needs more work.
+
+ ''Wordpad has no memory. Worpdad has no community. Wordpad has no revert. Wordpad is '''not''' wiki.''
+
+  Um, Wiki is '''meant''' to be "haphazard" so that it becomes self-organizing.  I doubt it could be made much easier; it '''is''' auditable (by the community that cares about it); and it has '''self''' integrity (much like us, in fact!).   The idea is one that is already reduced to its simplest, optimum format.  There is '''no''' more work to be done on it. If you dont understand this you haven't ever tried the real thing.   MeDerek.
+
+----
+
+Wiki relies on the users or 'passers-by' it works great in websites with numerous users however on small 'never heard of' sites it would not work. But still on Yahoo! howeaver it would not work either because everybody would think someone else would do it. Wiki works well where the conditions are good but perishes where the conditions are bad.
+
+MauriceAlbert
+
+P.S I just think Wiki is amazing, how it secures itself while being so open.
+
+----
+
+Not stated among the arguments for and against wiki is the obvious: that you can easily secure wiki behind an intranet, and that is where wiki excels, among a contained, gated community, where trust is implicit and granted on the basis of all individuals being known to the community. There are secured wikis on the Net as well. They don't provide complete security against vandalism, yet the rollback and versioning/difference capabilities of some of these wikis is reason enough to pay attention to wiki as an important collaborative content tool.
+
+DavidMattison, 2003-05-20
+
+----
+
+I just installed moin^2 yesterday on our company intranet server (debian) and already people are using it. Needless to say, they're all technically minded so they know how to behave. I must say, I'm just blown away with the idea, although I have been wanting to look at wikis for ages. It just never occured to me that '''anyone''' could edit the pages, so I never got the idea of wiki-communities. It's great, I love it,  and now maybe I'll have to work some :-).
+
+AleksandrKoltsoff, 2003-05-28
+
+
+----
+
+Fascinating...I'd heard of Wiki on and off but was too busy to investigate.
+Looking up the Aqsis renderer's online docs, I got a link to here.  I'm
+intrigued.  Re. Wordpad, above, I submit that part of the problem may
+be that Wordpad is too non-geeky.  The prevailing view here seems to be that
+geeks make Wiki work, and Wordpad is...well, certainly not geeky.  (I'll refrain
+from digging out more general Microsoft comments.  *grin*)
+
+Anyway, take care and I hope that the humming bird gets better!
+
+Richard I-don't-have-my-own-Wiki-page Rauch, 20030718
+
+----
+
+Sabotage by deletion is easily fixed.  A truly perverse individual, however, would engage in far more subtle forms of damage, such as mangling text in ways that is not immediately obvious, especially to a user that is already familiar with the page and skipping directly to content that appears new.  A vandal could post an edit that couples an insightful comment with the introduction of random typos and word deletions or insertions that degrades the quality of the page without destroying it.  (Such behavior could even be automated.)  By the time such damage is typically discovered, it will be intermixed with a series of valid changes to the page, making fixing things into a painful merge rather than a simple rollback.
+
+While the level of individual with the time and dedication to do such, coupled with the sociopathic instinct to destroy things others enjoy, is a fairly rare occurrence, the internet age has taught us that such pathological individuals do exist, and that they can affect computers anywhere in the world.  Unfortunately, there is little that can be done to protect a wiki from such saboteurs without severely curtailing its usability to the people for which it is there in the first place.  It's the old conflict between freedom and security...
+
+-- [http://mapache.org Mapache] 2003-09-28
+
+----
+
+My solution for this problem is to set a e-mail mark to all pages that are important to me. So I get informed if someone changes the page and I can react properly. I did so with a wiki I created for my class and it works fine. -- 1st-angel [[DateTime(2003-10-07T14:57:30Z)]]
+
+P.S. 
+Sorry for my bad english.
+
+----
+Today I encountered my first wiki sabotage in the form of a hentai link randomly added to the content of the page so I had simply went in and manually deleted it approximately 20 hours after the fact from what the recent change stated. After using Wikipedia.org for a while now I had come to appreciate the work people put into sharing information and to see even a random link inserted motivated me to do something about it, and I did. I'm considering reverting the pages back to pre-hentai link when I figure how to do so, but this seemingly simple event has convinced me that Wiki does work as long as there are people who desire helpful information and know that they're allowed to "Fix" things.
+
+-- random web surfer who was looking for WRT54G information. 2004-08-21
+
+
+== Why Wikis Don't Work as Well as We Think They Do ==
+Having installed two wiki's (one for work, one for a class), I believe there are some usability issues that prevent them from fulfilling their promise.   Assume that most people are not going to invest 20 minutes or more of their time to understand formatting unless there's a big payoff for them. I offer this in the hopes that we can all think about how to solve these problems:
+
+1)  People don't use wiki's because they don't realize they can actually make changes.  I've found that most of my wiki's audience (participants?) bring a broadcast mindset to anything on the web.  The idea that they can make changes is totally foreign to them and they're anxious at first when it comes to "talking back."    "Sandboxes" don't seem to be sufficient to get people over the hump.  We need something else...
+ * That is not a problem of technology, but of people not knowing wikis. But for your work companions and students: you did tell them that they CAN make changes? I think this is more of a problem of people coming in via search engines, not realizing that they got into a wiki. One solution for them could be to display a one-time notice "Hey, you have found a great new EDITABLE web site" if they don't have a special cookie (NOWIKINEWBIEANYMORE=1). ''I can understand wanting to force co-workers to use a local wiki, but making random people who came in on a search engine and aren't tuned-in enough with reality to notice that they can edit the page they're reading may be more trouble than it's worth.''
+ * Spread the word! ;) ''This sounds like a much more productive approach to hooking people into wiki... but there are already enough wikis that have reached critical mass.  Is wiki evangelism even necessary at this point (January 2004)?''
+
+2)  Strangely enough, the "free-form" aspect of wiki isn't free form enough.  There's no way to easily create columns.  I looked at wiki's originally as a way of blogging.  Most blogs are two or three columns, but only one column could be powered by a wiki, the others I had to do in HTML.  I wish I didn't have to make this compromise.  Maybe columns isn't the answer, maybe tables are because that's really what columns are made out of in HTML...
+ * If you have concrete ideas of how to improve that, tell us. Do you know some method of doing multi-column text without having to make (mostly wrong) assumptions about screen and font size? But: we won't make a design that's "optimized for 800x600 and IE". @)
+
+I work in an ad agency and we deal in short attention spans.  We need to design better ways to accommodate these short attention spans at the initial stage of using a wiki.  Once people see the benefit, then they will invest the time into using them.
+
+-- Joel Greenberg 10/20/03
+
+In regards to point number 2, you may want to check out [http://snipsnap.org/ SnipSnap].  It's a combination of a Weblog (with columns) and a Wiki.
+
+-- Richard Terry 1/8/2003
+
+With regards to point number 1, no. People will invest incredible amounts of time learning all kinds of things - um, video recorders spring to mind! - as long as they think there is some benefit (however imaginary).  So people who don't want to learn how to use wiki are those who see no benefit (and would probably not contribute anyway - no loss).
+-- MeDerek 1 May 2004
+
+For point number 2, there is now a macro in the MacroMarket called Columns. It's not fully automatic, but close enough.
+
+-- AnttiKuntsi [[Date(2004-06-14T13:43:38Z)]]
+
+----
+
+I have a VERY short attention span. How short? This short - (putter about, do other things, come back - oh yes!). And this looks like a lot of fun for doing short stories,poetry and goofiness!   --Bruce Griffis
+
+
+----
+
+I find that the biggest problem with Wiki's is when people think they can use them as a solution for documentation, and it leaves you with an unusable, not up-to-date mess.
+
+That's not a problem of wiki, but just whether you have people writing good content or not. With wiki you CAN have MORE people doing that, doing that TOGETHER even. But if you still end up with nobody doing it, you would have the same problem without a wiki, too. -- ThomasWaldmann [[DateTime(2004-03-23T19:53:49Z)]]
+
+----
+
+The only real moderation problem with a wiki is when you encounter viewpoint war's sometimes.  And in that case, there is something like the not-yet-developed [http://www.usemod.com/cgi-bin/mb.pl?ViewPoint ViewPoint] to deal with that or the system that [http://wikipedia.org/ wikipedia.org] came up with.  That and subtle stalking is the only real things that I can think of.  The rest is counteracted by the balancing nature of wiki's and the fact that there are more reasonable people than trolls.   The fact that everyone can be a moderator can really help with trolling. --[http://www.usemod.com/cgi-bin/mb.pl?MahyarMcDonald MahyarMcDonald] (02/04/04)
+
+----
+
+Viewpoint wars are fun, because both participants are always wrong. Only "I" am right.
+ - rob
+
+----
+
+This page is no longer usable because the signal to noise ratio is too small.  The problem with a room full of brilliant people constructively engaged about meaninful things is that no one can hear anything over the racket.
+
+----
+
+Huh!?  I read the whole page, getting a lot out of *all* the different viewpoints, much like a slashdot discussion, without the ratings and threads (both of which I like, actually).  Well, some folks can't deal with the chaos I guess, and any kind of human interaction tends to be chaotic.  In contrast, refined, controlled discussions can also be boring.  Slashdot-like systems leverage the chaos and impose just enough organization to avoid breakdown.  It could be that wikis need some of the same control mechanisms to really work well on a larger scale.
+
+----
+
+How to sabotage this system
+
+Look for opinions.  Oppose them.  Generate controversy, especially heated debate over ambiguous subjects.  This will raise the level of noise and frustration, driving people away.
+
+Look for facts.  Distort them.  Replacing complicated data with slight changes can be detected, but only if a person is willing to pour over it and validate it.  A difference engine and source control help when source material is changed in a complex, subtle ways. But enough accumulated errors cause a failure of trust.
+
+And never forget; if you can set this page to something, someone else can set it to something else.  Last in wins.
+        Last in wins ... what?  Making a page with content about installing moinmoin with Apache? Who wants to 'win' that? ;)
+
+See?
+
+----
+
+I just visited WP:HEP and found it sabotaged, pressed edit, and it loaded an already reverted version. Speaks volumes, i guess.

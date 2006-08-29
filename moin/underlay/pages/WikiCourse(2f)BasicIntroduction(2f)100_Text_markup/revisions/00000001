@@ -1,0 +1,27 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off
+[[Navigation(slides)]]
+
+= Text Markup and Links =
+
+To add special formatting to text, just enclose it within markup. There are special notations which are automatically recognized as internal or external links or as embedded pictures.
+
+||<rowbgcolor="#FFFFE8"> '''Input''' || '''Display''' ||
+|| `''italic'' and '''bold''' and __underlined__` || ''italic'' and '''bold''' and __underlined__ ||
+|| {{{`typewriter`}}} || `typewriter` ||
+|| {{{^super^script and ,,sub,,script}}} || ^super^script and ,,sub,,script ||
+|| `PageReference WikiSandBox` || PageReference WikiSandBox ||
+|| `MoinMoin:HelpContents` || MoinMoin:HelpContents (InterWiki-Link) ||
+|| `http://www.web.de/` || http://www.web.de/ ||
+|| `http://www.pythonwiki.de/wiki/img/moinmoin.gif` || http://www.pythonwiki.de/wiki/img/moinmoin.gif ||
+|| `:)  B)  :))  ;)  :D  :(  :-?` || :)  B)  :))  ;)  :D  :(  :-? (Smileys) ||
+|| `/!\  <!>  (!)  (./)  {OK}  {X}  {i}` || /!\  <!>  (!)  (./)  {OK}  {X}  {i} (Marks) ||
+|| `{1}  {2}  {3}` || {1}  {2}  {3}  (Priorities) ||
+
+For details see HelpOnFormatting, HelpOnLinking and HelpOnSmileys.

@@ -1,0 +1,46 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+[[Navigation(siblings)]]
+
+This macro includes the formatted content of the given local wiki page(s), following
+recursive includes if encountered. If the recursion generates any cycles, this is detected and prevented!
+
+'''Usage:'''
+ {{{
+[[Include(pagename, heading, level, from="regex", to="regex", sort=ascending|descending, items=n, skipitems=n, titlesonly, editlink)]]
+}}}
+
+ pagename:: Name of the page to include, if it starts with a caret "`^`", a regex of pages to include.
+ heading::  Text for the generated heading which will link to the included page (optional).
+ level::    Level (1..5) of the generated heading (optional).
+ from::     Partial include start marker (optional).
+ to::       Partial include end marker (optional).
+ sort::     Sorting order when pagename is a regex, i.e. starts with a caret (optional).
+ items::    Maximum number of pages to include.   
+ skipitems:: Number of initial pages to skip over (optional).
+ titlesonly:: Only include a link to the page, not page content (optional).
+ editlink:: add a footer with links to the included page, both normal and edit (optional, available since MoinMoin 1.3.4).
+ 
+All parameters except pagename are optional, but you have to follow the given order! If you want to omit "`heading`", you have to leave the second parameter empty.
+
+`from` and `to` recognise the pattern in comments as well. So watch out for comments that stop the include unexpectedly.
+
+'''Examples:'''
+ * `[[Include(FooBar)]]` -- include the text of page `FooBar` in the current paragraph
+ * `[[Include(FooBar,"Foo Bar" )]]` -- add a linked H1 of 'Foo Bar' followed by the text
+ * `[[Include(FooBar, , 2)]]` -- add a H2 of 'Foo Bar'
+ * `[[Include(FooBar, 'All about Foo Bar', 2)]]` -- add a H2 of 'All about Foo Bar'
+ * `[[Include(FooBar, , from="^----$")]]` -- only include content after first horizontal rule
+ * `[[Include(FooBar, , to="^----$")]]` -- only include content until first horizontal rule
+ * `[[Include(^FooBar/.*, , sort=descending)]]` -- sort the page list in decending order
+ * `[[Include(^FooBar/.*, , items=3)]]` -- include maximal three pages
+ * `[[Include(^BlogBase/.*,, to="^----$", sort=descending, items=7)]]` -- show at most a week of a blog
+ * `[[Include(^BlogBase/.*,, to="^----$", sort=descending, items=7, skipitems=7, titlesonly)]]` -- show the previous week with titles only
+ * You can use these with MoinMoin:MonthCalendar for blogging:
+  * `[[Include(^FirstnameLastname/20..-..-..,,to="^----",sort=descending,items=3)]]` -- show 3 items out of a month calendar
+  * `[[Include(^FirstnameLastname/20..-..-..,,to="^----",sort=descending,items=4,skipitems=3,titlesonly)]]` -- show next 4 items only with titles

@@ -1,0 +1,70 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:None
+##master-date:None
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+= Creating a new page =
+## We should test this section with beginners
+## Beginner
+
+You create a new page by visiting the page. If the page does not exists, Moin``Moin will suggest to create it. There are several ways to create a new page:
+
+== By Adding a link on another page ==
+ 1. Edit another page
+ 1. Add a link to the new page, either as a WikiName or as `["Name With Spaces"]`
+ 1. Save the page and click the new link
+ 1. Click one of the template names
+ 1. Edit your new page and save it
+
+For more information on linking to other pages, see HelpOnLinking.
+
+== By visiting the page ==
+## Can a complete beginner use this?
+
+ 1. Enter the address of the new page, e.g `http://example.com/wiki/MyNewPage` in the browser location box and press Enter
+ 1. Click one of the template names
+ 1. Edit your new page and save it
+
+ (!) Might not work on all browsers if the page name contains non ASCII characters.
+
+== By using the NewPage macro ==
+
+If the current page uses the `NewPage` macro:
+ 1. Enter the page name in the text box and click "[[GetText(Create New Page)]]"
+ 1. Edit your page and save it
+
+Example:
+ [[NewPage(HelpTemplate)]]
+
+The `NewPage` macro make it easy to create new pages in one step, using certain template or automatically creating a sub page. For more help on `NewPage` macro, see HelpOnMacros.
+
+== By using the GoTo macro ==
+
+If the current page uses the `GoTo` macro:
+ 1. Enter the page name in the text box and click "[[GetText(Go To Page)]]"
+ 1. Click "Create new page"
+ 1. Edit your page and save it
+
+Example:
+ [[GoTo]]
+
+= Creating and using template pages =
+## Advanced
+
+See HelpOnTemplates.
+
+[[Anchor(variablesubstitution)]]
+= Setting Variables  =
+
+See HelpOnVariables
+
+= Editor backup =
+## Advanced
+
+If you have a homepage (a page with the same name as your user name), each time you save or preview a page, a backup of the text is saved as `UserName/MoinEditorBackup`. If your browser crashed when editing a page and you did a preview, you can get the text from the backup. Use preview often!
+
+## TODO: remove this stupidity, sub page should be allowed always
+ (!) If sub pages are disabled, the backup is saved as `UserNameMoinEditorBackup`

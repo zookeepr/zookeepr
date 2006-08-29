@@ -1,0 +1,2 @@
+#acl All:read
+See MoinMoin:EditingOnMoinMaster.

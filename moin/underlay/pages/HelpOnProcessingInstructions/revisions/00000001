@@ -1,0 +1,106 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+MoinMoin processing instructions have the same semantics as in XML: they control the paths taken when processing a page. Processing instructions are lines that start with a "{{{#}}}" character followed by a keyword and optionally some arguments; the keyword is always handled case-insensitive. Two consecutive hash marks at the start of a line are a comment that won't appear in the processed page.
+
+All PIs must appear at the very start of a page. An exception are comment PIs, those may appear anywhere within a  page using "wiki" format, but not in pages using other formats.
+
+For more information on the possible markup, see HelpOnEditing. 
+
+Processing instructions !MoinMoin knows of:
+[[TableOfContents]]
+
+= ## comment =
+{{{
+## a comment, any text here is ignored
+}}}
+
+= #format =
+Defines the input format for this page. 
+{{{
+#FORMAT format-specifier optional-arguments
+}}}
+
+format-specifier can be:
+ * '''wiki''': default MoinMoin wiki markup
+ * '''plain''': normal plain text
+ * '''python''': colored Python code
+ * Any other installed parser name. See HelpOnParsers for additional parsers available and MoinMoin:ParserMarket for user provided parsers.
+
+Some parsers can accept optional arguments. Check the documentation of the parser for the possible options.
+
+= #redirect =
+Redirect to a different page (see MeatBall:PageRedirect'''''')
+{{{
+#REDIRECT pagename
+}}}
+
+= #refresh =
+Redirect to a different page (or an external URL or just refresh the same page, if left out)
+  * Needs to be enabled in the server configuration, see HelpOnConfiguration
+{{{
+#REFRESH delay target
+}}}
+
+target can be either a page name, or a fully qualified url. Here are two examples:
+{{{
+#refresh 0 FrontPage
+#refresh 5 http://example.com/
+}}}
+
+= #pragma =
+Sets processing modes for this page:
+{{{
+#PRAGMA mode arguments
+}}} 
+
+Mode names are not case-sensitive. 
+
+!MoinMoin knows few pragmas, and you may add more and use them for your own themes or macros. Here are the known pragmas:
+
+== section-numbers ==
+Switches automatic numbering of section headers.
+{{{
+#pragma section-numbers off
+}}}
+`off` or `0` disable numbering, `on` or `1` enables numbering. The default mode is set by the `show_section_numbers` config option.
+
+When enabling numbering, its possible to use specific heading level:
+{{{
+#pragma section-numbers 2
+}}}
+Only displays section numbers for headings of level 2 and up (similarly for 3 to 6).
+
+== keywords ==
+adds a `<meta>` tag with keywords which tells search engines what you can find on the particular page.
+{{{
+#pragma keywords Cars, Vehicles, Foo
+}}} 
+
+== description ==
+adds a `<meta>` tag which contains the description of the particular page.
+{{{
+#pragma description This page is about cars.
+}}} 
+
+== deprecated ==
+Mark this page as deprecated.
+{{{
+#DEPRECATED
+}}}
+Further changes to the page will create no backup versions and displaying it will show the current contents (usually the reason why this page is deprecated) plus the last backup. This effectively freezes the last version of the page, makes it unavailable for searches (no hits on stale content), but keeps that content available for viewing.
+
+ * Removing the PI from the page will store '''no''' backup of the deprecation warning.
+ * In comparison to `#REDIRECT` this PI gives the ability to give the user a reason why this page is no longer of use and why they should go to a new one, while `#REDIRECT` will throw them to the new page without any reason.
+
+= #language =
+Set page language and direction.
+{{{
+#language language-name
+}}}
+Set page language and direction. Language name is the iso-639-1 code. MoinMoin ignore languages that does not have a translation file in `MoinMoin/i18n/`. See also HelpOnLanguages.

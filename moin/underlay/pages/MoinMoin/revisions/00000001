@@ -1,0 +1,48 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+MoinMoin is a Python Wiki:WikiClone, based on Wiki:PikiPiki. The name is a common German slang expression (see MoinMoin:MoinMoinEtymology for more about that). If you run a Wiki using MoinMoin, please add it to the MoinMoin:MoinMoinWikis page. Contributed code is on the MoinMoin:MacroMarket, MoinMoin:ActionMarket and MoinMoin:ParserMarket pages.
+
+The following pages are about the development of MoinMoin:
+ * MoinMoin:MoinMoinQuestions - Questions about MoinMoin (installing, etc.)
+ * MoinMoin:MoinMoinTranslation - discussion about translating MoinMoin
+ * MoinMoin:MoinMoinBugs - bugs in the software
+ * MoinMoin:MoinMoinIdeas - you are encouraged to ''add'' wishes and ideas to this page
+ * MoinMoin:MoinMoinMailingLists - discussion about MoinMoin via email
+ * MoinMoin:MoinDev - information for MoinMoin developers
+ * HelpForDevelopers - the rules that govern MoinMoin development
+
+These pages provide information about using and installing MoinMoin:
+ * HelpOnInstalling - how to install MoinMoin
+ * /TextFormatting - a page containing samples of most of the markup options
+ * MoinMoin:MoinMoinSuccessStories - what do other people use MoinMoin for?
+ * HelpContents - The main page of the help system
+ * HelpMiscellaneous/FrequentlyAskedQuestions - Frequently Asked Questions (ask your own on MoinMoin:MoinMoinQuestions)
+ * MoinMoin:MoinMoinMailingLists - discussion about MoinMoin via email
+ * MoinMoin:MoinMoinWikis - list of wiki sites using MoinMoin
+ * /InstallDocs - all the help pages about installation rolled into one
+ * MoinMoin:SecurityPolicy - explains how to restrict access to your wiki, or parts of it
+ * MoinMoin:MoinMoinSyndication - Support for RSS feeds and other collaboration features across systems
+ * MoinMoin:MoinMoinExtensions - extended features that plug into the core distribution
+ * Slides: WikiCourse - An Introduction to Wikis and MoinMoin
+
+Other pages about MoinMoin:
+ * MoinMoin:MoinMoinEtymology
+
+External links:
+ * [http://sourceforge.net/projects/moin/ SourceForge Project Info]
+ * [http://moinmoin.wikiwikiweb.de/ Project Homepage]
+ * [http://freshmeat.net/projects/moin FreshMeat Entry]
+ * [http://www.oreillynet.com/pub/a/python/2000/11/29/pythonnews.html PythonNews article on wikis]
+
+Connect to Foldoc:IRC for meeting the author and other MoinMoin users and developers:
+ * channel `#moin` on freenode server `irc.freenode.net`
+ * see also [http://freenode.net/ freenode home page] and esp. [http://freenode.net/irc_servers.shtml freenode IRC servers] for more information
+
+http://www.opensource.org/trademarks/opensource/web/opensource-110x95.png
+[[BR]][http://www.opensource.org/docs/definition.php Open Source]

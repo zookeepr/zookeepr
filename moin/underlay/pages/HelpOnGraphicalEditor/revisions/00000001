@@ -1,0 +1,41 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:HelpOnGraphicalEditor
+##master-date:
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+== Basics ==
+MoinMoin 1.5 comes with a GUI editor. It requires Firefox (1.0+), Mozilla (1.3+), Netscape (7+) or Internet Explorer (5.5+). GUI editor integration is quite new, non-trivial code and still has bugs. Be careful and safe often. 
+
+Although the ''GUI editor'' is an HTML editor running in your browser the wiki itself does not work with HTML internally, but uses a special markup called "wiki markup" - it can be viewed with the "Show Raw Text" action or while editing with the ''text editor''. The wiki markup is much easier to edit than raw HTML, but has several restrictions:
+
+ * No text formats, links, images, icons, ... within headings, links, most text formats except '''bold''' and ''italic.''
+ * No headings, bullet and numbered list, horizontal lines tables, ... within tables. Use tables for listing data not for page layout.
+
+The editor only allows legal formattings but it is possible to get around this restriction with copy and paste. As the HTML has to be translated to wiki markup this don't do any good. As soon as non supported formatting is translated to wiki markup it will either break or  be ignored.
+
+== CamelCase ==
+
+In the wiki markup !CamelCase words (at least two word with one capital letter at the beginning written together) are automatically turned into a link to a wiki page of that name. In the Graphical Editor this works, too. To get the !CamelCase links detected hit the preview button or simply save the page. !CamelCase can be avoided by prepending an exclamation mark.
+
+== Using wiki markup within the GUI editor ==
+ * backticks ("`") surrounding text  (formatted)
+ * single quotes (bold, italic)
+ * underscores (underlined)
+ * ...
+
+== Special elements ==
+There are some elements in the MoinMoin markup that cannot be represented as own HTML entities in the editor. These are left as plain text. They are coloured yellow in the editor to show you that they have special meaning. These elements are:
+
+ * Macros (see HelpOnMacros)
+ * inlined attachments (see HelpOnActions/AttachFile)
+ * Exclamation marks (`!`) used for quoting CamelCase links
+
+The yellow is for your information only and has no further effect. You can just type in these items as plain text although the editor does not recognize them as special and does not color them for you. But when the page is rendered after you pressed Save or Preview these items are recognized.
+
+== Features not supported within the Graphical Editor ==
+ * thickness of horizontal lines
+ * `id`, `class` and `style` attributes in tables
+ * setting the starting number of numbered lists

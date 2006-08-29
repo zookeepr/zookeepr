@@ -1,0 +1,79 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+HelpContents > HelpOnAdministration > HelpOnInstalling
+
+[[TableOfContents]]
+
+= How to install your own MoinMoin Wiki =
+This page describes the installation procedure of MoinMoin. In the next section, there is a list of real-world [#installscenarios Installation Scenarios] that help you to understand how to apply the instructions in different environments. If you already have a wiki running and want to upgrade, see HelpOnUpdating.
+
+A Moin``Moin installation is done by some elementary steps:
+ * /BasicInstallation explains the "`setup.py`" step of the installation in more detail. This is used to get the Moin``Moin code and wiki template installed onto your system. This applies equally to all scenarios, and you should read it before trying a live installation.
+ * /WikiInstanceCreation explains how you make a new wiki instance (data and configuration). This is also common to all scenarios.
+ * Setup your webserver
+  * Decide which solution you want to use (see below).
+  * Getting the web server to serve static stuff under the `/wiki` URL (url_prefix), used for theme CSS and images, etc. This is slightly different for the various web servers that can be used - see below.
+  * Getting the web server to execute the moin code when you access wiki pages. This is done either by CGI, FastCGI, mod_python or Twisted or the built-in stand alone server - this is slightly different for the various web servers that can be used - see below.
+ * After a successful installation, you might want to read more about configuration and other options that you, as the wiki administrator, can set up. HelpOnAdministration contains links to pages that cover these topics. Especially, the HelpOnConfiguration and HelpOnUpdating pages provide additional information regarding wiki setup and maintenance.
+ * /TroubleShooting helps with fixing any general problems you might encounter which apply to any installation platform. 
+
+= Using distribution versions =
+
+As an alternative for downloading you can use of distribution packages (from your favourite Linux distribution, for example). But often those are not very up-to-date. The installation scenarios will not differ much as you will have to create new instances by yourself anyway. Some distributions have predefined configuration files where you just have to make /WikiInstanceCreation because the shared content is already in its place.
+
+[[Anchor(installscenarios)]]
+= Installation scenarios =
+
+The following subpages will show you concrete examples of installation sessions, showing the commands used and explaining what they do. You ''must first read the general information on installing above'' before doing the installation steps described on the pages linked from below:
+
+== Personal wiki ==
+
+Wiki for personal use or small workgroup. Does not require anything but Python and MoinMoin.
+
+ * /StandaloneServer
+   ''Technical note:'' Note that Standalone is faster than Twisted currently, but does not support multiple interfaces/ports.
+
+== Public wiki using CGI ==
+
+CGI is very common, well tested and easy to configure but rather slow.
+
+ * /ApacheOnLinux
+ * /ApacheOnLinuxFtp
+  * If you have just FTP access, choose this scenario.
+ * /ApacheOnMacOsx
+ * /ApacheOnWin32
+ * /InternetInformationServer
+ * /WebLogic
+ * /AolServer
+
+== Standalone mode ==
+
+It's very quick and can be run behind Apache's mod_proxy.
+
+== High performance public wiki ==
+
+These servers are much faster than CGI, but might be harder to install and configure.
+
+ * /TwistedWeb 
+ * /FastCgi - using [http://fastcgi.com/ FastCgi] on Apache and Lighttpd webservers
+ * /ApacheWithModPython
+
+== A minimalistic wiki ==
+
+Sometimes you want to install a wiki that is only made of the minimal components. How you set this up and how you add additional components is decribed in /MinimalWiki
+
+
+== Wiki Farming ==
+
+One copy of moinmoin source code can be used to operate more than one wiki.  Create a directory for your farm, and under it, make two data trees per the /WikiInstanceCreation instructions. In the config directory (by default ''/usr/share/moin/''config) you will find an example '''farmconfig.py''' file.  Copy this into the farm directory, and edit moin's launcher script (moin.py if you are standalone, moin.cgi if you are cgi, etc.) to point directly at it.   
+
+farmconfig.py declares regular expressions for each wiki "tree" you would like - several trees make a tree farm.  It also sets the default '''wikiconfig''' options (see HelpOnConfiguration).
+
+Once a URL matches, its keyword is used to seek out an additional (but optional) configuration file.  The example describes the moin home site and its documentation development tree (moinmoin and moinmaster).  So, when you visit http://moinmoin.wikiwikiweb.de the URL matches ''moinmoin'', moinmoin.py is looked for (and exists in the same directory as farmconfig.py).  Within moinmoin.py, the options override the farmconfig, wikiconfig processing stops, and the moinmoin data tree is served to the visitor.
+
+Note that URLs matching no regex at all will not be served by moin.  If you are in standalone mode, an error page will be presented.  Also note that unless one of your keywords is ''wikiconfig'' any file named wikiconfig.py will never be read; the farm takes precedence.

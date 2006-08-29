@@ -43,3 +43,7 @@ submitted by
 </p>
 
 </div>
+
+<div id="wiki">
+<% h.wiki_here() %>
+</div>

@@ -8,7 +8,13 @@ from pylons.error import error_template
 from pylons.middleware import ErrorHandler, ErrorDocuments, StaticJavascripts, error_mapper
 import pylons.wsgiapp
 
+from zookeepr.lib import wiki
+
 from zookeepr.config.environment import load_environment
+
+def error_mapper_wrapper(code, message, environ, global_conf=None, **kw):
+    if code != 404:
+        return error_mapper(code, message, environ, global_conf, **kw)
 
 def make_app(global_conf, **app_conf):
     """Create a WSGI application and return it
@@ -49,7 +55,10 @@ def make_app(global_conf, **app_conf):
     
     # @@@ Display error documents for 401, 403, 404 status codes (if debug is disabled also
     # intercepts 500) @@@
-    app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
+    e = error_mapper
+    if wiki.has_moin:
+        e = error_mapper_wrapper
+    app = ErrorDocuments(app, global_conf, mapper=e, **app_conf)
     
     # @@@ Establish the Registry for this application @@@
     app = RegistryManager(app)
