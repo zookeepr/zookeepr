@@ -16,3 +16,14 @@ class Proposal(object):
 
     def __repr__(self):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)
+
+
+class Attachment(object):
+    def __init__(self, name=None, content_type=None, creation_timestamp=None, content=None):
+        self.name = name
+        self.content_type = content_type
+        self.creation_timestamp = creation_timestamp
+        self.content = content
+
+    def __repr__(self):
+        return '<Attachment id="%r" name="%s">' % (self.id, self.name)
