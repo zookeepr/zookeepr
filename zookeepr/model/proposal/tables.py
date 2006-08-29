@@ -40,3 +40,20 @@ person_proposal_map = Table('person_proposal_map',
     Column('proposal_id', Integer, ForeignKey('proposal.id'),
         nullable=False),
     )
+
+# for storing attachments
+attachment = Table('attachment',
+                   Column('id', Integer, primary_key=True),
+
+                   Column('name', String,
+                          nullable=False),
+                   Column('content_type', String,
+                          nullable=False),
+                   
+                   Column('creation_timestamp', DateTime,
+                          nullable=False),
+
+                   Column('content', Binary,
+                          nullable=False),
+
+                   )
