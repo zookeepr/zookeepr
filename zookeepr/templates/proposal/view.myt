@@ -32,6 +32,11 @@ submitted by
 % #endif
 </p>
 
+<p class="attachment">
+<em>Attachment:</em>
+"<% c.proposal.attachment[:50] %>..."
+</p>
+
 <hr />
 
 <p class="actions">
