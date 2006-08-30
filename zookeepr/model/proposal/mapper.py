@@ -16,6 +16,7 @@ mapper(Proposal, proposal,
         'type': relation(ProposalType, lazy=True),
         'people': relation(Person, secondary=person_proposal_map,
             backref='proposals'),
-        'attachments': relation(Attachment, lazy=True),
+        'attachments': relation(Attachment, lazy=True,
+                                cascade='all, delete-orphan'),
     }
     )

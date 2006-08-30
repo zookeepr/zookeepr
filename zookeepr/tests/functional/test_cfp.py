@@ -3,7 +3,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model import Person, Proposal, ProposalType
+from zookeepr.model import Person, Proposal, ProposalType, Attachment
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
@@ -164,3 +164,4 @@ class TestCFP(ControllerTest):
 
         self.assertEmptyModel(Proposal)
         self.assertEmptyModel(Person)
+        self.assertEmptyModel(Attachment)
