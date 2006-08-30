@@ -16,8 +16,6 @@ proposal = Table('proposal',
                    Column('title', String()),
                    # abstract or description
                    Column('abstract', String()),
-                   # attachment, if they've submitted a paper
-                   Column('attachment', Binary()),
 
                    # type, enumerated in the proposal_type table
                    Column('proposal_type_id', Integer,
@@ -45,8 +43,7 @@ person_proposal_map = Table('person_proposal_map',
 attachment = Table('attachment',
                    Column('id', Integer, primary_key=True),
 
-                   Column('proposal_id', Integer, ForeignKey('proposal.id'),
-                          nullable=False),
+                   Column('proposal_id', Integer, ForeignKey('proposal.id')),
 
                    Column('filename', String,
                           key='_filename',
