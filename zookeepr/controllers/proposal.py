@@ -12,7 +12,6 @@ class ProposalSchema(schema.Schema):
     experience = validators.String()
     url = validators.String()
     type = ProposalTypeValidator()
-    attachment = FileUploadValidator()
 
 class NewProposalSchema(BaseSchema):
     proposal = ProposalSchema()

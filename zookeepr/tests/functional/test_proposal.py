@@ -11,13 +11,11 @@ class TestProposal(ControllerTest):
                     abstract='abstract 1',
                     experience='experience 1',
                     url='http://example.org',
-                    attachment=buffer('foo'),
                     ),
                dict(title='not a test',
                     abstract='abstract 2',
                     experience='experience 2',
                     url='http://lca2007.linux.org.au',
-                    attachment=buffer('bar'),
                     ),
                ]
 
@@ -203,7 +201,6 @@ class TestProposal(ControllerTest):
         f['proposal.type'] = 1
         f['proposal.abstract'] = "cubist"
         f['proposal.experience'] = "n"
-        f['proposal.attachment'] = buffer("foo")
         print f.submit_fields()
         resp = f.submit()
         resp = resp.follow()

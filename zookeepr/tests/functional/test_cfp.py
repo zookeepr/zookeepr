@@ -50,7 +50,7 @@ class TestCFP(ControllerTest):
 
         atts = self.objectstore.query(Attachment).select()
         self.assertEqual(1, len(atts))
-        self.assertEqual('foo', subs[0].content)
+        self.assertEqual('foo', str(atts[0].content))
                          
 
         self.objectstore.delete(regs[0])
