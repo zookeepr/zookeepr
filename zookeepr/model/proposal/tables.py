@@ -45,14 +45,18 @@ person_proposal_map = Table('person_proposal_map',
 attachment = Table('attachment',
                    Column('id', Integer, primary_key=True),
 
-                   Column('proposal_id', Integer, ForeignKey('proposal.id')),
+                   Column('proposal_id', Integer, ForeignKey('proposal.id'),
+                          nullable=False),
 
-                   Column('name', String,
+                   Column('filename', String,
+                          key='_filename',
                           nullable=False),
                    Column('content_type', String,
+                          key='_content_type',
                           nullable=False),
                    
                    Column('creation_timestamp', DateTime,
+                          key='_creation_timestamp',
                           nullable=False),
 
                    Column('content', Binary(),

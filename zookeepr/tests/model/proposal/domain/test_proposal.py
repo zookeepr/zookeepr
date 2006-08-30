@@ -190,7 +190,8 @@ class TestProposal(ModelTest):
         p = Proposal(title='prop 1')
         self.objectstore.save(p)
 
-        a = Attachment(name='a', content_type='text/plain',
+        a = Attachment(filename='a',
+                       content_type='text/plain',
                        creation_timestamp=datetime.datetime.now(),
                        content="foobar")
         self.objectstore.save(a)

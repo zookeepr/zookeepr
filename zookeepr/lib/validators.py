@@ -26,3 +26,15 @@ class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         s = create_session()
         return s.query(ProposalType).get(value)
+
+
+class FileUploadValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        if isinstance(value, cgi.FieldStorage):
+            filename = value.filename
+            content = buffer(value.value)
+        elif isinstance(value, str):
+            filename = None
+            content = buffer(value)
+        return dict(filename=filename,
+                    content=content)

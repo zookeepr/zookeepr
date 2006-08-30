@@ -66,8 +66,8 @@
 <span class="fielddesc">If your proposal has a project URL, specify it here so the review committee can find out more about your proposal.</span>
 </p>
 
-<p><label for="proposal.attachment">Attach paper:</label>
-<% h.file_field('proposal.attachment', size=50) %>
+<p><label for="attachment">Attach paper:</label>
+<% h.file_field('attachment', size=50) %>
 <br />
 <span class="fielddesc">If you are submitting a paper for peer review, please upload it here.</span>
 </p>
