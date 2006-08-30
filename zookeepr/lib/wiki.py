@@ -3,13 +3,13 @@
 from exceptions import ImportError
 from paste.httpexceptions import HTTPException
 
+from zookeepr.lib.base import *
+from zookeepr.model import Person
+
 try:
     from MoinMoin.server.wsgi import moinmoinApp
     from MoinMoin.request import RequestWSGI
     import cgi
-
-    from zookeepr.lib.base import *
-    from zookeepr.model import Person
 
     class RequestZookeepr(RequestWSGI):
         def __init__(self, request):
@@ -53,8 +53,9 @@ def get_wiki_response(request, start_response):
     if 'person_id' in session:
         people = g.objectstore.query(Person).select_by(id=session['person_id'])
         if len(people) > 0:
-            request.env['AUTH_TYPE'] = 'Basic'
-            request.env['REMOTE_USER'] = people[0].handle
+            request.environ['AUTH_TYPE'] = 'Basic'
+            request.environ['REMOTE_USER'] = people[0].handle
+        
     moinReq = RequestZookeepr(request)
     moinReq.run()
     start_response(moinReq.status, moinReq.headers)

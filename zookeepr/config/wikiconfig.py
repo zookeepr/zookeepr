@@ -28,16 +28,17 @@
 from MoinMoin.multiconfig import DefaultConfig
 from paste.deploy import CONFIG
 
-from MoinMoin.auth.http import http
+from MoinMoin.auth import http
 
 class Config(DefaultConfig):
 
     auth = [http]
+    user_autocreate = True
 
     # Wiki identity ----------------------------------------------------
 
     # Site name, used by default for wiki name-logo [Unicode]
-    sitename = u'Untitled Wiki'
+    sitename = u'MyLCA Wiki'
 
     # Wiki logo. You can use an image, text or both. [Unicode]
     # For no logo or text, use '' - the default is to show the sitename.
@@ -94,7 +95,10 @@ class Config(DefaultConfig):
     # IMPORTANT: grant yourself admin rights! replace YourName with
     # your user name. See HelpOnAccessControlLists for more help.
     # All acl_rights_xxx options must use unicode [Unicode]
-    #acl_rights_before = u"YourName:read,write,delete,revert,admin"
+    acl_rights_default = u"Trusted:read,write,delete,revert \
+      Known:read,write,delete,revert \
+      All:read"
+    acl_rights_before = u"Ycros:read,write,delete,revert,admin"
 
     # Link spam protection for public wikis (Uncomment to enable)
     # Needs a reliable internet connection.
