@@ -9,16 +9,16 @@ class TestAttachmentTable(TableTest):
     time, and content.
     """
     table = 'proposal.tables.attachment'
-    samples = [dict(filename='test',
+    samples = [dict(_filename='test',
                     proposal_id=1,
-                    content_type='application/octet-stream',
-                    creation_timestamp=datetime.datetime.now(),
+                    _content_type='application/octet-stream',
+                    _creation_timestamp=datetime.datetime.now(),
                     content=buffer("foo")),
-               dict(filename='test2',
+               dict(_filename='test2',
                     proposal_id=2,
-                    content_type='text/plain',
-                    creation_timestamp=datetime.datetime(2006,8,29,16,13,37),
+                    _content_type='text/plain',
+                    _creation_timestamp=datetime.datetime(2006,8,29,16,13,37),
                     content=buffer("bar")),
                ]
-    not_nullables = ['filename', 'content_type', 'creation_timestamp',
+    not_nullables = ['_filename', '_content_type', '_creation_timestamp',
                      'content']
