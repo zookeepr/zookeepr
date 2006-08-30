@@ -47,7 +47,7 @@ submitted by
 <tr class="<% h.cycle('even', 'odd') %>">
 
 <td>
-<% a.filename %>
+<% h.link_to(a.filename, url=h.url_for(controller='attachment', action='view', id=a.id)) %>
 </td>
 
 <td>
