@@ -5,7 +5,7 @@ from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, c, g, h, render, render_response, request
-from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator
+from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator
 from zookeepr.model import Person, ProposalType, Proposal
     
 class RegistrationSchema(Schema):
@@ -20,7 +20,7 @@ class ProposalSchema(Schema):
     type = ProposalTypeValidator()
     experience = validators.String()
     url = validators.String()
-    attachment = FileUploadValidator()
+    attachment = validators.FileUploadKeeper()
     assistance = validators.Bool()
     
 class NewCFPSchema(BaseSchema):
