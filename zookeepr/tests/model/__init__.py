@@ -201,21 +201,9 @@ class TableTest(TestBase):
     """
     __metaclass__ = TableTestGenerator
 
-    def get_table(self):
-        """Return the table, coping with scoping.
-
-        Set the ``table`` class variable to the name of the table variable
-        relative to anchor.model.
-        """
-        module = model
-        # cope with classes in sub-models
-        for submodule in self.table.split('.'):
-            module = getattr(module, submodule)
-        return module
-        
     def check_empty_table(self):
         """Check that the database was left empty after the test"""
-        query = sqlalchemy.select([sqlalchemy.func.count(self.get_table().c.id)])
+        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
         result = query.execute()
         self.assertEqual(0, result.fetchone()[0])
 
@@ -233,33 +221,33 @@ class TableTest(TestBase):
         
         for sample in self.samples:
             print "testing insert of sample data:", sample
-            query = self.get_table().insert()
+            query = self.table.insert()
             query.execute(sample)
 
             for key in sample.keys():
-                col = getattr(self.get_table().c, key)
+                col = getattr(self.table.c, key)
                 query = sqlalchemy.select([col])
                 result = query.execute()
                 row = result.fetchone()
                 print "row:", row
                 self.assertEqual(sample[key], row[0])
 
-            self.get_table().delete().execute()
+            self.table.delete().execute()
 
         # do this again to make sure the test data is all able to go into
         # the db, so that we know it's good to do uniqueness tests, for example
         for sample in self.samples:
-            query = self.get_table().insert()
+            query = self.table.insert()
             query.execute(sample)
 
         # get the count of rows
-        query = sqlalchemy.select([sqlalchemy.func.count(self.get_table().c.id)])
+        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
         result = query.execute()
         # check that it's the same length as the sample data
         self.assertEqual(len(self.samples), result.fetchone()[0])
 
         # ok, delete it
-        self.get_table().delete().execute()
+        self.table.delete().execute()
 
         self.check_empty_table()
 
@@ -284,10 +272,10 @@ class TableTest(TestBase):
             # create the model object
             print coldata
 
-            query = self.get_table().insert()
+            query = self.table.insert()
             self.assertRaisesAny(query.execute, coldata)
 
-            self.get_table().delete().execute()
+            self.table.delete().execute()
 
             self.check_empty_table()
 
@@ -304,17 +292,17 @@ class TableTest(TestBase):
 
         for col in self.uniques:
 
-            self.get_table().insert().execute(self.samples[0])
+            self.table.insert().execute(self.samples[0])
 
             attr = {}
             attr.update(self.samples[1])
 
             attr[col] = self.samples[0][col]
 
-            query = self.get_table().insert()
+            query = self.table.insert()
             self.assertRaisesAny(query.execute, attr)
 
-            self.get_table().delete().execute()
+            self.table.delete().execute()
 
             self.check_empty_table()
 
