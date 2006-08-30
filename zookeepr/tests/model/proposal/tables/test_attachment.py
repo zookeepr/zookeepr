@@ -8,7 +8,7 @@ class TestAttachmentTable(TableTest):
     This table stores attachments: their names, content-type, upload
     time, and content.
     """
-    table = 'proposal.tables.attachment'
+    table = model.proposal.tables.attachment
     samples = [dict(_filename='test',
                     proposal_id=1,
                     _content_type='application/octet-stream',
