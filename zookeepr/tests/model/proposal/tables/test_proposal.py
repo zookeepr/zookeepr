@@ -5,7 +5,7 @@ class TestProposalTable(TableTest):
 
     This table stores proposals made by candidate speakers.
     """
-    table = 'proposal.tables.proposal'
+    table = model.proposal.tables.proposal
     samples = [dict(title='Test Paper',
                     abstract='Test Abstract',
                     experience='None at all',
