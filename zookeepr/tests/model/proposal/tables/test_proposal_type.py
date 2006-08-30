@@ -5,7 +5,7 @@ class TestProposalType(TableTest):
 
     This table stores the list of types that a proposal can be.
     """
-    table = 'proposal.tables.proposal_type'
+    table = model.proposal.tables.proposal_type
     samples = [dict(name='test'),
                dict(name='test1'),
                ]

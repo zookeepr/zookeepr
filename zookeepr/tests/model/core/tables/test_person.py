@@ -7,7 +7,7 @@ class TestPerson(TableTest):
     their contact details, etc, and references an account table that
     contains the person's login details.
     """
-    table = 'core.tables.person'
+    table = model.core.tables.person
     samples = [dict(handle='testguy',
                     firstname='Testguy',
                     lastname='McTest',
