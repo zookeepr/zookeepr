@@ -11,7 +11,6 @@ class TestProposalTable(TableTest):
                     experience='None at all',
                     url='gopher://',
                     proposal_type_id=1,
-                    attachment=buffer("attachment"), #StringIO.StringIO("attachment"),
                     assistance=True,
                     ),
                dict(title='Test BOF',
@@ -19,7 +18,6 @@ class TestProposalTable(TableTest):
                     experience='Some',
                     url="sqlite:////somedb.db",
                     proposal_type_id=2,
-                    attachment=buffer("snuh"), #StringIO.StringIO("snuh"),
                     assistance=False,
                     ),
                ]
