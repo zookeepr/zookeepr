@@ -12,7 +12,7 @@ class ModelTestGenerator(type):
     written to do common model tests, thus improving TDD!
     """
     def __init__(cls, name, bases, classdict):
-        if 'model' in classdict:
+        if 'domain' in classdict:
             monkeypatch(cls, 'test_crud', 'crud')
 
 
@@ -82,7 +82,7 @@ class ModelTest(TestBase):
 #         For example,
 
 #         class TestSomeModel(ModelTest):
-#             model = 'mod'
+#             domain = model.SomeModel
 #             samples = [dict(password='test')]
 #             mangles = dict(password=lambda p: md5.new(p).hexdigest())
         
