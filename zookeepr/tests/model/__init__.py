@@ -21,8 +21,8 @@ class ModelTest(TestBase):
 
     Derived classes should set the following attributes:
 
-    ``model`` is a string containing the name of the class being tested,
-    scoped relative to the module ``zookeepr.model``.
+    ``domain`` is the class (not an instance) that is having it's API
+    tested.
 
     ``samples`` is a list of dictionaries of attributes to use when
     creating test model objects.
@@ -36,7 +36,7 @@ class ModelTest(TestBase):
     An example using this base class follows.
 
     class TestSomeModel(ModelTest):
-        model = 'module.User'
+        model = model.core.User
         samples = [dict(name='testguy',
                         email_address='test@example.org',
                         password='test')]
@@ -53,22 +53,10 @@ class ModelTest(TestBase):
         del self.objectstore
         super(ModelTest, self).tearDown()
 
-    def get_model(self):
-        """Return the model object, coping with scoping.
-
-        Set the ``model`` class variable to the name of the model class
-        relative to anchor.model.
-        """
-        module = model
-        # cope with classes in sub-models
-        for submodule in self.model.split('.'):
-            module = getattr(module, submodule)
-        return module
-        
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
         session = create_session()
-        results = session.query(self.get_model()).select()
+        results = session.query(self.domain).select()
         self.assertEqual(0, len(results))
         session.close()
 
@@ -104,7 +92,7 @@ class ModelTest(TestBase):
 
         for sample in self.samples:
             # instantiating model
-            o = self.get_model()(**sample)
+            o = self.domain(**sample)
     
             # committing to db
             self.objectstore.save(o)
@@ -116,9 +104,9 @@ class ModelTest(TestBase):
             del o
     
             # check it's in the database
-            print self.get_model()
+            print self.domain
             print oid
-            o = self.objectstore.get(self.get_model(), oid)
+            o = self.objectstore.get(self.domain, oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
