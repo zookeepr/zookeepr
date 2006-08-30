@@ -5,7 +5,7 @@ from zookeepr.model import Person
 from zookeepr.tests.model import *
 
 class TestPerson(ModelTest):
-    model = 'Person'
+    domain = model.core.Person
 
     samples = [dict(handle='testguy',
                     email_address='testguy@example.org',

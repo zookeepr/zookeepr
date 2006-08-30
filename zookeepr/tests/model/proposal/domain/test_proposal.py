@@ -4,7 +4,7 @@ from zookeepr.tests.model import *
 class TestProposal(ModelTest):
         
     def test_create(self):
-        self.model = 'Proposal'
+        self.domain = model.proposal.Proposal
 
         self.check_empty_session()
 
@@ -134,7 +134,7 @@ class TestProposal(ModelTest):
         self.objectstore.flush()
 
         # check
-        self.model = 'Proposal'
+        self.domain = model.proposal.Proposal
         self.check_empty_session()
 
     def test_multiple_persons_per_proposal(self):
@@ -181,5 +181,5 @@ class TestProposal(ModelTest):
         self.objectstore.flush()
         
         # check
-        self.model = 'Proposal'
+        self.domain = model.proposal.Proposal
         self.check_empty_session()

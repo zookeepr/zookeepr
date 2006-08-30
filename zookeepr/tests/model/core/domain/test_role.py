@@ -2,7 +2,8 @@ from zookeepr.model import Person, Role
 from zookeepr.tests.model import *
 
 class TestRoleModel(ModelTest):
-     model = 'Role'
+     domain = model.core.Role
+
      samples = [dict(name='site admin'),
                 dict(name='speaker'),
                 ]
