@@ -32,10 +32,39 @@ submitted by
 % #endif
 </p>
 
-<p class="attachment">
-<em>Attachment:</em>
-"<% c.proposal.attachment[:50] %>..."
-</p>
+<div class="attachment">
+% if len(c.proposal.attachments) > 0:
+<em>Attachments:</em>
+<table>
+<tr>
+<th>Filename</th>
+<th>Size</th>
+<th>Date uploaded</th>
+</tr>
+% #endif
+
+% for a in c.proposal.attachments:
+<tr class="<% h.cycle('even', 'odd') %>">
+
+<td>
+<% a.filename %>
+</td>
+
+<td>
+<% len(a.content) %>b
+</td>
+
+<td>
+<% a.creation_timestamp.strftime("%Y-%m-%d %H:%M") %>
+</td>
+
+</tr>
+% #endfor
+
+% if len(c.proposal.attachments) > 0:
+</table>
+% #endfor
+</div>
 
 <hr />
 
