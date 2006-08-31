@@ -14,11 +14,9 @@
 </tr>
 % #endif
 
-% rowcount = 0
 % for s in c.proposal_collection:
-%	rowcount += 1
 <tr class="<% h.cycle('even', 'odd') %>">
-	<td><% rowcount %></td>
+	<td><% h.counter() %></td>
 	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
 	<td>
 % 	if s.type:
