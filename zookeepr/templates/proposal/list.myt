@@ -29,7 +29,7 @@
 	<td>
 % 	for p in s.people:
 
-<% h.link_to(p.fullname or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
+<% h.link_to(p.fullname or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
 %	# endfor
 </td>
 
