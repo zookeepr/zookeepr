@@ -1,4 +1,4 @@
-<h2>List proposals</h2>
+<h2>List of Proposals</h2>
 
 <table>
 
@@ -17,7 +17,7 @@
 % for s in c.proposal_collection:
 <tr class="<% h.cycle('even', 'odd') %>">
 	<td><% h.counter() %></td>
-	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
+	<td><% h.link_to(h.util.html_escape(s.title), url=h.url(action='view', id=s.id)) %></td>
 	<td>
 % 	if s.type:
 <% s.type.name %>
