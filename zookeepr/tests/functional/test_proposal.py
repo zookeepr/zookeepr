@@ -220,3 +220,28 @@ class TestProposal(ControllerTest):
         self.objectstore.delete(s2)
         self.objectstore.delete(s1)
         self.objectstore.flush()
+
+class TestProposalControllerSignedIn(SignedInControllerTest):
+    """Test the proposal controller's behaviour once we're signed in.
+    """
+
+    def test_proposal_list(self):
+        # we're logged in but still can't see it
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='index'),
+                            status=403)
+
+    def test_proposal_list_reviewer(self):
+        # we're logged in and we're a reviewer
+        r = model.Role('reviewer')
+        self.person.roles.append(r)
+        self.objectstore.save(r)
+        self.objectstore.flush()
+
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='index'))
+
+
+        # clean up
+        self.objectstore.delete(r)
+        self.objectstore.flush()
