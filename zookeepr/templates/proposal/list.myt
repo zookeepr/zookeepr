@@ -15,7 +15,7 @@
 % #endif
 
 % for s in c.proposal_collection:
-<tr>
+<tr class="<% h.cycle('even', 'odd') %>">
 	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
 	<td>
 % 	if s.type:
