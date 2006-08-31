@@ -198,6 +198,18 @@ div.boxed {
 }
 
 /**
+ * tables
+ */
+
+TABLE TH {
+  background-color: #ee8c00;
+}
+
+TABLE TR.odd {
+  background-color: #fcaf3e;
+}
+
+/**
  * custom stuff
  */
 
