@@ -35,15 +35,21 @@ submitted by
 <hr />
 
 <p class="actions">
-% if c.can_edit:
+<ul>
+
+% if c.person in c.proposal.people:
+<li>
 <% h.link_to('Edit', url=h.url(action='edit',id=c.proposal.id)) %>
-# |
-% #end if
-#<% h.link_to('Back', url=h.url(action='index')) %>
+</li>
+% #endif
 
 % if 'reviewer' in [x.name for x in c.person.roles]:
+<li>
 <% h.link_to('Review this proposal', url=h.url(action='review')) %>
+</li>
 % #endif
+
+</ul>
 </p>
 
 </div>
