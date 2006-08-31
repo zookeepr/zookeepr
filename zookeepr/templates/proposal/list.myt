@@ -4,6 +4,7 @@
 
 % if len(c.proposal_collection) > 0:
 <tr>
+<th>#</th>
 <th>Title</th>
 <th>Type</th>
 #<th>Abstract</th>
@@ -13,8 +14,11 @@
 </tr>
 % #endif
 
+% rowcount = 0
 % for s in c.proposal_collection:
+%	rowcount += 1
 <tr class="<% h.cycle('even', 'odd') %>">
+	<td><% rowcount %></td>
 	<td><% h.link_to(s.title, url=h.url(action='view', id=s.id)) %></td>
 	<td>
 % 	if s.type:
