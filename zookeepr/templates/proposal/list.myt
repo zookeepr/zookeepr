@@ -21,8 +21,8 @@
 <% s.type.name %>
 % 	#endif
 </td>
-	<td><% str(s.abstract)[:30] %></td>
-	<td><% str(s.experience)[:30] %></td>
+	<td><% h.truncate(s.abstract) %></td>
+	<td><% h.truncate(s.experience) %></td>
 	<td><% h.link_to(s.url, url=s.url) %></td>
 	<td>
 % 	for p in s.people:
