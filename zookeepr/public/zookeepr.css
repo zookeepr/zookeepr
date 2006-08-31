@@ -306,8 +306,8 @@ SPAN.actions {
   font-size: 110%;
 }
 
-#proposal P.experience {
-  margin: 1em;
+#proposal DIV.experience {
+  /*margin: 1em;*/
   padding: 0.5ex;
   border: 1px dashed grey;
 }
