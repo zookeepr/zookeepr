@@ -264,7 +264,7 @@ class TestProposal(SignedInControllerTest):
         self.objectstore.flush()
         pid = p.id
         
-        # we're logged in but this isn't our proposal
+        # we're logged in but this isn't our proposal..
         # should 403
         resp = self.app.get(url_for(controller='proposal',
                                     action='view',
@@ -291,5 +291,28 @@ class TestProposal(SignedInControllerTest):
                                     id=pid))
                             
         # clean up
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+
+    def test_proposal_view_as_reviewer(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
+
+        r = model.Role('reviewer')
+        self.objectstore.save(r)
+        self.person.roles.append(r)
+        self.objectstore.flush()
+        pid = p.id
+        rid = r.id
+        self.objectstore.clear()
+
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=p.id))
+        #resp.click('Review this proposal')
+        # clean up
+        self.objectstore.delete(self.objectstore.get(model.Role, rid))
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
