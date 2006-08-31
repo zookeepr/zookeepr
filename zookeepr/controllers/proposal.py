@@ -1,6 +1,6 @@
 from formencode import validators, compound, schema, variabledecode
 
-from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse
+from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
 from zookeepr.lib.base import c, g, redirect_to, request, render_response
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
@@ -31,7 +31,7 @@ class ProposalController(SecureController, View, Modify):
     permissions = {"edit": [AuthFunc('is_submitter')],
                    "view": [AuthFunc('is_submitter')],
                    "delete": [AuthFunc('is_submitter')],
-                   "index": [],
+                   "index": [AuthRole('reviewer')],
                    }
 
     def __before__(self, **kwargs):
