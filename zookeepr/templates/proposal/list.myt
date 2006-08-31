@@ -23,7 +23,7 @@
 </td>
 	<td><% h.truncate(s.abstract) %></td>
 	<td><% h.truncate(s.experience) %></td>
-	<td><% h.link_to(s.url, url=s.url) %></td>
+	<td><% h.link_to(h.truncate(s.url), url=s.url) %></td>
 	<td>
 % 	for p in s.people:
 
