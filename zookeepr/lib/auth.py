@@ -166,9 +166,9 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
-        print g.objectstore.query(Role).select()
+        #print g.objectstore.query(Role).select()
         roles = g.objectstore.query(Role).select_by(name=self.role_name)
-        print "roles:", roles
+        #print "roles:", roles
         if len(roles) == 0:
             role = None
         else:
