@@ -9,7 +9,6 @@
 <th>Abstract</th>
 <th>Experience</th>
 <th>URL</th>
-<th>Attachment</th>
 <th>Person</th>
 </tr>
 % #endif
@@ -25,7 +24,6 @@
 	<td><% str(s.abstract)[:30] %></td>
 	<td><% str(s.experience)[:30] %></td>
 	<td><% h.link_to(s.url, url=s.url) %></td>
-	<td><% str(s.attachment)[:30] %></td>
 	<td>
 % 	for p in s.people:
 
@@ -49,8 +47,8 @@
 #if c.proposal_pages.current.next:
 #    m.write(h.link_to('Next page', url=h.url(page=c.proposal_pages.current.next)))
 
-m.write('<br />')
-if c.can_edit:
-    m.write(h.link_to('New proposal', url=h.url(action='new')))
+#m.write('<br />')
+#if c.can_edit:
+#    m.write(h.link_to('New proposal', url=h.url(action='new')))
 </%python>
  
