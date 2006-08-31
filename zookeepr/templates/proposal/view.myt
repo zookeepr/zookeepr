@@ -43,3 +43,7 @@ submitted by
 </p>
 
 </div>
+
+<%method title>
+<% h.truncate(c.proposal.title) %> - <% c.proposal.type.name %> proposal - <& PARENT:title &>
+</%method>
