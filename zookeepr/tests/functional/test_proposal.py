@@ -3,6 +3,25 @@ import pprint
 from zookeepr.model import Proposal, ProposalType, Person
 from zookeepr.tests.functional import *
 
+class TestProposalBase(object):
+    """Base class that sets up proposal objects for experimenting with.
+    """
+    def setUp(self):
+        super(TestProposalBase, self).setUp()
+        
+        self.proposal1 = model.Proposal(title='proposal1')
+        self.proposal2 = model.Proposal(title='proposal2')
+        self.objectstore.save(self.proposal1)
+        self.objectstore.save(self.proposal2)
+        self.objectstore.flush()
+
+    def tearDown(self):
+        self.objectstore.delete(self.proposal2)
+        self.objectstore.delete(self.proposal1)
+        self.objectstore.flush()
+        
+        super(TestProposalBase, self).tearDown()
+
 class TestProposal(SignedInControllerTest):
     model = Proposal
     name = 'proposal'
@@ -43,7 +62,6 @@ class TestProposal(SignedInControllerTest):
         super(TestProposal, self).tearDown()
 
     def test_selected_radio_button_in_edit(self):
-        
         # Test that a radio button is checked when editing a proposal
         s = Proposal(id=1,
                        type=self.objectstore.get(ProposalType, 3),
@@ -238,4 +256,41 @@ class TestProposal(SignedInControllerTest):
 
         # clean up
         self.objectstore.delete(r)
+        self.objectstore.flush()
+
+    def test_proposal_view(self):
+        model.proposal.tables.proposal.insert().execute(
+            dict(id=37, title='test view',
+                 proposal_type_id=1)
+            )
+        p = self.objectstore.get(Proposal, 37)
+        pid = p.id
+        
+        # we're logged in but this isn't our proposal
+        # should 403
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=p.id),
+                            status=403)
+                            
+        # clean up
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+
+    def test_proposal_view(self):
+        model.proposal.tables.proposal.insert().execute(
+            dict(id=37, title='test view',
+                 proposal_type_id=1)
+            )
+        p = self.objectstore.get(Proposal, 37)
+        self.person.proposals.append(p)
+        self.objectstore.flush()
+        
+        # we're logged in and this is ours
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=p.id))
+                            
+        # clean up
+        self.objectstore.delete(p)
         self.objectstore.flush()
