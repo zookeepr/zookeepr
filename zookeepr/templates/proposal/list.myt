@@ -29,15 +29,15 @@
 	<td>
 % 	for p in s.people:
 
-<% h.link_to(p.handle or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
+<% h.link_to(p.fullname or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
 %	# endfor
 </td>
 
-% 	if c.can_edit:
-%		for action in ['edit', 'delete']:
-	<td><% h.link_to(action, url=h.url(action=action, id=s.id)) %></td>
-%		# endfor
-%	#endif
+#% 	if c.can_edit:
+#%		for action in ['edit', 'delete']:
+#	<td><% h.link_to(action, url=h.url(action=action, id=s.id)) %></td>
+#%		# endfor
+#%	#endif
 </tr>
 % #endfor
 </table>
