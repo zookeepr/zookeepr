@@ -40,6 +40,10 @@ submitted by
 # |
 % #end if
 #<% h.link_to('Back', url=h.url(action='index')) %>
+
+% if 'reviewer' in [x.name for x in c.person.roles]:
+<% h.link_to('Review this proposal', url=h.url(action='review')) %>
+% #endif
 </p>
 
 </div>

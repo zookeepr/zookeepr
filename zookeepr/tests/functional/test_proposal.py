@@ -289,7 +289,7 @@ class TestProposal(SignedInControllerTest):
         resp = self.app.get(url_for(controller='proposal',
                                     action='view',
                                     id=pid))
-                            
+
         # clean up
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
@@ -311,7 +311,9 @@ class TestProposal(SignedInControllerTest):
         resp = self.app.get(url_for(controller='proposal',
                                     action='view',
                                     id=p.id))
-        #resp.click('Review this proposal')
+        # reviewers can review a proposal
+        resp.click('Review this proposal')
+        
         # clean up
         self.objectstore.delete(self.objectstore.get(model.Role, rid))
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
