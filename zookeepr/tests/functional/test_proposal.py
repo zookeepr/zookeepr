@@ -3,7 +3,7 @@ import pprint
 from zookeepr.model import Proposal, ProposalType, Person
 from zookeepr.tests.functional import *
 
-class TestProposal(ControllerTest):
+class TestProposal(SignedInControllerTest):
     model = Proposal
     name = 'proposal'
     url = '/proposal'
@@ -22,7 +22,7 @@ class TestProposal(ControllerTest):
                ]
 
     def additional(self, obj):
-        obj.people.append(self.p)
+        obj.people.append(self.person)
         obj.type = self.objectstore.get(ProposalType, 1)
         return obj
     
@@ -37,10 +37,8 @@ class TestProposal(ControllerTest):
         model.proposal.tables.proposal_type.insert().execute(
             dict(id=3, name='Miniconf'),
             )
-        self.log_in()
 
     def tearDown(self):
-        self.log_out()
         model.proposal.tables.proposal_type.delete().execute()
         super(TestProposal, self).tearDown()
 
@@ -55,7 +53,7 @@ class TestProposal(ControllerTest):
                        url='')
         self.objectstore.save(s)
         
-        self.p.proposals.append(s)
+        self.person.proposals.append(s)
         
         self.objectstore.flush()
 
@@ -214,7 +212,7 @@ class TestProposal(ControllerTest):
 
         s2 = subs[0]
         # is it attached to our guy?
-        self.failUnless(s2 in self.p.proposals, "s2 not in p.proposals (currently %r)" % self.p.proposals)
+        self.failUnless(s2 in self.person.proposals, "s2 not in p.proposals (currently %r)" % self.person.proposals)
         
         # clean up
         self.objectstore.delete(s2)
