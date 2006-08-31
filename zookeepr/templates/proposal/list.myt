@@ -54,3 +54,7 @@
 #    m.write(h.link_to('New proposal', url=h.url(action='new')))
 </%python>
  
+
+<%method title>
+Proposals - <& PARENT:title &>
+</%method>
