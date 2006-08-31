@@ -219,10 +219,6 @@ class TestProposal(SignedInControllerTest):
         self.objectstore.delete(s1)
         self.objectstore.flush()
 
-class TestProposalControllerSignedIn(SignedInControllerTest):
-    """Test the proposal controller's behaviour once we're signed in.
-    """
-
     def test_proposal_list(self):
         # we're logged in but still can't see it
         resp = self.app.get(url_for(controller='proposal',
