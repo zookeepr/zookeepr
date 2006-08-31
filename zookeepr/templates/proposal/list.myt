@@ -6,9 +6,9 @@
 <tr>
 <th>Title</th>
 <th>Type</th>
-<th>Abstract</th>
-<th>Experience</th>
-<th>URL</th>
+#<th>Abstract</th>
+#<th>Experience</th>
+#<th>Project URL</th>
 <th>Person</th>
 </tr>
 % #endif
@@ -21,9 +21,9 @@
 <% s.type.name %>
 % 	#endif
 </td>
-	<td><% h.truncate(s.abstract) %></td>
-	<td><% h.truncate(s.experience) %></td>
-	<td><% h.link_to(h.truncate(s.url), url=s.url) %></td>
+#	<td><% h.truncate(s.abstract) %></td>
+#	<td><% h.truncate(s.experience) %></td>
+#	<td><% h.link_to(h.truncate(s.url), url=s.url) %></td>
 	<td>
 % 	for p in s.people:
 
