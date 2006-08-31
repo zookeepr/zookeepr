@@ -259,11 +259,9 @@ class TestProposal(SignedInControllerTest):
         self.objectstore.flush()
 
     def test_proposal_view(self):
-        model.proposal.tables.proposal.insert().execute(
-            dict(id=37, title='test view',
-                 proposal_type_id=1)
-            )
-        p = self.objectstore.get(Proposal, 37)
+        p = Proposal(title='test view')
+        self.objectstore.save(p)
+        self.objectstore.flush()
         pid = p.id
         
         # we're logged in but this isn't our proposal
@@ -277,20 +275,21 @@ class TestProposal(SignedInControllerTest):
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
 
-    def test_proposal_view(self):
-        model.proposal.tables.proposal.insert().execute(
-            dict(id=37, title='test view',
-                 proposal_type_id=1)
-            )
-        p = self.objectstore.get(Proposal, 37)
+    def test_proposal_view_ours(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
         self.person.proposals.append(p)
         self.objectstore.flush()
+        pid = p.id
+        self.objectstore.clear()
         
         # we're logged in and this is ours
         resp = self.app.get(url_for(controller='proposal',
                                     action='view',
-                                    id=p.id))
+                                    id=pid))
                             
         # clean up
-        self.objectstore.delete(p)
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
