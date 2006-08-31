@@ -25,7 +25,7 @@
 
 # FIXME: this is a cheap switch based on the page name, not very robust
 <p><label for="person.phone">Phone number</label>
-% if m.request_path == h.url_for(controller='submission', action='new'):
+% if m.request_path == h.url_for(controller='proposal', action='new'):
 <span class="fieldRequired">(Required)</span><br />
 % else:
 <br />

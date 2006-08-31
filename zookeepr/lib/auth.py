@@ -2,8 +2,8 @@ import md5
 
 from sqlalchemy import create_session
 
-from zookeepr.lib.base import BaseController, c, redirect_to, session
-from zookeepr.model.core.domain import Person
+from zookeepr.lib.base import BaseController, c, g, redirect_to, session, abort
+from zookeepr.model import Person, Role
 
 class retcode:
     """Enumerations of authentication return codes"""
@@ -17,6 +17,7 @@ class PersonAuthenticator(object):
     """Look up the Person in the data store"""
 
     def authenticate(self, username, password):
+
         objectstore = create_session()
         
         ps = objectstore.query(Person).select_by(email_address=username)
@@ -32,9 +33,9 @@ class PersonAuthenticator(object):
             result = retcode.SUCCESS
         else:
             result = retcode.FAILURE
-        
-        objectstore.close()
 
+        objectstore.close()
+        
         return result
 
 
@@ -110,12 +111,14 @@ class SecureController(BaseController):
     def __before__(self, **kwargs):
         # Call the parent __before__ method to ensure the common pre-call code
         # is run
-        BaseController.__before__(self, **kwargs)
+        super(SecureController, self).__before__(**kwargs)
 
         if self.logged_in():
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
-            c.person = self.objectstore.get(Person, session['person_id'])
+            # FIXME get is boned on the live site
+            #c.person = g.objectstore.get(Person, session['person_id'])
+            c.person = g.objectstore.query(Person).select_by(id=session['person_id'])[0]
         else:
             # No-one's logged in, so send them to the signin
             # page.
@@ -125,3 +128,49 @@ class SecureController(BaseController):
             redirect_to(controller='account',
                         action='signin',
                         id=None)
+
+        if self.check_permissions(kwargs['action']):
+            return
+        else:
+            abort(403, "computer says no")
+
+    def check_permissions(self, action):
+        if not hasattr(self, 'permissions'):
+             # Open access by default
+            return True
+
+        if not action in self.permissions.keys():
+            # open access by default
+            return True
+
+        results = map(lambda x: x.authorise(self), self.permissions[action])
+        return reduce(lambda x, y: x or y, results, False)
+
+class AuthFunc(object):
+    def __init__(self, callable):
+        self.callable = callable
+
+    def authorise(self, cls):
+        return getattr(cls, self.callable)()
+
+class AuthTrue(object):
+    def authorise(self):
+        return True
+
+class AuthFalse(object):
+    def authorise(self):
+        return False
+
+class AuthRole(object):
+    def __init__(self, role_name):
+        self.role_name = role_name
+
+    def authorise(self, cls):
+        print Role.select()
+        roles = Role.select_by(name=self.role_name)
+        print "roles:", roles
+        if len(roles) == 0:
+            role = None
+        else:
+            role = roles[0]
+        return role in c.person.roles

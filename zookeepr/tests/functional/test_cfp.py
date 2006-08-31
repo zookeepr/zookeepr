@@ -3,7 +3,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model import Person, Submission, SubmissionType
+from zookeepr.model import Person, Proposal, ProposalType
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
@@ -26,59 +26,57 @@ class TestCFP(ControllerTest):
                     'type': 1,
                     'experience': 'some',
                     'url': 'http://example.org',
-                    'attachment': 'foo',
+                    'attachment': buffer('foo'),
                     'assistance': True,
                     }
         for k in reg_data.keys():
             form['registration.' + k] = reg_data[k]
         for k in sub_data.keys():
-            form['submission.' + k] = sub_data[k]
+            form['proposal.' + k] = sub_data[k]
 
         form.submit()
 
-        regs = Person.select()
+        regs = self.objectstore.query(Person).select()
         self.assertEqual(1, len(regs))
 
         for key in reg_data.keys():
             self.check_attribute(regs[0], key, reg_data[key])
 
-        subs = Submission.select()
+        subs = self.objectstore.query(Proposal).select()
         self.assertEqual(1, len(subs))
 
         for key in sub_data.keys():
             self.check_attribute(subs[0], key, sub_data[key])
 
-        regs[0].delete()
-        regs[0].flush()
-        subs[0].delete()
-        subs[0].flush()
+        self.objectstore.delete(regs[0])
+        self.objectstore.delete(subs[0])
+        self.objectstore.flush()
 
-    no_test = ['password_confirm']
+    # FIXME: not testing type
+    no_test = ['password_confirm', 'type']
     mangles = dict(password = lambda p: md5.new(p).hexdigest(),
-                   #attachment = lambda a: buffer(a),
-                   type = lambda t: SubmissionType.get(1),
+                   attachment = lambda a: buffer(a),
+                   #type = lambda t: TestCFP.objectstore.query(ProposalType).get(1),
                    )
 
     def setUp(self):
         ControllerTest.setUp(self)
-        st1 = SubmissionType('Paper')
-        st2 = SubmissionType('Scissors')
-        st1.save()
-        st1.flush()
-        st2.save()
-        st2.flush()
+        st1 = ProposalType('Paper')
+        st2 = ProposalType('Scissors')
+        self.objectstore.save(st1)
+        self.objectstore.save(st2)
+        self.objectstore.flush()
         self.stid = (st1.id, st2.id)
 
     def tearDown(self):
-        st1 = SubmissionType.get(self.stid[0])
-        st2 = SubmissionType.get(self.stid[1])
-        st1.delete()
-        st1.flush()
-        st2.delete()
-        st2.flush()
+        st1 = self.objectstore.query(ProposalType).get(self.stid[0])
+        st2 = self.objectstore.query(ProposalType).get(self.stid[1])
+        self.objectstore.delete(st2)
+        self.objectstore.delete(st1)
+        self.objectstore.flush()
         ControllerTest.tearDown(self)
-                           
-        
+
+
     def test_cfp_registration(self):
         # set up the smtp catcher
         Dummy_smtplib.install()
@@ -90,11 +88,11 @@ class TestCFP(ControllerTest):
              'registration.password': 'test',
              'registration.password_confirm': 'test',
              'registration.fullname': 'Testguy McTest',
-             'submission.title': 'title',
-             'submission.abstract': 'abstract',
-             'submission.type': 1,
-             'submission.attachment': '',
-             'submission.assistance': False,
+             'proposal.title': 'title',
+             'proposal.abstract': 'abstract',
+             'proposal.type': 1,
+             'proposal.attachment': '',
+             'proposal.assistance': False,
              }
         for k in d.keys():
             form[k] = d[k]
@@ -104,17 +102,17 @@ class TestCFP(ControllerTest):
         res1.mustcontain('testguy@example.org')
 
         # grab it from the db
-        regs = Person.select()
+        regs = self.objectstore.query(Person).select()
         self.assertEqual(1, len(regs))
         # make sure that it's inactive
         self.assertEqual(False, regs[0].activated)
 
         # clear this session, we want to reselect this data later
-        objectstore.clear()
+        self.objectstore.clear()
         
         
         # get out the url hash because i don't know how to trap smtplib
-        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from submission")
+        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from proposal")
         
         message = Dummy_smtplib.existing
 
@@ -137,24 +135,27 @@ class TestCFP(ControllerTest):
         self.failUnlessEqual(None, html_match, "HTML in message!")
         
         # check that the message has a url hash in it
-        match = re.match(r'^.*/register/confirm/(\S+)', message.message, re.DOTALL)
+        match = re.match(r'^.*/account/confirm/(\S+)', message.message, re.DOTALL)
         print "match:", match
         self.failIfEqual(None, match, "url not found")
 
         # visit the url
         print "match: '''%s'''" % match.group(1)
-        res = self.app.get('/register/confirm/%s' % match.group(1))
+        res = self.app.get('/account/confirm/%s' % match.group(1))
         print res
         
         # check the rego worked
-        regs = Person.select()
+        regs = self.objectstore.query(Person).select()
         self.assertEqual(1, len(regs))
         print regs[0]
-        self.assertEqual(True, regs[0].activated, "registration was not activated!")
+        self.assertEqual(True, regs[0].activated, "account was not activated!")
 
         # clean up
         Dummy_smtplib.existing.reset()
-        regs[0].delete()
-        regs[0].flush()
-        Submission.select()[0].delete()
-        Submission.select()[0].flush()
+
+        self.objectstore.delete(regs[0])
+        self.objectstore.delete(self.objectstore.query(Proposal).select()[0])
+        self.objectstore.flush()
+
+        self.assertEmptyModel(Proposal)
+        self.assertEmptyModel(Person)

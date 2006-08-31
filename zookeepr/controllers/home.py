@@ -17,7 +17,9 @@ class HomeController(BaseController):
         """
 
         if 'person_id' in session:
-            c.person = self.objectstore.get(Person, session['person_id'])
+            # FIXME: get is boned on the live site
+            persons = g.objectstore.query(Person).select_by(id=session['person_id'])
+            c.person = persons[0]# g.objectstore.get(Person, session['person_id'])
 
             resp = render_response('home.myt')
 

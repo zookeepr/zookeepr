@@ -2,6 +2,10 @@
 
 <h2>Call for Participation</h2>
 
+<p>
+<strong>Closes 15th September!</strong>
+</p>
+
 <h3>Overview</h3>
 
 <p>
@@ -59,7 +63,7 @@ appropriate for this conference.
 </p>
 
 <p>
-Submissions on the following topics are encouraged:
+Proposals on the following topics are encouraged:
 <ul>
 <li>System administration:
 <ul>
@@ -109,7 +113,7 @@ Submissions on the following topics are encouraged:
 
 </ul>
 
-<h3>Submission Guidelines</h3>
+<h3>Proposal Guidelines</h3>
 
 <p>
 Proposals for presentations and tutorials should be around 400 words
@@ -139,7 +143,7 @@ format, such as 7-bit ASCII text, HTML, DocBook or LaTeX.
 </p>
 
 <p>
-Submission requires pre-registration, providing the following
+Proposal requires pre-registration, providing the following
 information:
 <ul>
 <li>Full name (and preferred handle, if any)</li>
@@ -172,14 +176,12 @@ to these conditions.
 <p>
 In the event that you miss one of the deadlines we reserve the right
 to revoke any offer to present your paper. We take having the paper
-for the conference proceedings very seriously and late submissions
+for the conference proceedings very seriously and late proposals
 place an undue burden on our formatting team.
 </p>
 
 <p>
-<strong>All</strong> submissions must be complete by the closing date -- that is, the 1st of September is not merely a closing date for abstracts.
-
-You will be able to modify your submissions Real Soon Now.
+<strong>All</strong> proposals must be complete by the closing date.
 </p>
 
 <p>
@@ -188,10 +190,10 @@ Important dates:
 <ul>
 <li>Call for participation announced:
     June 28, 2006</li>
-<li>Submissions open:
+<li>Proposals open:
     July 1, 2006</li>
-<li>Submission deadline:
-    September 1, 2006</li>
+<li>Extended proposal deadline:
+    September 15, 2006</li>
 <li>Notifications by review committee:
     October 15, 2006</li>
 <li>Conference begins:

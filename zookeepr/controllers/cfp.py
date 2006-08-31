@@ -4,32 +4,28 @@ from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, c, h, render, render_response, request
-from zookeepr.lib.validators import BaseSchema
-from zookeepr.model import Person, SubmissionType, Submission
-
-class SubmissionTypeValidator(validators.FancyValidator):
-    def _to_python(self, value, state):
-        return SubmissionType.get(value)
+from zookeepr.lib.base import BaseController, c, g, h, render, render_response, request
+from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator
+from zookeepr.model import Person, ProposalType, Proposal
     
-class RegistrationValidator(Schema):
+class RegistrationSchema(Schema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     fullname = validators.String()
 
-class SubmissionValidator(Schema):
+class ProposalSchema(Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
-    type = SubmissionTypeValidator()
+    type = ProposalTypeValidator()
     experience = validators.String()
     url = validators.String()
-    attachment = validators.String()
+    attachment = FileUploadValidator()
     assistance = validators.Bool()
     
-class NewCFPValidator(BaseSchema):
-    registration = RegistrationValidator()
-    submission = SubmissionValidator()
+class NewCFPSchema(BaseSchema):
+    registration = RegistrationSchema()
+    proposal = ProposalSchema()
     pre_validators = [NestedVariables]
 
 class CfpController(BaseController):
@@ -37,34 +33,33 @@ class CfpController(BaseController):
         return render_response("cfp/list.myt")
 
     def submit(self):
-        c.cfptypes = SubmissionType.select()
+        c.cfptypes = g.objectstore.query(ProposalType).select()
 
         errors = {}
         defaults = dict(request.POST)
 
         new_reg = Person()
-        new_sub = Submission()
+        new_sub = Proposal()
 
         c.registration = new_reg
-        c.submission = new_sub
+        c.proposal = new_sub
         
         if request.method == 'POST' and defaults:
-            result, errors = NewCFPValidator().validate(defaults)
+            result, errors = NewCFPSchema().validate(defaults)
 
             if not errors:
                 # update the objects with the validated form data
-                for k in result['submission']:
-                    setattr(new_sub, k, result['submission'][k])
+                for k in result['proposal']:
+                    setattr(new_sub, k, result['proposal'][k])
                 for k in result['registration']:
                     setattr(new_reg, k, result['registration'][k])
 
-                new_reg.save()
-                new_sub.save()
+                g.objectstore.save(new_reg)
+                g.objectstore.save(new_sub)
 
-                new_reg.submissions.append(new_sub)
-                
-                new_reg.flush()
-                new_sub.flush()
+                new_reg.proposals.append(new_sub)
+
+                g.objectstore.flush()
 
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template

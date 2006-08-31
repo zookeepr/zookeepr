@@ -2,7 +2,8 @@ from zookeepr.model import Person, Role
 from zookeepr.tests.model import *
 
 class TestRoleModel(ModelTest):
-     model = 'Role'
+     domain = model.core.Role
+
      samples = [dict(name='site admin'),
                 dict(name='speaker'),
                 ]
@@ -16,30 +17,18 @@ class TestRoleModel(ModelTest):
                     email_address='testguy@example.org')
          r = Role('admin')
 
-         p.save()
-         p.flush()
-
-         r.save()
-         r.flush()
-         
+         self.objectstore.save(p)
+         self.objectstore.save(r)
          p.roles.append(r)
+         self.objectstore.flush()
 
-         print "pre clear, p.roles:", p.roles
-
-         p.save()
-         p.flush()
-
-         print "p saved:", p
-         
          rid = r.id
          pid = p.id
          
-         objectstore.clear()
+         self.objectstore.clear()
 
-         print "pre get p:", p
-         
-         p = Person.get(pid)
-         r = Role.get(rid)
+         p = self.objectstore.get(Person, pid)
+         r = self.objectstore.get(Role, rid)
          print "new p:", p
          print "p.roles:", p.roles
 
@@ -55,48 +44,46 @@ class TestRoleModel(ModelTest):
          self.failUnless(p in r.people, "%r not in r.people (currently %r)" % (p, r.people))
          
          # clean up
-         p.delete()
-         p.flush()
-         Role.get(rid).delete()
-         Role.get(rid).flush()
+         self.objectstore.delete(p)
+         self.objectstore.delete(r)
+         self.objectstore.flush()
          
          # check
-         self.assertEqual(0, len(Role.select()))
+         self.assertEqual(0, len(self.objectstore.query(Role).select()))
          self.check_empty_session()
 
      def test_many_roles(self):
          p1 = Person(email_address='one@example.org', password='1')
-         p1.save()
          p2 = Person(email_address='two@example.org', password='2')
-         p2.save()
          p3 = Person(email_address='three@example.org', password='3')
-         p3.save()
          p4 = Person(email_address='four@example.org', password='4')
-         p4.save()
+         self.objectstore.save(p1)
+         self.objectstore.save(p2)
+         self.objectstore.save(p3)
+         self.objectstore.save(p4)
 
          r1 = Role('single')
-         r1.save()
-         r1.flush()
          r2 = Role('double')
-         r2.save()
-         r2.flush()
+         self.objectstore.save(r1)
+         self.objectstore.save(r2)
 
          p1.roles.append(r1)
          p2.roles.append(r2)
          p4.roles.append(r2)
 
-         objectstore.flush()
+         self.objectstore.flush()
+         
          p = (p1.id, p2.id, p3.id, p4.id)
          r = (r1.id, r2.id)
 
-         objectstore.clear()
+         self.objectstore.clear()
 
-         p1 = Person.get(p[0])
-         p2 = Person.get(p[1])
-         p3 = Person.get(p[2])
-         p4 = Person.get(p[3])
-         r1 = Role.get(r[0])
-         r2 = Role.get(r[1])
+         p1 = self.objectstore.get(Person, p[0])
+         p2 = self.objectstore.get(Person, p[1])
+         p3 = self.objectstore.get(Person, p[2])
+         p4 = self.objectstore.get(Person, p[3])
+         r1 = self.objectstore.get(Role, r[0])
+         r2 = self.objectstore.get(Role, r[1])
 
          # test
          self.failUnless(r1 in p1.roles)
@@ -112,12 +99,11 @@ class TestRoleModel(ModelTest):
          self.failIf(r2 in p3.roles)
 
          # clean up
-         p1.delete()
-         p2.delete()
-         p3.delete()
-         p4.delete()
+         self.objectstore.delete(p1)
+         self.objectstore.delete(p2)
+         self.objectstore.delete(p3)
+         self.objectstore.delete(p4)
+         self.objectstore.delete(r1)
+         self.objectstore.delete(r2)
 
-         r1.delete()
-         r2.delete()
-
-         objectstore.flush()
+         self.objectstore.flush()

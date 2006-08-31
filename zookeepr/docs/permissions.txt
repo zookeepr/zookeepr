@@ -1,0 +1,80 @@
+= Extension of permission system =
+
+We need to be able to provide a way for controllers to hook into our permissions system:
+ * add function (or decorator for python2.4) to controller
+ * function returns a dictionary of the permissions of each method
+
+The SecureController can be modified to recognise these permissions and apply restrictions accordingly. 
+
+The controller permissions will be modifiable through the admin
+interface (through some sort of abstraction).
+
+
+= how to do authorisation in zookeepr =
+
+you want to restrict access to methods in the controllers (i.e certain
+urls) to:
+
+ logged in users
+
+ site administrators
+
+ speakers
+
+ reviewers
+
+ the creator of an X
+
+we want to mark up these methods using a decorator-like method:
+
+ (we use python2.3 so not actual decorators)
+
+class FooController(SecureController):
+      permissions = {"new": [...]}
+
+      def new(self):
+	  x
+
+ (rather than, say:)
+
+	 @permissions([...])
+	 def new(self):
+	     pass
+
+how do we infer each of the cases above?
+
+
+ * logged in users:
+
+   c.person is a Person object
+   'person_id' in session
+
+ * roles (site admin, speaker, reviewer):
+
+   Role.select_by_name(role)[0] in c.person.roles
+
+   (name is unique on roles)
+
+   Q: is name a good way to define what roles?  that's kinda sucky and
+hardcoded.
+
+ * a creator... we need some function to define whether c.person is
+the creator of an object.
+
+  we also need this object to exist before the permissions are
+checked, otherwise we have nothing to compare to.
+
+  BaseController.__call__ calls __before__ before calling the method,
+and then __after__ after.  we can override either __before__,
+__call__, or __after__ to insert our permissions checking logic, but
+we still don't have control over when the object is retrieved.
+
+  Enter crud...  the crud mixins know what the model is called
+(self.model) and know what the unique id is (id passed in to
+edit/delete/read), so this can be pushed up the stack to __before__ in
+the crud base... IFF we have an id field then we can retrieve the
+object.
+
+even better, an intermediate class that implments our retrieving
+__before__, which only Edit, Read, and Delete inherit from... then if
+id is not present we can throw an exception

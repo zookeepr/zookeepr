@@ -28,11 +28,10 @@ class Globals(object):
             your global variables.
             
         """
-        default_metadata.connect(app_conf['dburi'], strategy='threadlocal')
+        default_metadata.connect(app_conf['dburi'])
         default_metadata.create_all()
         # This is a dirty hack.  Save the engine in globals so we can retrieve it
         # in the request threads and reattach it to the default_metadata context.
-        # (I.e. something is boned with threadlocal SQLAlchemy.)
         self.engine = default_metadata.context._engine
 
     def __del__(self):
