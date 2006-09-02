@@ -5,10 +5,10 @@
 <h2><% c.proposal.title | h %></h2>
 
 <fieldset>
-<legend>Technical content</legend>
+<legend>Proposal technical content</legend>
 
 <p>
-A proposal for a <% c.proposal.type.name %>.
+This is a proposal for a <% c.proposal.type.name %>.
 </p>
 
 <p>
@@ -20,6 +20,7 @@ Project URL:
 % #endif
 </p>
 
+<p>Abstract:</p>
 <div class="data">
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
 </div>
