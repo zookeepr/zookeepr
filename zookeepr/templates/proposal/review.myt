@@ -28,11 +28,11 @@ Project URL:
 <div id="q1">
 <p>1. How familiar are you with the subject matter of this talk?
 <br />
-<% h.radio_button('familiarity', 0) %>I don't know enough about the subject.
+<% h.radio_button('review.familiarity', 0) %>I don't know enough about the subject.
 <br />
-<% h.radio_button('familiarity', 1) %>I'm not an expert, but I feel comfortable with the subject matter.
+<% h.radio_button('review.familiarity', 1) %>I'm not an expert, but I feel comfortable with the subject matter.
 <br />
-<% h.radio_button('familiarity', 2) %>I'm an expert, I know the subject very well.
+<% h.radio_button('review.familiarity', 2) %>I'm an expert, I know the subject very well.
 </p>
 </div>
 
@@ -42,7 +42,7 @@ Project URL:
 
 <p>
 % for i in range(1,6):
-<% h.radio_button('technical', i) %>
+<% h.radio_button('review.technical', i) %>
 %	if i == 0:
 NA
 %	else:
@@ -84,7 +84,7 @@ Proposal submitted by:
 
 <p>
 % for i in range(1,6):
-<% h.radio_button('experience', i) %> <% i %>
+<% h.radio_button('review.experience', i) %> <% i %>
 % #endfor
 </p>
 #<br/>
@@ -103,7 +103,7 @@ Summary
 
 <p>
 % for i in range(1,6):
-<% h.radio_button('coolness', i) %> <% i %>
+<% h.radio_button('review.coolness', i) %> <% i %>
 % #endfor
 </p>
 </div>
@@ -114,13 +114,13 @@ Summary
 </p>
 
 <p>
-<% h.select('stream', option_tags=h.options_for_select_from_objects(c.streams, 'name', 'id')) %>
+<% h.select('review.stream', option_tags=h.options_for_select_from_objects(c.streams, 'name', 'id')) %>
 </p>
 </div>
 
 <p>Comments (optional, readable by other reviewers, will not be shown to the submitter)
 
-<% h.text_area('comments', size="80x10") %>
+<% h.text_area('review.comments', size="80x10") %>
 </p>
 
 </fieldset>

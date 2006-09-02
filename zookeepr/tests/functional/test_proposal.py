@@ -304,9 +304,13 @@ class TestProposal(SignedInControllerTest):
         r = model.Role('reviewer')
         self.objectstore.save(r)
         self.person.roles.append(r)
+        # need a stream
+        s = model.Stream(name='stream')
+        self.objectstore.save(s)
         self.objectstore.flush()
         pid = p.id
         rid = r.id
+        sid = s.id
         self.objectstore.clear()
 
         resp = self.app.get(url_for(controller='proposal',
@@ -317,8 +321,20 @@ class TestProposal(SignedInControllerTest):
 
         # get the form and start reviewing!
         f = resp.form
+
+        print f.fields
+
+        f['review.familiarity'] = 1
+        f['review.technical'] = 1
+        f['review.experience'] = 1
+        f['review.coolness'] = 1
+        f['review.stream'] = 1
+        f['review.comments'] = "snuh"
+
+        f.submit()
         
         # clean up
+        self.objectstore.delete(self.objectstore.get(model.Stream, sid))
         self.objectstore.delete(self.objectstore.get(model.Role, rid))
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
