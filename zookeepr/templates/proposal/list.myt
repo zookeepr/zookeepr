@@ -11,7 +11,7 @@
 #<th>Experience</th>
 #<th>Project URL</th>
 <th>Person</th>
-<th>Review</th>
+<th>Reviewed</th>
 </tr>
 % #endif
 
@@ -37,7 +37,7 @@
 %	if [ r for r in s.reviews if r.reviewer == c.person ]:
 	TICK!
 %	else:
-	<% h.link_to("Review", url=h.url(action="review", id=s.id)) %>
+	<% h.link_to("Review now!", url=h.url(action="review", id=s.id)) %>
 %	#ENDIF
 	</td>
 #% 	if c.can_edit:
