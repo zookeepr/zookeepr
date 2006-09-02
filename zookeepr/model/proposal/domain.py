@@ -19,8 +19,15 @@ class Proposal(object):
 
 ## Reviews
 class Review(object):
-    def __init__(self):
-        pass
+    def __init__(self, proposal=None, reviewer=None, familiarity=None, technical=None, experience=None, coolness=None, stream=None, comment=None):
+        self.proposal = proposal
+        self.reviewer = reviewer
+        self.familiarity = familiarity
+        self.technical = technical
+        self.experience = experience
+        self.coolness = coolness
+        self.stream = stream
+        self.comment = comment
 
     def __repr__(self):
         return '<Review id=%d>' % (self.id,)
