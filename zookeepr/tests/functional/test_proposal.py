@@ -313,7 +313,10 @@ class TestProposal(SignedInControllerTest):
                                     action='view',
                                     id=p.id))
         # reviewers can review a proposal
-        resp.click('Review this proposal')
+        resp = resp.click('Review this proposal')
+
+        # get the form and start reviewing!
+        f = resp.form
         
         # clean up
         self.objectstore.delete(self.objectstore.get(model.Role, rid))
