@@ -11,6 +11,7 @@
 #<th>Experience</th>
 #<th>Project URL</th>
 <th>Person</th>
+<th>Review</th>
 </tr>
 % #endif
 
@@ -32,7 +33,14 @@
 <% h.link_to(p.fullname or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
 %	# endfor
 </td>
-
+	<td>
+%	if [ r for r in s.reviews if r.reviewer == c.person ]:
+	DONE
+%	else:
+	<% h.link_to("Review", url=h.url(action="review", id=s.id)) %>
+%	#ENDIF
+	<% [ r for r in s.reviews if r.reviewer == c.person ] %>
+	</td>
 #% 	if c.can_edit:
 #%		for action in ['edit', 'delete']:
 #	<td><% h.link_to(action, url=h.url(action=action, id=s.id)) %></td>

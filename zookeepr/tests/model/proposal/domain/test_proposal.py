@@ -1,4 +1,4 @@
-from zookeepr.model import Proposal, ProposalType, Person
+from zookeepr.model import Proposal, ProposalType, Person, Stream, Review
 from zookeepr.tests.model import *
 
 class TestProposal(ModelTest):
@@ -183,3 +183,46 @@ class TestProposal(ModelTest):
         # check
         self.domain = model.proposal.Proposal
         self.check_empty_session()
+
+
+    def test_reviewed_proposal(self):
+        p1 = Person(email_address='one@example.org',
+                    password='foo')
+        st = ProposalType('Presentation')
+        self.objectstore.save(p1)
+        self.objectstore.save(st)
+
+        s = Proposal(title='a sub')
+        p1.proposals.append(s)
+        self.objectstore.save(s)
+
+        p2 = Person(email_address='reviewer@example.org',
+                    password='bar')
+        self.objectstore.save(p2)
+
+        stream = Stream(name="pants")
+
+        r = Review(reviewer=p2, proposal=s, stream=stream, comment="Buuzah")
+        self.objectstore.save(r)
+        self.objectstore.flush()
+
+        self.failUnless(s in p1.proposals)
+        self.failUnless(s not in p2.proposals)
+
+        self.failUnless(p1 in s.people)
+        self.failUnless(p2 not in s.people)
+
+        self.failUnless(r in s.reviews)
+
+        # clean up
+        self.objectstore.delete(s)
+        self.objectstore.delete(p1)
+        self.objectstore.delete(p2)
+        self.objectstore.delete(st)
+
+        self.objectstore.flush()
+        
+        # check
+        self.domain = model.proposal.Proposal
+        self.check_empty_session()
+        
