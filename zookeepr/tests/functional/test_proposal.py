@@ -329,9 +329,15 @@ class TestProposal(SignedInControllerTest):
         f['review.experience'] = 1
         f['review.coolness'] = 1
         f['review.stream'] = 1
-        f['review.comments'] = "snuh"
+        f['review.comment'] = "snuh"
 
         f.submit()
+
+        # test that we have a review
+        reviews = self.objectstore.query(model.Review).select()
+        self.assertEqual(1, len(reviews))
+        self.assertEqual("snuh", reviews[0].comment)
+                                                            
         
         # clean up
         self.objectstore.delete(self.objectstore.get(model.Stream, sid))
