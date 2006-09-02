@@ -1,6 +1,6 @@
-from zookeepr.lib.base import BaseController, render_response
-#from zookeepr.lib.crud import Edit
+from zookeepr.lib.base import BaseController, render_response, model
+from zookeepr.lib.crud import List
 
-class ReviewController(BaseController):
-    def new(self):
-        return render_response("review/new.myt", defaults={}, errors={})
+class ReviewController(BaseController, List):
+    model = model.Review
+    individual = 'review'
