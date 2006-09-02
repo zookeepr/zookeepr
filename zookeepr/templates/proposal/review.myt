@@ -67,7 +67,8 @@ Proposal submitted by:
 <ul>
 % for p in c.proposal.people:
 <li>
-<% h.link_to('Stalk %s on Google' % p.fullname, url='http://google.com/search?q=%s' % p.fullname) %>
+<% h.link_to('%s (stalk on Google)' % p.fullname, url='http://google.com/search?q=%s+%s' % (p.fullname, p.email_address)) %>
+<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (p.fullname, p.email_address)) %>
 </li>
 % #endfor
 </ul>
