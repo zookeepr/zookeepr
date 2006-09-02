@@ -114,7 +114,7 @@ Summary
 </p>
 
 <p>
-<% h.select('stream', multiple=True, option_tags=h.options_for_select_from_objects(c.streams, 'name', 'id')) %>
+<% h.select('stream', option_tags=h.options_for_select_from_objects(c.streams, 'name', 'id')) %>
 </p>
 </div>
 
