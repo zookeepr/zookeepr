@@ -204,6 +204,7 @@ class TestProposal(ModelTest):
 
         r = Review(reviewer=p2, proposal=s, stream=stream, comment="Buuzah")
         self.objectstore.save(r)
+
         self.objectstore.flush()
 
         self.failUnless(s in p1.proposals)
@@ -215,10 +216,12 @@ class TestProposal(ModelTest):
         self.failUnless(r in s.reviews)
 
         # clean up
+        self.objectstore.delete(r)
         self.objectstore.delete(s)
         self.objectstore.delete(p1)
         self.objectstore.delete(p2)
         self.objectstore.delete(st)
+        self.objectstore.delete(stream)
 
         self.objectstore.flush()
         
