@@ -42,6 +42,7 @@ This is MyLCA, a site designed to tailor LCA to you!
 
 </div>
 
+## reviewer block
 % if 'reviewer' in [r.name for r in c.person.roles]:
 <div id="reviewer">
 <p>
