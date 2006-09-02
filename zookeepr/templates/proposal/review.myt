@@ -5,7 +5,7 @@
 <h2><% c.proposal.title | h %></h2>
 
 <fieldset>
-<legend>Proposal technical content</legend>
+<legend>Proposal's technical content</legend>
 
 <p>
 This is a proposal for a <% c.proposal.type.name %>.
