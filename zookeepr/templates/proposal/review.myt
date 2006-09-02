@@ -1,4 +1,4 @@
-<h1>Proposal Review</h2>
+<h1>Proposal Review</h1>
 
 <% h.form(h.url_for()) %>
 
