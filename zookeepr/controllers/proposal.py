@@ -75,5 +75,6 @@ class ProposalController(SecureController, View, Modify):
     def review(self, id):
         """Review a proposal.
         """
+        c.proposal = g.objectstore.get(Proposal, id)
         return render_response('proposal/review.myt')
     

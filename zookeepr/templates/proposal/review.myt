@@ -1,6 +1,10 @@
-*** title ***
+<h1>Proposal Review</h2>
 
-*** abstract ***
+<h2><% c.proposal.title | h %></h2>
+
+<div class="abstract">
+<% c.proposal.abstract %>
+</div>
 
 <p>How familiar are you with the subject matter of this talk?
 <br />
