@@ -71,3 +71,9 @@ class ProposalController(SecureController, View, Modify):
 
     def is_submitter(self):
         return c.person in self.obj.people
+
+    def review(self, id):
+        """Review a proposal.
+        """
+        return render_response('proposal/review.myt')
+    
