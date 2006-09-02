@@ -297,6 +297,7 @@ class TestProposal(SignedInControllerTest):
     def test_proposal_view_as_reviewer(self):
         p = Proposal(title='test view',
                      abstract='abs',
+                     experience='snuh',
                      type=self.objectstore.get(ProposalType, 3))
         self.objectstore.save(p)
 
