@@ -2,12 +2,23 @@
 
 <% h.form(h.url_for()) %>
 
-<p>review for</p>
-
 <h2><% c.proposal.title | h %></h2>
 
 <fieldset>
-<legend>Abstract</legend>
+<legend>Technical content</legend>
+
+<p>
+A proposal for a <% c.proposal.type.name %>.
+</p>
+
+<p>
+Project URL:
+% if c.proposal.url:
+<% h.link_to(c.proposal.url, url=c.proposal.url) %>.
+% else:
+<em>none given</em>.
+% #endif
+</p>
 
 <div class="data">
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
@@ -43,7 +54,7 @@ NA
 </fieldset>
 
 <fieldset>
-<legend>Experience/Bio</legend>
+<legend>Presenter's Experience/Bio</legend>
 
 <div class="data">
 <% h.auto_link(h.simple_format(c.proposal.experience)) %>
