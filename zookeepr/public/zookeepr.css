@@ -353,7 +353,7 @@ textarea {
   font-size: smaller;
 }
 
-fieldset {
+FIELDSET {
   margin-bottom: 1.5em;
   border-style: none;
   background-color: #eee;
@@ -364,4 +364,10 @@ fieldset {
 DIV.data {
   border: 1px dashed black;
   padding-left: 1em;
+}
+
+FIELDSET LEGEND {
+  font-weight: bold;
+  border: 1px solid black;
+  background-color: #eee;
 }
