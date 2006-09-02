@@ -125,6 +125,10 @@ Summary
 
 </fieldset>
 
+<p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
+
 <% h.submit('Submit review!') %>
 
 <% h.end_form() %>
