@@ -216,7 +216,6 @@ class TestProposal(ModelTest):
         self.failUnless(r in s.reviews)
 
         # clean up
-        self.objectstore.delete(r)
         self.objectstore.delete(s)
         self.objectstore.delete(p1)
         self.objectstore.delete(p2)

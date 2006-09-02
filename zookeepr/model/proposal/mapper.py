@@ -14,7 +14,7 @@ mapper(Proposal, proposal,
         'type': relation(ProposalType, lazy=True),
         'people': relation(Person, secondary=person_proposal_map,
             backref='proposals'),
-        'reviews' : relation(Review, lazy=True)
+        'reviews' : relation(Review, lazy=True, private=True)
     }
     )
 
