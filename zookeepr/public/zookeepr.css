@@ -361,12 +361,6 @@ FIELDSET {
   padding:1em;
 }
 
-DIV.data {
-  border: 1px dashed black;
-  padding-left: 1em;
-  font-style: italic;
-}
-
 FIELDSET LEGEND {
   font-weight: bold;
   border: 1px solid black;

@@ -21,9 +21,9 @@ Project URL:
 </p>
 
 <p>Abstract:</p>
-<div class="data">
+<blockquote>
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
-</div>
+</blockquote>
 
 <div id="q1">
 <p>1. How familiar are you with the subject matter of this talk?
@@ -57,9 +57,9 @@ NA
 <fieldset>
 <legend>Presenter's experience/biography</legend>
 
-<div class="data">
+<blockquote>
 <% h.auto_link(h.simple_format(c.proposal.experience)) %>
-</div>
+</blockquote>
 
 <div id="stalk">
 <p>
