@@ -1,6 +1,7 @@
 from sqlalchemy import mapper, relation
 
 from zookeepr.model.core import Person
+from zookeepr.model.schedule import Stream
 from tables import proposal, proposal_type, person_proposal_map, review
 from domain import Proposal, ProposalType, Review
 
@@ -21,5 +22,6 @@ mapper(Review, review,
        properties = {
     'reviewer': relation(Person, lazy=True),
     'proposal': relation(Proposal, lazy=True),
+    'stream': relation(Stream, lazy=True),
     }
        )
