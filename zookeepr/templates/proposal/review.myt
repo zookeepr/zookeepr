@@ -55,7 +55,7 @@ NA
 </fieldset>
 
 <fieldset>
-<legend>Presenter's Experience/Bio</legend>
+<legend>Presenter's experience/biography</legend>
 
 <div class="data">
 <% h.auto_link(h.simple_format(c.proposal.experience)) %>
