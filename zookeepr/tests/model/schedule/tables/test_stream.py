@@ -1,4 +1,4 @@
-from zookeepr.tests.model import *
+from zookeepr.tests.model import TableTest, model
 
 class TestStreamTable(TableTest):
     table = model.schedule.tables.stream
