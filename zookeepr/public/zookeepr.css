@@ -360,3 +360,8 @@ fieldset {
   width: 100%;
   padding:1em;
 }
+
+DIV.data {
+  border: 1px dashed black;
+  padding-left: 1em;
+}

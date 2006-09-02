@@ -1,11 +1,17 @@
 <h1>Proposal Review</h2>
 
+<% h.form(h.url_for()) %>
+
+<p>review for</p>
+
 <h2><% c.proposal.title | h %></h2>
 
-<fieldset id="abstract">
+<fieldset>
 <legend>Abstract</legend>
-<% c.proposal.abstract %>
-</fieldset>
+
+<div class="data">
+<% h.auto_link(h.simple_format(c.proposal.abstract)) %>
+</div>
 
 <p>How familiar are you with the subject matter of this talk?
 <br />
@@ -28,10 +34,14 @@ NA
 % #endfor
 </p>
 
-<fieldset id="experience">
-<legend>Experience/Bio</legend>
-<% c.proposal.experience %>
 </fieldset>
+
+<fieldset>
+<legend>Experience/Bio</legend>
+
+<div class="data">
+<% h.auto_link(h.simple_format(c.proposal.experience)) %>
+</div>
 
 <p>"Author's experience on the proposal's subject, based on the mini-curriculum provided by she/he and others sources (web searches, another events, performance among community etc)."
 
@@ -43,6 +53,13 @@ NA
 *** support multiple people ***
 <% h.link_to('google stalk this person', url='http://google.com/search?q=Lindsay%20Holmwood') %>
 </p>
+
+</fieldset>
+
+<fieldset>
+<legend>
+Summary
+</legend>
 
 <p>How excited are you to have this submission presented at linux.conf.au 2007?
 
@@ -63,3 +80,9 @@ What stream do you think this talk is most suitable for?
 
 <% h.text_area('comments', size="80x10") %>
 </p>
+
+</fieldset>
+
+<% h.submit('Submit review!') %>
+
+<% h.end_form() %>
