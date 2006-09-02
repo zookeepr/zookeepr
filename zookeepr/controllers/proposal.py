@@ -24,9 +24,7 @@ class EditProposalSchema(BaseSchema):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        stream = g.objectstore.query(Stream).get(value)
-        print "stream found is %s" % stream
-        return stream
+        return g.objectstore.query(Stream).get(value)
     
 class ReviewSchema(schema.Schema):
     familiarity = validators.Int()
@@ -101,8 +99,6 @@ class ProposalController(SecureController, View, Modify):
         
         if defaults:
             result, errors = NewReviewSchema().validate(defaults)
-
-            print "review schema results:", result, errors
 
             if not errors:
                 for k in result['review']:
