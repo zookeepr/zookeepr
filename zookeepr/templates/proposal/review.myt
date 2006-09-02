@@ -86,3 +86,7 @@ What stream do you think this talk is most suitable for?
 <% h.submit('Submit review!') %>
 
 <% h.end_form() %>
+
+<%method title>
+Review of <% h.truncate(c.proposal.title) %> - <& PARENT:title &>
+</%method>
