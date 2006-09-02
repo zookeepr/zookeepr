@@ -49,6 +49,20 @@ NA
 <% h.auto_link(h.simple_format(c.proposal.experience)) %>
 </div>
 
+<div id="stalk">
+<p>
+Proposal submitted by:
+
+<ul>
+% for p in c.proposal.people:
+<li>
+<% h.link_to('Stalk %s on Google' % p.fullname, url='http://google.com/search?q=%s' % p.fullname) %>
+</li>
+% #endfor
+</ul>
+</p>
+</div>
+
 <div id="q3">
 <p>3. "Author's experience on the proposal's subject, based on the mini-curriculum provided by she/he and others sources (web searches, another events, performance among community etc)."
 </p>
@@ -59,16 +73,6 @@ NA
 % #endfor
 </p>
 #<br/>
-</div>
-
-<div id="stalk">
-<ul>
-% for p in c.proposal.people:
-<li>
-<% h.link_to('google stalk %s' % p.fullname, url='http://google.com/search?q=%s' % p.fullname) %>
-</li>
-% #endfor
-</ul>
 </div>
 
 </fieldset>
