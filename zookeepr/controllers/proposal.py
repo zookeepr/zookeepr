@@ -4,7 +4,7 @@ from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, A
 from zookeepr.lib.base import c, g, redirect_to, request, render_response
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
-from zookeepr.model import Proposal, ProposalType, Stream
+from zookeepr.model import Proposal, ProposalType, Stream, Review
 
 class ProposalSchema(schema.Schema):
     title = validators.String()
@@ -20,6 +20,13 @@ class NewProposalSchema(BaseSchema):
 
 class EditProposalSchema(BaseSchema):
     proposal = ProposalSchema()
+    pre_validators = [variabledecode.NestedVariables]
+
+class ReviewSchema(schema.Schema):
+    pass
+
+class NewReviewSchema(BaseSchema):
+    review = ReviewSchema()
     pre_validators = [variabledecode.NestedVariables]
 
 class ProposalController(SecureController, View, Modify):
@@ -76,6 +83,25 @@ class ProposalController(SecureController, View, Modify):
         """Review a proposal.
         """
         c.proposal = g.objectstore.get(Proposal, id)
+
+        review = Review()
+        defaults = dict(request.POST)
+        if defaults:
+            result, errors = NewReviewSchema().validate(defaults)
+
+            if not errors:
+                for k in result['review']:
+                    setattr(review, k, result['review'][k])
+
+                    review.reviewer = c.person
+                    review.proposal = c.proposal
+
+                    g.objectstore.save(review)
+                    g.objectstore.flush()
+
+                    redirect_to(h.url_for('home'))
+                
         c.streams = g.objectstore.query(Stream).select()
+        
         return render_response('proposal/review.myt')
     
