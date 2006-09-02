@@ -39,7 +39,6 @@
 %	else:
 	<% h.link_to("Review", url=h.url(action="review", id=s.id)) %>
 %	#ENDIF
-	<% [ r for r in s.reviews if r.reviewer == c.person ] %>
 	</td>
 #% 	if c.can_edit:
 #%		for action in ['edit', 'delete']:
