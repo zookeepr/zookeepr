@@ -110,7 +110,7 @@ Summary
 </p>
 
 <p>
-<% h.select('stream', multiple=True, option_tags=h.options_for_select([['Free Love and Open Sexual Something', '19'],['Kernel Hax0ring', '18'],['Sysadmin/BOFH', '21'], ['Tools', '37']])) %>
+<% h.select('stream', multiple=True, option_tags=h.options_for_select([(x.name, x.id) for x in c.streams])) %>
 </p>
 </div>
 

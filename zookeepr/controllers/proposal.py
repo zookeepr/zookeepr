@@ -4,7 +4,7 @@ from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, A
 from zookeepr.lib.base import c, g, redirect_to, request, render_response
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
-from zookeepr.model import Proposal, ProposalType
+from zookeepr.model import Proposal, ProposalType, Stream
 
 class ProposalSchema(schema.Schema):
     title = validators.String()
@@ -76,5 +76,6 @@ class ProposalController(SecureController, View, Modify):
         """Review a proposal.
         """
         c.proposal = g.objectstore.get(Proposal, id)
+        c.streams = g.objectstore.query(Stream).select()
         return render_response('proposal/review.myt')
     
