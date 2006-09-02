@@ -13,7 +13,8 @@
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
 </div>
 
-<p>How familiar are you with the subject matter of this talk?
+<div id="q1">
+<p>1. How familiar are you with the subject matter of this talk?
 <br />
 <% h.radio_button('familiarity', 0) %>I don't know enough about the subject.
 <br />
@@ -21,9 +22,13 @@
 <br />
 <% h.radio_button('familiarity', 2) %>I'm an expert, I know the subject very well.
 </p>
+</div>
 
-<p>"Proposal's technical quality, based on the abstract provided by the author."
+<div id="q2">
+<p>2. "Proposal's technical quality, based on the abstract provided by the author."
+</p>
 
+<p>
 % for i in range(1,6):
 <% h.radio_button('technical', i) %>
 %	if i == 0:
@@ -33,6 +38,7 @@ NA
 %	#endif
 % #endfor
 </p>
+</div>
 
 </fieldset>
 
@@ -43,16 +49,27 @@ NA
 <% h.auto_link(h.simple_format(c.proposal.experience)) %>
 </div>
 
-<p>"Author's experience on the proposal's subject, based on the mini-curriculum provided by she/he and others sources (web searches, another events, performance among community etc)."
+<div id="q3">
+<p>3. "Author's experience on the proposal's subject, based on the mini-curriculum provided by she/he and others sources (web searches, another events, performance among community etc)."
+</p>
 
+<p>
 % for i in range(1,6):
 <% h.radio_button('experience', i) %> <% i %>
 % #endfor
-<br/>
-
-*** support multiple people ***
-<% h.link_to('google stalk this person', url='http://google.com/search?q=Lindsay%20Holmwood') %>
 </p>
+#<br/>
+</div>
+
+<div id="stalk">
+<ul>
+% for p in c.proposal.people:
+<li>
+<% h.link_to('google stalk %s' % p.fullname, url='http://google.com/search?q=%s' % p.fullname) %>
+</li>
+% #endfor
+</ul>
+</div>
 
 </fieldset>
 
@@ -61,20 +78,26 @@ NA
 Summary
 </legend>
 
-<p>How excited are you to have this submission presented at linux.conf.au 2007?
+<div id="q4">
+<p>4. How excited are you to have this submission presented at linux.conf.au 2007?
+</p>
 
+<p>
 % for i in range(1,6):
 <% h.radio_button('coolness', i) %> <% i %>
 % #endfor
 </p>
+</div>
 
+<div id="q5">
 <p>
-What stream do you think this talk is most suitable for?
+5. What stream do you think this talk is most suitable for?
 </p>
 
 <p>
 <% h.select('stream', multiple=True, option_tags=h.options_for_select([['Free Love and Open Sexual Something', '19'],['Kernel Hax0ring', '18'],['Sysadmin/BOFH', '21'], ['Tools', '37']])) %>
 </p>
+</div>
 
 <p>Comments (optional, readable by other reviewers, will not be shown to the submitter)
 
