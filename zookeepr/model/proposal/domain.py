@@ -16,3 +16,11 @@ class Proposal(object):
 
     def __repr__(self):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)
+
+## Reviews
+class Review(object):
+    def __init__(self):
+        pass
+
+    def __repr__(self):
+        return '<Review id=%d>' % (self.id,)
