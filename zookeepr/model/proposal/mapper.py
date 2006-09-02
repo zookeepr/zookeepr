@@ -17,4 +17,9 @@ mapper(Proposal, proposal,
     )
 
 # Map the Review domain model onto the review table
-mapper(Review, review)
+mapper(Review, review,
+       properties = {
+    'reviewer': relation(Person, lazy=True),
+    'proposal': relation(Proposal, lazy=True),
+    }
+       )

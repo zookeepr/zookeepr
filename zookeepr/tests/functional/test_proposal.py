@@ -340,6 +340,7 @@ class TestProposal(SignedInControllerTest):
                                                             
         
         # clean up
+        self.objectstore.delete(self.objectstore.get(model.Review, reviews[0].id))
         self.objectstore.delete(self.objectstore.get(model.Stream, sid))
         self.objectstore.delete(self.objectstore.get(model.Role, rid))
         self.objectstore.delete(self.objectstore.get(Proposal, pid))

@@ -22,8 +22,17 @@ class EditProposalSchema(BaseSchema):
     proposal = ProposalSchema()
     pre_validators = [variabledecode.NestedVariables]
 
+class StreamValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return g.objectstore.query(Stream).get(value)
+    
 class ReviewSchema(schema.Schema):
-    pass
+    familiarity = validators.Int()
+    technical = validators.Int()
+    experience = validators.Int()
+    coolness = validators.Int()
+    stream = StreamValidator()
+    comment = validators.String()
 
 class NewReviewSchema(BaseSchema):
     review = ReviewSchema()
@@ -86,6 +95,8 @@ class ProposalController(SecureController, View, Modify):
 
         review = Review()
         defaults = dict(request.POST)
+        errors = {}
+        
         if defaults:
             result, errors = NewReviewSchema().validate(defaults)
 
@@ -99,9 +110,18 @@ class ProposalController(SecureController, View, Modify):
                     g.objectstore.save(review)
                     g.objectstore.flush()
 
-                    redirect_to(h.url_for('home'))
+                    # FIXME: dumb
+                    redirect_to('/')
                 
         c.streams = g.objectstore.query(Stream).select()
         
-        return render_response('proposal/review.myt')
+        good_errors = {}
+        for key in errors.keys():
+            try:
+                for subkey in errors[key].keys():
+                    good_errors[key + "." + subkey] = errors[key][subkey]
+            except AttributeError:
+                good_errors[key] = errors[key]
+
+        return render_response('proposal/review.myt', defaults=defaults, errors=good_errors)
     
