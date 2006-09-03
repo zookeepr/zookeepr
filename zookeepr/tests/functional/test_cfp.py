@@ -3,7 +3,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model import Person, Proposal, ProposalType
+from zookeepr.model import Person, Proposal, ProposalType, Attachment
 from zookeepr.tests.functional import *
 
 class TestCFP(ControllerTest):
@@ -26,13 +26,13 @@ class TestCFP(ControllerTest):
                     'type': 1,
                     'experience': 'some',
                     'url': 'http://example.org',
-                    'attachment': buffer('foo'),
                     'assistance': True,
                     }
         for k in reg_data.keys():
             form['registration.' + k] = reg_data[k]
         for k in sub_data.keys():
             form['proposal.' + k] = sub_data[k]
+        form['attachment'] = "foo"
 
         form.submit()
 
@@ -47,6 +47,11 @@ class TestCFP(ControllerTest):
 
         for key in sub_data.keys():
             self.check_attribute(subs[0], key, sub_data[key])
+
+        atts = self.objectstore.query(Attachment).select()
+        self.assertEqual(1, len(atts))
+        self.assertEqual('foo', str(atts[0].content))
+                         
 
         self.objectstore.delete(regs[0])
         self.objectstore.delete(subs[0])
@@ -91,8 +96,8 @@ class TestCFP(ControllerTest):
              'proposal.title': 'title',
              'proposal.abstract': 'abstract',
              'proposal.type': 1,
-             'proposal.attachment': '',
              'proposal.assistance': False,
+             'attachment': 'foo'
              }
         for k in d.keys():
             form[k] = d[k]
@@ -159,3 +164,4 @@ class TestCFP(ControllerTest):
 
         self.assertEmptyModel(Proposal)
         self.assertEmptyModel(Person)
+        self.assertEmptyModel(Attachment)

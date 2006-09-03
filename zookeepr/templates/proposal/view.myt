@@ -32,6 +32,40 @@ submitted by
 % #endif
 </div>
 
+<div class="attachment">
+% if len(c.proposal.attachments) > 0:
+<em>Attachments:</em>
+<table>
+<tr>
+<th>Filename</th>
+<th>Size</th>
+<th>Date uploaded</th>
+</tr>
+% #endif
+
+% for a in c.proposal.attachments:
+<tr class="<% h.cycle('even', 'odd') %>">
+
+<td>
+<% h.link_to(a.filename, url=h.url_for(controller='attachment', action='view', id=a.id)) %>
+</td>
+
+<td>
+<% len(a.content) %>b
+</td>
+
+<td>
+<% a.creation_timestamp.strftime("%Y-%m-%d %H:%M") %>
+</td>
+
+</tr>
+% #endfor
+
+% if len(c.proposal.attachments) > 0:
+</table>
+% #endfor
+</div>
+
 <hr />
 
 <p class="actions">

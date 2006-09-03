@@ -241,7 +241,7 @@ class TableTest(TestBase):
 
     def not_nullable(self):
         """Check that certain columns of a table are not nullable.
-    
+         
         Specify the ``not_nullables`` class variable with a list of column names
         that must not be null, and this method will insert into the table rows
         with each set to null and test for an exception from the database layer.
@@ -250,7 +250,7 @@ class TableTest(TestBase):
         self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
 
         for col in self.not_nullables:
-            print "testing that %s is not nullable" % col
+            print "TEST: testing that %s is not nullable" % col
             
             # construct an attribute dictionary without the 'not null' attribute
             coldata = {}
