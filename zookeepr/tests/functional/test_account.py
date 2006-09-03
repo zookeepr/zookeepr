@@ -162,7 +162,7 @@ class TestAccountController(ControllerTest):
         print Dummy_smtplib.existing.message
 
         # check to address
-        to_match = re.match(t'^.*To:.*testguy@example.org', Dummy_smtplib.existing.message, re.DOTALL)
+        to_match = re.match(r'^.*To:.*testguy@example.org', Dummy_smtplib.existing.message, re.DOTALL)
         self.failIfEqual(None, to_match, "to address not in headers")
 
         # check that the email has no HTML in it and thus was not rendered
