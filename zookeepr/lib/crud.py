@@ -204,7 +204,8 @@ class Delete(RUDBase):
 class Read(RUDBase):
     def view(self):
         """View a specific object"""
-        c.can_edit = self._can_edit()
+        if hasattr(self, '_can_edit'):
+            c.can_edit = self._can_edit()
 
         # save obj onto the magical c
         setattr(c, self.individual, self.obj)

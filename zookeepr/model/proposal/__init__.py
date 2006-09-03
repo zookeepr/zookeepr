@@ -1,4 +1,4 @@
-from domain import Proposal, ProposalType, Review
+from domain import Proposal, ProposalType, Attachment, Review
 import mapper
 
-__all__ = ['Proposal', 'ProposalType', 'Review']
+__all__ = ['Proposal', 'ProposalType', 'Attachment', 'Review']

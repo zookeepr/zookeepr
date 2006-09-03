@@ -1,4 +1,6 @@
-from zookeepr.model import Proposal, ProposalType, Person, Stream, Review
+import datetime
+
+from zookeepr.model import Proposal, ProposalType, Person, Attachment, Stream, Review
 from zookeepr.tests.model import *
 
 class TestProposal(ModelTest):
@@ -28,7 +30,6 @@ class TestProposal(ModelTest):
                        type=st,
                        abstract='This visage, no mere veneer of vanity, is it vestige of the vox populi, now vacant, vanished, as the once vital voice of the verisimilitude now venerates what they once vilified. However, this valorous visitation of a by-gone vexation, stands vivified, and has vowed to vanquish these venal and virulent vermin vanguarding vice and vouchsafing the violently vicious and voracious violation of volition. The only verdict is vengeance; a vendetta, held as a votive, not in vain, for the value and veracity of such shall one day vindicate the vigilant and the virtuous. Verily, this vichyssoise of verbiage veers most verbose vis-a-vis an introduction, and so it is my very good honor to meet you and you may call me V.',
                        experience='Vaudeville',
-                       attachment="some attachment",
                        )
         
         # give this sub to v
@@ -55,8 +56,6 @@ class TestProposal(ModelTest):
         self.assertEqual(v, v.proposals[0].people[0])
         self.assertEqual(v.handle, v.proposals[0].people[0].handle)
         self.assertEqual(st.name, v.proposals[0].type.name)
-
-        self.assertEqual(buffer("some attachment"), s.attachment)
 
         # check the proposal relations
         self.assertEqual(st.name, s.type.name)
@@ -183,6 +182,36 @@ class TestProposal(ModelTest):
         # check
         self.domain = model.proposal.Proposal
         self.check_empty_session()
+
+    def test_proposal_with_attachment(self):
+        p = Proposal(title='prop 1')
+        self.objectstore.save(p)
+
+        a = Attachment(filename='a',
+                       content_type='text/plain',
+                       creation_timestamp=datetime.datetime.now(),
+                       content="foobar")
+        self.objectstore.save(a)
+        self.objectstore.flush()
+
+        p.attachments.append(a)
+        self.objectstore.flush()
+
+        pid = p.id
+        aid = a.id
+
+        self.objectstore.clear()
+
+        p = self.objectstore.get(Proposal, pid)
+        a = self.objectstore.get(Attachment, aid)
+        self.assertEqual(p.attachments[0], a)
+
+        self.objectstore.delete(a)
+        self.objectstore.delete(p)
+        self.objectstore.flush()
+
+        #self.assertEmptyModel(Attachment)
+        #self.assertEmptyModel(Proposal)
 
 
     def test_reviewed_proposal(self):
