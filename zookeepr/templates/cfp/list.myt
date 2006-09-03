@@ -2,6 +2,10 @@
 
 <h2>Call for Participation</h2>
 
+<p>
+<strong>Closes 15th September!</strong>
+</p>
+
 <h3>Overview</h3>
 
 <p>
@@ -177,9 +181,7 @@ place an undue burden on our formatting team.
 </p>
 
 <p>
-<strong>All</strong> proposals must be complete by the closing date -- that is, the 1st of September is not merely a closing date for abstracts.
-
-You will be able to modify your proposals Real Soon Now.
+<strong>All</strong> proposals must be complete by the closing date.
 </p>
 
 <p>
@@ -190,8 +192,8 @@ Important dates:
     June 28, 2006</li>
 <li>Proposals open:
     July 1, 2006</li>
-<li>Proposal deadline:
-    September 1, 2006</li>
+<li>Extended proposal deadline:
+    September 15, 2006</li>
 <li>Notifications by review committee:
     October 15, 2006</li>
 <li>Conference begins:

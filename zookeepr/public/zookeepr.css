@@ -198,6 +198,22 @@ div.boxed {
 }
 
 /**
+ * tables
+ */
+
+TABLE TH {
+  background-color: #f57900;
+}
+
+TABLE TR.even {
+  background-color: #fecf7e;
+}
+
+TABLE TR.odd {
+  background-color: #fcaf3e;
+}
+
+/**
  * custom stuff
  */
 
@@ -213,7 +229,7 @@ div.boxed {
 }
 
 #cfpbutton a:visited, #cfpbutton a:link {
-  color:#fcaf3e;
+  color: #fcaf3e;
 }
 
 .error-message {
@@ -294,8 +310,8 @@ SPAN.actions {
   font-size: 110%;
 }
 
-#proposal P.experience {
-  margin: 1em;
+#proposal DIV.experience {
+  /*margin: 1em;*/
   padding: 0.5ex;
   border: 1px dashed grey;
 }
@@ -341,10 +357,16 @@ textarea {
   font-size: smaller;
 }
 
-fieldset {
+FIELDSET {
   margin-bottom: 1.5em;
   border-style: none;
   background-color: #eee;
   width: 100%;
   padding:1em;
+}
+
+FIELDSET LEGEND {
+  font-weight: bold;
+  border: 1px solid black;
+  background-color: #eee;
 }

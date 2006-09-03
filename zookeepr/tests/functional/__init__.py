@@ -1,3 +1,4 @@
+import md5
 import os
 
 from paste.deploy import loadapp
@@ -307,25 +308,31 @@ class ControllerTest(TestBase):
         url = url_for(controller=self.url, action='delete', id=1)
         res = self.app.post(url, status=404)
 
-    def log_in(self):
-        self.p = model.Person(email_address='testguy@example.org',
-                              password='test')
-        self.p.activated = True
-        self.objectstore.save(self.p)
+
+class SignedInControllerTest(ControllerTest):
+    """Test base class that signs us in first.
+    """
+    def setUp(self):
+        super(SignedInControllerTest, self).setUp()
+        self.person = model.Person(email_address='testguy@example.org',
+                                   password='test')
+        self.person.activated = True
+        self.objectstore.save(self.person)
         self.objectstore.flush()
-        resp = self.app.get(url_for(controller='account', action='signin'))
+        resp = self.app.get(url_for(controller='account',
+                                    action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'
         resp = f.submit()
-        #print resp
         self.failUnless('person_id' in resp.session)
-        self.assertEqual(self.p.id,
-                         resp.session['person_id'])
-        return resp
+        self.assertEqual(self.person.id, resp.session['person_id'])
 
-    def log_out(self):
-        self.objectstore.delete(self.objectstore.get(model.Person, self.p.id))
+    def tearDown(self):
+        self.objectstore.delete(self.objectstore.get(model.Person, self.person.id))
         self.objectstore.flush()
+        super(SignedInControllerTest, self).tearDown()
 
-__all__ = ['ControllerTest', 'model', 'url_for']
+
+__all__ = ['ControllerTest', 'SignedInControllerTest', 'model', 'url_for']
+

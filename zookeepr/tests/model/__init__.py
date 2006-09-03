@@ -12,7 +12,7 @@ class ModelTestGenerator(type):
     written to do common model tests, thus improving TDD!
     """
     def __init__(cls, name, bases, classdict):
-        if 'model' in classdict:
+        if 'domain' in classdict:
             monkeypatch(cls, 'test_crud', 'crud')
 
 
@@ -21,8 +21,8 @@ class ModelTest(TestBase):
 
     Derived classes should set the following attributes:
 
-    ``model`` is a string containing the name of the class being tested,
-    scoped relative to the module ``zookeepr.model``.
+    ``domain`` is the class (not an instance) that is having it's API
+    tested.
 
     ``samples`` is a list of dictionaries of attributes to use when
     creating test model objects.
@@ -36,7 +36,7 @@ class ModelTest(TestBase):
     An example using this base class follows.
 
     class TestSomeModel(ModelTest):
-        model = 'module.User'
+        model = model.core.User
         samples = [dict(name='testguy',
                         email_address='test@example.org',
                         password='test')]
@@ -53,22 +53,10 @@ class ModelTest(TestBase):
         del self.objectstore
         super(ModelTest, self).tearDown()
 
-    def get_model(self):
-        """Return the model object, coping with scoping.
-
-        Set the ``model`` class variable to the name of the model class
-        relative to anchor.model.
-        """
-        module = model
-        # cope with classes in sub-models
-        for submodule in self.model.split('.'):
-            module = getattr(module, submodule)
-        return module
-        
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
         session = create_session()
-        results = session.query(self.get_model()).select()
+        results = session.query(self.domain).select()
         self.assertEqual(0, len(results))
         session.close()
 
@@ -94,7 +82,7 @@ class ModelTest(TestBase):
 #         For example,
 
 #         class TestSomeModel(ModelTest):
-#             model = 'mod'
+#             domain = model.SomeModel
 #             samples = [dict(password='test')]
 #             mangles = dict(password=lambda p: md5.new(p).hexdigest())
         
@@ -104,7 +92,7 @@ class ModelTest(TestBase):
 
         for sample in self.samples:
             # instantiating model
-            o = self.get_model()(**sample)
+            o = self.domain(**sample)
     
             # committing to db
             self.objectstore.save(o)
@@ -116,9 +104,9 @@ class ModelTest(TestBase):
             del o
     
             # check it's in the database
-            print self.get_model()
+            print self.domain
             print oid
-            o = self.objectstore.get(self.get_model(), oid)
+            o = self.objectstore.get(self.domain, oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
@@ -201,21 +189,9 @@ class TableTest(TestBase):
     """
     __metaclass__ = TableTestGenerator
 
-    def get_table(self):
-        """Return the table, coping with scoping.
-
-        Set the ``table`` class variable to the name of the table variable
-        relative to anchor.model.
-        """
-        module = model
-        # cope with classes in sub-models
-        for submodule in self.table.split('.'):
-            module = getattr(module, submodule)
-        return module
-        
     def check_empty_table(self):
         """Check that the database was left empty after the test"""
-        query = sqlalchemy.select([sqlalchemy.func.count(self.get_table().c.id)])
+        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
         result = query.execute()
         self.assertEqual(0, result.fetchone()[0])
 
@@ -233,39 +209,39 @@ class TableTest(TestBase):
         
         for sample in self.samples:
             print "testing insert of sample data:", sample
-            query = self.get_table().insert()
+            query = self.table.insert()
             query.execute(sample)
 
             for key in sample.keys():
-                col = getattr(self.get_table().c, key)
+                col = getattr(self.table.c, key)
                 query = sqlalchemy.select([col])
                 result = query.execute()
                 row = result.fetchone()
                 print "row:", row
                 self.assertEqual(sample[key], row[0])
 
-            self.get_table().delete().execute()
+            self.table.delete().execute()
 
         # do this again to make sure the test data is all able to go into
         # the db, so that we know it's good to do uniqueness tests, for example
         for sample in self.samples:
-            query = self.get_table().insert()
+            query = self.table.insert()
             query.execute(sample)
 
         # get the count of rows
-        query = sqlalchemy.select([sqlalchemy.func.count(self.get_table().c.id)])
+        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
         result = query.execute()
         # check that it's the same length as the sample data
         self.assertEqual(len(self.samples), result.fetchone()[0])
 
         # ok, delete it
-        self.get_table().delete().execute()
+        self.table.delete().execute()
 
         self.check_empty_table()
 
     def not_nullable(self):
         """Check that certain columns of a table are not nullable.
-    
+         
         Specify the ``not_nullables`` class variable with a list of column names
         that must not be null, and this method will insert into the table rows
         with each set to null and test for an exception from the database layer.
@@ -274,7 +250,7 @@ class TableTest(TestBase):
         self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
 
         for col in self.not_nullables:
-            print "testing that %s is not nullable" % col
+            print "TEST: testing that %s is not nullable" % col
             
             # construct an attribute dictionary without the 'not null' attribute
             coldata = {}
@@ -284,10 +260,10 @@ class TableTest(TestBase):
             # create the model object
             print coldata
 
-            query = self.get_table().insert()
+            query = self.table.insert()
             self.assertRaisesAny(query.execute, coldata)
 
-            self.get_table().delete().execute()
+            self.table.delete().execute()
 
             self.check_empty_table()
 
@@ -304,17 +280,17 @@ class TableTest(TestBase):
 
         for col in self.uniques:
 
-            self.get_table().insert().execute(self.samples[0])
+            self.table.insert().execute(self.samples[0])
 
             attr = {}
             attr.update(self.samples[1])
 
             attr[col] = self.samples[0][col]
 
-            query = self.get_table().insert()
+            query = self.table.insert()
             self.assertRaisesAny(query.execute, attr)
 
-            self.get_table().delete().execute()
+            self.table.delete().execute()
 
             self.check_empty_table()
 

@@ -16,8 +16,6 @@ proposal = Table('proposal',
                    Column('title', String()),
                    # abstract or description
                    Column('abstract', String()),
-                   # attachment, if they've submitted a paper
-                   Column('attachment', Binary()),
 
                    # type, enumerated in the proposal_type table
                    Column('proposal_type_id', Integer,
@@ -40,3 +38,49 @@ person_proposal_map = Table('person_proposal_map',
     Column('proposal_id', Integer, ForeignKey('proposal.id'),
         nullable=False),
     )
+
+# for storing attachments
+attachment = Table('attachment',
+                   Column('id', Integer, primary_key=True),
+
+                   Column('proposal_id', Integer, ForeignKey('proposal.id')),
+
+                   Column('filename', String,
+                          key='_filename',
+                          nullable=False),
+                   Column('content_type', String,
+                          key='_content_type',
+                          nullable=False),
+                   
+                   Column('creation_timestamp', DateTime,
+                          key='_creation_timestamp',
+                          nullable=False),
+
+                   Column('content', Binary(),
+                          nullable=False),
+
+                   )
+
+# reviews of proposals
+review = Table('review',
+               Column('id', Integer, primary_key=True),
+
+               Column('proposal_id', Integer,
+                      ForeignKey('proposal.id'),
+                      nullable=False,
+                      ),
+               Column('reviewer_id', Integer,
+                      ForeignKey('person.id'),
+                      nullable=False,
+                      ),
+
+               Column('familiarity', Integer),
+               Column('technical', Integer),
+               Column('experience', Integer),
+               Column('coolness', Integer),
+
+               Column('stream_id', Integer,
+                      ForeignKey('stream.id'),
+                      ),
+               Column('comment', String),
+               )
