@@ -1,7 +1,7 @@
 from sqlalchemy import mapper, join, relation, backref
 
-from zookeepr.model.core.tables import account, person, role, person_role_map
-from zookeepr.model.core.domain import Person, Role
+from tables import account, person, role, person_role_map, password_reset_confirmation
+from domain import Person, Role, PasswordResetConfirmation
 
 # Map the Person object onto person table
 mapper(Person, join(account, person),
@@ -14,3 +14,6 @@ mapper(Person, join(account, person),
 
 # Map the Role object onto the role table
 mapper(Role, role)
+
+# Map the PasswordResetConfuirmation object
+mapper(PasswordResetConfirmation, password_reset_confirmation)

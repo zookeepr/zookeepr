@@ -100,3 +100,21 @@ class Role(object):
 
     def __repr__(self):
         return '<Role id="%s" name="%s">' % (self.id, self.name)
+
+
+class PasswordResetConfirmation(object):
+    def __init__(self, email_address=None):
+        self.email_address = email_address
+        self.timestamp = datetime.datetime.now()
+        self._update_url_hash()
+
+    def _update_url_hash(self):
+        nonce = random.randrange(0, 2**30)
+        magic = "%s&%s&%s" % (self.email_address,
+            self.timestamp,
+            nonce)
+        self.url_hash = md5.new(magic).hexdigest()
+
+    def __repr__(self):
+        return '<PasswordResetConfirmation email_address=%r timestamp=%r>' % (self.email_address, self.timestamp)
+
