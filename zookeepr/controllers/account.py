@@ -79,3 +79,21 @@ class AccountController(BaseController):
         g.objectstore.flush()
 
         return render_response('account/confirmed.myt')
+
+    def forgotten_password(self):
+        """Action to let the user request a password change.
+
+        GET returns a form for emailing them the password change
+        confirmation.
+
+        POST checks the form and then creates a confirmation record:
+        date, email_address, and a url_hash that is a hash of a
+        combination of date, email_address, and a random nonce.
+
+        The email address must exist in the account database.
+
+        The second half of the password change operation happens in
+        the ``confirm`` action.
+        """
+        defaults = dict(request.POST)
+        errors = {}
