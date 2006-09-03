@@ -1,0 +1,26 @@
+* review model
+
+fkey on submission, reviewer, stream
+
+fields: fmailiarity, trech q, expereince, exciretment, comments
+
+link to timetableable thing for acceptance
+
+... future
+
+question table
+q_a_map -> review id, question id, answer
+
+* actions
+
+revise recommendations
+
+browse before review
+
+lists of talks
+
+review reports
+
+* interface
+group questions?
+

@@ -1,4 +1,4 @@
-from zookeepr.model.proposal.domain import Proposal, ProposalType, Attachment
-import zookeepr.model.proposal.mapper
+from domain import Proposal, ProposalType, Attachment, Review
+import mapper
 
-__all__ = ['Proposal', 'ProposalType']
+__all__ = ['Proposal', 'ProposalType', 'Attachment', 'Review']

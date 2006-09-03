@@ -13,7 +13,7 @@ submitted by
 </p>
 
 <div class="abstract">
-<% h.simple_format(c.proposal.abstract) %>
+<% h.auto_link(h.simple_format(c.proposal.abstract)) %>
 </div>
 
 % if c.proposal.url:
@@ -22,15 +22,15 @@ submitted by
 </p>
 % #endif
 
-<p class="experience">
+<div class="experience">
 <em>Speaking experience:</em>
 % if c.proposal.experience:
 <br />
-<% c.proposal.experience | h %>
+<% h.auto_link(h.simple_format(c.proposal.experience)) %>
 % else:
 [none provided]
 % #endif
-</p>
+</div>
 
 <div class="attachment">
 % if len(c.proposal.attachments) > 0:
@@ -69,11 +69,25 @@ submitted by
 <hr />
 
 <p class="actions">
-% if c.can_edit:
+<ul>
+
+% if c.person in c.proposal.people:
+<li>
 <% h.link_to('Edit', url=h.url(action='edit',id=c.proposal.id)) %>
-# |
-% #end if
-#<% h.link_to('Back', url=h.url(action='index')) %>
+</li>
+% #endif
+
+% if 'reviewer' in [x.name for x in c.person.roles]:
+<li>
+<% h.link_to('Review this proposal', url=h.url(action='review')) %>
+</li>
+% #endif
+
+</ul>
 </p>
 
 </div>
+
+<%method title>
+<% h.truncate(c.proposal.title) %> - <% c.proposal.type.name %> proposal - <& PARENT:title &>
+</%method>
