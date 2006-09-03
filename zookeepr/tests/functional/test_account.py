@@ -1,6 +1,6 @@
 import datetime
 
-from zookeepr.model import Person
+from zookeepr.model import Person, PasswordResetConfirmation
 from zookeepr.tests.functional import *
 
 class TestAccountController(ControllerTest):
@@ -134,6 +134,25 @@ class TestAccountController(ControllerTest):
 
         response = self.app.get('/account/confirm/nonexistent', status=404)
 
+    def test_account_password_routing(self):
+        self.assertEqual(dict(controller='account',
+                              action='forgotten_password'),
+                         self.map.match('/account/forgotten_password'))
+
+    def test_account_password_url_for(self):
+        self.assertEqual('/account/forgotten_password',
+                         url_for(controller='account', action='forgotten_password'))
+
+    def test_account_confirm_routing(self):
+        self.assertEqual(dict(controller='account',
+                              action='reset_password',
+                              url_hash='N'),
+                         self.map.match('/account/reset_password/N'))
+
+    def test_account_password_url_for(self):
+        self.assertEqual('/account/reset_password/N',
+                         url_for(controller='/account', action='reset_password', url_hash='N'))
+
     def test_forgotten_password(self):
         p = model.Person(email_address='testguy@example.org')
         self.objectstore.save(c)
@@ -209,7 +228,7 @@ class TestAccountController(ControllerTest):
         print resp
         resp.mustcontain("Your sign in details are incorrect")
 
-        crecs = self.session.query(PasswordResetConfirmation).select_by(email_address='nonexistent@example.org')
+        crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address='nonexistent@example.org')
         self.assertEqual(0, len(crecs), "contact records found: %r" % crecs)
         self.assertEqual(None, Dummy_smtplib.existing)
 
@@ -225,8 +244,8 @@ class TestAccountController(ControllerTest):
         stamp = datetime.datetime.now() - datetime.timedelta(24, 0, 1)
         c = PasswordResetConfirmation(email_address=email)
         c.timestamp = stamp
-        self.session.save(c)
-        self.session.flush()
+        self.objectstore.save(c)
+        self.objectstore.flush()
         cid = c.id
 
         resp = self.app.get(url_for(controller='account',
@@ -235,8 +254,8 @@ class TestAccountController(ControllerTest):
         # check for warning
         resp.mustcontain("This password recovery session has expired")
 
-        self.session.clear()
-        c = self.session.get(PasswordResetConfirmation, cid)
+        self.objectstore.clear()
+        c = self.objectstore.get(PasswordResetConfirmation, cid)
         # record shouldn't exist anymore
         self.assertEqual(None, c)
 
@@ -246,19 +265,14 @@ class TestAccountController(ControllerTest):
 
         # create a confirmation record
         email = 'testguy@example.org'
+        p = Person(email_address=email)
+        self.objectstore.save(p)
         c = PasswordResetConfirmation(email_address=email)
         # set the timestamp to just under 24 hours ago
         c.timestamp = datetime.datetime.now() - datetime.timedelta(23, 59, 59)
-        self.session.save(c)
-        self.session.flush()
+        self.objectstore.save(c)
+        self.objectstore.flush()
         cid = c.id
-
-        # create a fake ldap entry
-        entry = ('uid=testguy,dc=example,dc=org',
-                 {'mail': [email]})
-        Dummy_ldap.existing.results[0] = entry
-
-        print "pre-results:", Dummy_ldap.existing.results
 
         resp = self.app.get(url_for(controller='account',
             action='reset_password',
@@ -275,17 +289,16 @@ class TestAccountController(ControllerTest):
         # check for success
         resp.mustcontain("Your password has been updated")
 
-        # ldap entry should have new password
-        print "results", Dummy_ldap.existing.results
-        entry = Dummy_ldap.existing.results[0]
-        self.failUnless('userPassword' in entry[1].keys(), "password not set, entry currently %r" % (entry,))
-
         # conf rec should be gone
-        self.session.clear()
-        c = self.session.get(PasswordResetConfirmation, cid)
+        self.objectstore.clear()
+        c = self.objectstore.get(PasswordResetConfirmation, cid)
         self.assertEqual(None, c)
 
-        # ldap password should be set to 'test'
+        # password should be set to 'test'
+        self.fail("not testing password has been set")
+
+        self.objectstore.delete(p)
+        self.objectstore.flush()
 
     def test_duplicate_password_reset(self):
         """Try to reset a password twice.
@@ -293,8 +306,8 @@ class TestAccountController(ControllerTest):
         bug#351
         """
         c = model.core.Contact(personal_email='testguy@example.org')
-        self.session.save(c)
-        self.session.flush()
+        self.objectstore.save(c)
+        self.objectstore.flush()
 
         #
         email = 'testguy@example.org'
@@ -309,7 +322,7 @@ class TestAccountController(ControllerTest):
         f['email_address'] = email
         f.submit()
 
-        crecs = self.session.query(PasswordResetConfirmation).select_by(email_address=email)
+        crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address=email)
         self.failIfEqual(0, len(crecs))
 
         # submit a second time
@@ -319,9 +332,9 @@ class TestAccountController(ControllerTest):
 
         # clean up
         Dummy_smtplib.existing.reset()
-        self.session.delete(crecs[0])
-        self.session.delete(c)
-        self.session.flush()
+        self.objectstore.delete(crecs[0])
+        self.objectstore.delete(c)
+        self.objectstore.flush()
 
     def test_login_failed_warning(self):
         """Test that you get an appropriate warning message from the form when you try to log in with invalid credentials.
