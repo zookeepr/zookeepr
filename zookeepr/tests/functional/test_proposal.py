@@ -3,7 +3,26 @@ import pprint
 from zookeepr.model import Proposal, ProposalType, Person
 from zookeepr.tests.functional import *
 
-class TestProposal(ControllerTest):
+class TestProposalBase(object):
+    """Base class that sets up proposal objects for experimenting with.
+    """
+    def setUp(self):
+        super(TestProposalBase, self).setUp()
+        
+        self.proposal1 = model.Proposal(title='proposal1')
+        self.proposal2 = model.Proposal(title='proposal2')
+        self.objectstore.save(self.proposal1)
+        self.objectstore.save(self.proposal2)
+        self.objectstore.flush()
+
+    def tearDown(self):
+        self.objectstore.delete(self.proposal2)
+        self.objectstore.delete(self.proposal1)
+        self.objectstore.flush()
+        
+        super(TestProposalBase, self).tearDown()
+
+class TestProposal(SignedInControllerTest):
     model = Proposal
     name = 'proposal'
     url = '/proposal'
@@ -22,7 +41,7 @@ class TestProposal(ControllerTest):
                ]
 
     def additional(self, obj):
-        obj.people.append(self.p)
+        obj.people.append(self.person)
         obj.type = self.objectstore.get(ProposalType, 1)
         return obj
     
@@ -37,15 +56,12 @@ class TestProposal(ControllerTest):
         model.proposal.tables.proposal_type.insert().execute(
             dict(id=3, name='Miniconf'),
             )
-        self.log_in()
 
     def tearDown(self):
-        self.log_out()
         model.proposal.tables.proposal_type.delete().execute()
         super(TestProposal, self).tearDown()
 
     def test_selected_radio_button_in_edit(self):
-        
         # Test that a radio button is checked when editing a proposal
         s = Proposal(id=1,
                        type=self.objectstore.get(ProposalType, 3),
@@ -55,7 +71,7 @@ class TestProposal(ControllerTest):
                        url='')
         self.objectstore.save(s)
         
-        self.p.proposals.append(s)
+        self.person.proposals.append(s)
         
         self.objectstore.flush()
 
@@ -214,9 +230,118 @@ class TestProposal(ControllerTest):
 
         s2 = subs[0]
         # is it attached to our guy?
-        self.failUnless(s2 in self.p.proposals, "s2 not in p.proposals (currently %r)" % self.p.proposals)
+        self.failUnless(s2 in self.person.proposals, "s2 not in p.proposals (currently %r)" % self.person.proposals)
         
         # clean up
         self.objectstore.delete(s2)
         self.objectstore.delete(s1)
+        self.objectstore.flush()
+
+    def test_proposal_list(self):
+        # we're logged in but still can't see it
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='index'),
+                            status=403)
+
+    def test_proposal_list_reviewer(self):
+        # we're logged in and we're a reviewer
+        r = model.Role('reviewer')
+        self.person.roles.append(r)
+        self.objectstore.save(r)
+        self.objectstore.flush()
+
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='index'))
+
+
+        # clean up
+        self.objectstore.delete(r)
+        self.objectstore.flush()
+
+    def test_proposal_view(self):
+        p = Proposal(title='test view')
+        self.objectstore.save(p)
+        self.objectstore.flush()
+        pid = p.id
+        
+        # we're logged in but this isn't our proposal..
+        # should 403
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=p.id),
+                            status=403)
+                            
+        # clean up
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+
+    def test_proposal_view_ours(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
+        self.person.proposals.append(p)
+        self.objectstore.flush()
+        pid = p.id
+        self.objectstore.clear()
+        
+        # we're logged in and this is ours
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=pid))
+
+        # clean up
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+
+    def test_proposal_view_as_reviewer(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     experience='snuh',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
+
+        r = model.Role('reviewer')
+        self.objectstore.save(r)
+        self.person.roles.append(r)
+        # need a stream
+        s = model.Stream(name='stream')
+        self.objectstore.save(s)
+        self.objectstore.flush()
+        pid = p.id
+        rid = r.id
+        sid = s.id
+        self.objectstore.clear()
+
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=p.id))
+        # reviewers can review a proposal
+        resp = resp.click('Review this proposal')
+
+        # get the form and start reviewing!
+        f = resp.form
+
+        print f.fields
+
+        f['review.familiarity'] = 1
+        f['review.technical'] = 1
+        f['review.experience'] = 1
+        f['review.coolness'] = 1
+        f['review.stream'] = 1
+        f['review.comment'] = "snuh"
+
+        f.submit()
+
+        # test that we have a review
+        reviews = self.objectstore.query(model.Review).select()
+        self.assertEqual(1, len(reviews))
+        self.assertEqual("snuh", reviews[0].comment)
+                                                            
+        
+        # clean up
+        self.objectstore.delete(self.objectstore.get(model.Review, reviews[0].id))
+        self.objectstore.delete(self.objectstore.get(model.Stream, sid))
+        self.objectstore.delete(self.objectstore.get(model.Role, rid))
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()

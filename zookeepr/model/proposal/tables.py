@@ -40,3 +40,27 @@ person_proposal_map = Table('person_proposal_map',
     Column('proposal_id', Integer, ForeignKey('proposal.id'),
         nullable=False),
     )
+
+# reviews of proposals
+review = Table('review',
+               Column('id', Integer, primary_key=True),
+
+               Column('proposal_id', Integer,
+                      ForeignKey('proposal.id'),
+                      nullable=False,
+                      ),
+               Column('reviewer_id', Integer,
+                      ForeignKey('person.id'),
+                      nullable=False,
+                      ),
+
+               Column('familiarity', Integer),
+               Column('technical', Integer),
+               Column('experience', Integer),
+               Column('coolness', Integer),
+
+               Column('stream_id', Integer,
+                      ForeignKey('stream.id'),
+                      ),
+               Column('comment', String),
+               )

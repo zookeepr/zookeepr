@@ -41,3 +41,12 @@ This is MyLCA, a site designed to tailor LCA to you!
 </p>
 
 </div>
+
+## reviewer block
+% if 'reviewer' in [r.name for r in c.person.roles]:
+<div id="reviewer">
+<p>
+You're a reviewer!  You can <% h.link_to("review stuff!", url=h.url(controller='proposal', action='index')) %>
+</p>
+</div>
+% #endif
