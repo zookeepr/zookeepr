@@ -1,9 +1,11 @@
+import datetime
+
 from formencode import validators, Invalid
 
 from zookeepr.lib.auth import PersonAuthenticator, retcode
 from zookeepr.lib.base import *
 from zookeepr.lib.validators import BaseSchema
-from zookeepr.model import Person
+from zookeepr.model import Person, PasswordResetConfirmation
 
 class AuthenticationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -97,3 +99,93 @@ class AccountController(BaseController):
         """
         defaults = dict(request.POST)
         errors = {}
+
+        if defaults:
+            result, errors = ForgottenPasswordSchema().validate(defaults)
+
+            if not errors:
+                c.conf_rec = PasswordResetConfirmation(result['email_address'])
+                g.objectstore.save(c.conf_rec)
+                try:
+                    g.objectstore.flush()
+                except sqlalchemy.exceptions.SQLError, e:
+                    g.objectstore.clear()
+                    # FIXME exposes sqlalchemy!
+                    return render_response('account/in_progress.myt')
+
+                s = smtplib.SMTP("localhost")
+                # generate email from template
+                body = render('account/confirmation_email.myt', fragment=True)
+                s.sendmail("support@anchor.com.au",
+                    c.conf_rec.email_address,
+                    body)
+                s.quit()
+                return render_response('account/password_confirmation_sent.myt')
+        return render_response('account/forgotten_password.myt', defaults=defaults, errors=errors)
+
+
+    def reset_password(self, url_hash):
+        """Confirm a password change request, and let the user change
+        their password.
+
+        `url_hash` is a hash of the email address, with which we can
+        look up the confuirmation record in the database.
+
+        If `url_hash` doesn't exist, 404.
+
+        If `url_hash` exists and the date is older than 24 hours,
+        warn the user, offer to send a new confirmation, and delete the
+        confirmation record.
+
+        GET returns a form for setting their password, with their email
+        address already shown.
+
+        POST checks that the email address (in the session, not in the
+        form) is part of a valid contact record (again).  If the record
+        exists, then create or update an LDAP entry for that email
+        address with that password, hashed.  Report success to the user.
+        Delete the confirmation record.
+
+        If the record doesn't exist, throw an error, delete the
+        confirmation record.
+        """
+        crecs = g.objectstore.query(PasswordResetConfirmation).select_by(url_hash=url_hash)
+        if len(crecs) == 0:
+            abort(404)
+
+        c.conf_rec = crecs[0]
+
+        now = datetime.datetime.now()
+        delta = now - c.conf_rec.timestamp
+        if delta > datetime.timedelta(24, 0, 0):
+            # this confirmation record has expired
+            g.objectstore.delete(c.conf_rec)
+            g.objectstore.flush()
+            return render_response('account/expired.myt')
+
+        # now process the form
+        defaults = dict(request.POST)
+        errors = {}
+
+        if defaults:
+            result, errors = PasswordResetSchema().validate(defaults)
+
+            if not errors:
+                # look up the email address in LDAP
+                l = LDAPAuthenticator(g.pylons_config.app_conf['ldap_server'],
+                                      g.pylons_config.app_conf['ldap_base'])
+                if not l.user_exists(c.conf_rec.email_address):
+                    l.create_entry(c.conf_rec.email_address)
+
+                # set the password
+                l.update_password(c.conf_rec.email_address, result['password'])
+
+                # delete the conf rec
+                g.objectstore.delete(c.conf_rec)
+                g.objectstore.flush()
+
+                return render_response('account/success.myt')
+
+        # FIXME: test the process above
+        return render_response('account/reset.myt', defaults=defaults, errors=errors)
+
