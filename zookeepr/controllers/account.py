@@ -35,7 +35,7 @@ class ExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         accounts = g.objectstore.query(Person).select_by(email_address=value['email_address'])
         if len(accounts) == 0:
-            raise Invalid("Your sign-in details are incorrect.", value, state)
+            raise Invalid("Your sign-in details are incorrect; try registering a new account.", value, state)
 
 class ForgottenPasswordSchema(BaseSchema):
     email_address = validators.String(not_empty=True)
