@@ -1,5 +1,6 @@
 import datetime
 import md5
+import re
 
 from paste.fixture import Dummy_smtplib
 
