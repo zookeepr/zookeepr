@@ -1,6 +1,8 @@
 import datetime
 import md5
 
+from paste.fixture import Dummy_smtplib
+
 from zookeepr.model import Person, PasswordResetConfirmation
 from zookeepr.tests.functional import *
 
@@ -307,10 +309,8 @@ class TestAccountController(ControllerTest):
 
     def test_duplicate_password_reset(self):
         """Try to reset a password twice.
-
-        bug#351
         """
-        c = model.core.Contact(personal_email='testguy@example.org')
+        c = Person(email_address='testguy@example.org')
         self.objectstore.save(c)
         self.objectstore.flush()
 
@@ -343,8 +343,6 @@ class TestAccountController(ControllerTest):
 
     def test_login_failed_warning(self):
         """Test that you get an appropriate warning message from the form when you try to log in with invalid credentials.
-
-        bug#359
         """
         resp = self.app.get(url_for(controller='account',
                                     action='signin'))
