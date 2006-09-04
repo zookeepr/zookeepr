@@ -28,6 +28,25 @@ class LoginValidator(BaseSchema):
 
     chained_validators = [AuthenticationValidator()]
 
+
+class ExistingAccountValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        accounts = g.objectstore.query(Person).select_by(email_address=value['email_address'])
+        if len(accounts) == 0:
+            raise Invalid("Your sign-in details are incorrect.", value, state)
+
+class ForgottenPasswordSchema(BaseSchema):
+    email_address = validators.String(not_empty=True)
+
+    chained_validators = [ExistingAccountValidator()]
+
+
+class PasswordResetSchema(BaseSchema):
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+
 class AccountController(BaseController):
 
     def signin(self):
@@ -141,10 +160,9 @@ class AccountController(BaseController):
         address already shown.
 
         POST checks that the email address (in the session, not in the
-        form) is part of a valid contact record (again).  If the record
-        exists, then create or update an LDAP entry for that email
-        address with that password, hashed.  Report success to the user.
-        Delete the confirmation record.
+        form) is part of a valid account record (again).  If the record
+        exists, then update the password, hashed.  Report success to the
+        user.  Delete the confirmation record.
 
         If the record doesn't exist, throw an error, delete the
         confirmation record.
@@ -171,15 +189,13 @@ class AccountController(BaseController):
             result, errors = PasswordResetSchema().validate(defaults)
 
             if not errors:
-                # look up the email address in LDAP
-                l = LDAPAuthenticator(g.pylons_config.app_conf['ldap_server'],
-                                      g.pylons_config.app_conf['ldap_base'])
-                if not l.user_exists(c.conf_rec.email_address):
-                    l.create_entry(c.conf_rec.email_address)
+                accounts = g.objectstore.query(Person).select_by(email_address=c.conf_rec.email_address)
+                if len(accounts) == 0:
+                    raise RuntimeError, "Account doesn't exist %s" % c.conf_rec.email_address
 
                 # set the password
-                l.update_password(c.conf_rec.email_address, result['password'])
-
+                accounts[0].password = result['password']
+                
                 # delete the conf rec
                 g.objectstore.delete(c.conf_rec)
                 g.objectstore.flush()
