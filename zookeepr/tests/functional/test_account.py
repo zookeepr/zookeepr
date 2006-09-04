@@ -1,4 +1,5 @@
 import datetime
+import md5
 
 from zookeepr.model import Person, PasswordResetConfirmation
 from zookeepr.tests.functional import *
@@ -272,6 +273,7 @@ class TestAccountController(ControllerTest):
         c.timestamp = datetime.datetime.now() - datetime.timedelta(23, 59, 59)
         self.objectstore.save(c)
         self.objectstore.flush()
+        pid = p.id
         cid = c.id
 
         resp = self.app.get(url_for(controller='account',
@@ -289,13 +291,16 @@ class TestAccountController(ControllerTest):
         # check for success
         resp.mustcontain("Your password has been updated")
 
-        # conf rec should be gone
         self.objectstore.clear()
+
+        # conf rec should be gone
         c = self.objectstore.get(PasswordResetConfirmation, cid)
         self.assertEqual(None, c)
 
         # password should be set to 'test'
-        self.fail("not testing password has been set")
+        p_hash = md5.new('test').hexdigest()
+        p = self.objectstore.get(Person, pid)
+        self.assertEqual(p_hash, p.password_hash)
 
         self.objectstore.delete(p)
         self.objectstore.flush()
