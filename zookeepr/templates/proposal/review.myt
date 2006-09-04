@@ -1,5 +1,7 @@
 <h1>Proposal Review</h1>
 
+<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+
 <% h.form(h.url_for()) %>
 
 <h2><% c.proposal.title | h %></h2>
@@ -133,6 +135,13 @@ Summary
 
 <% h.end_form() %>
 
+</&>
+
 <%method title>
 Review of <% h.truncate(c.proposal.title) %> - <& PARENT:title &>
 </%method>
+
+<%args>
+defaults
+errors
+</%args>
