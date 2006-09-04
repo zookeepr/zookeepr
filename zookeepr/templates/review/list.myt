@@ -56,3 +56,7 @@
 
 % #endif
 </table>
+
+<%method title>
+Reviews - <& PARENT:title &>
+</%method>
