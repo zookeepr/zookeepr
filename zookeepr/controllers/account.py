@@ -16,7 +16,7 @@ class AuthenticationValidator(validators.FancyValidator):
         if r == retcode.SUCCESS:
             pass
         elif r == retcode.FAILURE:
-            raise Invalid("Incorrect email address or password.", value, state)
+            raise Invalid("Your sign-in details are incorrect.", value, state)
         elif r == retcode.TRY_AGAIN:
             raise Invalid("A problem occurred during sign in; please try again later.", value, state)
         elif r == retcode.INACTIVE:

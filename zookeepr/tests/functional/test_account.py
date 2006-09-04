@@ -235,7 +235,7 @@ class TestAccountController(ControllerTest):
         resp = f.submit()
 
         print resp
-        resp.mustcontain("Your sign in details are incorrect")
+        resp.mustcontain("Your sign-in details are incorrect")
 
         crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address='nonexistent@example.org')
         self.assertEqual(0, len(crecs), "contact records found: %r" % crecs)
@@ -357,5 +357,5 @@ class TestAccountController(ControllerTest):
         f['password'] = 'broken'
         resp = f.submit()
 
-        resp.mustcontain("Your sign in details are incorrect")
+        resp.mustcontain("Your sign-in details are incorrect")
 
