@@ -1,6 +1,8 @@
 import datetime
+import smtplib
 
 from formencode import validators, Invalid
+import sqlalchemy
 
 from zookeepr.lib.auth import PersonAuthenticator, retcode
 from zookeepr.lib.base import *
