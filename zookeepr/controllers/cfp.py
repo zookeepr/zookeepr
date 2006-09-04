@@ -53,17 +53,18 @@ class CfpController(BaseController):
                 # update the objects with the validated form data
                 for k in result['proposal']:
                     setattr(new_sub, k, result['proposal'][k])
+                g.objectstore.save(new_sub)
+                
                 for k in result['registration']:
                     setattr(new_reg, k, result['registration'][k])
-                for k in result['attachment']:
-                    setattr(new_att, k, result['attachment'][k])
-
                 g.objectstore.save(new_reg)
-                g.objectstore.save(new_sub)
-                g.objectstore.save(new_att)
-
                 new_reg.proposals.append(new_sub)
-                new_sub.attachments.append(new_att)
+
+                if result['attachment'] is not None:
+                    for k in result['attachment']:
+                        setattr(new_att, k, result['attachment'][k])
+                    g.objectstore.save(new_att)
+                    new_sub.attachments.append(new_att)
 
                 g.objectstore.flush()
 

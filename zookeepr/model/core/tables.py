@@ -63,3 +63,21 @@ person_role_map = Table('person_role_map',
                         Column('person_id', Integer, ForeignKey('person.id')),
                         Column('role_id', Integer, ForeignKey('role.id'))
                         )
+
+# password reset confirmation
+password_reset_confirmation = Table('password_reset_confirmation',
+    Column('id', Integer, primary_key=True),
+
+    Column('email_address', String,
+        nullable=False,
+        unique=True,
+        ),
+    Column('url_hash', String,
+        nullable=False,
+        unique=True,
+        ),
+    Column('timestamp', DateTime,
+        nullable=False,
+        ),
+    )
+ 

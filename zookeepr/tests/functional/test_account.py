@@ -1,6 +1,10 @@
 import datetime
+import md5
+import re
 
-from zookeepr.model import Person
+from paste.fixture import Dummy_smtplib
+
+from zookeepr.model import Person, PasswordResetConfirmation
 from zookeepr.tests.functional import *
 
 class TestAccountController(ControllerTest):
@@ -133,3 +137,225 @@ class TestAccountController(ControllerTest):
         self.assertEmptyModel(Person)
 
         response = self.app.get('/account/confirm/nonexistent', status=404)
+
+    def test_account_password_routing(self):
+        self.assertEqual(dict(controller='account',
+                              action='forgotten_password'),
+                         self.map.match('/account/forgotten_password'))
+
+    def test_account_password_url_for(self):
+        self.assertEqual('/account/forgotten_password',
+                         url_for(controller='account', action='forgotten_password'))
+
+    def test_account_confirm_routing(self):
+        self.assertEqual(dict(controller='account',
+                              action='reset_password',
+                              url_hash='N'),
+                         self.map.match('/account/reset_password/N'))
+
+    def test_account_password_url_for(self):
+        self.assertEqual('/account/reset_password/N',
+                         url_for(controller='/account', action='reset_password', url_hash='N'))
+
+    def test_forgotten_password(self):
+        p = model.Person(email_address='testguy@example.org')
+        self.objectstore.save(p)
+        self.objectstore.flush()
+        pid = p.id
+
+        # trap smtp
+        Dummy_smtplib.install()
+
+        # get the login page
+        resp = self.app.get(url_for(controller='account',
+            action='signin'))
+        # click on the forgotten password link
+        resp = resp.click('Forgotten your password?')
+
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f.submit()
+
+        # check that the confirmation record was created
+        crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
+        self.failIfEqual(0, len(crecs))
+
+        # check our email
+        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from forgotten password action")
+
+        print Dummy_smtplib.existing.message
+
+        # check to address
+        to_match = re.match(r'^.*To:.*testguy@example.org', Dummy_smtplib.existing.message, re.DOTALL)
+        self.failIfEqual(None, to_match, "to address not in headers")
+
+        # check that the email has no HTML in it and thus was not rendered
+        # incorrectly
+        html_match = re.match(r'^.*<!DOCTYPE', Dummy_smtplib.existing.message, re.DOTALL)
+        self.assertEqual(None, html_match, "HTML in message")
+
+        # check that the message has a url hash in it
+        url_match = re.match(r'^.*(/account/reset_password/\S+)', Dummy_smtplib.existing.message, re.DOTALL)
+        self.failIfEqual(None, url_match, "reset password url not found in message")
+
+        # ok go to the URL, on treadmills
+        resp = self.app.get(url_match.group(1))
+
+        # set password
+        f = resp.form
+        f['password'] = 'passwdtest'
+        f['password_confirm'] = 'passwdtest'
+        f.submit()
+
+        self.objectstore.clear()
+        # check that the password was changed
+        p_hash = md5.new('passwdtest').hexdigest()
+        p = self.objectstore.get(Person, pid)
+        self.assertEqual(p_hash, p.password_hash)
+
+        # check that the confirmatin record is gone
+        crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
+        self.assertEqual(0, len(crecs))
+
+        # clean up
+        Dummy_smtplib.existing.reset()
+        self.objectstore.delete(p)
+        self.objectstore.flush()
+
+    def test_forgotten_password_no_account(self):
+        """Test that an invalid email address doesn't start a password change.
+        """
+        Dummy_smtplib.install()
+
+        resp = self.app.get(url_for(controller='account',
+                                    action='signin'))
+        resp = resp.click('Forgotten your password?')
+        f = resp.forms[0]
+        f['email_address'] = 'nonexistent@example.org'
+        resp = f.submit()
+
+        print resp
+        resp.mustcontain("Your sign-in details are incorrect")
+
+        crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address='nonexistent@example.org')
+        self.assertEqual(0, len(crecs), "contact records found: %r" % crecs)
+        self.assertEqual(None, Dummy_smtplib.existing)
+
+    def test_confirm_404(self):
+        """Test that an attempt to access an invalid url_hash throws a 404"""
+        resp = self.app.get(url_for(action='reset_password',
+            controller='account',
+            url_hash='n'), status=404)
+
+    def test_confirm_old_url_hash(self):
+        """Test that old url_hashes are caught"""
+        email = 'testguy@example.org'
+        stamp = datetime.datetime.now() - datetime.timedelta(24, 0, 1)
+        c = PasswordResetConfirmation(email_address=email)
+        c.timestamp = stamp
+        self.objectstore.save(c)
+        self.objectstore.flush()
+        cid = c.id
+
+        resp = self.app.get(url_for(controller='account',
+            action='reset_password',
+            url_hash=c.url_hash))
+        # check for warning
+        resp.mustcontain("This password recovery session has expired")
+
+        self.objectstore.clear()
+        c = self.objectstore.get(PasswordResetConfirmation, cid)
+        # record shouldn't exist anymore
+        self.assertEqual(None, c)
+
+
+    def test_confirm(self):
+        """Test confirmation of a password reset that should succeed"""
+
+        # create a confirmation record
+        email = 'testguy@example.org'
+        p = Person(email_address=email)
+        self.objectstore.save(p)
+        c = PasswordResetConfirmation(email_address=email)
+        # set the timestamp to just under 24 hours ago
+        c.timestamp = datetime.datetime.now() - datetime.timedelta(23, 59, 59)
+        self.objectstore.save(c)
+        self.objectstore.flush()
+        pid = p.id
+        cid = c.id
+
+        resp = self.app.get(url_for(controller='account',
+            action='reset_password',
+            url_hash=c.url_hash))
+
+        # showing the email on the page
+        resp.mustcontain(email)
+
+        f = resp.form
+        f['password'] = 'test'
+        f['password_confirm'] = 'test'
+        resp = f.submit()
+
+        # check for success
+        resp.mustcontain("Your password has been updated")
+
+        self.objectstore.clear()
+
+        # conf rec should be gone
+        c = self.objectstore.get(PasswordResetConfirmation, cid)
+        self.assertEqual(None, c)
+
+        # password should be set to 'test'
+        p_hash = md5.new('test').hexdigest()
+        p = self.objectstore.get(Person, pid)
+        self.assertEqual(p_hash, p.password_hash)
+
+        self.objectstore.delete(p)
+        self.objectstore.flush()
+
+    def test_duplicate_password_reset(self):
+        """Try to reset a password twice.
+        """
+        c = Person(email_address='testguy@example.org')
+        self.objectstore.save(c)
+        self.objectstore.flush()
+
+        #
+        email = 'testguy@example.org'
+
+        # trap smtp
+        Dummy_smtplib.install()
+
+        resp = self.app.get(url_for(controller='account',
+                                    action='signin'))
+        resp = resp.click('Forgotten your password?')
+        f = resp.forms[0]
+        f['email_address'] = email
+        f.submit()
+
+        crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address=email)
+        self.failIfEqual(0, len(crecs))
+
+        # submit a second time
+        resp = f.submit()
+
+        resp.mustcontain("password recovery process is already in progress")
+
+        # clean up
+        Dummy_smtplib.existing.reset()
+        self.objectstore.delete(crecs[0])
+        self.objectstore.delete(c)
+        self.objectstore.flush()
+
+    def test_login_failed_warning(self):
+        """Test that you get an appropriate warning message from the form when you try to log in with invalid credentials.
+        """
+        resp = self.app.get(url_for(controller='account',
+                                    action='signin'))
+        f = resp.form
+        f['email_address'] = 'test'
+        f['password'] = 'broken'
+        resp = f.submit()
+
+        resp.mustcontain("Your sign-in details are incorrect")
+
