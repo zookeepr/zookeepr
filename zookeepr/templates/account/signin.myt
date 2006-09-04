@@ -22,6 +22,10 @@
 
 </&>
 
+<p>
+<% h.link_to('Forgotten your password?', url=h.url(action='forgotten_password')) %>
+</p>
+
 <%method title>
 Sign in to MyLCA - <& PARENT:title &>
 </%method>
