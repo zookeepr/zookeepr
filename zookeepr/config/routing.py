@@ -16,6 +16,11 @@ def make_map():
     # the top level controller is named home
     m.connect('home', '', controller='home')
 
+    # hack the old error handler back in, using the style of the old
+    # routes controller.  this is necessary to get the error handler
+    # to not 404 when calling itself
+    m.connect('/error/:action/:id', controller='error')
+
     # The CFP named routes
     m.connect('cfp', '/cfp', controller='cfp', action='index')
     m.connect('submit_cfp', '/cfp/submit', controller='cfp', action='submit')
@@ -26,14 +31,10 @@ def make_map():
               controller='account',
               action='confirm')
 
-    # hack the old error handler back in, using the style of the old
-    # routes controller.  this is necessary to get the error handler
-    # to not 404 when calling itself
-    m.connect('/error/:action/:id', controller='error')
-
     # special case for account controller, again in the style of the
     # original routes controller
     m.connect('/account/:action', controller='account')
+    m.connect('/account/reset_password/:url_hash', controller='account', action='reset_password')
 
     # special case for the about controller
     m.connect('/about/', controller='about', action='view', id='index')
