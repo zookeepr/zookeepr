@@ -158,7 +158,7 @@ class TestAccountController(ControllerTest):
 
     def test_forgotten_password(self):
         p = model.Person(email_address='testguy@example.org')
-        self.objectstore.save(c)
+        self.objectstore.save(p)
         self.objectstore.flush()
 
         # trap smtp
