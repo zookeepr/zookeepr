@@ -161,6 +161,7 @@ class TestAccountController(ControllerTest):
         p = model.Person(email_address='testguy@example.org')
         self.objectstore.save(p)
         self.objectstore.flush()
+        pid = p.id
 
         # trap smtp
         Dummy_smtplib.install()
@@ -206,11 +207,15 @@ class TestAccountController(ControllerTest):
         f['password_confirm'] = 'passwdtest'
         f.submit()
 
+        self.objectstore.clear()
         # check that the password was changed
-        self.fail("password change not tested")
+        p_hash = md5.new('passwdtest').hexdigest()
+        p = self.objectstore.get(Person, pid)
+        self.assertEqual(p_hash, p.password_hash)
 
         # check that the confirmatin record is gone
-        self.fail("confrmation record gone not tested")
+        crecs = self.objectstore.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
+        self.assertEqual(0, len(crecs))
 
         # clean up
         Dummy_smtplib.existing.reset()
