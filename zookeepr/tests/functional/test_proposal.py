@@ -1,6 +1,6 @@
 import pprint
 
-from zookeepr.model import Proposal, ProposalType, Person
+from zookeepr.model import Proposal, ProposalType, Person, Attachment
 from zookeepr.tests.functional import *
 
 class TestProposalBase(object):
@@ -217,6 +217,7 @@ class TestProposal(SignedInControllerTest):
         f['proposal.type'] = 1
         f['proposal.abstract'] = "cubist"
         f['proposal.experience'] = "n"
+        f['attachment'] = "foo"
         print f.submit_fields()
         resp = f.submit()
         resp = resp.follow()
@@ -228,6 +229,9 @@ class TestProposal(SignedInControllerTest):
         s2 = subs[0]
         # is it attached to our guy?
         self.failUnless(s2 in self.person.proposals, "s2 not in p.proposals (currently %r)" % self.person.proposals)
+
+        # do we have an attachment?
+        self.failIfEqual([], subs[0].attachments)
         
         # clean up
         self.objectstore.delete(s2)
@@ -342,3 +346,77 @@ class TestProposal(SignedInControllerTest):
         self.objectstore.delete(self.objectstore.get(model.Role, rid))
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
+
+
+    def test_proposal_attach_more(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
+        self.person.proposals.append(p)
+        self.objectstore.flush()
+        pid = p.id
+        self.objectstore.clear()
+        
+        # we're logged in and this is ours
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=pid))
+        resp = resp.click('Add an attachment')
+
+        f = resp.form
+        f['attachment'] = "attachment"
+        resp = f.submit()
+        resp = resp.follow()
+
+        atts = self.objectstore.query(Attachment).select()
+        self.failIfEqual([], atts)
+        self.assertEqual("attachment", str(atts[0].content))
+
+        
+        # clean up
+        self.objectstore.delete(atts[0])
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+
+
+    def test_proposal_delete_attachment(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
+        self.person.proposals.append(p)
+        a = Attachment(content="foo")
+        self.objectstore.save(a)
+        p.attachments.append(a)
+        self.objectstore.flush()
+        pid = p.id
+        aid = a.id
+        self.objectstore.clear()
+        
+        # we're logged in and this is ours
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=pid))
+        resp = resp.click('delete')
+
+        print resp.request.url
+        f = resp.form
+        print f.fields
+        resp = f.submit()
+
+        resp = resp.follow()
+
+        atts = self.objectstore.query(Attachment).select()
+        self.assertEqual([], atts)
+
+        
+        self.assertEqual(url_for(controller='proposal',
+                                 action='view',
+                                 id=pid),
+                         resp.request.url)
+
+        # clean up
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+

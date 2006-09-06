@@ -1,10 +1,10 @@
 from formencode import validators, compound, schema, variabledecode
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
-from zookeepr.lib.base import c, g, redirect_to, request, render_response
+from zookeepr.lib.base import c, g, redirect_to, request, render_response, session
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
-from zookeepr.model import Proposal, ProposalType, Stream, Review
+from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment
 
 class ProposalSchema(schema.Schema):
     title = validators.String()
@@ -14,7 +14,9 @@ class ProposalSchema(schema.Schema):
     type = ProposalTypeValidator()
 
 class NewProposalSchema(BaseSchema):
+    ignore_key_missing = True
     proposal = ProposalSchema()
+    attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
 class EditProposalSchema(BaseSchema):
@@ -37,6 +39,10 @@ class NewReviewSchema(BaseSchema):
     review = ReviewSchema()
     pre_validators = [variabledecode.NestedVariables]
 
+class NewAttachmentSchema(BaseSchema):
+    attachment = FileUploadValidator()
+    pre_validators = [variabledecode.NestedVariables]
+
 class ProposalController(SecureController, View, Modify):
     model = Proposal
     individual = 'proposal'
@@ -56,6 +62,7 @@ class ProposalController(SecureController, View, Modify):
 
     def new(self, id):
         self.obj = self.model()
+        att = Attachment()
         errors = {}
         defaults = dict(request.POST)
         if defaults:
@@ -64,10 +71,14 @@ class ProposalController(SecureController, View, Modify):
             if not errors:
                 for k in result['proposal']:
                     setattr(self.obj, k, result['proposal'][k])
-
-                self.obj.people.append(c.person)
-
                 g.objectstore.save(self.obj)
+                self.obj.people.append(c.person)
+                if result.has_key('attachment') and result['attachment'] is not None:
+                    for k in result['attachment']:
+                        setattr(att, k, result['attachment'][k])
+                    self.obj.attachments.append(att)
+                    g.objectstore.save(att)
+
                 g.objectstore.flush()
 
                 redirect_to(action='view', id=self.obj.id)
@@ -124,3 +135,42 @@ class ProposalController(SecureController, View, Modify):
 
         return render_response('proposal/review.myt', defaults=defaults, errors=good_errors)
     
+
+    def attach(self, id):
+        """Attach a file to the proposal.
+        """
+        c.proposal = g.objectstore.get(Proposal, id)
+        attachment = Attachment()
+        defaults = dict(request.POST)
+        errors = {}
+
+        if defaults:
+            result, errors = NewAttachmentSchema().validate(defaults)
+
+            if not errors:
+                for k in result['attachment']:
+                    setattr(attachment, k, result['attachment'][k])
+                g.objectstore.save(attachment)
+                c.proposal.attachments.append(attachment)
+
+                g.objectstore.flush()
+
+                return redirect_to(action='view', id=id)
+
+        good_errors = {}
+        for key in errors.keys():
+            try:
+                for subkey in errors[key].keys():
+                    good_errors[key + "." + subkey] = errors[key][subkey]
+            except AttributeError:
+                good_errors[key] = errors[key]
+
+        return render_response('proposal/attach.myt', defaults=defaults, errors=good_errors)
+
+    def view(self):
+        # save the current proposal id so we can refer to it later when we need to
+        # bounce back here from other controllers
+        # crazy shit with RUDBase means id is on self.obj
+        session['proposal_id'] = self.obj.id
+        session.save()
+        return super(ProposalController, self).view()

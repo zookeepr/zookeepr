@@ -306,16 +306,6 @@ SPAN.actions {
   font-size: 90%;
 }
 
-#proposal DIV.abstract {
-  font-size: 110%;
-}
-
-#proposal DIV.experience {
-  /*margin: 1em;*/
-  padding: 0.5ex;
-  border: 1px dashed grey;
-}
-
 #proposal P.actions {
   font-size: 80%;
   text-align: center;

@@ -13,7 +13,12 @@ submitted by
 </p>
 
 <div class="abstract">
+<p>
+<em>Abstract</em>
+</p>
+<blockquote>
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
+</blockquote>
 </div>
 
 % if c.proposal.url:
@@ -23,19 +28,23 @@ submitted by
 % #endif
 
 <div class="experience">
+<p>
 <em>Speaking experience:</em>
+</p>
+<blockquote>
 % if c.proposal.experience:
-<br />
 <% h.auto_link(h.simple_format(c.proposal.experience)) %>
 % else:
 [none provided]
 % #endif
+</blockquote>
 </div>
 
 <div class="attachment">
 % if len(c.proposal.attachments) > 0:
-<em>Attachments:</em>
+#<em>Attachments:</em>
 <table>
+<caption>Attachments</caption>
 <tr>
 <th>Filename</th>
 <th>Size</th>
@@ -51,19 +60,24 @@ submitted by
 </td>
 
 <td>
-<% len(a.content) %>b
+<% h.number_to_human_size(len(a.content)) %>
 </td>
 
 <td>
 <% a.creation_timestamp.strftime("%Y-%m-%d %H:%M") %>
 </td>
 
+<td>
+<% h.link_to('delete', url=h.url(controller='attachment', action='delete', id=a.id)) %>
 </tr>
 % #endfor
 
 % if len(c.proposal.attachments) > 0:
 </table>
 % #endfor
+<p>
+<% h.link_to('Add an attachment', url=h.url(action='attach')) %>
+</p>
 </div>
 
 <hr />

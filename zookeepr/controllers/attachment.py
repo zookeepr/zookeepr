@@ -1,11 +1,12 @@
 from zookeepr.lib.auth import SecureController
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Read
+from zookeepr.lib.crud import Delete
 from zookeepr.model import Attachment
 
-class AttachmentController(SecureController):
+class AttachmentController(SecureController, Delete):
     model = Attachment
     individual = 'attachment'
+    redirect_map = {'delete': dict(controller='proposal', action='view', id=session['proposal_id'])}
 
     def view(self, id):
         att = g.objectstore.get(Attachment, id)
