@@ -62,7 +62,6 @@ attachment = Table('attachment',
                    Column('content', Binary(),
                           nullable=False),
 
-                   Column('creation_timestamp', DateTime),
                    Column('last_modification_timestamp', DateTime),
 
                    )
