@@ -52,7 +52,7 @@ submitted by
 </td>
 
 <td>
-<% len(a.content) %>b
+<% h.number_to_human_size(len(a.content)) %>
 </td>
 
 <td>
