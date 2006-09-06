@@ -80,8 +80,8 @@ Proposal submitted by:
 </p>
 
 <p>
-% for i in range(1,6):
-<% h.radio_button('review.experience', i) %> <% i %>
+% for i in range(0,6):
+<% h.radio('review.experience', i, i) %>
 % #endfor
 </p>
 #<br/>
@@ -99,8 +99,8 @@ Summary
 </p>
 
 <p>
-% for i in range(1,6):
-<% h.radio_button('review.coolness', i) %> <% i %>
+% for i in range(0,6):
+<% h.radio('review.coolness', i, i) %>
 % #endfor
 </p>
 </div>
