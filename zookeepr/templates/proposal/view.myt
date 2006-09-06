@@ -13,7 +13,12 @@ submitted by
 </p>
 
 <div class="abstract">
+<p>
+<em>Abstract</em>
+</p>
+<blockquote>
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
+</blockquote>
 </div>
 
 % if c.proposal.url:
@@ -23,13 +28,16 @@ submitted by
 % #endif
 
 <div class="experience">
+<p>
 <em>Speaking experience:</em>
+</p>
+<blockquote>
 % if c.proposal.experience:
-<br />
 <% h.auto_link(h.simple_format(c.proposal.experience)) %>
 % else:
 [none provided]
 % #endif
+</blockquote>
 </div>
 
 <div class="attachment">
