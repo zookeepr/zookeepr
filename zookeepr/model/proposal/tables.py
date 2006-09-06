@@ -30,8 +30,13 @@ proposal = Table('proposal',
                    # do they need assistance?
                    Column('assistance', Boolean),
 
-                 Column('creation_timestamp', DateTime),
-                 Column('last_modification_timestamp', DateTime),
+                 Column('creation_timestamp', DateTime,
+                        nullable=False,
+                        default=func.current_timestamp()),
+                 Column('last_modification_timestamp', DateTime,
+                        nullable=False,
+                        default=func.current_timestamp(),
+                        onupdate=func.current_timestamp()),
                    )
 
 # for doing n-n mappings of people and proposals
@@ -56,8 +61,12 @@ attachment = Table('attachment',
                           nullable=False),
                    
                    Column('creation_timestamp', DateTime,
-                          key='_creation_timestamp',
-                          nullable=False),
+                          nullable=False,
+                          default=func.current_timestamp()),
+                   Column('last_modification_timestamp', DateTime,
+                          nullable=False,
+                          default=func.current_timestamp(),
+                          onupdate=func.current_timestamp()),
 
                    Column('content', Binary(),
                           nullable=False),
@@ -87,7 +96,12 @@ review = Table('review',
                       ),
                Column('comment', String),
 
-               Column('creation_timestamp', DateTime),
-               Column('last_modification_timestamp', DateTime),
+               Column('creation_timestamp', DateTime,
+                      nullable=False,
+                      default=func.current_timestamp()),
+               Column('last_modification_timestamp', DateTime,
+                      nullable=False,
+                      default=func.current_timestamp(),
+                      onupdate=func.current_timestamp()),
 
                )
