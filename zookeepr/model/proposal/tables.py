@@ -62,8 +62,6 @@ attachment = Table('attachment',
                    Column('content', Binary(),
                           nullable=False),
 
-                   Column('last_modification_timestamp', DateTime),
-
                    )
 
 # reviews of proposals
