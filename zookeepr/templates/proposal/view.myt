@@ -34,8 +34,9 @@ submitted by
 
 <div class="attachment">
 % if len(c.proposal.attachments) > 0:
-<em>Attachments:</em>
+#<em>Attachments:</em>
 <table>
+<caption>Attachments</caption>
 <tr>
 <th>Filename</th>
 <th>Size</th>
@@ -64,6 +65,9 @@ submitted by
 % if len(c.proposal.attachments) > 0:
 </table>
 % #endfor
+<p>
+<% h.link_to('Add an attachment', url=h.url(action='attach')) %>
+</p>
 </div>
 
 <hr />

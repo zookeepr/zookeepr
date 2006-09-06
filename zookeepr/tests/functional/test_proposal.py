@@ -342,3 +342,25 @@ class TestProposal(SignedInControllerTest):
         self.objectstore.delete(self.objectstore.get(model.Role, rid))
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
+
+
+    def test_proposal_attach_more(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
+        self.person.proposals.append(p)
+        self.objectstore.flush()
+        pid = p.id
+        self.objectstore.clear()
+        
+        # we're logged in and this is ours
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=pid))
+        resp = resp.click('Add an attachment')
+
+        # clean up
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+

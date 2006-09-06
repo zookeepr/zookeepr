@@ -4,7 +4,7 @@ from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, A
 from zookeepr.lib.base import c, g, redirect_to, request, render_response
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
-from zookeepr.model import Proposal, ProposalType, Stream, Review
+from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment
 
 class ProposalSchema(schema.Schema):
     title = validators.String()
@@ -35,6 +35,10 @@ class ReviewSchema(schema.Schema):
 
 class NewReviewSchema(BaseSchema):
     review = ReviewSchema()
+    pre_validators = [variabledecode.NestedVariables]
+
+class NewAttachmentSchema(BaseSchema):
+    attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
 class ProposalController(SecureController, View, Modify):
@@ -124,3 +128,34 @@ class ProposalController(SecureController, View, Modify):
 
         return render_response('proposal/review.myt', defaults=defaults, errors=good_errors)
     
+
+    def attach(self, id):
+        """Attach a file to the proposal.
+        """
+        c.proposal = g.objectstore.get(Proposal, id)
+        attachment = Attachment()
+        defaults = dict(request.POST)
+        errors = {}
+
+        if defaults:
+            result, errors = NewAttachmentSchema().validate(defaults)
+
+            if not errors:
+                for k in result['attachment']:
+                    setattr(attachment, k, result['attachment'][k])
+                g.objectstore.save(attachment)
+                c.proposal.attachments.append(attachment)
+
+                g.objectstore.flush()
+
+                return redirect_to(action='view', id=id)
+
+        good_errors = {}
+        for key in errors.keys():
+            try:
+                for subkey in errors[key].keys():
+                    good_errors[key + "." + subkey] = errors[key][subkey]
+            except AttributeError:
+                good_errors[key] = errors[key]
+
+        return render_response('proposal/attach.myt', defaults=defaults, errors=good_errors)
