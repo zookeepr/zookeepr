@@ -30,22 +30,11 @@ Project URL:
 <div id="q1">
 <p>1. How familiar are you with the subject matter of this talk?
 <br />
-
-<input id="review.familiarity0" name="review.familiarity" type="radio" value="0" />
-<label for="review.familiarity0">
-I don't know enough about the subject.
-</label>
+<% h.radio('review.familiarity', 0, "I don't know enough about the subject.") %>
 <br />
-<input id="review.familiarity1" name="review.familiarity" type="radio" value="1" />
-<label for="review.familiarity1">
-I'm not an expert, but I feel comfortable with the subject matter.
-</label>
+<% h.radio('review.familiarity', 1, "I'm not an expert, but I feel comfortable with the subject matter.") %>
 <br />
-<input id="review.familiarity2" name="review.familiarity" type="radio" value="2" />
-<label for="review.familiarity2">
-I'm an expert, I know the subject very well.
-</label>
-
+<% h.radio('review.familiarity', 2, "I'm an expert, I know the subject very well.") %>
 </p>
 </div>
 
@@ -54,13 +43,8 @@ I'm an expert, I know the subject very well.
 </p>
 
 <p>
-% for i in range(1,6):
-<% h.radio_button('review.technical', i) %>
-%	if i == 0:
-NA
-%	else:
-<% i %>
-%	#endif
+% for i in range(0,6):
+<% h.radio('review.technical', i, i) %>
 % #endfor
 </p>
 </div>
