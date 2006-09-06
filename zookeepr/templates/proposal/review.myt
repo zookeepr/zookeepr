@@ -1,5 +1,7 @@
 <h1>Proposal Review</h1>
 
+<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+
 <% h.form(h.url_for()) %>
 
 <h2><% c.proposal.title | h %></h2>
@@ -28,11 +30,11 @@ Project URL:
 <div id="q1">
 <p>1. How familiar are you with the subject matter of this talk?
 <br />
-<% h.radio_button('review.familiarity', 0) %>I don't know enough about the subject.
+<% h.radio('review.familiarity', 0, "I don't know enough about the subject.") %>
 <br />
-<% h.radio_button('review.familiarity', 1) %>I'm not an expert, but I feel comfortable with the subject matter.
+<% h.radio('review.familiarity', 1, "I'm not an expert, but I feel comfortable with the subject matter.") %>
 <br />
-<% h.radio_button('review.familiarity', 2) %>I'm an expert, I know the subject very well.
+<% h.radio('review.familiarity', 2, "I'm an expert, I know the subject very well.") %>
 </p>
 </div>
 
@@ -41,13 +43,8 @@ Project URL:
 </p>
 
 <p>
-% for i in range(1,6):
-<% h.radio_button('review.technical', i) %>
-%	if i == 0:
-NA
-%	else:
-<% i %>
-%	#endif
+% for i in range(0,6):
+<% h.radio('review.technical', i, i) %>
 % #endfor
 </p>
 </div>
@@ -83,8 +80,8 @@ Proposal submitted by:
 </p>
 
 <p>
-% for i in range(1,6):
-<% h.radio_button('review.experience', i) %> <% i %>
+% for i in range(0,6):
+<% h.radio('review.experience', i, i) %>
 % #endfor
 </p>
 #<br/>
@@ -102,8 +99,8 @@ Summary
 </p>
 
 <p>
-% for i in range(1,6):
-<% h.radio_button('review.coolness', i) %> <% i %>
+% for i in range(0,6):
+<% h.radio('review.coolness', i, i) %>
 % #endfor
 </p>
 </div>
@@ -133,6 +130,13 @@ Summary
 
 <% h.end_form() %>
 
+</&>
+
 <%method title>
 Review of <% h.truncate(c.proposal.title) %> - <& PARENT:title &>
 </%method>
+
+<%args>
+defaults
+errors
+</%args>

@@ -24,7 +24,7 @@ class EditProposalSchema(BaseSchema):
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return g.objectstore.query(Stream).get(value)
-    
+
 class ReviewSchema(schema.Schema):
     familiarity = validators.Int()
     technical = validators.Int()

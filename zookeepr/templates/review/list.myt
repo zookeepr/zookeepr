@@ -1,9 +1,16 @@
+<h1>Reviews</h1>
+
 <table>
 <tr>
 <th>#</th>
 <th>Proposal title</th>
 <th>Reviewer</th>
-<th>Score</th>
+<th>Familiarity</th>
+<th>Tech Content</th>
+<th>Speaker Exp</th>
+<th>Coolness</th>
+<th>Stream</th>
+<th>Comment</th>
 </tr>
 % for r in c.review_collection:
 
@@ -22,10 +29,34 @@
 </td>
 
 <td>
-put scores here
+<% r.familiarity |h %>
+</td>
+
+<td>
+<% r.technical |h %>
+</td>
+
+<td>
+<% r.experience |h %>
+</td>
+
+<td>
+<% r.coolness |h %>
+</td>
+
+<td>
+<% r.stream.name |h %>
+</td>
+
+<td>
+<% h.truncate(r.comment) %>
 </td>
 
 </tr>
 
 % #endif
 </table>
+
+<%method title>
+Reviews - <& PARENT:title &>
+</%method>
