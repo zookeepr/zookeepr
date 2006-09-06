@@ -193,7 +193,8 @@ class Delete(RUDBase):
             g.objectstore.delete(self.obj)
             g.objectstore.flush()
 
-            redirect_to(controller='home', action='index', id=None)
+            default_redirect = dict(action='index', id=None)
+            self.redirect_to('delete', default_redirect)
 
         # save obj onto the magical c
         setattr(c, self.individual, self.obj)
