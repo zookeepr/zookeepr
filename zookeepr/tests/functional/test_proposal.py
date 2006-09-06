@@ -375,3 +375,42 @@ class TestProposal(SignedInControllerTest):
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
 
+
+    def test_proposal_delete_attachment(self):
+        p = Proposal(title='test view',
+                     abstract='abs',
+                     type=self.objectstore.get(ProposalType, 3))
+        self.objectstore.save(p)
+        self.person.proposals.append(p)
+        a = Attachment(content="foo")
+        self.objectstore.save(a)
+        p.attachments.append(a)
+        self.objectstore.flush()
+        pid = p.id
+        aid = a.id
+        self.objectstore.clear()
+        
+        # we're logged in and this is ours
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='view',
+                                    id=pid))
+        resp = resp.click('delete')
+
+        f = resp.form
+        resp = f.submit()
+
+        resp = resp.follow()
+
+        atts = self.objectstore.query(Attachment).select()
+        self.assertEqual([], atts)
+
+        
+        self.assertEqual(url_for(controller='attachment',
+                                 action='view',
+                                 id=pid),
+                         resp.request.url)
+
+        # clean up
+        self.objectstore.delete(self.objectstore.get(Proposal, pid))
+        self.objectstore.flush()
+

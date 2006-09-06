@@ -1,7 +1,7 @@
 from formencode import validators, compound, schema, variabledecode
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
-from zookeepr.lib.base import c, g, redirect_to, request, render_response
+from zookeepr.lib.base import c, g, redirect_to, request, render_response, session
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
 from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment
@@ -159,3 +159,11 @@ class ProposalController(SecureController, View, Modify):
                 good_errors[key] = errors[key]
 
         return render_response('proposal/attach.myt', defaults=defaults, errors=good_errors)
+
+    def view(self):
+        # save the current proposal id so we can refer to it later when we need to
+        # bounce back here from other controllers
+        # crazy shit with RUDBase means id is on self.obj
+        session['proposal_id'] = self.obj.id
+        session.save()
+        return super(ProposalController, self).view()

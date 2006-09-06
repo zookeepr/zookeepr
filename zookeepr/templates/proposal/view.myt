@@ -59,6 +59,8 @@ submitted by
 <% a.creation_timestamp.strftime("%Y-%m-%d %H:%M") %>
 </td>
 
+<td>
+<% h.link_to('delete', url=h.url(controller='attachment', action='delete', id=a.id)) %>
 </tr>
 % #endfor
 
