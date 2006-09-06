@@ -66,5 +66,8 @@ def reset_counter(name='default'):
 def radio(name, value, label):
     id_str = "%s.%s" % (name, value)
     i = '<input type="radio" name="%s" id="%s" value="%s" />' % (name, id_str, value)
-    lab = '<label for="%s">%s</label>' % (id_str, label)
+    if label == None:
+        lab = ''
+    else:
+        lab = '<label for="%s">%s</label>' % (id_str, label)
     return i + lab
