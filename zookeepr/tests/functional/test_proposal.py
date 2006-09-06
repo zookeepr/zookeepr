@@ -217,6 +217,7 @@ class TestProposal(SignedInControllerTest):
         f['proposal.type'] = 1
         f['proposal.abstract'] = "cubist"
         f['proposal.experience'] = "n"
+        f['attachment'] = "foo"
         print f.submit_fields()
         resp = f.submit()
         resp = resp.follow()
@@ -228,6 +229,9 @@ class TestProposal(SignedInControllerTest):
         s2 = subs[0]
         # is it attached to our guy?
         self.failUnless(s2 in self.person.proposals, "s2 not in p.proposals (currently %r)" % self.person.proposals)
+
+        # do we have an attachment?
+        self.failIfEqual([], subs[0].attachments)
         
         # clean up
         self.objectstore.delete(s2)

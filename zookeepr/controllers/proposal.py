@@ -68,6 +68,7 @@ class ProposalController(SecureController, View, Modify):
             if not errors:
                 for k in result['proposal']:
                     setattr(self.obj, k, result['proposal'][k])
+                    
 
                 self.obj.people.append(c.person)
 
