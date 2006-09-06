@@ -14,7 +14,9 @@ class ProposalSchema(schema.Schema):
     type = ProposalTypeValidator()
 
 class NewProposalSchema(BaseSchema):
+    ignore_key_missing = True
     proposal = ProposalSchema()
+    attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
 class EditProposalSchema(BaseSchema):
@@ -60,6 +62,7 @@ class ProposalController(SecureController, View, Modify):
 
     def new(self, id):
         self.obj = self.model()
+        att = Attachment()
         errors = {}
         defaults = dict(request.POST)
         if defaults:
@@ -68,11 +71,14 @@ class ProposalController(SecureController, View, Modify):
             if not errors:
                 for k in result['proposal']:
                     setattr(self.obj, k, result['proposal'][k])
-                    
-
-                self.obj.people.append(c.person)
-
                 g.objectstore.save(self.obj)
+                self.obj.people.append(c.person)
+                if result.has_key('attachment') and result['attachment'] is not None:
+                    for k in result['attachment']:
+                        setattr(att, k, result['attachment'][k])
+                    self.obj.attachments.append(att)
+                    g.objectstore.save(att)
+
                 g.objectstore.flush()
 
                 redirect_to(action='view', id=self.obj.id)
