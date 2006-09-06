@@ -67,5 +67,4 @@ def radio(name, value, label):
     id_str = "%s.%s" % (name, value)
     i = '<input type="radio" name="%s" id="%s" value="%s" />' % (name, id_str, value)
     lab = '<label for="%s">%s</label>' % (id_str, label)
-    print i+lab
     return i + lab
