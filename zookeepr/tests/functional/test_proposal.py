@@ -1,6 +1,6 @@
 import pprint
 
-from zookeepr.model import Proposal, ProposalType, Person
+from zookeepr.model import Proposal, ProposalType, Person, Attachment
 from zookeepr.tests.functional import *
 
 class TestProposalBase(object):
@@ -360,7 +360,18 @@ class TestProposal(SignedInControllerTest):
                                     id=pid))
         resp = resp.click('Add an attachment')
 
+        f = resp.form
+        f['attachment'] = "attachment"
+        resp = f.submit()
+        resp = resp.follow()
+
+        atts = self.objectstore.query(Attachment).select()
+        self.failIfEqual([], atts)
+        self.assertEqual("attachment", str(atts[0].content))
+
+        
         # clean up
+        self.objectstore.delete(atts[0])
         self.objectstore.delete(self.objectstore.get(Proposal, pid))
         self.objectstore.flush()
 
