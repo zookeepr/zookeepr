@@ -18,7 +18,3 @@ class AttachmentController(SecureController, Delete):
         response.headers['content-disposition'] = 'attachment; filename="%s";' % att.filename
 
         return response
-
-    def delete(self):
-        print "session", session
-        return super(AttachmentController, self).delete()
