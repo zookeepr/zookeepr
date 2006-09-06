@@ -175,7 +175,7 @@ a img {
  * forms
  */
 
-label {
+LABEL {
   font-weight: bold;
 }
 
@@ -353,7 +353,7 @@ textarea {
   margin: 0 auto;
 }
 
-.fielddesc, label {
+.fielddesc {
   font-size: smaller;
 }
 
