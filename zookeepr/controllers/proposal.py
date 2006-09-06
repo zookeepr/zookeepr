@@ -26,7 +26,6 @@ class StreamValidator(validators.FancyValidator):
         return g.objectstore.query(Stream).get(value)
 
 class ReviewSchema(schema.Schema):
-    ignore_key_missing = True
     familiarity = validators.Int()
     technical = validators.Int()
     experience = validators.Int()
