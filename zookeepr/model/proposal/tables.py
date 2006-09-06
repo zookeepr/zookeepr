@@ -29,6 +29,9 @@ proposal = Table('proposal',
 
                    # do they need assistance?
                    Column('assistance', Boolean),
+
+                 Column('creation_timestamp', DateTime),
+                 Column('last_modification_timestamp', DateTime),
                    )
 
 # for doing n-n mappings of people and proposals
@@ -59,6 +62,9 @@ attachment = Table('attachment',
                    Column('content', Binary(),
                           nullable=False),
 
+                   Column('creation_timestamp', DateTime),
+                   Column('last_modification_timestamp', DateTime),
+
                    )
 
 # reviews of proposals
@@ -83,4 +89,8 @@ review = Table('review',
                       ForeignKey('stream.id'),
                       ),
                Column('comment', String),
+
+               Column('creation_timestamp', DateTime),
+               Column('last_modification_timestamp', DateTime),
+
                )
