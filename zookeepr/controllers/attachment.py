@@ -6,7 +6,7 @@ from zookeepr.model import Attachment
 class AttachmentController(SecureController, Delete):
     model = Attachment
     individual = 'attachment'
-    redirect_map = {'delete': dict(controller='attachment', action='view', id=session['proposal_id'])}
+    redirect_map = {'delete': dict(controller='proposal', action='view', id=session['proposal_id'])}
 
     def view(self, id):
         att = g.objectstore.get(Attachment, id)

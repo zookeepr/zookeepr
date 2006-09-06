@@ -396,7 +396,9 @@ class TestProposal(SignedInControllerTest):
                                     id=pid))
         resp = resp.click('delete')
 
+        print resp.request.url
         f = resp.form
+        print f.fields
         resp = f.submit()
 
         resp = resp.follow()
@@ -405,7 +407,7 @@ class TestProposal(SignedInControllerTest):
         self.assertEqual([], atts)
 
         
-        self.assertEqual(url_for(controller='attachment',
+        self.assertEqual(url_for(controller='proposal',
                                  action='view',
                                  id=pid),
                          resp.request.url)
