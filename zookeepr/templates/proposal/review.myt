@@ -30,11 +30,22 @@ Project URL:
 <div id="q1">
 <p>1. How familiar are you with the subject matter of this talk?
 <br />
-<% h.radio_button('review.familiarity', 0) %>I don't know enough about the subject.
+
+<input id="review.familiarity0" name="review.familiarity" type="radio" value="0" />
+<label for="review.familiarity0">
+I don't know enough about the subject.
+</label>
 <br />
-<% h.radio_button('review.familiarity', 1) %>I'm not an expert, but I feel comfortable with the subject matter.
+<input id="review.familiarity1" name="review.familiarity" type="radio" value="1" />
+<label for="review.familiarity1">
+I'm not an expert, but I feel comfortable with the subject matter.
+</label>
 <br />
-<% h.radio_button('review.familiarity', 2) %>I'm an expert, I know the subject very well.
+<input id="review.familiarity2" name="review.familiarity" type="radio" value="2" />
+<label for="review.familiarity2">
+I'm an expert, I know the subject very well.
+</label>
+
 </p>
 </div>
 
