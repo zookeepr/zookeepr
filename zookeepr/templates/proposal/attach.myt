@@ -1,6 +1,6 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
-<% h.form(url=h.url()) %>
+<% h.form(url=h.url(), multipart=True) %>
 
 <label for="attachment">Attach a file</label>
 <br />
