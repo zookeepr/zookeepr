@@ -19,6 +19,6 @@ class AttachmentController(SecureController, Delete):
 
         return response
 
-    def delete(self, id):
+    def delete(self):
         print "session", session
-        return super(AttachmentController, self).delete(id)
+        return super(AttachmentController, self).delete()
