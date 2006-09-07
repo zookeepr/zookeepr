@@ -98,7 +98,7 @@ class SecureController(BaseController):
     from this class instead of `BaseController`.
 
     As a bonus, they will have access to `c.person` which is a
-    `skypanel.model.Person` object that will identify the user
+    `model.Person` object that will identify the user
     who is currently logged in.
     """
 
