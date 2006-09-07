@@ -1,0 +1,153 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:None
+##master-date:None
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+[[Navigation(children)]]
+[[TableOfContents]]
+
+== Macros ==
+Macros allow the insertion of system features into normal wiki pages; the only thing that makes those pages special is that they contain macros. If you edit pages like RecentChanges or SystemInfo, you'll see what that means.
+
+For more information on the possible markup, see HelpOnEditing. 
+
+=== Search macros ===
+
+MoinMoin now uses a new search engine, that lets your make sophisticated searches using both the interactive search box or any of the search macros. For more help, see HelpOnSearching.
+
+||<tablewidth="100%">'''Macro'''||'''Description'''||'''Example'''||
+||<-3>{{{[[TitleSearch]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> create a search box on the page, which search the page titles || See FindPage ||
+||<-3>{{{[[FullSearch]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> create a search box on the page, which search the page contents || See FindPage ||
+||<-3>{{{[[FullSearch()]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> print a list of pages whose content matches the current page title (like clicking on the page title) || See the CategoryCategory page ||
+||<-3>{{{[[FullSearch(text)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> print a list of pages whose content matches the search term || Search for {{{powered}}}:[[FullSearch(powered)]] ||
+||<-3>{{{[[FullSearchCached(text)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Works like the `FullSearch` macro but caches the results statically. Use it if you prefer speed over an up-to-date result || Search for {{{powered}}}:[[FullSearchCached(powered)]] ||
+||<-3>{{{[[GoTo]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> directly go to the page you enter || See the FindPage ||
+||<-3>{{{[[PageList(Help)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> print a list of pages whose title matches the search term || See the HelpIndex ||
+
+=== Navigation ===
+||<tablewidth="100%">'''Macro'''||'''Description'''||'''Example'''||
+||<-3>{{{[[RecentChanges]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> a list of recently edited pages || See RecentChanges ||
+||<-3>{{{[[TitleIndex]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> an index of all page titles || See TitleIndex ||
+||<-3>{{{[[WordIndex]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> an index of all words in page titles || See WordIndex ||
+||<-3>{{{[[WantedPages]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> list links to non-existent pages || See WantedPages ||
+||<-3>{{{[[OrphanedPages]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> list pages no other page links to || See OrphanedPages ||
+||<-3>{{{[[AbandonedPages]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> list pages that were not edited for the longest time || See AbandonedPages ||
+||<-3>{{{[[RandomPage]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> a link to a random page || [[RandomPage]] ||
+||<-3>{{{[[RandomPage(#)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> links to a number of random pages || Two random pages:[[RandomPage(2)]] ||
+||<-3>{{{[[TableOfContents([maxdepth])]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display a local table of contents, possibly limited to a maximal depth || See above ||
+||<-3>{{{[[Anchor(anchorname)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> macro to insert anchors into a page || [[Anchor(here)]][#here] ||
+||<-3>{{{[[Navigation(children[,maxdepth])]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> macro to list all of a pages' children || See start of this page ||
+||<-3>{{{[[Navigation(siblings[,maxdepth])]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> quick navigation to siblings of a page || See /MailTo ||
+||<-3>{{{[[Navigation(slideshow)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> creates a link to toggle between slide show and wiki mode, and a link to start the slide show || See HelpOnSlideShows ||
+||<-3>{{{[[Navigation(slides)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> displays first/prev/next/last links || See HelpOnSlideShows ||
+||<-3>{{{[[AttachInfo]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> displays number of attachments for current page || See HelpOnActions/AttachFile ||
+||<-3>{{{[[AttachInfo(page)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> displays number of attachments for page || See HelpOnActions/AttachFile ||
+||<-3>{{{[[AttachList]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> displays list of attachments for current page || See HelpOnActions/AttachFile ||
+||<-3>{{{[[AttachList(page)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> displays list of attachments for page || See HelpOnActions/AttachFile ||
+
+=== System information ===
+||<tablewidth="100%">'''Macro'''||'''Description'''||'''Example'''||
+||<-3>{{{[[InterWiki]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> a list of all known InterWiki names || InterWiki ||
+||<-3>{{{[[SystemInfo]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> info on the wiki, the python interpreter and the host system || SystemInfo ||
+||<-3>{{{[[PageCount(exists)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> current page count. If `exists` is supplied as an argument, only existing pages will be shown. || [[PageCount]] pages ||
+||<-3>{{{[[PageSize]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> list the sizes of all pages || See PageSize ||
+||<-3>{{{[[StatsChart(type)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> shows statistical charts (currently defined types: hitcounts, pagesize, useragents) || See EventStats and subpages  ||
+||<-3>{{{[[SystemAdmin]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Information for system administrators || Needs admin rights.[[BR]] [[SystemAdmin]] ||
+
+=== Others ===
+||<tablewidth="100%">'''Macro'''||'''Description'''||'''Example'''||
+||<-3>{{{[[ImageLink(image,target[,width=width[,height=height]][,alt=alttag])]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> This macro is used to make a link that displays an image (can be given as either attachment or URL) and links to either an URL or a wiki page. Optionally the size of the image can be adjusted. If no target is given the link will point to the image itself. || See /ImageLink ||
+||<-3>{{{[[Icon(image)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;">display system icons||  See HelpOnNavigation||
+||<-3>{{{[[UserPreferences]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display a user preferences dialog || See UserPreferences ||
+||<-3>{{{[[UserPreferences(createonly)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display user creation dialog ||  ||
+||<-3>{{{[[BR]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> insert a line break || 1st line[[BR]]2nd line ||
+||<-3>{{{[[RandomQuote(pagename)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Select a random quote from the given page, or from `FortuneCookies` if ommitted || [[RandomQuote]] ||
+||<-3>{{{[[Include(HelloWorld[,"heading"[,level]])]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> include contents of another page || for details see ["/Include"] ||
+||<-3>{{{[[FootNote(text)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Add a footnote[[FootNote(the text cannot contain any wiki markup)]], or explicitely display collected footnotes when no args are given || See below for an example. ||
+||<-3>{{{[[Date(timestamp)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display a timestamp according to system settings || [[Date()]] ||
+||<-3>{{{[[DateTime(timestamp)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display a timestamp[[FootNote("timestamp" can be empty (current time), a number of seconds since 1970 (unix timestamp), or a W3C time specification ("2002-01-23T12:34:56"). See RFC822, sect. 5. )]] according to user settings || [[DateTime()]] ||
+||<-3>{{{[[GetText(text)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> loads I18N texts (mainly intended for use on Help pages) || "Edit``Text" is translated to "[[GetText(EditText)]]" ||
+||<-3>{{{[[TeudView]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> useful for intranet developer wikis, a means to view pydoc documentation, formatted via a XSLT stylesheet || See [http://twistedmatrix.com/wiki/python/TeudProject] ||
+||<-3>{{{[[MailTo(email)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> protect your email address from spam bots || for details see /MailTo ||
+||<-3>{{{[[NewPage(PageTemplate,ButtonLabel,ParentPage[,NameTemplate])]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Allow the user to create (sub-) pages easily, using the page `PageTemplate`as the template for the new page and the string `NameTemplate` as a template for the name.[[FootNote(`NameTemplate` is formatted with `time.strftime()`, with the exception of `%s` which is replaced by the input into the edit box (which is only shown if necessary). If `NameTemplate` is not specified or empty, it defaults to `%s`.)]] || [[NewPage(CategoryTemplate, Create new category,,Category%s)]]||
+||<-3>{{{[[GetVal(NeatSnippets,regards)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Retrieve dictionary entries from dict pages. || If you have a page called GermanDict which contains the entry ''Test'', you should see the translation here: [[GetVal(GermanDict,Test)]] ||
+||<-3>{{{ [[MonthCalendar(,,12)]]}}}||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Displays a Calendar and creates link for entries to each day on subpages || See /MonthCalendar ||
+
+[[FootNote()]]
+
+=== Writing your own macro ===
+Create a python file called {{{MacroName.py}}} located in your {{{data/plugin/macro}}} directory. Ensure it has a single method called {{{execute(macro, arguments)}}}, which is the entry-point.
+ * ''macro'' is an instance of class Macro, and also evaluates to a string of the macroname.
+ * ''arguments'' is an arbitrary argument string you can pass in with parameters to your macro.
+
+All {{{Macro}}} instances have a {{{request}}} member through which you can access the form parameters and other information related to user interaction.
+   
+{{{execute()}}} should use the formatter to construct valid markup for the current target format. In most cases this is HTML, so writing a macro which returns HTML will work in most cases but fail when formats like XML or `text/plain` are requested.
+   
+For example, your wiki page has the following line on it:
+{{{
+[[MacroName(arg1,arg2,arg3)]]
+}}}
+   
+You could write a !MacroName.py file like this:
+{{{#!python
+Dependencies = []
+
+def execute(macro, args):
+    return macro.formatter.text("I got these args from a macro %s: %s" %
+    (str(macro), args))
+}}}
+
+ /!\ Add an entry into {{{Dependencies}}} if the output from your macro should not be cached. This is important if the macro output could change from one moment to another, for example if your macro searches in wiki pages which may be being edited by other users, or loads information from an external database whose contents may change. Currently the value of any entry does not matter and may be considered a short description for 'why results from this macro should not be cached', but please look at the entries used in other macros for values which may be suitable. 
+
+[[FootNote]]

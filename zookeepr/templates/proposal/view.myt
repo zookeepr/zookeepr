@@ -102,6 +102,10 @@ submitted by
 
 </div>
 
+<div id="wiki">
+<% h.wiki_here() %>
+</div>
+
 <%method title>
 <% h.truncate(c.proposal.title) %> - <% c.proposal.type.name %> proposal - <& PARENT:title &>
 </%method>

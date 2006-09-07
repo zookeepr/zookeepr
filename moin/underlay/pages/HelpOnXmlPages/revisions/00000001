@@ -1,0 +1,80 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+[[TableOfContents(1)]]
+
+= XML Pages & XSLT Processing =
+If you have [http://4suite.org/ Python4Suite] installed in your system, it is possible to save XML documents as pages. It's important to start those pages with an XML declaration "{{{<?xml ...>}}}" in the very first line. Also, you have to specify the stylesheet that is to be used to process the XML document to HTML. This is done using a [http://www.w3.org/TR/xml-stylesheet/ standard "xml-stylesheet" processing instruction], with the name of a page containing the stylesheet as the "{{{href}}}" parameter.
+
+Do no forget to enable XSLT processing, see HelpOnConfiguration.
+
+See the following example for details, which can also be found on the XsltVersion page.
+
+== Example ==
+{{{
+<?xml version="1.0" encoding="ISO-8859-1"?>
+
+<?xml-stylesheet href="XsltVersion" type="text/xml"?>
+
+<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+
+   <xsl:output method="html" omit-xml-declaration="yes" indent="no"/>
+
+   <xsl:template match="/">
+     This Wiki is running an XSLT engine by
+     <xsl:value-of select="system-property('xsl:vendor')"/>
+     (<a href="{system-property('xsl:vendor-url')}"><xsl:value-of select="system-property('xsl:vendor-url')"/></a>)
+     implementing XSLT v<xsl:value-of select="system-property('xsl:version')"/>
+   </xsl:template>
+
+</xsl:stylesheet>
+}}} 
+
+= Rendering DocBook =
+In order to let MoinMoin render DocBook pages, you will need to follow the steps described below. Afterwards, you will be able to write DocBook files in MoinMoin and see them as rendered HTML. Note that rendering DocBook pages may take some seconds of processing time (this is done after the page is saved).
+
+== Installing the DocBook support ==
+ 1. Install 4suite and enable XSLT processing, see above.
+ 1. Go to [http://sourceforge.net/project/showfiles.php?group_id=21935&package_id=16608 DocBook files at SourceForge] and download the latest archive. It contains the XSLT files necessary for HTML generation.
+ 1. Extract the archive and copy the whole directory {{{html}}} into another directory that is writable to MoinMoin (e.g. the {{{data}}} directory).
+  * After you have upgraded 4suite, you have to delete the file {{{db_compiled.dat}}} in this directory.
+ 1. Edit your wiki configuration,  the attribute {{{docbook_html_dir}}} has to point to the directory (which contains e.g. the file {{{docbook.xsl}}}) you created in the last step.
+ 1. You should be able to use the DocBook parser now.
+
+=== Using DocBook ===
+Just write your DocBook file like you would have done in a different environment as well. If you want to insert links to other wiki pages, be sure to simply write the WikiName into the text. Note that pages that would need {{{["..."]}}} links in ordinary wiki markup cannot be linked to directly, yet.
+
+DocBook markup is either marked by {{{#format docbook}}} in the first line of the page or in a wiki page like this:
+{{{#!docbook
+<!DOCTYPE book PUBLIC "-//OASIS//DTD DocBook XML V4.1.2//EN" "http://www.oasis-open.org/docbook/xml/4.1.2/docbookx.dtd">
+<book>
+<bookinfo>
+<author>
+<firstname>Bernd</firstname>
+<surname>Le Pain</surname>
+</author>
+<copyright>
+<year>2005</year>
+</copyright>
+</bookinfo>
+<chapter>
+<title>This is a title of a chapter</title>
+<sect1>
+<title>This is a title of a section</title>
+<para>This is a paragraph.</para>
+<para>
+<emphasis role="bold">
+This is a paragraph in bold.
+</emphasis>
+</para>
+</sect1>
+</chapter>
+</book>
+}}}
+
+Note that you need to install DocBook like described above to make this example work.

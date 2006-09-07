@@ -1,0 +1,12 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+ * ExampleProject/AdminGroup
+ * ThomasWaldmann
+ * ["Joe Doe"]
+
+Normally, this page would be ACL protected so that only a few site admins can add to it.

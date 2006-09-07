@@ -1,3 +1,4 @@
+import sys
 import os
 
 import pylons.config
@@ -14,6 +15,10 @@ def load_environment():
                            ('components', 'templates')],
              'static_files': os.path.join(root_path, 'public')
              }
+    
+    # MoinMoin environment setup, needs to find wikiconfig.py which is in this dir
+
+    sys.path.insert(0, os.path.join(root_path, 'config'))
     
     # The following options are passed directly into Myghty, so all configuration options
     # available to the Myghty handler are available for your use here

@@ -1,0 +1,66 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+== Help on Variables ==
+
+=== predefined variables ===
+The following variables are substituted when a page is saved. Note that they will appear unreplaced in the preview!
+
+|| Variable         || Description                                  || Example ||
+|| @``PAGE@     || Name of the page (useful for template pages) || HelpOnPageCreation ||
+|| @``DATE@     || Current date in the system's format          || [[Date(2004-08-30T06:38:05Z)]] ||
+|| @``TIME@     || Current date and time in the user's format   || [[DateTime(2004-08-30T06:38:05Z)]] ||
+|| @``USERNAME@ || Just the user's name (or his domain/IP)      || TheAnarcat ||
+|| @``USER@     || Signature "-- loginname"                     || -- TheAnarcat ||
+|| @``SIG@      || Dated Signature "-- loginname date time"     || -- TheAnarcat [[DateTime(2004-08-30T06:38:05Z)]] ||
+|| @``MAILTO@   || A fancy mailto: link with the user's data    || None - on public sites, better use the Mail``To macro) ||
+
+
+== expanding variables ==
+
+You can use Home``Page``Name/My``Dict to expand those variables, just put a Wiki``Dict there with your variables and values. For example,
+{{{
+ VAR1:: substitution 1
+ VAR2:: substitution 2
+}}}
+
+If you make a page ending with `.*Dict` (see page_dict_regex), you can set some variables to specific values:
+ var1:: value1
+ var2:: value2
+ var3:: value3
+
+The actual format of the variable assignment above when editing in the edit window is the following:
+{{{
+ var1:: value1
+ var2:: value2
+ var3:: value3
+}}}
+The leading space and the space after '::' are important.
+
+== getting variables ==
+
+=== At Every Page Refresh ===
+
+You can use these values using the `GetVal` macro:
+
+{{{
+[[GetVal(WikiDict,var1)]] [[GetVal(WikiDict,var2)]] [[GetVal(WikiDict,var3)]]
+}}}
+
+Renders as:
+
+[[GetVal(WikiDict,var1)]] [[GetVal(WikiDict,var2)]] [[GetVal(WikiDict,var3)]]
+
+=== When Saving the Page ===
+
+If the variables are set on !UserName/!MyDict (!UserName must of course be replaced as appropriate), you can get the variables when saving any page with @var1@, @var2@, ...etc. instead of the {{{GetVal}}} macro. 
+
+----
+
+/!\ Note that data in dict pages is cached and does not require opening and parsing the page file for each access to the value. In CGI, the value is fetched from a pickle, in long running process, the pickle is loaded once and then the value is accessed from memory.
+
+/!\ Note that saving template pages and using preview does ''not'' expand variables. Other than that, variable expansion is very global and happens anywhere on the page, including code displays, comments, processing instructions and other "special" areas of a page you might think are excluded. See HelpOnTemplates for more information about using templates.

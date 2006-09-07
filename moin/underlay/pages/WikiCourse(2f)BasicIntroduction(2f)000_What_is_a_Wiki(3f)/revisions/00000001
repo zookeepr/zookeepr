@@ -1,0 +1,32 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off
+[[Navigation(slides)]]
+
+= What is a Wiki? =
+
+ * a technology for collaborative creation of internet and intranet pages
+ * ''Wiki-Wiki'' is hawaiian and means fast
+ 
+== Principles ==
+ * '''Fast''' - fast editing, communicating and easy to learn
+
+ * '''Open''' - everybody may read ''and'' edit everything
+ * '''Uncomplicated''' - everything works in a standard browser
+ * '''Easy''' - no HTML knowledge necessary, simply formatted text
+ * '''Simple''' - ''Content over Form'' (content counts, not the super-pretty appearance)
+ * '''Secure''' - every change is archived, nothing gets lost
+ * '''Interlinked''' - Links between pages are easy to make
+ * '''Flexible'''
+   * Personal Information Management, Knowledgebases, Brainstorming
+   * Collaboration, Coordination and Communication platform
+   * Creating documentation and slide shows ;)
+   * etc...
+
+----
+For details see HelpForBeginners.

@@ -1,0 +1,22 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+MoinMoin would miss quite some features without the help of some of its users/developers. What you can do to improve MoinMoin, also for your own benefit:
+ * develop new extensions like macros, actions and parsers  (MoinMoin:MoinMoinExtensions)
+ * run the development version and help testing the new features or test MoinMoin on a certain platform, or with certain Python versions (MoinMoin:MoinMoinTesting)
+ * help with the translation efforts, especially adding new languages (MoinMoin:MoinDev/Translation)
+ * help developping new themes, styles and icons (MoinMoin:MoinDev/ThemeDevelopment)
+ * etc.
+
+If you want to help you should look on existing bugs at MoinMoin:MoinMoinBugs and look what user want at MoinMoin:FeatureRequests.
+
+More information on MoinMoin source code and other developer issues can be found in the MoinMoin main wiki, on MoinMoin:MoinDev and its subpages.
+
+== Contributions ==
+
+See MoinMoin:MoinMoinExtensions.

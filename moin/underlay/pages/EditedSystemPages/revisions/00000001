@@ -1,0 +1,11 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+Here is a list of system and help pages that have been edited on this wiki. The edited pages hide the original system and help pages. 
+
+[[EditedSystemPages]]

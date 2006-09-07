@@ -1,0 +1,42 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+HelpContents > HelpOnEditing
+
+== Creating Subpages ==
+
+Subpages are groups of pages that share a common prefix, which itself is another page. While this is also possible with "classic" wiki, by using names like {{{SomeTopicSubTopic}}}, the use of {{{SomeTopic/SubTopic}}} allows better navigational support, and you can omit the common prefix when linking from the parent page to the child page.
+
+Thus, by using "/" to concatenate several WikiName''''''s, you can create arbitrarily deep hierarchies (within limits, especially the length of filenames on your system). In reality, subpages are normal pages that contain a "/" in their name, and thus they are stored besides all other pages in the file system. Subpages are a configurable feature, but they're on by default and it's recommended that you keep it that way, since the help pages themselves use this feature.
+
+Links to sibling pages start with "`../`", for example ../SubPages (a link to this page).
+
+=== Example ===
+{{{
+ * HelpOnEditing/SubPages
+ * [wiki:HelpOnEditing/SubPages This very page]
+ * [wiki:Self:HelpOnEditing/SubPages This very page]
+ * /ThirdLevel
+ * [wiki:/ThirdLevel A page below this one]
+ * ["/sub page with arbitrary page name"]
+ * ../SubPages
+ * ["../"] (anonymous parent link)
+ * [:../:free parent link]
+}}} 
+
+=== Display ===
+ * HelpOnEditing/SubPages
+ * [wiki:HelpOnEditing/SubPages This very page]
+ * [wiki:Self:HelpOnEditing/SubPages This very page]
+ * /ThirdLevel
+ * [wiki:/ThirdLevel A page below this one]
+ * ["/sub page with arbitrary page name"]
+ * ../SubPages
+ * ["../"] (anonymous parent link)
+ * [:../:free parent link]
+
+/!\ Please do all of us a favour and don't create the /ThirdLevel pages, it's just an example!

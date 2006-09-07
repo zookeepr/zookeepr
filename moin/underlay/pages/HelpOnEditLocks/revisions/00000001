@@ -1,0 +1,48 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+== Locking against concurrent editing ==
+
+If two people try and edit the same wiki page at once some nasty conflicts can occur. Without any kind of warning system one of the editors can save the page, which leaves the other editor with a message warning them about the conflict. An easy way around this is to display warnings for editors that try to start editing wiki pages that are already being edited. i.e. the wiki keeps track of pages being edited.
+
+This can be done in Moin using the ''editlock'' system. There are three levels of locking: to ''warn'', to ''lock'' and ''None'' (turned off).
+ 
+If you configure Moin to '''warn''', when someone tries to edit a page that is already being edited, they will be presented with a warning message asking them to consider waiting until the current editor has finished.
+
+Moin can also be configured to '''lock''' an edited page, only during editing. Here, if some tries to edit a page that is being edited they will receive a message saying that the page is locked and will not be able to edit it until the editor has finished.
+
+A complication of this feature is that an editing session might be started and might not be finished. e.g.:
+ * Someone presses edit and then clicks on a link to exit the page without cancelling.
+ * The browser window is closed without cancelling.
+ * The back button is pressed.
+ * Someone starts editing a page and forgets and leaves it open overnight.
+This would result in a page having permanent warnings or being permanently locked. Therefore, both ''warn'' and ''lock'' have a '''timeout''' feature. After a specified number of minutes the feature expires. Note that the timer restarts when you hit preview. If you are actively editing a page and hit preview it is assumed you are still busy and the timer starts again. If you leave the page, or exit it for more time than the timer allows the edit locking runs out and other people are free to edit the page.
+
+=== Configuration ===
+
+The `edit_locking` config variable controls the behaviour of the locking system. This can have the following values:
+
+ * `None`, i.e. there is no edit locking. The feature is turned off and nobody is warned or stopped from doing simultaneous edits of a page.
+
+ * "`warn <timeout>`" tells Moin to warn anyone trying to concurrently editing a page, with a specified timeout, e.g. "`warn 10`" will warn for 10 minutes after an edit is started.
+
+ * "`lock <timeout>`" tells Moin to lock a page for the specified amount of time after an edit started. e.g. "`lock 5`" locks a page for 5 minutes.
+
+=== Aborting an edit ===
+
+For the reasons explained in the timeout description above, you should '''always use Cancel''' to cancel an edit if you have enabled edit locking!
+
+== Example ==
+
+Sample interaction of John``Miller and Jane``Doe...
+
+ no locking (None):: John``Miller starts editing a page and Jane``Doe thinks she'll edit the same page. She has no idea that someone else is editing the page so they both edit away and hit save. It doesn't matter who started first and did the most editing, whoever hits ''save changes'' first will have their changes committed and the unfortunate 2nd editor will have to try and merge their changes in or lose them.
+
+ edit warnings (warn):: John``Miller starts editing a page and Jane``Doe thinks she'll edit the same page. When she hits edit she'll see a warning telling her that someone else got there first. If she is polite she'll leave the page, but she can still save before John and he may lose his changes.
+
+ edit locking (lock):: John``Miller starts editing a page and Jane``Doe thinks she'll edit the same page. When she hits edit she'll see a warning telling her that someone else got there first and the page is locked. She will have to wait for the page to become available.

@@ -1,0 +1,42 @@
+
+    CH.ifa.draw.standard.StandardDrawing "no_attributes" 18 
+        CH.ifa.draw.figures.EllipseFigure "attributes" "attributes" 2 "Sensitive" "String" "http%3A%2F%2Fmoinmoin.wikiwikiweb.de%2F" "FillColor" "Color" 255 0 0 55 321 74 76  
+        CH.ifa.draw.figures.RectangleFigure "attributes" "attributes" 2 "Sensitive" "String" "http%3A%2F%2Fmoinmaster.wikiwikiweb.de%2F" "FillColor" "Color" 255 200 0 317 159 184 158  
+        CH.ifa.draw.figures.RoundRectangleFigure "attributes" "attributes" 1 "Sensitive" "String" "" 42 32 165 114 8 8  
+        CH.ifa.draw.figures.EllipseFigure "attributes" "attributes" 1 "FillColor" "Color" 255 255 0 71 203 151 98  
+        CH.ifa.draw.figures.EllipseFigure "no_attributes" 231 16 74 76  
+        CH.ifa.draw.figures.EllipseFigure "attributes" "attributes" 1 "FillColor" "Color" 0 0 255 406 16 74 76  
+        CH.ifa.draw.figures.EllipseFigure "no_attributes" 545 15 74 76  
+        CH.ifa.draw.figures.ElbowConnection "no_attributes" 4 207 141 262 141 262 238 317 238 
+            CH.ifa.draw.figures.ArrowTip  
+            CH.ifa.draw.figures.ArrowTip  0 0 0 
+            CH.ifa.draw.figures.ShortestDistanceConnector REF 3  
+            CH.ifa.draw.standard.ChopBoxConnector REF 2   
+        CH.ifa.draw.figures.LineConnection "no_attributes" 2 317 273 127 347 
+            CH.ifa.draw.figures.ArrowTip  
+            CH.ifa.draw.figures.ArrowTip  0 0 0 
+            CH.ifa.draw.standard.ChopBoxConnector REF 2  
+            CH.ifa.draw.figures.ChopEllipseConnector REF 1   
+        CH.ifa.draw.figures.ElbowConnection "no_attributes" 2 305 54 407 54 
+            CH.ifa.draw.figures.ArrowTip  
+            CH.ifa.draw.figures.ArrowTip  0 0 0 
+            CH.ifa.draw.figures.ChopEllipseConnector REF 5  
+            CH.ifa.draw.figures.ChopEllipseConnector REF 6   
+        CH.ifa.draw.figures.ElbowConnection "no_attributes" 4 480 54 513 54 513 53 546 53 
+            CH.ifa.draw.figures.ArrowTip  
+            CH.ifa.draw.figures.ArrowTip  0 0 0 
+            CH.ifa.draw.figures.ChopEllipseConnector REF 6  
+            CH.ifa.draw.figures.ChopEllipseConnector REF 7   
+        CH.ifa.draw.figures.TextFigure "attributes" "attributes" 1 "FillColor" "Color" 255 199 158 102 78 "word" "Helvetica" 0 12 0 NULL NULL  
+        CH.ifa.draw.figures.LineFigure "no_attributes" 2 102 175 157 200 NULL NULL 0 0 0  
+        CH.ifa.draw.contrib.PolygonFigure "no_attributes" 12 147 229 134 228 65 176 103 188 280 213 282 237 265 267 225 259 229 260 173 190 151 214 0 212  
+        CH.ifa.draw.figures.LineConnection "no_attributes" 2 140 204 146 146 
+            CH.ifa.draw.figures.ArrowTip  
+            CH.ifa.draw.figures.ArrowTip  0 0 0 
+            CH.ifa.draw.figures.ChopEllipseConnector REF 4  
+            CH.ifa.draw.figures.ShortestDistanceConnector REF 3   
+        CH.ifa.draw.figures.PolyLineFigure "no_attributes" 105 46 282 47 284 49 284 50 285 52 286 54 288 58 289 60 290 66 291 71 292 74 293 79 294 81 295 83 295 86 295 89 295 91 295 94 295 95 295 96 295 100 295 104 295 107 295 109 295 112 295 115 293 117 292 120 292 121 291 121 290 122 290 123 289 124 288 124 287 125 285 125 283 125 282 125 280 125 277 123 273 120 271 116 266 113 263 109 260 107 258 106 258 105 257 104 256 102 256 101 256 100 256 98 256 97 256 94 256 92 256 90 258 88 259 88 261 87 262 87 266 87 268 87 270 87 272 87 273 87 275 87 276 88 277 89 278 89 279 90 279 92 280 92 281 93 282 95 282 96 282 97 282 98 282 105 289 104 289 103 291 103 292 103 294 103 296 103 297 103 298 102 299 102 301 102 303 101 305 101 306 101 307 101 308 100 308 99 307 97 306 95 305 92 303 90 302 88 301 85 300 81 297 76 293 74 292 70 291 69 291 NULL NULL 0 0 0  
+        CH.ifa.draw.contrib.PolygonFigure "no_attributes" 6 278 127 320 145 322 138 313 132 295 138 0 154  
+        CH.ifa.draw.figures.TextFigure "attributes" "attributes" 2 "observed.figure" "Storable" REF 3 "FillColor" "Color" 255 199 158 124 89 "" "Helvetica" 0 12 0 REF 3 
+            CH.ifa.draw.standard.OffsetLocator 0 0 
+                CH.ifa.draw.standard.RelativeLocator 0.5 0.5     

@@ -1,0 +1,41 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+The DesktopEdition can be configured similarly to a normal MoinMoin installation. You must restart `moin.exe`/`moin.py` for changes to take effect.
+
+= Basic configuration =
+Just edit the file `wikiconfig.py` file. You can use the options listed on the page HelpOnConfiguration.
+
+Here is a sample: {{{#!python
+from MoinMoin.multiconfig import DefaultConfig
+
+class Config(DefaultConfig):
+    sitename = "My local notebook"
+    logo_string = u'<img src= "/wiki/mylogo.png"> My local notebook-Wiki'
+    acl_rights_default = u"All:read,write,delete"
+}}}
+Note that the last line is needed if you want to disable administrator access for all users. This is very important if you are using your wiki on the Internet.
+
+Note that you need admin rights to install help pages in your language. So, install them before you use the `acl_rights_default` above.
+
+= Server configuration =
+Additionally, you can set some server options like the port etc. in the file `wikiserverconfig.py`. You need to create it and fill it like shown below. See [:HelpOnInstalling/StandaloneServer#options:HelpOnInstalling/StandaloneServer] for the available options.
+
+Here is a sample: {{{#!python
+from __main__ import DefaultConfig
+class Config(DefaultConfig):
+    port = 80
+    interface = "10.0.0.0" # changes the interface where the webserver is bound. use "" for every interface
+}}}
+
+= Dictionary =
+You can create a `dict` directory in the MMDE directory and copy dictionary files into it. Then they will be found by the integrated spellchecker.
+
+= Plugins/Themes =
+Of course you can install plugins and themes like you do it normally. If it is a prepared MoinMoin package file, then you just need to upload it and click `install` on the page which lists all attachments. Otherwise you have to copy the plugin file into the directory `wiki/data/plugin/` followed by the type of the plugin. E.g. for a theme you would copy the `.py` file into `wiki/data/plugin/theme` directory.
+
+You will need to copy `the css` and `img` folders (if you are installing a theme) into a subfolder, which has got the name of your theme, of `wiki/htdocs`.

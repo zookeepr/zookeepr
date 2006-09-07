@@ -1,0 +1,76 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+/!\ This help is for MoinMoin with modern theme only. If this is not your case, the position and label of navigation controls may be slightly different. However, the function should be the same.
+
+== Screen Layout ==
+
+The screen layout contains the following parts (from top to bottom):
+
+ 1. Page header
+ 1. Navigation bar, a collection of tabs for quick links
+ 1. Dynamic message box
+ 1. Actions toolbar
+ 1. Canvas for page rendering
+ 1. Actions toolbar, same as part 4
+ 1. Page bottom
+
+The first four parts are the most important and will be introduced below.
+
+=== Page Header ===
+
+This part contains the following elements:
+
+ * Site logo (optional): it is also a link to the front page (home).
+ * User login:
+  * not logged in: offers a link to log in
+  * logged in: shows your user name (links to your home page), provides a link to UserPreferences and a logout link.
+ * Search bar: allows you to search this site. The default button (you get it by hitting <ENTER>) does a ''title'' search. If you want to do a full text search, you need to click on the other button.
+ * Page path: shows the path of the page. Clicking on the page title link will show every page that refers this page. If it is a subpage, you can click on the parent page to go up.
+ * Page trail: lists the last five pages visited, so you can jump back several pages easily. You have to enable '''[[GetText(Show page trail)]]''' to see it.
+
+=== Navigation Bar ===
+
+This part is a collection of tabs for quick links. By default, there are three tabs:
+
+ * RecentChanges, links to a page to show recent modifications of the wiki
+ * FindPage, links to a page offering search and index functions
+ * HelpContents, links to main help page
+
+Besides the default tabs, you can also add your favourite pages to this bar by clicking '''[[GetText(Add Link)]]''' on each page or editing '''[[GetText(Quick links)]]''' list in UserPreferences.
+
+=== Dynamic Message Box ===
+
+This box is displayed to show you some messages. You can click '''[[GetText(Clear message)]]''' to close it or it will be closed automatically when you move to another page.
+
+=== Actions Toolbar ===
+
+This part is the links for the most often used functions:
+
+ * '''[[GetText(Edit)]]''', allows you to edit the page
+  * Depends on your UserPreferences, it may be '''[[GetText(Edit (Text))]]''' and '''[[GetText(Edit (GUI))]]''' to let you choose which editor to use
+  * If you have no right to edit this page, '''[[GetText(Immutable Page)]]''' is displaed instead
+ * '''[[GetText(Info)]]''', shows meta information about the page, especially the full version history
+  * '''Show "[[GetText(Revision History)]]"''', shows revision history of the page
+  * '''Show "[[GetText(General Page Infos)]]"''', shows general information of the page
+  * '''Show chart "[[GetText(Page hits and edits)]]"''', shows page hits and edits count
+ * '''[[GetText(Subscribe)]]'''/'''[[GetText(Unsubscribe)]]''', allows to subscribe or unsubscribe to email notifications for the current page
+ * '''[[GetText(Add Link)]]'''/'''[[GetText(Remove Link)]]''', allows to add/remove your favourite pages to/from navigation bar
+ * '''[[GetText(Attachments)]]''', allows to manipulate attachments of the page
+ * '''[[GetText(More Actions:)]]''', contains the following common functions:
+  * '''[[GetText(Raw Text)]]''', shows the source code of the current page
+  * '''[[GetText(Print View)]]''', shows a printable version of the page without the header or footer
+  * '''[[GetText(Delete Cache)]]''', force the page to be recompiled
+  * '''[[GetText(Check Spelling)]]''', invokes spelling checker
+  * '''[[GetText(Like Pages)]]''', prints a list of pages with titles similar to this page
+  * '''[[GetText(Local Site Map)]]''', prints a list of pages that are referred from this page
+  * '''[[GetText(Rename Page)]]''', allows to rename this page
+  * '''[[GetText(Delete Page)]]''', allows to delete this page
+  * Any custom actions you have installed.
+
+(!) This toolbar is duplicated at the page bottom for convenience.

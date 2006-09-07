@@ -1,0 +1,28 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+== Updating Python ==
+
+If you want to change the Python running your MoinMoin installation there are some issues to keep in mind:
+
+=== Location of the MoinMoin directory ===
+
+The default installation process (`setup.py`) installed the MoinMoin files into the site-packages directory of the current Python installation (for example `/usr/lib/python2.2/site-packages`). If you move to another Python interpreter you must reinstall the MoinMoin files into the new `lib/pythonX.X/site-packeges` directory. If you installed the MoinMoin files elsewhere and adjusted `sys.path` this is not a problem.
+
+=== The precompiled Python files (.pyc) ===
+
+Python does not grant that .pyc files are compatible between Python versions. If you change the Python interpreter you should recompile the Python scripts. You may use 
+
+{{{
+python -c "import compileall; compileall.compile_dir('/path/to/MoinMoin')"
+}}}
+
+for this. If you reinstall MoinMoin for the new interpreter the step is not needed/done by setup.py.
+
+=== Empty Page Cache ===
+
+The page cache uses Python byte code for faster page rendering. To avoid compatibility problems you should empty the cache by hand by deleting all files in `data/pages/*/cache/` and `underlay/pages/*/cache/`. 
