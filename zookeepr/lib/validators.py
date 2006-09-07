@@ -32,9 +32,9 @@ class FileUploadValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         if isinstance(value, cgi.FieldStorage):
             filename = value.filename
-            content = buffer(value.value)
+            content = value.value
         elif isinstance(value, str):
             filename = None
-            content = buffer(value)
+            content = value
         return dict(filename=filename,
                     content=content)
