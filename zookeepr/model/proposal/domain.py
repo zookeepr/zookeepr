@@ -66,4 +66,4 @@ class Review(object):
         self.comment = comment
 
     def __repr__(self):
-        return '<Review id=%d>' % (self.id,)
+        return '<Review id="%r">' % (self.id,)
