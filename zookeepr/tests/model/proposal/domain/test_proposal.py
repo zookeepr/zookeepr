@@ -192,7 +192,6 @@ class TestProposal(ModelTest):
                        creation_timestamp=datetime.datetime.now(),
                        content="foobar")
         self.objectstore.save(a)
-        self.objectstore.flush()
 
         p.attachments.append(a)
         self.objectstore.flush()
