@@ -32,9 +32,8 @@
 </p>
 
 <p>
-<label for="proposal.attachment">Attach a paper:</label>
-<br />
-<% h.file_field('proposal.attachment', size=50) %>
+<label for="attachment">Attach a paper:</label>
+<% h.file_field('attachment', size=50) %>
 </p>
 
 <p>

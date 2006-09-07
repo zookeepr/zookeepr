@@ -26,7 +26,7 @@ class TestAccountTable(TableTest):
     confirmed, and the user may log in.
     """
     # What's the table object?
-    table = 'core.tables.account'
+    table = model.core.tables.account
     # What's some sample data we can use for the generic table testing?
     samples = [dict(email_address='testguy@example.org',
                     password_hash='password_hash1',

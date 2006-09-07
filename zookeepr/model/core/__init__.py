@@ -1,4 +1,4 @@
-from zookeepr.model.core.domain import Person, Role
-import zookeepr.model.core.mapper
+from domain import Person, Role, PasswordResetConfirmation
+import mapper
 
 __all__ = ['Person', 'Role']

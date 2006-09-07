@@ -181,7 +181,7 @@ class Update(RUDBase):
         
 
 class Delete(RUDBase):
-    def delete(self, id):
+    def delete(self):
         """Delete the proposal type
 
         GET will return a form asking for approval.
@@ -193,7 +193,8 @@ class Delete(RUDBase):
             g.objectstore.delete(self.obj)
             g.objectstore.flush()
 
-            redirect_to(controller='home', action='index', id=None)
+            default_redirect = dict(action='index', id=None)
+            self.redirect_to('delete', default_redirect)
 
         # save obj onto the magical c
         setattr(c, self.individual, self.obj)
@@ -204,7 +205,8 @@ class Delete(RUDBase):
 class Read(RUDBase):
     def view(self):
         """View a specific object"""
-        c.can_edit = self._can_edit()
+        if hasattr(self, '_can_edit'):
+            c.can_edit = self._can_edit()
 
         # save obj onto the magical c
         setattr(c, self.individual, self.obj)
