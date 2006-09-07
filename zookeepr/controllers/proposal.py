@@ -115,8 +115,8 @@ class ProposalController(SecureController, View, Modify):
                     setattr(review, k, result['review'][k])
 
                 review.reviewer = c.person
-                review.proposal = c.proposal
-
+                c.proposal.reviews.append(review)
+                
                 g.objectstore.save(review)
                 g.objectstore.flush()
 
