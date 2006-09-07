@@ -192,7 +192,6 @@ class TestProposal(ModelTest):
                        creation_timestamp=datetime.datetime.now(),
                        content="foobar")
         self.objectstore.save(a)
-        self.objectstore.flush()
 
         p.attachments.append(a)
         self.objectstore.flush()
@@ -231,8 +230,10 @@ class TestProposal(ModelTest):
 
         stream = Stream(name="pants")
 
-        r = Review(reviewer=p2, proposal=s, stream=stream, comment="Buuzah")
+        r = Review(reviewer=p2, stream=stream, comment="Buuzah")
+        s.reviews.append(r)
         self.objectstore.save(r)
+        
 
         self.objectstore.flush()
 

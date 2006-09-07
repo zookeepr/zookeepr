@@ -50,7 +50,7 @@ class Attachment(object):
     content_type = property(_get_content_type, _set_content_type)
 
     def __repr__(self):
-        return '<Attachment id="%r" filename="%s">' % (self.id, self.name)
+        return '<Attachment id="%r" filename="%s">' % (self.id, self.filename)
 
 
 ## Reviews
@@ -66,4 +66,4 @@ class Review(object):
         self.comment = comment
 
     def __repr__(self):
-        return '<Review id=%d>' % (self.id,)
+        return '<Review id="%r">' % (self.id,)
