@@ -56,6 +56,13 @@ class TestAccountController(ControllerTest):
         self.assertEqual(p.id,
                          resp.session['person_id'])
 
+        # see if we're still logged in when we go to another page
+        resp = self.app.get(url_for(controller='about', action='view'))
+
+        self.failUnless('person_id' in resp.session)
+        self.assertEqual(p.id,
+                         resp.session['person_id'])
+
         # sign out
         resp = resp.goto(url_for(controller='account',
                                  action='signout'))
