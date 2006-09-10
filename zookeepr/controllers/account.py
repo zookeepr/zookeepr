@@ -51,15 +51,21 @@ class PasswordResetSchema(BaseSchema):
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
+
 class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
     fullname = validators.String(not_empty=True)
     handle = validators.String()
-    
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+
+
 class NewRegistrationSchema(BaseSchema):
     registration = PersonSchema()
 
     pre_validators = [NestedVariables]
+
 
 class AccountController(BaseController):
 
@@ -255,7 +261,10 @@ class AccountController(BaseController):
         # unmangle errors
         good_errors = {}
         for key in errors.keys():
-            for subkey in errors[key].keys():
-                good_errors[key + "." + subkey] = errors[key][subkey]
+            try:
+                for subkey in errors[key].keys():
+                    good_errors[key + "." + subkey] = errors[key][subkey]
+            except AttributeError:
+                good_errors[key] = errors[key]
                 
         return render_response('account/new.myt', defaults=defaults, errors=good_errors)
