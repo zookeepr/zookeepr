@@ -4,7 +4,7 @@
 
 <p>
 An email has been sent to you at <em><% c.person.email_address | h %></em> with details on how to complete the account registration process.
-Please please follow the instructions in that message.
+Please follow the instructions in that message.
 </p>
 
 <p>

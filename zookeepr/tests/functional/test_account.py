@@ -383,7 +383,7 @@ class TestAccountController(ControllerTest):
         f['registration.handle'] = 'testguy'
         resp = f.submit()
         # did we get an appropriate page?
-        resp.mustcontain("confirm")
+        resp.mustcontain("follow the instructions in that message")
 
         # check our email
         self.failIfEqual(None, Dummy_smtplib.existing,
