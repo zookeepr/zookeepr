@@ -1,4 +1,4 @@
-Subject: linux.conf.au  2007 New Account Confirmation
+Subject: linux.conf.au 2007 New Account Confirmation
 To: <% c.person.fullname %> <<% c.person.email_address %>>
 
 Dear <% c.person.fullname %>,
