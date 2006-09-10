@@ -7,5 +7,6 @@
 <li><% h.link_to('sign out', url=h.url(controller='account', action='signout', id=None)) %></li>
 % else:
 <li><% h.link_to('sign in', url=h.url(controller='account', action='signin', id=None)) %></li>
+<li><% h.link_to('new user?', url=h.url(controller='account', action='new', id=None)) %></li>
 % #endif
 </ul>
