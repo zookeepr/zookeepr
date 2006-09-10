@@ -381,6 +381,8 @@ class TestAccountController(ControllerTest):
         f['registration.email_address'] = 'testguy@example.org'
         f['registration.fullname'] = 'Testguy McTest'
         f['registration.handle'] = 'testguy'
+        f['registration.password'] = 'test'
+        f['registration.password_confirm'] = 'test'
         resp = f.submit()
         # did we get an appropriate page?
         resp.mustcontain("follow the instructions in that message")
@@ -419,7 +421,7 @@ class TestAccountController(ControllerTest):
         self.assertEqual(True, regs[0].activated, "account was not activated!")
         # ok, now try to log in
 
-        resp = resp.click('sign in')
+        resp = resp.click('sign in', index=1)
         f = resp.form
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'
