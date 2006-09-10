@@ -12,7 +12,7 @@ http://lca2007.linux.org.au<% h.url_for('acct_confirm', id=c.person.url_hash) %>
 (If clicking does not work, please clag it into your web browser.)
 
 Once your account has been confirmed, you will be able to log
-into the site with the password you provided with your proposal.
+into the site with the password you provided.
 
 Thanks again, and have a great day!
 
