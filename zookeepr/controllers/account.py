@@ -207,3 +207,42 @@ class AccountController(BaseController):
         # FIXME: test the process above
         return render_response('account/reset.myt', defaults=defaults, errors=errors)
 
+
+    def create(self):
+        """Create a new account.
+
+        Non-CFP accounts get created through this interface.
+
+        See ``cfp.py`` for more account creation code.
+        """
+        defaults = dict(request.POST)
+        errors = {}
+
+        c.person = Person()
+
+        if defaults:
+            result, errors = NewRegistrationSchema().validate(defaults)
+
+            if not errors:
+                # update the objects with the validated form data
+                for k in result['registration']:
+                    setattr(c.person, k, result['registration'][k])
+                g.objectstore.save(c.person)
+                g.objectstore.flush()
+
+                s = smtplib.SMTP("localhost")
+                # generate welcome message
+                body = render('account/new_account_welcome.myt', url_hash=c.person.url_hash, fragment=True)
+                s.sendmail("seven-contact@lca2007.linux.org.au",
+                           c.person.email_address,
+                           body)
+                s.quit()
+                return render_response('account/thankyou.myt')
+
+        # unmangle errors
+        good_errors = {}
+        for key in errors.keys():
+            for subkey in errors[key].keys():
+                good_errors[key + "." + subkey] = errors[key][subkey]
+                
+        return render_response('account/new.myt', defaults=defaults, errors=good_errors)
