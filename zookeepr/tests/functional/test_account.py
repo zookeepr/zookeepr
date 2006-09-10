@@ -366,3 +366,57 @@ class TestAccountController(ControllerTest):
 
         resp.mustcontain("Your sign-in details are incorrect")
 
+
+    def test_create_account(self):
+        """Test the process of creating new accounts.
+        """
+        Dummy_smtplib.install()
+        
+        # get the home page
+        resp = self.app.get('/')
+        # click on the 'create new account' link
+        resp = resp.click('new user?')
+        # fill out the form
+        f = resp.form
+        f['registration.email_address'] = 'testguy@example.org'
+        f['registration.fullname'] = 'Testguy McTest'
+        f['registration.handle'] = 'testguy'
+        resp = f.submit()
+        # did we get an appropriate page?
+        resp.mustcontain("confirm")
+
+        # check our email
+        self.failIfEqual(None, Dummy_smtplib.existing,
+                         "no message sent")
+        message = Dummy_smtplib.existing
+        # check that it went to the right place
+        self.assertEqual("testguy@example.org", message.to_addresses)
+        # check that the message has the to address in it
+        to_match = re.match(r'^.*To:.*testguy@example.org.*',
+                            message.message, re.DOTALL)
+        self.failIfEqual(None, to_match, "to address not in headers")
+        # check that the message has the user's name
+        name_match = re.match(r'^.*Testguy McTest',
+                              message.message, re.DOTALL)
+        self.failIfEqual(None, name_match, "user's name not in headers")
+        # check that the message was renderered without HTML, i.e.
+        # as a fragment and thus no autohandler crap
+        html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
+        self.failUnlessEqual(None, html_match, "HTML in message!")
+        # check that the message has a url hash in it
+        match = re.match(r'^.*/account/confirm/(\S+)',
+                         message.message, re.DOTALL)
+        self.failIfEqual(None, match, "url not found")
+        # visit the url
+        print "match: '''%s'''" % match.group(1)
+        res = self.app.get('/account/confirm/%s' % match.group(1))
+        print res
+        
+        # check the rego worked
+        regs = self.objectstore.query(Person).select()
+        self.assertEqual(1, len(regs))
+        print regs[0]
+        self.assertEqual(True, regs[0].activated, "account was not activated!")
+
+        # clean up
+        Dummy_smtplib.existing.reset()
