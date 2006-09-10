@@ -13,3 +13,5 @@ zookeepr/config.ini
 *.pyc
 *.pyo
 *~
+moin/data/user/*
+moin/data/pages/*
