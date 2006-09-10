@@ -2,6 +2,8 @@ import datetime
 import smtplib
 
 from formencode import validators, Invalid
+from formencode.schema import Schema
+from formencode.variabledecode import NestedVariables
 import sqlalchemy
 
 from zookeepr.lib.auth import PersonAuthenticator, retcode
@@ -48,6 +50,23 @@ class PasswordResetSchema(BaseSchema):
     password_confirm = validators.String(not_empty=True)
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+
+
+class PersonSchema(Schema):
+    email_address = validators.String(not_empty=True)
+    fullname = validators.String(not_empty=True)
+    handle = validators.String()
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+
+
+class NewRegistrationSchema(BaseSchema):
+    registration = PersonSchema()
+
+    pre_validators = [NestedVariables]
+
 
 class AccountController(BaseController):
 
@@ -207,3 +226,46 @@ class AccountController(BaseController):
         # FIXME: test the process above
         return render_response('account/reset.myt', defaults=defaults, errors=errors)
 
+
+    def new(self):
+        """Create a new account.
+
+        Non-CFP accounts get created through this interface.
+
+        See ``cfp.py`` for more account creation code.
+        """
+        defaults = dict(request.POST)
+        errors = {}
+
+        c.person = Person()
+
+        if defaults:
+            result, errors = NewRegistrationSchema().validate(defaults)
+
+            if not errors:
+                # update the objects with the validated form data
+                for k in result['registration']:
+                    setattr(c.person, k, result['registration'][k])
+                g.objectstore.save(c.person)
+                g.objectstore.flush()
+
+                s = smtplib.SMTP("localhost")
+                # generate welcome message
+                body = render('account/new_account_email.myt',
+                              fragment=True)
+                s.sendmail("seven-contact@lca2007.linux.org.au",
+                           c.person.email_address,
+                           body)
+                s.quit()
+                return render_response('account/thankyou.myt')
+
+        # unmangle errors
+        good_errors = {}
+        for key in errors.keys():
+            try:
+                for subkey in errors[key].keys():
+                    good_errors[key + "." + subkey] = errors[key][subkey]
+            except AttributeError:
+                good_errors[key] = errors[key]
+                
+        return render_response('account/new.myt', defaults=defaults, errors=good_errors)
