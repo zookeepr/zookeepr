@@ -409,14 +409,23 @@ class TestAccountController(ControllerTest):
         self.failIfEqual(None, match, "url not found")
         # visit the url
         print "match: '''%s'''" % match.group(1)
-        res = self.app.get('/account/confirm/%s' % match.group(1))
-        print res
+        resp = self.app.get('/account/confirm/%s' % match.group(1))
+        print resp
         
         # check the rego worked
         regs = self.objectstore.query(Person).select()
         self.failIfEqual([], regs)
         print regs[0]
         self.assertEqual(True, regs[0].activated, "account was not activated!")
+        # ok, now try to log in
+
+        resp = resp.click('sign in')
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f['password'] = 'test'
+        resp = f.submit()
+        self.failIf('details are incorrect' in resp)
+        self.failUnless('logged_in_user' in resp.session)
 
         # clean up
         Dummy_smtplib.existing.reset()
