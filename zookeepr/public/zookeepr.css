@@ -20,15 +20,6 @@ body {
   margin-bottom: 20px;
 }
 
-#usermenu, #mainmenu {
-  font-size: 160%;
-  font-weight: bold;
-}
-
-#usermenu {
-  font-size: 120%;
-}
-
 #menus {
   position: absolute;
   top: 20px;
@@ -150,26 +141,32 @@ a img {
  * menus
  */
 
-.linkmenu {
+.menu {
+  font-size: larger;
+  font-weight: bold;
   list-style: none;
   margin: 0;
   padding: 0;
   clear: both;
 }
 
-#mainmenu li {
+.menu li {
   float: left;
   padding: 0.1em .5em;
 }
 
-.linkmenu a {
+.menu a {
   text-decoration: none;
 }
 
 #mainmenu {
-  display: block;
-  width: 15em;
+  font-size: x-large;
 }
+
+#secondarymenu {
+  font-size: large;
+}
+
 
 /**
  * forms
@@ -239,21 +236,6 @@ TABLE TR.odd {
   margin-bottom: 1ex;
 }
 
-.sublinkmenu {
-  margin: 0;
-  padding: 0;
-  clear: both;
-}
-
-.sublinkmenu li {
-  font-size: 80%;
-  float: left;
-}
-
-.sublinkmenu a {
-  text-decoration: none;
-}
-
 ul {
   margin: 0em;
   padding-left: 1.5em;
@@ -273,15 +255,6 @@ ul li:before {
 h2 {
   color: #999;
 }
-
-#mainmenu li:before {
-  content: "";
-}
-
-.sublinkmenu li {
-  border-right: 1px dotted #fff;
-}
-
 
 /**
  * CRUD actions
