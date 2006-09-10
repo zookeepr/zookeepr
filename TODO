@@ -33,14 +33,6 @@
   * informational module (explain MyLCA box, Jeff's giant arrow)
   * planet feed
 
- * sign up for a login
-  * firstname, lastname, handle, email, password
-  * optionally any other personal details
-  Firstname, Lastname, Handle, Country, City, Phone, Email (whitelist contact), (Privacy, Fax, Title, Company, Address, State, Zip, Photo, RSS, Company)
-  * send confirmation email
-
- * Edit/delete previously submitted participation
-
  * Administration
   * organisers have a release schedule to plug dates in, modules are activated at times
   * look up, edit, create attendees 
@@ -109,5 +101,3 @@
 displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have quoted chars
 
  * apachebench on zookeepr
-
- * autocreate roles and submission types at server startup
