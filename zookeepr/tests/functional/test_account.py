@@ -414,9 +414,12 @@ class TestAccountController(ControllerTest):
         
         # check the rego worked
         regs = self.objectstore.query(Person).select()
-        self.assertEqual(1, len(regs))
+        self.failIfEqual([], regs)
         print regs[0]
         self.assertEqual(True, regs[0].activated, "account was not activated!")
 
         # clean up
         Dummy_smtplib.existing.reset()
+
+        self.objectstore.delete(regs[0])
+        self.objectstore.flush()
