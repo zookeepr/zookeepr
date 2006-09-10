@@ -1,0 +1,167 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:None
+##master-date:None
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+== Other MoinMoin help topics ==
+
+'''Subtopics'''
+ * /FrequentlyAskedQuestions
+ * /ExperimentalFeatures
+
+'''Contents''' [[TableOfContents]]
+
+=== Lost password for a user ===
+
+If you have mail configured for your moin (see HelpOnConfiguration) then
+users can have their password sent to the email address in their current
+record.  If SMTP is not configured, then the "Mail me my password" button
+is not shown on UserPreferences, and subscribed pages cannot be sent to
+users.
+
+=== Adding an icon to your wiki setup ===
+
+You maybe want to add some icon to your wiki site, commonly known as `favicon.ico`.
+To get those little icons besides bookmarks and with tabbed browsing, add this to your `wikiconfig.py`:
+{{{
+html_head = '''
+<link rel="shortcut icon" href="/wiki/favicon.ico">
+<!-- ... more header stuff ... -->
+'''
+}}}
+
+The image size ''must'' be 16x16 and simply putting it as `/favicon.ico` (into your Document``Root) does ''not'' work with all browsers (e.g. does not work with Mozilla versions 1.0 - 1.3).
+
+=== Apache tricks ===
+
+==== Securing access to a wiki via Apache means ====
+
+See MoinMoin:PasswordProtectedEditing
+
+==== Serving the wiki from a domain root ====
+`httpd.conf` modification for MoinMoin installation at "/":
+{{{
+# global section:
+LoadModule rewrite_module /usr/lib/apache/1.3/mod_rewrite.so
+# virtualhost section:
+RewriteEngine on
+RewriteRule ^/wiki/       -                      [last]
+RewriteRule ^/robots.txt  -                      [last]
+RewriteRule ^/favicon.ico -                      [last]
+RewriteRule ^/?(.*) /file/path/to/moin.cgi/$1  [last,type=application/x-httpd-cgi]
+}}}
+This way you can use short and clean URLs like http://LinuxWiki.de/FrontPage.
+
+Note:
+
+ * /pathto/cgi-bin/.. is absolute file path, not a URL path.
+ * Make sure the ''file path'' to moin.cgi has ExecCGI privileges in your httpd.conf.
+ * There is no need for a !ScriptAlias to moin.cgi, but you still need the alias to MoinMoin's htdocs folder: `Alias /wiki/ "/usr/share/moin/htdocs/"`
+
+==== Redirect /mywiki/MyWiki to the user's language FrontPage ====
+
+Perhaps you want to use My``Wiki in your wiki to refer to your wiki. If a user clicks this link s/he should be transfered to the FrontPage, that is to the FrontPage of her/his language.
+
+Add this to your {{{httpd.conf}}} ''before'' the {{{ScriptAlias}}}:
+{{{
+RedirectPermanent /mywiki/MyWiki    http://www.domain.org/mywiki?action=show
+}}}
+
+=== Serving the wiki from wiki.domain.com and home page from www.domain.com ===
+
+Here is a configuration for virtual hosting with special permissions on Gentoo Linux.  The following configuration is for Apache2 config files.  Just put it all in httpd.conf for Apache 1.
+
+Add this to /etc/apache2/conf/vhosts/vhosts.conf
+
+{{{
+NameVirtualHost *
+<VirtualHost *>
+   ServerName www.domain.org
+   ServerAlias domain.org
+   DocumentRoot /var/www/domain.org/htdocs
+</VirtualHost>
+ 
+<VirtualHost *>
+   ServerName wiki.domain.org
+   Alias /wiki/ "/usr/share/moin/htdocs/"
+   Alias /favicon.ico "/var/www/htdocs/favicon.ico"
+   ScriptAlias / "/usr/share/moin/mywiki/moin.cgi/"
+</VirtualHost>
+}}}
+
+Add this to /etc/apache2/conf/commonapache2.conf
+
+{{{
+<Directory /usr/share/moin/htdocs/>
+   Order deny,allow
+   Allow from all
+</Directory>
+
+<Directory /usr/share/moin/domain.org/>
+   Order deny,allow
+   Allow from all
+</Directory>
+}}}
+
+=== Special features for wiki farms and intranets ===
+
+The following shows how certain features can help you to optimize your configuration when you run several wikis on one host, or when you use MoinMoin in intranet environments.
+
+==== Centralized settings ====
+
+ * farmconfig.py
+ * shared intermap.txt
+ * shared code base and icons
+
+==== Remapping URLs ====
+The configuration variable "`url_mappings`" can be used to remap URLs, for example to change certain URL prefixes to totally different ones. This is especially useful in intranets, when whole trees of documents hosted outside of the wiki move around. It does not apply to most intra-wiki links as those are relative and are not remapped.
+
+"`url_mappings`" is a lookup table in the form of a dict, the key is the prefix to be replaced, the value is the replacement.
+
+You could also use "`url_mappings`" to include a dereferer-script for external links, like this: {{{
+url_mappings = {
+    'http://my-wiki/': 'http://my-wiki/',
+    'http://': '/cgi-bin/derefer.cgi?url=http://'
+  }
+}}}
+The reason you might want to use this is to avoid google spamming in your wiki (although this is unlikely to be noticed and would only counter the link spamming if done large-scale) or to keep your wikipages secret. Note that your own wiki needs to be included explicitly because URLs that might be generated automatically (for example for email notifications) would otherwise be remapped to your referrer script as well.
+
+'''Please notice:''' If you want to ''redirect'' a single page to another, just type `#REDIRECT` and the name of the page to direct to in the first line of your page. See HelpOnProcessingInstructions.
+
+=== TODO ===
+
+<!> TODO: explain the following things in detail, and add more detail to the above sections
+
+Needing more explanation:
+ * event logging
+ * Page trails (user option)
+ * UserPreferences: checkboxes for double-click edit, page trail, fancy links, emoticons, jump to last page visited, and some other yes/no options
+ * "Remove trailing whitespace from each line" option in the editor
+ * Page templates (create a new page using a template page) 
+ * Only "normal" URLs (outside of brackets) are converted to inline images ==> document exact rules
+ * Highlighting of search results, and of bad words when spellchecking
+ * Support for "file:" URLS
+ * email notification features
+ * "RSS" icon displayed by RecentChanges macro
+ * commentary field of editor, recent changes and page info
+ * Page caching, for now limited to XSLT processing (where it's absolutely needed); new code & API to add the "Delete``Cache" link
+ * inline search fields (at the bottom of each page)
+ * the interwiki name "Self" now always points to the own wiki
+ * page info action
+
+Admin stuff:
+ * describe "moin.cgi?action=test" tool in more detail
+ * Wiki``Farm support:
+   * <datadir>/plugin/macro and <datadir>/plugin/action can be used to store macros and actions local to a specific wiki instance
+   * config.shared_intermap can contain a pathname to a shared "intermap.txt" file (i.e. one stored outside the datadir)
+ * $PAGE placeholder in interwiki map
+
+Command-line tools:
+ * "moin-dump" command line tool to create a static copy of the wiki content
+ * "pagescleaner" display unused directories in data/pages
+ * "globaledit" script for doing global changes to all pages in a wiki.
+
+Compatibility:
+ * RSS features require a recent PyXML (CVS or 0.7) due to bugs in the namespace handling of xml.sax.saxutils in earlier versions. This is (hopefully) automatically detected on every installation.

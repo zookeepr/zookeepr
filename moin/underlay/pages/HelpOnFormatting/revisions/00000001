@@ -1,0 +1,99 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+== General ==
+
+ * Use one or more blank lines to separate paragraphs.
+ * Use `[[BR]]` to insert linebreaks into paragraphs.
+
+== Typeface ==
+
+## Note that in some places we've used backticks here to "escape" the Wiki markup.
+
+||''' Name/Sample''' || ''' Markup '''   || ''' Notes '''          ||
+||  ''italic''     || `''italic''`       || Double single quotes.  ||
+||  '''bold'''     || `'''bold'''`       || Triple single quotes.  ||
+||  `monospace`    || {{{`monospace`}}}  || Single backticks.  Wiki markup is ignored.   ||
+||  {{{code}}}     || `{{{code}}}`       || [#code_example Example.]  Wiki markup is ignored. ||
+||  __underline__  || `__underline__`    ||                         ||
+||  ^super^script  || `^superscript^`    ||                         ||
+||  ,,sub,,script  || `,,subscript,,`    ||                         ||
+||  ~-smaller-~    || `~-smaller-~`      ||                         ||
+||  ~+larger+~     || `~+larger+~`       ||                         ||
+|| --(stroke)--    || `--(stroke)--`     || MoinMoin Version 1.5+   ||
+
+== Colorized Code ==
+
+There are several ways to display colorized code formatting:
+ 1. Start a special code block containing the parser's name: `{{{#!parsername`
+ 2. Embed a file attachment bearing a supported extension (such as `".py"`) with `inline:`
+ 3. Begin a page with the format processing instruction: `#format parsername`
+
+[#color_code_example Example.]
+
+To see the list of supported languages see HelpOnParsers.
+
+----
+
+= Examples =
+
+== Mixing ''italic'' and '''bold''' ==
+[[Anchor(italic_bold_example)]]
+
+## Note that in some places we've used backticks here to "escape" the Wiki markup.
+
+||'''Markup'''                       || '''Result'''                     ||
+|| `'''''Mix''' at the beginning''`  ||  '''''Mix''' at the beginning''  ||
+|| `'''''Mix'' at the beginning'''`  ||  '''''Mix'' at the beginning'''  ||
+|| `'''Mix at the ''end'''''`        ||  '''Mix at the ''end'''''        ||
+|| `''Mix at the '''end'''''`        ||  ''Mix at the '''end'''''        ||
+
+
+== Code ==
+
+[[Anchor(code_example)]]
+## Note that we've used backticks here to "escape" the Wiki markup, and line-breaks to split up the paragraph.
+
+`{{{` [[BR]]
+`10 PRINT "Hello, world!"` [[BR]]
+`20 GOTO 10` [[BR]]
+`}}}` [[BR]]
+
+Result:
+
+{{{
+10 PRINT "Hello, world!"
+20 GOTO 10
+}}}
+
+
+== Superscript & Subscript ==
+
+`You might recall ''a''^2^ `+` ''b''^2^ `=` ''c''^2^ from your math lessons, unless your head is filled with H,,2,,O.`
+
+Result:
+
+You might recall ''a''^2^ `+` ''b''^2^ `=` ''c''^2^ from your math lessons, unless your head is filled with H,,2,,O.
+
+
+== Colorized Code, Method #1 ==
+[[Anchor(color_code_example)]]
+
+## Note that we've used backticks here to "escape" the Wiki markup, and line-breaks to split up the paragraph.
+
+`{{{#!python` [[BR]]
+`from colors import palette` [[BR]]
+`palette.colorize('python')` [[BR]]
+`}}}` [[BR]]
+
+Result:
+
+{{{#!python
+from colors import palette
+palette.colorize('python')
+}}}

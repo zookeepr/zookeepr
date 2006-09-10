@@ -1,0 +1,22 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off 
+[[Navigation(slides)]] 
+
+= Creating new Pages =
+
+New pages are created by simply adding a new WikiName to an existing page and clicking on it after saving the existing page.
+
+This brings up a page with a variety of possibilities to create the new page:
+ * click on ''create page'' to start with an empty page or
+ * click on one of the listed templates to base your page on the content of the selected template.
+
+Below the list of templates you will also find a list of existing pages with a similar name. You should always check this list because someone else might have already started a page about the same subject but named it slightly differently.
+
+----
+For details see HelpOnPageCreation and WikiName.

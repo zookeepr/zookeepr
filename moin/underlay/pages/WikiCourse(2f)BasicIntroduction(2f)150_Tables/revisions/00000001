@@ -1,0 +1,26 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off 
+[[Navigation(slides)]] 
+
+= Tables =
+
+Tables appear if you separate the content of the columns by &#160;`||`. All fields of the same row must be also on the same line in the editor.
+
+Markup:
+ {{{
+||<rowbgcolor="#FFFFE0"> '''Column 1'''  |||| '''Column 2 & 3''' ||
+||<)> 1  ||<:> 2 ||<(> 3 ||
+}}}
+
+Display:
+ ||<rowbgcolor="#FFFFE0"> '''Column 1'''  |||| '''Column 2 & 3''' ||
+ ||<)> 1  ||<:> 2 ||<(> 3 ||
+
+----
+For details see HelpOnTables.

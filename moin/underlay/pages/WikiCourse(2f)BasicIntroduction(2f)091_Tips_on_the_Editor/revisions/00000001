@@ -1,0 +1,24 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off 
+[[Navigation(slides)]]
+
+= Tips on the Editor =
+"`Check spelling`" examines the text for unknown words.
+
+Within the editor, the usual hotkeys work:
+||<rowbgcolor="#DEDEDE">'''Undo:''' `CTRL+Z`||'''Redo:''' `CTRL+Y`||
+||<rowbgcolor="lightblue">'''Copy:''' `CTRL+C`||'''Paste:''' `CTRL+V`||
+||<rowbgcolor="#DEDEDE">'''Home:''' `CTRL+Home`||'''End:''' `CTRL+End`||
+
+
+(!) If you discover an interesting format somewhere, just use the "raw" icon to find out how it was done.
+
+(!) In UserPreferences, you can set up the editor to open when you double click a page.
+
+(!) You can subscribe to pages to get a mail on every change of that page. Just click on the envelope [[Icon(subscribe)]] at top right of the page.

@@ -1,0 +1,217 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+[[TableOfContents]]
+
+= Why Use mod_python =
+
+[http://modpython.org/ mod_python] embeds the python interpreter into
+the apache server. This saves initialization time and the need of
+forking cgi scripts. It doesn't have the ability to run as different
+users. It will always run as the main apache user and group. Be sure
+that your wiki data files are accessible and writable by your apache
+server.
+
+<!> The basic configuration is suitable for mod_python 3.1.3 and later. If you use older version, see the section "Older mod_python versions"
+
+<!> mod_python will cause your apache processes to increase their
+memory requirements considerably - especially as apache runs many
+separate processes which will each need to have their own copy of the
+python code and data in the process memory space.  You may find that
+FastCGI, as detailed in HelpOnInstalling/ApacheWithFastCgi is rather
+more efficient in this respect.
+
+= Basic configuring =
+
+ 1. Install mod_python
+ 1. Set up a wiki instance
+ 1. Edit `wikiconfig.py`
+ 3. Changes to Apache `httpd.conf`
+ 1. Restart Apache
+
+The sample configurations below are for a wiki instance called `mywiki` installed in a directory `/var/www/moin/mywiki` with the main MoinMoin installation installed in python's default site library path. The wiki appears as URL `/mywiki` under the server - ie `http://my.ser.ver/mywiki`.  You will need to change these to reflect your installation.
+
+== Install mod_python ==
+
+Most people will just add a `mod_python` package to their current operating system installation.  If you are building from source then you should consult the [http://modpython.org/live/current/doc-html/ mod_python documentation].
+
+The mod_python installation should have added some lines to the Apache configuration file - either in the file itself or in an included configuration file (for example on Red Hat or Fedora linux the mod_python configuration is in `/etc/httpd/conf.d/python.conf`).
+
+Make sure you have this line in `httpd.conf` or mod_python will not work:
+{{{
+LoadModule python_module modules/mod_python.so
+}}}
+
+After this restart Apache and make sure that it starts successfully, and that the error log has a line similar to this:-
+{{{
+[Sat Jan 01 15:40:49 2005] [notice] mod_python: Creating 4 session mutexes based on 150 max processes and 0 max threads.
+}}}
+
+You may need to change some environment variables on (eg) FreeBSD - this is detailed in the port installation message.
+
+== Set up a wiki instance ==
+
+This is done as shown in [:HelpOnInstalling/WikiInstanceCreation:WikiInstanceCreation]. Its recommended to first configure the wiki with cgi and check that it works, then change the configuratin to use mod_python. This allows you be sure that any problems are in the mod_python transition rather than the basic MoinMoin installation.
+
+ 1. Copy moin.cgi into your wiki directory
+ 1. Configure `httpd.conf` as cgi first:
+  {{{
+Alias /wiki/ "/usr/share/moin/htdocs/"
+ScriptAlias /mywiki "/var/www/moin/mywiki/moin.cgi"
+}}}
+
+Restart Apache and make test that your wiki works.
+
+== Edit `wikiconfig.py` ==
+
+Make sure you use only absolute paths - relative paths will not work!
+{{{
+data_dir = '/var/www/moin/mywiki/data/'
+data_underlay_dir = '/var/www/moin/mywiki/underlay/'
+}}}
+
+If you do not want to use absolute paths, you can use Python's os module to construct the relative paths:
+{{{import os
+data_dir = os.path.join(os.path.dirname(__file__), 'data/')
+data_underlay_dir = os.path.join(os.path.dirname(__file__), 'underlay/')
+}}}
+
+Test that the wiki works after this change.
+
+ (!) In 1.2 and earlyer, the configuration file is called `moin_config.py`.
+
+== Changes to Apache `httpd.conf` ==
+
+After your wiki is running as cgi script, convert it to run with mod_python. 
+
+If you run your wiki as cgi as we recommended before, remove or comment the ScriptAlias directive:
+{{{
+#ScriptAlias /mywiki "/var/www/moin/mywiki/moin.cgi"
+}}}
+
+Add a `Location` directive:
+{{{
+<Location /mywiki>
+    SetHandler python-program
+    # Add the path of your wiki directory
+    PythonPath "['/var/www/moin/mywiki'] + sys.path"
+    PythonHandler MoinMoin.request::RequestModPy.run
+</Location>
+}}}
+
+If you have multiple MoinMoin instances then add one location directive for each one (changing the paths as appropriate) and add a line with the directive `PythonInterpreter mywiki` to each Location section. With this directive different subinterpreters with completely separate namespaces will be used for each wiki (see [http://modpython.org/live/current/doc-html/pyapi-interps.html here] for details).
+
+If you did not install MoinMoin in the default location, you will have to add the path to MoinMoin to the system path:
+{{{
+    PythonPath "['/var/www/moin/mywiki', '/prefix/lib/python2.x/site-packages'] + sys.path"
+}}}
+
+Restart Apache - everything should now work correctly.
+
+= Solving problems for non-root-mounted wikis =
+
+ /!\ If your wiki does not have a root URL (like `http://www.example.com/FrontPage`), then you might need to follow the next steps:
+
+On some installations, mod_python hands MoinMoin incorrect script_name and path_info. It usually happens when using the Apache Location directive, with a wiki in an arbitary path:
+{{{
+<Location /farm/mywiki>
+    ...
+</Location>
+}}}
+This will not work, because its not clear what is the script name, since with location setup, there is no real script.
+
+To solve this problem, use a `PythonOption` directive:
+{{{
+<Location /farm/mywiki>
+    # Location value must match the Apache Location value!
+    PythonOption Location /farm/mywiki
+    ...
+</Location>
+}}}
+ (!) New in release 1.3.5
+
+= Configuring root wiki =
+
+You may wish to have your wiki appearing at the root of your webserver - for example so that `http://wiki.example.com/` will map to your wiki rather than having to use `http://wiki.example.com/mywiki/`.  This requires a slightly different form of configuration using `mod_rewrite` - this is a standard module of recent Apache distributions, and is often enabled by default.
+
+You need to set up your wiki instance as described above, and also copy `moinmodpy.py` from the Moin installation directory to the wiki instance directory (`/var/www/moin/mywiki` in these examples).
+
+The Apache configuration needs `mod_rewrite` enabled - so the line
+{{{
+LoadModule rewrite_module modules/mod_rewrite.so
+}}}
+should appear in the first part of the `httpd.conf` configuration file.
+
+The wiki and virtual host configuration sould look like this:-
+{{{
+<VirtualHost *:80>
+  ServerAdmin postmaster@example.com
+  DocumentRoot /var/www/html
+  ServerName wiki.example.com
+  Alias /wiki/ "/usr/share/moin/htdocs/"
+
+  # Rewrite urls
+  RewriteEngine On
+  RewriteLogLevel 0
+  # map /wiki static files to Moin htdocs
+  RewriteRule ^/wiki/(.*)$ /usr/share/moin/htdocs/$1 [last]
+  RewriteRule ^/robots.txt$ /usr/share/moin/htdocs/robots.txt [last]
+  RewriteRule ^/favicon.ico$ /usr/share/moin/htdocs/favicon.ico [last]
+  # map everything else to server script
+  RewriteRule ^(.*)$ /var/www/moin/mywiki/moinmodpy.py$1
+
+  <Directory "/var/www/moin/testwiki">
+    # Modpy stuff
+    AddHandler python-program .py
+    # Add the path to the wiki directory, where
+    # moinmodpy.py and wikiconfig.py are located.
+    PythonPath "['/var/www/moin/mywiki'] + sys.path"
+    PythonHandler moinmodpy
+  </Directory>
+</VirtualHost>
+}}}
+
+Apache should be restarted, and the !FrontPage of `mywiki` should now appear at `http://wiki.example.com/`.
+
+Other ways of handling root level wikis with Apache are detailed in the appropriately named HelpOnConfiguration/ApacheVoodoo.
+
+= Older mod_python versions =
+
+mod_python versions 2.7.10, 3.0.4 and 3.1.2b have a bug in `apache.resolve_object`. This bug was reported to the mod_python
+maintainers and has been fixed in the 3.1.3 release. The best fix for this is to update to the current release. However if you are unable to do this there are 2 possible solutions:
+
+== Use a wrapper script ==
+
+MoinMoin come with a `moinmodpy.py` wrapper script, and this could be used by changing the `PythonPath` and `PythonHandler` directives as shown in the `moinmodpy.htaccess` file. The wrapper was named `moin_modpy.py` in MoinMoin 1.2.
+
+== Fix mod_python ==
+mod_python has a small resolver bug in versions 2.7.10, 3.0.4 and 3.1.2b.
+The method `resolve_object` in `mod_python/apache.py` checks the wrong
+object, and so the lookup for `RequestModPy.run` fails.
+
+To fix it you need to change the method `resolve_object` (around line 551 for
+mod_python 3.1.2b) from
+
+{{{
+        if silent and not hasattr(module, obj_str):
+            return None
+}}}
+
+to
+
+{{{
+        if silent and not hasattr(obj, obj_str):
+            return None
+}}}
+
+
+= Troubleshooting =
+
+Page access gives apache error::
+ {{{PythonHandler MoinMoin.request::RequestModPy.run: OSError: [Errno 2] No such file or directory: 'data/user'}}}
+ This appears to be caused by you not having an absolute path for `data_dir` in `moin_config.py`.  There are several other lines of error traceback preceding this one in the apache error log.  Fix the path in `moin_config.py`.

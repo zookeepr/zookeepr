@@ -1,0 +1,43 @@
+##master-page:HelpTemplate
+##master-date:Unknown-Date
+#format wiki
+#language en
+
+[[TableOfContents]]
+== ImageLink ==
+This macro is used to make a link that displays an image (can be given as either attachment or URL) and links to either an URL or a wiki page. Optionally the size of the image can be adjusted. If no target is given the link will point to the image itself. 
+
+=== Syntax ===
+{{{[[ImageLink(image,target[,width=width[,height=height]][,alt=alttag])]]}}}
+
+=== Parameters ===
+{{{
+image: image attachment file name or the URL of an image
+target: link target wiki page or URL (optional)
+}}}
+=== Keyword Parameters ===
+{{{
+width: rendered image width (optional)
+height: rendered image heigth (optional)
+alt: alt text
+}}}
+=== Example ===
+{{{
+[[ImageLink(München.png,München,height=100)]]
+[[ImageLink(Images/München.png,München,height=100)]]
+[[ImageLink(http://webcam.portalmuc.de/images/webcam/webcam_marienplatz.jpg,München Marienplatz)]]
+[[ImageLink(plot.png,width=200)]]
+[[ImageLink(plot.png,height=200)]]
+[[ImageLink(plot.png)]]
+[[ImageLink(http://webcam.portalmuc.de/images/webcam/webcam_marienplatz.jpg,http://www.muenchen.de,width=150)]]
+[[ImageLink(münchen.png,http://www.muenchen.de,width=50)]]
+[[ImageLink(http://webcam.portalmuc.de/images/webcam/webcam_marienplatz.jpg)]]
+[[ImageLink(example.png,alt=whateveryouwant(üöä))]]
+}}} 
+
+=== Display ===
+{{{
+[[ImageLink(http://moinmaster.wikiwikiweb.de:8000/wiki/common/moindude.png,FrontPage,width=200,alt=Welcome)]]
+}}}
+
+[[ImageLink(http://moinmaster.wikiwikiweb.de:8000/wiki/common/moindude.png,FrontPage,width=200,alt=Welcome)]]

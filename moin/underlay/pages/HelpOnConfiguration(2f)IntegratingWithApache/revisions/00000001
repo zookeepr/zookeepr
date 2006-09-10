@@ -1,0 +1,128 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+''' How to integrate your wiki with existing Apache setup '''
+
+There are currently 5 possibilities running a MoinMoin wiki: Using CGI, FastCGI, Mod Python, Standalone server or Twisted server. The best options are FastCGI or Mod Python, but they are not available on all platforms and known to have configuration issues. The next solution is running twisted or standalone servers, which are much faster then CGI and easier to configure. 
+
+However, many people already run web servers and serve static pages or other applications, and want to add a wiki to the current setup. The best option is to run MoinMoin as a Standalone or Twisted server proxied behind your existing web server. In release 1.5 this works out of the box with simple setup.
+
+In the example setup bellow, We will integrate a MoinMoin wiki in our site http://www.example.com/exwiki/.
+
+ (!) New in release 1.5
+
+= Requirements =
+
+ 1. Install Standalone or Twisted server as explained in HelpOnInstalling.
+ 1. Make sure mod_proxy is installed and loaded. Consult [http://localhost/manual Apache Documentation].
+
+= Integrating with Apache 2 =
+
+== Standalone or Twisted setup ==
+
+If you want to use Twisted, edit {{{mointwisted.py}}} and set these options:
+{{{
+    port = 8000
+    interfaces = ['localhost']
+}}}
+
+If you want to use Standalone, edit {{{standalone.py}}} and set these options:
+{{{
+    port = 8000
+    interface = 'localhost'
+}}}
+
+Now run your moin server and check that it works at http://localhost:8000.
+
+== Apache 2 setup ==
+
+Edit your Apache configuration file, either `httpd.conf` or included configuration file:
+{{{
+# Must be off to run a reverse proxy
+ProxyRequests Off
+
+Alias /wiki/ "/usr/share/moin/htdocs/"
+
+<Location /exwiki/>
+    ProxyPass http://localhost:8000/
+    ProxyPassReverse http://localhost:8000/
+    RequestHeader set X-Moin-Location /exwiki/
+</Location>
+}}}
+
+Now restart Apache and test your wiki at http://localhost/exwiki/ or http://www.example.com/exwiki/
+
+This setup was tested on Mac OS X.
+
+
+= Integrating with Apache 1 =
+
+== Standalone or Twisted setup ==
+
+If you want to use Twisted, edit {{{mointwisted.py}}} and set these options:
+{{{
+    properties = {'script_name': '/mywiki', 'http_host': 'yourdomain'}
+    port = 8000
+    interfaces = ['localhost']
+}}}
+
+If you want to use Standalone, edit {{{standalone.py}}} and set these options:
+{{{
+    properties = {'script_name': '/mywiki', 'http_host': 'yourdomain'}
+    port = 8000
+    interface = 'localhost'
+}}}
+
+ (!) Another solution may be to use url_mapping config option.
+
+== Apache 1 setup ==
+
+This setup require mod_proxy. Make sure its installed and loaded before you continue.
+
+Edit your Apache configuration file, either `httpd.conf` or included configuration file:
+{{{
+# Must be off to run a reverse proxy
+ProxyRequests Off
+
+Alias /wiki/ "/usr/share/moin/htdocs/"
+
+<Location /exwiki/>
+    ProxyPass http://localhost:8000/
+    ProxyPassReverse http://localhost:8000/
+</Location>
+}}}
+
+Now restart Apache and test your wiki at http://www.example.com/exwiki/
+
+ (!) Note that your wiki will not work correctly from http://localhost:8000 with this setup.
+
+ <!> Tested with Apache 2, should work also on Apache 1.
+
+= Farm configuration =
+
+When running Twisted or Standalone without a proxy, the wiki url contain the server name (and sometimes also the port) and the page name. For example: `localhost:8000/pagename`. 
+
+However, when running behind a proxy, the wiki url contain the proxy host, not the server name, and may include a "script_name". In this case, the wiki that run on `localhost:8000` might have a url of `www.example.com/exwiki/pagename` when you access it through the proxy, and `localhost:8000/pagename` when you access it locally.
+
+If you want to use same configuration file for both local and word access, use settings like this in your `farmconfig.py`:
+{{{
+wikis = [('exwiki', r'^(localhost:8000|www.example.com/exwiki).*')]
+}}}
+
+If you want to have different configuration for local and world access:
+{{{
+wikis = [('exwiki_local', r'^localhost:8000.*'),
+         ('exwiki_world', r'^www.example.com/exwiki.*'),]
+}}}
+
+= Disabling host rewriting =
+
+If you want to disable the new transparent host rewriting, override `http_host` in your server script:
+{{{
+    properties = {'http_host': 'hostname'}
+}}}

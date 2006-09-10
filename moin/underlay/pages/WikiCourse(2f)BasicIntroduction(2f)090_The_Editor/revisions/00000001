@@ -1,0 +1,20 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off 
+[[Navigation(slides)]]
+
+= Using the Editor =
+
+To edit a page, just click on [[Icon(edit)]] or on the link "`EditText`" at the end of the page. A form will appear enabling you to change text and save it again. A backup copy of the previous page's content is made each time.
+
+You can check the appearance of the page without saving it by using the preview function - ''without'' creating an entry on RecentChanges; additionally there will be an intermediate save of the page content, if you have created a homepage ([[Icon(home)]] is visible).
+
+<!> After editing pages, please leave the edit form by "`Save Changes`" since otherwise your edits will be lost!
+
+----
+For details see HelpOnEditing.

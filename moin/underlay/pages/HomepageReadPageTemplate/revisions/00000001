@@ -1,0 +1,7 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:HomepageReadPageTemplate
+##master-date:Unknown-Date
+#acl @ME@:read,write,delete,revert @ME@/ReadWriteGroup:read @ME@/ReadGroup:read
+#format wiki
+#language en

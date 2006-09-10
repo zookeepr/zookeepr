@@ -1,0 +1,86 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+== Actions ==
+
+Actions are tools that work on a page or the whole wiki, but unlike macros do not add ''to'' the page content when viewing a page, but work ''on'' that page content. They either produce some output based on page contents (navigational actions like searching) or implement functions that are not related to viewing a page (like deleting or renaming a page).
+
+There is a set of system-defined actions, which includes page editing; you can extend the set of known actions by your own ones. See HelpForDevelopers for more on that.
+
+The following actions are added to the list of user-defined extension actions at the bottom of each page (or in the "More actions" menu). This happens to any mixed-case extension, for other actions (all lower-case) see the list further down this page. Some of these action might not be available for your wiki site.
+
+||<tablewidth="100%">'''Action'''||'''Description'''||'''Remark'''||
+||<-3>`AttachFile`     ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> attach files to a page, see /AttachFile for more details. || This action is not granted if you are not logged in. ||
+||<-3>`DeletePage`     ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Delete a page, after you confirmed it; deletion means a final backup copy is created and only then the page is deleted, i.e. you can ''revive'' the page later on (as long as the backups are not physically deleted). || This action is not granted if you are not logged in. ||
+||<-3>`RenamePage`     ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Rename a page, after you confirmed it. || ||
+||<-3>`LikePages`     ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> list pages whose title starts or ends with the same MeatBall:WikiWord as the current page title.|| ||
+||<-3>`LocalSiteMap`     ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> show nearby links of the current page, i.e. list all referred-to pages, and in turn their references, to a certain limited depth. || ||
+||<-3>`SpellCheck`     ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;">call the spell checker for the current page; see HelpOnSpellCheck for more. || ||
+||<-3>`SubscribeUser`     ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Administrators can use it to subscribe other users to pages || ||
+
+The following is a list of ''internal'' actions that are used to implement the various icons and links at the top and bottom of pages, or supplement certain macros.
+
+||<tablewidth="100%">'''Action'''||'''Description'''||'''Remark'''||
+||<-3>`titleindex`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Implements the listing of all page names as text (append `?action=titleindex` to your wiki address) or XML (`?action=titleindex&mimetype=text/xml`); the main use of this action is to enable MeatBall:MetaWiki.|| ||
+||<-3>`fullsearch`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> this action is triggered by clicking on the "Search Text" button of the `FullSearch` macro (`?action=fullsearch&value=HelpOnActions`).|| ||
+||<-3>`titlesearch`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> this action is triggered by clicking on the "Search Titles" button of the `TitleSearch` macro (`?action=titlesearch&value=HelpOnActions`).|| ||
+||<-3>`inlinesearch`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> this implements the inline search for the form fields at the bottom of each page (note that this uses POST requests, so you won't normally see this action in URLs).|| ||
+||<-3>`highlight`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> highlight the search word when you click on a link in a search result list.|| ||
+||<-3>`diff`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display differences between page revisions.|| ||
+||<-3>`info`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> show meta-data on a page.|| ||
+||<-3>`recall`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display an older revision of a page.|| ||
+||<-3>`show`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display a page (the default action).|| ||
+||<-3>`refresh`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> refresh the cached version of a page (currently only used on XSLT-formatted pages). || ||
+||<-3>`print`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> show the print-view of a page, which omits the navigational items from the display view. || ||
+||<-3>`edit`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> edit this page. || ||
+||<-3>`savepage`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> save this page (do not ever use this manually). || ||
+||<-3>`subscribe`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> subscribe to a page. || ||
+||<-3>`userform`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> save user preferences. || ||
+||<-3>`bookmark`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> set bookmark for RecentChanges. || ||
+||<-3>`raw`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> send the raw wiki markup as text/plain (e.g. for backup purposes via wget); `SystemInfo?action=raw` will show the markup of SystemInfo. || ||
+||<-3>`format`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> emit specially formatted views of a page. Parameter `mimetype` specifies the wanted mime-type. ||<20%>You can generate '''DocBook''' markup from your pages by appending `?action=format&mimetype=xml/docbook` to the address. Note that you need to install PyXML to use it. ||
+||<-3>`rss_rc`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> generate a RSS feed of RecentChanges. || ||
+||<-3>`chart`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> display charts. || ||
+||<-3>`export`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> export the wiki content. || ''[experimental]''  ||
+||<-3>`content`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> for transclusion into static web pages, this action emits the pure page content, without any <html>, <head>, or <body> tags. || ||
+||<-3>`links`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> generates a list of all pages and the links on them, just like MeatBall:LinkDatabase. || ||
+||<-3>`sitemap`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> generates a Google XML sitemap, see [http://www.google.com/webmasters/sitemaps/docs/en/protocol.html Sitemap protocol]|| ||
+||<-3>`xmlrpc`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> Wiki XML-RPC interface, see MeatBall:XmlRpcToWiki. || ||
+||<-3>`revert`    ||
+||<5%>[[BR]]||<^ 75% style="margin: 10px;"> revert to an older version of the page. || ||

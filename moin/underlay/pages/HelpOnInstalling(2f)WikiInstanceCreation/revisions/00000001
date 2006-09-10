@@ -1,0 +1,128 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+After you have downloaded and installed Moin``Moin, you will want to "have a wiki". As explained at the bottom of ../BasicInstallation, you have to copy several directories and files. This way, you can have as many wikis as you want, and you can easily upgrade Moin``Moin: only the original files will be overwritten, not your copies.
+
+Every time you copy those files (and modify the configuration of your server accordingly), you create what is called a ''wiki instance''. Each wiki instance is independant from the others, with a different configuration, different pages, different users, etc.
+
+Some of the steps you need to take depend on which web server and which operating system you use. They are described on dedicated pages, which you should read (at least the beginning) before reading this one. Some other steps are common to every webserver and operating system (copying files around, setting permissions), and this is what is described here.
+
+You can use attachment:createinstance.sh (a bash script that install the instance).
+
+= Read this first =
+
+== Security warnings ==
+
+||<tablestyle="color: red"> /!\ '''Warning: make sure that your `data` directory and your configuration files are not accessible through your web server. Do not put your wiki directory in `public_html`, `Sites` or any other directory your web server can access. The web server only needs to access the file in the `htdocs` directory and the `moin.cgi` script! (Or whatever script your server uses to start Moin``Moin.)''' ||
+
+||<tablestyle="color: red"> /!\ '''Warning: make sure that the `data` directory and its subdirectories are not readable and not writeable by users other than the web server user. If you need to give worldwide read-write permissions to get it working, be aware that you are doing a very unsecure setup, that can be compromised by any other user or program on your computer.''' ||
+
+== Note to Windows users ==
+
+All the commands below are Linux commands. The text descriptions that introduce them should be enough to help you understand what you need to do. Use the Windows Explorer, or the appropriate text-mode commands.
+
+= Choose a wiki name  =
+
+Choose a unique name for the new wiki instance you want to create. It should be a short word, something that reflects what you intend to use the wiki for, like the name of your organization, of your team, of the project you are working on, etc.
+ 
+ <!> '''Do not use the name "wiki" - it is reserved for internal use. You would need a special setup to use this with CGI, and you can't use it at all with standalone or twisted server.'''
+
+The name "`mywiki`" is used as an example in the various commands below.
+
+= Choose a location =
+
+Choose a directory on your disk, it will contain all the files needed for your wiki instance. At the beginning, your wiki instance will use approximately 10 MB of disk space. Then of course, it will grow depending on the way your wiki is used. A personal wiki, even with many pages, might only use 30 MB or 40 MB of disk space. A popular wiki, or a wiki with many files attached to the pages, might use much more, of course.
+
+If you are the administrator (or root) of the server, you can use anything you like or that makes sense to you, for example `/usr/local/var/moin`, `/mnt/wikis`, etc.
+
+If you are a simple user, you will probably only be allowed to write in your personal, "home" directory. Choose a subdirectory that makes sense to you, for example the `share/moin` subdirectory.
+
+= Collect some important information =
+
+This is where the instructions differ according to the web server and operating system you use, and whether you are the administrator or a simple user. See the appropriate pages for your web server and operating system combination.
+
+On Linux, the `export` command will be used to remember the collected information. Windows users should write it down carefully (maybe cutting-and-pasting in a Notepad window), or store it in environment variables if they use the command prompt.
+
+ * `PREFIX` is the prefix you used during the ../BasicInstallation
+ * `SHARE` is the name of the `share` directory, as discussed at the bottom of ../BasicInstallation
+ * `WIKILOCATION` is the name of the directory that will contain your wiki instance
+ * `INSTANCE` is the directory containing the wiki instance. It cannot be an existing directory readable through Apache, otherwise it will fail.
+
+If you are an administrator, you also need to collect the following:
+
+ * `USER` is the user name of the web server
+ * `GROUP` is the name of the group to which the web server belongs
+
+Now, Linux folks, let's store these settings in memory:
+{{{
+> export PREFIX=/usr                # this might be something else
+> export SHARE=$PREFIX/share/moin   # this should be correct for most people
+> export WIKILOCATION=$SHARE        # this is just an example
+> export INSTANCE=mywiki            # this is just an example
+}}}
+
+Administrators also need the following two lines:
+
+{{{
+> export USER=www-data              # this is just an example
+> export GROUP=www-data             # this is just an example
+}}}
+
+= Copy the files =
+
+To create your new instance, you first need to create a directory named like your instance, inside the `WIKILOCATION`. Then you need to copy the `data` and `underlay` directories from your `SHARE` directory into your instance directory. Finally, you need to copy the `wikiconfig.py` file from the `config` directory into the instance directory.
+
+Linux folks need just type these commands:
+{{{
+> cd $WIKILOCATION
+> mkdir $INSTANCE                   # make a directory for this instance
+> cp -R $SHARE/data $INSTANCE       # copy template data directory
+> cp -R $SHARE/underlay $INSTANCE   # copy underlay data directory
+> cp $SHARE/config/wikiconfig.py $INSTANCE   # copy wiki configuration sample file
+}}}
+
+ /!\ Note that you just need to keep one underlay directory on your system if you are running multiple wikis (e.g. in a farm.)
+
+= Set permissions =
+
+== Administrators ==
+
+Administrators need to restrict the permissions of the files, so that only the web server (and the administrator of course) can read and write them. For maximum security, no other user on the machine should be able to read or write anything in the wiki instance directory. Don't forget that this directory contains sensitive information, notably the (encrypted) passwords of the wiki users.
+
+On Linux, the following commands should be enough:
+{{{
+> chown -R $USER.$GROUP $INSTANCE   # check that USER and GROUP are correct
+> chmod -R ug+rwX $INSTANCE         # USER.GROUP may read and write
+> chmod -R o-rwx $INSTANCE          # everybody else is rejected
+}}}
+
+== Normal users ==
+
+Normal users, on the contrary, need to broaden the permissions of the files, so that the web server can read and write them. On recent Windows versions, and on some versions of Unix, Linux and other systems, ''access control lists'' can be used to that effect. They are, however, powerful and complicated, much beyond the scope of this document. Ask a knowledgeable person about them.
+
+Without them, normal users have to allow ''everybody'' to access the instance directory. This is the only way the web server can enter it and do its work. This is, of course, '''VERY INSECURE''', since any other user and program on the server can read the directory. You should '''not''' use such a setup for a wiki open to the public.
+
+On Linux, the following commands will open the instance directory to the whole world:
+{{{
+> chmod -R a+rwX $INSTANCE
+}}}
+
+'''Note:'''
+ * it is also possible to put the web server and the normal user in the same ''group'', and then only open the instance directory to the members of that group. This is a bit more secure (depending on who else is in the group), but you need the cooperation of the server administrator; he is the one setting up groups.
+ * the best other possibility is that the server administrator sets up `suexec` to execute CGI scripts in user directories under the user id of that user. You don't need to give world permissions that way, so it is a quite secure setup, but you also need cooperation of the administrator.
+
+
+= Tune configuration =
+
+Now, you need to tune the configuration of your web server and of your wiki instance. Look at the appropriate help page for your web server, then come back here to tune the settings of your wiki instance.
+
+Edit `wikiconfig.py`. The default settings should work fine in most cases, but there are some things that you will probably want to change, like the name and logo of your wiki! :) Read the comments inside `wikiconfig.py`, they will guide you through this process.  (Start with "Wiki identity", around line 25.)
+
+||<tablestyle="color: red"> /!\ '''Warning: don't forget to restart your web server in order to apply changes in `wikiconfig.py`''' ||
+
+HelpOnConfiguration contains all the details about all the options, in case the comments in `wikiconfig.py` are not enough.

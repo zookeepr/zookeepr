@@ -1,0 +1,155 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+ <!> This looks like a duplicate of SyntaxReference ?!
+
+'''Content'''
+[[TableOfContents(1)]]
+
+= Headings =
+== Header 2 ==
+=== Header 3 ===
+==== Header 4 ====
+===== Header 5 =====
+
+This page tries to use each supported markup element at least once.
+
+Normal text, ''emphasized'', '''strong''', __underline__, ,,subscript,,, ^superscript^, `typewriter` and {{{typewriter}}}.
+
+:) ;) :D {1} {de} {OK} (./)
+
+= Links =
+
+MoinMoin
+
+MoinMoin/TextFormatting
+
+MoinMoin/InstallDocs 
+
+../InstallDocs 
+
+/SubPage
+
+[#anchorname Anchor Link]
+
+http://moinmoin.wikiwikiweb.de/
+
+[http://moinmoin.wikiwikiweb.de/]
+
+[http://moinmoin.wikiwikiweb.de/ MoinMoin Homepage]
+
+[http://moinmoin.wikiwikiweb.de/wiki/classic/img/moinmoin.png]
+
+[http://moinmoin.wikiwikiweb.de/wiki/classic/img/moinmoin.png moinmoin.png]
+
+Self:InterWiki
+
+MeatBall:InterWiki
+
+wiki:MeatBall/InterWiki
+
+[wiki:MeatBall/InterWiki]
+
+[wiki:MeatBall/InterWiki InterWiki page on MeatBall]
+
+anyone@inter.net (if you want to get spam)
+
+[[MailTo(first DOT last NOSPAM AT company DOT com)]] (somewhat spam protected)
+
+http://moinmoin.wikiwikiweb.de/wiki/classic/img/moinmoin.png
+
+
+= Blocks =
+
+'''Blockquote'''
+ This is indented
+  Even more
+
+'''Bullet list'''
+ * item 1
+
+ * item 2, with gap
+ * item 3
+   * item 3.1
+
+'''Numbered list'''
+ 1. item 1
+   i. item 1
+   i. item 2
+ 1. item 2
+   a. item 1
+   a. item 2
+##
+ Term:: Decription
+ Label:: Definition
+
+'''Code display'''
+ {{{
+line 1
+    indented 4 characters
+}}}
+
+'''Tables'''
+ General table layout and HTML like options
+ ||||||<tablewidth="80%">'''Heading'''||
+ ||cell 1||cell2||cell 3||
+ ||<rowspan=2> spanning rows||||<bgcolor='#E0E0FF'> spanning 2 columns||
+ ||<rowbgcolor="#FFFFE0">cell2||cell 3||
+
+ Cell width
+ || narrow ||<:99%> wide ||
+
+ Spanning rows and columns
+ ||<|2> 2 rows || row 1 ||
+ || row 2 ||
+ ||<-2> row 3 over 2 columns ||
+
+ Alignment
+ ||<(> left ||<^|3> top ||<v|3> bottom ||
+ ||<:> centered ||
+ ||<)> right ||
+
+ Colors
+ ||<#FF8080> red ||<#80FF80> green ||<#8080FF> blue ||
+
+
+'''Rules'''
+
+--- (not a rule)
+----
+-----
+------
+-------
+--------
+---------
+----------
+-------------------------------------------- (not thicker than 10)
+
+
+
+= Macros =
+
+[[Anchor(anchorname)]]
+'''[[PageCount]]''' pages
+[[RandomPage]]
+
+= Processors =
+
+'''Syntax Hilighting'''
+ {{{
+#!python
+# python code
+print code.colorize("abc", 1 + 1)
+}}}
+
+'''CSV Tables'''
+ {{{#!CSV -2
+Col1;Col2;Col3;Col4
+1;2;3;4
+a;b;c;d
+}}}

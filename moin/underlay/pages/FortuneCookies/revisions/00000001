@@ -1,0 +1,23 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+`RandomQuote` macro selects random quotes from list items on this page. See also HelpOnMacros.
+
+Here are few hints for new users, or users that don't like to read the manual:
+
+## FortuneCookies on this page is a self-linked link. It's not a link when it is quoted.
+## To solve this problem, change the format to [:XXXX:XXXX].
+ * Edit the [:FortuneCookies:FortuneCookies] page to display randomly selected wisdom here.
+
+ * Hint: set your pages language with {{{#language en}}} processing instruction. See also HelpOnLanguages.
+
+ * Hint: you can add your favorite pages to your navibar. See your Quicklinks list in UserPreferences.
+
+ * Hint: you can search for multiple words, just like Google. See also HelpOnSearching.
+
+ * Hint: get email notification when this page changes, by clicking '''[[GetText(Subscribe)]]'''.
