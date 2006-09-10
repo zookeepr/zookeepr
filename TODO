@@ -2,19 +2,13 @@
 
  * sign in / sign out links when you are still signed in
 
- * timestamps on proposals
-
  * look at using Paste@http isntead of PsateScriupt@wsgiutils
-
- * Fix url_hash for existing submitters and mail out rego confirmation emails.
 
 == next ==
 
  * Add ability to add co-speakers to submissions.
 
  * HACKING document
-
- * Paper upload doesn't store filename or content type.
 
  * Update CFP with review details.
 
@@ -25,8 +19,6 @@
  * clicking on 'about' from my home page seems to sign out; make the authbar do the right thing regardless of wether securecontroller is used or not.
 
  * prettify the profile page
-
- * "I forgot my password" link on signin.
 
 = Milestones for 0.2 =
 
