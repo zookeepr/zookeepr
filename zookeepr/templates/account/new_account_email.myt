@@ -14,6 +14,6 @@ http://lca2007.linux.org.au<% h.url_for('acct_confirm', id=c.person.url_hash) %>
 Once your account has been confirmed, you will be able to log
 into the site with the password you provided.
 
-Thanks again, and have a great day!
+Thanks, and have a great day!
 
 The linux.conf.au 2007 Organising Committee
