@@ -2,6 +2,8 @@ import datetime
 import smtplib
 
 from formencode import validators, Invalid
+from formencode.schema import Schema
+from formencode.variabledecode import NestedVariables
 import sqlalchemy
 
 from zookeepr.lib.auth import PersonAuthenticator, retcode
@@ -48,6 +50,16 @@ class PasswordResetSchema(BaseSchema):
     password_confirm = validators.String(not_empty=True)
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+
+class PersonSchema(Schema):
+    email_address = validators.String(not_empty=True)
+    fullname = validators.String(not_empty=True)
+    handle = validators.String()
+    
+class NewRegistrationSchema(BaseSchema):
+    registration = PersonSchema()
+
+    pre_validators = [NestedVariables]
 
 class AccountController(BaseController):
 
@@ -208,7 +220,7 @@ class AccountController(BaseController):
         return render_response('account/reset.myt', defaults=defaults, errors=errors)
 
 
-    def create(self):
+    def new(self):
         """Create a new account.
 
         Non-CFP accounts get created through this interface.
@@ -232,7 +244,8 @@ class AccountController(BaseController):
 
                 s = smtplib.SMTP("localhost")
                 # generate welcome message
-                body = render('account/new_account_welcome.myt', url_hash=c.person.url_hash, fragment=True)
+                body = render('account/new_account_email.myt',
+                              fragment=True)
                 s.sendmail("seven-contact@lca2007.linux.org.au",
                            c.person.email_address,
                            body)
