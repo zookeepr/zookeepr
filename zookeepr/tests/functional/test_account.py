@@ -427,7 +427,7 @@ class TestAccountController(ControllerTest):
         f['password'] = 'test'
         resp = f.submit()
         self.failIf('details are incorrect' in resp)
-        self.failUnless('logged_in_user' in resp.session)
+        self.failUnless('person_id' in resp.session)
 
         # clean up
         Dummy_smtplib.existing.reset()
