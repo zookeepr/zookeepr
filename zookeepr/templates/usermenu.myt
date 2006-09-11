@@ -1,10 +1,11 @@
 <br />
 <ul id="usermenu" class="menu">
 
-% if c.signed_in_person:
+% if 'signed_in_person_id' in session:
 
 <li>
-signed in as <% c.signed_in_person.email_address %>
+signed in
+# as <% c.signed_in_person.email_address %>
 </li>
 
 <li>
