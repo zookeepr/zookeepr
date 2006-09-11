@@ -117,8 +117,8 @@ class SecureController(BaseController):
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
             # FIXME get is boned on the live site
-            #c.person = g.objectstore.get(Person, session['signed_in_person_id'])
-            c.person = g.objectstore.query(Person).select_by(id=session['signed_in_person_id'])[0]
+            #c.signed_in_person = g.objectstore.get(Person, session['signed_in_person_id'])
+            c.signed_in_person = g.objectstore.query(Person).select_by(id=session['signed_in_person_id'])[0]
         else:
             # No-one's logged in, so send them to the signin
             # page.
@@ -173,4 +173,4 @@ class AuthRole(object):
             role = None
         else:
             role = roles[0]
-        return role in c.person.roles
+        return role in c.signed_in_person.roles

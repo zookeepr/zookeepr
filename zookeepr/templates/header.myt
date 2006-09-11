@@ -1,5 +1,5 @@
 <%init>
-if c.person and c.person.email_address == 'erikd@mega-nerd.net':
+if c.signed_in_person and c.signed_in_person.email_address == 'erikd@mega-nerd.net':
 	logo = '/sicktux.png'
 else:
 	logo = '/lca2007-header.png'
