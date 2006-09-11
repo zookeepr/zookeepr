@@ -41,5 +41,5 @@ class PersonController(SecureController, View, Modify):
     individual = 'person'
     key = 'handle'
 
-    def is_same_person(self):
-        return c.person.id == session['person_id']
+#    def is_same_person(self):
+#        return c.person == c.signed_in_person

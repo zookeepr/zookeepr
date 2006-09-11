@@ -50,8 +50,8 @@ def get_wiki_response(request, start_response):
         abort(404)
         return
 
-    if 'person_id' in session:
-        people = g.objectstore.query(Person).select_by(id=session['person_id'])
+    if 'signed_in_person_id' in session:
+        people = g.objectstore.query(Person).select_by(id=session['signed_in_person_id'])
         if len(people) > 0:
             request.environ['AUTH_TYPE'] = 'Basic'
             request.environ['REMOTE_USER'] = people[0].handle

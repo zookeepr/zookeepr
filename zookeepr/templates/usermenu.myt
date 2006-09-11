@@ -1,13 +1,18 @@
 <br />
 <ul id="usermenu" class="menu">
 
-% if c.person:
+% if 'signed_in_person_id' in session:
+
+<li>
+signed in
+# as <% c.signed_in_person.email_address %>
+</li>
 
 <li>
 <% h.link_to('my home', url=h.url('home')) %>
 </li>
 
-#<li><% h.link_to('my profile', url=h.url(controller='person', action='view', id=c.person.id)) %></li>
+#<li><% h.link_to('my profile', url=h.url(controller='person', action='view', id=session['person_id'])) %></li>
 
 <li>
 <% h.link_to('sign out', url=h.url(controller='account', action='signout', id=None)) %>

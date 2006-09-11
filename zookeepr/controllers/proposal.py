@@ -72,7 +72,7 @@ class ProposalController(SecureController, View, Modify):
                 for k in result['proposal']:
                     setattr(self.obj, k, result['proposal'][k])
                 g.objectstore.save(self.obj)
-                self.obj.people.append(c.person)
+                self.obj.people.append(c.signed_in_person)
                 if result.has_key('attachment') and result['attachment'] is not None:
                     for k in result['attachment']:
                         setattr(att, k, result['attachment'][k])
@@ -96,7 +96,7 @@ class ProposalController(SecureController, View, Modify):
         return render_response('proposal/new.myt', defaults=defaults, errors=good_errors)
 
     def is_submitter(self):
-        return c.person in self.obj.people
+        return c.signed_in_person in self.obj.people
 
     def review(self, id):
         """Review a proposal.
@@ -114,7 +114,7 @@ class ProposalController(SecureController, View, Modify):
                 for k in result['review']:
                     setattr(review, k, result['review'][k])
 
-                review.reviewer = c.person
+                review.reviewer = c.signed_in_person
                 c.proposal.reviews.append(review)
                 
                 g.objectstore.save(review)
