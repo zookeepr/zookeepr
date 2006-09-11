@@ -4,7 +4,7 @@
 % if 'signed_in_person_id' in session:
 
 <li>
-signed in
+signed in as <% c.signed_in_person.email_address %>
 </li>
 
 <li>
