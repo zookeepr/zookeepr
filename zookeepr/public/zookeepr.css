@@ -148,6 +148,7 @@ a img {
   margin: 0;
   padding: 0;
   clear: both;
+  float: right;
 }
 
 .menu li {
