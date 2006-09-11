@@ -34,6 +34,10 @@ class TestAccountController(ControllerTest):
         self.assertEqual('/account/signout',
                          url_for(controller='account', action='signout', id=None))
 
+    def assertSignedIn(self, session, id):
+        self.failUnless('signed_in_person_id' in session)
+        self.assertEqual(id, session['signed_in_person_id'])
+
     def test_signin_signout(self):
         """Test account sign in"""
         # create a user
@@ -52,16 +56,12 @@ class TestAccountController(ControllerTest):
         f['password'] = 'p4ssw0rd'
         resp = f.submit()
 
-        self.failUnless('person_id' in resp.session)
-        self.assertEqual(p.id,
-                         resp.session['person_id'])
+        self.assertSignedIn(resp.session, p.id)
 
         # see if we're still logged in when we go to another page
         resp = self.app.get(url_for(controller='about', action='view'))
 
-        self.failUnless('person_id' in resp.session)
-        self.assertEqual(p.id,
-                         resp.session['person_id'])
+        self.assertSignedIn(resp.session, p.id)
 
         # sign out
         resp = resp.goto(url_for(controller='account',
@@ -103,7 +103,7 @@ class TestAccountController(ControllerTest):
         resp = f.submit()
     
         # test that login is refused
-        self.failIf('person_id' in resp.session)
+        self.failIf('signed_in_person_id' in resp.session)
         
         # clean up
         self.objectstore.delete(p)
@@ -427,7 +427,7 @@ class TestAccountController(ControllerTest):
         f['password'] = 'test'
         resp = f.submit()
         self.failIf('details are incorrect' in resp)
-        self.failUnless('person_id' in resp.session)
+        self.assertSignedIn(resp.session, regs[0].id)
 
         # clean up
         Dummy_smtplib.existing.reset()

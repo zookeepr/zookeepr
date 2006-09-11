@@ -16,10 +16,10 @@ class HomeController(BaseController):
         in so we duplicate the __before__ code from SecureController here.
         """
 
-        if 'person_id' in session:
+        if 'signed_in_person_id' in session:
             # FIXME: get is boned on the live site
-            persons = g.objectstore.query(Person).select_by(id=session['person_id'])
-            c.person = persons[0]# g.objectstore.get(Person, session['person_id'])
+            persons = g.objectstore.query(Person).select_by(id=session['signed_in_person_id'])
+            c.person = persons[0]# g.objectstore.get(Person, session['signed_in_person_id'])
 
             resp = render_response('home.myt')
 

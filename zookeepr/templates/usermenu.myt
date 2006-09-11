@@ -1,7 +1,7 @@
 <br />
 <ul id="usermenu" class="menu">
 
-% if 'person_id' in session:
+% if 'signed_in_person_id' in session:
 
 <li>
 signed in

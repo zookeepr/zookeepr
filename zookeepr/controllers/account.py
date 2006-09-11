@@ -88,7 +88,7 @@ class AccountController(BaseController):
                     errors = {'x': 'Invalid login'}
                 else:
                     # at least one Person matches, save it
-                    session['person_id'] = persons[0].id
+                    session['signed_in_person_id'] = persons[0].id
                     session.save()
 
                     # return home

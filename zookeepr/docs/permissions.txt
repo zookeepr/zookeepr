@@ -47,7 +47,7 @@ how do we infer each of the cases above?
  * logged in users:
 
    c.person is a Person object
-   'person_id' in session
+   'signed_in_person_id' in session
 
  * roles (site admin, speaker, reviewer):
 
