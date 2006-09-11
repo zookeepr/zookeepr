@@ -4,6 +4,10 @@
 % if 'person_id' in session:
 
 <li>
+signed in
+</li>
+
+<li>
 <% h.link_to('my home', url=h.url('home')) %>
 </li>
 
