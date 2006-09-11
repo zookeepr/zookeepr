@@ -1,6 +1,7 @@
+from zookeepr.lib.auth import SecureController
 from zookeepr.lib.base import *
 
-class AboutController(BaseController):
+class AboutController(SecureController):
     """Display information about a specific part of the conference.
     """
     def view(self, id):

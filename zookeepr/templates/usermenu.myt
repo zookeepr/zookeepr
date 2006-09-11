@@ -1,7 +1,7 @@
 <br />
 <ul id="usermenu" class="menu">
 
-% if 'signed_in_person_id' in session:
+% if c.signed_in_person:
 
 <li>
 signed in as <% c.signed_in_person.email_address %>
