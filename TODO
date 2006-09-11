@@ -1,25 +1,3 @@
-= TODO =
-
- * sign in / sign out links when you are still signed in
-
- * look at using Paste@http isntead of PsateScriupt@wsgiutils
-
-== next ==
-
- * Add ability to add co-speakers to submissions.
-
- * HACKING document
-
- * Update CFP with review details.
-
- * group crud controller tests (person, role, submission, stype), vs others (home, register, cfp, about)
-
- * write more docs ;-)
-
- * clicking on 'about' from my home page seems to sign out; make the authbar do the right thing regardless of wether securecontroller is used or not.
-
- * prettify the profile page
-
 = Milestones for 0.2 =
 
  * MyLCA administration
