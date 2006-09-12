@@ -1,0 +1,259 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+## page was renamed from HelpOnInstalling/ApacheOnUnix
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+This page describes the particular steps that need to be taken to create a wiki instance using MoinMoin on Linux with the Apache web server. '''You should have already performed the ../BasicInstallation. '''Installations on other Unices like FreeBSD are very similar.
+
+Two scenarios are possible. You might be the administrator (root) of the server, able to install and modify files almost anywhere on the machine, and notably able to modifiy the Apache configuration. You might also be a simple user, only able to write files into your home directory, and unable to alter the master Apache config file. The two scenarios are discussed below.
+
+'''Table of contents''' [[TableOfContents]]
+
+== Administrator (root) ==
+Most GNU/Linux distributions come with Apache pre-installed. There is, however, some variation as to where exactly the various Apache files are located. You should consult your distribution manual, or ask on the appropriate discussion board. In the following paragraphs, we assume a (quite standard) file system layout with:
+
+ * `/etc/httpd/httpd.conf` - the main Apache configuration file
+ * `/var/log/httpd/error_log` - the log file containing Apache error messages
+
+Some distributions use `apache` instead of `httpd` for the directory names, others may use weirder settings.
+
+=== Create a wiki instance ===
+Creating a wiki instance involves copying files around and setting appropriate permissions. Before you can proceed, you need to know what user and group your Apache server runs as. The easiest way to know this is to issue this command:
+
+{{{
+> egrep "^User|^Group" /etc/httpd/httpd.conf
+User wwwrun
+Group nogroup
+}}}
+
+This shows a typical result: "`wwwrun.nogroup`". Other common results are "`nobody.nogroup`", "`apache.apache`" and "`www-data.www-data`". You can of course use your own. What matters is that you know which ones are in use, because you will need them to set file permissions.
+
+Once you have gathered this information, read ../WikiInstanceCreation and follow the steps described there.
+
+=== Install moin.cgi ===
+There is one last file you need to copy, the bridge between Apache and Moin``Moin: the CGI script that Apache will call every time a wiki page is requested, and that will in turn invoke all the Moin``Moin components to handle the request. You can actually put this script anywhere you like (all the paths to the files Moin``Moin needs can be configured to match your filesystem layout), but for the sake of simplicity and security, we suggest you follow the instructions below, unless you think you know better.
+
+We will create a `cgi-bin` subdirectory in the instance directory. Using the environment variables defined in ../WikiInstanceCreation, run the following commands:
+
+{{{
+> cd $WIKILOCATION/$INSTANCE
+> mkdir cgi-bin
+> cp $SHARE/server/moin.cgi cgi-bin
+> chown -R $USER.$GROUP cgi-bin
+> chmod -R ug+rx cgi-bin
+> chmod -R o-rwx cgi-bin
+}}}
+
+=== Configure moin.cgi ===
+When `moin.cgi` is launched, it imports a Moin``Moin module that in turn imports other modules and the configuration file. While the Moin``Moin modules should always be found in a properly configured system (as described in ../BasicInstallation), it is likely that the configuration file will not be found. Edit the `moin.cgi` script to correct that. Add these lines near the top of the file:
+
+{{{
+import sys
+sys.path.insert(0, '..')
+}}}
+
+You can also use the absolute name of the directory that contains the `wikiconfig.py` file instead of `'..'`.
+
+=== Configure Apache ===
+Now that every file is in place and properly locked down (as far as the filesystem is concerned), we need to configure Apache so that it offers access to the right files, and no others. However, since the default Apache configuration varies a lot according to the distribution you use, and since administrators often make important additions and changes to it, we cannot give exact instructions that cover all cases. Instead, we will first describe roughly what needs to be done, and then give a few specific lines that you should add at the appropriate place in your Apache config.
+
+Your Apache should be set up so that:
+
+ * Access to your instance directory is denied (sane Apache installations should actually deny access to the whole server, and then only allow a few specific directories).
+ * An alias is set up to redirect requests from `/wiki/` (in the URL) to the `htdocs` directory (in the `share` directory, as discussed at the bottom of ../BasicInstallation)
+ * A script alias is set up to redirect requests from whatever you want (we suggest you use your instance name, for example `/mywiki`) to the CGI script you just copied.
+
+The following commands will add two lines at the bottom of your Apache config file. These lines only cover the last two items listed above. You have to check the first one by yourself (there is too much variation in Linux distributions). Note that you may have to move the two lines to the appropriate place in your config file -- maybe near other similar lines.
+
+{{{
+> echo "" >>/etc/httpd/httpd.conf
+> echo "Alias /wiki/ \"$SHARE/htdocs/\"" >>/etc/httpd/httpd.conf
+> echo "ScriptAlias /mywiki \"$WIKILOCATION/$INSTANCE/cgi-bin/moin.cgi\"" >>/etc/httpd/httpd.conf
+}}}
+
+You only need to define the alias for `htdocs` once. You need to define a different script alias for each wiki instance you intend to run.
+
+=== Configure MoinMoin ===
+Finally, check that the `wikiconfig.py` file in the instance directory contains correct paths for the htdocs prefix, the instance data directory, and the instance underlay directory. You can use relative paths for the directories, but note that they are relative to the CGI script, not the configuration file! You can also use absolute paths, and save yourself some headaches.
+
+Here are the settings you should have in the config file if you followed all our suggestions:
+
+{{{
+    data_dir = '../data/'
+    data_underlay_dir = '../underlay/'
+    url_prefix = '/wiki'
+}}}
+
+There are other settings you will likely want to alter, look at the bottom of ../WikiInstanceCreation for more details about them.
+
+=== Test the wiki ===
+Everything should work fine now. It is time to '''restart the Apache server''' (usually with "`/etc/init.d/apache restart`", sometimes with "`apachectl restart`") and perform the following steps:
+
+ * Run the ''Moin``Moin CGI Diagnosis'': connect to "`http://127.0.0.1/mywiki?action=test`" (or the name and port you have defined in the Apache configuration file). Verify that the displayed information is correct. Check that the directories listed under ''Checking directories...'' are ''OK''.
+ * Access your new wiki with the URL "`http://127.0.0.1/mywiki/`" (or the name and port you have defined in the Apache configuration file). You should see the Front``Page.
+ * If this is the case, try to edit it and save your changes.
+ * If that works, see if your edit is reflected on the Recent``Changes page.
+ * If you see them, congratulations, your new wiki works! :)
+
+If something goes wrong, have a look at Troubleshooting, at the bottom of this page.
+
+=== Apache tricks ===
+For more advanced configuration and some tricks see HelpMiscellaneous.
+
+== Simple user (home directory installation) ==
+On machines shared by many people, simple users typically have no access to the root account, cannot modify the `httpd.conf` file, and cannot copy files into the system-wide `cgi-bin` and `htdocs` directories. In that case, Apache can be set up so that each user can host a web site in the home directory of his or her shell account, using the `UserDir` directive. If the machine administrator decides to use it, all URLs that start with "`/~username`" will be redirected to a directory in the users' home directories, where they have write permission and can install Moin``Moin.
+
+As an example, we will consider the case of a user named "`mm`". Of course, wherever you see "`mm`" below, you will replace it with your own username.
+
+=== Make sure /~username works ===
+The home directory installation can only work if the administrator (root) has allowed it. So, the first step is of course to check that it works. Typically, Apache is set up so that the `public_html` subdirectory in the home directory is used as the web site root. So, the first first step is to check if that directory exists.
+
+{{{
+> ls -ld ~/public_html
+drwxr-xr-x   2 mm       users        4096 Nov 30 00:29 public_html
+}}}
+
+If the directory does not exist, create it, and be sure it can be read and entered by the web server.
+
+{{{
+> mkdir public_html
+> chmod a+rx public_html
+> ls -ld ~/public_html
+drwxr-xr-x   2 mm       users        4096 Nov 30 00:35 public_html
+}}}
+
+Now, check if the "`/~mm`" URL works:
+
+{{{
+> lynx -error_file=/dev/stderr -dump http://localhost/~mm/ >/dev/null
+URL=http://localhost/~mm/ (GET)
+STATUS=HTTP/1.1 200 OK
+}}}
+
+If you get a "`200 OK`" response code, then it works, and you can go on to the next check. If you get a "`403 Forbidden`" or a "`404 Not Found`" response, then maybe something is wrong with your directory, or maybe the whole thing has not been enabled by your administrator.
+
+ * Check the permissions for your home directory (`~`) and your `public_html` directory. The first one should at least end with "`--x`", and the second one, as we saw above, with "`r-x`".
+ * It also possible that the administrator has set up another name for the personal web site directory. "`public_html`" is just the usual default, but anything can actually be used. There is no way to know, you have to ask the administrator (root).
+ * Finally, if the personal web site feature is disabled, maybe you can ask the administrator to enable it?
+
+Once you have checked you can read the files in the directory, you need to check that you are also able to execute CGI scripts in that directory. Use the following commands to create a simple CGI script in the appropriate location:
+
+{{{
+> mkdir -p ~/public_html/cgi-bin
+> cat > ~/public_html/cgi-bin/test.cgi
+#!/bin/sh
+echo Content-Type: text/plain
+echo
+echo "CGI scripts work"
+<CTRL-D>
+> chmod a+rx ~/public_html/cgi-bin/test.cgi
+> lynx -dump http://localhost/~jh/cgi-bin/test.cgi
+CGI scripts work
+}}}
+
+If you get anything else than "`CGI scripts work`", then something went wrong. Check the directory permissions as above, try other names (or ask about them). The sad truth might be that you are not allowed to execute CGI scripts. You would then have to ask the administrator (root) for that permission.
+
+Once you get it, you can set up your wiki instance in the `public_html` directory. :)
+
+=== Create a wiki instance ===
+Creating a wiki instance involves copying files around and setting appropriate permissions. Read ../WikiInstanceCreation and follow the steps described there.
+
+=== Install the htdocs files ===
+The web server needs to access these files, so we need to copy them in the "`public_html`" directory. Just use this:
+
+{{{
+> cd ~/public_html
+> cp -R ~/share/moin/htdocs wiki
+> chmod -R a+rX wiki
+}}}
+
+=== Install moin.cgi ===
+There is one last file you need to copy, the bridge between Apache and Moin``Moin: the CGI script that Apache will call every time a wiki page is requested, and that will in turn invoke all the Moin``Moin components to handle the request. You need to put this file in a directory for which CGI scripts execution is enabled. By default, this should work:
+
+{{{
+> cd ~/public_html
+> mkdir cgi-bin
+> cp $SHARE/server/moin.cgi cgi-bin
+> chmod -R a+rx cgi-bin
+}}}
+
+=== Configure moin.cgi ===
+When `moin.cgi` is launched, it imports a Moin``Moin module (that in turn imports other modules and the configuration file). Since everything has been installed in your home directory, it is likely none of these will be found. Edit the `moin.cgi` script to correct that. Add these lines near the top of the file:
+
+{{{
+import sys
+sys.path.insert(0, '/home/mm/lib/python2.3')
+sys.path.insert(0, '/home/mm/lib/python2.3/site-packages')
+sys.path.insert(0, '/home/mm/share/moin/mywiki')
+}}}
+
+Of course, you need to adapt the paths to your situation. The first two lines should help locate the Moin``Moin modules, the last one should help locate the `wikiconfig.py` file.
+
+'''Note:''' You might also need to edit the first line of the file, to point to the correct version of Python. The default should be fine, but a line like "`#! /usr/bin/python2.3`" might help you if the default does not work.
+
+'''Note 2:''' In this file there is a line reading {{{request = RequestCGI()}}}. If you have a complex mod_rewrite case, you might want to add {{{properties = {'script_name': '/mywiki'} }}} in the parenthesis. This will let MoinMoin generate URLs that start with {{{/mywiki}}} and not the path that the webserver passed to MoinMoin:
+
+{{{
+def handle_request(req, env, form):
+    request = RequestCGI(req, env, form, properties = {'script_name': '/mywiki'})
+    request.run()
+}}}
+
+=== Configure MoinMoin ===
+Finally, check that the `wikiconfig.py` file in the instance directory contains correct paths for the htdocs directory, the instance data directory, and the instance underlay directory. You can use relative paths for the directories, but note that they are relative to the CGI script, not the configuration file! You can also use absolute paths, and save yourself some headaches.
+
+{{{
+    data_dir = '/home/mm/share/moin/mywiki/data/'
+    data_underlay_dir = '/home/mm/share/moin/mywiki/underlay/'
+    url_prefix = '/~mm/wiki'
+}}}
+
+=== Test the wiki ===
+Everything should work fine, now. It is time to perform the following steps:
+
+ * Run the ''Moin``Moin CGI Diagnosis'': {{{> lynx -dump http://localhost/~mm/cgi-bin/moin.cgi?action=test}}}
+ * If it worked, try to access your new-born wiki with the URL "`http://127.0.0.1/~mm/cgi-bin/moin.cgi`". You should see the Front``Page.
+ * If this is the case, try to edit it and save your changes.
+ * If that works, see if your edit is reflected on the Recent``Changes page.
+ * If you see them, congratulations, you have a new wiki! :)
+
+If something goes wrong, have a look at Troubleshooting, below.
+
+== Troubleshooting ==
+See also ../TroubleShooting for generic stuff.
+
+The first thing to do when your wiki does not work as expected is to issue the command "`tail /var/log/httpd/error_log`" to display the most recent errors. Usually, you will get a hint on what went wrong, like missing file system permissions.
+
+=== Adding permission to serve the htdocs directory ===
+In some (sane) Linux distributions (like SuSE 9.0) serving directories other than the document-root "`/srv/www/htdocs`" with Apache is switched off by default for security reasons in "`/etc/httpd/httpd.conf`" (or for Apache2 "`/etc/apache2/httpd.conf`"):
+
+{{{
+# forbid access to the entire filesystem by default
+<Directory />
+  Options None
+  AllowOverride None
+  Order deny,allow
+  Deny from all
+</Directory>
+}}}
+
+To allow Apache to serve directories outside of the document root you have to add these lines to "`/etc/httpd/httpd.conf`" (in SuSE it is recommended to create a new "`http.conf.local`" and include this file in "`/etc/sysconfig/apache2`"):
+
+{{{
+Alias /wiki/ "/usr/share/moin/htdocs/"
+<Directory "/usr/share/moin/htdocs/">
+   Order deny,allow
+   Allow from all
+</Directory>
+
+ScriptAlias /mywiki "/usr/share/moin/mywiki/cgi-bin/moin.cgi"
+<Directory "/usr/share/moin/mywiki/cgi-bin">
+   Order deny,allow
+   Allow from all
+</Directory>
+}}}
+
+Of course, you need to adapt the paths to your particular situation.

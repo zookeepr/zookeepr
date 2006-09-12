@@ -1,0 +1,101 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+= Quick Reference =
+||'''Hyperlink'''            ||'''Syntax'''                       ||'''Comment'''                   ||
+||internal link              ||`WikiName`                         ||Camel``Case page name           ||
+||internal free link         ||`["Page"]` or `["free link"]`      ||configurable function           ||
+||internal link to sub page  ||`/SubPage` or `["/Sub page"]`      ||relative to upper page          ||
+||external link              ||`http://example.net`               ||                                ||
+||named internal link        ||`[:HelpContents:Contents of the Help]`||                             ||
+||named external link        ||`[http://example.net example site]`||                                ||
+||local graphics (attachment)||`attachment:graphics.png`          ||images will be displayed inline ||
+||external graphics          ||`http://example.net/image.png`     ||shows target image              ||
+||external and internal graphics || `[[ImageLink(image,target[,width=width[,height=height]][,alt=alttag])]]` ||makes a link that displays an image and links to either an URL or a wiki page. ||
+||border of internal link    ||{{{WikiName``s}}}                  ||2 backticks                     ||
+||avoid an internal link     ||`!WikiName`                        ||configurable function           ||
+
+= Explanations and Examples =
+== Arbitrary Page Names ==
+If you enclose a sequence of characters in square brackets and double quotes {{{["like this"]}}}, that makes it a page name. That can be used for specific uses of MoinMoin (like organizing a list of items, e.g. your CD collection, by their "natural" name) or for having a wiki with non-western character sets.
+
+== URLs and Inline Images ==
+There are several way to insert external references[[FootNote(The opposite of external references are the internal, automatic WikiName links.)]] into the text:
+ * direct URL insertion; if the URL ends in an image extension ("{{{.gif}}}", "{{{.jpg}}}" or "{{{.png}}}"), the URL is converted to an image tag.
+ * bracketed URLs.
+ * InterWiki links.
+ * email addresses.
+
+If you enter URLs into normal text, there is the problem of detecting what belongs to the URL and what not. There are four ways to force the ending of an URL:
+ * put a space after the URL.
+ * use the Wiki:SixSingleQuotes escaping.
+ * put the URL into double quotes.
+ * use the bracketed URL syntax.
+
+The supported URL schemes are: `http`, `https`, `ftp`, `nntp`, `news`, `mailto`, `telnet`, `irc` and `file`. The administrator of your wiki can extend the supported schemes by using the {{{url_schemas}}} variable (see HelpOnConfiguration).
+
+In addition to the standard schemes, there are MoinMoin-specific ones: `wiki`, `attachment`, `inline`, and `drawing`. "`wiki`" indicates an InterWiki link, so `MoinMoin:FrontPage` and `wiki:MoinMoin:FrontPage` are equivalent; you will normally prefer the shorter form, the "`wiki`" scheme becomes important when you use bracketed links, since there you always need a scheme. The other three schemes are related to file attachments and are explained on HelpOnActions/AttachFile.
+
+For more information on the possible markup, see HelpOnEditing. For details on how to link to subpages, see HelpOnEditing/SubPages.
+
+To ''insert'' anchors into a page you need the [wiki:HelpOnMacros macro] ''Anchor'': `[[Anchor(anchorname)]]`, where "anchorname" is the actual identifier of the anchor. To reference an anchor on the same wiki page use `[#anchorname]` or `[#anchorname label text]`. To link to an anchor on another wiki page write `[:PageName#anchorname]` or `[:PageName#anchorname:label text]`, where "Page``Name" is the name of the other page and "anchorname" is the identifier of the anchor on that page.
+
+It is often desirable to create a link to a Wiki page in the current Wiki, but have the link appear with a different text label. While you can use an InterWiki link with a Wiki name of Self, this results in an InterWiki icon prefix which might be misleading since you're not leaving the current Wiki at all. Use the syntax of `[:WikiPage:Label text]` to achieve a link to a current Wiki page without creating an InterWiki link.
+
+/!\ On some Wikis, a link to the page RecentChanges might refer to the same page as this link: ["recentchanges"]. This is especially true for Windows and Mac OS X systems because they are not case-sensitive normally.
+
+[[FootNote]]
+
+=== Avoiding some stuff gets automatically linked ===
+
+For avoiding that a word like Page``Name automatically gets linked, use {{{Page``Name}}}.
+
+You can also suppress WikiName linking by putting an exclamation mark (''bang'') before the WikiName, i.e. `!WikiName`. This can be disabled with the configuration option `bang_meta = False`.
+
+For avoiding that a URL gets automatically linked, use either {{{`http://...`}}} or `{{{http://...}}}`.
+
+=== Example ===
+{{{
+ * http://moinmoin.wikiwikiweb.de/
+ * [http://moinmoin.wikiwikiweb.de/]
+ * [http://moinmoin.wikiwikiweb.de/ MoinMoin Homepage]
+ * http://moinmoin.wikiwikiweb.de/wiki/common/moinmoin.png
+ * [http://moinmoin.wikiwikiweb.de/wiki/common/moinmoin.png]
+ * [http://moinmoin.wikiwikiweb.de/wiki/common/moinmoin.png  moinmoin.png]
+ * [http:/wiki/common/moinmoin.png] partial URL
+ * InterWiki
+  * Self:InterWiki
+  * MeatBall:InterWiki
+  * wiki:MeatBall/InterWiki
+  * [wiki:MeatBall/InterWiki]
+  * [wiki:MeatBall/InterWiki InterWiki page on MeatBall]
+ * user@example.com
+ * mailto:user@example.com?subject=test
+ * [:InterWiki:InterWiki page in this wiki]
+ * [#anchorname Link to anchor on this page]
+ * [:OtherPage#anchorname:Link to anchor on other page in current wiki with label text]
+}}}
+
+=== Display ===
+ * http://moinmoin.wikiwikiweb.de/
+ * [http://moinmoin.wikiwikiweb.de/]
+ * [http://moinmoin.wikiwikiweb.de/ MoinMoin Homepage]
+ * http://moinmoin.wikiwikiweb.de/wiki/common/moinmoin.png
+ * [http://moinmoin.wikiwikiweb.de/wiki/common/moinmoin.png]
+ * [http://moinmoin.wikiwikiweb.de/wiki/common/moinmoin.png  moinmoin.png]
+ * [http:/wiki/common/moinmoin.png] partial URL
+ * InterWiki
+  * Self:InterWiki
+  * MeatBall:InterWiki
+  * wiki:MeatBall/InterWiki
+  * [wiki:MeatBall/InterWiki]
+  * [wiki:MeatBall/InterWiki InterWiki page on MeatBall]
+ * user@example.com
+ * mailto:user@example.com?subject=test
+ * [:InterWiki:InterWiki page in this wiki]
+ * [#anchorname Link to anchor on this page]
+ * [:OtherPage#anchorname:Link to anchor on other page in current wiki with label text]

@@ -1,0 +1,51 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+You may self-register and establish your preferences by clicking on the "UserPreferences" (or "Login") link at the top of every page (exact naming and location depends on the theme).  If you have registered and are logged in, your name will be displayed.
+
+The various fields in User``Preferences are described below:
+
+ * '''[[GetText(Name)]]''': Either your real name or an alias. Best is to use WikiName format.
+  * If ACLs are enabled, it is '''required''' to be a ''unique'' name.
+ * '''[[GetText(Alias-Name)]]''': If your login name (see above) is cryptic due to technical reasons, you can give your real name here. It will be only used for display purposes.
+ * '''[[GetText(Password)]]''': Something you can remember but is very hard for friends and family to guess.
+ * '''[[GetText(Password repeat)]]''': if you initially set or later change your password, repeat it here to avoid typos.
+ * '''[[GetText(Email)]]''': Your email address, this is required if you wish to subscribe to wiki pages or wish to have a forgotten login data mailed to you.
+  * If ACLs are enabled, the email address is required to be unique and valid.
+ * '''[[GetText(User CSS URL)]]''': If you want to override some of the wiki system's css, put your own CSS here (UTF-8 or ASCII).
+ * '''[[GetText(Editor size)]]''': <!> This controls the size of the text area when you edit a page. Adjust this to suit the size of your monitor and your personal preferences.
+ * '''[[GetText(Preferred theme)]]''': choose a theme to change colours, icons and layout of the wiki
+ * '''[[GetText(Editor Preference)]]''': the editor you prefer, either "text" or "gui"
+ * '''[[GetText(Editor shown on UI)]]''': which editor(s) are shown on the user interface, either [[GetText(free choice)]] or [[GetText(the one preferred)]].
+ * '''[[GetText(Time zone)]]''': ...
+   * '''[[GetText(Your time is)]]''': If the correct time is not displayed, use the drop down box and select the correct time.
+   * '''[[GetText(Server time is)]]''': Displays the server time.
+ * '''[[GetText(Date format)]]''': The default of year-month-day is least confusing for international use.
+ * '''[[GetText(Preferred language)]]''': The default is taken from your browser setting. It is advisable to set this to a specific language anyway, since then you get notification mails in your native tongue, too.
+ * '''[[GetText(General options)]]''': ...
+   * '''[[GetText(Add spaces to displayed wiki names)]]''': If checked, makes '''Wiki``Names''' look like '''Wiki Names'''.
+   * '''[[GetText(Disable this account forever)]]''': If checked, you can't login again with this account. Think first. :)
+   * '''[[GetText(Open editor on double click)]]''': Handy if you edit a lot of pages.
+   * '''[[GetText(Publish my email (not my wiki homepage) in author info)]]''': in case you have no wiki home page.
+   * '''[[GetText(Jump to last visited page instead of frontpage)]]''': When you point your browser at the wiki's base URL (i.e. the one not mentioning a specific page), you will see the last page visited. This can be useful if you are frequently reading or editing a single page.
+   * '''[[GetText(Remember login information)]]''': When you set this, the cookie won't expire at midnight.
+   * '''[[GetText(Show fancy diffs)]]''': Makes diffs more readable.
+   * '''[[GetText(Show icon toolbar)]]''': Provides a row of icon links in the upper right corner.
+   * '''[[GetText(Show page trail)]]''': Lists the last five pages visited at the top of the page, so you can jump back several pages easily.
+   * '''[[GetText(Show question mark for non-existing pagelinks)]]''': Display a highlighted '''?''' in front of a non-existant page instead of a color-coded page name.
+   * '''[[GetText(Show top/bottom links in headings)]]''': If checked, every title bar will have an up and down arrow to navigate to top or bottom of page.
+   * '''[[GetText(Subscribe to trivial changes)]]''': If checked, you will be notified even if editor said it was a trivial change.
+ * '''[[GetText(Quick links)]]''': Overrides the standard choices in the gray navigation bar at the top of the page.  Enter one Wiki page name per line. You may also add free-form links, i.e. entries of the form `[url linktext]` just like in wiki pages.
+ * '''[[GetText(Subscribed wiki pages (one regex per line))]]''': Enter '''`.*`''' to receive an email when any page in this Wiki changes (''not recommended'' for busy wikis), or enter the names of any individual pages, one per line.  If you are familiar with '''regular expressions''', you may enter a regex expression to match the pages names of interest (.* matches all page names). With the '''[[GetText(Show icon toolbar)]]''' option checked, subscription to individual pages is made easy by clicking the envelope icon when viewing a page of interest.
+
+ /!\ This is an optional feature that only works when email support has enabled for this wiki, see HelpOnConfiguration/EmailSupport for details.
+
+
+== Customization of user preferences ==
+
+You can predefine, disable or remove several options on the UserPreferences page, see HelpOnConfiguration/UserPreferences.

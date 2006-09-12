@@ -105,8 +105,8 @@ class SecureController(BaseController):
     def logged_in(self):
         # check that the user is logged in.
         # We can tell if someone is logged in by the presence
-        # of the 'person_id' field in the browser session.
-        return 'person_id' in session
+        # of the 'signed_in_person_id' field in the browser session.
+        return 'signed_in_person_id' in session
 
     def __before__(self, **kwargs):
         # Call the parent __before__ method to ensure the common pre-call code
@@ -117,8 +117,8 @@ class SecureController(BaseController):
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
             # FIXME get is boned on the live site
-            #c.person = g.objectstore.get(Person, session['person_id'])
-            c.person = g.objectstore.query(Person).select_by(id=session['person_id'])[0]
+            #c.signed_in_person = g.objectstore.get(Person, session['signed_in_person_id'])
+            c.signed_in_person = g.objectstore.query(Person).select_by(id=session['signed_in_person_id'])[0]
         else:
             # No-one's logged in, so send them to the signin
             # page.
@@ -173,4 +173,4 @@ class AuthRole(object):
             role = None
         else:
             role = roles[0]
-        return role in c.person.roles
+        return role in c.signed_in_person.roles

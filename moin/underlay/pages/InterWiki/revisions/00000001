@@ -1,0 +1,19 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+InterWiki links are a quick way to refer to information in other wikis, without having to remember
+cryptic URLs. To write an InterWiki link, just use the InterWiki moniker of the foreign wiki, 
+followed by a page name on that wiki. 
+Of course, InterWiki links are not rendered differently when the remote page does not exist, and
+MoinMoin cannot check whether you followed the rules for WikiName``s of the other wiki.
+So double-check what you type.
+See the wiki:MeatBall/InterWiki page on wiki:MeatBall:MeatballWiki for further details.
+
+List of valid InterWiki names this wiki knows of (the master copy of this list is at MoinMaster:InterWikiMap):
+[[InterWiki]]
+
+MoinMoin marks the InterWiki links in a way that works for the MeatBall:ColourBlind and also is MeatBall:LynxFriendly by using a little icon with an ALT attribute. If you hover above the icon in a graphical browser, you'll see to which Wiki it refers. BTW, the reasoning behind the icon used is based on the idea that a Wiki:WikiWikiWeb is created by a team effort of several people.

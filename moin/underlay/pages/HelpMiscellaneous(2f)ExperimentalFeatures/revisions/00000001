@@ -1,0 +1,28 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+This page describes features that are not completed yet or need pratical testing before they're added to the standard feature set. They might disappear or be changed subtantially!
+
+== Miscellaneous ==
+
+ * `[:page name]` and `[:page name:link text]` are a shorter form of `[wiki:Self:...]`, with the additional benefit that both `page name` and `link text` can contain any character, including spaces.
+  * Pro: using spaces, and it allows `&#...;` recoding (yet to be added) so that it's possible to add non-western chars into wikinames of western/latin1 wikis. This feature is not needed any more as moin-1.3 supports Unicode.
+  * Contra: one more way to link to things
+
+== Bidirectional language support ==
+
+ * `config.language_default` sets the default language of a wiki's ''content''
+   * the HTML `lang` attribute of a page's `BODY` tag is set to this language
+ * for each language MoinMoin supports in its user interface, a correspondent `[[lang]]` macro exists, e.g. `[[en]]`
+   * this macro sets HTML `lang` attributes for paragraphs etc.
+   * it also changes the text direction
+
+See also MoinMoin:BetterHebrewSupport.
+
+== User-defined forms ==
+
+ <!> TODO

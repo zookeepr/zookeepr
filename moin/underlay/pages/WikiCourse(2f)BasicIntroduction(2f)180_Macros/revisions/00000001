@@ -1,0 +1,22 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off 
+[[Navigation(slides)]]
+
+= Macros =
+
+ * Macros allow dynamic (computed) content to be inserted into pages.
+ * A macro is called by "`[[MacroName(parameters)]]`".
+ * The parameters are optional, depending on the macro.
+ * The most important macros:
+   * `TableOfContents` - show a local table of contents
+   * `Anchor` - defines a link target line
+   * `FootNote` - generates a footnote[[FootNote(Footnotes look like this.)]]
+   * `PageList` - generates lists of pages with titles matching a pattern
+----
+For details see HelpOnMacros.

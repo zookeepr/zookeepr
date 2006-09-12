@@ -1,7 +1,7 @@
 <h2>Welcome to MyLCA!</h2>
 
 <p>
-Welcome, <strong><% c.person.firstname %></strong>!
+Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 </p>
 
 <p>
@@ -13,10 +13,10 @@ This is MyLCA, a site designed to tailor LCA to you!
 <p>You've submitted the following proposals to the CFP:
 <ul>
 
-% for s in c.person.proposals:
+% for s in c.signed_in_person.proposals:
 
 # FIXME: dirty hack
-%	if c.person in s.people:
+%	if c.signed_in_person in s.people:
 <li>
 <% h.link_to(s.title, url=h.url(controller='proposal', action='view', id=s.id)) %>
 
@@ -43,7 +43,7 @@ This is MyLCA, a site designed to tailor LCA to you!
 </div>
 
 ## reviewer block
-% if 'reviewer' in [r.name for r in c.person.roles]:
+% if 'reviewer' in [r.name for r in c.signed_in_person.roles]:
 <div id="reviewer">
 <p>
 You're a reviewer!  You can <% h.link_to("review stuff!", url=h.url(controller='proposal', action='index')) %>

@@ -1,0 +1,286 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers 2
+
+= Access Control Lists =
+
+When Access Control Lists, or ACLs for short, are turned on, you will be able to control who may do what on or with a wiki page.
+
+== Contents ==
+[[TableOfContents]]
+
+== Basics ==
+Using ACLs in moin is as easy as including a control line at the top of the page you want to control, like the following one:
+{{{
+#acl SomeUser:read,write All:read
+}}}
+/!\ You need to already have `admin` rights to be able to add or modify such an acl line.
+
+This will allow `SomeUser` to read and write on that page, while every other user will be able to read but not edit it (unless you've
+done some special setup in the site configuration).
+
+Attachments are also protected by the ACLs of the page they are attached to, when served through the moin wiki engine.
+
+/!\ Attachments are ''not'' protected when the server is configured for direct access to the attachments (i.e. when the {{{attachments}}} option in wikiconfig.py is used).
+
+[[Anchor(Configuration)]]
+== Configuration ==
+These are the configuration items used to setup ACLs on a moin site.
+
+||'''Entry'''||'''Default'''||'''Description'''||
+||acl_rights_before||{{{u""}}}||applied '''before''' page or default ACLs||
+||acl_rights_after||{{{u""}}}||applied '''after''' page or default ACLs||
+||acl_rights_default||{{{u"Trusted:read,write,delete,revert \}}}[[BR]]{{{Known:read,write,delete,revert \}}}[[BR]]{{{All:read,write"}}}||'''only''' used when '''no other''' ACLs are given on the page being accessed||
+||acl_rights_valid||`["read", ` `"write", ` `"delete", ` `"revert", ` `"admin"]`||These are the acceptable (known) rights (and the place to extend, if necessary).||
+
+So you know now what it ''does'', but what does it ''mean''?
+ * "before" means '''forcing stuff''' (this is because of first match algorithm)  Use this for your sitewide page admins or page editors.
+ * "default" means '''what is done if no ACLs are used on the page'''. It is equivalent to writing exactly these ACLs onto a page. These are also the rights that are merged if '''Default''' is written among the ACLs in the page.
+ * "after" means '''not forgetting stuff''' accidently (like maybe giving read rights to all)
+
+It helps if you think of them as before, during, and after processing of page based ACLs.
+
+(!) That u"" notation used for the configuration strings means unicode and ''must be there'' - see HelpOnConfiguration for details.
+
+== Syntax ==
+The syntax for each line is as follows:
+{{{
+#acl [+-]User[,SomeGroup,...]:[right[,right,...]] [[+-]OtherUser:...] [[+-]Trusted:...] [[+-]Known:...] [[+-]All:...] [Default]
+}}}
+
+Where:
+
+ * '''User''' is a user name and triggers only if the user matches. 
+ * '''Some``Group''' is a page name matching {{{page_group_regex}}} with some lines in the form " * Member" (see [#Groups]).
+ * '''Trusted''' is a special group containing all authenticated users who used HTTP-Basic-authentication.
+ * '''Known''' is a special group containing all valid users (like when using the cookie).
+ * '''All''' is a special group containing all users (known and anonymous users).
+ * '''Default''' is a special entry which inserts at the given place the entries from {{{acl_rights_default}}} (see [#Default]).
+ * '''right''' may be an arbitrary word like read, write, delete, revert, admin.
+ Only words in {{{acl_rights_valid}}} are accepted, others are ignored. It is allowed to specify no rights, which means that no rights are given.
+
+/!\ Do not put whitespace between the name and the rights - `All: write,read` is '''not''' a valid ACL string.
+
+== Available rights ==
+These are the available rights you can use in an ACL entry. Be aware that Delete''''''Page and Rename''''''Page are not allowed if the user is not `Known`, even if a `delete` right is granted.
+
+ read::
+ Given users will be able to read text of this page.
+
+ write::
+ Given users will be able to write (edit) text of this page.
+
+ delete::
+ Given users will be able to delete this page and its attachments.
+
+ revert::
+ Given users will be able to revert this page to an older version.
+
+ admin::
+ Given users will have admin rights for this page. It means users will be able to change ACL settings, including granting "admin" to others and revoking "admin" from others.
+
+/!\ There is no separate '''rename''' right: renaming a page requires that a given user has the read, write and delete rights.
+
+== Processing logic ==
+When some user is trying to access some ACL-protected resource, the ACLs will be processed in the order they're found. The '''first ACL matching the user''' will tell if the user has access to that resource or not and processing will stop once the user matched an ACL entry.
+
+(!) Due to that ''first match'' algorithm, you should sort your ACLs: first single usernames, then special groups, then more general groups, then `Known` and at last `All`.
+
+For example, the following ACL tells that `SomeUser` is able to read and write the resources protected by that ACL, while any member of `SomeGroup` (besides `SomeUser`, if part of that group) may also admin that, and every other user is able to read it.
+{{{
+#acl SomeUser:read,write SomeGroup:read,write,admin All:read
+}}}
+
+To make the system more flexible, there are also two modifiers: the prefixes '+' and '-'. When they are used, processing will only stop when requested right for some specific user matches the user and right(s) in the given ACL entry, but will continue if you are looking for another right (or another user).
+In case of '+' the right will be given, in case of '-' the right will be denied (for the stopping case).
+
+As an example, assuming that `SomeUser` is a member of `SomeGroup`, the above ACL could also be written as:
+{{{
+#acl -SomeUser:admin SomeGroup:read,write,admin All:read
+}}}
+
+This example is only special for `SomeUser`, because when admin right is queried for `SomeUser`, it will be denied and processing stops. In any other case, processing continues.
+
+Or even:
+{{{
+#acl +All:read -SomeUser:admin SomeGroup:read,write,admin
+}}}
+
+`+All:read` means that when any user is requesting read right, it will be given and processing stops. In any other case, processing will continue. If admin right is queried for `SomeUser`, it will be denied and processing stops. In any other case, processing will continue. Finally if a member of `SomeGroup` is requesting some right it will be given if specified there and denied, if not. All other users have no rights, except when given by configuration.
+
+
+Notice that you probably won't want to use the second and third examples in ACL entries of some page. They're very useful on the site configuration entries though.
+
+[[Anchor(Default)]]
+== Inheriting from defaults ==
+Sometimes it might be useful to give rights to someone without affecting the default rights too much. For example, let's suppose you have the following entries in your configuration:
+{{{
+
+acl_rights_default = u"TrustedGroup:read,write,delete,revert All:read"
+acl_rights_before  = u"AdminGroup:admin,read,write,delete,revert +TrustedGroup:admin"
+}}}
+
+Now, you have some page where you want to give the "write" permission for `SomeUser`, but also want to keep the default behavior for All and `TrustedGroup`.  You can easily do that using the '''Default''' entry:
+{{{
+#acl SomeUser:read,write Default
+}}}
+
+This will insert the entries from {{{acl_rights_default}}} in the exact place where the Default word is placed. In other words, the entry above, with the given configuration, is equivalent to the following entry:
+{{{
+#acl SomeUser:read,write TrustedGroup:read,write,delete,revert All:read
+}}}
+
+Lets look at the first example in this section:
+{{{acl_rights_before  = u"AdminGroup:admin,read,write,delete,revert +TrustedGroup:admin"}}}
+
+ACLs are processed in the order of "before" then "page/default" and then "after", "left to right".
+
+So it begins at the left of "before" with `AdminGroup:...` - this matches if
+you are a member of admin group.
+If it matches, you get those rights (arwdr) and ACL processing STOPS.
+
+If it does not match, ACL processing continues with `+TrustedGroup:admin`
+- this matches if you are a member of `TrustedGroup`.
+
+If it matches, you get the rights (a) and - now the difference because of the modifier,
+- ACL processing CONTINUES! So if there is another match for that
+group or your user or `Known:` or `All:` you will get those rights, too.
+
+If it does not match, ACL processing continues - with the page ACLs (if
+there are any) or with default ACLs (if there are no pages ACLs) and
+finally with the "after" ACLs.
+
+While they represent the same thing, inheriting from the defaults has the advantage of automatically following any further change introduced in the defaults.
+
+[[Anchor(Groups)]]
+== Groups ==
+User groups make it easier to specify rights for bigger groups. Normally, the name of the group page has to end with `Group` like FriendsGroup. This lets MoinMoin recognise it as a list of usernames. This default pattern could be changed (e.g. for non-english languages etc.), see HelpOnConfiguration.
+
+Only `SomeUser`'s friends can read and edit this page:
+{{{
+#acl SomeUser:read,write SomeUser/FriendsGroup:read,write
+}}}
+
+`SomeUser/FriendsGroup` would be a page with each top-level list item representing a wiki username in that group:
+{{{
+#acl SomeUser:read,write,admin,delete,revert
+ * JoeSmith
+ * JoeDoe
+ * JoeMiller
+}}}
+
+A page named `AdminGroup` could define a group of that name and could be also protected by ACLs:
+{{{
+#acl AdminGroup:admin,read,write All:read
+ * SomeUser
+ * OtherUser
+   * This is currently ignored.
+Any other text not in first level list will be ignored.
+}}}
+
+/!\ A first level list is one with only one space before the asterisk (and there also has to be one space after the asterisk). The following won't work:
+{{{
+  * some user
+-- two spaces so doesn't work
+}}}
+
+You can configure which page names are considered as group definition pages (e.g. for non-english wikis):
+{{{
+page_group_regex =  '[a-z]Group$'    # this is the default
+}}}
+
+/!\ If changes to the group page do not take effect, let MoinMoin rebuild the cache by simply removing all files in the directory {{{path_to_your_wiki_instance/data/cache/wikidicts/}}}
+
+
+== Usage cases ==
+
+=== Public community Wiki on the Internet ===
+The most important point here is to use ACLs only in cases where really needed. Wikis depend on openness of information and free editing. They use soft security to clean up bad stuff. So there is no general need for ACLs. If you use them too much, you might destroy the way wiki works.
+
+This is why either ACLs should not be used at all (default) or, if used, the wikiconfig.py should look similar to that:
+{{{
+acl_rights_before = u'WikiEditorName:read,write,admin,delete,revert +AdminGroup:admin BadGuy:' 
+}}}
+
+The default {{{acl_rights_default}}} option should be ok for you:
+{{{
+acl_rights_default = u'Known:read,write,delete,revert All:read,write' 
+}}}
+
+A good advice is to have only a few and very trusted admins in `AdminGroup` (they should be very aware of how a wiki works or they would maybe accidently destroy the way the wiki works: by its openness, not by being closed and locked!).
+
+If using `AdminGroup`, you should make a page called `AdminGroup` and use it to define some people who get admin rights.
+
+Specifing `BadGuy` like shown above basically locks him out - he can't read or edit anything with that account. That makes only sense if done temporarily, otherwise you also could just delete that account. Of course, this `BadGuy` can also work anonymously, so this is no real protection (this is where soft security will apply).
+
+=== Wiki as a simple CMS ===
+If you want to use a wiki to easily create web content, but if you don't want edits by the public (but only by some webmasters), you maybe want to use that in your wikiconfig.py:
+{{{
+acl_rights_default = u'All:read' 
+acl_rights_before  = u'WebMaster,OtherWebMaster:read,write,admin,delete,revert' 
+}}}
+
+So everyone can read, but only the Webmasters can do anything else. As long as they still work on a new page, they can put
+{{{
+#acl All: 
+}}}
+on it, so nobody else will be able to see the unready page. When being finished with it, don't forget to remove that line again, so that
+{{{acl_rights_default}}} will be used.
+
+Some page(s) could also allow public comments (like one being called `PublicComments`), so you give more rights on that page:
+{{{
+#acl All:read,write 
+}}}
+
+=== Wiki on Intranet ===
+If you want to use a wiki on your intranet and you trust your users (not doing hostile stuff like locking others out or hijacking pages) to use the admin functionality in a senseful way, you maybe want to use that:
+{{{
+acl_rights_default = u'Known:admin,read,write,delete,revert All:read,write'
+acl_rights_before  = u'WikiAdmin,BigBoss:read,write,admin,delete,revert' 
+}}}
+
+So everyone can read, write and change ACL rights, `WikiAdmin` and `BigBoss` are enforced to be able to do anything, known users get admin rights by acl_rights_default (so they get it as long as no other ACL is in force for a page).
+
+Consequences:
+ * on a new page, the page creator can put any ACLs he wants
+ * on existing pages, not having ACLs yet, any known user can set up any ACLs he wants
+ * all people (except `WikiAdmin` and `BigBoss`) can be locked out by anybody ("known") else on pages without ACLs
+
+=== Wiki as a public company page ===
+If you want to use a wiki as the company page, and don't want every user being able to change the company page content, you may want to
+use something like this:
+{{{
+acl_rights_default = u"TrustedGroup:admin,read,write,delete,revert All:read"
+acl_rights_before  = u"AdminGroup:admin,read,write,delete,revert +TrustedGroup:admin"
+}}}
+
+This means that:
+ * by default known and anonymous users are only allowed to read pages
+ * on a new page, users in `TrustedGroup` can put any ACLs they want
+ * on existing pages, not having ACLs yet, any user in `TrustedGroup` user can set up any ACLs he wants
+ * all people, except people in `AdminGroup`, can be locked out by other admins or trusted users
+ * people in `TrustedGroup` get to use their admin rights on any page they're able to write, even if there are specific ACLs
+
+=== Comments on read-only page ===
+You can easily add a comments section to a read-only page by using a writable subpage, and allowing users to write on it. For example, you
+can define `SomePage` like this:
+{{{
+#acl SomeUser:read,write All:read
+'''Some read-only content'''
+
+...
+
+''' User comments '''
+[[Include(SomePage/Comments)]]
+}}}
+
+And `SomePage/Comments` like this:
+{{{
+#acl All:read,write
+Add your comments about SomePage here.
+}}}

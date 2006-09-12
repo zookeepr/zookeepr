@@ -1,0 +1,43 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+== Modifying the MoinMoin Default Style Sheets ==
+
+If you wish to modify the default Moin``Moin style sheet, it is a good practice to create a new theme first. Copy one of the existing themes to a new name (and also do not forget to copy the themename.py file, too). Use the @import function to import the original CSS file. Override only those attributes you wish to change. Then, if you later upgrade to a newer version of Moin``Moin, any changes to the original CSS file will be incorporated automatically.
+
+Example:
+{{{
+@import url("/wiki/classic/css/screen.css");
+
+body {
+    background-color: #FAEBD7;  
+    font-family: Arial,Helvetica;  
+}
+}}}
+
+== Allowing Users to Choose a Style Sheet ==
+
+To allow you users to choose between alternate style sheets, you first need to create several choices. Using the example above, change the background-color to `#E7FFE7` and save the file as `green.css` in `htdocs/mytheme/css/`.
+
+Test this option by modifying your user preferences to select a '''CSS URL''' of `/wiki/mytheme/css/green.css`. 
+
+Finally, you will probably need to edit HelpOnUserPreferences and change the wording for '''CSS URL''' to instruct your users on the choices available, including the new option for a green background.
+
+'''Note''': When a user initializes or updates their User``Preferences, the default value for '''CSS URL''' will be empty. Any user can return to the default value by erasing the '''CSS URL''' field value and clicking the '''[[GetText( Save )]]''' button.
+
+== How can I use my old .css style option with the new "theme based" moinmoin? ==
+
+ 1. Select the theme you like the most, or is more like your old one.
+ 1. Clone the selected theme into the wiki plugin directory. For example, if the '''classic''' theme is your departure point to create '''mytheme''', then: 
+  1. Copy your `htdocs/classic` dir (containing the `css` and `img` subdirs) to `htdocs/mytheme`
+  1. Copy python/site-packages/Moin``Moin/theme/classic.py to data/plugin/theme/mytheme.py
+  1. Add the following line to your `wikiconfig.py`:
+  {{{
+theme_default = 'mytheme'}}}
+ 1. Modify the mytheme CSS files (common.css, screen.css and print.css) to change the style and the mytheme.py to change order or appearance of elements in the produced html. At least, make sure that you change the value of the variable ''name'' to '' 'mytheme' '' (at the top of class ''Theme''), otherwise your changes to the mytheme CSS files may have no effect.
+
+In this way, you will already have your personal theme available to simplify new upgrades. 

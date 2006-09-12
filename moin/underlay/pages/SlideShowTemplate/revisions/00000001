@@ -1,0 +1,19 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:SlideShowTemplate
+##master-date:Unknown-Date
+#format wiki
+#language en
+[[Navigation(slideshow)]]
+
+##attachment:mylogo.png
+
+<introductionary bla bla ...>
+
+ * ["/000 Introduction"]
+ * ["/100 What's next?"]
+ * ...
+ * ["/900 What's last?"]
+ * ../SlideShowHandOutTemplate
+
+[[Navigation(children)]]

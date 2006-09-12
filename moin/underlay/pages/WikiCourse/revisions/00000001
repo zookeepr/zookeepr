@@ -1,0 +1,24 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers 2
+
+The content of this page and its sub-pages is in English. (!) See WikiSchulung for a course in German.
+
+= WikiCourse =
+
+[[TableOfContents]]
+
+== Courses ==
+
+ * /BasicIntroduction
+ * Advanced:
+   * HelpOnProcessingInstructions
+   * HelpOnMacros (complex Macros which are not treated in the introduction)
+
+== External Links ==
+ * (none in English yet)

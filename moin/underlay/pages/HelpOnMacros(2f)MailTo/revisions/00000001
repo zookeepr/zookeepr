@@ -1,0 +1,73 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+[[Navigation(siblings)]]
+
+Using the '''`MailTo`'''-Macro helps you putting your email address into a wiki in a rather safe way without having to fear that it gets collected by spam bots (robots collecting email addresses) and abused by some spammer.
+
+= Usage =
+
+`[[MailTo(Firstname DOT Lastname AT example DOT net)]]`
+
+or 
+
+`[[MailTo(Firstname DOT Lastname AT example DOT net, link text)]]`
+
+= What does it do? =
+
+We have to differentiate between logged-in and anonymous users (which includes spam bots).
+
+Logged-in users are assumed to have the right to read and easily use the email address via a single click (otherwise, one would not publish it in a wiki).
+
+Regarding anonymous users things get more critical - those could be "normal" users, but also someone or something (like a spam bot) collecting email addresses to abuse them by sending unsolicited commercial email to them (this is a very general problem in the internet).
+
+== Logged-in users ==
+
+They will get the following:
+ Firstname.Lastname@example.net
+
+So they get a directly readable and clickable `mailto:` link.
+
+== Anonymous users ==
+
+Anonymous users (like spam bots and other bots) will only get the literal argument text as passed to the macro:
+
+ Firstname DOT Lastname AT example DOT net
+
+Pure text, no `mailto:` link. An intelligent human being will be able to interpret that and enter that email address manually into an email client.
+
+But an automatic bot hopefully can't make anything out of that and will simply miss it (except if it is an especially bright bot, for that case see below) - and the macro has fulfilled its purpose, avoiding spam.
+
+= How it works and more samples =
+
+For anonymous users, the macro simply outputs the literal argument text as passed to the macro.
+
+For logged-in users, the macro processes the parameter string as follows:
+
+ 1. The following ALL-UPERCASE words will be replaced:
+
+  || AT   || `@` ||
+  || DOT  || `.` ||
+  || DASH || `-` ||
+
+ 1. Other ALL-UPPERCASE words like e.g. NO SPAM NOSPAM WHATEVER I DONT WANT SPAM etc. will simply be dropped (replaced by an empty string).
+
+ 1. All blanks get removed.
+
+ 1. A clickable `mailto:` link is generated.
+
+There is of course some danger of an especially bright spam bot recognizing usual spam protection words like AT, DOT and NOSPAM and converting them correctly. This is made more unlikely if you sprinkle in ''arbitrary'' words and blanks. A spam bot who can even recognize that has well earned your email address. ;)
+
+You can easily see the effects of `MailTo` by comparing these examples for logged-in and anonymous users:
+
+ * `[[MailTo(Firstname DOT Lastname AT example DOT net)]]` becomes [[MailTo(Firstname DOT Lastname AT example DOT net)]]
+ * `[[MailTo(Firstname . Lastname AT exa mp le DOT n e t)]]` becomes [[MailTo(Firstname . Lastname AT exa mp le DOT n e t)]]
+ * `[[MailTo(Firstname I DONT WANT SPAM . Lastname@example DOT net)]]` becomes [[MailTo(Firstname I DONT WANT SPAM . Lastname@example DOT net)]]
+ * `[[MailTo(First name I Lastname DONT AT WANT SPAM example DOT n e t)]]` becomes [[MailTo(First name I Lastname DONT AT WANT SPAM example DOT n e t)]]
+ * `[[MailTo(Vorname DOT Nachname AT example DOT net, Me, Myself, and I)]]` becomes [[MailTo(Vorname DOT Nachname AT example DOT net, Me, Myself, and I)]]
+
+(!) Given the ability to add CAPS words, each user can raise the obstacles for both bots and humans as they desire. If you make it hard for human readers, you will get less mail. ;)

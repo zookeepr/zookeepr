@@ -1,0 +1,121 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+= How Authentication works with MoinMoin =
+
+MoinMoin historically has used some cookie-based authentication: you log in via the form on page UserPreferences, moin sets a cookie and from then on this cookie is used for authenticating you - until you log off and the cookie gets deleted (or until the cookie expires). 
+
+For running moin in corporate environments this is often no option as access restrictions have to be enforced reliably. Starting with 1.3 moin could also use HTTP basic auth based authentication, when being run with some web servers (like Apache) supporting it. 
+
+Starting with 1.5 moin now has freely configurable and kind of modular authentication. You use the `auth` configuration value to set up a list of authentication methods that are processed in exactly that order.
+
+When an external user database is used you do not want to recreate all users in moin. For this case the configuration option `user_autocreate` was added to moin 1.5. If you set it to True a new user profile will be created automatically when a new user has passed authentication (and the auth method supports auto creation).
+
+Presently the following authentication methods are supported:
+
+ || '''Server setup''' || '''Authentication''' || '''Auth method in moin''' ||
+ ||<|2 (> All || by moin via own cookie || `MoinMoin.auth.moin_cookie` ||
+ || by moin via external cookie || see contrib/auth_externalcookie/ ||
+ ||<|2 (> Apache with CGI, modpy or Fast``Cgi || by Apache modules: HTTP Basic, HTTP Digest, SSPI (aka NTLM) or LDAP || `MoinMoin.auth.http` ||
+ || by moin via LDAP || `MoinMoin.auth.ldap_login` (must combine with moin_cookie to keep the session) ||
+ || Apache+SSL with CGI, modpy or Fast``Cgi || by Apache via SSL client certificate || `MoinMoin.auth.sslclientcert` ||
+ || Twisted || HTTP Basic (but does not request authentication by header, so this is currently only useful for automated stuff, not for browser use) || `MoinMoin.auth.http` ||
+ || IIS || (?) || (?) ||
+
+== Other "auth" methods ==
+These are not strictly auth methods, as they don't authenticate users, but use auth information for other purposes:
+
+ || `MoinMoin.auth.log` || will just log login/logout/name, nothing else ||
+ || `MoinMoin.auth.smb_mount` || mount some smb share using user/password from login, umount on logout ||
+
+`MoinMoin.auth.interwiki` is unfinished, experimental code - don't use.
+
+== Shipped plugins ==
+=== moin_cookie auth (default) ===
+{{{#!python
+    from MoinMoin.auth import moin_cookie
+    auth = [moin_cookie]
+}}}
+
+This is the default auth list moin uses (so if you just want that, you don't need to configure it). It means that moin just tries to use the MOIN_ID cookie as it ever did.
+
+For doing that, moin will just call the `MoinMoin.auth.moin_cookie` function. This function will look if there is a valid cookie:
+ * if yes, it will use it to make and return a valid user object. The user is known now.
+ * if no, the function does not return a user object. As as moin_cookie is the only auth method in the list, there is no other auth method to try and the user will stay unknown for that case.
+
+=== http auth ===
+
+To activate http authentication you have to add following lines to `wikiconfig.py`:
+{{{#!python
+    from MoinMoin.auth import http
+    auth = [http]
+}}}
+
+For HTTP basic auth used with a web server like Apache, the web server handles authentication before moin gets called. You either enter a valid username and password or your access will be denied by the web server.
+
+So moin's http auth method will just check if user authentication happened:
+ * if yes, it will return a user object based on the authenticated user name.
+ * if no, it will not return a user object. In this example, there are no other auth methods, so the user will stay unknown.
+
+Well, in reality, it is a bit more complicated indeed:
+ * For Twisted we use the username and password stored in the moin user profile. Except wiki xmlrpc usage this is currently not used.
+ * For NTLM and Negotiate, we split off everything before the last "\" (usually it is "Domain\username") and we also use title() to normalize "username" to "Username".
+
+ (!) You usually do want to set `user_autocreate = True` for this auth method. moin will then auto create a user profile if the authenticated user does not already have one. So the user does not need to create the moin profile himself.
+
+=== sslclientcert auth ===
+To activate authentication via SSL client certificates you have to add following lines to `wikiconfig.py`:
+{{{#!python
+    from MoinMoin.auth import sslclientcert
+    auth = [sslclientcert]
+}}}
+
+For SSL client certificate auth used with a web server like Apache, the web server handles authentication before moin gets called. You either have a valid SSL client certificate or your access will be denied by the web server.
+
+So moin's sslclientcert auth method will just check if user authentication happened:
+ * if yes, it will return a user object based on the email address or user name in the certificate.
+ * if no, it will not return a user object. In this example, there are no other auth methods, so the user will stay unknown.
+
+ (!) You usually do want to set `user_autocreate = True` for this auth method. moin will then auto create a user profile if the authenticated user does not already have one. So the user does not need to create the moin profile himself.
+
+=== php_auth ===
+To activate Single-Sign-On integration with PHP applications, use this module. It reads PHP session files and therefore directly integrates with existing PHP authentication systems.
+
+To use this module, use the following lines of code in your configuration:
+{{{#!python
+    from MoinMoin.auth import php_auth
+    auth = [php_auth()]
+}}}
+php_auth has the following parameters: {{{#!python
+php_auth(apps=['egw'], s_path="/tmp", s_prefix="sess_")
+}}}
+ * `apps` is a list of enabled applications
+ * `s_path` is the path of the PHP session files
+ * `s_prefix` is the prefix of the PHP session files
+
+The only supported PHP application is eGroupware 1.2 currently. But it should be fairly easy to add a few lines of code that extract the necessary information from the PHP session.
+
+== Combining multiple auth methods ==
+For combining e.g. http and cookie authentication, your `wikiconfig.py` might contain:
+{{{#!python
+    from MoinMoin.auth import http, moin_cookie
+    auth = [http, moin_cookie]
+}}}
+
+In this example, moin will first check if the http auth method gives a valid user. If yes, it will use just that. If not and `continue_flag` returned by http auth method is True, it will continue checking other auth list method - `moin_cookie` in this case... ( /!\ needs update /!\ )
+
+ (!) Not all combinations make sense, of course.
+
+== Making your own auth method ==
+See the commented config file fragment `contrib/auth_externalcookie/` and `MoinMoin/auth.py` in your moin distribution archive for examples of how to do authentication.
+
+Here is just a short summary of what's currently possible:
+ * use UserPreferences login form as userinterface for your own auth method for entering name and password
+ * search existing user profiles for a "matching" user (the match needs not be the name, it can also be the email address or something you put into aliasname)
+ * create a user object and let it remember what attributes were determined by auth method (and thus should not be offered on UserPreferences)
+ * update values in user's profile from externally provided data
+ * autocreate user profiles

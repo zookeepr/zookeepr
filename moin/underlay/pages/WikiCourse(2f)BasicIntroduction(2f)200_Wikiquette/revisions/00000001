@@ -1,0 +1,22 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+#pragma section-numbers off 
+[[Navigation(slides)]]
+
+= Wikiquette - how do I behave correctly? =
+
+== Cooperative Editing ==
+
+Basic principle: ''Anybody logged in can edit anything.''
+
+Exceptions:
+ * If you want to edit a page without being disturbed, just write a note to that effect ''at the top'' of the page and save that change first.
+ * If two people edit a page simultaneously, the first can save normally, but the second will get a warning and should follow the directions to merge their changes with the already saved data.
+ * Personal Homepages: normally only changed by their owner, but you may append messages at the end of the page
+
+In general, do follow any hints given on a page, there is generally no ''enforced'' limit, but you should not blindly ignore other people's wishes.

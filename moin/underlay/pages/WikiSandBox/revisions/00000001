@@ -1,0 +1,77 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:WikiSandBox
+#format wiki
+#language en
+
+'''Feel free to experiment here, after the four dashes below. Please do not create new pages without any meaningful content just to try it out!'''
+
+You may want to open HelpOnEditing in a new window or tab while you edit.
+----
+
+== Formatting ==
+
+''italic'' '''bold''' {{{typewriter}}} 
+
+`backtick typewriter` (configurable)
+
+~+ bigger +~ ~- smaller -~
+
+{{{
+preformatted some more
+and some more lines too
+
+}}}
+
+{{{#!python
+def syntax(highlight):
+    print "on"
+    return None
+}}}
+
+
+{{{#!java
+  public void main(String[] args]){
+     System.out.println("Hello world!");
+  } 
+
+}}}
+
+
+== Linking ==
+
+HelpOnEditing MoinMoin:InterWiki 
+
+http://moinmoin.wikiwikiweb.de/ [http://www.python.org/ Python]
+
+someone@example.com
+
+
+=== Image Link ===
+http://c2.com/sig/wiki.gif
+
+== Smileys ==
+
+/!\ Alert
+
+== Lists ==
+
+=== Bullet ===
+ * first
+   1. nested and numbered
+   1. numbered lists are renumbered
+ * second
+ * third
+ blockquote
+   deeper
+
+=== Glossary ===
+ Term:: Definition
+
+=== Drawing ===
+drawing:mytest
+
+= Heading 1 =
+== Heading 2 ==
+=== Heading 3 ===
+==== Heading 4 ====

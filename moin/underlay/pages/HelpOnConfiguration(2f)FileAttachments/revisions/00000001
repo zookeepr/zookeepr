@@ -1,0 +1,69 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+The [wiki:Self:HelpOnActions/AttachFile AttachFile action] enables a page to have multiple attached files. Since file uploads could be abused for DoS (Denial of Service) attacks, `AttachFile` is an action that may be enabled by the wiki administrator. To do this, add "`allowed_actions = ['AttachFile']`" to your configuration file.
+
+This is all you usually need to do for configuration.
+
+||<tablestyle="color: red;"> /!\ '''Warning: if you make your attachments directly accessible via the web server, you should make sure that the web server does not execute attachments (like .php or .asp or other scripts) uploaded by evil users. If you do not know how to do that, do not configure your installation like described below or you risk making your server remotely exploitable.''' ||
+
+= How attachments are handled =
+
+There are two storage/retrieval models for file attachments:
+
+ 1. Attachments are stored "privately" and can only be retrieved via a CGI GET (via URLs like `http://myorg.org/mywiki/<SomePage>?action=AttachFile&do=get&target=filename.ext`).
+
+ 1. Attachments are stored into a directory directly accessible by the web server, and can thus be served directly by the webserver, without any invocation of MoinMoin (leading to URLs like `http://myorg.org/mywikiattach/<Somepage>/attachments/filename.ext`).
+
+The first option is the default; attachments are stored in the "...mywiki/data/pages/" directory, with paths like "`...mywiki/data/pages/<pagename>/attachments/<filename>`".
+
+The MoinMoin ''attachments'' configuration option allows you to move the directory structure used to store attachments to another location.  Unless you have a reason for doing so, there is no need to use a different location. Using a different location may be more work and more risk, as all the existing attachments must be copied to the new location. The following instructions are for Apache servers and assume you intend to leave the attachment files in their existing location and your original installation used the name "mywiki".
+
+= Serving attachments directly by the web server =
+
+ * /!\ Note that this does not work with attachments whose filenames contain non-ascii characters.
+
+ * /!\ '''Note that we plan to remove that option in 2.0. Because of that and the security problems noted below, we do not recommend that option.'''
+
+
+The first step is to tell Apache that it has another Alias directory from which it can serve files. Review the changes you made to the httpd.conf (or commonhttpd.conf) file during the Moin``Moin installation and find the Script``Alias statement similar to the following:
+{{{
+    ScriptAlias /mywiki           ".../mywiki/moin.cgi" 
+}}}
+Create an Alias statement similar to the Script``Alias statement above, replacing the ''/mywiki'' URI with ''/mywikiattach/'' and replacing ''moin.cgi'' with ''data/pages/''.
+{{{
+    Alias       /mywikiattach/    ".../mywiki/data/pages/"
+}}}
+
+Be sure to note the differences in the trailing slashes between the two statements, they must be entered exactly as shown above. If you are making this change to a running system, you must restart Apache to have the change take effect.
+
+The second step is to tell MoinMoin to let Apache do the work of fetching file attachments. To do this,
+you need to add an `attachments` option to .../mywiki/wikiconfig.py. The 'attachment' option is a dictionary of two values: {{{
+attachments = {
+    'dir': '.../mywiki/data/pages',
+    'url': '/mywikiattach',
+}
+}}}
+
+Moin``Moin must still do the work of uploading file attachments. The ''dir'' value above tells Moin``Moin where to store attachments; note this is the same as the path in the new Apache Alias statement but without the trailing "/". The ''url'' value tells Moin``Moin how to retrieve the attachments; this matches the URI in the Alias statement but again without the trailing "/".
+
+/!\ Your attached files are now directly servable by Apache. However if you also have PHP (or ASP or any other server parsed language) installed then an attacker can upload a PHP script an then run it to exploit other local weaknesses.
+
+For example, you can disable PHP for the appropriate directory (note that it's difficult to include instructions for disabling all server parsed languages).
+
+{{{
+<Directory .../mywiki/data/pages/>
+    RemoveType .php .php3 .php4 .phtml
+</Directory>
+}}}
+
+/!\ This only disables php stuff - you have to add everything else on your own!
+
+After you have completed the configuration changes, test by uploading an attachment for WikiSandBox. Then modify the WikiSandBox page to display the uploaded image or download the file. If there were existing attachments before this change, verify the old attachments are still available.  Finally, review the Apache ''access.log'' file to verify you have a log entry showing the expected file access:
+
+  * ''"...GET /mywikiattach/Wiki``Sand``Box/attachments/mypix.jpg HTTP/1.1..."''.

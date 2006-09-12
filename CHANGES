@@ -1,0 +1,9 @@
+Changes for Zookeepr
+====================
+
+0.1.5
+-----
+
+ * Wiki integration thanks to Michael Kedzierski.
+ * Support for signing up for an account without needing to go through the
+   CFP.

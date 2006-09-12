@@ -1,0 +1,15 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+HelpContents > HelpOnAdministration > HelpOnPageDeletion
+
+== How to delete pages ==
+If enabled (see HelpOnConfiguration and HelpMiscellaneous/FrequentlyAskedQuestions) and allow by ACLs, you can delete pages with the {{{DeletePage}}} action. Note that deleting means to make a backup copy of the page, and then deleting the page file. This is almost like saving an empty page (which is not allowed by the system).
+
+What this means is that you can get back at deleted pages by using the standard mechanisms, see also the HelpMiscellaneous/FrequentlyAskedQuestions entry "Can I restore a page from an older version?" for this. Especially, if you enter the page name into the `GoTo` dialog, you'll see the usual page creation stuff, but clicking on `PageInfo` will reveal the old version history, unless the page was purged out of existence inbetween.
+
+(!) The only way to unrevertably and completely delete a page (including backups, history, attachments, etc.) is via the shell on the host system. The page files are found in the "`data/pages/<PageName>`" directory, and you can simply delete the whole `<PageName>` directory - no way back in that case.

@@ -1,0 +1,175 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+Some basic pages used for every language, but we only need them once in english (don't translate!):
+ * AutoAdminGroup
+ * BadContent
+ * LocalBadContent
+ * EditedSystemPages
+ * MoinPagesEditorGroup
+ * LocalSpellingWords
+  * SystemPagesGroup
+ * SystemPagesSetup
+
+This is a list of all english System``Pages (including Help``Pages) in this wiki:
+
+system pages:
+ * FrontPage
+ * RecentChanges
+ * TitleIndex
+ * WordIndex
+ * SiteNavigation
+ * FindPage
+ * UserPreferences
+ * MissingPage
+ * MissingHomePage
+ * AbandonedPages
+ * OrphanedPages
+ * WantedPages
+ * EventStats
+ * EventStats/HitCounts
+ * EventStats/UserAgents
+ * PageSize
+ * PageHits
+ * InterWiki
+ * RandomPage
+ * SystemInfo
+ * WikiHomePage
+ * WikiName
+ * WikiSandBox
+ * WikiWikiWeb
+ * WhyWikiWorks
+ * XsltVersion
+ * MoinMoin
+ * MoinMoin/TextFormatting
+ * FortuneCookies
+ 
+help pages:
+ * HelpContents
+ * HelpForBeginners
+ * HelpForDevelopers
+ * HelpIndex
+ * HelpMiscellaneous
+ * HelpMiscellaneous/ExperimentalFeatures
+ * HelpMiscellaneous/FrequentlyAskedQuestions
+ * HelpOnAccessControlLists
+ * HelpOnActions
+ * HelpOnActions/AttachFile
+ * HelpOnAdministration
+ * HelpOnAuthentication
+ * HelpOnAutoAdmin
+ * HelpOnCategories
+ * HelpOnConfiguration
+ * HelpOnConfiguration/CascadingStyleSheets
+ * HelpOnConfiguration/EmailSupport
+ * HelpOnConfiguration/SecurityPolicy
+ * HelpOnConfiguration/ApacheVoodoo
+ * HelpOnConfiguration/FileAttachments
+ * HelpOnConfiguration/IntegratingWithApache
+ * HelpOnConfiguration/SurgeProtection
+ * HelpOnConfiguration/UserPreferences
+ * HelpOnEditLocks
+ * HelpOnEditing
+ * HelpOnEditing/SubPages
+ * HelpOnFormatting
+ * HelpOnGraphicalEditor
+ * HelpOnHeadlines
+ * HelpOnPackageInstaller
+ * MoinMoin/InstallDocs
+ * HelpOnInstalling
+ * HelpOnInstalling/AolServer
+ * HelpOnInstalling/ApacheOnMacOsx
+ * HelpOnInstalling/ApacheOnLinux
+ * HelpOnInstalling/ApacheOnLinuxFtp
+ * HelpOnInstalling/ApacheOnWin32
+ * HelpOnInstalling/ApacheWithModPython
+ * HelpOnInstalling/BasicInstallation
+ * HelpOnInstalling/FastCgi
+ * HelpOnInstalling/InternetInformationServer
+ * HelpOnInstalling/MinimalWiki
+ * HelpOnInstalling/StandaloneServer
+ * HelpOnInstalling/TroubleShooting
+ * HelpOnInstalling/TwistedWeb
+ * HelpOnInstalling/WebLogic
+ * HelpOnInstalling/WikiInstanceCreation
+ * HelpOnLanguages
+ * HelpOnLinking
+ * HelpOnLists
+ * HelpOnMacros
+ * HelpOnMacros/ImageLink
+ * ["HelpOnMacros/Include"]
+ * HelpOnMacros/MailTo
+ * HelpOnMacros/MonthCalendar
+ * HelpOnNavigation
+ * HelpOnPageCreation
+ * HelpOnPageDeletion
+ * HelpOnParsers
+ * HelpOnParsers/ReStructuredText
+ * HelpOnParsers/ReStructuredText/RstPrimer
+ * HelpOnProcessingInstructions
+ * HelpOnProcessors
+ * HelpOnRules
+ * HelpOnSearching
+ * HelpOnSkins
+ * HelpOnSlideShows
+ * ["HelpOnSlideShows/000 Introduction"]
+ * ["HelpOnSlideShows/100 Creating the slides"]
+ * ["HelpOnSlideShows/900 Last but not least: Running your presentation."]
+ * HelpOnSmileys
+ * HelpOnSpellCheck
+ * HelpOnSuperUser
+ * HelpOnTables
+ * HelpOnTemplates
+ * HelpOnThemes
+ * HelpOnUpdating
+ * HelpOnUpdatingPython
+ * HelpOnUserHandling
+ * HelpOnUserPreferences
+ * HelpOnVariables
+ * HelpOnXmlPages
+ * HelpTemplate
+ * SyntaxReference
+
+DesktopEdition:
+ * DesktopEdition 
+ * DesktopEdition/HowToConfigure
+
+Wiki Course:
+ * WikiCourse
+ * WikiCourse/BasicIntroduction
+ * ["WikiCourse/BasicIntroduction/000 What is a Wiki?"]
+ * ["WikiCourse/BasicIntroduction/050 First Steps"]
+ * ["WikiCourse/BasicIntroduction/060 How do I navigate?"]
+ * ["WikiCourse/BasicIntroduction/090 The Editor"]
+ * ["WikiCourse/BasicIntroduction/091 Tips on the Editor"]
+ * ["WikiCourse/BasicIntroduction/100 Text markup"]
+ * ["WikiCourse/BasicIntroduction/110 Headlines and Paragraphs"]
+ * ["WikiCourse/BasicIntroduction/130 Lists"]
+ * ["WikiCourse/BasicIntroduction/150 Tables"]
+ * ["WikiCourse/BasicIntroduction/180 Macros"]
+ * ["WikiCourse/BasicIntroduction/191 Creating new Pages"]
+ * ["WikiCourse/BasicIntroduction/195 Actions"]
+ * ["WikiCourse/BasicIntroduction/200 Wikiquette"]
+ * ["WikiCourse/BasicIntroduction/210 Organisation and Structure"]
+ * ["WikiCourse/BasicIntroduction/900 Exercises"]
+ * ["WikiCourse/BasicIntroductionHandOut"]
+
+categories:
+ * CategoryCategory
+ * CategoryHomepage
+
+templates:
+ * CategoryTemplate
+ * HelpTemplate
+ * HomepageTemplate
+ * HomepageReadWritePageTemplate
+ * HomepageReadPageTemplate
+ * HomepagePrivatePageTemplate
+ * HomepageGroupsTemplate
+ * SlideShowHandOutTemplate
+ * SlideShowTemplate
+ * SlideTemplate
