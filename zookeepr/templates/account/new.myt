@@ -33,9 +33,14 @@
 </p>
 
 <p>
+<span class="mandatory">*</span>
 <label for="registration.handle">Display name:</label>
 <br />
 <% h.text_field('registration.handle', size=40) %>
+<br />
+<span class="fielddesc">
+Your display name will be used to identify you on the website.
+</span>
 </p>
 
 <p>
