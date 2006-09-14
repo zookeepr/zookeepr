@@ -1,3 +1,5 @@
+ * make wiki pages actually return a 404 for the "this page doens't yet exist"
+
 = Milestones for 0.2 =
 
  * MyLCA administration

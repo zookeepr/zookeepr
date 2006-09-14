@@ -434,3 +434,28 @@ class TestAccountController(ControllerTest):
 
         self.objectstore.delete(regs[0])
         self.objectstore.flush()
+
+    def test_create_duplicate_account(self):
+        Dummy_smtplib.install()
+        
+        # create a fake user
+        p = Person(email_address='testguy@example.org')
+        p.activated = True
+        self.objectstore.save(p)
+        self.objectstore.flush()
+
+        resp = self.app.get('/account/new')
+        f = resp.form
+        f['registration.email_address'] = 'testguy@example.org'
+        f['registration.fullname'] = 'Testguy McTest'
+        f['registration.handle'] = 'tg'
+        f['registration.password'] = 'test'
+        f['registration.password_confirm'] = 'test'
+        resp = f.submit()
+
+        resp.mustcontain('This account already exists')
+
+        resp.click('recover your password')
+
+        self.objectstore.delete(p)
+        self.objectstore.flush()

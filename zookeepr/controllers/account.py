@@ -52,6 +52,13 @@ class PasswordResetSchema(BaseSchema):
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 
+class NotExistingAccountValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        accounts = g.objectstore.query(Person).select_by(email_address=value['email_address'])
+        if len(accounts) > 0:
+            raise Invalid("This account already exists.", value, state)
+
+
 class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
     fullname = validators.String(not_empty=True)
@@ -59,7 +66,7 @@ class PersonSchema(Schema):
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     
-    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [NotExistingAccountValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 
 class NewRegistrationSchema(BaseSchema):
