@@ -12,6 +12,7 @@ setup(
         "SQLAlchemy>=0.2.7",
         "nose>=0.9.0",
         "FormEncode>=0.5.1",
+        "PasteScript>=0.9.8",
     ],
     packages=find_packages(),
     include_package_data=True,

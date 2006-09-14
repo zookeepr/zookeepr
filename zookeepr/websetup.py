@@ -1,5 +1,7 @@
 import os
 
+from paste.script.copydir import copy_dir
+
 def setup_config(command, filename, section, vars):
     """
     Place any commands to setup zookeepr here.
@@ -43,14 +45,21 @@ def setup_config(command, filename, section, vars):
         try:
             os.mkdir(dirname)
         except OSError, e:
+            # if directory not found, move up a dir
             if e.errno == 2:
                 mkdir(os.path.dirname(dirname))
+                os.mkdir(dirname)
             else:
                 raise e
 
-    print config['moin_data']
-    print config['moin_underlay']
-
-    
-    mkdir(config['moin_data'])
-    mkdir(config['moin_underlay'])
+    try:
+        mkdir(os.path.join(config['moin_data'], 'pages'))
+        # copy plugins dir from our egg to the destination
+        copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(config['moin_data'], 'plugin'), {}, 1, False)
+        mkdir(os.path.join(config['moin_underlay'], 'pages'))
+    except OSError, e:
+        # skip file-exists
+        if e.errno == 17:
+            pass
+        else:
+            raise e
