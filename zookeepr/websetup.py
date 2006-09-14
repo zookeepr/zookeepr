@@ -1,3 +1,5 @@
+import os
+
 def setup_config(command, filename, section, vars):
     """
     Place any commands to setup zookeepr here.
@@ -18,18 +20,37 @@ def setup_config(command, filename, section, vars):
 #    print "created thingies"
     
 
-    model.proposal.tables.proposal_type.insert().execute(
-        dict(name='Presentation'),
+    try:
+        model.proposal.tables.proposal_type.insert().execute(
+            dict(name='Presentation'),
         )
-    model.proposal.tables.proposal_type.insert().execute(
-        dict(name='Miniconf'),
-        )
-    model.proposal.tables.proposal_type.insert().execute(
-        dict(name='Tutorial'),
-        )
-    model.schedule.tables.stream.insert().execute(
-        dict(name='Free Love and Open Sensual Stimulation'),
-        )
-    model.core.tables.role.insert().execute(
-        dict(name='reviewer'),
-        )
+        model.proposal.tables.proposal_type.insert().execute(
+            dict(name='Miniconf'),
+            )
+        model.proposal.tables.proposal_type.insert().execute(
+            dict(name='Tutorial'),
+            )
+        model.schedule.tables.stream.insert().execute(
+            dict(name='Free Love and Open Sensual Stimulation'),
+            )
+        model.core.tables.role.insert().execute(
+            dict(name='reviewer'),
+            )
+    except sqlalchemy.exceptions.SQLError:
+        pass
+
+    def mkdir(dirname):
+        try:
+            os.mkdir(dirname)
+        except OSError, e:
+            if e.errno == 2:
+                mkdir(os.path.dirname(dirname))
+            else:
+                raise e
+
+    print config['moin_data']
+    print config['moin_underlay']
+
+    
+    mkdir(config['moin_data'])
+    mkdir(config['moin_underlay'])
