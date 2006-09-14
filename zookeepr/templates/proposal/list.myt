@@ -34,7 +34,7 @@
 %	# endfor
 </td>
 	<td>
-%	if [ r for r in s.reviews if r.reviewer == c.person ]:
+%	if [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
 	TICK!
 %	else:
 	<% h.link_to("Review now!", url=h.url(action="review", id=s.id)) %>
