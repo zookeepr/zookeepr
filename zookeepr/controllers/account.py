@@ -56,7 +56,7 @@ class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         accounts = g.objectstore.query(Person).select_by(email_address=value['email_address'])
         if len(accounts) > 0:
-            raise Invalid("This account already exists; try the forgotten password link.", value, state)
+            raise Invalid("This account already exists.", value, state)
 
 
 class PersonSchema(Schema):

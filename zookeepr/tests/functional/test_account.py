@@ -453,7 +453,9 @@ class TestAccountController(ControllerTest):
         f['registration.password_confirm'] = 'test'
         resp = f.submit()
 
-        resp.mustcontain('This account already exists; try the forgotten password link.')
+        resp.mustcontain('This account already exists')
+
+        resp.click('recover your password')
 
         self.objectstore.delete(p)
         self.objectstore.flush()
