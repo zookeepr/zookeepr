@@ -35,10 +35,6 @@ moin_underlay = %(here)s/moin_underlay
 # on the SQLAlchemy documentation for `global_connect`.
 dburi = sqlite://filename=%(here)s/somedb.db
 
-# MoinMoin mashup paths
-moin_data = %(here)s/moin/data
-moin_underlay = %(here)s/moin/underlay
-
 # WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to
 # execute malicious code after an exception is raised.
