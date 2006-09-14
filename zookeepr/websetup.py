@@ -56,7 +56,7 @@ def setup_config(command, filename, section, vars):
         mkdir(os.path.join(config['moin_data'], 'pages'))
         # copy plugins dir from our egg to the destination
         copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(config['moin_data'], 'plugin'), {}, 1, False)
-        mkdir(os.path.join(config['moin_underlay'], 'pages'))
+        copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'underlay'), os.path.join(config['moin_underlay']), {}, 1, False)
     except OSError, e:
         # skip file-exists
         if e.errno == 17:
