@@ -1,0 +1,11 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+MoinMoin ''DesktopEdition'' is a small wiki which can be used by workgroups or as a local personal information manager.
+
+ * Download and further information on MoinMoin:DesktopEdition
+ * Look at /HowToConfigure if you want to customise DesktopEdition.

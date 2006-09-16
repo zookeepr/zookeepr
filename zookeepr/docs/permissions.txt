@@ -46,20 +46,20 @@ how do we infer each of the cases above?
 
  * logged in users:
 
-   c.person is a Person object
-   'person_id' in session
+   c.signed_in_person is a Person object
+   'signed_in_person_id' in session
 
  * roles (site admin, speaker, reviewer):
 
-   Role.select_by_name(role)[0] in c.person.roles
+   Role.select_by_name(role)[0] in c.signed_in_person.roles
 
    (name is unique on roles)
 
    Q: is name a good way to define what roles?  that's kinda sucky and
 hardcoded.
 
- * a creator... we need some function to define whether c.person is
-the creator of an object.
+ * a creator... we need some function to define whether
+c.signed_in_person is the creator of an object.
 
   we also need this object to exist before the permissions are
 checked, otherwise we have nothing to compare to.

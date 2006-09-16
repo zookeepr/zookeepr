@@ -1,32 +1,4 @@
-= TODO =
-
- * sign in / sign out links when you are still signed in
-
- * timestamps on proposals
-
- * look at using Paste@http isntead of PsateScriupt@wsgiutils
-
- * Fix url_hash for existing submitters and mail out rego confirmation emails.
-
-== next ==
-
- * Add ability to add co-speakers to submissions.
-
- * HACKING document
-
- * Paper upload doesn't store filename or content type.
-
- * Update CFP with review details.
-
- * group crud controller tests (person, role, submission, stype), vs others (home, register, cfp, about)
-
- * write more docs ;-)
-
- * clicking on 'about' from my home page seems to sign out; make the authbar do the right thing regardless of wether securecontroller is used or not.
-
- * prettify the profile page
-
- * "I forgot my password" link on signin.
+ * make wiki pages actually return a 404 for the "this page doens't yet exist"
 
 = Milestones for 0.2 =
 
@@ -40,14 +12,6 @@
   * edit personal settings, submit participations, list submissions, edit submissions, conference registration
   * informational module (explain MyLCA box, Jeff's giant arrow)
   * planet feed
-
- * sign up for a login
-  * firstname, lastname, handle, email, password
-  * optionally any other personal details
-  Firstname, Lastname, Handle, Country, City, Phone, Email (whitelist contact), (Privacy, Fax, Title, Company, Address, State, Zip, Photo, RSS, Company)
-  * send confirmation email
-
- * Edit/delete previously submitted participation
 
  * Administration
   * organisers have a release schedule to plug dates in, modules are activated at times
@@ -117,5 +81,3 @@
 displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have quoted chars
 
  * apachebench on zookeepr
-
- * autocreate roles and submission types at server startup

@@ -1,0 +1,23 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+You can predefine, disable or remove several options on the UserPreferences page using the following parameters in wikiconfig.py like shown on HelpOnConfiguration:
+
+ * user_checkbox_defaults
+ * user_checkbox_disable
+ * user_checkbox_fields
+ * user_checkbox_remove
+ * user_form_defaults
+ * user_form_disable
+ * user_form_fields
+ * user_form_remove
+
+The possible values are found in multiconfig.py:
+
+user_checkbox_remove = ['edit_on_doubleclick', 'show_nonexist_qm', 'show_toolbar', 'show_topbottom', 'show_fancy_diff', 'wikiname_add_spaces', 'remember_me', 'disabled',]
+
+user_form_remove = ['password', 'password2', 'css_url', 'logout', 'create', 'account_sendmail',]

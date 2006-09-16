@@ -325,8 +325,8 @@ class SignedInControllerTest(ControllerTest):
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'
         resp = f.submit()
-        self.failUnless('person_id' in resp.session)
-        self.assertEqual(self.person.id, resp.session['person_id'])
+        self.failUnless('signed_in_person_id' in resp.session)
+        self.assertEqual(self.person.id, resp.session['signed_in_person_id'])
 
     def tearDown(self):
         self.objectstore.delete(self.objectstore.get(model.Person, self.person.id))

@@ -1,0 +1,156 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+'''Index'''
+[[TableOfContents]]
+
+== Requirements ==
+
+Before you install Moin``Moin, you must have the necessary infrastructure in place. This procedure explains the steps necessary to install the infrastructure and provides detailed instructions for the installation of Moin``Moin. 
+
+Downloading and installing all of the required components will require almost 100 MB of disk space - shouldn't be a problem nowadays, right?
+
+Many users prefer to install software products in a folder other than the installation default. Python typically changes the default installation folder name with each point release, and Apache has changed the default installation folder name with the release of version 2.  Instead of enumerating all the possibilities at each step, this procedure will use the '''Reference''' name in the table below as the installed location for each product. Substitute your real installation location when editing configuration files and entering commands.
+
+||<rowbgcolor="#EEDDAA">Reference||Product||Installation Default or Typical Name||
+||'''C:\Apache'''|| Apache||C:\Program Files\Apache Group\Apache2||
+||'''C:\Python'''||Python||C:\Python22||
+||'''C:\Moin'''||wiki instances||C:\My Documents\Moin||
+
+This installation procedure was tested with Apache 1.3.26 and Apache 2.0.44 for Windows running on Windows ME, and using Python 2.3.
+
+== Preparation ==
+
+=== MSI Installer ===
+Installation of Apache and one alternative distribution of Python require the Microsoft '''MSI Installer'''.  The latest version, 2.0, was released in September of 2001. You will know you don't have the correct version if you receive errors after double-clicking on a file name ending in '''.msi'''. To get the latest version, go to http://www.microsoft.com/, search for '''msi installer''', and follow the instructions.  There are two versions, one for Windows ME, 98, and 95; and another for Windows 2000 and NT. Windows XP has the 2.0 version and requires no update.
+
+=== Installing Apache ===
+
+To obtain the latest version of Apache, go to http://www.apache.org/, and click on the link to '''HTTP Server'''. Find the link to download the '''Win32 Binary (MSI Installer)''' version. Read the Apache documentation to determine the correct installation procedure for your situation.  Questions and problems with the Apache installation process should be resolved through use of the resources provided by the Apache organization. Be sure your webserver runs correctly before proceeding. 
+
+'''Warning:''' the procedure described above tends to trivialize the installation of the Apache web server. Apache can be installed and running on your PC in a very few minutes with only a cursory examination of the Apache documentation.  Before you undertake the installation of any web server that can be accessed through the internet, you should exercise a controlled level of paranoia and assess the potential damage that may be caused by hackers accessing or destroying sensitive data. This should include not only the all data which resides on the PC which will host the Apache web server, but all other PCs on the local LAN which participate in any form of file sharing.  
+
+Windows ME, 98SE, 98, 95, and probably NT should be considered inappropriate hosts for any Apache web server that can be accessed via the internet.  Use either Windows 2000 or XP and install all security patches available for your operating system.
+
+Do not let the above discourage you from installing Moin``Moin.  Most of the internet activity probing your system for weaknesses will be from virus infected Windows NT systems running IIS whose owners have neglected to apply available security patches. The starting Apache configuration is secure and you will not have a problem provided you:
+ * Regularly review and apply security patches for your installed software.
+ * Understand the ramifications of any changes you make to the Apache config files.
+ * Regularly review the Apache logs for suspicious activity.
+ * Regularly take backups of your data.
+
+=== Installing Python ===
+
+There are currently two different distributions of Python available for Windows. The normal Python distribution is available from http://www.python.org. This is distributed as a windows executable (.exe) file.
+
+An alternative distribution called '''Active``Python''' is available from http://www.activestate.com/. This distribution uses the MSI Installer and contains some tools specific to the Windows operating system and a popular Windows IDE called Pythonwin.  Active``Python is available for free; an email address is requested (but not required) before downloading.
+
+Moin``Moin will work with either distribution, but requires Python release 2.3 or later.  Download and install the distribution of your choice.  Questions and problems dealing with the Python installation process should be resolved through the use of resources provided by Python.org or Active``State.  Be sure your Python installation is correct before proceeding.
+
+== Installing MoinMoin ==
+Download the current version of Moin``Moin from http://moinmoin.wikiwikiweb.de/ into `C:\TEMP` or an alternative location. To extract the ''.tar.gz''-format archive, you may use Win``Zip.
+
+You should then have a folder such as `C:\TEMP\moin-x.x` where "x.x" is the current release number. This folder will contain a `setup.py` file in addition to several other files and subfolders.
+
+Open an MS-DOS or console window and enter the commands:
+{{{
+C:
+cd \TEMP\moin-x.x
+C:\Python\python setup.py install --record=install.log
+}}}
+
+The above commands will add Moin``Moin to your `C:\Python` installation and create an `install.log` file in {{{C:\temp\moin-x.x}}} listing all the copied files. You may use Windows Explorer to examine the newly created folders within `C:\Python`. You should find a `C:\Python\share\moin` folder. With Python 2.3 and later you will also find a `C:\Python\Lib\site-packages\MoinMoin` folder. The `MoinMoin` folder contains many Python scripts and several subfolders.
+
+You are now ready to create a wiki instance.
+
+== Creating a Wiki Instance ==
+It is a good practice to try to keep all of your personal or site specific data under a few root folders. This way you can easily backup your important data on a regular basis without having to waste time either backing up static files or picking out dozens of important folders scattered throughout your folder structure.  You should avoid placing your wiki data under the `C:\Python` folder so that you can later upgrade Python or Moin``Moin without accidentally overwriting or deleting your wiki data.  For the same reason, you probably don't want to place your wiki data within the `C:\Apache` folder. The default personal folder under many Windows versions is called `C:\My Documents`.  
+
+Choose a location appropriate for you; the following instructions assume you will be creating one or more wiki instances in `C:\Moin\` and the first wiki instance will be named `mywiki`.
+
+You may replace the name `mywiki` with almost any name you wish, but do not use `wiki` because that is used by Moin``Moin for loading standard images and style sheets. Although this can be changed later, the plan is that the name you choose for `mywiki` will become part of the url used to access your site, e.g. `http://myorganization.org/mywiki/FrontPage`.
+
+Start an MS-DOS or console window and enter the commands below. This will create a clone of the Moin``Moin wiki in the mywiki folder. 
+
+{{{
+cd C:\ 
+md Moin
+md Moin\mywiki
+md Moin\mywiki\data
+md Moin\mywiki\underlay
+cd \Python\share\moin
+xcopy data        C:\Moin\mywiki\data /E
+xcopy underlay    C:\Moin\mywiki\underlay /E
+copy  config\*.* C:\Moin\mywiki\*.*
+copy  server\*.* C:\Moin\mywiki\*.*
+}}}
+
+If your server is going to run multiple wikis, you need to create additional clones. Do the same commands again, but use mywiki2 instead of mywiki.
+
+Edit `C:\Moin\mywiki\wikiconfig.py` and at least change `sitename` to the name of your wiki:
+{{{
+    sitename = 'My Wiki'
+}}}
+
+Additionally, set `data_dir` and `data_underlay_dir` to the absolute paths of the particular directories. Like here:
+{{{
+    data_dir = r'C:\Moin\mywiki\data'
+    data_underlay_dir = r'C:\Moin\mywiki\underlay'
+}}}
+
+For a personal or intranet installation, you'll normally also add this line to `wikiconfig.py`:
+{{{
+    allowed_actions = ['DeletePage', 'AttachFile', 'RenamePage', ]
+}}}
+
+If you will '''''not''''' be running a Wiki farm (if you're not sure what this means, then you probably won't be), make sure to delete the `farmconfig.py` file from the `C:\Moin\mywiki` directory, or else `moin.cgi` will most likely give off various errors (including one about not being able to find a configuration file) and will ultimately fail to start up properly.
+
+Additional configuration details can be found in HelpOnConfiguration.
+
+== Integrating MoinMoin into Apache ==
+Use your editor to edit the file `C:\Moin\mywiki\moin.cgi`.  Change the first line (the shebang statement) to point to your local Python executable program. Note the forward slashes -- Apache uses the Unix convention for folder separators. This tells Apache the `moin.cgi` file is an executable script that will be interpreted by a program to be loaded from `C:/Python/python`.
+{{{#!
+#! C:/Python/python
+}}}
+
+After that, you may need to activate the lines which add a folder to the sys.path and enter your path to MoinMoin there if you have '''not''' installed MoinMoin to the site-packages dir:
+{{{#! python
+import sys
+sys.path.insert(0, r'C:\Moin\...')
+}}}
+
+The next step is to tell Apache that is has more work to do.
+Use your editor to append the following lines to `C:\Apache\conf\httpd.conf`. Note the presence and absence of trailing slashes, it is important to enter the lines exactly as shown below.
+{{{
+Alias       /wiki/     "C:/Python/share/moin/htdocs/"
+ScriptAlias /mywiki    "C:/Moin/mywiki/moin.cgi"
+}}}
+
+The '''Alias''' lines for `wiki` above instructs Apache to serve images, style sheets, etc. from the specified folders and subfolders. The '''Script``Alias''' line is needed once for each wiki instance, so if you have multiple wikis, repeat the statement using mywiki2, mywiki3, etc. The Script``Alias statement instructs Apache to execute scripts from the specified folder. See the Apache docs for a complete explanation.
+
+Test your changes by restarting your Apache server and try to access your newborn wiki with the URL `http://127.0.0.1/mywiki`. You should see the Front``Page, try to edit and save it, and if that works, verify your edit is reflected on the Recent``Changes page.
+
+And now, it is up to you and your user community to transform your wiki into an informative and useful tool. You will probably want to retain most of the Help``On~ pages dealing with editing, delete those pages with irrelevant information (like this page, don't let your users or boss know how easy it was to install Moin``Moin ;) ), and rewrite the Front``Page to introduce your wiki topic. 
+
+== Troubleshooting ==
+The first place to look for clues when the unexpected happens is to try changing your url to: `http://127.0.0.1/mywiki?action=test`. If Apache can find and execute the module `C:/Moin/mywiki/moin.cgi`, a page of diagnostics titled '''Moin``Moin CGI Diagnosis''' will be displayed. Check the output for error messages.
+
+The second place to look for is `C:\Apache\logs\error.log`. The following are common errors grouped by the message displayed by your browser.
+
+=== Internal Server Error ===
+
+If the Apache log shows a message "The system cannot find the file specified." then a possibility is the shebang statement in `moin.cgi` is incorrect.
+
+If the Apache log shows a different error message, then the Moin``Moin Python scripts may be abending. To determine the cause, you could try temporarily renaming `moin.cgi` to `moin.py`, loading `moin.py` with the Python '''idle''' IDE and executing it to determine if there are any error messages.
+
+=== Not Found ===
+If the Apache error log shows the message "File does not exist: C:/Apache/htdocs/mywiki",  the '''Script``Alias''' statement in `httpd.conf` may be incorrect.
+
+=== The Page Cannot be found ===
+If the Apache error log shows the message "File does not exist: C:/Apache/htdocs/????", you may have mistyped the url "http://127.0.0.1/mywiki" into your browser.
+
+=== FrontPage Loads Without Icons ===
+If the Apache Error log shows many error messages "File does not exist: C:/Apache/htdocs/wiki", then the '''Alias''' statement in `httpd.conf` may be incorrect.

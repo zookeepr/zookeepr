@@ -12,7 +12,7 @@ today!</p>
 
 <p><b>experience</b> the wonder of Linux and Open Source</p>
 
-<p><b>learn</b> about robots, music, movies gaming and more</p>
+<p><b>learn</b> about robots, music, movies, gaming and more</p>
 
 <p><b>participate</b> in the greatest technical community on the planet</p>
 

@@ -1,0 +1,147 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+## page was renamed from HelpOnInstalling/StandaloneOnLinux
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+'''Installing and configuring standalone server'''
+
+See also: HelpOnConfiguration/IntegratingWithApache
+
+The standalone server is especially made for local wikis because it does not need a web server installed. Only Python and Moin are necessary!
+
+To install and run the standalone server:
+ 1. If MoinMoin is not installed yet, perform ../BasicInstallation
+ 1. Create a wiki instance as described in ../WikiInstanceCreation
+ 1. Copy {{{moin.py}}} to your wiki directory, where your {{{wikiconfig.py}}} is
+ 1. If you installed with `--prefix` option, you must edit moin.py and set `docs` to the correct path.
+ 1. Run {{{moin.py}}}
+ 1. Access your wiki at http://localhost:8000/
+
+On most cases, the default settings will be just fine. You many want to edit {{{moin.py}}} and change some of the options, as described in the next section.
+
+= Configuring moin.py =
+
+== System path configuration ==
+
+If you did a standard install, and you are not a developer, you probably want to skip this section. If not, you might want to add the path to moin and config file, like that:
+
+{{{
+import sys
+sys.path.insert(0, '/path/to/moin')
+sys.path.insert(0, '/path/to/wikiconfig')
+}}}
+
+[[Anchor(options)]]
+== Config class options ==
+
+|| '''Option''' || '''Default''' || '''Comment''' ||
+|| name || {{{'moin'}}} || Server name, used by default for log and pid files. (!) New in 1.5 ||
+|| docs || {{{'/usr/share/moin/wiki/htdocs'}}} || Path to moin shared files. If you used `--prefix` install, the default path will not work, and you must set the path to {{{'PREFIX/share/moin/wiki/htdocs'}}}. ||
+|| user || {{{'www-data'}}} || If you run as root, the server will run with as this user ||
+|| group || {{{'www-data'}}} || If you run as root, the server will run with as this group ||
+|| port || {{{8000}}} || Port to serve. To serve privileged port under 1024 you will have to run as root ||
+|| interface || {{{'localhost'}}} || The interface the server will listen to. The default will listen only to localhost. Set to {{{''}}} to listen to all.||
+|| logPath || {{{name + '.log'}}} || Log file. Default is commented. ||
+|| serverClass || {{{'ThreadPoolServer'}}}, {{{'ThreadingServer'}}}, {{{'ForkingServer'}}}, {{{'SimpleServer'}}}, {{{'SecureThreadPoolServer'}}} || The server type to use, see the comments in the {{{moin.py}}}. The default is {{{'ThreadPoolServer'}}}, which create a pool of threads and reuse them for new connections. (!) New in 1.3.5 ||
+|| threadLimit || {{{10}}} || How many threads to create. (!) New in 1.3.5 ||
+|| requestQueueSize || {{{50}}} || The count of socket connection requests that are buffered by the operating system. (!) New in 1.3.5 ||
+|| properties || {{{ {} }}} || allow overriding any request property by setting the value in this dict e.g {{{properties = {'script_name': '/mywiki'}}}}. (!) New in 1.5 ||
+|| ssl_privkey || {{{ None }}} || If using the SecureThreadPoolServer, this must point to the server's private key (!) New in 1.6 ||
+|| ssl_certificate || {{{ None }}} || If using the SecureThreadPoolServer, this must point to the server's certificate (!) New in 1.6 ||
+
+ (!) There may be more options useful to moin developers, see the comments in {{{moin.py}}}
+
+== Using the secure standalone server ==
+
+(!) New in 1.6
+
+The standalone server supports SSL when using the SecureThreadPoolServer server class. The SSL support is provided by the [http://trevp.net/tlslite/ TLSLite library]. '''All wiki traffic is forced to SSL when using the SecureThreadPoolServer'''. 
+
+Two additional configuration options are required when using the SecureThreadPoolServer. First, `ssl_privkey` must point to the server's private key. Second, `ssl_certificate` must point to the server's certificate. 
+
+/!\ ''TLSLite does not support a password protected private key unless additional libraries are used. Consult the TLSLite webpage for more information.''
+
+Typically a certificate would be purchased from an certificate authority, such as Thawte (http://www.thawte.com). However, since the suggested usage of the standalone server is for personal use, a self signed certificate may be appropriate. For more information on how to generate a server private key, and a self signed certificate, see the [http://www.openssl.org/docs/HOWTO/ openssl HOWTO pages].
+
+For example, to create the server's private key, run the following:
+
+`openssl genrsa -out privkey.pem 2048`
+
+To create a self signed certificate for the newly created private key, run the following:
+
+`openssl req -new -x509 -key privkey.pem -out cacert.pem -days 1095`
+
+moin.py then needs to be told about the generated files `privkey.pem` and `cacert.pem`. For the example above, the following lines would need to be added to moin.py:
+
+{{{
+    ssl_privkey = "/secure/path/to/privkey.pem"
+    ssl_certificate = "/secure/path/to/cacert.pem"
+}}}
+
+/!\ Using a self signed certificate will cause your browser to generate a warning that it cannot verify the identify of the wiki server. This is because the certificate was not signed by a recognized certificate authority (CA). In order to get rid of this warning, you must purchase a certificate from a CA.
+
+= Configuring wikiconfig.py =
+
+The sample config file should be just fine.
+
+|| '''Option''' || '''Default''' || '''Comment''' ||
+|| url_prefix || '/wiki' || You should not change this, or images and css file will not be available to the wiki! ||
+
+= Starting the server =
+
+Run {{{moin.py}}} from the command line:
+{{{
+$ ./moin.py
+Serving on localhost:8000
+}}}
+
+Test your wiki at http://localhost:8000/
+
+On Windows, you can double click {{{moin.py}}} to start the server. A new terminal window will be opened. Close the window or press {{{Control + Pause}}} to stop the server.
+
+On Unix, interrupt the server with {{{Control + C}}} in order to shut it down.
+
+= Serving port 80 on Unix =
+
+On GNU/Linux, Mac OS X or other Posix like OS, you can serve the standard port 80 used for web serving, but you must run as {{{root}}} for this.
+ 
+Set {{{port}}} to 80, and verify that {{{user}}} and {{{group}}} exists on your system. If not, set them to an existing user, meant for web serving. If needed, {{{chown}}} your wiki dir to this user and group.
+
+Run {{{moin.py}}} as root:
+{{{
+$ sudo moin.py
+Password:
+Serving on localhost:8000
+Running as uid/gid 70/70
+}}}
+
+Test your wiki at http://localhost/
+
+= Running as daemon =
+
+If run on Unix, you can run moin.py as a background process:
+ 1. Have a working {{{moin.py}}} as explained above
+ 1. Copy the file {{{prefix/share/moin/server/moin}}} to your wiki directory.
+ 1. Start moin server:
+{{{
+./moin start
+}}}
+
+To stop the server:
+{{{
+./moin stop
+}}}
+
+For more info run {{{moin}}} with no arguments.
+
+If you want to start moin from a system startup script, you may need to add the path to {{{moin.py}}} in the top of the script:
+{{{
+# Add the path to moin.py directory 
+import sys
+sys.path.insert(0, '/path/to/moin')
+}}}
+
+ (!) New in release 1.5

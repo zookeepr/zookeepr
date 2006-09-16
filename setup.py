@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1.3",
+    version="0.1.6",
     #description="",
     #author="",
     #author_email="",
@@ -12,6 +12,7 @@ setup(
         "SQLAlchemy>=0.2.7",
         "nose>=0.9.0",
         "FormEncode>=0.5.1",
+        "PasteScript>=0.9.8",
     ],
     packages=find_packages(),
     include_package_data=True,

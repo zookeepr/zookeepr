@@ -85,13 +85,13 @@ submitted by
 <p class="actions">
 <ul>
 
-% if c.person in c.proposal.people:
+% if c.signed_in_person in c.proposal.people:
 <li>
 <% h.link_to('Edit', url=h.url(action='edit',id=c.proposal.id)) %>
 </li>
 % #endif
 
-% if 'reviewer' in [x.name for x in c.person.roles]:
+% if 'reviewer' in [x.name for x in c.signed_in_person.roles]:
 <li>
 <% h.link_to('Review this proposal', url=h.url(action='review')) %>
 </li>
@@ -100,6 +100,10 @@ submitted by
 </ul>
 </p>
 
+</div>
+
+<div id="wiki">
+<% h.wiki_here() %>
 </div>
 
 <%method title>

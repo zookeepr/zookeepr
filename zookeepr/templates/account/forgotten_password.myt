@@ -1,4 +1,4 @@
-<&| @skypanel.lib.formfill:formfill, defaults=defaults, errors=errors &>
+<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <form method="post" action="<% h.url_for() %>" >
 <fieldset>
 <h3>Forgotten password?</h3>

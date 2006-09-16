@@ -1,0 +1,24 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+It looks like you have not created your personal home page yet.
+
+A personal home page is a nice place to publish data ''about yourself'', like:
+ * who you are, what you do, what you like or dislike
+ * your phone number, email address or other contact data
+ * a photo of yourself
+ 
+You also can use it to keep things ''for yourself'' (and maybe also for others), like:
+ * your favourite links
+ * your todo list
+ * your notes
+
+Keep in mind that the home page itself is usually ''public'', everybody can read and also write it (and this is a good thing, see it as a means of communication with you). But you can also create protected sub-pages of it, so restricting access to some of your pages is no problem.
+
+[[Action(edit&template=HomepageTemplate,Create my home page now!)]]
+
+If you don't want a home page, just click somewhere else.

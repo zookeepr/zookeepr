@@ -1,0 +1,8 @@
+<map name="%MAPNAME%">
+<area shape="rect" coords="317,159,501,317" href="http://moinmaster.wikiwikiweb.de/" />
+<area shape="poly" coords="92,397,59,378,59,340,91,321,124,339,124,377" href="http://moinmoin.wikiwikiweb.de/" />
+<area shape="rect" coords="0,0,629,5" href="%TWIKIDRAW%" />
+<area shape="rect" coords="0,0,5,407" href="%TWIKIDRAW%" />
+<area shape="rect" coords="624,0,629,407" href="%TWIKIDRAW%" />
+<area shape="rect" coords="0,402,629,407" href="%TWIKIDRAW%" />
+</map>

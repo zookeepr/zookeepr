@@ -1,0 +1,27 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+SiteNavigation is the central place to explore this wiki. MoinMoin supports these MeatBall:IndexingScheme''''''s:
+ * RecentChanges
+ * TitleIndex
+ * WordIndex
+ * FindPage
+ * WantedPages
+ * OrphanedPages
+ * AbandonedPages
+ * RandomPage
+ * PageSize
+ * PageHits
+
+On each page, there are actions that allow to navigate to other pages related to the current page:
+ * [[GetText(LikePages)]]
+ * [[GetText(LocalSiteMap)]]
+
+Additionally, there are the
+{{{[[PageList]]}}}, {{{[[FullSearch('text')]]}}}
+and {{{[[TableOfContents]]}}}
+macros, which allow you to automatically generate indices for cohesive parts of a wiki.

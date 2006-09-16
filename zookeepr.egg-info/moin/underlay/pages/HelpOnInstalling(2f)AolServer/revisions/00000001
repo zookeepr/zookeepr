@@ -1,0 +1,29 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+== Configure Aolservers nscgi module for MoinMoin ==
+
+Put the following lines in the [http://www.aolserver.com/ Aolserver] configuration file, inside the `nscgi` module configuration
+
+{{{
+ns_param  map "GET  /mywiki /var/lib/moin/moin.cgi"
+ns_param  map "POST /mywiki /var/lib/moin/moin.cgi"}}}
+
+where:
+
+`/mywiki` -- URL at which the Wiki-Instance will be accessible
+
+`/var/lib/moin/moin.cgi` -- Path of the moin CGI script
+
+== Mapping the /usr/share/moin/htdocs directory ==
+
+The easiest way to map the ..`htdocs` directory to an url (say `/wiki`) is by creating a symbolic link inside the documenttree. 
+Another option (on Microsoft Operating Systems) is copying the whole directory tree to where it is needed.
+ 
+{{{
+cd $DOCROOT
+ln -s /usr/share/moin/htdocs wiki}}}

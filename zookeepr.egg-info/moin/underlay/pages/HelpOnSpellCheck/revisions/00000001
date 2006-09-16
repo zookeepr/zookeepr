@@ -1,0 +1,41 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+HelpContents > HelpOnAdministration > HelpOnSpellCheck
+
+== The Spell Checking Option ==
+MoinMoin looks for valid words in three places:
+ * the "dict" directory in the MoinMoin package directory (this is mostly below the directory {{{site-packages}}} of your Python installation)
+ * the "dict" directory of data directory of your wiki (per-wiki dictionnary)
+ * the page LocalSpellingWords
+
+If the "dbhash" module is available with your Python installation, the files in "dict" are read only ''once'' and stored in a hash table. This speeds up the spell checking process because the number of words in the ''checked page'' determines the time needed for the checking, ''not'' the number of words in the dictionary (with 250000 words, some hundred milliseconds instead of several seconds).
+
+Note that it may take a few minutes to build up this database, but only the first time the spellchecker is called. If your browser or the webserver timeouts before the file is completely built, one solution is to telnet into your webserver, and manually request the page[[FootNote(The next version will provide a tool to create the database on the command line.)]].
+
+BTW, a UNIX machine normally comes with at least one words file; to use those, create a symlink within the dict directory, like so:
+{{{
+MoinMoin/dict> ln -s /usr/dict/words .
+}}}
+On some systems, the words file is found in "/usr/share/dict/words" instead.
+
+=== Example ===
+{{{
+MoinMoin> ls -l dict
+-rw-r--r--   1 544      everyone   409067 Jan 04 06:38 american-english
+-rw-r--r--   1 544      everyone  2913577 Jan 25  2000 german.txt
+-rw-r--r--   1 544      everyone    92631 Nov 30 15:24 top10000de.txt
+}}}
+
+=== Words files ===
+If you need words files for US English or German, you can find them [http://moin.sf.net/files/ here].
+
+=== If it does not work ===
+
+If you change the contents of {{{MoinMoin/dict/}}} or {{{data/dict/}}} (because of adding new / removing old dictionaries) or if you create a new {{{MoinMoin/dict/}}} or {{{data/dict/}}} directory, then you have to delete the file {{{<yourwiki>/data/cache/spellchecker.dict}}} (a new one will be created automagically).
+
+If you don't, your new dictionaries won't be recognized (e.g. it will use only LocalSpellingWords). Another possible cause of problems is that you did not place the dictionaries in the ''active'' "MoinMoin" package directory, i.e. the one that is actually imported by your CGI script.

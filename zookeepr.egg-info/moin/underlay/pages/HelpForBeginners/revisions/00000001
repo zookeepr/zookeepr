@@ -1,0 +1,30 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+A WikiWikiWeb is a collaborative hypertext environment, with an emphasis on easy access to and modification of information. 
+
+You can edit any page by pressing the "edit" link.
+Depending on the selected user interface theme you will find this at the top, in the sidebar area
+or at the bottom of the page.
+Capitalized words joined together form a WikiName, which hyperlinks to another page.  The highlighted title searches for all pages that link to the current page.  Pages which do not yet exist are linked with a question mark (or a different rendering in bold red): just follow the link and you can add a definition.  That is also the way to create a new page: add a new WikiName to an existing page, save your modification, click on your new link and create the page (more details on HelpOnPageCreation).
+
+You are encouraged to edit the WikiSandBox whichever way you like. Please restrain yourself from editing other pages until you feel at home with the ways a wiki works.
+
+To learn more about what a Wiki:WikiWikiWeb is, read about Wiki:WhyWikiWorks and the Wiki:WikiNature. Also, consult the Wiki:WikiWikiWebFaq and Wiki:OneMinuteWiki. 
+This wiki is also part of the InterWiki space, which means you can easily refer to a wealth of information available through other public wiki sites.
+
+Good starting points to explore a wiki are
+ * RecentChanges: see where people are currently working
+ * FindPage: search or browse the database in various ways
+ * TitleIndex: a list of all pages in the wiki
+ * WordIndex: a list of all words that are part of page title (thus, a list of the concepts in a wiki)
+ * SiteNavigation: a page leading to the different indexing schemes of the wiki
+ * WikiSandBox: feel free to change this page and experiment with editing
+ * HelpOnEditing: the starting point to learn everything about wiki markup
+
+For more help, see the HelpContents and the HelpIndex pages.

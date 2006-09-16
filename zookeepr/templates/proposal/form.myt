@@ -1,5 +1,3 @@
-#<% h.hidden_field('proposal.person_id', c.person.id) %>
-
 <p>
 <span class="mandatory">*</span>
 <label for="proposal.title">Title:</label><br />

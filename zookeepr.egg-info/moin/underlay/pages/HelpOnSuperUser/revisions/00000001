@@ -1,0 +1,13 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+## page was renamed from SuperUser
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+Super users (exists since version 1.5.2) are one or more trusted user names with permission to do wiki-wide admin operations, like make full backups, software installation, and language installation via SystemPagesSetup (do not confuse with HelpOnAccessControlLists). 
+
+In their UserPreferences screen, they have a list of other users they can temporarily "become" in order to help or disable those users.
+
+See HelpOnConfiguration to configure the super user, and some examples in HelpOnUserHandling and HelpOnPackageInstaller.

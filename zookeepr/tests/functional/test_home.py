@@ -27,9 +27,9 @@ class TestHomeController(ControllerTest):
         resp = f.submit()
         print resp
         print resp.session
-        self.failUnless('person_id' in resp.session)
+        self.failUnless('signed_in_person_id' in resp.session)
         self.assertEqual(p.id,
-                         resp.session['person_id'])
+                         resp.session['signed_in_person_id'])
         resp = resp.follow()
         print resp.request.url
         self.assertEqual('/', resp.request.url)

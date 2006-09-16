@@ -1,0 +1,117 @@
+## Please edit system and help pages ONLY in the moinmaster wiki! For more
+## information, please see MoinMaster:MoinPagesEditorGroup.
+##master-page:Unknown-Page
+##master-date:Unknown-Date
+#acl MoinPagesEditorGroup:read,write,delete,revert All:read
+#format wiki
+#language en
+
+'''How to deal with common errors'''
+
+= First follow the instructions =
+
+Moin has provided instructions for common usage.  Try creating a wiki using the default values within the instructions. Your wiki would then be stored where ours is, and named `mywiki` ... but you can change that place, and this name, AFTER you have a working wiki. The default values have been chosen carefully to work for most people on most platforms, or at least be a good start.
+
+ * First follow the instructions
+ * Do not change any configuration option unless you must.
+ * Play with a working wiki before you try to customize it.
+
+= Change one thing at a time =
+
+When your wiki is running, go and customize it to your needs, but remember to change only one option at a time. You probably don't fully understand how all options work, and if you go and break few things in the same step, you will have hard time to fix it. 
+
+= Check That Your Webserver Can Use Python =
+
+This is also in HelpOnInstalling/BasicInstallation.  Use this script:
+
+{{{
+#!/bin/sh
+echo Content-Type: text/plain
+echo
+echo "Your web server is running as:"
+id
+echo "CGI scripts work"
+echo "Now we try to invoke Python interpreters and get their versions:"
+python -V 2>&1
+python2.3 -V 2>&1
+python2.4 -V 2>&1
+echo "Finished."
+}}}
+
+to see if you can get it to announce that cgi works. Then you will also know which versions of python are usable.  This is especially handy for users with no root access.
+
+= Built-in test =
+
+There's a built-in diagnostic mode that's useful when doing an install; just append "`?action=test`" to the URL of your wiki:
+{{{
+lynx --dump http://`hostname`/mywiki?action=test
+}}}
+
+If you see an import error here, but 
+
+{{{
+python -c "import MoinMoin"
+}}}
+
+works, it's likely a result of missing file permissions or a wrong PYTHONPATH setting within the web server environment.
+
+= Duelling Pythons =
+
+The most common problem you might encounter is when you have an old Python version installed into "`/usr`", and a newer Python distribution into "`/usr/local`"; this is typical for GNU/Linux distributions that still come bundled with an old Python version.
+
+In that case, if you enter "`python`" on your prompt, you will usually get the more recent Python interpreter, because "`/usr/local/bin`" is in your `PATH`. The situation is different in your webserver environment, and thus you might have to change the bang path of "`moin.cgi`", like this:
+{{{
+#!/usr/local/bin/python
+
+"""
+    MoinMoin - CGI Driver Script
+...
+"""
+}}}
+
+ * Debian stable users might want to look for backport of newer Python, or download and build Python from source.
+
+ * When installing, make sure you install with the version of python you want to run moin with. `python setup.py install` will install with the first python in the path, which may be the version you expect or not! `/usr/local/bin/python2.4` will install in specific python. You will have to use the same path in the moin server script.
+
+= Missing file permissions =
+
+If you are root, the installed files may be readable only by root, but they must also be readable by the web server before the wiki will work. This includes both the Python modules and the site itself. For the data directory, the wiki engine also needs ''write'' access.  To fix this, first find out where the Python module directory is; look in `install.log`, or run the command: 
+
+{{{
+python -c "import sys; print '%s/lib/python%s/site-packages' % ( sys.prefix, sys.version[:3] )"
+}}}
+
+For the example below, we'll assume that the Python module directory is `/usr/local/lib/python2.3/site-packages`.
+Make the files world-readable using the following commands:
+{{{
+cd /usr/local
+chmod -R a+rX lib/python2.3/site-packages/MoinMoin
+}}}
+
+= Set Your Variables Carefully =
+
+Be especially careful when you retype instead of cut and paste. Quoting errors in `wikiconfig.py` can cause things to fail.  The following items are also variable issues.  Also, some features only work if they are enabled by their option in either `wikiconfig.py` or `farmconfig.py`.
+
+== moin.cgi found, Moin doesn't run ==
+
+If you have to add the moin code location into the system path, make sure to specify the place ``above`` !MoinMoin itself, so that the word !MoinMoin is recognized during the import request.  
+
+== CSS files do not work ==
+
+Very common error is missing CSS styles. Your wiki look bare and ugly, unlike this nice wiki. In most cases, you did broke the configuration by not reading the instructions, or by trying to customize the instructions because you are smarter then us. :-)
+
+The fix is very easy: make sure your Apache Alias and ScriptAlias are NOT the same. This Apache setup will never work:
+{{{
+Alias /wiki/ "/prefix/share/moin/htdocs/"
+ScriptAlias /wiki/ "/var/www/wiki/moin.cgi"
+}}}
+
+Alias is used to server static files: css, images etc. ScriptAlias is used to hide moin.cgi from the url. You must use different values! You can use anything you like for ScriptAlias, or Alias, but Alias must match the `url_prefix` configuration option. Here is an example that works (the default):
+{{{
+# Apache config
+Alias /wiki/ "/prefix/share/moin/htdocs/"
+}}}
+{{{
+# Wiki config
+    url_prefix = '/wiki'
+}}}
