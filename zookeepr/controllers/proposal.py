@@ -174,3 +174,12 @@ class ProposalController(SecureController, View, Modify):
         session['proposal_id'] = self.obj.id
         session.save()
         return super(ProposalController, self).view()
+
+    def index(self):
+        c.proposal_types = g.objectstore.query(ProposalType).select()
+
+        for pt in c.proposal_types:
+            stuff = g.objectstore.query(Proposal).select_by(proposal_type_id=pt.id)
+            setattr(c, '%s_collection' % pt.name, stuff)
+
+        return super(ProposalController, self).index()

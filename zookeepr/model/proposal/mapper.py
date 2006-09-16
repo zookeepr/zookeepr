@@ -14,7 +14,7 @@ mapper(Attachment, attachment)
 # Map the Proposal object onto the proposal table
 mapper(Proposal, proposal,
     properties = {
-        'type': relation(ProposalType, lazy=True),
+        'type': relation(ProposalType),
         'people': relation(Person, secondary=person_proposal_map,
             backref='proposals'),
         'attachments': relation(Attachment, lazy=True, private=True),
