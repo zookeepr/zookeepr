@@ -18,7 +18,7 @@
 
 % for s in getattr(c, '%s_collection' % pt.name):
 <tr class="<% h.cycle('even', 'odd') %>">
-	<td><% h.counter() %></td>
+	<td><% s.id %></td>
 	<td><% h.link_to(h.util.html_escape(s.title), url=h.url(action='view', id=s.id)) %></td>
 #	<td><% h.truncate(s.abstract) %></td>
 #	<td><% h.truncate(s.experience) %></td>
