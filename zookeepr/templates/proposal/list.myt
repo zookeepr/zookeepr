@@ -2,7 +2,8 @@
 
 
 % for pt in c.proposal_types:
-<h3><% pt.name %>s</h3>
+%	collection = getattr(c, '%s_collection' % pt.name)
+<h3><% pt.name %>s (<% len(collection) %>)</h3>
 
 <table>
 
@@ -16,7 +17,7 @@
 <th>Reviewed?</th>
 </tr>
 
-% for s in getattr(c, '%s_collection' % pt.name):
+% 	for s in collection:
 <tr class="<% h.cycle('even', 'odd') %>">
 	<td><% s.id %></td>
 	<td><% h.link_to(h.util.html_escape(s.title), url=h.url(action='view', id=s.id)) %></td>
@@ -24,17 +25,17 @@
 #	<td><% h.truncate(s.experience) %></td>
 #	<td><% h.link_to(h.truncate(s.url), url=s.url) %></td>
 	<td>
-% 	for p in s.people:
+% 		for p in s.people:
 
 <% h.link_to(p.fullname or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
 %	# endfor
 </td>
 	<td>
-%	if [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
+%		if [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
 	TICK!
-%	else:
+%		else:
 	<% h.link_to("Review now!", url=h.url(action="review", id=s.id)) %>
-%	#ENDIF
+%		#ENDIF
 	</td>
 #% 	if c.can_edit:
 #%		for action in ['edit', 'delete']:
@@ -42,7 +43,7 @@
 #%		# endfor
 #%	#endif
 </tr>
-% #endfor collection
+% 	#endfor collection
 </table>
 
 <br />
