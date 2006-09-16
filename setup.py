@@ -2,14 +2,14 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1.6",
+    version="0.1.7",
     #description="",
     #author="",
     #author_email="",
     #url="",
     install_requires=[
         "Pylons>=0.9.1",
-        "SQLAlchemy>=0.2.7",
+        "SQLAlchemy>=0.2.8",
         "nose>=0.9.0",
         "FormEncode>=0.5.1",
         "PasteScript>=0.9.8",
