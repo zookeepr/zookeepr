@@ -1,29 +1,25 @@
 <h2>List of Proposals</h2>
 
+
+% for pt in c.proposal_types:
+<h3><% pt.name %>s</h3>
+
 <table>
 
-% if len(c.proposal_collection) > 0:
 <tr>
 <th>#</th>
 <th>Title</th>
-<th>Type</th>
 #<th>Abstract</th>
 #<th>Experience</th>
 #<th>Project URL</th>
-<th>Person</th>
-<th>Reviewed</th>
+<th>Submitter(s)</th>
+<th>Reviewed?</th>
 </tr>
-% #endif
 
-% for s in c.proposal_collection:
+% for s in getattr(c, '%s_collection' % pt.name):
 <tr class="<% h.cycle('even', 'odd') %>">
 	<td><% h.counter() %></td>
 	<td><% h.link_to(h.util.html_escape(s.title), url=h.url(action='view', id=s.id)) %></td>
-	<td>
-% 	if s.type:
-<% s.type.name %>
-% 	#endif
-</td>
 #	<td><% h.truncate(s.abstract) %></td>
 #	<td><% h.truncate(s.experience) %></td>
 #	<td><% h.link_to(h.truncate(s.url), url=s.url) %></td>
@@ -46,9 +42,12 @@
 #%		# endfor
 #%	#endif
 </tr>
-% #endfor
+% #endfor collection
 </table>
 
+<br />
+
+% #endfor proposal types
 
 <%python>
 #if c.proposal_pages.current.previous:
