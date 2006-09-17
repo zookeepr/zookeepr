@@ -80,10 +80,14 @@ review = Table('review',
                Column('proposal_id', Integer,
                       ForeignKey('proposal.id'),
                       nullable=False,
+                      # reviewer and proposal must be unique
+                      unique='review_proposal_reviewer_ux',
                       ),
                Column('reviewer_id', Integer,
                       ForeignKey('person.id'),
                       nullable=False,
+                      # reviewer and proposal must be unique
+                      unique='review_proposal_reviewer_ux',
                       ),
 
                Column('familiarity', Integer),

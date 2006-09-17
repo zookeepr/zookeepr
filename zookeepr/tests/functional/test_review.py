@@ -8,7 +8,6 @@ class TestReviewController(SignedInControllerTest):
         model.proposal.tables.proposal_type.insert().execute(
             {'id': 1, 'name': 'paper'}
             )
-
         model.core.tables.role.insert().execute(
             {'id': 1, 'name': 'reviewer'}
             )
@@ -24,6 +23,7 @@ class TestReviewController(SignedInControllerTest):
         model.core.tables.person_role_map.delete().execute()
         model.core.tables.role.delete().execute()
         model.proposal.tables.proposal_type.delete().execute()
+        
         super(TestReviewController, self).tearDown()
 
 #     def test_review_feedback(self):
@@ -93,4 +93,7 @@ class TestReviewController(SignedInControllerTest):
 #         """Test that a reviewer can't review their own submissions."""
 #         self.fail("untedted")
 
+#     def test_only_one_review_per_reviewer_per_proposal(self):
+#         """test that reviewers can only do one review per proposal"""
+        
 
