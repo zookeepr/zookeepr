@@ -81,13 +81,13 @@ review = Table('review',
                       ForeignKey('proposal.id'),
                       nullable=False,
                       # reviewer and proposal must be unique
-                      unique='review_proposal_reviewer_ux',
+                      unique='ux_review_proposal_reviewer',
                       ),
                Column('reviewer_id', Integer,
                       ForeignKey('person.id'),
                       nullable=False,
                       # reviewer and proposal must be unique
-                      unique='review_proposal_reviewer_ux',
+                      unique='ux_review_proposal_reviewer',
                       ),
 
                Column('familiarity', Integer),
