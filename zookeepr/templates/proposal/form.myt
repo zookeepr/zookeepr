@@ -1,7 +1,7 @@
 <p>
 <span class="mandatory">*</span>
 <label for="proposal.title">Title:</label><br />
-<% h.text_field('proposal.title', c.proposal.title, size=80) %></p>
+<% h.text_field('proposal.title', size=80) %></p>
 
 <p>
 <span class="mandatory">*</span>
@@ -26,7 +26,7 @@
 <p>
 <label for="proposal.url">Project URL:</label>
 <br />
-<% h.text_field('proposal.url', c.proposal.url, size=80) %>
+<% h.text_field('proposal.url', size=80) %>
 </p>
 
 <p>
@@ -38,13 +38,13 @@
 <span class="mandatory">*</span>
 <label for="proposal.abstract">Abstract:</label>
 <br />
-<% h.text_area('proposal.abstract', c.proposal.abstract, size="80x10") %></p>
+<% h.text_area('proposal.abstract', size="80x10") %></p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="proposal.experience">Experience:</label>
 <br />
-<% h.text_area('proposal.experience', c.proposal.experience, size="80x5") %></p>
+<% h.text_area('proposal.experience', size="80x5") %></p>
 
 <p>
 <span class="mandatory">*</span>
