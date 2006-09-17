@@ -8,6 +8,8 @@ Changes for Zookeepr
   * Review list shows only your own reviews
   * Proposal list shows only unreviewed proposals
   * Reviewers can only review a proposal once
+ * Fixed a bug with proposal edit/view when angle brackets were used in
+   the proposal content.  Thanks "Follower".
 
 0.1.7
 -----
