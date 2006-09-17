@@ -17,7 +17,7 @@ submitted by
 <em>Abstract</em>
 </p>
 <blockquote>
-<% h.auto_link(h.simple_format(h.util.html_escape(c.proposal.abstract))) %>
+<% c.proposal.abstract | h, s, l %>
 </blockquote>
 </div>
 
@@ -33,7 +33,7 @@ submitted by
 </p>
 <blockquote>
 % if c.proposal.experience:
-<% h.auto_link(h.simple_format(h.util.html_escape(c.proposal.experience))) %>
+<% c.proposal.experience | h, s, l %>
 % else:
 [none provided]
 % #endif
