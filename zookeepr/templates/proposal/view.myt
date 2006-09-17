@@ -23,7 +23,12 @@ submitted by
 
 % if c.proposal.url:
 <p class="url">
+# FIXME: I reckon this should go into the helpers logic
+%	if '://' in c.proposal.url:
 <% h.link_to(c.proposal.url, url=c.proposal.url) %>
+%	else:
+<% h.link_to(c.proposal.url, url='http://' + c.proposal.url) %>
+%	#endif
 </p>
 % #endif
 
