@@ -1,5 +1,8 @@
-<h2>List of Proposals</h2>
+<p>
+<% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %>
+</p>
 
+<h2>List of Proposals</h2>
 
 % for pt in c.proposal_types:
 %	collection = getattr(c, '%s_collection' % pt.name)
