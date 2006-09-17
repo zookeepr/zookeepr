@@ -11,6 +11,8 @@ Changes for Zookeepr
  * Fixed a bug with proposal edit/view when angle brackets were used in
    the proposal content.  Thanks "Follower".
  * The pretty Internal Server Error page has been re-enabled.
+ * We now 404 correctly on nonexistent objects, instead of 500ing during
+   test for nonexistent objects :)
 
 0.1.7
 -----
