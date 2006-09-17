@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1.6",
+    version="0.1.8",
     #description="",
     #author="",
     #author_email="",
@@ -11,7 +11,7 @@ setup(
         # our champion wsgi stack
         "Pylons>=0.9.1",
         # our champion ORM
-        "SQLAlchemy>=0.2.7",
+        "SQLAlchemy>=0.2.8",
         # nose as test runner
         "nose>=0.9.0",
         # FormEncode used to do form input validation
