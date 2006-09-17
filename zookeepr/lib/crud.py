@@ -144,7 +144,7 @@ class RUDBase(CRUDBase):
             if len(os) == 1:
                 self.obj = os[0]
 
-        if not hasattr(self, 'obj'):
+        if not hasattr(self, 'obj') or self.obj is None:
             abort(404, "No such object: cannot %s nonexistent id = %r" % (kwargs['action'],
                                                                           kwargs['id']))
 
