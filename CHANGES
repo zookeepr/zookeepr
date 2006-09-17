@@ -1,6 +1,14 @@
 Changes for Zookeepr
 ====================
 
+0.1.8
+-----
+
+ * Review interface tweaks:
+  * Review list shows only your own reviews
+  * Proposal list shows only unreviewed proposals
+  * Reviewers can only review a proposal once
+
 0.1.7
 -----
 
