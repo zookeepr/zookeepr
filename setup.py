@@ -2,17 +2,24 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1.8",
+    version="0.1.8.1",
     #description="",
     #author="",
     #author_email="",
     #url="",
     install_requires=[
+        # our champion wsgi stack
         "Pylons>=0.9.1",
+        # our champion ORM
         "SQLAlchemy>=0.2.8",
+        # nose as test runner
         "nose>=0.9.0",
+        # FormEncode used to do form input validation
         "FormEncode>=0.5.1",
+        # Explicit depends on PasteScript as we use it in setup-app
         "PasteScript>=0.9.8",
+        # URL auto_link fixes in 0.2.1
+        "WebHelpers>=0.2.1",
     ],
     packages=find_packages(),
     include_package_data=True,
