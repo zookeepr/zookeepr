@@ -1,5 +1,7 @@
+import sqlalchemy.exceptions
+
 from zookeepr.tests.model import ModelTest, model
-#
+
 class TestReviewModel(ModelTest):
 #    domain = model.Review
 #    samples = [dict(proposal
@@ -43,7 +45,8 @@ class TestReviewModel(ModelTest):
         self.objectstore.save(r2)
         p.reviews.append(r2)
         # raise an exception when trying to commit this
-        self.assertRaisesAny(self.objectstore.flush)
+        self.assertRaises(sqlalchemy.exceptions.SQLError,
+                          self.objectstore.flush)
 
         # clean up
         #self.objectstore.clear()
