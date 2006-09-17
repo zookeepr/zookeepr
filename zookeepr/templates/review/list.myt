@@ -1,4 +1,4 @@
-<h1>Reviews</h1>
+<h2>Reviews</h2>
 
 <table>
 <tr>
