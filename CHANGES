@@ -10,6 +10,7 @@ Changes for Zookeepr
   * Reviewers can only review a proposal once
  * Fixed a bug with proposal edit/view when angle brackets were used in
    the proposal content.  Thanks "Follower".
+ * The pretty Internal Server Error page has been re-enabled.
 
 0.1.7
 -----
