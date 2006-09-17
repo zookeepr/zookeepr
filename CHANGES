@@ -1,6 +1,16 @@
 Changes for Zookeepr
 ====================
 
+0.1.7
+-----
+
+ * Review interface tweaks.
+
+0.1.6
+-----
+
+ * Better wiki support via paster setup-app.
+
 0.1.5
 -----
 
