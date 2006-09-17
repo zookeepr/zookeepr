@@ -21,6 +21,8 @@
 </tr>
 
 % 	for s in collection:
+# don't show the row if we've already reviewed it
+%		if not [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
 <tr class="<% h.cycle('even', 'odd') %>">
 	<td><% s.id %></td>
 	<td><% h.link_to(h.util.html_escape(s.title), url=h.url(action='view', id=s.id)) %></td>
@@ -46,6 +48,7 @@
 #%		# endfor
 #%	#endif
 </tr>
+%		#endif only unreviewed
 % 	#endfor collection
 </table>
 
