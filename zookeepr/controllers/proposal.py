@@ -1,4 +1,4 @@
-from formencode import validators, compound, schema, variabledecode
+from formencode import validators, compound, schema, variabledecode, Invalid
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
 from zookeepr.lib.base import c, g, redirect_to, request, render_response, session
@@ -35,9 +35,25 @@ class ReviewSchema(schema.Schema):
     stream = StreamValidator()
     comment = validators.String()
 
+
+class NotYetReviewedValidator(validators.FancyValidator):
+    """Make sure the reviewer hasn't yet reviewed this proposal"""
+
+    messages = {
+        "already": "You've already reviewed this proposal, try editing the existing review."
+        }
+    
+    def validate_python(self, value, state):
+        reviews = g.objectstore.query(Review).select_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
+        if len(reviews) > 0:
+            raise Invalid(self.message('already', None),
+                          value, state)
+        
+
 class NewReviewSchema(BaseSchema):
     review = ReviewSchema()
     pre_validators = [variabledecode.NestedVariables]
+    chained_validators = [NotYetReviewedValidator()]
 
 class NewAttachmentSchema(BaseSchema):
     attachment = FileUploadValidator()
@@ -126,12 +142,15 @@ class ProposalController(SecureController, View, Modify):
         c.streams = g.objectstore.query(Stream).select()
         
         good_errors = {}
-        for key in errors.keys():
-            try:
-                for subkey in errors[key].keys():
-                    good_errors[key + "." + subkey] = errors[key][subkey]
-            except AttributeError:
-                good_errors[key] = errors[key]
+        try:
+            for key in errors.keys():
+                try:
+                    for subkey in errors[key].keys():
+                        good_errors[key + "." + subkey] = errors[key][subkey]
+                except AttributeError:
+                    good_errors[key] = errors[key]
+        except AttributeError:
+            good_errors['x'] = errors
 
         return render_response('proposal/review.myt', defaults=defaults, errors=good_errors)
     

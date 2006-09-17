@@ -93,7 +93,31 @@ class TestReviewController(SignedInControllerTest):
 #         """Test that a reviewer can't review their own submissions."""
 #         self.fail("untedted")
 
-#     def test_only_one_review_per_reviewer_per_proposal(self):
-#         """test that reviewers can only do one review per proposal"""
-        
+    def test_only_one_review_per_reviewer_per_proposal(self):
+        """test that reviewers can only do one review per proposal"""
+        p2 = model.Person(email_address='t2@example.org',
+                    fullname='submitter')
+        self.objectstore.save(p2)
+        p = model.Proposal(title='prop',
+                           abstract='abs',
+                           experience='exp',
+                           type=self.objectstore.get(model.ProposalType, 1),
+                           )
+        self.objectstore.save(p)
+        p.people.append(p2)
+        self.objectstore.flush()
 
+        resp = self.app.get(url_for(controller='proposal',
+                                    action='review',
+                                    id=p.id))
+        f = resp.form
+        resp = f.submit()
+
+        # do it again 
+        resp = f.submit()
+        resp.mustcontain("already reviewed this proposal")
+        
+        # clean up
+        self.objectstore.delete(p)
+        self.objectstore.delete(p2)
+        self.objectstore.flush()
