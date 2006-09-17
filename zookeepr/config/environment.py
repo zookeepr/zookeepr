@@ -2,6 +2,7 @@ import sys
 import os
 
 import pylons.config
+import webhelpers
 
 from zookeepr.config.routing import make_map
 
@@ -24,6 +25,13 @@ def load_environment():
     # available to the Myghty handler are available for your use here
     myghty = {}
     myghty['log_errors'] = True
+
+    # Add webhelpers' auto_link and simple_format methods to myghty's
+    # escaping functions, for great justice.
+    # http://www.myghty.org/docs/filtering.myt#filtering_escaping_custom
+    myghty['escapes'] = {'l': webhelpers.auto_link,
+                         's': webhelpers.simple_format,
+                         }
     
     # Add your own Myghty config options here, note that all config options will override
     # any Pylons config options

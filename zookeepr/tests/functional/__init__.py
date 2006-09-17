@@ -315,7 +315,9 @@ class SignedInControllerTest(ControllerTest):
     def setUp(self):
         super(SignedInControllerTest, self).setUp()
         self.person = model.Person(email_address='testguy@example.org',
-                                   password='test')
+                                   password='test',
+                                   fullname='Testguy McTest'
+                                   )
         self.person.activated = True
         self.objectstore.save(self.person)
         self.objectstore.flush()
