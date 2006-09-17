@@ -56,7 +56,7 @@
 
 </tr>
 
-% 	#endif
+% 	#endif only look at own reviews
 % #endfor
 </table>
 
