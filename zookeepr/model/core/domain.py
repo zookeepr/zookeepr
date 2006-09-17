@@ -13,6 +13,7 @@ class Person(object):
                  firstname=None, lastname=None, phone=None, fax=None,
                  creation_timestamp=None,
                  activated=None,
+                 fullname=None
                  ):
         # account information
         self.email_address = email_address
@@ -21,7 +22,7 @@ class Person(object):
         self.creation_timestamp = creation_timestamp or datetime.datetime.now()
 
         self.handle = handle
-        if self.fullname is not None:
+        if fullname is not None:
             self.fullname = fullname
         else:
             self.firstname = firstname

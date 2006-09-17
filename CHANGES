@@ -1,6 +1,29 @@
 Changes for Zookeepr
 ====================
 
+0.1.8
+-----
+
+ * Review interface tweaks:
+  * Review list shows only your own reviews
+  * Proposal list shows only unreviewed proposals
+  * Reviewers can only review a proposal once
+ * Fixed a bug with proposal edit/view when angle brackets were used in
+   the proposal content.  Thanks "Follower".
+ * The pretty Internal Server Error page has been re-enabled.
+ * We now 404 correctly on nonexistent objects, instead of 500ing during
+   test for nonexistent objects :)
+
+0.1.7
+-----
+
+ * Review interface tweaks.
+
+0.1.6
+-----
+
+ * Better wiki support via paster setup-app.
+
 0.1.5
 -----
 

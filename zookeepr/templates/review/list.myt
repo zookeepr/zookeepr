@@ -1,4 +1,8 @@
-<h1>Reviews</h1>
+<p>
+<% h.link_to('Go to your unreviewed proposals', url=h.url(controller='proposal', action='index', id=None)) %>
+</p>
+
+<h2>Reviews</h2>
 
 <table>
 <tr>
@@ -13,6 +17,8 @@
 <th>Comment</th>
 </tr>
 % for r in c.review_collection:
+# only see the review if you wrote it
+%	if r.reviewer == c.signed_in_person:
 
 <tr class="<% h.cycle('even', 'odd') %>">
 
@@ -54,8 +60,13 @@
 
 </tr>
 
-% #endif
+% 	#endif only look at own reviews
+% #endfor
 </table>
+
+<p>
+<% h.link_to('Go to your unreviewed proposals', url=h.url(controller='proposal', action='index', id=None)) %>
+</p>
 
 <%method title>
 Reviews - <& PARENT:title &>

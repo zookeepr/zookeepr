@@ -15,8 +15,8 @@ class ErrorController(WSGIController):
         """
         Change this method to change how error documents are displayed
         """
-        #if ARGS.get('code', '') == "500":
-        #    return render_response('error/500.myt')
+        if request.params['code'] == "500":
+            return render_response('error/500.myt')
 
         page = error_document_template % {
             'prefix': get_prefix(request.environ),
