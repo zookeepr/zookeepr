@@ -13,6 +13,8 @@
 <th>Comment</th>
 </tr>
 % for r in c.review_collection:
+# only see the review if you wrote it
+%	if r.reviewer == c.signed_in_person:
 
 <tr class="<% h.cycle('even', 'odd') %>">
 
@@ -54,7 +56,8 @@
 
 </tr>
 
-% #endif
+% 	#endif
+% #endfor
 </table>
 
 <%method title>

@@ -78,6 +78,13 @@ class TestReviewController(SignedInControllerTest):
         resp.mustcontain(self.person.firstname)
         self.failIf(p1.firstname in resp, "shouldn't be able to see other people's reviews")
 
+
+        # clean up
+        self.objectstore.delete(p)
+        self.objectstore.delete(p1)
+        self.objectstore.delete(p2)
+        self.objectstore.flush()
+
 #     def test_reviewer_name_hidden_from_submitter(self):
 #         """Test taht a revier is anonymouse to submitters"""
 #         self.fail("untested")
