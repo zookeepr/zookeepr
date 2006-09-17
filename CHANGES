@@ -1,8 +1,8 @@
 Changes for Zookeepr
 ====================
 
-bzr
----
+0.1.8.1
+-------
 
  * Worked around proposal URLs without a scheme, bruteforcing them to http://
  * Updated dependency on WebHelpers to get better URL auto link behaviour.
