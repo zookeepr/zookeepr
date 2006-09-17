@@ -13,6 +13,8 @@ setup(
         "nose>=0.9.0",
         "FormEncode>=0.5.1",
         "PasteScript>=0.9.8",
+        # URL auto_link fixes in 0.2.1
+        "WebHelpers>=0.2.1",
     ],
     packages=find_packages(),
     include_package_data=True,
