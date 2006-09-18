@@ -51,7 +51,7 @@ def get_wiki_response(request, start_response):
         return
 
     if 'signed_in_person_id' in session:
-        people = g.objectstore.query(Person).select_by(id=session['signed_in_person_id'])
+        people = Query(Person).select_by(id=session['signed_in_person_id'])
         if len(people) > 0:
             request.environ['AUTH_TYPE'] = 'Basic'
             request.environ['REMOTE_USER'] = people[0].handle

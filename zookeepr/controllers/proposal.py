@@ -25,7 +25,7 @@ class EditProposalSchema(BaseSchema):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return g.objectstore.query(Stream).get(value)
+        return Query(Stream).get(value)
 
 class ReviewSchema(schema.Schema):
     familiarity = validators.Int()
@@ -162,7 +162,7 @@ class ProposalController(SecureController, View, Modify):
                     setattr(attachment, k, result['attachment'][k])
                 c.proposal.attachments.append(attachment)
 
-                g.objectstore.flush()
+                objectstore.flush()
 
                 return redirect_to(action='view', id=id)
 
