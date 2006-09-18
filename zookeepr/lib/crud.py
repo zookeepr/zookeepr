@@ -52,23 +52,20 @@ class Create(CRUDBase):
         errors = {}
         defaults = dict(request.POST)
 
-        self.obj = self.model()
         if request.method == 'POST' and defaults:
             result, errors = self.schemas['new'].validate(defaults)
 
             if not errors:
+                self.obj = self.model()
+                # make new_object accessible to the template
+                setattr(c, model_name, self.obj)
                 # update the new object with the form data
                 for k in result[model_name]:
                     setattr(self.obj, k, result[model_name][k])
 
-                g.objectstore.save(self.obj)
-                g.objectstore.flush()
-
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('new', default_redirect)
 
-        # make new_object accessible to the template
-        setattr(c, model_name, self.obj)
 
         # unmangle the errors
         good_errors = {}

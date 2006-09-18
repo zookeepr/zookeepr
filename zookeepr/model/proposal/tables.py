@@ -1,3 +1,4 @@
+import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
 # types of proposals: typically 'paper', 'miniconf', etc

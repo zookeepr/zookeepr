@@ -44,15 +44,6 @@ class ModelTest(TestBase):
     """
     __metaclass__ = ModelTestGenerator
 
-    def setUp(self):
-        super(ModelTest, self).setUp()
-        self.objectstore = create_session()
-
-    def tearDown(self):
-        self.objectstore.close()
-        del self.objectstore
-        super(ModelTest, self).tearDown()
-
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
         session = create_session()

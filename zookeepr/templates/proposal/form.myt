@@ -10,7 +10,7 @@
 <br />
 
 % for st in c.proposal_types:
-%	if c.proposal.type:
+%	if c.proposal and c.proposal.type:
 %		czeched = c.proposal.type == st
 %	else:
 %		czeched = False
