@@ -3,27 +3,27 @@ import pprint
 from zookeepr.model import Proposal, ProposalType, Person, Attachment
 from zookeepr.tests.functional import *
 
-class TestProposalBase(object):
-    """Base class that sets up proposal objects for experimenting with.
-    """
-    def setUp(self):
-        super(TestProposalBase, self).setUp()
+# class TestProposalBase(object):
+#     """Base class that sets up proposal objects for experimenting with.
+#     """
+#     def setUp(self):
+#         super(TestProposalBase, self).setUp()
         
-        self.proposal1 = model.Proposal(title='proposal1')
-        self.proposal2 = model.Proposal(title='proposal2')
-        objectstore.save(self.proposal1)
-        objectstore.save(self.proposal2)
-        objectstore.flush()
+#         self.proposal1 = model.Proposal(title='proposal1')
+#         self.proposal2 = model.Proposal(title='proposal2')
+#         objectstore.save(self.proposal1)
+#         objectstore.save(self.proposal2)
+#         objectstore.flush()
 
-    def tearDown(self):
-        objectstore.delete(self.proposal2)
-        objectstore.delete(self.proposal1)
-        objectstore.flush()
+#     def tearDown(self):
+#         objectstore.delete(self.proposal2)
+#         objectstore.delete(self.proposal1)
+#         objectstore.flush()
         
-        super(TestProposalBase, self).tearDown()
+#         super(TestProposalBase, self).tearDown()
 
 class TestProposal(SignedInControllerTest):
-    model = Proposal
+    #model = Proposal
     name = 'proposal'
     url = '/proposal'
     samples = [dict(title='test',

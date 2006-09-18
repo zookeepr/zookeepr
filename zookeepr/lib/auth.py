@@ -157,11 +157,5 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
-        #print g.objectstore.query(Role).select()
-        roles = g.objectstore.query(Role).select_by(name=self.role_name)
-        #print "roles:", roles
-        if len(roles) == 0:
-            role = None
-        else:
-            role = roles[0]
+        role = Query(Role).get_by(name=self.role_name)
         return role in c.signed_in_person.roles

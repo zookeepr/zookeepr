@@ -139,15 +139,15 @@ class ControllerTest(TestBase):
         # now check that the data is in the database
         os = Query(self.model).select()
         print 'yarr', os
-        self.failIfEqual(0, len(os), "data object %r not in database" % (self.model,))
+        self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
         for key in self.samples[0].keys():
             self.check_attribute(os[0], key, self.samples[0][key])
 
+        print os
         objectstore.delete(os[0])
         objectstore.flush()
-
         print "create:", objectstore.new
 
     def check_attribute(self, obj, attr, expected):
@@ -321,6 +321,7 @@ class SignedInControllerTest(ControllerTest):
         self.person.activated = True
         objectstore.save(self.person)
         objectstore.flush()
+        self.pid = self.person.id
         resp = self.app.get(url_for(controller='account',
                                     action='signin'))
         f = resp.form
@@ -328,10 +329,10 @@ class SignedInControllerTest(ControllerTest):
         f['password'] = 'test'
         resp = f.submit()
         self.failUnless('signed_in_person_id' in resp.session)
-        self.assertEqual(self.person.id, resp.session['signed_in_person_id'])
+        self.assertEqual(self.pid, resp.session['signed_in_person_id'])
 
     def tearDown(self):
-        objectstore.delete(Query(model.Person).get(self.person.id))
+        objectstore.delete(Query(model.Person).get(self.pid))
         objectstore.flush()
         super(SignedInControllerTest, self).tearDown()
 
