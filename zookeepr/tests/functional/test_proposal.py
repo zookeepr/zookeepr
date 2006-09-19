@@ -23,7 +23,7 @@ from zookeepr.tests.functional import *
 #         super(TestProposalBase, self).tearDown()
 
 class TestProposal(SignedInControllerTest):
-    #model = Proposal
+    model = Proposal
     name = 'proposal'
     url = '/proposal'
     samples = [dict(title='test',
