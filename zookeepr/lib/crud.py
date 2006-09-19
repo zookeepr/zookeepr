@@ -52,23 +52,20 @@ class Create(CRUDBase):
         errors = {}
         defaults = dict(request.POST)
 
-        self.obj = self.model()
         if request.method == 'POST' and defaults:
             result, errors = self.schemas['new'].validate(defaults)
 
             if not errors:
+                self.obj = self.model()
+                # make new_object accessible to the template
+                setattr(c, model_name, self.obj)
                 # update the new object with the form data
                 for k in result[model_name]:
                     setattr(self.obj, k, result[model_name][k])
 
-                g.objectstore.save(self.obj)
-                g.objectstore.flush()
-
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('new', default_redirect)
 
-        # make new_object accessible to the template
-        setattr(c, model_name, self.obj)
 
         # unmangle the errors
         good_errors = {}
@@ -99,7 +96,7 @@ class List(CRUDBase):
         #setattr(c, model_name + '_collection', collection)
 
         # assign list of objects to template global
-        setattr(c, model_name + '_collection', g.objectstore.query(self.model).select(order_by=self.model.c.id))
+        setattr(c, model_name + '_collection', Query(self.model).select(order_by=self.model.c.id))
 
         c.can_edit = self._can_edit()
         # exec the template
@@ -137,12 +134,10 @@ class RUDBase(CRUDBase):
             pass
 
         if use_oid:
-            self.obj = g.objectstore.get(self.model, id)
+            self.obj = Query(self.model).get(id)
         elif hasattr(self, 'key'):
             query_dict = {self.key: kwargs['id']}
-            os = g.objectstore.query(self.model).select_by(**query_dict)
-            if len(os) == 1:
-                self.obj = os[0]
+            self.obj = Query(self.model).get_by(**query_dict)
 
         if not hasattr(self, 'obj') or self.obj is None:
             abort(404, "No such object: cannot %s nonexistent id = %r" % (kwargs['action'],
@@ -169,8 +164,8 @@ class Update(RUDBase):
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[self.individual][k])
 
-                g.objectstore.save(self.obj)
-                g.objectstore.flush()
+                objectstore.save(self.obj)
+                objectstore.flush()
 
                 redirect_to(action='view', id=self.identifier(self.obj))
 
@@ -190,8 +185,8 @@ class Delete(RUDBase):
         """
         
         if request.method == 'POST' and self.obj is not None:
-            g.objectstore.delete(self.obj)
-            g.objectstore.flush()
+            objectstore.delete(self.obj)
+            objectstore.flush()
 
             default_redirect = dict(action='index', id=None)
             self.redirect_to('delete', default_redirect)
@@ -211,7 +206,9 @@ class Read(RUDBase):
         # save obj onto the magical c
         setattr(c, self.individual, self.obj)
         # exec the template
-        return render_response('%s/view.myt' % self.individual)
+        response = render_response('%s/view.myt' % self.individual)
+
+        return response
 
 
 # legacy classes

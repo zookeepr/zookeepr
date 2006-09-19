@@ -1,8 +1,6 @@
 import md5
 
-from sqlalchemy import create_session
-
-from zookeepr.lib.base import BaseController, c, g, redirect_to, session, abort
+from zookeepr.lib.base import *
 from zookeepr.model import Person, Role
 
 class retcode:
@@ -17,25 +15,20 @@ class PersonAuthenticator(object):
     """Look up the Person in the data store"""
 
     def authenticate(self, username, password):
-
-        objectstore = create_session()
+        person = Query(Person).get_by(email_address=username)
         
-        ps = objectstore.query(Person).select_by(email_address=username)
-        
-        if len(ps) <> 1:
+        if person is None:
             return retcode.FAILURE
 
         password_hash = md5.new(password).hexdigest()
 
-        if not ps[0].activated:
+        if not person.activated:
             result = retcode.INACTIVE
-        elif password_hash == ps[0].password_hash:
+        elif password_hash == person.password_hash:
             result = retcode.SUCCESS
         else:
             result = retcode.FAILURE
 
-        objectstore.close()
-        
         return result
 
 
@@ -111,14 +104,13 @@ class SecureController(BaseController):
     def __before__(self, **kwargs):
         # Call the parent __before__ method to ensure the common pre-call code
         # is run
-        super(SecureController, self).__before__(**kwargs)
+        if hasattr(super(SecureController, self), '__before__'):
+            super(SecureController, self).__before__(**kwargs)
 
         if self.logged_in():
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
-            # FIXME get is boned on the live site
-            #c.signed_in_person = g.objectstore.get(Person, session['signed_in_person_id'])
-            c.signed_in_person = g.objectstore.query(Person).select_by(id=session['signed_in_person_id'])[0]
+            c.signed_in_person = Query(Person).get(session['signed_in_person_id'])
         else:
             # No-one's logged in, so send them to the signin
             # page.
@@ -166,11 +158,5 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
-        #print g.objectstore.query(Role).select()
-        roles = g.objectstore.query(Role).select_by(name=self.role_name)
-        #print "roles:", roles
-        if len(roles) == 0:
-            role = None
-        else:
-            role = roles[0]
+        role = Query(Role).get_by(name=self.role_name)
         return role in c.signed_in_person.roles
