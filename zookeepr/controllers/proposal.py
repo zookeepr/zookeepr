@@ -87,11 +87,15 @@ class ProposalController(SecureController, View, Modify):
                 for k in result['proposal']:
                     setattr(c.proposal, k, result['proposal'][k])
                 self.obj.people.append(c.signed_in_person)
+                objectstore.save(c.proposal)
                 if result.has_key('attachment') and result['attachment'] is not None:
                     att = Attachment()
                     for k in result['attachment']:
                         setattr(att, k, result['attachment'][k])
                     self.obj.attachments.append(att)
+                    objectstore.save(att)
+                
+                objectstore.flush()
 
                 redirect_to(action='view', id=self.obj.id)
 
@@ -124,8 +128,12 @@ class ProposalController(SecureController, View, Modify):
                 for k in result['review']:
                     setattr(review, k, result['review'][k])
 
+                objectstore.save(review)
+
                 review.reviewer = c.signed_in_person
                 c.proposal.reviews.append(review)
+
+                objectstore.flush()
                 
                 # FIXME: dumb
                 redirect_to('/')

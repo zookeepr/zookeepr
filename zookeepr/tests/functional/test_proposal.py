@@ -105,6 +105,8 @@ class TestProposal(SignedInControllerTest):
         objectstore.save(s)
         p2.proposals.append(s)
         objectstore.flush()
+        p2id = p2.id
+        sid = s.id
         # try to view the proposal as the other person
         resp = self.app.get(url_for(controller='proposal',
                                     action='view',
@@ -112,8 +114,8 @@ class TestProposal(SignedInControllerTest):
                             status=403)
 
         # clean up
-        objectstore.delete(p2)
-        objectstore.delete(s)
+        objectstore.delete(Query(Person).get(p2id))
+        objectstore.delete(Query(Proposal).get(sid))
         objectstore.flush()
 
 
@@ -128,22 +130,24 @@ class TestProposal(SignedInControllerTest):
         objectstore.save(s)
         p2.proposals.append(s)
         objectstore.flush()
+        p2id = p2.id
+        sid = s.id
         # try to view the proposal as the other person
         resp = self.app.get(url_for(controller='proposal',
                                     action='edit',
-                                    id=s.id),
+                                    id=sid),
                             status=403)
 
         # also try to post to it
         resp = self.app.post(url_for(controller='proposal',
                                      action='edit',
-                                     id=s.id),
+                                     id=sid),
                              params={},
                              status=403)
 
         # clean up
-        objectstore.delete(p2)
-        objectstore.delete(s)
+        objectstore.delete(Query(Person).get(p2id))
+        objectstore.delete(Query(Proposal).get(sid))
         objectstore.flush()
 
 
@@ -154,27 +158,29 @@ class TestProposal(SignedInControllerTest):
                     password='test')
         objectstore.save(p2)
         objectstore.flush()
+        p2id = p2.id
         # create a proposal
         s = Proposal(title='foo')
         objectstore.save(s)
         p2.proposals.append(s)
         objectstore.flush()
+        sid = s.id
         # try to view the proposal as the other person
         resp = self.app.get(url_for(controller='proposal',
                                     action='delete',
-                                    id=s.id),
+                                    id=sid),
                             status=403)
 
         # also try to post to it
         resp = self.app.post(url_for(controller='proposal',
                                      action='delete',
-                                     id=s.id),
+                                     id=sid),
                              params={},
                              status=403)
 
         # clean up
-        objectstore.delete(p2)
-        objectstore.delete(s)
+        objectstore.delete(Query(Person).get(p2id))
+        objectstore.delete(Query(Proposal).get(sid))
         objectstore.flush()
 
 
@@ -189,14 +195,16 @@ class TestProposal(SignedInControllerTest):
         objectstore.save(s)
         p2.proposals.append(s)
         objectstore.flush()
+        p2id = p2.id
+        sid = s.id
         # try to view the proposal as the other person
         resp = self.app.get(url_for(controller='proposal',
                                     action='index'),
                             status=403)
 
         # clean up
-        objectstore.delete(p2)
-        objectstore.delete(s)
+        objectstore.delete(Query(Person).get(p2id))
+        objectstore.delete(Query(Proposal).get(sid))
         objectstore.flush()
 
 
@@ -206,6 +214,7 @@ class TestProposal(SignedInControllerTest):
         s1 = Proposal(title='sub one')
         objectstore.save(s1)
         objectstore.flush()
+        s1id = s1.id
 
         # now go home, click on the submit another link, and do so
         resp = self.app.get('/')
@@ -220,22 +229,22 @@ class TestProposal(SignedInControllerTest):
         f['attachment'] = "foo"
         print f.submit_fields()
         resp = f.submit()
+        print resp
         resp = resp.follow()
 
         # does it exist?
-        subs = objectstore.query(Proposal).select_by(title='sub two')
-        self.assertEqual(1, len(subs))
+        s2 = Query(Proposal).get_by(title='sub two')
+        self.failIfEqual(None, s2)
 
-        s2 = subs[0]
         # is it attached to our guy?
         self.failUnless(s2 in self.person.proposals, "s2 not in p.proposals (currently %r)" % self.person.proposals)
 
         # do we have an attachment?
-        self.failIfEqual([], subs[0].attachments)
+        self.failIfEqual([], s2.attachments)
         
         # clean up
         objectstore.delete(s2)
-        objectstore.delete(s1)
+        objectstore.delete(Query(Proposal).get(s1id))
         objectstore.flush()
 
     def test_proposal_list(self):
@@ -335,16 +344,17 @@ class TestProposal(SignedInControllerTest):
         f.submit()
 
         # test that we have a review
-        reviews = objectstore.query(model.Review).select()
+        reviews = Query(model.Review).select()
+        self.failIfEqual([], reviews)
         self.assertEqual(1, len(reviews))
         self.assertEqual("snuh", reviews[0].comment)
                                                             
         
         # clean up
         objectstore.delete(objectstore.get(model.Review, reviews[0].id))
-        objectstore.delete(objectstore.get(model.Stream, sid))
-        objectstore.delete(objectstore.get(model.Role, rid))
-        objectstore.delete(objectstore.get(Proposal, pid))
+        objectstore.delete(Query(model.Stream).get(sid))
+        objectstore.delete(Query(model.Role).get(rid))
+        objectstore.delete(Query(Proposal).get(pid))
         objectstore.flush()
 
 
