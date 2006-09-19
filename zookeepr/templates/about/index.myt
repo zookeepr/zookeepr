@@ -2,9 +2,6 @@
 
 <p id="cfpbutton" class="right"><% h.link_to('<img src="/cfp.png" alt="Call for Papers" /><br />The linux.conf.au 2007 Call for Participation is open!', url=h.url_for('cfp')) %></p>
 
-<h2>linux.conf.au 2007</h2>
-<h3>January 15th-20th, 2007 &middot; University of New South Wales</h3>
-
 <blockquote>
 <p><i>
 You know how it goes.
