@@ -1,7 +1,7 @@
 from formencode import validators, compound, schema, variabledecode, Invalid
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
-from zookeepr.lib.base import c, g, redirect_to, request, render_response, session
+from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
 from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment
@@ -25,7 +25,7 @@ class EditProposalSchema(BaseSchema):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return g.objectstore.query(Stream).get(value)
+        return Query(Stream).get(value)
 
 class ReviewSchema(schema.Schema):
     familiarity = validators.Int()
@@ -44,8 +44,8 @@ class NotYetReviewedValidator(validators.FancyValidator):
         }
     
     def validate_python(self, value, state):
-        reviews = g.objectstore.query(Review).select_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
-        if len(reviews) > 0:
+        review = Query(Review).get_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
+        if review is not None:
             raise Invalid(self.message('already', None),
                           value, state)
         
@@ -74,32 +74,30 @@ class ProposalController(SecureController, View, Modify):
     def __before__(self, **kwargs):
         super(ProposalController, self).__before__(**kwargs)
 
-        c.proposal_types = g.objectstore.query(ProposalType).select()
+        c.proposal_types = Query(ProposalType).select()
 
     def new(self, id):
-        self.obj = self.model()
-        att = Attachment()
         errors = {}
         defaults = dict(request.POST)
         if defaults:
             result, errors = self.schemas['new'].validate(defaults)
 
             if not errors:
+                c.proposal = self.obj = self.model()
                 for k in result['proposal']:
-                    setattr(self.obj, k, result['proposal'][k])
-                g.objectstore.save(self.obj)
+                    setattr(c.proposal, k, result['proposal'][k])
                 self.obj.people.append(c.signed_in_person)
+                objectstore.save(c.proposal)
                 if result.has_key('attachment') and result['attachment'] is not None:
+                    att = Attachment()
                     for k in result['attachment']:
                         setattr(att, k, result['attachment'][k])
                     self.obj.attachments.append(att)
-                    g.objectstore.save(att)
-
-                g.objectstore.flush()
+                    objectstore.save(att)
+                
+                objectstore.flush()
 
                 redirect_to(action='view', id=self.obj.id)
-
-        c.proposal = self.obj
 
         good_errors = {}
         for key in errors.keys():
@@ -117,9 +115,8 @@ class ProposalController(SecureController, View, Modify):
     def review(self, id):
         """Review a proposal.
         """
-        c.proposal = g.objectstore.get(Proposal, id)
+        c.proposal = Query(Proposal).get(id)
 
-        review = Review()
         defaults = dict(request.POST)
         errors = {}
         
@@ -127,19 +124,21 @@ class ProposalController(SecureController, View, Modify):
             result, errors = NewReviewSchema().validate(defaults)
 
             if not errors:
+                review = Review()
                 for k in result['review']:
                     setattr(review, k, result['review'][k])
 
+                objectstore.save(review)
+
                 review.reviewer = c.signed_in_person
                 c.proposal.reviews.append(review)
-                
-                g.objectstore.save(review)
-                g.objectstore.flush()
 
+                objectstore.flush()
+                
                 # FIXME: dumb
                 redirect_to('/')
                 
-        c.streams = g.objectstore.query(Stream).select()
+        c.streams = Query(Stream).select()
         
         good_errors = {}
         try:
@@ -158,8 +157,7 @@ class ProposalController(SecureController, View, Modify):
     def attach(self, id):
         """Attach a file to the proposal.
         """
-        c.proposal = g.objectstore.get(Proposal, id)
-        attachment = Attachment()
+        c.proposal = Query(Proposal).get(id)
         defaults = dict(request.POST)
         errors = {}
 
@@ -167,12 +165,12 @@ class ProposalController(SecureController, View, Modify):
             result, errors = NewAttachmentSchema().validate(defaults)
 
             if not errors:
+                attachment = Attachment()
                 for k in result['attachment']:
                     setattr(attachment, k, result['attachment'][k])
-                g.objectstore.save(attachment)
                 c.proposal.attachments.append(attachment)
 
-                g.objectstore.flush()
+                objectstore.flush()
 
                 return redirect_to(action='view', id=id)
 
@@ -195,10 +193,10 @@ class ProposalController(SecureController, View, Modify):
         return super(ProposalController, self).view()
 
     def index(self):
-        c.proposal_types = g.objectstore.query(ProposalType).select()
+        c.proposal_types = Query(ProposalType).select()
 
         for pt in c.proposal_types:
-            stuff = g.objectstore.query(Proposal).select_by(proposal_type_id=pt.id)
+            stuff = Query(Proposal).select_by(proposal_type_id=pt.id)
             setattr(c, '%s_collection' % pt.name, stuff)
 
         return super(ProposalController, self).index()

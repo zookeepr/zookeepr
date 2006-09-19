@@ -22,9 +22,9 @@ class TestProposal(ModelTest):
 
         print v
 
-        self.objectstore.save(st)
-        self.objectstore.save(v)
-        self.objectstore.flush()
+        objectstore.save(st)
+        objectstore.save(v)
+        objectstore.flush()
 
         s = Proposal(title='Venal Versimilitude: Vast vocation or violition of volition?',
                        type=st,
@@ -35,20 +35,20 @@ class TestProposal(ModelTest):
         # give this sub to v
         v.proposals.append(s)
 
-        self.objectstore.save(s)
-        self.objectstore.flush()
+        objectstore.save(s)
+        objectstore.flush()
 
         vid = v.id
         stid = st.id
         sid = s.id
 
-        self.objectstore.clear()
+        objectstore.clear()
 
         print vid, stid, sid
 
-        v = self.objectstore.get(Person, vid)
-        st = self.objectstore.get(ProposalType, stid)
-        s = self.objectstore.get(Proposal, sid)
+        v = objectstore.get(Person, vid)
+        st = objectstore.get(ProposalType, stid)
+        s = objectstore.get(Proposal, sid)
         
         self.assertEqual(1, len(v.proposals))
         self.assertEqual(s.title, v.proposals[0].title)
@@ -64,16 +64,16 @@ class TestProposal(ModelTest):
         print s.type
         print s.people[0]
 
-        self.objectstore.delete(s)
-        self.objectstore.delete(st)
-        self.objectstore.delete(v)
-        self.objectstore.flush()
+        objectstore.delete(s)
+        objectstore.delete(st)
+        objectstore.delete(v)
+        objectstore.flush()
         
-        v = self.objectstore.get(Person, vid)
+        v = objectstore.get(Person, vid)
         self.failUnlessEqual(None, v)
-        s = self.objectstore.get(Proposal, sid)
+        s = objectstore.get(Proposal, sid)
         self.failUnlessEqual(None, s)
-        st = self.objectstore.get(ProposalType, stid)
+        st = objectstore.get(ProposalType, stid)
         self.failUnlessEqual(None, st)
         
         self.check_empty_session()
@@ -86,19 +86,19 @@ class TestProposal(ModelTest):
                     password='q')
         st = ProposalType('Presentation')
 
-        self.objectstore.save(r1)
-        self.objectstore.save(r2)
-        self.objectstore.save(st)
+        objectstore.save(r1)
+        objectstore.save(r2)
+        objectstore.save(st)
         
-        self.objectstore.flush()
+        objectstore.flush()
         
         s1 = Proposal(title='one',
                         abstract='bar',
                         type=st)
-        self.objectstore.save(s1)
+        objectstore.save(s1)
 
         r1.proposals.append(s1)
-        self.objectstore.flush()
+        objectstore.flush()
 
         self.failUnless(s1 in r1.proposals)
 
@@ -106,9 +106,9 @@ class TestProposal(ModelTest):
                         abstract='some abstract',
                         type=st)
 
-        self.objectstore.save(s2)
+        objectstore.save(s2)
         r2.proposals.append(s2)
-        self.objectstore.flush()
+        objectstore.flush()
 
         self.failUnless(s2 in r2.proposals)
 
@@ -125,12 +125,12 @@ class TestProposal(ModelTest):
         self.failIf(s2 in r1.proposals, "invalid proposal in r1.submissions: %r" % s2)
 
         # clean up
-        self.objectstore.delete(s2)
-        self.objectstore.delete(s1)
-        self.objectstore.delete(r2)
-        self.objectstore.delete(r1)
-        self.objectstore.delete(st)
-        self.objectstore.flush()
+        objectstore.delete(s2)
+        objectstore.delete(s1)
+        objectstore.delete(r2)
+        objectstore.delete(r1)
+        objectstore.delete(st)
+        objectstore.flush()
 
         # check
         self.domain = model.proposal.Proposal
@@ -140,24 +140,24 @@ class TestProposal(ModelTest):
         p1 = Person(email_address='one@example.org',
                     password='foo')
         st = ProposalType('Presentation')
-        self.objectstore.save(p1)
-        self.objectstore.save(st)
+        objectstore.save(p1)
+        objectstore.save(st)
 
         s = Proposal(title='a sub')
         p1.proposals.append(s)
-        self.objectstore.save(s)
-        self.objectstore.flush()
+        objectstore.save(s)
+        objectstore.flush()
 
         p2 = Person(email_address='two@example.org',
                     password='bar')
         s.people.append(p2)
-        self.objectstore.save(p2)
-        self.objectstore.flush()
+        objectstore.save(p2)
+        objectstore.flush()
 
         p3 = Person(email_address='three@example.org',
                     password='quux')
-        self.objectstore.save(p3)
-        self.objectstore.flush()
+        objectstore.save(p3)
+        objectstore.flush()
 
 
         self.failUnless(s in p1.proposals)
@@ -172,12 +172,12 @@ class TestProposal(ModelTest):
         self.failIf(p3 in s.people)
 
         # clean up
-        self.objectstore.delete(s)
-        self.objectstore.delete(p1)
-        self.objectstore.delete(p2)
-        self.objectstore.delete(st)
+        objectstore.delete(s)
+        objectstore.delete(p1)
+        objectstore.delete(p2)
+        objectstore.delete(st)
 
-        self.objectstore.flush()
+        objectstore.flush()
         
         # check
         self.domain = model.proposal.Proposal
@@ -185,29 +185,29 @@ class TestProposal(ModelTest):
 
     def test_proposal_with_attachment(self):
         p = Proposal(title='prop 1')
-        self.objectstore.save(p)
+        objectstore.save(p)
 
         a = Attachment(filename='a',
                        content_type='text/plain',
                        creation_timestamp=datetime.datetime.now(),
                        content="foobar")
-        self.objectstore.save(a)
+        objectstore.save(a)
 
         p.attachments.append(a)
-        self.objectstore.flush()
+        objectstore.flush()
 
         pid = p.id
         aid = a.id
 
-        self.objectstore.clear()
+        objectstore.clear()
 
-        p = self.objectstore.get(Proposal, pid)
-        a = self.objectstore.get(Attachment, aid)
+        p = objectstore.get(Proposal, pid)
+        a = objectstore.get(Attachment, aid)
         self.assertEqual(p.attachments[0], a)
 
-        self.objectstore.delete(a)
-        self.objectstore.delete(p)
-        self.objectstore.flush()
+        objectstore.delete(a)
+        objectstore.delete(p)
+        objectstore.flush()
 
         #self.assertEmptyModel(Attachment)
         #self.assertEmptyModel(Proposal)
@@ -217,25 +217,25 @@ class TestProposal(ModelTest):
         p1 = Person(email_address='one@example.org',
                     password='foo')
         st = ProposalType('Presentation')
-        self.objectstore.save(p1)
-        self.objectstore.save(st)
+        objectstore.save(p1)
+        objectstore.save(st)
 
         s = Proposal(title='a sub')
         p1.proposals.append(s)
-        self.objectstore.save(s)
+        objectstore.save(s)
 
         p2 = Person(email_address='reviewer@example.org',
                     password='bar')
-        self.objectstore.save(p2)
+        objectstore.save(p2)
 
         stream = Stream(name="pants")
 
         r = Review(reviewer=p2, stream=stream, comment="Buuzah")
         s.reviews.append(r)
-        self.objectstore.save(r)
+        objectstore.save(r)
         
 
-        self.objectstore.flush()
+        objectstore.flush()
 
         self.failUnless(s in p1.proposals)
         self.failUnless(s not in p2.proposals)
@@ -246,13 +246,13 @@ class TestProposal(ModelTest):
         self.failUnless(r in s.reviews)
 
         # clean up
-        self.objectstore.delete(s)
-        self.objectstore.delete(p1)
-        self.objectstore.delete(p2)
-        self.objectstore.delete(st)
-        self.objectstore.delete(stream)
+        objectstore.delete(s)
+        objectstore.delete(p1)
+        objectstore.delete(p2)
+        objectstore.delete(st)
+        objectstore.delete(stream)
 
-        self.objectstore.flush()
+        objectstore.flush()
         
         # check
         self.domain = model.proposal.Proposal
