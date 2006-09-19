@@ -10,13 +10,13 @@ class TestHomeController(ControllerTest):
                    password='test',
                    firstname='Testguy')
         p.activated = True
-        self.objectstore.save(p)
+        objectstore.save(p)
         print p
         s = Proposal(title='foo')
-        self.objectstore.save(s)
+        objectstore.save(s)
         p.proposals.append(s)
 
-        self.objectstore.flush()
+        objectstore.flush()
 
         print p
 
@@ -36,6 +36,6 @@ class TestHomeController(ControllerTest):
         resp.mustcontain("Welcome, <strong>Testguy</strong>!")
         resp.mustcontain("foo")
 
-        self.objectstore.delete(p)
-        self.objectstore.delete(s)
-        self.objectstore.flush()
+        objectstore.delete(p)
+        objectstore.delete(s)
+        objectstore.flush()

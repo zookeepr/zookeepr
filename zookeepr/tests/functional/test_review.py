@@ -43,14 +43,14 @@ class TestReviewController(SignedInControllerTest):
         """Test that a reviewer can only see their own reviews"""
         p1 = model.Person(email_address='testgirl@example.org',
                     fullname='Testgirl Van der Test')
-        self.objectstore.save(p1)
+        objectstore.save(p1)
         p2 = model.Person(email_address='t2@example.org',
                     fullname='submitter')
-        self.objectstore.save(p2)
+        objectstore.save(p2)
         p = model.Proposal(title='prop',
-                           type=self.objectstore.get(model.ProposalType, 1),
+                           type=objectstore.get(model.ProposalType, 1),
                            )
-        self.objectstore.save(p)
+        objectstore.save(p)
         p.people.append(p2)
         r1 = model.Review(
                     reviewer=self.person,
@@ -58,21 +58,24 @@ class TestReviewController(SignedInControllerTest):
                     technical=1,
                     experience=1,
                     coolness=1,
-                    stream=self.objectstore.get(model.Stream, 1),
+                    stream=objectstore.get(model.Stream, 1),
                     )
         p.reviews.append(r1)
-        self.objectstore.save(r1)
+        objectstore.save(r1)
         r2 = model.Review(
                     reviewer=p1,
                     familiarity=1,
                     technical=2,
                     experience=2,
                     coolness=3,
-                    stream=self.objectstore.get(model.Stream, 1),
+                    stream=objectstore.get(model.Stream, 1),
                     )
         p.reviews.append(r2)
-        self.objectstore.save(r2)
-        self.objectstore.flush()
+        objectstore.save(r2)
+        objectstore.flush()
+        p1id = p1.id
+        p2id = p2.id
+        pid = p.id
 
         resp = self.app.get('/review')
         resp.mustcontain(self.person.firstname)
@@ -80,10 +83,10 @@ class TestReviewController(SignedInControllerTest):
 
 
         # clean up
-        self.objectstore.delete(p)
-        self.objectstore.delete(p1)
-        self.objectstore.delete(p2)
-        self.objectstore.flush()
+        objectstore.delete(Query(model.Proposal).get(pid))
+        objectstore.delete(Query(model.Person).get(p1id))
+        objectstore.delete(Query(model.Person).get(p2id))
+        objectstore.flush()
 
 #     def test_reviewer_name_hidden_from_submitter(self):
 #         """Test taht a revier is anonymouse to submitters"""
@@ -97,15 +100,17 @@ class TestReviewController(SignedInControllerTest):
         """test that reviewers can only do one review per proposal"""
         p2 = model.Person(email_address='t2@example.org',
                     fullname='submitter')
-        self.objectstore.save(p2)
+        objectstore.save(p2)
         p = model.Proposal(title='prop',
                            abstract='abs',
                            experience='exp',
-                           type=self.objectstore.get(model.ProposalType, 1),
+                           type=objectstore.get(model.ProposalType, 1),
                            )
-        self.objectstore.save(p)
+        objectstore.save(p)
         p.people.append(p2)
-        self.objectstore.flush()
+        objectstore.flush()
+        p2id = p2.id
+        pid = p.id
 
         resp = self.app.get(url_for(controller='proposal',
                                     action='review',
@@ -118,6 +123,6 @@ class TestReviewController(SignedInControllerTest):
         resp.mustcontain("already reviewed this proposal")
         
         # clean up
-        self.objectstore.delete(p)
-        self.objectstore.delete(p2)
-        self.objectstore.flush()
+        objectstore.delete(Query(model.Person).get(p2id))
+        objectstore.delete(Query(model.Proposal).get(pid))
+        objectstore.flush()

@@ -26,18 +26,20 @@ class AuthenticationValidator(validators.FancyValidator):
         else:
             raise RuntimeError, "Unhandled authentication return code: '%r'" % r
 
+
+class ExistingAccountValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        accounts = Query(Person).select_by(email_address=value['email_address'])
+        if len(accounts) == 0:
+            raise Invalid("Your sign-in details are incorrect; try registering a new account.", value, state)
+
+
 class LoginValidator(BaseSchema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
 
-    chained_validators = [AuthenticationValidator()]
+    chained_validators = [ExistingAccountValidator(), AuthenticationValidator()]
 
-
-class ExistingAccountValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        accounts = g.objectstore.query(Person).select_by(email_address=value['email_address'])
-        if len(accounts) == 0:
-            raise Invalid("Your sign-in details are incorrect; try registering a new account.", value, state)
 
 class ForgottenPasswordSchema(BaseSchema):
     email_address = validators.String(not_empty=True)
@@ -54,8 +56,8 @@ class PasswordResetSchema(BaseSchema):
 
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        accounts = g.objectstore.query(Person).select_by(email_address=value['email_address'])
-        if len(accounts) > 0:
+        account = Query(Person).get_by(email_address=value['email_address'])
+        if account is not None:
             raise Invalid("This account already exists.", value, state)
 
 
@@ -89,13 +91,10 @@ class AccountController(BaseController):
                 # get account
                 # check auth
                 # set session cookies
-                persons = g.objectstore.query(Person).select_by(email_address=result['email_address'])
-                if len(persons) < 1:
-                    # Don't raise an exception, handle gracefully
-                    errors = {'x': 'Invalid login'}
-                else:
+                person = Query(Person).get_by(email_address=result['email_address'])
+                if person:
                     # at least one Person matches, save it
-                    session['signed_in_person_id'] = persons[0].id
+                    session['signed_in_person_id'] = person.id
                     session.save()
 
                     # return home
@@ -117,15 +116,15 @@ class AccountController(BaseController):
         they regsitered, and a nonce.
 
         """
-        r = g.objectstore.query(Person).select_by(url_hash=id)
+        r = Query(Person).select_by(url_hash=id)
 
         if len(r) < 1:
             abort(404)
 
         r[0].activated = True
 
-        g.objectstore.save(r[0])
-        g.objectstore.flush()
+        objectstore.save(r[0])
+        objectstore.flush()
 
         return render_response('account/confirmed.myt')
 
@@ -152,11 +151,11 @@ class AccountController(BaseController):
 
             if not errors:
                 c.conf_rec = PasswordResetConfirmation(result['email_address'])
-                g.objectstore.save(c.conf_rec)
+                objectstore.save(c.conf_rec)
                 try:
-                    g.objectstore.flush()
+                    objectstore.flush()
                 except sqlalchemy.exceptions.SQLError, e:
-                    g.objectstore.clear()
+                    objectstore.clear()
                     # FIXME exposes sqlalchemy!
                     return render_response('account/in_progress.myt')
 
@@ -195,7 +194,7 @@ class AccountController(BaseController):
         If the record doesn't exist, throw an error, delete the
         confirmation record.
         """
-        crecs = g.objectstore.query(PasswordResetConfirmation).select_by(url_hash=url_hash)
+        crecs = Query(PasswordResetConfirmation).select_by(url_hash=url_hash)
         if len(crecs) == 0:
             abort(404)
 
@@ -205,8 +204,8 @@ class AccountController(BaseController):
         delta = now - c.conf_rec.timestamp
         if delta > datetime.timedelta(24, 0, 0):
             # this confirmation record has expired
-            g.objectstore.delete(c.conf_rec)
-            g.objectstore.flush()
+            objectstore.delete(c.conf_rec)
+            objectstore.flush()
             return render_response('account/expired.myt')
 
         # now process the form
@@ -217,16 +216,18 @@ class AccountController(BaseController):
             result, errors = PasswordResetSchema().validate(defaults)
 
             if not errors:
-                accounts = g.objectstore.query(Person).select_by(email_address=c.conf_rec.email_address)
+                accounts = Query(Person).select_by(email_address=c.conf_rec.email_address)
                 if len(accounts) == 0:
                     raise RuntimeError, "Account doesn't exist %s" % c.conf_rec.email_address
 
                 # set the password
                 accounts[0].password = result['password']
+                # also make sure the account is activated
+                accounts[0].activated = True
                 
                 # delete the conf rec
-                g.objectstore.delete(c.conf_rec)
-                g.objectstore.flush()
+                objectstore.delete(c.conf_rec)
+                objectstore.flush()
 
                 return render_response('account/success.myt')
 
@@ -244,17 +245,14 @@ class AccountController(BaseController):
         defaults = dict(request.POST)
         errors = {}
 
-        c.person = Person()
-
         if defaults:
             result, errors = NewRegistrationSchema().validate(defaults)
 
             if not errors:
+                c.person = Person()
                 # update the objects with the validated form data
                 for k in result['registration']:
                     setattr(c.person, k, result['registration'][k])
-                g.objectstore.save(c.person)
-                g.objectstore.flush()
 
                 s = smtplib.SMTP("localhost")
                 # generate welcome message

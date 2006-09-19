@@ -9,14 +9,14 @@
 <p>
 <span class="mandatory">*</span>
 <label for="registration.fullname">Your name:</label>
-<% h.text_field('registration.fullname', c.registration.fullname, size=40) %>
+<% h.text_field('registration.fullname', size=40) %>
 <br />
 </p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="registration.email_address">Email address:</label>
-<% h.text_field('registration.email_address', c.registration.email_address, size=40) %>
+<% h.text_field('registration.email_address', size=40) %>
 <br />
 <span class="fielddesc">This will be our primary way of contacting you.</span>
 </p>
@@ -44,7 +44,7 @@
 <p>
 <span class="mandatory">*</span>
 <label for="proposal.title">Title:</label>
-<% h.text_field('proposal.title', c.proposal.title, size=50) %>
+<% h.text_field('proposal.title', size=50) %>
 <br />
 <span class="fielddesc">e.g. the name of your paper, or talk title.</span>
 </p>
@@ -61,7 +61,7 @@
 </p>
 
 <p><label for="proposal.url">Project URL:</label>
-<% h.text_field('proposal.url', c.proposal.url, size=50) %>
+<% h.text_field('proposal.url', size=50) %>
 <br />
 <span class="fielddesc">If your proposal has a project URL, specify it here so the review committee can find out more about your proposal.</span>
 </p>
