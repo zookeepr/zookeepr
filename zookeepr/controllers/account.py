@@ -222,6 +222,8 @@ class AccountController(BaseController):
 
                 # set the password
                 accounts[0].password = result['password']
+                # also make sure the account is activated
+                accounts[0].activated = True
                 
                 # delete the conf rec
                 objectstore.delete(c.conf_rec)
