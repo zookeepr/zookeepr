@@ -104,7 +104,8 @@ class SecureController(BaseController):
     def __before__(self, **kwargs):
         # Call the parent __before__ method to ensure the common pre-call code
         # is run
-        super(SecureController, self).__before__(**kwargs)
+        if hasattr(super(SecureController, self), '__before__'):
+            super(SecureController, self).__before__(**kwargs)
 
         if self.logged_in():
             # Retrieve the Person object from the object store

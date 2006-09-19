@@ -73,6 +73,9 @@ class TestReviewController(SignedInControllerTest):
         p.reviews.append(r2)
         objectstore.save(r2)
         objectstore.flush()
+        p1id = p1.id
+        p2id = p2.id
+        pid = p.id
 
         resp = self.app.get('/review')
         resp.mustcontain(self.person.firstname)
@@ -80,9 +83,9 @@ class TestReviewController(SignedInControllerTest):
 
 
         # clean up
-        objectstore.delete(p)
-        objectstore.delete(p1)
-        objectstore.delete(p2)
+        objectstore.delete(Query(model.Proposal).get(pid))
+        objectstore.delete(Query(model.Person).get(p1id))
+        objectstore.delete(Query(model.Person).get(p2id))
         objectstore.flush()
 
 #     def test_reviewer_name_hidden_from_submitter(self):
@@ -120,6 +123,6 @@ class TestReviewController(SignedInControllerTest):
         resp.mustcontain("already reviewed this proposal")
         
         # clean up
-        objectstore.delete(Query(Person).get(p2id))
-        objectstore.delete(Query(Person).get(pid))
+        objectstore.delete(Query(model.Person).get(p2id))
+        objectstore.delete(Query(model.Proposal).get(pid))
         objectstore.flush()

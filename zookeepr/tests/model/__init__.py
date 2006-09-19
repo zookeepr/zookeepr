@@ -1,5 +1,5 @@
-import sqlalchemy
-from sqlalchemy import create_session
+import sqlalchemy.mods.threadlocal
+from sqlalchemy import objectstore, Query
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -46,10 +46,8 @@ class ModelTest(TestBase):
 
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
-        session = create_session()
-        results = session.query(self.domain).select()
-        self.assertEqual(0, len(results))
-        session.close()
+        results = Query(self.domain).select()
+        self.assertEqual([], results)
 
     def crud(self):
         #
@@ -86,18 +84,18 @@ class ModelTest(TestBase):
             o = self.domain(**sample)
     
             # committing to db
-            self.objectstore.save(o)
-            self.objectstore.flush()
+            objectstore.save(o)
+            objectstore.flush()
             oid = o.id
 
             # clear the session, invalidating o
-            self.objectstore.clear()
+            objectstore.clear()
             del o
     
             # check it's in the database
             print self.domain
             print oid
-            o = self.objectstore.get(self.domain, oid)
+            o = objectstore.get(self.domain, oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
@@ -106,13 +104,13 @@ class ModelTest(TestBase):
                 self.check_attribute(o, key, sample[key])
     
             # deleting object
-            self.objectstore.delete(o)
-            self.objectstore.flush()
+            objectstore.delete(o)
+            objectstore.flush()
     
             # checking db
             self.check_empty_session()
 
-        self.objectstore.close()
+        objectstore.close()
 
     def check_attribute(self, obj, key, value):
         """Check that the attribute has the correct value.
@@ -286,4 +284,7 @@ class TableTest(TestBase):
             self.check_empty_table()
 
 
-__all__ = ['TableTest', 'ModelTest', 'model', 'create_session']
+__all__ = ['TableTest', 'ModelTest',
+           'objectstore', 'Query',
+           'model',
+           ]
