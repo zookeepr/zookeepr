@@ -112,7 +112,7 @@ class SecureController(BaseController):
             # and attach it to the magic 'c' global.
             c.signed_in_person = Query(Person).get(session['signed_in_person_id'])
             if c.signed_in_person is None:
-                raise "Holy shit"
+                raise "hell"
         else:
             # No-one's logged in, so send them to the signin
             # page.
