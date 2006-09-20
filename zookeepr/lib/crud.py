@@ -66,17 +66,8 @@ class Create(CRUDBase):
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('new', default_redirect)
 
-
-        # unmangle the errors
-        good_errors = {}
-        for key in errors.keys():
-            try:
-                for subkey in errors[key].keys():
-                    good_errors[key + "." + subkey] = errors[key][subkey]
-            except AttributeError:
-                good_errors[key] = errors[key]
-
-        return render_response('%s/new.myt' % model_name, defaults=defaults, errors=good_errors)
+        return render_response('%s/new.myt' % model_name,
+                               defaults=defaults, errors=errors)
 
 
 class List(CRUDBase):

@@ -15,6 +15,8 @@ class BaseSchema(schema.Schema):
             return result, {}
         except Invalid, e:
             errors = e.unpack_errors()
+            # e.unpack_errors() doesn't necessarily return a nice dictionary
+            # for formfill to use, so re-mangle it
             good_errors = {}
             try:
                 for key in errors.keys():
@@ -25,6 +27,7 @@ class BaseSchema(schema.Schema):
                         good_errors[key] = errors[key]
             except AttributeError:
                 good_errors['x'] = errors
+                
             return {}, good_errors
 
 

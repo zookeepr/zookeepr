@@ -66,10 +66,5 @@ class CfpController(BaseController):
 
                 return render_response('cfp/thankyou.myt')
 
-        # unmangle the errors
-        good_errors = {}
-        for key in errors.keys():
-            for subkey in errors[key].keys():
-                good_errors[key + "." + subkey] = errors[key][subkey]
-
-        return render_response("cfp/new.myt", defaults=defaults, errors=good_errors)
+        return render_response("cfp/new.myt",
+                               defaults=defaults, errors=errors)
