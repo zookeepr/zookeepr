@@ -1,7 +1,7 @@
 import cgi
 
 from formencode import Invalid, validators, schema
-from sqlalchemy import create_session
+from sqlalchemy import Query
 
 from zookeepr.model import Person, ProposalType
 
@@ -38,8 +38,7 @@ class PersonValidator(validators.FancyValidator):
 
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        s = create_session()
-        return s.query(ProposalType).get(value)
+        return Query(ProposalType).get(value)
 
 
 class FileUploadValidator(validators.FancyValidator):
