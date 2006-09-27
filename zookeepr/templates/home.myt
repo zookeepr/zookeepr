@@ -13,6 +13,8 @@ Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 <% h.wiki_fragment('Links') %>
 </div>
 
+<div id="clear"></div>
+
 <div id="proposals">
 
 <p>You've submitted the following proposals to the CFP:
