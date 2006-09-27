@@ -1,3 +1,12 @@
+# cool stuff
+<div id="column-a">
+<% h.wiki_fragment('Blurb') %>
+</div>
+
+<div id="column-b">
+<% h.wiki_fragment('Links') %>
+</div>
+
 <h2>Welcome to MyLCA!</h2>
 
 <p>

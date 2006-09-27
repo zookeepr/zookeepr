@@ -1,9 +1,11 @@
 """MoinMoin wiki integration."""
 
 from exceptions import ImportError
+
 from paste.httpexceptions import HTTPException
 
 from zookeepr.lib.base import *
+from zookeepr.lib.BeautifulSoup import BeautifulSoup
 from zookeepr.model import Person
 
 try:
@@ -73,3 +75,13 @@ def wiki_here():
             return match.groups()[0]
     except HTTPException:
         return ''
+
+def wiki_fragment(page_name='Home'):
+    from zookeepr.lib.base import request
+    def start_response(status, headers, exc_info=None):
+        pass
+
+    print request.environ['PATH_INFO']
+    request.environ['PATH_INFO'] = '/' + page_name
+    soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
+    return '<div class="wiki">\n' + soup.findAll('div', id='content')[0].prettify() + '\n</div>'
