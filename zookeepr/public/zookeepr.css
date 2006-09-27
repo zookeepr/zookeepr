@@ -339,3 +339,40 @@ FIELDSET LEGEND {
   border: 1px solid black;
   background-color: #eee;
 }
+
+/*
+ * Wiki
+ */
+
+.wiki .editbar LI {
+  display: inline;
+  float: left;
+  padding-right: 1em;
+}
+
+.wiki .editbar {
+  clear: both;
+}
+
+.wiki #message {
+ border: 1px solid black;
+ }
+ 
+.wiki #pageinfo {
+  font-style: italic;
+}
+
+.wiki #pagelocation {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #999;
+  font-size: x-large;
+  letter-spacing: 0.1em;
+  padding: 0;
+  margin: 0;
+}
+
+.wiki #pagelocation a {
+  text-decoration: none;
+  color: #999;
+}
