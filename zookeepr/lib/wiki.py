@@ -84,4 +84,5 @@ def wiki_fragment(page_name='Home'):
 
     request.environ['PATH_INFO'] = '/' + page_name
     soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
-    return '<div class="wiki">\n' + soup.findAll('div', id='content')[0].prettify() + '\n</div>'
+    content = soup.findAll('div', id='content')[0]
+    return '<div class="wiki">\n%s\n</div>' % (content,)
