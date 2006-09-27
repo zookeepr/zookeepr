@@ -114,6 +114,10 @@ hr {
   display: none;
 }
 
+.clear {
+  clear: both;
+}
+
 .left {
   float: left;
 }
@@ -340,7 +344,7 @@ FIELDSET LEGEND {
   background-color: #eee;
 }
 
-/*
+/***
  * Wiki
  */
 

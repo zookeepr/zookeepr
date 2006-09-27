@@ -13,7 +13,9 @@ Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 <% h.wiki_fragment('Links') %>
 </div>
 
-<div id="clear"></div>
+<!-- UGH -->
+<div class="clear">&nbsp;</div>
+<hr />
 
 <div id="proposals">
 
