@@ -13,10 +13,6 @@ Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 <% h.wiki_fragment('Links') %>
 </div>
 
-<p>
-This is MyLCA, a site designed to tailor LCA to you!
-</p>
-
 <div id="proposals">
 
 <p>You've submitted the following proposals to the CFP:
