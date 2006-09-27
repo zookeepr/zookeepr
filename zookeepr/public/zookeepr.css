@@ -359,8 +359,22 @@ FIELDSET LEGEND {
 }
 
 .wiki #message {
- border: 1px solid black;
- }
+  /* nice boxing border */
+  border: 1px solid black;
+  /* move away from the header just before us */
+  margin-top: 1em;
+  /* pad out the left and bottom nicely */
+  padding-left: 1em;
+  padding-bottom: 1em;
+  /* big and red */
+  color: red;
+  font-weight: bold;
+}
+
+/* reverse the effect of the bold above for the "clear message" link */
+.wiki #message a {
+  font-weight: normal;
+}
  
 .wiki #pageinfo {
   font-style: italic;
