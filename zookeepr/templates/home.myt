@@ -1,3 +1,9 @@
+<h2>Welcome to linux.conf.au 2007!</h2>
+
+<p>
+Welcome, <strong><% c.signed_in_person.firstname %></strong>!
+</p>
+
 # cool stuff
 <div id="column-a">
 <% h.wiki_fragment('Blurb') %>
@@ -6,12 +12,6 @@
 <div id="column-b">
 <% h.wiki_fragment('Links') %>
 </div>
-
-<h2>Welcome to linux.conf.au 2007!</h2>
-
-<p>
-Welcome, <strong><% c.signed_in_person.firstname %></strong>!
-</p>
 
 <p>
 This is MyLCA, a site designed to tailor LCA to you!
