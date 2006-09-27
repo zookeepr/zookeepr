@@ -84,6 +84,11 @@ class Config(DefaultConfig):
     # url_prefix must be '/wiki' for Twisted and standalone servers.
     # For CGI, it should match your Apache Alias setting.
     url_prefix = '/wiki'
+    
+    attachments = {
+        'dir': data_dir + '/attachments',
+        'url': '/att_data',
+        }
 
 
     # Security ----------------------------------------------------------
