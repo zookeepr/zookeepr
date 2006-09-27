@@ -38,12 +38,12 @@ class Config(DefaultConfig):
     # Wiki identity ----------------------------------------------------
 
     # Site name, used by default for wiki name-logo [Unicode]
-    sitename = u'MyLCA Wiki'
+    sitename = u'linux.conf.au 2007'
 
     # Wiki logo. You can use an image, text or both. [Unicode]
     # For no logo or text, use '' - the default is to show the sitename.
     # See also url_prefix setting below!
-    logo_string = u'<img src="/wiki/common/moinmoin.png" alt="MoinMoin Logo">'
+    logo_string = ''#u'<img src="/wiki/common/moinmoin.png" alt="MoinMoin Logo">'
 
     # name of entry page / front page [Unicode], choose one of those:
 
@@ -98,7 +98,7 @@ class Config(DefaultConfig):
     acl_rights_default = u"Trusted:read,write,delete,revert \
       Known:read,write,delete,revert \
       All:read"
-    acl_rights_before = u"Ycros:read,write,delete,revert,admin"
+    acl_rights_before = u"AdminGroup:read,write,delete,revert,admin"
 
     # Link spam protection for public wikis (Uncomment to enable)
     # Needs a reliable internet connection.
@@ -128,6 +128,7 @@ class Config(DefaultConfig):
     # You MUST use Unicode strings here, but you need not use localized
     # page names for system and help pages, those will be used automatically
     # according to the user selected language. [Unicode]
+    # (This was commented out in the zookeepr.py theme)
     navi_bar = [
         # If you want to show your page_front_page here:
         #u'%(page_front_page)s',
