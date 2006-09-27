@@ -1,8 +1,10 @@
 <h2>Welcome to linux.conf.au 2007!</h2>
 
+% if c.signed_in_person:
 <p>
 Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 </p>
+% #endif
 
 # cool stuff
 <div id="column-a">
@@ -17,6 +19,7 @@ Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 <div class="clear">&nbsp;</div>
 <hr />
 
+% if c.signed_in_person:
 <div id="proposals">
 
 <p>You've submitted the following proposals to the CFP:
@@ -59,3 +62,5 @@ You're a reviewer!  You can <% h.link_to("review stuff!", url=h.url(controller='
 </p>
 </div>
 % #endif
+
+% #endif c.signed_in_person

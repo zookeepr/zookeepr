@@ -22,9 +22,6 @@ class HomeController(BaseController):
             # FIXME: get is boned on the live site, use get_by
             c.signed_in_person = Query(Person).get_by(id=session['signed_in_person_id'])
 
-            resp = render_response('home.myt')
-
-        else:
-            resp = render_response('about/index.myt')
+        resp = render_response('home.myt')
 
         return resp
