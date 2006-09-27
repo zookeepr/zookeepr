@@ -77,11 +77,11 @@ def wiki_here():
         return ''
 
 def wiki_fragment(page_name='Home'):
+    """Use a Moin page as content as a fragment."""
     from zookeepr.lib.base import request
     def start_response(status, headers, exc_info=None):
         pass
 
-    print request.environ['PATH_INFO']
     request.environ['PATH_INFO'] = '/' + page_name
     soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
     return '<div class="wiki">\n' + soup.findAll('div', id='content')[0].prettify() + '\n</div>'
