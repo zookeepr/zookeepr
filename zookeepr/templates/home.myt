@@ -7,7 +7,7 @@
 <% h.wiki_fragment('Links') %>
 </div>
 
-<h2>Welcome to MyLCA!</h2>
+<h2>Welcome to linux.conf.au 2007!</h2>
 
 <p>
 Welcome, <strong><% c.signed_in_person.firstname %></strong>!
