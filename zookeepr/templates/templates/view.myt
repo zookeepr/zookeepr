@@ -1,4 +1,4 @@
-<div id="wiki">
+<div class="wiki">
 
 <% h.wiki_here() %>
 
