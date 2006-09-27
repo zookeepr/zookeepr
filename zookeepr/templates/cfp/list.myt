@@ -1,9 +1,12 @@
-<p id="cfpbutton" class="right"><% h.link_to('<img src="/cfp-go.png" alt="Call for Papers" /><br />Submit a paper for linux.conf.au 2007!', url=h.url_for('submit_cfp')) %></p>
+#<p id="cfpbutton" class="right"><% h.link_to('<img src="/cfp-go.png" alt="Call for Papers" /><br />Submit a paper for linux.conf.au 2007!', url=h.url_for('submit_cfp')) %></p>
 
 <h2>Call for Participation</h2>
 
 <p>
-<strong>Closes 15th September!</strong>
+#<strong>Closes 15th September!</strong>
+<strong>The Call for Participation is now closed!</strong>
+
+Thanks to everyone who submitted a proposal!
 </p>
 
 <h3>Overview</h3>

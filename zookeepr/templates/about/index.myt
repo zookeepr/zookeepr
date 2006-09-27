@@ -1,6 +1,6 @@
 #<div id="column-a" class="column"><div class="inner">
 
-<p id="cfpbutton" class="right"><% h.link_to('<img src="/cfp.png" alt="Call for Papers" /><br />The linux.conf.au 2007 Call for Participation is open!', url=h.url_for('cfp')) %></p>
+#<p id="cfpbutton" class="right"><% h.link_to('<img src="/cfp.png" alt="Call for Papers" /><br />The linux.conf.au 2007 Call for Participation is open!', url=h.url_for('cfp')) %></p>
 
 <blockquote>
 <p><i>

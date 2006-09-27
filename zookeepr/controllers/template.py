@@ -12,4 +12,5 @@ class TemplateController(BaseController):
         The default is just to abort the request with a 404 File not found
         status message.
         """
+        c.title = url
         return render_response('templates/view.myt')

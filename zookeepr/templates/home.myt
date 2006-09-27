@@ -1,13 +1,25 @@
-<h2>Welcome to MyLCA!</h2>
+<h2>Welcome to linux.conf.au 2007!</h2>
 
+% if c.signed_in_person:
 <p>
 Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 </p>
+% #endif
 
-<p>
-This is MyLCA, a site designed to tailor LCA to you!
-</p>
+# cool stuff
+<div id="column-a">
+<% h.wiki_fragment('Blurb') %>
+</div>
 
+<div id="column-b">
+<% h.wiki_fragment('Links') %>
+</div>
+
+<!-- UGH -->
+<div class="clear">&nbsp;</div>
+<hr />
+
+% if c.signed_in_person:
 <div id="proposals">
 
 <p>You've submitted the following proposals to the CFP:
@@ -50,3 +62,5 @@ You're a reviewer!  You can <% h.link_to("review stuff!", url=h.url(controller='
 </p>
 </div>
 % #endif
+
+% #endif c.signed_in_person
