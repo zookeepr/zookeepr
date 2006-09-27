@@ -22,16 +22,16 @@ class Theme(ThemeBase):
         html = [
             # Header
             u'<div id="header">',
-            self.username(d),
+            #self.username(d),
             u'<div id="locationline">',
-            self.interwiki(d),
+            #self.interwiki(d),
             self.title(d),
             u'</div>',
-            self.trail(d),
-            self.navibar(d),
+            #self.trail(d),
+            #self.navibar(d),
             u'<div id="pageline"><hr style="display:none;"></div>',
             self.msg(d),
-            self.editbar(d),
+            #self.editbar(d),
             u'</div>',
             
             # Start of page
@@ -82,10 +82,10 @@ class Theme(ThemeBase):
             self.emit_custom_html(self.cfg.page_footer1),
             
             # Footer
-            u'<div id="footer">',
+            u'<div class="editbar">',
             self.editbar(d),
-            self.credits(d),
-            self.showversion(d, **keywords),
+            #self.credits(d),
+            #self.showversion(d, **keywords),
             u'</div>',
             
             # Post footer custom html

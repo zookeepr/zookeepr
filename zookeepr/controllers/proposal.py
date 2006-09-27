@@ -99,15 +99,7 @@ class ProposalController(SecureController, View, Modify):
 
                 redirect_to(action='view', id=self.obj.id)
 
-        good_errors = {}
-        for key in errors.keys():
-            try:
-                for subkey in errors[key].keys():
-                    good_errors[key + "." + subkey] = errors[key][subkey]
-            except AttributeError:
-                good_errors[key] = errors[key]
-
-        return render_response('proposal/new.myt', defaults=defaults, errors=good_errors)
+        return render_response('proposal/new.myt', defaults=defaults, errors=errors)
 
     def is_submitter(self):
         return c.signed_in_person in self.obj.people
@@ -140,18 +132,7 @@ class ProposalController(SecureController, View, Modify):
                 
         c.streams = Query(Stream).select()
         
-        good_errors = {}
-        try:
-            for key in errors.keys():
-                try:
-                    for subkey in errors[key].keys():
-                        good_errors[key + "." + subkey] = errors[key][subkey]
-                except AttributeError:
-                    good_errors[key] = errors[key]
-        except AttributeError:
-            good_errors['x'] = errors
-
-        return render_response('proposal/review.myt', defaults=defaults, errors=good_errors)
+        return render_response('proposal/review.myt', defaults=defaults, errors=errors)
     
 
     def attach(self, id):
@@ -174,15 +155,7 @@ class ProposalController(SecureController, View, Modify):
 
                 return redirect_to(action='view', id=id)
 
-        good_errors = {}
-        for key in errors.keys():
-            try:
-                for subkey in errors[key].keys():
-                    good_errors[key + "." + subkey] = errors[key][subkey]
-            except AttributeError:
-                good_errors[key] = errors[key]
-
-        return render_response('proposal/attach.myt', defaults=defaults, errors=good_errors)
+        return render_response('proposal/attach.myt', defaults=defaults, errors=errors)
 
     def view(self):
         # save the current proposal id so we can refer to it later when we need to

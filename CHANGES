@@ -1,6 +1,21 @@
 Changes for Zookeepr
 ====================
 
+0.1.9
+-----
+
+ * Refactored good_errors mangling out of controllers and into BaseSchema.
+ * Worked around Query.get() problem on the live site when retrieving
+   the signed in user.
+ * Hacked around some ugliness in the wiki controller, theme changes, and
+   added code to allow embedding of wiki page content in other templates.
+
+0.1.8.2
+-------
+
+ * Converted data model to use SQLAlchemy's threadlocal plugin, to fix
+   random objectstore session problems.
+
 0.1.8.1
 -------
 

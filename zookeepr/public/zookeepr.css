@@ -52,6 +52,11 @@ h1, h2, h3, h4 {
   padding: 0;
 }
 
+#countdown {
+  color: red;
+  font-weight: bold;
+  font-size: larger;
+}
 /**
  * columns
  */
@@ -107,6 +112,10 @@ hr {
 
 .hidden {
   display: none;
+}
+
+.clear {
+  clear: both;
 }
 
 .left {
@@ -333,4 +342,55 @@ FIELDSET LEGEND {
   font-weight: bold;
   border: 1px solid black;
   background-color: #eee;
+}
+
+/***
+ * Wiki
+ */
+
+.wiki .editbar LI {
+  display: inline;
+  float: left;
+  padding-right: 1em;
+}
+
+.wiki .editbar {
+  clear: both;
+}
+
+.wiki #message {
+  /* nice boxing border */
+  border: 1px solid black;
+  /* move away from the header just before us */
+  margin-top: 1em;
+  /* pad out the left and bottom nicely */
+  padding-left: 1em;
+  padding-bottom: 1em;
+  /* big and red */
+  color: red;
+  font-weight: bold;
+}
+
+/* reverse the effect of the bold above for the "clear message" link */
+.wiki #message a {
+  font-weight: normal;
+}
+ 
+.wiki #pageinfo {
+  font-style: italic;
+}
+
+.wiki #pagelocation {
+  font-weight: bold;
+  text-transform: uppercase;
+  color: #999;
+  font-size: x-large;
+  letter-spacing: 0.1em;
+  padding: 0;
+  margin: 0;
+}
+
+.wiki #pagelocation a {
+  text-decoration: none;
+  color: #999;
 }

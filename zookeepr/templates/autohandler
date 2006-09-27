@@ -15,7 +15,23 @@
 <& mainmenu.myt &>
 <& usermenu.myt &>
 </div>
+
+# commented by jaq 27/9/06
+#<div id="when">
+#<h3>January 15th-21st, 2007
+#&middot;
+#University of New South Wales
+#</h3>
+#<p>
+#<span id="countdown">
+#<% (datetime.datetime(2007, 1, 15) - datetime.datetime.now()).days %>
+#days to go!
+#</span>
+#</p>
+#</div>
+
 </div>
+
 <hr />
 
 <div id="body" class="">
@@ -33,3 +49,7 @@
 <%method title>
 linux.conf.au 2007
 </%method>
+
+<%init>
+import datetime
+</%init>

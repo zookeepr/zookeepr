@@ -222,6 +222,8 @@ class AccountController(BaseController):
 
                 # set the password
                 accounts[0].password = result['password']
+                # also make sure the account is activated
+                accounts[0].activated = True
                 
                 # delete the conf rec
                 objectstore.delete(c.conf_rec)
@@ -262,13 +264,5 @@ class AccountController(BaseController):
                 s.quit()
                 return render_response('account/thankyou.myt')
 
-        # unmangle errors
-        good_errors = {}
-        for key in errors.keys():
-            try:
-                for subkey in errors[key].keys():
-                    good_errors[key + "." + subkey] = errors[key][subkey]
-            except AttributeError:
-                good_errors[key] = errors[key]
-                
-        return render_response('account/new.myt', defaults=defaults, errors=good_errors)
+        return render_response('account/new.myt',
+                               defaults=defaults, errors=errors)
