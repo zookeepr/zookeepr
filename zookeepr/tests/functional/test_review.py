@@ -177,9 +177,14 @@ class TestReviewController(SignedInControllerTest):
         f = resp.form
         f['review.comment'] = 'hi!'
         f['review.coolness'] = 1
-        f.submit()
+        resp = f.submit()
+
+        print resp
+        
 
         r = Query(model.Review).get(rid)
+        print r
+        print r.comment
         self.assertEqual('hi!', r.comment)
         self.assertEqual(1, r.coolness)
 
