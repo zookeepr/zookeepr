@@ -1,6 +1,25 @@
 from zookeepr.tests.functional import *
 
 class TestReviewController(SignedInControllerTest):
+#     model = model.Review
+#     name = 'review'
+#     url = '/review'
+#     samples = [dict(comment='a',
+#                     familiarity=0,
+#                     technical=0,
+#                     experience=0,
+#                     coolness=0),
+#                dict(comment='b',
+#                     familiarity=1,
+#                     technical=1,
+#                     experience=1,
+#                     coolness=1)
+#                ]
+
+#     def additional(self, obj):
+#         obj.stream = Query(model.Stream).get(1)
+#         obj.proposal = Query(model.Proposal).get(1)
+#         return obj
 
     def setUp(self):
         super(TestReviewController, self).setUp()
@@ -80,8 +99,6 @@ class TestReviewController(SignedInControllerTest):
         resp = self.app.get('/review')
         resp.mustcontain(self.person.firstname)
         self.failIf(p1.firstname in resp, "shouldn't be able to see other people's reviews")
-
-
         # clean up
         objectstore.delete(Query(model.Proposal).get(pid))
         objectstore.delete(Query(model.Person).get(p1id))
@@ -125,4 +142,49 @@ class TestReviewController(SignedInControllerTest):
         # clean up
         objectstore.delete(Query(model.Person).get(p2id))
         objectstore.delete(Query(model.Proposal).get(pid))
+        objectstore.flush()
+
+    def test_edit_review(self):
+        """test that a reviewer can edit their review"""
+        s = model.Person(email_address='submitter@example.org',
+                         fullname='submitter')
+        objectstore.save(s)
+        p = model.Proposal(title='prop',
+                           abstract='abs',
+                           experience='exp',
+                           type=Query(model.ProposalType).get(1))
+        objectstore.save(p)
+        s.proposals.append(p)
+        r = model.Review(reviewer=self.person,
+                         familiarity=0,
+                         technical=0,
+                         experience=0,
+                         coolness=0,
+                         stream=Query(model.Stream).get(1))
+        objectstore.save(r)
+        p.reviews.append(r)
+        objectstore.flush()
+        sid = s.id
+        pid = p.id
+        rid = r.id
+
+        # clear the session
+        objectstore.clear()
+
+        resp = self.app.get(url_for(controller='review',
+                                    action='edit',
+                                    id=rid))
+        f = resp.form
+        f['comment'] = 'hi!'
+        f['coolness'] = 1
+        f.submit()
+
+        r = Query(model.Review).get(rid)
+        self.assertEqual('hi!', r.comment)
+        self.assertEqual(1, r.coolness)
+
+        # clean up
+        objectstore.delete(r)
+        objectstore.delete(Query(model.Proposal).get(pid))
+        objectstore.delete(Query(model.Person).get(sid))
         objectstore.flush()
