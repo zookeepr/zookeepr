@@ -3,7 +3,7 @@ from formencode import validators, compound, schema, variabledecode, Invalid
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
-from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator
+from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator, StreamValidator, ReviewSchema
 from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment
 
 class ProposalSchema(schema.Schema):
@@ -22,18 +22,6 @@ class NewProposalSchema(BaseSchema):
 class EditProposalSchema(BaseSchema):
     proposal = ProposalSchema()
     pre_validators = [variabledecode.NestedVariables]
-
-class StreamValidator(validators.FancyValidator):
-    def _to_python(self, value, state):
-        return Query(Stream).get(value)
-
-class ReviewSchema(schema.Schema):
-    familiarity = validators.Int()
-    technical = validators.Int()
-    experience = validators.Int()
-    coolness = validators.Int()
-    stream = StreamValidator()
-    comment = validators.String()
 
 
 class NotYetReviewedValidator(validators.FancyValidator):

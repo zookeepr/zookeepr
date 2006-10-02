@@ -175,8 +175,8 @@ class TestReviewController(SignedInControllerTest):
                                     action='edit',
                                     id=rid))
         f = resp.form
-        f['comment'] = 'hi!'
-        f['coolness'] = 1
+        f['review.comment'] = 'hi!'
+        f['review.coolness'] = 1
         f.submit()
 
         r = Query(model.Review).get(rid)
