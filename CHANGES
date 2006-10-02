@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.1.10 (bzr)
+------
+
+ * Added ability for reviews to be edited. (bug #6)
+
 0.1.9
 -----
 
