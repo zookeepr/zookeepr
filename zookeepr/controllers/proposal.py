@@ -115,8 +115,7 @@ class ProposalController(SecureController, View, Modify):
 
                 objectstore.flush()
                 
-                # FIXME: dumb
-                redirect_to('/')
+                redirect_to(controller='proposal', action='index', id=None)
                 
         c.streams = Query(Stream).select()
         
