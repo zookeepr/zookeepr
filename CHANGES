@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.1.11
+------
+
+ * Merge proposal ID and title in proposal list page.
+ * Show submission times in proposal list, review, and view proposal pages.
+
 0.1.10
 ------
 
