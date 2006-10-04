@@ -27,7 +27,7 @@
 </td>
 
 <td>
-<% r.proposal.title %>
+<% h.link_to("%s - %s" % (r.proposal.id, r.proposal.title), url=h.url(controller='review', action='edit', id=r.id)) %>
 </td>
 
 <td>
