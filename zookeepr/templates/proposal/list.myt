@@ -1,22 +1,23 @@
+<h1>Proposal List</h1>
+
 <p>
 <% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %>
 </p>
 
-<h2>List of Proposals</h2>
-
 % for pt in c.proposal_types:
 %	collection = getattr(c, '%s_collection' % pt.name)
-<h3><% pt.name %>s (<% len(collection) %>)</h3>
+<h2><% pt.name %>s (<% len(collection) %>)</h2>
 
 <table>
 
 <tr>
-<th>#</th>
-<th>Title</th>
+#<th>#</th>
+<th>ID - Title</th>
 #<th>Abstract</th>
 #<th>Experience</th>
 #<th>Project URL</th>
 <th>Submitter(s)</th>
+<th>Submission Time</th>
 <th>Reviewed?</th>
 </tr>
 
@@ -24,8 +25,8 @@
 # don't show the row if we've already reviewed it
 %		if not [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
 <tr class="<% h.cycle('even', 'odd') %>">
-	<td><% s.id %></td>
-	<td><% h.link_to(h.util.html_escape(s.title), url=h.url(action='view', id=s.id)) %></td>
+#	<td><% s.id %></td>
+	<td><% h.link_to("%s - %s" % (s.id, h.util.html_escape(s.title)), url=h.url(action='view', id=s.id)) %></td>
 #	<td><% h.truncate(s.abstract) %></td>
 #	<td><% h.truncate(s.experience) %></td>
 #	<td><% h.link_to(h.truncate(s.url), url=s.url) %></td>
@@ -35,6 +36,11 @@
 <% h.link_to(p.fullname or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
 %	# endfor
 </td>
+
+<td>
+<% p.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
+</td>
+
 	<td>
 %		if [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
 	TICK!
