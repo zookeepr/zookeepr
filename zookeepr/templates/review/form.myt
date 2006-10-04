@@ -1,22 +1,14 @@
-<h1>Proposal Review</h1>
-
-<h2>#<% c.proposal.id %> - "<% c.proposal.title | h %>"</h2>
-
-<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-
-<% h.form(h.url_for()) %>
-
 <fieldset>
 <legend>Proposal's technical content</legend>
 
 <p>
-This is a proposal for a <% c.proposal.type.name %>.
+This is a proposal for a <% c.review.proposal.type.name %>.
 </p>
 
 <p>
 Project URL:
-% if c.proposal.url:
-<% h.link_to(c.proposal.url, url=c.proposal.url) %>.
+% if c.review.proposal.url:
+<% h.link_to(c.review.proposal.url, url=c.review.proposal.url) %>.
 % else:
 <em>none given</em>.
 % #endif
@@ -24,7 +16,7 @@ Project URL:
 
 <p>Abstract:</p>
 <blockquote>
-<% h.auto_link(h.simple_format(c.proposal.abstract)) %>
+<% h.auto_link(h.simple_format(c.review.proposal.abstract)) %>
 </blockquote>
 
 <div id="q1">
@@ -55,7 +47,7 @@ Project URL:
 <legend>Presenter's experience/biography</legend>
 
 <blockquote>
-<% h.auto_link(h.simple_format(c.proposal.experience)) %>
+<% h.auto_link(h.simple_format(c.review.proposal.experience)) %>
 </blockquote>
 
 <div id="stalk">
@@ -63,7 +55,7 @@ Project URL:
 Proposal submitted by:
 
 <ul>
-% for p in c.proposal.people:
+% for p in c.review.proposal.people:
 <li>
 <% p.fullname | h %> &lt;<% p.email_address %>&gt;
 <% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (p.fullname, p.email_address)) %>
@@ -125,18 +117,3 @@ Summary
 <p>
 <span class="mandatory">*</span> - Mandatory field
 </p>
-
-<% h.submit('Submit review!') %>
-
-<% h.end_form() %>
-
-</&>
-
-<%method title>
-Reviewing proposal #<% c.proposal.id %>, "<% h.truncate(c.proposal.title) %>" - <& PARENT:title &>
-</%method>
-
-<%args>
-defaults
-errors
-</%args>
