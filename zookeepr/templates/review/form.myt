@@ -2,7 +2,10 @@
 <legend>Proposal's technical content</legend>
 
 <p>
-This is a proposal for a <% c.review.proposal.type.name %>.
+This is a proposal for a <% c.review.proposal.type.name %>
+submitted at
+<% c.review.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
+(last updated at <% c.review.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
 </p>
 
 <p>
