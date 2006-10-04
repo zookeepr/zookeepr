@@ -1,5 +1,3 @@
-<h2><% c.review.proposal.title | h %></h2>
-
 <fieldset>
 <legend>Proposal's technical content</legend>
 

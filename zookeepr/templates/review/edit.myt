@@ -1,4 +1,6 @@
-<h2>Edit review for <% c.review.proposal.title %></h2>
+<h1>Review update</h1>
+
+<h2>#<% c.review.proposal.id %> - "<% c.review.proposal.title %>"</h2>
 
 <div id="review">
 
