@@ -38,7 +38,7 @@
 </td>
 
 <td>
-<% p.creation_timestamp %>
+<% p.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
 </td>
 
 	<td>
