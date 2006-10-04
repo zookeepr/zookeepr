@@ -1,10 +1,10 @@
 <h1>Proposal Review</h1>
 
+<h2>#<% c.proposal.id %> - "<% c.proposal.title | h %>"</h2>
+
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <% h.form(h.url_for()) %>
-
-<h2><% c.proposal.title | h %></h2>
 
 <fieldset>
 <legend>Proposal's technical content</legend>
@@ -133,7 +133,7 @@ Summary
 </&>
 
 <%method title>
-Review of <% h.truncate(c.proposal.title) %> - <& PARENT:title &>
+Reviewing proposal #<% c.proposal.id %>, "<% h.truncate(c.proposal.title) %>" - <& PARENT:title &>
 </%method>
 
 <%args>
