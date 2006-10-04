@@ -8,6 +8,7 @@ Changes for Zookeepr
  * Put proposal ID in the review list. (bug #32)
  * Put proposal ID in the review page. (bug #31)
  * Redirect to unreviewed proposal list after a successful review. (bug #33)
+ * Hack to not show reviewers the list of Miniconfs. (bug #34)
 
 0.1.9
 -----

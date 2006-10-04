@@ -153,7 +153,11 @@ class ProposalController(SecureController, View, Modify):
         return super(ProposalController, self).view()
 
     def index(self):
-        c.proposal_types = Query(ProposalType).select()
+        # hack for bug#34, don't show miniconfs to reviewers
+        if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
+            c.proposal_types = Query(ProposalType).select()
+        else:
+            c.proposal_types = Query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
 
         for pt in c.proposal_types:
             stuff = Query(Proposal).select_by(proposal_type_id=pt.id)
