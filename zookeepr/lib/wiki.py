@@ -84,4 +84,26 @@ def wiki_fragment(page_name='Home'):
 
     request.environ['PATH_INFO'] = '/' + page_name
     soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
-    return '<div class="wiki">\n' + soup.findAll('div', id='content')[0].prettify() + '\n</div>'
+    try:
+        return '<div class="wiki">\n' + soup.findAll('div', id='content')[0].prettify() + '\n</div>'
+    except IndexError:
+        # Raise an error so we can print it out when this happens during a test
+        # and see what MoinMoin is complaining about
+        print soup.prettify()
+        raise IndexError
+
+def wiki_html_fragment(page_name='Home'):
+    """Use a Moin page as a raw HTML fragment."""
+    from zookeepr.lib.base import request
+    def start_response(status, headers, exc_info=None):
+        pass
+
+    from MoinMoin.request import RequestCLI
+    from MoinMoin.Page import Page
+    from MoinMoin.PageEditor import PageEditor
+
+    request = RequestCLI('localhost/mywiki', page_name)
+    editor = PageEditor(request, page_name)
+    text = editor.get_raw_body()
+
+    return text
