@@ -10,7 +10,10 @@
 <legend>Proposal's technical content</legend>
 
 <p>
-This is a proposal for a <% c.proposal.type.name %>.
+This is a proposal for a <% c.proposal.type.name %>
+submitted at
+<% c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
+(last updated at <% c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
 </p>
 
 <p>

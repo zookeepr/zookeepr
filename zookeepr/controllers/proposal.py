@@ -160,7 +160,7 @@ class ProposalController(SecureController, View, Modify):
             c.proposal_types = Query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
 
         for pt in c.proposal_types:
-            stuff = Query(Proposal).select_by(proposal_type_id=pt.id)
+            stuff = Query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
             setattr(c, '%s_collection' % pt.name, stuff)
 
         return super(ProposalController, self).index()
