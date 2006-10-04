@@ -5,6 +5,7 @@ Changes for Zookeepr
 ------
 
  * Added ability for reviews to be edited. (bug #6)
+ * Put proposal ID in the review list. (bug #32)
 
 0.1.9
 -----
