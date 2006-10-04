@@ -85,7 +85,7 @@ def wiki_fragment(page_name='Home'):
     request.environ['PATH_INFO'] = '/' + page_name
     soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
     try:
-        return '<div class="wiki">\n' + soup.findAll('div', id='content')[0].prettify() + '\n</div>'
+        return '<div class="wiki">\n' + str(soup.findAll('div', id='content')[0]) + '\n</div>'
     except IndexError:
         # Raise an error so we can print it out when this happens during a test
         # and see what MoinMoin is complaining about
