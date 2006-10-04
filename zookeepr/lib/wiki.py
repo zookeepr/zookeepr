@@ -106,4 +106,8 @@ def wiki_html_fragment(page_name='Home'):
     editor = PageEditor(request, page_name)
     text = editor.get_raw_body()
 
+    # Remove ACLs TODO - use a better regex
+    regex = re.compile( '(^|\n) *#[^\n]*' )
+    text = regex.sub('\n', text)
+
     return text
