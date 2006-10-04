@@ -21,7 +21,6 @@ errors
 <%init>
 # Working around a bug in formencode, we need to set the defaults to the
 # c.review values
-print "defaults", defaults
 if not defaults:
     defaults = {'review.familiarity': c.review.familiarity,
         'review.technical': c.review.technical,
@@ -29,7 +28,6 @@ if not defaults:
         'review.coolness': c.review.coolness,
         'review.comment': c.review.comment,
         }
-print "defaults", defaults
 </%init>
 
 <%method title>
