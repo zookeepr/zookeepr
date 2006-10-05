@@ -110,9 +110,10 @@ at
 
 </div>
 
-<div id="wiki">
-<% h.wiki_here() %>
-</div>
+# FIXME: wiki disabled
+#<div id="wiki">
+#<% h.wiki_here() %>
+#</div>
 
 <%method title>
 <% h.truncate(c.proposal.title) %> - <% c.proposal.type.name %> proposal - <& PARENT:title &>
