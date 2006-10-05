@@ -213,11 +213,11 @@ TABLE TH {
 }
 
 TABLE TR.even {
-  background-color: #fecf7e;
+  background-color: #ddd;
 }
 
 TABLE TR.odd {
-  background-color: #fcaf3e;
+  background-color: #eee;
 }
 
 /**

@@ -1,6 +1,14 @@
 Changes for Zookeepr
 ====================
 
+0.1.11.1
+--------
+
+ * The Not Enough 1s Release
+ * Changed CSS for table rows per suggestion from Martin Pool.
+ * Reverted redirection to unreviewed proposal list at request of Silvia
+   Pfeiffer, as it was very slow.
+
 0.1.11
 ------
 
