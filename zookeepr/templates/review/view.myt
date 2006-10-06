@@ -6,9 +6,17 @@
 Review by <% c.review.reviewer.fullname %>
 </p>
 
+<p>
+Proposal Abstract:
+<blockquote>
+<% h.truncate(c.review.proposal.abstract, 200) %>
+</blockquote>
+</p>
+
+<p>
 <table>
 <tr>
-<th>Reviewer Familiarity with Subject</th>
+<th>Reviewer's Familiarity with Subject</th>
 <td>
 % if c.review.familiarity == 0:
 0 - Abstained
@@ -39,7 +47,7 @@ Review by <% c.review.reviewer.fullname %>
 </tr>
 
 </table>
-
+</p>
 
 <p>
 Reviewer Comment:
