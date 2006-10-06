@@ -99,7 +99,8 @@ at
 </li>
 % #endif
 
-% if 'reviewer' in [x.name for x in c.signed_in_person.roles]:
+# Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
+% if 'reviewer' in [x.name for x in c.signed_in_person.roles] and c.signed_in_person not in [x.reviewer for x in c.proposal.reviews]:
 <li>
 <% h.link_to('Review this proposal', url=h.url(action='review')) %>
 </li>
@@ -109,6 +110,62 @@ at
 </p>
 
 </div>
+
+
+% if ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
+<p>
+<table>
+<tr>
+<th># - Reviewer</th>
+<th>Familiar?</th>
+<th>Tech</th>
+<th>Exp</th>
+<th>Exc!</th>
+<th>Rec. Stream</th>
+<th>Comment</th>
+</tr>
+
+%	for r in c.proposal.reviews:
+<tr class="<% h.cycle('even', 'odd') %>">
+<td>
+<% h.link_to("%s - %s" % (r.id, r.reviewer.fullname), url=h.url(controller='review', id=r.id, action='view')) %>
+</td>
+
+<td>
+% 		if r.familiarity == 0:
+0 - No
+% 		elif r.familiarity == 1:
+1 - Some
+% 		elif r.familiarity == 2:
+2 - Expert
+% 		#endif
+</td>
+
+<td>
+<% r.technical | h %>
+</td>
+
+<td>
+<% r.experience | h %>
+</td>
+
+<td>
+<% r.coolness | h %>
+</td>
+
+<td>
+<% r.stream.name | h %>
+</td>
+
+<td>
+<% r.comment | h %>
+</td>
+
+</tr>
+%	#endfor
+</table>
+</p>
+% #endif
 
 # FIXME: wiki disabled
 #<div id="wiki">
