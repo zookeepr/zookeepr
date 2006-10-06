@@ -94,6 +94,7 @@ def wiki_fragment(page_name='Home'):
 
 def wiki_html_fragment(page_name='Home'):
     """Use a Moin page as a raw HTML fragment."""
+    # TODO jaq to refactor this as johnf doesn't know what he's doing :)
     from zookeepr.lib.base import request
     def start_response(status, headers, exc_info=None):
         pass
