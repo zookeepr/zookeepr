@@ -5,7 +5,7 @@ All names available in this module will be available under the Pylons h object.
 """
 from routes import request_config
 from webhelpers import *
-from wiki import wiki_here, wiki_fragment
+from wiki import wiki_here, wiki_fragment, wiki_html_fragment
 
 def counter(*args, **kwargs):
     """Return the next cardinal in a sequence.
