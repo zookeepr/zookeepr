@@ -7,7 +7,7 @@ Review by <% c.review.reviewer.fullname %>
 </p>
 
 <p>
-Proposal Abstract:
+Proposal Abstract:  (<% h.link_to('go to this proposal', url=h.url(controller='proposal', action='view', id=c.review.proposal.id)) %>)
 <blockquote>
 <% h.truncate(c.review.proposal.abstract, 200) %>
 </blockquote>

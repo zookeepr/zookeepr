@@ -4,7 +4,7 @@ Changes for Zookeepr
 0.1.13
 ------
 
- * 
+ * Added view action to review controller and a suitable template.
 
 0.1.12
 ------
