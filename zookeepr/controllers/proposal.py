@@ -114,8 +114,9 @@ class ProposalController(SecureController, View, Modify):
                 c.proposal.reviews.append(review)
 
                 objectstore.flush()
-                
-                redirect_to(controller='proposal', action='index', id=None)
+
+                # Dumb but redirecting to the proposal list is very slow
+                redirect_to('/')
                 
         c.streams = Query(Stream).select()
         
