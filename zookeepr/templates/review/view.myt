@@ -8,23 +8,34 @@ Review by <% c.review.reviewer.fullname %>
 
 <table>
 <tr>
-<th>Familiarity</th>
-<td><% c.review.familiarity | h %></td>
+<th>Reviewer Familiarity with Subject</th>
+<td>
+% if c.review.familiarity == 0:
+0 - Abstained
+% else:
+<% c.review.familiarity | h %>
+% #endif
+</td>
 </tr>
 
 <tr>
-<th>Technical</th>
+<th>Proposer's Technical Rating</th>
 <td><% c.review.technical | h %></td>
 </tr>
 
 <tr>
-<th>Experience</th>
+<th>Proposer's Speaking Experience Rating</th>
 <td><% c.review.experience | h %></td>
 </tr>
 
 <tr>
-<th>Coolness</th>
+<th>Reviewer's Excitement Level</th>
 <td><% c.review.coolness | h %></td>
+</tr>
+
+<tr>
+<th>Recommended Stream</th>
+<td><% c.review.stream.name %></td>
 </tr>
 
 </table>
