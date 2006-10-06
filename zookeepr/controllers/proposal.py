@@ -115,7 +115,7 @@ class ProposalController(SecureController, View, Modify):
 
                 objectstore.flush()
 
-                # Dumb but redirecting to the proposal list is very slow
+                # Dumb but redirecting to the proposal list is very slow.  bug #33
                 redirect_to('/')
                 
         c.streams = Query(Stream).select()

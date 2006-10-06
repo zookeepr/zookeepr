@@ -8,11 +8,15 @@ Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 
 # cool stuff
 <div id="column-a">
+<div class="inner">
 <% h.wiki_fragment('Blurb') %>
+</div>
 </div>
 
 <div id="column-b">
+<div class="inner">
 <% h.wiki_fragment('Links') %>
+</div>
 </div>
 
 <!-- UGH -->
