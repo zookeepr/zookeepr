@@ -1,6 +1,14 @@
 Changes for Zookeepr
 ====================
 
+0.1.12
+------
+
+ * The We don't need no MoinMoin release
+ * Import Wiki fragments as raw HTML
+ * Update CSS for Rego table and fix front page spacing
+ * Print a sane error message when Soup causes an exception
+
 0.1.11.1
 --------
 
