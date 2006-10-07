@@ -6,163 +6,163 @@ from paste.fixture import Dummy_smtplib
 from zookeepr.model import Person, Proposal, ProposalType, Attachment
 from zookeepr.tests.functional import *
 
-class TestCFP(ControllerTest):
-    def test_index(self):
-        res = self.app.get('/cfp')
+#class TestCFP(ControllerTest):
+#    def test_index(self):
+#        res = self.app.get('/cfp')
         
-    def test_create(self):
-        response = self.app.get('/cfp/submit')
-        form = response.form
+#     def test_create(self):
+#         response = self.app.get('/cfp/submit')
+#         form = response.form
 
-        print form.text
-        print form.fields
+#         print form.text
+#         print form.fields
 
-        reg_data = {'email_address': 'testguy@example.org',
-                    'password': 'password',
-                    'password_confirm': 'password',
-                   }
-        sub_data = {'title': 'title',
-                    'abstract': 'abstract',
-                    'type': 1,
-                    'experience': 'some',
-                    'url': 'http://example.org',
-                    'assistance': True,
-                    }
-        for k in reg_data.keys():
-            form['registration.' + k] = reg_data[k]
-        for k in sub_data.keys():
-            form['proposal.' + k] = sub_data[k]
-        form['attachment'] = "foo"
+#         reg_data = {'email_address': 'testguy@example.org',
+#                     'password': 'password',
+#                     'password_confirm': 'password',
+#                    }
+#         sub_data = {'title': 'title',
+#                     'abstract': 'abstract',
+#                     'type': 1,
+#                     'experience': 'some',
+#                     'url': 'http://example.org',
+#                     'assistance': True,
+#                     }
+#         for k in reg_data.keys():
+#             form['registration.' + k] = reg_data[k]
+#         for k in sub_data.keys():
+#             form['proposal.' + k] = sub_data[k]
+#         form['attachment'] = "foo"
 
-        form.submit()
+#         form.submit()
 
-        regs = Query(Person).select()
-        self.assertEqual(1, len(regs))
+#         regs = Query(Person).select()
+#         self.assertEqual(1, len(regs))
 
-        for key in reg_data.keys():
-            self.check_attribute(regs[0], key, reg_data[key])
+#         for key in reg_data.keys():
+#             self.check_attribute(regs[0], key, reg_data[key])
 
-        subs = Query(Proposal).select()
-        self.assertEqual(1, len(subs))
+#         subs = Query(Proposal).select()
+#         self.assertEqual(1, len(subs))
 
-        for key in sub_data.keys():
-            self.check_attribute(subs[0], key, sub_data[key])
+#         for key in sub_data.keys():
+#             self.check_attribute(subs[0], key, sub_data[key])
 
-        atts = Query(Attachment).select()
-        self.assertEqual(1, len(atts))
-        self.assertEqual('foo', str(atts[0].content))
+#         atts = Query(Attachment).select()
+#         self.assertEqual(1, len(atts))
+#         self.assertEqual('foo', str(atts[0].content))
                          
 
-        objectstore.delete(regs[0])
-        objectstore.delete(subs[0])
-        objectstore.flush()
+#         objectstore.delete(regs[0])
+#         objectstore.delete(subs[0])
+#         objectstore.flush()
 
-    # FIXME: not testing type
-    no_test = ['password_confirm', 'type']
-    mangles = dict(password = lambda p: md5.new(p).hexdigest(),
-                   attachment = lambda a: buffer(a),
-                   #type = lambda t: TestCFP.objectstore.query(ProposalType).get(1),
-                   )
+#     # FIXME: not testing type
+#     no_test = ['password_confirm', 'type']
+#     mangles = dict(password = lambda p: md5.new(p).hexdigest(),
+#                    attachment = lambda a: buffer(a),
+#                    #type = lambda t: TestCFP.objectstore.query(ProposalType).get(1),
+#                    )
 
-    def setUp(self):
-        super(TestCFP, self).setUp()
-        st1 = ProposalType('Paper')
-        st2 = ProposalType('Scissors')
-        objectstore.save(st1)
-        objectstore.save(st2)
-        objectstore.flush()
-        self.stid = (st1.id, st2.id)
+#     def setUp(self):
+#         super(TestCFP, self).setUp()
+#         st1 = ProposalType('Paper')
+#         st2 = ProposalType('Scissors')
+#         objectstore.save(st1)
+#         objectstore.save(st2)
+#         objectstore.flush()
+#         self.stid = (st1.id, st2.id)
 
-    def tearDown(self):
-        st1 = Query(ProposalType).get(self.stid[0])
-        st2 = Query(ProposalType).get(self.stid[1])
-        objectstore.delete(st2)
-        objectstore.delete(st1)
-        objectstore.flush()
+#     def tearDown(self):
+#         st1 = Query(ProposalType).get(self.stid[0])
+#         st2 = Query(ProposalType).get(self.stid[1])
+#         objectstore.delete(st2)
+#         objectstore.delete(st1)
+#         objectstore.flush()
 
-        super(TestCFP, self).tearDown()
+#         super(TestCFP, self).tearDown()
 
 
-    def test_cfp_registration(self):
-        # set up the smtp catcher
-        Dummy_smtplib.install()
+#     def test_cfp_registration(self):
+#         # set up the smtp catcher
+#         Dummy_smtplib.install()
         
-        # submit to the cfp
-        res = self.app.get('/cfp/submit')
-        form = res.form
-        d = {'registration.email_address': 'testguy@example.org',
-             'registration.password': 'test',
-             'registration.password_confirm': 'test',
-             'registration.fullname': 'Testguy McTest',
-             'proposal.title': 'title',
-             'proposal.abstract': 'abstract',
-             'proposal.type': 1,
-             'proposal.assistance': False,
-             'attachment': 'foo'
-             }
-        for k in d.keys():
-            form[k] = d[k]
-        res1 = form.submit()
+#         # submit to the cfp
+#         res = self.app.get('/cfp/submit')
+#         form = res.form
+#         d = {'registration.email_address': 'testguy@example.org',
+#              'registration.password': 'test',
+#              'registration.password_confirm': 'test',
+#              'registration.fullname': 'Testguy McTest',
+#              'proposal.title': 'title',
+#              'proposal.abstract': 'abstract',
+#              'proposal.type': 1,
+#              'proposal.assistance': False,
+#              'attachment': 'foo'
+#              }
+#         for k in d.keys():
+#             form[k] = d[k]
+#         res1 = form.submit()
 
-        # thankyou page says what email address got sent to
-        res1.mustcontain('testguy@example.org')
+#         # thankyou page says what email address got sent to
+#         res1.mustcontain('testguy@example.org')
 
-        # grab it from the db
-        regs = Query(Person).select()
-        self.assertEqual(1, len(regs))
-        # make sure that it's inactive
-        self.assertEqual(False, regs[0].activated)
+#         # grab it from the db
+#         regs = Query(Person).select()
+#         self.assertEqual(1, len(regs))
+#         # make sure that it's inactive
+#         self.assertEqual(False, regs[0].activated)
 
-        # clear this session, we want to reselect this data later
-        objectstore.clear()
+#         # clear this session, we want to reselect this data later
+#         objectstore.clear()
         
         
-        # get out the url hash because i don't know how to trap smtplib
-        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from proposal")
+#         # get out the url hash because i don't know how to trap smtplib
+#         self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from proposal")
         
-        message = Dummy_smtplib.existing
+#         message = Dummy_smtplib.existing
 
-        print "message: '''%s'''" % message.message
+#         print "message: '''%s'''" % message.message
 
-        # check that the message goes to the right place
-        self.assertEqual("testguy@example.org", message.to_addresses)
+#         # check that the message goes to the right place
+#         self.assertEqual("testguy@example.org", message.to_addresses)
 
-        # check that the message has the to address in it
-        to_match = re.match(r'^.*To:.*testguy@example.org.*', message.message, re.DOTALL)
-        self.failIfEqual(None, to_match, "to address not in headers")
+#         # check that the message has the to address in it
+#         to_match = re.match(r'^.*To:.*testguy@example.org.*', message.message, re.DOTALL)
+#         self.failIfEqual(None, to_match, "to address not in headers")
 
-        # check that the message has the submitter's name
-        name_match = re.match(r'^.*Testguy McTest', message.message, re.DOTALL)
-        self.failIfEqual(None, name_match, "submitter's name not in headers")
+#         # check that the message has the submitter's name
+#         name_match = re.match(r'^.*Testguy McTest', message.message, re.DOTALL)
+#         self.failIfEqual(None, name_match, "submitter's name not in headers")
 
-        # check that the message was renderered without HTML, i.e.
-        # as a fragment and thus no autohandler crap
-        html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
-        self.failUnlessEqual(None, html_match, "HTML in message!")
+#         # check that the message was renderered without HTML, i.e.
+#         # as a fragment and thus no autohandler crap
+#         html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
+#         self.failUnlessEqual(None, html_match, "HTML in message!")
         
-        # check that the message has a url hash in it
-        match = re.match(r'^.*/account/confirm/(\S+)', message.message, re.DOTALL)
-        print "match:", match
-        self.failIfEqual(None, match, "url not found")
+#         # check that the message has a url hash in it
+#         match = re.match(r'^.*/account/confirm/(\S+)', message.message, re.DOTALL)
+#         print "match:", match
+#         self.failIfEqual(None, match, "url not found")
 
-        # visit the url
-        print "match: '''%s'''" % match.group(1)
-        res = self.app.get('/account/confirm/%s' % match.group(1))
-        print res
+#         # visit the url
+#         print "match: '''%s'''" % match.group(1)
+#         res = self.app.get('/account/confirm/%s' % match.group(1))
+#         print res
         
-        # check the rego worked
-        regs = Query(Person).select()
-        self.assertEqual(1, len(regs))
-        print regs[0]
-        self.assertEqual(True, regs[0].activated, "account was not activated!")
+#         # check the rego worked
+#         regs = Query(Person).select()
+#         self.assertEqual(1, len(regs))
+#         print regs[0]
+#         self.assertEqual(True, regs[0].activated, "account was not activated!")
 
-        # clean up
-        Dummy_smtplib.existing.reset()
+#         # clean up
+#         Dummy_smtplib.existing.reset()
 
-        objectstore.delete(regs[0])
-        objectstore.delete(Query(Proposal).select()[0])
-        objectstore.flush()
+#         objectstore.delete(regs[0])
+#         objectstore.delete(Query(Proposal).select()[0])
+#         objectstore.flush()
 
-        self.assertEmptyModel(Proposal)
-        self.assertEmptyModel(Person)
-        self.assertEmptyModel(Attachment)
+#         self.assertEmptyModel(Proposal)
+#         self.assertEmptyModel(Person)
+#         self.assertEmptyModel(Attachment)
