@@ -5,6 +5,7 @@ Changes for Zookeepr
 ------
 
  * Modify CFP submission to only allow submissions from organisers.
+ * Show if a speaker has requested travel assistance on proposal view page.
 
 0.1.14
 ------
