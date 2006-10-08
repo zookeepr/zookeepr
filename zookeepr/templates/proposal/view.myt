@@ -88,6 +88,16 @@ at
 </p>
 </div>
 
+<p>
+Travel assistance
+% if c.proposal.assistance:
+IS
+% else:
+is NOT
+% #endif
+required.
+</p>
+
 <hr />
 
 <p class="actions">

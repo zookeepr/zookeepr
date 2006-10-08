@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.1.15
+------
+
+ * Modify CFP submission to only allow submissions from organisers.
+
 0.1.14
 ------
 

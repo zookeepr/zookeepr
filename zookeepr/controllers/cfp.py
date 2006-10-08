@@ -4,6 +4,7 @@ from formencode import validators
 from formencode.schema import Schema
 from formencode.variabledecode import NestedVariables
 
+from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator
 from zookeepr.model import Person, ProposalType, Proposal, Attachment
@@ -28,7 +29,9 @@ class NewCFPSchema(BaseSchema):
     attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
 
-class CfpController(BaseController):
+class CfpController(SecureController):
+    permissions = {'submit': [AuthRole('organiser')]
+                   }
     def index(self):
         return render_response("cfp/list.myt")
 
