@@ -88,6 +88,16 @@ at
 </p>
 </div>
 
+<p>
+Speaker 
+% if c.proposal.assistance:
+DOES
+% else:
+does NOT
+% #endif
+want travel assistance.
+</p>
+
 <hr />
 
 <p class="actions">
