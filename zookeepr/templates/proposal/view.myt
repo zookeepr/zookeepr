@@ -89,13 +89,13 @@ at
 </div>
 
 <p>
-Speaker 
+Travel assistance
 % if c.proposal.assistance:
-DOES
+IS
 % else:
-does NOT
+is NOT
 % #endif
-want travel assistance.
+required.
 </p>
 
 <hr />
