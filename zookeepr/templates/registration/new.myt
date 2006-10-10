@@ -62,21 +62,21 @@ Your display name will be used to identify you on the website.
 <span class="mandatory">*</span>
 <label for="registration.miniconfs">Prefered miniconfs:</label>
 <br />
-<% h.checkbox('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="registration.lpi">LPI exams:</label>
 <br />
-<% h.checkbox('registration.lpi', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.lpi', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="registration.dinner">Penguin Dinner:</label>
 <br />
-<% h.checkbox('registration.dinner', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.dinner', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <p>
@@ -124,19 +124,19 @@ Your display name will be used to identify you on the website.
 <p>
 <label for="registration.identifier">Your identifier:</label>
 <br />
-<% h.text('registration.identifier', size=40) %>
+<% h.text_field('registration.identifier', size=40) %>
 </p>
 
 <p>
 <label for="registration.prevlca">Previous LCA's?</label>
 <br />
-<% h.checkbox('registration.prevlca', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.prevlca', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <p>
 <label for="registration.keysigning">Attending the keysigning?</label>
 <br />
-<% h.checkbox('registration.keysigning', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.keysigning', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <h4>Partners Programme</h4>
@@ -144,13 +144,13 @@ Your display name will be used to identify you on the website.
 <p>
 <label for="registration.partners">Will you be bringing a partner?</label>
 <br />
-<% h.checkbox('registration.partners', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.partners', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <p>
 <label for="registration.children">Attending the keysigning?</label>
 <br />
-<% h.checkbox('registration.children', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.children', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 <% h.select('registration.childrenages', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
@@ -160,7 +160,7 @@ Your display name will be used to identify you on the website.
 <span class="mandatory">*</span>
 <label for="registration.accommodation">Would you like student accommodation?</label>
 <br />
-<% h.checkbox('registration.accommodation', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.accommodation', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <p>
@@ -174,21 +174,21 @@ Your display name will be used to identify you on the website.
 <p>
 <label for="registration.lasignup">Do you want to sign up for LA membership?</label>
 <br />
-<% h.checkbox('registration.lasignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.lasignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 # checked by default
 <p>
 <label for="registration.announcesignup">Do you want to sign up to the conference announcement mailing list?</label>
 <br />
-<% h.checkbox('registration.announcesignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.announcesignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 # unchecked by default
 <p>
 <label for="registration.delegatessignup">Do you want to sign up to the delegates mailing list?</label>
 <br />
-<% h.checkbox('registration.delegatessignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.delegatessignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <p>
