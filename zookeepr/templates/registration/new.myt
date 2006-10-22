@@ -89,14 +89,6 @@ Your display name will be used to identify you on the website.
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.openday">I want to present at Open Day!</label>
-<br />
-<% h.check_box('registration.openday', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-<% h.text_field('registration.opendaydescription', size=40) %>
-</p>
-
-<p>
-<span class="mandatory">*</span>
 <label for="registration.opendaydrag">I'm dragging this many people along:</label>
 <br />
 <% h.select('registration.opendaydrag', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
