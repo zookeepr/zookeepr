@@ -5,7 +5,8 @@ Enter your name, and email address, and password, and we'll email you with a con
 </p>
 
 <p>
-If you've already got an account, but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password')) %>.
+If you've already got an account, but can't log in, you can
+<% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
