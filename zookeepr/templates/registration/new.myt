@@ -9,47 +9,50 @@ If you've already got an account, but can't log in, you can <% h.link_to('recove
 </p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-<form method="post" action="<% h.url_for() %>" >
-<fieldset>
+<% h.form(h.url()) %>
+
+<fieldset id="person">
 <p>
 <span class="mandatory">*</span>
-<label for="registration.fullname">Your full name:</label>
+<label for="person.fullname">Your full name:</label>
 <br />
-<% h.text_field('registration.fullname', size=40) %>
+<% h.text_field('person.fullname', size=40) %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.email_address">Email address:</label>
+<label for="person.email_address">Email address:</label>
 <br />
-<% h.text_field('registration.email_address', size=40) %>
+<% h.text_field('person.email_address', size=40) %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.password">Choose a password:</label>
+<label for="person.password">Choose a password:</label>
 <br />
-<% h.password_field("registration.password", size=40) %>
+<% h.password_field("person.password", size=40) %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.password_confirm">Confirm your password:</label>
+<label for="person.password_confirm">Confirm your password:</label>
 <br />
-<% h.password_field("registration.password_confirm", size=40) %>
+<% h.password_field("person.password_confirm", size=40) %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.handle">Display name:</label>
+<label for="person.handle">Display name:</label>
 <br />
-<% h.text_field('registration.handle', size=40) %>
+<% h.text_field('person.handle', size=40) %>
 <br />
 <span class="fielddesc">
 Your display name will be used to identify you on the website.
 </span>
 </p>
+</fieldset>
 
+<fieldset id="registration">
 <h4>Conference Information</h4>
 <p>
 <span class="mandatory">*</span>
@@ -219,7 +222,7 @@ Please check out the <a href="Accommodation">accommodation</a> page before commi
 
 </fieldset>
 
-</form>
+<% h.end_form() %>
 </&>
 
 <%args>
