@@ -5,8 +5,8 @@ Welcome to the conference registration. Please fill in the form as best you can.
 </p>
 
 <p>
-If you've already got an account (through a prior registration, or other interaction with this site), but can't log in, you can
-<% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
+If you've already got an account (through a prior registration, or other interaction with this site), but can't log in, you can try
+<% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
