@@ -109,13 +109,18 @@ Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> p
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.dinner">Penguin Dinner:</label>
+<label for="registration.dinner">I'd like this many Penguin Dinner Tickets:</label>
+<SELECT>
+<option>0</option>
+<option>1</option>
+<option>2</option>
+</SELECT>
 <br />
-<% h.select('registration.dinner', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 <span class="fielddesc">
 The Penguin Dinner will be the official close of linux.conf.au 2007 and we strongly encourage people to attend.
  Not only will you have a chance to see who wins the Rusty Wrench Award, but you'll have a chance to drink with your buddies before the next lca.
 </span>
+<br />
 <label for="registration.dinnerpref">Dietary requirements:</label>
 <br />
 <% h.text_field('registration.dinnerpref', size=100) %>
