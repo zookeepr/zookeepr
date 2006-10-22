@@ -102,9 +102,9 @@ Your display name will be used to identify you on the website.
 <br />
 <% h.text_field('registration.address1', size=40) %>
 <% h.text_field('registration.address2', size=40) %>
-<label for="registration.address">Suburb:</label>
+<label for="registration.city">Suburb:</label>
 <br />
-<% h.text_field('registration.suburb', size=40) %>
+<% h.text_field('registration.city', size=40) %>
 <label for="registration.state">State:</label>
 <br />
 <% h.text_field('registration.state', size=40) %>
