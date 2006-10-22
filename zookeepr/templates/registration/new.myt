@@ -154,6 +154,9 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 <label for="registration.opendaydrag">I'm dragging this many people along to <% h.link_to("Open Day", url="OpenDay") %>:</label>
 <INPUT type="text">
 </p>
+</fieldset>
+
+<fieldset id="personal">
 
 <h4>Personal Information</h4>
 
@@ -237,7 +240,9 @@ Other: <INPUT type="text">
 <label for="registration.keysigning">I'll be attending the keysigning?</label>
 <INPUT type="checkbox">
 </p>
+</fieldset>
 
+<fieldset id="partners">
 <h4>Partners Programme</h4>
 
 <p>
@@ -257,8 +262,9 @@ Other: <INPUT type="text">
 <label for="registration.kids0-5">This many 7-9 year olds:</label><INPUT type="text"><br />
 <label for="registration.kids0-5">This many 10 or above:</label><INPUT type="text"><br />
 </p>
+</fieldset>
 
-
+<fieldset id="accommodation">
 <h4>Accommodation</h4>
 
 <p>
@@ -289,28 +295,10 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 <INPUT type="checkbox">Thursday
 <INPUT type="checkbox">Friday
 </p>
+</fieldset>
 
+<fieldset>
 <h4>Subscriptions</h4>
-# checked by default
-<p>
-<label for="registration.lasignup">Do you want to sign up for LA membership? (free)</label>
-<br />
-<% h.check_box('registration.lasignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-</p>
-
-# checked by default
-<p>
-<label for="registration.announcesignup">Do you want to sign up to the conference announcement mailing list?</label>
-<br />
-<% h.check_box('registration.announcesignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-</p>
-
-# unchecked by default
-<p>
-<label for="registration.delegatessignup">Do you want to sign up to the conference attendees mailing list?</label>
-<br />
-<% h.check_box('registration.delegatessignup', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-</p>
 
 <p>
 <label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
@@ -336,9 +324,6 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 <p>
 <span class="mandatory">*</span> - Mandatory field
 </p>
-
-</div>
-
 
 </fieldset>
 
