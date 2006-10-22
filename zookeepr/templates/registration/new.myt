@@ -109,10 +109,16 @@ Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> p
 
 <p>
 <span class="mandatory">*</span>
-
 <label for="registration.dinner">Penguin Dinner:</label>
 <br />
 <% h.select('registration.dinner', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<span class="fielddesc">
+The Penguin Dinner will be the official close of linux.conf.au 2007 and we strongly encourage people to attend.
+ Not only will you have a chance to see who wins the Rusty Wrench Award, but you'll have a chance to drink with your buddies before the next lca.
+</span>
+<label for="registration.dinnerpref">Dietary requirements:</label>
+<br />
+<% h.text_field('registration.dinnerpref', size=100) %>
 </p>
 
 <p>
@@ -123,10 +129,8 @@ Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> p
 </p>
 
 <p>
-<span class="mandatory">*</span>
-<label for="registration.opendaydrag">I'm dragging this many people along:</label>
-<br />
-<% h.select('registration.opendaydrag', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.opendaydrag">I'm dragging this many people along to <% h.link_to("Open Day", url="OpenDay") %>:</label>
+<INPUT type="text">
 </p>
 
 <h4>Personal Information</h4>
@@ -136,16 +140,25 @@ Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> p
 <label for="registration.address">Address:</label>
 <br />
 <% h.text_field('registration.address1', size=40) %>
+<br />
 <% h.text_field('registration.address2', size=40) %>
+<br />
+<span class="mandatory">*</span>
 <label for="registration.city">Suburb:</label>
 <br />
 <% h.text_field('registration.city', size=40) %>
+<br />
+<span class="mandatory">*</span>
 <label for="registration.state">State:</label>
 <br />
 <% h.text_field('registration.state', size=40) %>
+<br />
+<span class="mandatory">*</span>
 <label for="registration.country">Country:</label>
 <br />
 <% h.text_field('registration.country', size=40) %>
+<br />
+<span class="mandatory">*</span>
 <label for="registration.postcode">Postcode:</label>
 <br />
 <% h.text_field('registration.postcode', size=40) %>
