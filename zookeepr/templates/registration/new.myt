@@ -5,7 +5,7 @@ Welcome to the conference registration. Please fill in the form as best you can.
 </p>
 
 <p>
-If you've already got an account, but can't log in, you can
+If you've already got an account (through a prior registration, or other interaction with this site), but can't log in, you can
 <% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
@@ -192,9 +192,10 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 <p>
 <label for="registration.shell">My favourite shell:</label>
 <SELECT>
-<option>Bash</option>
-<option>Zsh</option>
-<option>Ksh</option>
+<option>-</option>
+<option>bash</option>
+<option>zsh</option>
+<option>ksh</option>
 </SELECT>
 Other: <INPUT type="text">
 </p>
@@ -202,9 +203,10 @@ Other: <INPUT type="text">
 <p>
 <label for="registration.editor">Your favourite editor:</label>
 <SELECT>
-<option>Vim</option>
-<option>Emacs</option>
-<option>Gedit</option>
+<option>-</option>
+<option>vim</option>
+<option>emacs</option>
+<option>gedit</option>
 </SELECT>
 Other: <INPUT type="text">
 </p>
@@ -212,6 +214,7 @@ Other: <INPUT type="text">
 <p>
 <label for="registration.distro">Your favourite distro:</label>
 <SELECT>
+<option>-</option>
 <option>Ubuntu</option>
 <option>Debian</option>
 <option>Fedora</option>
