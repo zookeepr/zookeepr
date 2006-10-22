@@ -124,8 +124,14 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 <p>
 <span class="mandatory">*</span>
 <label for="registration.type">T-shirt Size:</label>
-<br />
-<% h.select('registration.tshirt', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<SELECT>
+<option>S</option>
+<option>M</option>
+<option>L</option>
+<option>XL</option>
+<option>XXL</option>
+<option>XXXL</option>
+</SELECT>
 </p>
 
 <p>
@@ -165,73 +171,107 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 </p>
 
 <p>
-<label for="registration.shell">Your shell:</label>
-<br />
-<% h.select('registration.shell', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.shell">My favourite shell:</label>
+<SELECT>
+<option>Bash</option>
+<option>Zsh</option>
+<option>Ksh</option>
+</SELECT>
+Other: <INPUT type="text">
 </p>
 
 <p>
-<label for="registration.editor">Your editor:</label>
-<br />
-<% h.select('registration.editor', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.editor">Your favourite editor:</label>
+<SELECT>
+<option>Vim</option>
+<option>Emacs</option>
+<option>Gedit</option>
+</SELECT>
+Other: <INPUT type="text">
 </p>
 
 <p>
-<label for="registration.distro">Your distro:</label>
-<br />
-<% h.select('registration.distro', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.distro">Your favourite distro:</label>
+<SELECT>
+<option>Ubuntu</option>
+<option>Debian</option>
+<option>Fedora</option>
+<option>Mandriva</option>
+<option>Gentoo</option>
+<option>RHEL</option>
+<option>CentOS</option>
+<option></option>
+</SELECT>
+Other: <INPUT type="text">
 </p>
 
 <p>
 <label for="registration.prevlca">Previous LCA's?</label>
 <br />
-<% h.check_box('registration.prevlca', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<INPUT type="checkbox">'99
+<INPUT type="checkbox">'01
+<INPUT type="checkbox">'02
+<INPUT type="checkbox">'03
+<INPUT type="checkbox">'04
+<INPUT type="checkbox">'05
+<INPUT type="checkbox">'06
 </p>
 
 <p>
-<label for="registration.keysigning">Attending the keysigning?</label>
-<br />
-<% h.check_box('registration.keysigning', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.keysigning">I'll be attending the keysigning?</label>
+<INPUT type="checkbox">
 </p>
 
 <h4>Partners Programme</h4>
 
 <p>
-<label for="registration.partners">Will you be bringing a partner?</label>
-<br />
-<% h.check_box('registration.partners', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.partners">I'll be bringing a partner?</label>
+<INPUT type="checkbox">
+</p>
+<p>
+<label for="registration.partneremail">My partner's email address</label> (so our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> tsar can contact them!)<br />
+<INPUT type="text">
 </p>
 
 <p>
-<label for="registration.children">Bringing Children?</label>
+<label for="registration.children">I'll be bringing children?</label>
 <br />
-<% h.check_box('registration.children', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-<% h.select('registration.childrenages', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.kids0-5">This many 0-3 year olds:</label><INPUT type="text"><br />
+<label for="registration.kids0-5">This many 4-6 year olds:</label><INPUT type="text"><br />
+<label for="registration.kids0-5">This many 7-9 year olds:</label><INPUT type="text"><br />
+<label for="registration.kids0-5">This many 10 or above:</label><INPUT type="text"><br />
 </p>
+
 
 <h4>Accommodation</h4>
 
 <p>
-Please check out the <a href="Accommodation">accommodation</a> page before committing to any accommodation choices.
+Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommodation</a> page before committing to any accommodation choices.
 </p>
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.accommodation">Do you require student accommodation?</label>
-<br />
-<% h.check_box('registration.accommodation', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.accommodation">I would like the following accommodation:</label>
+<SELECT>
+<option>I will organise my own</option>
+<option>New College - no breakfast $49.50</option>
+<option>New College - $55.00</option>
+<option>Shalom - $60.00</option>
+<option>Shalom - with ensuite $80.00</option>
+<option>International House - no breakfast $35.00</option>
+<option>Warrane - male only $58.50</option>
+</SELECT>
 </p>
 
 <p>
-<label for="registration.accommodationtype">What sort of accommodation do you want?</label>
+<label for="registration.accommodationdays">I'd like accommodation on the following days:</label>
 <br />
-<% h.select('registration.accommodationtype', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-</p>
-
-<p>
-<label for="registration.accommodationdays"></label>
-<br />
-<% h.check_box('registration.accommodationdays', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<INPUT type="checkbox">Sunday
+<INPUT type="checkbox">Monday
+<INPUT type="checkbox">Tuesday
+<INPUT type="checkbox">Wednesday
+<INPUT type="checkbox">Thursday
+<INPUT type="checkbox">Friday
 </p>
 
 <h4>Subscriptions</h4>
@@ -257,14 +297,36 @@ Please check out the <a href="Accommodation">accommodation</a> page before commi
 </p>
 
 <p>
+<label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
+<INPUT type="checkbox" checked>
+</p>
+
+<p>
+<label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
+<INPUT type="checkbox" checked>
+</p>
+
+<p>
+<label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
+<INPUT type="checkbox">
+</p>
+
+<p>
+<label for="registration.discount">Discount codes</label> - enter the special discount code if you have one.<br />
+<INPUT type="text">
+</p>
+
+
+<p>
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
-<% h.submit("Create a new account") %>
 </div>
 
 
 </fieldset>
+
+<% h.submit("Register me!") %>
 
 <% h.end_form() %>
 </&>
