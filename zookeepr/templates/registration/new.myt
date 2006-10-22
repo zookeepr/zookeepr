@@ -84,7 +84,7 @@ Your display name will be used to identify you on the website.
 <span class="mandatory">*</span>
 <label for="registration.openday">I want to present at Open Day!</label>
 <br />
-<% h.checkbox('registration.openday', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.openday', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 <% h.text_field('registration.opendaydescription', size=40) %>
 </p>
 
@@ -184,7 +184,7 @@ Please check out the <a href="Accommodation">accommodation</a> page before commi
 <p>
 <label for="registration.accommodationdays"></label>
 <br />
-<% h.checkbox('registration.accommodationdays', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box('registration.accommodationdays', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
 </p>
 
 <h4>Subscriptions</h4>
