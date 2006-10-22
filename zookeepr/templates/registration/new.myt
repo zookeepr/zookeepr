@@ -24,6 +24,10 @@ If you've already got an account, but can't log in, you can <% h.link_to('recove
 <label for="person.email_address">Email address:</label>
 <br />
 <% h.text_field('person.email_address', size=40) %>
+<br />
+<span class="fielddesc">
+Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
+</span>
 </p>
 
 <p>
@@ -42,7 +46,7 @@ If you've already got an account, but can't log in, you can <% h.link_to('recove
 
 <p>
 <span class="mandatory">*</span>
-<label for="person.handle">Display name:</label>
+<label for="person.handle">Display name/handle/nickname:</label>
 <br />
 <% h.text_field('person.handle', size=40) %>
 <br />
