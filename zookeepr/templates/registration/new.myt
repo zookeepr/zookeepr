@@ -206,15 +206,15 @@ Other: <INPUT type="text">
 </p>
 
 <p>
-<label for="registration.prevlca">Previous LCAs?</label>
+<label for="registration.prevlca">Have you attended any previous LCAs?</label>
+
+% for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)')]:
+%	label = 'registration.prevlca%s' % year
 <br />
-<INPUT type="checkbox">'99
-<INPUT type="checkbox">'01
-<INPUT type="checkbox">'02
-<INPUT type="checkbox">'03
-<INPUT type="checkbox">'04
-<INPUT type="checkbox">'05
-<INPUT type="checkbox">'06
+<% h.check_box(label) %>
+<label for="<% label %>"><% desc %></label>
+% #endfor
+
 </p>
 
 <p>
