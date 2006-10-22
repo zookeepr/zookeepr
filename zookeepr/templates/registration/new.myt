@@ -206,7 +206,7 @@ Other: <INPUT type="text">
 </p>
 
 <p>
-<label for="registration.prevlca">Previous LCA's?</label>
+<label for="registration.prevlca">Previous LCAs?</label>
 <br />
 <INPUT type="checkbox">'99
 <INPUT type="checkbox">'01
