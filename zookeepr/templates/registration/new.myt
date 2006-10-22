@@ -1,7 +1,7 @@
 <h3>Register for the conference</h3>
 
 <p>
-Enter your name, and email address, and password, and we'll email you with a confirmation to create your account.
+Welcome to the conference registration. Please fill in the form as best you can. 
 </p>
 
 <p>
@@ -59,19 +59,53 @@ Your display name will be used to identify you on the website.
 
 <fieldset id="registration">
 <h4>Conference Information</h4>
+
+<p>
+<label for="registration.special">Special requirements</label>
+<br />
+<% h.text_field('registration.special', size=100) %>
+<br />
+<span class="fielddesc">
+Please enter any requirements; dietary, access requirements, or otherwise.
+</span>
+</p>
+
 <p>
 <span class="mandatory">*</span>
-<label for="registration.type">Registration type:</label>
-<br />
+I'd like to choose the 
 <% h.select('registration.type', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.type">registration</label>.
+Check the <% h.link_to('registration page', url="Registration") %> for full details on each ticket.
 </p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="registration.miniconfs">Prefered miniconfs:</label>
 <br />
-<% h.check_box('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+#<% h.check_box('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<span class="fielddesc">
+Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
+</span>
+
+<h5>Monday</h5>
+<INPUT type="checkbox">Embedded Miniconf
+<INPUT type="checkbox">Virtualisation Miniconf
+<INPUT type="checkbox">MySQL Miniconf
+<INPUT type="checkbox">FOSS in Research Miniconf
+<INPUT type="checkbox">FOSS in the Movies Miniconf
+<h5>Tuesday</h5>
+<INPUT type="checkbox">Gaming Miniconf
+<INPUT type="checkbox">Kernel Miniconf
+<INPUT type="checkbox">PostgreSQL Miniconf
+<INPUT type="checkbox">OpenOffice.org Miniconf
+<INPUT type="checkbox">Linuxchix Miniconf
+<h5>Both Monday and Tuesday</h5>
+
+<INPUT type="checkbox">Debian Miniconf
+<INPUT type="checkbox">GNOME
+<INPUT type="checkbox">Education
 </p>
+
 
 <p>
 <span class="mandatory">*</span>
