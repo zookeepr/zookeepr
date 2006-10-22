@@ -122,7 +122,7 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
-<label for="registration.identifier">Your identifier:</label>
+<label for="registration.identifier">Your nick/handle/identifier/string/short name/thing you want people to call you and will be printed on your badge:</label>
 <br />
 <% h.text_field('registration.identifier', size=40) %>
 </p>
