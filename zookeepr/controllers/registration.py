@@ -46,11 +46,11 @@ class RegistrationSchema(Schema):
     discount_code = validators.String()
 
 class PersonSchema(Schema):
-    email_address = validators.String()
-    password = validators.String()
-    password_confirm = validators.String()
-    fullname = validators.String()
-    handle = validators.String()
+    email_address = validators.String(not_empty=True)
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    fullname = validators.String(not_empty=True)
+    handle = validators.String(not_empty=True)
     
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
