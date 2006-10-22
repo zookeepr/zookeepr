@@ -89,20 +89,31 @@ Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> p
 
 <h5>Monday</h5>
 <INPUT type="checkbox">Embedded Miniconf
+<br />
 <INPUT type="checkbox">Virtualisation Miniconf
+<br />
 <INPUT type="checkbox">MySQL Miniconf
+<br />
 <INPUT type="checkbox">FOSS in Research Miniconf
+<br />
 <INPUT type="checkbox">FOSS in the Movies Miniconf
 <h5>Tuesday</h5>
+<br />
 <INPUT type="checkbox">Gaming Miniconf
+<br />
 <INPUT type="checkbox">Kernel Miniconf
+<br />
 <INPUT type="checkbox">PostgreSQL Miniconf
+<br />
 <INPUT type="checkbox">OpenOffice.org Miniconf
+<br />
 <INPUT type="checkbox">Linuxchix Miniconf
 <h5>Both Monday and Tuesday</h5>
 
 <INPUT type="checkbox">Debian Miniconf
+<br />
 <INPUT type="checkbox">GNOME
+<br />
 <INPUT type="checkbox">Education
 </p>
 
@@ -110,9 +121,9 @@ Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> p
 <p>
 <span class="mandatory">*</span>
 <label for="registration.dinner">I'd like this many Penguin Dinner Tickets:</label>
-<SELECT>
+<SELECT id="registration.dinner" name="registration.dinner">
 <option>0</option>
-<option>1</option>
+<option selected>1</option>
 <option>2</option>
 </SELECT>
 <br />
