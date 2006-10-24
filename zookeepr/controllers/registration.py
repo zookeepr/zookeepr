@@ -3,7 +3,7 @@ from formencode.schema import Schema
 
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Create
+from zookeepr.lib.crud import Create, List
 from zookeepr.lib.validators import BaseSchema
 
 class RegistrationSchema(Schema):
@@ -62,9 +62,8 @@ class NewRegistrationSchema(BaseSchema):
 
     pre_validators = [variabledecode.NestedVariables]
     
-class RegistrationController(BaseController, Create):
+class RegistrationController(BaseController, Create, List):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
                }
-
