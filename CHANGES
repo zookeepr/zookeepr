@@ -4,7 +4,7 @@ Changes for Zookeepr
 0.1.16
 ------
 
- * Added registration templates.
+ * Added registration templates, business logic, and stub data model.
 
 0.1.15
 ------
