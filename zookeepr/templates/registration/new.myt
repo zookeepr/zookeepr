@@ -306,7 +306,7 @@ selected
 <% h.text_field('registration.partneremail', size=50) %>
 <br />
 <span class="fielddesc">
-If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.
+If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme") %> if you have any problems registering your partner for the programme.
 </span>
 </p>
 
