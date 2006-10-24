@@ -172,7 +172,7 @@ Other: <INPUT type="text">
 <br />
 % #endfor
 <span class="fielddesc">
-Check the <% h.link_to('registration page', url="/Registration") %> for full details on each ticket.
+Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for full details on each ticket.
 </span>
 </p>
 
@@ -248,12 +248,12 @@ Please enter any requirements if necessary; access requirements, etc.
 
 <br />
 <span class="fielddesc">
-Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
+Please check the <% h.link_to('Miniconfs', url="/Miniconfs", popup=True) %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
 </span>
 </p>
 
 <p>
-<label for="registration.opendaydrag">How many people are you bringing to <% h.link_to("Open Day", url="/OpenDay") %>:</label>
+<label for="registration.opendaydrag">How many people are you bringing to <% h.link_to("Open Day", url="/OpenDay", popup=True) %>:</label>
 <% h.text_field('registration.opendaydrag', size=10) %>
 <br />
 <span class="fielddesc">
@@ -322,7 +322,7 @@ selected
 <% h.text_field('registration.partneremail', size=50) %>
 <br />
 <span class="fielddesc">
-If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme") %> if you have any problems registering your partner for the programme.
+If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
 </span>
 </p>
 
