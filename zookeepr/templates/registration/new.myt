@@ -136,7 +136,6 @@ Other: <INPUT type="text">
 <option>Gentoo</option>
 <option>RHEL</option>
 <option>CentOS</option>
-<option></option>
 </SELECT>
 Other: <INPUT type="text">
 </p>
@@ -218,7 +217,6 @@ Female:
 <br />
 <span class="fielddesc">
 The Penguin Dinner will be the official close of linux.conf.au 2007 and we strongly encourage people to attend.
- Not only will you have a chance to see who wins the Rusty Wrench Award, but you'll have a chance to drink with your buddies before the next lca.
 </span>
 <br />
 <label for="registration.dinnerpref">Dietary requirements:</label>
