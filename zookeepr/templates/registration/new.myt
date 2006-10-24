@@ -146,7 +146,7 @@ Other: <% h.text_field('registration.distrostring') %>
 <label for="registration.prevlca">Have you attended any previous LCAs?</label>
 
 % for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)')]:
-%	label = 'registration.prevlca%s' % year
+%	label = 'registration.prevlca.%s' % year
 <br />
 <% h.check_box(label) %>
 <label for="<% label %>"><% desc %></label>
@@ -244,7 +244,7 @@ Please enter any requirements if necessary; access requirements, etc.
 # FIXME: CLEARLY this needs to be dynamic
 
 % for mc in ['Debian', 'Embedded', 'Education', 'FOSS in Research', 'FOSS in Movies', 'Gaming', 'GNOME', 'Kernel', 'Linuxchix', 'MySQL', 'OpenOffice.org', 'PostgreSQL', 'Virtualisation']:
-% 	l = 'registration.mc_%s' % mc.replace(' ', '_')
+% 	l = 'registration.miniconf.%s' % mc.replace(' ', '_')
 <br />
 <% h.check_box(l) %>
 <label for="<% l %>"><% mc %></label>

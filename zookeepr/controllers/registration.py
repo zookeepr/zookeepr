@@ -23,13 +23,7 @@ class RegistrationSchema(Schema):
     distro = validators.String()
     distrostring = validators.String()
 
-    prevlca99 = validators.Bool()
-    prevlca01 = validators.Bool()
-    prevlca02 = validators.Bool()
-    prevlca03 = validators.Bool()
-    prevlca04 = validators.Bool()
-    prevlca05 = validators.Bool()
-    prevlca06 = validators.Bool()
+    prevlca = validators.Set()
 
     type = validators.String(not_empty=True)
     discount = validators.String()
@@ -38,6 +32,7 @@ class RegistrationSchema(Schema):
     dinner = validators.Int()
     diet = validators.String()
     special = validators.String()
+    miniconf = validators.Set()
     opendaydrag = validators.Int()
 
     partneremail = validators.String()
@@ -72,3 +67,4 @@ class RegistrationController(BaseController, Create):
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
                }
+
