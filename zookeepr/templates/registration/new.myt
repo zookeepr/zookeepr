@@ -177,52 +177,6 @@ If you are planning on bringing your partner, please enter their email address h
 </p>
 </fieldset>
 
-<fieldset id="accommodation">
-<h4>Accommodation</h4>
-
-<p>
-Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommodation</a> page before committing to any accommodation choices.
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.accommodation">Please pick the college would you like to stay at:</label>
-<SELECT name="registration.accommodation">
-<option>I will organise my own</option>
-<option>New College - no breakfast $49.50</option>
-<option>New College - $55.00</option>
-<option>Shalom - $60.00</option>
-<option>Shalom - with ensuite $80.00</option>
-<option>International House - no breakfast $35.00</option>
-<option>Warrane - male only $58.50</option>
-</SELECT>
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.accommodation_start">Check in on:</label>
-<select name="registration.accommodation_start">
-% for d in range(14, 21):
-<option><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
-% #endfor
-</select>
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registation.accommodation_end">Check out on:</label>
-<select name="registration.accommodation_end">
-% for d in range(14, 21):
-<option 
-% 	if d == 20:
-selected
-% 	#endif
-><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
-% #endfor
-</select>
-</p>
-</fieldset>
-
 <fieldset id="registration">
 <h4>Conference Information</h4>
 
@@ -326,6 +280,52 @@ Open Day is open to friends and family, and is targetted to a non-technical audi
 </span>
 </p>
 
+</fieldset>
+
+<fieldset id="accommodation">
+<h4>Accommodation</h4>
+
+<p>
+Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommodation</a> page before committing to any accommodation choices.
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registration.accommodation">Please pick the college would you like to stay at:</label>
+<SELECT name="registration.accommodation">
+<option>I will organise my own</option>
+<option>New College - no breakfast $49.50</option>
+<option>New College - $55.00</option>
+<option>Shalom - $60.00</option>
+<option>Shalom - with ensuite $80.00</option>
+<option>International House - no breakfast $35.00</option>
+<option>Warrane - male only $58.50</option>
+</SELECT>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registration.accommodation_start">Check in on:</label>
+<select name="registration.accommodation_start">
+% for d in range(14, 21):
+<option><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
+% #endfor
+</select>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registation.accommodation_end">Check out on:</label>
+<select name="registration.accommodation_end">
+% for d in range(14, 21):
+<option 
+% 	if d == 20:
+selected
+% 	#endif
+><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
+% #endfor
+</select>
+</p>
 </fieldset>
 
 <fieldset>
