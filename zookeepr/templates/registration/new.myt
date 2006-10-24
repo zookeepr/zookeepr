@@ -95,7 +95,7 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
-<label for="registration.shell">My favourite shell:</label>
+<label for="registration.shell">Your favourite shell:</label>
 <SELECT>
 <option>-</option>
 <option>bash</option>
@@ -151,21 +151,29 @@ Other: <INPUT type="text">
 <h4>Partners Programme</h4>
 
 <p>
-<label for="registration.partners">I'll be bringing a partner?</label>
-<INPUT type="checkbox">
-</p>
-<p>
-<label for="registration.partneremail">My partner's email address</label> (so our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> tsar can contact them!)<br />
-<INPUT type="text">
+<label for="registration.partneremail">Your partner's email address:</label>
+<% h.text_field('registration.partneremail', size=50) %>
+<br />
+<span class="fielddesc">
+If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.
+</span>
 </p>
 
 <p>
-<label for="registration.children">I'll be bringing children?</label>
+<label for="registration.children">Are you bringing children?</label>
 <br />
-<label for="registration.kids0-5">This many 0-3 year olds:</label><INPUT type="text"><br />
-<label for="registration.kids0-5">This many 4-6 year olds:</label><INPUT type="text"><br />
-<label for="registration.kids0-5">This many 7-9 year olds:</label><INPUT type="text"><br />
-<label for="registration.kids0-5">This many 10 or above:</label><INPUT type="text"><br />
+<label for="registration.kids_0_3">This many under 3 year olds:</label>
+<% h.text_field('registration.kids_0_3', size=10) %>
+<br />
+<label for="registration.kids_4_6">This many 4-6 year olds:</label>
+<% h.text_field('registration.kids_4_6', size=10) %>
+<br />
+<label for="registration.kids_7_9">This many 7-9 year olds:</label>
+<% h.text_field('registration.kids_7_9', size=10) %>
+<br />
+<label for="registration.kids_10">This many aged 10 or above:</label>
+<% h.text_field('registration.kids_10', size=10) %>
+<br />
 </p>
 </fieldset>
 
