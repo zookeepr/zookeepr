@@ -17,6 +17,11 @@ If you've already got an account (through a prior registration, or other interac
 <% h.form(h.url()) %>
 
 <fieldset id="person">
+
+<p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
+
 <p>
 <span class="mandatory">*</span>
 <label for="person.fullname">Your full name:</label>
@@ -64,6 +69,10 @@ Your display name will be used to identify you on the website.
 <fieldset id="personal">
 
 <h4>Personal Information</h4>
+
+<p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
 
 <p>
 <span class="mandatory">*</span>
@@ -149,6 +158,10 @@ Other: <INPUT type="text">
 
 <fieldset id="registration">
 <h4>Conference Information</h4>
+
+<p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
 
 <p>
 <span class="mandatory">*</span>
@@ -256,6 +269,11 @@ Open Day is open to friends and family, and is targetted to a non-technical audi
 <h4>Accommodation</h4>
 
 <p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
+
+
+<p>
 Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommodation</a> page before committing to any accommodation choices.
 </p>
 
@@ -344,10 +362,6 @@ If you are planning on bringing your partner, please enter their email address h
 <p>
 <label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
 <INPUT type="checkbox">
-</p>
-
-<p>
-<span class="mandatory">*</span> - Mandatory field
 </p>
 
 </fieldset>
