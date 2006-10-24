@@ -103,14 +103,15 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
+# FIXME: dynamic :)
 <label for="registration.shell">Your favourite shell:</label>
-<SELECT>
+<select name="registration.shell">
 <option>-</option>
-<option>bash</option>
-<option>zsh</option>
-<option>ksh</option>
+% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'esh', 'lsh', 'rc', 'smrsh', 'sash', 'pdmenu', 'kiss', 'busybox', 'posh', 'es', 'osh', 'mc', 'X-Tree Gold']:
+<option><% s %></option>
+% #endfor
 </SELECT>
-Other: <INPUT type="text">
+Other: <% h.text_field('registration.shelltext') %>
 </p>
 
 <p>
@@ -295,7 +296,7 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 <span class="mandatory">*</span>
 <label for="registration.accommodation_start">Check in on:</label>
 <select name="registration.accommodation_start">
-% for d in range(14, 21):
+% for d in range(14, 20):
 <option><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
 % #endfor
 </select>
@@ -305,7 +306,7 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 <span class="mandatory">*</span>
 <label for="registation.accommodation_end">Check out on:</label>
 <select name="registration.accommodation_end">
-% for d in range(14, 21):
+% for d in range(15, 21):
 <option 
 % 	if d == 20:
 selected
