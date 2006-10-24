@@ -144,10 +144,7 @@ Other: <INPUT type="text">
 
 </p>
 
-<p>
-<label for="registration.keysigning">I'll be attending the keysigning?</label>
-<INPUT type="checkbox">
-</p>
+
 </fieldset>
 
 <fieldset id="partners">
