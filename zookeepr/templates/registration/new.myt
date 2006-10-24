@@ -118,18 +118,18 @@ Other: <% h.text_field('registration.shelltext') %>
 
 <p>
 <label for="registration.editor">Your favourite editor:</label>
-<SELECT>
+<SELECT name="registration.editor">
 <option>-</option>
 <option>vim</option>
 <option>emacs</option>
 <option>gedit</option>
 </SELECT>
-Other: <INPUT type="text">
+Other: <% h.text_field('registration.editorstring') %>
 </p>
 
 <p>
 <label for="registration.distro">Your favourite distro:</label>
-<SELECT>
+<SELECT name="registration.distro">
 <option>-</option>
 <option>Ubuntu</option>
 <option>Debian</option>
@@ -139,7 +139,7 @@ Other: <INPUT type="text">
 <option>RHEL</option>
 <option>CentOS</option>
 </SELECT>
-Other: <INPUT type="text">
+Other: <% h.text_field('registration.distrostring') %>
 </p>
 
 <p>
@@ -210,7 +210,6 @@ Female:
 </p>
 
 <p>
-<span class="mandatory">*</span>
 <label for="registration.dinner">I'd like this many extra Penguin Dinner Tickets:</label>
 <SELECT id="registration.dinner" name="registration.dinner">
 <option>0</option>
@@ -224,9 +223,9 @@ Professional delegates already have one dinner ticket included in their registra
 </p>
 
 <p>
-<label for="registration.dinnerpref">Dietary requirements:</label>
+<label for="registration.diet">Dietary requirements:</label>
 <br />
-<% h.text_field('registration.dinnerpref', size=100) %>
+<% h.text_field('registration.diet', size=100) %>
 </p>
 
 <p>
@@ -353,18 +352,18 @@ If you are planning on bringing your partner, please enter their email address h
 <h4>Subscriptions</h4>
 
 <p>
-<label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
 <% h.check_box('registration.lasignup') %>
+<label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
 </p>
 
 <p>
-<label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
 <% h.check_box('registration.announcesignup') %>
+<label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
 </p>
 
 <p>
+<% h.check_box('registration.delegatessignup') %>
 <label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
-<% h.check_box('registration.delegatesignup') %>
 </p>
 
 </fieldset>
