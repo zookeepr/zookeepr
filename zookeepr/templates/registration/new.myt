@@ -57,105 +57,6 @@ Your display name will be used to identify you on the website.
 </p>
 </fieldset>
 
-<fieldset id="registration">
-<h4>Conference Information</h4>
-
-<p>
-<label for="registration.special">Special requirements</label>
-<br />
-<% h.text_field('registration.special', size=100) %>
-<br />
-<span class="fielddesc">
-Please enter any requirements; dietary, access requirements, or otherwise.
-</span>
-</p>
-
-<p>
-<span class="mandatory">*</span>
-I'd like to choose the 
-<% h.select('registration.type', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-<label for="registration.type">registration</label>.
-Check the <% h.link_to('registration page', url="Registration") %> for full details on each ticket.
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.miniconfs">Prefered miniconfs:</label>
-<br />
-#<% h.check_box('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-<span class="fielddesc">
-Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
-</span>
-
-<h5>Monday</h5>
-<INPUT type="checkbox">Embedded Miniconf
-<br />
-<INPUT type="checkbox">Virtualisation Miniconf
-<br />
-<INPUT type="checkbox">MySQL Miniconf
-<br />
-<INPUT type="checkbox">FOSS in Research Miniconf
-<br />
-<INPUT type="checkbox">FOSS in the Movies Miniconf
-<h5>Tuesday</h5>
-<br />
-<INPUT type="checkbox">Gaming Miniconf
-<br />
-<INPUT type="checkbox">Kernel Miniconf
-<br />
-<INPUT type="checkbox">PostgreSQL Miniconf
-<br />
-<INPUT type="checkbox">OpenOffice.org Miniconf
-<br />
-<INPUT type="checkbox">Linuxchix Miniconf
-<h5>Both Monday and Tuesday</h5>
-
-<INPUT type="checkbox">Debian Miniconf
-<br />
-<INPUT type="checkbox">GNOME
-<br />
-<INPUT type="checkbox">Education
-</p>
-
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.dinner">I'd like this many Penguin Dinner Tickets:</label>
-<SELECT id="registration.dinner" name="registration.dinner">
-<option>0</option>
-<option selected>1</option>
-<option>2</option>
-</SELECT>
-<br />
-<span class="fielddesc">
-The Penguin Dinner will be the official close of linux.conf.au 2007 and we strongly encourage people to attend.
- Not only will you have a chance to see who wins the Rusty Wrench Award, but you'll have a chance to drink with your buddies before the next lca.
-</span>
-<br />
-<label for="registration.dinnerpref">Dietary requirements:</label>
-<br />
-<% h.text_field('registration.dinnerpref', size=100) %>
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.type">T-shirt Size:</label>
-<SELECT>
-<option>S</option>
-<option>M</option>
-<option>L</option>
-<option>XL</option>
-<option>XXL</option>
-<option>XXXL</option>
-</SELECT>
-</p>
-
-<p>
-<label for="registration.opendaydrag">I'm dragging this many people along to <% h.link_to("Open Day", url="OpenDay") %>:</label>
-<INPUT type="text">
-</p>
-</fieldset>
-
 <fieldset id="personal">
 
 <h4>Personal Information</h4>
@@ -297,6 +198,117 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 <INPUT type="checkbox">Wednesday
 <INPUT type="checkbox">Thursday
 <INPUT type="checkbox">Friday
+</p>
+</fieldset>
+
+<fieldset id="registration">
+<h4>Conference Information</h4>
+
+<p>
+<label for="registration.special">Special requirements</label>
+<br />
+<% h.text_field('registration.special', size=100) %>
+<br />
+<span class="fielddesc">
+Please enter any requirements; dietary, access requirements, or otherwise.
+</span>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+I'd like to choose the 
+<% h.select('registration.type', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<label for="registration.type">registration</label>.
+Check the <% h.link_to('registration page', url="Registration") %> for full details on each ticket.
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label>Teeshirt Size:</label>
+<table>
+# FIXME:
+% for sex in ['M', 'F']:
+<tr>
+<td>
+%	if sex == 'M':
+Male:
+%	else:
+Female:
+%	#endif
+</td>
+% 	for size, size_text in [('S', 'Small'), ('M', 'Medium'), ('L', 'Large'), ('XL', 'X Large'), ('XXL', 'XX Large'), ('XXXL', 'XXX Large')]:
+<td>
+<input type="radio" name="registration.teesize" id="registration.teesize_<% sex %>_<% size %>" value="<% sex %>_<% size %>" />
+<label for="registration.teesize_<% sex %>_<% size %>"><% size_text %></label>
+</td>
+% 	#endfor
+</tr>
+% #endfor
+</table>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registration.miniconfs">Prefered miniconfs:</label>
+<br />
+#<% h.check_box('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<span class="fielddesc">
+Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
+</span>
+
+<h5>Monday</h5>
+<INPUT type="checkbox">Embedded Miniconf
+<br />
+<INPUT type="checkbox">Virtualisation Miiconf
+<br />
+<INPUT type="checkbox">MySQL Miniconf
+<br />
+<INPUT type="checkbox">FOSS in Research Miniconf
+<br />
+<INPUT type="checkbox">FOSS in the Movies Miniconf
+<h5>Tuesday</h5>
+<br />
+<INPUT type="checkbox">Gaming Miniconf
+<br />
+<INPUT type="checkbox">Kernel Miniconf
+<br />
+<INPUT type="checkbox">PostgreSQL Miniconf
+<br />
+<INPUT type="checkbox">OpenOffice.org Miniconf
+<br />
+<INPUT type="checkbox">Linuxchix Miniconf
+<h5>Both Monday and Tuesday</h5>
+
+<INPUT type="checkbox">Debian Miniconf
+<br />
+<INPUT type="checkbox">GNOME
+<br />
+<INPUT type="checkbox">Education
+</p>
+
+
+<p>
+<span class="mandatory">*</span>
+<label for="registration.dinner">I'd like this many Penguin Dinner Tickets:</label>
+<SELECT id="registration.dinner" name="registration.dinner">
+<option>0</option>
+<option selected>1</option>
+<option>2</option>
+</SELECT>
+<br />
+<span class="fielddesc">
+The Penguin Dinner will be the official close of linux.conf.au 2007 and we strongly encourage people to attend.
+ Not only will you have a chance to see who wins the Rusty Wrench Award, but you'll have a chance to drink with your buddies before the next lca.
+</span>
+<br />
+<label for="registration.dinnerpref">Dietary requirements:</label>
+<br />
+<% h.text_field('registration.dinnerpref', size=100) %>
+</p>
+
+<p>
+<label for="registration.opendaydrag">I'm dragging this many people along to <% h.link_to("Open Day", url="OpenDay") %>:</label>
+<INPUT type="text">
 </p>
 </fieldset>
 
