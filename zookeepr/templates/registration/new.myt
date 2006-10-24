@@ -172,7 +172,7 @@ Other: <INPUT type="text">
 <br />
 % #endfor
 <span class="fielddesc">
-Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for full details on each ticket.
+Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for the full details of each ticket.
 </span>
 </p>
 
@@ -208,17 +208,19 @@ Female:
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.dinner">I'd like this many Penguin Dinner Tickets:</label>
+<label for="registration.dinner">I'd like this many extra Penguin Dinner Tickets:</label>
 <SELECT id="registration.dinner" name="registration.dinner">
 <option>0</option>
-<option selected>1</option>
+<option>1</option>
 <option>2</option>
 </SELECT>
 <br />
 <span class="fielddesc">
-The Penguin Dinner will be the official close of linux.conf.au 2007 and we strongly encourage people to attend.
+Professional delegates already have one dinner ticket included in their registration.
 </span>
-<br />
+</p>
+
+<p>
 <label for="registration.dinnerpref">Dietary requirements:</label>
 <br />
 <% h.text_field('registration.dinnerpref', size=100) %>
