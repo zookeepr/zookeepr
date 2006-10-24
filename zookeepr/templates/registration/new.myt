@@ -103,6 +103,12 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
+<label for="registration.company">Company:</label>
+#<br />
+<% h.text_field('registration.company', size=60) %>
+</p>
+
+<p>
 # FIXME: dynamic :)
 <label for="registration.shell">Your favourite shell:</label>
 <select name="registration.shell">
@@ -275,7 +281,7 @@ Open Day is open to friends and family, and is targetted to a non-technical audi
 
 
 <p>
-Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=True) page before committing to any accommodation choices.
+Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=True) %> page before committing to any accommodation choices.
 </p>
 
 <p>
@@ -297,7 +303,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <label for="registration.accommodation_start">Check in on:</label>
 <select name="registration.accommodation_start">
 % for d in range(14, 20):
-<option><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
+<option><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
 % #endfor
 </select>
 </p>
@@ -311,7 +317,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 % 	if d == 20:
 selected
 % 	#endif
-><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
+><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
 % #endfor
 </select>
 </p>
@@ -325,7 +331,7 @@ selected
 <% h.text_field('registration.partneremail', size=50) %>
 <br />
 <span class="fielddesc">
-If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
+If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) %> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
 </span>
 </p>
 
