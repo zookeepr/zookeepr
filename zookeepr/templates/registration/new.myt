@@ -277,7 +277,7 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.accommodation">Please pick the college would you like to stay at:</label>
+<label for="registration.accommodation">What accommodation would you like to stay at:</label>
 <SELECT name="registration.accommodation">
 <option>I will organise my own</option>
 <option>New College - no breakfast $49.50</option>
