@@ -55,11 +55,13 @@ class Create(CRUDBase):
         if request.method == 'POST' and defaults:
             result, errors = self.schemas['new'].validate(defaults)
 
+            print "r,e", result, errors
             if not errors:
                 self.obj = self.model()
                 # make new_object accessible to the template
                 setattr(c, model_name, self.obj)
                 # update the new object with the form data
+                print result
                 for k in result[model_name]:
                     setattr(self.obj, k, result[model_name][k])
 
@@ -158,7 +160,8 @@ class Update(RUDBase):
                 objectstore.save(self.obj)
                 objectstore.flush()
 
-                redirect_to(action='view', id=self.identifier(self.obj))
+                default_redirect = dict(action='view', id=self.identifier(self.obj))
+                self.redirect_to('edit', default_redirect)
 
         # save obj onto the magical c
         setattr(c, self.individual, self.obj)

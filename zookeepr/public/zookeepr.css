@@ -213,11 +213,11 @@ TABLE TH {
 }
 
 TABLE TR.even {
-  background-color: #fecf7e;
+  background-color: #ddd;
 }
 
 TABLE TR.odd {
-  background-color: #fcaf3e;
+  background-color: #eee;
 }
 
 /**
@@ -394,3 +394,34 @@ FIELDSET LEGEND {
   text-decoration: none;
   color: #999;
 }
+
+
+/* Registration levels table */
+
+table.rego {
+  width: 100%;
+}
+
+table.rego td.pro {
+  color: white;
+  background-color: #1E90FF;
+  text-align: center;
+}
+
+table.rego td.hob {
+  color: white;
+  background-color: #A2CD5A;
+  text-align: center;
+}
+
+table.rego td.con {
+  color: white;
+  background-color: #F08080;
+  text-align: center;
+}
+
+table.rego td.non {
+  text-align: center;
+}
+
+

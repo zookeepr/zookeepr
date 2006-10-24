@@ -10,6 +10,9 @@ submitted by
 <% p.fullname %>
 &lt;<% p.email_address %>&gt;
 % #endfor
+at
+<% c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
+(last updated at <% c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
 </p>
 
 <div class="abstract">
@@ -85,6 +88,16 @@ submitted by
 </p>
 </div>
 
+<p>
+Travel assistance
+% if c.proposal.assistance:
+IS
+% else:
+is NOT
+% #endif
+required.
+</p>
+
 <hr />
 
 <p class="actions">
@@ -96,7 +109,8 @@ submitted by
 </li>
 % #endif
 
-% if 'reviewer' in [x.name for x in c.signed_in_person.roles]:
+# Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
+% if 'reviewer' in [x.name for x in c.signed_in_person.roles] and c.signed_in_person not in [x.reviewer for x in c.proposal.reviews]:
 <li>
 <% h.link_to('Review this proposal', url=h.url(action='review')) %>
 </li>
@@ -107,9 +121,66 @@ submitted by
 
 </div>
 
-<div id="wiki">
-<% h.wiki_here() %>
-</div>
+
+% if ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
+<p>
+<table>
+<tr>
+<th># - Reviewer</th>
+<th>Familiar?</th>
+<th>Tech</th>
+<th>Exp</th>
+<th>Exc!</th>
+<th>Rec. Stream</th>
+<th>Comment</th>
+</tr>
+
+%	for r in c.proposal.reviews:
+<tr class="<% h.cycle('even', 'odd') %>">
+<td>
+<% h.link_to("%s - %s" % (r.id, r.reviewer.fullname), url=h.url(controller='review', id=r.id, action='view')) %>
+</td>
+
+<td>
+% 		if r.familiarity == 0:
+0 - No
+% 		elif r.familiarity == 1:
+1 - Some
+% 		elif r.familiarity == 2:
+2 - Expert
+% 		#endif
+</td>
+
+<td>
+<% r.technical | h %>
+</td>
+
+<td>
+<% r.experience | h %>
+</td>
+
+<td>
+<% r.coolness | h %>
+</td>
+
+<td>
+<% r.stream.name | h %>
+</td>
+
+<td>
+<% r.comment | h %>
+</td>
+
+</tr>
+%	#endfor
+</table>
+</p>
+% #endif
+
+# FIXME: wiki disabled
+#<div id="wiki">
+#<% h.wiki_here() %>
+#</div>
 
 <%method title>
 <% h.truncate(c.proposal.title) %> - <% c.proposal.type.name %> proposal - <& PARENT:title &>

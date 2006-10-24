@@ -3,7 +3,7 @@ import cgi
 from formencode import Invalid, validators, schema
 from sqlalchemy import Query
 
-from zookeepr.model import Person, ProposalType
+from zookeepr.model import Person, ProposalType, Stream
 
 class BaseSchema(schema.Schema):
     allow_extra_fields = True
@@ -51,3 +51,17 @@ class FileUploadValidator(validators.FancyValidator):
             content = value
         return dict(filename=filename,
                     content=content)
+
+
+class StreamValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Query(Stream).get(value)
+
+
+class ReviewSchema(schema.Schema):
+    familiarity = validators.Int()
+    technical = validators.Int()
+    experience = validators.Int()
+    coolness = validators.Int()
+    stream = StreamValidator()
+    comment = validators.String()
