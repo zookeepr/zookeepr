@@ -295,42 +295,21 @@ Please enter any requirements if necessary; access requirements, etc.
 </p>
 
 <p>
-<span class="mandatory">*</span>
 <label for="registration.miniconfs">Prefered miniconfs:</label>
+
+# FIXME: CLEARLY this needs to be dynamic
+
+% for mc in ['Debian', 'Embedded', 'Education', 'FOSS in Research', 'FOSS in Movies', 'Gaming', 'GNOME', 'Kernel', 'Linuxchix', 'MySQL', 'OpenOffice.org', 'PostgreSQL', 'Virtualisation']:
+% 	l = 'registration.mc_%s' % mc.replace(' ', '_')
 <br />
-#<% h.check_box('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
+<% h.check_box(l) %>
+<label for="<% l %>"><% mc %></label>
+% #endfor
+
+<br />
 <span class="fielddesc">
 Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
 </span>
-
-<h5>Monday</h5>
-<INPUT type="checkbox">Embedded Miniconf
-<br />
-<INPUT type="checkbox">Virtualisation Miiconf
-<br />
-<INPUT type="checkbox">MySQL Miniconf
-<br />
-<INPUT type="checkbox">FOSS in Research Miniconf
-<br />
-<INPUT type="checkbox">FOSS in the Movies Miniconf
-<h5>Tuesday</h5>
-<br />
-<INPUT type="checkbox">Gaming Miniconf
-<br />
-<INPUT type="checkbox">Kernel Miniconf
-<br />
-<INPUT type="checkbox">PostgreSQL Miniconf
-<br />
-<INPUT type="checkbox">OpenOffice.org Miniconf
-<br />
-<INPUT type="checkbox">Linuxchix Miniconf
-<h5>Both Monday and Tuesday</h5>
-
-<INPUT type="checkbox">Debian Miniconf
-<br />
-<INPUT type="checkbox">GNOME
-<br />
-<INPUT type="checkbox">Education
 </p>
 
 <p>
