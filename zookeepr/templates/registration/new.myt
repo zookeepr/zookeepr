@@ -147,36 +147,6 @@ Other: <INPUT type="text">
 
 </fieldset>
 
-<fieldset id="partners">
-<h4>Partners Programme</h4>
-
-<p>
-<label for="registration.partneremail">Your partner's email address:</label>
-<% h.text_field('registration.partneremail', size=50) %>
-<br />
-<span class="fielddesc">
-If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.
-</span>
-</p>
-
-<p>
-<label for="registration.children">Are you bringing children?</label>
-<br />
-<label for="registration.kids_0_3">This many under 3 year olds:</label>
-<% h.text_field('registration.kids_0_3', size=10) %>
-<br />
-<label for="registration.kids_4_6">This many 4-6 year olds:</label>
-<% h.text_field('registration.kids_4_6', size=10) %>
-<br />
-<label for="registration.kids_7_9">This many 7-9 year olds:</label>
-<% h.text_field('registration.kids_7_9', size=10) %>
-<br />
-<label for="registration.kids_10">This many aged 10 or above:</label>
-<% h.text_field('registration.kids_10', size=10) %>
-<br />
-</p>
-</fieldset>
-
 <fieldset id="registration">
 <h4>Conference Information</h4>
 
@@ -325,6 +295,36 @@ selected
 ><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
 % #endfor
 </select>
+</p>
+</fieldset>
+
+<fieldset id="partners">
+<h4>Partners Programme</h4>
+
+<p>
+<label for="registration.partneremail">Your partner's email address:</label>
+<% h.text_field('registration.partneremail', size=50) %>
+<br />
+<span class="fielddesc">
+If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.
+</span>
+</p>
+
+<p>
+<label for="registration.children">Are you bringing children?</label>
+<br />
+<label for="registration.kids_0_3">This many under 3 year olds:</label>
+<% h.text_field('registration.kids_0_3', size=10) %>
+<br />
+<label for="registration.kids_4_6">This many 4-6 year olds:</label>
+<% h.text_field('registration.kids_4_6', size=10) %>
+<br />
+<label for="registration.kids_7_9">This many 7-9 year olds:</label>
+<% h.text_field('registration.kids_7_9', size=10) %>
+<br />
+<label for="registration.kids_10">This many aged 10 or above:</label>
+<% h.text_field('registration.kids_10', size=10) %>
+<br />
 </p>
 </fieldset>
 
