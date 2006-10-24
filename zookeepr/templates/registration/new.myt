@@ -228,10 +228,16 @@ selected
 
 <p>
 <span class="mandatory">*</span>
-I'd like to choose the 
-<% h.select('registration.type', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-<label for="registration.type">registration</label>.
-Check the <% h.link_to('registration page', url="Registration") %> for full details on each ticket.
+<label for="registration.type">What class of ticket do you want?</label>
+<br />
+% for t in ['Professional', 'Hobbyist', 'Student']:
+<input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
+<label for="registration.type_<% t %>"><% t %></label>
+<br />
+% #endfor
+<span class="fielddesc">
+Check the <% h.link_to('registration page', url="/Registration") %> for full details on each ticket.
+</span>
 </p>
 
 <p>
