@@ -275,7 +275,7 @@ Open Day is open to friends and family, and is targetted to a non-technical audi
 
 
 <p>
-Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommodation</a> page before committing to any accommodation choices.
+Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=True) page before committing to any accommodation choices.
 </p>
 
 <p>
@@ -325,7 +325,7 @@ selected
 <% h.text_field('registration.partneremail', size=50) %>
 <br />
 <span class="fielddesc">
-If you are planning on bringing your partner, please enter their email address here so that our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
+If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
 </span>
 </p>
 
