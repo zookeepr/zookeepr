@@ -3,47 +3,51 @@ from formencode.schema import Schema
 
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Create
+from zookeepr.lib.crud import Create, List
 from zookeepr.lib.validators import BaseSchema
 
 class RegistrationSchema(Schema):
-    rego_type = validators.String()
-    miniconfs = validators.String()
-    dinner_tickets = validators.Int()
-    diet = validators.String()
-    tee_size = validators.String()
-    open_day_visitors = validators.Int()
-
-    address1 = validators.String()
+    address1 = validators.String(not_empty=True)
     address2 = validators.String()
-    city = validators.String()
+    city = validators.String(not_empty=True)
     state = validators.String()
-    country = validators.String()
-    postcode = validators.String()
+    country = validators.String(not_empty=True)
+    postcode = validators.String(not_empty=True)
+
+    company = validators.String()
 
     shell = validators.String()
+    shelltext = validators.String()
     editor = validators.String()
+    editorstring = validators.String()
     distro = validators.String()
+    distrostring = validators.String()
 
-    prev_lca = validators.String()
-    keysigning = validators.StringBoolean()
+    prevlca = validators.Set()
 
-    partner = validators.StringBoolean()
-    partner_email = validators.String()
-    children_0_3 = validators.Int()
-    children_4_6 = validators.Int()
-    children_7_9 = validators.Int()
-    children_10 = validators.Int()
+    type = validators.String(not_empty=True)
+    discount = validators.String()
+
+    teesize = validators.String(not_empty=True)
+    dinner = validators.Int()
+    diet = validators.String()
+    special = validators.String()
+    miniconf = validators.Set()
+    opendaydrag = validators.Int()
+
+    partneremail = validators.String()
+    kids_0_3 = validators.Int()
+    kids_4_6 = validators.Int()
+    kids_7_9 = validators.Int()
+    kids_10 = validators.Int()
 
     accommodation = validators.String()
-    accommodation_start = validators.String()
-    accommodation_end = validators.String()
+    checkin = validators.Int()
+    checkout = validators.Int()
 
-    la_membership = validators.StringBoolean()
-    lca_announce_list = validators.StringBoolean()
-    lca_attendees_list = validators.StringBoolean()
-
-    discount_code = validators.String()
+    lasignup = validators.Bool()
+    announcesignup = validators.Bool()
+    delegatessignup = validators.Bool()
 
 class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
@@ -58,7 +62,7 @@ class NewRegistrationSchema(BaseSchema):
 
     pre_validators = [variabledecode.NestedVariables]
     
-class RegistrationController(BaseController, Create):
+class RegistrationController(BaseController, Create, List):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
