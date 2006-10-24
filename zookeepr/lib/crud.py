@@ -52,14 +52,19 @@ class Create(CRUDBase):
         errors = {}
         defaults = dict(request.POST)
 
+        print "d", defaults
+
         if request.method == 'POST' and defaults:
             result, errors = self.schemas['new'].validate(defaults)
 
+            print "r,e", result, errors
+            
             if not errors:
                 self.obj = self.model()
                 # make new_object accessible to the template
                 setattr(c, model_name, self.obj)
                 # update the new object with the form data
+                print result
                 for k in result[model_name]:
                     setattr(self.obj, k, result[model_name][k])
 
