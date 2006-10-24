@@ -83,12 +83,11 @@ Your display name will be used to identify you on the website.
 <% h.text_field('registration.address2', size=40) %>
 <br />
 <span class="mandatory">*</span>
-<label for="registration.city">Suburb:</label>
+<label for="registration.city">City/Suburb:</label>
 <br />
 <% h.text_field('registration.city', size=40) %>
 <br />
-<span class="mandatory">*</span>
-<label for="registration.state">State:</label>
+<label for="registration.state">State/Province:</label>
 <br />
 <% h.text_field('registration.state', size=40) %>
 <br />
@@ -98,7 +97,7 @@ Your display name will be used to identify you on the website.
 <% h.text_field('registration.country', size=40) %>
 <br />
 <span class="mandatory">*</span>
-<label for="registration.postcode">Postcode:</label>
+<label for="registration.postcode">Postcode/ZIP:</label>
 <br />
 <% h.text_field('registration.postcode', size=40) %>
 </p>
