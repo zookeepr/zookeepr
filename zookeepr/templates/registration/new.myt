@@ -241,6 +241,11 @@ Check the <% h.link_to('registration page', url="/Registration") %> for full det
 </p>
 
 <p>
+<label for="registration.discount">Discount Code:</label>
+<% h.text_field('registration.discount') %>
+</p>
+
+<p>
 <span class="mandatory">*</span>
 <label>Teeshirt Size:</label>
 <table>
@@ -340,12 +345,6 @@ Open Day is open to friends and family, and is targetted to a non-technical audi
 <label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
 <INPUT type="checkbox">
 </p>
-
-<p>
-<label for="registration.discount">Discount codes</label> - enter the special discount code if you have one.<br />
-<INPUT type="text">
-</p>
-
 
 <p>
 <span class="mandatory">*</span> - Mandatory field
