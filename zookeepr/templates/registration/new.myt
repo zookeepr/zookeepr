@@ -1,3 +1,7 @@
+<%init>
+import datetime
+</%init>
+
 <h3>Register for the conference</h3>
 
 <p>
@@ -9,7 +13,7 @@ If you've already got an account (through a prior registration, or other interac
 <% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
-<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+#<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url()) %>
 
 <fieldset id="person">
@@ -190,14 +194,22 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 </p>
 
 <p>
-<label for="registration.accommodationdays">I'd like accommodation on the following days:</label>
-<br />
-<INPUT type="checkbox">Sunday
-<INPUT type="checkbox">Monday
-<INPUT type="checkbox">Tuesday
-<INPUT type="checkbox">Wednesday
-<INPUT type="checkbox">Thursday
-<INPUT type="checkbox">Friday
+<label for="registration.accommodation_start">I'd like accommodation from</label>
+<select name="registration.accommodation_start">
+% for d in range(14, 21):
+<option><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
+% #endfor
+</select>
+<label for="registation.accommodation_end">until</label>
+<select name="registration.accommodation_end">
+% for d in range(14, 21):
+<option 
+% 	if d == 20:
+selected
+% 	#endif
+><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
+% #endfor
+</select>
 </p>
 </fieldset>
 
@@ -345,7 +357,7 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 <% h.submit("Register me!") %>
 
 <% h.end_form() %>
-</&>
+#</&>
 
 <%args>
 defaults
