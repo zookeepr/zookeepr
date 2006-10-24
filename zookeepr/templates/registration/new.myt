@@ -228,7 +228,7 @@ selected
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.type">What class of ticket do you want?</label>
+<label for="registration.type">What type of ticket do you want?</label>
 <br />
 % for t in ['Professional', 'Hobbyist', 'Student']:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
