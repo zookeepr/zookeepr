@@ -42,8 +42,8 @@ class RegistrationSchema(Schema):
     kids_10 = validators.Int()
 
     accommodation = validators.String()
-    checkin = validators.String()
-    checkout = validators.String()
+    checkin = validators.Int()
+    checkout = validators.Int()
 
     lasignup = validators.Bool()
     announcesignup = validators.Bool()

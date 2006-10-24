@@ -298,7 +298,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <label for="registration.checkin">Check in on:</label>
 <select name="registration.checkin">
 % for d in range(14, 20):
-<option><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
+<option value="<% d %>"><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
 % #endfor
 </select>
 </p>
@@ -308,7 +308,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <label for="registation.checkout">Check out on:</label>
 <select name="registration.checkout">
 % for d in range(15, 21):
-<option 
+<option value="<% d %>"
 % 	if d == 20:
 selected
 % 	#endif
@@ -383,7 +383,7 @@ import datetime
 
 # work around bug in formencode, set defaults
 if not defaults:
-	defaults = {'registration.checkout': 'Saturday, 20 Jan',
+	defaults = {'registration.checkout': '20',
 		'registration.lasignup': '1',
 		'registration.announcesignup': '1',
 		}
