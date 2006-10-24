@@ -1,7 +1,3 @@
-<%init>
-import datetime
-</%init>
-
 <h3>Register for the conference</h3>
 
 <p>
@@ -13,7 +9,7 @@ If you've already got an account (through a prior registration, or other interac
 <% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
-#<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url()) %>
 
 <fieldset id="person">
@@ -300,8 +296,8 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.accommodation_start">Check in on:</label>
-<select name="registration.accommodation_start">
+<label for="registration.checkin">Check in on:</label>
+<select name="registration.checkin">
 % for d in range(14, 20):
 <option><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
 % #endfor
@@ -310,8 +306,8 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 
 <p>
 <span class="mandatory">*</span>
-<label for="registation.accommodation_end">Check out on:</label>
-<select name="registration.accommodation_end">
+<label for="registation.checkout">Check out on:</label>
+<select name="registration.checkout">
 % for d in range(15, 21):
 <option 
 % 	if d == 20:
@@ -358,17 +354,17 @@ If you are planning on bringing your partner, please enter their email address h
 
 <p>
 <label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
-<INPUT type="checkbox" checked>
+<% h.check_box('registration.lasignup') %>
 </p>
 
 <p>
 <label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
-<INPUT type="checkbox" checked>
+<% h.check_box('registration.announcesignup') %>
 </p>
 
 <p>
 <label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
-<INPUT type="checkbox">
+<% h.check_box('registration.delegatesignup') %>
 </p>
 
 </fieldset>
@@ -376,9 +372,21 @@ If you are planning on bringing your partner, please enter their email address h
 <% h.submit("Register me!") %>
 
 <% h.end_form() %>
-#</&>
+</&>
 
 <%args>
 defaults
 errors
 </%args>
+
+<%init>
+import datetime
+
+# work around bug in formencode, set defaults
+if not defaults:
+	defaults = {'registration.checkout': 'Saturday, 20 Jan',
+		'registration.lasignup': '1',
+		'registration.announcesignup': '1',
+		}
+</%init>
+
