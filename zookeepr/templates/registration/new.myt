@@ -186,8 +186,8 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.accommodation">I would like the following accommodation:</label>
-<SELECT>
+<label for="registration.accommodation">Please pick the college would you like to stay at:</label>
+<SELECT name="registration.accommodation">
 <option>I will organise my own</option>
 <option>New College - no breakfast $49.50</option>
 <option>New College - $55.00</option>
@@ -199,13 +199,18 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 </p>
 
 <p>
-<label for="registration.accommodation_start">I'd like accommodation from</label>
+<span class="mandatory">*</span>
+<label for="registration.accommodation_start">Check in on:</label>
 <select name="registration.accommodation_start">
 % for d in range(14, 21):
 <option><% datetime.datetime(2007, 01, d).strftime('%A, %d %b') %></option>
 % #endfor
 </select>
-<label for="registation.accommodation_end">until</label>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registation.accommodation_end">Check out on:</label>
 <select name="registration.accommodation_end">
 % for d in range(14, 21):
 <option 
