@@ -279,12 +279,12 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 </p>
 
 <p>
-<label for="registration.special">Special requirements</label>
+<label for="registration.special">Other special requirements</label>
 <br />
 <% h.text_field('registration.special', size=100) %>
 <br />
 <span class="fielddesc">
-Please enter any requirements; dietary, access requirements, or otherwise.
+Please enter any requirements if necessary; access requirements, etc.
 </span>
 </p>
 
