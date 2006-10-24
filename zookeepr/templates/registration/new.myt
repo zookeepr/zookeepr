@@ -165,9 +165,10 @@ Other: <INPUT type="text">
 <span class="mandatory">*</span>
 <label for="registration.type">What type of ticket do you want?</label>
 <br />
-% for t in ['Professional', 'Hobbyist', 'Student']:
+# FIXME: dynamic content
+% for (t, p, eb) in [('Professional', '670.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
-<label for="registration.type_<% t %>"><% t %></label>
+<label for="registration.type_<% t %>"><% t %> - $<% p %> ($<% eb %> earlybird)</label>
 <br />
 % #endfor
 <span class="fielddesc">
