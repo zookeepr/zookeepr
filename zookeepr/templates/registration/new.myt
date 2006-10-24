@@ -313,8 +313,12 @@ Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> p
 </p>
 
 <p>
-<label for="registration.opendaydrag">I'm dragging this many people along to <% h.link_to("Open Day", url="OpenDay") %>:</label>
-<INPUT type="text">
+<label for="registration.opendaydrag">How many people are you bringing to <% h.link_to("Open Day", url="/OpenDay") %>:</label>
+<% h.text_field('registration.opendaydrag', size=10) %>
+<br />
+<span class="fielddesc">
+Open Day is open to friends and family, and is targetted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.
+</span>
 </p>
 
 </fieldset>
