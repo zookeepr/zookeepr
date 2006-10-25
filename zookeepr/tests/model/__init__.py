@@ -1,4 +1,4 @@
-import sys
+import warnings
 
 import sqlalchemy.mods.threadlocal
 from sqlalchemy import objectstore, Query
@@ -15,7 +15,7 @@ class ModelTestGenerator(type):
     """
     def __init__(cls, name, bases, classdict):
         if 'domain' not in classdict:
-            print >>sys.stderr, "warning: no domain attribute found in %s" % name
+            warnings.warn("warning: no domain attribute found in %s" % name)
         else:
             monkeypatch(cls, 'test_crud', 'crud')
 
@@ -148,7 +148,7 @@ class TableTestGenerator(type):
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
         if 'table' not in classdict:
-            print >>sys.stderr, "warning: no table attribute found in %s" % name
+            warnings.warn("warning: no table attribute found in %s" % name)
         else:
             monkeypatch(mcs, 'test_insert', 'insert')
             
