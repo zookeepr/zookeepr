@@ -1,5 +1,6 @@
 import md5
 import os
+import warnings
 
 from paste.deploy import loadapp
 from paste.fixture import TestApp
@@ -26,7 +27,9 @@ class ControllerTestGenerator(type):
         type.__init__(mcs, name, bases, classdict)
 
         # patch if we have a model defined
-        if 'model' in classdict:
+        if 'model' not in classdict:
+            warnings.warn("no model attribute in %s" % name, stacklevel=2)
+        else:
             for t in ['create', 'edit', 'delete',
                       'invalid_get_on_edit',
                       'invalid_get_on_delete',

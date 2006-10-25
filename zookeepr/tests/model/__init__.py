@@ -15,7 +15,7 @@ class ModelTestGenerator(type):
     """
     def __init__(cls, name, bases, classdict):
         if 'domain' not in classdict:
-            warnings.warn("no domain attribute found in %s" % name)
+            warnings.warn("no domain attribute found in %s" % name, stacklevel=2)
         else:
             monkeypatch(cls, 'test_crud', 'crud')
 
@@ -148,7 +148,7 @@ class TableTestGenerator(type):
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
         if 'table' not in classdict:
-            warnings.warn("no table attribute found in %s" % name)
+            warnings.warn("no table attribute found in %s" % name, stacklevel=2)
         else:
             monkeypatch(mcs, 'test_insert', 'insert')
             
