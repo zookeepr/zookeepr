@@ -1,3 +1,5 @@
+import sys
+
 import sqlalchemy.mods.threadlocal
 from sqlalchemy import objectstore, Query
 
@@ -143,7 +145,9 @@ class TableTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
-        if 'table' in classdict:
+        if 'table' not in classdict:
+            print >>sys.stderr, "warning: no table attribute found in %s" % name
+        else:
             monkeypatch(mcs, 'test_insert', 'insert')
             
             for k in ['not_nullable', 'unique']:
