@@ -14,7 +14,9 @@ class ModelTestGenerator(type):
     written to do common model tests, thus improving TDD!
     """
     def __init__(cls, name, bases, classdict):
-        if 'domain' in classdict:
+        if 'domain' not in classdict:
+            print >>sys.stderr, "warning: no domain attribute found in %s" % name
+        else:
             monkeypatch(cls, 'test_crud', 'crud')
 
 
