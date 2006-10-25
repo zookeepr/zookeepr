@@ -6,7 +6,7 @@ class TestRegistrationTable(TableTest):
     This table stores registration details.
     """
     table = model.registration.tables.registration
-    samples = [dict(account_id=1,
+    samples = [dict(
                     address1='a11',
                     address2='a12',
                     city='city1',
@@ -39,7 +39,7 @@ class TestRegistrationTable(TableTest):
                     announcesignup=1,
                     delegatesignup=1,
                     ),
-               dict(account_id=2,
+               dict(
                     address1='a21',
                     address2='a22',
                     city='city2',

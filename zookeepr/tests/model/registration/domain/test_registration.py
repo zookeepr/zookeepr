@@ -1,14 +1,8 @@
 from zookeepr.tests.model import *
 
 class TestRegistration(ModelTest):
-
-    def test_create(self):
-        self.domain = model.registration.Registration
-
-        self.check_empty_session()
-
-        r = model.registration.Registration(
-            address1='a1',
+    domain = model.registration.Registration
+    samples = [dict(address1='a1',
             address2='a2',
             city='city',
             state='state1',
@@ -39,11 +33,4 @@ class TestRegistration(ModelTest):
             lasignup=1,
             announcesignup=1,
             delegatesignup=1,
-            )
-
-        objectstore.save(r)
-        objectstore.flush()
-
-        
-        
-        self.fail("broken")
+            )]
