@@ -8,8 +8,6 @@ class TestRegistration(ModelTest):
         self.check_empty_session()
 
         r = model.registration.Registration(
-            email_address='snuh',
-            
             address1='a1',
             address2='a2',
             city='city',
