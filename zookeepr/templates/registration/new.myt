@@ -218,7 +218,7 @@ Female:
 </SELECT>
 <br />
 <span class="fielddesc">
-Professional delegates already have one dinner ticket included in their registration.
+The Penguin Dinner is included in the price of a Professional delegate ticket.  Concession and Hobbyist delegates will need to purchase a Penguin Dinner ticket if they wish to attend.
 </span>
 </p>
 
