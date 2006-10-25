@@ -5,7 +5,7 @@ class TestRegistrationTable(TableTest):
 
     This table stores registration details.
     """
-    tables = model.registration.tables.registration
+    table = model.registration.tables.registration
     samples = [dict(address1='a11',
                     address2='a12',
                     city='city1',
