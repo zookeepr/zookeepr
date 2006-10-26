@@ -2,6 +2,7 @@ import md5
 import os
 import warnings
 
+from formencode import variabledecode
 from paste.deploy import loadapp
 from paste.fixture import TestApp
 from routes import url_for
@@ -103,11 +104,17 @@ class ControllerTest(TestBase):
             self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
     def form_params(self, params):
-        """Prepend the controller's name to the param dict for use
-        when posting into the form."""
-        result = {}
-        for key in params.keys():
-            result[self.name + '.' + key] = params[key]
+        """Flatten the params dictionary for form posting.
+        
+        like a reverse variabledecode.NestedVariables.  If self.name exists,
+        prepend it onto the params keys.
+        """
+        if hasattr(self, 'name'):
+            prepend = self.name
+        else:
+            prepend = ''
+
+        result = variabledecode.variable_encode(params, prepend)
 
         return result
 
