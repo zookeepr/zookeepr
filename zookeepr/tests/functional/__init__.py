@@ -36,7 +36,8 @@ class ControllerTestGenerator(type):
                       'invalid_get_on_delete',
                       'invalid_get_on_new',
                       'delete_nonexistent']:
-                monkeypatch(mcs, 'test_' + t, t)
+                if 'crud' not in classdict or t in classdict['crud']:
+                    monkeypatch(mcs, 'test_' + t, t)
 
 class ControllerTest(TestBase):
     """Base class for testing CRUD on controller objects.
