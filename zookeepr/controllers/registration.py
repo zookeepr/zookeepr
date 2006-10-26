@@ -76,14 +76,10 @@ class RegistrationController(BaseController, Create):
         errors = {}
         defaults = dict(request.POST)
 
-        print "d", defaults
-
         if defaults:
             results, errors = NewRegistrationSchema().validate(defaults)
 
-            print "r, e", results, errors
-
-            if errors:
+            if errors: #FIXME: make this only print if debug enabled
                 warnings.warn("form validation failed: %s" % errors)
             else:
                 c.registration = model.Registration()
