@@ -133,7 +133,7 @@ class ControllerTest(TestBase):
         print "url", url
         # get the form
         response = self.app.get(url)
-        print response
+        #print response
         form = response.form
 
         # fill it out
@@ -152,8 +152,14 @@ class ControllerTest(TestBase):
         self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
-        for key in self.samples[0].keys():
-            self.check_attribute(os[0], key, self.samples[0][key])
+
+        # dodgy hack
+        params = self.samples[0]
+        if isinstance(params, dict) and hasattr(self, 'param_name'):
+            params = params[self.param_name]
+            print "params", params
+        for key in params.keys():
+            self.check_attribute(os[0], key, params[key])
 
         print os
         objectstore.delete(os[0])
