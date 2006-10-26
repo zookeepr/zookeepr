@@ -1,3 +1,5 @@
+import warnings
+
 from formencode import validators, compound, variabledecode
 from formencode.schema import Schema
 
@@ -73,10 +75,16 @@ class RegistrationController(BaseController, Create, List):
         errors = {}
         defaults = dict(request.POST)
 
+        print "d", defaults
+
         if defaults:
             results, errors = NewRegistrationSchema().validate(defaults)
 
-            if not errors:
+            print "r, e", results, errors
+
+            if errors:
+                warnings.warn("form validation failed: %s" % errors)
+            else:
                 c.registration = model.Registration()
                 c.person = model.Person()
                 for k in result['person']:
