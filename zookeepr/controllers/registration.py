@@ -1,9 +1,11 @@
+import warnings
+
 from formencode import validators, compound, variabledecode
 from formencode.schema import Schema
 
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Create, List
+from zookeepr.lib.crud import Create
 from zookeepr.lib.validators import BaseSchema
 
 class RegistrationSchema(Schema):
@@ -19,23 +21,23 @@ class RegistrationSchema(Schema):
     shell = validators.String()
     shelltext = validators.String()
     editor = validators.String()
-    editorstring = validators.String()
+    editortext = validators.String()
     distro = validators.String()
-    distrostring = validators.String()
+    distrotext = validators.String()
 
-    prevlca = validators.Set()
+    prevlca = validators.Set(if_missing=None)
 
     type = validators.String(not_empty=True)
-    discount = validators.String()
+    discount_code = validators.String()
 
     teesize = validators.String(not_empty=True)
     dinner = validators.Int()
     diet = validators.String()
     special = validators.String()
-    miniconf = validators.Set()
+    miniconf = validators.Set(if_missing=None)
     opendaydrag = validators.Int()
 
-    partneremail = validators.String()
+    partner_email = validators.String()
     kids_0_3 = validators.Int()
     kids_4_6 = validators.Int()
     kids_7_9 = validators.Int()
@@ -47,7 +49,7 @@ class RegistrationSchema(Schema):
 
     lasignup = validators.Bool()
     announcesignup = validators.Bool()
-    delegatessignup = validators.Bool()
+    delegatesignup = validators.Bool()
 
 class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
@@ -55,6 +57,7 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     fullname = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
+    pre_validators = [validators.FieldsMatch('password', 'password_confirm')]
     
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -62,8 +65,31 @@ class NewRegistrationSchema(BaseSchema):
 
     pre_validators = [variabledecode.NestedVariables]
     
-class RegistrationController(BaseController, Create, List):
+class RegistrationController(BaseController, Create):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
                }
+
+    def new(self):
+
+        errors = {}
+        defaults = dict(request.POST)
+
+        if defaults:
+            results, errors = NewRegistrationSchema().validate(defaults)
+
+            if errors: #FIXME: make this only print if debug enabled
+                warnings.warn("form validation failed: %s" % errors)
+            else:
+                c.registration = model.Registration()
+                c.person = model.Person()
+                for k in results['person']:
+                    setattr(c.person, k, results['person'][k])
+                for k in results['registration']:
+                    setattr(c.registration, k, results['registration'][k])
+
+                c.registration.person = c.person
+
+        return render_response("registration/new.myt", defaults=defaults, errors=errors)
+

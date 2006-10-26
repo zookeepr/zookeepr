@@ -1,11 +1,11 @@
-from sqlalchemy import mapper, join
+from sqlalchemy import mapper, join, relation
 
+from zookeepr.model.core import Person
 from tables import registration
-from zookeepr.model.core.tables import account, person
 from domain import Registration
 
-mapper(Registration, join(join(account, person), registration),
+mapper(Registration, registration,
        properties = {
-    'account_id': [account.c.id, person.c.account_id, registration.c.account_id],
+    'person': relation(Person)
     }
        )
