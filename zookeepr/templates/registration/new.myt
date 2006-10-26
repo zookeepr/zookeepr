@@ -108,9 +108,9 @@ Your display name will be used to identify you on the website.
 # FIXME: dynamic :)
 <label for="registration.shell">Your favourite shell:</label>
 <select name="registration.shell">
-<option>-</option>
+<option value="-">-</option>
 % for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'esh', 'lsh', 'rc', 'smrsh', 'sash', 'pdmenu', 'kiss', 'busybox', 'posh', 'es', 'osh', 'mc', 'XTree Gold']:
-<option><% s %></option>
+<option value="<%s%>"><% s %></option>
 % #endfor
 </SELECT>
 Other: <% h.text_field('registration.shelltext') %>
@@ -119,10 +119,10 @@ Other: <% h.text_field('registration.shelltext') %>
 <p>
 <label for="registration.editor">Your favourite editor:</label>
 <SELECT name="registration.editor">
-<option>-</option>
-<option>vim</option>
-<option>emacs</option>
-<option>gedit</option>
+<option value="-">-</option>
+<option value="vim">vim</option>
+<option value="emacs">emacs</option>
+<option value="gedit">gedit</option>
 </SELECT>
 Other: <% h.text_field('registration.editortext') %>
 </p>
@@ -130,7 +130,7 @@ Other: <% h.text_field('registration.editortext') %>
 <p>
 <label for="registration.distro">Your favourite distro:</label>
 <SELECT name="registration.distro">
-<option>-</option>
+<option value="-">-</option>
 <option>Ubuntu</option>
 <option>Debian</option>
 <option>Fedora</option>
@@ -212,9 +212,9 @@ Female:
 <p>
 <label for="registration.dinner">I'd like this many extra Penguin Dinner Tickets:</label>
 <SELECT id="registration.dinner" name="registration.dinner">
-<option>0</option>
-<option>1</option>
-<option>2</option>
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
 </SELECT>
 <br />
 <span class="fielddesc">
@@ -283,13 +283,13 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <span class="mandatory">*</span>
 <label for="registration.accommodation">What accommodation would you like to stay at:</label>
 <SELECT name="registration.accommodation">
-<option>I will organise my own</option>
-<option>New College - no breakfast $49.50</option>
-<option>New College - $55.00</option>
-<option>Shalom - $60.00</option>
-<option>Shalom - with ensuite $80.00</option>
-<option>International House - no breakfast $35.00</option>
-<option>Warrane - male only $58.50</option>
+<option value="own">I will organise my own</option>
+<option value="newc no breakfast">New College - no breakfast $49.50</option>
+<option value="new">New College - $55.00</option>
+<option value="shalom">Shalom - $60.00</option>
+<option value="shalom ensuite">Shalom - with ensuite $80.00</option>
+<option value="intl">International House - no breakfast $35.00</option>
+<option value="warrane">Warrane - male only $58.50</option>
 </SELECT>
 </p>
 
@@ -386,6 +386,7 @@ if not defaults:
 	defaults = {'registration.checkout': '20',
 		'registration.lasignup': '1',
 		'registration.announcesignup': '1',
+		'registration.dinner': '0',
 		}
 </%init>
 
