@@ -25,7 +25,7 @@ class RegistrationSchema(Schema):
     distro = validators.String()
     distrotext = validators.String()
 
-    prevlca = validators.Set()
+    prevlca = validators.Set(if_missing=None)
 
     type = validators.String(not_empty=True)
     discount_code = validators.String()
@@ -34,7 +34,7 @@ class RegistrationSchema(Schema):
     dinner = validators.Int()
     diet = validators.String()
     special = validators.String()
-    miniconf = validators.Set()
+    miniconf = validators.Set(if_missing=None)
     opendaydrag = validators.Int()
 
     partner_email = validators.String()
@@ -57,6 +57,7 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     fullname = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
+    pre_validators = [validators.FieldsMatch('password', 'password_confirm')]
     
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -87,10 +88,10 @@ class RegistrationController(BaseController, Create, List):
             else:
                 c.registration = model.Registration()
                 c.person = model.Person()
-                for k in result['person']:
-                    setattr(c.person, k, result['person'][k])
-                for k in result['registration']:
-                    setattr(c.registration, k, result['registration'][k])
+                for k in results['person']:
+                    setattr(c.person, k, results['person'][k])
+                for k in results['registration']:
+                    setattr(c.registration, k, results['registration'][k])
 
                 c.registration.person = c.person
 
