@@ -67,3 +67,24 @@ class RegistrationController(BaseController, Create, List):
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
                }
+
+    def new(self):
+
+        errors = {}
+        defaults = dict(request.POST)
+
+        if defaults:
+            results, errors = NewRegistrationSchema().validate(defaults)
+
+            if not errors:
+                c.registration = model.Registration()
+                c.person = model.Person()
+                for k in result['person']:
+                    setattr(c.person, k, result['person'][k])
+                for k in result['registration']:
+                    setattr(c.registration, k, result['registration'][k])
+
+                c.registration.person = c.person
+
+        return render_response("registration/new.myt", defaults=defaults, errors=errors)
+
