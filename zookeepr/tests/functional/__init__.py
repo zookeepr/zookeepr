@@ -141,7 +141,7 @@ class ControllerTest(TestBase):
 
         # now check that the data is in the database
         os = Query(self.model).select()
-        print 'yarr', os
+        print 'objects of type %s in the db: %r' % (self.model.__name__,  os)
         self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
