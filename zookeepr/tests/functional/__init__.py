@@ -191,9 +191,12 @@ class ControllerTest(TestBase):
 
     def make_model_data(self):
         result = {}
-        for key in self.samples[0].keys():
+        params = self.samples[0]
+        if hasattr(self, 'param_name'):
+            params = params[self.param_name]
+        for key in params.keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
-                result[key] = self.samples[0][key]
+                result[key] = params[key]
         return result
 
     def edit(self):
