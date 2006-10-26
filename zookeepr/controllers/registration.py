@@ -19,14 +19,14 @@ class RegistrationSchema(Schema):
     shell = validators.String()
     shelltext = validators.String()
     editor = validators.String()
-    editorstring = validators.String()
+    editortext = validators.String()
     distro = validators.String()
-    distrostring = validators.String()
+    distrotext = validators.String()
 
     prevlca = validators.Set()
 
     type = validators.String(not_empty=True)
-    discount = validators.String()
+    discount_code = validators.String()
 
     teesize = validators.String(not_empty=True)
     dinner = validators.Int()
@@ -35,7 +35,7 @@ class RegistrationSchema(Schema):
     miniconf = validators.Set()
     opendaydrag = validators.Int()
 
-    partneremail = validators.String()
+    partner_email = validators.String()
     kids_0_3 = validators.Int()
     kids_4_6 = validators.Int()
     kids_7_9 = validators.Int()
@@ -47,7 +47,7 @@ class RegistrationSchema(Schema):
 
     lasignup = validators.Bool()
     announcesignup = validators.Bool()
-    delegatessignup = validators.Bool()
+    delegatesignup = validators.Bool()
 
 class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)

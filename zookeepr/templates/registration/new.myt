@@ -109,7 +109,7 @@ Your display name will be used to identify you on the website.
 <label for="registration.shell">Your favourite shell:</label>
 <select name="registration.shell">
 <option>-</option>
-% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'esh', 'lsh', 'rc', 'smrsh', 'sash', 'pdmenu', 'kiss', 'busybox', 'posh', 'es', 'osh', 'mc', 'X-Tree Gold']:
+% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'esh', 'lsh', 'rc', 'smrsh', 'sash', 'pdmenu', 'kiss', 'busybox', 'posh', 'es', 'osh', 'mc', 'XTree Gold']:
 <option><% s %></option>
 % #endfor
 </SELECT>
@@ -124,7 +124,7 @@ Other: <% h.text_field('registration.shelltext') %>
 <option>emacs</option>
 <option>gedit</option>
 </SELECT>
-Other: <% h.text_field('registration.editorstring') %>
+Other: <% h.text_field('registration.editortext') %>
 </p>
 
 <p>
@@ -139,7 +139,7 @@ Other: <% h.text_field('registration.editorstring') %>
 <option>RHEL</option>
 <option>CentOS</option>
 </SELECT>
-Other: <% h.text_field('registration.distrostring') %>
+Other: <% h.text_field('registration.distrotext') %>
 </p>
 
 <p>
@@ -180,8 +180,8 @@ Check the <% h.link_to('registration page', url="/Registration", popup=True) %> 
 </p>
 
 <p>
-<label for="registration.discount">Discount Code:</label>
-<% h.text_field('registration.discount') %>
+<label for="registration.discount_code">Discount Code:</label>
+<% h.text_field('registration.discount_code') %>
 </p>
 
 <p>
@@ -322,8 +322,8 @@ selected
 <h4>Partners Programme</h4>
 
 <p>
-<label for="registration.partneremail">Your partner's email address:</label>
-<% h.text_field('registration.partneremail', size=50) %>
+<label for="registration.partner_email">Your partner's email address:</label>
+<% h.text_field('registration.partner_email', size=50) %>
 <br />
 <span class="fielddesc">
 If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) %> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
@@ -362,8 +362,8 @@ If you are planning on bringing your partner, please enter their email address h
 </p>
 
 <p>
-<% h.check_box('registration.delegatessignup') %>
-<label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
+<% h.check_box('registration.delegatesignup') %>
+<label for="registration.delegatesignup">I want to sign up to the conference attendees mailing list!</label>
 </p>
 
 </fieldset>
