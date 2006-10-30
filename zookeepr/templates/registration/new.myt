@@ -13,29 +13,45 @@ If you've already got an account (through a prior registration, or other interac
 <% h.form(h.url()) %>
 
 <fieldset id="person">
+<h4>Account details</h4>
 
+% if not c.signed_in_person:
 <p>
 <span class="mandatory">*</span> - Mandatory field
 </p>
+% #endif
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.fullname">Your full name:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.fullname | h %>
+% else:
 <br />
 <% h.text_field('person.fullname', size=40) %>
+% #endif
 </p>
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.email_address">Email address:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.email_address | h %>
+% else:
 <br />
 <% h.text_field('person.email_address', size=40) %>
+% #endif
 <br />
 <span class="fielddesc">
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
 </span>
 </p>
 
+% if not c.signed_in_person:
 <p>
 <span class="mandatory">*</span>
 <label for="person.password">Choose a password:</label>
@@ -49,12 +65,19 @@ Your email address will only be used to correspond with you, and is your login n
 <br />
 <% h.password_field("person.password_confirm", size=40) %>
 </p>
+% #endif
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.handle">Display name/handle/nickname:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.handle |h %>
+% else:
 <br />
 <% h.text_field('person.handle', size=40) %>
+% #endif
 <br />
 <span class="fielddesc">
 Your display name will be used to identify you on the website.
@@ -99,6 +122,12 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
+<label for="registration.phone">Phone number:</label>
+<br />
+<% h.text_field('registration.phone') %>
+</p>
+
+<p>
 <label for="registration.company">Company:</label>
 #<br />
 <% h.text_field('registration.company', size=60) %>
@@ -108,9 +137,9 @@ Your display name will be used to identify you on the website.
 # FIXME: dynamic :)
 <label for="registration.shell">Your favourite shell:</label>
 <select name="registration.shell">
-<option>-</option>
-% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'esh', 'lsh', 'rc', 'smrsh', 'sash', 'pdmenu', 'kiss', 'busybox', 'posh', 'es', 'osh', 'mc', 'X-Tree Gold']:
-<option><% s %></option>
+<option value="-">-</option>
+% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'esh', 'lsh', 'rc', 'smrsh', 'sash', 'pdmenu', 'kiss', 'busybox', 'posh', 'es', 'osh', 'mc', 'XTree Gold']:
+<option value="<%s%>"><% s %></option>
 % #endfor
 </SELECT>
 Other: <% h.text_field('registration.shelltext') %>
@@ -119,18 +148,18 @@ Other: <% h.text_field('registration.shelltext') %>
 <p>
 <label for="registration.editor">Your favourite editor:</label>
 <SELECT name="registration.editor">
-<option>-</option>
-<option>vim</option>
-<option>emacs</option>
-<option>gedit</option>
+<option value="-">-</option>
+<option value="vim">vim</option>
+<option value="emacs">emacs</option>
+<option value="gedit">gedit</option>
 </SELECT>
-Other: <% h.text_field('registration.editorstring') %>
+Other: <% h.text_field('registration.editortext') %>
 </p>
 
 <p>
 <label for="registration.distro">Your favourite distro:</label>
 <SELECT name="registration.distro">
-<option>-</option>
+<option value="-">-</option>
 <option>Ubuntu</option>
 <option>Debian</option>
 <option>Fedora</option>
@@ -139,7 +168,7 @@ Other: <% h.text_field('registration.editorstring') %>
 <option>RHEL</option>
 <option>CentOS</option>
 </SELECT>
-Other: <% h.text_field('registration.distrostring') %>
+Other: <% h.text_field('registration.distrotext') %>
 </p>
 
 <p>
@@ -180,8 +209,8 @@ Check the <% h.link_to('registration page', url="/Registration", popup=True) %> 
 </p>
 
 <p>
-<label for="registration.discount">Discount Code:</label>
-<% h.text_field('registration.discount') %>
+<label for="registration.discount_code">Discount Code:</label>
+<% h.text_field('registration.discount_code') %>
 </p>
 
 <p>
@@ -212,13 +241,13 @@ Female:
 <p>
 <label for="registration.dinner">I'd like this many extra Penguin Dinner Tickets:</label>
 <SELECT id="registration.dinner" name="registration.dinner">
-<option>0</option>
-<option>1</option>
-<option>2</option>
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
 </SELECT>
 <br />
 <span class="fielddesc">
-Professional delegates already have one dinner ticket included in their registration.
+The Penguin Dinner is included in the price of a Professional delegate ticket.  Concession and Hobbyist delegates will need to purchase a Penguin Dinner ticket if they wish to attend.
 </span>
 </p>
 
@@ -283,13 +312,13 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <span class="mandatory">*</span>
 <label for="registration.accommodation">What accommodation would you like to stay at:</label>
 <SELECT name="registration.accommodation">
-<option>I will organise my own</option>
-<option>New College - no breakfast $49.50</option>
-<option>New College - $55.00</option>
-<option>Shalom - $60.00</option>
-<option>Shalom - with ensuite $80.00</option>
-<option>International House - no breakfast $35.00</option>
-<option>Warrane - male only $58.50</option>
+<option value="own">I will organise my own</option>
+<option value="newc no breakfast">New College - no breakfast $49.50</option>
+<option value="new">New College - $55.00</option>
+<option value="shalom">Shalom - $60.00</option>
+<option value="shalom ensuite">Shalom - with ensuite $80.00</option>
+<option value="intl">International House - no breakfast $35.00</option>
+<option value="warrane">Warrane - male only $58.50</option>
 </SELECT>
 </p>
 
@@ -322,8 +351,8 @@ selected
 <h4>Partners Programme</h4>
 
 <p>
-<label for="registration.partneremail">Your partner's email address:</label>
-<% h.text_field('registration.partneremail', size=50) %>
+<label for="registration.partner_email">Your partner's email address:</label>
+<% h.text_field('registration.partner_email', size=50) %>
 <br />
 <span class="fielddesc">
 If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) %> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
@@ -362,8 +391,8 @@ If you are planning on bringing your partner, please enter their email address h
 </p>
 
 <p>
-<% h.check_box('registration.delegatessignup') %>
-<label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
+<% h.check_box('registration.delegatesignup') %>
+<label for="registration.delegatesignup">I want to sign up to the conference attendees mailing list!</label>
 </p>
 
 </fieldset>
@@ -386,6 +415,7 @@ if not defaults:
 	defaults = {'registration.checkout': '20',
 		'registration.lasignup': '1',
 		'registration.announcesignup': '1',
+		'registration.dinner': '0',
 		}
 </%init>
 

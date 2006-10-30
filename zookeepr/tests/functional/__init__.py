@@ -1,6 +1,8 @@
 import md5
 import os
+import warnings
 
+from formencode import variabledecode
 from paste.deploy import loadapp
 from paste.fixture import TestApp
 from routes import url_for
@@ -26,13 +28,16 @@ class ControllerTestGenerator(type):
         type.__init__(mcs, name, bases, classdict)
 
         # patch if we have a model defined
-        if 'model' in classdict:
+        if 'model' not in classdict:
+            warnings.warn("no model attribute in %s" % name, stacklevel=2)
+        else:
             for t in ['create', 'edit', 'delete',
                       'invalid_get_on_edit',
                       'invalid_get_on_delete',
                       'invalid_get_on_new',
                       'delete_nonexistent']:
-                monkeypatch(mcs, 'test_' + t, t)
+                if 'crud' not in classdict or t in classdict['crud']:
+                    monkeypatch(mcs, 'test_' + t, t)
 
 class ControllerTest(TestBase):
     """Base class for testing CRUD on controller objects.
@@ -100,11 +105,17 @@ class ControllerTest(TestBase):
             self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
     def form_params(self, params):
-        """Prepend the controller's name to the param dict for use
-        when posting into the form."""
-        result = {}
-        for key in params.keys():
-            result[self.name + '.' + key] = params[key]
+        """Flatten the params dictionary for form posting.
+        
+        like a reverse variabledecode.NestedVariables.  If self.name exists,
+        prepend it onto the params keys.
+        """
+        if hasattr(self, 'name'):
+            prepend = self.name
+        else:
+            prepend = ''
+
+        result = variabledecode.variable_encode(params, prepend)
 
         return result
 
@@ -123,7 +134,7 @@ class ControllerTest(TestBase):
         print "url", url
         # get the form
         response = self.app.get(url)
-        print response
+        #print response
         form = response.form
 
         # fill it out
@@ -138,12 +149,18 @@ class ControllerTest(TestBase):
 
         # now check that the data is in the database
         os = Query(self.model).select()
-        print 'yarr', os
+        print 'objects of type %s in the db: %r' % (self.model.__name__,  os)
         self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
-        for key in self.samples[0].keys():
-            self.check_attribute(os[0], key, self.samples[0][key])
+
+        # dodgy hack
+        params = self.samples[0]
+        if isinstance(params, dict) and hasattr(self, 'param_name'):
+            params = params[self.param_name]
+            print "params", params
+        for key in params.keys():
+            self.check_attribute(os[0], key, params[key])
 
         print os
         objectstore.delete(os[0])
@@ -175,9 +192,12 @@ class ControllerTest(TestBase):
 
     def make_model_data(self):
         result = {}
-        for key in self.samples[0].keys():
+        params = self.samples[0]
+        if hasattr(self, 'param_name'):
+            params = params[self.param_name]
+        for key in params.keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
-                result[key] = self.samples[0][key]
+                result[key] = params[key]
         return result
 
     def edit(self):

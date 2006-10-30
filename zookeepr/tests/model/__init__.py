@@ -1,3 +1,5 @@
+import warnings
+
 import sqlalchemy.mods.threadlocal
 from sqlalchemy import objectstore, Query
 
@@ -12,7 +14,9 @@ class ModelTestGenerator(type):
     written to do common model tests, thus improving TDD!
     """
     def __init__(cls, name, bases, classdict):
-        if 'domain' in classdict:
+        if 'domain' not in classdict:
+            warnings.warn("no domain attribute found in %s" % name, stacklevel=2)
+        else:
             monkeypatch(cls, 'test_crud', 'crud')
 
 
@@ -143,7 +147,9 @@ class TableTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
-        if 'table' in classdict:
+        if 'table' not in classdict:
+            warnings.warn("no table attribute found in %s" % name, stacklevel=2)
+        else:
             monkeypatch(mcs, 'test_insert', 'insert')
             
             for k in ['not_nullable', 'unique']:
