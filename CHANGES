@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.1.18
+------
+
+ * Use dnspython instead of PyDNS for email address validation, as it's
+   easier to install.
+
 0.1.17
 ------
 
