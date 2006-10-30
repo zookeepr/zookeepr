@@ -27,6 +27,7 @@ class RegistrationSchema(Schema):
     editortext = validators.String()
     distro = validators.String()
     distrotext = validators.String()
+    silly_description = validators.String()
 
     prevlca = validators.Set(if_missing=None)
 

@@ -171,6 +171,59 @@ Other: <% h.text_field('registration.editortext') %>
 Other: <% h.text_field('registration.distrotext') %>
 </p>
 
+<%python>
+adjs1 = ["strongly",
+		       "poorly", "bad	ly", "well", "dynamically",
+		       "hastily", "statically", "mysteriously",
+		       "buggily", "extremely", "nicely", "strangely",
+		       "irritatingly", "unquestionably", "clearly",
+		       "plainly", "silently", "abstractly", "validly",
+		       "invalidly", "immutably", "oddly", "disturbingly",
+		       "atonally", "randomly", "amusingly", "widely",
+		       "narrowly", "manually", "automatically", "audibly",
+		       "brilliantly", "independently", "definitively",
+		       "provably", "improbably", "distortingly",
+		       "confusingly"]
+adjs2 = ["invalid", "valid",
+		       "referenced", "dereferenced", "unreferenced",
+		       "illegal", "legal",
+		       "questionable", 
+		       "alternate", "implemented", "unimplemented",
+		       "terminal", "non-terminal",
+		       "static", "dynamic",
+		       "qualified", "unqualified", 
+		       "constant", "variable",
+		       "volatile", "non-volatile",
+		       "abstract", "concrete",
+		       "fungible", "non-fungible",
+		       "untyped", "variable",
+		       "mutable", "immutable",
+		       "sizable", "miniscule",
+		       "perverse", "immovable",
+		       "compressed", "uncompressed",
+		       "surreal", "allegorical"]
+nouns = ["pointer", "structure",
+		       "definition", "declaration", "type", "union",
+		       "coder", "admin", "hacker", "kitten", "mistake",
+		       "conversion", "implementation", "design", "analysis",
+		       "neophyte", "expert", "bundle", "package",
+		       "abstraction", "theorem", "display", "distro",
+		       "restriction", "device", "function", "reference"]
+a1 = random.choice(adjs1)
+a2 = random.choice(adjs2)
+n1 = random.choice(nouns)
+if a1[0] in ['a', 'e', 'i', 'o', 'u']:
+    start = 'an'
+else:
+    start = 'a'
+desc = '%s %s %s %s' % (start, a1, a2, n1)
+</%python>
+<p>
+<label for="registration.silly_description">Description:</label>
+<% desc %>
+<% h.hidden_field('registration.silly_description', value=desc) %>
+</p>
+
 <p>
 <label for="registration.prevlca">Have you attended any previous LCAs?</label>
 
@@ -409,6 +462,7 @@ errors
 
 <%init>
 import datetime
+import random
 
 # work around bug in formencode, set defaults
 if not defaults:

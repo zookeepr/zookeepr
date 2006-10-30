@@ -16,6 +16,7 @@ class Registration(object):
                  editortext=None,
                  distro=None,
                  distrotext=None,
+                 silly_description=None,
                  type=None,
                  discount_code=None,
                  teesize=None,
@@ -49,6 +50,7 @@ class Registration(object):
         self.editortext = editortext
         self.distro = distro
         self.distrotext = distrotext
+        self.silly_description = silly_description
         self.type = type
         self.discount_code = discount_code
         self.teesize = teesize
