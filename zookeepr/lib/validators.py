@@ -104,12 +104,12 @@ class EmailAddress(validators.FancyValidator):
         mxrecs = None
         arecs = None
         try:
-            mxrecs = dns.resolver.query(splitted[1], 'MX')
-            arecs = dns.resolver.query(splitted[1], 'A')
-        except dns.resolver.NoAnswer, e:
-            raise Invalid(self.message('socketError', state, error=e), value, state)
-        if not mxrecs and not arecs:
-            raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
+            domain_exists = dns.resolver.query(splitted[1], 'MX')
+        except dns.resolver.NoAnswer:
+            try:
+                domain_exists = dns.resolver.query(splitted[1], 'A')
+            except dns.resolver.NoAnswer:
+                raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
 
 
     def _to_python(self, value, state):
