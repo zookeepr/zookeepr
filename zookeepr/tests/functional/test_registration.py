@@ -1,3 +1,5 @@
+import re
+
 from paste.fixture import Dummy_smtplib
 
 from zookeepr.tests.functional import *
@@ -88,5 +90,30 @@ class TestSignedInRegistrationController(SignedInControllerTest):
         self.failIf('Missing value' in resp, "form validation failed")
         resp.mustcontain('testguy@example.org')
 
-        self.fail("not really")
+        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from registration")
 
+        message = Dummy_smtplib.existing
+
+        self.assertEqual("testguy@example.org", message.to_addresses)
+
+        # check that the message has the to address in it
+        to_match = re.match(r'^.*To:.*testguy@example.org.*', message.message, re.DOTALL)
+        self.failIfEqual(None, to_match, "to address not in headers")
+
+        # check that the message has the submitter's name
+        name_match = re.match(r'^.*Testguy McTest', message.message, re.DOTALL)
+        self.failIfEqual(None, name_match, "submitter's name not in headers")
+
+        # check that the message was renderered without HTML, i.e.
+        # as a fragment and thus no autohandler crap
+        html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
+        self.failUnlessEqual(None, html_match, "HTML in message!")
+
+        # test that we have a registration
+        regs = Query(model.Registration).select()
+        self.failIfEqual([], regs)
+        self.assertEqual(self.person.id, regs[0].person.id)
+
+        # clean up
+        objectstore.delete(regs[0])
+        objectstore.flush()
