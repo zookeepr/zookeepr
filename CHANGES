@@ -5,6 +5,10 @@ Changes for Zookeepr
 ------
 
  * Added email address validators for the registration schema.
+ * Added email response for registration process.
+ * Store creation timestamp in registrations.
+ * Add phone number to registration form.
+ * Formatting and style changes to registration form.
 
 0.1.16
 ------
