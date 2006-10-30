@@ -13,13 +13,18 @@ If you've already got an account (through a prior registration, or other interac
 <% h.form(h.url()) %>
 
 <fieldset id="person">
+<h4>Account details</h4>
 
+% if not c.signed_in_person:
 <p>
 <span class="mandatory">*</span> - Mandatory field
 </p>
+% #endif
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.fullname">Your full name:</label>
 % if c.signed_in_person:
 <% c.signed_in_person.fullname | h %>
@@ -30,7 +35,9 @@ If you've already got an account (through a prior registration, or other interac
 </p>
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.email_address">Email address:</label>
 % if c.signed_in_person:
 <% c.signed_in_person.email_address | h %>
@@ -61,7 +68,9 @@ Your email address will only be used to correspond with you, and is your login n
 % #endif
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.handle">Display name/handle/nickname:</label>
 % if c.signed_in_person:
 <% c.signed_in_person.handle |h %>
