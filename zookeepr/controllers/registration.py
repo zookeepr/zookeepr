@@ -6,7 +6,7 @@ from formencode.schema import Schema
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Create
-from zookeepr.lib.validators import BaseSchema
+from zookeepr.lib.validators import BaseSchema, EmailAddress
 
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
@@ -37,7 +37,7 @@ class RegistrationSchema(Schema):
     miniconf = validators.Set(if_missing=None)
     opendaydrag = validators.Int()
 
-    partner_email = validators.String()
+    partner_email = EmailAddress(not_empty=True, resolve_domain=True)
     kids_0_3 = validators.Int()
     kids_4_6 = validators.Int()
     kids_7_9 = validators.Int()
@@ -52,7 +52,7 @@ class RegistrationSchema(Schema):
     delegatesignup = validators.Bool()
 
 class PersonSchema(Schema):
-    email_address = validators.String(not_empty=True)
+    email_address = EmailAddress(resolve_domain=True, not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     fullname = validators.String(not_empty=True)
