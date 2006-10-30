@@ -1,3 +1,4 @@
+import smtplib
 import warnings
 
 from formencode import validators, compound, variabledecode
@@ -115,6 +116,11 @@ class RegistrationController(BaseController, Create):
 
                 c.registration.person = c.person
                 objectstore.flush()
+
+                s = smtplib.SMTP("localhost")
+                body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
+                s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
+                s.quit()
                 
                 return render_response('registration/thankyou.myt')
 

@@ -1,3 +1,5 @@
+from paste.fixture import Dummy_smtplib
+
 from zookeepr.tests.functional import *
 
 class TestRegistrationController(ControllerTest):
@@ -45,8 +47,14 @@ class TestRegistrationController(ControllerTest):
                ]
     no_test = ['password_confirm', 'person']
     crud = ['create']
+    
+    def setUp(self):
+        super(TestRegistrationController, self).setUp()
+        Dummy_smtplib.install()
 
     def tearDown(self):
+        Dummy_smtplib.existing.reset()
+
         ps = Query(model.Person).select()
         for p in ps:
             objectstore.delete(p)
@@ -78,5 +86,7 @@ class TestSignedInRegistrationController(SignedInControllerTest):
             f['registration.' + k] = sample_data[k]
         resp = f.submit()
         self.failIf('Missing value' in resp, "form validation failed")
-        resp.mustcontain('polly prissy pants')
+        resp.mustcontain('testguy@example.org')
+
+        self.fail("not really")
 
