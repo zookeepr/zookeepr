@@ -98,7 +98,8 @@ class RegistrationController(BaseController, Create):
                 results, errors = NewRegistrationSchema().validate(defaults)
 
             if errors: #FIXME: make this only print if debug enabled
-                warnings.warn("form validation failed: %s" % errors)
+                if request.environ['paste.config']['app_conf'].get('debug'):
+                    warnings.warn("form validation failed: %s" % errors)
             else:
                 c.registration = model.Registration()
                 for k in results['registration']:
