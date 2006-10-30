@@ -12,6 +12,7 @@ registration = Table('registration',
                      Column('state', String),
                      Column('country', String),
                      Column('postcode', String),
+                     Column('phone', String),
                      Column('company', String),
                      Column('shell', String),
                      Column('shelltext', String),
@@ -38,4 +39,13 @@ registration = Table('registration',
                      Column('announcesignup', Boolean),
                      Column('delegatesignup', Boolean),
                      
+
+                     Column('creation_timestamp', DateTime,
+                        nullable=False,
+                        default=func.current_timestamp()),
+                     Column('last_modification_timestamp', DateTime,
+                        nullable=False,
+                        default=func.current_timestamp(),
+                        onupdate=func.current_timestamp()),
+
                      )

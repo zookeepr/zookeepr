@@ -13,29 +13,45 @@ If you've already got an account (through a prior registration, or other interac
 <% h.form(h.url()) %>
 
 <fieldset id="person">
+<h4>Account details</h4>
 
+% if not c.signed_in_person:
 <p>
 <span class="mandatory">*</span> - Mandatory field
 </p>
+% #endif
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.fullname">Your full name:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.fullname | h %>
+% else:
 <br />
 <% h.text_field('person.fullname', size=40) %>
+% #endif
 </p>
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.email_address">Email address:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.email_address | h %>
+% else:
 <br />
 <% h.text_field('person.email_address', size=40) %>
+% #endif
 <br />
 <span class="fielddesc">
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
 </span>
 </p>
 
+% if not c.signed_in_person:
 <p>
 <span class="mandatory">*</span>
 <label for="person.password">Choose a password:</label>
@@ -49,12 +65,19 @@ Your email address will only be used to correspond with you, and is your login n
 <br />
 <% h.password_field("person.password_confirm", size=40) %>
 </p>
+% #endif
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.handle">Display name/handle/nickname:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.handle |h %>
+% else:
 <br />
 <% h.text_field('person.handle', size=40) %>
+% #endif
 <br />
 <span class="fielddesc">
 Your display name will be used to identify you on the website.
@@ -96,6 +119,12 @@ Your display name will be used to identify you on the website.
 <label for="registration.postcode">Postcode/ZIP:</label>
 <br />
 <% h.text_field('registration.postcode', size=40) %>
+</p>
+
+<p>
+<label for="registration.phone">Phone number:</label>
+<br />
+<% h.text_field('registration.phone') %>
 </p>
 
 <p>
