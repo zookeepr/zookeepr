@@ -21,10 +21,10 @@ If you've already got an account (through a prior registration, or other interac
 <p>
 <span class="mandatory">*</span>
 <label for="person.fullname">Your full name:</label>
-<br />
 % if c.signed_in_person:
 <% c.signed_in_person.fullname | h %>
 % else:
+<br />
 <% h.text_field('person.fullname', size=40) %>
 % #endif
 </p>
@@ -32,10 +32,10 @@ If you've already got an account (through a prior registration, or other interac
 <p>
 <span class="mandatory">*</span>
 <label for="person.email_address">Email address:</label>
-<br />
 % if c.signed_in_person:
 <% c.signed_in_person.email_address | h %>
 % else:
+<br />
 <% h.text_field('person.email_address', size=40) %>
 % #endif
 <br />
@@ -63,10 +63,10 @@ Your email address will only be used to correspond with you, and is your login n
 <p>
 <span class="mandatory">*</span>
 <label for="person.handle">Display name/handle/nickname:</label>
-<br />
 % if c.signed_in_person:
 <% c.signed_in_person.handle |h %>
 % else:
+<br />
 <% h.text_field('person.handle', size=40) %>
 % #endif
 <br />
