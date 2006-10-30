@@ -109,11 +109,11 @@ class RegistrationController(BaseController, Create):
                     for k in results['person']:
                         setattr(c.person, k, results['person'][k])
 
-                    c.registration.person = c.person
                     objectstore.save(c.person)
                 else:
-                    c.registration.person = c.signed_in_person
+                    c.person = c.signed_in_person
 
+                c.registration.person = c.person
                 objectstore.flush()
                 
                 return render_response('registration/thankyou.myt')
