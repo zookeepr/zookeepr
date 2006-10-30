@@ -113,6 +113,12 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
+<label for="registration.phone">Phone number:</label>
+<br />
+<% h.text_field('registration.phone') %>
+</p>
+
+<p>
 <label for="registration.company">Company:</label>
 #<br />
 <% h.text_field('registration.company', size=60) %>

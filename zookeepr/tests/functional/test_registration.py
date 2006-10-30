@@ -14,6 +14,7 @@ class TestRegistrationController(ControllerTest):
                                       state='state1',
                                       country='country1',
                                       postcode='postcode1',
+                                      phone='37',
                                       company='company1',
                                       shelltext='shelltext1',
                                       editortext='editortext1',

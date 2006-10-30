@@ -17,6 +17,8 @@ class RegistrationSchema(Schema):
     country = validators.String(not_empty=True)
     postcode = validators.String(not_empty=True)
 
+    phone = validators.String()
+    
     company = validators.String()
 
     shell = validators.String()
