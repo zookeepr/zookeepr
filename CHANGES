@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.1.17
+------
+
+ * Added email address validators for the registration schema.
+
 0.1.16
 ------
 
