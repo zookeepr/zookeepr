@@ -5,6 +5,7 @@ Dear <% c.person.fullname %>,
 
 Thankyou for registering for linux.conf.au 2007!
 
+% if not c.signed_in_person:
 If you would like to log into the linux.conf.au 2007 site, please
 start by confirming your registration by clicking on the URL
 below:
@@ -15,6 +16,55 @@ http://lca2007.linux.org.au<% h.url_for('acct_confirm', id=id) %>
 
 Once your account has been confirmed, you will be able to log
 into the site with the password you provided with your registration.
+
+% #endif
+Your account details are:
+
+   Ticket: <% c.registration.type %>
+
+<%python>
+if c.registration.teesize.startswith('M'):
+    teesex = 'Mens'
+else:
+    teesex = 'Womens'
+
+teesize = {'S': 'small',
+           'M': 'medium',
+           'L': 'large',
+           'XL': 'X large',
+           'XXL': 'XX large',
+           'XXXL': 'XXX large'}[c.registration.teesize[-1]]
+</%python>
+ Teeshirt: <% teesex %> <% teesize %>
+
+ Extra tickets: <% c.registration.dinner |h %>
+
+ Accommodation: <% c.registration.accommodation %>
+       Checkin: <% c.registration.checkin %>th January
+      Checkout: <% c.registration.checkout %>th January
+
+ Dietary requirements:
+    <% c.registration.diet %>
+
+ Other requirements:
+    <% c.registration.special %>
+
+  Address: <% c.registration.address1 %>
+           <% c.registration.address2 %>
+           <% c.registration.city %>
+           <% c.registration.state %>, <% c.registration.postcode %>
+           <% c.registration.country %>
+    Phone: <% c.registration.phone %>
+  Company: <% c.registration.company %>
+
+    Shell: <% c.registration.shelltext or c.registration.shell %>
+   Editor: <% c.registration.editortext or c.registration.editor %>
+   Distro: <% c.registration.distrotext or c.registration.distro %>
+
+If you want to change your details, please log into the website.
+
+Please note!  You have not yet been invoiced.  Your invoice will be sent
+to you via email when ready.
 
 Thanks again, and have a great day!
 
