@@ -56,7 +56,8 @@ class TestRegistrationController(ControllerTest):
         Dummy_smtplib.install()
 
     def tearDown(self):
-        Dummy_smtplib.existing.reset()
+        if Dummy_smtplib.existing:
+            Dummy_smtplib.existing.reset()
 
         ps = Query(model.Person).select()
         for p in ps:
