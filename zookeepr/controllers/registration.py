@@ -37,7 +37,7 @@ class RegistrationSchema(Schema):
     miniconf = validators.Set(if_missing=None)
     opendaydrag = validators.Int()
 
-    partner_email = EmailAddress(not_empty=True, resolve_domain=True)
+    partner_email = EmailAddress(resolve_domain=True)
     kids_0_3 = validators.Int()
     kids_4_6 = validators.Int()
     kids_7_9 = validators.Int()
@@ -64,12 +64,26 @@ class NewRegistrationSchema(BaseSchema):
     registration = RegistrationSchema()
 
     pre_validators = [variabledecode.NestedVariables]
-    
+
+class ExistingPersonRegoSchema(BaseSchema):
+    registration = RegistrationSchema()
+
+    pre_validators = [variabledecode.NestedVariables]
+
+
 class RegistrationController(BaseController, Create):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
                }
+
+    def __before__(self):
+        if hasattr(super(RegistrationController, self), '__before__'):
+            super(RegistrationController, self).__before__()
+
+        if 'signed_in_person_id' in session:
+            c.signed_in_person = Query(model.Person).get_by(id=session['signed_in_person_id'])
+
 
     def new(self):
 
@@ -77,19 +91,32 @@ class RegistrationController(BaseController, Create):
         defaults = dict(request.POST)
 
         if defaults:
-            results, errors = NewRegistrationSchema().validate(defaults)
+            if c.signed_in_person:
+                results, errors = ExistingPersonRegoSchema().validate(defaults)
+            else:
+                results, errors = NewRegistrationSchema().validate(defaults)
 
             if errors: #FIXME: make this only print if debug enabled
                 warnings.warn("form validation failed: %s" % errors)
             else:
                 c.registration = model.Registration()
-                c.person = model.Person()
-                for k in results['person']:
-                    setattr(c.person, k, results['person'][k])
                 for k in results['registration']:
                     setattr(c.registration, k, results['registration'][k])
+                objectstore.save(c.registration)
 
-                c.registration.person = c.person
+                if not c.signed_in_person:
+                    c.person = model.Person()
+                    for k in results['person']:
+                        setattr(c.person, k, results['person'][k])
+
+                    c.registration.person = c.person
+                    objectstore.save(c.person)
+                else:
+                    c.registration.person = c.signed_in_person
+
+                objectstore.flush()
+                
+                return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 

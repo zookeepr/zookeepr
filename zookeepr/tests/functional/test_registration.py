@@ -52,3 +52,31 @@ class TestRegistrationController(ControllerTest):
             objectstore.delete(p)
         objectstore.flush()
         super(TestRegistrationController, self).tearDown()
+
+class TestSignedInRegistrationController(SignedInControllerTest):
+
+    def test_existing_account_registration(self):
+        """Test that someone with an existing account can register.
+
+        """
+        resp = self.app.get('/registration/new')
+        f = resp.form
+        print f.fields.keys()
+        self.failIf('person.fullname' in f.fields.keys(), "form asking for person details of signed in person")
+        sample_data = dict(address1='a1',
+            city='Sydney',
+            state='NSW',
+            country='Australia',
+            postcode='2001',
+            type='Professional',
+            teesize='M_M',
+            checkin=14,
+            checkout=20,
+            accommodation='own',
+            )
+        for k in sample_data.keys():
+            f['registration.' + k] = sample_data[k]
+        resp = f.submit()
+        self.failIf('Missing value' in resp, "form validation failed")
+        resp.mustcontain('polly prissy pants')
+
