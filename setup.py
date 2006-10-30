@@ -20,6 +20,8 @@ setup(
         "PasteScript>=0.9.8",
         # URL auto_link fixes in 0.2.1
         "WebHelpers>=0.2.1",
+        # DNS for email address validation
+        "dnspython",
     ],
     packages=find_packages(),
     include_package_data=True,

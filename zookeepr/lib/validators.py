@@ -1,7 +1,7 @@
 import cgi
-import socket
+import re
 
-import DNS
+import dns.resolver
 from formencode import Invalid, validators, schema
 from sqlalchemy import Query
 
@@ -69,20 +69,28 @@ class ReviewSchema(schema.Schema):
     comment = validators.String()
 
 
-class EmailAddress(validators.Email):
+class EmailAddress(validators.FancyValidator):
     """Validator for email addresses.
 
     We override the FormEncode Email validator because it doesn't
     allow domains that have A records but no MX, and doesn't like
     'localhost'.
     """
-   
-    # some versions of FormEncode don't have this message
-    messages = {'socketError': 'An error occurred when trying to connect to the server: %(error)s'}
+
+    usernameRE = re.compile(r"^[^ \t\n\r@<>()]+$", re.I)
+    domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$", re.I)
+
+    messages = {
+        'empty': 'Please enter an email address',
+        'noAt': 'An email address must contain a single @',
+        'badUsername': 'The username portion of the email address is invalid (the portion before the @: %(username)s)',
+        'badDomain': 'The domain portion of the email address is invalid (the portion after the @: %(domain)s)',
+        'domainDoesNotExist': 'The domain of the email address does not exist (the portion after the @: %(domain)s)',
+        'socketError': 'An error occurred when trying to connect to the server: %(error)s'
+        }
 
     def __init__(self, *args, **kwargs):
         super(EmailAddress, self).__init__(*args, **kwargs)
-        DNS.Base.DiscoverNameServers()
 
     def validate_python(self, value, state):
         if not value:
@@ -93,11 +101,16 @@ class EmailAddress(validators.Email):
             raise Invalid(self.message('noAt', state), value, state)
         if not self.usernameRE.search(splitted[0]):
             raise Invalid(self.message('badUsername', state, username=splitted[0]), value, state)
+        mxrecs = None
+        arecs = None
         try:
-            mxrecs = DNS.lazy.mxlookup(splitted[1])
-            arecs = DNS.Base.DnsRequest().req(splitted[1]).answers
-        except (socket.error, DNS.Base.DNSError), e:
+            mxrecs = dns.resolver.query(splitted[1], 'MX')
+            arecs = dns.resolver.query(splitted[1], 'A')
+        except dns.resolver.NoAnswer, e:
             raise Invalid(self.message('socketError', state, error=e), value, state)
         if not mxrecs and not arecs:
             raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
 
+
+    def _to_python(self, value, state):
+        return value.strip()
