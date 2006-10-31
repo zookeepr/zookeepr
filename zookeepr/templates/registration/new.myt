@@ -5,32 +5,53 @@ Welcome to the conference registration. Please fill in the form as best you can.
 </p>
 
 <p>
-If you've already got an account, but can't log in, you can
-<% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
+If you've already got an account (through a prior registration, or other interaction with this site), but can't log in, you can try
+<% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url()) %>
 
 <fieldset id="person">
+<h4>Account details</h4>
+
+% if not c.signed_in_person:
 <p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
+% #endif
+
+<p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.fullname">Your full name:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.fullname | h %>
+% else:
 <br />
 <% h.text_field('person.fullname', size=40) %>
+% #endif
 </p>
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.email_address">Email address:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.email_address | h %>
+% else:
 <br />
 <% h.text_field('person.email_address', size=40) %>
+% #endif
 <br />
 <span class="fielddesc">
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
 </span>
 </p>
 
+% if not c.signed_in_person:
 <p>
 <span class="mandatory">*</span>
 <label for="person.password">Choose a password:</label>
@@ -44,12 +65,19 @@ Your email address will only be used to correspond with you, and is your login n
 <br />
 <% h.password_field("person.password_confirm", size=40) %>
 </p>
+% #endif
 
 <p>
+% if not c.signed_in_person:
 <span class="mandatory">*</span>
+% #endif
 <label for="person.handle">Display name/handle/nickname:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.handle |h %>
+% else:
 <br />
 <% h.text_field('person.handle', size=40) %>
+% #endif
 <br />
 <span class="fielddesc">
 Your display name will be used to identify you on the website.
@@ -57,108 +85,13 @@ Your display name will be used to identify you on the website.
 </p>
 </fieldset>
 
-<fieldset id="registration">
-<h4>Conference Information</h4>
-
-<p>
-<label for="registration.special">Special requirements</label>
-<br />
-<% h.text_field('registration.special', size=100) %>
-<br />
-<span class="fielddesc">
-Please enter any requirements; dietary, access requirements, or otherwise.
-</span>
-</p>
-
-<p>
-<span class="mandatory">*</span>
-I'd like to choose the 
-<% h.select('registration.type', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-<label for="registration.type">registration</label>.
-Check the <% h.link_to('registration page', url="Registration") %> for full details on each ticket.
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.miniconfs">Prefered miniconfs:</label>
-<br />
-#<% h.check_box('registration.miniconfs', option_tags=h.options_for_select_from_objects(c.registration, 'name', 'id')) %>
-<span class="fielddesc">
-Please check the <a href="http://lca2007.linux.org.au/Miniconfs">Miniconfs</a> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
-</span>
-
-<h5>Monday</h5>
-<INPUT type="checkbox">Embedded Miniconf
-<br />
-<INPUT type="checkbox">Virtualisation Miniconf
-<br />
-<INPUT type="checkbox">MySQL Miniconf
-<br />
-<INPUT type="checkbox">FOSS in Research Miniconf
-<br />
-<INPUT type="checkbox">FOSS in the Movies Miniconf
-<h5>Tuesday</h5>
-<br />
-<INPUT type="checkbox">Gaming Miniconf
-<br />
-<INPUT type="checkbox">Kernel Miniconf
-<br />
-<INPUT type="checkbox">PostgreSQL Miniconf
-<br />
-<INPUT type="checkbox">OpenOffice.org Miniconf
-<br />
-<INPUT type="checkbox">Linuxchix Miniconf
-<h5>Both Monday and Tuesday</h5>
-
-<INPUT type="checkbox">Debian Miniconf
-<br />
-<INPUT type="checkbox">GNOME
-<br />
-<INPUT type="checkbox">Education
-</p>
-
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.dinner">I'd like this many Penguin Dinner Tickets:</label>
-<SELECT id="registration.dinner" name="registration.dinner">
-<option>0</option>
-<option selected>1</option>
-<option>2</option>
-</SELECT>
-<br />
-<span class="fielddesc">
-The Penguin Dinner will be the official close of linux.conf.au 2007 and we strongly encourage people to attend.
- Not only will you have a chance to see who wins the Rusty Wrench Award, but you'll have a chance to drink with your buddies before the next lca.
-</span>
-<br />
-<label for="registration.dinnerpref">Dietary requirements:</label>
-<br />
-<% h.text_field('registration.dinnerpref', size=100) %>
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.type">T-shirt Size:</label>
-<SELECT>
-<option>S</option>
-<option>M</option>
-<option>L</option>
-<option>XL</option>
-<option>XXL</option>
-<option>XXXL</option>
-</SELECT>
-</p>
-
-<p>
-<label for="registration.opendaydrag">I'm dragging this many people along to <% h.link_to("Open Day", url="OpenDay") %>:</label>
-<INPUT type="text">
-</p>
-</fieldset>
-
 <fieldset id="personal">
 
 <h4>Personal Information</h4>
+
+<p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
 
 <p>
 <span class="mandatory">*</span>
@@ -169,12 +102,11 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 <% h.text_field('registration.address2', size=40) %>
 <br />
 <span class="mandatory">*</span>
-<label for="registration.city">Suburb:</label>
+<label for="registration.city">City/Suburb:</label>
 <br />
 <% h.text_field('registration.city', size=40) %>
 <br />
-<span class="mandatory">*</span>
-<label for="registration.state">State:</label>
+<label for="registration.state">State/Province:</label>
 <br />
 <% h.text_field('registration.state', size=40) %>
 <br />
@@ -184,51 +116,115 @@ The Penguin Dinner will be the official close of linux.conf.au 2007 and we stron
 <% h.text_field('registration.country', size=40) %>
 <br />
 <span class="mandatory">*</span>
-<label for="registration.postcode">Postcode:</label>
+<label for="registration.postcode">Postcode/ZIP:</label>
 <br />
 <% h.text_field('registration.postcode', size=40) %>
 </p>
 
 <p>
-<label for="registration.shell">My favourite shell:</label>
-<SELECT>
-<option>Bash</option>
-<option>Zsh</option>
-<option>Ksh</option>
+<label for="registration.phone">Phone number:</label>
+<br />
+<% h.text_field('registration.phone') %>
+</p>
+
+<p>
+<label for="registration.company">Company:</label>
+#<br />
+<% h.text_field('registration.company', size=60) %>
+</p>
+
+<p>
+# FIXME: dynamic :)
+<label for="registration.shell">Your favourite shell:</label>
+<select name="registration.shell">
+<option value="-">-</option>
+% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold']:
+<option value="<%s%>"><% s %></option>
+% #endfor
 </SELECT>
-Other: <INPUT type="text">
+Other: <% h.text_field('registration.shelltext') %>
 </p>
 
 <p>
 <label for="registration.editor">Your favourite editor:</label>
-<SELECT>
-<option>Vim</option>
-<option>Emacs</option>
-<option>Gedit</option>
+<SELECT name="registration.editor">
+<option value="-">-</option>
+% for e in ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed']:
+<option value="<% e %>"><% e %></option>
+% #endfor
 </SELECT>
-Other: <INPUT type="text">
+Other: <% h.text_field('registration.editortext') %>
 </p>
 
 <p>
 <label for="registration.distro">Your favourite distro:</label>
-<SELECT>
-<option>Ubuntu</option>
-<option>Debian</option>
-<option>Fedora</option>
-<option>Mandriva</option>
-<option>Gentoo</option>
-<option>RHEL</option>
-<option>CentOS</option>
-<option></option>
+<SELECT name="registration.distro">
+<option value="-">-</option>
+% for d in ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'RHEL', 'Slackware', 'Ubuntu']:
+<option value="<% d %>"><% d %></option>
+% #endfor
 </SELECT>
-Other: <INPUT type="text">
+Other: <% h.text_field('registration.distrotext') %>
+</p>
+
+<%python>
+adjs1 = ["strongly",
+		       "poorly", "bad	ly", "well", "dynamically",
+		       "hastily", "statically", "mysteriously",
+		       "buggily", "extremely", "nicely", "strangely",
+		       "irritatingly", "unquestionably", "clearly",
+		       "plainly", "silently", "abstractly", "validly",
+		       "invalidly", "immutably", "oddly", "disturbingly",
+		       "atonally", "randomly", "amusingly", "widely",
+		       "narrowly", "manually", "automatically", "audibly",
+		       "brilliantly", "independently", "definitively",
+		       "provably", "improbably", "distortingly",
+		       "confusingly"]
+adjs2 = ["invalid", "valid",
+		       "referenced", "dereferenced", "unreferenced",
+		       "illegal", "legal",
+		       "questionable", 
+		       "alternate", "implemented", "unimplemented",
+		       "terminal", "non-terminal",
+		       "static", "dynamic",
+		       "qualified", "unqualified", 
+		       "constant", "variable",
+		       "volatile", "non-volatile",
+		       "abstract", "concrete",
+		       "fungible", "non-fungible",
+		       "untyped", "variable",
+		       "mutable", "immutable",
+		       "sizable", "miniscule",
+		       "perverse", "immovable",
+		       "compressed", "uncompressed",
+		       "surreal", "allegorical"]
+nouns = ["pointer", "structure",
+		       "definition", "declaration", "type", "union",
+		       "coder", "admin", "hacker", "kitten", "mistake",
+		       "conversion", "implementation", "design", "analysis",
+		       "neophyte", "expert", "bundle", "package",
+		       "abstraction", "theorem", "display", "distro",
+		       "restriction", "device", "function", "reference"]
+a1 = random.choice(adjs1)
+a2 = random.choice(adjs2)
+n1 = random.choice(nouns)
+if a1[0] in ['a', 'e', 'i', 'o', 'u']:
+    start = 'an'
+else:
+    start = 'a'
+desc = '%s %s %s %s' % (start, a1, a2, n1)
+</%python>
+<p>
+<label for="registration.silly_description">Description:</label>
+<% desc %>
+<% h.hidden_field('registration.silly_description', value=desc) %>
 </p>
 
 <p>
 <label for="registration.prevlca">Have you attended any previous LCAs?</label>
 
 % for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)')]:
-%	label = 'registration.prevlca%s' % year
+%	label = 'registration.prevlca.%s' % year
 <br />
 <% h.check_box(label) %>
 <label for="<% label %>"><% desc %></label>
@@ -236,9 +232,167 @@ Other: <INPUT type="text">
 
 </p>
 
+
+</fieldset>
+
+<fieldset id="registration">
+<h4>Conference Information</h4>
+
 <p>
-<label for="registration.keysigning">I'll be attending the keysigning?</label>
-<INPUT type="checkbox">
+<span class="mandatory">*</span> - Mandatory field
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registration.type">What type of ticket do you want?</label>
+<br />
+# FIXME: dynamic content
+% for (t, p, eb) in [('Professional', '670.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
+<input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
+<label for="registration.type_<% t %>"><% t %> - $<% p %> ($<% eb %> earlybird)</label>
+<br />
+% #endfor
+<span class="fielddesc">
+Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for the full details of each ticket.
+</span>
+</p>
+
+<p>
+<label for="registration.discount_code">Discount Code:</label>
+<% h.text_field('registration.discount_code') %>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label>Teeshirt Size:</label>
+<table>
+# FIXME:
+% for sex in ['M', 'F']:
+<tr>
+<td>
+%	if sex == 'M':
+Male:
+%	else:
+Female:
+%	#endif
+</td>
+% 	for size, size_text in [('S', 'Small'), ('M', 'Medium'), ('L', 'Large'), ('XL', 'X Large'), ('XXL', 'XX Large'), ('XXXL', 'XXX Large')]:
+<td>
+<input type="radio" name="registration.teesize" id="registration.teesize_<% sex %>_<% size %>" value="<% sex %>_<% size %>" />
+<label for="registration.teesize_<% sex %>_<% size %>"><% size_text %></label>
+</td>
+% 	#endfor
+</tr>
+% #endfor
+</table>
+</p>
+
+<p>
+<label for="registration.dinner">I'd like this many extra Penguin Dinner Tickets:</label>
+<SELECT id="registration.dinner" name="registration.dinner">
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+</SELECT>
+<br />
+<span class="fielddesc">
+The Penguin Dinner is included in the price of a Professional delegate ticket.  Concession and Hobbyist delegates will need to purchase a Penguin Dinner ticket if they wish to attend.
+</span>
+</p>
+
+<p>
+<label for="registration.diet">Dietary requirements:</label>
+<br />
+<% h.text_field('registration.diet', size=100) %>
+</p>
+
+<p>
+<label for="registration.special">Other special requirements</label>
+<br />
+<% h.text_field('registration.special', size=100) %>
+<br />
+<span class="fielddesc">
+Please enter any requirements if necessary; access requirements, etc.
+</span>
+</p>
+
+<p>
+<label for="registration.miniconfs">Prefered miniconfs:</label>
+
+# FIXME: CLEARLY this needs to be dynamic
+
+% for mc in ['Debian', 'Embedded', 'Education', 'FOSS in Research', 'FOSS in Movies', 'Gaming', 'GNOME', 'Kernel', 'Linuxchix', 'MySQL', 'OpenOffice.org', 'PostgreSQL', 'Virtualisation']:
+% 	l = 'registration.miniconf.%s' % mc.replace(' ', '_')
+<br />
+<% h.check_box(l) %>
+<label for="<% l %>"><% mc %></label>
+% #endfor
+
+<br />
+<span class="fielddesc">
+Please check the <% h.link_to('Miniconfs', url="/Miniconfs", popup=True) %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
+</span>
+</p>
+
+<p>
+<label for="registration.opendaydrag">How many people are you bringing to <% h.link_to("Open Day", url="/OpenDay", popup=True) %>:</label>
+<% h.text_field('registration.opendaydrag', size=10) %>
+<br />
+<span class="fielddesc">
+Open Day is open to friends and family, and is targetted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.
+</span>
+</p>
+
+</fieldset>
+
+<fieldset id="accommodation">
+<h4>Accommodation</h4>
+
+<p>
+<span class="mandatory">*</span> - Mandatory field
+</p>
+
+
+<p>
+Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=True) %> page before committing to any accommodation choices.
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registration.accommodation">What accommodation would you like to stay at:</label>
+<SELECT name="registration.accommodation">
+<option value="own">I will organise my own</option>
+<option value="newc no breakfast">New College - no breakfast $49.50</option>
+<option value="new">New College - $55.00</option>
+<option value="shalom">Shalom - $60.00</option>
+<option value="shalom ensuite">Shalom - with ensuite $80.00</option>
+<option value="intl">International House - no breakfast $35.00</option>
+<option value="warrane">Warrane - male only $58.50</option>
+</SELECT>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registration.checkin">Check in on:</label>
+<select name="registration.checkin">
+% for d in range(14, 20):
+<option value="<% d %>"><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
+% #endfor
+</select>
+</p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="registation.checkout">Check out on:</label>
+<select name="registration.checkout">
+% for d in range(15, 21):
+<option value="<% d %>"
+% 	if d == 20:
+selected
+% 	#endif
+><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
+% #endfor
+</select>
 </p>
 </fieldset>
 
@@ -246,54 +400,29 @@ Other: <INPUT type="text">
 <h4>Partners Programme</h4>
 
 <p>
-<label for="registration.partners">I'll be bringing a partner?</label>
-<INPUT type="checkbox">
-</p>
-<p>
-<label for="registration.partneremail">My partner's email address</label> (so our <a href="http://lca2007.linux.org.au/PartnersProgramme">Partners Programme</a> tsar can contact them!)<br />
-<INPUT type="text">
-</p>
-
-<p>
-<label for="registration.children">I'll be bringing children?</label>
+<label for="registration.partner_email">Your partner's email address:</label>
+<% h.text_field('registration.partner_email', size=50) %>
 <br />
-<label for="registration.kids0-5">This many 0-3 year olds:</label><INPUT type="text"><br />
-<label for="registration.kids0-5">This many 4-6 year olds:</label><INPUT type="text"><br />
-<label for="registration.kids0-5">This many 7-9 year olds:</label><INPUT type="text"><br />
-<label for="registration.kids0-5">This many 10 or above:</label><INPUT type="text"><br />
-</p>
-</fieldset>
-
-<fieldset id="accommodation">
-<h4>Accommodation</h4>
-
-<p>
-Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommodation</a> page before committing to any accommodation choices.
+<span class="fielddesc">
+If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) %> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
+</span>
 </p>
 
 <p>
-<span class="mandatory">*</span>
-<label for="registration.accommodation">I would like the following accommodation:</label>
-<SELECT>
-<option>I will organise my own</option>
-<option>New College - no breakfast $49.50</option>
-<option>New College - $55.00</option>
-<option>Shalom - $60.00</option>
-<option>Shalom - with ensuite $80.00</option>
-<option>International House - no breakfast $35.00</option>
-<option>Warrane - male only $58.50</option>
-</SELECT>
-</p>
-
-<p>
-<label for="registration.accommodationdays">I'd like accommodation on the following days:</label>
+<label for="registration.children">Are you bringing children?</label>
 <br />
-<INPUT type="checkbox">Sunday
-<INPUT type="checkbox">Monday
-<INPUT type="checkbox">Tuesday
-<INPUT type="checkbox">Wednesday
-<INPUT type="checkbox">Thursday
-<INPUT type="checkbox">Friday
+<label for="registration.kids_0_3">This many under 3 year olds:</label>
+<% h.text_field('registration.kids_0_3', size=10) %>
+<br />
+<label for="registration.kids_4_6">This many 4-6 year olds:</label>
+<% h.text_field('registration.kids_4_6', size=10) %>
+<br />
+<label for="registration.kids_7_9">This many 7-9 year olds:</label>
+<% h.text_field('registration.kids_7_9', size=10) %>
+<br />
+<label for="registration.kids_10">This many aged 10 or above:</label>
+<% h.text_field('registration.kids_10', size=10) %>
+<br />
 </p>
 </fieldset>
 
@@ -301,28 +430,18 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 <h4>Subscriptions</h4>
 
 <p>
+<% h.check_box('registration.lasignup') %>
 <label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
-<INPUT type="checkbox" checked>
 </p>
 
 <p>
+<% h.check_box('registration.announcesignup') %>
 <label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
-<INPUT type="checkbox" checked>
 </p>
 
 <p>
-<label for="registration.delegatessignup">I want to sign up to the conference attendees mailing list!</label>
-<INPUT type="checkbox">
-</p>
-
-<p>
-<label for="registration.discount">Discount codes</label> - enter the special discount code if you have one.<br />
-<INPUT type="text">
-</p>
-
-
-<p>
-<span class="mandatory">*</span> - Mandatory field
+<% h.check_box('registration.delegatesignup') %>
+<label for="registration.delegatesignup">I want to sign up to the conference attendees mailing list!</label>
 </p>
 
 </fieldset>
@@ -336,3 +455,17 @@ Please check out the <a href="http://lca2007.linux.org.au/Accommodation">accommo
 defaults
 errors
 </%args>
+
+<%init>
+import datetime
+import random
+
+# work around bug in formencode, set defaults
+if not defaults:
+	defaults = {'registration.checkout': '20',
+		'registration.lasignup': '1',
+		'registration.announcesignup': '1',
+		'registration.dinner': '0',
+		}
+</%init>
+

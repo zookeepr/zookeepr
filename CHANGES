@@ -1,10 +1,41 @@
 Changes for Zookeepr
 ====================
 
+0.2.1
+-----
+
+ * Add validator to prevent 500 errors when trying to register with an
+   existing account.
+
+0.2
+---
+
+ * The "I think we're ready to take registrations" release.
+ * Add more editors, shells, and distros (and by "add" of course I mean
+   "remove and clean up").
+ * Add the silly description to the registration form.
+ * Store the previous LCA attendance and Miniconf preference data (hackishly
+   but does the job).
+ 
+0.1.18
+------
+
+ * Use dnspython instead of PyDNS for email address validation, as it's
+   easier to install.
+
+0.1.17
+------
+
+ * Added email address validators for the registration schema.
+ * Added email response for registration process.
+ * Store creation timestamp in registrations.
+ * Add phone number to registration form.
+ * Formatting and style changes to registration form.
+
 0.1.16
 ------
 
- * Added registration templates.
+ * Added registration templates, business logic, and stub data model.
 
 0.1.15
 ------

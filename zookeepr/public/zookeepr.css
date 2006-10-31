@@ -195,7 +195,7 @@ input, textarea {
 }
 
 SPAN.fielddesc {
-  font-size: 80%;
+  font-size: small;
   font-style: italic;
 }
 

@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.1.15",
+    version="0.2.1",
     #description="",
     #author="",
     #author_email="",
@@ -20,6 +20,8 @@ setup(
         "PasteScript>=0.9.8",
         # URL auto_link fixes in 0.2.1
         "WebHelpers>=0.2.1",
+        # DNS for email address validation
+        "dnspython",
     ],
     packages=find_packages(),
     include_package_data=True,

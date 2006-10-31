@@ -7,6 +7,22 @@ Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 % #endif
 
 # cool stuff
+
+# flickr feed fragment
+<div id="flickr">
+<div class="inner">
+<% flickr.html >
+</div>
+</div>
+
+# planet feed fragment
+<div id="planet">
+<div class="inner">
+<% planet.html >
+</div>
+</div>
+
+# wiki fragments
 <div id="column-a">
 <div class="inner">
 <% h.wiki_fragment('Blurb') %>
