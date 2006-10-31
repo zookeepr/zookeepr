@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.2.3
+-----
+
+ * Add validation for handle already existing in DB
+
 0.2.2
 -----
 
