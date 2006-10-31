@@ -9,6 +9,16 @@ from zookeepr.lib.base import *
 from zookeepr.lib.crud import Create
 from zookeepr.lib.validators import BaseSchema, EmailAddress
 
+class DictSet(validators.Set):
+    def _from_python(self, value):
+        value = super(DictSet, self)._from_python(value, state)
+        return dict(zip(value, [1]*len(value)))
+        
+    def _to_python(self, value, state):
+        value = value.keys()
+        return super(DictSet, self)._to_python(value, state)
+
+
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
     address2 = validators.String()
@@ -27,8 +37,9 @@ class RegistrationSchema(Schema):
     editortext = validators.String()
     distro = validators.String()
     distrotext = validators.String()
+    silly_description = validators.String()
 
-    prevlca = validators.Set(if_missing=None)
+    prevlca = DictSet(if_missing=None)
 
     type = validators.String(not_empty=True)
     discount_code = validators.String()
@@ -37,7 +48,7 @@ class RegistrationSchema(Schema):
     dinner = validators.Int()
     diet = validators.String()
     special = validators.String()
-    miniconf = validators.Set(if_missing=None)
+    miniconf = DictSet(if_missing=None)
     opendaydrag = validators.Int()
 
     partner_email = EmailAddress(resolve_domain=True)

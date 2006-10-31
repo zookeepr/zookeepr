@@ -16,6 +16,7 @@ class Registration(object):
                  editortext=None,
                  distro=None,
                  distrotext=None,
+                 silly_description=None,
                  type=None,
                  discount_code=None,
                  teesize=None,
@@ -34,6 +35,8 @@ class Registration(object):
                  lasignup=None,
                  announcesignup=None,
                  delegatesignup=None,
+                 prevlca=None,
+                 miniconf=None,
                  ):
         self.address1 = address1
         self.address2 = address2
@@ -49,6 +52,7 @@ class Registration(object):
         self.editortext = editortext
         self.distro = distro
         self.distrotext = distrotext
+        self.silly_description = silly_description
         self.type = type
         self.discount_code = discount_code
         self.teesize = teesize
@@ -67,3 +71,5 @@ class Registration(object):
         self.lasignup = lasignup
         self.announcesignup = announcesignup
         self.delegatesignup = delegatesignup
+        self.prevlca = prevlca
+        self.miniconf = miniconf

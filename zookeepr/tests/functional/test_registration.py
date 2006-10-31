@@ -19,6 +19,7 @@ class TestRegistrationController(ControllerTest):
                                       shelltext='shelltext1',
                                       editortext='editortext1',
                                       distrotext='distrotext1',
+                                      silly_description='foo',
                                       type='Professional',
                                       discount_code='discount_code1',
                                       teesize='M_M',
@@ -39,6 +40,8 @@ class TestRegistrationController(ControllerTest):
                                       distro='-',
                                       shell='-',
                                       accommodation='own',
+                                      prevlca={'99': '1'},
+                                      miniconf={'Debian': '1'},
                                       ),
                     person=dict(email_address='testguy@example.org',
                                 password='test',
@@ -50,6 +53,9 @@ class TestRegistrationController(ControllerTest):
                ]
     no_test = ['password_confirm', 'person']
     crud = ['create']
+    mangles = dict(miniconf = lambda m: m.keys(),
+                prevlca = lambda p: p.keys(),
+                )
     
     def setUp(self):
         super(TestRegistrationController, self).setUp()

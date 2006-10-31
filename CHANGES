@@ -1,6 +1,16 @@
 Changes for Zookeepr
 ====================
 
+0.2
+---
+
+ * The "I think we're ready to take registrations" release.
+ * Add more editors, shells, and distros (and by "add" of course I mean
+   "remove and clean up").
+ * Add the silly description to the registration form.
+ * Store the previous LCA attendance and Miniconf preference data (hackishly
+   but does the job).
+ 
 0.1.18
 ------
 
