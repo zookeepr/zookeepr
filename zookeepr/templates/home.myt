@@ -6,10 +6,16 @@ Welcome, <strong><% c.signed_in_person.firstname %></strong>!
 </p>
 % #endif
 
+# Flickr fragment
+<div id="flickr">
+<& flickr.html &>
+</div>
+
 # cool stuff
 <div id="column-a">
 <div class="inner">
 <% h.wiki_fragment('Blurb') %>
+<& planet.html &>
 </div>
 </div>
 
