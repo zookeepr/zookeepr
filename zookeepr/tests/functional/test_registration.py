@@ -53,6 +53,9 @@ class TestRegistrationController(ControllerTest):
                ]
     no_test = ['password_confirm', 'person']
     crud = ['create']
+    mangles = dict(miniconf = lambda m: m.keys(),
+                prevlca = lambda p: p.keys(),
+                )
     
     def setUp(self):
         super(TestRegistrationController, self).setUp()
