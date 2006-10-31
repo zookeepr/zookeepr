@@ -138,7 +138,7 @@ Your display name will be used to identify you on the website.
 <label for="registration.shell">Your favourite shell:</label>
 <select name="registration.shell">
 <option value="-">-</option>
-% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'esh', 'lsh', 'rc', 'smrsh', 'sash', 'pdmenu', 'kiss', 'busybox', 'posh', 'es', 'osh', 'mc', 'XTree Gold']:
+% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold']:
 <option value="<%s%>"><% s %></option>
 % #endfor
 </SELECT>
@@ -149,9 +149,9 @@ Other: <% h.text_field('registration.shelltext') %>
 <label for="registration.editor">Your favourite editor:</label>
 <SELECT name="registration.editor">
 <option value="-">-</option>
-<option value="vim">vim</option>
-<option value="emacs">emacs</option>
-<option value="gedit">gedit</option>
+% for e in ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed']:
+<option value="<% e %>"><% e %></option>
+% #endfor
 </SELECT>
 Other: <% h.text_field('registration.editortext') %>
 </p>
@@ -160,13 +160,9 @@ Other: <% h.text_field('registration.editortext') %>
 <label for="registration.distro">Your favourite distro:</label>
 <SELECT name="registration.distro">
 <option value="-">-</option>
-<option>Ubuntu</option>
-<option>Debian</option>
-<option>Fedora</option>
-<option>Mandriva</option>
-<option>Gentoo</option>
-<option>RHEL</option>
-<option>CentOS</option>
+% for d in ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'RHEL', 'Slackware', 'Ubuntu']:
+<option value="<% d %>"><% d %></option>
+% #endfor
 </SELECT>
 Other: <% h.text_field('registration.distrotext') %>
 </p>
