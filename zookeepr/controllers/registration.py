@@ -23,7 +23,6 @@ class DictSet(validators.Set):
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         account = Query(model.Person).get_by(email_address=value['email_address'])
-        print "persons found:", account
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
 
