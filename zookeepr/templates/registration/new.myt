@@ -122,7 +122,7 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
-<label for="registration.phone">Phone number:</label>
+<label for="registration.phone">Mobile/Cell number:</label>
 <br />
 <% h.text_field('registration.phone') %>
 </p>
