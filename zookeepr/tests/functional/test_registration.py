@@ -40,6 +40,8 @@ class TestRegistrationController(ControllerTest):
                                       distro='-',
                                       shell='-',
                                       accommodation='own',
+                                      prevlca={'99': '1'},
+                                      miniconf={'Debian': '1'},
                                       ),
                     person=dict(email_address='testguy@example.org',
                                 password='test',
