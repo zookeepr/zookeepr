@@ -1,6 +1,7 @@
 import cgi
 import re
 
+import socket
 from formencode import Invalid, validators, schema
 from sqlalchemy import Query
 
