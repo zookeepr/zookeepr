@@ -19,6 +19,14 @@ class DictSet(validators.Set):
         return super(DictSet, self)._to_python(value, state)
 
 
+# FIXME: merge with account.py controller and move to validators
+class NotExistingAccountValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        account = Query(model.Person).get_by(email_address=value['email_address'])
+        if account is not None:
+            raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
+
+
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
     address2 = validators.String()
@@ -71,8 +79,10 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     fullname = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
-    pre_validators = [validators.FieldsMatch('password', 'password_confirm')]
-    
+
+    chained_validators = [NotExistingAccountValidator(), validators.FieldsMatch('password', 'password_confirm')]
+
+
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
     registration = RegistrationSchema()
