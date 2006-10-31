@@ -19,6 +19,7 @@ class TestRegistrationController(ControllerTest):
                                       shelltext='shelltext1',
                                       editortext='editortext1',
                                       distrotext='distrotext1',
+                                      silly_description='foo',
                                       type='Professional',
                                       discount_code='discount_code1',
                                       teesize='M_M',
