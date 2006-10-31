@@ -1,7 +1,7 @@
 import cgi
 import re
 
-import dns.resolver
+import socket 
 from formencode import Invalid, validators, schema
 from sqlalchemy import Query
 
