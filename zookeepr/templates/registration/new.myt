@@ -5,7 +5,9 @@ Welcome to the conference registration. Please fill in the form as best you can.
 </p>
 
 <p>
-If you've already got an account (through a prior registration, or other interaction with this site), but can't log in, you can try
+If you already have an account (through a prior registration, or other interaction with this site), then please sign in.
+</p>
+<p>If you can't log in, you can try
 <% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
@@ -122,7 +124,7 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
-<label for="registration.phone">Phone number:</label>
+<label for="registration.phone">Mobile/Cell number:</label>
 <br />
 <% h.text_field('registration.phone') %>
 </p>
@@ -447,6 +449,10 @@ If you are planning on bringing your partner, please enter their email address h
 </fieldset>
 
 <% h.submit("Register me!") %>
+<span class="fielddesc">
+If you encounter any problems signing up please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+</span>
+
 
 <% h.end_form() %>
 </&>

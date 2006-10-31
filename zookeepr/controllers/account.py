@@ -54,11 +54,12 @@ class PasswordResetSchema(BaseSchema):
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 
+# FIXME: merge with registration controller validator and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         account = Query(Person).get_by(email_address=value['email_address'])
         if account is not None:
-            raise Invalid("This account already exists.", value, state)
+            raise Invalid("This account already exists.  Please try signing in first.", value, state)
 
 
 class PersonSchema(Schema):

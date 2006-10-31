@@ -28,6 +28,9 @@ def make_app(global_conf, **app_conf):
     config = load_environment()
     config.init_app(global_conf, app_conf, package='zookeepr')
     
+    # Include stuff like flickr into the myghty component root
+    config.myghty['component_root'].append( {'dynamic_html': app_conf['dynamic_html_dir'] })
+
     # Load our default Pylons WSGI app and make g available
     app = pylons.wsgiapp.PylonsApp(config)
     g = app.globals

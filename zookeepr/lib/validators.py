@@ -1,7 +1,7 @@
 import cgi
 import re
 
-import dns.resolver
+import socket
 from formencode import Invalid, validators, schema
 from sqlalchemy import Query
 
@@ -78,7 +78,7 @@ class EmailAddress(validators.FancyValidator):
     """
 
     usernameRE = re.compile(r"^[^ \t\n\r@<>()]+$", re.I)
-    domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$", re.I)
+    domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$|^localhost$", re.I)
 
     messages = {
         'empty': 'Please enter an email address',
@@ -101,13 +101,12 @@ class EmailAddress(validators.FancyValidator):
             raise Invalid(self.message('noAt', state), value, state)
         if not self.usernameRE.search(splitted[0]):
             raise Invalid(self.message('badUsername', state, username=splitted[0]), value, state)
-        mxrecs = None
-        arecs = None
+        if not self.domainRE.search(splitted[1]):
+            raise Invalid(self.message('badDomain', state, domain=splitted[1]), value, state)
         try:
-            domain_exists = dns.resolver.query(splitted[1], 'A')
-        except dns.resolver.NoAnswer:
+            domain_exists = socket.gethostbyname(splitted[1])
+        except socket.gaierror:
             raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
-
 
     def _to_python(self, value, state):
         return value.strip()

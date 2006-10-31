@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.2.1
+-----
+
+ * Add validator to prevent 500 errors when trying to register with an
+   existing account.
+
 0.2
 ---
 
