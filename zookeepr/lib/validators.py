@@ -104,8 +104,8 @@ class EmailAddress(validators.FancyValidator):
         mxrecs = None
         arecs = None
         try:
-            domain_exists = dns.resolver.query(splitted[1], 'A')
-        except dns.resolver.NoAnswer:
+            domain_exists = socket.gethostbyname(splitted[1])
+        except socket.gaierror:
             raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
 
 
