@@ -25,7 +25,7 @@ class NotExistingAccountValidator(validators.FancyValidator):
         account = Query(model.Person).get_by(email_address=value['email_address'])
         print "persons found:", account
         if account is not None:
-            raise Invalid("This account already exists.  Please try signing in first.", value, state)
+            raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
 
 
 class RegistrationSchema(Schema):
