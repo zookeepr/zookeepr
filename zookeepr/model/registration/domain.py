@@ -35,6 +35,8 @@ class Registration(object):
                  lasignup=None,
                  announcesignup=None,
                  delegatesignup=None,
+                 prevlca=None,
+                 miniconf=None,
                  ):
         self.address1 = address1
         self.address2 = address2
@@ -69,3 +71,5 @@ class Registration(object):
         self.lasignup = lasignup
         self.announcesignup = announcesignup
         self.delegatesignup = delegatesignup
+        self.prevlca = prevlca
+        self.miniconf = miniconf

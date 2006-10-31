@@ -39,7 +39,8 @@ registration = Table('registration',
                      Column('lasignup', Boolean),
                      Column('announcesignup', Boolean),
                      Column('delegatesignup', Boolean),
-                     
+                     Column('prevlca', PickleType),
+                     Column('miniconf', PickleType),
 
                      Column('creation_timestamp', DateTime,
                         nullable=False,

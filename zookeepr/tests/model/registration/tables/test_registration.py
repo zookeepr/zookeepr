@@ -39,6 +39,8 @@ class TestRegistrationTable(TableTest):
                     lasignup=1,
                     announcesignup=1,
                     delegatesignup=1,
+                    prevlca=[99],
+                    miniconf=['Debian'],
                     ),
                dict(
                     address1='a21',
@@ -73,5 +75,7 @@ class TestRegistrationTable(TableTest):
                     lasignup=0,
                     announcesignup=0,
                     delegatesignup=0,
+                    prevlca=['01'],
+                    miniconf=['Embedded'],
                     ),
                 ]

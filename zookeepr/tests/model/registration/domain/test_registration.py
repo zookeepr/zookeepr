@@ -34,4 +34,6 @@ class TestRegistration(ModelTest):
                     lasignup=1,
                     announcesignup=1,
                     delegatesignup=1,
+                    prevlca=[99],
+                    miniconf=['Debian'],
                     )]
