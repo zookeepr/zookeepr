@@ -1,6 +1,15 @@
 Changes for Zookeepr
 ====================
 
+0.2.2
+-----
+
+ * Changed from pydns validation to socket.gethostbyname (this was
+   done due to a perceived bug with timeouts which was a different bug 
+   affecting all errors, so it could be rolled back)
+ * Include raw HTML into a Mghty template from outside the egg
+ * Random content changes
+
 0.2.1
 -----
 
