@@ -5,7 +5,7 @@ class TestAccommodationTable(TableTest):
 
     This table stores accommodation details.
     """
-    table = model.accommodation.tables.accommodation
+    table = model.registration.tables.accommodation
     samples = [dict(name='name1',
                     cost_per_night=1,
                     beds=1,
