@@ -51,3 +51,11 @@ registration = Table('registration',
                         onupdate=func.current_timestamp()),
 
                      )
+
+accommodation = Table('accommodation',
+                      Column('id', Integer, primary_key=True),
+
+                      Column('name', String),
+                      Column('cost_per_night', Float),
+                      Column('beds', Integer),
+                      )
