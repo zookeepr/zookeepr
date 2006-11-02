@@ -73,3 +73,10 @@ class Registration(object):
         self.delegatesignup = delegatesignup
         self.prevlca = prevlca
         self.miniconf = miniconf
+
+
+class Accommodation(object):
+    def __init__(self, name, cost_per_night, beds):
+        self.name = name
+        self.cost_per_night = cost_per_night
+        self.beds = beds
