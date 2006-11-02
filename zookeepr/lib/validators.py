@@ -78,7 +78,6 @@ class EmailAddress(validators.FancyValidator):
     """
 
     usernameRE = re.compile(r"^[^ \t\n\r@<>()]+$", re.I)
-    # add in example.org to regex so we can validate tests offline
     domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$|^localhost$", re.I)
 
     messages = {
