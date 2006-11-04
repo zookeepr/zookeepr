@@ -40,6 +40,45 @@ def setup_config(command, filename, section, vars):
             )
     except sqlalchemy.exceptions.SQLError:
         pass
+    try:
+        model.registration.tables.accommodation.insert().execute(
+            dict(name="New College - no breakfast",
+                 cost_per_night=49.50,
+                 beds=100,
+                 )
+            )
+        model.registration.tables.accommodation.insert().execute(
+            dict(name="New College",
+                 cost_per_night=55.00,
+                 beds=100,
+                 )
+            )
+        model.registration.tables.accommodation.insert().execute(
+            dict(name="Shalom",
+                 cost_per_night=60.00,
+                 beds=100,
+                 )
+            )
+        model.registration.tables.accommodation.insert().execute(
+            dict(name="Shalom with ensuite",
+                 cost_per_night=80.00,
+                 beds=100,
+                 )
+            )
+        model.registration.tables.accommodation.insert().execute(
+            dict(name="International house - no breakfast",
+                 cost_per_night=35.00,
+                 beds=100,
+                 )
+            )
+        model.registration.tables.accommodation.insert().execute(
+            dict(name="Warrane - male only",
+                 cost_per_night=58.50,
+                 beds=100,
+                 )
+            )
+    except sqlalchemy.exceptions.SQLError:
+        pass
 
     def mkdir(dirname):
         try:
