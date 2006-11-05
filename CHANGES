@@ -5,6 +5,7 @@ Changes for Zookeepr
 -----
 
  * Add accommodation data model.
+ * Added validation schema for existing handle/display names.
 
 0.2.2
 -----
