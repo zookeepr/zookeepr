@@ -59,3 +59,16 @@ accommodation = Table('accommodation',
                       Column('cost_per_night', Float),
                       Column('beds', Integer),
                       )
+
+accommodation_option = Table('accommodation_option',
+                             Column('id', Integer, primary_key=True),
+
+                             Column('name', String, nullable=False, unique=True),
+                             Column('cost_per_night', Float, nullable=False),
+                             )
+accommodation_location = Table('accommodation_location',
+                               Column('id', Integer, primary_key=True),
+
+                               Column('name', String, nullable=False, unique=True),
+                               Column('beds', Integer, nullable=False),
+                               )

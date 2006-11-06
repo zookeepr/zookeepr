@@ -1,7 +1,7 @@
 from zookeepr.tests.model import *
 
 class TestAccomodationLocationTable(TableTest):
-    """Test the ``location`` table.
+    """Test the ``accommodation_location`` table.
 
     This table stores accommodation locations.
     """
@@ -11,5 +11,5 @@ class TestAccomodationLocationTable(TableTest):
                dict(name='bar college',
                     beds=2),
                ]
-    not_nullables = ['name']
+    not_nullables = ['name', 'beds']
     uniques = ['name']
