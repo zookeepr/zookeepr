@@ -1,7 +1,11 @@
-AUTHORS of zookeepr
-===================
+zookeepr AUTHORS
+================
+
+The following people are the primary authors of filtergen. See also the file
+THANKS for a list of all contributors.  Discussion of development occurs on
+the zookeepr-devel@lists.zookeepr.org mailing list (also an easy way to reach
+the authors).
 
 Jamie Wilkinson <jaq@spacepants.org>
-Ben Leslie <benno@benno.id.au>
 Lindsay Holmwood <auxesis@gmail.com>
 Michael Kedzierski <ycros@kruel.org>
