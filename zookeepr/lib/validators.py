@@ -105,7 +105,7 @@ class EmailAddress(validators.FancyValidator):
             raise Invalid(self.message('badDomain', state, domain=splitted[1]), value, state)
 
         # hack so example.org tests work offline
-        if splitted[1] == 'example.org':
+        if splitted[1] == 'example.org' or splitted[1] == 'localhost':
             domain_exists = True
         else:
             try:
