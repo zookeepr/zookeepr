@@ -41,9 +41,9 @@ def make_map():
     m.connect('/about/:id', controller='about', action='view')
 
     # OpenDay
-    m.connect('openday', '/openday', controller='openday', action='new')
+    m.connect('openday', '/OpenDay', controller='openday', action='new')
     m.connect('/Openday', controller='openday', action='new')
-    m.connect('/OpenDay', controller='openday', action='new')
+    m.connect('/openday', controller='openday', action='new')
     m.connect('/openDay', controller='openday', action='new')
 
     # Note to wary travellers; an ID can never be 'new' because of this
