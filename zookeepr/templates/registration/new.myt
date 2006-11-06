@@ -295,7 +295,7 @@ Female:
 <option value="0">0</option>
 <option value="1">1</option>
 <option value="2">2</option>
-</SELECT>
+</SELECT> <label> - $60 each </label>
 <br />
 <span class="fielddesc">
 The Penguin Dinner is included in the price of a Professional delegate ticket.  Concession and Hobbyist delegates will need to purchase a Penguin Dinner ticket if they wish to attend.
