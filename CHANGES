@@ -6,6 +6,7 @@ Changes for Zookeepr
 
  * Add accommodation data model.
  * Added validation schema for existing handle/display names.
+ * Merged A+MX email address domain validation from Jiri Baum.
 
 0.2.2
 -----
