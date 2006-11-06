@@ -25,7 +25,7 @@ Please fill in the form as best you can.
 <% h.text_field('openday.email_address', size=40) %>
 <br />
 <span class="fielddesc">
-Your email address will only be used to correspond with you.  It will not be shown or used otherwise.
+Your email address will only be used to correspond with you about the Open Day event. It will not be shown or used otherwise.
 </span>
 </p>
 
