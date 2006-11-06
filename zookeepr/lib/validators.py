@@ -105,6 +105,11 @@ class EmailAddress(validators.FancyValidator):
         arecs = None
         try:
             domain_exists = dns.resolver.query(splitted[1], 'A')
+	    return
+        except dns.resolver.NoAnswer:
+	    pass
+        try:
+            domain_exists = dns.resolver.query(splitted[1], 'MX')
         except dns.resolver.NoAnswer:
             raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
 
