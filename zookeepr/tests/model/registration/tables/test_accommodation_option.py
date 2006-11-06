@@ -7,9 +7,11 @@ class TestAccommodationOptionTable(TableTest):
     """
     table = model.registration.tables.accommodation_option
     samples = [dict(name='foo college',
+                    accommodation_location_id=1,
                     cost_per_night=1.0),
                dict(name='foo college + ensuite',
+                    accommodation_location_id=2,
                     cost_per_night=2.0),
                ]
-    not_nullables = ['name', 'cost_per_night']
+    not_nullables = ['name', 'cost_per_night', 'accommodation_location_id']
     uniques = ['name']
