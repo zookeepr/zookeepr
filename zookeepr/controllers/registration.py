@@ -26,6 +26,10 @@ class NotExistingAccountValidator(validators.FancyValidator):
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
 
+        account = Query(model.Person).get_by(handle=value['handle'])
+        if account is not None:
+            raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
+
 
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)

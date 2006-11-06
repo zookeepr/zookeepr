@@ -1,6 +1,28 @@
 Changes for Zookeepr
 ====================
 
+0.2.3
+-----
+
+ * Add accommodation data model.
+ * Added validation schema for existing handle/display names.
+ * Merged A+MX email address domain validation from Jiri Baum.
+
+0.2.2
+-----
+
+ * Changed from pydns validation to socket.gethostbyname (this was
+   done due to a perceived bug with timeouts which was a different bug 
+   affecting all errors, so it could be rolled back)
+ * Include raw HTML into a Mghty template from outside the egg
+ * Random content changes
+
+0.2.1
+-----
+
+ * Add validator to prevent 500 errors when trying to register with an
+   existing account.
+
 0.2
 ---
 

@@ -33,7 +33,7 @@ class TestHomeController(ControllerTest):
         resp = resp.follow()
         print resp.request.url
         self.assertEqual('/', resp.request.url)
-        resp.mustcontain("Welcome, <strong>Testguy</strong>!")
+        resp.mustcontain("signed in")
         resp.mustcontain("foo")
 
         objectstore.delete(p)

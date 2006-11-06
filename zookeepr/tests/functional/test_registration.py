@@ -165,3 +165,43 @@ class TestNotSignedInRegistrationController(ControllerTest):
         # clean up
         objectstore.delete(Query(model.Person).get(pid))
         objectstore.flush()
+
+    def test_not_signed_in_existing_handle(self):
+        p = model.Person(email_address='testguy@example.org',
+            fullname='testguy mctest',
+            handle='testguy',
+            )
+        p.activated = True
+        objectstore.save(p)
+        objectstore.flush()
+
+        pid = p.id
+
+        resp = self.app.get('/registration/new')
+        f = resp.form
+        sample_data = dict(address1='a1',
+            city='Sydney',
+            state='NSW',
+            country='Australia',
+            postcode='2001',
+            type='Professional',
+            teesize='M_M',
+            checkin=14,
+            checkout=20,
+            accommodation='own',
+            )
+        for k in sample_data.keys():
+            f['registration.' + k] = sample_data[k]
+        f['person.email_address'] = 'testguy2@example.org'
+        f['person.fullname'] = 'testguy mctest'
+        f['person.handle']= 'testguy'
+        f['person.password'] = 'test'
+        f['person.password_confirm'] = 'test'
+
+        resp = f.submit()
+
+        resp.mustcontain('This display name has been taken, sorry.  Please use another.')
+
+        # clean up
+        objectstore.delete(Query(model.Person).get(pid))
+        objectstore.flush()
