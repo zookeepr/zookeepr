@@ -365,7 +365,11 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <SELECT name="registration.accommodation">
 <option value="0">I will organise my own</option>
 % for a in c.accommodation_collection:
-<option value="<% a.id %>"><% a.name %> <% a.option %> <% h.number_to_currency(a.cost_per_night) %></option>
+<option value="<% a.id %>"><% a.name %>
+% 	if a.option:
+(<% a.option %>)
+% 	#endif
+<% h.number_to_currency(a.cost_per_night) %></option>
 % #endfor
 </SELECT>
 </p>
