@@ -1,0 +1,5 @@
+= fun sql for acommodation =
+
+How many beds are left?
+
+select accommodation_location.name, accommodation_location.beds - count(registration.id) from accommodation_location join accommodation_option on accommodation_option.accommodation_location_id = accommodation_location.id left outer join registration on accommodation_option.id = registration.accommodation group by accommodation_location.id;
