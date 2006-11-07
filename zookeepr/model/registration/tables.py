@@ -74,6 +74,6 @@ accommodation_option = Table('accommodation_option',
                                     ForeignKey('accommodation_location.id'),
                                     nullable=False),
 
-                             Column('name', String, nullable=False, unique=True),
+                             Column('name', String),
                              Column('cost_per_night', Float, nullable=False),
                              )

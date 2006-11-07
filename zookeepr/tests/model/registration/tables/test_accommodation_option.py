@@ -13,5 +13,4 @@ class TestAccommodationOptionTable(TableTest):
                     accommodation_location_id=2,
                     cost_per_night=2.0),
                ]
-    not_nullables = ['name', 'cost_per_night', 'accommodation_location_id']
-    uniques = ['name']
+    not_nullables = ['cost_per_night', 'accommodation_location_id']
