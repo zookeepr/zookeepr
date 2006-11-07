@@ -40,6 +40,7 @@ def setup_config(command, filename, section, vars):
             )
     except sqlalchemy.exceptions.SQLError:
         pass
+
     try:
         model.registration.tables.accommodation_location.insert().execute(
             dict(id=1,
@@ -69,7 +70,7 @@ def setup_config(command, filename, section, vars):
             dict(name="",
                  cost_per_night=60.00,
                  accommodation_location_id=2,
-                 )
+                 ),
             )
         model.registration.tables.accommodation_option.insert().execute(
             dict(name="with ensuite",
@@ -77,7 +78,7 @@ def setup_config(command, filename, section, vars):
                  accommodation_location_id=2,
                  )
             )
-        model.registartion.tables.accommodation_location.insert().execute(
+        model.registration.tables.accommodation_location.insert().execute(
             dict(id=3,
                  name="International house",
                  beds=100,
@@ -89,7 +90,7 @@ def setup_config(command, filename, section, vars):
                  accommodation_location_id=3,
                  )
             )
-        model.registration.tables.acommodation_location.insert().execute(
+        model.registration.tables.accommodation_location.insert().execute(
             dict(id=4,
                  name="Warrane",
                  beds=100,
