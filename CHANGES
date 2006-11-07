@@ -1,6 +1,13 @@
 Changes for Zookeepr
 ====================
 
+0.2.5
+-----
+
+ * Use the new accommodation data model for displaying accommodation options
+   on the registration page.
+ * Misc bug fixes.
+
 0.2.4
 -----
 
