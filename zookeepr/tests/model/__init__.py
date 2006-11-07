@@ -235,12 +235,12 @@ class TableTest(TestBase):
         self.check_empty_table()
 
     def not_nullable(self):
-        """Check that certain columns of a table are not nullable.
-         
-        Specify the ``not_nullables`` class variable with a list of column names
-        that must not be null, and this method will insert into the table rows
-        with each set to null and test for an exception from the database layer.
-        """
+        #"""Check that certain columns of a table are not nullable.
+        # 
+        #Specify the ``not_nullables`` class variable with a list of column names
+        #that must not be null, and this method will insert into the table rows
+        #with each set to null and test for an exception from the database layer.
+        #"""
 
         self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
 
@@ -250,7 +250,7 @@ class TableTest(TestBase):
             # construct an attribute dictionary without the 'not null' attribute
             coldata = {}
             coldata.update(self.samples[0])
-            coldata[col] = None
+            del coldata[col]
     
             # create the model object
             print coldata
