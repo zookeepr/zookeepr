@@ -39,7 +39,7 @@ teesize = {'S': 'small',
 
  Extra tickets: <% c.registration.dinner |h %>
 
-% if c.registration.accommodation:
+% if c.registration.accommodation != '0':
 %	i = int(c.registration.accommodation) - 1
 %	a = c.accommodation_collection[i]
 %	if a.option:
@@ -51,6 +51,8 @@ teesize = {'S': 'small',
  Accommodation: <% accom %>
        Checkin: <% c.registration.checkin %>th January
       Checkout: <% c.registration.checkout %>th January
+% else:
+ Accommodation: none selected
 % #endif
 
  Dietary requirements:
