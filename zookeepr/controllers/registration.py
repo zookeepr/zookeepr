@@ -114,6 +114,7 @@ class RegistrationController(BaseController, Create):
 
 
     def new(self):
+        c.accommodation_collection = Query(model.Accommodation).select()
 
         errors = {}
         defaults = dict(request.POST)
