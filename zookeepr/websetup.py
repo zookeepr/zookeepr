@@ -41,40 +41,64 @@ def setup_config(command, filename, section, vars):
     except sqlalchemy.exceptions.SQLError:
         pass
     try:
-        model.registration.tables.accommodation.insert().execute(
-            dict(name="New College - no breakfast",
+        model.registration.tables.accommodation_location.insert().execute(
+            dict(id=1,
+                 name="New College",
+                 beds=100
+                 ),
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="no breakfast",
                  cost_per_night=49.50,
-                 beds=100,
+                 accommodation_location_id=1,
                  )
             )
-        model.registration.tables.accommodation.insert().execute(
-            dict(name="New College",
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="",
                  cost_per_night=55.00,
-                 beds=100,
+                 accommodation_location_id=1,
                  )
             )
-        model.registration.tables.accommodation.insert().execute(
-            dict(name="Shalom",
+        model.registration.tables.accommodation_location.insert().execte(
+            dict(id=2,
+                 name="Shalom",
+                 beds=100,
+                 ),
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="",
                  cost_per_night=60.00,
-                 beds=100,
+                 accommodation_location_id=2,
                  )
             )
-        model.registration.tables.accommodation.insert().execute(
-            dict(name="Shalom with ensuite",
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="with ensuite",
                  cost_per_night=80.00,
-                 beds=100,
+                 accommodation_location_id=2,
                  )
             )
-        model.registration.tables.accommodation.insert().execute(
-            dict(name="International house - no breakfast",
+        model.registartion.tables.accommodation_location.insert().execute(
+            dict(id=3,
+                 name="International house",
+                 beds=100,
+                 ),
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="no breakfast",
                  cost_per_night=35.00,
+                 accommodation_location_id=3,
+                 )
+            )
+        model.registration.tables.acommodation_location.insert().execute(
+            dict(id=4,
+                 name="Warrane",
                  beds=100,
                  )
             )
-        model.registration.tables.accommodation.insert().execute(
-            dict(name="Warrane - male only",
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="male only",
                  cost_per_night=58.50,
-                 beds=100,
+                 accommodation_location_id=4,
                  )
             )
     except sqlalchemy.exceptions.SQLError:
