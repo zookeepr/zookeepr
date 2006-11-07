@@ -117,6 +117,7 @@ def setup_config(command, filename, section, vars):
                 raise e
 
     try:
+        os.symlink(os.path.join(config['moin_data'], 'attachments'), os.path.join(os.path.dirname(__file__), 'public', 'att-data'))
         mkdir(os.path.join(config['moin_data'], 'pages'))
         # copy plugins dir from our egg to the destination
         copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(config['moin_data'], 'plugin'), {}, 1, False)

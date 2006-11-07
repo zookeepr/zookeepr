@@ -106,6 +106,10 @@ class AccountController(BaseController):
                     session['signed_in_person_id'] = person.id
                     session.save()
 
+                    # Redirect to original URL if it exists
+                    if 'sign_in_redirect' in session:
+                        redirect_to(session['sign_in_redirect'])
+
                     # return home
                     redirect_to('home')
 
