@@ -11,7 +11,7 @@ setup(
         # our champion wsgi stack
         "Pylons>=0.9.1",
         # our champion ORM
-        "SQLAlchemy>=0.2.8",
+        "SQLAlchemy>=0.3",
         # nose as test runner
         "nose>=0.9.0",
         # FormEncode used to do form input validation
