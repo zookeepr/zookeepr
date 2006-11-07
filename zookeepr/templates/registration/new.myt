@@ -363,13 +363,10 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <span class="mandatory">*</span>
 <label for="registration.accommodation">What accommodation would you like to stay at:</label>
 <SELECT name="registration.accommodation">
-<option value="own">I will organise my own</option>
-<option value="newc no breakfast">New College - no breakfast $49.50</option>
-<option value="new">New College - $55.00</option>
-<option value="shalom">Shalom - $60.00</option>
-<option value="shalom ensuite">Shalom - with ensuite $80.00</option>
-<option value="intl">International House - no breakfast $35.00</option>
-<option value="warrane">Warrane - male only $58.50</option>
+<option value="0">I will organise my own</option>
+% for a in c.accommodation_collection:
+<option value="<% a.id %>"><% a.name %> <% a.option %> <% h.number_to_currency(a.cost_per_night) %></option>
+% #endfor
 </SELECT>
 </p>
 

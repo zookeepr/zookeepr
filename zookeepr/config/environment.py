@@ -31,6 +31,7 @@ def load_environment():
     # http://www.myghty.org/docs/filtering.myt#filtering_escaping_custom
     myghty['escapes'] = {'l': webhelpers.auto_link,
                          's': webhelpers.simple_format,
+                         'c': webhelpers.number_to_currency,
                          }
     
     # Add your own Myghty config options here, note that all config options will override

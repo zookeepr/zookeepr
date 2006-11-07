@@ -152,5 +152,9 @@ class RegistrationController(BaseController, Create):
                 
                 return render_response('registration/thankyou.myt')
 
+        c.accommodation_collection = Query(model.Accommodation).select()
+
+        print c.accommodation_collection
+
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
