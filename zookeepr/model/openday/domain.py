@@ -8,7 +8,7 @@ class Openday(object):
                  heardfromtext=None,
                  opendaydrag=None,
                  ):
-        self.fullname = email_address
+        self.fullname = fullname
         self.email_address = email_address
         self.heardfrom = heardfrom
         self.heardfromtext = heardfromtext
