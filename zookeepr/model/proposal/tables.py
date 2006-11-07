@@ -81,15 +81,12 @@ review = Table('review',
                Column('proposal_id', Integer,
                       ForeignKey('proposal.id'),
                       nullable=False,
-                      # reviewer and proposal must be unique
-                      unique='ux_review_proposal_reviewer',
                       ),
                Column('reviewer_id', Integer,
                       ForeignKey('person.id'),
                       nullable=False,
-                      # reviewer and proposal must be unique
-                      unique='ux_review_proposal_reviewer',
                       ),
+               UniqueConstraint('proposal_id', 'reviewer_id', name='ux_review_proposal_reviewer'),
 
                Column('familiarity', Integer),
                Column('technical', Integer),
