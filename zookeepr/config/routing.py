@@ -40,6 +40,12 @@ def make_map():
     m.connect('/about/', controller='about', action='view', id='index')
     m.connect('/about/:id', controller='about', action='view')
 
+    # OpenDay
+    m.connect('openday', '/OpenDay', controller='openday', action='new')
+    m.connect('/Openday', controller='openday', action='new')
+    m.connect('/openday', controller='openday', action='new')
+    m.connect('/openDay', controller='openday', action='new')
+
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
     m.connect(':controller/new', action='new', id=None)

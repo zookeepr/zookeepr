@@ -33,7 +33,7 @@ teesize = {'S': 'small',
            'L': 'large',
            'XL': 'X large',
            'XXL': 'XX large',
-           'XXXL': 'XXX large'}[c.registration.teesize[-1]]
+           'XXXL': 'XXX large'}[c.registration.teesize[2:]]
 </%python>
  Teeshirt: <% teesex %> <% teesize %>
 
