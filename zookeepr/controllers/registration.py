@@ -114,6 +114,7 @@ class RegistrationController(BaseController, Create):
 
 
     def new(self):
+        c.accommodation_collection = Query(model.Accommodation).select()
 
         errors = {}
         defaults = dict(request.POST)
@@ -151,8 +152,6 @@ class RegistrationController(BaseController, Create):
                 s.quit()
                 
                 return render_response('registration/thankyou.myt')
-
-        c.accommodation_collection = Query(model.Accommodation).select()
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
