@@ -12,6 +12,7 @@ mapper(Registration, registration,
 
 mapper(Accommodation, join(accommodation_location, accommodation_option),
        properties = {
+    'accommodation_location_id': [accommodation_location.c.id, accommodation_option.c.accommodation_location_id],
     'name': accommodation_location.c.name,
     'option': accommodation_option.c.name,
     }
