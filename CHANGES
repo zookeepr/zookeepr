@@ -7,6 +7,10 @@ Changes for Zookeepr
  * Use the new accommodation data model for displaying accommodation options
    on the registration page.
  * Misc bug fixes.
+ * Redirect back to original URL after signing in.  (John Ferlito)
+ * Create a symlink in the public/ static files directory pointing to
+   MoinMoin attachments as a workaround for moin attachment brokenness.
+   (John Ferlito)
 
 0.2.4
 -----
