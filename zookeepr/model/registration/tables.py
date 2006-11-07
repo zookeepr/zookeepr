@@ -52,14 +52,6 @@ registration = Table('registration',
 
                      )
 
-accommodation = Table('accommodation',
-                      Column('id', Integer, primary_key=True),
-
-                      Column('name', String),
-                      Column('cost_per_night', Float),
-                      Column('beds', Integer),
-                      )
-
 accommodation_location = Table('accommodation_location',
                                Column('id', Integer, primary_key=True),
 
@@ -74,6 +66,6 @@ accommodation_option = Table('accommodation_option',
                                     ForeignKey('accommodation_location.id'),
                                     nullable=False),
 
-                             Column('name', String, nullable=False, unique=True),
+                             Column('name', String),
                              Column('cost_per_night', Float, nullable=False),
                              )

@@ -39,7 +39,7 @@ class TestRegistrationController(ControllerTest):
                                       editor='-',
                                       distro='-',
                                       shell='-',
-                                      accommodation='own',
+                                      accommodation='0',
                                       prevlca={'99': '1'},
                                       miniconf={'Debian': '1'},
                                       ),
@@ -90,7 +90,7 @@ class TestSignedInRegistrationController(SignedInControllerTest):
             teesize='M_M',
             checkin=14,
             checkout=20,
-            accommodation='own',
+            accommodation='0',
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -148,7 +148,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
             teesize='M_M',
             checkin=14,
             checkout=20,
-            accommodation='own',
+            accommodation=0,
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -188,7 +188,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
             teesize='M_M',
             checkin=14,
             checkout=20,
-            accommodation='own',
+            accommodation=0,
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
