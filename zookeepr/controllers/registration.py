@@ -36,7 +36,7 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
         if 'signed_in_person_id' in session:
             rego = Query(model.Registration).get_by(person_id=session['signed_in_person_id'])
         if rego is not None:
-            raise Invalid("Thanks for your keenness, but you've already registered!")
+            raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
 
 class RegistrationSchema(Schema):
