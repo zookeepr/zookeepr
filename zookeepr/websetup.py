@@ -93,7 +93,7 @@ def setup_config(command, filename, section, vars):
         model.registration.tables.accommodation_location.insert().execute(
             dict(id=4,
                  name="Warrane",
-                 beds=100,
+                 beds=50,
                  )
             )
         model.registration.tables.accommodation_option.insert().execute(
