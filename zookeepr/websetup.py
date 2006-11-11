@@ -45,7 +45,7 @@ def setup_config(command, filename, section, vars):
         model.registration.tables.accommodation_location.insert().execute(
             dict(id=1,
                  name="New College",
-                 beds=100
+                 beds=125,
                  ),
             )
         model.registration.tables.accommodation_option.insert().execute(
@@ -63,7 +63,7 @@ def setup_config(command, filename, section, vars):
         model.registration.tables.accommodation_location.insert().execute(
             dict(id=2,
                  name="Shalom",
-                 beds=100,
+                 beds=90,
                  ),
             )
         model.registration.tables.accommodation_option.insert().execute(
@@ -81,7 +81,7 @@ def setup_config(command, filename, section, vars):
         model.registration.tables.accommodation_location.insert().execute(
             dict(id=3,
                  name="International house",
-                 beds=100,
+                 beds=50,
                  ),
             )
         model.registration.tables.accommodation_option.insert().execute(
