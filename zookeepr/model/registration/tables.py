@@ -4,7 +4,8 @@ from sqlalchemy import *
 registration = Table('registration',
                      Column('id', Integer, primary_key=True),
 
-                     Column('person_id', Integer, ForeignKey('person.id')),
+                     Column('person_id', Integer, ForeignKey('person.id'),
+                            unique=True),
 
                      Column('address1', String),
                      Column('address2', String),

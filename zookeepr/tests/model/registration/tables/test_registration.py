@@ -6,7 +6,7 @@ class TestRegistrationTable(TableTest):
     This table stores registration details.
     """
     table = model.registration.tables.registration
-    samples = [dict(
+    samples = [dict(person_id=1,
                     address1='a11',
                     address2='a12',
                     city='city1',
@@ -42,7 +42,7 @@ class TestRegistrationTable(TableTest):
                     prevlca=[99],
                     miniconf=['Debian'],
                     ),
-               dict(
+               dict(person_id=2,
                     address1='a21',
                     address2='a22',
                     city='city2',
@@ -79,3 +79,4 @@ class TestRegistrationTable(TableTest):
                     miniconf=['Embedded'],
                     ),
                 ]
+    uniques = ['person_id']
