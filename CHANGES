@@ -10,6 +10,7 @@ Changes for Zookeepr
  * Create a symlink in the public/ static files directory pointing to
    MoinMoin attachments as a workaround for moin attachment brokenness.
    (John Ferlito)
+ * Made sure that people don't register more than once. (Jamie Wilkinson)
 
 0.2.4
 -----
