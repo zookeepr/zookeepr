@@ -18,6 +18,6 @@ mapper(Accommodation, join(accommodation_location, accommodation_option),
 mapper(Registration, registration,
        properties = {
     'person': relation(Person),
-    'accommodation': relation(Accommodation),
+    'accommodation': relation(Accommodation, backref='registrations'),
     }
        )

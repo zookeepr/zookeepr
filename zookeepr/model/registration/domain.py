@@ -79,3 +79,7 @@ class Accommodation(object):
         self.option = option
         self.cost_per_night = cost_per_night
         self.beds = beds
+
+    def get_available_beds(self):
+        """Return the number of beds not yet claimed."""
+        return self.beds - len(self.registrations)

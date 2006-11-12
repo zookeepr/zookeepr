@@ -20,7 +20,11 @@ class TestAccommodationModel(ModelTest):
         objectstore.save(a)
         objectstore.flush()
 
-        self.assertEqual(1, a.available)
+        print "registrations using this accommodation:", a.registrations
+
+        self.assertEqual([], a.registrations)
+
+        self.assertEqual(1, a.get_available_beds())
 
         # register something, use up the bed
         r = model.registration.Registration()
@@ -29,4 +33,13 @@ class TestAccommodationModel(ModelTest):
         objectstore.save(r)
         objectstore.flush()
 
-        self.assertEqual(0, a.available)
+        print "registrations using this accommodation:", a.registrations
+        self.failIfEqual([], a.registrations)
+        self.assertEqual(r, a.registrations[0])
+
+        print a.get_available_beds()
+        self.assertEqual(0, a.get_available_beds())
+
+        objectstore.delete(r)
+        objectstore.delete(a)
+        objectstore.flush()
