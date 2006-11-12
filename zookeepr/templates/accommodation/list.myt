@@ -1,10 +1,22 @@
-<h1>Acoommodation</h1>
+<h1>Accommodation</h1>
 
 <table>
 
+<th>#</th>
+
+<th>Location</th>
+
+<th>Option</th>
+
+<th>Cost per night</th>
+
+<th>Capacity (# beds)</th>
+
+<th>Availability (# beds left)</th>
+
 % for a in c.accommodation_collection:
 
-<tr>
+<tr class="<% h.cycle('even', 'odd')%>">
 
 <td>
 <% a.id %>
@@ -27,7 +39,7 @@
 </td>
 
 <td>
-beds left
+<% a.get_available_beds() %>
 </td>
 
 </tr>
@@ -35,3 +47,7 @@ beds left
 % #endfor
 
 </table>
+
+<%method title>
+Accommodation - <& PARENT:title &>
+</%method>
