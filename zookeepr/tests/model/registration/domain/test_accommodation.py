@@ -1,5 +1,3 @@
-from sqlalchemy import default_metadata
-
 from zookeepr.tests.model import *
 
 class TestAccommodationLocationModel(ModelTest):
@@ -55,9 +53,8 @@ class TestAccommodationModel(ModelTest):
 
     def test_accommodation_available(self):
 
-        # engine echo on
-        
-        default_metadata.engine.echo = True
+        self.echo_sql(True)
+
         al = model.registration.AccommodationLocation(name='a', beds=1)
         objectstore.save(al)
         objectstore.flush()
@@ -83,12 +80,19 @@ class TestAccommodationModel(ModelTest):
 
         objectstore.save(r)
         objectstore.flush()
-
+        
+        # we want to force a reload of the beds_taken field
+        objectstore.expire(a)
+        objectstore.expire(r)
+        
         print "registrations using this accommodation:", a.registrations
         self.failIfEqual([], a.registrations)
         self.assertEqual(r, a.registrations[0])
 
-        print a.get_available_beds()
+        print "beds taken:", a.beds_taken
+        self.assertEqual(1, a.beds_taken)
+        self.assertEqual(1, a.beds)
+        print "available beds:", a.get_available_beds()
         self.assertEqual(0, a.get_available_beds())
 
         # add a second accommodation option
@@ -108,7 +112,8 @@ class TestAccommodationModel(ModelTest):
         # both options should have no beds because the first registration filled them all
         self.assertEqual(0, a1.get_available_beds(), "accommodation options should both have no beds available")
 
-        objectstore.delete(r)
-        model.registration.tables.accommodation_option.delete().execute(id=2)
-        objectstore.delete(a)
-        objectstore.flush()
+        self.echo_sql(False)
+
+        model.registration.tables.registration.delete().execute()
+        model.registration.tables.accommodation_option.delete().execute()
+        model.registration.tables.accommodation_location.delete().execute()
