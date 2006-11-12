@@ -73,13 +73,30 @@ class Registration(object):
         self.miniconf = miniconf
 
 
-class Accommodation(object):
-    def __init__(self, name, option, cost_per_night, beds):
+class AccommodationLocation(object):
+    def __init__(self, name=None, beds=None):
         self.name = name
-        self.option = option
-        self.cost_per_night = cost_per_night
         self.beds = beds
+
+    def __repr__(self):
+        return '<AccommodationLocation name=%r beds=%r>' % (self.name, self.beds)
+
+
+class AccommodationOption(object):
+    def __init__(self, name=None, cost_per_night=None, location=None):
+        self.name = name
+        self.cost_per_night = cost_per_night
+        self.location = None
+
+    def __repr__(self):
+        return '<AccommodationOption name=%r cost_per_night=%r location=%r>' % (self.name, self.cost_per_night, self.location)
+
+
+class Accommodation(object):
 
     def get_available_beds(self):
         """Return the number of beds not yet claimed."""
-        return self.beds - len(self.registrations)
+        return self.beds - self.beds_taken
+
+    def __repr__(self):
+        return '<Accommodation name=%r option=%r beds=%d available_beds=%d>' % (self.name, self.option, self.beds, self.get_available_beds())
