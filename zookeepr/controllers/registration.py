@@ -131,7 +131,13 @@ class RegistrationController(BaseController, Create):
 
 
     def new(self):
-        c.accommodation_collection = Query(model.Accommodation).select()
+        print "calling new"
+        as = Query(model.Accommodation).select()
+        print "as", as
+        print "post query"
+        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
+        print 'post filter'
+        print "accommodation options are:", c.accommodation_collection
 
         errors = {}
         defaults = dict(request.POST)
