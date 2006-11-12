@@ -1,7 +1,7 @@
 import warnings
 
 import sqlalchemy.mods.threadlocal
-from sqlalchemy import objectstore, Query
+from sqlalchemy import objectstore, Query, default_metadata
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -48,6 +48,10 @@ class ModelTest(TestBase):
     """
     __metaclass__ = ModelTestGenerator
 
+    def echo_sql(self, value):
+        """Tell the underlying engine to echo SQL, for debugging tests."""
+        default_metadata.engine.echo = value
+        
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
         results = Query(self.domain).select()
