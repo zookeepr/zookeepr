@@ -58,7 +58,7 @@ class TestAccommodationModel(ModelTest):
         al = model.registration.AccommodationLocation(name='a', beds=1)
         objectstore.save(al)
         objectstore.flush()
-        ao = model.registration.AccommodationOption(name='', cost_per_night=1.00)
+        ao = model.registration.AccommodationOption(name='buh', cost_per_night=1.00)
         ao.location = al
         objectstore.save(ao)
         objectstore.flush()
@@ -82,8 +82,8 @@ class TestAccommodationModel(ModelTest):
         objectstore.flush()
         
         # we want to force a reload of the beds_taken field
-        objectstore.expire(a)
-        objectstore.expire(r)
+        objectstore.refresh(a)
+        #objectstore.expire(r)
         
         print "registrations using this accommodation:", a.registrations
         self.failIfEqual([], a.registrations)
@@ -96,15 +96,17 @@ class TestAccommodationModel(ModelTest):
         self.assertEqual(0, a.get_available_beds())
 
         # add a second accommodation option
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(id=2,
-                 accommodation_location_id=1,
-                 name='x',
-                 cost_per_night=2.0
-                 )
-            )
+        ao1 = model.registration.AccommodationOption(name='snuh', cost_per_night=2)
+        ao1.location = al
+        objectstore.save(ao1)
+        objectstore.flush()
 
-        a1 = Query(model.registration.Accommodation).get_by(id=2)
+        # assert that there are two accommodations now
+        as = Query(model.Accommodation).select()
+        print "accommodations 2:", as
+        self.assertEqual(2, len(as))
+
+        a1 = Query(model.registration.Accommodation).get_by(id=ao1.id)
         
         print "a beds available:", a.get_available_beds()
         print "a1 beds available:", a1.get_available_beds()
@@ -114,6 +116,14 @@ class TestAccommodationModel(ModelTest):
 
         self.echo_sql(False)
 
+        as = Query(model.Accommodation).select()
+        print 'as:', as
+
+        available_as = filter(lambda a: a.get_available_beds() >= 1, as)
+        print 'available_as:', available_as
+
         model.registration.tables.registration.delete().execute()
         model.registration.tables.accommodation_option.delete().execute()
         model.registration.tables.accommodation_location.delete().execute()
+
+        self.fail("not really")
