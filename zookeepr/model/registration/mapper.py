@@ -42,6 +42,7 @@ mapper(Accommodation,
        order_by=None,
        )
 
+
 mapper(Registration, registration,
        properties = {
     'person': relation(Person),
