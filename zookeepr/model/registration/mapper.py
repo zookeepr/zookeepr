@@ -28,7 +28,10 @@ mapper(Accommodation,
                accommodation_option.c.cost_per_night,
                accommodation_location_beds_taken_selectable.c.beds_taken
                ],
-              accommodation_location_beds_taken_selectable.c.loc_id==accommodation_location.c.id,
+              from_obj=[join(join(accommodation_location, accommodation_option),
+                             accommodation_location_beds_taken_selectable,
+                             accommodation_location_beds_taken_selectable.c.loc_id==accommodation_location.c.id)],
+              group_by=[accommodation_option.c.id],
               ).alias('accommodation_selectable'),
        order_by=None,
        )
