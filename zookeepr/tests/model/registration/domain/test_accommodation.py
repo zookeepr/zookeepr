@@ -13,3 +13,20 @@ class TestAccommodationModel(ModelTest):
                     beds=50,
                     )
                ]
+
+    def test_accommodation_available(self):
+        a = model.registration.Accommodation(name="a", option="", cost_per_night=1.0,
+                                             beds=1)
+        objectstore.save(a)
+        objectstore.flush()
+
+        self.assertEqual(1, a.available)
+
+        # register something, use up the bed
+        r = model.registration.Registration()
+        r.accommodation = a
+
+        objectstore.save(r)
+        objectstore.flush()
+
+        self.assertEqual(0, a.available)
