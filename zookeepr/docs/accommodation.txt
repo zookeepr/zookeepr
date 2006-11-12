@@ -3,3 +3,21 @@
 How many beds are left?
 
 select accommodation_location.name, accommodation_location.beds - count(registration.id) from accommodation_location join accommodation_option on accommodation_option.accommodation_location_id = accommodation_location.id left outer join registration on accommodation_option.id = registration.accommodation group by accommodation_location.id;
+
+
+# this one is more awesome, left outer join, orderin the tables
+# correctly
+
+SELECT accommodation_option.id AS id, accommodation_location.name AS name, accommodation_location.beds AS beds, accommodation_option.name AS option, accommodation_option.cost_per_night AS cost_per_night, count(registration.id) AS beds_taken
+
+FROM accommodation_location
+
+JOIN accommodation_option on
+accommodation_option.accommodation_location_id =
+accommodation_location.id
+
+LEFT OUTER JOIN registration on accommodation_option.id = registration.accommodation_option_id
+
+GROUP BY accommodation_option.id, accommodation_location.name,
+accommodation_location.beds, accommodation_option.name,
+accommodation_option.cost_per_night;
