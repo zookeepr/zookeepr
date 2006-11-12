@@ -53,6 +53,14 @@ class ModelTest(TestBase):
         results = Query(self.domain).select()
         self.assertEqual([], results)
 
+    def additional(self, obj):
+        """Perform additional modifications to the model object before saving.
+
+        Derived classes can override this to set up dependent objects for CRUD
+        tests.
+        """
+        return obj
+    
     def crud(self):
         #
 #         """Test CRUD operations on data model object.
@@ -86,7 +94,10 @@ class ModelTest(TestBase):
         for sample in self.samples:
             # instantiating model
             o = self.domain(**sample)
-    
+
+            # perform additional operations
+            o = self.additional(o)
+            
             # committing to db
             objectstore.save(o)
             objectstore.flush()
