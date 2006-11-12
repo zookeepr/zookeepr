@@ -118,12 +118,12 @@ class TestAccommodationModel(ModelTest):
 
         as = Query(model.Accommodation).select()
         print 'as:', as
+        self.assertEqual(2, len(as))
 
         available_as = filter(lambda a: a.get_available_beds() >= 1, as)
         print 'available_as:', available_as
+        self.assertEqual(0, len(available_as))
 
         model.registration.tables.registration.delete().execute()
         model.registration.tables.accommodation_option.delete().execute()
         model.registration.tables.accommodation_location.delete().execute()
-
-        self.fail("not really")
