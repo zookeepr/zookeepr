@@ -39,14 +39,8 @@ teesize = {'S': 'small',
 
  Extra tickets: <% c.registration.dinner |h %>
 
-% if c.registration.accommodation != '0':
-%	i = int(c.registration.accommodation) - 1
-%	a = c.accommodation_collection[i]
-%	if a.option:
-%		opt = " (%s) " % a.option
-%	else:
-%		opt = ' '
-%
+% if c.registration.accommodation:
+%	a = c.registration.accommodation
 %	accom = "%s%s(%s per night)" % (a.name, opt, h.number_to_currency(a.cost_per_night))
  Accommodation: <% accom %>
        Checkin: <% c.registration.checkin %>th January

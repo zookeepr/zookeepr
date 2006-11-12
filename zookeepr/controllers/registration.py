@@ -30,6 +30,19 @@ class NotExistingAccountValidator(validators.FancyValidator):
         if account is not None:
             raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
 
+class NotExistingRegistrationValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        rego = None
+        if 'signed_in_person_id' in session:
+            rego = Query(model.Registration).get_by(person_id=session['signed_in_person_id'])
+        if rego is not None:
+            raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+
+
+class AccommodationValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Query(model.Accommodation).get(value)
+
 
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
@@ -69,7 +82,8 @@ class RegistrationSchema(Schema):
     kids_7_9 = validators.Int()
     kids_10 = validators.Int()
 
-    accommodation = validators.String()
+    accommodation = AccommodationValidator()
+    
     checkin = validators.Int()
     checkout = validators.Int()
 
@@ -91,11 +105,14 @@ class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
     registration = RegistrationSchema()
 
+    chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
+
 
 class ExistingPersonRegoSchema(BaseSchema):
     registration = RegistrationSchema()
 
+    chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
 
@@ -114,7 +131,8 @@ class RegistrationController(BaseController, Create):
 
 
     def new(self):
-        c.accommodation_collection = Query(model.Accommodation).select()
+        as = Query(model.Accommodation).select()
+        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
         errors = {}
         defaults = dict(request.POST)

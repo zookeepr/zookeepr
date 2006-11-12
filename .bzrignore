@@ -23,3 +23,4 @@ zookeepr.egg-info/moin/data/user/*
 zookeepr.egg-info/moin/data/*-log
 zookeepr.egg-info/moin/data/cache/surgeprotect/surge-log
 zookeepr.egg-info/moin/data/pages/*
+zookeepr/public/att-data
