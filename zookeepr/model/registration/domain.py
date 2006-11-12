@@ -93,7 +93,8 @@ class AccommodationOption(object):
 
 
 class Accommodation(object):
-
+    """Read-only object for referring to accommodation."""
+    
     def get_available_beds(self):
         """Return the number of beds not yet claimed."""
         return self.beds - self.beds_taken
