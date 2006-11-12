@@ -11,6 +11,9 @@ Changes for Zookeepr
    MoinMoin attachments as a workaround for moin attachment brokenness.
    (John Ferlito)
  * Made sure that people don't register more than once. (Jamie Wilkinson)
+ * Update the accommodation data model to allow us to see how many beds are
+   already taken for a given venue (and this value is shared across different
+   options at the same venue).  (Jamie Wilkinson)
 
 0.2.4
 -----
