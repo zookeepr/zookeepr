@@ -39,6 +39,11 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
 
+class AccommodationValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Query(model.Accommodation).get(value)
+
+
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
     address2 = validators.String()
@@ -77,7 +82,8 @@ class RegistrationSchema(Schema):
     kids_7_9 = validators.Int()
     kids_10 = validators.Int()
 
-    accommodation = validators.String()
+    accommodation = AccommodationValidator()
+    
     checkin = validators.Int()
     checkout = validators.Int()
 

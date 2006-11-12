@@ -4,12 +4,6 @@ from zookeepr.model.core import Person
 from tables import registration, accommodation_location, accommodation_option
 from domain import Registration, Accommodation
 
-mapper(Registration, registration,
-       properties = {
-    'person': relation(Person)
-    }
-       )
-
 mapper(Accommodation, join(accommodation_location, accommodation_option),
        properties = {
     'accommodation_location_id': [accommodation_location.c.id, accommodation_option.c.accommodation_location_id],
@@ -18,5 +12,12 @@ mapper(Accommodation, join(accommodation_location, accommodation_option),
 #    'available': outerjoin(join(accommodation_location, accommodation_option),
 #                           registration,
 #                           accommodation_option.c.id==registration.c.accommodation)
+    }
+       )
+
+mapper(Registration, registration,
+       properties = {
+    'person': relation(Person),
+    'accommodation': relation(Accommodation),
     }
        )

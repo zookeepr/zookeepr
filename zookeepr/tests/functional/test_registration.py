@@ -39,7 +39,6 @@ class TestRegistrationController(ControllerTest):
                                       editor='-',
                                       distro='-',
                                       shell='-',
-                                      accommodation='0',
                                       prevlca={'99': '1'},
                                       miniconf={'Debian': '1'},
                                       ),
@@ -51,11 +50,13 @@ class TestRegistrationController(ControllerTest):
                                 )
                     )
                ]
-    no_test = ['password_confirm', 'person']
+    # FIXME: not testing accommodation object
+    no_test = ['password_confirm', 'person', 'accommodation']
     crud = ['create']
     mangles = dict(miniconf = lambda m: m.keys(),
-                prevlca = lambda p: p.keys(),
-                )
+                   prevlca = lambda p: p.keys(),
+                   #accommodation = lambda p: None,
+                   )
     
     def setUp(self):
         super(TestRegistrationController, self).setUp()

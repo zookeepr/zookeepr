@@ -29,7 +29,6 @@ class Registration(object):
                  kids_4_6=None,
                  kids_7_9=None,
                  kids_10=None,
-                 accommodation=None,
                  checkin=None,
                  checkout=None,
                  lasignup=None,
@@ -65,7 +64,6 @@ class Registration(object):
         self.kids_4_6 = kids_4_6
         self.kids_7_9 = kids_7_9
         self.kids_10 = kids_10
-        self.accommodation = accommodation
         self.checkin = checkin
         self.checkout = checkout
         self.lasignup = lasignup
