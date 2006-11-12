@@ -31,15 +31,15 @@
 </td>
 
 <td>
-<% a.cost_per_night %>
+<% h.number_to_currency(a.cost_per_night) %>
 </td>
 
 <td>
-<% a.beds %>
+<% a.beds |h %>
 </td>
 
 <td>
-<% a.get_available_beds() %>
+<% a.get_available_beds() |h %>
 </td>
 
 </tr>
