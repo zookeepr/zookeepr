@@ -100,4 +100,4 @@ class Accommodation(object):
         return self.beds - self.beds_taken
 
     def __repr__(self):
-        return '<Accommodation name=%r option=%r beds=%d available_beds=%d>' % (self.name, self.option, self.beds, self.get_available_beds())
+        return '<Accommodation name=%r option=%r beds=%d available_beds=%d cost_per_night=%r>' % (self.name, self.option, self.beds, self.get_available_beds(), self.cost_per_night)
