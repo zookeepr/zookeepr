@@ -1,21 +1,21 @@
-<p>
-<% c.profile.fullname |h %>'s profile
-</p>
+<h1>Profile of <% c.profile.fullname |h %></h1>
 
-<div id="bio">
-<p>Bio:</p>
-<p>
 % content = h.wiki_fragment('/profile/%d' % c.profile.id)
 % if 'This page does not exist yet.' in content:
-<% c.profile.proposals[0].experience %>
-% else:
-<% content %>
+%	if len(c.profile.proposals) > 0:
+%		content = c.profile.proposals[0].experience
+%	else:
+%		content = None
+%	#endif
 % #endif
-</p>
+% if content:
+<div id="bio">
+<p><% content %></p>
 </div>
+% #endif
 
-<div id="proposals">
-<h2>Proposals</h2>
+<div id="talks">
+<h2>Talks</h2>
 <table>
 % for p in c.profile.proposals:
 <tr class="<% h.cycle('even', 'odd') %>">
