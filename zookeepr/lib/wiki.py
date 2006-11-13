@@ -85,7 +85,8 @@ def wiki_fragment(page_name='Home'):
     request.environ['PATH_INFO'] = '/' + page_name
     soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
     try:
-        return '<div class="wiki">\n' + str(soup.findAll('div', id='content')[0]) + '\n</div>'
+        content = soup.findAll('div', id='content')[0]
+        return '<div class="wiki">\n%s\n</div>' % (content,)
     except IndexError:
         if "You are not allowed to access this!" in soup.prettify():
             print "IndexError raised, soup content is:"
