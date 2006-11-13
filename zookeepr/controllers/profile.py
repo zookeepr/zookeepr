@@ -1,4 +1,4 @@
-from zookeepr.lib.base import *
+from zookeepr.lib.base import BaseController
 from zookeepr.lib.crud import View
 from zookeepr import model
 
