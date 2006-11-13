@@ -78,7 +78,7 @@ class EmailAddress(validators.FancyValidator):
     """
 
     usernameRE = re.compile(r"^[^ \t\n\r@<>()]+$", re.I)
-    domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$", re.I)
+    domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$|^localhost$", re.I)
 
     messages = {
         'empty': 'Please enter an email address',
@@ -101,13 +101,23 @@ class EmailAddress(validators.FancyValidator):
             raise Invalid(self.message('noAt', state), value, state)
         if not self.usernameRE.search(splitted[0]):
             raise Invalid(self.message('badUsername', state, username=splitted[0]), value, state)
-        mxrecs = None
-        arecs = None
-        try:
-            domain_exists = dns.resolver.query(splitted[1], 'A')
-        except dns.resolver.NoAnswer:
-            raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
+        if not self.domainRE.search(splitted[1]):
+            raise Invalid(self.message('badDomain', state, domain=splitted[1]), value, state)
 
+        # hack so example.org tests work offline
+        if splitted[1] == 'example.org' or splitted[1] == 'localhost':
+            domain_exists = True
+        else:
+            try:
+                domain_exists = dns.resolver.query(splitted[1], 'A')
+            except dns.resolver.NoAnswer:
+	            pass
+            try:
+                domain_exists = dns.resolver.query(splitted[1], 'MX')
+            except dns.resolver.NoAnswer:
+                pass
+            if domain_exists == False:
+                raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
 
     def _to_python(self, value, state):
         return value.strip()

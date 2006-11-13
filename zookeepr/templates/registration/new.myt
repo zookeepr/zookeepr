@@ -5,7 +5,9 @@ Welcome to the conference registration. Please fill in the form as best you can.
 </p>
 
 <p>
-If you've already got an account (through a prior registration, or other interaction with this site), but can't log in, you can try
+If you already have an account (through a prior registration, or other interaction with this site), then please sign in.
+</p>
+<p>If you can't log in, you can try
 <% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
 
@@ -122,7 +124,7 @@ Your display name will be used to identify you on the website.
 </p>
 
 <p>
-<label for="registration.phone">Phone number:</label>
+<label for="registration.phone">Mobile/Cell number:</label>
 <br />
 <% h.text_field('registration.phone') %>
 </p>
@@ -247,7 +249,7 @@ desc = '%s %s %s %s' % (start, a1, a2, n1)
 <label for="registration.type">What type of ticket do you want?</label>
 <br />
 # FIXME: dynamic content
-% for (t, p, eb) in [('Professional', '670.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
+% for (t, p, eb) in [('Professional', '690.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
 <label for="registration.type_<% t %>"><% t %> - $<% p %> ($<% eb %> earlybird)</label>
 <br />
@@ -293,7 +295,7 @@ Female:
 <option value="0">0</option>
 <option value="1">1</option>
 <option value="2">2</option>
-</SELECT>
+</SELECT> <label> - $60 each </label>
 <br />
 <span class="fielddesc">
 The Penguin Dinner is included in the price of a Professional delegate ticket.  Concession and Hobbyist delegates will need to purchase a Penguin Dinner ticket if they wish to attend.
@@ -361,13 +363,14 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <span class="mandatory">*</span>
 <label for="registration.accommodation">What accommodation would you like to stay at:</label>
 <SELECT name="registration.accommodation">
-<option value="own">I will organise my own</option>
-<option value="newc no breakfast">New College - no breakfast $49.50</option>
-<option value="new">New College - $55.00</option>
-<option value="shalom">Shalom - $60.00</option>
-<option value="shalom ensuite">Shalom - with ensuite $80.00</option>
-<option value="intl">International House - no breakfast $35.00</option>
-<option value="warrane">Warrane - male only $58.50</option>
+<option value="0">I will organise my own</option>
+% for a in c.accommodation_collection:
+<option value="<% a.id %>"><% a.name %>
+% 	if a.option:
+(<% a.option %>)
+% 	#endif
+- <% h.number_to_currency(a.cost_per_night) %> per night</option>
+% #endfor
 </SELECT>
 </p>
 
@@ -447,6 +450,10 @@ If you are planning on bringing your partner, please enter their email address h
 </fieldset>
 
 <% h.submit("Register me!") %>
+<span class="fielddesc">
+If you encounter any problems signing up please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+</span>
+
 
 <% h.end_form() %>
 </&>

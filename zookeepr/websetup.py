@@ -41,6 +41,70 @@ def setup_config(command, filename, section, vars):
     except sqlalchemy.exceptions.SQLError:
         pass
 
+    try:
+        model.registration.tables.accommodation_location.insert().execute(
+            dict(id=1,
+                 name="New College",
+                 beds=125,
+                 ),
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="no breakfast",
+                 cost_per_night=49.50,
+                 accommodation_location_id=1,
+                 )
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="",
+                 cost_per_night=55.00,
+                 accommodation_location_id=1,
+                 )
+            )
+        model.registration.tables.accommodation_location.insert().execute(
+            dict(id=2,
+                 name="Shalom",
+                 beds=90,
+                 ),
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="",
+                 cost_per_night=60.00,
+                 accommodation_location_id=2,
+                 ),
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="with ensuite",
+                 cost_per_night=80.00,
+                 accommodation_location_id=2,
+                 )
+            )
+        model.registration.tables.accommodation_location.insert().execute(
+            dict(id=3,
+                 name="International house",
+                 beds=50,
+                 ),
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="no breakfast",
+                 cost_per_night=35.00,
+                 accommodation_location_id=3,
+                 )
+            )
+        model.registration.tables.accommodation_location.insert().execute(
+            dict(id=4,
+                 name="Warrane",
+                 beds=50,
+                 )
+            )
+        model.registration.tables.accommodation_option.insert().execute(
+            dict(name="male only",
+                 cost_per_night=58.50,
+                 accommodation_location_id=4,
+                 )
+            )
+    except sqlalchemy.exceptions.SQLError:
+        pass
+
     def mkdir(dirname):
         try:
             os.mkdir(dirname)
@@ -53,6 +117,7 @@ def setup_config(command, filename, section, vars):
                 raise e
 
     try:
+        os.symlink(os.path.join(config['moin_data'], 'attachments'), os.path.join(os.path.dirname(__file__), 'public', 'att-data'))
         mkdir(os.path.join(config['moin_data'], 'pages'))
         # copy plugins dir from our egg to the destination
         copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(config['moin_data'], 'plugin'), {}, 1, False)

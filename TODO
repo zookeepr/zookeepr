@@ -9,3 +9,5 @@
 displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have quoted chars
 
  * apachebench on zookeepr
+
+ * move openday model into registration submodule

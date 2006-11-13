@@ -1,11 +1,33 @@
 import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
+accommodation_location = Table('accommodation_location',
+                               Column('id', Integer, primary_key=True),
+
+                               Column('name', String, nullable=False, unique=True),
+                               Column('beds', Integer, nullable=False),
+                               )
+
+accommodation_option = Table('accommodation_option',
+                             Column('id', Integer, primary_key=True),
+
+                             Column('accommodation_location_id', Integer,
+                                    ForeignKey('accommodation_location.id'),
+                                    nullable=False),
+
+                             Column('name', String),
+                             Column('cost_per_night', Float, nullable=False),
+                             )
+
 registration = Table('registration',
                      Column('id', Integer, primary_key=True),
 
-                     Column('person_id', Integer, ForeignKey('person.id')),
+                     Column('person_id', Integer, ForeignKey('person.id'),
+                            unique=True),
 
+                     Column('accommodation_option_id', Integer, ForeignKey('accommodation_option.id'),
+                            ),
+                     
                      Column('address1', String),
                      Column('address2', String),
                      Column('city', String),
@@ -33,7 +55,7 @@ registration = Table('registration',
                      Column('kids_4_6', Integer),
                      Column('kids_7_9', Integer),
                      Column('kids_10', Integer),
-                     Column('accommodation', String),
+
                      Column('checkin', Integer),
                      Column('checkout', Integer),
                      Column('lasignup', Boolean),

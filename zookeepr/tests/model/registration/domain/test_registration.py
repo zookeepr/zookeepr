@@ -28,7 +28,6 @@ class TestRegistration(ModelTest):
                     kids_4_6=1,
                     kids_7_9=1,
                     kids_10=1,
-                    accommodation='accommodation1',
                     checkin=1,
                     checkout=1,
                     lasignup=1,

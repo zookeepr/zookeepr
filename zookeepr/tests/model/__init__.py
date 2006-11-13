@@ -1,7 +1,7 @@
 import warnings
 
 import sqlalchemy.mods.threadlocal
-from sqlalchemy import objectstore, Query
+from sqlalchemy import objectstore, Query, default_metadata
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -48,11 +48,23 @@ class ModelTest(TestBase):
     """
     __metaclass__ = ModelTestGenerator
 
+    def echo_sql(self, value):
+        """Tell the underlying engine to echo SQL, for debugging tests."""
+        default_metadata.engine.echo = value
+        
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
         results = Query(self.domain).select()
         self.assertEqual([], results)
 
+    def additional(self, obj):
+        """Perform additional modifications to the model object before saving.
+
+        Derived classes can override this to set up dependent objects for CRUD
+        tests.
+        """
+        return obj
+    
     def crud(self):
         #
 #         """Test CRUD operations on data model object.
@@ -86,7 +98,10 @@ class ModelTest(TestBase):
         for sample in self.samples:
             # instantiating model
             o = self.domain(**sample)
-    
+
+            # perform additional operations
+            o = self.additional(o)
+            
             # committing to db
             objectstore.save(o)
             objectstore.flush()

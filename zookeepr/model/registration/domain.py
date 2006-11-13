@@ -29,7 +29,6 @@ class Registration(object):
                  kids_4_6=None,
                  kids_7_9=None,
                  kids_10=None,
-                 accommodation=None,
                  checkin=None,
                  checkout=None,
                  lasignup=None,
@@ -65,7 +64,6 @@ class Registration(object):
         self.kids_4_6 = kids_4_6
         self.kids_7_9 = kids_7_9
         self.kids_10 = kids_10
-        self.accommodation = accommodation
         self.checkin = checkin
         self.checkout = checkout
         self.lasignup = lasignup
@@ -73,3 +71,33 @@ class Registration(object):
         self.delegatesignup = delegatesignup
         self.prevlca = prevlca
         self.miniconf = miniconf
+
+
+class AccommodationLocation(object):
+    def __init__(self, name=None, beds=None):
+        self.name = name
+        self.beds = beds
+
+    def __repr__(self):
+        return '<AccommodationLocation name=%r beds=%r>' % (self.name, self.beds)
+
+
+class AccommodationOption(object):
+    def __init__(self, name=None, cost_per_night=None, location=None):
+        self.name = name
+        self.cost_per_night = cost_per_night
+        self.location = None
+
+    def __repr__(self):
+        return '<AccommodationOption name=%r cost_per_night=%r location=%r>' % (self.name, self.cost_per_night, self.location)
+
+
+class Accommodation(object):
+    """Read-only object for referring to accommodation."""
+    
+    def get_available_beds(self):
+        """Return the number of beds not yet claimed."""
+        return self.beds - self.beds_taken
+
+    def __repr__(self):
+        return '<Accommodation name=%r option=%r beds=%d available_beds=%d cost_per_night=%r>' % (self.name, self.option, self.beds, self.get_available_beds(), self.cost_per_night)

@@ -39,7 +39,6 @@ class TestRegistrationController(ControllerTest):
                                       editor='-',
                                       distro='-',
                                       shell='-',
-                                      accommodation='own',
                                       prevlca={'99': '1'},
                                       miniconf={'Debian': '1'},
                                       ),
@@ -51,11 +50,13 @@ class TestRegistrationController(ControllerTest):
                                 )
                     )
                ]
-    no_test = ['password_confirm', 'person']
+    # FIXME: not testing accommodation object
+    no_test = ['password_confirm', 'person', 'accommodation']
     crud = ['create']
     mangles = dict(miniconf = lambda m: m.keys(),
-                prevlca = lambda p: p.keys(),
-                )
+                   prevlca = lambda p: p.keys(),
+                   #accommodation = lambda p: None,
+                   )
     
     def setUp(self):
         super(TestRegistrationController, self).setUp()
@@ -90,7 +91,7 @@ class TestSignedInRegistrationController(SignedInControllerTest):
             teesize='M_M',
             checkin=14,
             checkout=20,
-            accommodation='own',
+            accommodation='0',
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -148,7 +149,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
             teesize='M_M',
             checkin=14,
             checkout=20,
-            accommodation='own',
+            accommodation=0,
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -161,6 +162,46 @@ class TestNotSignedInRegistrationController(ControllerTest):
         resp = f.submit()
 
         resp.mustcontain('This account already exists.')
+
+        # clean up
+        objectstore.delete(Query(model.Person).get(pid))
+        objectstore.flush()
+
+    def test_not_signed_in_existing_handle(self):
+        p = model.Person(email_address='testguy@example.org',
+            fullname='testguy mctest',
+            handle='testguy',
+            )
+        p.activated = True
+        objectstore.save(p)
+        objectstore.flush()
+
+        pid = p.id
+
+        resp = self.app.get('/registration/new')
+        f = resp.form
+        sample_data = dict(address1='a1',
+            city='Sydney',
+            state='NSW',
+            country='Australia',
+            postcode='2001',
+            type='Professional',
+            teesize='M_M',
+            checkin=14,
+            checkout=20,
+            accommodation=0,
+            )
+        for k in sample_data.keys():
+            f['registration.' + k] = sample_data[k]
+        f['person.email_address'] = 'testguy2@example.org'
+        f['person.fullname'] = 'testguy mctest'
+        f['person.handle']= 'testguy'
+        f['person.password'] = 'test'
+        f['person.password_confirm'] = 'test'
+
+        resp = f.submit()
+
+        resp.mustcontain('This display name has been taken, sorry.  Please use another.')
 
         # clean up
         objectstore.delete(Query(model.Person).get(pid))

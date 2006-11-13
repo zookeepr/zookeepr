@@ -1,6 +1,45 @@
 Changes for Zookeepr
 ====================
 
+0.2.5
+-----
+
+ * Use the new accommodation data model for displaying accommodation options
+   on the registration page.  (Jamie Wilkinson)
+ * Redirect back to original URL after signing in.  (John Ferlito)
+ * Create a symlink in the public/ static files directory pointing to
+   MoinMoin attachments as a workaround for moin attachment brokenness.
+   (John Ferlito)
+ * Made sure that people don't register more than once. (Jamie Wilkinson)
+ * Update the accommodation data model to allow us to see how many beds are
+   already taken for a given venue (and this value is shared across different
+   options at the same venue).  (Jamie Wilkinson)
+ * Add a controller for user profiles, and embed proposal bios where they
+   exist.  (Jamie Wilkinson)
+
+0.2.4
+-----
+
+ * Fixed rego email teesize message
+ * Dinner price on rego form
+ * Added Open Day registration
+
+0.2.3
+-----
+
+ * Add accommodation data model.
+ * Added validation schema for existing handle/display names.
+ * Merged A+MX email address domain validation from Jiri Baum.
+
+0.2.2
+-----
+
+ * Changed from pydns validation to socket.gethostbyname (this was
+   done due to a perceived bug with timeouts which was a different bug 
+   affecting all errors, so it could be rolled back)
+ * Include raw HTML into a Mghty template from outside the egg
+ * Random content changes
+
 0.2.1
 -----
 
