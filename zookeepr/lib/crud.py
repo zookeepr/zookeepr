@@ -121,7 +121,7 @@ class RUDBase(CRUDBase):
         if kwargs['id'] is None:
             #print "action is %s, we're in RUDBase.__before__, wtf, wah wah wah" % kwargs['action']
             return
-        
+
         # If we can convert this to an integer then we look up based on the OID
         try:
             id = int(kwargs['id'])
@@ -130,7 +130,7 @@ class RUDBase(CRUDBase):
             pass
 
         if use_oid:
-            self.obj = Query(self.model).get(id)
+            self.obj = Query(self.model).get_by(id=id)
         elif hasattr(self, 'key'):
             query_dict = {self.key: kwargs['id']}
             self.obj = Query(self.model).get_by(**query_dict)
