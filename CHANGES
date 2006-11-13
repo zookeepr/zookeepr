@@ -8,6 +8,8 @@ Changes for Zookeepr
    (Jamie Wilkinson)
  * Make embedded wiki bit work again.  (Jamie Wilkinson)
  * Remove handle from profile title.  (Jamie Wilkinson)
+ * Add a controller for accepted talks, and embed proposal abstracts where
+   they exist.  (Jamie Wilkinson)
 
 0.2.5
 -----
