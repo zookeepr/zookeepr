@@ -14,6 +14,8 @@ Changes for Zookeepr
  * Update the accommodation data model to allow us to see how many beds are
    already taken for a given venue (and this value is shared across different
    options at the same venue).  (Jamie Wilkinson)
+ * Add a controller for user profiles, and embed proposal bios where they
+   exist.  (Jamie Wilkinson)
 
 0.2.4
 -----
