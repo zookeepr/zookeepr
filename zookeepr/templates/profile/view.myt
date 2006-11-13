@@ -1,11 +1,17 @@
-<h1>Profile</h1>
+<p>
+<% c.profile.fullname |h %>'s profile
+</p>
 
-<div>
-<% c.profile.fullname |h %>
-</div>
-
-<div id="wiki">
-<% h.wiki_fragment('/profile/%d' % c.profile.id) %>
+<div id="bio">
+<p>Bio:</p>
+<p>
+% content = h.wiki_fragment('/profile/%d' % c.profile.id)
+% if 'This page does not exist yet.' in content:
+<% c.profile.proposals[0].experience %>
+% else:
+<% content %>
+% #endif
+</p>
 </div>
 
 <div id="proposals">
@@ -14,7 +20,7 @@
 % for p in c.profile.proposals:
 <tr class="<% h.cycle('even', 'odd') %>">
 
-<td><% h.link_to(p.title, url=h.url(controller='talk', id=p.id)) %></td>
+<td><% h.link_to(p.title, url=h.url(controller='talk', action='view', id=p.id)) %></td>
 
 </tr>
 % #endif
