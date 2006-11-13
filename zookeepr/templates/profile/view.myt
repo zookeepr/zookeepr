@@ -29,5 +29,5 @@ if 'This page does not exist yet.' in content:
 </div>
 
 <%method title>
-<% c.profile.handle |h %> profile - <& PARENT:title &>
+profile - <& PARENT:title &>
 </%method>
