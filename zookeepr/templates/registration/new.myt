@@ -369,7 +369,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 % 	if a.option:
 (<% a.option %>)
 % 	#endif
-- <% h.number_to_currency(a.cost_per_night) %> per night</option>
+- <% h.number_to_currency(a.cost_per_night) %> per night (<% a.beds - a.beds_taken %> places left)</option>
 % #endfor
 </SELECT>
 </p>

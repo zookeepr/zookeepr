@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.2.6
+-----
+
+ * Fix group-by bug in postgresql backends for accommodation bed counter.
+   (Jamie Wilkinson)
+
 0.2.5
 -----
 

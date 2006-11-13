@@ -1,13 +1,14 @@
 <h1>Profile of <% c.profile.fullname |h %></h1>
 
-% content = h.wiki_fragment('/profile/%d' % c.profile.id)
-% if 'This page does not exist yet.' in content:
-%	if len(c.profile.proposals) > 0:
-%		content = c.profile.proposals[0].experience
-%	else:
-%		content = None
-%	#endif
-% #endif
+<%python>
+content = h.wiki_fragment('/wiki/profile/%d' % c.profile.id)
+
+if 'This page does not exist yet.' in content:
+	if len(c.profile.proposals) > 0:
+		content = c.profile.proposals[0].experience
+	else:
+		content = None
+</%python>
 % if content:
 <div id="bio">
 <p><% content %></p>
