@@ -1,6 +1,20 @@
 Changes for Zookeepr
 ====================
 
+0.2.6
+-----
+
+ * Fix group-by bug in postgresql backends for accommodation bed counter.
+   (Jamie Wilkinson)
+ * Make embedded wiki bit work again.  (Jamie Wilkinson)
+ * Remove handle from profile title.  (Jamie Wilkinson)
+ * Add a controller for accepted talks, and embed proposal abstracts where
+   they exist.  (Jamie Wilkinson)
+ * Fix two showstopper bugs that weren't caught before releasing 0.2.5.
+   Template error in mailout from registration, and schema validation
+   error with 'own' being submitted, probably should never have happened.
+   I blame Alec Thomas for the second bug.  (Jamie Wilkinson)
+
 0.2.5
 -----
 
