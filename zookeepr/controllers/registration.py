@@ -41,7 +41,7 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
 
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        if value = 'own':
+        if value == 'own':
             return None
         return Query(model.Accommodation).get(value)
 
