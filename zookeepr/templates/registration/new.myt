@@ -4,12 +4,14 @@
 Welcome to the conference registration. Please fill in the form as best you can. 
 </p>
 
+% if not 'signed_in_person_id' in session:
 <p>
 If you already have an account (through a prior registration, or other interaction with this site), then please sign in.
 </p>
 <p>If you can't log in, you can try
 <% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
+% #endif
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url()) %>
