@@ -343,7 +343,7 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
     """Test base class that signs us in first.
     """
     def setUp(self):
-        super(SignedInControllerTest, self).setUp()
+        super(SignedInCRUDControllerTest, self).setUp()
         self.person = model.Person(email_address='testguy@example.org',
                                    password='test',
                                    fullname='Testguy McTest'
@@ -364,7 +364,7 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
     def tearDown(self):
         objectstore.delete(Query(model.Person).get(self.pid))
         objectstore.flush()
-        super(SignedInControllerTest, self).tearDown()
+        super(SignedInCRUDControllerTest, self).tearDown()
 
 
 __all__ = ['ControllerTest',

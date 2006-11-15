@@ -4,7 +4,7 @@ from paste.fixture import Dummy_smtplib
 
 from zookeepr.tests.functional import *
 
-class TestRegistrationController(ControllerTest):
+class TestRegistrationController(CRUDControllerTest):
     model = model.registration.Registration
     url = '/registration'
     param_name = 'registration'
@@ -72,7 +72,7 @@ class TestRegistrationController(ControllerTest):
         objectstore.flush()
         super(TestRegistrationController, self).tearDown()
 
-class TestSignedInRegistrationController(SignedInControllerTest):
+class TestSignedInRegistrationController(SignedInCRUDControllerTest):
 
     def test_existing_account_registration(self):
         """Test that someone with an existing account can register.
