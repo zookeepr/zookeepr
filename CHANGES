@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.2.7
+-----
+
+ * Refactor ControllerTest base classes to differentiate semiautomagic tests
+   for CRUD controllers versus non-CRUD controllers.  (Jamie Wilkinson)
+
 0.2.6
 -----
 
