@@ -164,7 +164,8 @@ class CRUDControllerTest(ControllerTest):
         resp = form.submit()
         #print "response:", resp
         error_match = re.search(r'<!-- for:.*<span class="error-message">[^<]*</span>', str(resp), re.DOTALL)
-        self.failUnlessEqual(None, error_match, "Errors in message: %s" % error_match.group(0))
+        if error_match is not None:
+            self.fail("Errors in message: %s" % error_match.group(0))
 
         # now check that the data is in the database
         os = Query(self.model).select()
