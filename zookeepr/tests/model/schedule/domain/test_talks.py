@@ -20,10 +20,17 @@ class TestTalkDomainModel(ModelTest):
         p2.type = t
         objectstore.save(p2)
 
+        objectstore.flush()
+
         talks = Query(model.schedule.Talk).select()
 
-        self.failIf(p1 in talks, "p1 shouldn't be in talks")
-        self.failUnless(p2 in talks, "p2 should be in talks")
+        print "talks:", talks
+
+        t1 = Query(model.schedule.Talk).get(p1.id)
+        t2 = Query(model.schedule.Talk).get(p2.id)
+
+        self.failUnless(t2 in talks, "t2 should be in talks")
+        self.failIf(t1 in talks, "t1 shouldn't be in talks")
 
         # clean up
         objectstore.delete(p2)

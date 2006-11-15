@@ -17,6 +17,6 @@ mapper(Talk, select([proposal],
        properties = {
     'type': relation(ProposalType),
     'people': relation(Person, secondary=person_proposal_map,
-                       backref='talks'),
+                       backref='accepted_talks'),
     }
        )
