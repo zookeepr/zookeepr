@@ -7,7 +7,7 @@ from paste.fixture import Dummy_smtplib
 from zookeepr.model import Person, PasswordResetConfirmation
 from zookeepr.tests.functional import *
 
-class TestAccountController(ControllerTest):
+class TestAccountController(CRUDControllerTest):
 
     def test_registration_confirmation_url(self):
         """test the routing of the registration confirmation url"""
