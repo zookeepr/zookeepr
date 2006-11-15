@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.2.8
+-----
+
+ * Don't blow up on NXDOMAIN responses during the email domain validator.
+   (Jamie Wilkinson)
+
 0.2.7
 -----
 
