@@ -150,6 +150,7 @@ class CRUDControllerTest(ControllerTest):
         response = self.app.get(url)
         #print response
         form = response.form
+        print form.fields
 
         # fill it out
         params = self.form_params(self.samples[0])
