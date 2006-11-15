@@ -27,6 +27,20 @@ class ControllerTest(TestBase):
         # add a routing map for testing routes within the controller tests
         self.map = make_map()
 
+    def assertEmptyModel(self, model=None):
+        """Check that there are no objects left in the data store.
+       
+        We leak knowledge of inheriting classes here, by testing to see if
+        they've set the model attribute.
+        """
+        if model is None:
+            if hasattr(self, 'model'):
+                model = self.model
+                
+        if model:
+            contents = Query(model).select()
+            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
+
 
 class CRUDControllerTestGenerator(type):
     """Monkeypatching metaclass for cruddy controller test generation.
@@ -103,16 +117,6 @@ class CRUDControllerTest(ControllerTest):
     def tearDown(self):
         self.assertEmptyModel(model.Proposal)
         self.assertEmptyModel()
-
-    def assertEmptyModel(self, model=None):
-        """Check that there are no models"""
-        if model is None:
-            if hasattr(self, 'model'):
-                model = self.model
-                
-        if model:
-            contents = Query(model).select()
-            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
     def form_params(self, params):
         """Flatten the params dictionary for form posting.
