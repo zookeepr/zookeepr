@@ -55,7 +55,7 @@ class CRUDControllerTestGenerator(type):
                 if 'crud' not in classdict or t in classdict['crud']:
                     monkeypatch(mcs, 'test_' + t, t)
 
-class CRUDControllerTest(TestBase):
+class CRUDControllerTest(ControllerTest):
     """Base class for testing CRUD on controller objects.
 
     Derived classes should set the following attributes:
