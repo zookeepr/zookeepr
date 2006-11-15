@@ -1,5 +1,3 @@
-import re
-
 from zookeepr.tests.functional import *
 
 class TestOpendayController(CRUDControllerTest):
@@ -7,27 +5,15 @@ class TestOpendayController(CRUDControllerTest):
     url = '/openday'
     param_name = 'openday'
     samples = [dict(openday=dict(
-                                      heardfromtext='School',
-                                      opendaydrag=1,
-                                      email_address='teacher@example.org',
-                                      heardfrom='-',
-                                      ),
+                                 heardfromtext='School',
+                                 opendaydrag=1,
+                                 email_address='teacher@example.org',
+                                 heardfrom='-',
+                                 ),
                     )
                ]
-#    no_test = ['password_confirm', 'person']
     crud = ['create']
 
-    def setUp(self):
-        super(TestOpendayController, self).setUp()
-
-    def tearDown(self):
-        ps = Query(model.OpenDay).select()
-        for p in ps:
-            objectstore.delete(p)
-        objectstore.flush()
-        super(TestOpendayController, self).tearDown()
-
-class TestOpendayController(CRUDControllerTest):
     def test_existing_openday(self):
         p = model.Openday(email_address='teacher@example.org',
             fullname='Happy teacher',
@@ -39,12 +25,8 @@ class TestOpendayController(CRUDControllerTest):
 
         resp = self.app.get('/openday/new')
         f = resp.form
-        sample_data = dict(
-            heardfromtext='Moo',
-            opendaydrag=5,
-            )
-        for k in sample_data.keys():
-            f['openday.' + k] = sample_data[k]
+        f['openday.heardfromtext'] = 'Moo'
+        f['openday.opendaydrag'] = '5'
         f['openday.email_address'] = 'teacher@example.org'
         f['openday.fullname'] = 'Happy Teacher'
 
