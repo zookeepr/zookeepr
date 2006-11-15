@@ -7,16 +7,6 @@ from zookeepr.lib.base import *
 from zookeepr.lib.crud import Create
 from zookeepr.lib.validators import BaseSchema, EmailAddress
 
-class DictSet(validators.Set):
-    def _from_python(self, value):
-        value = super(DictSet, self)._from_python(value, state)
-        return dict(zip(value, [1]*len(value)))
-
-    def _to_python(self, value, state):
-        value = value.keys()
-        return super(DictSet, self)._to_python(value, state)
-
-
 class NotExistingOpendayValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         openday = Query(model.Openday).get_by(email_address=value['email_address'])
