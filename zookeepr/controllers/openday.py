@@ -17,12 +17,12 @@ class DictSet(validators.Set):
         return super(DictSet, self)._to_python(value, state)
 
 
-# FIXME: merge with account.py controller and move to validators
 class NotExistingOpendayValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         openday = Query(model.Openday).get_by(email_address=value['email_address'])
         if openday is not None:
             raise Invalid("You have already registered!", value, state)
+
 
 class OpendaySchema(Schema):
     fullname = validators.String(not_empty=True)
@@ -40,6 +40,7 @@ class NewOpendaySchema(BaseSchema):
     openday = OpendaySchema()
 
     pre_validators = [variabledecode.NestedVariables]
+
 
 class OpendayController(BaseController, Create):
     individual = 'openday'
