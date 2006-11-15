@@ -1,4 +1,4 @@
-from domain import Stream
+from domain import Stream, Talk
 import mapper
 
-__all__ = ['Stream']
+__all__ = ['Stream', 'Talk']

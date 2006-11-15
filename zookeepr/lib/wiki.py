@@ -88,13 +88,15 @@ def wiki_fragment(page_name='Home'):
         content = soup.findAll('div', id='content')[0]
         return '<div class="wiki">\n%s\n</div>' % (content,)
     except IndexError:
+        print "soup is", soup.prettify()
         if "You are not allowed to access this!" in soup.prettify():
             print "IndexError raised, soup content is:"
-            print soup.prettify()
+            return content
         else:
             # Raise an error so we can print it out when this happens during
             # a test and see what MoinMoin is complaining about
             raise
+        return 'BONE'
 
 def wiki_html_fragment(page_name='Home'):
     """Use a Moin page as a raw HTML fragment."""
