@@ -1,6 +1,6 @@
 from zookeepr.tests.functional import *
 
-class TestReviewController(SignedInControllerTest):
+class TestReviewController(SignedInCRUDControllerTest):
 #     model = model.Review
 #     name = 'review'
 #     url = '/review'

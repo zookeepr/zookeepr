@@ -11,7 +11,7 @@ if 'This page does not exist yet.' in content:
 </%python>
 % if content:
 <div id="bio">
-<p><% content %></p>
+<p><% content |s %></p>
 </div>
 % #endif
 
