@@ -5,6 +5,7 @@ class TestOpendayController(CRUDControllerTest):
     url = '/openday'
     param_name = 'openday'
     samples = [dict(openday=dict(
+                            fullname='Happy Teacher',
                                  heardfromtext='School',
                                  opendaydrag=1,
                                  email_address='teacher@example.org',
