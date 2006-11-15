@@ -16,6 +16,18 @@ from zookeepr.tests import TestBase, monkeypatch
 here_dir = os.path.dirname(__file__)
 conf_dir = os.path.dirname(os.path.dirname(os.path.dirname(here_dir)))
 
+class ControllerTest(TestBase):
+    """Base class for controller tests"""
+    def __init__(self, *args):
+        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
+        self.app = TestApp(wsgiapp)
+        super(ControllerTest, self).__init__(*args)
+
+    def setUp(self):
+        # add a routing map for testing routes within the controller tests
+        self.map = make_map()
+
+
 class CRUDControllerTestGenerator(type):
     """Monkeypatching metaclass for cruddy controller test generation.
 
@@ -82,14 +94,8 @@ class CRUDControllerTest(TestBase):
     """
     __metaclass__ = CRUDControllerTestGenerator
     
-    def __init__(self, *args):
-        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
-        self.app = TestApp(wsgiapp)
-        TestBase.__init__(self, *args)
-
     def setUp(self):
-        # add a routing map for testing routes within the controller tests
-        self.map = make_map()
+        super(CRUDControllerTest, self).setUp()
 
         # check that the objectstore is currently empty
         self.assertEmptyModel()
@@ -361,7 +367,8 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
         super(SignedInControllerTest, self).tearDown()
 
 
-__all__ = ['CRUDControllerTest', 'SignedInCRUDControllerTest',
+__all__ = ['ControllerTest',
+    'CRUDControllerTest', 'SignedInCRUDControllerTest',
     'objectstore', 'Query',
     'model', 'url_for']
 
