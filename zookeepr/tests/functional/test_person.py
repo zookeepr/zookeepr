@@ -2,7 +2,7 @@
 
 # from zookeepr.tests.functional import *
 
-# class TestPerson(ControllerTest):
+# class TestPerson(CRUDControllerTest):
 # #     def test_index(self):
 # #         response = self.app.get(url_for(controller='person'))
 # #         # Test response...

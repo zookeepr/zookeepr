@@ -79,7 +79,7 @@ class CRUDControllerTest(ControllerTest):
 
     An example using this base class:
 
-    class TestSomeController(ControllerTest):
+    class TestSomeController(CRUDControllerTest):
         name = 'Person'
         model = model.core.Person
         url = '/person'

@@ -4,13 +4,13 @@ from paste.fixture import AppError
 
 from sqlalchemy import create_session
 
-class TestTemplateController(ControllerTest):
+class TestTemplateController(CRUDControllerTest):
     """Tests the Template controller and wiki integration."""
 
     # Implementation
 
     def setUp(self):
-        ControllerTest.setUp(self)
+        CRUDControllerTest.setUp(self)
 
         self.logged_in = False
 
@@ -40,7 +40,7 @@ class TestTemplateController(ControllerTest):
         objectstore.delete(Query(model.Person).get(self.p.id))
         objectstore.flush()
 
-        ControllerTest.tearDown(self)
+        CRUDControllerTest.tearDown(self)
 
     def assertNotLoggedIn(self):
         # confirm we aren't logged in 

@@ -2,7 +2,7 @@ import re
 
 from zookeepr.tests.functional import *
 
-class TestOpendayController(ControllerTest):
+class TestOpendayController(CRUDControllerTest):
     model = model.openday.Openday
     url = '/openday'
     param_name = 'openday'
@@ -27,7 +27,7 @@ class TestOpendayController(ControllerTest):
         objectstore.flush()
         super(TestOpendayController, self).tearDown()
 
-class TestOpendayController(ControllerTest):
+class TestOpendayController(CRUDControllerTest):
     def test_existing_openday(self):
         p = model.Openday(email_address='teacher@example.org',
             fullname='Happy teacher',
