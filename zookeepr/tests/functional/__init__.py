@@ -16,8 +16,8 @@ from zookeepr.tests import TestBase, monkeypatch
 here_dir = os.path.dirname(__file__)
 conf_dir = os.path.dirname(os.path.dirname(os.path.dirname(here_dir)))
 
-class ControllerTestGenerator(type):
-    """Monkeypatching metaclass for controller test generation.
+class CRUDControllerTestGenerator(type):
+    """Monkeypatching metaclass for cruddy controller test generation.
 
     This metaclass constructs test methods at class definition time
     based on the class attributes in the child; this way we can define
@@ -26,6 +26,10 @@ class ControllerTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
+
+        # Don't patch if we're the base class
+        if not name.startswith('Test'):
+            return
 
         # patch if we have a model defined
         if 'model' not in classdict:
@@ -39,7 +43,7 @@ class ControllerTestGenerator(type):
                 if 'crud' not in classdict or t in classdict['crud']:
                     monkeypatch(mcs, 'test_' + t, t)
 
-class ControllerTest(TestBase):
+class CRUDControllerTest(TestBase):
     """Base class for testing CRUD on controller objects.
 
     Derived classes should set the following attributes:
@@ -76,7 +80,7 @@ class ControllerTest(TestBase):
         no_test = ['password_confirm']
         mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
-    __metaclass__ = ControllerTestGenerator
+    __metaclass__ = CRUDControllerTestGenerator
     
     def __init__(self, *args):
         wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
@@ -329,7 +333,7 @@ class ControllerTest(TestBase):
         res = self.app.post(url, status=404)
 
 
-class SignedInControllerTest(ControllerTest):
+class SignedInCRUDControllerTest(CRUDControllerTest):
     """Test base class that signs us in first.
     """
     def setUp(self):
@@ -357,7 +361,7 @@ class SignedInControllerTest(ControllerTest):
         super(SignedInControllerTest, self).tearDown()
 
 
-__all__ = ['ControllerTest', 'SignedInControllerTest',
+__all__ = ['CRUDControllerTest', 'SignedInCRUDControllerTest',
     'objectstore', 'Query',
     'model', 'url_for']
 
