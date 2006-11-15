@@ -1,5 +1,6 @@
 import md5
 import os
+import re
 import warnings
 
 from formencode import variabledecode
@@ -145,12 +146,12 @@ class CRUDControllerTest(ControllerTest):
         #"""Test create action on controller"""
 
         url = url_for(controller=self.url, action='new')
-        print "url", url
+        print "url retrieved is:", url
         # get the form
         response = self.app.get(url)
         #print response
         form = response.form
-        print form.fields
+        print "form fields are:", form.fields
 
         # fill it out
         params = self.form_params(self.samples[0])
@@ -160,7 +161,10 @@ class CRUDControllerTest(ControllerTest):
         print "about to submit with these fields:", form.submit_fields()
 
         # submit
-        form.submit()
+        resp = form.submit()
+        #print "response:", resp
+        error_match = re.search(r'<!-- for:.*<span class="error-message">[^<]*</span>', str(resp), re.DOTALL)
+        self.failUnlessEqual(None, error_match, "Errors in message: %s" % error_match.group(0))
 
         # now check that the data is in the database
         os = Query(self.model).select()
@@ -168,12 +172,12 @@ class CRUDControllerTest(ControllerTest):
         self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
-
         # dodgy hack
         params = self.samples[0]
         if isinstance(params, dict) and hasattr(self, 'param_name'):
             params = params[self.param_name]
             print "params", params
+
         for key in params.keys():
             self.check_attribute(os[0], key, params[key])
 
