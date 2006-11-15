@@ -1,6 +1,14 @@
 Changes for Zookeepr
 ====================
 
+0.2.7
+-----
+
+ * Refactor ControllerTest base classes to differentiate semiautomagic tests
+   for CRUD controllers versus non-CRUD controllers.  (Jamie Wilkinson)
+ * Fix really really dumb bug in registration email generation.
+   (Jamie Wilkinson)
+
 0.2.6
 -----
 

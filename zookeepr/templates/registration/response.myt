@@ -40,6 +40,7 @@ teesize = {'S': 'small',
  Extra tickets: <% c.registration.dinner |h %>
 
 % if c.registration.accommodation:
+%	a = c.registration.accommodation
 %	if a.option:
 %		opt = " (%s) " % a.option
 %	else:

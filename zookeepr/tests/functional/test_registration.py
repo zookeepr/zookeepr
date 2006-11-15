@@ -41,6 +41,7 @@ class TestRegistrationController(CRUDControllerTest):
                                       shell='-',
                                       prevlca={'99': '1'},
                                       miniconf={'Debian': '1'},
+                                      accommodation=1,
                                       ),
                     person=dict(email_address='testguy@example.org',
                                 password='test',
@@ -57,12 +58,29 @@ class TestRegistrationController(CRUDControllerTest):
                    prevlca = lambda p: p.keys(),
                    #accommodation = lambda p: None,
                    )
-    
+
     def setUp(self):
         super(TestRegistrationController, self).setUp()
         Dummy_smtplib.install()
 
+        # create some accommodation
+        self.al = model.registration.AccommodationLocation(name='foo', beds=1)
+        self.ao = model.registration.AccommodationOption(name='', cost_per_night=1)
+        self.ao.location = self.al
+        objectstore.save(self.al)
+        objectstore.save(self.ao)
+        objectstore.flush()
+
+        self.alid = self.al.id
+        self.aoid = self.ao.id
+        
     def tearDown(self):
+        self.ao = Query(model.registration.AccommodationOption).get(self.aoid)
+        self.al = Query(model.registration.AccommodationLocation).get(self.alid)
+        objectstore.delete(self.ao)
+        objectstore.delete(self.al)
+        objectstore.flush()
+        
         if Dummy_smtplib.existing:
             Dummy_smtplib.existing.reset()
 
