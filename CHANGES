@@ -1,6 +1,14 @@
 Changes for Zookeepr
 ====================
 
+0.2.8
+-----
+
+ * Don't blow up on NXDOMAIN responses or timeouts during the email domain
+   validator.  (Jamie Wilkinson)
+ * Lock down talk controller to only accepted talks.  (Jamie Wilkinson)
+ * Only show accepted talks on profile pages.  (Jamie Wilkinson)
+
 0.2.7
 -----
 
