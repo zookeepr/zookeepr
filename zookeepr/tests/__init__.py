@@ -65,6 +65,13 @@ def setUp():
     except OSError:
         pass
 
+    # MoinMoin has surge protection.  This is bad because it introduces timing
+    # assumptions about usage, and if we're testing we can't have timing
+    # assumptions, because we don't know how fast we'll run.
+    surge_log = 'moin/data/cache/surgeprotect/surge-log'
+    if os.path.exists(surge_log):
+        os.unlink(surge_log)
+
     eng = create_engine('sqlite:///test.db', echo=True)
     global_connect(eng);
     default_metadata.create_all()

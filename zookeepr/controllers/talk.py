@@ -3,5 +3,5 @@ from zookeepr.lib.crud import View
 from zookeepr import model
 
 class TalkController(BaseController, View):
-    model = model.Proposal
+    model = model.Talk
     individual = 'talk'
