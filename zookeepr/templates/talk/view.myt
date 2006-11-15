@@ -7,9 +7,14 @@
 </p>
 
 <div id="abstract">
-<p>
+#% content = h.wiki_here()
+% content = h.wiki_fragment('/wiki/talk/%d' % c.talk.id)
+% if 'This page does not exist yet.' in content:
 <% c.talk.abstract |s %>
-</p>
+#<p><% h.link_to('Edit wiki', url=h.url('/talk/%d?action=edit' % c.talk.id)) %></p>
+% else:
+<% content %>
+% #endif
 </div>
 
 <%method title>

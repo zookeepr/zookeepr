@@ -1,5 +1,6 @@
 import md5
 import os
+import re
 import warnings
 
 from formencode import variabledecode
@@ -16,8 +17,34 @@ from zookeepr.tests import TestBase, monkeypatch
 here_dir = os.path.dirname(__file__)
 conf_dir = os.path.dirname(os.path.dirname(os.path.dirname(here_dir)))
 
-class ControllerTestGenerator(type):
-    """Monkeypatching metaclass for controller test generation.
+class ControllerTest(TestBase):
+    """Base class for controller tests"""
+    def __init__(self, *args):
+        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
+        self.app = TestApp(wsgiapp)
+        super(ControllerTest, self).__init__(*args)
+
+    def setUp(self):
+        # add a routing map for testing routes within the controller tests
+        self.map = make_map()
+
+    def assertEmptyModel(self, model=None):
+        """Check that there are no objects left in the data store.
+       
+        We leak knowledge of inheriting classes here, by testing to see if
+        they've set the model attribute.
+        """
+        if model is None:
+            if hasattr(self, 'model'):
+                model = self.model
+                
+        if model:
+            contents = Query(model).select()
+            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
+
+
+class CRUDControllerTestGenerator(type):
+    """Monkeypatching metaclass for cruddy controller test generation.
 
     This metaclass constructs test methods at class definition time
     based on the class attributes in the child; this way we can define
@@ -26,6 +53,10 @@ class ControllerTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
+
+        # Don't patch if we're the base class
+        if not name.startswith('Test'):
+            return
 
         # patch if we have a model defined
         if 'model' not in classdict:
@@ -39,7 +70,7 @@ class ControllerTestGenerator(type):
                 if 'crud' not in classdict or t in classdict['crud']:
                     monkeypatch(mcs, 'test_' + t, t)
 
-class ControllerTest(TestBase):
+class CRUDControllerTest(ControllerTest):
     """Base class for testing CRUD on controller objects.
 
     Derived classes should set the following attributes:
@@ -63,7 +94,7 @@ class ControllerTest(TestBase):
 
     An example using this base class:
 
-    class TestSomeController(ControllerTest):
+    class TestSomeController(CRUDControllerTest):
         name = 'Person'
         model = model.core.Person
         url = '/person'
@@ -76,16 +107,10 @@ class ControllerTest(TestBase):
         no_test = ['password_confirm']
         mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
-    __metaclass__ = ControllerTestGenerator
+    __metaclass__ = CRUDControllerTestGenerator
     
-    def __init__(self, *args):
-        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
-        self.app = TestApp(wsgiapp)
-        TestBase.__init__(self, *args)
-
     def setUp(self):
-        # add a routing map for testing routes within the controller tests
-        self.map = make_map()
+        super(CRUDControllerTest, self).setUp()
 
         # check that the objectstore is currently empty
         self.assertEmptyModel()
@@ -93,16 +118,6 @@ class ControllerTest(TestBase):
     def tearDown(self):
         self.assertEmptyModel(model.Proposal)
         self.assertEmptyModel()
-
-    def assertEmptyModel(self, model=None):
-        """Check that there are no models"""
-        if model is None:
-            if hasattr(self, 'model'):
-                model = self.model
-                
-        if model:
-            contents = Query(model).select()
-            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
     def form_params(self, params):
         """Flatten the params dictionary for form posting.
@@ -131,11 +146,12 @@ class ControllerTest(TestBase):
         #"""Test create action on controller"""
 
         url = url_for(controller=self.url, action='new')
-        print "url", url
+        print "url retrieved is:", url
         # get the form
         response = self.app.get(url)
         #print response
         form = response.form
+        print "form fields are:", form.fields
 
         # fill it out
         params = self.form_params(self.samples[0])
@@ -145,7 +161,11 @@ class ControllerTest(TestBase):
         print "about to submit with these fields:", form.submit_fields()
 
         # submit
-        form.submit()
+        resp = form.submit()
+        #print "response:", resp
+        error_match = re.search(r'<!-- for:.*<span class="error-message">[^<]*</span>', str(resp), re.DOTALL)
+        if error_match is not None:
+            self.fail("Errors in message: %s" % error_match.group(0))
 
         # now check that the data is in the database
         os = Query(self.model).select()
@@ -153,12 +173,12 @@ class ControllerTest(TestBase):
         self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
 
-
         # dodgy hack
         params = self.samples[0]
         if isinstance(params, dict) and hasattr(self, 'param_name'):
             params = params[self.param_name]
             print "params", params
+
         for key in params.keys():
             self.check_attribute(os[0], key, params[key])
 
@@ -329,11 +349,11 @@ class ControllerTest(TestBase):
         res = self.app.post(url, status=404)
 
 
-class SignedInControllerTest(ControllerTest):
+class SignedInCRUDControllerTest(CRUDControllerTest):
     """Test base class that signs us in first.
     """
     def setUp(self):
-        super(SignedInControllerTest, self).setUp()
+        super(SignedInCRUDControllerTest, self).setUp()
         self.person = model.Person(email_address='testguy@example.org',
                                    password='test',
                                    fullname='Testguy McTest'
@@ -354,10 +374,11 @@ class SignedInControllerTest(ControllerTest):
     def tearDown(self):
         objectstore.delete(Query(model.Person).get(self.pid))
         objectstore.flush()
-        super(SignedInControllerTest, self).tearDown()
+        super(SignedInCRUDControllerTest, self).tearDown()
 
 
-__all__ = ['ControllerTest', 'SignedInControllerTest',
+__all__ = ['ControllerTest',
+    'CRUDControllerTest', 'SignedInCRUDControllerTest',
     'objectstore', 'Query',
     'model', 'url_for']
 

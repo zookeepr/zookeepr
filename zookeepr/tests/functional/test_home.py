@@ -1,7 +1,7 @@
 from zookeepr.model import Person, Proposal
 from zookeepr.tests.functional import *
 
-class TestHomeController(ControllerTest):
+class TestHomeController(CRUDControllerTest):
     def test_index(self):
         response = self.app.get(url_for(controller='home'))
 

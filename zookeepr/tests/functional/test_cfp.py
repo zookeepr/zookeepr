@@ -6,7 +6,7 @@ from paste.fixture import Dummy_smtplib
 from zookeepr.model import Person, Proposal, ProposalType, Attachment
 from zookeepr.tests.functional import *
 
-#class TestCFP(ControllerTest):
+#class TestCFP(CRUDControllerTest):
 #    def test_index(self):
 #        res = self.app.get('/cfp')
         
