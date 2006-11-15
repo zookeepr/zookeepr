@@ -127,7 +127,7 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         objectstore.delete(regs[0])
         objectstore.flush()
 
-class TestNotSignedInRegistrationController(CRUDControllerTest):
+class TestNotSignedInRegistrationController(ControllerTest):
     def test_not_signed_in_existing_registration(self):
         p = model.Person(email_address='testguy@example.org',
             fullname='testguy mctest',
