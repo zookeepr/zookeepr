@@ -1,16 +1,12 @@
 from zookeepr.tests.functional import *
-from zookeepr.lib.base import session, g
-from paste.fixture import AppError
 
-from sqlalchemy import create_session
-
-class TestTemplateController(CRUDControllerTest):
+class TestTemplateController(ControllerTest):
     """Tests the Template controller and wiki integration."""
 
     # Implementation
 
     def setUp(self):
-        CRUDControllerTest.setUp(self)
+        super(TestTemplateController, self).setUp()
 
         self.logged_in = False
 
@@ -40,7 +36,7 @@ class TestTemplateController(CRUDControllerTest):
         objectstore.delete(Query(model.Person).get(self.p.id))
         objectstore.flush()
 
-        CRUDControllerTest.tearDown(self)
+        super(TestTemplateController, self).tearDown()
 
     def assertNotLoggedIn(self):
         # confirm we aren't logged in 
