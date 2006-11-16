@@ -14,6 +14,12 @@ class CRUDModelTestGenerator(type):
     written to do common model tests, thus improving TDD!
     """
     def __init__(cls, name, bases, classdict):
+        type.__init__(cls, name, bases, classdict)
+
+        # Don't try to patch if we're the base class
+        if not name.startswith('Test'):
+            return
+
         if 'domain' not in classdict:
             warnings.warn("no domain attribute found in %s" % name, stacklevel=2)
         else:
