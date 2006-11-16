@@ -1,6 +1,6 @@
 from zookeepr.tests.functional import *
 
-class TestProfileController(CRUDControllerTest):
+class TestProfileController(ControllerTest):
     def test_profile_view(self):
         # set up
         p = model.Person(email_address='testguy@example.org',
