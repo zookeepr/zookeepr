@@ -173,6 +173,11 @@ class TableTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
+
+        # Don't try to patch the base class
+        if not name.startswith('Test'):
+            return
+
         if 'table' not in classdict:
             warnings.warn("no table attribute found in %s" % name, stacklevel=2)
         else:
