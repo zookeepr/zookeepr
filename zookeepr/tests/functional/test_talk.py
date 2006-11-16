@@ -1,6 +1,6 @@
 from zookeepr.tests.functional import *
 
-class TestTalkController(CRUDControllerTest):
+class TestTalkController(ControllerTest):
     def test_talk_view(self):
         # set up
         pt = model.ProposalType(name='snuh')
