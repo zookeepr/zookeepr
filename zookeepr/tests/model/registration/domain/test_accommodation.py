@@ -49,7 +49,7 @@ class TestAccommodationOptionModel(CRUDModelTest):
         super(TestAccommodationOptionModel, self).tearDown()
 
 
-class TestAccommodationModel(CRUDModelTest):
+class TestAccommodationModel(ModelTest):
 
     def test_accommodation_available(self):
 

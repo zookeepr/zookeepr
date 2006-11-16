@@ -6,6 +6,20 @@ from sqlalchemy import objectstore, Query, default_metadata
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
 
+class ModelTest(TestBase):
+    """Base class for all data model domain object tests.
+    """
+
+    def echo_sql(self, value):
+        """Tell the underlying engine to echo SQL, for debugging tests."""
+        default_metadata.engine.echo = value
+        
+    def check_empty_session(self):
+        """Check that the database was left empty after the test"""
+        results = Query(self.domain).select()
+        self.assertEqual([], results)
+
+
 class CRUDModelTestGenerator(type):
     """Monkeypatching metaclass for data model test classes.
 
@@ -26,7 +40,7 @@ class CRUDModelTestGenerator(type):
             monkeypatch(cls, 'test_crud', 'crud')
 
 
-class CRUDModelTest(TestBase):
+class CRUDModelTest(ModelTest):
     """Base class for testing the data model classes.
 
     Derived classes should set the following attributes:
@@ -53,15 +67,6 @@ class CRUDModelTest(TestBase):
         mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
     __metaclass__ = CRUDModelTestGenerator
-
-    def echo_sql(self, value):
-        """Tell the underlying engine to echo SQL, for debugging tests."""
-        default_metadata.engine.echo = value
-        
-    def check_empty_session(self):
-        """Check that the database was left empty after the test"""
-        results = Query(self.domain).select()
-        self.assertEqual([], results)
 
     def additional(self, obj):
         """Perform additional modifications to the model object before saving.
@@ -312,7 +317,7 @@ class TableTest(TestBase):
 
 
 __all__ = ['TableTest',
-           'CRUDModelTest',
+           'ModelTest', 'CRUDModelTest',
            'objectstore', 'Query',
            'model',
            ]
