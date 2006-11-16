@@ -1,6 +1,6 @@
 from zookeepr.tests.model import *
 
-class TestTalkDomainModel(ModelTest):
+class TestTalkDomainModel(CRUDModelTest):
     def test_accepted_talk(self):
         # set up things
         t = model.ProposalType(name='snuh')

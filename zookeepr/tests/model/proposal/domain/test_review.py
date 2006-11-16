@@ -2,7 +2,7 @@ import sqlalchemy.exceptions
 
 from zookeepr.tests.model import *
 
-class TestReviewModel(ModelTest):
+class TestReviewModel(CRUDModelTest):
 #    domain = model.Review
 #    samples = [dict(proposal
 

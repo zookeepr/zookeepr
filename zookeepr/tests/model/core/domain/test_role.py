@@ -1,7 +1,6 @@
-from zookeepr.model import Person, Role
 from zookeepr.tests.model import *
 
-class TestRoleModel(ModelTest):
+class TestRoleModel(CRUDModelTest):
      domain = model.core.Role
 
      samples = [dict(name='site admin'),
@@ -13,9 +12,9 @@ class TestRoleModel(ModelTest):
      def test_map_person(self):
          """Test mapping persons to roles"""
 
-         p = Person(handle='testguy',
+         p = model.Person(handle='testguy',
                     email_address='testguy@example.org')
-         r = Role('admin')
+         r = model.Role('admin')
 
          objectstore.save(p)
          objectstore.save(r)
@@ -27,8 +26,8 @@ class TestRoleModel(ModelTest):
          
          objectstore.clear()
 
-         p = objectstore.get(Person, pid)
-         r = objectstore.get(Role, rid)
+         p = objectstore.get(model.Person, pid)
+         r = objectstore.get(model.Role, rid)
          print "new p:", p
          print "p.roles:", p.roles
 
@@ -49,21 +48,21 @@ class TestRoleModel(ModelTest):
          objectstore.flush()
          
          # check
-         self.assertEqual(0, len(objectstore.query(Role).select()))
+         self.assertEqual(0, len(objectstore.query(model.Role).select()))
          self.check_empty_session()
 
      def test_many_roles(self):
-         p1 = Person(email_address='one@example.org', password='1')
-         p2 = Person(email_address='two@example.org', password='2')
-         p3 = Person(email_address='three@example.org', password='3')
-         p4 = Person(email_address='four@example.org', password='4')
+         p1 = model.Person(email_address='one@example.org', password='1')
+         p2 = model.Person(email_address='two@example.org', password='2')
+         p3 = model.Person(email_address='three@example.org', password='3')
+         p4 = model.Person(email_address='four@example.org', password='4')
          objectstore.save(p1)
          objectstore.save(p2)
          objectstore.save(p3)
          objectstore.save(p4)
 
-         r1 = Role('single')
-         r2 = Role('double')
+         r1 = model.Role('single')
+         r2 = model.Role('double')
          objectstore.save(r1)
          objectstore.save(r2)
 
@@ -78,12 +77,12 @@ class TestRoleModel(ModelTest):
 
          objectstore.clear()
 
-         p1 = objectstore.get(Person, p[0])
-         p2 = objectstore.get(Person, p[1])
-         p3 = objectstore.get(Person, p[2])
-         p4 = objectstore.get(Person, p[3])
-         r1 = objectstore.get(Role, r[0])
-         r2 = objectstore.get(Role, r[1])
+         p1 = objectstore.get(model.Person, p[0])
+         p2 = objectstore.get(model.Person, p[1])
+         p3 = objectstore.get(model.Person, p[2])
+         p4 = objectstore.get(model.Person, p[3])
+         r1 = objectstore.get(model.Role, r[0])
+         r2 = objectstore.get(model.Role, r[1])
 
          # test
          self.failUnless(r1 in p1.roles)

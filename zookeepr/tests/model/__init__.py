@@ -6,7 +6,7 @@ from sqlalchemy import objectstore, Query, default_metadata
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
 
-class ModelTestGenerator(type):
+class CRUDModelTestGenerator(type):
     """Monkeypatching metaclass for data model test classes.
 
     This metaclass generates test methods in the target class based on the
@@ -20,7 +20,7 @@ class ModelTestGenerator(type):
             monkeypatch(cls, 'test_crud', 'crud')
 
 
-class ModelTest(TestBase):
+class CRUDModelTest(TestBase):
     """Base class for testing the data model classes.
 
     Derived classes should set the following attributes:
@@ -39,14 +39,14 @@ class ModelTest(TestBase):
 
     An example using this base class follows.
 
-    class TestSomeModel(ModelTest):
+    class TestSomeModel(CRUDModelTest):
         model = model.core.User
         samples = [dict(name='testguy',
                         email_address='test@example.org',
                         password='test')]
         mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
-    __metaclass__ = ModelTestGenerator
+    __metaclass__ = CRUDModelTestGenerator
 
     def echo_sql(self, value):
         """Tell the underlying engine to echo SQL, for debugging tests."""
@@ -305,7 +305,8 @@ class TableTest(TestBase):
             self.check_empty_table()
 
 
-__all__ = ['TableTest', 'ModelTest',
+__all__ = ['TableTest',
+           'CRUDModelTest',
            'objectstore', 'Query',
            'model',
            ]

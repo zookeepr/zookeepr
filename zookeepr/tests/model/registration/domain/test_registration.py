@@ -1,6 +1,6 @@
 from zookeepr.tests.model import *
 
-class TestRegistration(ModelTest):
+class TestRegistration(CRUDModelTest):
     domain = model.registration.Registration
     samples = [dict(address1='a1',
                     address2='a2',

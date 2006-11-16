@@ -1,6 +1,6 @@
 from zookeepr.tests.model import *
 
-class TestAccommodationLocationModel(ModelTest):
+class TestAccommodationLocationModel(CRUDModelTest):
     """Test the AccommodationLocation crud object, that maps straight on
     top of the accommodation_location table.
     """
@@ -14,7 +14,7 @@ class TestAccommodationLocationModel(ModelTest):
                ]
 
 
-class TestAccommodationOptionModel(ModelTest):
+class TestAccommodationOptionModel(CRUDModelTest):
     """Test the AccommodationOption crud object, that maps straight
     on top of the accommopation_option table.
     """
@@ -49,7 +49,7 @@ class TestAccommodationOptionModel(ModelTest):
         super(TestAccommodationOptionModel, self).tearDown()
 
 
-class TestAccommodationModel(ModelTest):
+class TestAccommodationModel(CRUDModelTest):
 
     def test_accommodation_available(self):
 

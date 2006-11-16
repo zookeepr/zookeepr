@@ -2,7 +2,7 @@ import datetime
 
 from zookeepr.tests.model import *
 
-class TestAttachmentModel(ModelTest):
+class TestAttachmentModel(CRUDModelTest):
     model = 'proposal.Attachment'
     samples = [dict(filename='attachment 1',
                     content_type='text/plain',
