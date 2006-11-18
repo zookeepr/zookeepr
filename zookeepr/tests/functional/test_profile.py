@@ -18,3 +18,11 @@ class TestProfileController(ControllerTest):
         objectstore.delete(p)
         objectstore.flush()
 
+
+class TestSignedInProfileController(SignedInCRUDControllerTest):
+    def test_profile_list(self):
+        resp = self.app.get('/profile')
+
+        resp = resp.follow()
+
+        resp.mustcontain("Testguy McTest")
