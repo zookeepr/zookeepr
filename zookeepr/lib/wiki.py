@@ -90,8 +90,8 @@ def wiki_fragment(page_name='Home'):
     except IndexError:
         print "soup is", soup.prettify()
         if "You are not allowed to access this!" in soup.prettify():
-            print "IndexError raised, soup content is:"
-            return content
+            #print "IndexError raised, soup content is:", soup.prettify():
+            return ''
         else:
             # Raise an error so we can print it out when this happens during
             # a test and see what MoinMoin is complaining about
