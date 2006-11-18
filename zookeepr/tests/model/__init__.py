@@ -107,6 +107,10 @@ class CRUDModelTest(ModelTest):
             "not enough sample data, stranger")
 
         for sample in self.samples:
+            # FIXME: add an inspecty thing to check we're setting only
+            # function parameters, possibly raising errors if there are
+            # sample datas without parameters matching.
+            
             # instantiating model
             o = self.domain(**sample)
 
