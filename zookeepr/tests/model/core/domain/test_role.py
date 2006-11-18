@@ -6,6 +6,7 @@ class TestRoleModel(CRUDModelTest):
      samples = [dict(name='site admin'),
                 dict(name='speaker'),
                 ]
+# FIXME: chckec
      not_nullables = ['name']
      uniques = ['name']
 

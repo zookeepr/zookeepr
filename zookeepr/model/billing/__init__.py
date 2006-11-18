@@ -1,4 +1,4 @@
-from domain import InvoiceItem
+from domain import InvoiceItem, Invoice
 import mapper
 
-__all__ = ['InvoiceItem']
+__all__ = ['InvoiceItem', 'Invoice']
