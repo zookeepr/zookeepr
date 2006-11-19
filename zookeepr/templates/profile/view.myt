@@ -2,6 +2,8 @@
 
 # Show personal details
 % if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id:
+<fieldset>
+
 <p>
 email address: <% c.profile.email_address |h %>
 </p>
@@ -15,23 +17,42 @@ first name: <% c.profile.firstname |h %>
 last name: <% c.profile.lastname |h %>
 </p>
 
+</fieldset>
+
 %	if c.profile.registration:
-<hr />
+<fieldset>
 
 <p>
 ticket: <% c.profile.registration.type |h %>
 </p>
 
-<hr />
+<p>
+teesize: <% c.profile.registration.teesize |h %>
+</p>
+
+<p>
+Additional dinner tickets: <% c.profile.registration.dinner |h %>
+</p>
+
+<p>
+Dietary requirements: <% c.profile.registration.diet |h %>
+</p>
+
+<p>
+Special requirements: <% c.profile.registration.special |h %>
+</p>
+
+
+</fieldset>
+
+<fieldset>
 
 <p>
 company: <% c.profile.registration.company |h %>
 </p>
 
 <p>
-address: <% c.profile.registration.address1 |h %>
-<br />
-<% c.profile.registration.address2 |h %>
+address: <% c.profile.registration.address1 |h %> <% c.profile.registration.address2 |h %>
 </p>
 
 <p>
@@ -54,7 +75,9 @@ country: <% c.profile.registration.country |h %>
 phone: <% c.profile.registration.phone |h %>
 </p>
 
-<hr />
+</fieldset>
+
+<fieldset>
 
 <p>
 shell:
@@ -88,26 +111,12 @@ description: <% c.profile.registration.silly_description |h %>
 </p>
 
 <p>
-teesize: <% c.profile.registration.teesize |h %>
-</p>
-
-<p>
-Additional dinner tickets: <% c.profile.registration.dinner |h %>
-</p>
-
-<p>
-Dietary requirements: <% c.profile.registration.diet |h %>
-</p>
-
-<p>
-Special requirements: <% c.profile.registration.special |h %>
-</p>
-
-<p>
 Number of people you've invited to Open Day: <% c.profile.registration.opendaydrag |h %>
 </p>
 
-<hr />
+</fieldset>
+
+<fieldset>
 
 <p>
 Partner's email address: <% c.profile.registration.partner_email |h %>
@@ -117,7 +126,9 @@ Partner's email address: <% c.profile.registration.partner_email |h %>
 Kids coming: aged 0-3: <% c.profile.registration.kids_0_3 |h %>; 4-6: <% c.profile.registration.kids_4_6 |h %>; 7-9: <% c.profile.registration.kids_7_9 |h %>; 10+: <% c.profile.registration.kids_10 |h %>
 </p>
 
-<hr />
+</fieldset>
+
+<fieldset>
 
 <p>
 Accommodation: <% c.profile.registration.accommodation.name |h %> <% c.profile.registration.accommodation.option |h %>
@@ -131,29 +142,50 @@ check-in date: <% c.profile.registration.checkin |h %> January 2007
 check-out date: <% c.profile.registration.checkout |h %> January 2007
 </p>
 
-<hr />
+</fieldset>
+
+<fieldset>
 
 <p>
-join Linux Australia: <% c.profile.registration.lasignup |h %>
+join Linux Australia: 
+% 		if c.profile.registration.lasignup:
+Yes
+%		else:
+No
+% #endif
 </p>
 
 <p>
-Join the conference announcement list: <% c.profile.registration.announcesignup |h %>
+Join the conference announcement list:
+%		if c.profile.registration.announcesignup:
+Yes
+%		else:
+No
+% #endif
 </p>
 
 <p>
-Join the delegates discussion list: <% c.profile.registration.delegatesignup |h %>
+Join the delegates discussion list:
+%		if c.profile.registration.delegatesignup:
+Yes
+%		else:
+No
+%		#endif
 </p>
 
-<hr />
+</fieldset>
+
+<fieldset>
 
 <p>
-Previous miniconfs: <% c.profile.registration.prevlca |h %>
+Previous miniconfs: <% ', '.join(['20%s' % x for x in c.profile.registration.prevlca]) %>
 </p>
 
 <p>
-Miniconfs likely to attend: <% c.profile.registration.miniconf |h %>
+Miniconfs likely to attend: <% ', '.join(c.profile.registration.miniconf) %>
 </p>
+
+</fieldset>
 
 %	else:
 <p>
