@@ -9,7 +9,7 @@ signed in
 </li>
 
 <li>
-<% h.link_to('my home', url=h.url('home')) %>
+<% h.link_to('my home', url=h.url(controller='profile', action='index')) %>
 </li>
 
 #<li><% h.link_to('my profile', url=h.url(controller='person', action='view', id=session['person_id'])) %></li>
