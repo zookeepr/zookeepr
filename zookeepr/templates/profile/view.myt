@@ -52,7 +52,10 @@ company: <% c.profile.registration.company |h %>
 </p>
 
 <p>
-address: <% c.profile.registration.address1 |h %> <% c.profile.registration.address2 |h %>
+address: <% c.profile.registration.address1 |h %>
+% 		if c.profile.registration.address2:
+, <% c.profile.registration.address2 |h %>
+%		#endif
 </p>
 
 <p>
