@@ -32,7 +32,3 @@
 <%method title>
 linux.conf.au 2007
 </%method>
-
-<%init>
-import datetime
-</%init>
