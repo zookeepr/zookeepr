@@ -84,10 +84,14 @@ class TestRegistrationController(CRUDControllerTest):
         if Dummy_smtplib.existing:
             Dummy_smtplib.existing.reset()
 
+        rs = Query(model.Registration).select()
+        print "rs at teardown:", rs
         ps = Query(model.Person).select()
+        print "ps at teardown:", ps
         for p in ps:
             objectstore.delete(p)
         objectstore.flush()
+        
         super(TestRegistrationController, self).tearDown()
 
 class TestSignedInRegistrationController(SignedInCRUDControllerTest):
