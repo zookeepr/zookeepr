@@ -1,5 +1,38 @@
 <h1><% c.profile.fullname |h %></h1>
 
+# Show personal details
+% if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id:
+<p>
+email address: <% c.profile.email_address %>
+</p>
+<p>
+display name: <% c.profile.handle %>
+</p>
+<p>
+first name: <% c.profile.firstname %>
+</p>
+<p>
+last name: <% c.profile.lastname %>
+</p>
+<p>
+phone: <% c.profile.phone %>
+</p>
+
+%	if c.profile.registration:
+<% c.profile.registration |h%>
+#<p>
+##address: <% c.profile.registration.address1 %>
+#<br />
+#<% c.profile.registration.address2 %>
+#</p>
+%	else:
+<p>
+You haven't yet registered for the conference.  <% h.link_to('Register now!', url=h.url('/Registration')) %>
+</p>
+%	#endif
+
+% #endif
+
 % if len(c.profile.accepted_talks) > 0:
 <%python>
 content = h.wiki_fragment('/wiki/profile/%d' % c.profile.id)
