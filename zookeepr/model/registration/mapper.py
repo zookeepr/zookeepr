@@ -45,8 +45,9 @@ mapper(Accommodation,
 mapper(Registration, registration,
        properties = {
     'person': relation(Person,
-                       backref=backref('registration', cascade="all, delete-orphan"),
-                       uselist=False),
+                       backref=backref('registration', cascade="all, delete-orphan",
+                                       uselist=False),
+                       ),
     'accommodation': relation(Accommodation, backref='registrations',
                               ),
     }
