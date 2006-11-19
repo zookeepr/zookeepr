@@ -72,6 +72,9 @@ class Registration(object):
         self.prevlca = prevlca
         self.miniconf = miniconf
 
+    def __repr__(self):
+        return '<Registration id=%r type=%r person_id=%r>' % (self.id, self.type, self.person_id)
+
 
 class AccommodationLocation(object):
     def __init__(self, name=None, beds=None):
