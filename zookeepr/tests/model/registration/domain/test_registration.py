@@ -37,10 +37,26 @@ class TestRegistration(CRUDModelTest):
                     miniconf=['Debian'],
                     )]
 
+    def setUp(self):
+        super(TestRegistration, self).setUp()
+        self.person = model.Person(email_address='testguy@example.org')
+        objectstore.save(self.person)
+        objectstore.flush()
+        self.pid = self.person.id
+
+    def tearDown(self):
+        objectstore.delete(Query(model.Person).get(self.pid))
+        objectstore.flush()
+        super(TestRegistration, self).tearDown()
+
+    def additional(self, rego):
+        rego.person = self.person
+        return rego
+
     def test_person_mapping(self):
         # person.registration should point to a single registration object
         r = model.Registration(**self.samples[0])
-        p = model.Person(email_address='testguy@example.org')
+        p = model.Person(email_address='testguy+map@example.org')
 
         r.person = p
         objectstore.save(r)

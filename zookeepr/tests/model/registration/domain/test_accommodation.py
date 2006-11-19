@@ -74,9 +74,13 @@ class TestAccommodationModel(ModelTest):
 
         self.assertEqual(1, a.get_available_beds())
 
+        p = model.Person(email_address='testguy@example.org')
+        objectstore.save(p)
         # register something, use up the bed
         r = model.registration.Registration()
         r.accommodation = a
+
+        p.registration = r
 
         objectstore.save(r)
         objectstore.flush()
@@ -124,6 +128,8 @@ class TestAccommodationModel(ModelTest):
         print 'available_as:', available_as
         self.assertEqual(0, len(available_as))
 
+        objectstore.delete(p)
+        objectstore.flush()
         model.registration.tables.registration.delete().execute()
         model.registration.tables.accommodation_option.delete().execute()
         model.registration.tables.accommodation_location.delete().execute()
