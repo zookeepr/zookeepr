@@ -185,7 +185,8 @@ class CRUDControllerTest(ControllerTest):
         print os
         objectstore.delete(os[0])
         objectstore.flush()
-        print "create:", objectstore.new
+        print "new objects after delete flush in create:", objectstore.new
+        self.failUnlessEqual([], list(objectstore.new), "uncommitted objects: %r" % (objectstore.new,))
 
     def check_attribute(self, obj, attr, expected):
         """check that the attribute has the correct value.
