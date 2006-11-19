@@ -19,12 +19,24 @@ phone: <% c.profile.phone %>
 </p>
 
 %	if c.profile.registration:
-<% c.profile.registration |h%>
-#<p>
-##address: <% c.profile.registration.address1 %>
-#<br />
-#<% c.profile.registration.address2 %>
-#</p>
+<p>
+address: <% c.profile.registration.address1 %>
+<br />
+<% c.profile.registration.address2 %>
+</p>
+
+<p>
+city/suburb: <% c.profile.registration.city %>
+</p>
+
+<p>
+state/province: <% c.profile.registration.state %>
+</p>
+
+<p>
+country: <% c.profile.registration.country %>
+</p>
+
 %	else:
 <p>
 You haven't yet registered for the conference.  <% h.link_to('Register now!', url=h.url('/Registration')) %>
