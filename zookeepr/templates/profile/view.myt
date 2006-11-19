@@ -14,11 +14,20 @@ first name: <% c.profile.firstname %>
 <p>
 last name: <% c.profile.lastname %>
 </p>
-<p>
-phone: <% c.profile.phone %>
-</p>
 
 %	if c.profile.registration:
+<hr />
+
+<p>
+ticket: <% c.profile.registration.type %>
+</p>
+
+<hr />
+
+<p>
+company: <% c.profile.registration.company %>
+</p>
+
 <p>
 address: <% c.profile.registration.address1 %>
 <br />
@@ -30,11 +39,120 @@ city/suburb: <% c.profile.registration.city %>
 </p>
 
 <p>
+postcode: <% c.profile.registration.postcode %>
+</p>
+
+<p>
 state/province: <% c.profile.registration.state %>
 </p>
 
 <p>
 country: <% c.profile.registration.country %>
+</p>
+
+<p>
+phone: <% c.profile.registration.phone %>
+</p>
+
+<hr />
+
+<p>
+shell:
+%		if c.profile.registration.shelltext:
+<% c.profile.registration.shelltext %>
+%		else:
+<% c.profile.registration.shell %>
+%		#endif
+</p>
+
+<p>
+editor:
+%		if c.profile.registration.editortext:
+<% c.profile.registration.editortext %>
+%		else:
+<% c.profile.registration.editor %>
+%		#endif
+</p>
+
+<p>
+distro:
+%		if c.profile.registration.distrotext:
+<% c.profile.registration.distrotext %>
+%		else:
+<% c.profile.registration.distro %>
+%		#endif
+</p>
+
+<p>
+description: <% c.profile.registration.silly_description %>
+</p>
+
+<p>
+teesize: <% c.profile.registration.teesize %>
+</p>
+
+<p>
+Additional dinner tickets: <% c.profile.registration.dinner %>
+</p>
+
+<p>
+Dietary requirements: <% c.profile.registration.diet %>
+</p>
+
+<p>
+Special requirements: <% c.profile.registration.special %>
+</p>
+
+<p>
+Number of people you've invited to Open Day: <% c.profile.registration.opendaydrag %>
+</p>
+
+<hr />
+
+<p>
+Partner's email address: <% c.profile.registration.partner_email %>
+</p>
+
+<p>
+Kids coming: aged 0-3: <% c.profile.registration.kids_0_3 %>; 4-6: <% c.profile.registration.kids_4_6 %>; 7-9: <% c.profile.registration.kids_7_9 %>; 10+: <% c.profile.registration.kids_10 %>
+</p>
+
+<hr />
+
+<p>
+Accommodation: <% c.profile.registration.accommodation.name %>
+</p>
+
+<p>
+check-in date: <% c.profile.registration.checkin %>
+</p>
+
+<p>
+check-out date: <% c.profile.registration.checkout %>
+</p>
+
+<hr />
+
+<p>
+join the LA: <% c.profile.registration.lasignup %>
+</p>
+
+<p>
+Join the conference announcement list: <% c.profile.registration.announcesignup %>
+</p>
+
+<p>
+Join the delegates discussion list: <% c.profile.registration.delegatesignup %>
+</p>
+
+<hr />
+
+<p>
+Previous miniconfs: <% c.profile.registration.prevlca %>
+</p>
+
+<p>
+Miniconfs likely to attend: <% c.profile.registration.miniconf %>
 </p>
 
 %	else:
