@@ -1,10 +1,9 @@
 import datetime
 import md5
 
-from zookeepr.model import Person
 from zookeepr.tests.model import *
 
-class TestPerson(ModelTest):
+class TestPerson(CRUDModelTest):
     domain = model.core.Person
 
     samples = [dict(handle='testguy',
@@ -32,7 +31,7 @@ class TestPerson(ModelTest):
     def test_select_by_url(self):
         self.check_empty_session()
 
-        r = Person(email_address='testguy@testguy.org',
+        r = model.Person(email_address='testguy@testguy.org',
                    password='password')
 
         print r
@@ -40,7 +39,7 @@ class TestPerson(ModelTest):
         objectstore.save(r)
         objectstore.flush()
 
-        s = objectstore.query(Person).select_by(url_hash=r.url_hash)
+        s = objectstore.query(model.Person).select_by(url_hash=r.url_hash)
 
         # only one element
         self.assertEqual(1, len(s))

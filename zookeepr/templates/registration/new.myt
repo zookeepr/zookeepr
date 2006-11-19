@@ -4,12 +4,14 @@
 Welcome to the conference registration. Please fill in the form as best you can. 
 </p>
 
+% if not 'signed_in_person_id' in session:
 <p>
 If you already have an account (through a prior registration, or other interaction with this site), then please sign in.
 </p>
 <p>If you can't log in, you can try
 <% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
 </p>
+% #endif
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url()) %>
@@ -249,7 +251,7 @@ desc = '%s %s %s %s' % (start, a1, a2, n1)
 <label for="registration.type">What type of ticket do you want?</label>
 <br />
 # FIXME: dynamic content
-% for (t, p, eb) in [('Professional', '670.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
+% for (t, p, eb) in [('Professional', '690.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
 <label for="registration.type_<% t %>"><% t %> - $<% p %> ($<% eb %> earlybird)</label>
 <br />
@@ -369,7 +371,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 % 	if a.option:
 (<% a.option %>)
 % 	#endif
-- <% h.number_to_currency(a.cost_per_night) %> per night</option>
+- <% h.number_to_currency(a.cost_per_night) %> per night (<% a.beds - a.beds_taken %> places left)</option>
 % #endfor
 </SELECT>
 </p>
@@ -434,7 +436,7 @@ If you are planning on bringing your partner, please enter their email address h
 
 <p>
 <% h.check_box('registration.lasignup') %>
-<label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
+<label for="registration.lasignup">I want to sign up for (free) Linux Australia membership!</label>
 </p>
 
 <p>

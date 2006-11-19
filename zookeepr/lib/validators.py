@@ -86,7 +86,8 @@ class EmailAddress(validators.FancyValidator):
         'badUsername': 'The username portion of the email address is invalid (the portion before the @: %(username)s)',
         'badDomain': 'The domain portion of the email address is invalid (the portion after the @: %(domain)s)',
         'domainDoesNotExist': 'The domain of the email address does not exist (the portion after the @: %(domain)s)',
-        'socketError': 'An error occurred when trying to connect to the server: %(error)s'
+        'socketError': 'An error occurred when trying to connect to the server: %(error)s',
+        'dnsTimeout': 'A temporary error occurred whilst trying to validate your email address, please try again in a moment.',
         }
 
     def __init__(self, *args, **kwargs):
@@ -109,13 +110,16 @@ class EmailAddress(validators.FancyValidator):
             domain_exists = True
         else:
             try:
-                domain_exists = dns.resolver.query(splitted[1], 'A')
-            except dns.resolver.NoAnswer:
-	            pass
-            try:
-                domain_exists = dns.resolver.query(splitted[1], 'MX')
-            except dns.resolver.NoAnswer:
-                pass
+                try:
+                    domain_exists = dns.resolver.query(splitted[1], 'A')
+                except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+                    pass
+                try:
+                    domain_exists = dns.resolver.query(splitted[1], 'MX')
+                except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+                    pass
+            except dns.resolver.Timeout:
+                raise Invalid(self.message('dnsTimeout', state, domain=splitted[1]), value, state)
             if domain_exists == False:
                 raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
 

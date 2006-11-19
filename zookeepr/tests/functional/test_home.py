@@ -1,4 +1,3 @@
-from zookeepr.model import Person, Proposal
 from zookeepr.tests.functional import *
 
 class TestHomeController(ControllerTest):
@@ -6,13 +5,13 @@ class TestHomeController(ControllerTest):
         response = self.app.get(url_for(controller='home'))
 
     def test_index_logged_in(self):
-        p = Person(email_address='testguy@example.org',
+        p = model.Person(email_address='testguy@example.org',
                    password='test',
                    firstname='Testguy')
         p.activated = True
         objectstore.save(p)
         print p
-        s = Proposal(title='foo')
+        s = model.Proposal(title='foo')
         objectstore.save(s)
         p.proposals.append(s)
 

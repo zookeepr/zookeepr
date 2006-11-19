@@ -31,6 +31,9 @@ proposal = Table('proposal',
                    # do they need assistance?
                    Column('assistance', Boolean),
 
+                 # Is it accepted?
+                 Column('accepted', Boolean),
+
                  Column('creation_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp()),

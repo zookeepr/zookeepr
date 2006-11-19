@@ -1,6 +1,6 @@
 from zookeepr.tests.model import *
 
-class TestRegistration(ModelTest):
+class TestRegistration(CRUDModelTest):
     domain = model.registration.Registration
     samples = [dict(address1='a1',
                     address2='a2',
@@ -28,7 +28,6 @@ class TestRegistration(ModelTest):
                     kids_4_6=1,
                     kids_7_9=1,
                     kids_10=1,
-                    accommodation='accommodation1',
                     checkin=1,
                     checkout=1,
                     lasignup=1,
@@ -37,3 +36,51 @@ class TestRegistration(ModelTest):
                     prevlca=[99],
                     miniconf=['Debian'],
                     )]
+
+    def setUp(self):
+        super(TestRegistration, self).setUp()
+        self.person = model.Person(email_address='testguy@example.org')
+        objectstore.save(self.person)
+        objectstore.flush()
+        self.pid = self.person.id
+
+    def tearDown(self):
+        objectstore.delete(Query(model.Person).get(self.pid))
+        objectstore.flush()
+        super(TestRegistration, self).tearDown()
+
+    def additional(self, rego):
+        rego.person = self.person
+        return rego
+
+    def test_person_mapping(self):
+        # person.registration should point to a single registration object
+        r = model.Registration(**self.samples[0])
+        p = model.Person(email_address='testguy+map@example.org')
+
+        r.person = p
+        objectstore.save(r)
+        objectstore.save(p)
+
+        objectstore.flush()
+        
+        rid = r.id
+        pid = p.id
+
+        # clear it
+        objectstore.clear()
+
+        
+        p = Query(model.Person).get(pid)
+        r = Query(model.Registration).get(rid)
+
+        # test that p is mapped to r properly
+        self.assertEqual(r, p.registration)
+
+        self.assertEqual(p, r.person)
+
+        # clean up, assert that r is deleted when p is
+        objectstore.delete(p)
+        objectstore.flush()
+
+        self.assertEqual(None, Query(model.Registration).get(rid))

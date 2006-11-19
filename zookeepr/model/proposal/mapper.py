@@ -18,7 +18,7 @@ mapper(Proposal, proposal,
         'people': relation(Person, secondary=person_proposal_map,
             backref='proposals'),
         'attachments': relation(Attachment, lazy=True, private=True),
-        'reviews' : relation(Review, lazy=True, private=True)
+        'reviews' : relation(Review, private=True, backref='proposal'),
     }
     )
 
@@ -26,7 +26,6 @@ mapper(Proposal, proposal,
 mapper(Review, review,
        properties = {
     'reviewer': relation(Person, lazy=True),
-    'proposal': relation(Proposal, lazy=True),
     'stream': relation(Stream, lazy=True),
     }
        )

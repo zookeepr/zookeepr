@@ -1,12 +1,26 @@
 import warnings
 
 import sqlalchemy.mods.threadlocal
-from sqlalchemy import objectstore, Query
+from sqlalchemy import objectstore, Query, default_metadata
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
 
-class ModelTestGenerator(type):
+class ModelTest(TestBase):
+    """Base class for all data model domain object tests.
+    """
+
+    def echo_sql(self, value):
+        """Tell the underlying engine to echo SQL, for debugging tests."""
+        default_metadata.engine.echo = value
+        
+    def check_empty_session(self):
+        """Check that the database was left empty after the test"""
+        results = Query(self.domain).select()
+        self.assertEqual([], results)
+
+
+class CRUDModelTestGenerator(type):
     """Monkeypatching metaclass for data model test classes.
 
     This metaclass generates test methods in the target class based on the
@@ -14,13 +28,19 @@ class ModelTestGenerator(type):
     written to do common model tests, thus improving TDD!
     """
     def __init__(cls, name, bases, classdict):
+        type.__init__(cls, name, bases, classdict)
+
+        # Don't try to patch if we're the base class
+        if not name.startswith('Test'):
+            return
+
         if 'domain' not in classdict:
             warnings.warn("no domain attribute found in %s" % name, stacklevel=2)
         else:
             monkeypatch(cls, 'test_crud', 'crud')
 
 
-class ModelTest(TestBase):
+class CRUDModelTest(ModelTest):
     """Base class for testing the data model classes.
 
     Derived classes should set the following attributes:
@@ -39,20 +59,23 @@ class ModelTest(TestBase):
 
     An example using this base class follows.
 
-    class TestSomeModel(ModelTest):
+    class TestSomeModel(CRUDModelTest):
         model = model.core.User
         samples = [dict(name='testguy',
                         email_address='test@example.org',
                         password='test')]
         mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
-    __metaclass__ = ModelTestGenerator
+    __metaclass__ = CRUDModelTestGenerator
 
-    def check_empty_session(self):
-        """Check that the database was left empty after the test"""
-        results = Query(self.domain).select()
-        self.assertEqual([], results)
+    def additional(self, obj):
+        """Perform additional modifications to the model object before saving.
 
+        Derived classes can override this to set up dependent objects for CRUD
+        tests.
+        """
+        return obj
+    
     def crud(self):
         #
 #         """Test CRUD operations on data model object.
@@ -84,9 +107,16 @@ class ModelTest(TestBase):
             "not enough sample data, stranger")
 
         for sample in self.samples:
+            # FIXME: add an inspecty thing to check we're setting only
+            # function parameters, possibly raising errors if there are
+            # sample datas without parameters matching.
+            
             # instantiating model
             o = self.domain(**sample)
-    
+
+            # perform additional operations
+            o = self.additional(o)
+            
             # committing to db
             objectstore.save(o)
             objectstore.flush()
@@ -147,6 +177,11 @@ class TableTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
+
+        # Don't try to patch the base class
+        if not name.startswith('Test'):
+            return
+
         if 'table' not in classdict:
             warnings.warn("no table attribute found in %s" % name, stacklevel=2)
         else:
@@ -290,7 +325,8 @@ class TableTest(TestBase):
             self.check_empty_table()
 
 
-__all__ = ['TableTest', 'ModelTest',
+__all__ = ['TableTest',
+           'ModelTest', 'CRUDModelTest',
            'objectstore', 'Query',
            'model',
            ]
