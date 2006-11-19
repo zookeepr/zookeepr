@@ -187,6 +187,9 @@ class CRUDControllerTest(ControllerTest):
         objectstore.flush()
         print "new objects after delete flush in create:", objectstore.new
         self.failUnlessEqual([], list(objectstore.new), "uncommitted objects: %r" % (objectstore.new,))
+        print "deleted:", objectstore.deleted
+        print "dirty:", objectstore.dirty
+        print "new:", objectstore.new
 
     def check_attribute(self, obj, attr, expected):
         """check that the attribute has the correct value.
@@ -373,6 +376,8 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
         self.assertEqual(self.pid, resp.session['signed_in_person_id'])
 
     def tearDown(self):
+        objectstore.clear()
+        
         objectstore.delete(Query(model.Person).get(self.pid))
         objectstore.flush()
         super(SignedInCRUDControllerTest, self).tearDown()

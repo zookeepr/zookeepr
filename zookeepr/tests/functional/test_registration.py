@@ -75,6 +75,10 @@ class TestRegistrationController(CRUDControllerTest):
         self.aoid = self.ao.id
         
     def tearDown(self):
+        objectstore.clear()
+
+        objectstore.delete(Query(model.Person).get_by(email_address='testguy@example.org'))
+
         self.ao = Query(model.registration.AccommodationOption).get(self.aoid)
         self.al = Query(model.registration.AccommodationLocation).get(self.alid)
         objectstore.delete(self.ao)
@@ -84,14 +88,6 @@ class TestRegistrationController(CRUDControllerTest):
         if Dummy_smtplib.existing:
             Dummy_smtplib.existing.reset()
 
-        rs = Query(model.Registration).select()
-        print "rs at teardown:", rs
-        ps = Query(model.Person).select()
-        print "ps at teardown:", ps
-        for p in ps:
-            objectstore.delete(p)
-        objectstore.flush()
-        
         super(TestRegistrationController, self).tearDown()
 
 class TestSignedInRegistrationController(SignedInCRUDControllerTest):
@@ -148,6 +144,7 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         # clean up
         objectstore.delete(regs[0])
         objectstore.flush()
+
 
 class TestNotSignedInRegistrationController(ControllerTest):
     def test_not_signed_in_existing_registration(self):
