@@ -36,3 +36,35 @@ class TestRegistration(CRUDModelTest):
                     prevlca=[99],
                     miniconf=['Debian'],
                     )]
+
+    def test_person_mapping(self):
+        # person.registration should point to a single registration object
+        r = model.Registration(**self.samples[0])
+        p = model.Person(email_address='testguy@example.org')
+
+        r.person = p
+        objectstore.save(r)
+        objectstore.save(p)
+
+        objectstore.flush()
+        
+        rid = r.id
+        pid = p.id
+
+        # clear it
+        objectstore.clear()
+
+        
+        p = Query(model.Person).get(pid)
+        r = Query(model.Registration).get(rid)
+
+        # test that p is mapped to r properly
+        self.assertEqual(r, p.registration)
+
+        self.assertEqual(p, r.person)
+
+        # clean up, assert that r is deleted when p is
+        objectstore.delete(p)
+        objectstore.flush()
+
+        self.assertEqual(None, Query(model.Registration).get(rid))

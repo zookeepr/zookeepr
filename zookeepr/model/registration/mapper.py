@@ -1,4 +1,4 @@
-from sqlalchemy import mapper, join, relation, and_, select, func, outerjoin
+from sqlalchemy import mapper, join, relation, and_, select, func, outerjoin, backref
 
 from zookeepr.model.core import Person
 from tables import registration, accommodation_location, accommodation_option
@@ -44,7 +44,9 @@ mapper(Accommodation,
 
 mapper(Registration, registration,
        properties = {
-    'person': relation(Person),
+    'person': relation(Person,
+                       backref=backref('registration', cascade="all, delete-orphan"),
+                       uselist=False),
     'accommodation': relation(Accommodation, backref='registrations',
                               ),
     }
