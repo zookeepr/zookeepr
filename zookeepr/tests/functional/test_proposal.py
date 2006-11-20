@@ -258,7 +258,8 @@ class TestProposal(SignedInCRUDControllerTest):
         self.person.roles.append(r)
         self.dbsession.save(r)
         self.dbsession.flush()
-        print "flushed"
+
+        self.failUnless('reviewer' in [x.name for x in self.person.roles])
 
         rid = r.id
 
