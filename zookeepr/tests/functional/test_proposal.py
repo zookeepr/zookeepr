@@ -272,7 +272,7 @@ class TestProposal(SignedInCRUDControllerTest):
         self.dbsession.flush()
 
     def test_proposal_view(self):
-        p = Proposal(title='test view')
+        p = model.Proposal(title='test view')
         self.dbsession.save(p)
         self.dbsession.flush()
         pid = p.id
@@ -285,7 +285,7 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
                             
         # clean up
-        self.dbsession.delete(objectstore.get(Proposal, pid))
+        self.dbsession.delete(p)
         self.dbsession.flush()
 
     def test_proposal_view_ours(self):
@@ -308,10 +308,10 @@ class TestProposal(SignedInCRUDControllerTest):
         self.dbsession.flush()
 
     def test_proposal_view_as_reviewer(self):
-        p = Proposal(title='test view',
+        p = model.Proposal(title='test view',
                      abstract='abs',
                      experience='snuh',
-                     type=self.dbsession.get(ProposalType, 3))
+                     type=self.dbsession.get(model.ProposalType, 3))
         self.dbsession.save(p)
 
         r = model.Role('reviewer')
@@ -354,10 +354,10 @@ class TestProposal(SignedInCRUDControllerTest):
                                                             
         
         # clean up
-        self.dbsession.delete(objectstore.get(model.Review, reviews[0].id))
+        self.dbsession.delete(reviews[0])
         self.dbsession.delete(self.dbsession.query(model.Stream).get(sid))
         self.dbsession.delete(self.dbsession.query(model.Role).get(rid))
-        self.dbsession.delete(self.dbsession.query(Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
         self.dbsession.flush()
 
 
