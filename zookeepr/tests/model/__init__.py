@@ -1,6 +1,6 @@
 import warnings
 
-from sqlalchemy import self.dbsession, self.dbsession.query, default_metadata
+from sqlalchemy import create_session, default_metadata, select, func
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -8,6 +8,16 @@ from zookeepr.tests import TestBase, monkeypatch
 class ModelTest(TestBase):
     """Base class for all data model domain object tests.
     """
+
+    def setUp(self):
+        super(ModelTest, self).setUp()
+
+        self.dbsession = create_session()
+
+    def tearDown(self):
+        self.dbsession.close()
+
+        super(ModelTest, self).tearDown()
 
     def echo_sql(self, value):
         """Tell the underlying engine to echo SQL, for debugging tests."""
@@ -220,7 +230,7 @@ class TableTest(TestBase):
 
     def check_empty_table(self):
         """Check that the database was left empty after the test"""
-        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
+        query = select([func.count(self.table.c.id)])
         result = query.execute()
         self.assertEqual(0, result.fetchone()[0])
 
@@ -243,7 +253,7 @@ class TableTest(TestBase):
 
             for key in sample.keys():
                 col = getattr(self.table.c, key)
-                query = sqlalchemy.select([col])
+                query = select([col])
                 result = query.execute()
                 row = result.fetchone()
                 print "row:", row
@@ -258,7 +268,7 @@ class TableTest(TestBase):
             query.execute(sample)
 
         # get the count of rows
-        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
+        query = select([func.count(self.table.c.id)])
         result = query.execute()
         # check that it's the same length as the sample data
         self.assertEqual(len(self.samples), result.fetchone()[0])
@@ -326,6 +336,5 @@ class TableTest(TestBase):
 
 __all__ = ['TableTest',
            'ModelTest', 'CRUDModelTest',
-           'self.dbsession', 'self.dbsession.query',
            'model',
            ]
