@@ -1,6 +1,5 @@
 import pprint
 
-from zookeepr.model import Proposal, ProposalType, Person, Attachment
 from zookeepr.tests.functional import *
 
 # class TestProposalBase(object):
@@ -23,7 +22,7 @@ from zookeepr.tests.functional import *
 #         super(TestProposalBase, self).tearDown()
 
 class TestProposal(SignedInCRUDControllerTest):
-    model = Proposal
+    model = model.Proposal
     name = 'proposal'
     url = '/proposal'
     samples = [dict(title='test',
@@ -40,7 +39,7 @@ class TestProposal(SignedInCRUDControllerTest):
 
     def additional(self, obj):
         obj.people.append(self.person)
-        obj.type = objectstore.get(ProposalType, 1)
+        obj.type = Query(model.ProposalType).get(1)
         return obj
     
     def setUp(self):
@@ -122,11 +121,11 @@ class TestProposal(SignedInCRUDControllerTest):
     def test_proposal_edit_lockdown(self):
         # we got one person already with login
         # create a sceond
-        p2 = Person(email_address='test2@example.org',
+        p2 = model.Person(email_address='test2@example.org',
                     password='test')
         objectstore.save(p2)
         # create a proposal
-        s = Proposal(title='foo')
+        s = model.Proposal(title='foo')
         objectstore.save(s)
         p2.proposals.append(s)
         objectstore.flush()
@@ -146,21 +145,21 @@ class TestProposal(SignedInCRUDControllerTest):
                              status=403)
 
         # clean up
-        objectstore.delete(Query(Person).get(p2id))
-        objectstore.delete(Query(Proposal).get(sid))
+        objectstore.delete(Query(model.Person).get(p2id))
+        objectstore.delete(Query(model.Proposal).get(sid))
         objectstore.flush()
 
 
     def test_proposal_delete_lockdown(self):
         # we got one person already with login
         # create a sceond
-        p2 = Person(email_address='test2@example.org',
+        p2 = model.Person(email_address='test2@example.org',
                     password='test')
         objectstore.save(p2)
         objectstore.flush()
         p2id = p2.id
         # create a proposal
-        s = Proposal(title='foo')
+        s = model.Proposal(title='foo')
         objectstore.save(s)
         p2.proposals.append(s)
         objectstore.flush()
@@ -179,19 +178,19 @@ class TestProposal(SignedInCRUDControllerTest):
                              status=403)
 
         # clean up
-        objectstore.delete(Query(Person).get(p2id))
-        objectstore.delete(Query(Proposal).get(sid))
+        objectstore.delete(Query(model.Person).get(p2id))
+        objectstore.delete(Query(model.Proposal).get(sid))
         objectstore.flush()
 
 
     def test_proposal_list_lockdown(self):
         # we got one person already with login
         # create a sceond
-        p2 = Person(email_address='test2@example.org',
+        p2 = model.Person(email_address='test2@example.org',
                     password='test')
         objectstore.save(p2)
         # create a proposal
-        s = Proposal(title='foo')
+        s = model.Proposal(title='foo')
         objectstore.save(s)
         p2.proposals.append(s)
         objectstore.flush()
@@ -203,15 +202,15 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
 
         # clean up
-        objectstore.delete(Query(Person).get(p2id))
-        objectstore.delete(Query(Proposal).get(sid))
+        objectstore.delete(Query(model.Person).get(p2id))
+        objectstore.delete(Query(model.Proposal).get(sid))
         objectstore.flush()
 
 
     def test_submit_another(self):
         # created guy with login
         # and a proposal
-        s1 = Proposal(title='sub one')
+        s1 = model.Proposal(title='sub one')
         objectstore.save(s1)
         objectstore.flush()
         s1id = s1.id
@@ -233,7 +232,7 @@ class TestProposal(SignedInCRUDControllerTest):
         resp = resp.follow()
 
         # does it exist?
-        s2 = Query(Proposal).get_by(title='sub two')
+        s2 = Query(model.Proposal).get_by(title='sub two')
         self.failIfEqual(None, s2)
 
         # is it attached to our guy?
@@ -244,7 +243,7 @@ class TestProposal(SignedInCRUDControllerTest):
         
         # clean up
         objectstore.delete(s2)
-        objectstore.delete(Query(Proposal).get(s1id))
+        objectstore.delete(Query(model.Proposal).get(s1id))
         objectstore.flush()
 
     def test_proposal_list(self):
@@ -359,9 +358,9 @@ class TestProposal(SignedInCRUDControllerTest):
 
 
     def test_proposal_attach_more(self):
-        p = Proposal(title='test view',
+        p = model.Proposal(title='test view',
                      abstract='abs',
-                     type=objectstore.get(ProposalType, 3))
+                     type=Query(model.ProposalType).get(3))
         objectstore.save(p)
         self.person.proposals.append(p)
         objectstore.flush()
@@ -379,24 +378,24 @@ class TestProposal(SignedInCRUDControllerTest):
         resp = f.submit()
         resp = resp.follow()
 
-        atts = objectstore.query(Attachment).select()
+        atts = Query(model.Attachment).select()
         self.failIfEqual([], atts)
         self.assertEqual("attachment", str(atts[0].content))
 
         
         # clean up
         objectstore.delete(atts[0])
-        objectstore.delete(objectstore.get(Proposal, pid))
+        objectstore.delete(Query(model.Proposal).get(pid))
         objectstore.flush()
 
 
     def test_proposal_delete_attachment(self):
-        p = Proposal(title='test view',
+        p = model.Proposal(title='test view',
                      abstract='abs',
-                     type=objectstore.get(ProposalType, 3))
+                     type=Query(model.ProposalType).get(3))
         objectstore.save(p)
         self.person.proposals.append(p)
-        a = Attachment(content="foo")
+        a = model.Attachment(content="foo")
         objectstore.save(a)
         p.attachments.append(a)
         objectstore.flush()
@@ -417,7 +416,7 @@ class TestProposal(SignedInCRUDControllerTest):
 
         resp = resp.follow()
 
-        atts = objectstore.query(Attachment).select()
+        atts = Query(model.Attachment).select()
         self.assertEqual([], atts)
 
         
@@ -427,6 +426,6 @@ class TestProposal(SignedInCRUDControllerTest):
                          resp.request.url)
 
         # clean up
-        objectstore.delete(objectstore.get(Proposal, pid))
+        objectstore.delete(Query(model.Proposal).get(pid))
         objectstore.flush()
 
