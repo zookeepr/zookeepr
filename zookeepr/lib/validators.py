@@ -39,7 +39,7 @@ class PersonValidator(validators.FancyValidator):
 
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return self.dbsession.query(ProposalType).get(value)
+        return state.query(ProposalType).get(value)
 
 
 class FileUploadValidator(validators.FancyValidator):
@@ -56,7 +56,7 @@ class FileUploadValidator(validators.FancyValidator):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return self.dbsession.query(Stream).get(value)
+        return state.query(Stream).get(value)
 
 
 class ReviewSchema(schema.Schema):
