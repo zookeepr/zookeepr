@@ -9,13 +9,15 @@ class TestProfileController(ControllerTest):
                          )
         objectstore.save(p)
         objectstore.flush()
+
+        pid = p.id
         
         resp = self.app.get('/profile/%d' % p.id)
 
         resp.mustcontain("Testguy McTest")
 
         # clean up
-        objectstore.delete(p)
+        objectstore.delete(Query(model.Person).get(pid))
         objectstore.flush()
 
 

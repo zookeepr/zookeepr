@@ -360,6 +360,7 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
     """
     def setUp(self):
         super(SignedInCRUDControllerTest, self).setUp()
+        self.assertEmptyModel(model.Person)
         self.person = model.Person(email_address='testguy@example.org',
                                    password='test',
                                    fullname='Testguy McTest'
