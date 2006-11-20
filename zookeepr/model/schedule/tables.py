@@ -1,4 +1,3 @@
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
 # Stores conference stream names

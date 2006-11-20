@@ -436,7 +436,7 @@ If you are planning on bringing your partner, please enter their email address h
 
 <p>
 <% h.check_box('registration.lasignup') %>
-<label for="registration.lasignup">I want to sign up for (free) LA membership!</label>
+<label for="registration.lasignup">I want to sign up for (free) Linux Australia membership!</label>
 </p>
 
 <p>

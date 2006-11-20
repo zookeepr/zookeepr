@@ -3,7 +3,6 @@ import re
 
 import dns.resolver
 from formencode import Invalid, validators, schema
-from sqlalchemy import Query
 
 from zookeepr.model import Person, ProposalType, Stream
 
@@ -11,9 +10,9 @@ class BaseSchema(schema.Schema):
     allow_extra_fields = True
     filter_extra_fields = True
 
-    def validate(self, input):
+    def validate(self, input, state=None):
         try:
-            result = self.to_python(input)
+            result = self.to_python(input, state)
             return result, {}
         except Invalid, e:
             errors = e.unpack_errors()
@@ -40,7 +39,7 @@ class PersonValidator(validators.FancyValidator):
 
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return Query(ProposalType).get(value)
+        return state.query(ProposalType).get(value)
 
 
 class FileUploadValidator(validators.FancyValidator):
@@ -57,7 +56,7 @@ class FileUploadValidator(validators.FancyValidator):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return Query(Stream).get(value)
+        return state.query(Stream).get(value)
 
 
 class ReviewSchema(schema.Schema):

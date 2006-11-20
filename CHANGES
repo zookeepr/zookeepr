@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.2.9
+-----
+
+ * Remove threadlocal SQLAlchemy mod from the data model, again using
+   a per-request session.  (Jamie Wilkinson)
+
 0.2.8
 -----
 

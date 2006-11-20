@@ -1,6 +1,6 @@
 from zookeepr.tests.model import *
 
-class TestOpenday(ModelTest):
+class TestOpenday(CRUDModelTest):
     domain = model.openday.Openday
     samples = [dict(fullname='fullname1',
                     email_address='partneremail1',

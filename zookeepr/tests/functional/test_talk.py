@@ -1,6 +1,6 @@
 from zookeepr.tests.functional import *
 
-class TestTalkController(CRUDControllerTest):
+class TestTalkController(ControllerTest):
     def test_talk_view(self):
         # set up
         pt = model.ProposalType(name='snuh')
@@ -9,9 +9,9 @@ class TestTalkController(CRUDControllerTest):
                            )
         t.type = pt
         t.accepted = True
-        objectstore.save(pt)
-        objectstore.save(t)
-        objectstore.flush()
+        self.dbsession.save(pt)
+        self.dbsession.save(t)
+        self.dbsession.flush()
 
         tid = t.id
         ptid = pt.id
@@ -22,9 +22,9 @@ class TestTalkController(CRUDControllerTest):
         resp.mustcontain("snuh")
 
         # clean up
-        objectstore.delete(Query(model.Proposal).get(tid))
-        objectstore.delete(Query(model.ProposalType).get(ptid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(tid))
+        self.dbsession.delete(self.dbsession.query(model.ProposalType).get(ptid))
+        self.dbsession.flush()
 
     def test_talk_view_not_accepted(self):
         # set up
@@ -33,9 +33,9 @@ class TestTalkController(CRUDControllerTest):
                            abstract='bar',
                            )
         t.type = pt
-        objectstore.save(pt)
-        objectstore.save(t)
-        objectstore.flush()
+        self.dbsession.save(pt)
+        self.dbsession.save(t)
+        self.dbsession.flush()
 
         tid = t.id
         ptid = pt.id
@@ -43,7 +43,7 @@ class TestTalkController(CRUDControllerTest):
         resp = self.app.get('/talk/%d' % t.id, status=404)
 
         # clean up
-        objectstore.delete(Query(model.Proposal).get(tid))
-        objectstore.delete(Query(model.ProposalType).get(ptid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(tid))
+        self.dbsession.delete(self.dbsession.query(model.ProposalType).get(ptid))
+        self.dbsession.flush()
 
