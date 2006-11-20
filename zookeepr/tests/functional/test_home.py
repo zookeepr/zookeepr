@@ -19,6 +19,9 @@ class TestHomeController(ControllerTest):
 
         print p
 
+        pid = p.id
+        sid = s.id
+
         resp = self.app.get(url_for(controller='account',action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'
@@ -35,6 +38,6 @@ class TestHomeController(ControllerTest):
         resp.mustcontain("signed in")
         resp.mustcontain("foo")
 
-        objectstore.delete(p)
-        objectstore.delete(s)
+        objectstore.delete(Query(model.Proposal).get(sid))
+        objectstore.delete(Query(model.Person).get(pid))
         objectstore.flush()

@@ -114,6 +114,7 @@ class CRUDControllerTest(ControllerTest):
 
         # check that the objectstore is currently empty
         self.assertEmptyModel()
+        self.assertEmptyModel(model.Proposal)
 
     def tearDown(self):
         self.assertEmptyModel(model.Proposal)
@@ -182,9 +183,10 @@ class CRUDControllerTest(ControllerTest):
         for key in params.keys():
             self.check_attribute(os[0], key, params[key])
 
-        print os
+        print "os before delete:", os
         objectstore.delete(os[0])
         objectstore.flush()
+        print "os after delete:", Query(self.model).select()
         print "new objects after delete flush in create:", objectstore.new
         self.failUnlessEqual([], list(objectstore.new), "uncommitted objects: %r" % (objectstore.new,))
         print "deleted:", objectstore.deleted
