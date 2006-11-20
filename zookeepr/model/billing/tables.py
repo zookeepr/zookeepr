@@ -1,4 +1,3 @@
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
 invoice_item = Table('invoice_item',

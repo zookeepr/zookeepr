@@ -136,8 +136,8 @@ class AccountController(BaseController):
 
         r[0].activated = True
 
-        objectstore.save(r[0])
-        objectstore.flush()
+        self.dbsession.save(r[0])
+        self.dbsession.flush()
 
         return render_response('account/confirmed.myt')
 
@@ -164,11 +164,11 @@ class AccountController(BaseController):
 
             if not errors:
                 c.conf_rec = PasswordResetConfirmation(result['email_address'])
-                objectstore.save(c.conf_rec)
+                self.dbsession.save(c.conf_rec)
                 try:
-                    objectstore.flush()
+                    self.dbsession.flush()
                 except sqlalchemy.exceptions.SQLError, e:
-                    objectstore.clear()
+                    self.dbsession.clear()
                     # FIXME exposes sqlalchemy!
                     return render_response('account/in_progress.myt')
 
@@ -217,8 +217,8 @@ class AccountController(BaseController):
         delta = now - c.conf_rec.timestamp
         if delta > datetime.timedelta(24, 0, 0):
             # this confirmation record has expired
-            objectstore.delete(c.conf_rec)
-            objectstore.flush()
+            self.dbsession.delete(c.conf_rec)
+            self.dbsession.flush()
             return render_response('account/expired.myt')
 
         # now process the form
@@ -239,8 +239,8 @@ class AccountController(BaseController):
                 accounts[0].activated = True
                 
                 # delete the conf rec
-                objectstore.delete(c.conf_rec)
-                objectstore.flush()
+                self.dbsession.delete(c.conf_rec)
+                self.dbsession.flush()
 
                 return render_response('account/success.myt')
 

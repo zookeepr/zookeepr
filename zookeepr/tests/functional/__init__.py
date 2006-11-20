@@ -7,8 +7,7 @@ from formencode import variabledecode
 from paste.deploy import loadapp
 from paste.fixture import TestApp
 from routes import url_for
-import sqlalchemy.mods.threadlocal
-from sqlalchemy import objectstore, Query
+from sqlalchemy import create_session, Query
 
 from zookeepr import model
 from zookeepr.config.routing import make_map
@@ -27,6 +26,9 @@ class ControllerTest(TestBase):
     def setUp(self):
         # add a routing map for testing routes within the controller tests
         self.map = make_map()
+
+        # create a db session
+        self.dbsession = create_session()
 
     def assertEmptyModel(self, model=None):
         """Check that there are no objects left in the data store.
@@ -112,7 +114,7 @@ class CRUDControllerTest(ControllerTest):
     def setUp(self):
         super(CRUDControllerTest, self).setUp()
 
-        # check that the objectstore is currently empty
+        # check that the self.dbsession is currently empty
         self.assertEmptyModel()
         self.assertEmptyModel(model.Proposal)
 
@@ -184,14 +186,14 @@ class CRUDControllerTest(ControllerTest):
             self.check_attribute(os[0], key, params[key])
 
         print "os before delete:", os
-        objectstore.delete(os[0])
-        objectstore.flush()
+        self.dbsession.delete(os[0])
+        self.dbsession.flush()
         print "os after delete:", Query(self.model).select()
-        print "new objects after delete flush in create:", objectstore.new
-        self.failUnlessEqual([], list(objectstore.new), "uncommitted objects: %r" % (objectstore.new,))
-        print "deleted:", objectstore.deleted
-        print "dirty:", objectstore.dirty
-        print "new:", objectstore.new
+        print "new objects after delete flush in create:", self.dbsession.new
+        self.failUnlessEqual([], list(self.dbsession.new), "uncommitted objects: %r" % (objectstore.new,))
+        print "deleted:", self.dbsession.deleted
+        print "dirty:", self.dbsession.dirty
+        print "new:", self.dbsession.new
 
     def check_attribute(self, obj, attr, expected):
         """check that the attribute has the correct value.
@@ -232,11 +234,11 @@ class CRUDControllerTest(ControllerTest):
         # create an instance of the model
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
         oid = o.id
         
-        objectstore.clear()
+        self.dbsession.clear()
 
         # get the form
         url = url_for(controller=self.url, action='edit', id=oid)
@@ -255,23 +257,23 @@ class CRUDControllerTest(ControllerTest):
         form.submit()
 
         # test
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
         for k in self.samples[1].keys():
             self.check_attribute(o, k, self.samples[1][k])
 
-        objectstore.delete(o)
-        objectstore.flush()
+        self.dbsession.delete(o)
+        self.dbsession.flush()
 
     def delete(self):
         #"""Test delete action on controller"""
         # create something
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
         oid = o.id
 
-        objectstore.clear()
+        self.dbsession.clear()
 
         ## delete it
         url = url_for(controller=self.url, action='delete', id=oid)
@@ -284,7 +286,7 @@ class CRUDControllerTest(ControllerTest):
         form.submit()
 
         # check db
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
         print o
         self.assertEqual(None, o)
 
@@ -294,23 +296,23 @@ class CRUDControllerTest(ControllerTest):
         # create some data
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
         oid = o.id
-        objectstore.clear()
+        self.dbsession.clear()
 
         url = url_for(controller=self.url, action='edit', id=oid)
 
         response = self.app.get(url, params=self.form_params(self.samples[1]))
 
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
 
         for key in self.samples[1].keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
                 self.failIfEqual(self.samples[1][key], getattr(o, key), "key '%s' was unchanged after edit (%r == %r)" % (key, self.samples[1][key], getattr(o, key)))
 
-        objectstore.delete(o)
-        objectstore.flush()
+        self.dbsession.delete(o)
+        self.dbsession.flush()
 
 
     def invalid_get_on_delete(self):
@@ -319,22 +321,22 @@ class CRUDControllerTest(ControllerTest):
         # create some data
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
 
         oid = o.id
-        objectstore.clear()
+        self.dbsession.clear()
 
         url = url_for(controller=self.url, action='delete', id=oid)
         res = self.app.get(url)
         
         # check
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
         self.failIfEqual(None, o)
         
         # clean up
-        objectstore.delete(o)
-        objectstore.flush()
+        self.dbsession.delete(o)
+        self.dbsession.flush()
 
     def invalid_get_on_new(self):
         #"""Test that GET requests on new action don't modify"""
@@ -366,8 +368,8 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
                                    fullname='Testguy McTest'
                                    )
         self.person.activated = True
-        objectstore.save(self.person)
-        objectstore.flush()
+        self.dbsession.save(self.person)
+        self.dbsession.flush()
         self.pid = self.person.id
         resp = self.app.get(url_for(controller='account',
                                     action='signin'))
@@ -379,15 +381,14 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
         self.assertEqual(self.pid, resp.session['signed_in_person_id'])
 
     def tearDown(self):
-        objectstore.clear()
+        self.dbsession.clear()
         
-        objectstore.delete(Query(model.Person).get(self.pid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Person).get(self.pid))
+        self.dbsession.flush()
         super(SignedInCRUDControllerTest, self).tearDown()
 
 
 __all__ = ['ControllerTest',
     'CRUDControllerTest', 'SignedInCRUDControllerTest',
-    'objectstore', 'Query',
-    'model', 'url_for']
+    'Query', 'model', 'url_for']
 

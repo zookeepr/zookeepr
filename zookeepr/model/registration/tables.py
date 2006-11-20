@@ -1,4 +1,3 @@
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
 accommodation_location = Table('accommodation_location',

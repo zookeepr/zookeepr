@@ -258,13 +258,16 @@ class TestProposal(SignedInCRUDControllerTest):
         self.person.roles.append(r)
         objectstore.save(r)
         objectstore.flush()
+        print "flushed"
+
+        rid = r.id
 
         resp = self.app.get(url_for(controller='proposal',
                                     action='index'))
 
 
         # clean up
-        objectstore.delete(r)
+        objectstore.delete(Query(model.Role).get(rid))
         objectstore.flush()
 
     def test_proposal_view(self):

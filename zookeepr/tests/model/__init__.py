@@ -1,6 +1,5 @@
 import warnings
 
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import objectstore, Query, default_metadata
 
 from zookeepr import model

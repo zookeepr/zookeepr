@@ -160,8 +160,8 @@ class Update(RUDBase):
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[self.individual][k])
 
-                objectstore.save(self.obj)
-                objectstore.flush()
+                self.dbsession.save(self.obj)
+                self.dbsession.flush()
 
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('edit', default_redirect)
@@ -182,8 +182,8 @@ class Delete(RUDBase):
         """
         
         if request.method == 'POST' and self.obj is not None:
-            objectstore.delete(self.obj)
-            objectstore.flush()
+            self.dbsession.delete(self.obj)
+            self.dbsession.flush()
 
             default_redirect = dict(action='index', id=None)
             self.redirect_to('delete', default_redirect)

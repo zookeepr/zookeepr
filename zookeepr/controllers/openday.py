@@ -58,9 +58,9 @@ class OpendayController(BaseController, Create):
                 c.openday = model.Openday()
                 for k in results['openday']:
                     setattr(c.openday, k, results['openday'][k])
-                objectstore.save(c.openday)
+                self.dbsession.save(c.openday)
 
-                objectstore.flush()
+                self.dbsession.flush()
 
                 return render_response('openday/thankyou.myt')
 
