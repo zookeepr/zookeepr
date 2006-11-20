@@ -16,8 +16,8 @@ class TestTemplateController(ControllerTest):
         self.p.activated = True
         self.p.handle = 'Foomongler'
 
-        objectstore.save(self.p)
-        objectstore.flush()
+        self.dbsession.save(self.p)
+        self.dbsession.flush()
         self.pid = self.p.id
 
     def tearDown(self):
@@ -33,8 +33,8 @@ class TestTemplateController(ControllerTest):
             f = resp.forms[0]
             f.submit('delete')
 
-        objectstore.delete(Query(model.Person).get(self.p.id))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Person).get(self.p.id))
+        self.dbsession.flush()
 
         super(TestTemplateController, self).tearDown()
 

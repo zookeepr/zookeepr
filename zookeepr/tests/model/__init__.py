@@ -1,6 +1,6 @@
 import warnings
 
-from sqlalchemy import objectstore, Query, default_metadata
+from sqlalchemy import self.dbsession, Query, default_metadata
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -117,18 +117,18 @@ class CRUDModelTest(ModelTest):
             o = self.additional(o)
             
             # committing to db
-            objectstore.save(o)
-            objectstore.flush()
+            self.dbsession.save(o)
+            self.dbsession.flush()
             oid = o.id
 
             # clear the session, invalidating o
-            objectstore.clear()
+            self.dbsession.clear()
             del o
     
             # check it's in the database
             print self.domain
             print oid
-            o = objectstore.get(self.domain, oid)
+            o = self.dbsession.get(self.domain, oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
@@ -137,13 +137,13 @@ class CRUDModelTest(ModelTest):
                 self.check_attribute(o, key, sample[key])
     
             # deleting object
-            objectstore.delete(o)
-            objectstore.flush()
+            self.dbsession.delete(o)
+            self.dbsession.flush()
     
             # checking db
             self.check_empty_session()
 
-        objectstore.close()
+        self.dbsession.close()
 
     def check_attribute(self, obj, key, value):
         """Check that the attribute has the correct value.
@@ -326,6 +326,6 @@ class TableTest(TestBase):
 
 __all__ = ['TableTest',
            'ModelTest', 'CRUDModelTest',
-           'objectstore', 'Query',
+           'self.dbsession', 'Query',
            'model',
            ]

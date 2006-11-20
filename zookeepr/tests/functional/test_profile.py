@@ -7,8 +7,8 @@ class TestProfileController(ControllerTest):
                          handle='testguy',
                          fullname='Testguy McTest',
                          )
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
 
         pid = p.id
         
@@ -17,8 +17,8 @@ class TestProfileController(ControllerTest):
         resp.mustcontain("Testguy McTest")
 
         # clean up
-        objectstore.delete(Query(model.Person).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Person).get(pid))
+        self.dbsession.flush()
 
 
 class TestSignedInProfileController(SignedInCRUDControllerTest):

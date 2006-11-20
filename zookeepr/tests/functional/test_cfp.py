@@ -53,32 +53,32 @@ from zookeepr.tests.functional import *
 #         self.assertEqual('foo', str(atts[0].content))
                          
 
-#         objectstore.delete(regs[0])
-#         objectstore.delete(subs[0])
-#         objectstore.flush()
+#         self.dbsession.delete(regs[0])
+#         self.dbsession.delete(subs[0])
+#         self.dbsession.flush()
 
 #     # FIXME: not testing type
 #     no_test = ['password_confirm', 'type']
 #     mangles = dict(password = lambda p: md5.new(p).hexdigest(),
 #                    attachment = lambda a: buffer(a),
-#                    #type = lambda t: TestCFP.objectstore.query(ProposalType).get(1),
+#                    #type = lambda t: TestCFP.self.dbsession.query(ProposalType).get(1),
 #                    )
 
 #     def setUp(self):
 #         super(TestCFP, self).setUp()
 #         st1 = ProposalType('Paper')
 #         st2 = ProposalType('Scissors')
-#         objectstore.save(st1)
-#         objectstore.save(st2)
-#         objectstore.flush()
+#         self.dbsession.save(st1)
+#         self.dbsession.save(st2)
+#         self.dbsession.flush()
 #         self.stid = (st1.id, st2.id)
 
 #     def tearDown(self):
 #         st1 = Query(ProposalType).get(self.stid[0])
 #         st2 = Query(ProposalType).get(self.stid[1])
-#         objectstore.delete(st2)
-#         objectstore.delete(st1)
-#         objectstore.flush()
+#         self.dbsession.delete(st2)
+#         self.dbsession.delete(st1)
+#         self.dbsession.flush()
 
 #         super(TestCFP, self).tearDown()
 
@@ -114,7 +114,7 @@ from zookeepr.tests.functional import *
 #         self.assertEqual(False, regs[0].activated)
 
 #         # clear this session, we want to reselect this data later
-#         objectstore.clear()
+#         self.dbsession.clear()
         
         
 #         # get out the url hash because i don't know how to trap smtplib
@@ -159,9 +159,9 @@ from zookeepr.tests.functional import *
 #         # clean up
 #         Dummy_smtplib.existing.reset()
 
-#         objectstore.delete(regs[0])
-#         objectstore.delete(Query(Proposal).select()[0])
-#         objectstore.flush()
+#         self.dbsession.delete(regs[0])
+#         self.dbsession.delete(Query(Proposal).select()[0])
+#         self.dbsession.flush()
 
 #         self.assertEmptyModel(Proposal)
 #         self.assertEmptyModel(Person)

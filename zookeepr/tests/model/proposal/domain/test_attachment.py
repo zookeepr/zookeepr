@@ -18,13 +18,13 @@ class TestAttachmentModel(CRUDModelTest):
     def setUp(self):
         super(TestAttachmentModel, self).setUp()
         self.p = model.Proposal(title='a', abstract='b')
-        objectstore.save(self.p)
-        objectstore.flush()
+        self.dbsession.save(self.p)
+        self.dbsession.flush()
         self.pid = self.p.id
 
     def tearDown(self):
-        objectstore.delete(Query(model.Proposal).get(self.pid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Proposal).get(self.pid))
+        self.dbsession.flush()
         super(TestAttachmentModel, self).tearDown()
 
     def additional(self, obj):

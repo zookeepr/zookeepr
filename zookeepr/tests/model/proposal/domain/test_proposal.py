@@ -21,9 +21,9 @@ class TestProposal(CRUDModelTest):
 
         print v
 
-        objectstore.save(st)
-        objectstore.save(v)
-        objectstore.flush()
+        self.dbsession.save(st)
+        self.dbsession.save(v)
+        self.dbsession.flush()
 
         s = model.Proposal(title='Venal Versimilitude: Vast vocation or violition of volition?',
                        type=st,
@@ -34,20 +34,20 @@ class TestProposal(CRUDModelTest):
         # give this sub to v
         v.proposals.append(s)
 
-        objectstore.save(s)
-        objectstore.flush()
+        self.dbsession.save(s)
+        self.dbsession.flush()
 
         vid = v.id
         stid = st.id
         sid = s.id
 
-        objectstore.clear()
+        self.dbsession.clear()
 
         print vid, stid, sid
 
-        v = objectstore.get(model.Person, vid)
-        st = objectstore.get(model.ProposalType, stid)
-        s = objectstore.get(model.Proposal, sid)
+        v = self.dbsession.get(model.Person, vid)
+        st = self.dbsession.get(model.ProposalType, stid)
+        s = self.dbsession.get(model.Proposal, sid)
         
         self.assertEqual(1, len(v.proposals))
         self.assertEqual(s.title, v.proposals[0].title)
@@ -63,16 +63,16 @@ class TestProposal(CRUDModelTest):
         print s.type
         print s.people[0]
 
-        objectstore.delete(s)
-        objectstore.delete(st)
-        objectstore.delete(v)
-        objectstore.flush()
+        self.dbsession.delete(s)
+        self.dbsession.delete(st)
+        self.dbsession.delete(v)
+        self.dbsession.flush()
         
-        v = objectstore.get(model.Person, vid)
+        v = self.dbsession.get(model.Person, vid)
         self.failUnlessEqual(None, v)
-        s = objectstore.get(model.Proposal, sid)
+        s = self.dbsession.get(model.Proposal, sid)
         self.failUnlessEqual(None, s)
-        st = objectstore.get(model.ProposalType, stid)
+        st = self.dbsession.get(model.ProposalType, stid)
         self.failUnlessEqual(None, st)
         
         self.check_empty_session()
@@ -85,19 +85,19 @@ class TestProposal(CRUDModelTest):
                     password='q')
         st = model.ProposalType('Presentation')
 
-        objectstore.save(r1)
-        objectstore.save(r2)
-        objectstore.save(st)
+        self.dbsession.save(r1)
+        self.dbsession.save(r2)
+        self.dbsession.save(st)
         
-        objectstore.flush()
+        self.dbsession.flush()
         
         s1 = model.Proposal(title='one',
                         abstract='bar',
                         type=st)
-        objectstore.save(s1)
+        self.dbsession.save(s1)
 
         r1.proposals.append(s1)
-        objectstore.flush()
+        self.dbsession.flush()
 
         self.failUnless(s1 in r1.proposals)
 
@@ -105,9 +105,9 @@ class TestProposal(CRUDModelTest):
                         abstract='some abstract',
                         type=st)
 
-        objectstore.save(s2)
+        self.dbsession.save(s2)
         r2.proposals.append(s2)
-        objectstore.flush()
+        self.dbsession.flush()
 
         self.failUnless(s2 in r2.proposals)
 
@@ -124,12 +124,12 @@ class TestProposal(CRUDModelTest):
         self.failIf(s2 in r1.proposals, "invalid proposal in r1.submissions: %r" % s2)
 
         # clean up
-        objectstore.delete(s2)
-        objectstore.delete(s1)
-        objectstore.delete(r2)
-        objectstore.delete(r1)
-        objectstore.delete(st)
-        objectstore.flush()
+        self.dbsession.delete(s2)
+        self.dbsession.delete(s1)
+        self.dbsession.delete(r2)
+        self.dbsession.delete(r1)
+        self.dbsession.delete(st)
+        self.dbsession.flush()
 
         # check
         self.domain = model.proposal.Proposal
@@ -139,24 +139,24 @@ class TestProposal(CRUDModelTest):
         p1 = model.Person(email_address='one@example.org',
                     password='foo')
         st = model.ProposalType('Presentation')
-        objectstore.save(p1)
-        objectstore.save(st)
+        self.dbsession.save(p1)
+        self.dbsession.save(st)
 
         s = model.Proposal(title='a sub')
         p1.proposals.append(s)
-        objectstore.save(s)
-        objectstore.flush()
+        self.dbsession.save(s)
+        self.dbsession.flush()
 
         p2 = model.Person(email_address='two@example.org',
                     password='bar')
         s.people.append(p2)
-        objectstore.save(p2)
-        objectstore.flush()
+        self.dbsession.save(p2)
+        self.dbsession.flush()
 
         p3 = model.Person(email_address='three@example.org',
                     password='quux')
-        objectstore.save(p3)
-        objectstore.flush()
+        self.dbsession.save(p3)
+        self.dbsession.flush()
 
 
         self.failUnless(s in p1.proposals)
@@ -171,12 +171,12 @@ class TestProposal(CRUDModelTest):
         self.failIf(p3 in s.people)
 
         # clean up
-        objectstore.delete(s)
-        objectstore.delete(p1)
-        objectstore.delete(p2)
-        objectstore.delete(st)
+        self.dbsession.delete(s)
+        self.dbsession.delete(p1)
+        self.dbsession.delete(p2)
+        self.dbsession.delete(st)
 
-        objectstore.flush()
+        self.dbsession.flush()
         
         # check
         self.domain = model.proposal.Proposal
@@ -184,29 +184,29 @@ class TestProposal(CRUDModelTest):
 
     def test_proposal_with_attachment(self):
         p = model.Proposal(title='prop 1')
-        objectstore.save(p)
+        self.dbsession.save(p)
 
         a = model.Attachment(filename='a',
                        content_type='text/plain',
                        creation_timestamp=datetime.datetime.now(),
                        content="foobar")
-        objectstore.save(a)
+        self.dbsession.save(a)
 
         p.attachments.append(a)
-        objectstore.flush()
+        self.dbsession.flush()
 
         pid = p.id
         aid = a.id
 
-        objectstore.clear()
+        self.dbsession.clear()
 
-        p = objectstore.get(model.Proposal, pid)
-        a = objectstore.get(model.Attachment, aid)
+        p = self.dbsession.get(model.Proposal, pid)
+        a = self.dbsession.get(model.Attachment, aid)
         self.assertEqual(p.attachments[0], a)
 
-        objectstore.delete(a)
-        objectstore.delete(p)
-        objectstore.flush()
+        self.dbsession.delete(a)
+        self.dbsession.delete(p)
+        self.dbsession.flush()
 
         #self.assertEmptyModel(Attachment)
         #self.assertEmptyModel(Proposal)
@@ -216,25 +216,25 @@ class TestProposal(CRUDModelTest):
         p1 = model.Person(email_address='one@example.org',
                     password='foo')
         st = model.ProposalType('Presentation')
-        objectstore.save(p1)
-        objectstore.save(st)
+        self.dbsession.save(p1)
+        self.dbsession.save(st)
 
         s = model.Proposal(title='a sub')
         p1.proposals.append(s)
-        objectstore.save(s)
+        self.dbsession.save(s)
 
         p2 = model.Person(email_address='reviewer@example.org',
                     password='bar')
-        objectstore.save(p2)
+        self.dbsession.save(p2)
 
         stream = model.Stream(name="pants")
 
         r = model.Review(reviewer=p2, stream=stream, comment="Buuzah")
         s.reviews.append(r)
-        objectstore.save(r)
+        self.dbsession.save(r)
         
 
-        objectstore.flush()
+        self.dbsession.flush()
 
         self.failUnless(s in p1.proposals)
         self.failUnless(s not in p2.proposals)
@@ -245,13 +245,13 @@ class TestProposal(CRUDModelTest):
         self.failUnless(r in s.reviews)
 
         # clean up
-        objectstore.delete(s)
-        objectstore.delete(p1)
-        objectstore.delete(p2)
-        objectstore.delete(st)
-        objectstore.delete(stream)
+        self.dbsession.delete(s)
+        self.dbsession.delete(p1)
+        self.dbsession.delete(p2)
+        self.dbsession.delete(st)
+        self.dbsession.delete(stream)
 
-        objectstore.flush()
+        self.dbsession.flush()
         
         # check
         self.domain = model.proposal.Proposal

@@ -190,7 +190,7 @@ class CRUDControllerTest(ControllerTest):
         self.dbsession.flush()
         print "os after delete:", Query(self.model).select()
         print "new objects after delete flush in create:", self.dbsession.new
-        self.failUnlessEqual([], list(self.dbsession.new), "uncommitted objects: %r" % (objectstore.new,))
+        self.failUnlessEqual([], list(self.dbsession.new), "uncommitted objects: %r" % (self.dbsession.new,))
         print "deleted:", self.dbsession.deleted
         print "dirty:", self.dbsession.dirty
         print "new:", self.dbsession.new

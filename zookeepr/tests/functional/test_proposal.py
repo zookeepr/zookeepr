@@ -10,14 +10,14 @@ from zookeepr.tests.functional import *
         
 #         self.proposal1 = model.Proposal(title='proposal1')
 #         self.proposal2 = model.Proposal(title='proposal2')
-#         objectstore.save(self.proposal1)
-#         objectstore.save(self.proposal2)
-#         objectstore.flush()
+#         self.dbsession.save(self.proposal1)
+#         self.dbsession.save(self.proposal2)
+#         self.dbsession.flush()
 
 #     def tearDown(self):
-#         objectstore.delete(self.proposal2)
-#         objectstore.delete(self.proposal1)
-#         objectstore.flush()
+#         self.dbsession.delete(self.proposal2)
+#         self.dbsession.delete(self.proposal1)
+#         self.dbsession.flush()
         
 #         super(TestProposalBase, self).tearDown()
 
@@ -61,16 +61,16 @@ class TestProposal(SignedInCRUDControllerTest):
     def test_selected_radio_button_in_edit(self):
         # Test that a radio button is checked when editing a proposal
         s = Proposal(id=1,
-                       type=objectstore.get(ProposalType, 3),
+                       type=self.dbsession.get(ProposalType, 3),
                        title='foo',
                        abstract='bar',
                        experience='',
                        url='')
-        objectstore.save(s)
+        self.dbsession.save(s)
         
         self.person.proposals.append(s)
         
-        objectstore.flush()
+        self.dbsession.flush()
 
         resp = self.app.get(url_for(controller='proposal',
                                     action='edit',
@@ -89,8 +89,8 @@ class TestProposal(SignedInCRUDControllerTest):
         self.assertEqual('3', f.fields['proposal.type'][0].value)
 
         # clean up
-        objectstore.delete(s)
-        objectstore.flush()
+        self.dbsession.delete(s)
+        self.dbsession.flush()
 
 
     def test_proposal_view_lockdown(self):
@@ -98,12 +98,12 @@ class TestProposal(SignedInCRUDControllerTest):
         # create a sceond
         p2 = Person(email_address='test2@example.org',
                     password='test')
-        objectstore.save(p2)
+        self.dbsession.save(p2)
         # create a proposal
         s = Proposal(title='foo')
-        objectstore.save(s)
+        self.dbsession.save(s)
         p2.proposals.append(s)
-        objectstore.flush()
+        self.dbsession.flush()
         p2id = p2.id
         sid = s.id
         # try to view the proposal as the other person
@@ -113,9 +113,9 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
 
         # clean up
-        objectstore.delete(Query(Person).get(p2id))
-        objectstore.delete(Query(Proposal).get(sid))
-        objectstore.flush()
+        self.dbsession.delete(Query(Person).get(p2id))
+        self.dbsession.delete(Query(Proposal).get(sid))
+        self.dbsession.flush()
 
 
     def test_proposal_edit_lockdown(self):
@@ -123,12 +123,12 @@ class TestProposal(SignedInCRUDControllerTest):
         # create a sceond
         p2 = model.Person(email_address='test2@example.org',
                     password='test')
-        objectstore.save(p2)
+        self.dbsession.save(p2)
         # create a proposal
         s = model.Proposal(title='foo')
-        objectstore.save(s)
+        self.dbsession.save(s)
         p2.proposals.append(s)
-        objectstore.flush()
+        self.dbsession.flush()
         p2id = p2.id
         sid = s.id
         # try to view the proposal as the other person
@@ -145,9 +145,9 @@ class TestProposal(SignedInCRUDControllerTest):
                              status=403)
 
         # clean up
-        objectstore.delete(Query(model.Person).get(p2id))
-        objectstore.delete(Query(model.Proposal).get(sid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Person).get(p2id))
+        self.dbsession.delete(Query(model.Proposal).get(sid))
+        self.dbsession.flush()
 
 
     def test_proposal_delete_lockdown(self):
@@ -155,14 +155,14 @@ class TestProposal(SignedInCRUDControllerTest):
         # create a sceond
         p2 = model.Person(email_address='test2@example.org',
                     password='test')
-        objectstore.save(p2)
-        objectstore.flush()
+        self.dbsession.save(p2)
+        self.dbsession.flush()
         p2id = p2.id
         # create a proposal
         s = model.Proposal(title='foo')
-        objectstore.save(s)
+        self.dbsession.save(s)
         p2.proposals.append(s)
-        objectstore.flush()
+        self.dbsession.flush()
         sid = s.id
         # try to view the proposal as the other person
         resp = self.app.get(url_for(controller='proposal',
@@ -178,9 +178,9 @@ class TestProposal(SignedInCRUDControllerTest):
                              status=403)
 
         # clean up
-        objectstore.delete(Query(model.Person).get(p2id))
-        objectstore.delete(Query(model.Proposal).get(sid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Person).get(p2id))
+        self.dbsession.delete(Query(model.Proposal).get(sid))
+        self.dbsession.flush()
 
 
     def test_proposal_list_lockdown(self):
@@ -188,12 +188,12 @@ class TestProposal(SignedInCRUDControllerTest):
         # create a sceond
         p2 = model.Person(email_address='test2@example.org',
                     password='test')
-        objectstore.save(p2)
+        self.dbsession.save(p2)
         # create a proposal
         s = model.Proposal(title='foo')
-        objectstore.save(s)
+        self.dbsession.save(s)
         p2.proposals.append(s)
-        objectstore.flush()
+        self.dbsession.flush()
         p2id = p2.id
         sid = s.id
         # try to view the proposal as the other person
@@ -202,17 +202,17 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
 
         # clean up
-        objectstore.delete(Query(model.Person).get(p2id))
-        objectstore.delete(Query(model.Proposal).get(sid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Person).get(p2id))
+        self.dbsession.delete(Query(model.Proposal).get(sid))
+        self.dbsession.flush()
 
 
     def test_submit_another(self):
         # created guy with login
         # and a proposal
         s1 = model.Proposal(title='sub one')
-        objectstore.save(s1)
-        objectstore.flush()
+        self.dbsession.save(s1)
+        self.dbsession.flush()
         s1id = s1.id
 
         # now go home, click on the submit another link, and do so
@@ -242,9 +242,9 @@ class TestProposal(SignedInCRUDControllerTest):
         self.failIfEqual([], s2.attachments)
         
         # clean up
-        objectstore.delete(s2)
-        objectstore.delete(Query(model.Proposal).get(s1id))
-        objectstore.flush()
+        self.dbsession.delete(s2)
+        self.dbsession.delete(Query(model.Proposal).get(s1id))
+        self.dbsession.flush()
 
     def test_proposal_list(self):
         # we're logged in but still can't see it
@@ -256,8 +256,8 @@ class TestProposal(SignedInCRUDControllerTest):
         # we're logged in and we're a reviewer
         r = model.Role('reviewer')
         self.person.roles.append(r)
-        objectstore.save(r)
-        objectstore.flush()
+        self.dbsession.save(r)
+        self.dbsession.flush()
         print "flushed"
 
         rid = r.id
@@ -267,13 +267,13 @@ class TestProposal(SignedInCRUDControllerTest):
 
 
         # clean up
-        objectstore.delete(Query(model.Role).get(rid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Role).get(rid))
+        self.dbsession.flush()
 
     def test_proposal_view(self):
         p = Proposal(title='test view')
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
         pid = p.id
         
         # we're logged in but this isn't our proposal..
@@ -284,18 +284,18 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
                             
         # clean up
-        objectstore.delete(objectstore.get(Proposal, pid))
-        objectstore.flush()
+        self.dbsession.delete(objectstore.get(Proposal, pid))
+        self.dbsession.flush()
 
     def test_proposal_view_ours(self):
         p = Proposal(title='test view',
                      abstract='abs',
-                     type=objectstore.get(ProposalType, 3))
-        objectstore.save(p)
+                     type=self.dbsession.get(ProposalType, 3))
+        self.dbsession.save(p)
         self.person.proposals.append(p)
-        objectstore.flush()
+        self.dbsession.flush()
         pid = p.id
-        objectstore.clear()
+        self.dbsession.clear()
         
         # we're logged in and this is ours
         resp = self.app.get(url_for(controller='proposal',
@@ -303,27 +303,27 @@ class TestProposal(SignedInCRUDControllerTest):
                                     id=pid))
 
         # clean up
-        objectstore.delete(objectstore.get(Proposal, pid))
-        objectstore.flush()
+        self.dbsession.delete(objectstore.get(Proposal, pid))
+        self.dbsession.flush()
 
     def test_proposal_view_as_reviewer(self):
         p = Proposal(title='test view',
                      abstract='abs',
                      experience='snuh',
-                     type=objectstore.get(ProposalType, 3))
-        objectstore.save(p)
+                     type=self.dbsession.get(ProposalType, 3))
+        self.dbsession.save(p)
 
         r = model.Role('reviewer')
-        objectstore.save(r)
+        self.dbsession.save(r)
         self.person.roles.append(r)
         # need a stream
         s = model.Stream(name='stream')
-        objectstore.save(s)
-        objectstore.flush()
+        self.dbsession.save(s)
+        self.dbsession.flush()
         pid = p.id
         rid = r.id
         sid = s.id
-        objectstore.clear()
+        self.dbsession.clear()
 
         resp = self.app.get(url_for(controller='proposal',
                                     action='view',
@@ -353,22 +353,22 @@ class TestProposal(SignedInCRUDControllerTest):
                                                             
         
         # clean up
-        objectstore.delete(objectstore.get(model.Review, reviews[0].id))
-        objectstore.delete(Query(model.Stream).get(sid))
-        objectstore.delete(Query(model.Role).get(rid))
-        objectstore.delete(Query(Proposal).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(objectstore.get(model.Review, reviews[0].id))
+        self.dbsession.delete(Query(model.Stream).get(sid))
+        self.dbsession.delete(Query(model.Role).get(rid))
+        self.dbsession.delete(Query(Proposal).get(pid))
+        self.dbsession.flush()
 
 
     def test_proposal_attach_more(self):
         p = model.Proposal(title='test view',
                      abstract='abs',
                      type=Query(model.ProposalType).get(3))
-        objectstore.save(p)
+        self.dbsession.save(p)
         self.person.proposals.append(p)
-        objectstore.flush()
+        self.dbsession.flush()
         pid = p.id
-        objectstore.clear()
+        self.dbsession.clear()
         
         # we're logged in and this is ours
         resp = self.app.get(url_for(controller='proposal',
@@ -387,24 +387,24 @@ class TestProposal(SignedInCRUDControllerTest):
 
         
         # clean up
-        objectstore.delete(atts[0])
-        objectstore.delete(Query(model.Proposal).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(atts[0])
+        self.dbsession.delete(Query(model.Proposal).get(pid))
+        self.dbsession.flush()
 
 
     def test_proposal_delete_attachment(self):
         p = model.Proposal(title='test view',
                      abstract='abs',
                      type=Query(model.ProposalType).get(3))
-        objectstore.save(p)
+        self.dbsession.save(p)
         self.person.proposals.append(p)
         a = model.Attachment(content="foo")
-        objectstore.save(a)
+        self.dbsession.save(a)
         p.attachments.append(a)
-        objectstore.flush()
+        self.dbsession.flush()
         pid = p.id
         aid = a.id
-        objectstore.clear()
+        self.dbsession.clear()
         
         # we're logged in and this is ours
         resp = self.app.get(url_for(controller='proposal',
@@ -429,6 +429,6 @@ class TestProposal(SignedInCRUDControllerTest):
                          resp.request.url)
 
         # clean up
-        objectstore.delete(Query(model.Proposal).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(Query(model.Proposal).get(pid))
+        self.dbsession.flush()
 
