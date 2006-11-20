@@ -16,4 +16,16 @@ invoice = Table('invoice',
                        ForeignKey('person.id'),
                        nullable=False,
                        ),
+
+                Column('issue_date', Date,
+                       nullable=False),
+                
+                Column('creation_timestamp', DateTime,
+                       nullable=False,
+                       default=func.current_timestamp()),
+                Column('last_modification_timestamp', DateTime,
+                       nullable=False,
+                       default=func.current_timestamp(),
+                       onupdate=func.current_timestamp()),
+
                 )

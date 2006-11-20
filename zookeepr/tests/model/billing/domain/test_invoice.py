@@ -1,9 +1,11 @@
+import datetime
+
 from zookeepr.tests.model import *
 
 class TestInvoiceDomainModel(CRUDModelTest):
     domain = model.billing.Invoice
-    samples = [{},
-               {},
+    samples = [dict(issue_date=datetime.date(2006,11,21)),
+               dict(issue_date=datetime.date(2006,11,22)),
                ]
 
     def setUp(self):
