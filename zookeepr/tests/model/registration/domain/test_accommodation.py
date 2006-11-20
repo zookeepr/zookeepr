@@ -42,7 +42,7 @@ class TestAccommodationOptionModel(CRUDModelTest):
         return ao
 
     def tearDown(self):
-        self.location = Query(model.registration.AccommodationLocation).get_by(id=self.lid)
+        self.location = self.dbsession.query(model.registration.AccommodationLocation).get_by(id=self.lid)
         self.dbsession.delete(self.location)
         self.dbsession.flush()
 
@@ -63,9 +63,9 @@ class TestAccommodationModel(ModelTest):
         self.dbsession.save(ao)
         self.dbsession.flush()
 
-        print "accommodations:", Query(model.registration.Accommodation).select()
+        print "accommodations:", self.dbsession.query(model.registration.Accommodation).select()
 
-        a = Query(model.registration.Accommodation).get_by(id=1)
+        a = self.dbsession.query(model.registration.Accommodation).get_by(id=1)
         self.failIfEqual(None, a)
 
         print "registrations using this accommodation:", a.registrations
@@ -106,11 +106,11 @@ class TestAccommodationModel(ModelTest):
         self.dbsession.flush()
 
         # assert that there are two accommodations now
-        as = Query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).select()
         print "accommodations 2:", as
         self.assertEqual(2, len(as))
 
-        a1 = Query(model.registration.Accommodation).get_by(id=ao1.id)
+        a1 = self.dbsession.query(model.registration.Accommodation).get_by(id=ao1.id)
         
         print "a beds available:", a.get_available_beds()
         print "a1 beds available:", a1.get_available_beds()
@@ -120,7 +120,7 @@ class TestAccommodationModel(ModelTest):
 
         self.echo_sql(False)
 
-        as = Query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).select()
         print 'as:', as
         self.assertEqual(2, len(as))
 

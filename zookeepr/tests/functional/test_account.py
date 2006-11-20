@@ -72,7 +72,7 @@ class TestAccountController(ControllerTest):
         self.failIf('contact_id' in resp.session)
         
         # clean up
-        self.dbsession.delete(Query(Person).get(p.id))
+        self.dbsession.delete(self.dbsession.query(Person).get(p.id))
         self.dbsession.flush()
 
     def test_signin_invalid(self):
@@ -107,7 +107,7 @@ class TestAccountController(ControllerTest):
         self.failIf('signed_in_person_id' in resp.session)
         
         # clean up
-        self.dbsession.delete(Query(Person).get(p.id))
+        self.dbsession.delete(self.dbsession.query(Person).get(p.id))
         self.dbsession.flush()
 
     def test_registration_confirmation(self):
@@ -137,7 +137,7 @@ class TestAccountController(ControllerTest):
         self.assertEqual(True, r.activated, "registration was not activated")
 
         # clean up
-        self.dbsession.delete(Query(Person).get(rid))
+        self.dbsession.delete(self.dbsession.query(Person).get(rid))
         self.dbsession.flush()
 
     def test_registration_confirmation_invalid_url_hash(self):
@@ -342,7 +342,7 @@ class TestAccountController(ControllerTest):
         f['email_address'] = email
         f.submit()
 
-        crec = Query(PasswordResetConfirmation).get_by(email_address=email)
+        crec = self.dbsession.query(PasswordResetConfirmation).get_by(email_address=email)
         self.failIfEqual(None, crec)
         crecid = crec.id
 
@@ -353,8 +353,8 @@ class TestAccountController(ControllerTest):
 
         # clean up
         Dummy_smtplib.existing.reset()
-        self.dbsession.delete(Query(PasswordResetConfirmation).get(crecid))
-        self.dbsession.delete(Query(Person).get(cid))
+        self.dbsession.delete(self.dbsession.query(PasswordResetConfirmation).get(crecid))
+        self.dbsession.delete(self.dbsession.query(Person).get(cid))
         self.dbsession.flush()
 
     def test_login_failed_warning(self):
@@ -418,7 +418,7 @@ class TestAccountController(ControllerTest):
         print resp
         
         # check the rego worked
-        regs = Query(Person).select()
+        regs = self.dbsession.query(Person).select()
         self.failIfEqual([], regs)
         print regs[0]
         self.assertEqual(True, regs[0].activated, "account was not activated!")
@@ -436,7 +436,7 @@ class TestAccountController(ControllerTest):
         # clean up
         Dummy_smtplib.existing.reset()
 
-        self.dbsession.delete(Query(Person).get(rid))
+        self.dbsession.delete(self.dbsession.query(Person).get(rid))
         self.dbsession.flush()
 
     def test_create_duplicate_account(self):
@@ -462,5 +462,5 @@ class TestAccountController(ControllerTest):
 
         resp.click('recover your password')
 
-        self.dbsession.delete(Query(Person).get(pid))
+        self.dbsession.delete(self.dbsession.query(Person).get(pid))
         self.dbsession.flush()

@@ -22,8 +22,8 @@ class TestTalkController(ControllerTest):
         resp.mustcontain("snuh")
 
         # clean up
-        self.dbsession.delete(Query(model.Proposal).get(tid))
-        self.dbsession.delete(Query(model.ProposalType).get(ptid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(tid))
+        self.dbsession.delete(self.dbsession.query(model.ProposalType).get(ptid))
         self.dbsession.flush()
 
     def test_talk_view_not_accepted(self):
@@ -43,7 +43,7 @@ class TestTalkController(ControllerTest):
         resp = self.app.get('/talk/%d' % t.id, status=404)
 
         # clean up
-        self.dbsession.delete(Query(model.Proposal).get(tid))
-        self.dbsession.delete(Query(model.ProposalType).get(ptid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(tid))
+        self.dbsession.delete(self.dbsession.query(model.ProposalType).get(ptid))
         self.dbsession.flush()
 

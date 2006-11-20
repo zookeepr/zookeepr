@@ -22,12 +22,12 @@ class TestTalkDomainModel(ModelTest):
 
         self.dbsession.flush()
 
-        talks = Query(model.schedule.Talk).select()
+        talks = self.dbsession.query(model.schedule.Talk).select()
 
         print "talks:", talks
 
-        t1 = Query(model.schedule.Talk).get(p1.id)
-        t2 = Query(model.schedule.Talk).get(p2.id)
+        t1 = self.dbsession.query(model.schedule.Talk).get(p1.id)
+        t2 = self.dbsession.query(model.schedule.Talk).get(p2.id)
 
         self.failUnless(t2 in talks, "t2 should be in talks")
         self.failIf(t1 in talks, "t1 shouldn't be in talks")
@@ -39,4 +39,4 @@ class TestTalkDomainModel(ModelTest):
         self.dbsession.flush()
 
         # test cleanup
-        self.failUnlessEqual([], Query(model.schedule.Talk).select())
+        self.failUnlessEqual([], self.dbsession.query(model.schedule.Talk).select())

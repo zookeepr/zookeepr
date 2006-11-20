@@ -7,7 +7,7 @@ from formencode import variabledecode
 from paste.deploy import loadapp
 from paste.fixture import TestApp
 from routes import url_for
-from sqlalchemy import create_session, Query
+from sqlalchemy import create_session
 
 from zookeepr import model
 from zookeepr.config.routing import make_map
@@ -41,7 +41,7 @@ class ControllerTest(TestBase):
                 model = self.model
                 
         if model:
-            contents = Query(model).select()
+            contents = self.dbsession.query(model).select()
             self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
 
@@ -171,7 +171,7 @@ class CRUDControllerTest(ControllerTest):
             self.fail("Errors in message: %s" % error_match.group(0))
 
         # now check that the data is in the database
-        os = Query(self.model).select()
+        os = self.dbsession.query(self.model).select()
         print 'objects of type %s in the db: %r' % (self.model.__name__,  os)
         self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
@@ -188,7 +188,7 @@ class CRUDControllerTest(ControllerTest):
         print "os before delete:", os
         self.dbsession.delete(os[0])
         self.dbsession.flush()
-        print "os after delete:", Query(self.model).select()
+        print "os after delete:", self.dbsession.query(self.model).select()
         print "new objects after delete flush in create:", self.dbsession.new
         self.failUnlessEqual([], list(self.dbsession.new), "uncommitted objects: %r" % (self.dbsession.new,))
         print "deleted:", self.dbsession.deleted
@@ -383,12 +383,12 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
     def tearDown(self):
         self.dbsession.clear()
         
-        self.dbsession.delete(Query(model.Person).get(self.pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.pid))
         self.dbsession.flush()
         super(SignedInCRUDControllerTest, self).tearDown()
 
 
 __all__ = ['ControllerTest',
     'CRUDControllerTest', 'SignedInCRUDControllerTest',
-    'Query', 'model', 'url_for']
+    'model', 'url_for']
 

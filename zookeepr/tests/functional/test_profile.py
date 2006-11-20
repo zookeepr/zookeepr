@@ -17,7 +17,7 @@ class TestProfileController(ControllerTest):
         resp.mustcontain("Testguy McTest")
 
         # clean up
-        self.dbsession.delete(Query(model.Person).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
         self.dbsession.flush()
 
 

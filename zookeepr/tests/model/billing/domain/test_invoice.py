@@ -13,7 +13,7 @@ class TestInvoiceDomainModel(CRUDModelTest):
         self.pid = self.person.id
 
     def tearDown(self):
-        self.dbsession.delete(Query(model.Person).get(self.pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.pid))
         self.dbsession.flush()
 
     def additional(self, invoice):

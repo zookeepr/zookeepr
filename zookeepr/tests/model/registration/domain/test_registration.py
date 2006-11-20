@@ -45,7 +45,7 @@ class TestRegistration(CRUDModelTest):
         self.pid = self.person.id
 
     def tearDown(self):
-        self.dbsession.delete(Query(model.Person).get(self.pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.pid))
         self.dbsession.flush()
         super(TestRegistration, self).tearDown()
 
@@ -71,8 +71,8 @@ class TestRegistration(CRUDModelTest):
         self.dbsession.clear()
 
         
-        p = Query(model.Person).get(pid)
-        r = Query(model.Registration).get(rid)
+        p = self.dbsession.query(model.Person).get(pid)
+        r = self.dbsession.query(model.Registration).get(rid)
 
         # test that p is mapped to r properly
         self.assertEqual(r, p.registration)
@@ -83,4 +83,4 @@ class TestRegistration(CRUDModelTest):
         self.dbsession.delete(p)
         self.dbsession.flush()
 
-        self.assertEqual(None, Query(model.Registration).get(rid))
+        self.assertEqual(None, self.dbsession.query(model.Registration).get(rid))

@@ -1,6 +1,6 @@
 import warnings
 
-from sqlalchemy import self.dbsession, Query, default_metadata
+from sqlalchemy import self.dbsession, self.dbsession.query, default_metadata
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -15,7 +15,7 @@ class ModelTest(TestBase):
         
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
-        results = Query(self.domain).select()
+        results = self.dbsession.query(self.domain).select()
         self.assertEqual([], results)
 
 
@@ -326,6 +326,6 @@ class TableTest(TestBase):
 
 __all__ = ['TableTest',
            'ModelTest', 'CRUDModelTest',
-           'self.dbsession', 'Query',
+           'self.dbsession', 'self.dbsession.query',
            'model',
            ]

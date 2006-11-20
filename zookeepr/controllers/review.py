@@ -1,7 +1,7 @@
 from formencode import variabledecode
 
 from zookeepr.lib.auth import AuthRole, SecureController
-from zookeepr.lib.base import c, render_response, model, Query
+from zookeepr.lib.base import c, render_response, model, self.dbsession.query
 from zookeepr.lib.crud import List, Update, Read
 from zookeepr.lib.validators import BaseSchema, ReviewSchema
 
@@ -25,4 +25,4 @@ class ReviewController(SecureController, List, Update, Read):
         
         super(ReviewController, self).__before__(**kwargs)
 
-        c.streams = Query(model.Stream).select()
+        c.streams = self.dbsession.query(model.Stream).select()

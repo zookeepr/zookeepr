@@ -23,7 +23,7 @@ class TestAttachmentModel(CRUDModelTest):
         self.pid = self.p.id
 
     def tearDown(self):
-        self.dbsession.delete(Query(model.Proposal).get(self.pid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(self.pid))
         self.dbsession.flush()
         super(TestAttachmentModel, self).tearDown()
 

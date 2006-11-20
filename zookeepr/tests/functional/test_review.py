@@ -17,8 +17,8 @@ class TestReviewController(SignedInCRUDControllerTest):
 #                ]
 
 #     def additional(self, obj):
-#         obj.stream = Query(model.Stream).get(1)
-#         obj.proposal = Query(model.Proposal).get(1)
+#         obj.stream = self.dbsession.query(model.Stream).get(1)
+#         obj.proposal = self.dbsession.query(model.Proposal).get(1)
 #         return obj
 
     def setUp(self):
@@ -100,9 +100,9 @@ class TestReviewController(SignedInCRUDControllerTest):
         resp.mustcontain(self.person.firstname)
         self.failIf(p1.firstname in resp, "shouldn't be able to see other people's reviews")
         # clean up
-        self.dbsession.delete(Query(model.Proposal).get(pid))
-        self.dbsession.delete(Query(model.Person).get(p1id))
-        self.dbsession.delete(Query(model.Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p1id))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
         self.dbsession.flush()
 
 #     def test_reviewer_name_hidden_from_submitter(self):
@@ -140,8 +140,8 @@ class TestReviewController(SignedInCRUDControllerTest):
         resp.mustcontain("already reviewed this proposal")
         
         # clean up
-        self.dbsession.delete(Query(model.Person).get(p2id))
-        self.dbsession.delete(Query(model.Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
         self.dbsession.flush()
 
     def test_edit_review(self):
@@ -152,7 +152,7 @@ class TestReviewController(SignedInCRUDControllerTest):
         p = model.Proposal(title='prop',
                            abstract='abs',
                            experience='exp',
-                           type=Query(model.ProposalType).get(1))
+                           type=self.dbsession.query(model.ProposalType).get(1))
         self.dbsession.save(p)
         s.proposals.append(p)
         r = model.Review(reviewer=self.person,
@@ -160,7 +160,7 @@ class TestReviewController(SignedInCRUDControllerTest):
                          technical=0,
                          experience=0,
                          coolness=0,
-                         stream=Query(model.Stream).get(1))
+                         stream=self.dbsession.query(model.Stream).get(1))
         self.dbsession.save(r)
         p.reviews.append(r)
         self.dbsession.flush()
@@ -182,7 +182,7 @@ class TestReviewController(SignedInCRUDControllerTest):
         print resp
         
 
-        r = Query(model.Review).get(rid)
+        r = self.dbsession.query(model.Review).get(rid)
         print r
         print r.comment
         self.assertEqual('hi!', r.comment)
@@ -190,6 +190,6 @@ class TestReviewController(SignedInCRUDControllerTest):
 
         # clean up
         self.dbsession.delete(r)
-        self.dbsession.delete(Query(model.Proposal).get(pid))
-        self.dbsession.delete(Query(model.Person).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(sid))
         self.dbsession.flush()

@@ -36,19 +36,19 @@ from zookeepr.tests.functional import *
 
 #         form.submit()
 
-#         regs = Query(Person).select()
+#         regs = self.dbsession.query(Person).select()
 #         self.assertEqual(1, len(regs))
 
 #         for key in reg_data.keys():
 #             self.check_attribute(regs[0], key, reg_data[key])
 
-#         subs = Query(Proposal).select()
+#         subs = self.dbsession.query(Proposal).select()
 #         self.assertEqual(1, len(subs))
 
 #         for key in sub_data.keys():
 #             self.check_attribute(subs[0], key, sub_data[key])
 
-#         atts = Query(Attachment).select()
+#         atts = self.dbsession.query(Attachment).select()
 #         self.assertEqual(1, len(atts))
 #         self.assertEqual('foo', str(atts[0].content))
                          
@@ -74,8 +74,8 @@ from zookeepr.tests.functional import *
 #         self.stid = (st1.id, st2.id)
 
 #     def tearDown(self):
-#         st1 = Query(ProposalType).get(self.stid[0])
-#         st2 = Query(ProposalType).get(self.stid[1])
+#         st1 = self.dbsession.query(ProposalType).get(self.stid[0])
+#         st2 = self.dbsession.query(ProposalType).get(self.stid[1])
 #         self.dbsession.delete(st2)
 #         self.dbsession.delete(st1)
 #         self.dbsession.flush()
@@ -108,7 +108,7 @@ from zookeepr.tests.functional import *
 #         res1.mustcontain('testguy@example.org')
 
 #         # grab it from the db
-#         regs = Query(Person).select()
+#         regs = self.dbsession.query(Person).select()
 #         self.assertEqual(1, len(regs))
 #         # make sure that it's inactive
 #         self.assertEqual(False, regs[0].activated)
@@ -151,7 +151,7 @@ from zookeepr.tests.functional import *
 #         print res
         
 #         # check the rego worked
-#         regs = Query(Person).select()
+#         regs = self.dbsession.query(Person).select()
 #         self.assertEqual(1, len(regs))
 #         print regs[0]
 #         self.assertEqual(True, regs[0].activated, "account was not activated!")
@@ -160,7 +160,7 @@ from zookeepr.tests.functional import *
 #         Dummy_smtplib.existing.reset()
 
 #         self.dbsession.delete(regs[0])
-#         self.dbsession.delete(Query(Proposal).select()[0])
+#         self.dbsession.delete(self.dbsession.query(Proposal).select()[0])
 #         self.dbsession.flush()
 
 #         self.assertEmptyModel(Proposal)

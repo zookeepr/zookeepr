@@ -32,7 +32,7 @@ class NotYetReviewedValidator(validators.FancyValidator):
         }
     
     def validate_python(self, value, state):
-        review = Query(Review).get_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
+        review = self.dbsession.query(Review).get_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
         if review is not None:
             raise Invalid(self.message('already', None),
                           value, state)
@@ -62,7 +62,7 @@ class ProposalController(SecureController, View, Modify):
     def __before__(self, **kwargs):
         super(ProposalController, self).__before__(**kwargs)
 
-        c.proposal_types = Query(ProposalType).select()
+        c.proposal_types = self.dbsession.query(ProposalType).select()
 
     def new(self, id):
         errors = {}
@@ -95,7 +95,7 @@ class ProposalController(SecureController, View, Modify):
     def review(self, id):
         """Review a proposal.
         """
-        c.proposal = Query(Proposal).get(id)
+        c.proposal = self.dbsession.query(Proposal).get(id)
 
         defaults = dict(request.POST)
         errors = {}
@@ -118,7 +118,7 @@ class ProposalController(SecureController, View, Modify):
                 # Dumb but redirecting to the proposal list is very slow.  bug #33
                 redirect_to('/')
                 
-        c.streams = Query(Stream).select()
+        c.streams = self.dbsession.query(Stream).select()
         
         return render_response('proposal/review.myt', defaults=defaults, errors=errors)
     
@@ -126,7 +126,7 @@ class ProposalController(SecureController, View, Modify):
     def attach(self, id):
         """Attach a file to the proposal.
         """
-        c.proposal = Query(Proposal).get(id)
+        c.proposal = self.dbsession.query(Proposal).get(id)
         defaults = dict(request.POST)
         errors = {}
 
@@ -156,12 +156,12 @@ class ProposalController(SecureController, View, Modify):
     def index(self):
         # hack for bug#34, don't show miniconfs to reviewers
         if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
-            c.proposal_types = Query(ProposalType).select()
+            c.proposal_types = self.dbsession.query(ProposalType).select()
         else:
-            c.proposal_types = Query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
+            c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
 
         for pt in c.proposal_types:
-            stuff = Query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
             setattr(c, '%s_collection' % pt.name, stuff)
 
         return super(ProposalController, self).index()

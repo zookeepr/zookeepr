@@ -15,7 +15,7 @@ class PersonAuthenticator(object):
     """Look up the Person in the data store"""
 
     def authenticate(self, username, password):
-        person = Query(Person).get_by(email_address=username)
+        person = self.dbsession.query(Person).get_by(email_address=username)
         
         if person is None:
             return retcode.FAILURE
@@ -110,7 +110,7 @@ class SecureController(BaseController):
         if self.logged_in():
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
-            c.signed_in_person = Query(Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(Person).get_by(id=session['signed_in_person_id'])
         else:
             # No-one's logged in, so send them to the signin
             # page.
@@ -158,5 +158,5 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
-        role = Query(Role).get_by(name=self.role_name)
+        role = self.dbsession.query(Role).get_by(name=self.role_name)
         return role in c.signed_in_person.roles

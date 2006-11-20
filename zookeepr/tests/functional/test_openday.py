@@ -36,6 +36,6 @@ class TestOpendayController(CRUDControllerTest):
         resp.mustcontain('You have already registered!')
 
         # clean up
-        self.dbsession.delete(Query(model.Openday).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Openday).get(pid))
         self.dbsession.flush()
 

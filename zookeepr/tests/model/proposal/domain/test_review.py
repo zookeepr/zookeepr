@@ -37,9 +37,9 @@ class TestReviewModel(CRUDModelTest):
         self.sid = self.stream.id
 
     def tearDown(self):
-        self.dbsession.delete(Query(model.Stream).get(self.sid))
-        self.dbsession.delete(Query(model.Proposal).get(self.pid))
-        self.dbsession.delete(Query(model.Person).get(self.rid))
+        self.dbsession.delete(self.dbsession.query(model.Stream).get(self.sid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(self.pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.rid))
         self.dbsession.flush()
 
         super(TestReviewModel, self).tearDown()

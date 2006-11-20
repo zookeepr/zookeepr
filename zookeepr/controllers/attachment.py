@@ -9,7 +9,7 @@ class AttachmentController(SecureController, Delete):
     redirect_map = {'delete': dict(controller='proposal', action='view', id=session['proposal_id'])}
 
     def view(self, id):
-        att = Query(model.Attachment).get(id)
+        att = self.dbsession.query(model.Attachment).get(id)
 
         response = Response(att.content)
         response.headers['content-type'] = att.content_type

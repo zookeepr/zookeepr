@@ -33,7 +33,7 @@ class TestTemplateController(ControllerTest):
             f = resp.forms[0]
             f.submit('delete')
 
-        self.dbsession.delete(Query(model.Person).get(self.p.id))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.p.id))
         self.dbsession.flush()
 
         super(TestTemplateController, self).tearDown()

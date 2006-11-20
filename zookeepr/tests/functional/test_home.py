@@ -38,6 +38,6 @@ class TestHomeController(ControllerTest):
         resp.mustcontain("signed in")
         resp.mustcontain("foo")
 
-        self.dbsession.delete(Query(model.Proposal).get(sid))
-        self.dbsession.delete(Query(model.Person).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
         self.dbsession.flush()

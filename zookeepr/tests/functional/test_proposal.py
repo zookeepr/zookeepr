@@ -39,7 +39,7 @@ class TestProposal(SignedInCRUDControllerTest):
 
     def additional(self, obj):
         obj.people.append(self.person)
-        obj.type = Query(model.ProposalType).get(1)
+        obj.type = self.dbsession.query(model.ProposalType).get(1)
         return obj
     
     def setUp(self):
@@ -113,8 +113,8 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
 
         # clean up
-        self.dbsession.delete(Query(Person).get(p2id))
-        self.dbsession.delete(Query(Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(Proposal).get(sid))
         self.dbsession.flush()
 
 
@@ -145,8 +145,8 @@ class TestProposal(SignedInCRUDControllerTest):
                              status=403)
 
         # clean up
-        self.dbsession.delete(Query(model.Person).get(p2id))
-        self.dbsession.delete(Query(model.Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
         self.dbsession.flush()
 
 
@@ -178,8 +178,8 @@ class TestProposal(SignedInCRUDControllerTest):
                              status=403)
 
         # clean up
-        self.dbsession.delete(Query(model.Person).get(p2id))
-        self.dbsession.delete(Query(model.Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
         self.dbsession.flush()
 
 
@@ -202,8 +202,8 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
 
         # clean up
-        self.dbsession.delete(Query(model.Person).get(p2id))
-        self.dbsession.delete(Query(model.Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
         self.dbsession.flush()
 
 
@@ -232,7 +232,7 @@ class TestProposal(SignedInCRUDControllerTest):
         resp = resp.follow()
 
         # does it exist?
-        s2 = Query(model.Proposal).get_by(title='sub two')
+        s2 = self.dbsession.query(model.Proposal).get_by(title='sub two')
         self.failIfEqual(None, s2)
 
         # is it attached to our guy?
@@ -243,7 +243,7 @@ class TestProposal(SignedInCRUDControllerTest):
         
         # clean up
         self.dbsession.delete(s2)
-        self.dbsession.delete(Query(model.Proposal).get(s1id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(s1id))
         self.dbsession.flush()
 
     def test_proposal_list(self):
@@ -267,7 +267,7 @@ class TestProposal(SignedInCRUDControllerTest):
 
 
         # clean up
-        self.dbsession.delete(Query(model.Role).get(rid))
+        self.dbsession.delete(self.dbsession.query(model.Role).get(rid))
         self.dbsession.flush()
 
     def test_proposal_view(self):
@@ -346,7 +346,7 @@ class TestProposal(SignedInCRUDControllerTest):
         f.submit()
 
         # test that we have a review
-        reviews = Query(model.Review).select()
+        reviews = self.dbsession.query(model.Review).select()
         self.failIfEqual([], reviews)
         self.assertEqual(1, len(reviews))
         self.assertEqual("snuh", reviews[0].comment)
@@ -354,16 +354,16 @@ class TestProposal(SignedInCRUDControllerTest):
         
         # clean up
         self.dbsession.delete(objectstore.get(model.Review, reviews[0].id))
-        self.dbsession.delete(Query(model.Stream).get(sid))
-        self.dbsession.delete(Query(model.Role).get(rid))
-        self.dbsession.delete(Query(Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Stream).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Role).get(rid))
+        self.dbsession.delete(self.dbsession.query(Proposal).get(pid))
         self.dbsession.flush()
 
 
     def test_proposal_attach_more(self):
         p = model.Proposal(title='test view',
                      abstract='abs',
-                     type=Query(model.ProposalType).get(3))
+                     type=self.dbsession.query(model.ProposalType).get(3))
         self.dbsession.save(p)
         self.person.proposals.append(p)
         self.dbsession.flush()
@@ -381,21 +381,21 @@ class TestProposal(SignedInCRUDControllerTest):
         resp = f.submit()
         resp = resp.follow()
 
-        atts = Query(model.Attachment).select()
+        atts = self.dbsession.query(model.Attachment).select()
         self.failIfEqual([], atts)
         self.assertEqual("attachment", str(atts[0].content))
 
         
         # clean up
         self.dbsession.delete(atts[0])
-        self.dbsession.delete(Query(model.Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
         self.dbsession.flush()
 
 
     def test_proposal_delete_attachment(self):
         p = model.Proposal(title='test view',
                      abstract='abs',
-                     type=Query(model.ProposalType).get(3))
+                     type=self.dbsession.query(model.ProposalType).get(3))
         self.dbsession.save(p)
         self.person.proposals.append(p)
         a = model.Attachment(content="foo")
@@ -419,7 +419,7 @@ class TestProposal(SignedInCRUDControllerTest):
 
         resp = resp.follow()
 
-        atts = Query(model.Attachment).select()
+        atts = self.dbsession.query(model.Attachment).select()
         self.assertEqual([], atts)
 
         
@@ -429,6 +429,6 @@ class TestProposal(SignedInCRUDControllerTest):
                          resp.request.url)
 
         # clean up
-        self.dbsession.delete(Query(model.Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
         self.dbsession.flush()
 
