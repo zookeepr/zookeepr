@@ -22,11 +22,11 @@ class DictSet(validators.Set):
 # FIXME: merge with account.py controller and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = Query(model.Person).get_by(email_address=value['email_address'])
+        account = state.query(model.Person).get_by(email_address=value['email_address'])
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
 
-        account = Query(model.Person).get_by(handle=value['handle'])
+        account = state.query(model.Person).get_by(handle=value['handle'])
         if account is not None:
             raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
 
@@ -34,7 +34,7 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         rego = None
         if 'signed_in_person_id' in session:
-            rego = Query(model.Registration).get_by(person_id=session['signed_in_person_id'])
+            rego = state.query(model.Registration).get_by(person_id=session['signed_in_person_id'])
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
@@ -43,7 +43,7 @@ class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         if value == 'own':
             return None
-        return Query(model.Accommodation).get(value)
+        return state.query(model.Accommodation).get(value)
 
 
 class RegistrationSchema(Schema):
@@ -129,11 +129,11 @@ class RegistrationController(BaseController, Create):
             super(RegistrationController, self).__before__()
 
         if 'signed_in_person_id' in session:
-            c.signed_in_person = Query(model.Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
 
 
     def new(self):
-        as = Query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).select()
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
         errors = {}
@@ -141,9 +141,9 @@ class RegistrationController(BaseController, Create):
 
         if defaults:
             if c.signed_in_person:
-                results, errors = ExistingPersonRegoSchema().validate(defaults)
+                results, errors = ExistingPersonRegoSchema().validate(defaults, self.dbsession)
             else:
-                results, errors = NewRegistrationSchema().validate(defaults)
+                results, errors = NewRegistrationSchema().validate(defaults, self.dbsession)
 
             if errors: #FIXME: make this only print if debug enabled
                 if request.environ['paste.config']['app_conf'].get('debug'):
@@ -152,19 +152,19 @@ class RegistrationController(BaseController, Create):
                 c.registration = model.Registration()
                 for k in results['registration']:
                     setattr(c.registration, k, results['registration'][k])
-                objectstore.save(c.registration)
+                self.dbsession.save(c.registration)
 
                 if not c.signed_in_person:
                     c.person = model.Person()
                     for k in results['person']:
                         setattr(c.person, k, results['person'][k])
 
-                    objectstore.save(c.person)
+                    self.dbsession.save(c.person)
                 else:
                     c.person = c.signed_in_person
 
                 c.registration.person = c.person
-                objectstore.flush()
+                self.dbsession.flush()
 
                 s = smtplib.SMTP("localhost")
                 body = render('registration/response.myt', id=c.person.url_hash, fragment=True)

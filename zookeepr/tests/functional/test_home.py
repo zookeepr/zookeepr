@@ -9,15 +9,18 @@ class TestHomeController(ControllerTest):
                    password='test',
                    firstname='Testguy')
         p.activated = True
-        objectstore.save(p)
+        self.dbsession.save(p)
         print p
         s = model.Proposal(title='foo')
-        objectstore.save(s)
+        self.dbsession.save(s)
         p.proposals.append(s)
 
-        objectstore.flush()
+        self.dbsession.flush()
 
         print p
+
+        pid = p.id
+        sid = s.id
 
         resp = self.app.get(url_for(controller='account',action='signin'))
         f = resp.form
@@ -35,6 +38,6 @@ class TestHomeController(ControllerTest):
         resp.mustcontain("signed in")
         resp.mustcontain("foo")
 
-        objectstore.delete(p)
-        objectstore.delete(s)
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
+        self.dbsession.flush()

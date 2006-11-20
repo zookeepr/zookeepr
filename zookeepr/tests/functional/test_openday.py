@@ -19,8 +19,8 @@ class TestOpendayController(CRUDControllerTest):
         p = model.Openday(email_address='teacher@example.org',
             fullname='Happy teacher',
             )
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
 
         pid = p.id
 
@@ -36,6 +36,6 @@ class TestOpendayController(CRUDControllerTest):
         resp.mustcontain('You have already registered!')
 
         # clean up
-        objectstore.delete(Query(model.Openday).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Openday).get(pid))
+        self.dbsession.flush()
 

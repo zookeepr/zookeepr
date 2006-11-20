@@ -36,10 +36,10 @@ class TestPerson(CRUDModelTest):
 
         print r
 
-        objectstore.save(r)
-        objectstore.flush()
+        self.dbsession.save(r)
+        self.dbsession.flush()
 
-        s = objectstore.query(model.Person).select_by(url_hash=r.url_hash)
+        s = self.dbsession.query(model.Person).select_by(url_hash=r.url_hash)
 
         # only one element
         self.assertEqual(1, len(s))
@@ -48,7 +48,7 @@ class TestPerson(CRUDModelTest):
         self.assertEqual(r, s[0])
 
         # clean up
-        objectstore.delete(r)
-        objectstore.flush()
+        self.dbsession.delete(r)
+        self.dbsession.flush()
 
         self.check_empty_session()

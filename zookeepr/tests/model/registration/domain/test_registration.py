@@ -40,13 +40,13 @@ class TestRegistration(CRUDModelTest):
     def setUp(self):
         super(TestRegistration, self).setUp()
         self.person = model.Person(email_address='testguy@example.org')
-        objectstore.save(self.person)
-        objectstore.flush()
+        self.dbsession.save(self.person)
+        self.dbsession.flush()
         self.pid = self.person.id
 
     def tearDown(self):
-        objectstore.delete(Query(model.Person).get(self.pid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.pid))
+        self.dbsession.flush()
         super(TestRegistration, self).tearDown()
 
     def additional(self, rego):
@@ -59,20 +59,20 @@ class TestRegistration(CRUDModelTest):
         p = model.Person(email_address='testguy+map@example.org')
 
         r.person = p
-        objectstore.save(r)
-        objectstore.save(p)
+        self.dbsession.save(r)
+        self.dbsession.save(p)
 
-        objectstore.flush()
+        self.dbsession.flush()
         
         rid = r.id
         pid = p.id
 
         # clear it
-        objectstore.clear()
+        self.dbsession.clear()
 
         
-        p = Query(model.Person).get(pid)
-        r = Query(model.Registration).get(rid)
+        p = self.dbsession.query(model.Person).get(pid)
+        r = self.dbsession.query(model.Registration).get(rid)
 
         # test that p is mapped to r properly
         self.assertEqual(r, p.registration)
@@ -80,7 +80,7 @@ class TestRegistration(CRUDModelTest):
         self.assertEqual(p, r.person)
 
         # clean up, assert that r is deleted when p is
-        objectstore.delete(p)
-        objectstore.flush()
+        self.dbsession.delete(p)
+        self.dbsession.flush()
 
-        self.assertEqual(None, Query(model.Registration).get(rid))
+        self.assertEqual(None, self.dbsession.query(model.Registration).get(rid))

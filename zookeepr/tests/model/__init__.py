@@ -1,7 +1,6 @@
 import warnings
 
-import sqlalchemy.mods.threadlocal
-from sqlalchemy import objectstore, Query, default_metadata
+from sqlalchemy import create_session, default_metadata, select, func
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -10,13 +9,23 @@ class ModelTest(TestBase):
     """Base class for all data model domain object tests.
     """
 
+    def setUp(self):
+        super(ModelTest, self).setUp()
+
+        self.dbsession = create_session()
+
+    def tearDown(self):
+        self.dbsession.close()
+
+        super(ModelTest, self).tearDown()
+
     def echo_sql(self, value):
         """Tell the underlying engine to echo SQL, for debugging tests."""
         default_metadata.engine.echo = value
         
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
-        results = Query(self.domain).select()
+        results = self.dbsession.query(self.domain).select()
         self.assertEqual([], results)
 
 
@@ -118,18 +127,18 @@ class CRUDModelTest(ModelTest):
             o = self.additional(o)
             
             # committing to db
-            objectstore.save(o)
-            objectstore.flush()
+            self.dbsession.save(o)
+            self.dbsession.flush()
             oid = o.id
 
             # clear the session, invalidating o
-            objectstore.clear()
+            self.dbsession.clear()
             del o
     
             # check it's in the database
             print self.domain
             print oid
-            o = objectstore.get(self.domain, oid)
+            o = self.dbsession.get(self.domain, oid)
             self.failIfEqual(None, o, "object not in database")
         
             # checking attributes
@@ -138,13 +147,13 @@ class CRUDModelTest(ModelTest):
                 self.check_attribute(o, key, sample[key])
     
             # deleting object
-            objectstore.delete(o)
-            objectstore.flush()
+            self.dbsession.delete(o)
+            self.dbsession.flush()
     
             # checking db
             self.check_empty_session()
 
-        objectstore.close()
+        self.dbsession.close()
 
     def check_attribute(self, obj, key, value):
         """Check that the attribute has the correct value.
@@ -221,7 +230,7 @@ class TableTest(TestBase):
 
     def check_empty_table(self):
         """Check that the database was left empty after the test"""
-        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
+        query = select([func.count(self.table.c.id)])
         result = query.execute()
         self.assertEqual(0, result.fetchone()[0])
 
@@ -244,7 +253,7 @@ class TableTest(TestBase):
 
             for key in sample.keys():
                 col = getattr(self.table.c, key)
-                query = sqlalchemy.select([col])
+                query = select([col])
                 result = query.execute()
                 row = result.fetchone()
                 print "row:", row
@@ -259,7 +268,7 @@ class TableTest(TestBase):
             query.execute(sample)
 
         # get the count of rows
-        query = sqlalchemy.select([sqlalchemy.func.count(self.table.c.id)])
+        query = select([func.count(self.table.c.id)])
         result = query.execute()
         # check that it's the same length as the sample data
         self.assertEqual(len(self.samples), result.fetchone()[0])
@@ -270,12 +279,12 @@ class TableTest(TestBase):
         self.check_empty_table()
 
     def not_nullable(self):
-        """Check that certain columns of a table are not nullable.
-         
-        Specify the ``not_nullables`` class variable with a list of column names
-        that must not be null, and this method will insert into the table rows
-        with each set to null and test for an exception from the database layer.
-        """
+        #"""Check that certain columns of a table are not nullable.
+        # 
+        #Specify the ``not_nullables`` class variable with a list of column names
+        #that must not be null, and this method will insert into the table rows
+        #with each set to null and test for an exception from the database layer.
+        #"""
 
         self.failIf(len(self.samples) < 1, "not enough sample data, stranger")
 
@@ -285,7 +294,7 @@ class TableTest(TestBase):
             # construct an attribute dictionary without the 'not null' attribute
             coldata = {}
             coldata.update(self.samples[0])
-            coldata[col] = None
+            del coldata[col]
     
             # create the model object
             print coldata
@@ -327,6 +336,5 @@ class TableTest(TestBase):
 
 __all__ = ['TableTest',
            'ModelTest', 'CRUDModelTest',
-           'objectstore', 'Query',
            'model',
            ]

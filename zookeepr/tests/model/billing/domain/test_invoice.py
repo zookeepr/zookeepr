@@ -7,14 +7,18 @@ class TestInvoiceDomainModel(CRUDModelTest):
                ]
 
     def setUp(self):
+        super(TestInvoiceDomainModel, self).setUp()
+
         self.person = model.Person(email_address='testguy@example.org')
-        objectstore.save(self.person)
-        objectstore.flush()
+        self.dbsession.save(self.person)
+        self.dbsession.flush()
         self.pid = self.person.id
 
     def tearDown(self):
-        objectstore.delete(Query(model.Person).get(self.pid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.pid))
+        self.dbsession.flush()
+
+        super(TestInvoiceDomainModel, self).tearDown()
 
     def additional(self, invoice):
         invoice.person = self.person

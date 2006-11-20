@@ -31,8 +31,8 @@ class TestAccommodationOptionModel(CRUDModelTest):
         super(TestAccommodationOptionModel, self).setUp()
         
         self.location = model.registration.AccommodationLocation(name='foo', beds=1)
-        objectstore.save(self.location)
-        objectstore.flush()
+        self.dbsession.save(self.location)
+        self.dbsession.flush()
         self.lid = self.location.id
         
     def additional(self, ao):
@@ -42,9 +42,9 @@ class TestAccommodationOptionModel(CRUDModelTest):
         return ao
 
     def tearDown(self):
-        self.location = Query(model.registration.AccommodationLocation).get_by(id=self.lid)
-        objectstore.delete(self.location)
-        objectstore.flush()
+        self.location = self.dbsession.query(model.registration.AccommodationLocation).get_by(id=self.lid)
+        self.dbsession.delete(self.location)
+        self.dbsession.flush()
 
         super(TestAccommodationOptionModel, self).tearDown()
 
@@ -56,16 +56,16 @@ class TestAccommodationModel(ModelTest):
         self.echo_sql(True)
 
         al = model.registration.AccommodationLocation(name='a', beds=1)
-        objectstore.save(al)
-        objectstore.flush()
+        self.dbsession.save(al)
+        self.dbsession.flush()
         ao = model.registration.AccommodationOption(name='buh', cost_per_night=1.00)
         ao.location = al
-        objectstore.save(ao)
-        objectstore.flush()
+        self.dbsession.save(ao)
+        self.dbsession.flush()
 
-        print "accommodations:", Query(model.registration.Accommodation).select()
+        print "accommodations:", self.dbsession.query(model.registration.Accommodation).select()
 
-        a = Query(model.registration.Accommodation).get_by(id=1)
+        a = self.dbsession.query(model.registration.Accommodation).get_by(id=1)
         self.failIfEqual(None, a)
 
         print "registrations using this accommodation:", a.registrations
@@ -75,19 +75,19 @@ class TestAccommodationModel(ModelTest):
         self.assertEqual(1, a.get_available_beds())
 
         p = model.Person(email_address='testguy@example.org')
-        objectstore.save(p)
+        self.dbsession.save(p)
         # register something, use up the bed
         r = model.registration.Registration()
         r.accommodation = a
 
         p.registration = r
 
-        objectstore.save(r)
-        objectstore.flush()
+        self.dbsession.save(r)
+        self.dbsession.flush()
         
         # we want to force a reload of the beds_taken field
-        objectstore.refresh(a)
-        #objectstore.expire(r)
+        self.dbsession.refresh(a)
+        #self.dbsession.expire(r)
         
         print "registrations using this accommodation:", a.registrations
         self.failIfEqual([], a.registrations)
@@ -102,15 +102,15 @@ class TestAccommodationModel(ModelTest):
         # add a second accommodation option
         ao1 = model.registration.AccommodationOption(name='snuh', cost_per_night=2)
         ao1.location = al
-        objectstore.save(ao1)
-        objectstore.flush()
+        self.dbsession.save(ao1)
+        self.dbsession.flush()
 
         # assert that there are two accommodations now
-        as = Query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).select()
         print "accommodations 2:", as
         self.assertEqual(2, len(as))
 
-        a1 = Query(model.registration.Accommodation).get_by(id=ao1.id)
+        a1 = self.dbsession.query(model.registration.Accommodation).get_by(id=ao1.id)
         
         print "a beds available:", a.get_available_beds()
         print "a1 beds available:", a1.get_available_beds()
@@ -120,7 +120,7 @@ class TestAccommodationModel(ModelTest):
 
         self.echo_sql(False)
 
-        as = Query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).select()
         print 'as:', as
         self.assertEqual(2, len(as))
 
@@ -128,8 +128,8 @@ class TestAccommodationModel(ModelTest):
         print 'available_as:', available_as
         self.assertEqual(0, len(available_as))
 
-        objectstore.delete(p)
-        objectstore.flush()
+        self.dbsession.delete(p)
+        self.dbsession.flush()
         model.registration.tables.registration.delete().execute()
         model.registration.tables.accommodation_option.delete().execute()
         model.registration.tables.accommodation_location.delete().execute()

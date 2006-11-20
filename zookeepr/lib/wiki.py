@@ -3,6 +3,7 @@
 from exceptions import ImportError
 
 from paste.httpexceptions import HTTPException
+from sqlalchemy import create_session
 
 from zookeepr.lib.base import *
 from zookeepr.lib.BeautifulSoup import BeautifulSoup
@@ -52,8 +53,10 @@ def get_wiki_response(request, start_response):
         abort(404)
         return
 
+    dbsession = create_session()
+
     if 'signed_in_person_id' in session:
-        people = Query(Person).select_by(id=session['signed_in_person_id'])
+        people = dbsession.query(Person).select_by(id=session['signed_in_person_id'])
         if len(people) > 0:
             request.environ['AUTH_TYPE'] = 'Basic'
             request.environ['REMOTE_USER'] = people[0].handle
@@ -61,6 +64,7 @@ def get_wiki_response(request, start_response):
     moinReq = RequestZookeepr(request)
     moinReq.run()
     start_response(moinReq.status, moinReq.headers)
+    dbsession.close()
     return [moinReq.output()]
 
 def wiki_here():

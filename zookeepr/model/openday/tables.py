@@ -1,4 +1,3 @@
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
 openday = Table('openday',

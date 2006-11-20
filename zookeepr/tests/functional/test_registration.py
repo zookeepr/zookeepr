@@ -67,23 +67,23 @@ class TestRegistrationController(CRUDControllerTest):
         self.al = model.registration.AccommodationLocation(name='foo', beds=1)
         self.ao = model.registration.AccommodationOption(name='', cost_per_night=1)
         self.ao.location = self.al
-        objectstore.save(self.al)
-        objectstore.save(self.ao)
-        objectstore.flush()
+        self.dbsession.save(self.al)
+        self.dbsession.save(self.ao)
+        self.dbsession.flush()
 
         self.alid = self.al.id
         self.aoid = self.ao.id
         
     def tearDown(self):
-        objectstore.clear()
+        self.dbsession.clear()
 
-        objectstore.delete(Query(model.Person).get_by(email_address='testguy@example.org'))
+        self.dbsession.delete(self.dbsession.query(model.Person).get_by(email_address='testguy@example.org'))
 
-        self.ao = Query(model.registration.AccommodationOption).get(self.aoid)
-        self.al = Query(model.registration.AccommodationLocation).get(self.alid)
-        objectstore.delete(self.ao)
-        objectstore.delete(self.al)
-        objectstore.flush()
+        self.ao = self.dbsession.query(model.registration.AccommodationOption).get(self.aoid)
+        self.al = self.dbsession.query(model.registration.AccommodationLocation).get(self.alid)
+        self.dbsession.delete(self.ao)
+        self.dbsession.delete(self.al)
+        self.dbsession.flush()
         
         if Dummy_smtplib.existing:
             Dummy_smtplib.existing.reset()
@@ -137,13 +137,13 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         self.failUnlessEqual(None, html_match, "HTML in message!")
 
         # test that we have a registration
-        regs = Query(model.Registration).select()
+        regs = self.dbsession.query(model.Registration).select()
         self.failIfEqual([], regs)
         self.assertEqual(self.person.id, regs[0].person.id)
 
         # clean up
-        objectstore.delete(regs[0])
-        objectstore.flush()
+        self.dbsession.delete(regs[0])
+        self.dbsession.flush()
 
 
 class TestNotSignedInRegistrationController(ControllerTest):
@@ -152,8 +152,8 @@ class TestNotSignedInRegistrationController(ControllerTest):
             fullname='testguy mctest',
             )
         p.activated = True
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
 
         pid = p.id
 
@@ -183,8 +183,8 @@ class TestNotSignedInRegistrationController(ControllerTest):
         resp.mustcontain('This account already exists.')
 
         # clean up
-        objectstore.delete(Query(model.Person).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
+        self.dbsession.flush()
 
     def test_not_signed_in_existing_handle(self):
         p = model.Person(email_address='testguy@example.org',
@@ -192,8 +192,8 @@ class TestNotSignedInRegistrationController(ControllerTest):
             handle='testguy',
             )
         p.activated = True
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
 
         pid = p.id
 
@@ -223,5 +223,5 @@ class TestNotSignedInRegistrationController(ControllerTest):
         resp.mustcontain('This display name has been taken, sorry.  Please use another.')
 
         # clean up
-        objectstore.delete(Query(model.Person).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
+        self.dbsession.flush()
