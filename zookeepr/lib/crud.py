@@ -153,7 +153,7 @@ class Update(RUDBase):
         errors = {}
         defaults = dict(request.POST)
         if defaults:
-            result, errors = self.schemas['edit'].validate(defaults)
+            result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
 
             if not errors:
                 # update the object with the posted data
