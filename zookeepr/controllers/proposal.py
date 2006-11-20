@@ -32,7 +32,7 @@ class NotYetReviewedValidator(validators.FancyValidator):
         }
     
     def validate_python(self, value, state):
-        review = self.dbsession.query(Review).get_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
+        review = state.query(Review).get_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
         if review is not None:
             raise Invalid(self.message('already', None),
                           value, state)
@@ -95,7 +95,7 @@ class ProposalController(SecureController, View, Modify):
     def review(self, id):
         """Review a proposal.
         """
-        c.proposal = self.dbsession.query(Proposal).get(id)
+        c.proposal = self.dbsession.query(model.Proposal).get(id)
 
         defaults = dict(request.POST)
         errors = {}

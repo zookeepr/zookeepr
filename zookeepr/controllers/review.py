@@ -1,7 +1,7 @@
 from formencode import variabledecode
 
 from zookeepr.lib.auth import AuthRole, SecureController
-from zookeepr.lib.base import c, render_response, model, self.dbsession.query
+from zookeepr.lib.base import c, render_response, model
 from zookeepr.lib.crud import List, Update, Read
 from zookeepr.lib.validators import BaseSchema, ReviewSchema
 

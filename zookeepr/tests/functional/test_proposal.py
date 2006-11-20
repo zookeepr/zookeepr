@@ -60,8 +60,8 @@ class TestProposal(SignedInCRUDControllerTest):
 
     def test_selected_radio_button_in_edit(self):
         # Test that a radio button is checked when editing a proposal
-        s = Proposal(id=1,
-                       type=self.dbsession.get(ProposalType, 3),
+        s = model.Proposal(id=1,
+                       type=self.dbsession.get(model.ProposalType, 3),
                        title='foo',
                        abstract='bar',
                        experience='',
@@ -96,11 +96,11 @@ class TestProposal(SignedInCRUDControllerTest):
     def test_proposal_view_lockdown(self):
         # we got one person already with login
         # create a sceond
-        p2 = Person(email_address='test2@example.org',
+        p2 = model.Person(email_address='test2@example.org',
                     password='test')
         self.dbsession.save(p2)
         # create a proposal
-        s = Proposal(title='foo')
+        s = model.Proposal(title='foo')
         self.dbsession.save(s)
         p2.proposals.append(s)
         self.dbsession.flush()
@@ -113,8 +113,8 @@ class TestProposal(SignedInCRUDControllerTest):
                             status=403)
 
         # clean up
-        self.dbsession.delete(self.dbsession.query(Person).get(p2id))
-        self.dbsession.delete(self.dbsession.query(Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
         self.dbsession.flush()
 
 
@@ -289,14 +289,13 @@ class TestProposal(SignedInCRUDControllerTest):
         self.dbsession.flush()
 
     def test_proposal_view_ours(self):
-        p = Proposal(title='test view',
+        p = model.Proposal(title='test view',
                      abstract='abs',
-                     type=self.dbsession.get(ProposalType, 3))
+                     type=self.dbsession.get(model.ProposalType, 3))
         self.dbsession.save(p)
         self.person.proposals.append(p)
         self.dbsession.flush()
         pid = p.id
-        self.dbsession.clear()
         
         # we're logged in and this is ours
         resp = self.app.get(url_for(controller='proposal',
@@ -304,7 +303,7 @@ class TestProposal(SignedInCRUDControllerTest):
                                     id=pid))
 
         # clean up
-        self.dbsession.delete(objectstore.get(Proposal, pid))
+        self.dbsession.delete(p)
         self.dbsession.flush()
 
     def test_proposal_view_as_reviewer(self):
