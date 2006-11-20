@@ -164,6 +164,6 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
-        dbsession = create_session()
-        role = dbsession.query(Role).get_by(name=self.role_name)
-        return role in c.signed_in_person.roles
+        role = cls.dbsession.query(Role).get_by(name=self.role_name)
+        retval = role in c.signed_in_person.roles
+        return retval
