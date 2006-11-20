@@ -23,4 +23,6 @@ class TestInvoiceController(SignedInCRUDControllerTest):
         super(TestInvoiceController, self).tearDown()
 
     def test_invoice_view(self):
+        resp = self.app.get('/invoice/%d' % self.iid)
+        print resp
         self.fail("not really")

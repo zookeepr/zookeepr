@@ -1,8 +1,10 @@
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import *
+from zookeepr.lib.crud import *
 
-class InvoiceController(SecureController, View):
+class InvoiceController(SecureController, Read):
     model = model.Invoice
+    individual = 'invoice'
     permissions = {'view': [AuthFunc('is_payee')],
                    }
 
