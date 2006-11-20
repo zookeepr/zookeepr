@@ -130,7 +130,6 @@ class AccountController(BaseController):
 
         """
         r = self.dbsession.query(Person).select_by(url_hash=id)
-        print "r is:", r
 
         if len(r) < 1:
             abort(404)
