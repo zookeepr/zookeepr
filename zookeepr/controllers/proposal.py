@@ -68,7 +68,7 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
         defaults = dict(request.POST)
         if defaults:
-            result, errors = self.schemas['new'].validate(defaults)
+            result, errors = self.schemas['new'].validate(defaults, self.dbsession)
 
             if not errors:
                 c.proposal = self.obj = self.model()
@@ -101,7 +101,7 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
         
         if defaults:
-            result, errors = NewReviewSchema().validate(defaults)
+            result, errors = NewReviewSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 review = Review()
@@ -131,7 +131,7 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
 
         if defaults:
-            result, errors = NewAttachmentSchema().validate(defaults)
+            result, errors = NewAttachmentSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 attachment = Attachment()

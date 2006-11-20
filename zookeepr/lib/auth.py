@@ -1,5 +1,7 @@
 import md5
 
+from sqlalchemy import create_session
+
 from zookeepr.lib.base import *
 from zookeepr.model import Person, Role
 
@@ -15,7 +17,9 @@ class PersonAuthenticator(object):
     """Look up the Person in the data store"""
 
     def authenticate(self, username, password):
-        person = self.dbsession.query(Person).get_by(email_address=username)
+        dbsession = create_session()
+
+        person = dbsession.query(Person).get_by(email_address=username)
         
         if person is None:
             return retcode.FAILURE
@@ -28,6 +32,8 @@ class PersonAuthenticator(object):
             result = retcode.SUCCESS
         else:
             result = retcode.FAILURE
+
+        dbsession.close()
 
         return result
 

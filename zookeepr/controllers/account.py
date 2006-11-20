@@ -29,7 +29,7 @@ class AuthenticationValidator(validators.FancyValidator):
 
 class ExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        accounts = self.dbsession.query(Person).select_by(email_address=value['email_address'])
+        accounts = state.query(Person).select_by(email_address=value['email_address'])
         if len(accounts) == 0:
             raise Invalid("Your sign-in details are incorrect; try registering a new account.", value, state)
 
@@ -57,7 +57,6 @@ class PasswordResetSchema(BaseSchema):
 # FIXME: merge with registration controller validator and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        print "state is:", state
         account = state.query(Person).get_by(email_address=value['email_address'])
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.", value, state)
@@ -94,7 +93,7 @@ class AccountController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = LoginValidator().validate(defaults)
+            result, errors = LoginValidator().validate(defaults, self.dbsession)
 
             if not errors:
                 # do the authorisation here or in validator?
@@ -131,6 +130,7 @@ class AccountController(BaseController):
 
         """
         r = self.dbsession.query(Person).select_by(url_hash=id)
+        print "r is:", r
 
         if len(r) < 1:
             abort(404)
@@ -161,7 +161,7 @@ class AccountController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = ForgottenPasswordSchema().validate(defaults)
+            result, errors = ForgottenPasswordSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.conf_rec = PasswordResetConfirmation(result['email_address'])
@@ -227,7 +227,7 @@ class AccountController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = PasswordResetSchema().validate(defaults)
+            result, errors = PasswordResetSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 accounts = self.dbsession.query(Person).select_by(email_address=c.conf_rec.email_address)
@@ -267,6 +267,8 @@ class AccountController(BaseController):
                 # update the objects with the validated form data
                 for k in result['registration']:
                     setattr(c.person, k, result['registration'][k])
+                self.dbsession.save(c.person)
+                self.dbsession.flush()
 
                 s = smtplib.SMTP("localhost")
                 # generate welcome message

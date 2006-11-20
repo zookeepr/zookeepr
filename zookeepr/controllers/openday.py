@@ -49,7 +49,7 @@ class OpendayController(BaseController, Create):
         defaults = dict(request.POST)
 
         if defaults:
-            results, errors = NewOpendaySchema().validate(defaults)
+            results, errors = NewOpendaySchema().validate(defaults, self.dbsession)
 
             if errors: #FIXME: make this only print if debug enabled
                 if request.environ['paste.config']['app_conf'].get('debug'):

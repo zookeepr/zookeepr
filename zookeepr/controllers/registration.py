@@ -141,9 +141,9 @@ class RegistrationController(BaseController, Create):
 
         if defaults:
             if c.signed_in_person:
-                results, errors = ExistingPersonRegoSchema().validate(defaults)
+                results, errors = ExistingPersonRegoSchema().validate(defaults, self.dbsession)
             else:
-                results, errors = NewRegistrationSchema().validate(defaults)
+                results, errors = NewRegistrationSchema().validate(defaults, self.dbsession)
 
             if errors: #FIXME: make this only print if debug enabled
                 if request.environ['paste.config']['app_conf'].get('debug'):

@@ -42,7 +42,7 @@ class CfpController(SecureController):
         defaults = dict(request.POST)
 
         if request.method == 'POST' and defaults:
-            result, errors = NewCFPSchema().validate(defaults)
+            result, errors = NewCFPSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.proposal = Proposal()
