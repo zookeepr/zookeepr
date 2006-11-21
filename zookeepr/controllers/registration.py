@@ -205,10 +205,25 @@ class RegistrationController(BaseController, Create, Update):
     def _build_invoice(self):
         r = c.registration
 
-        invoice = model.Invoice(issue_date=datetime.datetime.now())
-        self.dbsession.save(invoice)
+        if len(r.person.invoices) == 0:
 
-        r.person.invoices.append(invoice)
+            invoice = model.Invoice(issue_date=datetime.datetime.now())
+            self.dbsession.save(invoice)
+            r.person.invoices.append(invoice)
+        
+        else:
+            # make the terrible assumption that all are paid,
+            # that we only change the last one
+            invoice = r.person.invoices[-1]
+            
+            if invoice.payment:
+                invoice = model.Invoice(issue_date=datetime.datetime.now())
+                self.dbsession.save(invoice)
+                r.person.invoices.append(invoice)
+            else:
+                # drop existing invoice items
+                for ii in invoice.items:
+                    self.dbsession.delete(ii)
 
         # pretty much all of this is a dirty hack
         iit = model.InvoiceItem()
@@ -251,5 +266,4 @@ class RegistrationController(BaseController, Create, Update):
             self.dbsession.save(iia)
             invoice.items.append(iia)
 
-        print "invoice dirties:", self.dbsession.dirty
         self.dbsession.flush()

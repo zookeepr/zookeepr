@@ -15,3 +15,9 @@ class Invoice(object):
 
     def __repr__(self):
         return '<Invoice id=%r person=%r>' % (self.id, self.person_id)
+
+    # FIXME: remove when mapped to payment object
+    def _get_payment(self):
+        return None
+
+    payment = property(_get_payment)
