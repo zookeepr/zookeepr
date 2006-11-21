@@ -37,3 +37,14 @@ invoice_item = Table('invoice_item', metadata,
                      Column('cost', Float,
                             nullable=False),
                      )
+
+payment = Table('payment', metadata,
+                Column('id', Integer, primary_key=True),
+
+                Column('invoice_id', Integer,
+                       ForeignKey('invoice.id'),
+                       nullable=False),
+                
+                Column('amount', Float,
+                       nullable=False),
+                )
