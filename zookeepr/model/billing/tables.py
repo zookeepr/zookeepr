@@ -36,6 +36,10 @@ invoice_item = Table('invoice_item', metadata,
                             nullable=False),
                      )
 
+payment_sent = Table('payment_sent', metadata,
+                         Column('id', Integer, primary_key=True),
+               )
+
 payment_received = Table('payment_received', metadata,
                          Column('id', Integer, primary_key=True),
 
@@ -56,10 +60,8 @@ payment_received = Table('payment_received', metadata,
                                 nullable=False),
                          Column('settlement', String,
                                 nullable=False),
-                         Column('error_string', String,
-                                nullable=False),
-                         Column('card_name', String,
-                                nullable=False),
+                         Column('error_string', String),
+                         Column('card_name', String),
                          Column('card_type', String,
                                 nullable=False),
                          Column('trans_id', String,

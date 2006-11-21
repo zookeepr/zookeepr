@@ -1,12 +1,18 @@
 from sqlalchemy import mapper, relation, backref
 
 from tables import invoice_item, invoice, payment_received, invoice_payment_received_map
-from domain import InvoiceItem, Invoice, PaymentReceived
+from domain import InvoiceItem, Invoice, PaymentReceived, PaymentSent
 from zookeepr.model.core import Person
 
 mapper(InvoiceItem, invoice_item)
 
-mapper(PaymentReceived, payment_received)
+mapper(PaymentReceived, payment_received,
+       properties = {
+            'payment': relation(PaymentSent,
+                                backref='payment_sent'
+                       ),
+            },
+      )
 
 mapper(Invoice, invoice,
        properties = {

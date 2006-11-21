@@ -43,7 +43,36 @@ class PaymentReceived(object):
         self.trans_id = TransID
         self.original_amount = ORIGINAL_AMOUNT
 
+    def map_fields(self, fields):
+
+        mapping = {
+            'InvoiceID': 'invoice_id',
+            'PaymentID': 'payment_id',
+            'AuthNum': 'auth_num',
+            'Amount': 'amount',
+            'RefundKey': 'refund_key',
+            'Status': 'status',
+            'Settlement': 'settlement',
+            'ErrorString': 'wrror_string',
+            'CardName': 'card_name',
+            'CardType': 'card_type',
+            'TransID': 'trans_id',
+            'ORIGINAL_AMOUNT': 'original_amount',
+        }
+
+        for key in mapping.keys():
+            if key in fields:
+                setattr(self, mapping[key], fields[key])
+
+
     def __repr__(self):
         return '<PaymentReceived id=%r invoice_id=%r payment_id=%r amount=%r>' % (self.id, self.invoice_id, self.payment_id, self.amount)
+
+class PaymentSent(object):
+    def __init__(self):
+        pass
+
+    def __repr__(self):
+        return '<PaymentSent id=%r>' % (self.id)
 
 

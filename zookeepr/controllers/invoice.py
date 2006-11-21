@@ -14,13 +14,29 @@ class InvoiceController(SecureController, Read):
 
     def verify(self):
 
+        # Support GET or POST
         fields = dict(request.POST)
+        if 'MAC' not in fields:
+            fields = dict(request.GET)
 
+
+        # If we don't have a valid MAC then we just throw everything away
+        # Since someone is being evil
         valid_mac = self.verify_hmac(fields)
         if not valid_mac:
             redirect_to('/Errors/InvalidPayment')
 
-            
+        # TODO Add some field validation
+        # I'm just trusting commsecure to do the right thing at the moment
+
+        # Store the payment attempt
+        payment_received = model.PaymentReceived()
+        payment_received.map_fields(fields)
+        self.dbsession.save(payment_received)
+        self.dbsession.flush()
+
+
+        redirect_to('/ShouldntGetHere')
 
 
     def verify_hmac(self, fields):
