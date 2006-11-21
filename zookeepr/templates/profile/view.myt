@@ -1,5 +1,9 @@
 <h1><% c.profile.fullname |h %></h1>
 
+% if c.profile.registration:
+<% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
+% #endif
+
 # Show personal details
 % if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id:
 <fieldset>
