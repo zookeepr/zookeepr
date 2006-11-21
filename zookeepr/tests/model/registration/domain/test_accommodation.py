@@ -52,9 +52,6 @@ class TestAccommodationOptionModel(CRUDModelTest):
 class TestAccommodationModel(ModelTest):
 
     def test_accommodation_available(self):
-
-        self.echo_sql(True)
-
         al = model.registration.AccommodationLocation(name='a', beds=1)
         self.dbsession.save(al)
         self.dbsession.flush()
@@ -117,8 +114,6 @@ class TestAccommodationModel(ModelTest):
 
         # both options should have no beds because the first registration filled them all
         self.assertEqual(0, a1.get_available_beds(), "accommodation options should both have no beds available")
-
-        self.echo_sql(False)
 
         as = self.dbsession.query(model.Accommodation).select()
         print 'as:', as
