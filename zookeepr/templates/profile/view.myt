@@ -134,7 +134,12 @@ Kids coming: aged 0-3: <% c.profile.registration.kids_0_3 |h %>; 4-6: <% c.profi
 <fieldset>
 
 <p>
-Accommodation: <% c.profile.registration.accommodation.name |h %> <% c.profile.registration.accommodation.option |h %>
+Accommodation:
+%		if c.profile.registration.accommodation:
+<% c.profile.registration.accommodation.name |h %> <% c.profile.registration.accommodation.option |h %>
+%		else:
+none selected
+%		#endif
 </p>
 
 <p>
@@ -181,11 +186,17 @@ No
 <fieldset>
 
 <p>
-Previous miniconfs: <% ', '.join(['20%s' % x for x in c.profile.registration.prevlca]) %>
+Previous miniconfs:
+%		if c.profile.registration.prevlca:
+ <% ', '.join(['20%s' % x for x in c.profile.registration.prevlca]) %>
+%		#endif
 </p>
 
 <p>
-Miniconfs likely to attend: <% ', '.join(c.profile.registration.miniconf) %>
+Miniconfs likely to attend:
+%		if c.profile.registration.miniconf:
+<% ', '.join(c.profile.registration.miniconf) %>
+%		#endif
 </p>
 
 </fieldset>
