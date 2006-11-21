@@ -195,24 +195,6 @@ class RegistrationController(BaseController, Create, Update):
 
     def _edit_postflush(self):
         # do post-rego-build-invoice magic
-        types = { 
-                    "Professional": [517.50, 690], 
-                    "Hobbyist": [300, 225], 
-                    "Concession": [99, 99] 
-                    }
-        dinner = { 
-                    "1": 60, 
-                    "2": 120, 
-                    "3": 180 
-                    }
-        accommodation = {
-                    "0": 0,
-                    "1": 49.50,
-                    "2": 55,
-                    "3": 60,
-                    "5": 35,
-                    "6": 58.50
-                    }
         pass
 
 
