@@ -5,6 +5,7 @@
 import warnings
 
 from formencode import Invalid
+from paste.deploy.converters import asbool
 
 from zookeepr.lib.base import *
 
@@ -163,9 +164,8 @@ class Update(RUDBase):
             result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
 
             if errors:
-                # FIXME: make this only print if debug enabled
-                #if asbool(request.environ['paste.config']['app_conf'].get('debug', 'false')):
-                warnings.warn("edit: form validation failed: %s" % errors)
+                if asbool(request.environ['paste.config']['global_conf'].get('debug')):
+                    warnings.warn("edit: form validation failed: %s" % errors)
             else:
                 # update the object with the posted data
                 for k in result[self.individual]:
