@@ -1,12 +1,12 @@
 import os
 
+from paste.deploy import appconfig
 from paste.script.copydir import copy_dir
 
 def setup_config(command, filename, section, vars):
     """
     Place any commands to setup zookeepr here.
     """
-    from paste.deploy import appconfig
     config = appconfig('config:' + filename)
 
 #     print "command", command
@@ -15,13 +15,15 @@ def setup_config(command, filename, section, vars):
 #     print "vars", vars
 #     print "config", config
 
-    import sqlalchemy
-    from zookeepr import model
-    sqlalchemy.default_metadata.connect(config['dburi'])#, echo=True)
-    sqlalchemy.default_metadata.create_all()
-#    print "created thingies"
-    
+    # Import late, otherwise if there's anything wrong in the model,
+    # the whole import will fail, and Paste will mistakenly think that
+    # websetup doesn't exist.
+    from zookeepr.model import create_all
+    print "Creating schema"
+    create_all(app_conf)
+    print "Schema creation done"
 
+    print "Populating data"
     try:
         model.proposal.tables.proposal_type.insert().execute(
             dict(name='Presentation'),
@@ -104,6 +106,7 @@ def setup_config(command, filename, section, vars):
             )
     except sqlalchemy.exceptions.SQLError:
         pass
+    print "population done"
 
     def mkdir(dirname):
         try:
