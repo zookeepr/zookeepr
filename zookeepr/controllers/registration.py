@@ -191,3 +191,7 @@ class RegistrationController(BaseController, Create, Update):
                 return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
+
+
+    def _edit_postflush(self):
+        print "postflush called"
