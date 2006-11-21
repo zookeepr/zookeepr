@@ -11,95 +11,14 @@ def setup_config(command, filename, section, vars):
     # Import late, otherwise if there's anything wrong in the model,
     # the whole import will fail, and Paste will mistakenly think that
     # websetup doesn't exist.
-    from zookeepr.model import create_all
+    from zookeepr.model import create_all, populate_data
     print "Creating schema"
     create_all(app_conf)
     print "Schema creation done"
 
     print "Populating data"
-    try:
-        model.proposal.tables.proposal_type.insert().execute(
-            dict(name='Presentation'),
-        )
-        model.proposal.tables.proposal_type.insert().execute(
-            dict(name='Miniconf'),
-            )
-        model.proposal.tables.proposal_type.insert().execute(
-            dict(name='Tutorial'),
-            )
-        model.schedule.tables.stream.insert().execute(
-            dict(name='Free Love and Open Sensual Stimulation'),
-            )
-        model.core.tables.role.insert().execute(
-            dict(name='reviewer'),
-            )
-    except sqlalchemy.exceptions.SQLError:
-        pass
-
-    try:
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=1,
-                 name="New College",
-                 beds=125,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="no breakfast",
-                 cost_per_night=49.50,
-                 accommodation_location_id=1,
-                 )
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="",
-                 cost_per_night=55.00,
-                 accommodation_location_id=1,
-                 )
-            )
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=2,
-                 name="Shalom",
-                 beds=90,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="",
-                 cost_per_night=60.00,
-                 accommodation_location_id=2,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="with ensuite",
-                 cost_per_night=80.00,
-                 accommodation_location_id=2,
-                 )
-            )
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=3,
-                 name="International house",
-                 beds=50,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="no breakfast",
-                 cost_per_night=35.00,
-                 accommodation_location_id=3,
-                 )
-            )
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=4,
-                 name="Warrane",
-                 beds=50,
-                 )
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="male only",
-                 cost_per_night=58.50,
-                 accommodation_location_id=4,
-                 )
-            )
-    except sqlalchemy.exceptions.SQLError:
-        pass
-    print "population done"
+    populate_data()
+    print "Data population done"
 
     def mkdir(dirname):
         try:
