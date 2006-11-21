@@ -68,8 +68,8 @@ def setUp():
     if os.path.exists(surge_log):
         os.unlink(surge_log)
 
-    from zookeepr.model import init_model
-    init_model({'dburi': 'sqlite:///test.db',
+    from zookeepr.model import create_all
+    create_all({'dburi': 'sqlite:///test.db',
                 'echo_queries': 'true'})
 
 __all__ = ['TestBase', 'monkeypatch']
