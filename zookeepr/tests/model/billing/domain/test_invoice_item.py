@@ -5,8 +5,10 @@ from zookeepr.tests.model import *
 class TestInvoiceItemDomainModel(CRUDModelTest):
     domain = model.billing.InvoiceItem
     samples = [dict(description='desc1',
+                    qty=1,
                     cost=1),
                dict(description='desc2',
+                    qty=2,
                     cost=2),
                ]
 
@@ -14,7 +16,7 @@ class TestInvoiceItemDomainModel(CRUDModelTest):
         super(TestInvoiceItemDomainModel, self).setUp()
         self.person = model.Person(email_address='testguy@example.org')
         self.dbsession.save(self.person)
-        self.invoice = model.Invoice(issue_date=datetime.date(2006,11,21))
+        self.invoice = model.Invoice(issue_date=datetime.datetime(2006,11,21))
         self.dbsession.save(self.invoice)
         self.invoice.person = self.person
         self.dbsession.flush()

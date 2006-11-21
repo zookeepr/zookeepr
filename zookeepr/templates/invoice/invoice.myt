@@ -23,9 +23,9 @@ in Sydney, Australia.
 Description                                             Cost
 
 % for item in invoice.items:	
-<% "%-50s\t%s" % (item.description, h.number_to_currency(item.cost)) %>
+<% "%-40s\t%s\t%s" % (item.description, item.qty, h.number_to_currency(item.qty * item.cost)) %>
 
-%	total += item.cost
+%	total += (item.qty * item.cost)
 % #endif
 ----------------------------------------------------------------
                                                  Total: <% h.number_to_currency(total) %>
