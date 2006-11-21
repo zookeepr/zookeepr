@@ -2,10 +2,6 @@ import new
 import os
 from unittest import TestCase
 
-from sqlalchemy import create_engine, global_connect, default_metadata
-
-from zookeepr import model
-
 class TestBase(TestCase):
     def assertRaisesAny(self, callable_obj, *args, **kwargs):
         """Assert that the ``callable_obj`` raises any exception."""
@@ -72,8 +68,8 @@ def setUp():
     if os.path.exists(surge_log):
         os.unlink(surge_log)
 
-    eng = create_engine('sqlite:///test.db', echo=True)
-    global_connect(eng);
-    default_metadata.create_all()
+    from zookeepr.model import init_model
+    init_model({'dburi': 'sqlite:///test.db',
+                'echo_queries': 'true'})
 
 __all__ = ['TestBase', 'monkeypatch']

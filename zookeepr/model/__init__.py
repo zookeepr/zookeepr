@@ -18,6 +18,13 @@ def init_model(app_conf):
         metadata = BoundMetaData(app_conf['dburi'])
         metadata.engine.echo = asbool(app_conf.get('echo_queries', 'false'))
 
+        import core.mapper
+        import proposal.mapper
+        import schedule.mapper
+        import registration.mapper
+        import openday.mapper
+        import billing.mapper
+
 def create_all(app_conf):
     """This is called from ``websetup`` to create everything."""
     init_model(app_conf)

@@ -1,6 +1,8 @@
 from sqlalchemy import *
 
-invoice = Table('invoice',
+from zookeepr.model import metadata
+
+invoice = Table('invoice', metadata,
                 Column('id', Integer, primary_key=True),
 
                 Column('person_id', Integer,
@@ -21,7 +23,7 @@ invoice = Table('invoice',
 
                 )
 
-invoice_item = Table('invoice_item',
+invoice_item = Table('invoice_item', metadata,
                      Column('id', Integer, primary_key=True),
 
                      Column('invoice_id', Integer,
