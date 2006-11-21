@@ -1,6 +1,6 @@
 import warnings
 
-from sqlalchemy import create_session, default_metadata, select, func
+from sqlalchemy import create_session, select, func
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -19,10 +19,6 @@ class ModelTest(TestBase):
 
         super(ModelTest, self).tearDown()
 
-    def echo_sql(self, value):
-        """Tell the underlying engine to echo SQL, for debugging tests."""
-        default_metadata.engine.echo = value
-        
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
         results = self.dbsession.query(self.domain).select()
