@@ -6,8 +6,8 @@ total = 0
                              ABN 56 987 117 479
 #                             NZ GST #90-792-369
 
-Issue Date: <% invoice.issue_date.strftime("%Y-%m-%d") %>
 Invoice Number: <% invoice.id %>
+    Issue Date: <% invoice.issue_date.strftime("%Y-%m-%d") %>
 
 
 Attention: <% invoice.person.fullname %>
