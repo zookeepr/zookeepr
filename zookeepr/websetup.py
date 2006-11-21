@@ -4,16 +4,9 @@ from paste.deploy import appconfig
 from paste.script.copydir import copy_dir
 
 def setup_config(command, filename, section, vars):
+    """Set up zookeepr database schema, filesystem requirements.
     """
-    Place any commands to setup zookeepr here.
-    """
-    config = appconfig('config:' + filename)
-
-#     print "command", command
-#     print "filename", filename
-#     print "section", section
-#     print "vars", vars
-#     print "config", config
+    app_conf = appconfig('config:' + filename)
 
     # Import late, otherwise if there's anything wrong in the model,
     # the whole import will fail, and Paste will mistakenly think that
@@ -120,17 +113,17 @@ def setup_config(command, filename, section, vars):
                 raise e
 
     try:
-        os.symlink(os.path.join(config['moin_data'], 'attachments'), os.path.join(os.path.dirname(__file__), 'public', 'att-data'))
+        os.symlink(os.path.join(app_conf['moin_data'], 'attachments'), os.path.join(os.path.dirname(__file__), 'public', 'att-data'))
     except OSError, e:
         if e.errno == 17:
             print "skipping, file exists"
         else:
             raise e
     try:
-        mkdir(os.path.join(config['moin_data'], 'pages'))
+        mkdir(os.path.join(app_conf['moin_data'], 'pages'))
         # copy plugins dir from our egg to the destination
-        copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(config['moin_data'], 'plugin'), {}, 1, False)
-        copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'underlay'), os.path.join(config['moin_underlay']), {}, 1, False)
+        copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(app_conf['moin_data'], 'plugin'), {}, 1, False)
+        copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'underlay'), os.path.join(app_conf['moin_underlay']), {}, 1, False)
     except OSError, e:
         # skip file-exists
         if e.errno == 17:
@@ -138,14 +131,14 @@ def setup_config(command, filename, section, vars):
         else:
             raise e
     try:
-        mkdir(config['dynamic_html_dir'])
+        mkdir(app_conf['dynamic_html_dir'])
     except OSError, e:
         if e.errno == 17:
             print "dynamic html dir exists"
         else:
             raise e
-    f = open(os.path.join(config['dynamic_html_dir'], 'flickr.html'), "ab")
+    f = open(os.path.join(app_conf['dynamic_html_dir'], 'flickr.html'), "ab")
     f.close()
 
-    p = open(os.path.join(config['dynamic_html_dir'], 'planet.html'), "ab")
+    p = open(os.path.join(app_conf['dynamic_html_dir'], 'planet.html'), "ab")
     p.close()
