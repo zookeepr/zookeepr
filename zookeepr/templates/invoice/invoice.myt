@@ -20,7 +20,7 @@ linux.conf.au 2007, being held at the University of New South Wales
 in Sydney, Australia.
 
 
-Description                                             Cost
+Description                                     Qty     Cost
 
 % for item in invoice.items:	
 <% "%-40s\t%s\t%s" % (item.description, item.qty, h.number_to_currency(item.qty * item.cost)) %>
