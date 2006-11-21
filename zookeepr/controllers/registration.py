@@ -149,11 +149,10 @@ class RegistrationController(BaseController, Create, Update):
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
 
-
-    def new(self):
         as = self.dbsession.query(model.Accommodation).select()
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
+    def new(self):
         errors = {}
         defaults = dict(request.POST)
 
@@ -192,34 +191,3 @@ class RegistrationController(BaseController, Create, Update):
                 return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
-
-
-    def edit(self, id):
-        as = self.dbsession.query(model.Accommodation).select()
-        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
-
-        errors = {}
-        defaults = dict(request.POST)
-
-        c.registration = self.obj
-        
-        if defaults:
-            results, errors = self.schemas['edit'].validate(defaults, self.dbsession)
-            
-            if errors: #FIXME make this only print if debug enabled
-                if request.environ['paste.config']['app_conf'].get('debug'):
-                    warnings.warn("form validation failed: %s" % errors)
-            else:
-
-                for (k, v) in results['registration'].items():
-                    setattr(c.registration, k, v)
-                self.dbsession.save(c.registration)
-
-                self.dbsession.flush()
-
-                # do rego-invoice magic
-
-                default_redirect = dict(action='view', id=self.identifier(self.obj))
-                self.redirect_to('edit', default_redirect)
-
-        return render_response("registration/edit.myt", defaults=defaults, errors=errors)
