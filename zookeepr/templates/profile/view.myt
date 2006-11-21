@@ -1,8 +1,6 @@
 <h1><% c.profile.fullname |h %></h1>
 
-% if c.profile.registration:
-<% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
-% #endif
+<& actions &>
 
 # Show personal details
 % if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id:
@@ -140,7 +138,11 @@ Kids coming: aged 0-3: <% c.profile.registration.kids_0_3 |h %>; 4-6: <% c.profi
 <p>
 Accommodation:
 %		if c.profile.registration.accommodation:
-<% c.profile.registration.accommodation.name |h %> <% c.profile.registration.accommodation.option |h %>
+<% c.profile.registration.accommodation.name |h %>
+%			if c.profile.registration.accommodation.option:
+(<% c.profile.registration.accommodation.option |h %>)
+%			#endif
+<% h.number_to_currency(c.profile.registration.accommodation.cost_per_night) %> per night
 %		else:
 none selected
 %		#endif
@@ -205,6 +207,8 @@ Miniconfs likely to attend:
 
 </fieldset>
 
+<& actions &>
+
 %	else:
 <p>
 You haven't yet registered for the conference.  <% h.link_to('Register now!', url=h.url('/Registration')) %>
@@ -245,4 +249,10 @@ if 'This page does not exist yet.' in content:
 
 <%method title>
 profile - <& PARENT:title &>
+</%method>
+
+<%method actions>
+% if c.profile.registration:
+<% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
+% #endif
 </%method>

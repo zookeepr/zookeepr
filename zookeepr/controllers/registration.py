@@ -45,6 +45,9 @@ class AccommodationValidator(validators.FancyValidator):
             return None
         return state.query(model.Accommodation).get(value)
 
+    def _from_python(self, value):
+        return value.id
+
 
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
@@ -191,28 +194,32 @@ class RegistrationController(BaseController, Create, Update):
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
 
-#     def edit(self):
-#         as = self.dbsession.query(model.Accommodation).select()
-#         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
+    def edit(self, id):
+        as = self.dbsession.query(model.Accommodation).select()
+        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
-#         errors = {}
-#         defaults = dict(request.POST)
+        errors = {}
+        defaults = dict(request.POST)
 
-
-#         c.registration = self.obj
+        c.registration = self.obj
         
-#         if defaults:
-#             if errors: #FIXME make this only print if debug enabled
-#                 if request.environ['paste.config']['app_conf'].get('debug'):
-#                     warnings.warn("form validation failed: %s" % errors)
-#             else:
+        if defaults:
+            results, errors = self.schemas['edit'].validate(defaults, self.dbsession)
+            
+            if errors: #FIXME make this only print if debug enabled
+                if request.environ['paste.config']['app_conf'].get('debug'):
+                    warnings.warn("form validation failed: %s" % errors)
+            else:
 
-#                 for (k, v) in results['registration'].items():
-#                     setattr(c.registration, k, v)
-#                 self.dbsession.save(c.registration)
+                for (k, v) in results['registration'].items():
+                    setattr(c.registration, k, v)
+                self.dbsession.save(c.registration)
 
-#                 self.dbsession.flush()
+                self.dbsession.flush()
 
-#                 # do rego-invoice magic
+                # do rego-invoice magic
 
-#         return render_response("registration/edit.myt", defaults=defaults, errors=errors)
+                default_redirect = dict(action='view', id=self.identifier(self.obj))
+                self.redirect_to('edit', default_redirect)
+
+        return render_response("registration/edit.myt", defaults=defaults, errors=errors)
