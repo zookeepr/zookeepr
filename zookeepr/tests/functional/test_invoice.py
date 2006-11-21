@@ -11,6 +11,9 @@ class TestInvoiceController(SignedInCRUDControllerTest):
         self.invoice.items.append(ii1)
         self.person.invoices.append(self.invoice)
         self.dbsession.save(ii1)
+        ii2 = model.InvoiceItem(description="awesomeness", cost=2.50)
+        self.invoice.items.append(ii2)
+        self.dbsession.save(ii2)
         self.dbsession.save(self.invoice)
         self.dbsession.flush()
         self.iid = self.invoice.id
@@ -25,4 +28,11 @@ class TestInvoiceController(SignedInCRUDControllerTest):
     def test_invoice_view(self):
         resp = self.app.get('/invoice/%d' % self.iid)
         print resp
+
+        resp.mustcontain("LCA 2007")
+        resp.mustcontain("Linux Australia")
+        resp.mustcontain("ABN")
+        resp.mustcontain("line 1")
+        resp.mustcontain("$1.00")
+        resp.mustcontain("Total: $3.50")
         self.fail("not really")
