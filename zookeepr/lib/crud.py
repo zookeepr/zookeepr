@@ -174,6 +174,9 @@ class Update(RUDBase):
                 self.dbsession.save(self.obj)
                 self.dbsession.flush()
 
+                # call postflush hook
+                self._edit_postflush()
+
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('edit', default_redirect)
 
@@ -181,6 +184,15 @@ class Update(RUDBase):
         setattr(c, self.individual, self.obj)
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
+
+    def _edit_postflush(self):
+        """Overridable method for hooking after a flush of the dbsession.
+
+        CRUD controllers can replace this method with one that performs
+        useful work after the dbsession has been flushed with data from a
+        successful form post.
+        """
+        pass
         
 
 class Delete(RUDBase):
