@@ -203,13 +203,12 @@ class RegistrationController(BaseController, Create, Update):
 
 
     def _build_invoice(self):
-        person = c.registration.person
         r = c.registration
 
         invoice = model.Invoice(issue_date=datetime.datetime.now())
         self.dbsession.save(invoice)
 
-        person.invoices.append(invoice)
+        r.person.invoices.append(invoice)
 
         # pretty much all of this is a dirty hack
         iit = model.InvoiceItem()
@@ -218,7 +217,7 @@ class RegistrationController(BaseController, Create, Update):
             iit.description = 'Professional registration'
             iit.qty = 1
             iit.cost = 690.00
-            iid = model.InvoiceItem(description='Penguin Dinner ticket (included in registraion)',
+            iid = model.InvoiceItem(description='Penguin Dinner ticket (included in registration)',
                                     qty=1,
                                     cost=0.00)
             self.dbsession.save(iid)
@@ -236,7 +235,7 @@ class RegistrationController(BaseController, Create, Update):
         invoice.items.append(iit)
 
         if r.dinner > 0:
-            iidt = model.InvoiceItem(description = 'Penguin dinner ticket',
+            iidt = model.InvoiceItem(description = 'Additional Penguin dinner tickets',
                                      qty = r.dinner,
                                      cost = 60.00)
             self.dbsession.save(iidt)
