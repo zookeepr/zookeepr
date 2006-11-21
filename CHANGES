@@ -9,6 +9,8 @@ Changes for Zookeepr
  * Refactor data model initialisation to be more awesome and not lose
    engine references.  Update test infrastructure to use same method so
    unittests don't hide production bugs.  (Jamie Wilkinson)
+ * Add facility for editing registration details.  (Jamie Wilkinson)
+ * Refactor CRUD methods to add post-DB-session-flush hooks.  (Jamie Wilkinson)
  
 0.2.8
 -----
