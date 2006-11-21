@@ -194,4 +194,5 @@ class RegistrationController(BaseController, Create, Update):
 
 
     def _edit_postflush(self):
-        print "postflush called"
+        # do post-rego-build-invoice magic
+        pass

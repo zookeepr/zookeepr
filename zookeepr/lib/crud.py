@@ -51,31 +51,45 @@ class Create(CRUDBase):
         POST requests will create the object, if the schemas validate.
         """
 
-        model_name = self.individual
         errors = {}
         defaults = dict(request.POST)
 
-        print "d", defaults
+        if defaults:
+            result, errors = self.schemas['new'].validate(defaults, self.dbsession)
 
-        if request.method == 'POST' and defaults:
-            result, errors = self.schemas['new'].validate(defaults)
-
-            print "r,e", result, errors
-            
-            if not errors:
+            if errors:
+                if asbool(request.environ['paste.config']['global_conf'].get('debug')):
+                    warnings.warn("new: form validation failed: %s" % errors)
+            else:
                 self.obj = self.model()
+
                 # make new_object accessible to the template
-                setattr(c, model_name, self.obj)
+                setattr(c, self.individual, self.obj)
+
                 # update the new object with the form data
-                print result
-                for k in result[model_name]:
+                for k in result[self.individual]:
                     setattr(self.obj, k, result[model_name][k])
+
+                self.dbsession.save(self.obj)
+                self.dbsession.flush()
+
+                # call postflush hook
+                self._new_postflush()
 
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('new', default_redirect)
 
-        return render_response('%s/new.myt' % model_name,
+        return render_response('%s/new.myt' % self.individual,
                                defaults=defaults, errors=errors)
+
+    def _new_postflush(self):
+        """Overridable method for hooking after a flush of the dbsession.
+
+        CRUD controllers can replace this method with one that performs
+        useful work after the dbsession has been flushed with data from a
+        successful form post.
+        """
+        pass
 
 
 class List(CRUDBase):
