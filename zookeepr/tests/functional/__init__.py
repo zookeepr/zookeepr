@@ -1,13 +1,13 @@
 import md5
 import os
+import re
 import warnings
 
 from formencode import variabledecode
 from paste.deploy import loadapp
 from paste.fixture import TestApp
 from routes import url_for
-import sqlalchemy.mods.threadlocal
-from sqlalchemy import objectstore, Query
+from sqlalchemy import create_session
 
 from zookeepr import model
 from zookeepr.config.routing import make_map
@@ -16,8 +16,37 @@ from zookeepr.tests import TestBase, monkeypatch
 here_dir = os.path.dirname(__file__)
 conf_dir = os.path.dirname(os.path.dirname(os.path.dirname(here_dir)))
 
-class ControllerTestGenerator(type):
-    """Monkeypatching metaclass for controller test generation.
+class ControllerTest(TestBase):
+    """Base class for controller tests"""
+    def __init__(self, *args):
+        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
+        self.app = TestApp(wsgiapp)
+        super(ControllerTest, self).__init__(*args)
+
+    def setUp(self):
+        # add a routing map for testing routes within the controller tests
+        self.map = make_map()
+
+        # create a db session
+        self.dbsession = create_session()
+
+    def assertEmptyModel(self, model=None):
+        """Check that there are no objects left in the data store.
+       
+        We leak knowledge of inheriting classes here, by testing to see if
+        they've set the model attribute.
+        """
+        if model is None:
+            if hasattr(self, 'model'):
+                model = self.model
+                
+        if model:
+            contents = self.dbsession.query(model).select()
+            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
+
+
+class CRUDControllerTestGenerator(type):
+    """Monkeypatching metaclass for cruddy controller test generation.
 
     This metaclass constructs test methods at class definition time
     based on the class attributes in the child; this way we can define
@@ -26,6 +55,10 @@ class ControllerTestGenerator(type):
     """
     def __init__(mcs, name, bases, classdict):
         type.__init__(mcs, name, bases, classdict)
+
+        # Don't patch if we're the base class
+        if not name.startswith('Test'):
+            return
 
         # patch if we have a model defined
         if 'model' not in classdict:
@@ -39,7 +72,7 @@ class ControllerTestGenerator(type):
                 if 'crud' not in classdict or t in classdict['crud']:
                     monkeypatch(mcs, 'test_' + t, t)
 
-class ControllerTest(TestBase):
+class CRUDControllerTest(ControllerTest):
     """Base class for testing CRUD on controller objects.
 
     Derived classes should set the following attributes:
@@ -63,7 +96,7 @@ class ControllerTest(TestBase):
 
     An example using this base class:
 
-    class TestSomeController(ControllerTest):
+    class TestSomeController(CRUDControllerTest):
         name = 'Person'
         model = model.core.Person
         url = '/person'
@@ -76,33 +109,18 @@ class ControllerTest(TestBase):
         no_test = ['password_confirm']
         mangles = dict(password=lambda p: md5.new(p).hexdigest())
     """
-    __metaclass__ = ControllerTestGenerator
+    __metaclass__ = CRUDControllerTestGenerator
     
-    def __init__(self, *args):
-        wsgiapp = loadapp('config:test.ini', relative_to=conf_dir)
-        self.app = TestApp(wsgiapp)
-        TestBase.__init__(self, *args)
-
     def setUp(self):
-        # add a routing map for testing routes within the controller tests
-        self.map = make_map()
+        super(CRUDControllerTest, self).setUp()
 
-        # check that the objectstore is currently empty
+        # check that the self.dbsession is currently empty
         self.assertEmptyModel()
+        self.assertEmptyModel(model.Proposal)
 
     def tearDown(self):
         self.assertEmptyModel(model.Proposal)
         self.assertEmptyModel()
-
-    def assertEmptyModel(self, model=None):
-        """Check that there are no models"""
-        if model is None:
-            if hasattr(self, 'model'):
-                model = self.model
-                
-        if model:
-            contents = Query(model).select()
-            self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
     def form_params(self, params):
         """Flatten the params dictionary for form posting.
@@ -131,11 +149,12 @@ class ControllerTest(TestBase):
         #"""Test create action on controller"""
 
         url = url_for(controller=self.url, action='new')
-        print "url", url
+        print "url retrieved is:", url
         # get the form
         response = self.app.get(url)
         #print response
         form = response.form
+        print "form fields are:", form.fields
 
         # fill it out
         params = self.form_params(self.samples[0])
@@ -145,27 +164,36 @@ class ControllerTest(TestBase):
         print "about to submit with these fields:", form.submit_fields()
 
         # submit
-        form.submit()
+        resp = form.submit()
+        #print "response:", resp
+        error_match = re.search(r'<!-- for:.*<span class="error-message">[^<]*</span>', str(resp), re.DOTALL)
+        if error_match is not None:
+            self.fail("Errors in message: %s" % error_match.group(0))
 
         # now check that the data is in the database
-        os = Query(self.model).select()
+        os = self.dbsession.query(self.model).select()
         print 'objects of type %s in the db: %r' % (self.model.__name__,  os)
         self.failIfEqual([], os, "data object %r not in database" % (self.model,))
         self.assertEqual(1, len(os), "more than one object in database (currently %r)" % (os,))
-
 
         # dodgy hack
         params = self.samples[0]
         if isinstance(params, dict) and hasattr(self, 'param_name'):
             params = params[self.param_name]
             print "params", params
+
         for key in params.keys():
             self.check_attribute(os[0], key, params[key])
 
-        print os
-        objectstore.delete(os[0])
-        objectstore.flush()
-        print "create:", objectstore.new
+        print "os before delete:", os
+        self.dbsession.delete(os[0])
+        self.dbsession.flush()
+        print "os after delete:", self.dbsession.query(self.model).select()
+        print "new objects after delete flush in create:", self.dbsession.new
+        self.failUnlessEqual([], list(self.dbsession.new), "uncommitted objects: %r" % (self.dbsession.new,))
+        print "deleted:", self.dbsession.deleted
+        print "dirty:", self.dbsession.dirty
+        print "new:", self.dbsession.new
 
     def check_attribute(self, obj, attr, expected):
         """check that the attribute has the correct value.
@@ -206,11 +234,11 @@ class ControllerTest(TestBase):
         # create an instance of the model
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
         oid = o.id
         
-        objectstore.clear()
+        self.dbsession.clear()
 
         # get the form
         url = url_for(controller=self.url, action='edit', id=oid)
@@ -229,23 +257,23 @@ class ControllerTest(TestBase):
         form.submit()
 
         # test
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
         for k in self.samples[1].keys():
             self.check_attribute(o, k, self.samples[1][k])
 
-        objectstore.delete(o)
-        objectstore.flush()
+        self.dbsession.delete(o)
+        self.dbsession.flush()
 
     def delete(self):
         #"""Test delete action on controller"""
         # create something
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
         oid = o.id
 
-        objectstore.clear()
+        self.dbsession.clear()
 
         ## delete it
         url = url_for(controller=self.url, action='delete', id=oid)
@@ -258,7 +286,7 @@ class ControllerTest(TestBase):
         form.submit()
 
         # check db
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
         print o
         self.assertEqual(None, o)
 
@@ -268,23 +296,23 @@ class ControllerTest(TestBase):
         # create some data
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
         oid = o.id
-        objectstore.clear()
+        self.dbsession.clear()
 
         url = url_for(controller=self.url, action='edit', id=oid)
 
         response = self.app.get(url, params=self.form_params(self.samples[1]))
 
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
 
         for key in self.samples[1].keys():
             if not hasattr(self, 'no_test') or key not in self.no_test:
                 self.failIfEqual(self.samples[1][key], getattr(o, key), "key '%s' was unchanged after edit (%r == %r)" % (key, self.samples[1][key], getattr(o, key)))
 
-        objectstore.delete(o)
-        objectstore.flush()
+        self.dbsession.delete(o)
+        self.dbsession.flush()
 
 
     def invalid_get_on_delete(self):
@@ -293,22 +321,22 @@ class ControllerTest(TestBase):
         # create some data
         o = self.model(**self.make_model_data())
         o = self.additional(o)
-        objectstore.save(o)
-        objectstore.flush()
+        self.dbsession.save(o)
+        self.dbsession.flush()
 
         oid = o.id
-        objectstore.clear()
+        self.dbsession.clear()
 
         url = url_for(controller=self.url, action='delete', id=oid)
         res = self.app.get(url)
         
         # check
-        o = objectstore.get(self.model, oid)
+        o = self.dbsession.get(self.model, oid)
         self.failIfEqual(None, o)
         
         # clean up
-        objectstore.delete(o)
-        objectstore.flush()
+        self.dbsession.delete(o)
+        self.dbsession.flush()
 
     def invalid_get_on_new(self):
         #"""Test that GET requests on new action don't modify"""
@@ -329,18 +357,19 @@ class ControllerTest(TestBase):
         res = self.app.post(url, status=404)
 
 
-class SignedInControllerTest(ControllerTest):
+class SignedInCRUDControllerTest(CRUDControllerTest):
     """Test base class that signs us in first.
     """
     def setUp(self):
-        super(SignedInControllerTest, self).setUp()
+        super(SignedInCRUDControllerTest, self).setUp()
+        self.assertEmptyModel(model.Person)
         self.person = model.Person(email_address='testguy@example.org',
                                    password='test',
                                    fullname='Testguy McTest'
                                    )
         self.person.activated = True
-        objectstore.save(self.person)
-        objectstore.flush()
+        self.dbsession.save(self.person)
+        self.dbsession.flush()
         self.pid = self.person.id
         resp = self.app.get(url_for(controller='account',
                                     action='signin'))
@@ -352,12 +381,14 @@ class SignedInControllerTest(ControllerTest):
         self.assertEqual(self.pid, resp.session['signed_in_person_id'])
 
     def tearDown(self):
-        objectstore.delete(Query(model.Person).get(self.pid))
-        objectstore.flush()
-        super(SignedInControllerTest, self).tearDown()
+        self.dbsession.clear()
+        
+        self.dbsession.delete(self.dbsession.query(model.Person).get(self.pid))
+        self.dbsession.flush()
+        super(SignedInCRUDControllerTest, self).tearDown()
 
 
-__all__ = ['ControllerTest', 'SignedInControllerTest',
-    'objectstore', 'Query',
+__all__ = ['ControllerTest',
+    'CRUDControllerTest', 'SignedInCRUDControllerTest',
     'model', 'url_for']
 

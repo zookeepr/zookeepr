@@ -1,14 +1,15 @@
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
-accommodation_location = Table('accommodation_location',
+from zookeepr.model import metadata
+
+accommodation_location = Table('accommodation_location', metadata, 
                                Column('id', Integer, primary_key=True),
 
                                Column('name', String, nullable=False, unique=True),
                                Column('beds', Integer, nullable=False),
                                )
 
-accommodation_option = Table('accommodation_option',
+accommodation_option = Table('accommodation_option', metadata,
                              Column('id', Integer, primary_key=True),
 
                              Column('accommodation_location_id', Integer,
@@ -19,7 +20,7 @@ accommodation_option = Table('accommodation_option',
                              Column('cost_per_night', Float, nullable=False),
                              )
 
-registration = Table('registration',
+registration = Table('registration', metadata,
                      Column('id', Integer, primary_key=True),
 
                      Column('person_id', Integer, ForeignKey('person.id'),

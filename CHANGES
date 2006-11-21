@@ -1,6 +1,34 @@
 Changes for Zookeepr
 ====================
 
+0.2.9
+-----
+
+ * Remove threadlocal SQLAlchemy mod from the data model, again using
+   a per-request session.  (Jamie Wilkinson)
+ * Refactor data model initialisation to be more awesome and not lose
+   engine references.  Update test infrastructure to use same method so
+   unittests don't hide production bugs.  (Jamie Wilkinson)
+ * Add facility for editing registration details.  (Jamie Wilkinson)
+ * Refactor CRUD methods to add post-DB-session-flush hooks.  (Jamie Wilkinson)
+ * Add invoice controller and view method.  (Jamie Wilkinson)
+ 
+0.2.8
+-----
+
+ * Don't blow up on NXDOMAIN responses or timeouts during the email domain
+   validator.  (Jamie Wilkinson)
+ * Lock down talk controller to only accepted talks.  (Jamie Wilkinson)
+ * Only show accepted talks on profile pages.  (Jamie Wilkinson)
+
+0.2.7
+-----
+
+ * Refactor ControllerTest base classes to differentiate semiautomagic tests
+   for CRUD controllers versus non-CRUD controllers.  (Jamie Wilkinson)
+ * Fix really really dumb bug in registration email generation.
+   (Jamie Wilkinson)
+
 0.2.6
 -----
 

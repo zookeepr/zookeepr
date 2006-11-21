@@ -8,9 +8,13 @@ class TestTalkController(ControllerTest):
                            abstract='bar',
                            )
         t.type = pt
-        objectstore.save(pt)
-        objectstore.save(t)
-        objectstore.flush()
+        t.accepted = True
+        self.dbsession.save(pt)
+        self.dbsession.save(t)
+        self.dbsession.flush()
+
+        tid = t.id
+        ptid = pt.id
         
         resp = self.app.get('/talk/%d' % t.id)
 
@@ -18,7 +22,28 @@ class TestTalkController(ControllerTest):
         resp.mustcontain("snuh")
 
         # clean up
-        objectstore.delete(t)
-        objectstore.delete(pt)
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(tid))
+        self.dbsession.delete(self.dbsession.query(model.ProposalType).get(ptid))
+        self.dbsession.flush()
+
+    def test_talk_view_not_accepted(self):
+        # set up
+        pt = model.ProposalType(name='snuh')
+        t = model.Proposal(title='foo',
+                           abstract='bar',
+                           )
+        t.type = pt
+        self.dbsession.save(pt)
+        self.dbsession.save(t)
+        self.dbsession.flush()
+
+        tid = t.id
+        ptid = pt.id
+        
+        resp = self.app.get('/talk/%d' % t.id, status=404)
+
+        # clean up
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(tid))
+        self.dbsession.delete(self.dbsession.query(model.ProposalType).get(ptid))
+        self.dbsession.flush()
 

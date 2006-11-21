@@ -1,7 +1,8 @@
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
-openday = Table('openday',
+from zookeepr.model import metadata
+
+openday = Table('openday', metadata,
                      Column('id', Integer, primary_key=True),
 
                      Column('fullname', String),

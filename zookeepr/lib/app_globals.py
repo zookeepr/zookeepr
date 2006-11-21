@@ -1,7 +1,6 @@
 import os
 
-from zookeepr import model
-from sqlalchemy import create_engine, default_metadata
+from zookeepr.model import init_model
 
 class Globals(object):
 
@@ -28,11 +27,7 @@ class Globals(object):
             your global variables.
             
         """
-        default_metadata.connect(app_conf['dburi'])
-        default_metadata.create_all()
-        # This is a dirty hack.  Save the engine in globals so we can retrieve it
-        # in the request threads and reattach it to the default_metadata context.
-        self.engine = default_metadata.context._engine
+        init_model(app_conf)
 
     def __del__(self):
         """
