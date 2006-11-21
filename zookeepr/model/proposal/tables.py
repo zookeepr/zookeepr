@@ -1,8 +1,9 @@
-import sqlalchemy.mods.threadlocal
 from sqlalchemy import *
 
+from zookeepr.model import metadata
+
 # types of proposals: typically 'paper', 'miniconf', etc
-proposal_type = Table('proposal_type',
+proposal_type = Table('proposal_type', metadata,
                         Column('id', Integer, primary_key=True),
                         Column('name', String(40),
                                unique=True,
@@ -10,7 +11,7 @@ proposal_type = Table('proposal_type',
                         )
 
 # proposals to the conference
-proposal = Table('proposal', 
+proposal = Table('proposal', metadata,
                    Column('id', Integer, primary_key=True),
 
                    # title of proposal
@@ -31,6 +32,9 @@ proposal = Table('proposal',
                    # do they need assistance?
                    Column('assistance', Boolean),
 
+                 # Is it accepted?
+                 Column('accepted', Boolean),
+
                  Column('creation_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp()),
@@ -41,7 +45,7 @@ proposal = Table('proposal',
                    )
 
 # for doing n-n mappings of people and proposals
-person_proposal_map = Table('person_proposal_map',
+person_proposal_map = Table('person_proposal_map', metadata,
     Column('person_id', Integer, ForeignKey('person.id'),
         nullable=False),
     Column('proposal_id', Integer, ForeignKey('proposal.id'),
@@ -49,7 +53,7 @@ person_proposal_map = Table('person_proposal_map',
     )
 
 # for storing attachments
-attachment = Table('attachment',
+attachment = Table('attachment', metadata,
                    Column('id', Integer, primary_key=True),
 
                    Column('proposal_id', Integer, ForeignKey('proposal.id')),
@@ -75,21 +79,18 @@ attachment = Table('attachment',
                    )
 
 # reviews of proposals
-review = Table('review',
+review = Table('review', metadata,
                Column('id', Integer, primary_key=True),
 
                Column('proposal_id', Integer,
                       ForeignKey('proposal.id'),
                       nullable=False,
-                      # reviewer and proposal must be unique
-                      unique='ux_review_proposal_reviewer',
                       ),
                Column('reviewer_id', Integer,
                       ForeignKey('person.id'),
                       nullable=False,
-                      # reviewer and proposal must be unique
-                      unique='ux_review_proposal_reviewer',
                       ),
+               UniqueConstraint('proposal_id', 'reviewer_id', name='ux_review_proposal_reviewer'),
 
                Column('familiarity', Integer),
                Column('technical', Integer),

@@ -5,3 +5,9 @@ else:
 	logo = '/lca2007-header.png'
 </%init>
 <h1><% h.link_to(h.image_tag(logo, alt="linux.conf.au 2007"), url=h.url('home')) %></h1>
+<h2>
+January 15th - 20th, 2007
+<br />
+University of New South Wales, Australia
+</h2>
+

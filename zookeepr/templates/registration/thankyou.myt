@@ -10,7 +10,7 @@ Thank you for your registration!
 An email has been sent to you at <em><% c.person.email_address | h %></em> with details of your registration.  To complete the registration process (allowing you to log in again later to modify your details and pay your invoice) please follow the instructions in that message.
 </p>
 
-<p>
+<p class="warning">
 <strong>Please note!</strong>
 You have not yet been invoiced.  An email will be sent when the payment facility is available.
 </p>

@@ -1,0 +1,42 @@
+= fun sql for acommodation =
+
+How many beds are left?
+
+this query gets the number of people currently registered for a
+particular accommodation *option*
+
+select accommodation_option.id, count(registration.id) as taken from
+accommodation_option left outer join registration on
+accommodation_option.id = registration.accommodation_option_id group
+by accommodation_option.id;
+
+
+this query gets the number of people currently registered for a
+particular accommodation *location*
+
+select accommodation_location.id, count(registration.id) as taken from
+accommodation_location left outer join accommodation_option on
+accommodation_location.id =
+accommodation_option.accommodation_location_id left outer join
+registration on accommodation_option.id =
+registration.accommodation_option_id group by
+accommodation_location.id;
+
+
+this query joins the previous against the join of options and
+locations, to get the number of rooms taken for all locations, mapped
+to options.
+
+select accommodation_option.id, accommodation_option.name,
+accommodation_option.cost_per_night, accommodation_location.name,
+accommodation_location.beds, regos.taken from accommodation_option,
+accommodation_location, (select accommodation_location.id as loc_id,
+count(registration.id) as taken from accommodation_location left outer
+join accommodation_option on accommodation_location.id =
+accommodation_option.accommodation_location_id left outer join
+registration on accommodation_option.id =
+registration.accommodation_option_id group by
+accommodation_location.id) as regos where
+accommodation_option.accommodation_location_id =
+accommodation_location.id and regos.loc_id =
+accommodation_location.id;

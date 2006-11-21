@@ -33,15 +33,26 @@ teesize = {'S': 'small',
            'L': 'large',
            'XL': 'X large',
            'XXL': 'XX large',
-           'XXXL': 'XXX large'}[c.registration.teesize[-1]]
+           'XXXL': 'XXX large'}[c.registration.teesize[2:]]
 </%python>
  Teeshirt: <% teesex %> <% teesize %>
 
  Extra tickets: <% c.registration.dinner |h %>
 
- Accommodation: <% c.registration.accommodation %>
+% if c.registration.accommodation:
+%	a = c.registration.accommodation
+%	if a.option:
+%		opt = " (%s) " % a.option
+%	else:
+%		opt = ' '
+%
+%	accom = "%s%s(%s per night)" % (a.name, opt, h.number_to_currency(a.cost_per_night))
+ Accommodation: <% accom %>
        Checkin: <% c.registration.checkin %>th January
       Checkout: <% c.registration.checkout %>th January
+% else:
+ Accommodation: none selected
+% #endif
 
  Dietary requirements:
     <% c.registration.diet %>

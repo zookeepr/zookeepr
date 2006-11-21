@@ -3,7 +3,6 @@ import re
 
 import socket 
 from formencode import Invalid, validators, schema
-from sqlalchemy import Query
 
 from zookeepr.model import Person, ProposalType, Stream
 
@@ -11,9 +10,9 @@ class BaseSchema(schema.Schema):
     allow_extra_fields = True
     filter_extra_fields = True
 
-    def validate(self, input):
+    def validate(self, input, state=None):
         try:
-            result = self.to_python(input)
+            result = self.to_python(input, state)
             return result, {}
         except Invalid, e:
             errors = e.unpack_errors()
@@ -40,7 +39,7 @@ class PersonValidator(validators.FancyValidator):
 
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return Query(ProposalType).get(value)
+        return state.query(ProposalType).get(value)
 
 
 class FileUploadValidator(validators.FancyValidator):
@@ -57,7 +56,7 @@ class FileUploadValidator(validators.FancyValidator):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return Query(Stream).get(value)
+        return state.query(Stream).get(value)
 
 
 class ReviewSchema(schema.Schema):
@@ -78,7 +77,7 @@ class EmailAddress(validators.FancyValidator):
     """
 
     usernameRE = re.compile(r"^[^ \t\n\r@<>()]+$", re.I)
-    domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$", re.I)
+    domainRE = re.compile(r"^[a-z0-9][a-z0-9\.\-_]*\.[a-z]+$|^localhost$", re.I)
 
     messages = {
         'empty': 'Please enter an email address',
@@ -86,7 +85,8 @@ class EmailAddress(validators.FancyValidator):
         'badUsername': 'The username portion of the email address is invalid (the portion before the @: %(username)s)',
         'badDomain': 'The domain portion of the email address is invalid (the portion after the @: %(domain)s)',
         'domainDoesNotExist': 'The domain of the email address does not exist (the portion after the @: %(domain)s)',
-        'socketError': 'An error occurred when trying to connect to the server: %(error)s'
+        'socketError': 'An error occurred when trying to connect to the server: %(error)s',
+        'dnsTimeout': 'A temporary error occurred whilst trying to validate your email address, please try again in a moment.',
         }
 
     def __init__(self, *args, **kwargs):
@@ -101,13 +101,26 @@ class EmailAddress(validators.FancyValidator):
             raise Invalid(self.message('noAt', state), value, state)
         if not self.usernameRE.search(splitted[0]):
             raise Invalid(self.message('badUsername', state, username=splitted[0]), value, state)
-        mxrecs = None
-        arecs = None
-        try:
-            domain_exists = socket.gethostbyname(splitted[1])
-        except socket.gaierror:
-            raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
+        if not self.domainRE.search(splitted[1]):
+            raise Invalid(self.message('badDomain', state, domain=splitted[1]), value, state)
 
+        # hack so example.org tests work offline
+        if splitted[1] == 'example.org' or splitted[1] == 'localhost':
+            domain_exists = True
+        else:
+            try:
+                try:
+                    domain_exists = dns.resolver.query(splitted[1], 'A')
+                except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+                    pass
+                try:
+                    domain_exists = dns.resolver.query(splitted[1], 'MX')
+                except (dns.resolver.NoAnswer, dns.resolver.NXDOMAIN):
+                    pass
+            except dns.resolver.Timeout:
+                raise Invalid(self.message('dnsTimeout', state, domain=splitted[1]), value, state)
+            if domain_exists == False:
+                raise Invalid(self.message('domainDoesNotExist', state, domain=splitted[1]), value, state)
 
     def _to_python(self, value, state):
         return value.strip()

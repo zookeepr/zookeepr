@@ -1,7 +1,7 @@
 # from zookeepr.model import ProposalType, Role
 # from zookeepr.tests.functional import *
 
-# class TestProposalType(ControllerTest):
+# class TestProposalType(CRUDControllerTest):
 #     model = ProposalType
 #     name = 'proposaltype'
 #     url = '/proposaltype'
@@ -9,7 +9,7 @@
 #                dict(name='BOF')]
 
 #     def setUp(self):
-#         super(ControllerTest, self).setUp()
+#         super(CRUDControllerTest, self).setUp()
 #         self.log_in()
 #         self.r = Role('site-admin')
 #         self.p.roles.append(self.r)
@@ -20,7 +20,7 @@
 #         self.r.delete()
 #         self.r.flush()
 #         self.log_out()
-#         super(ControllerTest, self).tearDown()
+#         super(CRUDControllerTest, self).tearDown()
 
 #     def test_proposal_view_lockdown(self):
 #         # we got one person

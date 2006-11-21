@@ -5,5 +5,5 @@ class TestStreamTable(TableTest):
     samples = [dict(name='Deep Hacking'),
                dict(name='Free Love and Open Sensual Stimulation'),
                ]
-    not_nullable = ['name']
-    unique = ['name']
+    not_nullables = ['name']
+    uniques = ['name']

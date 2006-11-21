@@ -36,13 +36,13 @@ class CfpController(SecureController):
         return render_response("cfp/list.myt")
 
     def submit(self):
-        c.cfptypes = Query(ProposalType).select()
+        c.cfptypes = self.dbsession.query(ProposalType).select()
 
         errors = {}
         defaults = dict(request.POST)
 
         if request.method == 'POST' and defaults:
-            result, errors = NewCFPSchema().validate(defaults)
+            result, errors = NewCFPSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.proposal = Proposal()

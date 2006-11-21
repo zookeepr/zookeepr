@@ -3,6 +3,7 @@
 from exceptions import ImportError
 
 from paste.httpexceptions import HTTPException
+from sqlalchemy import create_session
 
 from zookeepr.lib.base import *
 from zookeepr.lib.BeautifulSoup import BeautifulSoup
@@ -52,8 +53,10 @@ def get_wiki_response(request, start_response):
         abort(404)
         return
 
+    dbsession = create_session()
+
     if 'signed_in_person_id' in session:
-        people = Query(Person).select_by(id=session['signed_in_person_id'])
+        people = dbsession.query(Person).select_by(id=session['signed_in_person_id'])
         if len(people) > 0:
             request.environ['AUTH_TYPE'] = 'Basic'
             request.environ['REMOTE_USER'] = people[0].handle
@@ -61,6 +64,7 @@ def get_wiki_response(request, start_response):
     moinReq = RequestZookeepr(request)
     moinReq.run()
     start_response(moinReq.status, moinReq.headers)
+    dbsession.close()
     return [moinReq.output()]
 
 def wiki_here():
@@ -85,12 +89,18 @@ def wiki_fragment(page_name='Home'):
     request.environ['PATH_INFO'] = '/' + page_name
     soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
     try:
-        return '<div class="wiki">\n' + str(soup.findAll('div', id='content')[0]) + '\n</div>'
+        content = soup.findAll('div', id='content')[0]
+        return '<div class="wiki">\n%s\n</div>' % (content,)
     except IndexError:
-        # Raise an error so we can print it out when this happens during a test
-        # and see what MoinMoin is complaining about
-        print soup.prettify()
-        raise IndexError
+        print "soup is", soup.prettify()
+        if "You are not allowed to access this!" in soup.prettify():
+            #print "IndexError raised, soup content is:", soup.prettify():
+            return ''
+        else:
+            # Raise an error so we can print it out when this happens during
+            # a test and see what MoinMoin is complaining about
+            raise
+        return 'BONE'
 
 def wiki_html_fragment(page_name='Home'):
     """Use a Moin page as a raw HTML fragment."""

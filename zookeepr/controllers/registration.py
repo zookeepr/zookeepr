@@ -4,9 +4,9 @@ import warnings
 from formencode import validators, compound, variabledecode
 from formencode.schema import Schema
 
-from zookeepr.lib.auth import SecureController, AuthRole
+from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Create
+from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
 
 class DictSet(validators.Set):
@@ -22,9 +22,31 @@ class DictSet(validators.Set):
 # FIXME: merge with account.py controller and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = Query(model.Person).get_by(email_address=value['email_address'])
+        account = state.query(model.Person).get_by(email_address=value['email_address'])
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
+
+        account = state.query(model.Person).get_by(handle=value['handle'])
+        if account is not None:
+            raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
+
+class NotExistingRegistrationValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        rego = None
+        if 'signed_in_person_id' in session:
+            rego = state.query(model.Registration).get_by(person_id=session['signed_in_person_id'])
+        if rego is not None:
+            raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+
+
+class AccommodationValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        if value == 'own':
+            return None
+        return state.query(model.Accommodation).get(value)
+
+    def _from_python(self, value):
+        return value.id
 
 
 class RegistrationSchema(Schema):
@@ -65,7 +87,8 @@ class RegistrationSchema(Schema):
     kids_7_9 = validators.Int()
     kids_10 = validators.Int()
 
-    accommodation = validators.String()
+    accommodation = AccommodationValidator()
+    
     checkin = validators.Int()
     checkout = validators.Int()
 
@@ -87,38 +110,57 @@ class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
     registration = RegistrationSchema()
 
+    chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
+
 
 class ExistingPersonRegoSchema(BaseSchema):
     registration = RegistrationSchema()
 
+    chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(BaseController, Create):
+class EditRegistrationSchema(BaseSchema):
+    registration = RegistrationSchema()
+
+    #chained_validators = [NotExistingRegistrationValidator()]
+    pre_validators = [variabledecode.NestedVariables]
+
+
+class RegistrationController(BaseController, Create, Update):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
+               'edit': EditRegistrationSchema(),
                }
+    permissions = {'edit': [AuthFunc('is_same_person')],
+                   }
+    redirect_map = {'edit': dict(controller='/profile', action='index'),
+                    }
 
-    def __before__(self):
+    def is_same_person(self):
+        c.signed_in_person == c.registration.person
+
+    def __before__(self, **kwargs):
         if hasattr(super(RegistrationController, self), '__before__'):
-            super(RegistrationController, self).__before__()
+            super(RegistrationController, self).__before__(**kwargs)
 
         if 'signed_in_person_id' in session:
-            c.signed_in_person = Query(model.Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
 
+        as = self.dbsession.query(model.Accommodation).select()
+        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
     def new(self):
-
         errors = {}
         defaults = dict(request.POST)
 
         if defaults:
             if c.signed_in_person:
-                results, errors = ExistingPersonRegoSchema().validate(defaults)
+                results, errors = ExistingPersonRegoSchema().validate(defaults, self.dbsession)
             else:
-                results, errors = NewRegistrationSchema().validate(defaults)
+                results, errors = NewRegistrationSchema().validate(defaults, self.dbsession)
 
             if errors: #FIXME: make this only print if debug enabled
                 if request.environ['paste.config']['app_conf'].get('debug'):
@@ -127,19 +169,19 @@ class RegistrationController(BaseController, Create):
                 c.registration = model.Registration()
                 for k in results['registration']:
                     setattr(c.registration, k, results['registration'][k])
-                objectstore.save(c.registration)
+                self.dbsession.save(c.registration)
 
                 if not c.signed_in_person:
                     c.person = model.Person()
                     for k in results['person']:
                         setattr(c.person, k, results['person'][k])
 
-                    objectstore.save(c.person)
+                    self.dbsession.save(c.person)
                 else:
                     c.person = c.signed_in_person
 
                 c.registration.person = c.person
-                objectstore.flush()
+                self.dbsession.flush()
 
                 s = smtplib.SMTP("localhost")
                 body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
@@ -150,3 +192,32 @@ class RegistrationController(BaseController, Create):
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
+
+    def _edit_postflush(self):
+        # do post-rego-build-invoice magic
+        types = { 
+                    "Professional": [517.50, 690], 
+                    "Hobbyist": [300, 225], 
+                    "Concession": [99, 99] 
+                    }
+        dinner = { 
+                    "1": 60, 
+                    "2": 120, 
+                    "3": 180 
+                    }
+        accommodation = {
+                    "0": 0,
+                    "1": 49.50,
+                    "2": 55,
+                    "3": 60,
+                    "5": 35,
+                    "6": 58.50
+                    }
+        pass
+
+
+
+
+
+
+        

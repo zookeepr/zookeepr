@@ -8,6 +8,8 @@ from pylons.error import error_template
 from pylons.middleware import ErrorHandler, ErrorDocuments, StaticJavascripts, error_mapper
 import pylons.wsgiapp
 
+import zookeepr.lib.app_globals as app_globals
+import zookeepr.lib.helpers
 from zookeepr.lib import wiki
 
 from zookeepr.config.environment import load_environment
@@ -28,9 +30,14 @@ def make_app(global_conf, **app_conf):
     config = load_environment()
     config.init_app(global_conf, app_conf, package='zookeepr')
     
+    # Include stuff like flickr into the myghty component root
+    config.myghty['component_root'].append( {'dynamic_html': app_conf['dynamic_html_dir'] })
+
     # Load our default Pylons WSGI app and make g available
-    app = pylons.wsgiapp.PylonsApp(config)
-    g = app.globals
+    app = pylons.wsgiapp.PylonsApp(config,
+            helpers=zookeepr.lib.helpers,
+            g=app_globals.Globals
+            )
     app = ConfigMiddleware(app, {'app_conf':app_conf,
         'global_conf':global_conf})
     

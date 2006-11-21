@@ -20,7 +20,7 @@ class HomeController(BaseController):
 
         if 'signed_in_person_id' in session:
             # FIXME: get is boned on the live site, use get_by
-            c.signed_in_person = Query(Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(Person).get_by(id=session['signed_in_person_id'])
 
         resp = render_response('home.myt')
 

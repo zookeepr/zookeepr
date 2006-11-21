@@ -1,6 +1,87 @@
 Changes for Zookeepr
 ====================
 
+0.2.9
+-----
+
+ * Remove threadlocal SQLAlchemy mod from the data model, again using
+   a per-request session.  (Jamie Wilkinson)
+ * Refactor data model initialisation to be more awesome and not lose
+   engine references.  Update test infrastructure to use same method so
+   unittests don't hide production bugs.  (Jamie Wilkinson)
+ * Add facility for editing registration details.  (Jamie Wilkinson)
+ * Refactor CRUD methods to add post-DB-session-flush hooks.  (Jamie Wilkinson)
+ * Add invoice controller and view method.  (Jamie Wilkinson)
+ 
+0.2.8
+-----
+
+ * Don't blow up on NXDOMAIN responses or timeouts during the email domain
+   validator.  (Jamie Wilkinson)
+ * Lock down talk controller to only accepted talks.  (Jamie Wilkinson)
+ * Only show accepted talks on profile pages.  (Jamie Wilkinson)
+
+0.2.7
+-----
+
+ * Refactor ControllerTest base classes to differentiate semiautomagic tests
+   for CRUD controllers versus non-CRUD controllers.  (Jamie Wilkinson)
+ * Fix really really dumb bug in registration email generation.
+   (Jamie Wilkinson)
+
+0.2.6
+-----
+
+ * Fix group-by bug in postgresql backends for accommodation bed counter.
+   (Jamie Wilkinson)
+ * Make embedded wiki bit work again.  (Jamie Wilkinson)
+ * Remove handle from profile title.  (Jamie Wilkinson)
+ * Add a controller for accepted talks, and embed proposal abstracts where
+   they exist.  (Jamie Wilkinson)
+ * Fix two showstopper bugs that weren't caught before releasing 0.2.5.
+   Template error in mailout from registration, and schema validation
+   error with 'own' being submitted, probably should never have happened.
+   I blame Alec Thomas for the second bug.  (Jamie Wilkinson)
+
+0.2.5
+-----
+
+ * Use the new accommodation data model for displaying accommodation options
+   on the registration page.  (Jamie Wilkinson)
+ * Redirect back to original URL after signing in.  (John Ferlito)
+ * Create a symlink in the public/ static files directory pointing to
+   MoinMoin attachments as a workaround for moin attachment brokenness.
+   (John Ferlito)
+ * Made sure that people don't register more than once. (Jamie Wilkinson)
+ * Update the accommodation data model to allow us to see how many beds are
+   already taken for a given venue (and this value is shared across different
+   options at the same venue).  (Jamie Wilkinson)
+ * Add a controller for user profiles, and embed proposal bios where they
+   exist.  (Jamie Wilkinson)
+
+0.2.4
+-----
+
+ * Fixed rego email teesize message
+ * Dinner price on rego form
+ * Added Open Day registration
+
+0.2.3
+-----
+
+ * Add accommodation data model.
+ * Added validation schema for existing handle/display names.
+ * Merged A+MX email address domain validation from Jiri Baum.
+
+0.2.2
+-----
+
+ * Changed from pydns validation to socket.gethostbyname (this was
+   done due to a perceived bug with timeouts which was a different bug 
+   affecting all errors, so it could be rolled back)
+ * Include raw HTML into a Mghty template from outside the egg
+ * Random content changes
+
 0.2.1
 -----
 
