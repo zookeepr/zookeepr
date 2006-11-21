@@ -1,1 +1,1 @@
-from domain import InvoiceItem, Invoice
+from domain import InvoiceItem, Invoice, PaymentReceived

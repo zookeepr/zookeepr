@@ -1,7 +1,7 @@
 from sqlalchemy import mapper, relation, backref
 
-from tables import invoice_item, invoice
-from domain import InvoiceItem, Invoice
+from tables import *
+from domain import *
 from zookeepr.model.core import Person
 
 mapper(InvoiceItem, invoice_item)
@@ -18,3 +18,5 @@ mapper(Invoice, invoice,
                       ),
     },
        )
+
+mapper(PaymentReceived, payment_received)

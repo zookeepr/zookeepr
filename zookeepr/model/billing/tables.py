@@ -48,3 +48,33 @@ payment = Table('payment', metadata,
                 Column('amount', Float,
                        nullable=False),
                 )
+
+payment_received = Table('payment_received', metadata,
+                         Column('id', Integer, primary_key=True),
+
+                         Column('invoice_id', Integer,
+                                ForeignKey('invoice.id'),
+                                ),
+
+                         Column('payment_id', Integer,
+                                ForeignKey('payment.id'),
+                                ),
+
+                         Column('auth_num', Integer,
+                                ),
+                         Column('amount', Integer,
+                                ),
+                         Column('refund_key', String),
+                         Column('merchant_id', String),
+                         Column('status', String),
+                         Column('settlement', Integer),
+                         Column('error_string', String),
+                         Column('card_name', String),
+                         Column('requested_page', String),
+                         Column('card_type', String),
+                         Column('mac', String),
+                         Column('card_number', String),
+                         Column('trans_id', String),
+                         Column('original_amount', Integer),
+                         Column('surcharge', Integer),
+                         )
