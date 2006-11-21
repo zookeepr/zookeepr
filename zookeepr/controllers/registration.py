@@ -4,9 +4,9 @@ import warnings
 from formencode import validators, compound, variabledecode
 from formencode.schema import Schema
 
-from zookeepr.lib.auth import SecureController, AuthRole
+from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Create
+from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
 
 class DictSet(validators.Set):
@@ -118,10 +118,18 @@ class ExistingPersonRegoSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
+class EditRegistrationSchema(BaseSchema):
+    registration = RegistrationSchema()
+
+    #chained_validators = [NotExistingRegistrationValidator()]
+    pre_validators = [variabledecode.NestedVariables]
+
+
 class RegistrationController(BaseController, Create):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
+               'edit': EditRegistrationSchema(),
                }
 
     def __before__(self):
@@ -175,3 +183,27 @@ class RegistrationController(BaseController, Create):
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
+
+    def edit(self):
+        as = self.dbsession.query(model.Accommodation).select()
+        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
+
+        errors = {}
+        defaults = dict(request.POST)
+
+        if defaults:
+            if errors: #FIXME make this only print if debug enabled
+                if request.environ['paste.config']['app_conf'].get('debug'):
+                    warnings.warn("form validation failed: %s" % errors)
+            else:
+                c.registration = self.obj
+
+                for (k, v) in results['registration'].items():
+                    setattr(c.registration, k, v)
+                self.dbsession.save(c.registration)
+
+                self.dbsession.flush()
+
+                # do rego-invoice magic
+
+        return render_response("registration/edit.myt", defaults=defaults, errors=errors)
