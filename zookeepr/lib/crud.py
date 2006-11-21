@@ -108,6 +108,8 @@ class RUDBase(CRUDBase):
     """
 
     def __before__(self, **kwargs):
+        #print "RUDBase.__before__:", kwargs
+        
         if hasattr(super(RUDBase, self), '__before__'):
             super(RUDBase, self).__before__(**kwargs)
         if 'id' not in kwargs.keys():
