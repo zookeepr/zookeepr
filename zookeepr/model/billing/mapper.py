@@ -1,10 +1,13 @@
 from sqlalchemy import mapper, relation, backref
 
-from tables import invoice_item, invoice, payment_received, invoice_payment_received_map
+from tables import invoice_item, invoice, payment_received, invoice_payment_received_map, invoice_registration_map, payment_sent
 from domain import InvoiceItem, Invoice, PaymentReceived, PaymentSent
 from zookeepr.model.core import Person
+from zookeepr.model.registration import Registration
 
 mapper(InvoiceItem, invoice_item)
+
+mapper(PaymentSent, payment_sent)
 
 mapper(PaymentReceived, payment_received,
        properties = {
@@ -20,6 +23,8 @@ mapper(Invoice, invoice,
                        lazy=True,
                        backref=backref('invoices', cascade="all, delete-orphan"),
                        ),
+    'registration': relation(Registration, secondary=invoice_registration_map,
+                             backref='invoice'),
     'items': relation(InvoiceItem,
                       backref='invoice',
                       cascade="all, delete-orphan",
