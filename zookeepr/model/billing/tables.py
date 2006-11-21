@@ -10,7 +10,7 @@ invoice = Table('invoice', metadata,
                        nullable=False,
                        ),
 
-                Column('issue_date', Date,
+                Column('issue_date', DateTime,
                        nullable=False),
                 
                 Column('creation_timestamp', DateTime,
@@ -32,6 +32,19 @@ invoice_item = Table('invoice_item', metadata,
                      
                      Column('description', String,
                             nullable=False),
+                     Column('qty', Integer,
+                            nullable=False),
                      Column('cost', Float,
                             nullable=False),
                      )
+
+payment = Table('payment', metadata,
+                Column('id', Integer, primary_key=True),
+
+                Column('invoice_id', Integer,
+                       ForeignKey('invoice.id'),
+                       nullable=False),
+                
+                Column('amount', Float,
+                       nullable=False),
+                )

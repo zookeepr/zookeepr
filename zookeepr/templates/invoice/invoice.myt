@@ -20,15 +20,15 @@ linux.conf.au 2007, being held at the University of New South Wales
 in Sydney, Australia.
 
 
-Description                                             Cost
+Description                                       Qty       Cost
 
 % for item in invoice.items:	
-<% "%-50s\t%s" % (item.description, h.number_to_currency(item.cost)) %>
+<% "%-50s %s\t%8s" % (item.description[:50], item.qty, h.number_to_currency(item.qty * item.cost)) %>
 
-%	total += item.cost
+%	total += (item.qty * item.cost)
 % #endif
 ----------------------------------------------------------------
-                                                 Total: <% h.number_to_currency(total) %>
+                                               Total:  <% "%9s" % h.number_to_currency(total) %>
 
 
 

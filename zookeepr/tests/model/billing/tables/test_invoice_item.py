@@ -8,9 +8,11 @@ class TestInvoiceItemTable(TableTest):
     table = model.billing.tables.invoice_item
     samples = [dict(description='desc1',
                     invoice_id=1,
+                    qty=1,
                     cost=1),
                dict(description='desc2',
                     invoice_id=2,
+                    qty=2,
                     cost=2),
                ]
-    not_nullables = ['description', 'cost', 'invoice_id']
+    not_nullables = ['description', 'cost', 'invoice_id', 'qty']

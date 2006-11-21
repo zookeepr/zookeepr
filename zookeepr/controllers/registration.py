@@ -1,3 +1,4 @@
+import datetime
 import smtplib
 import warnings
 
@@ -183,6 +184,9 @@ class RegistrationController(BaseController, Create, Update):
                 c.registration.person = c.person
                 self.dbsession.flush()
 
+                # do post-rego build invoice magic
+                self._build_invoice()
+
                 s = smtplib.SMTP("localhost")
                 body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
                 s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
@@ -195,4 +199,71 @@ class RegistrationController(BaseController, Create, Update):
 
     def _edit_postflush(self):
         # do post-rego-build-invoice magic
-        pass
+        self._build_invoice()
+
+
+    def _build_invoice(self):
+        r = c.registration
+
+        if len(r.person.invoices) == 0:
+
+            invoice = model.Invoice(issue_date=datetime.datetime.now())
+            self.dbsession.save(invoice)
+            r.person.invoices.append(invoice)
+        
+        else:
+            # make the terrible assumption that all are paid,
+            # that we only change the last one
+            invoice = r.person.invoices[-1]
+            
+            if invoice.payment:
+                invoice = model.Invoice(issue_date=datetime.datetime.now())
+                self.dbsession.save(invoice)
+                r.person.invoices.append(invoice)
+            else:
+                # drop existing invoice items
+                for ii in invoice.items:
+                    self.dbsession.delete(ii)
+
+        # pretty much all of this is a dirty hack
+        iit = model.InvoiceItem()
+        self.dbsession.save(iit)
+        if r.type == 'Professional':
+            iit.description = 'Professional registration'
+            iit.qty = 1
+            iit.cost = 690.00
+            iid = model.InvoiceItem(description='Penguin Dinner ticket (included in registration)',
+                                    qty=1,
+                                    cost=0.00)
+            self.dbsession.save(iid)
+            invoice.items.append(iid)
+        elif r.type == 'Hobbyist':
+            iit.description='Hobbyist registration'
+            iit.qty = 1
+            iit.cost=300.00
+        elif r.type == 'Concession':
+            iit.description='Student/Concession registration'
+            iit.qty = 1
+            iit.cost=99.00
+            
+        self.dbsession.save(iit)
+        invoice.items.append(iit)
+
+        if r.dinner > 0:
+            iidt = model.InvoiceItem(description = 'Additional Penguin dinner tickets',
+                                     qty = r.dinner,
+                                     cost = 60.00)
+            self.dbsession.save(iidt)
+            invoice.items.append(iidt)
+
+        if r.accommodation:
+            desc = "Accommodation - %s" % r.accommodation.name
+            if r.accommodation.option:
+                desc += " (%s)" % (r.accommodation.option,)
+            iia = model.InvoiceItem(description=desc,
+                                    qty=r.checkout - r.checkin,
+                                    cost=r.accommodation.cost_per_night)
+            self.dbsession.save(iia)
+            invoice.items.append(iia)
+
+        self.dbsession.flush()

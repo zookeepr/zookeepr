@@ -4,8 +4,8 @@ from zookeepr.tests.model import *
 
 class TestInvoiceDomainModel(CRUDModelTest):
     domain = model.billing.Invoice
-    samples = [dict(issue_date=datetime.date(2006,11,21)),
-               dict(issue_date=datetime.date(2006,11,22)),
+    samples = [dict(issue_date=datetime.datetime(2006,11,21)),
+               dict(issue_date=datetime.datetime(2006,11,22)),
                ]
 
     def setUp(self):
@@ -30,9 +30,9 @@ class TestInvoiceDomainModel(CRUDModelTest):
         return invoice
 
     def test_item_add(self):
-        i = model.Invoice(issue_date=datetime.date(2006,11,21))
+        i = model.Invoice(issue_date=datetime.datetime(2006,11,21))
         i.person = self.person
-        ii = model.InvoiceItem(description='b', cost=2)
+        ii = model.InvoiceItem(description='b', qty=1, cost=2)
         self.dbsession.save(i)
         self.dbsession.save(ii)
         i.items.append(ii)
