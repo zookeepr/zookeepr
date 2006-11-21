@@ -116,7 +116,7 @@ class RUDBase(CRUDBase):
             if 'action' in kwargs:
                 raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
             else:
-                raise RuntimeError, "id not in kwargs, additionally don't know what action is being performend"
+                raise RuntimeError, "id not in kwargs, additionally don't know what action is being performend (did you forget to pass in **kwargs in super.__before__?)"
         
         use_oid = False # Determines if we look up on a key or the OID
 
