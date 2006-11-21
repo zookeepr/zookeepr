@@ -125,16 +125,23 @@ class EditRegistrationSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(BaseController, Create):
+class RegistrationController(BaseController, Create, Update):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
                'edit': EditRegistrationSchema(),
                }
+    permissions = {'edit': [AuthFunc('is_same_person')],
+                   }
+    redirect_map = {'edit': dict(controller='/profile', action='index'),
+                    }
 
-    def __before__(self):
+    def is_same_person(self):
+        c.signed_in_person == c.registration.person
+
+    def __before__(self, **kwargs):
         if hasattr(super(RegistrationController, self), '__before__'):
-            super(RegistrationController, self).__before__()
+            super(RegistrationController, self).__before__(**kwargs)
 
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
@@ -184,26 +191,28 @@ class RegistrationController(BaseController, Create):
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
 
-    def edit(self):
-        as = self.dbsession.query(model.Accommodation).select()
-        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
+#     def edit(self):
+#         as = self.dbsession.query(model.Accommodation).select()
+#         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
-        errors = {}
-        defaults = dict(request.POST)
+#         errors = {}
+#         defaults = dict(request.POST)
 
-        if defaults:
-            if errors: #FIXME make this only print if debug enabled
-                if request.environ['paste.config']['app_conf'].get('debug'):
-                    warnings.warn("form validation failed: %s" % errors)
-            else:
-                c.registration = self.obj
 
-                for (k, v) in results['registration'].items():
-                    setattr(c.registration, k, v)
-                self.dbsession.save(c.registration)
+#         c.registration = self.obj
+        
+#         if defaults:
+#             if errors: #FIXME make this only print if debug enabled
+#                 if request.environ['paste.config']['app_conf'].get('debug'):
+#                     warnings.warn("form validation failed: %s" % errors)
+#             else:
 
-                self.dbsession.flush()
+#                 for (k, v) in results['registration'].items():
+#                     setattr(c.registration, k, v)
+#                 self.dbsession.save(c.registration)
 
-                # do rego-invoice magic
+#                 self.dbsession.flush()
 
-        return render_response("registration/edit.myt", defaults=defaults, errors=errors)
+#                 # do rego-invoice magic
+
+#         return render_response("registration/edit.myt", defaults=defaults, errors=errors)
