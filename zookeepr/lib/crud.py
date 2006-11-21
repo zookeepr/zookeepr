@@ -161,6 +161,9 @@ class RUDBase(CRUDBase):
             abort(404, "No such object: cannot %s nonexistent id = %r" % (kwargs['action'],
                                                                           kwargs['id']))
 
+        # save obj onto the magical c
+        setattr(c, self.individual, self.obj)
+
 
 class Update(RUDBase):
     def edit(self, id):
@@ -174,6 +177,7 @@ class Update(RUDBase):
 
         errors = {}
         defaults = dict(request.POST)
+
         if defaults:
             result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
 
@@ -194,8 +198,6 @@ class Update(RUDBase):
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('edit', default_redirect)
 
-        # save obj onto the magical c
-        setattr(c, self.individual, self.obj)
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
 
@@ -225,8 +227,6 @@ class Delete(RUDBase):
             default_redirect = dict(action='index', id=None)
             self.redirect_to('delete', default_redirect)
 
-        # save obj onto the magical c
-        setattr(c, self.individual, self.obj)
         # call the template
         return render_response('%s/confirm_delete.myt' % self.individual)
 
@@ -237,8 +237,6 @@ class Read(RUDBase):
         if hasattr(self, '_can_edit'):
             c.can_edit = self._can_edit()
 
-        # save obj onto the magical c
-        setattr(c, self.individual, self.obj)
         # exec the template
         response = render_response('%s/view.myt' % self.individual)
 
