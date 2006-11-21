@@ -8,6 +8,7 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
+from zookeepr.model import Invoice, InvoiceItem
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -192,7 +193,21 @@ class RegistrationController(BaseController, Create, Update):
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
+    def pay(self):
+        registration = self.obj
+        if registration.invoice:
+            invoice = registration.invoice[0]
+        else:
+            invoice = Invoice()
+            invoice.person = registration.person
+            invoice.registration = [registration]
 
-    def _edit_postflush(self):
-        # do post-rego-build-invoice magic
-        pass
+        invoice.items = []
+        import time
+        invoice.items.append(InvoiceItem("TEST", time.time()))
+#        invoice.items.append(InvoiceItem("TEST2", 3745))
+
+        self.dbsession.save(invoice)        
+        self.dbsession.flush()
+
+        redirect_to(controller='invoice', action='view', id=invoice.id)
