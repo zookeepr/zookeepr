@@ -34,6 +34,7 @@ moin_underlay = %(here)s/moin_underlay
 # `BaseController.__call__()`.  Note the URL syntax depends
 # on the SQLAlchemy documentation for `global_connect`.
 dburi = sqlite://filename=%(here)s/somedb.db
+# echo_queries = true
 
 # WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to

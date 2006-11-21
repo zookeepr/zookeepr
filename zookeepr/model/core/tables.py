@@ -1,6 +1,8 @@
 from sqlalchemy import *
 
-account = Table('account',
+from zookeepr.model import metadata
+
+account = Table('account', metadata,
                 Column('id', Integer, primary_key=True),
 
                 Column('email_address', String,
@@ -27,7 +29,7 @@ account = Table('account',
                        nullable=False),
                 )
 
-person = Table('person',
+person = Table('person', metadata,
                Column('id', Integer, primary_key=True),
 
                Column('account_id', Integer, ForeignKey('account.id'),
@@ -49,7 +51,7 @@ person = Table('person',
                )
 
 # describe account roles to grant levels of access
-role = Table('role',
+role = Table('role', metadata,
              Column('id', Integer, primary_key=True),
              
              # name of role
@@ -59,13 +61,13 @@ role = Table('role',
              )
 
 # map persons onto roles
-person_role_map = Table('person_role_map',
+person_role_map = Table('person_role_map', metadata,
                         Column('person_id', Integer, ForeignKey('person.id')),
                         Column('role_id', Integer, ForeignKey('role.id'))
                         )
 
 # password reset confirmation
-password_reset_confirmation = Table('password_reset_confirmation',
+password_reset_confirmation = Table('password_reset_confirmation', metadata,
     Column('id', Integer, primary_key=True),
 
     Column('email_address', String,

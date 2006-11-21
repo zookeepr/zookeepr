@@ -6,7 +6,13 @@ Changes for Zookeepr
 
  * Remove threadlocal SQLAlchemy mod from the data model, again using
    a per-request session.  (Jamie Wilkinson)
-
+ * Refactor data model initialisation to be more awesome and not lose
+   engine references.  Update test infrastructure to use same method so
+   unittests don't hide production bugs.  (Jamie Wilkinson)
+ * Add facility for editing registration details.  (Jamie Wilkinson)
+ * Refactor CRUD methods to add post-DB-session-flush hooks.  (Jamie Wilkinson)
+ * Add invoice controller and view method.  (Jamie Wilkinson)
+ 
 0.2.8
 -----
 

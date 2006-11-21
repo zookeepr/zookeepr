@@ -1,6 +1,6 @@
 import warnings
 
-from sqlalchemy import create_session, default_metadata, select, func
+from sqlalchemy import create_session, select, func
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch
@@ -19,10 +19,6 @@ class ModelTest(TestBase):
 
         super(ModelTest, self).tearDown()
 
-    def echo_sql(self, value):
-        """Tell the underlying engine to echo SQL, for debugging tests."""
-        default_metadata.engine.echo = value
-        
     def check_empty_session(self):
         """Check that the database was left empty after the test"""
         results = self.dbsession.query(self.domain).select()
@@ -125,7 +121,8 @@ class CRUDModelTest(ModelTest):
 
             # perform additional operations
             o = self.additional(o)
-            
+
+            print "pending:", self.dbsession.dirty
             # committing to db
             self.dbsession.save(o)
             self.dbsession.flush()
@@ -136,8 +133,8 @@ class CRUDModelTest(ModelTest):
             del o
     
             # check it's in the database
-            print self.domain
-            print oid
+            print "crud, object is:", self.domain
+            print "object oid is:", oid
             o = self.dbsession.get(self.domain, oid)
             self.failIfEqual(None, o, "object not in database")
         
@@ -148,6 +145,8 @@ class CRUDModelTest(ModelTest):
     
             # deleting object
             self.dbsession.delete(o)
+            print "pending delete:", self.dbsession.deleted
+            print "dirty:", self.dbsession.dirty
             self.dbsession.flush()
     
             # checking db

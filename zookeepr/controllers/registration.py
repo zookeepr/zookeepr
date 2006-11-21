@@ -4,9 +4,9 @@ import warnings
 from formencode import validators, compound, variabledecode
 from formencode.schema import Schema
 
-from zookeepr.lib.auth import SecureController, AuthRole
+from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Create
+from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
 
 class DictSet(validators.Set):
@@ -44,6 +44,9 @@ class AccommodationValidator(validators.FancyValidator):
         if value == 'own':
             return None
         return state.query(model.Accommodation).get(value)
+
+    def _from_python(self, value):
+        return value.id
 
 
 class RegistrationSchema(Schema):
@@ -118,24 +121,38 @@ class ExistingPersonRegoSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(BaseController, Create):
+class EditRegistrationSchema(BaseSchema):
+    registration = RegistrationSchema()
+
+    #chained_validators = [NotExistingRegistrationValidator()]
+    pre_validators = [variabledecode.NestedVariables]
+
+
+class RegistrationController(BaseController, Create, Update):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
+               'edit': EditRegistrationSchema(),
                }
+    permissions = {'edit': [AuthFunc('is_same_person')],
+                   }
+    redirect_map = {'edit': dict(controller='/profile', action='index'),
+                    }
 
-    def __before__(self):
+    def is_same_person(self):
+        c.signed_in_person == c.registration.person
+
+    def __before__(self, **kwargs):
         if hasattr(super(RegistrationController, self), '__before__'):
-            super(RegistrationController, self).__before__()
+            super(RegistrationController, self).__before__(**kwargs)
 
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
 
-
-    def new(self):
         as = self.dbsession.query(model.Accommodation).select()
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
+    def new(self):
         errors = {}
         defaults = dict(request.POST)
 
@@ -175,3 +192,7 @@ class RegistrationController(BaseController, Create):
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
+
+    def _edit_postflush(self):
+        # do post-rego-build-invoice magic
+        pass
