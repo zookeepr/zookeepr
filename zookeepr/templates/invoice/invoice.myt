@@ -7,7 +7,8 @@ total = 0
 #                             NZ GST #90-792-369
 
 Invoice Number: <% invoice.id %>
-    Issue Date: <% invoice.issue_date.strftime("%Y-%m-%d") %>
+
+    Issue Date: <% invoice.issue_date.strftime("%d %b %Y") %>
 
 
 Attention: <% invoice.person.fullname %>
