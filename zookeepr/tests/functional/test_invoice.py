@@ -29,10 +29,8 @@ class TestInvoiceController(SignedInCRUDControllerTest):
         resp = self.app.get('/invoice/%d' % self.iid)
         print resp
 
-        resp.mustcontain("LCA 2007")
         resp.mustcontain("Linux Australia")
         resp.mustcontain("ABN")
         resp.mustcontain("line 1")
         resp.mustcontain("$1.00")
         resp.mustcontain("Total: $3.50")
-        self.fail("not really")
