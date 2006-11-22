@@ -4,39 +4,39 @@ class TestTalkDomainModel(ModelTest):
     def test_accepted_talk(self):
         # set up things
         t = model.ProposalType(name='snuh')
-        objectstore.save(t)
+        self.dbsession.save(t)
         
         p1 = model.Proposal(title='a',
                             abstract='a',
                             )
         p1.accepted = False
         p1.type = t
-        objectstore.save(p1)
+        self.dbsession.save(p1)
         
         p2 = model.Proposal(title='b',
                             abstract='b',
                             )
         p2.accepted = True
         p2.type = t
-        objectstore.save(p2)
+        self.dbsession.save(p2)
 
-        objectstore.flush()
+        self.dbsession.flush()
 
-        talks = Query(model.schedule.Talk).select()
+        talks = self.dbsession.query(model.schedule.Talk).select()
 
         print "talks:", talks
 
-        t1 = Query(model.schedule.Talk).get(p1.id)
-        t2 = Query(model.schedule.Talk).get(p2.id)
+        t1 = self.dbsession.query(model.schedule.Talk).get(p1.id)
+        t2 = self.dbsession.query(model.schedule.Talk).get(p2.id)
 
         self.failUnless(t2 in talks, "t2 should be in talks")
         self.failIf(t1 in talks, "t1 shouldn't be in talks")
 
         # clean up
-        objectstore.delete(p2)
-        objectstore.delete(p1)
-        objectstore.delete(t)
-        objectstore.flush()
+        self.dbsession.delete(p2)
+        self.dbsession.delete(p1)
+        self.dbsession.delete(t)
+        self.dbsession.flush()
 
         # test cleanup
-        self.failUnlessEqual([], Query(model.schedule.Talk).select())
+        self.failUnlessEqual([], self.dbsession.query(model.schedule.Talk).select())

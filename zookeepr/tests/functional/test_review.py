@@ -17,8 +17,8 @@ class TestReviewController(SignedInCRUDControllerTest):
 #                ]
 
 #     def additional(self, obj):
-#         obj.stream = Query(model.Stream).get(1)
-#         obj.proposal = Query(model.Proposal).get(1)
+#         obj.stream = self.dbsession.query(model.Stream).get(1)
+#         obj.proposal = self.dbsession.query(model.Proposal).get(1)
 #         return obj
 
     def setUp(self):
@@ -62,14 +62,14 @@ class TestReviewController(SignedInCRUDControllerTest):
         """Test that a reviewer can only see their own reviews"""
         p1 = model.Person(email_address='testgirl@example.org',
                     fullname='Testgirl Van der Test')
-        objectstore.save(p1)
+        self.dbsession.save(p1)
         p2 = model.Person(email_address='t2@example.org',
                     fullname='submitter')
-        objectstore.save(p2)
+        self.dbsession.save(p2)
         p = model.Proposal(title='prop',
-                           type=objectstore.get(model.ProposalType, 1),
+                           type=self.dbsession.get(model.ProposalType, 1),
                            )
-        objectstore.save(p)
+        self.dbsession.save(p)
         p.people.append(p2)
         r1 = model.Review(
                     reviewer=self.person,
@@ -77,21 +77,21 @@ class TestReviewController(SignedInCRUDControllerTest):
                     technical=1,
                     experience=1,
                     coolness=1,
-                    stream=objectstore.get(model.Stream, 1),
+                    stream=self.dbsession.get(model.Stream, 1),
                     )
         p.reviews.append(r1)
-        objectstore.save(r1)
+        self.dbsession.save(r1)
         r2 = model.Review(
                     reviewer=p1,
                     familiarity=1,
                     technical=2,
                     experience=2,
                     coolness=3,
-                    stream=objectstore.get(model.Stream, 1),
+                    stream=self.dbsession.get(model.Stream, 1),
                     )
         p.reviews.append(r2)
-        objectstore.save(r2)
-        objectstore.flush()
+        self.dbsession.save(r2)
+        self.dbsession.flush()
         p1id = p1.id
         p2id = p2.id
         pid = p.id
@@ -100,10 +100,10 @@ class TestReviewController(SignedInCRUDControllerTest):
         resp.mustcontain(self.person.firstname)
         self.failIf(p1.firstname in resp, "shouldn't be able to see other people's reviews")
         # clean up
-        objectstore.delete(Query(model.Proposal).get(pid))
-        objectstore.delete(Query(model.Person).get(p1id))
-        objectstore.delete(Query(model.Person).get(p2id))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p1id))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
+        self.dbsession.flush()
 
 #     def test_reviewer_name_hidden_from_submitter(self):
 #         """Test taht a revier is anonymouse to submitters"""
@@ -117,15 +117,15 @@ class TestReviewController(SignedInCRUDControllerTest):
         """test that reviewers can only do one review per proposal"""
         p2 = model.Person(email_address='t2@example.org',
                     fullname='submitter')
-        objectstore.save(p2)
+        self.dbsession.save(p2)
         p = model.Proposal(title='prop',
                            abstract='abs',
                            experience='exp',
-                           type=objectstore.get(model.ProposalType, 1),
+                           type=self.dbsession.get(model.ProposalType, 1),
                            )
-        objectstore.save(p)
+        self.dbsession.save(p)
         p.people.append(p2)
-        objectstore.flush()
+        self.dbsession.flush()
         p2id = p2.id
         pid = p.id
 
@@ -140,36 +140,36 @@ class TestReviewController(SignedInCRUDControllerTest):
         resp.mustcontain("already reviewed this proposal")
         
         # clean up
-        objectstore.delete(Query(model.Person).get(p2id))
-        objectstore.delete(Query(model.Proposal).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
+        self.dbsession.flush()
 
     def test_edit_review(self):
         """test that a reviewer can edit their review"""
         s = model.Person(email_address='submitter@example.org',
                          fullname='submitter')
-        objectstore.save(s)
+        self.dbsession.save(s)
         p = model.Proposal(title='prop',
                            abstract='abs',
                            experience='exp',
-                           type=Query(model.ProposalType).get(1))
-        objectstore.save(p)
+                           type=self.dbsession.query(model.ProposalType).get(1))
+        self.dbsession.save(p)
         s.proposals.append(p)
         r = model.Review(reviewer=self.person,
                          familiarity=0,
                          technical=0,
                          experience=0,
                          coolness=0,
-                         stream=Query(model.Stream).get(1))
-        objectstore.save(r)
+                         stream=self.dbsession.query(model.Stream).get(1))
+        self.dbsession.save(r)
         p.reviews.append(r)
-        objectstore.flush()
+        self.dbsession.flush()
         sid = s.id
         pid = p.id
         rid = r.id
 
         # clear the session
-        objectstore.clear()
+        self.dbsession.clear()
 
         resp = self.app.get(url_for(controller='review',
                                     action='edit',
@@ -182,14 +182,14 @@ class TestReviewController(SignedInCRUDControllerTest):
         print resp
         
 
-        r = Query(model.Review).get(rid)
+        r = self.dbsession.query(model.Review).get(rid)
         print r
         print r.comment
         self.assertEqual('hi!', r.comment)
         self.assertEqual(1, r.coolness)
 
         # clean up
-        objectstore.delete(r)
-        objectstore.delete(Query(model.Proposal).get(pid))
-        objectstore.delete(Query(model.Person).get(sid))
-        objectstore.flush()
+        self.dbsession.delete(r)
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(sid))
+        self.dbsession.flush()

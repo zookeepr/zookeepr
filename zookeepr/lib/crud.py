@@ -2,7 +2,10 @@
 
 # FIXME: Find somewhere to document the class attributes used by the generics.
 
+import warnings
+
 from formencode import Invalid
+from paste.deploy.converters import asbool
 
 from zookeepr.lib.base import *
 
@@ -48,31 +51,45 @@ class Create(CRUDBase):
         POST requests will create the object, if the schemas validate.
         """
 
-        model_name = self.individual
         errors = {}
         defaults = dict(request.POST)
 
-        print "d", defaults
+        if defaults:
+            result, errors = self.schemas['new'].validate(defaults, self.dbsession)
 
-        if request.method == 'POST' and defaults:
-            result, errors = self.schemas['new'].validate(defaults)
-
-            print "r,e", result, errors
-            
-            if not errors:
+            if errors:
+                if asbool(request.environ['paste.config']['global_conf'].get('debug')):
+                    warnings.warn("new: form validation failed: %s" % errors)
+            else:
                 self.obj = self.model()
+
                 # make new_object accessible to the template
-                setattr(c, model_name, self.obj)
+                setattr(c, self.individual, self.obj)
+
                 # update the new object with the form data
-                print result
-                for k in result[model_name]:
+                for k in result[self.individual]:
                     setattr(self.obj, k, result[model_name][k])
+
+                self.dbsession.save(self.obj)
+                self.dbsession.flush()
+
+                # call postflush hook
+                self._new_postflush()
 
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('new', default_redirect)
 
-        return render_response('%s/new.myt' % model_name,
+        return render_response('%s/new.myt' % self.individual,
                                defaults=defaults, errors=errors)
+
+    def _new_postflush(self):
+        """Overridable method for hooking after a flush of the dbsession.
+
+        CRUD controllers can replace this method with one that performs
+        useful work after the dbsession has been flushed with data from a
+        successful form post.
+        """
+        pass
 
 
 class List(CRUDBase):
@@ -92,7 +109,7 @@ class List(CRUDBase):
         #setattr(c, model_name + '_collection', collection)
 
         # assign list of objects to template global
-        setattr(c, model_name + '_collection', Query(self.model).select(order_by=self.model.c.id))
+        setattr(c, model_name + '_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
 
         c.can_edit = self._can_edit()
         # exec the template
@@ -108,10 +125,15 @@ class RUDBase(CRUDBase):
     """
 
     def __before__(self, **kwargs):
+        #print "RUDBase.__before__:", kwargs
+        
         if hasattr(super(RUDBase, self), '__before__'):
             super(RUDBase, self).__before__(**kwargs)
         if 'id' not in kwargs.keys():
-            raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
+            if 'action' in kwargs:
+                raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
+            else:
+                raise RuntimeError, "id not in kwargs, additionally don't know what action is being performend (did you forget to pass in **kwargs in super.__before__?)"
         
         use_oid = False # Determines if we look up on a key or the OID
 
@@ -130,14 +152,17 @@ class RUDBase(CRUDBase):
             pass
 
         if use_oid:
-            self.obj = Query(self.model).get_by(id=id)
+            self.obj = self.dbsession.query(self.model).get_by(id=id)
         elif hasattr(self, 'key'):
             query_dict = {self.key: kwargs['id']}
-            self.obj = Query(self.model).get_by(**query_dict)
+            self.obj = self.dbsession.query(self.model).get_by(**query_dict)
 
         if not hasattr(self, 'obj') or self.obj is None:
             abort(404, "No such object: cannot %s nonexistent id = %r" % (kwargs['action'],
                                                                           kwargs['id']))
+
+        # save obj onto the magical c
+        setattr(c, self.individual, self.obj)
 
 
 class Update(RUDBase):
@@ -152,24 +177,38 @@ class Update(RUDBase):
 
         errors = {}
         defaults = dict(request.POST)
-        if defaults:
-            result, errors = self.schemas['edit'].validate(defaults)
 
-            if not errors:
+        if defaults:
+            result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
+
+            if errors:
+                if asbool(request.environ['paste.config']['global_conf'].get('debug')):
+                    warnings.warn("edit: form validation failed: %s" % errors)
+            else:
                 # update the object with the posted data
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[self.individual][k])
 
-                objectstore.save(self.obj)
-                objectstore.flush()
+                self.dbsession.save(self.obj)
+                self.dbsession.flush()
+
+                # call postflush hook
+                self._edit_postflush()
 
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('edit', default_redirect)
 
-        # save obj onto the magical c
-        setattr(c, self.individual, self.obj)
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
+
+    def _edit_postflush(self):
+        """Overridable method for hooking after a flush of the dbsession.
+
+        CRUD controllers can replace this method with one that performs
+        useful work after the dbsession has been flushed with data from a
+        successful form post.
+        """
+        pass
         
 
 class Delete(RUDBase):
@@ -182,14 +221,12 @@ class Delete(RUDBase):
         """
         
         if request.method == 'POST' and self.obj is not None:
-            objectstore.delete(self.obj)
-            objectstore.flush()
+            self.dbsession.delete(self.obj)
+            self.dbsession.flush()
 
             default_redirect = dict(action='index', id=None)
             self.redirect_to('delete', default_redirect)
 
-        # save obj onto the magical c
-        setattr(c, self.individual, self.obj)
         # call the template
         return render_response('%s/confirm_delete.myt' % self.individual)
 
@@ -200,8 +237,6 @@ class Read(RUDBase):
         if hasattr(self, '_can_edit'):
             c.can_edit = self._can_edit()
 
-        # save obj onto the magical c
-        setattr(c, self.individual, self.obj)
         # exec the template
         response = render_response('%s/view.myt' % self.individual)
 

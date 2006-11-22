@@ -1,6 +1,27 @@
 Changes for Zookeepr
 ====================
 
+0.2.9
+-----
+
+ * Remove threadlocal SQLAlchemy mod from the data model, again using
+   a per-request session.  (Jamie Wilkinson)
+ * Refactor data model initialisation to be more awesome and not lose
+   engine references.  Update test infrastructure to use same method so
+   unittests don't hide production bugs.  (Jamie Wilkinson)
+ * Add facility for editing registration details.  (Jamie Wilkinson)
+ * Refactor CRUD methods to add post-DB-session-flush hooks.  (Jamie Wilkinson)
+ * Add invoice controller and view method.  (Jamie Wilkinson)
+ * Add PaymentOptions object to enumerate costs for billable items.
+   (John Ferlito, Lindsay Holmwood)
+ * Add payment storage objects.  (Jamie Wilkinson, Lindsay Holmwood,
+   John Ferlito)
+ * Add payment controller for payment workflow.  (Jamie Wilkinson,
+   John Ferlito)
+ * Added interfacing with CommSecure.  (John Ferlito, Jamie Wilkinson)
+ * Install moin attachment symlink in dynamic_html_dir so the build isn't
+   interrupted.  (Jamie Wilkinson)
+ 
 0.2.8
 -----
 

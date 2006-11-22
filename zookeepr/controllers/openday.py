@@ -9,7 +9,7 @@ from zookeepr.lib.validators import BaseSchema, EmailAddress
 
 class NotExistingOpendayValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        openday = Query(model.Openday).get_by(email_address=value['email_address'])
+        openday = state.query(model.Openday).get_by(email_address=value['email_address'])
         if openday is not None:
             raise Invalid("You have already registered!", value, state)
 
@@ -49,7 +49,7 @@ class OpendayController(BaseController, Create):
         defaults = dict(request.POST)
 
         if defaults:
-            results, errors = NewOpendaySchema().validate(defaults)
+            results, errors = NewOpendaySchema().validate(defaults, self.dbsession)
 
             if errors: #FIXME: make this only print if debug enabled
                 if request.environ['paste.config']['app_conf'].get('debug'):
@@ -58,9 +58,9 @@ class OpendayController(BaseController, Create):
                 c.openday = model.Openday()
                 for k in results['openday']:
                     setattr(c.openday, k, results['openday'][k])
-                objectstore.save(c.openday)
+                self.dbsession.save(c.openday)
 
-                objectstore.flush()
+                self.dbsession.flush()
 
                 return render_response('openday/thankyou.myt')
 
