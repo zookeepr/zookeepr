@@ -28,7 +28,7 @@ mapper(Invoice, invoice,
                       cascade="all, delete-orphan",
                       ),
     'payment': relation(PaymentReceived, 
-                        backref='payment_received'
+                        backref='invoice'
                         ),
     },
        )
