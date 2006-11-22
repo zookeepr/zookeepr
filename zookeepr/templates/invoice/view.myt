@@ -16,6 +16,10 @@
 </p>
 <p>
 <strong>Due Date:</strong> <% c.invoice.due_date.strftime("%d %b %Y") %>
+</p>
+<p>
+<strong>Amount Due:</strong> <% h.number_to_currency(c.invoice.total()/100) %>
+</p>
 
 <p>
 <strong>Attention:</strong> <% c.invoice.person.fullname %>
@@ -40,7 +44,7 @@ in Sydney, Australia.
 </tr>
 
 % for item in c.invoice.items:
-<tr>
+<tr class="<% h.cycle('even', 'odd') %>">
 
 <td>
 <% item.description %>
@@ -50,20 +54,26 @@ in Sydney, Australia.
 <% item.qty %>
 </td>
 
-<td>
-<% item.cost %>
+<td style="text-align:right">
+<% h.number_to_currency(item.cost/100) %>
 </td>
 
-<td>
-<% item.total() %>
+<td style="text-align:right">
+<% h.number_to_currency(item.total()/100) %>
 </td>
 
 </tr>
 % #endif
 <tr></tr>
 <tr>
+
 <td style="text-align: right" colspan="3">Total</td>
-<td><% c.invoice.total() %></td>
+
+<td style="text-align: right">
+<strong>
+<% h.number_to_currency(c.invoice.total()/100) %>
+</strong>
+</td>
 </table>
 
 <p>
