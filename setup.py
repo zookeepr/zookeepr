@@ -36,9 +36,6 @@ setup(
         'public/*.pdf',
         'public/sponsors/*.gif',
         ]},
-    exclude_package_data{'zookeepr':
-                         ['dynamic_html_dir/*',
-                          ]},
     entry_points="""
     [paste.app_factory]
     main=zookeepr:make_app
