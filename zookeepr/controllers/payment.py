@@ -3,14 +3,22 @@ import string
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 
-class PaymentController(BaseController, Create):
+class PaymentController(BaseController, Create, View):
     """This controller receives payment advice from CommSecure.
 
     the url /payment/new receives the advice
     """
 
-    domain = model.PaymentReceived
+    model = model.PaymentReceived
     individual = 'payment'
+
+    def view(self):
+
+        # TODO Needs auth
+
+        c.person = c.payment.payment_sent.invoice.person
+
+        return super(PaymentController, self).view()
 
     def new(self):
         fields = dict(request.GET)
