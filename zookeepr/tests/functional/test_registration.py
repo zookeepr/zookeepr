@@ -146,7 +146,7 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         self.dbsession.flush()
 
     def test_edit_registration(self):
-        # testing that we can generate an invoice from a registration
+        # test that the rego edit form has the right things in it
         al = model.registration.AccommodationLocation(name='FooPlex', beds=100)
         ao = model.registration.AccommodationOption(name='snuh', cost_per_night=37.00)
         ao.location = al
