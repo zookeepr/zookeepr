@@ -55,15 +55,16 @@ in Sydney, Australia.
 </td>
 
 <td style="text-align:right">
-<% h.number_to_currency(item.cost/100) %>
+<% h.number_to_currency(item.cost/100.0) %>
 </td>
 
 <td style="text-align:right">
-<% h.number_to_currency(item.total()/100) %>
+<% h.number_to_currency(item.total()/100.0) %>
 </td>
 
 </tr>
-% #endif
+% #endfor
+
 <tr></tr>
 <tr>
 
@@ -71,7 +72,7 @@ in Sydney, Australia.
 
 <td style="text-align: right">
 <strong>
-<% h.number_to_currency(c.invoice.total()/100) %>
+<% h.number_to_currency(c.invoice.total()/100.0) %>
 </strong>
 </td>
 </table>

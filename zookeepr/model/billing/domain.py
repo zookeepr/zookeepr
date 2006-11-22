@@ -29,10 +29,10 @@ class Invoice(object):
 
     def total(self):
         """Return the total value of this invoice"""
-        total = 0
+        t = 0
         for ii in self.items:
-            total += ii.total()
-        return total
+            t += ii.total()
+        return t
 
 
 class PaymentReceived(object):
