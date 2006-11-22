@@ -50,12 +50,15 @@ class TestInvoiceController(SignedInCRUDControllerTest):
 
         accom = self.dbsession.query(model.Accommodation).get(ao.id)
         rego = model.Registration(type='Professional',
+                                  checkin=14,
+                                  checkout=20,
+                                  dinner=1,
+                                  partner_email='foo',
+                                  kids_0_3=9,
                                   )
         self.dbsession.save(rego)
         rego.person = self.person
         rego.accommodation = accom
-        rego.partner_email = 'foo'
-        rego.kids_0_3 = 9
 
         self.dbsession.flush()
         self.dbsession.clear()
@@ -71,6 +74,9 @@ class TestInvoiceController(SignedInCRUDControllerTest):
 
         inv = self.dbsession.query(model.Invoice).get_by(person_id=self.person.id)
 
+
+        print "items:", inv.items
+        
         for d in ('Professional Registration', 'Accommodation - FooPlex (snuh)', 'Additional Penguin Dinner Tickets', "Partner's Programme"):
             self.failUnless(d in [ii.description for ii in inv.items],
                             "Can't find %r in items" % d)

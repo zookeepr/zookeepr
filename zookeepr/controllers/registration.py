@@ -213,7 +213,24 @@ class RegistrationController(BaseController, Create, Update):
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
-        # 
+        # Dinner:
+        if registration.dinner > 0:
+            iid = model.InvoiceItem(description='Additional Penguin Dinner Tickets',
+                                    qty=registration.dinner,
+                                    cost=6000)
+            self.dbsession.save(iid)
+            invoice.items.append(iid)
+        
+        # Accommodation:
+        if registration.accommodation:
+            description = 'Accommodation - %s' % registration.accommodation.name
+            if registration.accommodation.option:
+                description += " (%s)" % registration.accommodation.option
+            iia = model.InvoiceItem(description,
+                                    qty=registration.checkout-registration.checkin,
+                                    cost=registration.accommodation.cost_per_night * 100)
+            self.dbsession.save(iia)
+            invoice.items.append(iia)
 
         self.dbsession.save(invoice)
         self.dbsession.flush()
