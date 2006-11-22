@@ -1,9 +1,11 @@
 import hmac, sha
 import string
+
+from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 
-class PaymentController(BaseController, Create, View):
+class PaymentController(SecureController, Create, View):
     """This controller receives payment advice from CommSecure.
 
     the url /payment/new receives the advice
@@ -11,6 +13,11 @@ class PaymentController(BaseController, Create, View):
 
     model = model.PaymentReceived
     individual = 'payment'
+    permissions = {'view': [AuthFunc('is_payee')],
+                   }
+
+    def is_payee(self):
+        return c.payment.payment_received.invoice.person == c.signed_in_person
 
     def view(self):
 
