@@ -232,6 +232,22 @@ class RegistrationController(BaseController, Create, Update):
             self.dbsession.save(iia)
             invoice.items.append(iia)
 
+        # Partner's Programme
+        partner = 0
+        if registration.partner_email:
+            partner = 1
+        kids = 0
+        for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10]:
+            if k is not None:
+                kids += k
+        if partner + kids > 0:
+            iip = model.InvoiceItem(description="Partner's Programme",
+                                    qty = 1,
+                                    cost=p.getPartnersAmount(partner, kids)
+                                    )
+            self.dbsession.save(iip)
+            invoice.items.append(iip)
+
         self.dbsession.save(invoice)
         self.dbsession.flush()
 
@@ -293,7 +309,11 @@ class PaymentOptions:
         return accommodationAmount
 
     def getPartnersAmount(self, partner, kids):
-        partnersAmount = self.partners[partner + kids]
+        count = partner + kids
+        if count == 0:
+            partnersAmount = 0
+        else:
+            partnersAmount = (count + 1) * 10000
         return partnersAmount
 
     # jaq, 22/11: what's this for?  commented out to facilitate runningness

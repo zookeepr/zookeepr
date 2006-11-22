@@ -47,6 +47,8 @@ class TestInvoiceController(SignedInCRUDControllerTest):
         self.dbsession.save(al)
         self.dbsession.save(ao)
         self.dbsession.flush()
+        alid = al.id
+        aoid = ao.id
 
         accom = self.dbsession.query(model.Accommodation).get(ao.id)
         rego = model.Registration(type='Professional',
@@ -61,6 +63,7 @@ class TestInvoiceController(SignedInCRUDControllerTest):
         rego.accommodation = accom
 
         self.dbsession.flush()
+        rid = rego.id
         self.dbsession.clear()
 
         resp = self.app.get('/profile/%d' % self.person.id)
@@ -72,7 +75,10 @@ class TestInvoiceController(SignedInCRUDControllerTest):
 
         print resp
 
-        inv = self.dbsession.query(model.Invoice).get_by(person_id=self.person.id)
+        invs = self.dbsession.query(model.Invoice).select_by(person_id=self.person.id)
+
+        print "invoice:", invs
+        inv = invs[0]
 
 
         print "items:", inv.items
@@ -83,7 +89,11 @@ class TestInvoiceController(SignedInCRUDControllerTest):
         
 
 
-        self.fail("not really")
+        #self.fail("not really")
         # clean up
-        
-        
+        # invoice gets deleted by tearDown, semantics of invoice creation, reuse
+        # existing invoice until paid
+        self.dbsession.delete(self.dbsession.query(model.Registration).get(rid))
+        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationOption).get(aoid))
+        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationLocation).get(alid))
+        self.dbsession.flush()
