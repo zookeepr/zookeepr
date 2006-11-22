@@ -7,11 +7,18 @@ from zookeepr.model.registration import Registration
 
 mapper(InvoiceItem, invoice_item)
 
-mapper(Payment, payment)
+mapper(Payment, payment,
+       properties = {
+            'invoice': relation(Invoice,
+                                lazy=True,
+                                backref='invoice_id'
+                       ),
+            },
+      )
 
 mapper(PaymentReceived, payment_received,
        properties = {
-            'payment': relation(Payment,
+            'payment_sent': relation(Payment,
                                 backref='payment_sent'
                        ),
             },
