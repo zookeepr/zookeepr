@@ -1,11 +1,10 @@
 import hmac, sha
 import string
 
-from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 
-class PaymentController(SecureController, Create, View):
+class PaymentController(BaseController, Create, View):
     """This controller receives payment advice from CommSecure.
 
     the url /payment/new receives the advice
@@ -13,13 +12,15 @@ class PaymentController(SecureController, Create, View):
 
     model = model.PaymentReceived
     individual = 'payment'
-    permissions = {'view': [AuthFunc('is_payee')],
-                   }
-
-    def is_payee(self):
-        return c.payment.payment_received.invoice.person == c.signed_in_person
 
     def view(self):
+        # hack because we don't use auth:
+        if 'signed_in_person_id' in session:
+            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+
+            if c.signed_in_person != c.payment.payment_received.invoice.person:
+                redirect_to('/account/signin')
+                                                    
         c.person = c.payment.payment_sent.invoice.person
 
         return super(PaymentController, self).view()
@@ -38,40 +39,40 @@ class PaymentController(SecureController, Create, View):
         # the validation, possibly even using a regular formencode validation
         # chain.
         
-        if not self.verify_hmac(fields):
+        if not self._verify_hmac(fields):
             # Verify the HMAC to be sure that it came from CommSecure.
             pr.result = 'InvalidMac'
             error = '/Errors/InvalidPayment'
             # email seven
-            self.mail_warn('Invalid HMAC', pr)
+            self._mail_warn('Invalid HMAC', pr)
             
         elif pr.payment is None:
             # Check that this data references a payment we sent to CommSecure.
             pr.result = 'NonExistentPayment'
             error = '/Errors/MissingPayment'
             # email seven
-            self.mail_warn('Nonexistent Payment', pr)
+            self._mail_warn('Nonexistent Payment', pr)
 
         elif pr.payment.invoice_id != string.atoi(pr.InvoiceID):
             # check invoices match
             pr.result = 'InvoiceMisMatch'
             error = '/Errors/BadInvoice'
 
-            self.mail_warn("Invoice Numbers Don't Match", pr)
+            self._mail_warn("Invoice Numbers Don't Match", pr)
 
         elif pr.payment.amount != string.atoi(pr.ORIGINAL_AMOUNT):
             # Check amounts match
             pr.result = 'AmountMisMatch'
             error = '/Errors/BadAmount'
 
-            self.mail_warn("Amount Paid Doesn't Match What We Stored", pr)
+            self._mail_warn("Amount Paid Doesn't Match What We Stored", pr)
 
         elif pr.Amount != pr.ORIGINAL_AMOUNT:
             # Check they paid what we asked
             pr.result = 'DifferentAmountPaid'
             error = '/Errors/UserPaidDifferentAmount'
 
-            self.mail_warn("Amount Paid Doesn't Match What We Asked", pr)
+            self._mail_warn("Amount Paid Doesn't Match What We Asked", pr)
             
         else:
             pr.result = 'OK'
@@ -87,7 +88,7 @@ class PaymentController(SecureController, Create, View):
         else:
             redirect_to(controller='payment', action='view', id=pr.id)
 
-    def verify_hmac(self, fields):
+    def _verify_hmac(self, fields):
         merchantid =  request.environ['paste.config']['app_conf'].get('commsecure_merchantid')
         secret =  request.environ['paste.config']['app_conf'].get('commsecure_secret')
 
@@ -102,6 +103,7 @@ class PaymentController(SecureController, Create, View):
         keys = fields.keys()
         keys.sort()
         stringToMAC = '&'.join(['%s=%s' % (key, fields[key]) for key in keys if key != 'MAC'])
+        print stringToMAC
         mac = hmac.new(secret, stringToMAC, sha).hexdigest()
 
         # Check the MAC
@@ -110,3 +112,11 @@ class PaymentController(SecureController, Create, View):
 
         return False
 
+
+    def _mail_warn(self, msg, pr):
+        s = smtplib.SMTP("localhost")
+        body = render('payment/warning.myt', fragment=True)
+        s.sendmail("seven-contact@lca2007.linux.org.au",
+                   "seven-contact@lca2007.linux.org.au",
+                   body)
+        s.quit()
