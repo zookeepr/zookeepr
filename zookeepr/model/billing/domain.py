@@ -58,32 +58,6 @@ class PaymentReceived(object):
         self.MerchantID = MerchantID
         self.Surcharge = Surcharge
 
-    def map_fields(self, fields):
-
-        mapping = {
-            'InvoiceID': 'invoice_id',
-            'PaymentID': 'payment_id',
-            'AuthNum': 'auth_num',
-            'Amount': 'amount',
-            'RefundKey': 'refund_key',
-            'Status': 'status',
-            'Settlement': 'settlement',
-            'ErrorString': 'wrror_string',
-            'CardName': 'card_name',
-            'CardType': 'card_type',
-            'TransID': 'trans_id',
-            'ORIGINAL_AMOUNT': 'original_amount',
-            'RequestedPage': 'requested_page',
-            'MAC': 'mac',
-            'CardNumber': 'card_number',
-            'MerchantID': 'merchant_id',
-            'Surcharge': 'surcharge',
-        }
-
-        for key in mapping.keys():
-            if key in fields:
-                setattr(self, mapping[key], fields[key])
-
 
 class Payment(object):
     def __repr__(self):

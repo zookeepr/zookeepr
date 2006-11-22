@@ -30,8 +30,7 @@ class InvoiceController(SecureController, Read):
         # I'm just trusting commsecure to do the right thing at the moment
 
         # Store the payment attempt
-        payment_received = model.PaymentReceived()
-        payment_received.map_fields(fields)
+        payment_received = model.PaymentReceived(**fields)
         self.dbsession.save(payment_received)
         self.dbsession.flush()
 
