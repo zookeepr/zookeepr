@@ -26,57 +26,66 @@ class PaymentController(SecureController, Create, View):
 
     def new(self):
         fields = dict(request.GET)
-        c.payment = model.PaymentReceived(**fields)
-        payment_received = c.payment
-        self.dbsession.save(payment_received)
+        
+        pr = model.PaymentReceived(**fields)
+        self.dbsession.save(pr)
+        # save object now to get the id and be sure it's saved in case
+        # the validation blows up
         self.dbsession.flush()
 
-        # Verify it really came from Commsecure
-        valid_mac = self.verify_hmac(fields)
-        if not valid_mac:
-            payment_received.result = 'InvalidMac'
-            self.dbsession.save(payment_received)
-            self.dbsession.flush()
-            redirect_to('/Errors/InvalidPayment')
+        # Start long chain of validation.
+        # I'd like to replace this with a "Chain of Command" pattern to do
+        # the validation, possibly even using a regular formencode validation
+        # chain.
+        
+        if not self.verify_hmac(fields):
+            # Verify the HMAC to be sure that it came from CommSecure.
+            pr.result = 'InvalidMac'
+            error = '/Errors/InvalidPayment'
+            # email seven
+            self.mail_warn('Invalid HMAC', pr)
+            
+        elif pr.payment is None:
+            # Check that this data references a payment we sent to CommSecure.
+            pr.result = 'NonExistentPayment'
+            error = '/Errors/MissingPayment'
+            # email seven
+            self.mail_warn('Nonexistent Payment', pr)
 
-        # What we sent
-        payment_sent = payment_received.payment
-        if payment_sent is None:
-            payment_received.result = 'NonExistentPayment'
-            self.dbsession.save(payment_received)
-            self.dbsession.flush()
-            redirect_to('/Errors/MissingPayment')
+        elif pr.payment.invoice_id != string.atoi(pr.InvoiceID):
+            # check invoices match
+            pr.result = 'InvoiceMisMatch'
+            error = '/Errors/BadInvoice'
 
-        # check invoices match
-        if payment_sent.invoice_id != string.atoi(payment_received.InvoiceID):
-            payment_received.result = 'InvoiceMisMatch'
-            self.dbsession.save(payment_received)
-            self.dbsession.flush()
-            redirect_to('/Errors/BadInvoice')
+            self.mail_warn("Invoice Numbers Don't Match", pr)
 
-        # Check amounts match
-        if payment_sent.amount != string.atoi(payment_received.ORIGINAL_AMOUNT):
-            payment_received.result = 'AmountMisMatch'
-            self.dbsession.save(payment_received)
-            self.dbsession.flush()
-            redirect_to('/Errors/BadAmount')
+        elif pr.payment.amount != string.atoi(pr.ORIGINAL_AMOUNT):
+            # Check amounts match
+            pr.result = 'AmountMisMatch'
+            error = '/Errors/BadAmount'
 
-        # Check they paid what we asked
-        if payment_received.Amount != payment_received.ORIGINAL_AMOUNT:
-            payment_received.result = 'DifferentAmountPaid'
-            self.dbsession.save(payment_received)
-            self.dbsession.flush()
-            redirect_to('/Errors/UserPaidDifferentAmount')
+            self.mail_warn("Amount Paid Doesn't Match What We Stored", pr)
 
-        payment_received.result = 'OK'
-        self.dbsession.save(payment_received)
+        elif pr.Amount != pr.ORIGINAL_AMOUNT:
+            # Check they paid what we asked
+            pr.result = 'DifferentAmountPaid'
+            error = '/Errors/UserPaidDifferentAmount'
+
+            self.mail_warn("Amount Paid Doesn't Match What We Asked", pr)
+            
+        else:
+            pr.result = 'OK'
+            error = None
+
         self.dbsession.flush()
 
         # OK we now have a valid transaction, we redirect the user to the view page
         # so they can see if their transaction was accepted or declined
 
-        redirect_to(controller='payment', action='view', id=payment_received.id)
-
+        if error:
+            redirect_to(error)
+        else:
+            redirect_to(controller='payment', action='view', id=pr.id)
 
     def verify_hmac(self, fields):
         merchantid =  request.environ['paste.config']['app_conf'].get('commsecure_merchantid')

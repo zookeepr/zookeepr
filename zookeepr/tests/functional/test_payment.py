@@ -4,5 +4,6 @@ class TestPaymentController(ControllerTest):
     """Test that when we pump data into the payment, it does the right thing.
     """
 
-    pass
-    #def test_payment_
+    def test_payment_received(self):
+        
+        pass
