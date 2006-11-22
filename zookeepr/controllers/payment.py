@@ -20,9 +20,6 @@ class PaymentController(SecureController, Create, View):
         return c.payment.payment_received.invoice.person == c.signed_in_person
 
     def view(self):
-
-        # TODO Needs auth
-
         c.person = c.payment.payment_sent.invoice.person
 
         return super(PaymentController, self).view()
