@@ -213,6 +213,8 @@ class RegistrationController(BaseController, Create, Update):
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
+        # 
+
         self.dbsession.save(invoice)
         self.dbsession.flush()
 
