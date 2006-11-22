@@ -202,7 +202,6 @@ class RegistrationController(BaseController, Create, Update):
         else:
             invoice = model.Invoice()
             invoice.person = registration.person
-            person.invoices.append(invoice)
 
         p = PaymentOptions()
 

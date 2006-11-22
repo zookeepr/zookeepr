@@ -1,9 +1,7 @@
 <h1>Tax Invoice/Statement</h1>
 
 <div style="text-align:center">
-<p>
-                         Linux Australia Incorporated
-</p>
+<h2>Linux Australia Incorporated</h2>
 <p>
                              ABN 56 987 117 479
 </p>
@@ -16,6 +14,8 @@
 <p>
 <strong>Issue Date:</strong> <% c.invoice.issue_date.strftime("%d %b %Y") %>
 </p>
+<p>
+<strong>Due Date:</strong> <% c.invoice.due_date.strftime("%d %b %Y") %>
 
 <p>
 <strong>Attention:</strong> <% c.invoice.person.fullname %>
@@ -95,3 +95,7 @@ Enquiries may be emailed to the organisers:
 # if invoice unpayed
 <p><a href="asdf">Confirm Invoice</a></p>
 # endif
+
+<%method title>
+Tax Invoice/Statement - <& PARENT:title &>
+</%method>
