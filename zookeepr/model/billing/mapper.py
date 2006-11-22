@@ -8,12 +8,9 @@ from zookeepr.model.registration import Registration
 mapper(InvoiceItem, invoice_item)
 
 mapper(Payment, payment,
-#        properties = {
-#             'invoice': relation(Invoice,
-#                                 lazy=True,
-#                                 backref='payment'
-#                        ),
-#             },
+        properties = {
+             'invoice': relation(Invoice)
+             },
       )
 
 mapper(PaymentReceived, payment_received,
