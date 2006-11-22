@@ -12,6 +12,12 @@ Changes for Zookeepr
  * Add facility for editing registration details.  (Jamie Wilkinson)
  * Refactor CRUD methods to add post-DB-session-flush hooks.  (Jamie Wilkinson)
  * Add invoice controller and view method.  (Jamie Wilkinson)
+ * Add PaymentOptions object to enumerate costs for billable items.
+   (John Ferlito, Lindsay Holmwood)
+ * Add payment storage objects.  (Jamie Wilkinson, Lindsay Holmwood,
+   John Ferlito)
+ * Add payment controller for payment workflow.  (Jamie Wilkinson,
+   John Ferlito)
  
 0.2.8
 -----
