@@ -1,3 +1,5 @@
+from paste.fixture import Dummy_smtplib
+
 from zookeepr.tests.functional import *
 
 class TestPaymentController(ControllerTest):
@@ -13,6 +15,15 @@ class TestPaymentController(ControllerTest):
 #         invoice.items.append(ii)
 
 #         # do stuff
+
+    def setUp(self):
+        super(TestPaymentController, self).setUp()
+        Dummy_smtplib.install()
+
+    def tearDown(self):
+        if Dummy_smtplib.existing:
+            Dummy_smtplib.existing.reset()
+        super(TestPaymentController, self).tearDown()
 
     def test_no_payment(self):
         # a random hit on the page
