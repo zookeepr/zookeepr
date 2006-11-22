@@ -35,7 +35,7 @@ setup(
         'public/*.gif',
         'public/*.pdf',
         'public/sponsors/*.gif',
-        ]}, 
+        ]},
     entry_points="""
     [paste.app_factory]
     main=zookeepr:make_app
