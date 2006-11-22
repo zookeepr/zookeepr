@@ -34,9 +34,38 @@ class InvoiceController(SecureController, Read):
         self.dbsession.save(payment_received)
         self.dbsession.flush()
 
+        # TODO Add some field validation
+        # I'm just trusting commsecure to do the right thing at the moment
+        payment = payment_received.payment
+        # check invoices match
+        if payment.invoice_id != payment_received.invoice_id:
+            payment_recevied.result = 'InvoiceMisMatch'
+            self.dbsession.save(payment_received)
+            self.dbsession.flush()
+            redirect_to('/Errors/BadInvoice')
 
-        redirect_to('/ShouldntGetHere')
+        # Check amounts match
+        if payment.amount != payment_received.original_amount:
+            payment_recevied.result = 'AmountMisMatch'
+            self.dbsession.save(payment_received)
+            self.dbsession.flush()
+            redirect_to('/Errors/BadAmount')
 
+        # Check they paid what we asked
+        if payment_received.amount != payment_received.original_amount:
+            payment_recevied.result = 'DifferentAmountPaid'
+            self.dbsession.save(payment_received)
+            self.dbsession.flush()
+            redirect_to('/Errors/UserPaidDifferentAmount')
+
+        payment_recevied.result = 'OK'
+        self.dbsession.save(payment_received)
+        self.dbsession.flush()
+
+        # OK we now have a valid transaction, we redirect the user to the view page
+        # so they can see if their transaction was accepted or declined
+
+        redirect_to(controller='payment_received', action='view', id=payment_received.id)
 
     def verify_hmac(self, fields):
         merchantid =  request.environ['paste.config']['app_conf'].get('commsecure_merchantid')
