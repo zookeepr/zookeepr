@@ -9,6 +9,7 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
+from zookeepr.model import Invoice, InvoiceItem
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -184,86 +185,107 @@ class RegistrationController(BaseController, Create, Update):
                 c.registration.person = c.person
                 self.dbsession.flush()
 
-                # do post-rego build invoice magic
-                self._build_invoice()
-
                 s = smtplib.SMTP("localhost")
                 body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
                 s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
                 s.quit()
-                
+
                 return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
-
-    def _edit_postflush(self):
-        # do post-rego-build-invoice magic
-        self._build_invoice()
-
-
-    def _build_invoice(self):
-        r = c.registration
-
-        if len(r.person.invoices) == 0:
-
-            invoice = model.Invoice(issue_date=datetime.datetime.now())
-            self.dbsession.save(invoice)
-            r.person.invoices.append(invoice)
-        
+    def pay(self):
+        registration = self.obj
+        if registration.invoice:
+            invoice = registration.invoice[0]
         else:
-            # make the terrible assumption that all are paid,
-            # that we only change the last one
-            invoice = r.person.invoices[-1]
-            
-            if invoice.payment:
-                invoice = model.Invoice(issue_date=datetime.datetime.now())
-                self.dbsession.save(invoice)
-                r.person.invoices.append(invoice)
-            else:
-                # drop existing invoice items
-                for ii in invoice.items:
-                    self.dbsession.delete(ii)
+            invoice = Invoice()
+            invoice.person = registration.person
+            invoice.registration = [registration]
 
-        # pretty much all of this is a dirty hack
-        iit = model.InvoiceItem()
-        self.dbsession.save(iit)
-        if r.type == 'Professional':
-            iit.description = 'Professional registration'
-            iit.qty = 1
-            iit.cost = 690.00
-            iid = model.InvoiceItem(description='Penguin Dinner ticket (included in registration)',
-                                    qty=1,
-                                    cost=0.00)
-            self.dbsession.save(iid)
-            invoice.items.append(iid)
-        elif r.type == 'Hobbyist':
-            iit.description='Hobbyist registration'
-            iit.qty = 1
-            iit.cost=300.00
-        elif r.type == 'Concession':
-            iit.description='Student/Concession registration'
-            iit.qty = 1
-            iit.cost=99.00
-            
-        self.dbsession.save(iit)
-        invoice.items.append(iit)
+        invoice.items = []
 
-        if r.dinner > 0:
-            iidt = model.InvoiceItem(description = 'Additional Penguin dinner tickets',
-                                     qty = r.dinner,
-                                     cost = 60.00)
-            self.dbsession.save(iidt)
-            invoice.items.append(iidt)
+        p = PaymentOptions()
 
-        if r.accommodation:
-            desc = "Accommodation - %s" % r.accommodation.name
-            if r.accommodation.option:
-                desc += " (%s)" % (r.accommodation.option,)
-            iia = model.InvoiceItem(description=desc,
-                                    qty=r.checkout - r.checkin,
-                                    cost=r.accommodation.cost_per_night)
-            self.dbsession.save(iia)
-            invoice.items.append(iia)
+        # Registration
+        description = registration.type + " Registration"
+        if p.is_earlybird(registration.date):
+            description = description + " (earlybird)"
+        ii = InvoiceItem(description, p.getTypeAmount(registration.type, registration.date))
+        self.dbsession.save(ii)
+        invoice.items.append(ii)
 
+        self.dbsession.save(invoice)
         self.dbsession.flush()
+
+        redirect_to(controller='invoice', action='view', id=invoice.id)
+
+
+class PaymentOptions:
+    def __init__(self):
+        types = {
+                "Professional": [51750, 69000],
+                "Hobbyist": [30000, 22500],
+                "Concession": [9900, 9900]
+                }
+        dinner = {
+                "1": 6000,
+                "2": 12000,
+                "3": 18000
+                }
+        accommodation = {
+                "0": 0,
+                "1": 4950,
+                "2": 5500,
+                "3": 6000,
+                "5": 3500,
+                "6": 5850
+                }
+        ebdate = [22, 11, 06]
+        #indates = [14, 15, 16, 17, 18, 19]
+        #outdates = [15, 16, 17, 18, 19, 20]
+
+        partners = {
+                "0": 0,
+                "1": 20000, # just a partner
+                "2": 30000, # now the kids
+                "3": 40000,
+                "4": 50000
+                }
+
+    def getTypeAmount(self, type, date):
+        if type in types.keys():
+            if self.is_earlybird(date):
+                return types[type][0]
+            else:
+                return types[type][1]
+
+    def is_earlybird(self, date):
+        if date[2] <= ebdate[2] and date[1] <= ebdate[1] and date[0] <= ebdate[0]:
+            return True
+
+        return False
+
+    def getDinnerAmount(self, tickets):
+        dinnerAmount = dinner[tickets]
+        return dinnerAmount
+
+    def getAccommodationRate(self, choice):
+        accommodationRate = accommodation[choice]
+        return accommodationRate
+
+    def getAccommodationAmount(self, rate, indate, outdate):
+        accommodationAmount = (outdate - indate) * rate
+        return accommodationAmount
+
+    def getPartnersAmount(self, partner, kids):
+        partnersAmount = partners[partner + kids]
+        return partnersAmount
+
+    # jaq, 22/11: what's this for?  commented out to facilitate runningness
+    #total = 0
+    #total += p.getTypeAmount()
+    #total += p.getDinnerAmount()
+    #total += p.getAccommodationRate()
+    #total += p.getAccommodationAmount()
+    #total += p.getPartnersAmount()

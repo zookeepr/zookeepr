@@ -2,6 +2,9 @@ from sqlalchemy import *
 
 from zookeepr.model import metadata
 
+print func, dir(func)
+print func.current_timestamp, dir(func.current_timestamp)
+
 invoice = Table('invoice', metadata,
                 Column('id', Integer, primary_key=True),
 
@@ -11,6 +14,7 @@ invoice = Table('invoice', metadata,
                        ),
 
                 Column('issue_date', DateTime,
+                       default=func.current_timestamp(),
                        nullable=False),
                 
                 Column('creation_timestamp', DateTime,
@@ -29,12 +33,12 @@ invoice_item = Table('invoice_item', metadata,
                      Column('invoice_id', Integer,
                             ForeignKey('invoice.id'),
                             nullable=False),
-                     
+
                      Column('description', String,
                             nullable=False),
                      Column('qty', Integer,
                             nullable=False),
-                     Column('cost', Float,
+                     Column('cost', Integer,
                             nullable=False),
                      )
 
@@ -45,7 +49,7 @@ payment = Table('payment', metadata,
                        ForeignKey('invoice.id'),
                        nullable=False),
                 
-                Column('amount', Float,
+                Column('amount', Integer,
                        nullable=False),
                 )
 

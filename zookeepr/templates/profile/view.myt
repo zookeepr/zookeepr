@@ -255,4 +255,10 @@ profile - <& PARENT:title &>
 % if c.profile.registration:
 <% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
 % #endif
+
+% if c.profile.registration:
+<% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.profile.registration.id)) %>
+% #endif
+
 </%method>
+

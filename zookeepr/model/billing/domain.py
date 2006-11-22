@@ -16,32 +16,75 @@ class Invoice(object):
     def __repr__(self):
         return '<Invoice id=%r person=%r>' % (self.id, self.person_id)
 
-    # FIXME: remove when mapped to payment object
-    def _get_payment(self):
-        return None
-
-    payment = property(_get_payment)
-
 
 class PaymentReceived(object):
-    def __init__(self, invoice_id=None, auth_num=None, amount=None, refund_key=None, merchant_id=None, status=None, settlement=None, error_string=None, card_name=None, requested_page=None, card_type=None, mac=None, card_number=None, payment_id=None, trans_id=None, original_amount=None, surcharge=None):
-        self.invoice_id = invoice_id
-        self.auth_num = auth_num
-        self.amount = amount
-        self.refund_key = refund_key
-        self.merchant_id = merchant_id
-        self.status = status
-        self.settlement = settlement
-        self.error_string = error_string
-        self.card_name = card_name
-        self.requested_page = requested_page
-        self.card_type = card_type
-        self.mac = mac
-        self.card_number = card_number
-        self.payment_id = payment_id
-        self.trans_id = trans_id
-        self.original_amount = original_amount
-        self.surcharge = surcharge
-
     def __repr__(self):
         return '<PaymentReceived id=%r invoice_id=%r payment_id=%r amount=%r status=%r>' % (self.id, self.invoice_id, self.payment_id, self.amount, self.status)
+
+    def __init__(self,
+                 InvoiceID=None,
+                 PaymentID=None,
+                 AuthNum=None,
+                 Amount=None,
+                 RefundKey=None,
+                 Status=None,
+                 Settlement=None,
+                 ErrorString=None,
+                 CardName=None,
+                 CardType=None,
+                 TransID=None,
+                 ORIGINAL_AMOUNT=None,
+                 RequestedPage=None,
+                 MAC=None,
+                 CardNumber=None,
+                 MerchantID=None,
+                 Surcharge=None,
+                 ):
+        self.invoice_id = InvoiceID
+        self.payment_id = PaymentID
+        self.auth_num = AuthNum
+        self.amount = Amount
+        self.refund_key = RefundKey
+        self.status = Status
+        self.settlement = Settlement
+        self.error_string = ErrorString
+        self.card_name = CardName
+        self.card_type = CardType
+        self.trans_id = TransID
+        self.original_amount = ORIGINAL_AMOUNT
+        self.requested_page = RequestedPage
+        self.mac = MAC
+        self.card_number = CardNumber
+        self.merchant_id = MerchantID
+        self.surcharge = Surcharge
+
+    def map_fields(self, fields):
+
+        mapping = {
+            'InvoiceID': 'invoice_id',
+            'PaymentID': 'payment_id',
+            'AuthNum': 'auth_num',
+            'Amount': 'amount',
+            'RefundKey': 'refund_key',
+            'Status': 'status',
+            'Settlement': 'settlement',
+            'ErrorString': 'wrror_string',
+            'CardName': 'card_name',
+            'CardType': 'card_type',
+            'TransID': 'trans_id',
+            'ORIGINAL_AMOUNT': 'original_amount',
+            'RequestedPage': 'requested_page',
+            'MAC': 'mac',
+            'CardNumber': 'card_number',
+            'MerchantID': 'merchant_id',
+            'Surcharge': 'surcharge',
+        }
+
+        for key in mapping.keys():
+            if key in fields:
+                setattr(self, mapping[key], fields[key])
+
+
+class Payment(object):
+    def __repr__(self):
+        return '<Payment id=%r>' % (self.id)
