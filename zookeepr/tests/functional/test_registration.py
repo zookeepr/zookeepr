@@ -164,6 +164,8 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
                                   partner_email='foo',
                                   kids_0_3=9,
                                   lasignup=True,
+                                  miniconf=['Debian', 'OpenOffice.org'],
+                                  prevlca=['06', '99'],
                                   )
         self.dbsession.save(rego)
         rego.person = self.person
@@ -182,9 +184,13 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
             print "%s: %r" % (k, v[0].value)
 
         print "registration.lasignup:", resp.form.fields['registration.lasignup'][0].value
-        self.assertEqual(True, resp.form.fields['registration.lasignup'][0].value)
-
-        self.fail("not really")
+        self.assertEqual('1', resp.form.fields['registration.lasignup'][0].value)
+        self.assertEqual('14', resp.form.fields['registration.checkin'][0].value)
+        self.assertEqual('1', resp.form.fields['registration.dinner'][0].value)
+        self.assertEqual('1', resp.form.fields['registration.miniconf.Debian'][0].value)
+        self.assertEqual('1', resp.form.fields['registration.miniconf.OpenOffice.org'][0].value)
+        self.assertEqual('1', resp.form.fields['registration.prevlca.06'][0].value)
+        self.assertEqual('1', resp.form.fields['registration.prevlca.99'][0].value)
 
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Registration).get(rid))
