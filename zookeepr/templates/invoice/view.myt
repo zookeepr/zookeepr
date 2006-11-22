@@ -103,11 +103,11 @@ Enquiries may be emailed to the organisers:
 
 #</pre>
 
-% if not c.invoice.payment:
-<p>
-<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
-</p>
-% #endif
+#% if not c.invoice.payment:
+#<p>
+#<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
+#</p>
+#% #endif
 
 <%method title>
 Tax Invoice/Statement - <& PARENT:title &>
