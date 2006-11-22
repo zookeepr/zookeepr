@@ -78,3 +78,6 @@ class TestInvoiceController(SignedInCRUDControllerTest):
 
 
         self.fail("not really")
+        # clean up
+        
+        
