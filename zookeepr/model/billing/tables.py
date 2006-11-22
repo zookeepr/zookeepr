@@ -110,4 +110,7 @@ payment_received = Table('payment_received', metadata,
                          Column('surcharge', Integer,
                                 key='Surcharge',
                                 ),
+                         Column('result', String,
+                                key='result',
+                                ),
                          )
