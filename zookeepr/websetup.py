@@ -32,13 +32,6 @@ def setup_config(command, filename, section, vars):
                 raise e
 
     try:
-        os.symlink(os.path.join(app_conf['moin_data'], 'attachments'), os.path.join(os.path.dirname(__file__), 'public', 'att-data'))
-    except OSError, e:
-        if e.errno == 17:
-            print "skipping, file exists"
-        else:
-            raise e
-    try:
         mkdir(os.path.join(app_conf['moin_data'], 'pages'))
         # copy plugins dir from our egg to the destination
         copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(app_conf['moin_data'], 'plugin'), {}, 1, False)
@@ -61,3 +54,11 @@ def setup_config(command, filename, section, vars):
 
     p = open(os.path.join(app_conf['dynamic_html_dir'], 'planet.html'), "ab")
     p.close()
+
+    try:
+        os.symlink(os.path.join(app_conf['moin_data'], 'attachments'), os.path.join(app_conf['dynamic_html_dir'], 'att-data'))
+    except OSError, e:
+        if e.errno == 17:
+            print "skipping, file exists"
+        else:
+            raise e
