@@ -282,10 +282,3 @@ class PaymentOptions:
         partnersAmount = partners[partner + kids]
         return partnersAmount
 
-    # jaq, 22/11: what's this for?  commented out to facilitate runningness
-    #total = 0
-    #total += p.getTypeAmount()
-    #total += p.getDinnerAmount()
-    #total += p.getAccommodationRate()
-    #total += p.getAccommodationAmount()
-    #total += p.getPartnersAmount()
