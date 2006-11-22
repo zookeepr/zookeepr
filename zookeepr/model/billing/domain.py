@@ -9,12 +9,24 @@ class InvoiceItem(object):
     def __repr__(self):
         return '<InvoiceItem id=%r description=%r qty=%r cost=%r>' % (self.id, self.description, self.qty, self.cost)
 
+    def total(self):
+        """Return the total cost of this item"""
+        return self.cost * self.qty
+
+
 class Invoice(object):
     def __init__(self, issue_date=None):
         self.issue_date = issue_date
 
     def __repr__(self):
         return '<Invoice id=%r person=%r>' % (self.id, self.person_id)
+
+    def total(self):
+        """Return the total value of this invoice"""
+        total = 0
+        for ii in self.items:
+            total += ii.total()
+        return total
 
 
 class PaymentReceived(object):
