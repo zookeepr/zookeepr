@@ -19,7 +19,7 @@ class Invoice(object):
 
 class PaymentReceived(object):
     def __repr__(self):
-        return '<PaymentReceived id=%r invoice_id=%r payment_id=%r amount=%r status=%r>' % (self.id, self.invoice_id, self.payment_id, self.amount, self.status)
+        return '<PaymentReceived id=%r invoice_id=%r payment_id=%r amount=%r status=%r>' % (self.id, self.InvoiceID, self.PaymentID, self.Amount, self.Status)
 
     def __init__(self,
                  InvoiceID=None,
@@ -40,23 +40,23 @@ class PaymentReceived(object):
                  MerchantID=None,
                  Surcharge=None,
                  ):
-        self.invoice_id = InvoiceID
-        self.payment_id = PaymentID
-        self.auth_num = AuthNum
-        self.amount = Amount
-        self.refund_key = RefundKey
-        self.status = Status
-        self.settlement = Settlement
-        self.error_string = ErrorString
-        self.card_name = CardName
-        self.card_type = CardType
-        self.trans_id = TransID
-        self.original_amount = ORIGINAL_AMOUNT
-        self.requested_page = RequestedPage
-        self.mac = MAC
-        self.card_number = CardNumber
-        self.merchant_id = MerchantID
-        self.surcharge = Surcharge
+        self.InvoiceID = InvoiceID
+        self.PaymentID = PaymentID
+        self.AuthNum = AuthNum
+        self.Amount = Amount
+        self.RefundKey = RefundKey
+        self.Status = Status
+        self.Settlement = Settlement
+        self.ErrorString = ErrorString
+        self.CardName = CardName
+        self.CardType = CardType
+        self.TransID = TransID
+        self.ORIGINAL_AMOUNT = ORIGINAL_AMOUNT
+        self.RequestedPage = RequestedPage
+        self.MAC = MAC
+        self.CardNumber = CardNumber
+        self.MerchantID = MerchantID
+        self.Surcharge = Surcharge
 
     def map_fields(self, fields):
 
