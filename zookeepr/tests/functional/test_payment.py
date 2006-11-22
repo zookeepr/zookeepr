@@ -47,10 +47,6 @@ class TestPaymentController(ControllerTest):
                       Surcharge=1)
         resp = self.app.get('/payment/new', params=params)
 
-        print resp
+        self.failUnless("Invalid HMAC" in  Dummy_smtplib.existing.message)
 
-        self.fail("not really")
-
-        # clean up
-        #self.objectstore.delete(invoice)
-        
+        self.assertEqual('/Errors/InvalidPayment', resp.header('location'))

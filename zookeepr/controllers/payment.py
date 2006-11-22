@@ -105,7 +105,7 @@ class PaymentController(BaseController, Create, View):
         keys = fields.keys()
         keys.sort()
         stringToMAC = '&'.join(['%s=%s' % (key, fields[key]) for key in keys if key != 'MAC'])
-        print stringToMAC
+        #print stringToMAC
         mac = hmac.new(secret, stringToMAC, sha).hexdigest()
 
         # Check the MAC
@@ -117,7 +117,7 @@ class PaymentController(BaseController, Create, View):
 
     def _mail_warn(self, msg, pr):
         s = smtplib.SMTP("localhost")
-        body = render('payment/warning.myt', fragment=True)
+        body = render('payment/warning.myt', fragment=True, subject=msg, pr=pr)
         s.sendmail("seven-contact@lca2007.linux.org.au",
                    "seven-contact@lca2007.linux.org.au",
                    body)
