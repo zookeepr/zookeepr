@@ -188,16 +188,12 @@ class RegistrationController(BaseController, Create, Update):
                 body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
                 s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
                 s.quit()
-                
+
                 return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
 
-    def _edit_postflush(self):
-        # do post-rego-build-invoice magic
-        pass
-        
     def pay(self):
         registration = self.obj
         if registration.invoice:
@@ -208,11 +204,87 @@ class RegistrationController(BaseController, Create, Update):
             invoice.registration = [registration]
 
         invoice.items = []
-        import time
-        invoice.items.append(InvoiceItem("TEST", time.time()))
-#        invoice.items.append(InvoiceItem("TEST2", 3745))
 
-        self.dbsession.save(invoice)        
+        p = new PaymentOptions()
+
+        # Registration
+        description = registration.type + "Registration"
+        if p.is_earlybird(registration.date):
+            description = description + " (earlybird)"
+        invoice.items.append(InvoiceItem(registration.type + "Registration" , p.getTypeAmount(registration.type, registration.date)
+
+        self.dbsession.save(invoice)
         self.dbsession.flush()
 
         redirect_to(controller='invoice', action='view', id=invoice.id)
+
+
+class PaymentOptions:
+    def __init__(self):
+        types = {
+                "Professional": [51750, 69000],
+                "Hobbyist": [30000, 22500],
+                "Concession": [9900, 9900]
+                }
+        dinner = {
+                "1": 6000,
+                "2": 12000,
+                "3": 18000
+                }
+        accommodation = {
+                "0": 0,
+                "1": 4950,
+                "2": 5500,
+                "3": 6000,
+                "5": 3500,
+                "6": 5850
+                }
+        ebdate = [22, 11, 06]
+        #indates = [14, 15, 16, 17, 18, 19]
+        #outdates = [15, 16, 17, 18, 19, 20]
+
+        partners = {
+                "0": 0,
+                "1": 20000, # just a partner
+                "2": 30000, # now the kids
+                "3": 40000,
+                "4": 50000
+                }
+
+    def getTypeAmount(self, type, date):
+        if type in types.keys():
+            if self.is_earlybird(date):
+                return types[type][0]
+            else:
+                return types[type][1]
+
+    def is_earlybird(self, date):
+        if date[2] <= ebdate[2] and date[1] <= ebdate[1] and date[0] <= ebdate[0]:
+            return True
+
+        return False
+
+    def getDinnerAmount(self, tickets):
+        dinnerAmount = dinner[tickets]
+        return dinnerAmount
+
+    def getAccommodationRate(self, choice):
+        accommodationRate = accommodation[choice]
+        return accommodationRate
+
+    def getAccommodationAmount(self, rate, indate, outdate):
+        accommodationAmount = (outdate - indate) * rate
+        return accommodationAmount.
+
+    def getPartnersAmount(self, partner, kids)
+        partnersAmount = partners[partner + kids]
+        return partnersAmount
+
+
+    total = 0
+    total += p.getTypeAmount()
+    total += p.getDinnerAmount()
+    total += p.getAccommodationRate()
+    total += p.getAccommodationAmount()
+    total += p.getPartnersAmount()
+ 
