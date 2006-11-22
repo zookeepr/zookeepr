@@ -1,4 +1,6 @@
-import hmac, sha
+import hmac
+import sha
+import smtplib
 import string
 
 from zookeepr.lib.base import *
