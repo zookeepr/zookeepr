@@ -18,6 +18,7 @@ Changes for Zookeepr
    John Ferlito)
  * Add payment controller for payment workflow.  (Jamie Wilkinson,
    John Ferlito)
+ * Added interfacing with CommSecure.  (John Ferlito, Jamie Wilkinson)
  
 0.2.8
 -----
