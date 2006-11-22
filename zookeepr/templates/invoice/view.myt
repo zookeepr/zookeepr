@@ -104,7 +104,9 @@ Enquiries may be emailed to the organisers:
 #</pre>
 
 # if invoice unpayed
-<p><a href="asdf">Confirm Invoice</a></p>
+<p>
+<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
+</p>
 # endif
 
 <%method title>
