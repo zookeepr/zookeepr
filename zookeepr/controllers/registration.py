@@ -9,7 +9,6 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
-from zookeepr.model import Invoice, InvoiceItem
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -194,26 +193,64 @@ class RegistrationController(BaseController, Create, Update):
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
-    def pay(self):
+    def pay(self, id):
         registration = self.obj
-        if registration.invoice:
-            invoice = registration.invoice[0]
+        if registration.person.invoices:
+            invoice = registration.person.invoices[0]
+            for ii in invoice.items:
+                self.dbsession.delete(ii)
         else:
-            invoice = Invoice()
+            invoice = model.Invoice()
             invoice.person = registration.person
-            invoice.registration = [registration]
-
-        invoice.items = []
 
         p = PaymentOptions()
 
         # Registration
         description = registration.type + " Registration"
-        if p.is_earlybird(registration.date):
+        if p.is_earlybird(registration.last_modification_timestamp):
             description = description + " (earlybird)"
-        ii = InvoiceItem(description, p.getTypeAmount(registration.type, registration.date))
+        ii = model.InvoiceItem(description=description, qty=1, cost=p.getTypeAmount(registration.type, registration.last_modification_timestamp))
         self.dbsession.save(ii)
         invoice.items.append(ii)
+
+        # Dinner:
+        if registration.dinner > 0:
+            iid = model.InvoiceItem(description='Additional Penguin Dinner Tickets',
+                                    qty=registration.dinner,
+                                    cost=6000)
+            self.dbsession.save(iid)
+            invoice.items.append(iid)
+        
+        # Accommodation:
+        if registration.accommodation:
+            description = 'Accommodation - %s' % registration.accommodation.name
+            if registration.accommodation.option:
+                description += " (%s)" % registration.accommodation.option
+            iia = model.InvoiceItem(description,
+                                    qty=registration.checkout-registration.checkin,
+                                    cost=registration.accommodation.cost_per_night * 100)
+            self.dbsession.save(iia)
+            invoice.items.append(iia)
+
+        # Partner's Programme
+        partner = 0
+        if registration.partner_email:
+            iipa = model.InvoiceItem(description = "Partner's Programme - Adult",
+                                     qty = 1,
+                                     cost=20000)
+            self.dbsession.save(iipa)
+            invoice.items.append(iipa)
+            
+        kids = 0
+        for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10]:
+            if k is not None:
+                kids += k
+        if kids > 0:
+            iipc = model.InvoiceItem(description="Partner's Programme - Child",
+                                    qty = kids,
+                                    cost=10000)
+            self.dbsession.save(iipc)
+            invoice.items.append(iipc)
 
         self.dbsession.save(invoice)
         self.dbsession.flush()
@@ -223,17 +260,17 @@ class RegistrationController(BaseController, Create, Update):
 
 class PaymentOptions:
     def __init__(self):
-        types = {
+        self.types = {
                 "Professional": [51750, 69000],
                 "Hobbyist": [30000, 22500],
                 "Concession": [9900, 9900]
                 }
-        dinner = {
+        self.dinner = {
                 "1": 6000,
                 "2": 12000,
                 "3": 18000
                 }
-        accommodation = {
+        self.accommodation = {
                 "0": 0,
                 "1": 4950,
                 "2": 5500,
@@ -241,11 +278,11 @@ class PaymentOptions:
                 "5": 3500,
                 "6": 5850
                 }
-        ebdate = [22, 11, 06]
+        self.ebdate = datetime.datetime(22, 11, 06, 0, 0, 0)
         #indates = [14, 15, 16, 17, 18, 19]
         #outdates = [15, 16, 17, 18, 19, 20]
 
-        partners = {
+        self.partners = {
                 "0": 0,
                 "1": 20000, # just a partner
                 "2": 30000, # now the kids
@@ -254,24 +291,21 @@ class PaymentOptions:
                 }
 
     def getTypeAmount(self, type, date):
-        if type in types.keys():
+        if type in self.types.keys():
             if self.is_earlybird(date):
-                return types[type][0]
+                return self.types[type][0]
             else:
-                return types[type][1]
+                return self.types[type][1]
 
     def is_earlybird(self, date):
-        if date[2] <= ebdate[2] and date[1] <= ebdate[1] and date[0] <= ebdate[0]:
-            return True
-
-        return False
+        return date <= self.ebdate
 
     def getDinnerAmount(self, tickets):
-        dinnerAmount = dinner[tickets]
+        dinnerAmount = self.dinner[tickets]
         return dinnerAmount
 
     def getAccommodationRate(self, choice):
-        accommodationRate = accommodation[choice]
+        accommodationRate = self.accommodation[choice]
         return accommodationRate
 
     def getAccommodationAmount(self, rate, indate, outdate):
@@ -279,6 +313,10 @@ class PaymentOptions:
         return accommodationAmount
 
     def getPartnersAmount(self, partner, kids):
-        partnersAmount = partners[partner + kids]
+        count = partner + kids
+        if count == 0:
+            partnersAmount = 0
+        else:
+            partnersAmount = (count + 1) * 10000
         return partnersAmount
 
