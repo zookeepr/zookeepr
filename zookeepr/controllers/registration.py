@@ -235,18 +235,22 @@ class RegistrationController(BaseController, Create, Update):
         # Partner's Programme
         partner = 0
         if registration.partner_email:
-            partner = 1
+            iipa = model.InvoiceItem(description = "Partner's Programme - Adult",
+                                     qty = 1,
+                                     cost=20000)
+            self.dbsession.save(iipa)
+            invoice.items.append(iipa)
+            
         kids = 0
         for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10]:
             if k is not None:
                 kids += k
-        if partner + kids > 0:
-            iip = model.InvoiceItem(description="Partner's Programme",
-                                    qty = 1,
-                                    cost=p.getPartnersAmount(partner, kids)
-                                    )
-            self.dbsession.save(iip)
-            invoice.items.append(iip)
+        if kids > 0:
+            iipc = model.InvoiceItem(description="Partner's Programme - Child",
+                                    qty = kids,
+                                    cost=10000)
+            self.dbsession.save(iipc)
+            invoice.items.append(iipc)
 
         self.dbsession.save(invoice)
         self.dbsession.flush()

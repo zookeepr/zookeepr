@@ -83,7 +83,7 @@ class TestInvoiceController(SignedInCRUDControllerTest):
 
         print "items:", inv.items
         
-        for d in ('Professional Registration', 'Accommodation - FooPlex (snuh)', 'Additional Penguin Dinner Tickets', "Partner's Programme"):
+        for d in ('Professional Registration', 'Accommodation - FooPlex (snuh)', 'Additional Penguin Dinner Tickets', "Partner's Programme - Adult", "Partner's Programme - Child"):
             self.failUnless(d in [ii.description for ii in inv.items],
                             "Can't find %r in items" % d)
         
