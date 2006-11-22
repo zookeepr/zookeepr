@@ -56,7 +56,8 @@ def setup_config(command, filename, section, vars):
     p.close()
 
     try:
-        os.symlink(os.path.join(app_conf['moin_data'], 'attachments'), os.path.join(app_conf['dynamic_html_dir'], 'att-data'))
+        os.symlink(os.path.join(app_conf['moin_data'], 'attachments'),
+                   os.path.join(app_conf['dynamic_html_dir'], 'att-data'))
     except OSError, e:
         if e.errno == 17:
             print "skipping, file exists"
