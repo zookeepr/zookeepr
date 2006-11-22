@@ -145,6 +145,53 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         self.dbsession.delete(regs[0])
         self.dbsession.flush()
 
+    def test_edit_registration(self):
+        # testing that we can generate an invoice from a registration
+        al = model.registration.AccommodationLocation(name='FooPlex', beds=100)
+        ao = model.registration.AccommodationOption(name='snuh', cost_per_night=37.00)
+        ao.location = al
+        self.dbsession.save(al)
+        self.dbsession.save(ao)
+        self.dbsession.flush()
+        alid = al.id
+        aoid = ao.id
+
+        accom = self.dbsession.query(model.Accommodation).get(ao.id)
+        rego = model.Registration(type='Professional',
+                                  checkin=14,
+                                  checkout=20,
+                                  dinner=1,
+                                  partner_email='foo',
+                                  kids_0_3=9,
+                                  lasignup=True,
+                                  )
+        self.dbsession.save(rego)
+        rego.person = self.person
+        rego.accommodation = accom
+
+        self.dbsession.flush()
+        rid = rego.id
+        self.dbsession.clear()
+
+        resp = self.app.get('/registration/1/edit')
+
+        #print resp.form.fields
+
+        print "*** dumping field contents"
+        for k, v in resp.form.fields.items():
+            print "%s: %r" % (k, v[0].value)
+
+        print "registration.lasignup:", resp.form.fields['registration.lasignup'][0].value
+        self.assertEqual(True, resp.form.fields['registration.lasignup'][0].value)
+
+        self.fail("not really")
+
+        # clean up
+        self.dbsession.delete(self.dbsession.query(model.Registration).get(rid))
+        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationOption).get(aoid))
+        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationLocation).get(alid))
+        self.dbsession.flush()
+        
 
 class TestNotSignedInRegistrationController(ControllerTest):
     def test_not_signed_in_existing_registration(self):

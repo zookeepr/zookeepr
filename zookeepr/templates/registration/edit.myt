@@ -24,5 +24,25 @@ errors
 if not defaults:
 	defaults = {}
 	for k in ['address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone', 'company', 'shell', 'shelltext', 'editor', 'editortext', 'distro', 'distrotext', 'prevlca', 'type', 'discount_code', 'teesize', 'dinner', 'diet', 'special', 'miniconf', 'accommodation', 'checkin', 'checkout', 'partner_email', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10', 'lasignup', 'announcesignup', 'delegatesignup']:
-		defaults['registration.' + k] = getattr(c.registration, k)
+		v = getattr(c.registration, k)
+		if v is not None:
+			print "%s %r" % (k, getattr(c.registration, k))
+			defaults['registration.' + k] = getattr(c.registration, k)
+	# UGH durty hack
+	if c.registration.accommodation:
+		defaults['registration.accommodation'] = c.registration.accommodation.id
+	if c.registration.lasignup:
+		defaults['registration.lasignup'] = 1
+	else:
+		defaults['registration.lasignup'] = 0
+	if c.registration.announcesignup:
+		defaults['registration.announcesignup'] = 1
+	else:
+		defaults['registration.announcesignup'] = 0
+	if c.registration.delegatesignup:
+		defaults['registration.delegatesignup'] = 1
+	else:
+		defaults['registration.delegatesignup'] = 0
+
+print "defaults:", defaults
 </%init>
