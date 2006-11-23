@@ -32,6 +32,8 @@ class PaymentController(BaseController, Create, View):
 
         if 'HTTP_X_FORWARDED_FOR' in request.environ:
             fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
+        submit = fields['submit'];
+        del fields['submit']
         pr = model.PaymentReceived(**fields)
         self.dbsession.save(pr)
         # save object now to get the id and be sure it's saved in case
@@ -43,6 +45,7 @@ class PaymentController(BaseController, Create, View):
         # the validation, possibly even using a regular formencode validation
         # chain.
         
+        fields['submit'] = submit
         if not self._verify_hmac(fields):
             # Verify the HMAC to be sure that it came from CommSecure.
             pr.result = 'InvalidMac'
