@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.1
+-------
+
+ * Add creation and last modification timestamps to payment tables.
+   (Jamie Wilkinson)
+
 0.2.9
 -----
 
