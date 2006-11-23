@@ -135,13 +135,11 @@ class RegistrationController(BaseController, Create, Update):
     schemas = {'new': NewRegistrationSchema(),
                'edit': EditRegistrationSchema(),
                }
-    permissions = {'edit': [AuthFunc('is_same_person')],
-                   }
     redirect_map = {'edit': dict(controller='/profile', action='index'),
                     }
 
     def is_same_person(self):
-        c.signed_in_person == c.registration.person
+        return c.signed_in_person == c.registration.person
 
     def __before__(self, **kwargs):
         if hasattr(super(RegistrationController, self), '__before__'):
@@ -154,6 +152,9 @@ class RegistrationController(BaseController, Create, Update):
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
     def edit(self, id):
+        if not self.is_same_person():
+            abort(403)
+
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
@@ -209,6 +210,7 @@ class RegistrationController(BaseController, Create, Update):
             invoice = registration.person.invoices[0]
             for ii in invoice.items:
                 self.dbsession.delete(ii)
+                
         else:
             invoice = model.Invoice()
             invoice.person = registration.person
@@ -217,9 +219,9 @@ class RegistrationController(BaseController, Create, Update):
 
         # Registration
         description = registration.type + " Registration"
-        if p.is_earlybird(registration.last_modification_timestamp):
+        if p.is_earlybird(registration.creation_timestamp):
             description = description + " (earlybird)"
-        ii = model.InvoiceItem(description=description, qty=1, cost=p.getTypeAmount(registration.type, registration.last_modification_timestamp))
+        ii = model.InvoiceItem(description=description, qty=1, cost=p.getTypeAmount(registration.type, registration.creation_timestamp))
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
@@ -288,7 +290,7 @@ class PaymentOptions:
                 "5": 3500,
                 "6": 5850
                 }
-        self.ebdate = datetime.datetime(22, 11, 06, 0, 0, 0)
+        self.ebdate = datetime.datetime(2006, 11, 16, 00, 00, 00)
         #indates = [14, 15, 16, 17, 18, 19]
         #outdates = [15, 16, 17, 18, 19, 20]
 
@@ -308,7 +310,8 @@ class PaymentOptions:
                 return self.types[type][1]
 
     def is_earlybird(self, date):
-        return date <= self.ebdate
+        result = date < self.ebdate
+        return result
 
     def getDinnerAmount(self, tickets):
         dinnerAmount = self.dinner[tickets]
