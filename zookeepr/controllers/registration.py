@@ -129,7 +129,7 @@ class EditRegistrationSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(BaseController, Create, Update):
+class RegistrationController(SecureController, Create, Update):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
@@ -141,7 +141,7 @@ class RegistrationController(BaseController, Create, Update):
                     }
 
     def is_same_person(self):
-        c.signed_in_person == c.registration.person
+        return c.signed_in_person == c.registration.person
 
     def __before__(self, **kwargs):
         if hasattr(super(RegistrationController, self), '__before__'):
