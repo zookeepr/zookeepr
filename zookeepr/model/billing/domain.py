@@ -57,7 +57,7 @@ class PaymentReceived(object):
                  CardNumber=None,
                  MerchantID=None,
                  Surcharge=None,
-                 REMOTE_ADDR=None,
+                 HTTP_X_FORWARDED_FOR=None,
                  ):
         self.InvoiceID = InvoiceID
         self.PaymentID = PaymentID
@@ -76,7 +76,7 @@ class PaymentReceived(object):
         self.CardNumber = CardNumber
         self.MerchantID = MerchantID
         self.Surcharge = Surcharge
-        self.REMOTE_ADDR = REMOTE_ADDR
+        self.HTTP_X_FORWARDED_FOR = HTTP_X_FORWARDED_FOR
 
 
 class Payment(object):

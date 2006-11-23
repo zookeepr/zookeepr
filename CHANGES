@@ -1,10 +1,15 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.7
+-------
+
+ * Actually change HTTP_X_FORWARDED_FOR everywhere  (John Ferlito)
+
 0.2.9.6
 -------
 
- * REMOTE_ADDR -> HTTP_X_FORWARDED_FOR due to apache setup
+ * REMOTE_ADDR -> HTTP_X_FORWARDED_FOR due to apache setup.  (John Ferlito)
 
 0.2.9.5
 -------
