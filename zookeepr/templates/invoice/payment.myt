@@ -1,7 +1,5 @@
 <h1>Pay invoice</h1>
 
-% print c.invoice
-
 <form method="POST" action="https://clearance.commsecure.com.au/cgi-bin/PSCheckout">
 
 % for k in fields.keys():

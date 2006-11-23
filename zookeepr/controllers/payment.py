@@ -16,7 +16,7 @@ class PaymentController(BaseController, Create, View):
     individual = 'payment'
 
     def view(self):
-        # hack because we don't use auth:
+        # hack because we don't use SecureController
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
 
@@ -30,6 +30,12 @@ class PaymentController(BaseController, Create, View):
     def new(self):
         fields = dict(request.GET)
 
+        # FIXME: the field shoulnd't be named this, it should be
+        # creation_ip.  Additionally it shouldn't only be HTTP_X_FORWARDED_FOR,
+        # it should also respect REMOTE_IP if it exists -- preferring HTTP_X_...
+        # though.  Typical proxy rules, etc.
+        # Thirdly, this should be at the end of this validation chain so that
+        # we don't have to remove it from the hmac verifyer.
         if 'HTTP_X_FORWARDED_FOR' in request.environ:
             fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
         pr = model.PaymentReceived(**fields)
