@@ -38,7 +38,28 @@ class PaymentController(BaseController, Create, View):
         # we don't have to remove it from the hmac verifyer.
         if 'HTTP_X_FORWARDED_FOR' in request.environ:
             fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
-        pr = model.PaymentReceived(**fields)
+
+        pd = {}
+        for k in ['InvoiceID'
+                 'PaymentID',
+                 'AuthNum',
+                 'Amount',
+                 'RefundKey',
+                 'Status',
+                 'Settlement',
+                 'ErrorString',
+                 'CardName',
+                 'CardType',
+                 'TransID',
+                 'ORIGINAL_AMOUNT',
+                 'RequestedPage',
+                 'MAC',
+                 'CardNumber',
+                 'MerchantID',
+                 'Surcharge']:
+            if k in fields:
+                pd[k] = fields[k]
+        pr = model.PaymentReceived(**pd)
         self.dbsession.save(pr)
         # save object now to get the id and be sure it's saved in case
         # the validation blows up
@@ -48,7 +69,6 @@ class PaymentController(BaseController, Create, View):
         # I'd like to replace this with a "Chain of Command" pattern to do
         # the validation, possibly even using a regular formencode validation
         # chain.
-        
         if not self._verify_hmac(fields):
             # Verify the HMAC to be sure that it came from CommSecure.
             pr.result = 'InvalidMac'
