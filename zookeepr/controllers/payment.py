@@ -62,14 +62,14 @@ class PaymentController(BaseController, Create, View):
 
             self._mail_warn("Invoice Numbers Don't Match", pr)
 
-        elif pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
+        elif pr.ORIGINAL_AMOUNT is not None and pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
             # Check amounts match
             pr.result = 'AmountMisMatch'
             error = '/Errors/BadAmount'
 
             self._mail_warn("Amount Paid Doesn't Match What We Stored", pr)
 
-        elif pr.Amount != pr.ORIGINAL_AMOUNT:
+        elif pr.ORIGINAL_AMOUNT is not None and pr.Amount != pr.ORIGINAL_AMOUNT:
             # Check they paid what we asked
             pr.result = 'DifferentAmountPaid'
             error = '/Errors/UserPaidDifferentAmount'

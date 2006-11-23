@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.4
+-------
+
+ * Fix payment notification receiver to handle missing fields from
+   CommSecure.  (John Ferlito)
+
 0.2.9.3
 -------
 
