@@ -290,7 +290,7 @@ class PaymentOptions:
                 "5": 3500,
                 "6": 5850
                 }
-        self.ebdate = datetime.datetime(2006, 11, 22)
+        self.ebdate = datetime.datetime(2006, 11, 16, 00, 00, 00)
         #indates = [14, 15, 16, 17, 18, 19]
         #outdates = [15, 16, 17, 18, 19, 20]
 
@@ -310,7 +310,7 @@ class PaymentOptions:
                 return self.types[type][1]
 
     def is_earlybird(self, date):
-        result = date <= self.ebdate
+        result = date < self.ebdate
         return result
 
     def getDinnerAmount(self, tickets):
