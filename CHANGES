@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.2
+-------
+
+ * Fix payment process handling.  (John Ferlito)
+ 
 0.2.9.1
 -------
 
