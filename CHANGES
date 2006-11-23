@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.3
+-------
+
+ * Fix security hole in registration controller edit method.  (Jamie Wilkinson)
+
 0.2.9.2
 -------
 
