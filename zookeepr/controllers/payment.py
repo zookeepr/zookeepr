@@ -40,7 +40,7 @@ class PaymentController(BaseController, Create, View):
             fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
 
         pd = {}
-        for k in ['InvoiceID'
+        for k in ['InvoiceID',
                  'PaymentID',
                  'AuthNum',
                  'Amount',
