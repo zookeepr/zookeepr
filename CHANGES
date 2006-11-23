@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.3.1
+-----
+
+ * Only allow specific fields into the object when receiving payment receipts.
+   (Jamie Wilkinson)
 
 0.3
 ---
