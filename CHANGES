@@ -1,6 +1,42 @@
 Changes for Zookeepr
 ====================
 
+
+0.3
+---
+
+ * Cosmetic changes to payment failed page.  (Lindsay Holmwood)
+ 
+0.2.9.9.1
+-------
+
+ * Uncomment payment link.  (John Ferlito)
+
+0.2.9.9
+-------
+
+ * Rounding error in invoice viewing.  (John Ferlito)
+
+0.2.9.8
+-------
+
+ * Stop duplicate payments for an invoice.  (John Ferlito)
+
+0.2.9.7
+-------
+
+ * Actually change HTTP_X_FORWARDED_FOR everywhere.  (John Ferlito)
+
+0.2.9.6
+-------
+
+ * REMOTE_ADDR -> HTTP_X_FORWARDED_FOR due to apache setup.  (John Ferlito)
+
+0.2.9.5
+-------
+
+ * Store IP address when receiving payments.  (John Ferlito)
+
 0.2.9.4
 -------
 
