@@ -129,14 +129,12 @@ class EditRegistrationSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(SecureController, Create, Update):
+class RegistrationController(BaseController, Create, Update):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
                'edit': EditRegistrationSchema(),
                }
-    permissions = {'edit': [AuthFunc('is_same_person')],
-                   }
     redirect_map = {'edit': dict(controller='/profile', action='index'),
                     }
 
@@ -152,6 +150,12 @@ class RegistrationController(SecureController, Create, Update):
 
         as = self.dbsession.query(model.Accommodation).select()
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
+
+    def edit(self, id):
+        if not self.is_same_person():
+            abort(403)
+
+        return super(BaseController, self).edit(id)
 
     def new(self):
         errors = {}
