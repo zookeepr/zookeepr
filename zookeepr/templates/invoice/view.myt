@@ -1,3 +1,8 @@
+% if not c.invoice.payment:
+<p>
+<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
+</p>
+% #endif
 <h1>Tax Invoice/Statement</h1>
 
 <div style="text-align:center">
@@ -40,7 +45,7 @@ in Sydney, Australia.
 <th>Description</th>
 <th>Qty</th>
 <th>Cost</th>
-<th>Total</th>
+<th>Total (Inc. GST)</th>
 </tr>
 
 % for item in c.invoice.items:
@@ -75,6 +80,18 @@ in Sydney, Australia.
 <% h.number_to_currency(c.invoice.total()/100.0) %>
 </strong>
 </td>
+</tr>
+<tr>
+
+<td style="text-align: right" colspan="3">GST Included</td>
+
+<td style="text-align: right">
+<strong>
+<% h.number_to_currency(c.invoice.total()/100.0/11) %>
+</strong>
+</td>
+</tr>
+
 </table>
 
 <p>
@@ -103,11 +120,11 @@ Enquiries may be emailed to the organisers:
 
 #</pre>
 
-#% if not c.invoice.payment:
-#<p>
-#<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
-#</p>
-#% #endif
+% if not c.invoice.payment:
+<p>
+<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
+</p>
+% #endif
 
 <%method title>
 Tax Invoice/Statement - <& PARENT:title &>
