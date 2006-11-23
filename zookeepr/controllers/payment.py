@@ -20,7 +20,7 @@ class PaymentController(BaseController, Create, View):
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
 
-            if c.signed_in_person != c.payment.payment_received.invoice.person:
+            if c.signed_in_person != c.payment.payment_sent.invoice.person:
                 redirect_to('/account/signin')
                                                     
         c.person = c.payment.payment_sent.invoice.person
@@ -48,21 +48,21 @@ class PaymentController(BaseController, Create, View):
             # email seven
             self._mail_warn('Invalid HMAC', pr)
             
-        elif pr.payment is None:
+        elif pr.payment_sent is None:
             # Check that this data references a payment we sent to CommSecure.
             pr.result = 'NonExistentPayment'
             error = '/Errors/MissingPayment'
             # email seven
             self._mail_warn('Nonexistent Payment', pr)
 
-        elif pr.payment.invoice_id != string.atoi(pr.InvoiceID):
+        elif pr.payment_sent.invoice_id != string.atoi(pr.InvoiceID):
             # check invoices match
             pr.result = 'InvoiceMisMatch'
             error = '/Errors/BadInvoice'
 
             self._mail_warn("Invoice Numbers Don't Match", pr)
 
-        elif pr.payment.amount != string.atoi(pr.ORIGINAL_AMOUNT):
+        elif pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
             # Check amounts match
             pr.result = 'AmountMisMatch'
             error = '/Errors/BadAmount'

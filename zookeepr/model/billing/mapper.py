@@ -16,7 +16,7 @@ mapper(Payment, payment,
 mapper(PaymentReceived, payment_received,
        properties = {
              'invoice': relation(Invoice),
-             'payment': relation(Payment,
+             'payment_sent': relation(Payment,
                                 backref='payments_received'
                        ),
             },
