@@ -25,7 +25,7 @@
 </p>
 % else:
 <p>
-<strong>Amount Due:</strong> <% h.number_to_currency(c.invoice.total()/100) %>
+<strong>Amount Due:</strong> <% h.number_to_currency(c.invoice.total()/100.0) %>
 </p>
 % #endif
 
