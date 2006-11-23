@@ -1,6 +1,17 @@
 Changes for Zookeepr
 ====================
 
+
+0.3
+---
+
+ * Cosmetic changes to payment failed page.  (Lindsay Holmwood)
+ 
+0.2.9.9.1
+-------
+
+ * Uncomment payment link.  (John Ferlito)
+
 0.2.9.9
 -------
 
