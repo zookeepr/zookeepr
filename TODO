@@ -13,3 +13,5 @@ displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have
  * move openday model into registration submodule
 
  * charts!  registrations, confirmed accounts + registrations, paid registrations
+
+ * rename payment_received to payment_receipt and payment to payment_sent (or a better name, payment_started ?)
