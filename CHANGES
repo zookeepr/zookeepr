@@ -1,10 +1,15 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.8
+-------
+
+ * Stop duplicate payments for an invoice.  (John Ferlito)
+
 0.2.9.7
 -------
 
- * Actually change HTTP_X_FORWARDED_FOR everywhere  (John Ferlito)
+ * Actually change HTTP_X_FORWARDED_FOR everywhere.  (John Ferlito)
 
 0.2.9.6
 -------
