@@ -153,6 +153,14 @@ class RegistrationController(BaseController, Create, Update):
         as = self.dbsession.query(model.Accommodation).select()
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
+    def edit(self, id):
+        registration = self.obj
+        if registration.person.invoices:
+            if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
+                redirect_to("/Errors/InvoiceAlreadyPaid")
+
+        return super(RegistrationController, self).edit(id)
+
     def new(self):
         errors = {}
         defaults = dict(request.POST)
@@ -196,6 +204,8 @@ class RegistrationController(BaseController, Create, Update):
     def pay(self, id):
         registration = self.obj
         if registration.person.invoices:
+            if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
+                redirect_to("/Errors/InvoiceAlreadyPaid")
             invoice = registration.person.invoices[0]
             for ii in invoice.items:
                 self.dbsession.delete(ii)
