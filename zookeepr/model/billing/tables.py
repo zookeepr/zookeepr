@@ -130,7 +130,7 @@ payment_received = Table('payment_received', metadata,
                                 key='result',
                                 ),
                          Column('ip_address', String,
-                                key='REMOTE_ADDR',
+                                key='HTTP_X_FORWARDED_FOR',
                                 ),
 
                          Column('creation_timestamp', DateTime,

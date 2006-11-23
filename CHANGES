@@ -1,6 +1,16 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.6
+-------
+
+ * REMOTE_ADDR -> HTTP_X_FORWARDED_FOR due to apache setup
+
+0.2.9.5
+-------
+
+ * Store IP address when receiving payments.  (John Ferlito)
+
 0.2.9.4
 -------
 
