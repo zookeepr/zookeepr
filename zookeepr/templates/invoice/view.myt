@@ -1,3 +1,5 @@
+<& actions &>
+
 <h1>Tax Invoice/Statement</h1>
 
 <div style="text-align:center">
@@ -17,9 +19,15 @@
 <p>
 <strong>Due Date:</strong> <% c.invoice.due_date.strftime("%d %b %Y") %>
 </p>
+% if c.invoice.good_payments:
+<p>
+<strong>Amount Due:</strong> $0.00
+</p>
+% else:
 <p>
 <strong>Amount Due:</strong> <% h.number_to_currency(c.invoice.total()/100) %>
 </p>
+% #endif
 
 <p>
 <strong>Attention:</strong> <% c.invoice.person.fullname %>
@@ -40,7 +48,7 @@ in Sydney, Australia.
 <th>Description</th>
 <th>Qty</th>
 <th>Cost</th>
-<th>Total</th>
+<th>Total (Inc. GST)</th>
 </tr>
 
 % for item in c.invoice.items:
@@ -75,6 +83,18 @@ in Sydney, Australia.
 <% h.number_to_currency(c.invoice.total()/100.0) %>
 </strong>
 </td>
+</tr>
+<tr>
+
+<td style="text-align: right" colspan="3">GST Included</td>
+
+<td style="text-align: right">
+<strong>
+<% h.number_to_currency(c.invoice.total()/100.0/11) %>
+</strong>
+</td>
+</tr>
+
 </table>
 
 <p>
@@ -103,11 +123,19 @@ Enquiries may be emailed to the organisers:
 
 #</pre>
 
-#% if not c.invoice.payment:
-#<p>
+<& actions &>
+
+<%method actions>
+% if c.invoice.bad_payments:
+Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+% elif not c.invoice.good_payments:
+<p>
 #<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
-#</p>
-#% #endif
+</p>
+% else:
+Invoice has been paid.
+% #endif
+</%method>
 
 <%method title>
 Tax Invoice/Statement - <& PARENT:title &>

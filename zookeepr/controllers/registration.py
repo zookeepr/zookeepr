@@ -155,7 +155,12 @@ class RegistrationController(BaseController, Create, Update):
         if not self.is_same_person():
             abort(403)
 
-        return super(BaseController, self).edit(id)
+        registration = self.obj
+        if registration.person.invoices:
+            if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
+                redirect_to("/Errors/InvoiceAlreadyPaid")
+
+        return super(RegistrationController, self).edit(id)
 
     def new(self):
         errors = {}
@@ -200,6 +205,8 @@ class RegistrationController(BaseController, Create, Update):
     def pay(self, id):
         registration = self.obj
         if registration.person.invoices:
+            if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
+                redirect_to("/Errors/InvoiceAlreadyPaid")
             invoice = registration.person.invoices[0]
             for ii in invoice.items:
                 self.dbsession.delete(ii)

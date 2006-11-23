@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.2.9.2
+-------
+
+ * Fix payment process handling.  (John Ferlito)
+ 
 0.2.9.1
 -------
 
@@ -27,6 +32,7 @@ Changes for Zookeepr
  * Added interfacing with CommSecure.  (John Ferlito, Jamie Wilkinson)
  * Install moin attachment symlink in dynamic_html_dir so the build isn't
    interrupted.  (Jamie Wilkinson)
+ * Fix edit bug on rego form.  (Jamie Wilkinson)
  
 0.2.8
 -----
