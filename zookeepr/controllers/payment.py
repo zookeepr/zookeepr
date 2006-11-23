@@ -16,7 +16,7 @@ class PaymentController(BaseController, Create, View):
     individual = 'payment'
 
     def view(self):
-        # hack because we don't use auth:
+        # hack because we don't use SecureController
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
 
