@@ -149,7 +149,11 @@ class AuthFunc(object):
         self.callable = callable
 
     def authorise(self, cls):
-        return getattr(cls, self.callable)()
+        result = getattr(cls, self.callable)()
+        if result is None:
+            # None is bad.  Return True or False
+            raise RuntimeError, "AuthFunc didn't get a result from %r!  Make sure you return a boolean!" % self.callable
+        return result
 
 class AuthTrue(object):
     def authorise(self):
