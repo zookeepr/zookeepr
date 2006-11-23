@@ -1,8 +1,14 @@
-% if not c.invoice.payment:
+% if c.invoice.bad_payments:
+Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+% elif not c.invoice.good_payments:
 <p>
 <% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
 </p>
+% else:
+Invoice has been paid.
 % #endif
+
+
 <h1>Tax Invoice/Statement</h1>
 
 <div style="text-align:center">
@@ -22,9 +28,15 @@
 <p>
 <strong>Due Date:</strong> <% c.invoice.due_date.strftime("%d %b %Y") %>
 </p>
+% if c.invoice.good_payments:
+<p>
+<strong>Amount Due:</strong> $0.00
+</p>
+% else:
 <p>
 <strong>Amount Due:</strong> <% h.number_to_currency(c.invoice.total()/100) %>
 </p>
+% #endif
 
 <p>
 <strong>Attention:</strong> <% c.invoice.person.fullname %>
@@ -120,11 +132,16 @@ Enquiries may be emailed to the organisers:
 
 #</pre>
 
-% if not c.invoice.payment:
+% if c.invoice.bad_payments:
+Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+% elif not c.invoice.good_payments:
 <p>
 <% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
 </p>
+% else:
+Invoice has been paid.
 % #endif
+
 
 <%method title>
 Tax Invoice/Statement - <& PARENT:title &>
