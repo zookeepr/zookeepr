@@ -29,7 +29,9 @@ class PaymentController(BaseController, Create, View):
 
     def new(self):
         fields = dict(request.GET)
-        
+
+        if 'REMOTE_ADDR' in request.environ:
+            fields['REMOTE_ADDR'] = request.environ['REMOTE_ADDR']
         pr = model.PaymentReceived(**fields)
         self.dbsession.save(pr)
         # save object now to get the id and be sure it's saved in case
@@ -96,15 +98,12 @@ class PaymentController(BaseController, Create, View):
 
         # Check for MAC
         if 'MAC' not in fields:
-            print "OATH"
-            print ' '.join(fields.keys())
-            print "\n\n\n\n"
             return False
 
         # Generate the MAC
         keys = fields.keys()
         keys.sort()
-        stringToMAC = '&'.join(['%s=%s' % (key, fields[key]) for key in keys if key != 'MAC'])
+        stringToMAC = '&'.join(['%s=%s' % (key, fields[key]) for key in keys if key != 'MAC' and key != 'REMOTE_ADDR'])
         #print stringToMAC
         mac = hmac.new(secret, stringToMAC, sha).hexdigest()
 
