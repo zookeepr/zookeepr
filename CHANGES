@@ -5,6 +5,7 @@ Changes for Zookeepr
 -------
 
  * Fix security hole in registration controller edit method.  (Jamie Wilkinson)
+ * Fix earlybird price calculations.  (Jamie Wilkinson)
 
 0.2.9.2
 -------
