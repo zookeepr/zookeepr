@@ -8,18 +8,15 @@ from zookeepr.model.registration import Registration
 mapper(InvoiceItem, invoice_item)
 
 mapper(Payment, payment,
-       properties = {
-            'invoice': relation(Invoice,
-                                lazy=True,
-                                backref='invoice_id'
-                       ),
-            },
+        properties = {
+             'invoice': relation(Invoice)
+             },
       )
 
 mapper(PaymentReceived, payment_received,
        properties = {
-            'payment_sent': relation(Payment,
-                                backref='payment_sent'
+            'payment': relation(Payment,
+                                backref='payment_received'
                        ),
             },
       )
@@ -30,14 +27,12 @@ mapper(Invoice, invoice,
                        lazy=True,
                        backref=backref('invoices', cascade="all, delete-orphan"),
                        ),
-#    'registration': relation(Registration,
-#                             backref='invoice'),
     'items': relation(InvoiceItem,
                       backref='invoice',
                       cascade="all, delete-orphan",
                       ),
     'payment': relation(PaymentReceived, 
-                        backref='payment_received'
+                        backref='invoice'
                         ),
     },
        )

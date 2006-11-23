@@ -3,7 +3,7 @@ from proposal import Proposal, ProposalType, Attachment, Review
 from schedule import Stream, Talk
 from registration import Registration, Accommodation
 from openday import Openday
-from billing import InvoiceItem, Invoice, PaymentReceived
+from billing import InvoiceItem, Invoice, PaymentReceived, Payment
 
 def init_model(app_conf):
     from paste.deploy.converters import asbool
