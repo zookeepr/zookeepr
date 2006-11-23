@@ -252,12 +252,13 @@ profile - <& PARENT:title &>
 </%method>
 
 <%method actions>
-% if c.profile.registration:
+% if not c.profile.invoice or not c.profile.invoice[0].bad_payments and not c.profile.invoice[0].good_payments:
+%     if c.profile.registration:
 <% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
-% #endif
-
-% if c.profile.registration:
 <% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.profile.registration.id)) %>
+%     #endif
+% else:
+<% h.link_to('(View Invoice)', url=h.url(controller='invoice', action='view', id=c.profile.invoice[0].id)) %>
 % #endif
 
 </%method>
