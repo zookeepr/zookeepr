@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.3.2
+-----
+
+ * Comma bug in payment receipt fields.  (John Ferlito)
+
 0.3.1
 -----
 
