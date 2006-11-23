@@ -4,7 +4,7 @@ Changes for Zookeepr
 0.2.9.9
 -------
 
- * Rounding error in invoice viewing
+ * Rounding error in invoice viewing.  (John Ferlito)
 
 0.2.9.8
 -------
