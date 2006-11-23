@@ -29,7 +29,9 @@ class PaymentController(BaseController, Create, View):
 
     def new(self):
         fields = dict(request.GET)
-        
+
+        if 'HTTP_X_FORWARDED_FOR' in request.environ:
+            fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
         pr = model.PaymentReceived(**fields)
         self.dbsession.save(pr)
         # save object now to get the id and be sure it's saved in case
@@ -62,14 +64,14 @@ class PaymentController(BaseController, Create, View):
 
             self._mail_warn("Invoice Numbers Don't Match", pr)
 
-        elif pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
+        elif pr.ORIGINAL_AMOUNT is not None and pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
             # Check amounts match
             pr.result = 'AmountMisMatch'
             error = '/Errors/BadAmount'
 
             self._mail_warn("Amount Paid Doesn't Match What We Stored", pr)
 
-        elif pr.Amount != pr.ORIGINAL_AMOUNT:
+        elif pr.ORIGINAL_AMOUNT is not None and pr.Amount != pr.ORIGINAL_AMOUNT:
             # Check they paid what we asked
             pr.result = 'DifferentAmountPaid'
             error = '/Errors/UserPaidDifferentAmount'
@@ -96,15 +98,12 @@ class PaymentController(BaseController, Create, View):
 
         # Check for MAC
         if 'MAC' not in fields:
-            print "OATH"
-            print ' '.join(fields.keys())
-            print "\n\n\n\n"
             return False
 
         # Generate the MAC
         keys = fields.keys()
         keys.sort()
-        stringToMAC = '&'.join(['%s=%s' % (key, fields[key]) for key in keys if key != 'MAC'])
+        stringToMAC = '&'.join(['%s=%s' % (key, fields[key]) for key in keys if key != 'MAC' and key != 'HTTP_X_FORWARDED_FOR'])
         #print stringToMAC
         mac = hmac.new(secret, stringToMAC, sha).hexdigest()
 
