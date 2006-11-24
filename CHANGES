@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.3.2
+-----
+
+ * Add HTTP_X_FORWARDED_FOR back to the PaymentReceived object.
+   (Jamie Wilkinson)
+
 0.3.1
 -----
 
