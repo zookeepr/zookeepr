@@ -56,6 +56,7 @@ class PaymentController(BaseController, Create, View):
                  'MAC',
                  'CardNumber',
                  'MerchantID',
+                 'HTTP_X_FORWARDED_FOR',
                  'Surcharge']:
             if k in fields:
                 pd[k] = fields[k]
