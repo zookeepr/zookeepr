@@ -1,6 +1,17 @@
 Changes for Zookeepr
 ====================
 
+0.3.3.1
+-----
+
+ * Change both accomodation dates not just one.  (John Ferlito)
+
+
+0.3.3
+-----
+
+ * Extend accomodation.  (John Ferlito)
+
 0.3.2
 -----
 
