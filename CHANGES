@@ -1,6 +1,28 @@
 Changes for Zookeepr
 ====================
 
+0.3.3.2
+-------
+
+ * Add HTTP_X_FORWARDED_FOR back to the PaymentReceived object.
+   (Jamie Wilkinson)
+
+0.3.3.1
+-------
+
+ * Change both accomodation dates not just one.  (John Ferlito)
+
+
+0.3.3
+-----
+
+ * Extend accomodation.  (John Ferlito)
+
+0.3.2
+-----
+
+ * Comma bug in payment receipt fields.  (John Ferlito)
+
 0.3.1
 -----
 
@@ -13,7 +35,7 @@ Changes for Zookeepr
  * Cosmetic changes to payment failed page.  (Lindsay Holmwood)
  
 0.2.9.9.1
--------
+---------
 
  * Uncomment payment link.  (John Ferlito)
 
