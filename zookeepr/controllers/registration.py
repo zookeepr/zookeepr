@@ -274,7 +274,7 @@ class PaymentOptions:
     def __init__(self):
         self.types = {
                 "Professional": [51750, 69000],
-                "Hobbyist": [30000, 22500],
+                "Hobbyist": [22500, 30000],
                 "Concession": [9900, 9900]
                 }
         self.dinner = {
