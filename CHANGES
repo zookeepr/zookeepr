@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.3.3.3
+-------
+
+ * Fix earlybird rate for hobbyist.  (John Ferlito)
+
 0.3.3.2
 -------
 
