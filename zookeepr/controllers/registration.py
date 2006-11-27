@@ -129,7 +129,7 @@ class EditRegistrationSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(BaseController, Create, Update):
+class RegistrationController(BaseController, Create, Update, List):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),

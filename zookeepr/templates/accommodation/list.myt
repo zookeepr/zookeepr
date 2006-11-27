@@ -14,7 +14,11 @@
 
 <th>Availability (# beds left)</th>
 
+% beds_total = 0;
+% beds_available = 0;
 % for a in c.accommodation_collection:
+%     beds_total += a.beds
+%     beds_available += a.get_available_beds()
 
 <tr class="<% h.cycle('even', 'odd')%>">
 
@@ -45,6 +49,14 @@
 </tr>
 
 % #endfor
+
+<tr>
+    <td>&nbsp;</td>
+    <td><strong>Totals</strong</td>
+    <td>&nbsp;</td>
+    <td><% beds_total %></td>
+    <td><% beds_available %></td>
+</tr>
 
 </table>
 
