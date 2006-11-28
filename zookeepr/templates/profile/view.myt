@@ -194,15 +194,14 @@ No
 <fieldset>
 
 <p>
-Previous Linux.Conf.Au's:
-% # This is a HACK we should just store the years properly
+%		''' This is a HACK we should just store the years properly '''
 %		if c.profile.registration.prevlca:
 %			lcas = []
 %			for x in c.profile.registration.prevlca:
 %				if x == '99':
 %					lcas.append(string.atoi('1999'))
 %				else:
-%					lcas.append(int(x) + 2000);
+%					lcas.append(int(x) + 2000)
 %				# endif
 %			# endfor
 %			lcas.sort()
@@ -260,7 +259,7 @@ if 'This page does not exist yet.' in content:
 % #endif
 
 <%method title>
-profile - <& PARENT:title &>
+<% c.profile.firstname + " " + c.profile.lastname | h %> - <& PARENT:title &>
 </%method>
 
 <%method actions>

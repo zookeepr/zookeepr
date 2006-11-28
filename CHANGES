@@ -7,6 +7,7 @@ Changes for Zookeepr
  * Registration reporting.  (John Ferlito)
  * Link bug on payment view page.  (John Ferlito)
  * Only show edit links on profile for signed in person.  (John Ferlito)
+ * Add talk and account names to tiles.  (John Ferlito)
 
 0.3.3.3
 -------

@@ -18,5 +18,5 @@
 </div>
 
 <%method title>
-Abstract - <& PARENT:title &>
+<% c.talk.title |h %> - <& PARENT:title &>
 </%method>
