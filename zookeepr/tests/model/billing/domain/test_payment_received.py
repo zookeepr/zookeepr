@@ -3,7 +3,7 @@ from zookeepr.tests.model import *
 class TestPaymentReceivedDomainModel(CRUDModelTest):
     domain = model.PaymentReceived
     samples = [dict(InvoiceID=1000,
-                    AuthNum=5260,
+                    AuthNum='5260',
                     Amount=69000,
                     RefundKey='KJdW+tSk95x+d54+gHB0',
                     MerchantID='Test',
@@ -20,7 +20,7 @@ class TestPaymentReceivedDomainModel(CRUDModelTest):
                     ORIGINAL_AMOUNT=69000,
                     Surcharge=0),
                dict(InvoiceID=1001,
-                    AuthNum=5261,
+                    AuthNum='5261',
                     Amount=69001,
                     RefundKey='KJdW+tSk95x+d54+gHB1',
                     MerchantID='Test1',
