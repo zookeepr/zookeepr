@@ -1,10 +1,11 @@
 % import string
 <h1><% c.profile.fullname |h %></h1>
 
-<& actions &>
-
 # Show personal details
 % if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id:
+
+<& actions &>
+
 <fieldset>
 
 <p>
