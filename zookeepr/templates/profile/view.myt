@@ -1,3 +1,4 @@
+% import string
 <h1><% c.profile.fullname |h %></h1>
 
 <& actions &>
@@ -192,9 +193,19 @@ No
 <fieldset>
 
 <p>
-Previous miniconfs:
+Previous Linux.Conf.Au's:
+% # This is a HACK we should just store the years properly
 %		if c.profile.registration.prevlca:
- <% ', '.join(['20%s' % x for x in c.profile.registration.prevlca]) %>
+%			lcas = []
+%			for x in c.profile.registration.prevlca:
+%				if x == '99':
+%					lcas.append(string.atoi('1999'))
+%				else:
+%					lcas.append(int(x) + 2000);
+%				# endif
+%			# endfor
+%			lcas.sort()
+ <%', '.join(['%s' % x for x in lcas]) %>
 %		#endif
 </p>
 
