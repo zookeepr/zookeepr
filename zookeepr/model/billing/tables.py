@@ -82,7 +82,7 @@ payment_received = Table('payment_received', metadata,
                                 key='PaymentID',
                                 ),
 
-                         Column('auth_num', Integer,
+                         Column('auth_num', String,
                                 key='AuthNum',
                                 ),
                          Column('amount', Integer,
