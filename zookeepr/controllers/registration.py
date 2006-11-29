@@ -193,10 +193,13 @@ class RegistrationController(BaseController, Create, Update, List):
                 c.registration.person = c.person
                 self.dbsession.flush()
 
-                s = smtplib.SMTP("localhost")
-                body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
-                s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
-                s.quit()
+                try:
+                    s = smtplib.SMTP("localhost")
+                    body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
+                    s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
+                    s.quit()
+                except:
+                    pass
 
                 return render_response('registration/thankyou.myt')
 

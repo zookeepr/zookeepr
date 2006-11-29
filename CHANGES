@@ -1,8 +1,14 @@
 Changes for Zookeepr
 ====================
 
+0.3.5
+-----
+
+ * Ignore SMTP exceptions for now.  (John Ferlito)
+ * domain_exists needs to be initialised.  (John Ferlito)
+
 0.3.4
--------
+-----
 
  * Registration reporting.  (John Ferlito)
  * Link bug on payment view page.  (John Ferlito)
