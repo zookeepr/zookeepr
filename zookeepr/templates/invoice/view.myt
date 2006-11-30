@@ -131,7 +131,9 @@ Invalid payments have been applied to this invoice, please email <a href="mailto
 % elif not c.invoice.good_payments:
 <p>
 <% h.link_to('(Pay this invoice)', url=h.url(controller='invoice', action='pay')) %>
-<% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
+% if c.invoice.person.registration:
+    <% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
+% #endif
 <br>
 <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small>
 </p>
