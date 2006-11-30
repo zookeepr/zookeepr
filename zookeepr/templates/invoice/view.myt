@@ -130,8 +130,12 @@ Enquiries may be emailed to the organisers:
 Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
 % elif not c.invoice.good_payments:
 <p>
-<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
+<% h.link_to('(Pay this invoice)', url=h.url(controller='invoice', action='pay')) %>
+<% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
+<br>
+<small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small>
 </p>
+
 % else:
 Invoice has been paid.
 % #endif
