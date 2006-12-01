@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.3.6
+-----
+
+ * Send email each time we receive a payment.  (John Ferlito)
+ * Add regen link to invoice page.  (John Ferlito)
+
 0.3.5
 -----
 

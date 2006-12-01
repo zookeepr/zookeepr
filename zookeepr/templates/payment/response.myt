@@ -8,6 +8,7 @@ Thank you for your payment attempt, the results are below.
 This is an invalid payment. Please contact seven-contact@lca2007.linux.org.au
 % elif c.payment.Status == 'Accepted':
 Your payment was successful. Your receipt number is <% c.payment.id %>
+You can view your invoice at http://lca2007.linux.org.au/invoice/<% c.payment.invoice.id %>
 % else:
 Your payment was unsuccessful. The reason was:
 
