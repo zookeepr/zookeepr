@@ -114,9 +114,20 @@ class PaymentController(BaseController, Create, View):
         # OK we now have a valid transaction, we redirect the user to the view page
         # so they can see if their transaction was accepted or declined
 
+
         if error:
             redirect_to(error)
         else:
+            c.person = pr.payment_sent.invoice.person
+            c.payment = pr
+            body = render('payment/response.myt', id=c.person.url_hash, fragment=True)
+            try:
+                s = smtplib.SMTP("localhost")
+                s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
+                s.quit()
+            except:
+                pass
+
             redirect_to(controller='payment', action='view', id=pr.id)
 
     def _verify_hmac(self, fields):
