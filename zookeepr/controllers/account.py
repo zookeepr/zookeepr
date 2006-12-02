@@ -172,7 +172,7 @@ class AccountController(BaseController):
                     # FIXME exposes sqlalchemy!
                     return render_response('account/in_progress.myt')
 
-                s = smtplib.SMTP("localhost")
+                s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
                 # generate email from template
                 body = render('account/confirmation_email.myt', fragment=True)
                 s.sendmail("support@anchor.com.au",

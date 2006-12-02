@@ -1,6 +1,16 @@
 Changes for Zookeepr
 ====================
 
+0.3.8
+-----
+
+ * Only send emails once for payment.  (John Ferlito)
+
+0.3.7
+-----
+
+ * Make email gateway configurable.  (John Ferlito)
+
 0.3.6
 -----
 

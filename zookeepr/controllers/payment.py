@@ -118,15 +118,17 @@ class PaymentController(BaseController, Create, View):
         if error:
             redirect_to(error)
         else:
-            c.person = pr.payment_sent.invoice.person
-            c.payment = pr
-            body = render('payment/response.myt', id=c.person.url_hash, fragment=True)
-            try:
-                s = smtplib.SMTP("localhost")
-                s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
-                s.quit()
-            except:
-                pass
+            # Commsecure does a get as well we don't want to send an email for that
+            if pr.HTTP_X_FORWARDED_FOR != '203.192.130.110':
+                c.person = pr.payment_sent.invoice.person
+                c.payment = pr
+                body = render('payment/response.myt', id=c.person.url_hash, fragment=True)
+                try:
+                    s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
+                    s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
+                    s.quit()
+                except:
+                    pass
 
             redirect_to(controller='payment', action='view', id=pr.id)
 

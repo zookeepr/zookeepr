@@ -194,7 +194,7 @@ class RegistrationController(BaseController, Create, Update, List):
                 self.dbsession.flush()
 
                 try:
-                    s = smtplib.SMTP("localhost")
+                    s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
                     body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
                     s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
                     s.quit()
