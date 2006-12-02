@@ -213,7 +213,7 @@ class AccountController(BaseController):
 
         c.conf_rec = crecs[0]
 
-        now = datetime.datetime.now(tz='EST')
+        now = datetime.datetime.now()
         delta = now - c.conf_rec.timestamp
         if delta > datetime.timedelta(24, 0, 0):
             # this confirmation record has expired
