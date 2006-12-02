@@ -137,6 +137,9 @@ class RegistrationController(BaseController, Create, Update, List):
                }
     redirect_map = {'edit': dict(controller='/profile', action='index'),
                     }
+    permissions = { 'remind': [AuthRole('organiser')],
+                   }
+
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -272,6 +275,11 @@ class RegistrationController(BaseController, Create, Update, List):
 
         redirect_to(controller='invoice', action='view', id=invoice.id)
 
+    # FIXME There is probably a way to get this to use the List thingy from CRUD
+    def remind(self):
+        setattr(c, 'registration_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        return render_response('registration/remind.myt')
+
 
 class PaymentOptions:
     def __init__(self):
@@ -335,4 +343,6 @@ class PaymentOptions:
         else:
             partnersAmount = (count + 1) * 10000
         return partnersAmount
+
+
 

@@ -10,6 +10,7 @@ class InvoiceController(SecureController, Read):
     individual = 'invoice'
     permissions = {'view': [AuthFunc('is_payee')],
                    'pay': [AuthFunc('is_payee')],
+                   'remind': [AuthRole('organiser')],
                    }
 
     def is_payee(self):
@@ -54,3 +55,9 @@ class InvoiceController(SecureController, Read):
         fields['MAC'] = mac
 
         return render_response('invoice/payment.myt', fields=fields)
+
+
+    # FIXME There is probably a way to get this to use the List thingy from CRUD
+    def remind(self):
+        setattr(c, 'invoice_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        return render_response('invoice/remind.myt')

@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.3.9
+-----
+
+ * Reporting of unpaid invoices.  (John Ferlito)
+
 0.3.8
 -----
 
