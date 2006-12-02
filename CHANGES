@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.3.10
+-----
+
+ * Make proposals editable.  (John Ferlito)
+
 0.3.9
 -----
 

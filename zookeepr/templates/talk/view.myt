@@ -6,6 +6,9 @@
 % #endfor
 </p>
 
+% if c.signed_in_person in c.talk.people or (c.signed_in_person and 'organiser' in [x.name for x in c.signed_in_person.roles]):
+    <% h.link_to('Edit', url=h.url(controller='proposal',action='edit',id=c.talk.id)) %>
+% #endif
 <div id="abstract">
 #% content = h.wiki_here()
 % content = h.wiki_fragment('/wiki/talk/%d' % c.talk.id)

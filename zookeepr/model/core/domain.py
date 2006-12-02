@@ -19,7 +19,7 @@ class Person(object):
         self.email_address = email_address
         self.password = password
         self.activated = activated or False
-        self.creation_timestamp = creation_timestamp or datetime.datetime.now()
+        self.creation_timestamp = creation_timestamp or datetime.datetime.now(tz='EST')
 
         self.handle = handle
         if fullname is not None:
@@ -48,7 +48,7 @@ class Person(object):
 
     def _set_creation_timestamp(self, value):
         if value is None:
-            self._creation_timestamp = datetime.datetime.now()
+            self._creation_timestamp = datetime.datetime.now(tz='EST')
         else:
             self._creation_timestamp = value
         self._update_url_hash()
@@ -106,7 +106,7 @@ class Role(object):
 class PasswordResetConfirmation(object):
     def __init__(self, email_address=None):
         self.email_address = email_address
-        self.timestamp = datetime.datetime.now()
+        self.timestamp = datetime.datetime.now(tz='EST')
         self._update_url_hash()
 
     def _update_url_hash(self):
