@@ -103,11 +103,12 @@ required.
 <p class="actions">
 <ul>
 
-% if c.signed_in_person in c.proposal.people:
+% if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <li>
 <% h.link_to('Edit', url=h.url(action='edit',id=c.proposal.id)) %>
 </li>
 % #endif
+
 
 # Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
 % if 'reviewer' in [x.name for x in c.signed_in_person.roles] and c.signed_in_person not in [x.reviewer for x in c.proposal.reviews]:
@@ -182,6 +183,8 @@ required.
 #<% h.wiki_here() %>
 #</div>
 
+
 <%method title>
 <% h.truncate(c.proposal.title) %> - <% c.proposal.type.name %> proposal - <& PARENT:title &>
 </%method>
+
