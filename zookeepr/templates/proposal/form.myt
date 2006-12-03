@@ -47,7 +47,7 @@
 
 <p>
 <span class="mandatory">*</span>
-<label for="proposal.experience">Experience:</label>
+<label for="proposal.experience">Bio:</label>
 <br />
 <% h.text_area('proposal.experience', size="80x5") %></p>
 
