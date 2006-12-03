@@ -30,7 +30,7 @@
 % #endif
 
 <p>
-% if c.invoice.person.registration.company:
+% if c.invoice.person.registration and c.invoice.person.registration.company:
 <strong>Attention:</strong> <% c.invoice.person.registration.company %>
 % else:
 <strong>Attention:</strong> <% c.invoice.person.fullname %>

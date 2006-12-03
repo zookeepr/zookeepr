@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.3.11
+-----
+
+ * Invoice company name if supplied.  (John Ferlito)
+
 0.3.10
 -----
 

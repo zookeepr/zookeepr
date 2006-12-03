@@ -19,3 +19,7 @@ displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have
  * Store past LCAs as real years instead of 99 so they sort and display properly
 
  * s/lca2007.linux.org.au/app_conf['base_url'] or similar
+
+ * company should be moved from registration to person so that we can show company on peoples badges and invoices
+
+ * We should have an registration_invoice_map to remove alot of the invoices[0] dodginess
