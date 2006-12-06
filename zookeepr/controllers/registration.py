@@ -357,7 +357,7 @@ class PaymentOptions:
         return result
 
     def getDinnerAmount(self, tickets):
-        dinnerAmount = self.dinner[tickets]
+        dinnerAmount = self.dinner(tickets)
         return dinnerAmount
 
     def getAccommodationRate(self, choice):
