@@ -24,6 +24,9 @@
 % #endfor
 
 </table>
+<br />
+ <% h.link_to('(Add another)', url=h.url(controller='discount_code', action='new')) %>
+
 <%init>
 
 discount_codes = c.discount_code_collection
