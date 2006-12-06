@@ -6,7 +6,7 @@
         <th>Rego Type</th>
         <th>Percentage Discount</th>
         <th>Comment</th>
-        <th>Used</th>
+        <th>Used By</th>
     </tr>
 
 % for d in discount_codes:
@@ -16,9 +16,9 @@
         <td><% d.percentage %></td>
         <td><% d.comment %></td>
 %     if d.registrations:
-        <td>True</td>
+        <td><% d.registrations[0].person.firstname + " " + d.registrations[0].person.lastname + " (" + d.registrations[0].company + ")"%></td>
 %     else:
-        <td><strong>False</strong></td>
+        <td><strong>Hasn't been used</strong></td>
 %     # endif
     </tr>
 % #endfor
