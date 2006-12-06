@@ -134,7 +134,9 @@ Enquiries may be emailed to the organisers:
 <& actions &>
 
 <%method actions>
-% if c.invoice.bad_payments:
+% if c.invoice.total() == 0:
+%    pass
+% elif c.invoice.bad_payments:
 Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
 % elif not c.invoice.good_payments:
 <p>
