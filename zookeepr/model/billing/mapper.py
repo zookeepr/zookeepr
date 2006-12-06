@@ -4,6 +4,7 @@ from tables import *
 from domain import *
 from zookeepr.model.core import Person
 from zookeepr.model.registration import Registration
+from zookeepr.model.registration.tables import registration
 
 mapper(InvoiceItem, invoice_item)
 
@@ -49,3 +50,13 @@ mapper(Invoice, invoice,
                             )
     },
        )
+
+mapper(DiscountCode, discount_code,
+        properties = {
+        'registrations': relation(Registration,
+                                  uselist=True,
+                                  primaryjoin=registration.c.discount_code==discount_code.c.code,
+                                  foreignkey=discount_code.c.code,
+                                  )
+        }
+      )

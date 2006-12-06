@@ -6,7 +6,8 @@ Changes for Zookeepr
 
  * Compare dates and not times to remove timezone issues.  (John Ferlito)
  * Modify remind CSV.  (John Ferlito)
-
+ * Discount Code support.  (John Ferlito)
+ * Update AUTHORS
 
 0.3.11
 -----

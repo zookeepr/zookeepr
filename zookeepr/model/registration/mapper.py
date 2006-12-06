@@ -1,7 +1,9 @@
 from sqlalchemy import mapper, join, relation, and_, select, func, outerjoin, backref
 
 from tables import registration, accommodation_location, accommodation_option
+from zookeepr.model.billing.tables import discount_code
 from domain import Registration, Accommodation, AccommodationLocation, AccommodationOption
+from zookeepr.model.billing.domain import DiscountCode
 from zookeepr.model.core import Person
 
 mapper(AccommodationLocation, accommodation_location)
@@ -49,7 +51,11 @@ mapper(Registration, registration,
                                        lazy=True,
                                        uselist=False),
                        ),
-    'accommodation': relation(Accommodation, backref='registrations',
-                              ),
+    'accommodation': relation(Accommodation, backref='registrations'),
+    'discount': relation(DiscountCode,
+                         uselist=False,
+                         primaryjoin=registration.c.discount_code==discount_code.c.code,
+                         foreignkey=discount_code.c.code,
+        )
     }
        )
