@@ -1,6 +1,13 @@
 Changes for Zookeepr
 ====================
 
+0.3.12
+-----
+
+ * Compare dates and not times to remove timezone issues.  (John Ferlito)
+ * Modify remind CSV.  (John Ferlito)
+
+
 0.3.11
 -----
 
