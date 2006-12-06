@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.3.11",
+    version="0.3.12",
     #description="",
     #author="",
     #author_email="",
