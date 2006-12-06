@@ -45,6 +45,8 @@ You will need to go to http://lca2007.linux.org.au/registration/remind as well t
 %         status = "BAD_PAYMENT"
 %     elif i.good_payments:
 %         continue
+%     elif i.total() == 0:
+%         continue
 %     else:
 %         status = "UNKNOWN"
 %     # endif

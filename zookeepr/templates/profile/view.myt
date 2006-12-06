@@ -263,10 +263,21 @@ if 'This page does not exist yet.' in content:
 </%method>
 
 <%method actions>
+% speaker = 0
+% if c.profile.proposals:
+%     for proposal in c.profile.proposals:
+%         if proposal.accepted:
+%             speaker = 1;
+%         # endif
+%     # endfor
+% # endif
+
 % if not c.profile.invoice or not c.profile.invoice[0].bad_payments and not c.profile.invoice[0].good_payments:
 %     if c.profile.registration:
 <% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
+%     if not speaker:
 <% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.profile.registration.id)) %>
+%     # endif
 <br>
 <small><strong>Please Note:</strong> To qualify for the earlybird discount you must have registred by the 15th November and you need to pay by the <strong>15th December</strong>.
 %     #endif
