@@ -227,7 +227,20 @@ class RegistrationController(BaseController, Create, Update, List):
         description = registration.type + " Registration"
         if p.is_earlybird(registration.creation_timestamp):
             description = description + " (earlybird)"
-        ii = model.InvoiceItem(description=description, qty=1, cost=p.getTypeAmount(registration.type, registration.creation_timestamp))
+        cost = p.getTypeAmount(registration.type, registration.creation_timestamp)
+
+        # Check for discount
+        result, errors = self.check_discount()
+        if result:
+            discount = registration.discount
+            description = description + " (Discounted" + discount.type + ")"
+            discount_amount =  p.getTypeAmount(discount.type, registration.creation_timestamp) * discount.percentage/100
+            if discount_amount > cost:
+                cost = 0
+            else:
+                cost -= discount_amount
+
+        ii = model.InvoiceItem(description=description, qty=1, cost=cost)
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
@@ -235,7 +248,7 @@ class RegistrationController(BaseController, Create, Update, List):
         if registration.dinner > 0:
             iid = model.InvoiceItem(description='Additional Penguin Dinner Tickets',
                                     qty=registration.dinner,
-                                    cost=6000)
+                                    cost=p.getDinnerAmount(1))
             self.dbsession.save(iid)
             invoice.items.append(iid)
         
@@ -279,6 +292,25 @@ class RegistrationController(BaseController, Create, Update, List):
     def remind(self):
         setattr(c, 'registration_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
         return render_response('registration/remind.myt')
+
+    def check_discount(self):
+        registration = self.obj
+
+        discount = registration.discount
+        # No discount code match
+        if not discount:
+            return False, None
+
+        if len(discount.registrations) > 1:
+            return False, "Discount code already used"
+
+        if discount.type != registration.type:
+            error = "You're discount is for " + discount.type + ", but you are registering for " + registration.type + ". This is fine if what you are registering for is more expensive a bit silly otherwise."
+            return True, error
+
+        return True, "Your discount code has been applied"
+
+
 
 
 class PaymentOptions:

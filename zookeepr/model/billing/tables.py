@@ -145,7 +145,7 @@ payment_received = Table('payment_received', metadata,
 discount_code = Table('discount_code', metadata,
                 Column('id', Integer, primary_key=True),
 
-                Column('code', String, nullable=False),
+                Column('code', String, nullable=False, unique=True),
 
                 Column('type', String, nullable=False),
 
