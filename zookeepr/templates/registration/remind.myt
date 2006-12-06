@@ -8,8 +8,9 @@ Please go to http://lca2007.linux.org.au/profile/$profile_id to edit your regist
 You will need to go to http://lca2007.linux.org.au/invoice/remind as well to get those people that have generated an invoice.
 <p>
 
-<strong>firstname,lastname,email_address,profile_id</strong><br>
+<strong>firstname,lastname,email_address,profile_id,status,earlybird</strong><br>
 % count = 0
+% p = PaymentOptions()
 % for r in registrations:
 %     speaker = False
 %     if r.person.proposals:
@@ -26,7 +27,7 @@ You will need to go to http://lca2007.linux.org.au/invoice/remind as well to get
 %         continue
 %     # endif
 
-"<% r.person.firstname %>","<% r.person.lastname %>","<% r.person.email_address %>",<% r.person.id %><br>
+"<% r.person.firstname %>","<% r.person.lastname %>","<% r.person.email_address %>",<% r.person.id %>,NO_INVOICE, <% p.is_earlybird(r.creation_timestamp) %><br>
 %     count += 1
 
 % # endfor
@@ -35,6 +36,8 @@ You will need to go to http://lca2007.linux.org.au/invoice/remind as well to get
 <% count %> registrations have no invoices
 
 <%init>
+
+from zookeepr.controllers.registration import PaymentOptions
 
 registrations = c.registration_collection
 

@@ -321,7 +321,7 @@ class PaymentOptions:
                 return self.types[type][1]
 
     def is_earlybird(self, date):
-        result = date < self.ebdate
+        result = date.date() < self.ebdate.date()
         return result
 
     def getDinnerAmount(self, tickets):
