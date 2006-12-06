@@ -268,7 +268,7 @@ if 'This page does not exist yet.' in content:
 <% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
 <% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.profile.registration.id)) %>
 <br>
-<small><strong>Please Note:</strong> To qualify for the earlybird discount you must have registred by the 15th November and you need to pay by the <strong>8th December</strong>.
+<small><strong>Please Note:</strong> To qualify for the earlybird discount you must have registred by the 15th November and you need to pay by the <strong>15th December</strong>.
 %     #endif
 % else:
 <% h.link_to('(View Invoice)', url=h.url(controller='invoice', action='view', id=c.profile.invoice[0].id)) %>

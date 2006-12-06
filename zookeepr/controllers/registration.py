@@ -39,6 +39,14 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
+# Only cares about real discount codes
+class DuplicateDiscountCodeValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        discount_code = state.query(model.DiscountCode).get_by(code=value['discount_code'])
+        if discount_code and discount_code.registrations:
+            raise Invalid("Discount code already in use!", value, state)
+
+
 
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -96,6 +104,8 @@ class RegistrationSchema(Schema):
     lasignup = validators.Bool()
     announcesignup = validators.Bool()
     delegatesignup = validators.Bool()
+    
+    chained_validators = [DuplicateDiscountCodeValidator()]
 
 class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
