@@ -54,7 +54,8 @@ mapper(Invoice, invoice,
 mapper(DiscountCode, discount_code,
         properties = {
         'registrations': relation(Registration,
-                                  primaryjoin=registration.c.discount_code==discount_code.c.code
+                                  primaryjoin=registration.c.discount_code==discount_code.c.code,
+                                  foreignkey=discount_code.c.code
                                   )
         }
       )
