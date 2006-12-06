@@ -21,7 +21,11 @@
 </p>
 % if c.invoice.good_payments:
 <p>
-<strong>Amount Due:</strong> $0.00
+<strong>Invoice Paid</strong>
+</p>
+% elif c.invoice.total() == 0:
+<p>
+<strong>No Payment Required</strong>
 </p>
 % else:
 <p>
@@ -130,9 +134,7 @@ Enquiries may be emailed to the organisers:
 <& actions &>
 
 <%method actions>
-% if c.invoice.total() == 0:
-No payment Required
-% elif c.invoice.bad_payments:
+% if c.invoice.bad_payments:
 Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
 % elif not c.invoice.good_payments:
 <p>
