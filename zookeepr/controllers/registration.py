@@ -321,9 +321,9 @@ class PaymentOptions:
                 "Concession": [9900, 9900]
                 }
         self.dinner = {
-                "1": 6000,
-                "2": 12000,
-                "3": 18000
+                1: 6000,
+                2: 12000,
+                3: 18000
                 }
         self.accommodation = {
                 "0": 0,
@@ -357,7 +357,7 @@ class PaymentOptions:
         return result
 
     def getDinnerAmount(self, tickets):
-        dinnerAmount = self.dinner(tickets)
+        dinnerAmount = self.dinner[tickets]
         return dinnerAmount
 
     def getAccommodationRate(self, choice):
