@@ -245,7 +245,7 @@ class RegistrationController(BaseController, Create, Update, List):
         result, errors = self.check_discount()
         if result:
             discount = registration.discount
-            description = description + " (Discounted" + discount.type + ")"
+            description = description + " (Discounted " + discount.type + ")"
             discount_amount =  p.getTypeAmount(discount.type, registration.creation_timestamp) * discount.percentage/100
             if discount_amount > cost:
                 cost = 0
