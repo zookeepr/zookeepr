@@ -141,3 +141,26 @@ payment_received = Table('payment_received', metadata,
                                 default=func.current_timestamp(),
                                 onupdate=func.current_timestamp()),
                          )
+
+discount_code = Table('discount_code', metadata,
+                Column('id', Integer, primary_key=True),
+
+                Column('code', String, nullable=False),
+
+                Column('type', String, nullable=False),
+
+                Column('percentage', Integer, nullable=False),
+
+                Column('comment', String, nullable=False),
+
+                Column('creation_timestamp', DateTime,
+                       nullable=False,
+                       default=func.current_timestamp()),
+                Column('last_modification_timestamp', DateTime,
+                       nullable=False,
+                       default=func.current_timestamp(),
+                       onupdate=func.current_timestamp()),
+
+                )
+
+

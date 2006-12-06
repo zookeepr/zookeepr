@@ -82,3 +82,21 @@ class PaymentReceived(object):
 class Payment(object):
     def __repr__(self):
         return '<Payment id=%r>' % (self.id)
+
+
+class DiscountCode(object):
+    def __repr__(self):
+        return '<DiscountCode id=%r code=%r type=%r percentage=%r comment=%r>' % (self.id, self.code, self.type, self.percentage, self.comment)
+
+    def __init__(self,
+                 code=None,
+                 type=None,
+                 percentage=None,
+                 comment=None,
+                 ):
+        self.code = code
+        self.type = type
+        self.percentage = percentage
+        self.comment = comment
+
+
