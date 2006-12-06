@@ -43,8 +43,10 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
 class DuplicateDiscountCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         discount_code = state.query(model.DiscountCode).get_by(code=value['discount_code'])
-        if discount_code and discount_code.registrations:
-            raise Invalid("Discount code already in use!", value, state)
+        if discount_code:
+            for r in discount_code.registrations:
+                if r.person_id != session['signed_in_person_id']:
+                    raise Invalid("Discount code already in use!", value, state)
 
 
 
