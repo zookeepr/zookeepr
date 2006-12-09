@@ -8,8 +8,8 @@ from zookeepr.lib.crud import *
 class InvoiceController(SecureController, Read):
     model = model.Invoice
     individual = 'invoice'
-    permissions = {'view': [AuthFunc('is_payee')],
-                   'pay': [AuthFunc('is_payee')],
+    permissions = {'view': [AuthFunc('is_payee'), AuthRole('organiser')],
+                   'pay': [AuthFunc('is_payee'), AuthRole('organiser')],
                    'remind': [AuthRole('organiser')],
                    }
 

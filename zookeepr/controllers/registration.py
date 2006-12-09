@@ -167,7 +167,7 @@ class RegistrationController(BaseController, Create, Update, List):
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
     def edit(self, id):
-        if not self.is_same_person():
+        if not self.is_same_person() and not AuthRole('organiser').authorise(self):
             abort(403)
 
         registration = self.obj
