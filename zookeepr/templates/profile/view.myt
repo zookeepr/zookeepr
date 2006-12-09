@@ -2,7 +2,7 @@
 <h1><% c.profile.fullname |h %></h1>
 
 # Show personal details
-% if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id:
+% if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id or c.allowed_full:
 
 <& actions &>
 

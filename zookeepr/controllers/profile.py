@@ -18,3 +18,12 @@ class ProfileController(BaseController, Read, Update, List):
 
         return super(ProfileController, self).index()
 
+    def view(self, id):
+        # Give template access to dbsession for auth checks
+        if 'signed_in_person_id' in session:
+            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+            r = AuthRole('organiser')
+            if r.authorise(self):
+                c.allowed_full = True
+
+        return super(ProfileController, self).view()
