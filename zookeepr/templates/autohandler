@@ -3,6 +3,7 @@
 <head>
 <title><& SELF:title &></title>
 <link rel="stylesheet" media="screen" href="/zookeepr.css" type="text/css"/>
+<link rel="stylesheet" media="print" href="/print.css" type="text/css"/>
 <link rel="icon" type="image/png" href="/seven-favicon-earthy.png" />
 </head>
 <body>

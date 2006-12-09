@@ -1,0 +1,33 @@
+/**
+ * layout
+ */
+
+@import url("/lca2007.css");
+
+@import url("/zookeepr.css");
+
+#menus {
+  display: none;
+}
+
+#actions {
+  display: none;
+}
+
+
+a:link {
+    text-decoration:none;
+    color: #000000;
+}
+a:active {
+    text-decoration:none;
+    color: #000000;
+}
+a:visited: {
+    text-decoration:none;
+    color: #000000;
+}
+a:hover {
+    text-decoration:none;
+    color: #000000;
+}

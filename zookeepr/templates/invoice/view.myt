@@ -134,6 +134,7 @@ Enquiries may be emailed to the organisers:
 <& actions &>
 
 <%method actions>
+<div id="actions">
 % if c.invoice.total() == 0:
 %    pass
 % elif c.invoice.bad_payments:
@@ -152,6 +153,7 @@ Invalid payments have been applied to this invoice, please email <a href="mailto
 % else:
 Invoice has been paid.
 % #endif
+</div>
 </%method>
 
 <%method title>
