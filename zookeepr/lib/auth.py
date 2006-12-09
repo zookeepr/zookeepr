@@ -117,6 +117,15 @@ class SecureController(BaseController):
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
             c.signed_in_person = self.dbsession.query(Person).get_by(id=session['signed_in_person_id'])
+
+            # Setup some roles for mghty to utilise
+            roles = self.dbsession.query(Role).select()
+            for role in roles:
+                r = AuthRole(role.name)
+                if r.authorise(self):
+                    setattr(c, 'is_%s_role' % role.name, True)
+
+
         else:
             # No-one's logged in, so send them to the signin
             # page.
