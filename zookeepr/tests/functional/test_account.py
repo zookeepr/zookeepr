@@ -42,7 +42,8 @@ class TestAccountController(ControllerTest):
         """Test account sign in"""
         # create a user
         p = model.core.Person(email_address='testguy@example.org',
-                         password='p4ssw0rd')
+                         password='p4ssw0rd',
+			 handle='testguy')
         p.activated = True
 
         self.dbsession.save(p)
@@ -90,7 +91,8 @@ class TestAccountController(ControllerTest):
     def test_signin_unconfirmed(self):
         # create an account
         p = model.core.Person(email_address='testguy@example.org',
-                         password='p4ssw0rd')
+                         password='p4ssw0rd',
+			 handle='testguy')
         self.dbsession.save(p)
         self.dbsession.flush()
         pid = p.id
@@ -115,9 +117,11 @@ class TestAccountController(ControllerTest):
         timestamp = datetime.datetime.now()
         email_address = 'testguy@testguy.org'
         password = 'password'
+	handle = 'testguy'
         r = Person(creation_timestamp=timestamp,
                    email_address=email_address,
                    password=password,
+		   handle=handle,
                    activated=False)
         url_hash = r.url_hash
         print url_hash
