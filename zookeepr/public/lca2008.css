@@ -31,7 +31,7 @@ ul li {
 	right: 0 !important;
 }
 
-#secondarymenu, #locationline, p.table-of-contents-heading {
+/* #secondarymenu, */ #locationline, p.table-of-contents-heading {
 	display: none;
 }
 
