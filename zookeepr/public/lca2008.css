@@ -15,20 +15,24 @@ ul li {
 	position: relative;
 }
 
+#header h1 {
+	text-align: right;
+}
 #header h2 {
 	position: absolute;
 	bottom: 0;
-	right: 0;
+	right: 190px;
 	font-size: medium;
 	font-weight: bold;
 	text-transform: none;
 	text-align: right;
-	color: #a04700;
+	/* color: #a04700; */
 }
 
 #menus {
 	width: 50%;
-	right: 0 !important;
+	position: absolute;
+	left: 0px;
 }
 
 /* #secondarymenu, */ #locationline, p.table-of-contents-heading {
@@ -94,7 +98,7 @@ div.planet h3 {
 /* headings */
 
 h2, h3, h4 {
-	color: #ce5c00 !important;
+	/* color: #ce5c00 !important; */
 	margin: 1.5em 0 1em 0 !important;
 }
 

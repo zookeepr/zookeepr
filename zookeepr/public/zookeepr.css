@@ -25,7 +25,7 @@ body {
 #menus {
   position: absolute;
   top: 20px;
-  right: 20px;
+  /* right: 20px; */
 }
 
 #body {
@@ -425,5 +425,4 @@ table.rego td.con {
 table.rego td.non {
   text-align: center;
 }
-
 
