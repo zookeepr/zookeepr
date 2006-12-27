@@ -89,7 +89,11 @@ def wiki_fragment(page_name='Home'):
     request.environ['PATH_INFO'] = '/' + page_name
     soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
     try:
-        content = soup.findAll('div', id='content')[0]
+        content = soup.findAll('div', id='content')
+	if len(content)==0:
+	  content = '(no content)'
+	else:
+	  content = content[0]
         return '<div class="wiki">\n%s\n</div>' % (content,)
     except IndexError:
         print "soup is", soup.prettify()
