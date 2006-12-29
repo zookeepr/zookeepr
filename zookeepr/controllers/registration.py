@@ -187,7 +187,8 @@ class RegistrationController(BaseController, Create, Update):
 
                 s = smtplib.SMTP("localhost")
                 body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
-                s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
+                s.sendmail(request.environ['paste.config']['app_conf'].get('committee_email'),
+		    c.person.email_address, body)
                 s.quit()
 
                 return render_response('registration/thankyou.myt')

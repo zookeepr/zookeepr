@@ -273,7 +273,7 @@ class AccountController(BaseController):
                 # generate welcome message
                 body = render('account/new_account_email.myt',
                               fragment=True)
-                s.sendmail("seven-contact@lca2007.linux.org.au",
+                s.sendmail(request.environ['paste.config']['app_conf'].get('committee_email'),
                            c.person.email_address,
                            body)
                 s.quit()

@@ -64,7 +64,8 @@ class CfpController(SecureController):
                 s = smtplib.SMTP("localhost")
                 # generate the message from a template
                 body = render('cfp/submission_response.myt', id=c.registration.url_hash, fragment=True)
-                s.sendmail("seven-contact@lca2007.linux.org.au", c.registration.email_address, body)
+                s.sendmail(request.environ['paste.config']['app_conf'].get('committee_email'),
+		    c.registration.email_address, body)
                 s.quit()
 
                 return render_response('cfp/thankyou.myt')
