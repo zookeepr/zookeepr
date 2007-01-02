@@ -37,15 +37,15 @@ You will need to go to http://lca2007.linux.org.au/registration/remind as well t
 %         # endif
 %     # endif
 %     status = ""
-%     if not i.payments:
+%     if i.total() == 0:
+%         continue
+%     elif not i.payments:
 %         status = "NOT_PAID"
 %     elif i.bad_payments:
 %         status = "INVALID"
 %     elif not i.good_payments:
 %         status = "BAD_PAYMENT"
 %     elif i.good_payments:
-%         continue
-%     elif i.total() == 0:
 %         continue
 %     else:
 %         status = "UNKNOWN"
