@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.3.15
+------
+
+ * Make tests work in python2.4.  (John Ferlito)
+ * Don't remind people with 0 dollar invoices.  (John Ferlito)
+
 0.3.14
 ------
 
