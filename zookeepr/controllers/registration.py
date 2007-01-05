@@ -130,7 +130,7 @@ class EditRegistrationSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(BaseController, Create, Update):
+class RegistrationController(SecureController, Create, Update):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
@@ -140,6 +140,9 @@ class RegistrationController(BaseController, Create, Update):
                    }
     redirect_map = {'edit': dict(controller='/profile', action='index'),
                     }
+
+    # disable registrations until we're ready for them --Jiri 5.1.2007
+    permissions['new'] = []
 
     def is_same_person(self):
         c.signed_in_person == c.registration.person
