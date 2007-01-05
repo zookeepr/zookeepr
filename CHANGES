@@ -1,6 +1,11 @@
 Changes for Zookeepr
 ====================
 
+0.3.16
+------
+
+ * Fix bug to allow second invoice to be paid.  (John Ferlito)
+
 0.3.15
 ------
 
