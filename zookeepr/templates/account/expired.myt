@@ -5,7 +5,7 @@ This password recovery session has expired. Please send in another request to ha
 </p>
 
 <p>
-If you believe this to be an error, please contact <em>seven-contact@lca2007.linux.org.au</em>.
+If you believe this to be an error, please contact <% h.ctte_email() %>.
 </p>
 
 <p><a href="<% h.url_for('home') %>">Return to login page</a>

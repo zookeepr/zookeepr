@@ -52,7 +52,7 @@ Other: <% h.text_field('openday.heardfromtext') %>
 
 <% h.submit("Submit!") %>
 <span class="fielddesc">
-If you encounter any problems signing up please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+If you encounter any problems signing up please email <% h.ctte_email() %>
 </span>
 
 

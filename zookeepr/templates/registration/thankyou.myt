@@ -17,7 +17,7 @@ You have not yet been invoiced.  An email will be sent when the payment facility
 
 </p>
 <p>
-If you do not receive this message in a reasonable timeframe, please contact us at <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+If you do not receive this message in a reasonable timeframe, please contact us at <% h.ctte_email() %>
 </p>
 
 <p>

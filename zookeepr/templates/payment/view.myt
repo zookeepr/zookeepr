@@ -2,7 +2,7 @@
 
 <p>
 % if c.payment.result != 'OK':
-This is an invalid payment. Please contact seven-contact@lca2007.linux.org.au
+This is an invalid payment. Please contact <% h.ctte_email() %>
 % elif c.payment.Status == 'Accepted':
 Your payment was successful. Your receipt number is <% c.payment.id %>
 % else:

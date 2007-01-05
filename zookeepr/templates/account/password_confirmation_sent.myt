@@ -4,5 +4,5 @@ To complete the password reset process please follow the instructions sent to yo
 </p>
 
 <p>
-If you do not receive this email within a reasonable timeframe, please contact us at <em>seven-contact@lca2007.linux.org.au</em>.
+If you do not receive this email within a reasonable timeframe, please contact us at <% h.ctte_email() %>.
 </p>
