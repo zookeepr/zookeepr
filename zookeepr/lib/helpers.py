@@ -72,3 +72,14 @@ def radio(name, value, label=None):
     else:
         lab = '<label for="%s">%s</label>' % (id_str, label)
     return i + lab
+
+def ctte_email(text=None):
+    """ E-mail link for the committee.
+
+    Renders a link to the committee; optionally takes a text, which will be
+    the text of the anchor (defaults to the e-mail address).
+    """
+    email = request_config().environ['paste.config']['app_conf']['committee_email']
+    if text==None:
+      text = '<tt>'+email+'</tt>'
+    return '<a href="mailto:'+email+'">'+text+'</a>'
