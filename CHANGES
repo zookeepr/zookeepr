@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.3.17
+------
+
+ * Only show /registration if logged in.  (John Ferlito)
+ * Show paid beds in /registration.  (John Ferlito)
+
 0.3.16
 ------
 

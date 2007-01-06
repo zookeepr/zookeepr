@@ -42,7 +42,7 @@
 <br>
 <strong>Money in Bank:</strong> <% h.number_to_currency(money_in_bank) %> <br>
 <br>
-<& ../accommodation/list.myt &>
+<& ../accommodation/list.myt, accommodation_paid = accommodation_paid &>
 
 <%init>
 
@@ -59,6 +59,7 @@ rego_total_paid = 0
 speakers_registered = 0
 extra_dinners = 0
 money_in_bank = 0
+accommodation_paid = {}
 
 # Loop through regos
 for r in c.registration_collection:
@@ -84,9 +85,12 @@ for r in c.registration_collection:
     if r.person.invoices and r.person.invoices[0].good_payments:
         rego_paid[type] += 1
         rego_total_paid += 1
-        money_in_bank += r.person.invoices[0].total()/100.0;
-
-
+        money_in_bank += r.person.invoices[0].total()/100.0
+	if r.accommodation_option_id > 0:
+		if r.accommodation_option_id in accommodation_paid:
+			accommodation_paid[r.accommodation_option_id] += 1
+		else:
+			accommodation_paid[r.accommodation_option_id] = 1
 
 
 </%init>

@@ -9,6 +9,7 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
+from zookeepr.model.registration import Accommodation
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -304,6 +305,20 @@ class RegistrationController(BaseController, Create, Update, List):
     def remind(self):
         setattr(c, 'registration_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
         return render_response('registration/remind.myt')
+
+    def index(self):
+        r = AuthRole('organiser')
+        if 'signed_in_person_id' in session:
+            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+            if not r.authorise(self):
+            	abort(403)
+        else:
+            abort(403)
+
+	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).select())
+
+
+        return super(RegistrationController, self).index()
 
     def check_discount(self):
         registration = self.obj
