@@ -16,7 +16,11 @@
         <td><% d.percentage %></td>
         <td><% d.comment %></td>
 %     if d.registrations:
-        <td><% d.registrations[0].person.firstname + " " + d.registrations[0].person.lastname + " (" + d.registrations[0].company + ")"%></td>
+        <td><% d.registrations[0].person.firstname + " " + d.registrations[0].person.lastname %>
+%          if d.registrations[0].company:
+                <% "(" + d.registrations[0].company + ")"%>
+%          # endif
+</td>
 %     else:
         <td><strong>Hasn't been used</strong></td>
 %     # endif

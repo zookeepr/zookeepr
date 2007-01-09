@@ -1,6 +1,12 @@
 Changes for Zookeepr
 ====================
 
+0.3.18
+------
+
+ * Show company name and name.  (John Ferlito)
+ * Discount code company null bug.  (John Ferlito)
+
 0.3.17
 ------
 
