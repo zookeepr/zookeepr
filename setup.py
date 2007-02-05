@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.2.9",
+    version="0.3.3.2",
     #description="",
     #author="",
     #author_email="",
@@ -35,7 +35,7 @@ setup(
         'public/*.gif',
         'public/*.pdf',
         'public/sponsors/*.gif',
-        ]}, 
+        ]},
     entry_points="""
     [paste.app_factory]
     main=zookeepr:make_app

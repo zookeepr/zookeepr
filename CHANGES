@@ -1,6 +1,92 @@
 Changes for Zookeepr
 ====================
 
+0.3.3.2
+-------
+
+ * Add HTTP_X_FORWARDED_FOR back to the PaymentReceived object.
+   (Jamie Wilkinson)
+
+0.3.3.1
+-------
+
+ * Change both accomodation dates not just one.  (John Ferlito)
+
+
+0.3.3
+-----
+
+ * Extend accomodation.  (John Ferlito)
+
+0.3.2
+-----
+
+ * Comma bug in payment receipt fields.  (John Ferlito)
+
+0.3.1
+-----
+
+ * Only allow specific fields into the object when receiving payment receipts.
+   (Jamie Wilkinson)
+
+0.3
+---
+
+ * Cosmetic changes to payment failed page.  (Lindsay Holmwood)
+ 
+0.2.9.9.1
+---------
+
+ * Uncomment payment link.  (John Ferlito)
+
+0.2.9.9
+-------
+
+ * Rounding error in invoice viewing.  (John Ferlito)
+
+0.2.9.8
+-------
+
+ * Stop duplicate payments for an invoice.  (John Ferlito)
+
+0.2.9.7
+-------
+
+ * Actually change HTTP_X_FORWARDED_FOR everywhere.  (John Ferlito)
+
+0.2.9.6
+-------
+
+ * REMOTE_ADDR -> HTTP_X_FORWARDED_FOR due to apache setup.  (John Ferlito)
+
+0.2.9.5
+-------
+
+ * Store IP address when receiving payments.  (John Ferlito)
+
+0.2.9.4
+-------
+
+ * Fix payment notification receiver to handle missing fields from
+   CommSecure.  (John Ferlito)
+
+0.2.9.3
+-------
+
+ * Fix security hole in registration controller edit method.  (Jamie Wilkinson)
+ * Fix earlybird price calculations.  (Jamie Wilkinson)
+
+0.2.9.2
+-------
+
+ * Fix payment process handling.  (John Ferlito)
+ 
+0.2.9.1
+-------
+
+ * Add creation and last modification timestamps to payment tables.
+   (Jamie Wilkinson)
+
 0.2.9
 -----
 
@@ -18,6 +104,10 @@ Changes for Zookeepr
    John Ferlito)
  * Add payment controller for payment workflow.  (Jamie Wilkinson,
    John Ferlito)
+ * Added interfacing with CommSecure.  (John Ferlito, Jamie Wilkinson)
+ * Install moin attachment symlink in dynamic_html_dir so the build isn't
+   interrupted.  (Jamie Wilkinson)
+ * Fix edit bug on rego form.  (Jamie Wilkinson)
  
 0.2.8
 -----

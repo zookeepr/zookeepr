@@ -99,9 +99,10 @@ def wiki_fragment(page_name='Home'):
 	  content = content[0]
         return '<div class="wiki">\n%s\n</div>' % (content,)
     except IndexError:
-        print "soup is", soup.prettify()
+        print "soup is: %r" % (soup.prettify(),)
+        # If it's a boring old security issue, then don't show anything,
+        # because we're a fragment!
         if "You are not allowed to access this!" in soup.prettify():
-            #print "IndexError raised, soup content is:", soup.prettify():
             return ''
         else:
             # Raise an error so we can print it out when this happens during

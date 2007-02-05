@@ -162,7 +162,7 @@ desc = '%s %s %s %s' % (start, a1, a2, n1)
 # FIXME: dynamic content
 % for (t, p, eb) in [('Professional', '690.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
-<label for="registration.type_<% t %>"><% t %> - $<% p %> ($<% eb %> earlybird)</label>
+<label for="registration.type_<% t %>"><% t %> - $<% p %></label>
 <br />
 % #endfor
 <span class="fielddesc">
@@ -289,7 +289,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <span class="mandatory">*</span>
 <label for="registration.checkin">Check in on:</label>
 <select name="registration.checkin">
-% for d in range(14, 20):
+% for d in range(14, 21):
 <option value="<% d %>"><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
 % #endfor
 </select>
@@ -299,7 +299,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <span class="mandatory">*</span>
 <label for="registation.checkout">Check out on:</label>
 <select name="registration.checkout">
-% for d in range(15, 21):
+% for d in range(15, 22):
 <option value="<% d %>"
 % 	if d == 20:
 selected

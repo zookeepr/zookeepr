@@ -2,9 +2,6 @@ from sqlalchemy import *
 
 from zookeepr.model import metadata
 
-print func, dir(func)
-print func.current_timestamp, dir(func.current_timestamp)
-
 invoice = Table('invoice', metadata,
                 Column('id', Integer, primary_key=True),
 
@@ -14,6 +11,9 @@ invoice = Table('invoice', metadata,
                        ),
 
                 Column('issue_date', DateTime,
+                       default=func.current_timestamp(),
+                       nullable=False),
+                Column('due_date', DateTime,
                        default=func.current_timestamp(),
                        nullable=False),
                 
@@ -40,7 +40,15 @@ invoice_item = Table('invoice_item', metadata,
                             nullable=False),
                      Column('cost', Integer,
                             nullable=False),
-                     )
+                     
+                     Column('creation_timestamp', DateTime,
+                            nullable=False,
+                            default=func.current_timestamp()),
+                     Column('last_modification_timestamp', DateTime,
+                            nullable=False,
+                            default=func.current_timestamp(),
+                            onupdate=func.current_timestamp()),
+                    )
 
 payment = Table('payment', metadata,
                 Column('id', Integer, primary_key=True),
@@ -51,6 +59,14 @@ payment = Table('payment', metadata,
                 
                 Column('amount', Integer,
                        nullable=False),
+
+                Column('creation_timestamp', DateTime,
+                       nullable=False,
+                       default=func.current_timestamp()),
+                Column('last_modification_timestamp', DateTime,
+                       nullable=False,
+                       default=func.current_timestamp(),
+                       onupdate=func.current_timestamp()),
                 )
 
 payment_received = Table('payment_received', metadata,
@@ -113,4 +129,15 @@ payment_received = Table('payment_received', metadata,
                          Column('result', String,
                                 key='result',
                                 ),
+                         Column('ip_address', String,
+                                key='HTTP_X_FORWARDED_FOR',
+                                ),
+
+                         Column('creation_timestamp', DateTime,
+                                nullable=False,
+                                default=func.current_timestamp()),
+                         Column('last_modification_timestamp', DateTime,
+                                nullable=False,
+                                default=func.current_timestamp(),
+                                onupdate=func.current_timestamp()),
                          )

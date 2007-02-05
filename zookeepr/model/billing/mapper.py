@@ -8,18 +8,16 @@ from zookeepr.model.registration import Registration
 mapper(InvoiceItem, invoice_item)
 
 mapper(Payment, payment,
-       properties = {
-            'invoice': relation(Invoice,
-                                lazy=True,
-                                backref='invoice_id'
-                       ),
-            },
+        properties = {
+             'invoice': relation(Invoice)
+             },
       )
 
 mapper(PaymentReceived, payment_received,
        properties = {
-            'payment_sent': relation(Payment,
-                                backref='payment_sent'
+             'invoice': relation(Invoice),
+             'payment_sent': relation(Payment,
+                                backref='payments_received'
                        ),
             },
       )
@@ -30,14 +28,24 @@ mapper(Invoice, invoice,
                        lazy=True,
                        backref=backref('invoices', cascade="all, delete-orphan"),
                        ),
-#    'registration': relation(Registration,
-#                             backref='invoice'),
     'items': relation(InvoiceItem,
                       backref='invoice',
                       cascade="all, delete-orphan",
                       ),
-    'payment': relation(PaymentReceived, 
-                        backref='payment_received'
-                        ),
+    # All payments
+    'payments': relation(PaymentReceived),
+    # Good payments, we got the money
+    'good_payments': relation(PaymentReceived,
+                              primaryjoin=and_(payment_received.c.InvoiceID == invoice.c.id,
+                                               payment_received.c.result == 'OK',
+                                               payment_received.c.Status == 'Accepted'
+                                  )
+                            ),
+    # Bad payments, something went wrong
+    'bad_payments': relation(PaymentReceived,
+                             primaryjoin=and_(payment_received.c.InvoiceID == invoice.c.id,
+                                              payment_received.c.result != 'OK'
+                                             )
+                            )
     },
        )
