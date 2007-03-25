@@ -66,8 +66,6 @@ class DiscountCodeController(SecureController, Read, Create, List):
             else:
                 c.discount_code = model.DiscountCode()
                 for k in results['discount_code']:
-                    print "Moo"
-                    print k
                     setattr(c.discount_code, k, results['discount_code'][k])
                 self.dbsession.save(c.discount_code)
 
