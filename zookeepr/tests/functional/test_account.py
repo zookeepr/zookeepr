@@ -42,11 +42,12 @@ class TestAccountController(ControllerTest):
         """Test account sign in"""
         # create a user
         p = model.core.Person(email_address='testguy@example.org',
-                         password='p4ssw0rd')
+                         password='p4ssw0rd',
+			 handle='testguy')
         p.activated = True
 
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
         
         # try to log in
         resp = self.app.get(url_for(controller='account',
@@ -72,8 +73,8 @@ class TestAccountController(ControllerTest):
         self.failIf('contact_id' in resp.session)
         
         # clean up
-        objectstore.delete(Query(Person).get(p.id))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(Person).get(p.id))
+        self.dbsession.flush()
 
     def test_signin_invalid(self):
         """Test invalid login details"""
@@ -90,9 +91,10 @@ class TestAccountController(ControllerTest):
     def test_signin_unconfirmed(self):
         # create an account
         p = model.core.Person(email_address='testguy@example.org',
-                         password='p4ssw0rd')
-        objectstore.save(p)
-        objectstore.flush()
+                         password='p4ssw0rd',
+			 handle='testguy')
+        self.dbsession.save(p)
+        self.dbsession.flush()
         pid = p.id
         
         # try to login
@@ -107,38 +109,40 @@ class TestAccountController(ControllerTest):
         self.failIf('signed_in_person_id' in resp.session)
         
         # clean up
-        objectstore.delete(Query(Person).get(p.id))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(Person).get(p.id))
+        self.dbsession.flush()
 
     def test_registration_confirmation(self):
         # insert registration model object
         timestamp = datetime.datetime.now()
         email_address = 'testguy@testguy.org'
         password = 'password'
+	handle = 'testguy'
         r = Person(creation_timestamp=timestamp,
                    email_address=email_address,
                    password=password,
+		   handle=handle,
                    activated=False)
         url_hash = r.url_hash
         print url_hash
-        objectstore.save(r)
-        objectstore.flush()
+        self.dbsession.save(r)
+        self.dbsession.flush()
         rid = r.id
         print r
         # clear so that we reload the object later
-        objectstore.clear()
+        self.dbsession.clear()
         
         # visit the link
         response = self.app.get('/account/confirm/' + url_hash)
         response.mustcontain('Thanks for confirming your registration')
         
         # test that it's activated
-        r = objectstore.get(Person,rid)
+        r = self.dbsession.get(Person,rid)
         self.assertEqual(True, r.activated, "registration was not activated")
 
         # clean up
-        objectstore.delete(Query(Person).get(rid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(Person).get(rid))
+        self.dbsession.flush()
 
     def test_registration_confirmation_invalid_url_hash(self):
         """test that an invalid has doesn't activate anything"""
@@ -167,8 +171,8 @@ class TestAccountController(ControllerTest):
 
     def test_forgotten_password(self):
         p = model.Person(email_address='testguy@example.org')
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
         pid = p.id
 
         # trap smtp
@@ -185,7 +189,7 @@ class TestAccountController(ControllerTest):
         f.submit()
 
         # check that the confirmation record was created
-        crecs = objectstore.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
+        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
         self.failIfEqual(0, len(crecs))
 
         # check our email
@@ -215,20 +219,20 @@ class TestAccountController(ControllerTest):
         f['password_confirm'] = 'passwdtest'
         f.submit()
 
-        objectstore.clear()
+        self.dbsession.clear()
         # check that the password was changed
         p_hash = md5.new('passwdtest').hexdigest()
-        p = objectstore.get(Person, pid)
+        p = self.dbsession.get(Person, pid)
         self.assertEqual(p_hash, p.password_hash)
 
         # check that the confirmatin record is gone
-        crecs = objectstore.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
+        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
         self.assertEqual(0, len(crecs))
 
         # clean up
         Dummy_smtplib.existing.reset()
-        objectstore.delete(p)
-        objectstore.flush()
+        self.dbsession.delete(p)
+        self.dbsession.flush()
 
     def test_forgotten_password_no_account(self):
         """Test that an invalid email address doesn't start a password change.
@@ -245,7 +249,7 @@ class TestAccountController(ControllerTest):
         print resp
         resp.mustcontain("Your sign-in details are incorrect")
 
-        crecs = objectstore.query(PasswordResetConfirmation).select_by(email_address='nonexistent@example.org')
+        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(email_address='nonexistent@example.org')
         self.assertEqual(0, len(crecs), "contact records found: %r" % crecs)
         self.assertEqual(None, Dummy_smtplib.existing)
 
@@ -261,8 +265,8 @@ class TestAccountController(ControllerTest):
         stamp = datetime.datetime.now() - datetime.timedelta(24, 0, 1)
         c = PasswordResetConfirmation(email_address=email)
         c.timestamp = stamp
-        objectstore.save(c)
-        objectstore.flush()
+        self.dbsession.save(c)
+        self.dbsession.flush()
         cid = c.id
 
         resp = self.app.get(url_for(controller='account',
@@ -271,8 +275,8 @@ class TestAccountController(ControllerTest):
         # check for warning
         resp.mustcontain("This password recovery session has expired")
 
-        objectstore.clear()
-        c = objectstore.get(PasswordResetConfirmation, cid)
+        self.dbsession.clear()
+        c = self.dbsession.get(PasswordResetConfirmation, cid)
         # record shouldn't exist anymore
         self.assertEqual(None, c)
 
@@ -283,12 +287,12 @@ class TestAccountController(ControllerTest):
         # create a confirmation record
         email = 'testguy@example.org'
         p = Person(email_address=email)
-        objectstore.save(p)
+        self.dbsession.save(p)
         c = PasswordResetConfirmation(email_address=email)
         # set the timestamp to just under 24 hours ago
         c.timestamp = datetime.datetime.now() - datetime.timedelta(23, 59, 59)
-        objectstore.save(c)
-        objectstore.flush()
+        self.dbsession.save(c)
+        self.dbsession.flush()
         pid = p.id
         cid = c.id
 
@@ -307,26 +311,26 @@ class TestAccountController(ControllerTest):
         # check for success
         resp.mustcontain("Your password has been updated")
 
-        objectstore.clear()
+        self.dbsession.clear()
 
         # conf rec should be gone
-        c = objectstore.get(PasswordResetConfirmation, cid)
+        c = self.dbsession.get(PasswordResetConfirmation, cid)
         self.assertEqual(None, c)
 
         # password should be set to 'test'
         p_hash = md5.new('test').hexdigest()
-        p = objectstore.get(Person, pid)
+        p = self.dbsession.get(Person, pid)
         self.assertEqual(p_hash, p.password_hash)
 
-        objectstore.delete(p)
-        objectstore.flush()
+        self.dbsession.delete(p)
+        self.dbsession.flush()
 
     def test_duplicate_password_reset(self):
         """Try to reset a password twice.
         """
         c = Person(email_address='testguy@example.org')
-        objectstore.save(c)
-        objectstore.flush()
+        self.dbsession.save(c)
+        self.dbsession.flush()
         cid = c.id
 
         #
@@ -342,7 +346,7 @@ class TestAccountController(ControllerTest):
         f['email_address'] = email
         f.submit()
 
-        crec = Query(PasswordResetConfirmation).get_by(email_address=email)
+        crec = self.dbsession.query(PasswordResetConfirmation).get_by(email_address=email)
         self.failIfEqual(None, crec)
         crecid = crec.id
 
@@ -353,9 +357,9 @@ class TestAccountController(ControllerTest):
 
         # clean up
         Dummy_smtplib.existing.reset()
-        objectstore.delete(Query(PasswordResetConfirmation).get(crecid))
-        objectstore.delete(Query(Person).get(cid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(PasswordResetConfirmation).get(crecid))
+        self.dbsession.delete(self.dbsession.query(Person).get(cid))
+        self.dbsession.flush()
 
     def test_login_failed_warning(self):
         """Test that you get an appropriate warning message from the form when you try to log in with invalid credentials.
@@ -418,7 +422,7 @@ class TestAccountController(ControllerTest):
         print resp
         
         # check the rego worked
-        regs = Query(Person).select()
+        regs = self.dbsession.query(Person).select()
         self.failIfEqual([], regs)
         print regs[0]
         self.assertEqual(True, regs[0].activated, "account was not activated!")
@@ -436,8 +440,8 @@ class TestAccountController(ControllerTest):
         # clean up
         Dummy_smtplib.existing.reset()
 
-        objectstore.delete(Query(Person).get(rid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(Person).get(rid))
+        self.dbsession.flush()
 
     def test_create_duplicate_account(self):
         Dummy_smtplib.install()
@@ -445,8 +449,8 @@ class TestAccountController(ControllerTest):
         # create a fake user
         p = Person(email_address='testguy@example.org')
         p.activated = True
-        objectstore.save(p)
-        objectstore.flush()
+        self.dbsession.save(p)
+        self.dbsession.flush()
         pid = p.id
 
         resp = self.app.get('/account/new')
@@ -462,5 +466,5 @@ class TestAccountController(ControllerTest):
 
         resp.click('recover your password')
 
-        objectstore.delete(Query(Person).get(pid))
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(Person).get(pid))
+        self.dbsession.flush()

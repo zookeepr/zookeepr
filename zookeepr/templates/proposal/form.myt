@@ -1,4 +1,7 @@
 <p>
+% if 'organiser' not in [x.name for x in c.signed_in_person.roles]:
+<div style="display:none">
+% # endif
 <span class="mandatory">*</span>
 <label for="proposal.title">Title:</label><br />
 <% h.text_field('proposal.title', size=80) %></p>
@@ -33,7 +36,9 @@
 <label for="attachment">Attach a paper:</label>
 <% h.file_field('attachment', size=50) %>
 </p>
-
+% if 'organiser' not in [x.name for x in c.signed_in_person.roles]:
+</div>
+% # endif
 <p>
 <span class="mandatory">*</span>
 <label for="proposal.abstract">Abstract:</label>
@@ -42,7 +47,7 @@
 
 <p>
 <span class="mandatory">*</span>
-<label for="proposal.experience">Experience:</label>
+<label for="proposal.experience">Bio:</label>
 <br />
 <% h.text_area('proposal.experience', size="80x5") %></p>
 

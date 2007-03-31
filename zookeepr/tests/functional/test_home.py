@@ -1,4 +1,3 @@
-from zookeepr.model import Person, Proposal
 from zookeepr.tests.functional import *
 
 class TestHomeController(ControllerTest):
@@ -6,19 +5,23 @@ class TestHomeController(ControllerTest):
         response = self.app.get(url_for(controller='home'))
 
     def test_index_logged_in(self):
-        p = Person(email_address='testguy@example.org',
+        p = model.Person(email_address='testguy@example.org',
                    password='test',
-                   firstname='Testguy')
+                   firstname='Testguy',
+		   handle='testguy')
         p.activated = True
-        objectstore.save(p)
+        self.dbsession.save(p)
         print p
-        s = Proposal(title='foo')
-        objectstore.save(s)
+        s = model.Proposal(title='foo')
+        self.dbsession.save(s)
         p.proposals.append(s)
 
-        objectstore.flush()
+        self.dbsession.flush()
 
         print p
+
+        pid = p.id
+        sid = s.id
 
         resp = self.app.get(url_for(controller='account',action='signin'))
         f = resp.form
@@ -36,6 +39,6 @@ class TestHomeController(ControllerTest):
         resp.mustcontain("signed in")
         resp.mustcontain("foo")
 
-        objectstore.delete(p)
-        objectstore.delete(s)
-        objectstore.flush()
+        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
+        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
+        self.dbsession.flush()

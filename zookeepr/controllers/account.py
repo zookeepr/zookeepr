@@ -29,7 +29,7 @@ class AuthenticationValidator(validators.FancyValidator):
 
 class ExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        accounts = Query(Person).select_by(email_address=value['email_address'])
+        accounts = state.query(Person).select_by(email_address=value['email_address'])
         if len(accounts) == 0:
             raise Invalid("Your sign-in details are incorrect; try registering a new account.", value, state)
 
@@ -57,7 +57,7 @@ class PasswordResetSchema(BaseSchema):
 # FIXME: merge with registration controller validator and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = Query(Person).get_by(email_address=value['email_address'])
+        account = state.query(Person).get_by(email_address=value['email_address'])
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.", value, state)
 
@@ -65,7 +65,7 @@ class NotExistingAccountValidator(validators.FancyValidator):
 # FIXME: merge with registration controller validator and move to validators
 class NotExistingHandleValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = Query(Person).get_by(handle=value['handle'])
+        account = state.query(Person).get_by(handle=value['handle'])
         if account is not None:
             raise Invalid("This handle already exists.  Please try signing in first, or choosing a new handle.", value, state)
 
@@ -93,18 +93,22 @@ class AccountController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = LoginValidator().validate(defaults)
+            result, errors = LoginValidator().validate(defaults, self.dbsession)
 
             if not errors:
                 # do the authorisation here or in validator?
                 # get account
                 # check auth
                 # set session cookies
-                person = Query(Person).get_by(email_address=result['email_address'])
+                person = self.dbsession.query(Person).get_by(email_address=result['email_address'])
                 if person:
                     # at least one Person matches, save it
                     session['signed_in_person_id'] = person.id
                     session.save()
+
+                    # Redirect to original URL if it exists
+                    if 'sign_in_redirect' in session:
+                        redirect_to(session['sign_in_redirect'])
 
                     # return home
                     redirect_to('home')
@@ -125,15 +129,15 @@ class AccountController(BaseController):
         they regsitered, and a nonce.
 
         """
-        r = Query(Person).select_by(url_hash=id)
+        r = self.dbsession.query(Person).select_by(url_hash=id)
 
         if len(r) < 1:
             abort(404)
 
         r[0].activated = True
 
-        objectstore.save(r[0])
-        objectstore.flush()
+        self.dbsession.save(r[0])
+        self.dbsession.flush()
 
         return render_response('account/confirmed.myt')
 
@@ -156,19 +160,19 @@ class AccountController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = ForgottenPasswordSchema().validate(defaults)
+            result, errors = ForgottenPasswordSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.conf_rec = PasswordResetConfirmation(result['email_address'])
-                objectstore.save(c.conf_rec)
+                self.dbsession.save(c.conf_rec)
                 try:
-                    objectstore.flush()
+                    self.dbsession.flush()
                 except sqlalchemy.exceptions.SQLError, e:
-                    objectstore.clear()
+                    self.dbsession.clear()
                     # FIXME exposes sqlalchemy!
                     return render_response('account/in_progress.myt')
 
-                s = smtplib.SMTP("localhost")
+                s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
                 # generate email from template
                 body = render('account/confirmation_email.myt', fragment=True)
                 s.sendmail("support@anchor.com.au",
@@ -203,7 +207,7 @@ class AccountController(BaseController):
         If the record doesn't exist, throw an error, delete the
         confirmation record.
         """
-        crecs = Query(PasswordResetConfirmation).select_by(url_hash=url_hash)
+        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(url_hash=url_hash)
         if len(crecs) == 0:
             abort(404)
 
@@ -213,8 +217,8 @@ class AccountController(BaseController):
         delta = now - c.conf_rec.timestamp
         if delta > datetime.timedelta(24, 0, 0):
             # this confirmation record has expired
-            objectstore.delete(c.conf_rec)
-            objectstore.flush()
+            self.dbsession.delete(c.conf_rec)
+            self.dbsession.flush()
             return render_response('account/expired.myt')
 
         # now process the form
@@ -222,10 +226,10 @@ class AccountController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = PasswordResetSchema().validate(defaults)
+            result, errors = PasswordResetSchema().validate(defaults, self.dbsession)
 
             if not errors:
-                accounts = Query(Person).select_by(email_address=c.conf_rec.email_address)
+                accounts = self.dbsession.query(Person).select_by(email_address=c.conf_rec.email_address)
                 if len(accounts) == 0:
                     raise RuntimeError, "Account doesn't exist %s" % c.conf_rec.email_address
 
@@ -235,8 +239,8 @@ class AccountController(BaseController):
                 accounts[0].activated = True
                 
                 # delete the conf rec
-                objectstore.delete(c.conf_rec)
-                objectstore.flush()
+                self.dbsession.delete(c.conf_rec)
+                self.dbsession.flush()
 
                 return render_response('account/success.myt')
 
@@ -255,13 +259,15 @@ class AccountController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = NewRegistrationSchema().validate(defaults)
+            result, errors = NewRegistrationSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.person = Person()
                 # update the objects with the validated form data
                 for k in result['registration']:
                     setattr(c.person, k, result['registration'][k])
+                self.dbsession.save(c.person)
+                self.dbsession.flush()
 
                 s = smtplib.SMTP("localhost")
                 # generate welcome message

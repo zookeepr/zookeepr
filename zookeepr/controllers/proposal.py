@@ -32,7 +32,7 @@ class NotYetReviewedValidator(validators.FancyValidator):
         }
     
     def validate_python(self, value, state):
-        review = Query(Review).get_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
+        review = state.query(Review).get_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id)
         if review is not None:
             raise Invalid(self.message('already', None),
                           value, state)
@@ -53,7 +53,7 @@ class ProposalController(SecureController, View, Modify):
 
     schemas = {"new" : NewProposalSchema(),
                "edit" : EditProposalSchema()}
-    permissions = {"edit": [AuthFunc('is_submitter')],
+    permissions = {"edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer')],
@@ -62,28 +62,28 @@ class ProposalController(SecureController, View, Modify):
     def __before__(self, **kwargs):
         super(ProposalController, self).__before__(**kwargs)
 
-        c.proposal_types = Query(ProposalType).select()
+        c.proposal_types = self.dbsession.query(ProposalType).select()
 
     def new(self, id):
         errors = {}
         defaults = dict(request.POST)
         if defaults:
-            result, errors = self.schemas['new'].validate(defaults)
+            result, errors = self.schemas['new'].validate(defaults, self.dbsession)
 
             if not errors:
                 c.proposal = self.obj = self.model()
                 for k in result['proposal']:
                     setattr(c.proposal, k, result['proposal'][k])
                 self.obj.people.append(c.signed_in_person)
-                objectstore.save(c.proposal)
+                self.dbsession.save(c.proposal)
                 if result.has_key('attachment') and result['attachment'] is not None:
                     att = Attachment()
                     for k in result['attachment']:
                         setattr(att, k, result['attachment'][k])
                     self.obj.attachments.append(att)
-                    objectstore.save(att)
+                    self.dbsession.save(att)
                 
-                objectstore.flush()
+                self.dbsession.flush()
 
                 redirect_to(action='view', id=self.obj.id)
 
@@ -95,30 +95,30 @@ class ProposalController(SecureController, View, Modify):
     def review(self, id):
         """Review a proposal.
         """
-        c.proposal = Query(Proposal).get(id)
+        c.proposal = self.dbsession.query(model.Proposal).get(id)
 
         defaults = dict(request.POST)
         errors = {}
         
         if defaults:
-            result, errors = NewReviewSchema().validate(defaults)
+            result, errors = NewReviewSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 review = Review()
                 for k in result['review']:
                     setattr(review, k, result['review'][k])
 
-                objectstore.save(review)
+                self.dbsession.save(review)
 
                 review.reviewer = c.signed_in_person
                 c.proposal.reviews.append(review)
 
-                objectstore.flush()
+                self.dbsession.flush()
 
                 # Dumb but redirecting to the proposal list is very slow.  bug #33
                 redirect_to('/')
                 
-        c.streams = Query(Stream).select()
+        c.streams = self.dbsession.query(Stream).select()
         
         return render_response('proposal/review.myt', defaults=defaults, errors=errors)
     
@@ -126,12 +126,12 @@ class ProposalController(SecureController, View, Modify):
     def attach(self, id):
         """Attach a file to the proposal.
         """
-        c.proposal = Query(Proposal).get(id)
+        c.proposal = self.dbsession.query(Proposal).get(id)
         defaults = dict(request.POST)
         errors = {}
 
         if defaults:
-            result, errors = NewAttachmentSchema().validate(defaults)
+            result, errors = NewAttachmentSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 attachment = Attachment()
@@ -139,7 +139,7 @@ class ProposalController(SecureController, View, Modify):
                     setattr(attachment, k, result['attachment'][k])
                 c.proposal.attachments.append(attachment)
 
-                objectstore.flush()
+                self.dbsession.flush()
 
                 return redirect_to(action='view', id=id)
 
@@ -156,12 +156,12 @@ class ProposalController(SecureController, View, Modify):
     def index(self):
         # hack for bug#34, don't show miniconfs to reviewers
         if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
-            c.proposal_types = Query(ProposalType).select()
+            c.proposal_types = self.dbsession.query(ProposalType).select()
         else:
-            c.proposal_types = Query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
+            c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
 
         for pt in c.proposal_types:
-            stuff = Query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
             setattr(c, '%s_collection' % pt.name, stuff)
 
         return super(ProposalController, self).index()

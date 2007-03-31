@@ -18,6 +18,12 @@ Once your account has been confirmed, you will be able to log
 into the site with the password you provided with your registration.
 
 % #endif
+
+You can now view and pay for your invoice by visiting
+http://lca2007.linux.org.au/profile/<% c.person.id %> and
+clicking on the "confirm and and pay" link. If you get a blank page
+please ensure you are signed in.
+
 Your account details are:
 
    Ticket: <% c.registration.type %>
@@ -33,15 +39,26 @@ teesize = {'S': 'small',
            'L': 'large',
            'XL': 'X large',
            'XXL': 'XX large',
-           'XXXL': 'XXX large'}[c.registration.teesize[-1]]
+           'XXXL': 'XXX large'}[c.registration.teesize[2:]]
 </%python>
  Teeshirt: <% teesex %> <% teesize %>
 
  Extra tickets: <% c.registration.dinner |h %>
 
- Accommodation: <% c.registration.accommodation %>
+% if c.registration.accommodation:
+%	a = c.registration.accommodation
+%	if a.option:
+%		opt = " (%s) " % a.option
+%	else:
+%		opt = ' '
+%
+%	accom = "%s%s(%s per night)" % (a.name, opt, h.number_to_currency(a.cost_per_night))
+ Accommodation: <% accom %>
        Checkin: <% c.registration.checkin %>th January
       Checkout: <% c.registration.checkout %>th January
+% else:
+ Accommodation: none selected
+% #endif
 
  Dietary requirements:
     <% c.registration.diet %>
@@ -62,9 +79,6 @@ teesize = {'S': 'small',
    Distro: <% c.registration.distrotext or c.registration.distro %>
 
 If you want to change your details, please log into the website.
-
-Please note!  You have not yet been invoiced.  Your invoice will be sent
-to you via email when ready.
 
 Thanks again, and have a great day!
 

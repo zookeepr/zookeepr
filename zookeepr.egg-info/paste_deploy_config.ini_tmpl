@@ -4,7 +4,7 @@
 # The %(here) variable will be replaced with the parent directory of this file
 #
 [DEFAULT]
-debug = true
+debug = false
 email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = paste@exceptions.com
@@ -34,8 +34,9 @@ moin_underlay = %(here)s/moin_underlay
 # `BaseController.__call__()`.  Note the URL syntax depends
 # on the SQLAlchemy documentation for `global_connect`.
 dburi = sqlite://filename=%(here)s/somedb.db
+# echo_queries = true
 
-# WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
-# Debug mode will enable the interactive debugging tool, allowing ANYONE to
-# execute malicious code after an exception is raised.
-#set debug = true
+# CommSecure (the payment gateway provider) requires a Merchant ID
+# and a shared secret
+commsecure_merchantid = TestZookeeprMerchantID
+commsecure_secret = zing

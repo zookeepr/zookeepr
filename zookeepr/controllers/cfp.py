@@ -36,13 +36,13 @@ class CfpController(SecureController):
         return render_response("cfp/list.myt")
 
     def submit(self):
-        c.cfptypes = Query(ProposalType).select()
+        c.cfptypes = self.dbsession.query(ProposalType).select()
 
         errors = {}
         defaults = dict(request.POST)
 
         if request.method == 'POST' and defaults:
-            result, errors = NewCFPSchema().validate(defaults)
+            result, errors = NewCFPSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.proposal = Proposal()
@@ -61,7 +61,7 @@ class CfpController(SecureController):
                         setattr(c.attachment, k, result['attachment'][k])
                     c.proposal.attachments.append(c.attachment)
 
-                s = smtplib.SMTP("localhost")
+                s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
                 # generate the message from a template
                 body = render('cfp/submission_response.myt', id=c.registration.url_hash, fragment=True)
                 s.sendmail("seven-contact@lca2007.linux.org.au", c.registration.email_address, body)

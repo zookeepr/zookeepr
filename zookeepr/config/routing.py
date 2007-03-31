@@ -31,6 +31,13 @@ def make_map():
               controller='account',
               action='confirm')
 
+    # Verify stuff from commsecure
+    m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
+
+    # Invoice Reminder
+    m.connect('/invoice/remind', controller='invoice', action='remind', id=None)
+    m.connect('/registration/remind', controller='registration', action='remind', id=None)
+
     # special case for account controller, again in the style of the
     # original routes controller
     m.connect('/account/:action', controller='account')
@@ -39,6 +46,12 @@ def make_map():
     # special case for the about controller
     m.connect('/about/', controller='about', action='view', id='index')
     m.connect('/about/:id', controller='about', action='view')
+
+    # OpenDay
+    m.connect('openday', '/OpenDay', controller='openday', action='new')
+    m.connect('/Openday', controller='openday', action='new')
+    m.connect('/openday', controller='openday', action='new')
+    m.connect('/openDay', controller='openday', action='new')
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule

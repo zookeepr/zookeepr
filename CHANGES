@@ -1,10 +1,265 @@
 Changes for Zookeepr
 ====================
 
+0.3.18
+------
+
+ * Show company name and name.  (John Ferlito)
+ * Discount code company null bug.  (John Ferlito)
+
+0.3.17
+------
+
+ * Only show /registration if logged in.  (John Ferlito)
+ * Show paid beds in /registration.  (John Ferlito)
+
+0.3.16
+------
+
+ * Fix bug to allow second invoice to be paid.  (John Ferlito)
+
+0.3.15
+------
+
+ * Make tests work in python2.4.  (John Ferlito)
+ * Don't remind people with 0 dollar invoices.  (John Ferlito)
+
+0.3.14
+------
+
+ * Print CSS.  (John Ferlito)
+
+0.3.13
+------
+
+ * Allow organisers access to profiles and invoices.  (John Ferlito)
+
+0.3.12
+-----
+
+ * Compare dates and not times to remove timezone issues.  (John Ferlito)
+ * Modify remind CSV.  (John Ferlito)
+ * Discount Code support.  (John Ferlito)
+ * Update AUTHORS
+
+0.3.11
+-----
+
+ * Invoice company name if supplied.  (John Ferlito)
+
+0.3.10
+-----
+
+ * Make proposals editable.  (John Ferlito)
+
+0.3.9
+-----
+
+ * Reporting of unpaid invoices.  (John Ferlito)
+
+0.3.8
+-----
+
+ * Only send emails once for payment.  (John Ferlito)
+
+0.3.7
+-----
+
+ * Make email gateway configurable.  (John Ferlito)
+
+0.3.6
+-----
+
+ * Send email each time we receive a payment.  (John Ferlito)
+ * Add regen link to invoice page.  (John Ferlito)
+
+0.3.5
+-----
+
+ * Ignore SMTP exceptions for now.  (John Ferlito)
+ * domain_exists needs to be initialised.  (John Ferlito)
+
+0.3.4
+-----
+
+ * Registration reporting.  (John Ferlito)
+ * Link bug on payment view page.  (John Ferlito)
+ * Only show edit links on profile for signed in person.  (John Ferlito)
+ * Add talk and account names to tiles.  (John Ferlito)
+ * So apparently auth_num can be a string. Wacky commsecure.  (John Ferlito)
+
+0.3.3.3
+-------
+
+ * Fix earlybird rate for hobbyist.  (John Ferlito)
+
+0.3.3.2
+-------
+
+ * Add HTTP_X_FORWARDED_FOR back to the PaymentReceived object.
+   (Jamie Wilkinson)
+
+0.3.3.1
+-------
+
+ * Change both accomodation dates not just one.  (John Ferlito)
+
+
+0.3.3
+-----
+
+ * Extend accomodation.  (John Ferlito)
+
+0.3.2
+-----
+
+ * Comma bug in payment receipt fields.  (John Ferlito)
+
+0.3.1
+-----
+
+ * Only allow specific fields into the object when receiving payment receipts.
+   (Jamie Wilkinson)
+
+0.3
+---
+
+ * Cosmetic changes to payment failed page.  (Lindsay Holmwood)
+ 
+0.2.9.9.1
+---------
+
+ * Uncomment payment link.  (John Ferlito)
+
+0.2.9.9
+-------
+
+ * Rounding error in invoice viewing.  (John Ferlito)
+
+0.2.9.8
+-------
+
+ * Stop duplicate payments for an invoice.  (John Ferlito)
+
+0.2.9.7
+-------
+
+ * Actually change HTTP_X_FORWARDED_FOR everywhere.  (John Ferlito)
+
+0.2.9.6
+-------
+
+ * REMOTE_ADDR -> HTTP_X_FORWARDED_FOR due to apache setup.  (John Ferlito)
+
+0.2.9.5
+-------
+
+ * Store IP address when receiving payments.  (John Ferlito)
+
+0.2.9.4
+-------
+
+ * Fix payment notification receiver to handle missing fields from
+   CommSecure.  (John Ferlito)
+
+0.2.9.3
+-------
+
+ * Fix security hole in registration controller edit method.  (Jamie Wilkinson)
+ * Fix earlybird price calculations.  (Jamie Wilkinson)
+
+0.2.9.2
+-------
+
+ * Fix payment process handling.  (John Ferlito)
+ 
+0.2.9.1
+-------
+
+ * Add creation and last modification timestamps to payment tables.
+   (Jamie Wilkinson)
+
+0.2.9
+-----
+
+ * Remove threadlocal SQLAlchemy mod from the data model, again using
+   a per-request session.  (Jamie Wilkinson)
+ * Refactor data model initialisation to be more awesome and not lose
+   engine references.  Update test infrastructure to use same method so
+   unittests don't hide production bugs.  (Jamie Wilkinson)
+ * Add facility for editing registration details.  (Jamie Wilkinson)
+ * Refactor CRUD methods to add post-DB-session-flush hooks.  (Jamie Wilkinson)
+ * Add invoice controller and view method.  (Jamie Wilkinson)
+ * Add PaymentOptions object to enumerate costs for billable items.
+   (John Ferlito, Lindsay Holmwood)
+ * Add payment storage objects.  (Jamie Wilkinson, Lindsay Holmwood,
+   John Ferlito)
+ * Add payment controller for payment workflow.  (Jamie Wilkinson,
+   John Ferlito)
+ * Added interfacing with CommSecure.  (John Ferlito, Jamie Wilkinson)
+ * Install moin attachment symlink in dynamic_html_dir so the build isn't
+   interrupted.  (Jamie Wilkinson)
+ * Fix edit bug on rego form.  (Jamie Wilkinson)
+ 
+0.2.8
+-----
+
+ * Don't blow up on NXDOMAIN responses or timeouts during the email domain
+   validator.  (Jamie Wilkinson)
+ * Lock down talk controller to only accepted talks.  (Jamie Wilkinson)
+ * Only show accepted talks on profile pages.  (Jamie Wilkinson)
+
+0.2.7
+-----
+
+ * Refactor ControllerTest base classes to differentiate semiautomagic tests
+   for CRUD controllers versus non-CRUD controllers.  (Jamie Wilkinson)
+ * Fix really really dumb bug in registration email generation.
+   (Jamie Wilkinson)
+
+0.2.6
+-----
+
+ * Fix group-by bug in postgresql backends for accommodation bed counter.
+   (Jamie Wilkinson)
+ * Make embedded wiki bit work again.  (Jamie Wilkinson)
+ * Remove handle from profile title.  (Jamie Wilkinson)
+ * Add a controller for accepted talks, and embed proposal abstracts where
+   they exist.  (Jamie Wilkinson)
+ * Fix two showstopper bugs that weren't caught before releasing 0.2.5.
+   Template error in mailout from registration, and schema validation
+   error with 'own' being submitted, probably should never have happened.
+   I blame Alec Thomas for the second bug.  (Jamie Wilkinson)
+
+0.2.5
+-----
+
+ * Use the new accommodation data model for displaying accommodation options
+   on the registration page.  (Jamie Wilkinson)
+ * Redirect back to original URL after signing in.  (John Ferlito)
+ * Create a symlink in the public/ static files directory pointing to
+   MoinMoin attachments as a workaround for moin attachment brokenness.
+   (John Ferlito)
+ * Made sure that people don't register more than once. (Jamie Wilkinson)
+ * Update the accommodation data model to allow us to see how many beds are
+   already taken for a given venue (and this value is shared across different
+   options at the same venue).  (Jamie Wilkinson)
+ * Add a controller for user profiles, and embed proposal bios where they
+   exist.  (Jamie Wilkinson)
+
+0.2.4
+-----
+
+ * Fixed rego email teesize message
+ * Dinner price on rego form
+ * Added Open Day registration
+
 0.2.3
 -----
 
- * Add validation for handle already existing in DB
+ * Add accommodation data model.
+ * Added validation schema for existing handle/display names.
+ * Merged A+MX email address domain validation from Jiri Baum.
 
 0.2.2
 -----
