@@ -1,0 +1,12 @@
+echo "Paid Regos"
+echo
+echo "select partner_email, kids_0_3, kids_4_6, kids_7_9, kids_10 from rego where id in (select rego from rego_invoice_payment where payment is NOT NULL) and partner_email is not NULL and partner_email != '';" | psql
+
+echo "Speaker Partners"
+echo
+echo "select partner_email, kids_0_3, kids_4_6, kids_7_9, kids_10 from rego where person_id in (select person from speakers) and partner_email is not NULL and partner_email != '';" | psql 
+
+echo "Unpaid Regos"
+echo
+echo "select partner_email, kids_0_3, kids_4_6, kids_7_9, kids_10 from rego where id in (select rego from rego_invoice_payment where payment is NULL) and partner_email is not NULL and partner_email != '' AND person_id NOT IN  (select person from speakers); " | psql
+

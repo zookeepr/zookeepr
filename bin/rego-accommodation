@@ -1,0 +1,3 @@
+accepted_person_ids="select person_id from person_proposal_map, proposal where accepted = 't' and person_proposal_map.proposal_id = proposal.id" number_regos="SELECT COUNT(type) FROM registration,person,account WHERE person.id = registration.person_id AND account.id = person.account_id AND person.id not in ($accepted_person_ids)"
+
+psql -c "select person.id, person.firstname, person.lastname, account.email_address, registration.accommodation_option_id from person, account, registration where person.id = registration.person_id and account.id = person.account_id and person.id not in ($accepted_person_ids)"

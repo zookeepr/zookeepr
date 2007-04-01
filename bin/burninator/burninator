@@ -1,0 +1,65 @@
+#!/bin/sh
+while read SESSION; do
+	case $SESSION in
+		==*)
+			echo $SESSION
+			continue
+		;;
+	esac
+	echo $SESSION | tr ',' '\n' | while read SLOT; do
+		echo -n "||"
+		case $SLOT in
+			???D)
+				echo -n '<class="deepkernel">'
+			;;
+			???P)
+				echo -n '<class="programmer">'
+			;;
+			???S)
+				echo -n '<class="sysadmin">'
+			;;
+			???K)
+				echo -n '<class="widekernel">'
+			;;
+			???C)
+				echo -n '<class="coolshit">'
+			;;
+			???U)
+				echo -n '<class="userexperience">'
+			;;
+			???F)
+				echo -n '<class="freeculture">'
+			;;
+			???T)
+				echo -n "<|3( class=\"tutorial\">'''Tutorial:''' "
+			;;
+			"")
+				echo -n " "
+				continue
+			;;
+			*)
+				echo -n "$SLOT"
+			;;
+		esac
+		IFS='#'
+		grep "^$(echo $SLOT | sed 's#[[:alpha:]]##;s#^0##')#" talk-data.txt | while read ID TYPE TITLE FIRST LAST EMAIL PERSON HANDLE; do
+			if [ ! "$TD" ]; then
+				echo -n "'''[http://lca2007.linux.org.au/talk/$ID $TITLE]'''[[BR]]"
+				echo -n "[http://lca2007.linux.org.au/talk/$ID http://mirror.linux.org.au/pub/linux.conf.au/2007/video/talks/$ID-stream.png] "
+				echo -n "[http://mirror.linux.org.au/pub/linux.conf.au/2007/video/talks/$ID.ogg http://mirror.linux.org.au/pub/linux.conf.au/2007/video/talks/$ID-ogg.png][[BR]]by "
+				#echo -n "'''$TITLE'''[[BR]]"
+			else
+				echo -n ", "
+			fi
+			TD=done
+			if [ $FIRST ] || [ $LAST ]; then
+				echo -n "[http://lca2007.linux.org.au/profile/$PERSON $FIRST $LAST]"
+				#echo -n "$FIRST $LAST"
+			else
+				echo -n "FIXME NO AUTHOR"
+			fi
+		done
+		unset IFS
+	done
+	echo "||"
+done < schedule.txt

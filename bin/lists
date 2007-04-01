@@ -1,0 +1,7 @@
+#!/bin/sh
+
+
+date=`date +%F`
+echo "select account.email_address from registration, person, account where account.id = person.account_id and registration.person_id = person.id and account.activated = 't' and announcesignup = 't';"  | psql -t > /home/lca/lists/announce.$date
+echo "select account.email_address from registration, person, account where account.id = person.account_id and registration.person_id = person.id and account.activated = 't' and delegatesignup = 't';" | psql -t > /home/lca/lists/delegate.$date
+echo "select account.email_address from registration, person, account where account.id = person.account_id and registration.person_id = person.id and account.activated = 't' and lasignup = 't';" | psql -t > /home/lca/lists/lasignup.$date

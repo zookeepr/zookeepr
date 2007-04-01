@@ -1,0 +1,6 @@
+#!/bin/sh
+
+accepted_person_ids="select DISTINCT person_id from person_proposal_map, proposal  where accepted = 't' and person_proposal_map.proposal_id = proposal.id"
+number_regos="SELECT COUNT(type) FROM registration,person,account WHERE person.id = registration.person_id AND account.id = person.account_id AND person.id not in ($accepted_person_ids)"
+
+psql -t -AF '#' -c "select person.id, person.firstname, person.lastname, account.email_address from person, account, registration where person.id = registration.person_id and account.id = person.account_id and person.id not in ($accepted_person_ids)"

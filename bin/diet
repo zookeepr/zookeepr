@@ -1,0 +1,5 @@
+#!/bin/sh
+
+psql -c "SELECT registration.id, person.firstname, person.lastname, diet, special from registration,person where registration.person_id = person.id and ( diet != '' or special !='') order by id;"
+#psql -c "SELECT registration.id, person.firstname, person.lastname,  special from registration,person where registration.person_id = person.id and ( diet != '' or special !='') order by id;"
+

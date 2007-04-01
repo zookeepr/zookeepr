@@ -1,0 +1,4 @@
+#!/bin/sh
+psql -c "select  fullname, email_address, heardfrom, heardfromtext, opendaydrag from openday;"
+echo -n "Total "
+psql -tc "select  SUM(opendaydrag) from openday;"

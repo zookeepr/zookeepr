@@ -1,0 +1,2 @@
+#!/bin/sh
+psql -c 'select person.firstname, person.lastname, count(review.reviewer_id) from review, person where person.id = reviewer_id group by firstname, lastname, reviewer_id order by count desc;'

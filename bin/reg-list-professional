@@ -1,0 +1,3 @@
+#!/bin/sh
+IFS='#'
+psql -t -c "select distinct person.firstname || ' ' || person.lastname, substr(account.email_address, 0, 30), person.id, registration.teesize where not registration.present and account.id = person.account_id and registration.type = 'Professional' and person.id = registration.person_id and rego_invoice_payment.cost = rego_invoice_payment.dollars and rego_invoice_payment.payment is not null and rego_invoice_payment.rego = registration.id order by person.firstname || ' ' || person.lastname asc;"

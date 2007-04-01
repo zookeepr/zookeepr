@@ -1,0 +1,47 @@
+#!/bin/sh
+num_speakers="select COUNT(DISTINCT person) from speaker_rego"
+num_registered_speakers="SELECT COUNT(person) FROM speaker_rego where id IS NOT NULL"
+num_unregistered_speakers="SELECT COUNT(person) FROM speaker_rego where id IS NULL"
+
+registered_speakers="
+SELECT
+	person.id, person.firstname, person.lastname, account.email_address, accommodation_location.name, diet, special
+FROM
+	person, account, registration
+LEFT JOIN
+	accommodation_option
+ON
+	registration.accommodation_option_id = accommodation_option.id
+LEFT JOIN
+	accommodation_location
+ON
+	accommodation_location.id = accommodation_option.accommodation_location_id 
+WHERE
+	person.id = registration.person_id
+	AND
+	person.account_id = account.id
+	AND
+	registration.id IN (SELECT id from speaker_rego)
+ORDER BY
+	person.firstname" 
+
+
+
+echo \#\#\# Registered Speakers \#\#\#
+psql -t -c "$registered_speakers" #| cut -d '#' -f 2-4 | sed "s/#/ /" |sort -u
+
+
+
+#registered_speaker_ids="SELECT person.id FROM registration,person WHERE person.id = registration.person_id AND person.id in ($accepted_person_ids)";
+#non_registered_speaker_ids="SELECT person_id FROM ($accepted_person_ids) AS person WHERE person_id NOT IN ($registered_speaker_ids)"
+#
+#echo $non_registered_speaker_ids
+#
+echo \#\#\# Non-Registered Speakers \#\#\#
+psql -t -c "select person.id, person.firstname, person.lastname, account.email_address FROM person, account WHERE person.id IN (SELECT person FROM speaker_rego where id IS NULL)  AND person.account_id = account.id ORDER BY person.firstname" #| cut -d '#' -f 2-4 | sed "s/#/ /" | sort -u 
+#
+#
+echo -n "Number of Speakers: "
+psql -t -c "$num_speakers"
+echo -n "Registered speakers: "
+psql -t -c "$num_registered_speakers" 

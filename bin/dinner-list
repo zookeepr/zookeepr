@@ -1,0 +1,8 @@
+#!/bin/sh
+
+psql -c "select distinct person.id, person.firstname || ' ' || person.lastname as name, r.dinner as tickets from person join (select person_id, case when registration.type = 'Professional' then 1 when registration.type in ('Hobbyist', 'Concession') and registration.discount_code in (select code from discount_code) then 1 when registration.id in (select id from speaker_rego) then 1 else 0 end + registration.dinner as dinner from registration where (rego_invoice_payment.payment > 0 or registration.id in (select id from speaker_rego) or registration.discount_code in (select code from  discount_code)) and rego_invoice_payment.rego = registration.id) as r on person.id = r.person_id where r.dinner > 0 order by name;"
+
+echo "      | Penelope Robinson         | 1"
+echo "      | Gernot Heiser             | 2"
+echo "      | Media                     | 2"
+echo "      | Babysitters for creche    | 5"

@@ -1,0 +1,10 @@
+echo Non EB
+echo "SELECT COUNT(type), type from rego_invoice_payment where eb='f' and payment is NOT NULL group by type;" | psql
+echo EB
+echo "SELECT COUNT(type), type from rego_invoice_payment where eb='t' and payment is NOT NULL group by type;" | psql
+echo Dinner
+echo "SELECT SUM(dinner) FROM registration WHERE id IN (SELECT rego from rego_invoice_payment where payment is NOT NULL);" | psql
+echo partners
+echo "SELECT COUNT(partner_email) FROM registration WHERE id IN (SELECT rego from rego_invoice_payment where payment is NOT NULL) and partner_email IS NOT NULL;" | psql
+echo Kids
+echo "select SUM(kids_0_3) + SUM(kids_4_6) + SUM(kids_7_9) + SUM(kids_10)  FROM registration WHERE id IN (SELECT rego from rego_invoice_payment where payment is NOT NULL) and partner_email IS NOT NULL;" | psql

@@ -1,0 +1,10 @@
+#!/bin/sh
+IFS='#'
+psql -A -t -F "#" -c "select registration.id, person.firstname, person.lastname, account.email_address where person.id = registration.person_id and account.id = person.account_id order by registration.creation_timestamp;" | nl -s '#' -w 1 | grep "^[7]*#" | while read NUM ID FIRST LAST EMAIL; do
+	echo "$NUM | $ID | $FIRST $LAST | $EMAIL"
+done
+
+IFS='#'
+psql -A -t -F "#" -c "select rego, person from rego_invoice_payment where payment > 0 order by rego" |  nl -s '#' -w 1 | grep "^[7]*#" | while read NUM ID PERSON ; do
+        echo "$NUM | $ID | $PERSON"
+done

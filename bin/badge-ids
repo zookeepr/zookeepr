@@ -1,0 +1,9 @@
+#!/bin/sh
+type=$1
+while read id
+do
+	IFS='#'
+	psql -A -t -F "#" -c "select person.firstname, person.lastname, registration.company, person.id, registration.dinner + 1, registration.country ilike 'Austral%', case when registration.shell = '-' then registration.shelltext else registration.shell end, case when registration.editor = '-' then registration.editortext else registration.editor end, registration.silly_description, person.handle where registration.type in ($type)  and person.id = registration.person_id and person.id=$id  order by person.id, person.lastname asc;" | nl -s '#' -w 1 | while read NUM FIRST LAST COMPANY REG_ID DINNERS AUSTRALIAN SH ED THINGY HANDLE; do
+	echo "$FIRST $LAST	$COMPANY	$REG_ID	$DINNERS	$AUSTRALIAN	$SH	$ED	$THINGY	$HANDLE"
+	done
+done

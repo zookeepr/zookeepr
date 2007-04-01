@@ -1,0 +1,15 @@
+#!/bin/bash
+
+check_mini_conf ()
+{
+	psql -tc "SELECT COUNT(miniconf) FROM registration WHERE miniconf LIKE '%$1%';"
+}
+
+
+miniconfs="Debian Embedded Education Research Movies Gaming GNOME Kernel Linuxchix MySQL OpenOffice PostgreSQL Virtualisation"
+
+for i in $miniconfs
+do
+	echo -n "$i: "
+	check_mini_conf $i
+done | grep -v '^$'

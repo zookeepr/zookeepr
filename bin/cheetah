@@ -1,0 +1,5 @@
+#!/home/lca/bin/python
+# EASY-INSTALL-SCRIPT: 'Cheetah==2.0rc7','cheetah'
+__requires__ = 'Cheetah==2.0rc7'
+import pkg_resources
+pkg_resources.run_script('Cheetah==2.0rc7', 'cheetah')
