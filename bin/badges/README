@@ -1,0 +1,6 @@
+badge-data
+    * prints information which can be fed to bade generator
+    * You can specify different types of registrations for different badge runs
+
+badge-ids
+    * Accepts person ids on STDIN for random batch making runs

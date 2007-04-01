@@ -1,5 +1,0 @@
-#!/bin/sh
-IFS='#'
-psql -A -t -F "#" -c "select distinct person.firstname, person.lastname, registration.company, person.id, registration.dinner + 1, registration.country ilike 'Austral%', case when registration.shell = '-' then registration.shelltext else registration.shell end, case when registration.editor = '-' then registration.editortext else registration.editor end, registration.silly_description, person.handle where registration.person_id = person.id and proposal.id = person_proposal_map.proposal_id and person.id = person_proposal_map.person_id and person.account_id = account.id and proposal.proposal_type_id = proposal_type.id and proposal.accepted = true order by person.id, person.lastname asc;" | nl -s '#' -w 1 | while read NUM FIRST LAST COMPANY REG_ID DINNERS AUSTRALIAN SH ED THINGY HANDLE; do
-	echo "$FIRST $LAST	$COMPANY	$REG_ID	$DINNERS	$AUSTRALIAN	$SH	$ED	$THINGY	$HANDLE"
-done
