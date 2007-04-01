@@ -25,5 +25,11 @@ dinner_numbers
 dinner_list
     * List of people going to dinner for crossing off at the door
 
+get_portal_auth
+    * Used to import auth into the portal machine
+
+list_signups
+    * Email addresses of people who requested to be signed up to lists
+
 special_req
     * Attendee special requirements
