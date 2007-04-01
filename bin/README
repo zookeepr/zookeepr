@@ -1,0 +1,14 @@
+Useful scripts
+
+burninator/
+    * Generate ICS and wiki programme from DB
+
+cron/
+    * Stuff run out of cron see cron/README
+
+database/
+    * All these scripts should make there way into the app
+      see database/READM
+
+
+
