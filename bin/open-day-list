@@ -1,8 +1,0 @@
-#!/bin/sh
-psql -t -c "select person.id, person.firstname, person.lastname, account.email_address FROM person, account WHERE person.id IN (SELECT person FROM speaker_rego where id IS NULL)  AND person.account_id = account.id ORDER BY person.firstname" #| cut -d '#' -f 2-4 | sed "s/#/ /" | sort -u 
-#
-#
-echo -n "Number of Speakers: "
-psql -t -c "$num_speakers"
-echo -n "Registered speakers: "
-psql -t -c "$num_registered_speakers" 

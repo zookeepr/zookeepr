@@ -1,3 +1,0 @@
-#!/bin/sh
-IFS='#'
-psql -t -c "select distinct person.firstname || ' ' || person.lastname, account.email_address, person.id, registration.teesize where not registration.present and account.id = person.account_id and person.id = registration.person_id and rego_invoice_payment.rego = registration.id and proposal.accepted = true and proposal.id = person_proposal_map.proposal_id and person_proposal_map.person_id = person.id order by person.firstname || ' ' || person.lastname asc;"

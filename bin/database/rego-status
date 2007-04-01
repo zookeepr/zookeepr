@@ -1,0 +1,169 @@
+#!/bin/sh
+
+accepted_person_ids="
+    SELECT DISTINCT
+        person_id
+    FROM
+        person_proposal_map,
+        proposal
+    WHERE
+        accepted = 't'
+    AND
+        person_proposal_map.proposal_id = proposal.id
+"
+
+number_regos="
+    SELECT
+        COUNT(type)
+    FROM
+        registration,
+        person,
+        account
+    WHERE
+        person.id = registration.person_id
+        AND
+        account.id = person.account_id
+        AND
+        person.id NOT IN ($accepted_person_ids)
+"
+
+echo Attendees
+psql -c "
+    SELECT
+        person.id,
+        person.firstname,
+        person.lastname,
+        account.email_address
+    FROM
+        person,
+        account,
+        registration
+    WHERE
+        person.id = registration.person_id
+        AND
+        account.id = person.account_id
+        AND
+        person.id NOT IN ($accepted_person_ids)
+"
+
+echo "Income"
+psql -c "
+    SELECT
+        COUNT(id) AS paid, 
+        SUM(amount)/100 AS dollars
+    FROM
+        payment_received
+    WHERE
+        status = 'Accepted'
+        AND
+        result = 'OK'
+        AND
+        ip_address = '203.192.130.110';
+"
+
+echo Registrations
+psql -c "
+    SELECT
+        type,
+        COUNT(type) AS number,
+        COUNT(type)*100/($number_regos) AS percent
+    FROM
+        registration,
+        person,
+        account
+    WHERE
+        person.id = registration.person_id
+        AND
+        account.id = person.account_id
+        AND
+        person.id NOT IN ($accepted_person_ids)
+    GROUP BY
+        type
+"
+
+echo Accommodation
+psql -c "
+    SELECT
+        accommodation_location.name,
+        COUNT(accommodation_location.name)
+    FROM
+        registration,
+        accommodation_location,
+        accommodation_option
+    WHERE
+        registration.accommodation_option_id = accommodation_option.id
+        AND
+        accommodation_option.accommodation_location_id = accommodation_location.id
+    GROUP BY
+        accommodation_location.name
+"
+
+echo "$(psql -tc "
+                        SELECT
+                            COUNT(person.id)
+                        FROM
+                            person,
+                            account,
+                            registration
+                        WHERE
+                            person.id = registration.person_id
+                            AND
+                            account.id = person.account_id
+                            AND
+                            person.id IN ($accepted_person_ids)
+                   ") of $(psql -tc "
+                        SELECT
+                            COUNT(person_id)
+                        FROM
+                            person_proposal_map,
+                            proposal
+                        WHERE
+                            accepted = 't'
+                            AND
+                            person_proposal_map.proposal_id = proposal.id
+                            ") speakers registered.\n"
+
+
+echo "$(psql -tc "
+                        SELECT
+                            SUM(dinner)
+                        FROM
+                            registration;
+                    ") extra dinners.\n"
+
+                    echo Tshirts
+psql -c "
+    SELECT
+        teesize,
+        count(*) AS ordered,
+        count(*) * 100 / (
+                            SELECT
+                                count(*)
+                            FROM
+                            registration
+                         ) AS percent
+    FROM
+        registration
+    GROUP BY
+        teesize
+    ORDER BY
+        ordered
+"
+
+echo Countries
+psql -c "
+    SELECT
+        COUNT(registration.country) AS delegates,
+        registration.country
+    FROM
+        registration,
+        rego_invoice_payment
+    WHERE
+        registration.id = rego_invoice_payment.rego
+        AND
+        rego_invoice_payment.payment IS NOT NULL
+    GROUP BY
+        country
+    ORDER BY
+        delegates DESC
+"

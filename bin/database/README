@@ -13,6 +13,9 @@ badge-data
 badge-ids
     * Accepts person ids on STDIN for random batch making runs
 
+booklet-professionals
+    * list of professionals by company to go in the booklet
+
 budget
     * Display values used to update budget spreadsheet
 
@@ -31,5 +34,25 @@ get_portal_auth
 list_signups
     * Email addresses of people who requested to be signed up to lists
 
+miniconf
+    * Number of attendees interested in each miniconf
+
+openday-status
+    * Who and how many coming to Open Day
+
+partners_programme
+    * Partners programme details
+
+reg-list
+    * Attendees list for rego desk
+
+rego-status
+    * Interesting rego stats
+
+review-team-tally
+    * how many papers have reviews reviewed
+
+speker-info
+    * speaker registration information
 special_req
     * Attendee special requirements

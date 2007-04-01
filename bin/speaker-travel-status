@@ -1,2 +1,0 @@
-#!/bin/sh
-psql -t -AF "#" -c "select person.firstname, person.lastname, account.email_address, proposal.assistance, registration.partner_email where proposal.id = person_proposal_map.proposal_id and person.id = person_proposal_map.person_id and person.account_id = account.id and proposal.proposal_type_id = proposal_type.id and proposal.accepted = true and registration.partner_email =  order by proposal.id, person.lastname;"
