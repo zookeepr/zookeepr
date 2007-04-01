@@ -19,5 +19,11 @@ budget
 diet
     * Attendee dietary requirements
 
+dinner_numbers
+    * Dinner reservation number
+
+dinner_list
+    * List of people going to dinner for crossing off at the door
+
 special_req
     * Attendee special requirements

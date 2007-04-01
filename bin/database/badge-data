@@ -5,20 +5,85 @@ extra_where=$2
 
 if [ -z $type ]
 then
-    echo "Usage: $0 hobbyists|professionals|speakers [where clause]"
+    echo "Usage: $0 hobby|prof|discount_hobby|discount_prof|speakers [where clause]"
     exit 1
 fi
 
+normal_clause="
+    AND
+    person.id = registration.person_id
+    AND
+    rego_invoice_payment.cost = rego_invoice_payment.dollars
+    AND
+    rego_invoice_payment.payment IS NOT NULL
+    AND
+    rego_invoice_payment.rego = registration.id
+    $extra_where
+"
 
+discount_clause="
+    AND
+    person.id = registration.person_id
+    AND
+    registration.discount_code = discount_code.code
+"
+
+extra_tables=""
 case $type in
-    "hobbyists")
+    "hobby")
         rego_type="('Hobbyist', 'Concession')"
+        where_clause="
+            registration.type IN $rego_type 
+            $normal_clause
+        "
         ;;
 
-    "professionals")
+    "prof")
         rego_type="('Professional')"
+        where_clause="
+            registration.type IN $rego_type 
+            $normal_clause
+        "
         ;;
+    "discount_hobby")
+        rego_type="('Hobbyist', 'Concession')"
+        where_clause="
+            registration.type IN $rego_type 
+            $discount_clause
+        "
+        extra_tables="discount_code,"
+        ;;
+
+    "discount_prof")
+        rego_type="('Professional')"
+        where_clause="
+            registration.type IN $rego_type 
+            $discount_clause
+        "
+        extra_tables="discount_code,"
+        ;;
+
     "speakers")
+        where_clause="
+            registration.person_id = person.id
+            AND
+            proposal.id = person_proposal_map.proposal_id
+            AND
+            person.id = person_proposal_map.person_id
+            AND
+            person.account_id = account.id
+            AND
+            proposal.proposal_type_id = proposal_type.id
+            AND
+            proposal.accepted = true
+            $extra_where
+        "
+        extra_tables="
+            person_proposal_map,
+            account,
+            proposal_type,
+            proposal,
+        "
         ;;
     *)
         echo "Invalid rego type"
@@ -26,43 +91,6 @@ case $type in
         ;;
 esac
 
-if [ $type != "speakers" ]
-then
-    where_clause="
-        registration.type IN $rego_type 
-        AND
-        person.id = registration.person_id
-        AND
-        rego_invoice_payment.cost = rego_invoice_payment.dollars
-        AND
-        rego_invoice_payment.payment IS NOT NULL
-        AND
-        rego_invoice_payment.rego = registration.id
-        $extra_where
-    "
-    extra_tables=""
-else
-    where_clause="
-        registration.person_id = person.id
-        AND
-        proposal.id = person_proposal_map.proposal_id
-        AND
-        person.id = person_proposal_map.person_id
-        AND
-        person.account_id = account.id
-        AND
-        proposal.proposal_type_id = proposal_type.id
-        AND
-        proposal.accepted = true
-        $extra_where
-    "
-    extra_tables="
-        person_proposal_map,
-        account,
-        proposal_type,
-        proposal,
-    "
-fi
 
 
 
