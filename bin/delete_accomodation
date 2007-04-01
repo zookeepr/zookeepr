@@ -1,7 +1,0 @@
-paid_regos="SELECT rego FROM rego_invoice_payment WHERE payment > 0"
-
-unpaid_accomodation="SELECT id FROM registration WHERE accommodation_option_id is not NULL AND id NOT IN ($paid_regos)"
-speaker_regos="SELECT registration.id from registration, person,speakers WHERE registration.person_id = person.id AND person.id = speakers.person";
-
-delete="SELECT * from rego_invoice_payment WHERE rego IN ($unpaid_accomodation) AND rego NOT IN ($speaker_regos)"
-psql -c "$delete"

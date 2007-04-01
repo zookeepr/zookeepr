@@ -1,0 +1,87 @@
+#!/usr/bin/env bash
+echo Earlybird
+echo "
+SELECT
+    COUNT(type),
+    type
+FROM
+    rego_invoice_payment
+WHERE
+    eb = 't'
+    AND
+    payment IS NOT NULL
+GROUP BY
+    type;
+" | psql
+
+echo Normal
+echo "
+SELECT
+    COUNT(type),
+    type
+FROM
+    rego_invoice_payment
+WHERE
+    eb='f'
+    AND
+    payment is NOT NULL
+GROUP BY
+    type;
+" | psql
+
+echo Extra Dinners
+echo "
+SELECT
+    SUM(dinner) 
+FROM
+    registration
+WHERE
+    id IN (
+            SELECT
+                rego
+            FROM
+                rego_invoice_payment
+            WHERE
+                payment IS NOT NULL
+          );
+" | psql
+
+echo Partners
+echo "
+SELECT
+    COUNT(partner_email) 
+FROM
+    registration
+WHERE
+    id IN (
+            SELECT
+                rego
+            FROM
+                rego_invoice_payment
+            WHERE
+                payment is NOT NULL
+          )
+    AND
+    partner_email IS NOT NULL;
+" | psql
+
+
+echo Kids
+echo "
+SELECT
+    SUM(kids_0_3) + SUM(kids_4_6) + SUM(kids_7_9) + SUM(kids_10)
+FROM
+    registration
+WHERE
+    id IN (
+            SELECT
+                rego
+            FROM
+                rego_invoice_payment
+            WHERE
+                payment is NOT NULL
+          )
+    AND
+    partner_email IS NOT NULL;
+" | psql
+

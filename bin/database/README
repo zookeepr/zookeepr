@@ -1,0 +1,23 @@
+All the scripts in this directory use raw SQL to access the DB. They are scripts the 07 team wrote
+to get things done quickly. They should really all be turned into part of the main application.
+So if you need something to do move a script from this directory into something accessible from the web.
+
+accommodation
+    * Displays paid for accommodation
+    * This is a useful list to give to colleges
+
+badge-data
+    * prints information which can be fed to bade generator
+    * You can specify different types of registrations for different badge runs
+
+badge-ids
+    * Accepts person ids on STDIN for random batch making runs
+
+budget
+    * Display values used to update budget spreadsheet
+
+diet
+    * Attendee dietary requirements
+
+special_req
+    * Attendee special requirements

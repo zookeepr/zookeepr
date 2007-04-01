@@ -1,0 +1,19 @@
+#!/bin/sh
+
+psql -c "
+    SELECT
+        registration.id,
+        person.lastname || ', ' || person.firstname,
+        diet
+    FROM
+        registration,
+        person
+WHERE
+    registration.person_id = person.id
+    AND
+    diet != ''
+ ORDER BY
+    person.lastname,
+    person.firstname
+"
+
