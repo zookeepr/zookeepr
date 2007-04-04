@@ -18,6 +18,12 @@ Once your account has been confirmed, you will be able to log
 into the site with the password you provided with your registration.
 
 % #endif
+
+You can now view and pay for your invoice by visiting
+http://lca2007.linux.org.au/profile/<% c.person.id %> and
+clicking on the "confirm and and pay" link. If you get a blank page
+please ensure you are signed in.
+
 Your account details are:
 
    Ticket: <% c.registration.type %>
@@ -73,9 +79,6 @@ teesize = {'S': 'small',
    Distro: <% c.registration.distrotext or c.registration.distro %>
 
 If you want to change your details, please log into the website.
-
-Please note!  You have not yet been invoiced.  Your invoice will be sent
-to you via email when ready.
 
 Thanks again, and have a great day!
 

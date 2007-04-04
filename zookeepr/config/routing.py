@@ -34,6 +34,10 @@ def make_map():
     # Verify stuff from commsecure
     m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
 
+    # Invoice Reminder
+    m.connect('/invoice/remind', controller='invoice', action='remind', id=None)
+    m.connect('/registration/remind', controller='registration', action='remind', id=None)
+
     # special case for account controller, again in the style of the
     # original routes controller
     m.connect('/account/:action', controller='account')

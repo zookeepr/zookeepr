@@ -9,6 +9,7 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
+from zookeepr.model.registration import Accommodation
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -38,6 +39,16 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
             rego = state.query(model.Registration).get_by(person_id=session['signed_in_person_id'])
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+
+# Only cares about real discount codes
+class DuplicateDiscountCodeValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        discount_code = state.query(model.DiscountCode).get_by(code=value['discount_code'])
+        if discount_code:
+            for r in discount_code.registrations:
+                if r.person_id != session['signed_in_person_id']:
+                    raise Invalid("Discount code already in use!", value, state)
+
 
 
 class AccommodationValidator(validators.FancyValidator):
@@ -96,6 +107,8 @@ class RegistrationSchema(Schema):
     lasignup = validators.Bool()
     announcesignup = validators.Bool()
     delegatesignup = validators.Bool()
+    
+    chained_validators = [DuplicateDiscountCodeValidator()]
 
 class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
@@ -129,7 +142,7 @@ class EditRegistrationSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(SecureController, Create, Update):
+class RegistrationController(BaseController, Create, Update, List):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
@@ -137,6 +150,9 @@ class RegistrationController(SecureController, Create, Update):
                }
     redirect_map = {'edit': dict(controller='/profile', action='index'),
                     }
+    permissions = { 'remind': [AuthRole('organiser')],
+                   }
+
 
     # disable registrations until we're ready for them --Jiri 5.1.2007
     permissions['new'] = []
@@ -155,7 +171,7 @@ class RegistrationController(SecureController, Create, Update):
         c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
 
     def edit(self, id):
-        if not self.is_same_person():
+        if not self.is_same_person() and not AuthRole('organiser').authorise(self):
             abort(403)
 
         registration = self.obj
@@ -196,11 +212,13 @@ class RegistrationController(SecureController, Create, Update):
                 c.registration.person = c.person
                 self.dbsession.flush()
 
-                s = smtplib.SMTP("localhost")
-                body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
-                s.sendmail(request.environ['paste.config']['app_conf'].get('committee_email'),
-		    c.person.email_address, body)
-                s.quit()
+                try:
+                    s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
+                    body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
+                    s.sendmail(request.environ['paste.config']['app_conf'].get('committee_email'), c.person.email_address, body)
+                    s.quit()
+                except:
+                    pass
 
                 return render_response('registration/thankyou.myt')
 
@@ -225,7 +243,20 @@ class RegistrationController(SecureController, Create, Update):
         description = registration.type + " Registration"
         if p.is_earlybird(registration.creation_timestamp):
             description = description + " (earlybird)"
-        ii = model.InvoiceItem(description=description, qty=1, cost=p.getTypeAmount(registration.type, registration.creation_timestamp))
+        cost = p.getTypeAmount(registration.type, registration.creation_timestamp)
+
+        # Check for discount
+        result, errors = self.check_discount()
+        if result:
+            discount = registration.discount
+            description = description + " (Discounted " + discount.type + ")"
+            discount_amount =  p.getTypeAmount(discount.type, registration.creation_timestamp) * discount.percentage/100
+            if discount_amount > cost:
+                cost = 0
+            else:
+                cost -= discount_amount
+
+        ii = model.InvoiceItem(description=description, qty=1, cost=cost)
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
@@ -233,7 +264,7 @@ class RegistrationController(SecureController, Create, Update):
         if registration.dinner > 0:
             iid = model.InvoiceItem(description='Additional Penguin Dinner Tickets',
                                     qty=registration.dinner,
-                                    cost=6000)
+                                    cost=p.getDinnerAmount(1))
             self.dbsession.save(iid)
             invoice.items.append(iid)
         
@@ -273,18 +304,56 @@ class RegistrationController(SecureController, Create, Update):
 
         redirect_to(controller='invoice', action='view', id=invoice.id)
 
+    # FIXME There is probably a way to get this to use the List thingy from CRUD
+    def remind(self):
+        setattr(c, 'registration_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        return render_response('registration/remind.myt')
+
+    def index(self):
+        r = AuthRole('organiser')
+        if 'signed_in_person_id' in session:
+            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+            if not r.authorise(self):
+            	abort(403)
+        else:
+            abort(403)
+
+	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).select())
+
+
+        return super(RegistrationController, self).index()
+
+    def check_discount(self):
+        registration = self.obj
+
+        discount = registration.discount
+        # No discount code match
+        if not discount:
+            return False, None
+
+        if len(discount.registrations) > 1:
+            return False, "Discount code already used"
+
+        if discount.type != registration.type:
+            error = "You're discount is for " + discount.type + ", but you are registering for " + registration.type + ". This is fine if what you are registering for is more expensive a bit silly otherwise."
+            return True, error
+
+        return True, "Your discount code has been applied"
+
+
+
 
 class PaymentOptions:
     def __init__(self):
         self.types = {
                 "Professional": [51750, 69000],
-                "Hobbyist": [30000, 22500],
+                "Hobbyist": [22500, 30000],
                 "Concession": [9900, 9900]
                 }
         self.dinner = {
-                "1": 6000,
-                "2": 12000,
-                "3": 18000
+                1: 6000,
+                2: 12000,
+                3: 18000
                 }
         self.accommodation = {
                 "0": 0,
@@ -314,7 +383,7 @@ class PaymentOptions:
                 return self.types[type][1]
 
     def is_earlybird(self, date):
-        result = date < self.ebdate
+        result = date.date() < self.ebdate.date()
         return result
 
     def getDinnerAmount(self, tickets):
@@ -336,4 +405,6 @@ class PaymentOptions:
         else:
             partnersAmount = (count + 1) * 10000
         return partnersAmount
+
+
 

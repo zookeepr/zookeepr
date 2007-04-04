@@ -21,7 +21,11 @@
 </p>
 % if c.invoice.good_payments:
 <p>
-<strong>Amount Due:</strong> $0.00
+<strong>Invoice Paid</strong>
+</p>
+% elif c.invoice.total() == 0:
+<p>
+<strong>No Payment Required</strong>
 </p>
 % else:
 <p>
@@ -31,6 +35,10 @@
 
 <p>
 <strong>Attention:</strong> <% c.invoice.person.fullname %>
+% if c.invoice.person.registration and c.invoice.person.registration.company:
+<br />
+<strong>Company:</strong> <% c.invoice.person.registration.company %>
+% # endif
 </p>
 
 <p>
@@ -126,15 +134,26 @@ Enquiries may be emailed to the organisers:
 <& actions &>
 
 <%method actions>
-% if c.invoice.bad_payments:
+<div id="actions">
+% if c.invoice.total() == 0:
+%    pass
+% elif c.invoice.bad_payments:
 Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
 % elif not c.invoice.good_payments:
 <p>
-<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %>
+<% h.link_to('(Pay this invoice)', url=h.url(controller='invoice', action='pay')) %>
+% if c.invoice.person.registration:
+    <% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
+% #endif
+<br>
+<small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
+<small><strong>Please Note:</strong> To qualify for the earlybird discount you must have registred by the 15th November and you need to pay by the <strong>15th December</strong>.
 </p>
+
 % else:
 Invoice has been paid.
 % #endif
+</div>
 </%method>
 
 <%method title>

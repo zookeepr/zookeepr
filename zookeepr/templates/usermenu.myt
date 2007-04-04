@@ -13,7 +13,7 @@ signed in
 #</li>
 
 <li>
-<% h.link_to('my profile', url=h.url(controller='profile', action='index')) %>
+<% h.link_to('my profile', url=h.url(controller='profile', action='view', id=session['signed_in_person_id'])) %>
 </li>
 
 <li>

@@ -365,7 +365,8 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
         self.assertEmptyModel(model.Person)
         self.person = model.Person(email_address='testguy@example.org',
                                    password='test',
-                                   fullname='Testguy McTest'
+                                   fullname='Testguy McTest',
+				   handle='testguy',
                                    )
         self.person.activated = True
         self.dbsession.save(self.person)

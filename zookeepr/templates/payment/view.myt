@@ -15,7 +15,7 @@ Your payment was unsuccessful. The reason was:
 </p>
 <p>
 Try to
-<% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.profile.registration.id)) %>
+<% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.payment.invoice.person.registration.id)) %>
 again.
 
 % #endiff

@@ -61,7 +61,7 @@ class CfpController(SecureController):
                         setattr(c.attachment, k, result['attachment'][k])
                     c.proposal.attachments.append(c.attachment)
 
-                s = smtplib.SMTP("localhost")
+                s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
                 # generate the message from a template
                 body = render('cfp/submission_response.myt', id=c.registration.url_hash, fragment=True)
                 s.sendmail(request.environ['paste.config']['app_conf'].get('committee_email'),

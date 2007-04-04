@@ -8,8 +8,9 @@ from zookeepr.lib.crud import *
 class InvoiceController(SecureController, Read):
     model = model.Invoice
     individual = 'invoice'
-    permissions = {'view': [AuthFunc('is_payee')],
-                   'pay': [AuthFunc('is_payee')],
+    permissions = {'view': [AuthFunc('is_payee'), AuthRole('organiser')],
+                   'pay': [AuthFunc('is_payee'), AuthRole('organiser')],
+                   'remind': [AuthRole('organiser')],
                    }
 
     def is_payee(self):
@@ -21,7 +22,7 @@ class InvoiceController(SecureController, Read):
         This method bounces the user off to the commsecure website.
         """
         if c.invoice.person.invoices:
-            if c.invoice.person.invoices[0].good_payments or c.invoice.person.invoices[0].bad_payments:
+            if c.invoice.good_payments or c.invoice.bad_payments:
                 redirect_to("/Errors/InvoiceAlreadyPaid")
 
         # get our merchant id and secret
@@ -54,3 +55,9 @@ class InvoiceController(SecureController, Read):
         fields['MAC'] = mac
 
         return render_response('invoice/payment.myt', fields=fields)
+
+
+    # FIXME There is probably a way to get this to use the List thingy from CRUD
+    def remind(self):
+        setattr(c, 'invoice_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        return render_response('invoice/remind.myt')

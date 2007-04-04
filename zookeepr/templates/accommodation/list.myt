@@ -14,7 +14,17 @@
 
 <th>Availability (# beds left)</th>
 
+% if accommodation_paid:
+<th> Paid Accommodation </th>
+% # endif
+
+
+% beds_total = 0
+% beds_available = 0
+% beds_paid = 0
 % for a in c.accommodation_collection:
+%     beds_total += a.beds
+%     beds_available += a.get_available_beds()
 
 <tr class="<% h.cycle('even', 'odd')%>">
 
@@ -42,11 +52,40 @@
 <% a.get_available_beds() |h %>
 </td>
 
+%     if accommodation_paid:
+<td>
+%         if a.id in accommodation_paid:
+%		beds_paid += accommodation_paid[a.id]
+<% accommodation_paid[a.id] %>
+%         else:
+0
+%         # endif
+</td>
+%     # endif
+
+
 </tr>
 
 % #endfor
 
+<tr>
+    <td>&nbsp;</td>
+    <td><strong>Totals</strong</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+
+    <td><% beds_total %></td>
+    <td><% beds_available %></td>
+%     if accommodation_paid:
+    <td><% beds_paid %></td>
+%     # endif
+</tr>
+
 </table>
+
+<%args scope="component">
+accommodation_paid = None
+</%args>
 
 <%method title>
 Accommodation - <& PARENT:title &>

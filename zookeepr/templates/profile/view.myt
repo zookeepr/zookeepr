@@ -1,9 +1,11 @@
+% import string
 <h1><% c.profile.fullname |h %></h1>
+
+# Show personal details
+% if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id or c.is_organiser_role:
 
 <& actions &>
 
-# Show personal details
-% if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id:
 <fieldset>
 
 <p>
@@ -192,9 +194,18 @@ No
 <fieldset>
 
 <p>
-Previous miniconfs:
+%		''' This is a HACK we should just store the years properly '''
 %		if c.profile.registration.prevlca:
- <% ', '.join(['20%s' % x for x in c.profile.registration.prevlca]) %>
+%			lcas = []
+%			for x in c.profile.registration.prevlca:
+%				if x == '99':
+%					lcas.append(string.atoi('1999'))
+%				else:
+%					lcas.append(int(x) + 2000)
+%				# endif
+%			# endfor
+%			lcas.sort()
+ <%', '.join(['%s' % x for x in lcas]) %>
 %		#endif
 </p>
 
@@ -248,14 +259,27 @@ if 'This page does not exist yet.' in content:
 % #endif
 
 <%method title>
-profile - <& PARENT:title &>
+<% c.profile.firstname + " " + c.profile.lastname | h %> - <& PARENT:title &>
 </%method>
 
 <%method actions>
+% speaker = 0
+% if c.profile.proposals:
+%     for proposal in c.profile.proposals:
+%         if proposal.accepted:
+%             speaker = 1;
+%         # endif
+%     # endfor
+% # endif
+
 % if not c.profile.invoice or not c.profile.invoice[0].bad_payments and not c.profile.invoice[0].good_payments:
 %     if c.profile.registration:
 <% h.link_to('(edit registration)', url=h.url(controller='registration', action='edit', id=c.profile.registration.id)) %>
+%     if not speaker:
 <% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.profile.registration.id)) %>
+%     # endif
+<br>
+<small><strong>Please Note:</strong> To qualify for the earlybird discount you must have registred by the 15th November and you need to pay by the <strong>15th December</strong>.
 %     #endif
 % else:
 <% h.link_to('(View Invoice)', url=h.url(controller='invoice', action='view', id=c.profile.invoice[0].id)) %>

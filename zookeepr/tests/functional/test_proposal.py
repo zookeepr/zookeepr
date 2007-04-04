@@ -97,7 +97,8 @@ class TestProposal(SignedInCRUDControllerTest):
         # we got one person already with login
         # create a sceond
         p2 = model.Person(email_address='test2@example.org',
-                    password='test')
+                    password='test',
+		    handle='test')
         self.dbsession.save(p2)
         # create a proposal
         s = model.Proposal(title='foo')
@@ -122,7 +123,8 @@ class TestProposal(SignedInCRUDControllerTest):
         # we got one person already with login
         # create a sceond
         p2 = model.Person(email_address='test2@example.org',
-                    password='test')
+                    password='test',
+		    handle='test')
         self.dbsession.save(p2)
         # create a proposal
         s = model.Proposal(title='foo')
@@ -154,7 +156,8 @@ class TestProposal(SignedInCRUDControllerTest):
         # we got one person already with login
         # create a sceond
         p2 = model.Person(email_address='test2@example.org',
-                    password='test')
+                    password='test',
+		    handle='test')
         self.dbsession.save(p2)
         self.dbsession.flush()
         p2id = p2.id
@@ -187,7 +190,8 @@ class TestProposal(SignedInCRUDControllerTest):
         # we got one person already with login
         # create a sceond
         p2 = model.Person(email_address='test2@example.org',
-                    password='test')
+                    password='test',
+		    handle='test')
         self.dbsession.save(p2)
         # create a proposal
         s = model.Proposal(title='foo')
