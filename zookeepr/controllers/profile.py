@@ -5,7 +5,7 @@ from zookeepr.lib.auth import AuthRole
 from zookeepr import model
 from zookeepr.model.core.domain import Role
 
-class ProfileController(BaseController, Read, Update, List):
+class ProfileController(SecureController, Read, Update, List):
     model = model.Person
     individual = 'profile'
 
@@ -35,3 +35,5 @@ class ProfileController(BaseController, Read, Update, List):
 
         return super(ProfileController, self).view()
 
+    def is_same_id(self, *args):
+        return self.obj.id == session['signed_in_person_id']
