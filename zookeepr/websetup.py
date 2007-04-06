@@ -34,6 +34,7 @@ def setup_config(command, filename, section, vars):
     try:
         mkdir(os.path.join(app_conf['moin_data'], 'pages'))
         mkdir(os.path.join(app_conf['moin_data'], 'attachments'))
+        mkdir(os.path.join(app_conf['moin_data'], 'users'))
         # copy plugins dir from our egg to the destination
         copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'data', 'plugin'), os.path.join(app_conf['moin_data'], 'plugin'), {}, 1, False)
         copy_dir(os.path.join(os.path.dirname(__file__), '..', 'zookeepr.egg-info', 'moin', 'underlay'), os.path.join(app_conf['moin_underlay']), {}, 1, False)
