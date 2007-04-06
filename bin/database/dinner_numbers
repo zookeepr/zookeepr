@@ -1,0 +1,61 @@
+#!/usr/bin/env bash
+
+extra_dinner=`psql -Atc "
+    SELECT
+        SUM(dinner)
+    FROM
+        registration
+    WHERE
+        id IN (
+                SELECT
+                    rego
+                FROM
+                    rego_invoice_payment
+                WHERE
+                    payment > 0
+              )
+"`
+
+prof=`psql -Atc "
+    SELECT
+        COUNT(id)
+    FROM
+        registration
+    WHERE
+        id IN (
+                SELECT
+                    rego
+                FROM
+                    rego_invoice_payment
+                WHERE
+                    payment > 0
+              )
+        AND
+        type='Professional'
+"`
+
+discount_code=`psql -Atc "
+    SELECT
+        COUNT(registration.id)
+    FROM
+        registration,
+        discount_code
+    WHERE
+        registration.discount_code = discount_code.code
+"`
+
+speakers=`psql -Atc "
+    SELECT
+        count(*)
+    FROM
+        speakers
+"`
+
+echo Extra Tickets:  $extra_dinner
+echo Professionals:  $prof
+echo Discount Codes: $discount_code
+echo Speakers:       $speakers
+echo
+echo Total:          $((exra_dinner + prof + discount_code + speakers))
+
+echo "Remember to add anything else to total above that isn't covered by entries in the DB"

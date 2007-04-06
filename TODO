@@ -23,3 +23,7 @@ displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have
  * company should be moved from registration to person so that we can show company on peoples badges and invoices
 
  * We should have an registration_invoice_map to remove alot of the invoices[0] dodginess
+
+ * When someone registers we should generate an invoice
+    * It should be due in two weeks
+    * If they don't pay in two weeks they loose there accomodation and it goes back into the pool

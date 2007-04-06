@@ -1,0 +1,89 @@
+#!/bin/sh
+NOW=$(date +%Y%m%dT%H%I%S)
+echo "BEGIN:VCALENDAR
+PRODID:-//linux.conf.au 2007//calinator 1.0//EN
+VERSION:2.0
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:linux.conf.au 2007
+X-WR-TIMEZONE:Australia/Sydney
+X-WR-CALDESC:
+BEGIN:VTIMEZONE
+TZID:Australia/Sydney
+X-LIC-LOCATION:Australia/Sydney
+BEGIN:STANDARD
+TZOFFSETFROM:+1100
+TZOFFSETTO:+1000
+TZNAME:EST
+DTSTART:19700329T030000
+RRULE:FREQ=YEARLY;BYMONTH=3;BYDAY=-1SU
+END:STANDARD
+BEGIN:DAYLIGHT
+TZOFFSETFROM:+1000
+TZOFFSETTO:+1100
+TZNAME:EST
+DTSTART:19701025T020000
+RRULE:FREQ=YEARLY;BYMONTH=10;BYDAY=-1SU
+END:DAYLIGHT
+END:VTIMEZONE"
+while read SESSION; do
+	case $SESSION in
+		==*)
+			BASEDATE=$(echo $SESSION | cut -d: -f2)
+			continue
+		;;
+	esac
+	echo $SESSION | tr ',' '\n' | while read SLOT; do
+		echo -n "||"
+		case $SLOT in
+			???D)
+				echo -n '<class="deepkernel">'
+			;;
+			???P)
+				echo -n '<class="programmer">'
+			;;
+			???S)
+				echo -n '<class="sysadmin">'
+			;;
+			???K)
+				echo -n '<class="widekernel">'
+			;;
+			???C)
+				echo -n '<class="coolshit">'
+			;;
+			???U)
+				echo -n '<class="userexperience">'
+			;;
+			???F)
+				echo -n '<class="freeculture">'
+			;;
+			???T)
+				echo -n "<|3( class=\"tutorial\">'''Tutorial:''' "
+			;;
+			"")
+				continue
+			;;
+			*)
+				echo -n "$SLOT"
+			;;
+		esac
+		IFS='#'
+		grep "^$(echo $SLOT | sed 's#[[:alpha:]]##;s#^0##')#" talk-data.txt | while read ID TYPE TITLE FIRST LAST EMAIL PERSON HANDLE; do
+			if [ ! "$TD" ]; then
+				echo -n "'''[http://lca2007.linux.org.au/talk/$ID $TITLE]'''[[BR]]by "
+				#echo -n "'''$TITLE'''[[BR]]"
+			else
+				echo -n ", "
+			fi
+			TD=done
+			if [ $FIRST ] || [ $LAST ]; then
+				echo -n "[http://lca2007.linux.org.au/profile/$PERSON $FIRST $LAST]"
+				#echo -n "$FIRST $LAST"
+			else
+				echo -n "FIXME NO AUTHOR"
+			fi
+		done
+		unset IFS
+	done
+	echo "||"
+done < schedule.txt

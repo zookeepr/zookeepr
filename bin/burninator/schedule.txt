@@ -1,0 +1,58 @@
+== Wednesday, January 17th ==
+<tableclass="programme" rowclass="rooms">,Clancy,Mathews A,Mathews B,Mathews C,Mathews D
+08:30,<:-5>'''Registration'''
+<|2>09:00,<:-5>'''Good Morning''' in the Clancy Theatre
+<:-5 class="keynote">'''[http://en.wikipedia.org/wiki/Andrew_S._Tanenbaum Dr. Andrew S. Tanenbaum]''' in the Clancy Theatre
+10:30,<:-5>'''Morning Tea'''
+11:00,139K,050P,211U,229C,041K
+11:40,<:-5>'''Break'''
+11:50,109P,036S,220U,071C,143K
+12:30,<:-5>'''Lunch'''
+14:00,263K,101U,124C,054K,027P
+14:40,<:-5>'''Break'''
+14:50,317C,154U,172C,254K,055F
+15:30,<:-5>'''Afternoon Tea'''
+16:00,102U,023C,243K,278P,020S
+16:40,<:-5>'''Break'''
+16:50,095U,185C,210K,048P,091D
+17:30,<:-5>'''Break'''
+19:00,<:-5>'''Professional Delegates Networking Session''' at the Scientia
+== Thursday, January 18th ==
+<tableclass="programme" rowclass="rooms">,Mathews A,Mathews B,Mathews C,Mathews D,CLB 1,CLB 2
+08:30,<:-6>'''Registration'''
+09:00,094D,131K,304T,145T,088T,258T
+09:40,<:-2>'''Break'''
+09:50,040D,176F
+10:30,<:-6>'''Morning Tea'''
+11:00,197D,213F,032T,136T,327T,330T
+11:40,<:-2>'''Break'''
+11:50,271D,322F
+12:30,<:-6>'''Lunch'''
+14:00,123D,173F,272T,029T,246T,<|7>'''HackFest begins at 2pm'''[[BR]][[BR]]'''[:OpenDay:Open Day] begins at 3pm'''
+14:40,<:-2>'''Break'''
+14:50,189D,068F
+15:30,<:-5>''Afternoon tea will not be served during [:OpenDay:Open Day]''
+16:00,188F,<|3>'''[:LightningTalks:Lightning Talks]''' hosted by Simon Lyall,312T,289T,<|3>'''[:KeySigning:Key Signing]''' hosted by Jon Oxer
+16:40,<:-1>'''Break'''
+16:50,191K
+17:30,<:-5 class="openday">'''[:OpenDay:Open Day] begins at 3pm'''||<|3>'''BoFs'''
+19:00,<:-5 class="openday">'''[:OpenDay:Open Day] Closing Presentations'''
+20:00,<:-5 class="openday">'''[:OpenDay:Open Day] finishes'''
+== Friday, January 19th ==
+<tableclass="programme" rowclass="rooms">,Clancy,Mathews A,Mathews B,Mathews C,Mathews D
+08:30,<:-5>'''Registration'''
+<|2>09:00,<:-5>'''Good Morning''' in the Clancy Theatre
+<:-5 class="keynote">'''[http://en.wikipedia.org/wiki/Kathy_Sierra Kathy Sierra]''' in the Clancy Theatre
+10:30,<:-5>'''Morning Tea'''
+11:00,038K,215P,144S,301U,171C
+11:40,<:-5>'''Break'''
+11:50,250K,315U,084S,252P,133K
+12:30,<:-5>'''Lunch'''
+14:00,107C,089S,326P,062S,221U
+14:40,<:-5>'''Break'''
+14:50,348K,122P,198S,113S,324D
+15:30,<:-5>'''Afternoon Tea'''
+16:00,<:-5>'''Closing Ceremony''' in the Clancy Theatre
+17:30,<:-5>'''Break'''
+18:30,<:-5>'''Walk to [:PenguinDinner:Penguin Dinner]''' from Gate 2
+19:00,<:-5>'''HP/IBM [:PenguinDinner:Penguin Dinner]'''

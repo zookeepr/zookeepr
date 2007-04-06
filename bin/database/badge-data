@@ -1,0 +1,144 @@
+#!/usr/bin/env bash
+
+type=$1
+extra_where=$2
+
+if [ -z $type ]
+then
+    echo "Usage: $0 hobby|prof|discount_hobby|discount_prof|speakers [where clause]"
+    exit 1
+fi
+
+normal_clause="
+    AND
+    person.id = registration.person_id
+    AND
+    rego_invoice_payment.cost = rego_invoice_payment.dollars
+    AND
+    rego_invoice_payment.payment IS NOT NULL
+    AND
+    rego_invoice_payment.rego = registration.id
+    $extra_where
+"
+
+discount_clause="
+    AND
+    person.id = registration.person_id
+    AND
+    registration.discount_code = discount_code.code
+"
+
+extra_tables=""
+case $type in
+    "hobby")
+        rego_type="('Hobbyist', 'Concession')"
+        where_clause="
+            registration.type IN $rego_type 
+            $normal_clause
+        "
+        ;;
+
+    "prof")
+        rego_type="('Professional')"
+        where_clause="
+            registration.type IN $rego_type 
+            $normal_clause
+        "
+        ;;
+    "discount_hobby")
+        rego_type="('Hobbyist', 'Concession')"
+        where_clause="
+            registration.type IN $rego_type 
+            $discount_clause
+        "
+        extra_tables="discount_code,"
+        ;;
+
+    "discount_prof")
+        rego_type="('Professional')"
+        where_clause="
+            registration.type IN $rego_type 
+            $discount_clause
+        "
+        extra_tables="discount_code,"
+        ;;
+
+    "speakers")
+        where_clause="
+            registration.person_id = person.id
+            AND
+            proposal.id = person_proposal_map.proposal_id
+            AND
+            person.id = person_proposal_map.person_id
+            AND
+            person.account_id = account.id
+            AND
+            proposal.proposal_type_id = proposal_type.id
+            AND
+            proposal.accepted = true
+            $extra_where
+        "
+        extra_tables="
+            person_proposal_map,
+            account,
+            proposal_type,
+            proposal,
+        "
+        ;;
+    *)
+        echo "Invalid rego type"
+        exit 1
+        ;;
+esac
+
+
+
+
+IFS='#'
+psql -A -t -F "#" -c "
+SELECT DISTINCT
+    person.firstname,
+    person.lastname,
+    registration.company,
+    person.id,
+    CASE WHEN registration.type IN ('Hobbyist', 'Concession')
+    THEN
+        registration.dinner
+    ELSE
+        registration.dinner + 1
+    END,
+    registration.country ILIKE 'Austral%',
+    CASE WHEN registration.shell = '-'
+    THEN
+        registration.shelltext
+    ELSE
+        registration.shell
+    END,
+    CASE WHEN registration.editor = '-'
+    THEN
+        registration.editortext
+    ELSE
+        registration.editor
+    END,
+    registration.silly_description,
+    person.handle
+FROM
+    registration,
+    rego_invoice_payment,
+    $extra_tables
+    person
+WHERE
+    $where_clause
+ORDER BY
+    person.id,
+    person.lastname ASC;
+" | nl -s '#' -w 1 | \
+    while read NUM FIRST LAST COMPANY REG_ID DINNERS AUSTRALIAN SH ED THINGY HANDLE
+    do
+        echo "$FIRST $LAST      $REG_ID $DINNERS    $AUSTRALIAN $SH $ED $THINGY $HANDLE"
+    done
+
+
+
+
+

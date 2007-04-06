@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+FEEDS=/home/lca/moin/data/pages/PlanetFeeds
+tr -d '\r\[\]' < $FEEDS/revisions/$(cat $FEEDS/current) | awk '/^ 1. http:/ { print "[" $2 "]" }'

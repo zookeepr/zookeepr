@@ -1,0 +1,77 @@
+#!/usr/bin/env bash
+
+echo "Paid Regos"
+echo
+echo "
+    SELECT
+        partner_email,
+        kids_0_3,
+        kids_4_6,
+        kids_7_9,
+        kids_10
+     FROM
+        rego
+    WHERE
+        id IN (
+                SELECT
+                    rego
+                FROM
+                    rego_invoice_payment
+                WHERE
+                    payment IS NOT NULL
+              )
+        AND
+        partner_email IS NOT NULL
+        AND
+        partner_email != ''
+" | psql
+
+echo "Speaker Partners"
+echo
+echo "
+    SELECT
+        partner_email,
+        kids_0_3,
+        kids_4_6,
+        kids_7_9,
+        kids_10
+    FROM
+        rego
+    WHERE
+        person_id IN (
+                        SELECT
+                            person
+                        FROM
+                            speakers
+                     )
+        AND
+        partner_email IS NOT NULL
+        AND
+        partner_email != ''
+" | psql
+
+echo "Unpaid Regos"
+echo
+echo "
+    SELECT
+        partner_email,
+        kids_0_3,
+        kids_4_6,
+        kids_7_9,
+        kids_10
+     FROM
+        rego
+    WHERE
+        id IN (
+                SELECT
+                    rego
+                FROM
+                    rego_invoice_payment
+                WHERE
+                    payment IS NULL
+              )
+        AND
+        partner_email IS NOT NULL
+        AND
+        partner_email != ''
+" | psql
