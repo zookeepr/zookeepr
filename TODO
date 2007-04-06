@@ -27,3 +27,5 @@ displayname can't be 'new', can't be all numbers, must be urlable, hsouldnt have
  * When someone registers we should generate an invoice
     * It should be due in two weeks
     * If they don't pay in two weeks they loose there accomodation and it goes back into the pool
+
+ * Generalise templates so they aren't lca specific. Move stuff into a config file eg conference name

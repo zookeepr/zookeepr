@@ -12,7 +12,7 @@ An email has been sent to you at <em><% c.person.email_address | h %></em> with 
 
 </p>
 <p>
-If you do not receive this message in a reasonable timeframe, please contact us at <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+If you do not receive this message in a reasonable timeframe, please contact us at <% h.contact_email() %>
 </p>
 
 <p>

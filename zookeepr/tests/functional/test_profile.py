@@ -11,9 +11,10 @@ class TestProfileController(ControllerTest):
         self.dbsession.flush()
 
         pid = p.id
-        
+
         resp = self.app.get('/profile/%d' % p.id)
 
+        print resp
         resp.mustcontain("Testguy McTest")
 
         # clean up
@@ -28,3 +29,5 @@ class TestSignedInProfileController(SignedInCRUDControllerTest):
         resp = resp.follow()
 
         resp.mustcontain("Testguy McTest")
+
+

@@ -4,7 +4,7 @@
 <title><& SELF:title &></title>
 <link rel="stylesheet" media="screen" href="/zookeepr.css" type="text/css"/>
 <link rel="stylesheet" media="print" href="/print.css" type="text/css"/>
-<link rel="icon" type="image/png" href="/seven-favicon-earthy.png" />
+<link rel="icon" type="image/png" href="/favicon.png" />
 </head>
 <body>
 
@@ -24,12 +24,12 @@
 
 <hr />
 <div id="footer">
-<p>Copyright &copy; 2006-2007, <a href="/Contact">The Seven Team</a></p>
+<p>Copyright &copy; 2006-2007, <a href="/Contact">conference organisers</a></p>
 </div>
 
 </body>
 </html>
 
 <%method title>
-linux.conf.au 2007
+linux.conf.au 2008
 </%method>
