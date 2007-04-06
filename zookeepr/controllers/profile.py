@@ -31,5 +31,3 @@ class ProfileController(BaseController, Read, Update, List):
 
 
         return super(ProfileController, self).view()
-
-

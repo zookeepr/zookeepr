@@ -40,3 +40,6 @@ dburi = sqlite://filename=%(here)s/somedb.db
 # and a shared secret
 commsecure_merchantid = TestZookeeprMerchantID
 commsecure_secret = zing
+
+# Contact email for the committee
+contact_email = contact@yourdomain.com

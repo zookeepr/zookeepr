@@ -60,7 +60,7 @@ class TestAccountController(ControllerTest):
         self.assertSignedIn(resp.session, p.id)
 
         # see if we're still logged in when we go to another page
-        resp = self.app.get(url_for(controller='about', action='view'))
+        resp = self.app.get(url_for(controller='home', action='view'))
 
         self.assertSignedIn(resp.session, p.id)
 
