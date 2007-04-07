@@ -1,12 +1,14 @@
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Read, Update, List
-from zookeepr.lib.auth import AuthRole
+from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc
 from zookeepr import model
 from zookeepr.model.core.domain import Role
 
-class ProfileController(BaseController, Read, Update, List):
+class ProfileController(SecureController, Read, Update, List):
     model = model.Person
     individual = 'profile'
+
+    permissions = {'view': [AuthFunc('is_same_id')]}
 
     def index(self):
         r = AuthRole('organiser')
@@ -31,3 +33,6 @@ class ProfileController(BaseController, Read, Update, List):
 
 
         return super(ProfileController, self).view()
+
+    def is_same_id(self, *args):
+        return self.obj.id == session['signed_in_person_id']
