@@ -10,8 +10,7 @@
 #                     email_address='testguy@example.org',
 #                     password='p4ssw0rd',
 #                     password_confirm='p4ssw0rd',
-#                     firstname='Testy',
-#                     lastname='Guy',
+#                     fullname='Testy Guy',
 #                     phone='37373737',
 #                     fax='42424242'
 #                     ),
@@ -19,8 +18,7 @@
 #                     email_address='testgirl@example.com',
 #                     password='test',
 #                     password_confirm='test',
-#                     firstname='Ytset',
-#                     lastname='Girl',
+#                     fullname='Ytset Girl',
 #                     phone='12121212',
 #                     fax='23232323'
 #                     ),

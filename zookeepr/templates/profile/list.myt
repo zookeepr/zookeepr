@@ -9,7 +9,7 @@
 % for p in c.profile_collection:
     <tr class="<% h.cycle('even', 'odd')%>">
         <td><% h.link_to(p.id, url=h.url(controller='profile', action='view', id=p.id)) %></td>
-        <td><% p.firstname + " " + p.lastname %></td>
+        <td><% p.fullname %></td>
         <td><% p.email_address %></td>
     </tr>
 % #endfor

@@ -15,10 +15,7 @@ email address: <% c.profile.email_address |h %>
 display name: <% c.profile.handle |h %>
 </p>
 <p>
-first name: <% c.profile.firstname |h %>
-</p>
-<p>
-last name: <% c.profile.lastname |h %>
+full name: <% c.profile.fullname |h %>
 </p>
 
 </fieldset>
@@ -259,7 +256,7 @@ if 'This page does not exist yet.' in content:
 % #endif
 
 <%method title>
-<% c.profile.firstname + " " + c.profile.lastname | h %> - <& PARENT:title &>
+<% c.profile.fullname | h %> - <& PARENT:title &>
 </%method>
 
 <%method actions>

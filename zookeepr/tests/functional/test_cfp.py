@@ -7,7 +7,7 @@ from zookeepr.model import Person, Proposal, ProposalType, Attachment
 from zookeepr.tests.functional import *
 
 
-class TestCFPController(ControllerTest):
+#class TestCFPController(ControllerTest):
 
 # TODO
 # * test the different states work by setting them somehow

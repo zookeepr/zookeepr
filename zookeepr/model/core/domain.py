@@ -10,10 +10,9 @@ class Person(object):
     all the information about that person.
     """
     def __init__(self, handle=None, email_address=None, password=None,
-                 firstname=None, lastname=None, phone=None, fax=None,
+                 fullname=None, phone=None, fax=None,
                  creation_timestamp=None,
-                 activated=None,
-                 fullname=None
+                 activated=None
                  ):
         # account information
         self.email_address = email_address
@@ -22,11 +21,7 @@ class Person(object):
         self.creation_timestamp = creation_timestamp or datetime.datetime.now()
 
         self.handle = handle
-        if fullname is not None:
-            self.fullname = fullname
-        else:
-            self.firstname = firstname
-            self.lastname = lastname
+        self.fullname = fullname
         self.phone = phone
         self.fax = fax
 
@@ -77,22 +72,6 @@ class Person(object):
 
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
-
-    def _set_fullname(self, value):
-        if value is not None:
-            self.firstname = value.split(' ')[0]
-            self.lastname = ' '.join(value.split(' ')[1:])
-        else:
-            self.firstname = None
-            self.lastname = None
-
-    def _get_fullname(self):
-        r = self.firstname
-        if self.lastname:
-            r = r + ' ' + self.lastname
-        return r
-
-    fullname = property(_get_fullname, _set_fullname)
 
 
 class Role(object):
