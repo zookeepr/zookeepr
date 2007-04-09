@@ -31,7 +31,15 @@ class NewCFPSchema(BaseSchema):
 
 class CfpController(SecureController):
     permissions = {'submit': [AuthRole('organiser')]
-                   }
+                  }
+
+    def __init__(self, *args):
+        c.cfp_status = request.environ['paste.config']['app_conf'].get('cfp_status')
+
+        # Anyone can submit while the CFP is open
+        if c.cfp_status == 'open' and 'submit' in self.permissions:
+            del self.permissions['submit']
+
     def index(self):
         return render_response("cfp/list.myt")
 

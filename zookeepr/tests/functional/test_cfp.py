@@ -6,6 +6,45 @@ from paste.fixture import Dummy_smtplib
 from zookeepr.model import Person, Proposal, ProposalType, Attachment
 from zookeepr.tests.functional import *
 
+
+class TestCFPController(ControllerTest):
+
+# TODO
+# * test the different states work by setting them somehow
+
+#    def __init__(self, *args):
+#        self.cfp_status = None
+#        super(TestCFPController, self).__init__(*args)
+#
+#    def setUp(self):
+#        #self.cfp_status = environ['paste.config']['app_conf']['cfp_status']
+#        print "Moo"
+#        print self.app.app.global_conf
+#        print "Cow"
+#
+#    def tearDown(self):
+#        #environ['paste.config']['app_conf']['cfp_status'] = self.cfp_status
+#        pass
+#
+#    def test_index(self):
+#        res = self.app.get('/cfp')
+#        raise
+#
+#    def test_index_module_not_open(self):
+#        #request.environ['paste.config']['app_conf'].set('cfp_status', 'not_open')
+#        resp = self.app.get('/cfp')
+#        resp.mustcontain("is not open!")
+#
+#    def test_index_module_open(self):
+#        #        request.environ['paste.config']['app_conf'].set('cfp_status', 'open')
+#        resp = self.app.get('/cfp')
+#        resp.mustcontain("is open!")
+#
+#    def test_index_module_closed(self):
+#        #        request.environ['paste.config']['app_conf'].set('cfp_status', 'closed')
+#        resp = self.app.get('/cfp')
+#        resp.mustcontain("is closed!")
+
 #class TestCFP(CRUDControllerTest):
 #    def test_index(self):
 #        res = self.app.get('/cfp')
