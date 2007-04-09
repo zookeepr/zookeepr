@@ -1,7 +1,3 @@
-<p>
-<strong>The Call for Participation is now closed!</strong>
-</p>
-
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>

@@ -4,49 +4,14 @@
 
 <fieldset>
 
-<p>First, tell us a bit about yourself:</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.fullname">Your name:</label>
-<% h.text_field('registration.fullname', size=40) %>
-<br />
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.email_address">Email address:</label>
-<% h.text_field('registration.email_address', size=40) %>
-<br />
-<span class="fielddesc">This will be our primary way of contacting you.</span>
-</p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.password">Password:</label>
-<% h.password_field('registration.password') %></p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.password_confirm">Password (confirm):</label>
-<% h.password_field('registration.password_confirm') %></p>
-
-<p>
-<span class="mandatory">*</span>
-<span class="fielddesc"> - Mandatory field</span>
-</p>
-</fieldset>
-
-<fieldset>
-
-<p>Now tell us a bit about the proposal you'd like to submit:</p>
+<p>Tell us a bit about the proposal you'd like to submit:</p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="proposal.title">Title:</label>
 <% h.text_field('proposal.title', size=50) %>
 <br />
-<span class="fielddesc">e.g. the name of your paper, or talk title.</span>
+<span class="fielddesc">e.g. the name of your talk, tutorial or miniconf.</span>
 </p>
 
 <p>
@@ -54,8 +19,19 @@
 <label>Type:</label>
 <br />
 % for st in c.cfptypes:
-<% h.radio_button('proposal.type', st.id) %>
-<label for="proposal.type"><% st.name |h %></label><br />
+%    if c.cfp_mode == 'miniconf':
+%        if st.name != 'Miniconf':
+%           continue
+%        # endif
+%    else:
+%        if st.name == 'Miniconf':
+%           continue
+%        # endif
+%    # endif
+
+    <% h.radio_button('proposal.type', st.id) %>
+    <label for="proposal.type"><% st.name |h %></label><br />
+
 % #endfor
 <span class="fielddesc">What sort of proposal is this?</span>
 </p>
