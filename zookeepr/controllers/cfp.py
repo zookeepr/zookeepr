@@ -25,8 +25,8 @@ class ProposalSchema(Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
-    url = validators.String()
     assistance = AssistanceTypeValidator()
+    url = validators.String()
 
     chained_validators = [CFPModeValidator]
 

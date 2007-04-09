@@ -17,6 +17,7 @@ mapper(Attachment, attachment)
 mapper(Proposal, proposal,
     properties = {
         'type': relation(ProposalType),
+        'assistance': relation(AssistanceType),
         'people': relation(Person, secondary=person_proposal_map,
             backref='proposals'),
         'attachments': relation(Attachment, lazy=True, private=True),

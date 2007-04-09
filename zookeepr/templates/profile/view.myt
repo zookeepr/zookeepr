@@ -227,6 +227,20 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 
 % #endif
 
+% if c.profile.proposals is not None:
+
+    <div id="proposals">
+    <h2>Proposals</h2>
+    <table>
+%   for p in c.profile.proposals:
+        <tr class="<% h.cycle('even', 'odd') %>">
+            <td><% h.link_to(p.title, url=h.url(controller='proposal', action='view', id=p.id)) %></td>
+        </tr>
+%   # endfor
+    </table>
+
+% #endif
+
 % if len(c.profile.accepted_talks) > 0:
 <%python>
 content = h.wiki_fragment('/wiki/profile/%d' % c.profile.id)

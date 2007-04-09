@@ -96,7 +96,7 @@ Use it to convince them why they should accept your paper.</span>
 % for ta in c.tatypes:
 <br />
     <% h.radio_button('proposal.assistance', ta.id) %>
-    <label for="proposal.type"><% ta.name |h %></label><br />
+    <label for="proposal.assistance"><% ta.name |h %></label><br />
 
 % #endfor
 <span class="fielddesc">Travel assistance is available to speakers who qualify.  If you think you need it, please let us know.</span>

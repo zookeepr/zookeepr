@@ -47,9 +47,26 @@
 
 <p>
 <span class="mandatory">*</span>
-<label for="proposal.experience">Bio:</label>
+<label for="person.experience">Experience:</label>
 <br />
-<% h.text_area('proposal.experience', size="80x5") %></p>
+<% h.text_area('person.experience', size="80x5") %></p>
+
+<p>
+<span class="mandatory">*</span>
+<label for="person.bio">Bio:</label>
+<br />
+<% h.text_area('person.bio', size="80x5") %></p>
+
+<p>
+<span class="mandatory">*</span>
+<label>Travel & Accommodation Assistance:</label>
+<br />
+% for ta in c.assistance_types:
+    <% h.radio_button('proposal.assistance', st.id) %>
+    <label for="proposal.assistance"><% ta.name |h %></label>
+    <br />
+% #endfor
+
 
 <p>
 <span class="mandatory">*</span>

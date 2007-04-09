@@ -35,18 +35,34 @@ at
 </p>
 % #endif
 
+% for person in c.proposal.people:
+<h2><% person.fullname | h, s, l %></h2></h2>
 <div class="experience">
 <p>
 <em>Speaking experience:</em>
 </p>
 <blockquote>
-% if c.proposal.experience:
-<% c.proposal.experience | h, s, l %>
+% if person.experience:
+<% person.experience | h, s, l %>
 % else:
 [none provided]
 % #endif
 </blockquote>
 </div>
+
+<div class="bio">
+<p>
+<em>Speaker bio:</em>
+</p>
+<blockquote>
+% if person.bio:
+<% person.bio | h, s, l %>
+% else:
+[none provided]
+% #endif
+</blockquote>
+</div>
+
 
 <div class="attachment">
 % if len(c.proposal.attachments) > 0:
@@ -89,13 +105,8 @@ at
 </div>
 
 <p>
-Travel assistance
-% if c.proposal.assistance:
-IS
-% else:
-is NOT
-% #endif
-required.
+Travel assistance: 
+<% c.tatypes[c.proposal.assistance_type_id] %>
 </p>
 
 <hr />

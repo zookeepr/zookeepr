@@ -12,10 +12,11 @@ class AssistanceType(object):
 
 ## Proposals
 class Proposal(object):
-    def __init__(self, id=None, title=None, type=None, abstract=None, url=None, attachment=None):
+    def __init__(self, id=None, title=None, type=None, assistance=None, abstract=None, url=None, attachment=None):
         self.id = id
         self.title = title
         self.type = type
+        self.assistance = assistance
         self.abstract = abstract
         self.url = url
         self.attachment = attachment
