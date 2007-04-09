@@ -5,14 +5,18 @@ class ProposalType(object):
     def __init__(self, name=None):
         self.name = name
 
+## Assistance Types
+class AssistanceType(object):
+    def __init__(self, name=None):
+        self.name = name
+
 ## Proposals
 class Proposal(object):
-    def __init__(self, id=None, title=None, type=None, abstract=None, experience=None, url=None, attachment=None):
+    def __init__(self, id=None, title=None, type=None, abstract=None, url=None, attachment=None):
         self.id = id
         self.title = title
         self.type = type
         self.abstract = abstract
-        self.experience = experience
         self.url = url
         self.attachment = attachment
 

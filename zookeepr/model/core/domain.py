@@ -11,6 +11,7 @@ class Person(object):
     """
     def __init__(self, handle=None, email_address=None, password=None,
                  fullname=None, phone=None, fax=None,
+                 experience=None, bio=None,
                  creation_timestamp=None,
                  activated=None
                  ):
@@ -24,6 +25,9 @@ class Person(object):
         self.fullname = fullname
         self.phone = phone
         self.fax = fax
+
+        self.experience = experience
+        self.bio = bio
 
         # url_hash should never be modifiable by the caller directly
         self._update_url_hash()

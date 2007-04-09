@@ -20,7 +20,7 @@ full name: <% c.profile.fullname |h %>
 
 </fieldset>
 
-%	if c.profile.registration:
+%   if c.profile.registration:
 <fieldset>
 
 <p>
@@ -54,9 +54,9 @@ company: <% c.profile.registration.company |h %>
 
 <p>
 address: <% c.profile.registration.address1 |h %>
-% 		if c.profile.registration.address2:
+%       if c.profile.registration.address2:
 , <% c.profile.registration.address2 |h %>
-%		#endif
+%       #endif
 </p>
 
 <p>
@@ -85,29 +85,29 @@ phone: <% c.profile.registration.phone |h %>
 
 <p>
 shell:
-%		if c.profile.registration.shelltext:
+%       if c.profile.registration.shelltext:
 <% c.profile.registration.shelltext |h %>
-%		else:
+%       else:
 <% c.profile.registration.shell |h %>
-%		#endif
+%       #endif
 </p>
 
 <p>
 editor:
-%		if c.profile.registration.editortext:
+%       if c.profile.registration.editortext:
 <% c.profile.registration.editortext |h %>
-%		else:
+%       else:
 <% c.profile.registration.editor |h %>
-%		#endif
+%       #endif
 </p>
 
 <p>
 distro:
-%		if c.profile.registration.distrotext:
+%       if c.profile.registration.distrotext:
 <% c.profile.registration.distrotext |h %>
-%		else:
+%       else:
 <% c.profile.registration.distro |h %>
-%		#endif
+%       #endif
 </p>
 
 <p>
@@ -136,15 +136,15 @@ Kids coming: aged 0-3: <% c.profile.registration.kids_0_3 |h %>; 4-6: <% c.profi
 
 <p>
 Accommodation:
-%		if c.profile.registration.accommodation:
+%       if c.profile.registration.accommodation:
 <% c.profile.registration.accommodation.name |h %>
-%			if c.profile.registration.accommodation.option:
+%           if c.profile.registration.accommodation.option:
 (<% c.profile.registration.accommodation.option |h %>)
-%			#endif
+%           #endif
 <% h.number_to_currency(c.profile.registration.accommodation.cost_per_night) %> per night
-%		else:
+%       else:
 none selected
-%		#endif
+%       #endif
 </p>
 
 <p>
@@ -161,29 +161,29 @@ check-out date: <% c.profile.registration.checkout |h %> January 2007
 
 <p>
 join Linux Australia: 
-% 		if c.profile.registration.lasignup:
+%       if c.profile.registration.lasignup:
 Yes
-%		else:
+%       else:
 No
 % #endif
 </p>
 
 <p>
 Join the conference announcement list:
-%		if c.profile.registration.announcesignup:
+%       if c.profile.registration.announcesignup:
 Yes
-%		else:
+%       else:
 No
 % #endif
 </p>
 
 <p>
 Join the delegates discussion list:
-%		if c.profile.registration.delegatesignup:
+%       if c.profile.registration.delegatesignup:
 Yes
-%		else:
+%       else:
 No
-%		#endif
+%       #endif
 </p>
 
 </fieldset>
@@ -191,37 +191,39 @@ No
 <fieldset>
 
 <p>
-%		''' This is a HACK we should just store the years properly '''
-%		if c.profile.registration.prevlca:
-%			lcas = []
-%			for x in c.profile.registration.prevlca:
-%				if x == '99':
-%					lcas.append(string.atoi('1999'))
-%				else:
-%					lcas.append(int(x) + 2000)
-%				# endif
-%			# endfor
-%			lcas.sort()
+%       ''' This is a HACK we should just store the years properly '''
+%       if c.profile.registration.prevlca:
+%           lcas = []
+%           for x in c.profile.registration.prevlca:
+%               if x == '99':
+%                   lcas.append(string.atoi('1999'))
+%               else:
+%                   lcas.append(int(x) + 2000)
+%               # endif
+%           # endfor
+%           lcas.sort()
  <%', '.join(['%s' % x for x in lcas]) %>
-%		#endif
+%       #endif
 </p>
 
 <p>
 Miniconfs likely to attend:
-%		if c.profile.registration.miniconf:
+%       if c.profile.registration.miniconf:
 <% ', '.join(c.profile.registration.miniconf) %>
-%		#endif
+%       #endif
 </p>
 
 </fieldset>
 
 <& actions &>
 
-%	else:
+%   else:
+%       if c.registration_status == 'open':
 <p>
 You haven't yet registered for the conference.  <% h.link_to('Register now!', url=h.url('/Registration')) %>
 </p>
-%	#endif
+%       #endif
+%   #endif
 
 % #endif
 
@@ -230,10 +232,10 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 content = h.wiki_fragment('/wiki/profile/%d' % c.profile.id)
 
 if 'This page does not exist yet.' in content:
-	if len(c.profile.proposals) > 0:
-		content = c.profile.proposals[0].experience
-	else:
-		content = None
+    if len(c.profile.proposals) > 0:
+        content = c.profile.bio
+    else:
+        content = None
 </%python>
 % if content:
 <div id="bio">
@@ -244,13 +246,13 @@ if 'This page does not exist yet.' in content:
 <div id="talks">
 <h2>Talks</h2>
 <table>
-%	for p in c.profile.accepted_talks:
+%   for p in c.profile.accepted_talks:
 <tr class="<% h.cycle('even', 'odd') %>">
 
 <td><% h.link_to(p.title, url=h.url(controller='talk', action='view', id=p.id)) %></td>
 
 </tr>
-%	#endif
+%   #endif
 </table>
 </div>
 % #endif

@@ -13,11 +13,11 @@
 <br />
 
 % for st in c.proposal_types:
-%	if c.proposal and c.proposal.type:
-%		czeched = c.proposal.type == st
-%	else:
-%		czeched = False
-%	#endif
+%   if c.proposal and c.proposal.type:
+%       czeched = c.proposal.type == st
+%   else:
+%       czeched = False
+%   #endif
 <% h.radio_button('proposal.type', st.id, checked=czeched) %>
 <label for="proposal.type"><% st.name |h %></label>
 <br />

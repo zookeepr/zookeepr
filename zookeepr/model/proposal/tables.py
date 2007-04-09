@@ -10,6 +10,15 @@ proposal_type = Table('proposal_type', metadata,
                                nullable=False),
                         )
 
+# types of assistance: 
+assistance_type = Table('assistance_type', metadata,
+                        Column('id', Integer, primary_key=True),
+                        Column('name', String(40),
+                               unique=True,
+                               nullable=False),
+                        )
+
+
 # proposals to the conference
 proposal = Table('proposal', metadata,
                    Column('id', Integer, primary_key=True),
@@ -23,22 +32,20 @@ proposal = Table('proposal', metadata,
                    Column('proposal_type_id', Integer,
                           ForeignKey('proposal_type.id')),
 
-                   # their bio/experience presenting this topic
-                   Column('experience', String()),
+                   # type, enumerated in the assistance_type table
+                   Column('assistance_type_id', Integer,
+                          ForeignKey('assistance_type.id')),
 
                    # url to a project page
                    Column('url', String()),
 
-                   # do they need assistance?
-                   Column('assistance', Boolean),
+                   # Is it accepted?
+                   Column('accepted', Boolean),
 
-                 # Is it accepted?
-                 Column('accepted', Boolean),
-
-                 Column('creation_timestamp', DateTime,
+                   Column('creation_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp()),
-                 Column('last_modification_timestamp', DateTime,
+                   Column('last_modification_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp(),
                         onupdate=func.current_timestamp()),

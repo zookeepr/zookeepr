@@ -4,7 +4,7 @@ import re
 import dns.resolver
 from formencode import Invalid, validators, schema
 
-from zookeepr.model import Person, ProposalType, Stream
+from zookeepr.model import Person, ProposalType, Stream, AssistanceType
 
 class BaseSchema(schema.Schema):
     allow_extra_fields = True
@@ -41,6 +41,9 @@ class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return state.query(ProposalType).get(value)
 
+class AssistanceTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return state.query(AssistanceType).get(value)
 
 class FileUploadValidator(validators.FancyValidator):
     def _to_python(self, value, state):
