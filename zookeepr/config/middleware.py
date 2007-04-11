@@ -4,6 +4,8 @@ from paste.urlparser import StaticURLParser
 from paste.registry import RegistryManager
 from paste.deploy.config import ConfigMiddleware
 
+from paste.pony import PonyMiddleware
+
 from pylons.error import error_template
 from pylons.middleware import ErrorHandler, ErrorDocuments, StaticJavascripts, error_mapper
 import pylons.wsgiapp
@@ -44,6 +46,9 @@ def make_app(global_conf, **app_conf):
     # YOUR MIDDLEWARE
     # Put your own middleware here, so that any problems are caught by the error
     # handling middleware underneath
+
+    # Ponies!
+    app = PonyMiddleware(app)
     
     # @@@ Change HTTPExceptions to HTTP responses @@@
     app = httpexceptions.make_middleware(app, global_conf)
