@@ -1,1 +1,1 @@
-from domain import Proposal, ProposalType, Attachment, Review
+from domain import Proposal, AssistanceType, ProposalType, Attachment, Review

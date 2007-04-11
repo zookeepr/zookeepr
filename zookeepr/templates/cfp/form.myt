@@ -5,31 +5,28 @@
 <fieldset>
 
 <p>First, tell us a bit about yourself:</p>
+<p><em>Note: These are common for all your proposals</em></p>
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.fullname">Your name:</label>
-<% h.text_field('registration.fullname', size=40) %>
+<label for="person.experience">Experience:</label>
 <br />
+<span class="fielddesc">Have you had any experience presenting elsewhere? If so, we'd like to know.<br />
+Anything you put here will only be seen by the reviewers.<br />
+Use it to convince them why they should accept your paper.</span>
+<br />
+<% h.text_area('person.experience', size="50x10") %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
-<label for="registration.email_address">Email address:</label>
-<% h.text_field('registration.email_address', size=40) %>
+<label for="person.bio">Bio:</label>
 <br />
-<span class="fielddesc">This will be our primary way of contacting you.</span>
+<span class="fielddesc">Your Bio, this will appear on the conference website.</span>
+<br />
+<% h.text_area('person.bio', size="50x10") %>
 </p>
 
-<p>
-<span class="mandatory">*</span>
-<label for="registration.password">Password:</label>
-<% h.password_field('registration.password') %></p>
-
-<p>
-<span class="mandatory">*</span>
-<label for="registration.password_confirm">Password (confirm):</label>
-<% h.password_field('registration.password_confirm') %></p>
 
 <p>
 <span class="mandatory">*</span>
@@ -39,14 +36,14 @@
 
 <fieldset>
 
-<p>Now tell us a bit about the proposal you'd like to submit:</p>
+<p>Tell us a bit about the proposal you'd like to submit:</p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="proposal.title">Title:</label>
 <% h.text_field('proposal.title', size=50) %>
 <br />
-<span class="fielddesc">e.g. the name of your paper, or talk title.</span>
+<span class="fielddesc">e.g. the name of your talk, tutorial or miniconf.</span>
 </p>
 
 <p>
@@ -54,8 +51,19 @@
 <label>Type:</label>
 <br />
 % for st in c.cfptypes:
-<% h.radio_button('proposal.type', st.id) %>
-<label for="proposal.type"><% st.name |h %></label><br />
+%    if c.cfp_mode == 'miniconf':
+%        if st.name != 'Miniconf':
+%           continue
+%        # endif
+%    else:
+%        if st.name == 'Miniconf':
+%           continue
+%        # endif
+%    # endif
+
+    <% h.radio_button('proposal.type', st.id) %>
+    <label for="proposal.type"><% st.name |h %></label><br />
+
 % #endfor
 <span class="fielddesc">What sort of proposal is this?</span>
 </p>
@@ -69,7 +77,7 @@
 <p><label for="attachment">Attach paper:</label>
 <% h.file_field('attachment', size=50) %>
 <br />
-<span class="fielddesc">If you are submitting a paper for peer review, please upload it here.</span>
+<span class="fielddesc">If you are submitting a paper, please upload it here.</span>
 </p>
 
 <p>
@@ -81,18 +89,16 @@
 <% h.text_area('proposal.abstract', size="50x20") %>
 </p>
 
+
 <p>
 <span class="mandatory">*</span>
-<label for="proposal.experience">Experience:</label>
+<label>Travel & Accommodation Assistance:</label>
+% for ta in c.tatypes:
 <br />
-<span class="fielddesc">Have you had any experience presenting elsewhere?  If so, we'd like to know.</span>
-<br />
-<% h.text_area('proposal.experience', size="50x10") %>
-</p>
+    <% h.radio_button('proposal.assistance', ta.id) %>
+    <label for="proposal.assistance"><% ta.name |h %></label><br />
 
-<p><label>Need travel assistance?</label>
-<% h.check_box('proposal.assistance') %>
-<br />
+% #endfor
 <span class="fielddesc">Travel assistance is available to speakers who qualify.  If you think you need it, please let us know.</span>
 </p>
 

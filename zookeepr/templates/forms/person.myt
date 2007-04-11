@@ -1,7 +1,6 @@
 # partial form for personal details
 
-First name: <input type="text" name="firstname" />
-Last name: <input type="text" name="lastname" />
+Full name: <input type="text" name="fullname" />
 Handle: <input type="text" name="handle" />
 
 Email: <input type="text" name="email" />

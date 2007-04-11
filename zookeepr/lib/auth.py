@@ -132,6 +132,8 @@ class SecureController(BaseController):
             # If we were being nice and WSGIy, we'd raise a 403 or 401 error
             # (depending) and let a security middleware layer take care
             # of the redirect.  Save that for a rainy day...
+            session['sign_in_redirect'] = h.current_url()
+            session.save()
             redirect_to(controller='account',
                         action='signin',
                         id=None)

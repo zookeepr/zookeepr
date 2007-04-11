@@ -8,7 +8,7 @@ account = Table('account', metadata,
                 Column('email_address', String,
                        nullable=False,
                        unique=True),
-                
+
                 Column('password_hash', String),
 
 
@@ -16,13 +16,13 @@ account = Table('account', metadata,
                 Column('creation_timestamp', DateTime,
                        nullable=False,
                        ),
-                
+
                 # hash of the url generated for easy lookup
                 Column('url_hash', String(32),
                        nullable=False,
                        index=True,
                        ),
-                
+
                 # flag that the account has been activated by the user
                 # (responded to their confirmation email)
                 Column('activated', Boolean,
@@ -34,26 +34,28 @@ person = Table('person', metadata,
 
                Column('account_id', Integer, ForeignKey('account.id'),
                       nullable=False),
-                      
+
                # secondary key, unique identifier within the zookeepr app
                # useful for URLs, not required though (a-la flickr)
                Column('handle', String(40),
                       unique=True,
                       ),
-               
+
                # other personal details
                # the lengths of the fields are chosen arbitrarily
-               Column('firstname', String(1024)),
-               Column('lastname', String(1024)),
+               Column('fullname', String(1024)),
                Column('phone', String(32)),
                Column('fax', String(32)),
-                     
-               )
+
+               # Proposal bits
+               Column('experience', String()),
+               Column('bio', String()),
+              )
 
 # describe account roles to grant levels of access
 role = Table('role', metadata,
              Column('id', Integer, primary_key=True),
-             
+
              # name of role
              Column('name', String,
                     unique=True,
@@ -82,4 +84,4 @@ password_reset_confirmation = Table('password_reset_confirmation', metadata,
         nullable=False,
         ),
     )
- 
+

@@ -15,13 +15,9 @@
 <% h.text_field('person.handle', c.person.handle) %></p>
 <p class="fieldHelp">Your display name is what other people will see throughout MyLCA, and how they will recognise you: You may want to use your nick name, your full name, or something messy and anonymous.</p>
 
-<p><label for="person.firstname">First name</label>
+<p><label for="person.fullname">Full name</label>
 <br />
-<% h.text_field('person.firstname', c.person.firstname) %></p>
-
-<p><label for="person.lastname">Last name</label>
-<br />
-<% h.text_field('person.lastname', c.person.lastname) %></p>
+<% h.text_field('person.fullname', c.person.fullname) %></p>
 
 # FIXME: this is a cheap switch based on the page name, not very robust
 <p><label for="person.phone">Phone number</label>

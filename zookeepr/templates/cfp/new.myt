@@ -1,7 +1,3 @@
-<p>
-<strong>The Call for Participation is now closed!</strong>
-</p>
-
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
@@ -17,3 +13,13 @@ Call for Participation - <& PARENT:title &>
 defaults
 errors
 </%args>
+
+<%init>
+# Working around a bug in formencode, we need to set the defaults to the c.proposal
+# values
+if not defaults:
+    defaults = {
+        'person.experience': c.person.experience,
+        'person.bio': c.person.bio
+    }
+</%init>

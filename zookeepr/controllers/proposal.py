@@ -3,15 +3,15 @@ from formencode import validators, compound, schema, variabledecode, Invalid
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
-from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator, StreamValidator, ReviewSchema
-from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment
+from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator, StreamValidator, ReviewSchema, AssistanceTypeValidator
+from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType
 
 class ProposalSchema(schema.Schema):
     title = validators.String()
     abstract = validators.String()
-    experience = validators.String()
     url = validators.String()
     type = ProposalTypeValidator()
+    assistance = AssistanceTypeValidator()
 
 class NewProposalSchema(BaseSchema):
     ignore_key_missing = True
@@ -63,6 +63,7 @@ class ProposalController(SecureController, View, Modify):
         super(ProposalController, self).__before__(**kwargs)
 
         c.proposal_types = self.dbsession.query(ProposalType).select()
+        c.assistance_types = self.dbsession.query(AssistanceType).select()
 
     def new(self, id):
         errors = {}
@@ -152,6 +153,10 @@ class ProposalController(SecureController, View, Modify):
         session['proposal_id'] = self.obj.id
         session.save()
         return super(ProposalController, self).view()
+
+    def edit(self, id):
+        c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+        return super(ProposalController, self).edit(id)
 
     def index(self):
         # hack for bug#34, don't show miniconfs to reviewers

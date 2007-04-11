@@ -24,8 +24,10 @@ errors
 if not defaults:
 	defaults = {'proposal.title': c.proposal.title,
 		    'proposal.type': c.proposal.type.id,
+		    'proposal.assistance': c.proposal.assistance.id,
 		    'proposal.abstract': c.proposal.abstract,
-                    'proposal.experience': c.proposal.experience,
+                    'person.experience': c.person.experience,
+                    'person.bio': c.person.bio,
                     'proposal.url': c.proposal.url,
                    }
 </%init>

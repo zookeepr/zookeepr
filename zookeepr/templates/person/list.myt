@@ -17,8 +17,7 @@
 <tr>
 	<td><% h.link_to(p.get_unique(), url=h.url(action='view', id=p.get_unique())) %></td>
 	<td><% p.email_address %></td>
-	<td><% p.firstname %></td>
-	<td><% p.lastname %></td>
+	<td><% p.fullname %></td>
 	<td><% p.phone %></td>
 	<td><% p.fax %></td>
 
