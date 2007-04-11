@@ -95,6 +95,13 @@ class SecureController(BaseController):
 
     Controllers that require someone to be logged in can inherit
     from this class instead of `BaseController`.
+    
+    In the permissions list, the special name 'ALL' sets the default
+    (normally open access).
+
+    Example:
+      permissions = { 'view': [AuthRole('reviewer'), AuthRole('organiser')],
+                      'ALL': [AuthRole('organiser)] }
 
     As a bonus, they will have access to `c.person` which is a
     `model.Person` object that will identify the user
@@ -148,11 +155,15 @@ class SecureController(BaseController):
              # Open access by default
             return True
 
-        if not action in self.permissions.keys():
+        if action in self.permissions.keys():
+	    perms = self.permissions[action]
+        elif 'ALL' in self.permissions.keys():
+	    perms = self.permissions['ALL']
+	else:
             # open access by default
-            return True
+	    return True
 
-        results = map(lambda x: x.authorise(self), self.permissions[action])
+        results = map(lambda x: x.authorise(self), perms)
         return reduce(lambda x, y: x or y, results, False)
 
 class AuthFunc(object):
