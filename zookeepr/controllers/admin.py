@@ -5,6 +5,24 @@ class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
 
     permissions = { 'ALL': [AuthRole('organiser')] }
+    def index(self):
+        res = dir(self)
+	exceptions = ['check_permissions', 'dbsession', 'index',
+			      'logged_in', 'permissions', 'start_response']
+
+	# get the ones in this controller by introspection.
+	funcs = [('/admin/'+x, getattr(self, x).__doc__)
+		       for x in res if x[0] != '_' and x not in exceptions]
+
+        # other functions should be appended to the list here.
+	# (none yet)
+
+	# show it!
+        c.columns = ['page', 'description']
+	c.data = [('<a href="%s">%s</a>'%(fn,fn), desc)
+						   for (fn, desc) in funcs]
+        c.text = 'List of admin functions.'
+	return render_response('admin/table.myt')
 
     def test(self):
         """
