@@ -8,7 +8,7 @@
 % for row in c.data:
   <tr>
 %   for item in row:
-    <td><% item %></td>
+    <td><% item | h%></td>
 %   # endfor
   </tr>
 % # endfor
