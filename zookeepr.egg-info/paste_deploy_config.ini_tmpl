@@ -18,6 +18,7 @@ port = 5000
 use = egg:zookeepr
 myghty_data_dir = %(here)s/data/templates
 cache_data_dir = %(here)s/data/cache
+dynamic_html_dir = %(here)s/data/dynamic_html
 session_data_dir = %(here)s/data/sessions
 session_key = zookeepr
 session_secret = ${app_instance_secret}
