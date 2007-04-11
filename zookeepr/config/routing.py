@@ -43,6 +43,9 @@ def make_map():
     m.connect('/account/:action', controller='account')
     m.connect('/account/reset_password/:url_hash', controller='account', action='reset_password')
 
+    # admin controller
+    m.connect('/admin/:action', controller='admin')
+
     # OpenDay
     m.connect('openday', '/OpenDay', controller='openday', action='new')
     m.connect('/Openday', controller='openday', action='new')
