@@ -300,3 +300,9 @@ if 'This page does not exist yet.' in content:
 
 </%method>
 
+% if 'organiser' in [x.name for x in c.signed_in_person.roles]:
+<h2>Roles</h2>
+<% h.link_to('view/change', url=h.url(action='roles')) %>
+% #endif
+
+
