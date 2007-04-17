@@ -106,6 +106,13 @@ class SecureController(BaseController):
     As a bonus, they will have access to `c.person` which is a
     `model.Person` object that will identify the user
     who is currently logged in.
+
+    Normally, users will be redirected to log in if they aren't already.
+    The anon_actions list can make exceptions where appropriate. Those
+    actions then may or may not have a c.person.
+
+    Example:
+      anon_actions = ['index']
     """
 
     def logged_in(self):
@@ -133,9 +140,14 @@ class SecureController(BaseController):
                     setattr(c, 'is_%s_role' % role.name, True)
 
 
+        elif (hasattr(self, 'anon_actions')
+	          and kwargs['action'] in self.anon_actions):
+	    # No-one's logged in, but this action is OK with that.
+	    pass
+
         else:
-            # No-one's logged in, so send them to the signin
-            # page.
+            # No-one's logged in, so send them to the signin page.
+	    
             # If we were being nice and WSGIy, we'd raise a 403 or 401 error
             # (depending) and let a security middleware layer take care
             # of the redirect.  Save that for a rainy day...

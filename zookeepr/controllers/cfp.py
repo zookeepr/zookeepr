@@ -39,6 +39,7 @@ class NewCFPSchema(BaseSchema):
 class CfpController(SecureController):
     permissions = {'submit': [AuthRole('organiser')]
                   }
+    anon_actions = ['index']
 
     def __init__(self, *args):
         c.cfp_status = request.environ['paste.config']['app_conf'].get('cfp_status')
