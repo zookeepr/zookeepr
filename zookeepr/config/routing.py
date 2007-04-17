@@ -52,6 +52,11 @@ def make_map():
     m.connect('/openday', controller='openday', action='new')
     m.connect('/openDay', controller='openday', action='new')
 
+    # special case the wiki controller so that it's not gobbled by the
+    # usual :controller rules...
+    m.connect('/wiki', controller='wiki', action='view', url='/wiki')
+    m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
+
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
     m.connect(':controller/new', action='new', id=None)
