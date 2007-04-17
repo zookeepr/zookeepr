@@ -27,12 +27,10 @@ class TestProposal(SignedInCRUDControllerTest):
     url = '/proposal'
     samples = [dict(title='test',
                     abstract='abstract 1',
-                    experience='experience 1',
                     url='http://example.org',
                     ),
                dict(title='not a test',
                     abstract='abstract 2',
-                    experience='experience 2',
                     url='http://lca2007.linux.org.au',
                     ),
                ]
@@ -53,9 +51,22 @@ class TestProposal(SignedInCRUDControllerTest):
         model.proposal.tables.proposal_type.insert().execute(
             dict(id=3, name='Miniconf'),
             )
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(id=1, name='Need Assisatance'),
+            )
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(id=2, name='Don\'t Need Assistance'),
+            )
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(id=3, name='Don\'t Need Assistance maybe'),
+            )
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(id=4, name='Don\'t Need Assistance employer'),
+            )
 
     def tearDown(self):
         model.proposal.tables.proposal_type.delete().execute()
+        model.proposal.tables.assistance_type.delete().execute()
         super(TestProposal, self).tearDown()
 
     def test_selected_radio_button_in_edit(self):
@@ -64,7 +75,6 @@ class TestProposal(SignedInCRUDControllerTest):
                        type=self.dbsession.get(model.ProposalType, 3),
                        title='foo',
                        abstract='bar',
-                       experience='',
                        url='')
         self.dbsession.save(s)
         
@@ -228,7 +238,7 @@ class TestProposal(SignedInCRUDControllerTest):
         f['proposal.title'] = 'sub two'
         f['proposal.type'] = 1
         f['proposal.abstract'] = "cubist"
-        f['proposal.experience'] = "n"
+        f['person.experience'] = "n"
         f['attachment'] = "foo"
         print f.submit_fields()
         resp = f.submit()
@@ -313,7 +323,6 @@ class TestProposal(SignedInCRUDControllerTest):
     def test_proposal_view_as_reviewer(self):
         p = model.Proposal(title='test view',
                      abstract='abs',
-                     experience='snuh',
                      type=self.dbsession.get(model.ProposalType, 3))
         self.dbsession.save(p)
 
@@ -328,7 +337,6 @@ class TestProposal(SignedInCRUDControllerTest):
         rid = r.id
         sid = s.id
         self.dbsession.clear()
-
         resp = self.app.get(url_for(controller='proposal',
                                     action='view',
                                     id=p.id))

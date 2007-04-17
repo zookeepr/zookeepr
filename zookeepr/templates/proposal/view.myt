@@ -20,7 +20,7 @@ at
 <em>Abstract</em>
 </p>
 <blockquote>
-<% c.proposal.abstract | h, s, l %>
+<% c.proposal.abstract | h, l %>
 </blockquote>
 </div>
 
@@ -36,17 +36,17 @@ at
 % #endif
 
 % for person in c.proposal.people:
-<h2><% person.fullname | h, s, l %></h2></h2>
+<h2><% person.fullname | h, l %></h2></h2>
 <div class="experience">
 <p>
 <em>Speaking experience:</em>
 </p>
 <blockquote>
-% if person.experience:
-<% person.experience | h, s, l %>
-% else:
+%   if person.experience:
+<% person.experience | h, l %>
+%   else:
 [none provided]
-% #endif
+%   #endif
 </blockquote>
 </div>
 
@@ -55,14 +55,14 @@ at
 <em>Speaker bio:</em>
 </p>
 <blockquote>
-% if person.bio:
-<% person.bio | h, s, l %>
-% else:
+%   if person.bio:
+<% person.bio | h, l %>
+%   else:
 [none provided]
-% #endif
+%   #endif
 </blockquote>
 </div>
-
+% # endfor
 
 <div class="attachment">
 % if len(c.proposal.attachments) > 0:
@@ -106,7 +106,11 @@ at
 
 <p>
 Travel assistance: 
-<% c.tatypes[c.proposal.assistance_type_id] %>
+% if c.proposal.assistance:
+<% c.proposal.assistance.name %>
+% else:
+Unknown
+% # endif
 </p>
 
 <hr />

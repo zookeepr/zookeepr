@@ -62,11 +62,15 @@
 <label>Travel & Accommodation Assistance:</label>
 <br />
 % for ta in c.assistance_types:
-    <% h.radio_button('proposal.assistance', st.id) %>
+%   if c.proposal and c.proposal.assistance:
+%       czeched = c.proposal.assistance == ta
+%   else:
+%       czeched = False
+%   #endif
+    <% h.radio_button('proposal.assistance', ta.id, checked=czeched) %>
     <label for="proposal.assistance"><% ta.name |h %></label>
     <br />
 % #endfor
-
 
 <p>
 <span class="mandatory">*</span>
