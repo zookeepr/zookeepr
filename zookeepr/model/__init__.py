@@ -1,5 +1,5 @@
 from core import Person, Role, PasswordResetConfirmation
-from proposal import Proposal, ProposalType, Attachment, Review
+from proposal import Proposal, ProposalType, Attachment, Review, AssistanceType
 from schedule import Stream, Talk
 from registration import Registration, Accommodation
 from openday import Openday
@@ -35,6 +35,7 @@ def populate_data():
     from zookeepr import model
 
     try:
+        # Proposals
         model.proposal.tables.proposal_type.insert().execute(
             dict(name='Presentation'),
         )
@@ -44,11 +45,29 @@ def populate_data():
         model.proposal.tables.proposal_type.insert().execute(
             dict(name='Tutorial'),
             )
+
+        # Assistance
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(name='Can\'t attend without full assistance'),
+            )
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(name='Can\'t attend without partial assistance'),
+            )
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(name='Will try to get my employer to pay'),
+            )
+        model.proposal.tables.assistance_type.insert().execute(
+            dict(name='Don\'t need assistance'),
+            )
+
         model.schedule.tables.stream.insert().execute(
             dict(name='Free Love and Open Sensual Stimulation'),
             )
         model.core.tables.role.insert().execute(
             dict(name='reviewer'),
+            )
+        model.core.tables.role.insert().execute(
+            dict(name='organiser'),
             )
     except SQLError:
         pass

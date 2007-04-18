@@ -2,8 +2,210 @@
  * layout
  */
 
-@import url("/lca2007.css");
 
+body {
+    max-width: 760px !important;
+    width: 760px !important;
+}
+
+ul li {
+    list-style: disc;
+}
+
+#body {
+    margin: 0 !important;
+}
+
+#header {
+    position: relative;
+}
+
+#header h1 {
+    text-align: right;
+}
+#header h2 {
+    position: absolute;
+    bottom: 0;
+    right: 190px;
+    font-size: medium;
+    font-weight: bold;
+    text-transform: none;
+    text-align: right;
+    /* color: #a04700; */
+}
+
+#menus {
+    width: 50%;
+    position: absolute;
+    left: 0px;
+}
+
+/* #secondarymenu, */ #locationline, p.table-of-contents-heading {
+    display: none;
+}
+
+#flickr {
+    text-align: center;
+    padding: 0 !important;
+    margin: 0 !important;
+}
+
+#flickr a img {
+    padding: 2px !important;
+    margin: 0 1px 0 1px !important;
+    border: 1px solid #cccccc;
+}
+
+#flickr a:hover img {
+    padding: 0 !important;
+    border: 3px solid #cccccc;
+}
+
+table.regologo {
+    float: right;
+    border: 0;
+    padding: 0 0 1em 1em;
+}
+
+div.inner ul {
+    margin: 0;
+    padding: 0;
+}
+
+div.inner ul li ul {
+    margin-left: 1em;
+}
+
+div.planet {
+    background-color: #eeeeee;
+    padding: 1em;
+    -moz-border-radius: 1em;
+}
+
+div.planet div.feeds {
+    margin: 1em 0 0 0;
+    font-weight: bold;
+    text-align: right;
+}
+
+div.planet li img {
+    vertical-align: middle;
+}
+
+div.planet a {
+    text-decoration: none;
+}
+
+div.planet h3 {
+    margin-top: 0 !important;
+}
+
+/* headings */
+
+h2, h3, h4 {
+    /* color: #ce5c00 !important; */
+    margin: 1.5em 0 1em 0 !important;
+}
+
+/* programme */
+
+table tr td p {
+    margin: 0;
+}
+
+table.programme {
+    border-collapse: collapse;
+    border: 1px solid #cccccc;
+    width: 100%;
+}
+table.programme td {
+    border: 1px solid #cccccc;
+    padding: 0.5em;
+    font-size: small;
+}
+tr.rooms td {
+    font-weight: bold;
+    text-align: center;
+}
+td.deepkernel { background-color: #FFFFCC; }
+td.programmer { background-color: #FFEECC; }
+td.sysadmin { background-color: #CCFFFF; }
+td.widekernel { background-color: #CCFFCC; }
+td.coolshit { background-color: #FFCCFF; }
+td.userexperience { background-color: #FFCCCC; }
+td.freeculture { background-color: #CCCCFF; }
+td.tutorial { background-color: #EEEEEE; }
+
+#body.planet {
+    position: relative;
+    background: transparent;
+    padding: 0 !important;
+}
+
+#body.planet div.channelgroup, #body.planet div.entrygroup {
+    margin-left: 2em;
+    margin-right: 2em;
+}
+
+#body.planet div.entry p.date {
+    text-align: right;
+}
+
+#body.planet h3 {
+    vertical-align: middle;
+    background-color: #eeeeee;
+    -moz-border-radius: 0.5em;
+    padding: 0.5em;
+    width: 40%;
+}
+
+#body.planet h4 {
+    text-transform: none;
+}
+
+#body.planet img.face {
+    float: left;
+    margin-right: 0.5em;
+}
+
+#sidebar {
+    float: right;
+    width: 140px;
+    padding: 1em 1em 0 1em;
+    margin: 0 0 2em 2em;
+    border: 0;
+    -moz-border-radius: 1em;
+    background-color: #eeeeee;
+}
+
+#sidebar div.section {
+    margin-bottom: 1em;
+}
+
+#sidebar h3 {
+    text-transform: none;
+    margin: 0 0 0.5em 0 !important;
+    padding: 0;
+}
+
+#sidebar ul {
+    padding-left: 0;
+}
+
+#sidebar ul li a {
+    color: black;
+    text-decoration: underline;
+}
+
+/**
+ * columns
+#column-a {
+    width: 65% !important;
+}
+#column-b {
+    margin-left: 67% !important;
+}
+ */
 body {
   font-family: sans-serif;
   color: #333;
@@ -25,7 +227,7 @@ body {
 #menus {
   position: absolute;
   top: 20px;
-  right: 20px;
+  /* right: 20px; */
 }
 
 #body {
@@ -425,5 +627,4 @@ table.rego td.con {
 table.rego td.non {
   text-align: center;
 }
-
 

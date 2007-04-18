@@ -21,6 +21,8 @@ class ProfileController(BaseController, Read, Update, List):
 
     def view(self):
         # hack because we don't use SecureController
+
+        c.registration_status = request.environ['paste.config']['app_conf'].get('registration_status')
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
             roles = self.dbsession.query(Role).select()
@@ -31,5 +33,3 @@ class ProfileController(BaseController, Read, Update, List):
 
 
         return super(ProfileController, self).view()
-
-

@@ -29,6 +29,12 @@ app_instance_uuid = ${app_instance_uuid}
 moin_data = %(here)s/moin/data
 moin_underlay = %(here)s/moin_underlay
 
+# Possible statuses not_open|open|closed
+cfp_status = open
+registration_status = not_open
+# Wether we are collecting miniconfs or papers
+cfp_mode = miniconf
+
 # We're using SQLAlchemy, the database is initialised in
 # `Globals.__init__()`, and connected to per thread/request in
 # `BaseController.__call__()`.  Note the URL syntax depends
@@ -40,3 +46,6 @@ dburi = sqlite://filename=%(here)s/somedb.db
 # and a shared secret
 commsecure_merchantid = TestZookeeprMerchantID
 commsecure_secret = zing
+
+# Contact email for the committee
+contact_email = contact@yourdomain.com

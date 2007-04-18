@@ -49,9 +49,12 @@ Project URL:
 <fieldset>
 <legend>Presenter's experience/biography</legend>
 
+% for person in c.review.proposal.people:
+<h2><% person.fullname %></h2>
 <blockquote>
-<% h.auto_link(h.simple_format(c.review.proposal.experience)) %>
+<% h.auto_link(h.simple_format(person.experience)) %>
 </blockquote>
+% #endfor
 
 <div id="stalk">
 <p>

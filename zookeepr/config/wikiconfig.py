@@ -38,7 +38,7 @@ class Config(DefaultConfig):
     # Wiki identity ----------------------------------------------------
 
     # Site name, used by default for wiki name-logo [Unicode]
-    sitename = u'linux.conf.au 2007'
+    sitename = u'linux.conf.au 2008'
 
     # Wiki logo. You can use an image, text or both. [Unicode]
     # For no logo or text, use '' - the default is to show the sitename.

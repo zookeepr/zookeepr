@@ -97,8 +97,8 @@ class TestReviewController(SignedInCRUDControllerTest):
         pid = p.id
 
         resp = self.app.get('/review')
-        resp.mustcontain(self.person.firstname)
-        self.failIf(p1.firstname in resp, "shouldn't be able to see other people's reviews")
+        resp.mustcontain(self.person.fullname)
+        self.failIf(p1.fullname in resp, "shouldn't be able to see other people's reviews")
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
         self.dbsession.delete(self.dbsession.query(model.Person).get(p1id))
@@ -120,7 +120,6 @@ class TestReviewController(SignedInCRUDControllerTest):
         self.dbsession.save(p2)
         p = model.Proposal(title='prop',
                            abstract='abs',
-                           experience='exp',
                            type=self.dbsession.get(model.ProposalType, 1),
                            )
         self.dbsession.save(p)
@@ -151,7 +150,6 @@ class TestReviewController(SignedInCRUDControllerTest):
         self.dbsession.save(s)
         p = model.Proposal(title='prop',
                            abstract='abs',
-                           experience='exp',
                            type=self.dbsession.query(model.ProposalType).get(1))
         self.dbsession.save(p)
         s.proposals.append(p)

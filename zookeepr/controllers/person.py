@@ -16,8 +16,7 @@
 #     handle = validators.PlainText()
 #     phone = validators.String()
 #     fax = validators.String()
-#     firstname = validators.String()
-#     lastname = validators.String()
+#     fullname = validators.String()
 
 # class NewPersonSchema(BaseSchema):
 #     person = PersonSchema()

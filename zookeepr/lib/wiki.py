@@ -65,7 +65,10 @@ def get_wiki_response(request, start_response):
     moinReq.run()
     start_response(moinReq.status, moinReq.headers)
     dbsession.close()
-    return [moinReq.output()]
+    res = ''.join(moinReq.output())
+    if type(res)==str:
+      res = res.decode('utf8', 'replace')
+    return res
 
 def wiki_here():
     from zookeepr.lib.base import request
@@ -73,7 +76,7 @@ def wiki_here():
         pass
 
     try:
-        wiki_content = ''.join(get_wiki_response(request, start_response))
+        wiki_content = get_wiki_response(request, start_response)
         match = cleaner_regexp.search(wiki_content)
         if match:
             return match.groups()[0]
@@ -87,9 +90,13 @@ def wiki_fragment(page_name='Home'):
         pass
 
     request.environ['PATH_INFO'] = '/' + page_name
-    soup = BeautifulSoup(''.join(get_wiki_response(request, start_response)))
+    soup = BeautifulSoup(get_wiki_response(request, start_response))
     try:
-        content = soup.findAll('div', id='content')[0]
+        content = soup.findAll('div', id='content')
+	if len(content)==0:
+	  content = '(no content)'
+	else:
+	  content = content[0]
         return '<div class="wiki">\n%s\n</div>' % (content,)
     except IndexError:
         print "soup is: %r" % (soup.prettify(),)

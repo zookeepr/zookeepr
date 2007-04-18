@@ -43,10 +43,6 @@ def make_map():
     m.connect('/account/:action', controller='account')
     m.connect('/account/reset_password/:url_hash', controller='account', action='reset_password')
 
-    # special case for the about controller
-    m.connect('/about/', controller='about', action='view', id='index')
-    m.connect('/about/:id', controller='about', action='view')
-
     # OpenDay
     m.connect('openday', '/OpenDay', controller='openday', action='new')
     m.connect('/Openday', controller='openday', action='new')

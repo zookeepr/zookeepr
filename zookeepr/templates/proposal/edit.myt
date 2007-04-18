@@ -21,11 +21,17 @@ errors
 <%init>
 # Working around a bug in formencode, we need to set the defaults to the c.proposal
 # values
-if not defaults:
-	defaults = {'proposal.title': c.proposal.title,
-		    'proposal.type': c.proposal.type.id,
-		    'proposal.abstract': c.proposal.abstract,
-                    'proposal.experience': c.proposal.experience,
-                    'proposal.url': c.proposal.url,
-                   }
+if not defaults and c.proposal:
+    defaults = {
+            'proposal.title': c.proposal.title,
+            'proposal.abstract': c.proposal.abstract,
+            'person.experience': c.person.experience,
+            'person.bio': c.person.bio,
+            'proposal.url': c.proposal.url,
+    }
+    if c.proposal.type:
+        defaults['proposal.type'] = c.proposal.type.id
+    if c.proposal.assistance:
+        defaults['proposal.assistance'] = c.proposal.assistance.id
+
 </%init>

@@ -28,12 +28,6 @@ class TestRouting(unittest.TestCase):
             self.assertEqual('/c/1/%s' % action,
                              url_for(controller='c', action=action, id=1))
 
-    def test_about_controller_id_url(self):
-        self.assertEqual('/about/programme',
-                         url_for(controller='about',
-                                 action='view',
-                                 id='programme'))
-
     def test_home_routing(self):
         """Test the routing of the home controller"""
         self.assertEqual(dict(controller='home',

@@ -1,6 +1,18 @@
 Changes for Zookeepr
 ====================
 
+0.3.19
+------
+
+ * Added license info (Jiri Baum)
+ * Added mel8 logos (Jiri Baum)
+ * Remove deprecated about controller (Jiri Baum)
+ * Integrated lca200[78].css (John Ferlito)
+ * Removed config.ini (John Ferlito)
+ * Added contact email address into config (Jiri Baum)
+ * Wiki UTF8 Fix (Jiri Baum)
+ * Bump version
+
 0.3.18
 ------
 
