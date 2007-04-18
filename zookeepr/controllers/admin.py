@@ -15,7 +15,10 @@ class AdminController(SecureController):
 		       for x in res if x[0] != '_' and x not in exceptions]
 
         # other functions should be appended to the list here.
-	# (none yet)
+	funcs += [
+	  ('/profile', '''List of people signed up (with option to
+					       view/change their roles'''),
+	]
 
 	# show it!
         c.columns = ['page', 'description']

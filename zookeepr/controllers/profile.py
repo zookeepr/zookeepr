@@ -43,7 +43,7 @@ class ProfileController(SecureController, Read, Update, List):
 
         td = '<td valign="middle">'
         res = ''
-        res += '<b>'+c.signed_in_person.fullname+'</b><br>'
+        res += '<b>'+self.obj.fullname+'</b><br>'
         data = dict(request.POST)
 	if data:
 	  role = int(data['role'])
