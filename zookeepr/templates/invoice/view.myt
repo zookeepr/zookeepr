@@ -34,7 +34,7 @@
 % #endif
 
 <p>
-<strong>Attention:</strong> <% c.invoice.person.fullname %>
+<strong>Attention:</strong> <% c.invoice.person.firstname %> <% c.invoice.person.lastname %>
 % if c.invoice.person.registration and c.invoice.person.registration.company:
 <br />
 <strong>Company:</strong> <% c.invoice.person.registration.company %>

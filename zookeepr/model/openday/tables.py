@@ -5,7 +5,8 @@ from zookeepr.model import metadata
 openday = Table('openday', metadata,
                      Column('id', Integer, primary_key=True),
 
-                     Column('fullname', String),
+                     Column('firstname', String),
+                     Column('lastname', String),
                      Column('email_address', String),
                      Column('heardfrom', String),
                      Column('heardfromtext', String),

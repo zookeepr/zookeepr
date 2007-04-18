@@ -15,8 +15,15 @@ Please fill in the form as best you can.
 
 <p>
 <span class="mandatory">*</span>
-<label for="openday.fullname">Your full name:</label>
-<% h.text_field('openday.fullname', size=40) %>
+<label for="openday.firstname">Your first name:</label>
+<% h.text_field('openday.firstname', size=40) %>
+</p>
+
+
+<p>
+<span class="mandatory">*</span>
+<label for="openday.lastname">Your last name:</label>
+<% h.text_field('openday.lastname', size=40) %>
 </p>
 
 <p>

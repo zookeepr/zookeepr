@@ -21,10 +21,14 @@ profile</h2>
 </p>
 
 <p>
-   <b>Full name:</b>
-    <% c.person.fullname | h %><br />
+   <b>First name:</b>
+    <% c.person.firstname | h %><br />
 </p>
 
+<p>
+   <b>Last name:</b>
+    <% c.person.lastname | h %><br />
+</p>
 </div>
 
 <p>

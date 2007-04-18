@@ -72,7 +72,8 @@ class NotExistingHandleValidator(validators.FancyValidator):
 
 class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
-    fullname = validators.String(not_empty=True)
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)

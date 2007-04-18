@@ -2,7 +2,7 @@
 
 <p>A <% c.talk.type.name %> by
 % for p in c.talk.people:
-<% h.link_to(p.fullname, url=h.url(controller='profile', action='view', id=p.id)) %>
+<% h.link_to(p.firstname + " " + p.lastname, url=h.url(controller='profile', action='view', id=p.id)) %>
 % #endfor
 </p>
 

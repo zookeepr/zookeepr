@@ -114,7 +114,8 @@ class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
-    fullname = validators.String(not_empty=True)
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
 
     chained_validators = [NotExistingAccountValidator(), validators.FieldsMatch('password', 'password_confirm')]

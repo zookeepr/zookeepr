@@ -386,7 +386,8 @@ class TestAccountController(ControllerTest):
         # fill out the form
         f = resp.form
         f['registration.email_address'] = 'testguy@example.org'
-        f['registration.fullname'] = 'Testguy McTest'
+        f['registration.firstname'] = 'Testguy'
+        f['registration.lastname'] = 'McTest'
         f['registration.handle'] = 'testguy'
         f['registration.password'] = 'test'
         f['registration.password_confirm'] = 'test'
@@ -405,7 +406,7 @@ class TestAccountController(ControllerTest):
                             message.message, re.DOTALL)
         self.failIfEqual(None, to_match, "to address not in headers")
         # check that the message has the user's name
-        name_match = re.match(r'^.*Testguy McTest',
+        name_match = re.match(r'^.*Testguy.*McTest',
                               message.message, re.DOTALL)
         self.failIfEqual(None, name_match, "user's name not in headers")
         # check that the message was renderered without HTML, i.e.
@@ -456,7 +457,8 @@ class TestAccountController(ControllerTest):
         resp = self.app.get('/account/new')
         f = resp.form
         f['registration.email_address'] = 'testguy@example.org'
-        f['registration.fullname'] = 'Testguy McTest'
+        f['registration.firstname'] = 'Testguy'
+        f['registration.lastname'] = 'McTest'
         f['registration.handle'] = 'tg'
         f['registration.password'] = 'test'
         f['registration.password_confirm'] = 'test'
