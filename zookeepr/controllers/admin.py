@@ -17,7 +17,7 @@ class AdminController(SecureController):
         # other functions should be appended to the list here.
 	funcs += [
 	  ('/profile', '''List of people signed up (with option to
-					       view/change their roles'''),
+					      view/change their roles)'''),
 	]
 
 	# show it!
