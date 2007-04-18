@@ -50,7 +50,7 @@ Project URL:
 <legend>Presenter's experience/biography</legend>
 
 % for person in c.review.proposal.people:
-<h2><% person.fullname %></h2>
+<h2><% person.firstname %> <% person.firstname %> </h2>
 <blockquote>
 <% h.auto_link(h.simple_format(person.experience)) %>
 </blockquote>
@@ -63,9 +63,9 @@ Proposal submitted by:
 <ul>
 % for p in c.review.proposal.people:
 <li>
-<% p.fullname | h %> &lt;<% p.email_address %>&gt;
-<% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (p.fullname, p.email_address)) %>
-<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (p.fullname, p.email_address)) %>
+<% p.firstname | h %> <% p.lastname | h %> &lt;<% p.email_address %>&gt;
+<% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (p.firstname + " " + p.lastname, p.email_address)) %>
+<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (p.firstname + " " + p.lastname, p.email_address)) %>
 <% h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % p.email_address) %>
 </li>
 % #endfor

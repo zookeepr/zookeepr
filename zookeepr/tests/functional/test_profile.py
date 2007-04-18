@@ -5,7 +5,8 @@ class TestProfileController(ControllerTest):
         # set up
         p = model.Person(email_address='testguy@example.org',
                          handle='testguy',
-                         fullname='Testguy McTest',
+                         firstname='Testguy',
+                         lastname='McTest',
                          )
         self.dbsession.save(p)
         self.dbsession.flush()

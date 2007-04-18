@@ -7,7 +7,8 @@ class TestHomeController(ControllerTest):
     def test_index_logged_in(self):
         p = model.Person(email_address='testguy@example.org',
                    password='test',
-                   fullname='Testguy',
+                   firstname='Testguy',
+                   lastname='Testguy',
 		   handle='testguy')
         p.activated = True
         self.dbsession.save(p)

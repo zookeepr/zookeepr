@@ -24,7 +24,7 @@ class TestReviewModel(CRUDModelTest):
         self.proposal = model.Proposal(title='p', abstract='a')
         self.dbsession.save(self.proposal)
 
-        self.reviewer = model.Person(fullname='snuh', email_address='reviewer@example.org')
+        self.reviewer = model.Person(firstname='snuh', lastname='snuh2', email_address='reviewer@example.org')
         self.dbsession.save(self.reviewer)
 
         self.stream = model.Stream(name="foo")
@@ -61,7 +61,8 @@ class TestReviewModel(CRUDModelTest):
         self.dbsession.save(p)
         s = model.Stream('streamy')
         self.dbsession.save(s)
-        r = model.Person(fullname='testguy mctest',
+        r = model.Person(firstname='testguy',
+                         lastname='mctest',
                          email_address='testguy@example.org',
                          )
         self.dbsession.save(r)

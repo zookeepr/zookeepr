@@ -21,7 +21,7 @@ Please go to http://lca2007.linux.org.au/profile/$profile_id to edit your regist
 You will need to go to http://lca2007.linux.org.au/registration/remind as well to get those people that havn't generated an invoice yet.
 <p>
 
-<strong>fullname,email_address,profile_id,status,earlybird</strong><br>
+<strong>firstname,lastname,email_address,profile_id,status,earlybird</strong><br>
 % count = 0
 % p = PaymentOptions()
 % for i in invoices:
@@ -54,7 +54,7 @@ You will need to go to http://lca2007.linux.org.au/registration/remind as well t
 %     if status == "INVALID":
 <strong>
 %     # endif
-"<% i.person.fullname %>","<% i.person.email_address %>",<% i.person.id %>,<% status %>,<% p.is_earlybird(i.person.registration.creation_timestamp) %><br>
+"<% i.person.firstname %>","<% i.person.lastname %>","<% i.person.email_address %>",<% i.person.id %>,<% status %>,<% p.is_earlybird(i.person.registration.creation_timestamp) %><br>
 %     if status == "INVALID":
 </strong>
 %     # endif

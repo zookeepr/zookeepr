@@ -5,7 +5,8 @@ class TestOpendayController(CRUDControllerTest):
     url = '/openday'
     param_name = 'openday'
     samples = [dict(openday=dict(
-                            fullname='Happy Teacher',
+                            firstname='Happy',
+                            lastname='Teacher',
                                  heardfromtext='School',
                                  opendaydrag=1,
                                  email_address='teacher@example.org',
@@ -17,7 +18,8 @@ class TestOpendayController(CRUDControllerTest):
 
     def test_existing_openday(self):
         p = model.Openday(email_address='teacher@example.org',
-            fullname='Happy teacher',
+                            firstname='Happy',
+                            lastname='Teacher',
             )
         self.dbsession.save(p)
         self.dbsession.flush()
@@ -29,7 +31,8 @@ class TestOpendayController(CRUDControllerTest):
         f['openday.heardfromtext'] = 'Moo'
         f['openday.opendaydrag'] = '5'
         f['openday.email_address'] = 'teacher@example.org'
-        f['openday.fullname'] = 'Happy Teacher'
+        f['openday.firstname'] = 'Happy'
+        f['openday.lastname'] = 'Teacher'
 
         resp = f.submit()
 

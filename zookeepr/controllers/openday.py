@@ -15,7 +15,8 @@ class NotExistingOpendayValidator(validators.FancyValidator):
 
 
 class OpendaySchema(Schema):
-    fullname = validators.String(not_empty=True)
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
 
     opendaydrag = validators.Int(not_empty=True)

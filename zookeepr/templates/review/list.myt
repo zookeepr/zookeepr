@@ -31,7 +31,10 @@
 </td>
 
 <td>
-<% r.reviewer.fullname %>
+<% r.reviewer.firstname %>
+</td>
+<td>
+<% r.reviewer.lastname %>
 </td>
 
 <td>

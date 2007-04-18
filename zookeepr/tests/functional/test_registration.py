@@ -47,7 +47,8 @@ class TestRegistrationController(CRUDControllerTest):
                                 password='test',
                                 password_confirm='test',
                                 handle='testguy',
-                                fullname='testguy mctest',
+                                firstname='testguy',
+                                lastname='mctest',
                                 )
                     )
                ]
@@ -99,7 +100,7 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         resp = self.app.get('/registration/new')
         f = resp.form
         print f.fields.keys()
-        self.failIf('person.fullname' in f.fields.keys(), "form asking for person details of signed in person")
+        self.failIf('person.firstname' in f.fields.keys(), "form asking for person details of signed in person")
         sample_data = dict(address1='a1',
             city='Sydney',
             state='NSW',
@@ -202,7 +203,8 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
 class TestNotSignedInRegistrationController(ControllerTest):
     def test_not_signed_in_existing_registration(self):
         p = model.Person(email_address='testguy@example.org',
-            fullname='testguy mctest',
+            firstname='testguy',
+            lastname='mctest',
             )
         p.activated = True
         self.dbsession.save(p)
@@ -226,7 +228,8 @@ class TestNotSignedInRegistrationController(ControllerTest):
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
         f['person.email_address'] = 'testguy@example.org'
-        f['person.fullname'] = 'testguy mctest'
+        f['person.firstname'] = 'testguy'
+        f['person.lastname'] = 'mctest'
         f['person.handle']= 'testguy'
         f['person.password'] = 'test'
         f['person.password_confirm'] = 'test'
@@ -241,7 +244,8 @@ class TestNotSignedInRegistrationController(ControllerTest):
 
     def test_not_signed_in_existing_handle(self):
         p = model.Person(email_address='testguy@example.org',
-            fullname='testguy mctest',
+            firstname='testguy',
+            lastname='mctest',
             handle='testguy',
             )
         p.activated = True
@@ -266,7 +270,8 @@ class TestNotSignedInRegistrationController(ControllerTest):
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
         f['person.email_address'] = 'testguy2@example.org'
-        f['person.fullname'] = 'testguy mctest'
+        f['person.firstname'] = 'testguy'
+        f['person.lastname'] = 'mctest'
         f['person.handle']= 'testguy'
         f['person.password'] = 'test'
         f['person.password_confirm'] = 'test'

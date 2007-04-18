@@ -1,5 +1,5 @@
 Subject: Confirmation of your payment attempt for linux.conf.au 2007
-To: <% c.person.fullname %> <<% c.person.email_address %>>
+To: <% c.person.firstname %>  <% c.person.lastname %> <<% c.person.email_address %>>
 
 Thank you for your payment attempt, the results are below.
 
