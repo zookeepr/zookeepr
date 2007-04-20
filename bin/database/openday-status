@@ -1,7 +1,8 @@
 #!/bin/sh
 psql -c "
     SELECT
-        fullname,
+        firstname,
+        lastname,
         email_address,
         heardfrom,
         heardfromtext,

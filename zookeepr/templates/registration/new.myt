@@ -29,14 +29,24 @@ If you already have an account (through a prior registration, or other interacti
 % if not c.signed_in_person:
 <span class="mandatory">*</span>
 % #endif
-<label for="person.fullname">Your full name:</label>
+
+<label for="person.firstname">Your first name:</label>
 % if c.signed_in_person:
-<% c.signed_in_person.fullname | h %>
+<% c.signed_in_person.firstname | h %>
 % else:
 <br />
-<% h.text_field('person.fullname', size=40) %>
+<% h.text_field('person.firstname', size=40) %>
 % #endif
 </p>
+<label for="person.lastname">Your last name:</label>
+% if c.signed_in_person:
+<% c.signed_in_person.lastname | h %>
+% else:
+<br />
+<% h.text_field('person.lastname', size=40) %>
+% #endif
+</p>
+
 
 <p>
 % if not c.signed_in_person:

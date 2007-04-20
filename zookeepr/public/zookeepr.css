@@ -1,630 +1,401 @@
-/**
- * layout
- */
+/*
+  Running MySource Matrix
+  Developed by Squiz - http://www.squiz.net
+  MySource, MySource Matrix and Squiz.net are registered Trademarks of Squiz Pty Ltd
+  Page generated: 18 April 2007 23:20:21
+*/
 
 
-body {
-    max-width: 760px !important;
-    width: 760px !important;
+ body {
+     font-size: 85%;
+     color: #fff;
+     background: #444 url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0003/975/fargrad.png) top left repeat-x;
+     text-align: center;
+     // font-family: "Lucida Grande", "Luxi Sans", "DejaVu Sans", "Lucida Sans Unicode", "Bitstream Vera Sans", Verdana, Geneva, sans-serif;
+     font-family: Verdana, Geneva, sans-serif;
+ }
+ 
+ /* and do it myyyyy wayyyyy */
+ * {
+     margin: 0;
+     padding: 0;
+     line-height: 150%;
+     border: none;
+ }
+ 
+ 
+ /* Jedi mind whammy */
+ .whammy {
+     height: 0px;
+     margin: 0;
+     padding: 0;
+     text-indent: -10000px;
+ }
+
+
+/* redo some of those general styles */
+ h1, h2, h3, h4 {
+     font-family: Helvetica, Arial, sans-serif;
+     font-weight: normal;
+ }
+ 
+ p {
+     margin: 0 0 0.9em 0;
 }
 
-ul li {
-    list-style: disc;
+img, #header { behavior: url(http://vic.clients.squiz.net/lca2008/__data/assets/file/0015/1059/iepngfix.htc); }
+
+a:hover {
+    color: red;
+}
+ 
+ .pop, div#main h1 {
+     color:#f90;
+     font-size: 1.8em;
+     margin-top: 20px;
+     font-weight: normal;
+     line-height: 130%;
+ }
+ 
+ div#main h2 {
+     color: #777;
+  font-size: 1.8em;
+  }
+ 
+ div#main h3 {
+     color: #777;
+     font-size: 1.4em;
+ }
+ 
+ .eight {
+     color: orange;
+     font-weight: bold;
+ }
+ 
+ div#container {
+     min-width: 760px;
+ }
+ 
+ div#header {
+     padding-top: 0px;
+     background-position: bottom center;
+     background-image: url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0018/972/thecity.png);
+     background-repeat: no-repeat;
+ }
+ 
+ div#main {
+     background: #fff url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0004/976/hoist.gif) top left repeat-x;
+     color: #666;
+     text-align: left;
+      border-top: 4px solid #ffc77f;
+      border-bottom: 4px solid #888;
+  }
+  
+  div#main strong {
+      color: #555;
+  }
+  
+  div#footer, p#redtape {
+      color: #999;
+  }
+  
+  div#footer {
+      background: #fff;
+  }
+  
+  p#redtape {
+      font-size: smaller;
+  }
+  
+  div#main, div#header ul {
+     padding: 10px 20%;
+     clear:both;
+ }
+ 
+ div#footer {
+     clear: both;
+     text-align: center;
+     padding-top: 40px;
+ }
+ 
+ div#header h1 {
+     margin: 0px 20%;
+     padding-top: 40px;
+     padding-bottom: 15px;
+     text-align: center;
+ }
+ 
+ div#header ul {
+     padding: 7px 0 7px 0;
+     margin: 0;
+     list-style-type: none;
+     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0020/974/faded.png);
+     color: #fff;
+     width: 100%;
+     text-align: center;
+     text-transform: lowercase;
+ }
+ 
+ 
+ div#header li { display: inline; }
+
+ div#header li a {
+     text-decoration: none;
+     color: #ccc;
+     padding: 9px 1em;
+ }
+ 
+ div#header li a.now {
+     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0017/971/now.gif) bottom center no-repeat;
+     color: #f90;
+     font-weight: bold;
+ }
+
+ div#header li a:hover
+ {
+ color: orange;
+ text-decoration: underline;
+ }
+ 
+ 
+#youarehere {
+     background: #ffc77f;
+     padding-top: 2px;
+     font-size: 0.9em;
 }
 
-#body {
-    margin: 0 !important;
-}
+ul#sub {
+     list-style-type: none;
+     margin: 0;
+     padding: 0;
+     width: 100%;
+     text-align: center;
+     text-transform: lowercase;
+ }
+ 
+ ul#sub li {
+     display: inline;
+ }
+ 
+ ul#sub li a {
+     color: black;
+     text-decoration: none;
+     padding: 7px 1em;
+ }
+ 
+ ul#sub li a.now {
+     font-weight: bold;
+     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0013/1129/now-sub.gif) bottom center no-repeat;
+ }
+ 
+ ul#sub li a:hover {
+     color: black;
+     text-decoration: underline;
+ }
 
-#header {
-    position: relative;
+p.spons {
+    clear: both;
+    padding: 10px 30px;
 }
-
-#header h1 {
-    text-align: right;
-}
-#header h2 {
-    position: absolute;
-    bottom: 0;
-    right: 190px;
-    font-size: medium;
-    font-weight: bold;
-    text-transform: none;
-    text-align: right;
-    /* color: #a04700; */
-}
-
-#menus {
-    width: 50%;
-    position: absolute;
-    left: 0px;
-}
-
-/* #secondarymenu, */ #locationline, p.table-of-contents-heading {
-    display: none;
-}
-
-#flickr {
-    text-align: center;
-    padding: 0 !important;
-    margin: 0 !important;
-}
-
-#flickr a img {
-    padding: 2px !important;
-    margin: 0 1px 0 1px !important;
-    border: 1px solid #cccccc;
-}
-
-#flickr a:hover img {
-    padding: 0 !important;
-    border: 3px solid #cccccc;
-}
-
-table.regologo {
-    float: right;
-    border: 0;
-    padding: 0 0 1em 1em;
-}
-
-div.inner ul {
-    margin: 0;
-    padding: 0;
-}
-
-div.inner ul li ul {
-    margin-left: 1em;
-}
-
-div.planet {
-    background-color: #eeeeee;
-    padding: 1em;
-    -moz-border-radius: 1em;
-}
-
-div.planet div.feeds {
-    margin: 1em 0 0 0;
-    font-weight: bold;
-    text-align: right;
-}
-
-div.planet li img {
-    vertical-align: middle;
-}
-
-div.planet a {
-    text-decoration: none;
-}
-
-div.planet h3 {
-    margin-top: 0 !important;
-}
-
-/* headings */
-
-h2, h3, h4 {
-    /* color: #ce5c00 !important; */
-    margin: 1.5em 0 1em 0 !important;
-}
-
-/* programme */
-
-table tr td p {
-    margin: 0;
-}
-
-table.programme {
-    border-collapse: collapse;
-    border: 1px solid #cccccc;
-    width: 100%;
-}
-table.programme td {
-    border: 1px solid #cccccc;
-    padding: 0.5em;
-    font-size: small;
-}
-tr.rooms td {
-    font-weight: bold;
-    text-align: center;
-}
-td.deepkernel { background-color: #FFFFCC; }
-td.programmer { background-color: #FFEECC; }
-td.sysadmin { background-color: #CCFFFF; }
-td.widekernel { background-color: #CCFFCC; }
-td.coolshit { background-color: #FFCCFF; }
-td.userexperience { background-color: #FFCCCC; }
-td.freeculture { background-color: #CCCCFF; }
-td.tutorial { background-color: #EEEEEE; }
-
-#body.planet {
-    position: relative;
-    background: transparent;
-    padding: 0 !important;
-}
-
-#body.planet div.channelgroup, #body.planet div.entrygroup {
-    margin-left: 2em;
-    margin-right: 2em;
-}
-
-#body.planet div.entry p.date {
-    text-align: right;
-}
-
-#body.planet h3 {
-    vertical-align: middle;
-    background-color: #eeeeee;
-    -moz-border-radius: 0.5em;
-    padding: 0.5em;
-    width: 40%;
-}
-
-#body.planet h4 {
-    text-transform: none;
-}
-
-#body.planet img.face {
+ 
+ 
+ a#sponhp, a#sponibm {
+    width: 100px;
+    margin: 0 10px;
+    display: block;
     float: left;
-    margin-right: 0.5em;
+ }
+
+a#sponredhat {
+    width: 173px;
+    margin: 0 10px;
+    display: block;
+    float: left;
+ }
+
+a#sponhp {
+    height: 57px;
+    width: 100px;
+    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0005/977/hp-roll.png) bottom left no-repeat;
 }
 
-#sidebar {
-    float: right;
-    width: 140px;
-    padding: 1em 1em 0 1em;
-    margin: 0 0 2em 2em;
-    border: 0;
-    -moz-border-radius: 1em;
-    background-color: #eeeeee;
+a#sponhp:hover {
+    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0005/977/hp-roll.png) top left no-repeat;
 }
 
-#sidebar div.section {
+a#sponibm {
+    height: 54px;
+    width: 100px;
+    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0016/970/ibm-roll.png) bottom left no-repeat;
+}
+
+a#sponibm:hover {
+    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0016/970/ibm-roll.png) top left no-repeat;
+}
+
+a#sponredhat {
+    height: 50px;
+    width: 173px;
+    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0008/1142/redhat-roll.png) top left no-repeat;
+}
+
+a#sponredhat:hover {
+    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0008/1142/redhat-roll.png) bottom left no-repeat;
+}
+
+p.emperor {
+    margin: 0 auto;
+    width: 450px;
+}
+
+p.spons a {
+    color: #555;
+}
+
+ p#redtape a {
+     color: #fff;
+ }
+ 
+ div#shiz {
+     float: left;
+     width: 70%;
+min-height: 300px;
+ }
+
+div#shiz ul, div#shiz ol {
+    margin-left: 3em;
     margin-bottom: 1em;
 }
 
-#sidebar h3 {
-    text-transform: none;
-    margin: 0 0 0.5em 0 !important;
-    padding: 0;
+div#shiz ul {
+    list-style-type: square;
 }
 
-#sidebar ul {
-    padding-left: 0;
+div#shiz li {
+    padding-left: 1em;
+}
+ 
+ div#randoms {
+     float: right;
+     text-align: center;
+     width: 25%;
+     margin-bottom: 10px;
+ }
+ div#randoms img {
+     margin: 10px 0;
+     padding: 3px 7px 8px 3px;
+     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0019/973/drop.gif) bottom right no-repeat;
+ }
+ 
+ 
+ #cred {
+     display: block;
+     text-align: right;
+     text-decoration: none;
+     font-size: smaller;
+     background: transparent;
+     color: #888;
+     padding: 4px;
+ }
+
+table.form, #login-form table {
+    width: 100%;
+    font-size: 100%;
+    font-size: inherit;
 }
 
-#sidebar ul li a {
-    color: black;
-    text-decoration: underline;
+table.form td, #login-form table td {
+    font-size: inherit;
+    margin: 0;
+    padding: 10px;
+    border-collapse: collapse;
+    vertical-align: top;
 }
 
-/**
- * columns
-#column-a {
-    width: 65% !important;
-}
-#column-b {
-    margin-left: 67% !important;
-}
- */
-body {
-  font-family: sans-serif;
-  color: #333;
-  background: url("/greydient-top.png") top left repeat-x white;
-  line-height: 1.5em;
-  max-width: 63em;
-  margin: 0 auto;
-  position: relative;
-  padding: 0;
-  font-size: 10pt;
+td.labels {
+    text-align: right;
+    vertical-align: top;
+    font-weight: bold;
+    color: #e70;
 }
 
-#header h1 {
-  margin: 0;
-  padding: 0;
-  margin-bottom: 20px;
+td.s-labels {
+    text-align: right;
+    vertical-align: top;
+    font-weight: bold;
+    font-size: 0.8em;
+    color: #e70;
 }
 
-#menus {
-  position: absolute;
-  top: 20px;
-  /* right: 20px; */
+#login-form td {
+    font-weight: bold;
+    color: #e70;
+    text-align: right;
 }
 
-#body {
-  margin: 20px;
-  margin-top: 0;
-  clear: both;
+td.entries, td.s-entries {
+    text-align: left;
 }
 
-#footer {
-  background: #fff;
-  border-top: 1px dotted #ccc;
-  line-height: 3em;
-  color: #666;
-  padding: 1ex;
-  text-align: center;
-  clear: both;
+td.submit input {
+    background: orange;
+    color: #fff;
+    padding: 4px;
 }
 
-h1, h2, h3, h4 {
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+#login-form .sq-form-field {
+    background: orange;
+    color: #fff;
+    padding: 4px;
 }
 
-#footer p {
-  margin: 0;
-  padding: 0;
+td.entries input, td.entries textarea, #login-form #SQ_LOGIN_USERNAME, #login-form #SQ_LOGIN_PASSWORD {
+    width: 100%;
+    border: 1px solid #777;
+    padding: 4px;
+    font-family: Verdana, Geneva, sans-serif;
+    background-color: #fff;
 }
 
-#countdown {
-  color: red;
-  font-weight: bold;
-  font-size: larger;
-}
-/**
- * columns
- */
-
-#column-a {
-  float: left;
-  width: 49%;
+td.s-entries input, td.s-entries textarea, td.s-entries select {
+    width: 100%;
+    border: 1px solid #777;
+    padding: 4px;
+    font-family: Verdana, Geneva, sans-serif;
+    background-color: #fff;
+    font-size: 0.8em;
 }
 
-#column-a div.inner {
-  padding-right: 20px;
+#login-form #SQ_LOGIN_USERNAME, #login-form #SQ_LOGIN_PASSWORD {
+    color: #000;
+    font-weight: normal;
 }
 
-#column-b {
-  border-left: 1px dashed #cccccc;
-  margin-left: 49%;
+#login-form #SQ_LOGIN_USERNAME:focus, #login-form #SQ_LOGIN_PASSWORD:focus {
+    color: #000;
+    border: 1px solid #e70 !important;
+    background: #FFFADB url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0010/1063/form-back.gif) repeat-x scroll 0%;
+    width: 100%;
 }
 
-#column-b div.inner {
-  padding-left: 20px;
+.note {
+    font-size: smaller;
 }
 
-blockquote{
-  margin: 0em;
-  padding: 2em;
-  background-color: #444;
-  color: #fff;
+td.entries input:focus, td.s-entries input:focus, td.s-entries select:focus {
+    color: #000;
+    border: 1px solid #e70 !important;
+    background: #FFFADB url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0010/1063/form-back.gif) repeat-x scroll 0%;
+    width: 100%;
 }
 
-blockquote i {
-  font-style: normal;
-}
-
-/**
- * generic
- */
-
-h1, h2, h3, h4, h5 {
-  color: #ce5c00;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 1ex;
-}
-
-hr {
-  clear: both;
-  display: none;
-  border: none;
-  height: 0;
-  padding: 0;
-  margin: 0;
-}
-
-.hidden {
-  display: none;
-}
-
-.clear {
-  clear: both;
-}
-
-.left {
-  float: left;
-}
-
-.right {
-  float: right;
-}
-
-a:link {
-  color: #ce5c00;
-}
-
-a:active {
-  color: #f57900;
-}
-
-a:visited {
-  color: #a04700;
-}
-
-a:hover {
-  color: #f57900;
-}
-
-a img {
-  border: 0;
-}
-
-/**
- * menus
- */
-
-.menu {
-  font-size: larger;
-  font-weight: bold;
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  clear: both;
-  float: right;
-}
-
-.menu li {
-  float: left;
-  padding: 0.1em .5em;
-}
-
-.menu a {
-  text-decoration: none;
-}
-
-#mainmenu {
-  font-size: x-large;
-}
-
-#secondarymenu {
-  font-size: large;
-}
-
-
-/**
- * forms
- */
-
-LABEL {
-  font-weight: bold;
-}
-
-input, textarea {
-  border: 1px solid #cccccc;
-}
-
-.fieldRequired {
-  color: #cccccc;
-}
-
-SPAN.fielddesc {
-  font-size: small;
-  font-style: italic;
-}
-
-/* A box containing a group of related info */
-div.boxed {
-  border: 1px solid grey;
-}
-
-/**
- * tables
- */
-
-TABLE TH {
-  background-color: #f57900;
-}
-
-TABLE TR.even {
-  background-color: #ddd;
-}
-
-TABLE TR.odd {
-  background-color: #eee;
-}
-
-/**
- * custom stuff
- */
-
-#cfpbutton {
-  width: 222px;
-  padding: 2em;
-  text-align: center;
-}
-
-#cfpbutton a {
-  text-decoration: none;
-  font-weight: bold;
-}
-
-#cfpbutton a:visited, #cfpbutton a:link {
-  color: #fcaf3e;
-}
-
-.error-message {
-  color: #ff0000;
-  padding: 0;
-  margin: 0;
-  margin-bottom: 1ex;
-}
-
-ul {
-  margin: 0em;
-  padding-left: 1.5em;
-}
-
-ul li{
-  list-style: none;
-}
-
-ul li:before {
-  content:"\00BB \0020 
-";
-  color: #aaa;
-  padding-right: 0.5em;
-}
-
-h2 {
-  color: #999;
-}
-
-/**
- * CRUD actions
- */
-
-/*
-#proposals LI:before {
-  content: "";
-}
-*/
-
-SPAN.actions {
-  font-size: 70%;
-}
-
-/**
- * Proposal pages
- */
-
-#proposal P.submitted {
-  font-style: italic;
-  font-size: 90%;
-}
-
-#proposal P.actions {
-  font-size: 80%;
-  text-align: center;
-}
-
-/* more andy bits */
-FORM DIV {
-  width: 100% ! important;
+td.entries textarea:focus, td.s-entries textarea:focus {
+    color: #000;
+    border: 1px solid #e70 !important;
+    background: #FFFADB !important;
+    width: 100%;
 }
 
 .mandatory {
-  color: #f57900;
+   color: #f00;
 }
-
-input, textarea {
-  padding: 3px;
-  font-family: sans-serif;
-  line-height: 1.5em;
-  font-size: 8pt;
-  border: 1px solid #ccc;
-}
-
-form {
-  width: 100%;
-  margin: 0em;
-  padding:0em;
-}
-
-input:focus, textarea:focus {
-  border-color:#f57900;
-}
-
-textarea {
-  width:100%;
-  margin: 0 auto;
-}
-
-.fielddesc {
-  font-size: smaller;
-}
-
-FIELDSET {
-  margin-bottom: 1.5em;
-  border-style: none;
-  background-color: #eee;
-  width: 100%;
-  padding:1em;
-}
-
-FIELDSET LEGEND {
-  font-weight: bold;
-  border: 1px solid black;
-  background-color: #eee;
-}
-
-/***
- * Wiki
- */
-
-.wiki .editbar LI {
-  display: inline;
-  float: left;
-  padding-right: 1em;
-}
-
-.wiki .editbar {
-  clear: both;
-}
-
-.wiki #message {
-  /* nice boxing border */
-  border: 1px solid black;
-  /* move away from the header just before us */
-  margin-top: 1em;
-  /* pad out the left and bottom nicely */
-  padding-left: 1em;
-  padding-bottom: 1em;
-  /* big and red */
-  color: red;
-  font-weight: bold;
-}
-
-/* reverse the effect of the bold above for the "clear message" link */
-.wiki #message a {
-  font-weight: normal;
-}
- 
-.wiki #pageinfo {
-  font-style: italic;
-}
-
-.wiki #pagelocation {
-  font-weight: bold;
-  text-transform: uppercase;
-  color: #999;
-  font-size: x-large;
-  letter-spacing: 0.1em;
-  padding: 0;
-  margin: 0;
-}
-
-.wiki #pagelocation a {
-  text-decoration: none;
-  color: #999;
-}
-
-
-/* Registration levels table */
-
-table.rego {
-  width: 100%;
-}
-
-table.rego td.pro {
-  color: white;
-  background-color: #1E90FF;
-  text-align: center;
-}
-
-table.rego td.hob {
-  color: white;
-  background-color: #A2CD5A;
-  text-align: center;
-}
-
-table.rego td.con {
-  color: white;
-  background-color: #F08080;
-  text-align: center;
-}
-
-table.rego td.non {
-  text-align: center;
-}
-

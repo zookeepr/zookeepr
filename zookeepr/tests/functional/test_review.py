@@ -61,10 +61,12 @@ class TestReviewController(SignedInCRUDControllerTest):
     def test_reviews_isolated(self):
         """Test that a reviewer can only see their own reviews"""
         p1 = model.Person(email_address='testgirl@example.org',
-                    fullname='Testgirl Van der Test')
+                    firstname='Testgirl',
+                    lastname='Van der Test')
         self.dbsession.save(p1)
         p2 = model.Person(email_address='t2@example.org',
-                    fullname='submitter')
+                    firstname='submitter',
+                    lastname='submitter')
         self.dbsession.save(p2)
         p = model.Proposal(title='prop',
                            type=self.dbsession.get(model.ProposalType, 1),
@@ -97,8 +99,8 @@ class TestReviewController(SignedInCRUDControllerTest):
         pid = p.id
 
         resp = self.app.get('/review')
-        resp.mustcontain(self.person.fullname)
-        self.failIf(p1.fullname in resp, "shouldn't be able to see other people's reviews")
+        resp.mustcontain(self.person.firstname)
+        self.failIf(p1.firstname in resp, "shouldn't be able to see other people's reviews")
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
         self.dbsession.delete(self.dbsession.query(model.Person).get(p1id))
@@ -116,11 +118,11 @@ class TestReviewController(SignedInCRUDControllerTest):
     def test_only_one_review_per_reviewer_per_proposal(self):
         """test that reviewers can only do one review per proposal"""
         p2 = model.Person(email_address='t2@example.org',
-                    fullname='submitter')
+                    firstname='submitter',
+                    lastname='submitter')
         self.dbsession.save(p2)
         p = model.Proposal(title='prop',
                            abstract='abs',
-                           experience='exp',
                            type=self.dbsession.get(model.ProposalType, 1),
                            )
         self.dbsession.save(p)
@@ -147,11 +149,11 @@ class TestReviewController(SignedInCRUDControllerTest):
     def test_edit_review(self):
         """test that a reviewer can edit their review"""
         s = model.Person(email_address='submitter@example.org',
-                         fullname='submitter')
+                    firstname='submitter',
+                    lastname='submitter')
         self.dbsession.save(s)
         p = model.Proposal(title='prop',
                            abstract='abs',
-                           experience='exp',
                            type=self.dbsession.query(model.ProposalType).get(1))
         self.dbsession.save(p)
         s.proposals.append(p)

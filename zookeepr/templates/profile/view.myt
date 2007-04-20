@@ -1,5 +1,5 @@
 % import string
-<h1><% c.profile.fullname |h %></h1>
+<h1><% c.profile.firstname |h %> <% c.profile.lastname |h %></h1>
 
 # Show personal details
 % if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id or c.is_organiser_role:
@@ -15,7 +15,8 @@ email address: <% c.profile.email_address |h %>
 display name: <% c.profile.handle |h %>
 </p>
 <p>
-full name: <% c.profile.fullname |h %>
+first name: <% c.profile.firstname |h %>
+last name: <% c.profile.lastname |h %>
 </p>
 
 </fieldset>
@@ -272,7 +273,7 @@ if 'This page does not exist yet.' in content:
 % #endif
 
 <%method title>
-<% c.profile.fullname | h %> - <& PARENT:title &>
+<% c.profile.firstname | h %> <% c.profile.lastname | h %> - <& PARENT:title &>
 </%method>
 
 <%method actions>

@@ -6,13 +6,15 @@ class TestOpendayTable(TableTest):
     This table stores registration details.
     """
     table = model.openday.tables.openday
-    samples = [dict(fullname='fullname1',
+    samples = [dict(firstname='lastname1',
+                    lastname='lastname',
                     email_address='email1',
                     heardfrom='heardfrom1',
                     heardfromtext='heardfromtext1',
                     opendaydrag=1,
                     ),
-               dict(fullname='fullname2',
+               dict(firstname='fullname2',
+                    lastname='lastname2',
                     email_address='email2',
                     heardfrom='heardfrom2',
                     heardfromtext='heardfromtext2',

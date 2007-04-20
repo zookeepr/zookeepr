@@ -1,25 +1,4 @@
-# Flickr fragment
-<div id="flickr">
-<& flickr.html &>
-</div>
-
-# cool stuff
-<div id="column-a">
-<div class="inner">
-<% h.wiki_fragment('Blurb') %>
-<& planet.html &>
-</div>
-</div>
-
-<div id="column-b">
-<div class="inner">
-<% h.wiki_fragment('Links') %>
-</div>
-</div>
-
-<!-- UGH -->
-<div class="clear">&nbsp;</div>
-<hr />
+<% h.wiki_fragment('Home') %>
 
 <!--
 FIXME: Dirty hack so all the tests don't fail

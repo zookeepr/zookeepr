@@ -8,16 +8,14 @@ class TestProposalTable(TableTest):
     table = model.proposal.tables.proposal
     samples = [dict(title='Test Paper',
                     abstract='Test Abstract',
-                    experience='None at all',
                     url='gopher://',
                     proposal_type_id=1,
-                    assistance=True,
+                    assistance_type_id=1,
                     ),
                dict(title='Test BOF',
                     abstract='some bof',
-                    experience='Some',
                     url="sqlite:////somedb.db",
                     proposal_type_id=2,
-                    assistance=False,
+                    assistance_type_id=2,
                     ),
                ]

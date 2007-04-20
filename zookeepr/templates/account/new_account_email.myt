@@ -1,7 +1,7 @@
 Subject: linux.conf.au 2008 New Account Confirmation
-To: <% c.person.fullname %> <<% c.person.email_address %>>
+To: <% c.person.firstname %>  <% c.person.lastname %> <<% c.person.email_address %>>
 
-Dear <% c.person.fullname %>,
+Dear <% c.person.firstname %>,
 
 If you would like to log into the linux.conf.au 2008 site, please
 start by confirming your registration by clicking on the URL

@@ -165,8 +165,13 @@ class ProposalController(SecureController, View, Modify):
         else:
             c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
 
+        c.assistance_types = self.dbsession.query(AssistanceType).select()
+
         for pt in c.proposal_types:
             stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
             setattr(c, '%s_collection' % pt.name, stuff)
+        for at in c.assistance_types:
+            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
+            setattr(c, '%s_collection' % at.name, stuff)
 
         return super(ProposalController, self).index()

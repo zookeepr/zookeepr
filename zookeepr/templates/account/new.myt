@@ -13,9 +13,15 @@ If you've already got an account, but can't log in, you can <% h.link_to('recove
 <fieldset>
 <p>
 <span class="mandatory">*</span>
-<label for="registration.fullname">Your full name:</label>
+<label for="registration.firstname">Your first name:</label>
 <br />
-<% h.text_field('registration.fullname', size=40) %>
+<% h.text_field('registration.firstname', size=40) %>
+</p>
+<p>
+<span class="mandatory">*</span>
+<label for="registration.lastname">Your last name:</label>
+<br />
+<% h.text_field('registration.lastname', size=40) %>
 </p>
 
 <p>

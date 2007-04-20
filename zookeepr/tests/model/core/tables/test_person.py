@@ -9,13 +9,15 @@ class TestPerson(TableTest):
     """
     table = model.core.tables.person
     samples = [dict(handle='testguy',
-                    fullname='Testguy McTest',
+                    firstname='Testguy',
+                    lastname='McTest',
                     phone='+61295555555',
                     fax='+61295555556',
                     account_id=1,
                     ),
                dict(handle='testgirl',
-                    fullname='Testgirl Van Test',
+                    firstname='Testgirl',
+                    lastname='Van Test',
                     phone='+37',
                     fax='42',
                     account_id=2,

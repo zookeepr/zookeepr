@@ -10,7 +10,7 @@ class Person(object):
     all the information about that person.
     """
     def __init__(self, handle=None, email_address=None, password=None,
-                 fullname=None, phone=None, fax=None,
+                 firstname=None, lastname=None, phone=None, fax=None,
                  experience=None, bio=None,
                  creation_timestamp=None,
                  activated=None
@@ -22,7 +22,8 @@ class Person(object):
         self.creation_timestamp = creation_timestamp or datetime.datetime.now()
 
         self.handle = handle
-        self.fullname = fullname
+        self.firstname = firstname
+        self.lastname = lastname
         self.phone = phone
         self.fax = fax
 

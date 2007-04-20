@@ -3,7 +3,7 @@
 <h2>#<% c.review.proposal.id %> - "<% c.review.proposal.title %>"</h2>
 
 <p>
-Review by <% c.review.reviewer.fullname %>
+Review by <% c.review.reviewer.firstname %> <% c.review.reviewer.lastname %>
 </p>
 
 <p>

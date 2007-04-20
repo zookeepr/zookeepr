@@ -1,7 +1,7 @@
 Subject: Confirmation of your registration to linux.conf.au 2007
-To: <% c.person.fullname %> <<% c.person.email_address %>>
+To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address %>>
 
-Dear <% c.person.fullname %>,
+Dear <% c.person.firstname %>,
 
 Thankyou for registering for linux.conf.au 2007!
 

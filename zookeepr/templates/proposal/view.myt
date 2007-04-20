@@ -7,7 +7,7 @@ Proposal for a
 <% c.proposal.type.name %> 
 submitted by
 % for p in c.proposal.people:
-<% p.fullname %>
+<% p.firstname %> <% p.lastname %>
 &lt;<% p.email_address %>&gt;
 % #endfor
 at
@@ -20,7 +20,7 @@ at
 <em>Abstract</em>
 </p>
 <blockquote>
-<% c.proposal.abstract | h, s, l %>
+<% c.proposal.abstract | h, l %>
 </blockquote>
 </div>
 
@@ -36,17 +36,17 @@ at
 % #endif
 
 % for person in c.proposal.people:
-<h2><% person.fullname | h, s, l %></h2></h2>
+<h2><% person.firstname | h%> <% person.lastname | h%></h2>
 <div class="experience">
 <p>
 <em>Speaking experience:</em>
 </p>
 <blockquote>
-% if person.experience:
-<% person.experience | h, s, l %>
-% else:
+%   if person.experience:
+<% person.experience | h, l %>
+%   else:
 [none provided]
-% #endif
+%   #endif
 </blockquote>
 </div>
 
@@ -55,14 +55,14 @@ at
 <em>Speaker bio:</em>
 </p>
 <blockquote>
-% if person.bio:
-<% person.bio | h, s, l %>
-% else:
+%   if person.bio:
+<% person.bio | h, l %>
+%   else:
 [none provided]
-% #endif
+%   #endif
 </blockquote>
 </div>
-
+% # endfor
 
 <div class="attachment">
 % if len(c.proposal.attachments) > 0:
@@ -106,7 +106,11 @@ at
 
 <p>
 Travel assistance: 
-<% c.tatypes[c.proposal.assistance_type_id] %>
+% if c.proposal.assistance:
+<% c.proposal.assistance.name %>
+% else:
+Unknown
+% # endif
 </p>
 
 <hr />
@@ -150,7 +154,7 @@ Travel assistance:
 %	for r in c.proposal.reviews:
 <tr class="<% h.cycle('even', 'odd') %>">
 <td>
-<% h.link_to("%s - %s" % (r.id, r.reviewer.fullname), url=h.url(controller='review', id=r.id, action='view')) %>
+<% h.link_to("%s - %s" % (r.id, r.reviewer.firstname), url=h.url(controller='review', id=r.id, action='view')) %>
 </td>
 
 <td>
