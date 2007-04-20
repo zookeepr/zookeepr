@@ -1,6 +1,6 @@
 <h2>Sign in to your MyLCA</h2>
 
-#<p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='person', action='new')) %> now!</p>
+<p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='account', action='new')) %> now!</p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
