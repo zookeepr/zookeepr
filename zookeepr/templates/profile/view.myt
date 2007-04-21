@@ -243,19 +243,9 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 
 % #endif
 
-% if len(c.profile.accepted_talks) > 0:
-<%python>
-content = h.wiki_fragment('/wiki/profile/%d' % c.profile.id)
-
-if 'This page does not exist yet.' in content:
-    if len(c.profile.proposals) > 0:
-        content = c.profile.bio
-    else:
-        content = None
-</%python>
-% if content:
+% if len(c.profile.proposals) > 0:
 <div id="bio">
-<p><% content |s %></p>
+<p><% c.profile.bio |s %></p>
 </div>
 % #endif
 

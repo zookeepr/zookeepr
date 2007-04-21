@@ -73,6 +73,17 @@ def radio(name, value, label=None):
         lab = '<label for="%s">%s</label>' % (id_str, label)
     return i + lab
 
+def webmaster_email(text=None):
+    """ E-mail link for the conference contact.
+
+    Renders a link to the committee; optionally takes a text, which will be
+    the text of the anchor (defaults to the e-mail address).
+    """
+    email = request_config().environ['paste.config']['app_conf']['webmaster_email']
+    if text==None:
+      text = '<tt>'+email+'</tt>'
+    return '<a href="mailto:'+email+'">'+text+'</a>'
+
 def contact_email(text=None):
     """ E-mail link for the conference contact.
 
@@ -83,3 +94,17 @@ def contact_email(text=None):
     if text==None:
       text = '<tt>'+email+'</tt>'
     return '<a href="mailto:'+email+'">'+text+'</a>'
+
+def host_name(text=None):
+    """ Name of the site (hostname)
+
+    Returns the fqdn for the website.
+    """
+    return request_config().environ['paste.config']['app_conf']['host_name']
+
+def event_name(text=None):
+    """ Name of the event
+
+    Returns the name of the event we're running (yay).
+    """
+    return request_config().environ['paste.config']['app_conf']['event_name']
