@@ -117,11 +117,14 @@ class AccountController(BaseController):
         return render_response('account/signin.myt', defaults=defaults, errors=errors)
 
     def signout(self):
-        # delete and invalidate the session
-        session.delete()
-        session.invalidate()
-        # return home
-        redirect_to('home')
+        defaults = dict(request.POST)
+	if defaults:
+            # delete and invalidate the session
+            session.delete()
+            session.invalidate()
+            # return home
+            redirect_to('home')
+	return render_response('account/signout.myt', defaults=None, errors={})
 
     def confirm(self, id):
         """Confirm a registration with the given ID.

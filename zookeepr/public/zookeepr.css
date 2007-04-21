@@ -1,15 +1,7 @@
-/*
-  Running MySource Matrix
-  Developed by Squiz - http://www.squiz.net
-  MySource, MySource Matrix and Squiz.net are registered Trademarks of Squiz Pty Ltd
-  Page generated: 18 April 2007 23:20:21
-*/
-
-
  body {
      font-size: 85%;
      color: #fff;
-     background: #444 url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0003/975/fargrad.png) top left repeat-x;
+     background: #444 url(/css-images/fargrad.png) top left repeat-x;
      text-align: center;
      // font-family: "Lucida Grande", "Luxi Sans", "DejaVu Sans", "Lucida Sans Unicode", "Bitstream Vera Sans", Verdana, Geneva, sans-serif;
      font-family: Verdana, Geneva, sans-serif;
@@ -43,7 +35,7 @@
      margin: 0 0 0.9em 0;
 }
 
-img, #header { behavior: url(http://vic.clients.squiz.net/lca2008/__data/assets/file/0015/1059/iepngfix.htc); }
+img, #header { behavior: url(/css-images/iepngfix.htc); }
 
 a:hover {
     color: red;
@@ -79,12 +71,12 @@ a:hover {
  div#header {
      padding-top: 0px;
      background-position: bottom center;
-     background-image: url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0018/972/thecity.png);
+     background-image: url(/css-images/thecity.png);
      background-repeat: no-repeat;
  }
  
  div#main {
-     background: #fff url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0004/976/hoist.gif) top left repeat-x;
+     background: #fff url(/css-images/hoist.gif) top left repeat-x;
      color: #666;
      text-align: left;
       border-top: 4px solid #ffc77f;
@@ -129,7 +121,7 @@ a:hover {
      padding: 7px 0 7px 0;
      margin: 0;
      list-style-type: none;
-     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0020/974/faded.png);
+     background: transparent url(/css-images/faded.png);
      color: #fff;
      width: 100%;
      text-align: center;
@@ -146,7 +138,7 @@ a:hover {
  }
  
  div#header li a.now {
-     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0017/971/now.gif) bottom center no-repeat;
+     background: transparent url(/css-images/now.gif) bottom center no-repeat;
      color: #f90;
      font-weight: bold;
  }
@@ -156,6 +148,12 @@ a:hover {
  color: orange;
  text-decoration: underline;
  }
+
+ div@header li.now {
+	 background: transparent url(/css-images/now.gif) bottom center no-repeat;
+     color: #f90;
+     font-weight: bold;
+}
  
  
 #youarehere {
@@ -185,7 +183,7 @@ ul#sub {
  
  ul#sub li a.now {
      font-weight: bold;
-     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0013/1129/now-sub.gif) bottom center no-repeat;
+     background: transparent url(/css-images/now-sub.gif) bottom center no-repeat;
  }
  
  ul#sub li a:hover {
@@ -216,31 +214,31 @@ a#sponredhat {
 a#sponhp {
     height: 57px;
     width: 100px;
-    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0005/977/hp-roll.png) bottom left no-repeat;
+    background: transparent url(/css-images/hp-roll.png) bottom left no-repeat;
 }
 
 a#sponhp:hover {
-    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0005/977/hp-roll.png) top left no-repeat;
+    background: transparent url(/css-images/hp-roll.png) top left no-repeat;
 }
 
 a#sponibm {
     height: 54px;
     width: 100px;
-    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0016/970/ibm-roll.png) bottom left no-repeat;
+    background: transparent url(/css-images/ibm-roll.png) bottom left no-repeat;
 }
 
 a#sponibm:hover {
-    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0016/970/ibm-roll.png) top left no-repeat;
+    background: transparent url(/css-images/ibm-roll.png) top left no-repeat;
 }
 
 a#sponredhat {
     height: 50px;
     width: 173px;
-    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0008/1142/redhat-roll.png) top left no-repeat;
+    background: transparent url(/css-images/redhat-roll.png) top left no-repeat;
 }
 
 a#sponredhat:hover {
-    background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0008/1142/redhat-roll.png) bottom left no-repeat;
+    background: transparent url(/css-images/redhat-roll.png) bottom left no-repeat;
 }
 
 p.emperor {
@@ -284,7 +282,7 @@ div#shiz li {
  div#randoms img {
      margin: 10px 0;
      padding: 3px 7px 8px 3px;
-     background: transparent url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0019/973/drop.gif) bottom right no-repeat;
+     background: transparent url(/css-images/drop.gif) bottom right no-repeat;
  }
  
  
@@ -304,7 +302,7 @@ table.form, #login-form table {
     font-size: inherit;
 }
 
-table.form td, #login-form table td {
+table.form td, table.form th, #login-form table td {
     font-size: inherit;
     margin: 0;
     padding: 10px;
@@ -312,7 +310,7 @@ table.form td, #login-form table td {
     vertical-align: top;
 }
 
-td.labels {
+th.labels {
     text-align: right;
     vertical-align: top;
     font-weight: bold;
@@ -335,6 +333,7 @@ td.s-labels {
 
 td.entries, td.s-entries {
     text-align: left;
+	vertical-align: top;
 }
 
 td.submit input {
@@ -374,7 +373,7 @@ td.s-entries input, td.s-entries textarea, td.s-entries select {
 #login-form #SQ_LOGIN_USERNAME:focus, #login-form #SQ_LOGIN_PASSWORD:focus {
     color: #000;
     border: 1px solid #e70 !important;
-    background: #FFFADB url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0010/1063/form-back.gif) repeat-x scroll 0%;
+    background: #FFFADB url(/css-images/form-back.gif) repeat-x scroll 0%;
     width: 100%;
 }
 
@@ -385,7 +384,7 @@ td.s-entries input, td.s-entries textarea, td.s-entries select {
 td.entries input:focus, td.s-entries input:focus, td.s-entries select:focus {
     color: #000;
     border: 1px solid #e70 !important;
-    background: #FFFADB url(http://vic.clients.squiz.net/lca2008/__data/assets/image/0010/1063/form-back.gif) repeat-x scroll 0%;
+    background: #FFFADB url(/css-images/form-back.gif) repeat-x scroll 0%;
     width: 100%;
 }
 

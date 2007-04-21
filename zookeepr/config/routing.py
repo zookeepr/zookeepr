@@ -66,6 +66,6 @@ def make_map():
     # default url scheme
     m.connect(':controller/:id/:action', action='index', id=None)
 
-    m.connect('*url', controller='wiki', action='view')
+    # m.connect('*url', controller='wiki', action='view')
 
     return m

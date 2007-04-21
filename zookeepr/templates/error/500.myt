@@ -1,11 +1,11 @@
-<h2>D'oh!</h2>
+<h2>Oops!</h2>
 
 <p>
-There was an internal server error dealing with your request!
+There was a server error dealing with your request!
 </p>
 
 <p>
-The site admins and their team of monkeys have been mailed a traceback and session data, and will get right on solving your problem.  If it's critical, <% h.contact_email("send us an email") %> and we'll help you out.
+The site maintainers and their herd of flying monkeys have been mailed a trace dump, and will attend to your problem shortly.  If it's deperately critical, <% h.contact_email("send us an email") %> and we'll help you out.
 </p>
 
 <p>

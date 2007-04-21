@@ -1,15 +1,6 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
 <head>
-<!--
-  Running MySource Matrix
-  Developed by Squiz - http://www.squiz.net
-  MySource, MySource Matrix and Squiz.net are registered Trademarks of Squiz Pty Ltd
-  Page generated: 18 April 2007 23:21:08
--->
-
-
-
 
 <title><& SELF:title &></title>
 
@@ -37,10 +28,10 @@
 </head>
 <body>
 
-<p class="whammy"><a href="?SQ_DESIGN_NAME=text-only&amp;SQ_ACTION=set_design_name">Text-only mode</a></p>
+<p class="whammy"></p>
 <div id="container">
     <div id="header">
-        <h1><img src="http://vic.clients.squiz.net/lca2008/__data/assets/image/0004/967/hed.png" alt="linux.conf.au - melbourne 2008" width="300" height="86" /></h1>
+        <h1><a href="/"><img src="/css-images/hed.png" alt="linux.conf.au - melbourne 2008" width="300" height="86" /></a></h1>
         <& nav.myt &>
     </div>
 
@@ -48,26 +39,27 @@
     <& pics.myt &>
 
     <div id="shiz">
+    <!-- start content -->
     <& content-body.myt &>
+    <!-- end content -->
     </div>
 
     <div id="footer">
     <p class="spons emperor">
-        <a href="http://www.hp.com/" id="sponhp"><img class="whammy" src="http://vic.clients.squiz.net/lca2008/__data/assets/image/0004/598/hp.png" alt="HP" /></a>
-        <a href="http://au.ibm.com/" id="sponibm"><img class="whammy" src="http://vic.clients.squiz.net/lca2008/__data/assets/image/0005/599/ibm.png" alt="IBM" /></a>
-        <a href="http://www.redhat.com" id="sponredhat"><img class="whammy" src="http://vic.clients.squiz.net/lca2008/__data/assets/image/0009/1143/redhat.png" alt="Redhat" /></a>
+        <a href="http://www.hp.com/" id="sponhp"><img class="whammy" src="/css-images/hp.png" alt="HP" /></a>
+        <a href="http://au.ibm.com/" id="sponibm"><img class="whammy" src="/css-images/ibm.png" alt="IBM" /></a>
+        <a href="http://www.redhat.com" id="sponredhat"><img class="whammy" src="/css-images/redhat.png" alt="Redhat" /></a>
     </p>
-    <p class="spons">Sponsors: <a href="#">Bob's Used Parts</a> | <a href="#">Squiz.net</a> | <a href="#">Trout Fishing In North Hobart</a></p>
+    <p class="spons">Sponsors: <a href="#">Bob's Used Parts</a> | <a href="#">Trout Fishing In North Hobart</a></p>
     </div>
 </div>
 
-<p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE and <a href="http://www.linux.org.au/">Linux Australia</a> | Linux&trade; is a registered trademark of Linus Torvalds | <a href="?SQ_DESIGN_NAME=text-only&amp;SQ_ACTION=set_design_name">Text-Only version</a><br />
-    Website powered by <a href="http://matrix.squiz.net">MySource Matrix</a> - a <a href="http://www.squiz.net">Squiz.net</a> initiative.</p>
+<p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE and <a href="http://www.linux.org.au/">Linux Australia</a> | Linux&trade; is a registered trademark of Linus Torvalds | <a href="?SQ_DESIGN_NAME=text-only&amp;SQ_ACTION=set_design_name">Text-Only version</a></p>
 <a id="cred" title="made with love" href="http://www.raena.net/">rja</a> </div>
 
 </body>
 </html>
 
 <%method title>
-<title>linux.conf.au // MEL8OURNE 2008</title>
+linux.conf.au // MEL8OURNE 2008
 </%method>

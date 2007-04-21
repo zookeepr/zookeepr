@@ -1,6 +1,6 @@
-<h2>New Account</h2>
+<h1 class="pop">New Account</h1>
 
-<h3>Thank You</h3>
+<h2>Thank You</h2>
 
 <p>
 An email has been sent to you at <em><% c.person.email_address | h %></em> with details on how to complete the account registration process.

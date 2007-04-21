@@ -1,4 +1,4 @@
-<h2>Sign in to your MyLCA</h2>
+<h1 class="pop">Sign in</h1>
 
 <p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='account', action='new')) %> now!</p>
 
@@ -6,17 +6,22 @@
 
 <% h.form(h.url_for(controller='/account', action='signin')) %>
 
-<p>
-<label for="email_address">Email address:</label>
-<% h.text_field('email_address') %>
-</p>
+<table class="form" summary="sign-in form">
+<tr>
+	<th class="labels"><label for="email_address">Email address:</label></th>
+	<td class="entries"><% h.text_field('email_address') %></td>
+</tr>
 
-<p>
-<label for="password">Password:</label>
-<% h.password_field('password') %>
-</p>
+<tr>
+	<th class="labels"><label for="password">Password:</label></th>
+	<td class="entries"><% h.password_field('password') %></td>
+</tr>
 
-<% h.submit('Sign in') %>
+<tr>
+	<td></td>
+	<td class="submit"><% h.submit('Sign in') %></td>
+</tr>
+</table>
 
 <% h.end_form() %>
 
@@ -25,10 +30,6 @@
 <p>
 <% h.link_to('Forgotten your password?', url=h.url(action='forgotten_password')) %>
 </p>
-
-<%method title>
-Sign in to MyLCA - <& PARENT:title &>
-</%method>
 
 <%args>
 defaults

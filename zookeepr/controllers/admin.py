@@ -18,6 +18,14 @@ class AdminController(SecureController):
 	funcs += [
 	  ('/profile', '''List of people signed up to the webpage (with
 			   option to view/change their zookeepr roles)'''),
+
+ 	  ('/accommodation', ''' '''),
+ 	  ('/discount_code', ''' '''),
+ 	  ('/profile', ''' '''),
+ 	  ('/invoice/remind', ''' '''),
+ 	  ('/openday', ''' '''),
+ 	  ('/proposal', ''' '''),
+ 	  ('/registration', ''' '''),
 	]
 
 	# show it!

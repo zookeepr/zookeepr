@@ -1,70 +1,58 @@
-<h3>New user account creation</h3>
+<h1 class="pop">New user account creation</h1>
 
 <p>
 Enter your name, and email address, and password, and we'll email you with a confirmation to create your account.
 </p>
 
 <p>
-If you've already got an account, but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password')) %>.
+If you've already got an account but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password')) %>.
 </p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+
 <form method="post" action="<% h.url_for() %>" >
-<fieldset>
-<p>
-<span class="mandatory">*</span>
-<label for="registration.firstname">Your first name:</label>
-<br />
-<% h.text_field('registration.firstname', size=40) %>
-</p>
-<p>
-<span class="mandatory">*</span>
-<label for="registration.lastname">Your last name:</label>
-<br />
-<% h.text_field('registration.lastname', size=40) %>
-</p>
 
-<p>
-<span class="mandatory">*</span>
-<label for="registration.email_address">Email address:</label>
-<br />
-<% h.text_field('registration.email_address', size=40) %>
-</p>
+<table class="form" summary="login form">
 
-<p>
-<span class="mandatory">*</span>
-<label for="registration.password">Choose a password:</label>
-<br />
-<% h.password_field("registration.password", size=40) %>
-</p>
+<tr>
+	<th class="labels"><span class="mandatory">*</span><label for="registration.firstname">Your first name:</label></th>
+	<td class="entries" valign="top"><% h.text_field('registration.firstname', size=40) %></td>
+</tr>
 
-<p>
-<span class="mandatory">*</span>
-<label for="registration.password_confirm">Confirm your password:</label>
-<br />
-<% h.password_field("registration.password_confirm", size=40) %>
-</p>
+<tr>
+	<th class="labels"><span class="mandatory">*</span><label for="registration.lastname">Your last name:</label></th>
+	<td class="entries"><% h.text_field('registration.lastname', size=40) %></td>
+</tr>
 
-<p>
-<span class="mandatory">*</span>
-<label for="registration.handle">Display name:</label>
-<br />
-<% h.text_field('registration.handle', size=40) %>
-<br />
-<span class="fielddesc">
-Your display name will be used to identify you on the website.
-</span>
-</p>
+<tr>
+	<th class="labels"><span class="mandatory">*</span><label for="registration.email_address">Email address:</label></th>
+	<td class="entries"><% h.text_field('registration.email_address', size=40) %></td>
+</tr>
 
-<p>
-<span class="mandatory">*</span> - Mandatory field
-</p>
+<tr>
+	<th class="labels"><span class="mandatory">*</span><label for="registration.password">Choose a password:</label></th>
+	<td class="entries"><% h.password_field("registration.password", size=40) %></td>
+</tr>
 
-<% h.submit("Create a new account") %>
-</div>
+<tr>
+	<th class="labels"><span class="mandatory">*</span><label for="registration.password_confirm">Confirm your password:</label></th>
+	<td class="entries"><% h.password_field("registration.password_confirm", size=40) %></td>
+</tr>
 
+<tr>
+	<th class="labels"><span class="mandatory">*</span><label for="registration.handle">Display name:</label></th>
+	<td class="entries"><% h.text_field('registration.handle', size=40) %>
+	<br />
+		<p class="note">Your display name will be used to identify you on the website.</span>
+	</td>
+</tr>
 
-</fieldset>
+<tr>
+	<td>&nbsp;</td>
+	<td class="submit"><% h.submit("Create a new account") %></td>
+</tr>
+
+</table>
 
 </form>
 </&>
