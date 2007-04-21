@@ -1,16 +1,16 @@
-Subject: Confirmation of your registration to linux.conf.au 2007
+Subject: Confirmation of your registration to <% h.event_name() %>
 To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address %>>
 
 Dear <% c.person.firstname %>,
 
-Thankyou for registering for linux.conf.au 2007!
+Thankyou for registering for <% h.event_name() %>!
 
 % if not c.signed_in_person:
-If you would like to log into the linux.conf.au 2007 site, please
+If you would like to log into the <% h.event_name() %> site, please
 start by confirming your registration by clicking on the URL
 below:
 
-http://lca2007.linux.org.au<% h.url_for('acct_confirm', id=id) %>
+http://<% h.host_name() %><% h.url_for('acct_confirm', id=id) %>
 
 (If clicking does not work, please clag it into your web browser.)
 
@@ -20,7 +20,7 @@ into the site with the password you provided with your registration.
 % #endif
 
 You can now view and pay for your invoice by visiting
-http://lca2007.linux.org.au/profile/<% c.person.id %> and
+http://<% h.host_name() %>/profile/<% c.person.id %> and
 clicking on the "confirm and and pay" link. If you get a blank page
 please ensure you are signed in.
 
@@ -82,7 +82,7 @@ If you want to change your details, please log into the website.
 
 Thanks again, and have a great day!
 
-The linux.conf.au 2007 Organising Committee
+The <% h.event_name() %> Organising Committee
 <%args>
 id
 </%args>

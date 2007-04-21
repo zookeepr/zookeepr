@@ -15,41 +15,35 @@ If you've already got an account but can't log in, you can <% h.link_to('recover
 <table class="form" summary="login form">
 
 <tr>
-	<th class="labels"><span class="mandatory">*</span><label for="registration.firstname">Your first name:</label></th>
-	<td class="entries" valign="top"><% h.text_field('registration.firstname', size=40) %></td>
+	<p class="labels"><span class="mandatory">*</span><label for="registration.firstname">Your first name:</label></th>
+	<p class="entries" valign="top"><% h.text_field('registration.firstname', size=40) %></td>
 </tr>
 
 <tr>
-	<th class="labels"><span class="mandatory">*</span><label for="registration.lastname">Your last name:</label></th>
-	<td class="entries"><% h.text_field('registration.lastname', size=40) %></td>
+	<p class="labels"><span class="mandatory">*</span><label for="registration.lastname">Your last name:</label></th>
+	<p class="entries"><% h.text_field('registration.lastname', size=40) %></td>
 </tr>
 
 <tr>
-	<th class="labels"><span class="mandatory">*</span><label for="registration.email_address">Email address:</label></th>
-	<td class="entries"><% h.text_field('registration.email_address', size=40) %></td>
+	<p class="labels"><span class="mandatory">*</span><label for="registration.email_address">Email address:</label></th>
+	<p class="entries"><% h.text_field('registration.email_address', size=40) %></td>
 </tr>
 
 <tr>
-	<th class="labels"><span class="mandatory">*</span><label for="registration.password">Choose a password:</label></th>
-	<td class="entries"><% h.password_field("registration.password", size=40) %></td>
+	<p class="labels"><span class="mandatory">*</span><label for="registration.password">Choose a password:</label></th>
+	<p class="entries"><% h.password_field("registration.password", size=40) %></td>
 </tr>
 
 <tr>
-	<th class="labels"><span class="mandatory">*</span><label for="registration.password_confirm">Confirm your password:</label></th>
-	<td class="entries"><% h.password_field("registration.password_confirm", size=40) %></td>
+	<p class="labels"><span class="mandatory">*</span><label for="registration.password_confirm">Confirm your password:</label></th>
+	<p class="entries"><% h.password_field("registration.password_confirm", size=40) %></td>
 </tr>
 
-<tr>
-	<th class="labels"><span class="mandatory">*</span><label for="registration.handle">Display name:</label></th>
-	<td class="entries"><% h.text_field('registration.handle', size=40) %>
-	<br /><br />
-		<p class="note">Your display name will be used to identify you on the website.</span>
-	</td>
-</tr>
+	<p class="labels"><span class="mandatory">*</span><label for="registration.handle">Display name:</label></p>
+	<p class="entries"><% h.text_field('registration.handle', size=40) %></p>
+	<p class="note">Your display name will be used to identify you on the website.</p>
 
-<tr>
-	<td>&nbsp;</td>
-	<td class="submit"><% h.submit("Create a new account") %></td>
+	<p class="submit"><% h.submit("Create a new account") %></p>
 </tr>
 
 </table>

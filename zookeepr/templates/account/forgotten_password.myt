@@ -6,8 +6,9 @@
    select a new password.
 </p>
 <div class="centre">
-<% h.text_field('email_address', size=30) %>
-<% h.submit("Set a new password") %>
+<p class="label">Email address:</p>
+<p class="entries"><% h.text_field('email_address', size=60) %></p>
+<p class="submit"><% h.submit("Set a new password") %></p>
 </div>
 
 

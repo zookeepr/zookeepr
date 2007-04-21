@@ -3,22 +3,22 @@ Send emails as follows.<br>
 
 <h2>NOT_PAID:</h2>
 You have not yet paid invoice $invoice_id<br>
-Please go to http://<% h.host_name %>/profile/$profile_id to edit your registration and complete your payment.
+Please go to http://<% h.host_name() %>/profile/$profile_id to edit your registration and complete your payment.
 
 <h2>NO_INVOICE:</h2>
 You have not yet paid invoice $invoice_id<br>
-Please go to http://<% h.host_name %>/profile/$profile_id to edit your registration and complete your payment.
+Please go to http://<% h.host_name() %>/profile/$profile_id to edit your registration and complete your payment.
 
 <h2>INVALID:</h2>
 Ignore these. JF needs to check them out and fix them up. It means something dodgey has been going on
 
 <h2>BAD_PAYMENT:</h2>
 Your attempt to pay invoice $invoice_id, failed. Most likely a problem with your card.<br>
-Please go to http://<% h.host_name %>/profile/$profile_id to edit your registration and complete your payment.<br>
+Please go to http://<% h.host_name() %>/profile/$profile_id to edit your registration and complete your payment.<br>
 
 <p>
 
-You will need to go to http://<% h.host_name %>/registration/remind as well to get those people that havn't generated an invoice yet.
+You will need to go to http://<% h.host_name() %>/registration/remind as well to get those people that havn't generated an invoice yet.
 <p>
 
 <strong>firstname,lastname,email_address,profile_id,status,earlybird</strong><br>

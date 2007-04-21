@@ -1,5 +1,5 @@
-Subject: linux.conf.au 2008 New Account Confirmation
-To: <% c.person.firstname %>  <% c.person.lastname %> <<% c.person.email_address %>>
+Subject: <% h.event_name() %> New Account Confirmation
+To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address %>>
 
 Dear <% c.person.firstname %>,
 
@@ -7,7 +7,7 @@ If you would like to log into the linux.conf.au 2008 site, please
 start by confirming your registration by clicking on the URL
 below:
 
-http://zookeepr.mel8ourne.org<% h.url_for('acct_confirm', id=c.person.url_hash) %>
+http://<% h.host_name() %><% h.url_for('acct_confirm', id=c.person.url_hash) %>
 
 (If clicking does not work, please clag it into your web browser.)
 
@@ -16,4 +16,4 @@ into the site with the password you provided.
 
 Thanks, and have a great day!
 
-The mel8 team
+The <% h.event_name() %> team

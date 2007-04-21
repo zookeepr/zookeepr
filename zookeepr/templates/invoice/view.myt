@@ -42,13 +42,12 @@
 </p>
 
 <p>
-<strong>Regarding:</strong> linux.conf.au 2007
+<strong>Regarding:</strong> <% h.event_name() %>
 </p>
 
 <p>
 This invoice has been issued as a result of an application to attend
-linux.conf.au 2007, being held at the University of New South Wales
-in Sydney, Australia.
+<% h.event_name() %>.
 </p>
 
 <table style="width: 100%">
@@ -107,12 +106,12 @@ in Sydney, Australia.
 
 <p>
 Further information on your registration is available at
-<a href="/profile">http://lca2007.linux.org.au/profile</a>.
+<a href="/profile">http://<% h.host_name() %>/profile</a>.
 </p>
 
 <p>
 Enquiries may be emailed to the organisers:
-<a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a> .
+<% h.contact_email( 'contact email') %>.
 </p>
 
 <div style="text-align:center">
@@ -138,7 +137,7 @@ Enquiries may be emailed to the organisers:
 % if c.invoice.total() == 0:
 %    pass
 % elif c.invoice.bad_payments:
-Invalid payments have been applied to this invoice, please email <a href="mailto:seven-contact@lca2007.linux.org.au">seven-contact@lca2007.linux.org.au</a>
+Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a>
 % elif not c.invoice.good_payments:
 <p>
 <% h.link_to('(Pay this invoice)', url=h.url(controller='invoice', action='pay')) %>

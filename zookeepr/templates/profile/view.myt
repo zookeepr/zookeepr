@@ -241,14 +241,13 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
     </table>
     </div>
 
-% #endif
-
-% if len(c.profile.proposals) > 0:
+<h2>Bio</h2>
 <div id="bio">
-<p><% c.profile.bio |s %></p>
+<p><% c.profile.bio |h %></p>
 </div>
 % #endif
 
+% if len(c.profile.accepted_talks)>0:
 <div id="talks">
 <h2>Talks</h2>
 <table>
@@ -296,5 +295,3 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 <h2>Roles</h2>
 <% h.link_to('view/change', url=h.url(action='roles')) %>
 % #endif
-
-

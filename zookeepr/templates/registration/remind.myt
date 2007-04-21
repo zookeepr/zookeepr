@@ -2,10 +2,10 @@
 Send emails as follows.<br>
 
 You have not yet paid your rego<br>
-Please go to http://lca2007.linux.org.au/profile/$profile_id to edit your registration and complete your payment.
+Please go to http://<% h.host_name() %>/profile/$profile_id to edit your registration and complete your payment.
 <p>
 
-You will need to go to http://lca2007.linux.org.au/invoice/remind as well to get those people that have generated an invoice.
+You will need to go to http://<% h.host_name() %>/invoice/remind as well to get those people that have generated an invoice.
 <p>
 
 <strong>firstname,lastname,email_address,profile_id,status,earlybird</strong><br>

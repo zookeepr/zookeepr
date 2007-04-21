@@ -95,14 +95,14 @@ def contact_email(text=None):
       text = '<tt>'+email+'</tt>'
     return '<a href="mailto:'+email+'">'+text+'</a>'
 
-def host_name(text=None):
+def host_name():
     """ Name of the site (hostname)
 
     Returns the fqdn for the website.
     """
     return request_config().environ['paste.config']['app_conf']['host_name']
 
-def event_name(text=None):
+def event_name():
     """ Name of the event
 
     Returns the name of the event we're running (yay).
