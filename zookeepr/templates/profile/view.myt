@@ -228,7 +228,7 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 
 % #endif
 
-% if c.profile.proposals is not None:
+% if c.profile.proposals is not None and len(c.profile.proposals)>0:
 
     <div id="proposals">
     <h2>Proposals</h2>
@@ -239,6 +239,7 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
         </tr>
 %   # endfor
     </table>
+    </div>
 
 % #endif
 

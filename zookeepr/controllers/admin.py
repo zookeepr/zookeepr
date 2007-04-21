@@ -21,11 +21,12 @@ class AdminController(SecureController):
 
  	  ('/accommodation', ''' '''),
  	  ('/discount_code', ''' '''),
- 	  ('/profile', ''' '''),
+ 	  ('/profile', ''' List of all website accounts (with links...)'''),
  	  ('/invoice/remind', ''' '''),
  	  ('/openday', ''' '''),
  	  ('/proposal', ''' '''),
  	  ('/registration', ''' '''),
+ 	  ('/pony', ''' OMG! Ponies!!!'''),
 	]
 
 	# show it!
@@ -41,17 +42,19 @@ class AdminController(SecureController):
         """
         return Response("This is a test. Hope you've studied!")
 
-    def dump_miniconfs(self):
+    def list_miniconfs(self):
         """ List of miniconfs """
-        return sql_response('''select proposal.id as id, title, abstract, url, firstname, lastname
-	from proposal, person, person_proposal_map
-	where proposal_type_id = 2 and person.id=person_id and proposal.id=proposal_id''')
-    def dump_attachments(self):
+        return sql_response("""select proposal.id as id, title, abstract, url, firstname || ' ' || lastname as name from proposal, person, person_proposal_map where proposal_type_id = 2 and person.id=person_id and proposal.id=proposal_id""")
+    def list_attachments(self):
         """ List of attachments """
         return sql_response('''
 	select title, filename from attachment, proposal where proposal.id=proposal_id;
 
 	''')
+    def account_creation(self):
+        """ When did people create their accounts? """
+	return sql_response("""select person.id, firstname || ' ' || lastname as name, creation_timestamp as created from account, person where account.id=person.id order by id;
+	""")
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table

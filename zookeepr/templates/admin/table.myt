@@ -7,10 +7,18 @@
 </tr>
 
 % for row in c.data:
-  <tr>
+  <tr class="<% oddeven.next() %>">
 %   for item in row:
-    <td><% item %></td>
+    <td class="list"><% item %></td>
 %   # endfor
   </tr>
 % # endfor
 </table>
+
+<%init>
+def oddeven():
+  while 1:
+    yield "odd"
+    yield "even"
+oddeven = oddeven()
+</%init>

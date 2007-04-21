@@ -1,8 +1,8 @@
 Subject: Payment error: <% subject %>
-To: seven-contact@lca2007.linux.org.au
-From: payment error <seven-contact@lca2007.linux.org.au>
+To: <% h.contact_email %>
+From: payment error <<% h.contact_email %>>
 
-Something boned whilst someone was trying to pay!
+Something went horribly wrong whilst someone was trying to pay!
 
 The error from the code is: <% subject %>
 
@@ -10,7 +10,7 @@ The PaymentReceived object looks like this:
 
 <% pr %>
 
-Check it out, they'll be whining^Wemailing you real soon!
+Please look at it! People get iffy about payments!
 
 Yours,
 

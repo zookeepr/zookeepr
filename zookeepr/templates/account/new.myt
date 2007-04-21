@@ -42,7 +42,7 @@ If you've already got an account but can't log in, you can <% h.link_to('recover
 <tr>
 	<th class="labels"><span class="mandatory">*</span><label for="registration.handle">Display name:</label></th>
 	<td class="entries"><% h.text_field('registration.handle', size=40) %>
-	<br />
+	<br /><br />
 		<p class="note">Your display name will be used to identify you on the website.</span>
 	</td>
 </tr>

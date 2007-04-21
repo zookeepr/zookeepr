@@ -8,7 +8,7 @@
 %	collection = getattr(c, '%s_collection' % pt.name)
 <h2><% pt.name %>s (<% len(collection) %>)</h2>
 
-<table>
+<table class="list">
 
 <tr>
 #<th>#</th>

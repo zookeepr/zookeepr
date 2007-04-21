@@ -2,19 +2,17 @@
 <h1>Propose a Mini-conf</h1>
 
 % if len(errors)>0:
-<span class="error-message">Not submitted, sorry - there was a problem.</span>
-<br>Please see below for more details and resubmit.
+<span class="error-message">Not submitted, sorry &mdash; there was a problem.</span>
+<br>Please see below for more details, edit and resubmit.
+%   for k in errors:
+%     if errors[k]=='Please enter a value':
+%       errors[k]='This information is required.'
+%     #endif
+%   #endif
 % #endif
 
-<h2>About yourself</h2>
-
-<p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>
-
-
 <% h.form(h.url(), multipart=True) %>
-<table class="form" summary="submission form">
 <& form_mini.myt &>
-</table>
 
 	<span class="submit"><% h.submit('Submit!') %></span>
 <% h.end_form() %>

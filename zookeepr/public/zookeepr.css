@@ -64,7 +64,7 @@ a:hover {
      font-size: 1.4em;
  }
  
- .eight {
+ .eight, .8 {
      color: orange;
      font-weight: bold;
  }
@@ -348,7 +348,7 @@ td.entries, td.s-entries, p.entries, p.s-entries {
     font-size: 0.8em !important;
 }
 
-td.submit input p.submit input {
+td.submit input, p.submit input {
     background: orange;
     color: #fff;
     padding: 4px;
@@ -360,7 +360,7 @@ td.submit input p.submit input {
     padding: 4px;
 }
 
-td.entries input, td.entries textarea , p.entries input, p.entries textarea {
+td.entries input, td.entries textarea, p.entries input, p.entries textarea {
     border: 1px solid #777;
     padding: 4px;
     font-family: Verdana, Geneva, sans-serif;
@@ -372,6 +372,11 @@ td.entries input, td.entries textarea , p.entries input, p.entries textarea {
 .note {
     margin-top: -1em;
     font-size: smaller;
+}
+
+.note-bene {
+    margin-top: -1em;
+    font-size: normal;
 }
 
 td.entries input:focus, td.s-entries input:focus, td.s-entries select:focus, p.entries input:focus, p.s-entries input:focus, p.s-entries select:focus {
@@ -392,7 +397,7 @@ td.entries textarea:focus, td.s-entries textarea:focus, p.entries textarea:focus
 
 table th {
   background-color: #E7C6A5;
-  padding: 5;
+  padding: 1px 10px 1px 10px;
 }
 
 table tr.even {
@@ -408,4 +413,14 @@ table tr.odd {
     font-weight: bold;
     text-decoration: blink;	/* HAAAAAAHAHA! */
     color: #c00;
+}
+
+table.list td, td.list {
+    vertical-align: top;
+    text-align: left;
+    padding: 1px 10px 1px 10px;
+}
+
+.mel8ourne {
+     color:#f90;
 }

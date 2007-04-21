@@ -8,13 +8,15 @@
 % for row in c.data:
   <tr class="<% oddeven.next() %>">
 %   for item in row:
-    <td><% item | h%></td>
+      <td class="list">
+        <% item | h %>
+      </td>
 %   # endfor
   </tr>
 % # endfor
 </table>
 
-<p class="note">
+<br><p class="note">
 <% c.sql %>
 </p>
 

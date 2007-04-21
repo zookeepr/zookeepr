@@ -1,26 +1,26 @@
-Subject: Confirmation of your payment attempt for linux.conf.au 2007
+Subject: Confirmation of your payment attempt for <% h.event %>
 To: <% c.person.firstname %>  <% c.person.lastname %> <<% c.person.email_address %>>
 
 Thank you for your payment attempt, the results are below.
 
 <p>
 % if c.payment.result != 'OK':
-This is an invalid payment. Please contact seven-contact@lca2007.linux.org.au
+This is an invalid payment. Please contact <% h.contact_email %>
 % elif c.payment.Status == 'Accepted':
 Your payment was successful. Your receipt number is <% c.payment.id %>
-You can view your invoice at http://lca2007.linux.org.au/invoice/<% c.payment.invoice.id %>
+You can view your invoice at http://<% h.site | u %>/invoice/<% c.payment.invoice.id %>
 % else:
 Your payment was unsuccessful. The reason was:
 
     <% c.payment.ErrorString %>
 
-You can try again by visiting http://lca2007.linux.org.au/registration/<% c.payment.invoice.person.registration.id %>/pay
+You can try again by visiting http://<% h.site | u %>/registration/<% c.payment.invoice.person.registration.id %>/pay
 
 % #endiff
 
 Thanks again, and have a great day!
 
-The linux.conf.au 2007 Organising Committee
+The <% h.event %> Organising Committee
 <%args>
 id
 </%args>
