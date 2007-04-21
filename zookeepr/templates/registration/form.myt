@@ -134,7 +134,7 @@ desc = '%s %s %s %s' % (start, a1, a2, n1)
 </p>
 
 <p>
-<label for="registration.prevlca">Have you attended any previous LCAs?</label>
+<label for="registration.prevlca">Have you attended linux.conf.au before?</label>
 
 % for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)')]:
 %	label = 'registration.prevlca.%s' % year

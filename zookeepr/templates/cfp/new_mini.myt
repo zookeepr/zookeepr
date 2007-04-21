@@ -1,5 +1,11 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <h1>Propose a Mini-conf</h1>
+
+% if len(errors)>0:
+<span class="error-message">Not submitted, sorry - there was a problem.</span>
+<br>Please see below for more details and resubmit.
+% #endif
+
 <h2>About yourself</h2>
 
 <p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>

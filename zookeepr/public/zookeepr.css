@@ -332,6 +332,8 @@ th.label, p.label  {
     vertical-align: top;
     font-weight: bold;
     color: #e70;
+    margin-top: 2.2em;
+    margin-bottom: 0px;
 }
 
 #login-form td {
@@ -346,7 +348,7 @@ td.entries, td.s-entries, p.entries, p.s-entries {
     font-size: 0.8em !important;
 }
 
-td.submit input {
+td.submit input p.submit input {
     background: orange;
     color: #fff;
     padding: 4px;
@@ -366,11 +368,13 @@ td.entries input, td.entries textarea , p.entries input, p.entries textarea {
     font-size: 1.1em;
 }
 
+/* Move us up, snugly against the input field */
 .note {
+    margin-top: -1em;
     font-size: smaller;
 }
 
-td.entries input:focus, td.s-entries input:focus, td.s-entries select:focus {
+td.entries input:focus, td.s-entries input:focus, td.s-entries select:focus, p.entries input:focus, p.s-entries input:focus, p.s-entries select:focus {
     color: #000;
     border: 1px solid #e70 !important;
     background: #FFFADB url(/css-images/form-back.gif) repeat-x scroll 0%;
@@ -386,15 +390,22 @@ td.entries textarea:focus, td.s-entries textarea:focus, p.entries textarea:focus
    color: #f00;
 }
 
-TABLE TH {
+table th {
   background-color: #E7C6A5;
   padding: 5;
 }
 
-TABLE TR.even {
+table tr.even {
   background-color: #fffadb;
 }
 
-TABLE TR.odd {
+table tr.odd {
   background-color: #FEF1B5;
+}
+
+.error-message {
+    font-size: 1.3em;
+    font-weight: bold;
+    text-decoration: blink;	/* HAAAAAAHAHA! */
+    color: #c00;
 }

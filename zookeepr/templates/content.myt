@@ -8,7 +8,7 @@
 % #endtry
 
 <%method title>
-<% c.title %> - <& PARENT:title &>
+<% c.title.replace('/', ' // ') %> - <& PARENT:title &>
 </%method>
 
 <%init>

@@ -14,9 +14,9 @@
 % # endfor
 </table>
 
-<pre>
+<p class="note">
 <% c.sql %>
-</pre>
+</p>
 
 <%init>
 def oddeven():

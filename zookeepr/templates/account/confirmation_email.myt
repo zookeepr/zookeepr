@@ -1,11 +1,11 @@
-From: linux.conf.au 2007 <seven-contact@lca2007.linux.org.au>
-Subject: LCA 2007 Forgotten Password Reset Confirmation
+From: linux.conf.au 2008 <zookeepr@mel8ourne.org>
+Subject: linux.conf.au 2008 Forgotten Password Reset Confirmation
 To: <% c.conf_rec.email_address %>
 
 To initiate the process for resetting the control panel password for
 <% c.conf_rec.email_address %>, please click on the link below:
 
-http://lca2007.linux.org.au<% h.url_for(controller='account', action='reset_password', url_hash=c.conf_rec.url_hash) %>
+http://zookeepr.mel8ourne.org<% h.url_for(controller='account', action='reset_password', url_hash=c.conf_rec.url_hash) %>
 
 If clicking the link does not work, copy and paste it into your web
 browser.
