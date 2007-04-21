@@ -57,7 +57,7 @@ class ProposalController(SecureController, View, Modify):
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
-                   "index": [AuthRole('reviewer')],
+                   "index": [AuthRole('reviewer'), AuthRole('organiser')],
                    }
 
     def __before__(self, **kwargs):
@@ -161,7 +161,8 @@ class ProposalController(SecureController, View, Modify):
 
     def index(self):
         # hack for bug#34, don't show miniconfs to reviewers
-        if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
+	# Jiri: unless they're also organisers...
+        if 'organiser' in [r.name for r in c.signed_in_person.roles]:
             c.proposal_types = self.dbsession.query(ProposalType).select()
         else:
             c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')

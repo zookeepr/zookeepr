@@ -5,14 +5,12 @@
 <p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>
 
 
-<table class="form" summary="submission form">
 <% h.form(h.url(), multipart=True) %>
+<table class="form" summary="submission form">
 <& form_mini.myt &>
-<tr>
-	<td>&nbsp;</td>
-	<td class="submit"><% h.submit('Submit!') %></td>
-</tr>
 </table>
+
+	<span class="submit"><% h.submit('Submit!') %></span>
 <% h.end_form() %>
 </&>
 

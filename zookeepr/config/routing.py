@@ -59,6 +59,10 @@ def make_map():
     #m.connect('/wiki', controller='wiki', action='view', url='/wiki')
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
+    m.connect('/person', controller='profile', action='index', id=None)
+    m.connect('/person/:id', controller='profile', action='view')
+    m.connect('/person/:id/:action', controlle='profile', action='index', id=None)
+
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
     m.connect(':controller/new', action='new', id=None)
