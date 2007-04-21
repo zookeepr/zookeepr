@@ -28,12 +28,12 @@
 </head>
 <body>
 
-<p class="whammy"></p>
 <div id="container">
     <div id="header">
-        <h1><a href="/"><img src="/css-images/hed.png" alt="linux.conf.au - melbourne 2008" width="300" height="86" /></a></h1>
+        <h1><a href="/"><img src="/css-images/hed.orig.png" alt="linux.conf.au - melbourne 2008" width="300" height="86" /></a></h1>
         <& nav.myt &>
     </div>
+        <& subnav.myt &>
 
 <div id="main">
     <& pics.myt &>
@@ -50,11 +50,11 @@
         <a href="http://au.ibm.com/" id="sponibm"><img class="whammy" src="/css-images/ibm.png" alt="IBM" /></a>
         <a href="http://www.redhat.com" id="sponredhat"><img class="whammy" src="/css-images/redhat.png" alt="Redhat" /></a>
     </p>
-    <p class="spons">Sponsors: <a href="#">Bob's Used Parts</a> | <a href="#">Trout Fishing In North Hobart</a></p>
+    <p class="spons">&nbsp;</p>
     </div>
 </div>
 
-<p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE and <a href="http://www.linux.org.au/">Linux Australia</a> | Linux&trade; is a registered trademark of Linus Torvalds | <a href="?SQ_DESIGN_NAME=text-only&amp;SQ_ACTION=set_design_name">Text-Only version</a></p>
+<p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE and <a href="http://www.linux.org.au/">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds</p>
 <a id="cred" title="made with love" href="http://www.raena.net/">rja</a> </div>
 
 </body>

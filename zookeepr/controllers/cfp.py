@@ -14,8 +14,8 @@ class CFPModeValidator(validators.FancyValidator):
         cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
         if cfp_mode == 'miniconf' and value['type'].name != 'Miniconf':
             raise Invalid("You can only register miniconfs at this time.", value, state)
-        elif cfp_mode != 'miniconf' and value['type'].name == 'Miniconf':
-            raise Invalid("You can't register miniconfs at this time.", value, state)
+        #elif cfp_mode != 'miniconf' and value['type'].name == 'Miniconf':
+        #    raise Invalid("You can't register miniconfs at this time.", value, state)
 
 class PersonSchema(Schema):
     experience = validators.String(not_empty=True)
@@ -84,4 +84,39 @@ class CfpController(SecureController):
                 return render_response('cfp/thankyou.myt')
 
         return render_response("cfp/new.myt",
+                               defaults=defaults, errors=errors)
+
+    def submit_mini(self):
+        c.cfptypes = self.dbsession.query(ProposalType).select()
+        c.tatypes = self.dbsession.query(AssistanceType).select()
+        c.cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
+        c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
+        c.person = c.signed_in_person
+
+        errors = {}
+        defaults = dict(request.POST)
+
+        if request.method == 'POST' and defaults:
+            result, errors = NewCFPSchema().validate(defaults, self.dbsession)
+
+            if not errors:
+                c.proposal = Proposal()
+                # update the objects with the validated form data
+                for k in result['proposal']:
+                    setattr(c.proposal, k, result['proposal'][k])
+
+                c.person.proposals.append(c.proposal)
+
+                for k in result['person']:
+                    setattr(c.person, k, result['person'][k])
+
+                if result['attachment'] is not None:
+                    c.attachment = Attachment()
+                    for k in result['attachment']:
+                        setattr(c.attachment, k, result['attachment'][k])
+                    c.proposal.attachments.append(c.attachment)
+
+                return render_response('cfp/thankyou.myt')
+
+        return render_response("cfp/new_mini.myt",
                                defaults=defaults, errors=errors)

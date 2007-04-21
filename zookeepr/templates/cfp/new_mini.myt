@@ -1,22 +1,23 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-<h2>Submit a Proposal</h2>
-<p>First, tell us a bit about yourself:</p>
-<p><em>Note: These are common for all your proposals</em></p>
+<h1>Propose a Mini-conf</h1>
+<h2>About yourself</h2>
+
+<p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>
 
 
-<table class="form" summary="submission form" >
+<table class="form" summary="submission form">
 <% h.form(h.url(), multipart=True) %>
-<& form.myt &>
+<& form_mini.myt &>
 <tr>
 	<td>&nbsp;</td>
-	<td class="submit"><% h.submit('Participate!') %></td>
+	<td class="submit"><% h.submit('Submit!') %></td>
 </tr>
 </table>
 <% h.end_form() %>
 </&>
 
 <%method title>
-Call for Participation - <& PARENT:title &>
+Call for Mini-confs - <& PARENT:title &>
 </%method>
 
 <%args>

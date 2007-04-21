@@ -13,20 +13,6 @@
 % #endif
     </ul>
 </div>
-% if submenus.has_key(where):
-<div id="youarehere">
-  <ul id="sub">
-%   for sub in submenus[where]:
-%     url = where+'/'+sub
-%     if url==c.url:
-        <li class="now"><% sub %>
-%     else:
-        <li><a href="/<%url%>"><% sub %></a>
-%     #endif
-%   #endif
-  </ul>
-</div>
-% #endif
 
 <%init>
 # The current URL can be accessed as h.url()()
@@ -38,6 +24,7 @@ map = (
   ('/sponsors', 'sponsors'),
   ('/media', 'media'),
   ('/mini-confs', 'mini-confs'),
+  ('/cfp', 'mini-confs'),
   ('/contact', 'contact'),
   ('/account', 'login'),
   ('/error', ''),
@@ -52,9 +39,5 @@ def cls(part):
     return 'class="now"'
   else:
     return 'class=""'
-
-submenus = {
-  'about': ('history', 'melbourne', 'linux', 'floss', 'credits'),
-}
 </%init>
 

@@ -34,6 +34,12 @@
      margin: 0 0 0.9em 0;
 }
 
+blockquote {
+	padding-left: 2em;
+	padding-bottom: 1em;
+	
+}
+
 img, #header { behavior: url(/css-images/iepngfix.htc); }
 
 a:hover {
@@ -70,7 +76,7 @@ a:hover {
  div#header {
      padding-top: 0px;
      background-position: bottom center;
-     background-image: url(/css-images/thecity.png);
+     background-image: url(/css-images/thecity.orig.png);
      background-repeat: no-repeat;
  }
  
@@ -111,8 +117,8 @@ a:hover {
  
  div#header h1 {
      margin: 0px 20%;
-     padding-top: 40px;
-     padding-bottom: 15px;
+     padding-top: 10px;
+     padding-bottom: 10px;
      text-align: center;
  }
  
@@ -174,13 +180,18 @@ ul#sub {
      display: inline;
  }
  
- ul#sub li a {
+ ul#sub li {
      color: black;
-     text-decoration: none;
      padding: 7px 1em;
  }
+
+ ul#sub li a {
+	color: black;
+	text-decoration: none;
+	
+}
  
- ul#sub li a.now {
+ ul#sub li.now {
      font-weight: bold;
      background: transparent url(/css-images/now-sub.gif) bottom center no-repeat;
  }
@@ -297,12 +308,12 @@ div#shiz li {
 
 table.form, #login-form table {
     width: 100%;
-    font-size: 100%;
-    font-size: inherit;
+/*    font-size: 100%;
+    font-size: inherit; */
 }
 
 table.form td, table.form th, #login-form table td {
-    font-size: inherit;
+    /* font-size: inherit; */
     margin: 0;
     padding: 10px;
     border-collapse: collapse;
@@ -316,11 +327,10 @@ th.labels {
     color: #e70;
 }
 
-td.s-labels {
-    text-align: right;
+th.label {
+    text-align: left;
     vertical-align: top;
     font-weight: bold;
-    font-size: 0.8em;
     color: #e70;
 }
 
@@ -332,7 +342,8 @@ td.s-labels {
 
 td.entries, td.s-entries {
     text-align: left;
-	vertical-align: top;
+    vertical-align: top;
+    font-size: 0.8em !important;
 }
 
 td.submit input {
@@ -347,33 +358,12 @@ td.submit input {
     padding: 4px;
 }
 
-td.entries input, td.entries textarea, #login-form #SQ_LOGIN_USERNAME, #login-form #SQ_LOGIN_PASSWORD {
-    width: 100%;
+td.entries input, td.entries textarea {
     border: 1px solid #777;
     padding: 4px;
     font-family: Verdana, Geneva, sans-serif;
     background-color: #fff;
-}
-
-td.s-entries input, td.s-entries textarea, td.s-entries select {
-    width: 100%;
-    border: 1px solid #777;
-    padding: 4px;
-    font-family: Verdana, Geneva, sans-serif;
-    background-color: #fff;
-    font-size: 0.8em;
-}
-
-#login-form #SQ_LOGIN_USERNAME, #login-form #SQ_LOGIN_PASSWORD {
-    color: #000;
-    font-weight: normal;
-}
-
-#login-form #SQ_LOGIN_USERNAME:focus, #login-form #SQ_LOGIN_PASSWORD:focus {
-    color: #000;
-    border: 1px solid #e70 !important;
-    background: #FFFADB url(/css-images/form-back.gif) repeat-x scroll 0%;
-    width: 100%;
+    font-size: 1.1em;
 }
 
 .note {
@@ -384,14 +374,12 @@ td.entries input:focus, td.s-entries input:focus, td.s-entries select:focus {
     color: #000;
     border: 1px solid #e70 !important;
     background: #FFFADB url(/css-images/form-back.gif) repeat-x scroll 0%;
-    width: 100%;
 }
 
 td.entries textarea:focus, td.s-entries textarea:focus {
     color: #000;
     border: 1px solid #e70 !important;
     background: #FFFADB !important;
-    width: 100%;
 }
 
 .mandatory {

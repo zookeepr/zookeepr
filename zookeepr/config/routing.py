@@ -25,6 +25,8 @@ def make_map():
     m.connect('cfp', '/cfp', controller='cfp', action='index')
     m.connect('submit_cfp', '/cfp/submit', controller='cfp', action='submit')
     m.connect('/cfp/thankyou', controller='cfp', action='thankyou')
+    m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
+					      controller='cfp', action='submit_mini')
 
     # account confirmation named route
     m.connect('acct_confirm', '/account/confirm/:id',
