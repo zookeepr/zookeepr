@@ -3,7 +3,6 @@
      color: #fff;
      background: #444 url(/css-images/fargrad.png) top left repeat-x;
      text-align: center;
-     // font-family: "Lucida Grande", "Luxi Sans", "DejaVu Sans", "Lucida Sans Unicode", "Bitstream Vera Sans", Verdana, Geneva, sans-serif;
      font-family: Verdana, Geneva, sans-serif;
  }
  
@@ -100,7 +99,7 @@ a:hover {
   }
   
   div#main, div#header ul {
-     padding: 10px 20%;
+     padding: 10px 10%;
      clear:both;
  }
  
@@ -256,8 +255,8 @@ p.spons a {
  
  div#shiz {
      float: left;
-     width: 70%;
-min-height: 300px;
+     width: 80%;
+     min-height: 300px;
  }
 
 div#shiz ul, div#shiz ol {
@@ -276,7 +275,7 @@ div#shiz li {
  div#randoms {
      float: right;
      text-align: center;
-     width: 25%;
+     width: 15%;
      margin-bottom: 10px;
  }
  div#randoms img {

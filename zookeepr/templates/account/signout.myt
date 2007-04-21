@@ -1,4 +1,5 @@
-<h1 class="pop">Sign out</h1>
+<h1 class="pop">Would you like to sign out?</h1>
+<p>Please confirm you would like to sign out.</p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
