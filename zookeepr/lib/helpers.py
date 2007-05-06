@@ -6,6 +6,9 @@ All names available in this module will be available under the Pylons h object.
 from routes import request_config
 from webhelpers import *
 from wiki import wiki_here, wiki_fragment, wiki_html_fragment
+import urllib
+from glob import glob
+import os.path, random, array
 
 def counter(*args, **kwargs):
     """Return the next cardinal in a sequence.
@@ -108,3 +111,28 @@ def event_name():
     Returns the name of the event we're running (yay).
     """
     return request_config().environ['paste.config']['app_conf']['event_name']
+
+def get_temperature():
+    """ Fetch temperature from the BOM website.
+
+    This *REALLY* need to implement some sort of caching mechanism. Sadly I know no
+    python, so someone else is going to have to write it.
+    """
+    return urllib.urlopen('http://www.mel8ourne.org/dyn/temp.php').read()
+
+def array_random(a):
+    """Randomize the array
+    """
+    b = []
+    while len( a ) > 0:
+        j = random.randint(0, len( a ) - 1)
+        b.append( a.pop( j ) )
+    return b
+
+def random_pic(subdir):
+    """Mel8ourne random pic code.
+    """
+    fileprefix = '/srv/zookeepr/zookeepr/public/random-pix/'
+    htmlprefix = '/random-pix/'
+    file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
+    return htmlprefix+subdir+'/'+file

@@ -1,16 +1,10 @@
+% import array
+% subdirs = [ 'people', 'misc', 'location' ]
+% subdirs = h.array_random( subdirs )
+
 <div id="randoms">
-    <img src="<% random_pic('location') %>" alt="" height="100" width="100" title="Random Location Image"/>
-    <img src="<% random_pic('people') %>" alt="" height="100" width="100" title="Random People Image"/>
-    <img src="<% random_pic('misc') %>" alt="" height="100" width="100" title="Random Misc Image"/>
+% for dir in subdirs:
+    <img src="<% h.random_pic( dir ) %>" alt="Random <% dir | h %>" height="100" width="100" title="Random <% dir | h %> image" /> 
+% # end for
     <strong></strong>
 </div>
-
-<%init>
-from glob import glob
-import os.path, random
-def random_pic(subdir):
-    fileprefix = '/srv/zookeepr/zookeepr/public/random-pix/'
-    htmlprefix = '/random-pix/'
-    file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
-    return htmlprefix+subdir+'/'+file
-</%init>
