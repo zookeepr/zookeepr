@@ -5,13 +5,7 @@
 
 <% h.form(h.url_for(controller='/account', action='signout')) %>
 
-<table class="form" summary="sign-out form">
-
-<tr>
-	<td></td>
-	<td class="submit"><% h.submit('Sign out') %></td>
-</tr>
-</table>
+	<p class="submit"><% h.submit('Sign out') %></p>
 
 <% h.end_form() %>
 

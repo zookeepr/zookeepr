@@ -18,6 +18,7 @@
 # Edit the list of submenus here :-)
 submenus = {
   'about': ('history', 'melbourne', 'linux', 'floss', 'credits'),
+  'sponsors-media': ('sponsorship packages','media coverage',),
   'mini-confs': ('submit mini-conf proposal',),
 }
 
@@ -27,8 +28,7 @@ url = h.url()()
 where = 'home'
 map = (
   ('/about', 'about'),
-  ('/sponsors', 'sponsors'),
-  ('/media', 'media'),
+  ('/sponsors-media', 'sponsors-media'),
   ('/mini-confs', 'mini-confs'),
   ('/cfp', 'mini-confs'),
   ('/contact', 'contact'),

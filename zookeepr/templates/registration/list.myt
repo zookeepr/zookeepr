@@ -2,6 +2,9 @@
 
 
 <h2> Total Registrations </h2>
+
+% if rego_total > 0:
+
 <table> 
     <tr>
         <th>Type</th>
@@ -11,9 +14,8 @@
         <th>Percentage Paid</th>
         <th>Attendees Breakdown</th>
     </tr>
-
-% for type in rego_all:
-    <tr class="<% h.cycle('even', 'odd')%>">
+%   for type in rego_all:
+    <tr class="<% h.cycle('even', 'odd')%> ">
         <td><% type %></td>
         <td><% rego_all[type] %></td>
         <td><% rego_nonspeaker[type] %></td>
@@ -21,7 +23,7 @@
         <td><% h.number_to_percentage(rego_paid[type]*100/rego_total_nonspeaker, precision=0) %></td>
         <td><% h.number_to_percentage(rego_nonspeaker[type]*100/rego_total_nonspeaker, precision=0) %></td>
     </tr>
-% #endfor
+%   #endfor
 
 <tr>
     <td><strong>Total</strong></td>
@@ -43,6 +45,11 @@
 <strong>Money in Bank:</strong> <% h.number_to_currency(money_in_bank) %> <br>
 <br>
 <& ../accommodation/list.myt, accommodation_paid = accommodation_paid &>
+
+% else:
+  <p><strong>No registrations yet</strong></p>
+  <p>And now also no divide by zero error or flood of email.</p>
+% # endif
 
 <%init>
 

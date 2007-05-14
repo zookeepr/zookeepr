@@ -1,0 +1,7 @@
+ http://lca2007.linux.org.au/accommodation
+ http://lca2007.linux.org.au/discount_code 
+ http://lca2007.linux.org.au/profile 
+ http://lca2007.linux.org.au/invoice/remind 
+ http://lca2007.linux.org.au/openday 
+ http://lca2007.linux.org.au/proposal  
+ http://lca2007.linux.org.au/registration

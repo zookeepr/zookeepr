@@ -10,22 +10,20 @@ set password
 </legend>
 
 <p>
-Enter thenew password for <em><% c.conf_rec.email_address %></em> in the form below.
+Enter the new password for <em><% c.conf_rec.email_address %></em> in the form below.
 </p>
 
 #<p>
 #Your password 
 
-<p>
-<label for="password">New password:</label>
-<% h.password_field('password') %>
-</p>
-<p>
-<label for="password_confirm">Re-enter password:</label>
-<% h.password_field('password_confirm') %>
+<p class="label"><label for="password">New password:</label>
+<p class="entries"><% h.password_field('password') %></p>
+
+<p class="label"><label for="password_confirm">Re-enter password:</label></p>
+<p class="entries"><% h.password_field('password_confirm') %></p>
 </p>
 
-<% h.submit() %>
+<p class="submit"><% h.submit() %></p>
 
 <% h.end_form() %>
 

@@ -6,22 +6,13 @@
 
 <% h.form(h.url_for(controller='/account', action='signin')) %>
 
-<table class="form" summary="sign-in form">
-<tr>
-	<th class="labels"><label for="email_address">Email address:</label></th>
-	<td class="entries"><% h.text_field('email_address') %></td>
-</tr>
+	<p class="label"><label for="email_address">Email address:</label></p>
+	<p class="entries"><% h.text_field('email_address', size=60) %></p>
 
-<tr>
-	<th class="labels"><label for="password">Password:</label></th>
-	<td class="entries"><% h.password_field('password') %></td>
-</tr>
+	<p class="label"><label for="password">Password:</label></p>
+	<p class="entries"><% h.password_field('password') %></p>
 
-<tr>
-	<td></td>
-	<td class="submit"><% h.submit('Sign in') %></td>
-</tr>
-</table>
+	<p class="submit"><% h.submit('Sign in') %></p>
 
 <% h.end_form() %>
 

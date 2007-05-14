@@ -2,8 +2,7 @@
     <ul id="navlist">
         <li><a href="/" <%cls('home')%> >Home</a></li>
         <li><a href="/about" <% cls('about') %>>About</a></li>
-        <li><a href="/sponsors" <% cls('sponsors') %>>Sponsors</a></li>
-        <li><a href="/media" <% cls('media') %>>Media</a></li>
+        <li><a href="/sponsors-media" <% cls('sponsors-media') %>>Sponsors / Media</a></li>
         <li><a href="/mini-confs" <% cls('mini-confs') %>>Mini-confs</a></li>
         <li><a href="/contact" <% cls('contact') %>>Contact</a></li>
 % if 'signed_in_person_id' not in session:
@@ -21,8 +20,7 @@ url = h.url()()
 where = 'home'
 map = (
   ('/about', 'about'),
-  ('/sponsors', 'sponsors'),
-  ('/media', 'media'),
+  ('/sponsors-media', 'sponsors-media'),
   ('/mini-confs', 'mini-confs'),
   ('/cfp', 'mini-confs'),
   ('/contact', 'contact'),

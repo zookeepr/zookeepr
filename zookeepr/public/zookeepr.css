@@ -25,12 +25,12 @@
 
 
 /* redo some of those general styles */
- h1, h2, h3, h4 {
-     font-family: Helvetica, Arial, sans-serif;
+h1, h2, h3, h4 {
+     font-family: DejaVu SansMono, Helvetica, Arial, sans-serif;
      font-weight: normal;
- }
+}
  
- p {
+p {
      margin: 0 0 0.9em 0;
 }
 
@@ -46,32 +46,34 @@ a:hover {
     color: red;
 }
  
- .pop, div#main h1 {
+.pop, div#main h1 {
+     font-family: DejaVu Sans Mono, Helvetica, Arial, sans-serif;
      color:#f90;
      font-size: 1.8em;
      margin-top: 20px;
      font-weight: normal;
      line-height: 130%;
- }
+     margin-bottom: 0.5em;
+}
  
- div#main h2 {
+div#main h2 {
      color: #777;
-  font-size: 1.8em;
-  }
+     font-size: 1.8em;
+}
  
- div#main h3 {
+div#main h3 {
      color: #777;
      font-size: 1.4em;
- }
+}
  
- .eight {
-     color: orange;
-     font-weight: bold;
- }
+.eight {
+    color: orange;
+    font-weight: bold;
+}
  
- div#container {
-     min-width: 760px;
- }
+div#container {
+    min-width: 760px;
+}
  
  div#header {
      padding-top: 0px;
@@ -84,8 +86,8 @@ a:hover {
      background: #fff url(/css-images/hoist.gif) top left repeat-x;
      color: #666;
      text-align: left;
-      border-top: 4px solid #ffc77f;
-      border-bottom: 4px solid #888;
+     border-top: 4px solid #ffc77f;
+     border-bottom: 4px solid #888;
   }
   
   div#main strong {
@@ -411,7 +413,7 @@ table tr.odd {
 .error-message {
     font-size: 1.3em;
     font-weight: bold;
-    text-decoration: blink;	/* HAAAAAAHAHA! */
+    /* text-decoration: blink;	*/ /* HAAAAAAHAHA! */  /* The boss-lady wanted tbis oot too */
     color: #c00;
 }
 
