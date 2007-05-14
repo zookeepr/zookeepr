@@ -1,4 +1,4 @@
-import smtplib
+import smtplib, sys
 
 from formencode import validators
 from formencode.schema import Schema
@@ -116,7 +116,19 @@ class CfpController(SecureController):
                         setattr(c.attachment, k, result['attachment'][k])
                     c.proposal.attachments.append(c.attachment)
 
-                return render_response('cfp/thankyou.myt')
+                try:
+                    s = smtplib.SMTP(request.environ['paste.config']['app_conf']
+.get('app_smtp_server'))
+                    body = render('cfp/thankyou_mini_email.myt', fragment=True)
+                    s.sendmail(
+                        request.environ['paste.config']['app_conf'].get('contact_email'),
+                        (c.person.email_address, 
+                        'miniconf-props@lists.mel8ourne.org'), body)
+                    s.quit()
+                except:
+                    pass
+
+                return render_response('cfp/thankyou_mini.myt')
 
         return render_response("cfp/new_mini.myt",
                                defaults=defaults, errors=errors)
