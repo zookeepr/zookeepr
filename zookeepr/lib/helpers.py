@@ -134,5 +134,8 @@ def random_pic(subdir):
     """
     fileprefix = '/srv/zookeepr/zookeepr/public/random-pix/'
     htmlprefix = '/random-pix/'
-    file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
-    return htmlprefix+subdir+'/'+file
+    try:
+	file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
+	return htmlprefix+subdir+'/'+file
+    except IndexError:
+        return "no images found"
