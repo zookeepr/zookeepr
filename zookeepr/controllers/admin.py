@@ -53,7 +53,9 @@ class AdminController(SecureController):
 	''')
     def account_creation(self):
         """ When did people create their accounts? """
-	return sql_response("""select person.id, firstname || ' ' || lastname as name, creation_timestamp as created from account, person where account.id=person.id order by id;
+	return sql_response("""select person.id, firstname || ' ' ||
+	lastname as name, creation_timestamp as created from account,
+	person where account.id=person.id order by person.id;
 	""")
 
 def sql_response(sql):
