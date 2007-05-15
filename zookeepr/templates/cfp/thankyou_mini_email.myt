@@ -1,4 +1,3 @@
-<pre>
 Subject: Confirmation of your miniconf proposal for linux.conf.au 2008
 To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address %>>
 

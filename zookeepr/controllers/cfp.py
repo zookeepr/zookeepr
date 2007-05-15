@@ -117,8 +117,7 @@ class CfpController(SecureController):
                     c.proposal.attachments.append(c.attachment)
 
                 try:
-                    s = smtplib.SMTP(request.environ['paste.config']['app_conf']
-.get('app_smtp_server'))
+                    s = smtplib.SMTP(request.environ['paste.config']['global_conf'].get('smtp_server'))
                     body = render('cfp/thankyou_mini_email.myt', fragment=True)
                     s.sendmail(
                         request.environ['paste.config']['app_conf'].get('contact_email'),
