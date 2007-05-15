@@ -210,7 +210,7 @@ class RegistrationController(BaseController, Create, Update, List):
                 self.dbsession.flush()
 
 		email(
-		    c.person.email_address
+		    c.person.email_address,
 		    render('registration/response.myt',
 		        id=c.person.url_hash, fragment=True))
 
