@@ -1,4 +1,4 @@
-import smtplib, sys
+import sys
 
 from formencode import validators
 from formencode.schema import Schema
@@ -6,6 +6,7 @@ from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
+from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator, AssistanceTypeValidator
 from zookeepr.model import ProposalType, Proposal, Attachment, AssistanceType
 
@@ -116,16 +117,9 @@ class CfpController(SecureController):
                         setattr(c.attachment, k, result['attachment'][k])
                     c.proposal.attachments.append(c.attachment)
 
-                try:
-                    s = smtplib.SMTP(request.environ['paste.config']['global_conf'].get('smtp_server'))
-                    body = render('cfp/thankyou_mini_email.myt', fragment=True)
-                    s.sendmail(
-                        request.environ['paste.config']['app_conf'].get('contact_email'),
-                        (c.person.email_address, 
-                        'miniconf-props@lists.mel8ourne.org'), body)
-                    s.quit()
-                except:
-                    pass
+                email((c.person.email_address, 
+                          'miniconf-props@lists.mel8ourne.org'),
+                      render('cfp/thankyou_mini_email.myt', fragment=True))
 
                 return render_response('cfp/thankyou_mini.myt')
 

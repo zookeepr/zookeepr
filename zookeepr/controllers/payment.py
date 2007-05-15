@@ -1,10 +1,10 @@
 import hmac
 import sha
-import smtplib
 import string
 
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
+from zookeepr.lib.mail import *
 
 class PaymentController(BaseController, Create, View):
     """This controller receives payment advice from CommSecure.
@@ -122,13 +122,9 @@ class PaymentController(BaseController, Create, View):
             if pr.HTTP_X_FORWARDED_FOR != '203.192.130.110':
                 c.person = pr.payment_sent.invoice.person
                 c.payment = pr
-                body = render('payment/response.myt', id=c.person.url_hash, fragment=True)
-                try:
-                    s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
-                    s.sendmail("seven-contact@lca2007.linux.org.au", c.person.email_address, body)
-                    s.quit()
-                except:
-                    pass
+                email(c.person.email_address,
+                    render('payment/response.myt', id=c.person.url_hash,
+		        fragment=True))
 
             redirect_to(controller='payment', action='view', id=pr.id)
 
@@ -155,9 +151,5 @@ class PaymentController(BaseController, Create, View):
 
 
     def _mail_warn(self, msg, pr):
-        s = smtplib.SMTP("localhost")
-        body = render('payment/warning.myt', fragment=True, subject=msg, pr=pr)
-        s.sendmail("seven-contact@lca2007.linux.org.au",
-                   "seven-contact@lca2007.linux.org.au",
-                   body)
-        s.quit()
+        email(request.environ['paste.config']['app_conf'].get('contact_email'),
+	    render('payment/warning.myt', fragment=True, subject=msg, pr=pr))

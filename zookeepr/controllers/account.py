@@ -1,5 +1,4 @@
 import datetime
-import smtplib
 
 from formencode import validators, Invalid
 from formencode.schema import Schema
@@ -8,6 +7,7 @@ import sqlalchemy
 
 from zookeepr.lib.auth import PersonAuthenticator, retcode
 from zookeepr.lib.base import *
+from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import Person, PasswordResetConfirmation
 
@@ -176,13 +176,8 @@ class AccountController(BaseController):
                     # FIXME exposes sqlalchemy!
                     return render_response('account/in_progress.myt')
 
-                s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
-                # generate email from template
-                body = render('account/confirmation_email.myt', fragment=True)
-                s.sendmail("support@anchor.com.au",
-                    c.conf_rec.email_address,
-                    body)
-                s.quit()
+                email(c.conf_rec.email_address,
+                    render('account/confirmation_email.myt', fragment=True))
                 return render_response('account/password_confirmation_sent.myt')
         return render_response('account/forgotten_password.myt', defaults=defaults, errors=errors)
 
@@ -273,14 +268,8 @@ class AccountController(BaseController):
                 self.dbsession.save(c.person)
                 self.dbsession.flush()
 
-                s = smtplib.SMTP("localhost")
-                # generate welcome message
-                body = render('account/new_account_email.myt',
-                              fragment=True)
-                s.sendmail(request.environ['paste.config']['app_conf'].get('contact_email'),
-                           c.person.email_address,
-                           body)
-                s.quit()
+                email(c.person.email_address,
+                    render('account/new_account_email.myt', fragment=True))
                 return render_response('account/thankyou.myt')
 
         return render_response('account/new.myt',

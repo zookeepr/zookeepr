@@ -1,5 +1,4 @@
 import datetime
-import smtplib
 import warnings
 
 from formencode import validators, compound, variabledecode
@@ -8,6 +7,7 @@ from formencode.schema import Schema
 from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
+from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, EmailAddress
 from zookeepr.model.registration import Accommodation
 
@@ -209,13 +209,10 @@ class RegistrationController(BaseController, Create, Update, List):
                 c.registration.person = c.person
                 self.dbsession.flush()
 
-                try:
-                    s = smtplib.SMTP(request.environ['paste.config']['app_conf'].get('app_smtp_server'))
-                    body = render('registration/response.myt', id=c.person.url_hash, fragment=True)
-                    s.sendmail(request.environ['paste.config']['app_conf'].get('contact_email'), c.person.email_address, body)
-                    s.quit()
-                except:
-                    pass
+		email(
+		    c.person.email_address
+		    render('registration/response.myt',
+		        id=c.person.url_hash, fragment=True))
 
                 return render_response('registration/thankyou.myt')
 
