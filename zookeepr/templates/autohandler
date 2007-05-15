@@ -10,21 +10,29 @@
 <link rel="icon" type="image/png" href="/favicon.png" />
 
 <!-- Web //-->
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<meta name="robots" content="index,follow" />
+
 
 <!-- Mandatory //-->
-<meta name="description" content="" />
-<meta name="keywords" content="" />
+<meta name="description" content="linux.conf.au is Australia's annual linux conference. It is fun, informal and seriously technical." />
+<meta name="keywords" content="fun, technical, linux, conference, melbourne, australia" />
 
 
-<meta name="Generator" content="MySource Matrix" />
+<meta name="Generator" content="Zookeepr" />
 <meta name="dc.creator.e-mail" content="webmaster@mel8ourne.org" />
 <meta name="dc.creator.name" content="Webmaster" />
 <meta name="tgn.id" content="7001933" />
 <meta name="tgn.name" content="Melbourne" />
 <meta name="tgn.nation" content="Australia" />
-<meta name="geo.position" content="-37.81;144.96" />
+<meta name="geo.position" contyyent="-37.81;144.96" />
 <meta name="geo.placename" content="Melbourne, Victoria" />
 <meta name="geo.country" content="AU" />
+<meta name="ICBM" contyyent="-37.81, 144.96" />
+
+
+<!-- Optional, but helpful //-->
+<meta name="MSSmartTagsPreventParsing" content="TRUE" />
 
 </head>
 <body>
