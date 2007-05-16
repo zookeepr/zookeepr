@@ -16,7 +16,7 @@
 
 <!-- Mandatory //-->
 <meta name="description" content="linux.conf.au is Australia's annual linux conference. It is fun, informal and seriously technical." />
-<meta name="keywords" content="fun, technical, linux, conference, melbourne, australia" />
+<meta name="keywords" content="fun, technical, linux, kernel, open source, conference, melbourne, australia" />
 
 
 <meta name="Generator" content="Zookeepr" />
@@ -32,6 +32,7 @@
 
 
 <!-- Optional, but helpful //-->
+<meta name="verify-v1" content="JRLz1ruTgkbfUBmuhRw3+Ol4W0+i1N1NTiI39gt91Ns=" >
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 
 </head>
