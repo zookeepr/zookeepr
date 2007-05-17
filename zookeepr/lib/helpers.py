@@ -118,7 +118,7 @@ def get_temperature():
     This *REALLY* need to implement some sort of caching mechanism. Sadly I know no
     python, so someone else is going to have to write it.
     """
-    return urllib.urlopen('http://www.mel8ourne.org/dyn/temp.php').read()
+    return urllib.urlopen('http://test.mel8ourne.org/dyn/temp.php').read()
 
 def array_random(a):
     """Randomize the array
