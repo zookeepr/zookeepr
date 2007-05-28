@@ -16,7 +16,7 @@
 
 <!-- Mandatory //-->
 <meta name="description" content="linux.conf.au is Australia's annual linux conference. It is fun, informal and seriously technical." />
-<meta name="keywords" content="fun, technical, linux, kernel, open source, conference, melbourne, australia, linux.conf.au, lca 2008" />
+<meta name="keywords" content="fun, technical, linux, kernel, open source, conference, melbourne, australia, linux.conf.au, lca 2008, LCA08, LCA2008, best linux conference" />
 
 
 <meta name="Generator" content="Zookeepr" />
@@ -32,7 +32,8 @@
 
 
 <!-- Optional, but helpful //-->
-<meta name="verify-v1" content="JRLz1ruTgkbfUBmuhRw3+Ol4W0+i1N1NTiI39gt91Ns=" >
+<meta name="verify-v1" 
+content="JRLz1ruTgkbfUBmuhRw3+Ol4W0+i1N1NTiI39gt91Ns=" />
 <meta name="MSSmartTagsPreventParsing" content="TRUE" />
 
 </head>
@@ -73,5 +74,5 @@
 </html>
 
 <%method title>
-linux.conf.au - MEL8OURNE 2008
+linux.conf.au 2008 | 28 Jan- 2 Feb | MEL8OURNE 
 </%method>

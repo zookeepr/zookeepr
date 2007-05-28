@@ -20,6 +20,13 @@
 
 <p>linux.conf.au 2008 in Mel<span class="eight">8</span>ourne, Victoria - The place to be.</p>
 
+<h2>Mini-confs</h2>
+
+<p>The call for mini-conf proposals is now open. If you have a mini-conf 
+you would like to run, please <a 
+href="http://linux.conf.au/mini-confs/submit_mini-conf_proposal">let us 
+know</a>.</p>
+
 <!--
 FIXME: Dirty hack so all the tests don't fail
 % if c.signed_in_person:
