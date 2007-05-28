@@ -4,6 +4,9 @@
 	<p class="note"><span class="mandatory">&#8224;</span> - Will be
 	published (if your presentation is accepted)</p>
 
+	<p class="note-bene">We reserve the right to forward submissions
+	(accepted or not) to the miniconf organisers.</p>
+
 	<p class="label"><span class="mandatory">*&#8224;</span><label for="proposal.title">Title:</label></p>
 	<p class="entries"><% h.text_field('proposal.title', size=70) %></p>
 		<p class="note">The name of your presentation.</p>
@@ -43,7 +46,10 @@
 	abstract:</label></p>
 	<p class="entries"><% h.text_field('proposal.abstract_video_url', size=70) %></p>
 		<p class="note">URL for a short "elevator pitch" (20s -
-		3min) video about your presentation.</p>
+		3min) video about your presentation or yourself (eg:
+		youtube link)
+		
+		.</p>
 
 	<p class="label"><span class="mandatory">&#8224;</span><label
 	for="attachment">Attach paper:</label></th>
