@@ -5,7 +5,7 @@
 <span class="error-message">Not submitted, sorry &mdash; there was a problem.</span>
 <br>Please see below for more details, edit and resubmit.
 %   for k in errors:
-%     if errors[k]=='Please enter a value':
+%     if errors[k] in ('Please enter a value', 'Missing value'):
 %       errors[k]='This information is required.'
 %     #endif
 %   #endif

@@ -28,7 +28,7 @@ class ProposalSchema(Schema):
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
     assistance = AssistanceTypeValidator()
-    proposal = validators.String(not_empty=True)
+    project = validators.String(not_empty=True)
     url = validators.String()
     abstract_video_url = validators.String()
 

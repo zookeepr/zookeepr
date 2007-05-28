@@ -18,9 +18,9 @@
 %   # endif
     <% h.radio_button('proposal.type', st.id) %>
 %   if st.name == 'Presentation':
-      <label for="proposal.type">Talk</label><br />
+      <label>Talk</label><br />
 %   else:
-      <label for="proposal.type"><% st.name |h %></label><br />
+      <label><% st.name |h %></label><br />
 %   #endif
 % #endfor
 		<p class="note" style="margin-top: 0em">The type of your
@@ -36,7 +36,7 @@
 		will appear as-is on the website in the draft programme. Up
 		to about 500 words.</p>
 
-	<p class="label"><span class="mandatory">*&#8224;</span><label for="proposal.project">Project:</label></p>
+	<p class="label"><span class="mandatory">&#8224;</span><label for="proposal.project">Project:</label></p>
 	<p class="entries"><% h.text_field('proposal.project', size=70) %></p>
 		<p class="note">The name of the project you will be talking
 		about.</p>
@@ -67,7 +67,7 @@
 	Assistance:</label></p>
 % for ta in c.tatypes:
     <% h.radio_button('proposal.assistance', ta.id) %>
-    <label for="proposal.assistance"><% ta.name |h %></label><br />
+    <label><% ta.name |h %></label><br />
 % #endfor
 		<p class="note" style="margin-top: 0em">Travel assistance
 		is available to speakers who qualify. If you think you need
@@ -83,7 +83,7 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 "(with Bob Vaxhacker and Eve Solo)".</p>
 
 	<p class="label"><span class="mandatory">*&#8224;</span><label
-	for="person.url">Speaker name:</label></p>
+	for="name">Speaker name:</label></p>
 	<p class="entries"><% h.text_field('name',
 	value=c.person.firstname + " " + c.person.lastname, size=70,
 	disabled=True) %></p>
