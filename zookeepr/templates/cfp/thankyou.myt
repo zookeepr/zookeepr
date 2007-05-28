@@ -1,16 +1,13 @@
-<h2>Call for Participation</h2>
+<h2>Call for Papers</h2>
 
 <h3>Thank You</h3>
 
 <p>
-Thank you for your proposal. 
-</p>
-
-
-<p>
-If you wish to make a second proposal, or modify the one you have just made, please go to your <% h.link_to('profile', url=h.url(controller='profile', id=c.person.id)) %>.
+Thank you for your paper submission.
 </p>
 
 <p>
-<a href="<% h.url_for("home") %>">Click here</a> to return to the main page.
+<a href="/papers/submit_a_paper">Submit another paper</a> or
+
+return to the <a href="<% h.url_for("home") %>">main page</a>.
 </p>

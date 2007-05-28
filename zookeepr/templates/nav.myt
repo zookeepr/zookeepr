@@ -4,6 +4,7 @@
         <li><a href="/about" <% cls('about') %>>About</a></li>
         <li><a href="/sponsors-media" <% cls('sponsors-media') %>>Sponsors / Media</a></li>
         <li><a href="/mini-confs" <% cls('mini-confs') %>>Mini-confs</a></li>
+        <li><a href="/papers" <% cls('papers') %>>Papers</a></li>
         <li><a href="/contact" <% cls('contact') %>>Contact</a></li>
 % if 'signed_in_person_id' not in session:
         <li><a href="<% h.url(controller='account', action='signin', id=None)() %>" <% cls('login') %>>login / register</a></li>
@@ -23,6 +24,7 @@ map = (
   ('/sponsors-media', 'sponsors-media'),
   ('/mini-confs', 'mini-confs'),
   ('/cfp', 'mini-confs'),
+  ('/papers', 'papers'),
   ('/contact', 'contact'),
   ('/account', 'login'),
   ('/error', ''),

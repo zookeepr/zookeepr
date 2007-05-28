@@ -23,8 +23,8 @@ def make_map():
 
     # The CFP named routes
     m.connect('cfp', '/cfp', controller='cfp', action='index')
-    m.connect('submit_cfp', '/cfp/submit', controller='cfp', action='submit')
-    m.connect('/cfp/thankyou', controller='cfp', action='thankyou')
+    m.connect('submit_cfp', '/papers/submit_a_paper', controller='cfp', action='submit')
+    m.connect('/papers/thankyou', controller='cfp', action='thankyou')
     m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
 					      controller='cfp', action='submit_mini')
 

@@ -20,6 +20,7 @@ submenus = {
   'about': ('history', 'melbourne', 'linux', 'floss', 'credits'),
   'sponsors-media': ('sponsorship packages','media coverage',),
   'mini-confs': ('submit mini-conf proposal',),
+  'papers': ('submit a paper',),
 }
 
 # The current URL can be accessed as h.url()()
@@ -31,6 +32,7 @@ map = (
   ('/sponsors-media', 'sponsors-media'),
   ('/mini-confs', 'mini-confs'),
   ('/cfp', 'mini-confs'),
+  ('/papers', 'papers'),
   ('/contact', 'contact'),
   ('/account', 'login'),
   ('/error', ''),

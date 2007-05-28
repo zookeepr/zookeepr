@@ -21,6 +21,7 @@ class CFPModeValidator(validators.FancyValidator):
 class PersonSchema(Schema):
     experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
+    url = validators.String()
 
 class ProposalSchema(Schema):
     title = validators.String(not_empty=True)
@@ -28,6 +29,7 @@ class ProposalSchema(Schema):
     type = ProposalTypeValidator()
     assistance = AssistanceTypeValidator()
     url = validators.String()
+    abstract_video_url = validators.String()
 
     chained_validators = [CFPModeValidator]
 
