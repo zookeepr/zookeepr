@@ -48,6 +48,8 @@ person = Table('person', metadata,
                Column('phone', String(32)),
                Column('fax', String(32)),
 
+               Column('url', String()),
+
                # Proposal bits
                Column('experience', String()),
                Column('bio', String()),

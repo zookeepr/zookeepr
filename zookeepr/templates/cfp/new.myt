@@ -1,22 +1,25 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-<h2>Submit a Proposal</h2>
-<p>First, tell us a bit about yourself:</p>
-<p><em>Note: These are common for all your proposals</em></p>
+<h1>Propose a talk or tutorial</h1>
 
+% if len(errors)>0:
+<span class="error-message">Not submitted, sorry &mdash; there was a problem.</span>
+<br>Please see below for more details, edit and resubmit.
+%   for k in errors:
+%     if errors[k]=='Please enter a value':
+%       errors[k]='This information is required.'
+%     #endif
+%   #endif
+% #endif
 
-<table class="form" summary="submission form" >
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
-<tr>
-	<td>&nbsp;</td>
-	<td class="submit"><% h.submit('Participate!') %></td>
-</tr>
-</table>
+
+	<p class="submit"><% h.submit('Submit!') %></p>
 <% h.end_form() %>
 </&>
 
 <%method title>
-Call for Participation - <& PARENT:title &>
+Call for Papers - <& PARENT:title &>
 </%method>
 
 <%args>
@@ -30,6 +33,7 @@ errors
 if not defaults:
     defaults = {
         'person.experience': c.person.experience,
-        'person.bio': c.person.bio
+        'person.bio': c.person.bio,
+	'proposal.type': 1,
     }
 </%init>

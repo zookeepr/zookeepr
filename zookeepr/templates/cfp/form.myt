@@ -1,86 +1,96 @@
-<tr>
-	<td></td>
-	<td><span class="mandatory">*</span> - Mandatory field</td>
-</tr>
+	<br><p class="note"><span class="mandatory">*</span> - Mandatory
+	field</p>
 
-<tr>
-	<th class="labels"><span class="mandatory">*</span><label for="person.experience">Experience:</label></th>
-	<td class="entries"><% h.text_area('person.experience', size="50x10") %>
-		<p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. 
-			Anything you put here will only be seen by the reviewers; 
-			Use it to convince them why they should accept your paper.</p>
-	</td>
-</tr>
+	<p class="note"><span class="mandatory">&#8224;</span> - Will be
+	published (if your presentation is accepted)</p>
 
-<tr>
-	<th class="labels"><span class="mandatory">*</span><label for="person.bio">Bio:</label></th>
-	<td class="entries"><% h.text_area('person.bio', size="50x10") %>
-		<p class="note">Your Bio, this will appear on the conference website.</p>
-	</td>
-</tr>
+	<p class="label"><span class="mandatory">*&#8224;</span><label for="proposal.title">Title:</label></p>
+	<p class="entries"><% h.text_field('proposal.title', size=70) %></p>
+		<p class="note">The name of your presentation.</p>
 
-<tr>
-	<td colspan="2"><p>Tell us a bit about the proposal you'd like to submit:</p></td>
-</tr>
-	
-<tr>
-	<th class="labels"><span class="mandatory">*</span><label for="proposal.title">Title:</label></th>
-	<td class="entries"><% h.text_field('proposal.title', size=50) %>
-		<p class="note">e.g. the name of your talk, tutorial or miniconf.</p>
-	</td>
-</tr>
-
-<tr>
-	<th class="labels"><span class="mandatory">*</span>Type:</th>
-	<td class="entries">
-
+	<p class="label"><span class="mandatory">*&#8224;</span><label for="proposal.type">Type:</label></p>
 % for st in c.cfptypes:
-%    if c.cfp_mode == 'miniconf':
-%        if st.name != 'Miniconf':
-%           continue
-%        # endif
-%    else:
-%        if st.name == 'Miniconf':
-%           continue
-%        # endif
-%    # endif
-
+%   if st.name == 'Miniconf':
+%     continue
+%   # endif
     <% h.radio_button('proposal.type', st.id) %>
-    <label for="proposal.type"><% st.name |h %></label><br />
-
+%   if st.name == 'Presentation':
+      <label for="proposal.type">Talk</label><br />
+%   else:
+      <label for="proposal.type"><% st.name |h %></label><br />
+%   #endif
 % #endfor
-	<p class="note">What sort of proposal is this?</p>
-	</td>
-</tr>
+		<p class="note" style="margin-top: 0em">The type of your
+		presentation. If in doubt, choose "Talk".</p>
 
-<tr>
-	<th class="labels"><label for="proposal.url">Project URL:</label></th>
-	<td class="entries"><% h.text_field('proposal.url', size=50) %>
-		<p class="note">If your proposal has a project URL, specify it here so the review committee can find out more about your proposal.</p>
-	</td>
-</tr>
+	<p class="label"><span class="mandatory">*&#8224;</span><label
+	for="proposal.abstract">Abstract:</label></p>
+	<p class="entries"><% h.text_area('proposal.abstract', size="70x10") %></p>
+		<p class="note">This will appear in the conference
+		programme. You will have an opportunity to update it once
+		the presentation is accepted, but it should reasonably
+		reflect what you will be presenting, and in any case it
+		will appear as-is on the website in the draft programme. Up
+		to about 500 words.</p>
 
-<tr>
-	<th class="labels"><label for="attachment">Attach paper:</label></th>
-	<td class="entries"><% h.file_field('attachment', size=50) %>
-		<p class="note">If you are submitting a paper, please upload it here.</p>
-	</td>
-</tr>
+	<p class="label"><span class="mandatory">&#8224;</span><label for="proposal.url">Project homepage:</label></p>
+	<p class="entries"><% h.text_field('proposal.url', size=70) %></p>
+		<p class="note">If your project has webpage, specify the
+		URL here so the committee can find out more about your
+		proposal.</p>
 
-<tr>
-	<th class="labels"><span class="mandatory">*</span><label for="proposal.abstract">Proposal Abstract:</label></th>
-	<td class="entries"><% h.text_area('proposal.abstract', size="50x20") %>
-		<p class="note">Please write here a summary of your proposal.  Your proposal will be judged on the description you provide.</p>
-	</td>
-</tr>
+	<p class="label"><label for="proposal.abstract_video_url">Video
+	abstract:</label></p>
+	<p class="entries"><% h.text_field('proposal.abstract_video_url', size=70) %></p>
+		<p class="note">URL for a short "elevator pitch" (20s -
+		3min) video about your presentation.</p>
 
-<tr>
-	<th class="labels"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></th>
-	<td class="entries">
+	<p class="label"><span class="mandatory">&#8224;</span><label
+	for="attachment">Attach paper:</label></th>
+	<p class="entries"><% h.file_field('attachment', size=60) %></p>
+		<p class="note">You can attach a paper if you wish; this is
+		optional.</p>
+
+	<p class="label"><span class="mandatory">*</span><label
+	for="proposal.assistance">Travel &amp; Accommodation
+	Assistance:</label></p>
 % for ta in c.tatypes:
-    <% h.radio_button('proposal.assistance', ta.id) %>&nbsp;<label for="proposal.assistance"><% ta.name |h %></label><br />
-
+    <% h.radio_button('proposal.assistance', ta.id) %>
+    <label for="proposal.assistance"><% ta.name |h %></label><br />
 % #endfor
-	<p class="note">Travel assistance is available to speakers who qualify.  If you think you need it, please let us know.</p>
-	</td>
-</tr>
+		<p class="note" style="margin-top: 0em">Travel assistance
+		is available to speakers who qualify. If you think you need
+		it, please let us know. Please put any additional details
+		into the "Personal experience" field, below.</p>
+
+<h2>About yourself</h2>
+
+<p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>
+
+
+	<p class="label"><span class="mandatory">*&#8224;</span><label
+	for="person.url">Speaker name:</label></p>
+	<p class="entries"><% h.text_field('name',
+	value=c.person.firstname + " " + c.person.lastname, size=70,
+	disabled=True) %></p>
+		<p class="note">(Can't be changed here.)</p>
+
+	<p class="label"><span class="mandatory">&#8224;</span><label
+	for="person.url">Speaker homepage:</label></p>
+	<p class="entries"><% h.text_field('person.url', size=70) %></p>
+		<p class="note">Your homepage.</p>
+
+	<p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
+	<p class="entries"><% h.text_area('person.experience', size="70x6") %></p>
+		<p class="note">Have you had any experience presenting
+		elsewhere? If so, we'd like to know. Anything you put here
+		will only be seen by the organisers and reviewers; use it
+		to convince them why they should accept your mini-confs and
+		papers.</p>
+
+	<p class="label"><span class="mandatory">*&#8224;</span><label for="person.bio">Bio:</label></p>
+	<p class="entries"><% h.text_area('person.bio', size="70x6") %></p>
+		<p class="note">This will appear on the conference website
+		for your papers. Please write in the third person, eg
+		"Alice is a Mozilla hacker...", 150-200 words.</p>
+

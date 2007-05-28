@@ -39,6 +39,9 @@ proposal = Table('proposal', metadata,
                    # url to a project page
                    Column('url', String()),
 
+                   # url to a project page
+                   Column('abstract_video_url', String()),
+
                    # Is it accepted?
                    Column('accepted', Boolean),
 
