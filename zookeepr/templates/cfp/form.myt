@@ -36,6 +36,11 @@
 		will appear as-is on the website in the draft programme. Up
 		to about 500 words.</p>
 
+	<p class="label"><span class="mandatory">*&#8224;</span><label for="proposal.project">Project:</label></p>
+	<p class="entries"><% h.text_field('proposal.project', size=70) %></p>
+		<p class="note">The name of the project you will be talking
+		about.</p>
+
 	<p class="label"><span class="mandatory">&#8224;</span><label for="proposal.url">Project homepage:</label></p>
 	<p class="entries"><% h.text_field('proposal.url', size=70) %></p>
 		<p class="note">If your project has webpage, specify the
@@ -46,8 +51,8 @@
 	abstract:</label></p>
 	<p class="entries"><% h.text_field('proposal.abstract_video_url', size=70) %></p>
 		<p class="note">URL for a short "elevator pitch" (20s -
-		3min) video about your presentation or yourself (eg:
-		youtube link)
+		3min) video about your presentation, your project or
+		yourself (eg: YouTube link)
 		
 		.</p>
 
@@ -73,6 +78,9 @@
 
 <p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>
 
+<P>If two or more people are presenting together, this information should
+for the primary speaker; mention the other speakers in the Abstract, eg.
+"(with Bob Vaxhacker and Eve Solo)".</p>
 
 	<p class="label"><span class="mandatory">*&#8224;</span><label
 	for="person.url">Speaker name:</label></p>
@@ -97,6 +105,7 @@
 	<p class="label"><span class="mandatory">*&#8224;</span><label for="person.bio">Bio:</label></p>
 	<p class="entries"><% h.text_area('person.bio', size="70x6") %></p>
 		<p class="note">This will appear on the conference website
-		for your papers. Please write in the third person, eg
-		"Alice is a Mozilla hacker...", 150-200 words.</p>
+		and in the programme for your talks and tutorials. Please
+		write in the third person, eg "Alice is a Mozilla
+		hacker...", 150-200 words.</p>
 

@@ -36,10 +36,11 @@ proposal = Table('proposal', metadata,
                    Column('assistance_type_id', Integer,
                           ForeignKey('assistance_type.id')),
 
-                   # url to a project page
+                   # name and url of the project
+                   Column('project', String()),
                    Column('url', String()),
 
-                   # url to a project page
+                   # url to a short video
                    Column('abstract_video_url', String()),
 
                    # Is it accepted?
