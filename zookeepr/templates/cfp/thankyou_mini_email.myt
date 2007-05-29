@@ -12,5 +12,5 @@ summary: <% c.proposal.abstract %>
 
 <%doc>
 This template is used to generate the email that is sent to people
-submitting miniconfs and/or papers for the conference.
+submitting miniconfs for the conference.
 </%doc>

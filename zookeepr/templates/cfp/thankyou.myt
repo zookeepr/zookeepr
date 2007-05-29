@@ -3,11 +3,11 @@
 <h3>Thank You</h3>
 
 <p>
-Thank you for your paper submission.
+Thank you for your presentation submission.
 </p>
 
 <p>
-<a href="/papers/submit_a_paper">Submit another paper</a> or
+<a href="/papers/submit_a_paper">Submit another presentation</a> or
 
 return to the <a href="<% h.url_for("home") %>">main page</a>.
 </p>

@@ -52,15 +52,7 @@
 	<p class="entries"><% h.text_field('proposal.abstract_video_url', size=70) %></p>
 		<p class="note">URL for a short "elevator pitch" (20s -
 		3min) video about your presentation, your project or
-		yourself (eg: YouTube link)
-		
-		.</p>
-
-	<p class="label"><span class="mandatory">&#8224;</span><label
-	for="attachment">Attach paper:</label></th>
-	<p class="entries"><% h.file_field('attachment', size=60) %></p>
-		<p class="note">You can attach a paper if you wish; this is
-		optional.</p>
+		yourself (eg: YouTube link).</p>
 
 	<p class="label"><span class="mandatory">*</span><label
 	for="proposal.assistance">Travel &amp; Accommodation
@@ -76,7 +68,8 @@
 
 <h2>About yourself</h2>
 
-<p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>
+<p><em>Note: These are common for all your proposals, both mini-confs and
+presentations.</em></p>
 
 <P>If two or more people are presenting together, this information should
 for the primary speaker; mention the other speakers in the Abstract, eg.
@@ -94,18 +87,18 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 	<p class="entries"><% h.text_field('person.url', size=70) %></p>
 		<p class="note">Your homepage.</p>
 
-	<p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
-	<p class="entries"><% h.text_area('person.experience', size="70x6") %></p>
-		<p class="note">Have you had any experience presenting
-		elsewhere? If so, we'd like to know. Anything you put here
-		will only be seen by the organisers and reviewers; use it
-		to convince them why they should accept your mini-confs and
-		papers.</p>
-
 	<p class="label"><span class="mandatory">*&#8224;</span><label for="person.bio">Bio:</label></p>
 	<p class="entries"><% h.text_area('person.bio', size="70x6") %></p>
 		<p class="note">This will appear on the conference website
 		and in the programme for your talks and tutorials. Please
 		write in the third person, eg "Alice is a Mozilla
 		hacker...", 150-200 words.</p>
+
+	<p class="label"><label for="person.experience">Relevant experience:</label></p>
+	<p class="entries"><% h.text_area('person.experience', size="70x6") %></p>
+		<p class="note">Have you had any experience presenting
+		elsewhere? If so, we'd like to know. Anything you put here
+		will only be seen by the organisers and reviewers; use it
+		to convince them why they should accept your mini-confs and
+		presentations.</p>
 

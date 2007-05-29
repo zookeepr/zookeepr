@@ -19,7 +19,7 @@ class CFPModeValidator(validators.FancyValidator):
         #    raise Invalid("You can't register miniconfs at this time.", value, state)
 
 class PersonSchema(Schema):
-    experience = validators.String(not_empty=True)
+    experience = validators.String()
     bio = validators.String(not_empty=True)
     url = validators.String()
 
@@ -37,8 +37,31 @@ class ProposalSchema(Schema):
 class NewCFPSchema(BaseSchema):
     person = PersonSchema()
     proposal = ProposalSchema()
+    #attachment = FileUploadValidator()
+    pre_validators = [NestedVariables]
+
+class MiniPersonSchema(Schema):
+    experience = validators.String()
+    bio = validators.String(not_empty=True)
+    #url = validators.String()
+
+class MiniProposalSchema(Schema):
+    title = validators.String(not_empty=True)
+    abstract = validators.String(not_empty=True)
+    type = ProposalTypeValidator()
+    assistance = AssistanceTypeValidator()
+    #project = validators.String(not_empty=True)
+    url = validators.String()
+    #abstract_video_url = validators.String()
+
+    chained_validators = [CFPModeValidator]
+
+class NewMiniSchema(BaseSchema):
+    person = MiniPersonSchema()
+    proposal = MiniProposalSchema()
     attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
+
 
 class CfpController(SecureController):
     permissions = {'submit': [AuthRole('organiser')]
@@ -79,11 +102,11 @@ class CfpController(SecureController):
                 for k in result['person']:
                     setattr(c.person, k, result['person'][k])
 
-                if result['attachment'] is not None:
-                    c.attachment = Attachment()
-                    for k in result['attachment']:
-                        setattr(c.attachment, k, result['attachment'][k])
-                    c.proposal.attachments.append(c.attachment)
+                #if result['attachment'] is not None:
+                #    c.attachment = Attachment()
+                #    for k in result['attachment']:
+                #        setattr(c.attachment, k, result['attachment'][k])
+                #    c.proposal.attachments.append(c.attachment)
 
                 return render_response('cfp/thankyou.myt')
 
@@ -101,7 +124,7 @@ class CfpController(SecureController):
         defaults = dict(request.POST)
 
         if request.method == 'POST' and defaults:
-            result, errors = NewCFPSchema().validate(defaults, self.dbsession)
+            result, errors = NewMiniSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.proposal = Proposal()

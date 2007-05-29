@@ -35,5 +35,6 @@ if not defaults:
         'person.experience': c.person.experience,
         'person.bio': c.person.bio,
 	'proposal.type': 1,
+	'proposal.assistance': 4,
     }
 </%init>

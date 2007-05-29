@@ -31,7 +31,8 @@
 
 <h2>About yourself</h2>
 
-<p><em>Note: These are common for all your proposals, both mini-confs and papers.</em></p>
+<p><em>Note: These are common for all your proposals, both mini-confs and
+presentations.</em></p>
 
 	<p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
 	<p class="entries"><% h.text_area('person.experience', size="70x6") %></p>
@@ -39,8 +40,9 @@
 		elsewhere? If so, we'd like to know.  Anything you put here
 		will only be seen by the organisers and reviewers; Use it to
 		convince them why they should accept your mini-confs and
-		papers.</p>
+		presentations.</p>
 
 	<p class="label"><span class="mandatory">*</span><label for="person.bio">Bio:</label></p>
 	<p class="entries"><% h.text_area('person.bio', size="70x6") %></p>
-		<p class="note">Your Bio, this will appear on the conference website for your papers.</p>
+		<p class="note">Your Bio, this will appear on the
+		conference website for your presentations.</p>
