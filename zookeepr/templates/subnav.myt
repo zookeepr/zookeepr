@@ -20,7 +20,7 @@ submenus = {
   'about': ('history', 'melbourne', 'linux', 'floss', 'credits'),
   'sponsors-media': ('sponsorship packages','media coverage',),
   'mini-confs': ('submit mini-conf proposal',),
-  'papers': ('submit a paper',),
+  'papers': ('submit a paper', 'speaker FAQ'),
 }
 
 # The current URL can be accessed as h.url()()
