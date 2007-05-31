@@ -16,11 +16,11 @@
 %   if st.name == 'Miniconf':
 %     continue
 %   # endif
-    <% h.radio_button('proposal.type', st.id) %>
+    <label><% h.radio_button('proposal.type', st.id) %>
 %   if st.name == 'Presentation':
-      <label>Talk</label><br />
+      Talk</label><br />
 %   else:
-      <label><% st.name |h %></label><br />
+      <% st.name |h %></label><br />
 %   #endif
 % #endfor
 		<p class="note" style="margin-top: 0em">The type of your
@@ -58,8 +58,8 @@
 	for="proposal.assistance">Travel &amp; Accommodation
 	Assistance:</label></p>
 % for ta in c.tatypes:
-    <% h.radio_button('proposal.assistance', ta.id) %>
-    <label><% ta.name |h %></label><br />
+    <label><% h.radio_button('proposal.assistance', ta.id) %>
+    <% ta.name |h %></label><br />
 % #endfor
 		<p class="note" style="margin-top: 0em">Travel assistance
 		is available to speakers who qualify. If you think you need
