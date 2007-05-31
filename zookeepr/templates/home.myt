@@ -20,6 +20,11 @@
 
 <p>linux.conf.au 2008 in Mel<span class="eight">8</span>ourne, Victoria - The place to be.</p>
 
+<h2>Call for Papers</h2>
+
+<p>The <a href="/papers">call for papers</a> is now open. If you have a talk or
+a tutorial you would like to present, please let us know.</p>
+
 <h2>Mini-confs</h2>
 
 <p>The call for <a href="/mini-confs">mini-conf proposals</a> is now open. If you have a mini-conf 
