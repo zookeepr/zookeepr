@@ -43,7 +43,7 @@
 
 	<p class="label"><span class="mandatory">&#8224;</span><label for="proposal.url">Project homepage:</label></p>
 	<p class="entries"><% h.text_field('proposal.url', size=70) %></p>
-		<p class="note">If your project has webpage, specify the
+		<p class="note">If your project has a webpage, specify the
 		URL here so the committee can find out more about your
 		proposal.</p>
 
