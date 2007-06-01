@@ -17,8 +17,8 @@
 <%init>
 # Edit the list of submenus here :-)
 submenus = {
-  'about': ('history', 'melbourne', 'linux', 'floss', 'credits'),
-  'sponsors-media': ('sponsorship packages','media coverage',),
+  '2008/about': ('history', 'melbourne', 'linux', 'floss', 'credits'),
+  '2008/sponsors-media': ('sponsorship packages','media coverage',),
   'mini-confs': ('submit mini-conf proposal',),
   'papers': ('submit a paper', 'speaker FAQ'),
 }
@@ -28,12 +28,12 @@ url = h.url()()
 
 where = 'home'
 map = (
-  ('/about', 'about'),
-  ('/sponsors-media', 'sponsors-media'),
+  ('/2008/about', '2008/about'),
+  ('/2008/sponsors-media', '2008/sponsors-media'),
   ('/mini-confs', 'mini-confs'),
   ('/cfp', 'mini-confs'),
   ('/papers', 'papers'),
-  ('/contact', 'contact'),
+  ('/2008/contact', '2008/contact'),
   ('/account', 'login'),
   ('/error', ''),
 )
