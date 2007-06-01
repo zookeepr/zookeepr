@@ -13,7 +13,10 @@ satisfy everyone's tastes and budget.</p>
   <p>Melbourne is serviced by planes, trains, boats and automobiles. For all your travel information, have a look at <a href="http://wikitravel.org/en/Melbourne">Wikitravel</a>.</p>
 
   <h2>Weather</h2>
+% if 0:
+    # it seems get_termperature() os making this page hang/loop.
   It is currently <% h.get_temperature() %>. <!-- OOGLY: This is fetched off the php site by urllib. Zookeepr really gotta do it by itself -->
+% # end if
   <p>The weather in Melbourne has been described as &quot;random&quot;, but though there may be a cool spell, it will most likely be warm to hot during the conference.</p>
   <p>The <a href="http://www.bom.gov.au/">Bureau of Meteorology</a> will give you <a href="http://www.bom.gov.au/products/IDV10450.shtml">the current Melbourne forecast</a> along with <a href="http://www.bom.gov.au/cgi-bin/climate/cgi_bin_scripts/map_script_new.cgi?86071">monthly average Melbourne temperature and rainfall</a>. This should help you decide what to pack</p>
 
