@@ -45,8 +45,8 @@ class AdminController(SecureController):
     def list_miniconfs(self):
         """ List of miniconfs """
         return sql_response("""select proposal.id as id, title, abstract,
-	url, firstname || ' ' || lastname as name from proposal, person,
-	person_proposal_map where proposal_type_id = 2 and
+	proposal.url, firstname || ' ' || lastname as name from proposal,
+	person, person_proposal_map where proposal_type_id = 2 and
 	person.id=person_id and proposal.id=proposal_id order by title""")
     def list_attachments(self):
         """ List of attachments """
