@@ -19,7 +19,7 @@
 submenus = {
   '2008/about': ('history', 'melbourne', 'linux', 'floss', 'credits'),
   '2008/sponsors-media': ('sponsorship packages','media coverage',),
-  'mini-confs': ('submit mini-conf proposal',),
+  'mini-confs': ('submit mini-conf proposal', 'mini-conf organiser FAQ'),
   'papers': ('submit a presentation', 'speaker FAQ'),
   'presentations': ('submit a presentation', 'speaker FAQ'),
 }
