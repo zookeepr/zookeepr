@@ -17,7 +17,7 @@ Project URL:
 % #endif
 </p>
 
-<p>Abstract:</p>
+<h3>Abstract:</h3>
 <blockquote>
 <% h.auto_link(h.simple_format(c.review.proposal.abstract)) %>
 </blockquote>

@@ -25,7 +25,7 @@ Project URL:
 % #endif
 </p>
 
-<p>Abstract:</p>
+<h3>Abstract:</h3>
 <blockquote>
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
 </blockquote>
@@ -104,7 +104,7 @@ Summary
 <p>4. How excited are you to have this submission presented at linux.conf.au 2007?
 </p>
 
-<p>
+<p class="entries">
 % for i in range(0,6):
 <% h.radio('review.coolness', i, i) %>
 % #endfor
@@ -121,8 +121,9 @@ Summary
 </p>
 </div>
 
-<p>Comments (optional, readable by other reviewers, will not be shown to the submitter)
-
+<p class="label">Comments (optional, readable by other reviewers, will not be shown to the submitter)
+</p>
+<p class="entries">
 <% h.text_area('review.comment', size="80x10") %>
 </p>
 
@@ -132,7 +133,9 @@ Summary
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
+<p class="submit">
 <% h.submit('Submit review!') %>
+</p>
 
 <% h.end_form() %>
 

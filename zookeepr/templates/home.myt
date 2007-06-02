@@ -1,6 +1,8 @@
 <h1 class="pop">Australia's annual linux conference is fun, informal and seriously technical.</h1>
 
-<p>In 2008, linux.conf.au returns to Melbourne &ndash; one of the world's best technical conferences, in one of the world's most liveable cities. The MEL<span class="eight">8</span>OURNE team plans on making our guests feel at home and the locals proud.</p>
+<p>In 2008, linux.conf.au returns to Melbourne. It is one of the 
+world's best linux conferences. The MEL<span class="eight">8</span>OURNE 
+team plans on making our guests feel at home and the locals proud.</p>
 
 <h2>When</h2>
 <p>linux.conf.au opens on Wednesday January 30th and concludes with an Open Day on February 2nd 2008. Special interest <a href="/mini-confs">mini-confs</a> are held before the conference on Monday and Tuesday.</p>
