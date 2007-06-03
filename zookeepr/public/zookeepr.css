@@ -394,7 +394,10 @@ td.entries textarea:focus, td.s-entries textarea:focus, p.entries textarea:focus
 }
 
 .mandatory {
-   color: #f00;
+   color: #e60000;
+}
+.publishable {
+   color: #bf00e6;
 }
 
 table th {
