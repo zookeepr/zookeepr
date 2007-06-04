@@ -6,7 +6,11 @@
 
 <% h.form(h.url()) %>
 <& form.myt &>
+
+<p class="submit">
 <% h.submit('Update') %>
+</p>
+
 <% h.end_form() %>
 
 </&>
