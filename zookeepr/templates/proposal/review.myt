@@ -89,7 +89,7 @@ Proposal submitted by:
 </p>
 </div>
 
-<p>3. Comments (optional, readable by other reviewers, will not be shown to the submitter)</p>
+<p>3. Comments (optional, readable by other reviewers, will not be shown to the submitter)
 
 <% h.text_area('review.comment', size="80x10") %>
 </p>
