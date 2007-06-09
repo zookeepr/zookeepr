@@ -99,10 +99,7 @@ review = Table('review', metadata,
                       ),
                UniqueConstraint('proposal_id', 'reviewer_id', name='ux_review_proposal_reviewer'),
 
-               Column('familiarity', Integer),
-               Column('technical', Integer),
-               Column('experience', Integer),
-               Column('coolness', Integer),
+               Column('score', Integer),
 
                Column('stream_id', Integer,
                       ForeignKey('stream.id'),

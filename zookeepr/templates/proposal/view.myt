@@ -143,10 +143,7 @@ Unknown
 <table>
 <tr>
 <th># - Reviewer</th>
-<th>Familiar?</th>
-<th>Tech</th>
-<th>Exp</th>
-<th>Exc!</th>
+<th>Score</th>
 <th>Rec. Stream</th>
 <th>Comment</th>
 </tr>
@@ -158,25 +155,7 @@ Unknown
 </td>
 
 <td>
-% 		if r.familiarity == 0:
-0 - No
-% 		elif r.familiarity == 1:
-1 - Some
-% 		elif r.familiarity == 2:
-2 - Expert
-% 		#endif
-</td>
-
-<td>
-<% r.technical | h %>
-</td>
-
-<td>
-<% r.experience | h %>
-</td>
-
-<td>
-<% r.coolness | h %>
+<% r.score | h %>
 </td>
 
 <td>

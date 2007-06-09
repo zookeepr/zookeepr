@@ -9,12 +9,10 @@
 <th>#</th>
 <th>Proposal title</th>
 <th>Reviewer</th>
-<th>Familiarity</th>
-<th>Tech Content</th>
-<th>Speaker Exp</th>
-<th>Coolness</th>
+<th>Score</th>
 <th>Stream</th>
 <th>Comment</th>
+<th>Edit</th>
 </tr>
 % for r in c.review_collection:
 # only see the review if you wrote it
@@ -32,25 +30,11 @@
 
 <td>
 <% r.reviewer.firstname %>
-</td>
-<td>
 <% r.reviewer.lastname %>
 </td>
 
 <td>
-<% r.familiarity |h %>
-</td>
-
-<td>
-<% r.technical |h %>
-</td>
-
-<td>
-<% r.experience |h %>
-</td>
-
-<td>
-<% r.coolness |h %>
+<% r.score |h %>
 </td>
 
 <td>
@@ -61,6 +45,9 @@
 <% h.truncate(r.comment) %>
 </td>
 
+<td>
+<% h.link_to("edit", url=h.url(controller='review', action='edit', id=r.id)) %>
+</td>
 </tr>
 
 % 	#endif only look at own reviews

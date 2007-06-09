@@ -173,5 +173,6 @@ class ProposalController(SecureController, View, Modify):
         for at in c.assistance_types:
             stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
             setattr(c, '%s_collection' % at.name, stuff)
+       
 
         return super(ProposalController, self).index()

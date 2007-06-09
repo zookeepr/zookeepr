@@ -4,16 +4,10 @@ from zookeepr.tests.model import *
 
 class TestReviewModel(CRUDModelTest):
     domain = model.Review
-    samples = [dict(familiarity=1,
-                    technical=1,
-                    experience=1,
-                    coolness=1,
+    samples = [dict(score=1,
                     comment="c1",
                     ),
-                dict(familiarity=2,
-                    technical=2,
-                    experience=2,
-                    coolness=2,
+                dict(score=2,
                     comment="c2",
                     ),
                 ]
@@ -71,9 +65,7 @@ class TestReviewModel(CRUDModelTest):
 
         # create a review
         r1 = model.Review(reviewer=r,
-                          familiarity=1,
-                          technical=1,
-                          coolness=1,
+                          score=1,
                           stream=s,
                           )
         self.dbsession.save(r1)
@@ -82,9 +74,7 @@ class TestReviewModel(CRUDModelTest):
 
         # create a second, identical
         r2 = model.Review(reviewer=r,
-                          familiarity=1,
-                          technical=1,
-                          coolness=1,
+                          score=1,
                           stream=s,
                           )
         self.dbsession.save(r2)
