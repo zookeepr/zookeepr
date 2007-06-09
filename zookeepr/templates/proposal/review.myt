@@ -100,8 +100,7 @@ Proposal submitted by:
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
-<% h.submit('Submit review!') %>
-<% h.submit('Submit review and Load Next proposal!') %>
+<% h.submit('Submit review and jump to next proposal!') %>
 
 <% h.end_form() %>
 

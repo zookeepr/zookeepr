@@ -1,3 +1,4 @@
+% import random
 <h1>Proposal List</h1>
 
 <p>
@@ -7,6 +8,7 @@
 
 % for pt in c.proposal_types:
 %	collection = getattr(c, '%s_collection' % pt.name)
+%	random.shuffle(collection)
 
 
 %	min_reviews = 100
