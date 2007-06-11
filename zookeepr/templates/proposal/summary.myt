@@ -58,7 +58,7 @@ function toggleDiv(id,flagit) {
 % for pt in c.proposal_types:
 % 	collection = getattr(c, '%s_collection' % pt.name)
 
-<h2><% pt.name %>s (<% len(collection) %>)</h2>
+<h2><% pt.name %>s </h2>
 
 <table>
 <tr>
@@ -71,6 +71,10 @@ function toggleDiv(id,flagit) {
 </tr>
 
 % 	for proposal in collection:
+% 		if not proposal.reviews:
+% 			continue
+% 		# endif
+
 <tr class="<% h.cycle('even', 'odd') %>">
 
 <td>
@@ -106,12 +110,16 @@ function toggleDiv(id,flagit) {
 % 				streams[review.stream.name] = 1
 % 			# endif
 % 		# endfor
-% 		avg_score = total_score/num_reviewers
+% 		if num_reviewers == 0:
+% 			avg_score = "No Reviews"
+% 		else:
+% 			avg_score = total_score/num_reviewers
+% 		# endif
 <td>
-<div onMouseOver="toggleDiv('<% "score%s" % review.id | h%>',1)" onMouseOut="toggleDiv('<% "score%s" % review.id | h%>',0)">
+<div onMouseOver="toggleDiv('<% "score%s" % proposal.id | h%>',1)" onMouseOut="toggleDiv('<% "score%s" % proposal.id | h%>',0)">
 <% avg_score |h %>
 </div>
-<div id="<% "score%s" % review.id | h%>" class="commentdiv"><% scores %></div>
+<div id="<% "score%s" % proposal.id | h%>" class="commentdiv"><% scores %></div>
 
 </td>
 
@@ -144,10 +152,10 @@ link_to doesn't let us pass javascript tags
 % 		#endfor
 
 <td>
-<div onMouseOver="toggleDiv('<% "stream%s" % review.id | h%>',1)" onMouseOut="toggleDiv('<% "stream%s" % review.id | h%>',0)">
+<div onMouseOver="toggleDiv('<% "stream%s" % proposal.id | h%>',1)" onMouseOut="toggleDiv('<% "stream%s" % proposal.id | h%>',0)">
 <% stream %> (<% stream_score %>)
 </div>
-<div id="<% "stream%s" % review.id | h%>" class="biodiv"><% stream_stats %></div>
+<div id="<% "stream%s" % proposal.id | h%>" class="biodiv"><% stream_stats %></div>
 </td>
 
 </tr>

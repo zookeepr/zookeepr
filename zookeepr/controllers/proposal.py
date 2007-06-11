@@ -102,7 +102,24 @@ class ProposalController(SecureController, View, Modify):
 
         defaults = dict(request.POST)
         errors = {}
-        
+
+        # Next ID for skipping
+        collection = self.dbsession.query(self.model).select_by(Proposal.c.proposal_type_id == 1)
+        random.shuffle(collection)
+        min_reviews = 100
+        for p in collection:
+            if len(p.reviews) < min_reviews:
+                min_reviews = len(p.reviews)
+            elif not p.reviews:
+                min_reviews = 0
+        for proposal in collection:
+            print proposal.id
+            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and (not proposal.reviews or len(proposal.reviews) <= min_reviews) and proposal.id != id:
+                c.next_review_id = proposal.id
+                break
+
+
+
         if defaults:
             result, errors = NewReviewSchema().validate(defaults, self.dbsession)
 
@@ -118,26 +135,15 @@ class ProposalController(SecureController, View, Modify):
 
                 self.dbsession.flush()
 
-                # Dumb but redirecting to the proposal list is very slow.  bug #33
-                collection = self.dbsession.query(self.model).select_by(Proposal.c.proposal_type_id == review.proposal.proposal_type_id)
-
-                random.shuffle(collection)
-                min_reviews = 100
-                for p in collection:
-                    if len(p.reviews) < min_reviews:
-                        min_reviews = len(p.reviews)
-                    elif not p.reviews:
-                        min_reviews = 0
-                for proposal in collection:
-                    if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and len(proposal.reviews) <= min_reviews and proposal != review.proposal:
-                        return redirect_to(action='review', id=proposal.id)
+                if c.next_review_id:
+                    return redirect_to(action='review', id=c.next_review_id)
 
                 return redirect_to(action='index')
-                
+
         c.streams = self.dbsession.query(Stream).select()
-        
+
         return render_response('proposal/review.myt', defaults=defaults, errors=errors)
-    
+
 
     def attach(self, id):
         """Attach a file to the proposal.
@@ -222,6 +228,8 @@ class ProposalController(SecureController, View, Modify):
         for review in proposal.reviews:
             num_reviewers += 1
             total_score += review.score
+        if num_reviewers == 0:
+            return 0
         return total_score/num_reviewers
 
 

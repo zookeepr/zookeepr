@@ -9,6 +9,9 @@
 <fieldset>
 <legend>Proposal's technical content</legend>
 
+% if c.next_review_id:
+<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
+% #endif
 <p>
 This is a proposal for a <strong><% c.proposal.type.name %></strong>
 submitted at
@@ -102,6 +105,9 @@ Proposal submitted by:
 
 <% h.submit('Submit review and jump to next proposal!') %>
 
+% if c.next_review_id:
+<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
+% #endif
 <% h.end_form() %>
 
 </&>
