@@ -56,6 +56,7 @@ class ProposalController(SecureController, View, Modify):
                "edit" : EditProposalSchema()}
     permissions = {"edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer')],
+                   "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer')],
                    }
@@ -172,6 +173,7 @@ class ProposalController(SecureController, View, Modify):
         c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
         return super(ProposalController, self).edit(id)
 
+
     def index(self):
         # hack for bug#34, don't show miniconfs to reviewers
         if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
@@ -190,3 +192,36 @@ class ProposalController(SecureController, View, Modify):
        
 
         return super(ProposalController, self).index()
+
+
+    def summary(self):
+
+        if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
+            c.proposal_types = self.dbsession.query(ProposalType).select()
+        else:
+            c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
+
+        c.assistance_types = self.dbsession.query(AssistanceType).select()
+
+        for pt in c.proposal_types:
+            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            stuff.sort(self.score_sort)
+            setattr(c, '%s_collection' % pt.name, stuff)
+        for at in c.assistance_types:
+            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
+            setattr(c, '%s_collection' % at.name, stuff)
+
+        return render_response('proposal/summary.myt')
+
+    def score_sort(self, proposal1, proposal2):
+        return self.review_avg_score(proposal2) - self.review_avg_score(proposal1)
+
+    def review_avg_score(self,proposal):
+        total_score = 0
+        num_reviewers = 0
+        for review in proposal.reviews:
+            num_reviewers += 1
+            total_score += review.score
+        return total_score/num_reviewers
+
+

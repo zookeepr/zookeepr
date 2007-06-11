@@ -48,6 +48,8 @@ def make_map():
     m.connect('/Openday', controller='openday', action='new')
     m.connect('/openday', controller='openday', action='new')
     m.connect('/openDay', controller='openday', action='new')
+    
+    m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
