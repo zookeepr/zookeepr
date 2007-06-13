@@ -21,6 +21,14 @@ errors
 <%init>
 # Working around a bug in formencode, we need to set the defaults to the c.proposal
 # values
+#
+# 13.6.2007 (IM between sabik & johnf):
+# (17:19:32) sabik: Would you remember the nature of the bug and/or how I
+# need to take it into account when I change the form?
+# (17:21:29) johnf: jaq fixed that but I know whenever I've
+# changed a form I've had to add its elements to that it of code
+# (17:22:09) sabik: OK, I guess I can just do that too...
+
 if not defaults and c.proposal:
     defaults = {
             'proposal.title': c.proposal.title,
