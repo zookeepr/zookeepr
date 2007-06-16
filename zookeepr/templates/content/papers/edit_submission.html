@@ -7,9 +7,8 @@ if 'signed_in_person_id' in session:
     from proposal, person_proposal_map
     where %d = person_id and proposal.id = proposal_id
       and proposal_type_id <> 2
-      and 1=2
     order by proposal.id
-    """ % session.signed_in_person_id)
+    """ % session['signed_in_person_id'])
 # note: the "2" corresponds to "miniconf" in our instance
 
 def oddeven():
