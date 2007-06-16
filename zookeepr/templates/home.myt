@@ -4,6 +4,12 @@
 world's best linux conferences. The MEL<span class="eight">8</span>OURNE 
 team plans on making our guests feel at home and the locals proud.</p>
 
+<h2>Call for Presentations</h2>
+
+<p>The <a href="/presentations">Call for Presentations</a> (aka <a
+href="/presentations">Call for Papers</a>) is now open. If you have a talk or
+a tutorial you would like to present, please let us know. Read the <a href="/presentations/announcement">full announcement</a>.</p>
+
 <h2>When</h2>
 <p>linux.conf.au opens on Wednesday January 30th and concludes with an Open Day on February 2nd 2008. Special interest <a href="/mini-confs">mini-confs</a> are held before the conference on Monday and Tuesday.</p>
 
@@ -22,11 +28,6 @@ team plans on making our guests feel at home and the locals proud.</p>
 
 <p>linux.conf.au 2008 in Mel<span class="eight">8</span>ourne, Victoria - The place to be.</p>
 
-<h2>Call for Presentations</h2>
-
-<p>The <a href="/presentations">Call for Presentations</a> (aka <a
-href="/presentations">Call for Papers</a>) is now open. If you have a talk or
-a tutorial you would like to present, please let us know.</p>
 
 <h2>Mini-confs</h2>
 
