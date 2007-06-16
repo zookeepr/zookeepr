@@ -30,6 +30,8 @@ def make_map():
     m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
     m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
 					      controller='cfp', action='submit_mini')
+    m.connect('/presentations/edit/:id', controller='proposal',
+							     action='edit')
 
     # account confirmation named route
     m.connect('acct_confirm', '/account/confirm/:id',

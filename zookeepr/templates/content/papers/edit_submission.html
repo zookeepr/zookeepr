@@ -1,0 +1,35 @@
+<%init>
+from zookeepr.controllers.admin import sql_data
+
+talks = sql_data("""
+  select proposal.id, proposal.title
+  from proposal, person, person_proposal_map
+  where person.id = person_id and proposal.id = proposal_id
+    and proposal_type_id <> 2
+  order by proposal.id
+  """)
+# note: the "2" corresponds to "miniconf" in our instance
+
+def oddeven():
+  while 1:
+    yield "odd"
+    yield "even"
+oddeven = oddeven()
+</%init>
+
+<h1>Edit a presentation</h1>
+
+% if len(talks)==0:
+  You have no presentation submissions to edit!  <a
+  href="/presentations/submit_a_presentation">Submit a presentation</a>
+  first...
+% else:
+  Select the presentation submission you wish to edit:
+  <table border="1">
+%   for (id, title) in talks:
+      <tr class="<% oddeven.next() %>">
+      <td class="list"><a href="/presentations/edit/<%id%>"><% title |h%></a></td>
+      </tr>
+%   #endfor
+  </table>
+% #endif

@@ -37,8 +37,11 @@ if not defaults and c.proposal:
     defaults = {
             'proposal.title': c.proposal.title,
             'proposal.abstract': c.proposal.abstract,
+            'proposal.project': c.proposal.project,
+            'proposal.abstract_video_url': c.proposal.abstract_video_url,
             'person.experience': c.person.experience,
             'person.bio': c.person.bio,
+            'person.url': c.person.url,
             'proposal.url': c.proposal.url,
     }
     if c.proposal.type:

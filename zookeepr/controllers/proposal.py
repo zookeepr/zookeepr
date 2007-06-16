@@ -1,4 +1,5 @@
 from formencode import validators, compound, schema, variabledecode, Invalid
+from paste.deploy.converters import asbool
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
 from zookeepr.lib.base import *
@@ -7,11 +8,13 @@ from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeVal
 from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType
 
 class ProposalSchema(schema.Schema):
-    title = validators.String()
-    abstract = validators.String()
-    url = validators.String()
+    title = validators.String(not_empty=True)
+    abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
     assistance = AssistanceTypeValidator()
+    project = validators.String(not_empty=True)
+    url = validators.String()
+    abstract_video_url = validators.String()
 
 class NewProposalSchema(BaseSchema):
     ignore_key_missing = True
@@ -19,8 +22,14 @@ class NewProposalSchema(BaseSchema):
     attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
+class PersonSchema(BaseSchema):
+    experience = validators.String()
+    bio = validators.String(not_empty=True)
+    url = validators.String()
+
 class EditProposalSchema(BaseSchema):
     proposal = ProposalSchema()
+    person = PersonSchema()
     pre_validators = [variabledecode.NestedVariables]
 
 
@@ -157,7 +166,38 @@ class ProposalController(SecureController, View, Modify):
 
     def edit(self, id):
         c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
-        return super(ProposalController, self).edit(id)
+	c.cfptypes = self.dbsession.query(ProposalType).select()
+	c.tatypes = self.dbsession.query(AssistanceType).select()
+
+        errors = {}
+        defaults = dict(request.POST)
+
+        if defaults:
+            result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
+
+            if errors:
+                if asbool(request.environ['paste.config']['global_conf'].get('debug')):
+                    warnings.warn("edit: form validation failed: %s" % errors)
+            else:
+                # update the object with the posted data
+                for k in result[self.individual]:
+                    setattr(self.obj, k, result[self.individual][k])
+
+                for k in result['person']:
+                    setattr(c.person, k, result['person'][k])
+
+                self.dbsession.save(self.obj)
+                self.dbsession.flush()
+
+                # call postflush hook
+                self._edit_postflush()
+
+                default_redirect = dict(action='view', id=self.identifier(self.obj))
+                return render_response('proposal/edit_thankyou.myt')
+
+        # call the template
+        return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
+
 
     def index(self):
         # hack for bug#34, don't show miniconfs to reviewers
