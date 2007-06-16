@@ -22,7 +22,8 @@ submenus = {
   '2008/sponsors-media': ('sponsorship packages','media coverage',),
   'mini-confs': ('submit mini-conf proposal', 'mini-conf organiser FAQ'),
   'presentations': ('announcement', 'submit a presentation',
-			'edit submission', 'speaker FAQ', 'sample form'),
+			#'edit submission',
+			'speaker FAQ', 'sample form'),
 }
 
 # The current URL can be accessed as h.url()()

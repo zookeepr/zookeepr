@@ -1,13 +1,15 @@
 <%init>
 from zookeepr.controllers.admin import sql_data
 
-talks = sql_data("""
-  select proposal.id, proposal.title
-  from proposal, person, person_proposal_map
-  where person.id = person_id and proposal.id = proposal_id
-    and proposal_type_id <> 2
-  order by proposal.id
-  """)
+if 'signed_in_person_id' in session:
+  talks = sql_data("""
+    select proposal.id, proposal.title
+    from proposal, person_proposal_map
+    where %d = person_id and proposal.id = proposal_id
+      and proposal_type_id <> 2
+      and 1=2
+    order by proposal.id
+    """ % session.signed_in_person_id)
 # note: the "2" corresponds to "miniconf" in our instance
 
 def oddeven():
@@ -19,7 +21,9 @@ oddeven = oddeven()
 
 <h1>Edit a presentation</h1>
 
-% if len(talks)==0:
+% if 'signed_in_person_id' not in session:
+  You need to <a href="http://linux.conf.au/account/signin?url=presentations%2Fedit_submission">log in first</a>.
+% elif len(talks)==0:
   You have no presentation submissions to edit!  <a
   href="/presentations/submit_a_presentation">Submit a presentation</a>
   first...
