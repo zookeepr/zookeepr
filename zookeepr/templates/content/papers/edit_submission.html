@@ -17,11 +17,11 @@ def oddeven():
     yield "even"
 oddeven = oddeven()
 </%init>
-
 <h1>Edit a presentation</h1>
 
 % if 'signed_in_person_id' not in session:
-  You need to <a href="http://linux.conf.au/account/signin?url=presentations%2Fedit_submission">log in first</a>.
+  <meta http-equiv="Refresh" content="1; http://linux.conf.au/account/signin?url=presentations%2Fedit_submission">
+  You need to <a href="http://linux.conf.au/account/signin?url=presentations%2Fedit_submission">sign in first</a>.
 % elif len(talks)==0:
   You have no presentation submissions to edit!  <a
   href="/presentations/submit_a_presentation">Submit a presentation</a>
