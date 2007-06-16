@@ -2,16 +2,19 @@
 % if 'organiser' not in [x.name for x in c.signed_in_person.roles]:
 <div style="display:none">
 % # endif
+<p class="label">
 <span class="mandatory">*</span>
-<label for="proposal.title">Title:</label><br />
+<label for="proposal.title">Title:</label></p>
+<p>
 <% h.text_field('proposal.title', size=80) %></p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="proposal.proposal_type">Type:</label>
 #<span class="fielddesc">What sort of proposal is this?</span>
-<br />
+</p>
 
+<p class="entries">
 % for st in c.proposal_types:
 %   if c.proposal and c.proposal.type:
 %       czeched = c.proposal.type == st
@@ -26,41 +29,49 @@
 </p>
 
 
-<p>
+<p class="label">
 <label for="proposal.url">Project URL:</label>
-<br />
+</p>
+<p class="entries">
 <% h.text_field('proposal.url', size=80) %>
 </p>
 
-<p>
+<p class="label">
 <label for="attachment">Attach a paper:</label>
 <% h.file_field('attachment', size=50) %>
 </p>
 % if 'organiser' not in [x.name for x in c.signed_in_person.roles]:
 </div>
 % # endif
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="proposal.abstract">Abstract:</label>
-<br />
-<% h.text_area('proposal.abstract', size="80x10") %></p>
+</p>
+<p class="entries">
+<% h.text_area('proposal.abstract', size="80x10") %>
+</p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="person.experience">Experience:</label>
-<br />
-<% h.text_area('person.experience', size="80x5") %></p>
+</p>
+<p class="entries">
+<% h.text_area('person.experience', size="80x5") %>
+</p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="person.bio">Bio:</label>
-<br />
-<% h.text_area('person.bio', size="80x5") %></p>
+</p>
+<p class="entries">
+<% h.text_area('person.bio', size="80x5") %>
+</p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label>Travel & Accommodation Assistance:</label>
-<br />
+</p>
+<p class="entries">
 % for ta in c.assistance_types:
 %   if c.proposal and c.proposal.assistance:
 %       czeched = c.proposal.assistance == ta
@@ -71,6 +82,7 @@
     <label for="proposal.assistance"><% ta.name |h %></label>
     <br />
 % #endfor
+</p>
 
 <p>
 <span class="mandatory">*</span>
