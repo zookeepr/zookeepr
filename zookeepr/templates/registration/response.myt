@@ -12,7 +12,7 @@ below:
 
 http://<% h.host_name() %><% h.url_for('acct_confirm', id=id) %>
 
-(If clicking does not work, please clag it into your web browser.)
+(If clicking does not work, please paste it into your web browser.)
 
 Once your account has been confirmed, you will be able to log
 into the site with the password you provided with your registration.
