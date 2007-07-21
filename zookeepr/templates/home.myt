@@ -10,8 +10,8 @@ team plans on making our guests feel at home and the locals proud.</p>
 <h2>Call for Presentations</h2>
 
 <p>The <a href="/presentations">Call for Presentations</a> (aka <a
-href="/presentations">Call for Papers</a>) will close on Friday, 20 July.
-If you have a talk or a tutorial you would like to present, please let us know. Read the <a href="/presentations/announcement">full announcement</a>.</p>
+href="/presentations">Call for Papers</a>) is closing imminently.
+If you have a talk or a tutorial you would like to present, please let us know quickly! Read the <a href="/presentations/announcement">full announcement</a>.</p>
 
 </div>
 

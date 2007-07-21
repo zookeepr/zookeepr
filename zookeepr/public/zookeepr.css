@@ -429,3 +429,24 @@ table.list td, td.list {
 .mel8ourne {
      color:#f90;
 }
+
+/* Front page column definitions */
+div#hp-announce {
+	float: left;
+	width: 50%
+}
+
+div#hp-news {
+	float: right;
+	width: 45%;
+}
+
+.hp-list {
+	margin: 0px;
+	padding: 0px;
+}
+
+.hp-list li {
+	text-indent: 0px;
+	list-style-type: none;
+}

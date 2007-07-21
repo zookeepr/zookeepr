@@ -45,7 +45,7 @@
 		<p class="note">The name of the project you will be talking
 		about.</p>
 
-	<p class="label"><span class="mandatory">*</span><span 
+	<p class="label"><span 
 	        class="publishable">&#8224;</span><label for="proposal.url">Project homepage:</label></p>
 	<p class="entries"><% h.text_field('proposal.url', size=70) %></p>
 		<p class="note">If your project has a webpage, specify the
