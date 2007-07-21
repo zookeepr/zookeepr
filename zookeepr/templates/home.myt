@@ -20,9 +20,10 @@ If you have a talk or a tutorial you would like to present, please let us know q
 <h2>News</h2>
 
 <ul class="hp-list" style="margin: 0px; padding: 0px;">
+<li><a href="/mini-confs">Mini-conf proposal submissions close</a><br />21 July 2006</li>
 <li><a href="/2008/sponsors-media/news/call-for-proposals-final-week">Call for Presentations - Final Week</a><br />16 July 2007</li>
 <li><a href="/2008/sponsors-media/news/keynote-secured">linux.conf.au 2008 - Keynote Secured</a><br />2 July 2007</li>
-<li><a href="/mini-confs">Mini-conf proposal submissions open</a><br />15 June 2006</li>
+<!-- <li><a href="/mini-confs">Mini-conf proposal submissions open</a><br />15 June 2006</li> -->
 </ul>
 
 </div>
