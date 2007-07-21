@@ -1,6 +1,4 @@
-<h2>Call for Mini-confs</h2>
-
-<h3>Closed!</h3>
+<h2>Closed!</h2>
 
 <p>
 The call for mini-confs is now closed!
