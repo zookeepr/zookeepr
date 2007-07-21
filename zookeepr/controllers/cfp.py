@@ -114,6 +114,11 @@ class CfpController(SecureController):
                                defaults=defaults, errors=errors)
 
     def submit_mini(self):
+
+        # call-for-miniconfs now closed
+        if 1: 
+	    return render_response("cfp/closed_mini.myt")
+
         c.cfptypes = self.dbsession.query(ProposalType).select()
         c.tatypes = self.dbsession.query(AssistanceType).select()
         c.cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
