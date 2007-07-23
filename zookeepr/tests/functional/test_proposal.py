@@ -348,10 +348,7 @@ class TestProposal(SignedInCRUDControllerTest):
 
         print f.fields
 
-        f['review.familiarity'] = 1
-        f['review.technical'] = 1
-        f['review.experience'] = 1
-        f['review.coolness'] = 1
+        f['review.score'] = 1
         f['review.stream'] = 1
         f['review.comment'] = "snuh"
 

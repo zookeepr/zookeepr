@@ -4,7 +4,8 @@ from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, A
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator, StreamValidator, ReviewSchema, AssistanceTypeValidator
-from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType
+from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role
+import random
 
 class ProposalSchema(schema.Schema):
     title = validators.String()
@@ -56,6 +57,7 @@ class ProposalController(SecureController, View, Modify):
     permissions = {"new": [AuthFalse()],
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer')],
+                   "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer'), AuthRole('organiser')],
                    }
@@ -101,7 +103,24 @@ class ProposalController(SecureController, View, Modify):
 
         defaults = dict(request.POST)
         errors = {}
-        
+
+        # Next ID for skipping
+        collection = self.dbsession.query(self.model).select_by(Proposal.c.proposal_type_id == 1)
+        random.shuffle(collection)
+        min_reviews = 100
+        for p in collection:
+            if len(p.reviews) < min_reviews:
+                min_reviews = len(p.reviews)
+            elif not p.reviews:
+                min_reviews = 0
+        for proposal in collection:
+            print proposal.id
+            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and (not proposal.reviews or len(proposal.reviews) <= min_reviews) and proposal.id != id:
+                c.next_review_id = proposal.id
+                break
+
+
+
         if defaults:
             result, errors = NewReviewSchema().validate(defaults, self.dbsession)
 
@@ -117,13 +136,15 @@ class ProposalController(SecureController, View, Modify):
 
                 self.dbsession.flush()
 
-                # Dumb but redirecting to the proposal list is very slow.  bug #33
-                redirect_to('/')
-                
+                if c.next_review_id:
+                    return redirect_to(action='review', id=c.next_review_id)
+
+                return redirect_to(action='index')
+
         c.streams = self.dbsession.query(Stream).select()
-        
+
         return render_response('proposal/review.myt', defaults=defaults, errors=errors)
-    
+
 
     def attach(self, id):
         """Attach a file to the proposal.
@@ -159,7 +180,9 @@ class ProposalController(SecureController, View, Modify):
         c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
         return super(ProposalController, self).edit(id)
 
+
     def index(self):
+        c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
         # hack for bug#34, don't show miniconfs to reviewers
 	# Jiri: unless they're also organisers...
         if 'organiser' in [r.name for r in c.signed_in_person.roles]:
@@ -169,11 +192,51 @@ class ProposalController(SecureController, View, Modify):
 
         c.assistance_types = self.dbsession.query(AssistanceType).select()
 
+        c.num_proposals = 5
+        reviewer_role = self.dbsession.query(Role).select_by(Role.c.name == 'reviewer')
+        c.num_reviewers = len(reviewer_role[0].people)
         for pt in c.proposal_types:
             stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            c.num_proposals += len(stuff)
+            setattr(c, '%s_collection' % pt.name, stuff)
+        for at in c.assistance_types:
+            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
+            setattr(c, '%s_collection' % at.name, stuff)
+       
+
+        return super(ProposalController, self).index()
+
+
+    def summary(self):
+
+        if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
+            c.proposal_types = self.dbsession.query(ProposalType).select()
+        else:
+            c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
+
+        c.assistance_types = self.dbsession.query(AssistanceType).select()
+
+        for pt in c.proposal_types:
+            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            stuff.sort(self.score_sort)
             setattr(c, '%s_collection' % pt.name, stuff)
         for at in c.assistance_types:
             stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
             setattr(c, '%s_collection' % at.name, stuff)
 
-        return super(ProposalController, self).index()
+        return render_response('proposal/summary.myt')
+
+    def score_sort(self, proposal1, proposal2):
+        return self.review_avg_score(proposal2) - self.review_avg_score(proposal1)
+
+    def review_avg_score(self,proposal):
+        total_score = 0
+        num_reviewers = 0
+        for review in proposal.reviews:
+            num_reviewers += 1
+            total_score += review.score
+        if num_reviewers == 0:
+            return 0
+        return total_score/num_reviewers
+
+

@@ -63,10 +63,7 @@ class StreamValidator(validators.FancyValidator):
 
 
 class ReviewSchema(schema.Schema):
-    familiarity = validators.Int()
-    technical = validators.Int()
-    experience = validators.Int()
-    coolness = validators.Int()
+    score = validators.Int()
     stream = StreamValidator()
     comment = validators.String()
 

@@ -93,7 +93,7 @@ def contact_email(text=None):
     Renders a link to the committee; optionally takes a text, which will be
     the text of the anchor (defaults to the e-mail address).
     """
-    email = request_config().environ['paste.config']['app_conf']['contact_email']
+    email = 'johnf@inodes.org'
     if text==None:
       text = '<tt>'+email+'</tt>'
     return '<a href="mailto:'+email+'">'+text+'</a>'

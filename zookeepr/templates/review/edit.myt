@@ -24,10 +24,7 @@ errors
 # Working around a bug in formencode, we need to set the defaults to the
 # c.review values
 if not defaults:
-    defaults = {'review.familiarity': c.review.familiarity,
-        'review.technical': c.review.technical,
-        'review.experience': c.review.experience,
-        'review.coolness': c.review.coolness,
+    defaults = {'review.score': c.review.score,
         'review.comment': c.review.comment,
         }
 </%init>

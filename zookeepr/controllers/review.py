@@ -14,7 +14,8 @@ class ReviewController(SecureController, List, Update, Read):
     individual = 'review'
     permissions = {'index': [AuthRole('reviewer')],
                    'edit': [AuthRole('reviewer')],
-                   'view': [AuthRole('reviewer'), AuthRole('organiser')]
+                   'view': [AuthRole('reviewer'), AuthRole('organiser')],
+                   'summary': [AuthRole('reviewer'), AuthRole('organiser')]
                    }
     schemas = {'edit': EditReviewSchema(),
                }
@@ -22,7 +23,8 @@ class ReviewController(SecureController, List, Update, Read):
                     }
 
     def __before__(self, **kwargs):
-        
+
         super(ReviewController, self).__before__(**kwargs)
 
         c.streams = self.dbsession.query(model.Stream).select()
+
