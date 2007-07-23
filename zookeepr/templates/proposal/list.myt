@@ -6,6 +6,10 @@
 </p>
 
 
+You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. 
+
+
+
 % for pt in c.proposal_types:
 %	collection = getattr(c, '%s_collection' % pt.name)
 %	random.shuffle(collection)

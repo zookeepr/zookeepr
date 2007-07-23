@@ -12,6 +12,7 @@
 % if c.next_review_id:
 <% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
 % #endif
+<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='index')) %>
 <p>
 This is a proposal for a <strong><% c.proposal.type.name %></strong>
 submitted at

@@ -4,7 +4,7 @@ from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, A
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator, StreamValidator, ReviewSchema, AssistanceTypeValidator
-from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType
+from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role
 import random
 
 class ProposalSchema(schema.Schema):
@@ -181,6 +181,7 @@ class ProposalController(SecureController, View, Modify):
 
 
     def index(self):
+        c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
         # hack for bug#34, don't show miniconfs to reviewers
         if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
             c.proposal_types = self.dbsession.query(ProposalType).select()
@@ -189,8 +190,12 @@ class ProposalController(SecureController, View, Modify):
 
         c.assistance_types = self.dbsession.query(AssistanceType).select()
 
+        c.num_proposals = 5
+        reviewer_role = self.dbsession.query(Role).select_by(Role.c.name == 'reviewer')
+        c.num_reviewers = len(reviewer_role[0].people)
         for pt in c.proposal_types:
             stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            c.num_proposals += len(stuff)
             setattr(c, '%s_collection' % pt.name, stuff)
         for at in c.assistance_types:
             stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
