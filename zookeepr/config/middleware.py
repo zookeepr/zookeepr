@@ -2,7 +2,7 @@ from paste import httpexceptions
 from paste.cascade import Cascade
 from paste.urlparser import StaticURLParser
 from paste.registry import RegistryManager
-from paste.deploy.config import ConfigMiddleware
+from paste.deploy.config import ConfigMiddleware, PrefixMiddleware
 
 from paste.pony import PonyMiddleware
 
@@ -73,6 +73,11 @@ def make_app(global_conf, **app_conf):
     #app = ErrorDocuments(app, global_conf, mapper=e, **app_conf)
 
     app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
+
+    # PrefixMiddleware fixes up the hostname when zookeepr is being proxied.
+    # This is important for constructing absolute filenames (as, for instance,
+    # PonyMiddleware does).
+    app = PrefixMiddleware(app)
     
     # @@@ Establish the Registry for this application @@@
     app = RegistryManager(app)
