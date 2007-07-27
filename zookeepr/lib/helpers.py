@@ -5,8 +5,6 @@ All names available in this module will be available under the Pylons h object.
 """
 from routes import request_config
 from webhelpers import *
-from pylons.helpers import log
-from pylons.i18n import get_lang, set_lang
 from wiki import wiki_here, wiki_fragment, wiki_html_fragment
 import urllib
 from glob import glob
