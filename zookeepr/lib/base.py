@@ -2,7 +2,8 @@ import cgi
 import types
 
 from formencode.api import Invalid
-from pylons import Response, c, g, h, cache, request, session
+from pylons import Response, c, g, cache, request, session
+import zookeepr.lib.helpers as h
 from pylons.controllers import WSGIController
 from pylons.decorators import jsonify, rest, validate
 from pylons.templating import render, render_response

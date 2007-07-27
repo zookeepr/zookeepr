@@ -1,4 +1,4 @@
-from pylons import h
+import zookeepr.lib.helpers as h
 from sqlalchemy import create_session
 
 from zookeepr.model.core.domain import Person
