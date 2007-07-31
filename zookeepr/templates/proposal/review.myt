@@ -25,6 +25,15 @@ Project URL:
 % #endif
 </p>
 
+<p>
+Video URL:
+% if c.proposal.abstract_video_url:
+<% h.link_to(c.proposal.abstract_video_url, url=c.proposal.abstract_video_url) %>.
+% else:
+<em>none given</em>.
+% #endif
+</p>
+
 <h3>Abstract:</h3>
 <blockquote>
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>

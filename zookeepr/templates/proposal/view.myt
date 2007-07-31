@@ -26,11 +26,24 @@ at
 
 % if c.proposal.url:
 <p class="url">
+<em>Project URL</em>
 # FIXME: I reckon this should go into the helpers logic
 %	if '://' in c.proposal.url:
 <% h.link_to(c.proposal.url, url=c.proposal.url) %>
 %	else:
 <% h.link_to(c.proposal.url, url='http://' + c.proposal.url) %>
+%	#endif
+</p>
+% #endif
+
+% if c.proposal.abstract_video_url:
+<p class="url">
+<em>Video Abstract</em>
+# FIXME: I reckon this should go into the helpers logic
+%	if '://' in c.proposal.abstract_video_url:
+<% h.link_to(c.proposal.abstract_video_url, url=c.proposal.abstract_video_url) %>
+%	else:
+<% h.link_to(c.proposal.abstract_video_url, url='http://' + c.proposal.abstract_video_url) %>
 %	#endif
 </p>
 % #endif
