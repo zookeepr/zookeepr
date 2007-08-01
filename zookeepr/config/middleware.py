@@ -76,8 +76,10 @@ def make_app(global_conf, **app_conf):
 
     # PrefixMiddleware fixes up the hostname when zookeepr is being proxied.
     # This is important for constructing absolute filenames (as, for instance,
-    # PonyMiddleware does).
-    app = PrefixMiddleware(app)
+    # PonyMiddleware does). However, it stuffs up things sometimes,
+    # especially on my test box, so make it configurable.
+    if not app_conf.has_key('prefixMW_disable'):
+      app = PrefixMiddleware(app)
     
     # @@@ Establish the Registry for this application @@@
     app = RegistryManager(app)
