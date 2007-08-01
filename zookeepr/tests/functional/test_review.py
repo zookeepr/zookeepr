@@ -5,15 +5,9 @@ class TestReviewController(SignedInCRUDControllerTest):
 #     name = 'review'
 #     url = '/review'
 #     samples = [dict(comment='a',
-#                     familiarity=0,
-#                     technical=0,
-#                     experience=0,
-#                     coolness=0),
+#                     score=0),
 #                dict(comment='b',
-#                     familiarity=1,
-#                     technical=1,
-#                     experience=1,
-#                     coolness=1)
+#                     score=1)
 #                ]
 
 #     def additional(self, obj):
@@ -75,20 +69,14 @@ class TestReviewController(SignedInCRUDControllerTest):
         p.people.append(p2)
         r1 = model.Review(
                     reviewer=self.person,
-                    familiarity=0,
-                    technical=1,
-                    experience=1,
-                    coolness=1,
+                    score=1,
                     stream=self.dbsession.get(model.Stream, 1),
                     )
         p.reviews.append(r1)
         self.dbsession.save(r1)
         r2 = model.Review(
                     reviewer=p1,
-                    familiarity=1,
-                    technical=2,
-                    experience=2,
-                    coolness=3,
+                    score=3,
                     stream=self.dbsession.get(model.Stream, 1),
                     )
         p.reviews.append(r2)
@@ -158,10 +146,7 @@ class TestReviewController(SignedInCRUDControllerTest):
         self.dbsession.save(p)
         s.proposals.append(p)
         r = model.Review(reviewer=self.person,
-                         familiarity=0,
-                         technical=0,
-                         experience=0,
-                         coolness=0,
+                         score=0,
                          stream=self.dbsession.query(model.Stream).get(1))
         self.dbsession.save(r)
         p.reviews.append(r)

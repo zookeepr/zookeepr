@@ -26,11 +26,24 @@ at
 
 % if c.proposal.url:
 <p class="url">
+<em>Project URL</em>
 # FIXME: I reckon this should go into the helpers logic
 %	if '://' in c.proposal.url:
 <% h.link_to(c.proposal.url, url=c.proposal.url) %>
 %	else:
 <% h.link_to(c.proposal.url, url='http://' + c.proposal.url) %>
+%	#endif
+</p>
+% #endif
+
+% if c.proposal.abstract_video_url:
+<p class="url">
+<em>Video Abstract</em>
+# FIXME: I reckon this should go into the helpers logic
+%	if '://' in c.proposal.abstract_video_url:
+<% h.link_to(c.proposal.abstract_video_url, url=c.proposal.abstract_video_url) %>
+%	else:
+<% h.link_to(c.proposal.abstract_video_url, url='http://' + c.proposal.abstract_video_url) %>
 %	#endif
 </p>
 % #endif
@@ -143,10 +156,7 @@ Unknown
 <table>
 <tr>
 <th># - Reviewer</th>
-<th>Familiar?</th>
-<th>Tech</th>
-<th>Exp</th>
-<th>Exc!</th>
+<th>Score</th>
 <th>Rec. Stream</th>
 <th>Comment</th>
 </tr>
@@ -158,25 +168,7 @@ Unknown
 </td>
 
 <td>
-% 		if r.familiarity == 0:
-0 - No
-% 		elif r.familiarity == 1:
-1 - Some
-% 		elif r.familiarity == 2:
-2 - Expert
-% 		#endif
-</td>
-
-<td>
-<% r.technical | h %>
-</td>
-
-<td>
-<% r.experience | h %>
-</td>
-
-<td>
-<% r.coolness | h %>
+<% r.score | h %>
 </td>
 
 <td>

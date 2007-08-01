@@ -15,8 +15,6 @@ class CFPModeValidator(validators.FancyValidator):
         cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
         if cfp_mode == 'miniconf' and value['type'].name != 'Miniconf':
             raise Invalid("You can only register miniconfs at this time.", value, state)
-        #elif cfp_mode != 'miniconf' and value['type'].name == 'Miniconf':
-        #    raise Invalid("You can't register miniconfs at this time.", value, state)
 
 class PersonSchema(Schema):
     experience = validators.String()

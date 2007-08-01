@@ -58,6 +58,8 @@ def make_map():
     m.connect('/Openday', controller='openday', action='new')
     m.connect('/openday', controller='openday', action='new')
     m.connect('/openDay', controller='openday', action='new')
+    
+    m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
 
     # special case the wiki controller so that it's not gobbled by the
     # usual :controller rules...
