@@ -101,6 +101,7 @@ function toggleDiv(id,flagit) {
 % 		num_reviewers = 0
 % 		scores = ""
 % 		for review in proposal.reviews:
+%                   if review.score is not None:
 % 			num_reviewers += 1
 % 			total_score += review.score
 % 			scores += review.reviewer.handle + ": %s " % review.score
@@ -109,6 +110,7 @@ function toggleDiv(id,flagit) {
 % 			else:
 % 				streams[review.stream.name] = 1
 % 			# endif
+%                   # endif
 % 		# endfor
 % 		if num_reviewers == 0:
 % 			avg_score = "No Reviews"
