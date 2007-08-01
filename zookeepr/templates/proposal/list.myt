@@ -1,13 +1,32 @@
+% import random
 <h1>Proposal List</h1>
 
 <p>
 <% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %>
 </p>
 
+
+You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. 
+
+
+
 % for pt in c.proposal_types:
 %	collection = getattr(c, '%s_collection' % pt.name)
+%	random.shuffle(collection)
+
+
+%	min_reviews = 100
+%	for p in collection:
+%		if len(p.reviews) < min_reviews:
+%			min_reviews = len(p.reviews)
+%		elif not p.reviews:
+%			min_reviews = 0
+%		# endif
+%	#endfor
+
 <h2><% pt.name %>s (<% len(collection) %>)</h2>
 
+Paper cannot been reviewed again untill all papers have been reviewed at least <% min_reviews +1 %> times;
 <table class="list">
 
 <tr>
@@ -18,6 +37,7 @@
 #<th>Project URL</th>
 <th>Submitter(s)</th>
 <th>Submission Time</th>
+<th>Number of reviews</th>
 <th>Reviewed?</th>
 </tr>
 
@@ -40,10 +60,13 @@
 <td>
 <% s.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
 </td>
+<td>
+<% len(s.reviews) %>
+</td>
 
 	<td>
-%		if [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
-	TICK!
+%		if min_reviews < 3 and len(s.reviews) > min_reviews :
+	Review something with <% min_reviews %> reviews first
 %		else:
 	<% h.link_to("Review now!", url=h.url(action="review", id=s.id)) %>
 %		#ENDIF

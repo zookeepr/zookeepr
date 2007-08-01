@@ -9,8 +9,12 @@
 <fieldset>
 <legend>Proposal's technical content</legend>
 
+% if c.next_review_id:
+<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
+% #endif
+<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='index')) %>
 <p>
-This is a proposal for a <% c.proposal.type.name %>
+This is a proposal for a <strong><% c.proposal.type.name %></strong>
 submitted at
 <% c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
 (last updated at <% c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
@@ -39,90 +43,63 @@ Video URL:
 <% h.auto_link(h.simple_format(c.proposal.abstract)) %>
 </blockquote>
 
-<div id="q1">
-<p>1. How familiar are you with the subject matter of this talk?
-<br />
-<% h.radio('review.familiarity', 0, "I don't know enough about the subject.") %>
-<br />
-<% h.radio('review.familiarity', 1, "I'm not an expert, but I feel comfortable with the subject matter.") %>
-<br />
-<% h.radio('review.familiarity', 2, "I'm an expert, I know the subject very well.") %>
-</p>
-</div>
-
-<div id="q2">
-<p>2. "Proposal's technical quality, based on the abstract provided by the author."
-</p>
-
-<p>
-% for i in range(0,6):
-<% h.radio('review.technical', i, i) %>
-% #endfor
-</p>
-</div>
-
 </fieldset>
-
 <fieldset>
 <legend>Presenter's experience/biography</legend>
-
 % for person in c.proposal.people:
 <h2><% person.firstname %> <% person.lastname %></h2>
+<strong>Experience</strong>
 <blockquote>
 <% h.auto_link(h.simple_format(person.experience)) %>
 </blockquote>
-% #endfor
+<strong>Bio</strong>
+<blockquote>
+<% h.auto_link(h.simple_format(person.bio)) %>
+</blockquote>
 
 <div id="stalk">
 <p>
 Proposal submitted by:
 
 <ul>
-% for p in c.proposal.people:
 <li>
-<% p.firstname | h %> <% p.lastname | h %>&lt;<% p.email_address %>&gt;
-<% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (p.firstname + " " + p.lastname, p.email_address)) %>
-<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (p.firstname + " " + p.lastname, p.email_address)) %>
-<% h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % p.email_address) %>
+<% person.firstname | h %> <% person.lastname | h %>&lt;<% person.email_address %>&gt;
+<% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
+<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
+<% h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % person.email_address) %>
 </li>
-% #endfor
 </ul>
 </p>
 </div>
 
-<div id="q3">
-<p>3. "Author's experience on the proposal's subject, based on the mini-curriculum provided by she/he and others sources (web searches, another events, performance among community etc)."
-</p>
-
-<p>
-% for i in range(0,6):
-<% h.radio('review.experience', i, i) %>
 % #endfor
-</p>
-#<br/>
-</div>
-
 </fieldset>
+
 
 <fieldset>
 <legend>
 Summary
 </legend>
 
-<div id="q4">
-<p>4. How excited are you to have this submission presented at linux.conf.au 2007?
-</p>
-
+<div id="q1">
 <p class="entries">
-% for i in range(0,6):
-<% h.radio('review.coolness', i, i) %>
-% #endfor
+<p>1. What score do you give this paper?
+<br />
+<% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
+<br />
+<% h.radio('review.score', -1, "-1 (reject) I want this proposal to be rejected") %>
+<br />
+<% h.radio('review.score', 0, "0 (indifferent) This proposal has no particular faults but no particular strengths") %>
+<br />
+<% h.radio('review.score', +1, "+1 (accept) I want this proposal to be accepted") %>
+<br />
+<% h.radio('review.score', +2, "+2 (strong accept) I want this proposal to be accepted, and if asked to I will advocate for it to be accepted.") %>
 </p>
 </div>
 
-<div id="q5">
+<div id="q2">
 <p>
-5. What stream do you think this talk is most suitable for?
+2. What stream do you think this talk is most suitable for?
 </p>
 
 <p>
@@ -143,9 +120,12 @@ Summary
 </p>
 
 <p class="submit">
-<% h.submit('Submit review!') %>
+<% h.submit('Submit review and jump to next proposal!') %>
 </p>
 
+% if c.next_review_id:
+<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
+% #endif
 <% h.end_form() %>
 
 </&>
