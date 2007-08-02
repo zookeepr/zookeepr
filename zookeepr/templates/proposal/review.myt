@@ -1,21 +1,23 @@
 <h1>Proposal Review</h1>
 
-<h2>#<% c.proposal.id %> - "<% c.proposal.title | h %>"</h2>
-
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <% h.form(h.url_for()) %>
-
-<fieldset>
-<legend>Proposal's technical content</legend>
 
 % if c.next_review_id:
 <% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
 % #endif
 <% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='index')) %>
-<p>
-This is a proposal for a <strong><% c.proposal.type.name %></strong>
-submitted at
+
+<h2>#<% c.proposal.id %> - "<% c.proposal.title | h %>"</h2>
+
+
+<fieldset>
+<legend>Proposal's technical content</legend>
+
+<p><p>Type: <strong><% c.proposal.type.name %></strong>
+
+<p>Submitted at:
 <% c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
 (last updated at <% c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
 </p>
@@ -76,15 +78,15 @@ Proposal submitted by:
 </fieldset>
 
 
+<h3>Review</h3>
 <fieldset>
 <legend>
-Summary
+Your opinion on this proposal.
 </legend>
 
 <div id="q1">
+<p class="label">1. What score do you give this paper?</p>
 <p class="entries">
-<p>1. What score do you give this paper?
-<br />
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
 <br />
 <% h.radio('review.score', -1, "-1 (reject) I want this proposal to be rejected") %>
@@ -98,7 +100,7 @@ Summary
 </div>
 
 <div id="q2">
-<p>
+<p class="label">
 2. What stream do you think this talk is most suitable for?
 </p>
 
