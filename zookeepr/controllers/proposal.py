@@ -65,7 +65,8 @@ class ProposalController(SecureController, View, Modify):
                "edit" : EditProposalSchema()}
     permissions = {"new": [AuthFalse()],
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
-                   "view": [AuthFunc('is_submitter'), AuthRole('reviewer')],
+                   "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
+						        AuthRole('organiser')],
                    "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer'), AuthRole('organiser')],
