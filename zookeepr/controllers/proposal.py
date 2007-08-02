@@ -273,8 +273,9 @@ class ProposalController(SecureController, View, Modify):
         total_score = 0
         num_reviewers = 0
         for review in proposal.reviews:
-            num_reviewers += 1
-            total_score += review.score
+	    if review.score is not None:
+                num_reviewers += 1
+                total_score += review.score
         if num_reviewers == 0:
             return 0
         return total_score/num_reviewers
