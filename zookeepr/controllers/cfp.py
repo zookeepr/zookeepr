@@ -77,6 +77,10 @@ class CfpController(SecureController):
         return render_response("cfp/list.myt")
 
     def submit(self):
+        # to close the CFP, change "if 0" to "if 1" :-)
+        if 0: 
+	    return render_response("cfp/closed.myt")
+
         c.cfptypes = self.dbsession.query(ProposalType).select()
         c.tatypes = self.dbsession.query(AssistanceType).select()
         c.cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
