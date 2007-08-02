@@ -109,6 +109,16 @@ Your opinion on this proposal.
 </p>
 </div>
 
+<div id="q3">
+<p class="label">
+3. What miniconf would this talk be most suitable for, if it's not accepted?
+</p>
+
+<p>
+<% h.select('review.miniconf', option_tags=h.options_for_select( [ [mc, mc]
+for mc in miniconfs] ) ) %>
+</p>
+</div>
 <p class="label">Comments (optional, readable by other reviewers, will not be shown to the submitter)
 </p>
 <p class="entries">
@@ -140,3 +150,9 @@ Reviewing proposal #<% c.proposal.id %>, "<% h.truncate(c.proposal.title) %>" - 
 defaults
 errors
 </%args>
+<%init>
+miniconfs = (
+  'foo',
+  'bar',
+)
+</%init>

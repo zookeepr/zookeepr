@@ -65,6 +65,7 @@ class StreamValidator(validators.FancyValidator):
 class ReviewSchema(schema.Schema):
     score = validators.Int()
     stream = StreamValidator()
+    miniconf = validators.String()
     comment = validators.String()
 
 

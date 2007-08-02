@@ -113,6 +113,7 @@ review = Table('review', metadata,
                Column('stream_id', Integer,
                       ForeignKey('stream.id'),
                       ),
+               Column('miniconf', String),
                Column('comment', String),
 
                Column('creation_timestamp', DateTime,
