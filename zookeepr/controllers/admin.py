@@ -65,6 +65,12 @@ class AdminController(SecureController):
 	lastname as name, creation_timestamp as created from account,
 	person where account.id=person.id order by person.id;
 	""")
+    def auth_users(self):
+        """ List of users that are authorised for some role """
+	return sql_response("""select role.name as role, firstname || ' '
+	|| lastname as name, person.id from role, person, person_role_map
+	where person.id=person_id and role.id=role_id order by role,
+	lastname, firstname""")
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
