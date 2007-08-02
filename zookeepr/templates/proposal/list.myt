@@ -66,7 +66,9 @@ Paper cannot been reviewed again untill all papers have been reviewed at least <
 
 	<td>
 %		if min_reviews < 3 and len(s.reviews) > min_reviews :
-	Review something with <% min_reviews %> reviews first
+	<small>Review something with <% min_reviews %> reviews first;
+	<% h.link_to("review anyway", url=h.url(action="review", id=s.id)) %>
+	</small>
 %		else:
 	<% h.link_to("Review now!", url=h.url(action="review", id=s.id)) %>
 %		#ENDIF
