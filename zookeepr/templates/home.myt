@@ -10,10 +10,14 @@ team plans on making our guests feel at home and the locals proud.</p>
 <h2>Call for Presentations</h2>
 
 <p>The <a href="/presentations">Call for Presentations</a> (aka <a
-href="/presentations">Call for Papers</a>) is <strong>still</strong> 
+href="/presentations">Call for Papers</a>) is 
+<strong>now closed</strong>.
+
+<!-- <strong>still</strong> 
 open, but will close on <a href="http://timeanddate.com/worldclock/meetingdetails.html?year=2007&month=8&day=3&hour=8&min=0&sec=0&p1=152&p2=224&p3=136&p4=248">August 3, at 18:00 AEST</a>.
 If you have a talk or a tutorial you would like to present, please let us know quickly!
 <br />Read the <a href="/presentations/announcement">full announcement</a>.</p>
+-->
 
 </div>
 

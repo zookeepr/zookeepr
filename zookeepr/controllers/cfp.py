@@ -78,7 +78,7 @@ class CfpController(SecureController):
 
     def submit(self):
         # to close the CFP, change "if 0" to "if 1" :-)
-        if 0: 
+        if 1: 
 	    return render_response("cfp/closed.myt")
 
         c.cfptypes = self.dbsession.query(ProposalType).select()
