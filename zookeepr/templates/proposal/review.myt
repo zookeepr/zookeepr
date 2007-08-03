@@ -151,6 +151,7 @@ defaults
 errors
 </%args>
 <%init>
+# warning: this list must match the one in ../review/form.myt
 miniconfs = (
   '',
   '(none)',

@@ -81,7 +81,17 @@ Proposal submitted by:
 </p>
 </div>
 
-<p>3. Comments (optional, readable by other reviewers, will not be shown to the submitter)
+<p class="label">
+3. What miniconf would this talk be most suitable for, if it's not accepted?
+</p>
+
+<p>
+<% h.select('review.miniconf', option_tags=h.options_for_select( [ [mc, mc]
+for mc in miniconfs] ) ) %>
+</p>
+
+
+<p>4. Comments (optional, readable by other reviewers, will not be shown to the submitter)
 
 <% h.text_area('review.comment', size="80x10") %>
 </p>
@@ -91,3 +101,25 @@ Proposal submitted by:
 <p>
 <span class="mandatory">*</span> - Mandatory field
 </p>
+<%init>
+# warning: this list must match the one in ../proposal/review.myt
+miniconfs = (
+  '',
+  '(none)',
+  'Debian',
+  'Distro Summit',
+  'Education',
+  'Embedded',
+  'Fedora',
+  'Gaming',
+  'Gentoo',
+  'Gnome',
+  'Kernel',
+  'LinuxChix',
+  'MySQL',
+  'Security',
+  'SysAdmin',
+  'Virtualisation',
+  'Wireless',
+)
+</%init>
