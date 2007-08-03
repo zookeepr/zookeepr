@@ -155,7 +155,7 @@ miniconfs = (
   '',
   '(none)',
   'Debian',
-  'Distro',
+  'Distro Summit',
   'Education',
   'Fedora',
   'Gaming',
