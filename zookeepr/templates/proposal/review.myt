@@ -152,7 +152,22 @@ errors
 </%args>
 <%init>
 miniconfs = (
-  'foo',
-  'bar',
+  '',
+  '(none)',
+  'Debian',
+  'Distro',
+  'Education',
+  'Fedora',
+  'Gaming',
+  'Gentoo',
+  'Gnome',
+  'Hardware',
+  'Kernel',
+  'LinuxChix',
+  'MySQL',
+  'Security',
+  'SysAdmin',
+  'Virtualisation',
+  'Wireless',
 )
 </%init>
