@@ -9,41 +9,25 @@ Review by <% c.review.reviewer.firstname %> <% c.review.reviewer.lastname %>
 <p>
 Proposal Abstract:  (<% h.link_to('go to this proposal', url=h.url(controller='proposal', action='view', id=c.review.proposal.id)) %>)
 <blockquote>
-<% h.truncate(c.review.proposal.abstract, 200) %>
+<% h.truncate(c.review.proposal.abstract, 200) | h%>
 </blockquote>
 </p>
 
 <p>
 <table>
 <tr>
-<th>Reviewer's Familiarity with Subject</th>
-<td>
-% if c.review.familiarity == 0:
-0 - Abstained
-% else:
-<% c.review.familiarity | h %>
-% #endif
-</td>
-</tr>
-
-<tr>
-<th>Proposer's Technical Rating</th>
-<td><% c.review.technical | h %></td>
-</tr>
-
-<tr>
-<th>Proposer's Speaking Experience Rating</th>
-<td><% c.review.experience | h %></td>
-</tr>
-
-<tr>
-<th>Reviewer's Excitement Level</th>
-<td><% c.review.coolness | h %></td>
+<th>Score</th>
+<td><% c.review.score | h %></td>
 </tr>
 
 <tr>
 <th>Recommended Stream</th>
-<td><% c.review.stream.name %></td>
+<td><% c.review.stream.name | h %></td>
+</tr>
+
+<tr>
+<th>Recommended Miniconf</th>
+<td><% c.review.miniconf | h %></td>
 </tr>
 
 </table>
@@ -52,6 +36,6 @@ Proposal Abstract:  (<% h.link_to('go to this proposal', url=h.url(controller='p
 <p>
 Reviewer Comment:
 <blockquote>
-<% c.review.comment %>
+<% c.review.comment | h%>
 </blockquote>
 </p>
