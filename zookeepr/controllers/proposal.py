@@ -124,7 +124,7 @@ class ProposalController(SecureController, View, Modify):
             elif not p.reviews:
                 min_reviews = 0
         for proposal in collection:
-            print proposal.id
+            #print proposal.id
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and (not proposal.reviews or len(proposal.reviews) <= min_reviews) and proposal.id != id:
                 c.next_review_id = proposal.id
                 break
