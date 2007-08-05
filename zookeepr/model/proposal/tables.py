@@ -122,6 +122,10 @@ review = Table('review', metadata,
                Column('last_modification_timestamp', DateTime,
                       nullable=False,
                       default=func.current_timestamp(),
-                      onupdate=func.current_timestamp()),
-
+		      onupdate='now'),
+		      # onupdate should really use
+		      #   func.current_timestamp()
+		      # but the version of sqlalchemy on the server can't
+		      # cope with that, saying something about
+		      # timezones...
                )
