@@ -11,13 +11,12 @@ team plans on making our guests feel at home and the locals proud.</p>
 
 <p>The <a href="/presentations">Call for Presentations</a> (aka <a
 href="/presentations">Call for Papers</a>) is 
-<strong>now closed</strong>.
+<strong>now closed</strong>.</p>
 
-<!-- <strong>still</strong> 
-open, but will close on <a href="http://timeanddate.com/worldclock/meetingdetails.html?year=2007&month=8&day=3&hour=8&min=0&sec=0&p1=152&p2=224&p3=136&p4=248">August 3, at 18:00 AEST</a>.
-If you have a talk or a tutorial you would like to present, please let us know quickly!
-<br />Read the <a href="/presentations/announcement">full announcement</a>.</p>
--->
+<p>We've received over 220 submissions for less than 60 presentation 
+slots. The paper review committee will now start the painstaking process 
+of determining what's in and what's not. The final program will be 
+announced in late September.</p>
 
 </div>
 
@@ -26,8 +25,10 @@ If you have a talk or a tutorial you would like to present, please let us know q
 <h2>News</h2>
 
 <ul class="hp-list" style="margin: 0px; padding: 0px;">
-<li><a href="/mini-confs">Mini-conf proposal submissions close</a><br />21 July 2006</li>
-<li><a href="/2008/sponsors-media/news/call-for-proposals-final-week">Call for Presentations - Final Week</a><br />16 July 2007</li>
+<li><a href="/mini-confs">Mini-confs announced!</a>
+<br /> 3 August 2007</li>
+<li><a href="/mini-confs">Proposal submissions closed</a><br />3 August
+2007</li>
 <li><a href="/2008/sponsors-media/news/keynote-secured">linux.conf.au 2008 - Keynote Secured</a><br />2 July 2007</li>
 <!-- <li><a href="/mini-confs">Mini-conf proposal submissions open</a><br />15 June 2006</li> -->
 </ul>
