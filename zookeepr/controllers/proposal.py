@@ -120,7 +120,9 @@ class ProposalController(SecureController, View, Modify):
         min_reviews = 100
         for p in collection:
             if len(p.reviews) < min_reviews:
-                min_reviews = len(p.reviews)
+		if not [ r for r in proposal.reviews if r.reviewer ==
+						      c.signed_in_person ]:
+		    min_reviews = len(p.reviews)
             elif not p.reviews:
                 min_reviews = 0
         for proposal in collection:
@@ -128,6 +130,10 @@ class ProposalController(SecureController, View, Modify):
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and (not proposal.reviews or len(proposal.reviews) <= min_reviews) and proposal.id != id:
                 c.next_review_id = proposal.id
                 break
+	else:
+	    # somehow didn't find one, so pick one at random
+	    # (the collection is shuffled, so item 0 is random enough)
+	    c.next_review_id = collection[0].id 
 
 
 
