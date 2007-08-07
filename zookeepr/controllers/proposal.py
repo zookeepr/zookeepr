@@ -115,9 +115,7 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
 
         # Next ID for skipping
-        collection = self.dbsession.query(self.model).select_by(
-	  (Proposal.c.proposal_type_id == 1) |
-	  (Proposal.c.proposal_type_id == 3))
+        collection = self.dbsession.query(self.model).select_by(Proposal.c.proposal_type_id <> 2)
         random.shuffle(collection)
         min_reviews = 100
         for p in collection:
