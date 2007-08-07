@@ -120,7 +120,7 @@ class ProposalController(SecureController, View, Modify):
         min_reviews = 100
         for p in collection:
             if len(p.reviews) < min_reviews:
-		if not [ r for r in proposal.reviews if r.reviewer ==
+		if not [ r for r in p.reviews if r.reviewer ==
 						      c.signed_in_person ]:
 		    min_reviews = len(p.reviews)
             elif not p.reviews:
