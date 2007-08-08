@@ -13,6 +13,7 @@ You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_prop
 % for pt in c.proposal_types:
 %	collection = getattr(c, '%s_collection' % pt.name)
 %	random.shuffle(collection)
+%	collection.sort(cmp = lambda x, y: cmp(len(x.reviews), len(y.reviews)))
 
 
 %	min_reviews = 100
