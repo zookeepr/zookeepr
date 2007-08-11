@@ -28,3 +28,8 @@ class ReviewController(SecureController, List, Update, Read):
 
         c.streams = self.dbsession.query(model.Stream).select()
 
+
+    def summary(self):
+        model_name = self.individual
+        setattr(c, model_name + '_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        return render_response('review/summary.myt')
