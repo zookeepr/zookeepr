@@ -30,7 +30,7 @@
 </td>
 
 <td>
-<% review_summary[reviewer]['total_score']/review_summary[reviewer]['num_reviews'] |h %>
+<% review_summary[reviewer]['total_score']*1.0/review_summary[reviewer]['num_reviews'] |h %>
 </td>
 
 % #endfor
