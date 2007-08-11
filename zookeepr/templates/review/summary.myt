@@ -9,7 +9,8 @@
 %         review_summary[r.reviewer] = {}
 %         review_summary[r.reviewer]['num_reviews'] = 1
 %         review_summary[r.reviewer]['total_score'] = r.score
-% # end
+%     # endif
+% # endfor
 
 <table>
 <tr>
