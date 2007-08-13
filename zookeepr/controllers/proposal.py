@@ -274,7 +274,7 @@ class ProposalController(SecureController, View, Modify):
         return render_response('proposal/summary.myt')
 
     def score_sort(self, proposal1, proposal2):
-        return int(self.review_avg_score(proposal2) - self.review_avg_score(proposal1))
+        return cmp(self.review_avg_score(proposal2), self.review_avg_score(proposal1))
 
     def review_avg_score(self,proposal):
         total_score = 0
