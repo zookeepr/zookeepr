@@ -20,10 +20,8 @@ function toggleDiv(id,flagit) {
 .commentdiv {
     background-color:#F9F9F9;
     border:1px dashed Blue;
-    left:450px;
     padding:4px;
     position:absolute;
-    top:250px;
     visibility:hidden;
     width:200px;
     font-family:Verdana,Arial,Helvetica,san-serif;
@@ -33,10 +31,8 @@ function toggleDiv(id,flagit) {
 .biodiv {
     background-color:#F9F9F9;
     border:1px dashed Blue;
-    left:450px;
     padding:4px;
     position:absolute;
-    top:250px;
     visibility:hidden;
     width:400px;
     font-family:Verdana,Arial,Helvetica,san-serif;
@@ -115,7 +111,7 @@ function toggleDiv(id,flagit) {
 % 		if num_reviewers == 0:
 % 			avg_score = "No Reviews"
 % 		else:
-% 			avg_score = total_score/num_reviewers
+% 			avg_score = total_score*1.0/num_reviewers
 % 		# endif
 <td>
 <div onMouseOver="toggleDiv('<% "score%s" % proposal.id | h%>',1)" onMouseOut="toggleDiv('<% "score%s" % proposal.id | h%>',0)">
