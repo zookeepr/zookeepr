@@ -9,7 +9,8 @@
 %         review_summary[r.reviewer] = {}
 %         review_summary[r.reviewer]['num_reviews'] = 1
 %         review_summary[r.reviewer]['total_score'] = r.score
-% # end
+%     # endif
+% # endfor
 
 <table>
 <tr>
@@ -29,7 +30,7 @@
 </td>
 
 <td>
-<% review_summary[reviewer]['total_score']/review_summary[reviewer]['num_reviews'] |h %>
+<% review_summary[reviewer]['total_score']*1.0/review_summary[reviewer]['num_reviews'] |h %>
 </td>
 
 % #endfor

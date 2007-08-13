@@ -31,6 +31,7 @@ class AdminController(SecureController):
           ('/proposal', ''' To see what you need to reveiw '''),
           ('/review', ''' To see what you have reviewed '''),
           ('/proposal/summary', ''' summary of the reviewed papers '''),
+          ('/review/summary', ''' summary of reviews '''),
 
 	]
 
