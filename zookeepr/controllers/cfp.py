@@ -79,8 +79,6 @@ class CfpController(SecureController):
     def submit(self):
         # to close the CFP, change "if 0" to "if 1" :-)
 
-        if 1:
-	   return render_response("cfp/closed.myt")
 
         c.cfptypes = self.dbsession.query(ProposalType).select()
         c.tatypes = self.dbsession.query(AssistanceType).select()
@@ -89,8 +87,11 @@ class CfpController(SecureController):
         c.person = c.signed_in_person
 
 	# Let in one poor suse guy who missed out.
-	# if c.person.id != 405:
-	#  return render_response("cfp/closed.myt")
+	if c.person.id != 427:
+	  return render_response("cfp/closed.myt")
+
+        # if 1:
+	#    return render_response("cfp/closed.myt")
 
         errors = {}
         defaults = dict(request.POST)
