@@ -53,11 +53,13 @@ function toggleDiv(id,flagit) {
 
 % for pt in c.proposal_types:
 % 	collection = getattr(c, '%s_collection' % pt.name)
+%	i = 1
 
 <h2><% pt.name %>s </h2>
 
 <table>
 <tr>
+<th>&nbsp;</th>
 <th>#</th>
 <th>Proposal</th>
 <th>Submitters</th>
@@ -72,6 +74,9 @@ function toggleDiv(id,flagit) {
 % 		# endif
 
 <tr class="<% h.cycle('even', 'odd') %>">
+
+<td><% i %></td>
+%		i = i+1
 
 <td>
 <% h.link_to(proposal.id, url=h.url(controller='proposal', action='view', id=proposal.id)) %>
