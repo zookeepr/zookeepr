@@ -72,6 +72,19 @@ class AdminController(SecureController):
 	|| lastname as name, person.id from role, person, person_role_map
 	where person.id=person_id and role.id=role_id order by role,
 	lastname, firstname""")
+    def rej_papers(self):
+        """ Rejected papers (for the miniconf organisers) """
+	return sql_response("""
+	  select distinct miniconf, email_address as email,
+	    firstname || ' ' || lastname as name, person.url as homepage,
+	    title, abstract, project, proposal.url 
+	  from proposal, person, account, person_proposal_map, review
+	  where person_id = person.id and review.proposal_id = proposal.id
+	    and person_proposal_map.proposal_id = proposal.id
+	    and account_id = account.id and account_id = person.id 
+	    and proposal_type_id = 1 and accepted is null
+	  order by miniconf
+	""")
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
