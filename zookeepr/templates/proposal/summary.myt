@@ -34,7 +34,7 @@ function toggleDiv(id,flagit) {
     padding:4px;
     position:absolute;
     visibility:hidden;
-    width:400px;
+    width:500px;
     font-family:Verdana,Arial,Helvetica,san-serif;
     font-size:8pt;
 
@@ -78,12 +78,22 @@ function toggleDiv(id,flagit) {
 <td><% i %></td>
 %		i = i+1
 
-<td>
-<% h.link_to(proposal.id, url=h.url(controller='proposal', action='view', id=proposal.id)) %>
-</td>
 
 <td>
-<% h.link_to(proposal.title, url=h.url(controller='proposal', action='view', id=proposal.id)) %>
+<div onMouseOver="toggleDiv('<% "assistance%s" % proposal.id | h%>',1)" onMouseOut="toggleDiv('<% "assistance%s" % proposal.id | h%>',0)">
+<% h.link_to(proposal.id, url=h.url(controller='proposal', action='review', id=proposal.id)) %>
+</div>
+<div id="<% "assistance%s" % proposal.id %>" class="commentdiv"><% proposal.assistance.name %></div>
+</td>
+
+
+
+
+<td>
+<div onMouseOver="toggleDiv('<% "proposal%s" % proposal.id | h%>',1)" onMouseOut="toggleDiv('<% "proposal%s" % proposal.id | h%>',0)">
+<% h.link_to(proposal.title, url=h.url(controller='proposal', action='review', id=proposal.id)) %>
+</div>
+<div id="<% "proposal%s" % proposal.id %>" class="biodiv"><strong>Abstract:</strong><p><% h.simple_format(proposal.abstract) %></p></pre></div>
 </td>
 
 <td>
