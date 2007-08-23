@@ -75,15 +75,15 @@ class AdminController(SecureController):
     def rej_papers(self):
         """ Rejected papers (for the miniconf organisers) """
 	return sql_response("""
-	  select distinct miniconf, email_address as email,
-	    firstname || ' ' || lastname as name, person.url as homepage,
-	    title, abstract, project, proposal.url 
+	  select distinct miniconf, proposal.id as proposal,
+	    email_address as email, firstname || ' ' || lastname as name,
+	    person.url as homepage, title, abstract, project, proposal.url 
 	  from proposal, person, account, person_proposal_map, review
 	  where person_id = person.id and review.proposal_id = proposal.id
 	    and person_proposal_map.proposal_id = proposal.id
 	    and account_id = account.id and account_id = person.id 
 	    and proposal_type_id = 1 and accepted is null
-	  order by miniconf
+	  order by miniconf, proposal.id
 	""")
 
 def sql_response(sql):
