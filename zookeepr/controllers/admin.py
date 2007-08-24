@@ -85,6 +85,26 @@ class AdminController(SecureController):
 	    and proposal_type_id = 1 and accepted is null
 	  order by miniconf, proposal.id
 	""")
+    def acc_papers(self):
+        """ Accepted papers/tutes with type and travel assistance status """
+	return sql_response("""
+	  SELECT proposal.id, proposal.title,
+	    person.firstname || ' ' || person.lastname as name,
+	    assistance_type.name as assistance, proposal_type.name as type
+	  FROM proposal
+	    LEFT JOIN proposal_type
+	      ON(proposal.proposal_type_id=proposal_type.id)
+	    LEFT JOIN person_proposal_map
+	      ON(person_proposal_map.proposal_id=proposal.id)
+	    LEFT JOIN person
+	      ON (person.id=person_proposal_map.person_id)
+	    LEFT JOIN assistance_type
+	      ON(assistance_type.id=proposal.assistance_type_id)
+	  WHERE proposal.accepted=true
+	  GROUP BY proposal.id, proposal.title, proposal_type.name,
+	    person.firstname, person.lastname, assistance_type.name
+	  ORDER BY proposal.id ASC;
+	""")
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
