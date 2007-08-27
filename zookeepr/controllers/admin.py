@@ -4,7 +4,12 @@ from zookeepr.lib.auth import SecureController, AuthRole
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
 
-    permissions = { 'ALL': [AuthRole('organiser')] }
+    permissions = {
+      'ALL': [AuthRole('organiser')],
+      'acc_papers': [AuthRole('miniconf'), AuthRole('organiser')],
+      'rej_papers': [AuthRole('miniconf'), AuthRole('organiser')],
+      'rej_papers_abstracts': [AuthRole('miniconf'), AuthRole('organiser')],
+    }
     def index(self):
         res = dir(self)
 	exceptions = ['check_permissions', 'dbsession', 'index',
@@ -73,11 +78,27 @@ class AdminController(SecureController):
 	where person.id=person_id and role.id=role_id order by role,
 	lastname, firstname""")
     def rej_papers(self):
-        """ Rejected papers (for the miniconf organisers) """
+        """ Rejected papers, without abstracts (for the miniconf organisers) """
 	return sql_response("""
-	  select distinct miniconf, proposal.id as proposal,
-	    email_address as email, firstname || ' ' || lastname as name,
-	    person.url as homepage, title, abstract, project, proposal.url 
+	  select distinct miniconf, proposal.id as p,
+	    firstname || ' ' || lastname as name,
+	    title, project,
+	    proposal.url, email_address as email, person.url as homepage
+	  from proposal, person, account, person_proposal_map, review
+	  where person_id = person.id and review.proposal_id = proposal.id
+	    and person_proposal_map.proposal_id = proposal.id
+	    and account_id = account.id and account_id = person.id 
+	    and proposal_type_id = 1 and accepted is null
+	  order by miniconf, proposal.id
+	""")
+    def rej_papers_abstracts(self):
+        """ Rejected papers, with abstracts (for the miniconf organisers) """
+	return sql_response("""
+	  select distinct miniconf, proposal.id as p,
+	    firstname || ' ' || lastname as name,
+	    title, project,
+	    abstract,
+	    proposal.url, email_address as email, person.url as homepage
 	  from proposal, person, account, person_proposal_map, review
 	  where person_id = person.id and review.proposal_id = proposal.id
 	    and person_proposal_map.proposal_id = proposal.id
@@ -86,6 +107,23 @@ class AdminController(SecureController):
 	  order by miniconf, proposal.id
 	""")
     def acc_papers(self):
+        """ Accepted papers (for miniconf organisers) """
+	return sql_response("""
+	  SELECT proposal.id, proposal.title,
+	    person.firstname || ' ' || person.lastname as name
+	  FROM proposal
+	    LEFT JOIN person_proposal_map
+	      ON(person_proposal_map.proposal_id=proposal.id)
+	    LEFT JOIN person
+	      ON (person.id=person_proposal_map.person_id)
+	    LEFT JOIN assistance_type
+	      ON(assistance_type.id=proposal.assistance_type_id)
+	  WHERE proposal.accepted=true and proposal_type_id=1
+	  GROUP BY proposal.id, proposal.title, 
+	    person.firstname, person.lastname, assistance_type.name
+	  ORDER BY proposal.id ASC;
+	""")
+    def acc_papers_tutes(self):
         """ Accepted papers/tutes with type and travel assistance status """
 	return sql_response("""
 	  SELECT proposal.id, proposal.title,
