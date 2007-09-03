@@ -226,7 +226,13 @@ class ProposalController(SecureController, View, Modify):
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
 
-
+    def short(self, id):
+      proposal = self.dbsession.query(Proposal).get(id)
+      res = proposal.title
+      if len(proposal.people)>0:
+        res += ' - ' + ', '.join([auth.firstname + ' ' + auth.lastname for
+	auth in proposal.people])
+      return Response(res)
 
     def index(self):
         c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
