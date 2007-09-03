@@ -145,6 +145,7 @@ class AdminController(SecureController):
 	  ORDER BY proposal.id ASC;
 	""")
     def draft_timetable(self):
+        """ Draft schedule for the conference """
         def talk(id):
 	    proposal = self.dbsession.query(Proposal).get(id)
 	    if proposal==None:
