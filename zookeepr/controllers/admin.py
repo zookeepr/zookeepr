@@ -1,5 +1,6 @@
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
+from zookeepr.controllers.proposal import Proposal
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -143,6 +144,17 @@ class AdminController(SecureController):
 	    person.firstname, person.lastname, assistance_type.name
 	  ORDER BY proposal.id ASC;
 	""")
+    def draft_timetable(self):
+        def talk(id):
+	    proposal = self.dbsession.query(Proposal).get(id)
+	    if proposal==None:
+	      return '[%s]'%id
+	    res = proposal.title
+	    if len(proposal.people)>0:
+	        res += ' - ' + ', '.join([auth.firstname + ' ' + auth.lastname for auth in proposal.people])
+	    return res
+        c.talk = talk
+	return render_response('admin/draft_timetable.myt')
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
