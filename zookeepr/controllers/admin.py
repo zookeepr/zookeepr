@@ -151,7 +151,7 @@ class AdminController(SecureController):
 	      return '[%s]'%id
 	    res = proposal.title
 	    if len(proposal.people)>0:
-	        res += ' - ' + ', '.join([auth.firstname + ' ' + auth.lastname for auth in proposal.people])
+	        res += ' &#8212; ' + ', '.join([auth.firstname + ' ' + auth.lastname for auth in proposal.people])
 	    return res
         c.talk = talk
 	return render_response('admin/draft_timetable.myt')
