@@ -19,9 +19,6 @@
         <li><a href="<% h.url(controller='account', action='signout', id=None)() %>" <% cls('login') %>>logout</a></li>
 % #endif
     </ul>
-<pre>
-<% mm | h %>
-</pre>
 </div>
 
 <%init>
