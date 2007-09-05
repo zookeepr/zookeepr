@@ -4,14 +4,24 @@
         <li><a href="/2008/about" <% cls('about') %>>About</a></li>
         <li><a href="/2008/sponsors-media" <% cls('sponsors-media') %>>Sponsors / Media</a></li>
         <li><a href="/mini-confs" <% cls('mini-confs') %>>Mini-confs</a></li>
-        <li><a href="/presentations" <% cls('papers') %>>Presentations</a></li>
+        <li><a href="/presentations" <% cls('presentations') %>>Presentations</a></li>
         <li><a href="/2008/contact" <% cls('contact') %>>Contact</a></li>
+
+% # the entries automatically generated from matrix:
+% for (t, u, c) in mm:
+        <li><a href="<% u %>" <% cls(c) %>><% t %></a></li>
+% #endfor
+
+% # the login / logout link is special:
 % if 'signed_in_person_id' not in session:
         <li><a href="<% h.url(controller='account', action='signin', id=None)() %>" <% cls('login') %>>login / register</a></li>
 % else:
         <li><a href="<% h.url(controller='account', action='signout', id=None)() %>" <% cls('login') %>>logout</a></li>
 % #endif
     </ul>
+<pre>
+<% mm | h %>
+</pre>
 </div>
 
 <%init>
@@ -19,17 +29,28 @@
 url = h.url()()
 
 where = 'home'
-map = (
+map = [
   ('/2008/about', 'about'),
   ('/2008/sponsors-media', 'sponsors-media'),
   ('/mini-confs', 'mini-confs'),
   ('/cfp', 'mini-confs'),
-  ('/papers', 'papers'),
-  ('/presentations', 'papers'),
+  ('/papers', 'presentations'),
+  ('/presentations', 'presentations'),
   ('/2008/contact', 'contact'),
   ('/account', 'login'),
   ('/error', ''),
-)
+]
+
+import re, urllib
+mm = 'http://matrix.mel8ourne.org/_designs/zookeepr-files/menu-list'
+# mm = urllib.urlopen(mm).readlines()
+mm = []
+mm = [mme.split(',', 2) for mme in mm]
+mm = [(t.strip(' \t"'), re.sub('^http://[^/]*/', '/', u.strip(' \t\n"')))
+							  for (t, u) in mm]
+mm = [(t, u, u.split('/')[1]) for (t, u) in mm if u!='/account/signin']
+
+map = map + [(u, c) for (t, u, c) in mm]
 
 for (u, w) in map:
   if url.startswith(u):
