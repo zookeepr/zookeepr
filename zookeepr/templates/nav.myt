@@ -7,12 +7,10 @@
         <li><a href="/presentations" <% cls('presentations') %>>Presentations</a></li>
         <li><a href="/2008/contact" <% cls('contact') %>>Contact</a></li>
 
-% # the entries automatically generated from matrix:
 % for (t, u, c) in mm:
         <li><a href="<% u %>" <% cls(c) %>><% t %></a></li>
 % #endfor
 
-% # the login / logout link is special:
 % if 'signed_in_person_id' not in session:
         <li><a href="<% h.url(controller='account', action='signin', id=None)() %>" <% cls('login') %>>login / register</a></li>
 % else:
@@ -38,6 +36,7 @@ map = [
   ('/error', ''),
 ]
 
+# Import the navbar from Matrix ("mm" stands for "matrix menu")
 import re, urllib
 mm = 'http://matrix.mel8ourne.org/_designs/zookeepr-files/menu-list'
 # mm = urllib.urlopen(mm).readlines()
