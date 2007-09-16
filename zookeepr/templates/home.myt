@@ -39,7 +39,10 @@ announced in late September.</p>
 <div id="rest" style="clear: both;">
 
 <h2>When</h2>
-<p>linux.conf.au opens on Wednesday January 30th and concludes with an Open Day on February 2nd 2008. Special interest <a href="/mini-confs">mini-confs</a> are held before the conference on Monday and Tuesday.</p>
+<p>linux.conf.au opens on Wednesday January 30th and concludes with an 
+Open Day on February 2nd 2008. Special interest <a 
+href="/mini-confs">mini-confs</a> are held before the conference on 
+Monday 28 and Tuesday 29 January, 2008.</p>
 
 <h2>Where</h2>
 <p>In 2008, the <a href="http://www.unimelb.edu.au">University of Melbourne</a> plays host to linux.conf.au.</p>
