@@ -1,4 +1,4 @@
-<h3>Register for the conference</h3>
+<h2>Register for the conference</h2>
 
 <p>
 Welcome to the conference registration. Please fill in the form as best you can. 
@@ -6,7 +6,8 @@ Welcome to the conference registration. Please fill in the form as best you can.
 
 % if not 'signed_in_person_id' in session:
 <p>
-If you already have an account (through a prior registration, or other interaction with this site), then please sign in.
+If you already have an account (through a prior registration, or other
+interaction with this site), then please <a href="/account/signin">sign in</a>.
 </p>
 <p>If you can't log in, you can try
 <% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
@@ -17,85 +18,91 @@ If you already have an account (through a prior registration, or other interacti
 <% h.form(h.url()) %>
 
 <fieldset id="person">
-<h4>Account details</h4>
+<h2>About yourself</h2>
 
 % if not c.signed_in_person:
-<p>
+<br><p class="note">
 <span class="mandatory">*</span> - Mandatory field
 </p>
 % #endif
 
-<p>
+<p class="label">
 % if not c.signed_in_person:
 <span class="mandatory">*</span>
 % #endif
-
-<label for="person.firstname">Your first name:</label>
+<label for="person.firstname">Your first name:</label></p>
 % if c.signed_in_person:
+<p>
 <% c.signed_in_person.firstname | h %>
 % else:
-<br />
+<p class="entries">
 <% h.text_field('person.firstname', size=40) %>
 % #endif
 </p>
-<label for="person.lastname">Your last name:</label>
+
+<p class="label">
+% if not c.signed_in_person:
+<span class="mandatory">*</span>
+% #endif
+<label for="person.lastname">Your last name:</label></p>
 % if c.signed_in_person:
+<p>
 <% c.signed_in_person.lastname | h %>
 % else:
-<br />
+<p class="entries">
 <% h.text_field('person.lastname', size=40) %>
 % #endif
 </p>
 
 
-<p>
+<p class="label">
 % if not c.signed_in_person:
 <span class="mandatory">*</span>
 % #endif
-<label for="person.email_address">Email address:</label>
+<label for="person.email_address">Email address:</label></p>
 % if c.signed_in_person:
+<p>
 <% c.signed_in_person.email_address | h %>
 % else:
-<br />
+<p class="entries">
 <% h.text_field('person.email_address', size=40) %>
 % #endif
-<br />
-<span class="fielddesc">
+</p>
+<p class="note">
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
-</span>
 </p>
 
 % if not c.signed_in_person:
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="person.password">Choose a password:</label>
-<br />
+</p><p class="entries">
 <% h.password_field("person.password", size=40) %>
 </p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="person.password_confirm">Confirm your password:</label>
-<br />
+</p><p class="entries">
 <% h.password_field("person.password_confirm", size=40) %>
 </p>
 % #endif
 
-<p>
+<p class="label">
 % if not c.signed_in_person:
 <span class="mandatory">*</span>
 % #endif
-<label for="person.handle">Display name/handle/nickname:</label>
+<label for="person.handle">Display name/handle/nickname:</label></p>
 % if c.signed_in_person:
+<p>
 <% c.signed_in_person.handle |h %>
 % else:
-<br />
+<p class="entries">
 <% h.text_field('person.handle', size=40) %>
 % #endif
-<br />
-<span class="fielddesc">
+</p>
+<p class="note">
 Your display name will be used to identify you on the website.
-</span>
 </p>
 </fieldset>
 
@@ -124,4 +131,3 @@ if not defaults:
 		'registration.dinner': '0',
 		}
 </%init>
-

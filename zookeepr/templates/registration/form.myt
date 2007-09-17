@@ -1,54 +1,56 @@
 <fieldset id="personal">
 
-<h4>Personal Information</h4>
+<h2>Personal Information</h2>
 
-<p>
+<br><p class="note">
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="registration.address">Address:</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.address1', size=40) %>
 <br />
 <% h.text_field('registration.address2', size=40) %>
-<br />
+</p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="registration.city">City/Suburb:</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.city', size=40) %>
-<br />
+</p><p class="label">
 <label for="registration.state">State/Province:</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.state', size=40) %>
-<br />
+</p><p class="label">
 <span class="mandatory">*</span>
 <label for="registration.country">Country:</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.country', size=40) %>
-<br />
+</p><p class="label">
 <span class="mandatory">*</span>
 <label for="registration.postcode">Postcode/ZIP:</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.postcode', size=40) %>
 </p>
 
-<p>
+</p><p class="label">
 <label for="registration.phone">Mobile/Cell number:</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.phone') %>
 </p>
 
-<p>
+</p><p class="label">
 <label for="registration.company">Company:</label>
-#<br />
+</p><p class="entries">
 <% h.text_field('registration.company', size=60) %>
 </p>
 
-<p>
+<p class="label">
 # FIXME: dynamic :)
 <label for="registration.shell">Your favourite shell:</label>
+</p><p class="entries">
 <select name="registration.shell">
 <option value="-">-</option>
 % for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold']:
@@ -58,8 +60,9 @@
 Other: <% h.text_field('registration.shelltext') %>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.editor">Your favourite editor:</label>
+</p><p class="entries">
 <SELECT name="registration.editor">
 <option value="-">-</option>
 % for e in ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed']:
@@ -71,6 +74,7 @@ Other: <% h.text_field('registration.editortext') %>
 
 <p>
 <label for="registration.distro">Your favourite distro:</label>
+</p><p class="entries">
 <SELECT name="registration.distro">
 <option value="-">-</option>
 % for d in ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'RHEL', 'Slackware', 'Ubuntu']:
@@ -127,57 +131,58 @@ else:
     start = 'a'
 desc = '%s %s %s %s' % (start, a1, a2, n1)
 </%python>
-<p>
+<p class="label">
 <label for="registration.silly_description">Description:</label>
+</p><p class="entries">
 <% desc %>
 <% h.hidden_field('registration.silly_description', value=desc) %>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.prevlca">Have you attended linux.conf.au before?</label>
-
-% for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)')]:
+</p><p class="entries">
+% for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)')]:
 %	label = 'registration.prevlca.%s' % year
 <br />
 <% h.check_box(label) %>
 <label for="<% label %>"><% desc %></label>
 % #endfor
-
 </p>
 
 
 </fieldset>
 
 <fieldset id="registration">
-<h4>Conference Information</h4>
+<h2>Conference Information</h2>
 
-<p>
+<br><p class="note">
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="registration.type">What type of ticket do you want?</label>
-<br />
+</p><p class="entries">
 # FIXME: dynamic content
 % for (t, p, eb) in [('Professional', '690.00', '517.50'), ('Hobbyist', '300.00', '225.00'), ('Concession', '99.00', '99.00')]:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
 <label for="registration.type_<% t %>"><% t %> - $<% p %></label>
 <br />
 % #endfor
-<span class="fielddesc">
+<p class="note">
 Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for the full details of each ticket.
-</span>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.discount_code">Discount Code:</label>
+</p><p class="entries">
 <% h.text_field('registration.discount_code') %>
 </p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label>Teeshirt Size:</label>
+<p class="entries">
 <table>
 # FIXME:
 % for sex in ['M', 'F']:
@@ -200,37 +205,36 @@ Female:
 </table>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.dinner">I'd like this many extra Penguin Dinner Tickets:</label>
+</p><p class="entries">
 <SELECT id="registration.dinner" name="registration.dinner">
 <option value="0">0</option>
 <option value="1">1</option>
 <option value="2">2</option>
 </SELECT> <label> - $60 each </label>
-<br />
-<span class="fielddesc">
+<p class="note">
 The Penguin Dinner is included in the price of a Professional delegate ticket.  Concession and Hobbyist delegates will need to purchase a Penguin Dinner ticket if they wish to attend.
 </span>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.diet">Dietary requirements:</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.diet', size=100) %>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.special">Other special requirements</label>
-<br />
+</p><p class="entries">
 <% h.text_field('registration.special', size=100) %>
-<br />
-<span class="fielddesc">
+</p><p class="note">
 Please enter any requirements if necessary; access requirements, etc.
-</span>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.miniconfs">Prefered miniconfs:</label>
+</p><p class="entries">
 
 # FIXME: CLEARLY this needs to be dynamic
 
@@ -241,27 +245,24 @@ Please enter any requirements if necessary; access requirements, etc.
 <label for="<% l %>"><% mc %></label>
 % #endfor
 
-<br />
-<span class="fielddesc">
-Please check the <% h.link_to('Miniconfs', url="/Miniconfs", popup=True) %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
-</span>
+<p class="note">
+Please check the <% h.link_to('Miniconfs', url="/mini-confs") %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
 </p>
 
-<p>
+<p class="label">
 <label for="registration.opendaydrag">How many people are you bringing to <% h.link_to("Open Day", url="/OpenDay", popup=True) %>:</label>
+</p><p class="entries">
 <% h.text_field('registration.opendaydrag', size=10) %>
-<br />
-<span class="fielddesc">
+</p><p class="note">
 Open Day is open to friends and family, and is targetted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.
-</span>
 </p>
 
 </fieldset>
 
 <fieldset id="accommodation">
-<h4>Accommodation</h4>
+<h2>Accommodation</h2>
 
-<p>
+<br><p class="note">
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
@@ -270,9 +271,10 @@ Open Day is open to friends and family, and is targetted to a non-technical audi
 Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=True) %> page before committing to any accommodation choices.
 </p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="registration.accommodation">What accommodation would you like to stay at:</label>
+</p><p class="entries">
 <SELECT name="registration.accommodation">
 <option value="0">I will organise my own</option>
 % for a in c.accommodation_collection:
@@ -285,9 +287,10 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 </SELECT>
 </p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="registration.checkin">Check in on:</label>
+</p><p class="entries">
 <select name="registration.checkin">
 % for d in range(14, 21):
 <option value="<% d %>"><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
@@ -295,9 +298,10 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 </select>
 </p>
 
-<p>
+<p class="label">
 <span class="mandatory">*</span>
 <label for="registation.checkout">Check out on:</label>
+</p><p class="entries">
 <select name="registration.checkout">
 % for d in range(15, 22):
 <option value="<% d %>"
@@ -311,20 +315,19 @@ selected
 </fieldset>
 
 <fieldset id="partners">
-<h4>Partners Programme</h4>
+<h2>Partners Programme</h2>
 
-<p>
+<p class="label">
 <label for="registration.partner_email">Your partner's email address:</label>
+</p><p class="entries">
 <% h.text_field('registration.partner_email', size=50) %>
-<br />
-<span class="fielddesc">
+</p><p class="note">
 If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) %> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
-</span>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.children">Are you bringing children?</label>
-<br />
+</p><p class="entries">
 <label for="registration.kids_0_3">This many under 3 year olds:</label>
 <% h.text_field('registration.kids_0_3', size=10) %>
 <br />
@@ -341,19 +344,19 @@ If you are planning on bringing your partner, please enter their email address h
 </fieldset>
 
 <fieldset>
-<h4>Subscriptions</h4>
+<h2>Subscriptions</h2>
 
-<p>
+<p class="entries">
 <% h.check_box('registration.lasignup') %>
 <label for="registration.lasignup">I want to sign up for (free) Linux Australia membership!</label>
 </p>
 
-<p>
+<p class="entries">
 <% h.check_box('registration.announcesignup') %>
 <label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
 </p>
 
-<p>
+<p class="entries">
 <% h.check_box('registration.delegatesignup') %>
 <label for="registration.delegatesignup">I want to sign up to the conference attendees mailing list!</label>
 </p>
