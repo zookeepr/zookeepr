@@ -58,4 +58,3 @@ def cls(part):
   else:
     return 'class=""'
 </%init>
-
