@@ -130,12 +130,14 @@ if a1[0] in ['a', 'e', 'i', 'o', 'u']:
 else:
     start = 'a'
 desc = '%s %s %s %s' % (start, a1, a2, n1)
+descMD5 = md5.new(desc).hexdigest()
 </%python>
 <p class="label">
 <label for="registration.silly_description">Description:</label>
 </p><p class="entries">
 <% desc %>
 <% h.hidden_field('registration.silly_description', value=desc) %>
+<% h.hidden_field('registration.silly_description_md5', value=descMD5) %>
 </p>
 
 <p class="label">
@@ -366,5 +368,6 @@ If you are planning on bringing your partner, please enter their email address h
 
 <%init>
 import datetime
+import md5
 import random
 </%init>

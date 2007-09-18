@@ -1,4 +1,5 @@
 import datetime
+import md5
 import warnings
 
 from formencode import validators, compound, variabledecode
@@ -31,6 +32,12 @@ class NotExistingAccountValidator(validators.FancyValidator):
         account = state.query(model.Person).get_by(handle=value['handle'])
         if account is not None:
             raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
+
+class SillyDescriptionMD5(validators.FancyValidator):
+    def validate_python(self, value, state):
+        checksum = md5.new(value['silly_description']).hexdigest()
+	if value['silly_description_md5'] != checksum:
+	    raise Invalid("Smart enough to hack the silly description, not smart enough to hack the MD5.", value, state)
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -80,6 +87,7 @@ class RegistrationSchema(Schema):
     distro = validators.String()
     distrotext = validators.String()
     silly_description = validators.String()
+    silly_description_md5 = validators.String(strip=True)
 
     prevlca = DictSet(if_missing=None)
 
@@ -108,7 +116,8 @@ class RegistrationSchema(Schema):
     announcesignup = validators.Bool()
     delegatesignup = validators.Bool()
     
-    chained_validators = [DuplicateDiscountCodeValidator()]
+    chained_validators = [DuplicateDiscountCodeValidator(),
+						     SillyDescriptionMD5()]
 
 class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
