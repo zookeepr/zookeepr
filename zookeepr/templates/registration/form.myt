@@ -160,12 +160,24 @@ descMD5 = md5.new(desc).hexdigest()
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
+% if 'signed_in_person_id' in session:
+%   proposals = c.signed_in_person.proposals
+%   is_speaker = reduce(lambda a, b: a or b.accepted, proposals, False)
+% else:
+%   proposals = []
+%   is_speaker = False
+% #endif
+
 <p class="label">
 <span class="mandatory">*</span>
 <label for="registration.type">What type of ticket do you want?</label>
 </p><p class="entries">
 # FIXME: dynamic content
-% for (t, p, eb) in [('Professional', '748.00', '598.40'), ('Hobbyist', '352.00', '281.60'), ('Concession', '154.00', '154.00')]:
+% ticket_types = [('Professional', '748.00', '598.40'), ('Hobbyist', '352.00', '281.60'), ('Concession', '154.00', '154.00')]
+% if is_speaker:
+%   ticket_types = [('Speaker', '0.00', '0.00')] + ticket_types
+% #endif
+% for (t, p, eb) in ticket_types:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
 <label for="registration.type_<% t %>"><% t %> - $<% p %></label>
 <br />
