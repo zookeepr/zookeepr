@@ -18,10 +18,14 @@
     <tr class="<% h.cycle('even', 'odd')%> ">
         <td><% type %></td>
         <td><% rego_all[type] %></td>
-        <td><% rego_nonspeaker[type] %></td>
-        <td><% rego_paid[type] %></td>
-        <td><% h.number_to_percentage(rego_paid[type]*100/rego_total_nonspeaker, precision=0) %></td>
-        <td><% h.number_to_percentage(rego_nonspeaker[type]*100/rego_total_nonspeaker, precision=0) %></td>
+        <td><% rego_nonspeaker.get(type, '-') %></td>
+        <td><% rego_paid.get(type, '-') %></td>
+%     if rego_total_nonspeaker > 0:
+        <td><% h.number_to_percentage(rego_paid.get(type,0)*100/rego_total_nonspeaker, precision=0) %></td>
+        <td><% h.number_to_percentage(rego_nonspeaker.get(type,0)*100/rego_total_nonspeaker, precision=0) %></td>
+%     else:
+        <td>-</td><td>-</td>
+%     #endif
     </tr>
 %   #endfor
 
@@ -30,7 +34,11 @@
     <td><strong><% rego_total %></strong></td>
     <td><strong><% rego_total_nonspeaker %></strong></td>
     <td><strong><% rego_total_paid %></strong></td>
+%   if rego_total_nonspeaker > 0:
     <td><strong><% h.number_to_percentage(rego_total_paid*100/rego_total_nonspeaker, precision=0) %></strong></td>
+%   else:
+    <td>-</td>
+%   #endif
     <td><strong><% h.number_to_percentage(100, precision=0) %></strong></td>
 </tr>
 
@@ -73,7 +81,7 @@ for r in c.registration_collection:
     type = r.type
 
     # All proposals
-    rego_all[type] += 1
+    rego_all[type] = 1 + rego_all.get(type, 0)
     rego_total += 1;
     extra_dinners += r.dinner
 
@@ -86,7 +94,7 @@ for r in c.registration_collection:
     if speaker:
         speakers_registered += 1
     else:
-        rego_nonspeaker[type] += 1
+        rego_nonspeaker[type] = 1 + rego_nonspeaker.get(type, 0)
         rego_total_nonspeaker += 1;
 
     if r.person.invoices and r.person.invoices[0].good_payments:
