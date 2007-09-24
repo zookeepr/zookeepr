@@ -1,11 +1,13 @@
 <div id="navcontainer">
     <ul id="navlist">
+      <!--
         <li><a href="/" <%cls('home')%> >Home</a></li>
         <li><a href="/2008/about" <% cls('about') %>>About</a></li>
         <li><a href="/2008/sponsors-media" <% cls('sponsors-media') %>>Sponsors / Media</a></li>
         <li><a href="/mini-confs" <% cls('mini-confs') %>>Mini-confs</a></li>
         <li><a href="/presentations" <% cls('presentations') %>>Presentations</a></li>
         <li><a href="/2008/contact" <% cls('contact') %>>Contact</a></li>
+      -->
 
 % for (t, u, c) in mm:
         <li><a href="<% u %>" <% cls(c) %>><% t %></a></li>
@@ -39,8 +41,8 @@ map = [
 # Import the navbar from Matrix ("mm" stands for "matrix menu")
 import re, urllib
 mm = 'http://matrix.mel8ourne.org/_designs/zookeepr-files/menu-list'
-# mm = urllib.urlopen(mm).readlines()
-mm = []
+mm = urllib.urlopen(mm).readlines()
+# mm = []
 mm = [mme.split(',', 2) for mme in mm]
 mm = [(t.strip(' \t"'), re.sub('^http://[^/]*/', '/', u.strip(' \t\n"')))
 							  for (t, u) in mm]
