@@ -85,8 +85,9 @@ Other: <% h.text_field('registration.distrotext') %>
 </p>
 
 <%python>
-adjs1 = ["strongly",
-		       "poorly", "bad	ly", "well", "dynamically",
+starts = ["a", "a", "a", "one", "no"] # bias toward "a"
+adverbs = ["strongly",
+		       "poorly", "badly", "well", "dynamically",
 		       "hastily", "statically", "mysteriously",
 		       "buggily", "extremely", "nicely", "strangely",
 		       "irritatingly", "unquestionably", "clearly",
@@ -96,8 +97,8 @@ adjs1 = ["strongly",
 		       "narrowly", "manually", "automatically", "audibly",
 		       "brilliantly", "independently", "definitively",
 		       "provably", "improbably", "distortingly",
-		       "confusingly"]
-adjs2 = ["invalid", "valid",
+		       "confusingly", "decidedly", "historically"]
+adjectives = ["invalid", "valid",
 		       "referenced", "dereferenced", "unreferenced",
 		       "illegal", "legal",
 		       "questionable", 
@@ -114,7 +115,8 @@ adjs2 = ["invalid", "valid",
 		       "sizable", "miniscule",
 		       "perverse", "immovable",
 		       "compressed", "uncompressed",
-		       "surreal", "allegorical"]
+		       "surreal", "allegorical",
+		       "trivial", "nontrivial"]
 nouns = ["pointer", "structure",
 		       "definition", "declaration", "type", "union",
 		       "coder", "admin", "hacker", "kitten", "mistake",
@@ -122,14 +124,13 @@ nouns = ["pointer", "structure",
 		       "neophyte", "expert", "bundle", "package",
 		       "abstraction", "theorem", "display", "distro",
 		       "restriction", "device", "function", "reference"]
-a1 = random.choice(adjs1)
-a2 = random.choice(adjs2)
-n1 = random.choice(nouns)
-if a1[0] in ['a', 'e', 'i', 'o', 'u']:
+adverb = random.choice(adverbs)
+adjective = random.choice(adjectives)
+noun = random.choice(nouns)
+start = random.choice(starts)
+if start == 'a' and adverb[0] in ['a', 'e', 'i', 'o', 'u']:
     start = 'an'
-else:
-    start = 'a'
-desc = '%s %s %s %s' % (start, a1, a2, n1)
+desc = '%s %s %s %s' % (start, adverb, adjective, noun)
 descMD5 = md5.new(desc).hexdigest()
 </%python>
 <p class="label">
@@ -186,11 +187,15 @@ descMD5 = md5.new(desc).hexdigest()
 Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for the full details of each ticket.
 </p>
 
+% if 0:
 <p class="label">
 <label for="registration.discount_code">Discount Code:</label>
 </p><p class="entries">
 <% h.text_field('registration.discount_code') %>
 </p>
+% else:
+<% h.hidden_field('registration.discount_code', value='') %>
+% #endif
 
 <p class="label">
 <span class="mandatory">*</span>
