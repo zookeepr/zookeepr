@@ -45,6 +45,7 @@ person = Table('person', metadata,
                # the lengths of the fields are chosen arbitrarily
                Column('firstname', String(1024)),
                Column('lastname', String(1024)),
+               Column('nick', String(1024)),
                Column('phone', String(32)),
                Column('fax', String(32)),
 

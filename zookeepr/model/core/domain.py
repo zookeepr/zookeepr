@@ -13,7 +13,7 @@ class Person(object):
                  firstname=None, lastname=None, phone=None, fax=None,
                  experience=None, bio=None,
                  creation_timestamp=None,
-                 activated=None
+                 activated=None, nick=None
                  ):
         # account information
         self.email_address = email_address
@@ -24,6 +24,7 @@ class Person(object):
         self.handle = handle
         self.firstname = firstname
         self.lastname = lastname
+        self.nick = nick
         self.phone = phone
         self.fax = fax
 

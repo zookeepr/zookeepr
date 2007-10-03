@@ -73,6 +73,7 @@ teesize = {'S': 'small',
            <% c.registration.country %>
     Phone: <% c.registration.phone %>
   Company: <% c.registration.company %>
+ IRC Nick: <% c.registration.nick %>
 
     Shell: <% c.registration.shelltext or c.registration.shell %>
    Editor: <% c.registration.editortext or c.registration.editor %>

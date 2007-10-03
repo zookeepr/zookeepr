@@ -102,7 +102,8 @@ Your email address will only be used to correspond with you, and is your login n
 % #endif
 </p>
 <p class="note">
-Your display name will be used to identify you on the website.
+Your display name will be used to identify you on the website. For an IRC
+nick or handle to be shown on the badge, see below.
 </p>
 </fieldset>
 

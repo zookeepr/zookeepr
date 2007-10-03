@@ -125,6 +125,7 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    nick = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
 
     chained_validators = [NotExistingAccountValidator(), validators.FieldsMatch('password', 'password_confirm')]

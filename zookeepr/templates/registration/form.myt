@@ -72,7 +72,7 @@ Other: <% h.text_field('registration.shelltext') %>
 Other: <% h.text_field('registration.editortext') %>
 </p>
 
-<p>
+<p class="label">
 <label for="registration.distro">Your favourite distro:</label>
 </p><p class="entries">
 <SELECT name="registration.distro">
@@ -82,6 +82,14 @@ Other: <% h.text_field('registration.editortext') %>
 % #endfor
 </SELECT>
 Other: <% h.text_field('registration.distrotext') %>
+</p>
+
+</p><p class="label">
+<label for="registration.nick">Superhero name:</label>
+</p><p class="entries">
+<% h.text_field('registration.nick', size=30) %>
+</p><p class="note">
+Your IRC nick or other handle you go by.
 </p>
 
 <%python>
