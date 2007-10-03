@@ -6,6 +6,28 @@ from formencode import Invalid, validators, schema
 
 from zookeepr.model import Person, ProposalType, Stream, AssistanceType
 
+class BoundedInt(validators.Int):
+    """ Validator for integers, with bounds.
+
+    Just like validators.Int, but with optional max and min arguments that
+    give limits on the integers and default to the PostgreSQL range for the
+    integer type (-2147483648 to +2147483647).
+
+    WTF did anyone ever code an Int validator *without* bounds?
+    """
+
+    def __init__(self, *args, **kw):
+        validators.Int.__init__(self, *args, **kw)
+	if not hasattr(self, 'min'):
+	  self.min = -2147483648
+	if not hasattr(self, 'max'):
+	  self.max = +2147483647
+    def validate_python(self, value, state):
+        if value>self.max:
+	    raise Invalid('Too large (maximum %d)'%self.max, value, state)
+        if value<self.min:
+	    raise Invalid('Too small (minimum %d)'%self.min, value, state)
+
 class BaseSchema(schema.Schema):
     allow_extra_fields = True
     filter_extra_fields = True
@@ -63,7 +85,7 @@ class StreamValidator(validators.FancyValidator):
 
 
 class ReviewSchema(schema.Schema):
-    score = validators.Int()
+    score = BoundedInt()
     stream = StreamValidator()
     miniconf = validators.String()
     comment = validators.String()
@@ -126,3 +148,4 @@ class EmailAddress(validators.FancyValidator):
 
     def _to_python(self, value, state):
         return value.strip()
+

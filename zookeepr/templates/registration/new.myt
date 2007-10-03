@@ -14,6 +14,16 @@ interaction with this site), then please <a href="/account/signin">sign in</a>.
 </p>
 % #endif
 
+% if errors:
+<p class="error-message">There
+%   if len(errors)==1:
+is one problem
+%   else:
+are <% `len(errors)` |h %> problems
+%   #endif
+% #endif
+with your registration form, highlighted in red below. Please correct and
+re-submit.</p>
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url()) %>
 

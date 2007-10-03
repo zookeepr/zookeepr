@@ -362,12 +362,16 @@ td.submit input, p.submit input {
     padding: 4px;
 }
 
-td.entries input, td.entries textarea, p.entries input, p.entries textarea {
+td.entries input, td.entries textarea, p.entries input, p.entries textarea, p.entries select {
     border: 1px solid #777;
     padding: 4px;
     font-family: Verdana, Geneva, sans-serif;
     background-color: #fff;
     font-size: 1.1em;
+}
+
+p.entries select {
+    padding: 1px;
 }
 
 /* Move us up, snugly against the input field */

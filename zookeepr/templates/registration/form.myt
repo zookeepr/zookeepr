@@ -232,16 +232,20 @@ Female:
 </p>
 
 <p class="label">
-<label for="registration.dinner">I'd like this many extra Penguin Dinner Tickets:</label>
+<label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
 </p><p class="entries">
 <SELECT id="registration.dinner" name="registration.dinner">
-<option value="0">0</option>
-<option value="1">1</option>
-<option value="2">2</option>
+<option value="0">0 (yourself only)</option>
+<option value="1">1 (yourself +1)</option>
+<option value="2">2 (yourself +2)</option>
 </SELECT> <label> - $60 each </label>
 <p class="note">
-The Penguin Dinner is included in the price of a Professional delegate ticket.  Concession and Hobbyist delegates will need to purchase a Penguin Dinner ticket if they wish to attend.
-</span>
+One Penguin Dinner is included in the price of your conference ticket.
+Additional Penguin Dinner tickets are intended for partners or friends not
+attending the conference.
+</p><p class="note-bene">
+Note that unlike past years, <b>Concession and Hobbyist tickets already
+include</b> one Penguin Dinner ticket.
 </p>
 
 <p class="label">
@@ -259,20 +263,38 @@ Please enter any requirements if necessary; access requirements, etc.
 </p>
 
 <p class="label">
-<label for="registration.miniconfs">Prefered miniconfs:</label>
+<label for="registration.miniconfs">Preferred miniconfs:</label>
 </p><p class="entries">
 
+<%python>
 # FIXME: CLEARLY this needs to be dynamic
-
-% for mc in ['Debian', 'Embedded', 'Education', 'FOSS in Research', 'FOSS in Movies', 'Gaming', 'GNOME', 'Kernel', 'Linuxchix', 'MySQL', 'OpenOffice.org', 'PostgreSQL', 'Virtualisation']:
+mclist = (
+    ('Monday',
+	('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security',
+	'Virtualisation', 'Wireless')),
+    ('Tuesday',
+	('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel',
+	'LinuxChix', 'MySQL', 'SysAdmin')))
+</%python>
+<table><tr>
+% for day, mcs in mclist: 
+<th><% day %>
+% #endfor
+<tr>
+% for day, mcs in mclist: 
+<td>
+%   for mc in mcs:
 % 	l = 'registration.miniconf.%s' % mc.replace(' ', '_')
-<br />
 <% h.check_box(l) %>
 <label for="<% l %>"><% mc %></label>
+<br>
+%   #endfor
+&nbsp;
 % #endfor
+</table>
 
 <p class="note">
-Please check the <% h.link_to('Miniconfs', url="/mini-confs") %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
+Please check the <% h.link_to('Miniconfs', url="/programme/mini-confs") %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
 </p>
 
 <p class="label">

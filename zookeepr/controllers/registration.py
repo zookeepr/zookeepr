@@ -9,7 +9,7 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema, EmailAddress
+from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
 
 class DictSet(validators.Set):
@@ -79,6 +79,7 @@ class RegistrationSchema(Schema):
     phone = validators.String()
     
     company = validators.String()
+    nick = validators.String()
 
     shell = validators.String()
     shelltext = validators.String()
@@ -95,22 +96,22 @@ class RegistrationSchema(Schema):
     discount_code = validators.String()
 
     teesize = validators.String(not_empty=True)
-    dinner = validators.Int()
+    dinner = BoundedInt(min=0)
     diet = validators.String()
     special = validators.String()
     miniconf = DictSet(if_missing=None)
-    opendaydrag = validators.Int()
+    opendaydrag = BoundedInt(min=0)
 
     partner_email = EmailAddress(resolve_domain=True)
-    kids_0_3 = validators.Int()
-    kids_4_6 = validators.Int()
-    kids_7_9 = validators.Int()
-    kids_10 = validators.Int()
+    kids_0_3 = BoundedInt(min=0)
+    kids_4_6 = BoundedInt(min=0)
+    kids_7_9 = BoundedInt(min=0)
+    kids_10 = BoundedInt(min=0)
 
     accommodation = AccommodationValidator()
     
-    checkin = validators.Int()
-    checkout = validators.Int()
+    checkin = BoundedInt(min=0)
+    checkout = BoundedInt(min=0)
 
     lasignup = validators.Bool()
     announcesignup = validators.Bool()
@@ -125,7 +126,6 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
-    nick = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
 
     chained_validators = [NotExistingAccountValidator(), validators.FieldsMatch('password', 'password_confirm')]
