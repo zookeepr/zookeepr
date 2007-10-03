@@ -77,7 +77,7 @@ Other: <% h.text_field('registration.editortext') %>
 </p><p class="entries">
 <SELECT name="registration.distro">
 <option value="-">-</option>
-% for d in ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'RHEL', 'Slackware', 'Ubuntu']:
+% for d in ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'RHEL', 'Slackware', 'Ubuntu']:
 <option value="<% d %>"><% d %></option>
 % #endfor
 </SELECT>
@@ -191,9 +191,16 @@ descMD5 = md5.new(desc).hexdigest()
 <label for="registration.type_<% t %>"><% t %> - $<% p %></label>
 <br />
 % #endfor
+% if is_speaker:
+<p class="note-bene">
+As a speaker, you are entitled to attend for free. However, if you
+<i>want</i> to pay, we aren't stopping you :-)
+</p>
+% else:
 <p class="note">
 Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for the full details of each ticket.
 </p>
+% #endif
 
 % if 0:
 <p class="label">
@@ -234,14 +241,12 @@ Female:
 <p class="label">
 <label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
 </p><p class="entries">
-<SELECT id="registration.dinner" name="registration.dinner">
-<option value="0">0 (yourself only)</option>
-<option value="1">1 (yourself +1)</option>
-<option value="2">2 (yourself +2)</option>
-</SELECT> <label> - $60 each </label>
+<% h.text_field('registration.dinner', size=10) %>
+- $60 each; not counting yourself.
 <p class="note">
-One Penguin Dinner is included in the price of your conference ticket.
-Additional Penguin Dinner tickets are intended for partners or friends not
+One Penguin Dinner is included in the
+price of your conference ticket.  Additional Penguin Dinner tickets are
+intended for partners or friends not
 attending the conference.
 </p><p class="note-bene">
 Note that unlike past years, <b>Concession and Hobbyist tickets already
