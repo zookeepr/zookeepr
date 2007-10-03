@@ -143,7 +143,7 @@ descMD5 = md5.new(desc).hexdigest()
 </%python>
 <p class="label">
 <label for="registration.silly_description">Description:</label>
-</p><p class="entries">
+</p><p>
 <% desc %>
 <% h.hidden_field('registration.silly_description', value=desc) %>
 </p>
