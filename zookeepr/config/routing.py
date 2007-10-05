@@ -44,6 +44,8 @@ def make_map():
     # Invoice Reminder
     m.connect('/invoice/remind', controller='invoice', action='remind', id=None)
     m.connect('/registration/remind', controller='registration', action='remind', id=None)
+    m.connect('/registration/status', controller='registration',
+						  action='status', id=None)
 
     # special case for account controller, again in the style of the
     # original routes controller

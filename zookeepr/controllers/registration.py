@@ -159,10 +159,12 @@ class RegistrationController(BaseController, Create, Update, List):
     schemas = {'new': NewRegistrationSchema(),
                'edit': EditRegistrationSchema(),
                }
-    redirect_map = {'edit': dict(controller='/profile', action='index'),
+    redirect_map = {'edit': dict(controller='registration', action='status'),
                     }
     permissions = { 'remind': [AuthRole('organiser')],
+                    'list': [AuthRole('organiser')],
                    }
+    anon_actions = ['status']
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -344,6 +346,8 @@ class RegistrationController(BaseController, Create, Update, List):
 
         return True, "Your discount code has been applied"
 
+    def status(self):
+        return render_response("registration/status.myt")
 
 
 
