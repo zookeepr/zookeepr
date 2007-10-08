@@ -1,4 +1,16 @@
+% if c.printable:
+<?xml version="1.0"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<head>
+<title>Tax Invoice/Statement - linux.conf.au 2008</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+</head>
+<body>
+% else:
 <& actions &>
+% #endif
 
 <h1>Tax Invoice/Statement</h1>
 
@@ -111,7 +123,11 @@ Further information on your registration is available at
 
 <p>
 Enquiries may be emailed to the organisers:
-<% h.contact_email( 'contact email') %>.
+% if c.printable:
+<% h.contact_email() %>.
+% else:
+<% h.contact_email('contact email') %>.
+% #endif
 </p>
 
 <div style="text-align:center">
@@ -128,7 +144,12 @@ Enquiries may be emailed to the organisers:
 </p>
 </div>
 
+% if c.printable:
+</body>
+</html>
+% else:
 <& actions &>
+% #endif
 
 <%method actions>
 <div id="actions">
@@ -143,6 +164,7 @@ Invalid payments have been applied to this invoice, please email <% h.contact_em
 % if c.invoice.person.registration:
     <% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
 % #endif
+<% h.link_to('(Printable version)', url=h.url(controller='invoice', action='printable')) %>
 <br>
 <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
 <small><strong>Please Note:</strong> To qualify for the earlybird discount

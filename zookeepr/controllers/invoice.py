@@ -56,6 +56,10 @@ class InvoiceController(SecureController, Read):
 
         return render_response('invoice/payment.myt', fields=fields)
 
+    def printable(self):
+        c.printable = True
+        res = render('%s/view.myt' % self.individual, fragment=True)
+	return Response(res)
 
     # FIXME There is probably a way to get this to use the List thingy from CRUD
     def remind(self):
