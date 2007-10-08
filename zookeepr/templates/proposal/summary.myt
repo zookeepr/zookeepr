@@ -37,6 +37,7 @@ function toggleDiv(id,flagit) {
     width:500px;
     font-family:Verdana,Arial,Helvetica,san-serif;
     font-size:8pt;
+}
 
 </style>
 
