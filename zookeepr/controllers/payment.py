@@ -29,7 +29,6 @@ class PaymentController(BaseController, Create, View):
 
     def new(self):
         fields = dict(request.GET)
-	raise `fields`
 
         # FIXME: the field shoulnd't be named this, it should be
         # creation_ip.  Additionally it shouldn't only be HTTP_X_FORWARDED_FOR,
@@ -41,26 +40,18 @@ class PaymentController(BaseController, Create, View):
             fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
 
         pd = {}
-        for k in ['InvoiceID',
-                 'PaymentID',
-                 'AuthNum',
-                 'Amount',
-                 'RefundKey',
-                 'Status',
-                 'Settlement',
-                 'ErrorString',
-                 'CardName',
-                 'CardType',
-                 'TransID',
-                 'ORIGINAL_AMOUNT',
-                 'RequestedPage',
-                 'MAC',
-                 'CardNumber',
-                 'MerchantID',
-                 'HTTP_X_FORWARDED_FOR',
-                 'Surcharge']:
-            if k in fields:
-                pd[k] = fields[k]
+        for a,b in [('invoice_id', 'InvoiceID'),
+                    ('payment_amount', 'Amount'),
+                    ('HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED_FOR'),
+		    ]:
+            if a in fields:
+                pd[b] = fields[a]
+
+	# convert from string dollars and cents to integer cents
+	# (hopefully not losing any precision, given the amounts involved)
+        if 'Amount' in pd:
+	    pd['Amount'] = int(round(float(pd['Amount'])*100))
+
         pr = model.PaymentReceived(**pd)
         self.dbsession.save(pr)
         # save object now to get the id and be sure it's saved in case
@@ -71,28 +62,7 @@ class PaymentController(BaseController, Create, View):
         # I'd like to replace this with a "Chain of Command" pattern to do
         # the validation, possibly even using a regular formencode validation
         # chain.
-        if not self._verify_hmac(fields):
-            # Verify the HMAC to be sure that it came from CommSecure.
-            pr.result = 'InvalidMac'
-            error = '/Errors/InvalidPayment'
-            # email seven
-            self._mail_warn('Invalid HMAC', pr)
-            
-        elif pr.payment_sent is None:
-            # Check that this data references a payment we sent to CommSecure.
-            pr.result = 'NonExistentPayment'
-            error = '/Errors/MissingPayment'
-            # email seven
-            self._mail_warn('Nonexistent Payment', pr)
-
-        elif pr.payment_sent.invoice_id != string.atoi(pr.InvoiceID):
-            # check invoices match
-            pr.result = 'InvoiceMisMatch'
-            error = '/Errors/BadInvoice'
-
-            self._mail_warn("Invoice Numbers Don't Match", pr)
-
-        elif pr.ORIGINAL_AMOUNT is not None and pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
+        if pr.ORIGINAL_AMOUNT is not None and pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
             # Check amounts match
             pr.result = 'AmountMisMatch'
             error = '/Errors/BadAmount'
@@ -108,6 +78,7 @@ class PaymentController(BaseController, Create, View):
             
         else:
             pr.result = 'OK'
+	    pr.Status = 'Accepted'
             error = None
 
         self.dbsession.flush()
@@ -119,15 +90,14 @@ class PaymentController(BaseController, Create, View):
         if error:
             redirect_to(error)
         else:
-            # Commsecure does a get as well we don't want to send an email for that
-            if pr.HTTP_X_FORWARDED_FOR != '203.192.130.110':
-                c.person = pr.payment_sent.invoice.person
-                c.payment = pr
-                email(c.person.email_address,
-                    render('payment/response.myt', id=c.person.url_hash,
-		        fragment=True))
+            return Response("Recorded, thank you.") #only goes to SecurePay
+	    #c.person = pr.payment_sent.invoice.person
+	    c.person = pr.invoice.person
+	    c.payment = pr
+	    email(c.person.email_address,
+		render('payment/response.myt', id=c.person.url_hash,
+		    fragment=True))
 
-            redirect_to(controller='payment', action='view', id=pr.id)
 
     def _verify_hmac(self, fields):
         merchantid =  request.environ['paste.config']['app_conf'].get('commsecure_merchantid')

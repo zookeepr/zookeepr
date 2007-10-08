@@ -65,14 +65,21 @@ otherwise.</p>
 % elif c.signed_in_person.invoices[0].bad_payments:
 <p><b>Tentatively registered and tried to pay.</b></p>
 
+<p>Unfortunately, there was some sort of problem with your payment.</p>
+
 <h3>Next step</h3>
 
-<p>Contact the committee.</p>
+<p><% h.contact_email('Contact the committee') %></p>
+
+<p>Your details are:
+person <% c.signed_in_person.id %>,
+registration <% c.signed_in_person.registration.id %>, 
+invoice <% c.signed_in_person.invoices[0].id %>.</p>
 
 <h3>Summary of steps</h3>
 &#9745; Fill in registration form
 <br/>&#9745; Generate invoice
-<br/>&#9746; Pay
+<br/>&#9744; Pay
 <br/>&#9744; Attend conference
 % else:
 <p><b>Tentatively registered.</b></p>

@@ -9,6 +9,7 @@ class InvoiceController(SecureController, Read):
     model = model.Invoice
     individual = 'invoice'
     permissions = {'view': [AuthFunc('is_payee'), AuthRole('organiser')],
+                   'printable': [AuthFunc('is_payee'), AuthRole('organiser')],
                    'pay': [AuthFunc('is_payee'), AuthRole('organiser')],
                    'remind': [AuthRole('organiser')],
                    }

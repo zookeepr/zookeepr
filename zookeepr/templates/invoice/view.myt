@@ -165,7 +165,7 @@ Invalid payments have been applied to this invoice, please email <% h.contact_em
     <% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
 % #endif
 <% h.link_to('(Printable version)', url=h.url(controller='invoice', action='printable')) %>
-<br>
+<br/>
 <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
 <small><strong>Please Note:</strong> To qualify for the earlybird discount
 you must have registred by the 15th November and you need to pay by the
@@ -173,6 +173,7 @@ you must have registred by the 15th November and you need to pay by the
 </p>
 
 % else:
+<% h.link_to('(Printable version)', url=h.url(controller='invoice', action='printable')) %>
 <p>
 Invoice has been paid.
 % #endif
