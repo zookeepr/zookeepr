@@ -56,21 +56,23 @@
     <!-- end content -->
     </div>
 
-    <div id="footer">
-<!-- the boss lady wants 'em oot
-    <p class="spons emperor">
-        <a href="http://www.hp.com/" id="sponhp"><img class="whammy" src="/css-images/hp.png" alt="HP" /></a>
-        <a href="http://au.ibm.com/" id="sponibm"><img class="whammy" src="/css-images/ibm.png" alt="IBM" /></a>
-        <a href="http://www.redhat.com" id="sponredhat"><img class="whammy" src="/css-images/redhat.png" alt="Redhat" /></a>
-    </p>
-    <p class="spons">&nbsp;</p>
--->
-    </div>
-</div>
+<div id="footer">
+            <p class="spons emperor">
 
-<p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE LCA2008
-and <a href="http://www.linux.org.au/">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a></p>
-<a id="cred" title="made with love" href="http://www.raena.net/">rja</a> </div>
+   <a href="http://linux.conf.au/sponsors-media" id="spongle"><img src="http://linux.conf.au/__data/assets/image/0013/427/small-google-logo.gif" alt="Google Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponhp" ><img src="http://linux.conf.au/__data/assets/image/0010/424/small-hp-logo.gif" alt="Hewlett-Packard Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponibm"><img src="http://linux.conf.au/__data/assets/image/0011/425/small-ibm-logo.gif" alt="IBM Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponmmv"><img src="http://linux.conf.au/__data/assets/image/0012/426/small-mmv-logo.gif" alt="Multimedia Victoria Logo" /></a>
+</p>        </div>
+    </div>
+
+    <p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE LCA2008
+        and <a href="http://www.linux.org.au/">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | 
+        <a href="http://linux.conf.au/site-map">Site map</a> | 
+        <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a></p>
+
+        <a id="cred" title="made with love" href="http://www.raena.net/">rja</a> 
+</div>
 
 <script src="http://www.google-analytics.com/urchin.js"
   type="text/ javascript">
