@@ -29,6 +29,7 @@ class PaymentController(BaseController, Create, View):
 
     def new(self):
         fields = dict(request.GET)
+	raise `fields`
 
         # FIXME: the field shoulnd't be named this, it should be
         # creation_ip.  Additionally it shouldn't only be HTTP_X_FORWARDED_FOR,

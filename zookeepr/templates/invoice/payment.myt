@@ -22,14 +22,23 @@
 </p>
 
 <p>
-<% h.link_to('Go back', url=h.url(action='view')) %> to view invoice details,
-or <% h.link_to('view registration details', url='/profile') %> before payment.
+View <% h.link_to('invoice details', url=h.url(action='view')) %> or <%
+h.link_to('registration status', url='/registration/status') %> before
+payment.
 </p>
 
 <input type="hidden" name="receipt_address"
   value="<% c.invoice.person.email_address |h %>">
 
+<input type="hidden" name="invoice_id" value="<% fields['InvoiceID'] %>">
+<input type="hidden" name="hidden_fields" value="invoice_id">
+<input type="hidden" name="information_fields" value="invoice_id">
+
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
+<input type="hidden" name="reply_link_url"
+  value="http://www.baum.com.au/mel8/payment/new?invoice_id=&payment_amount=">
+<input type="hidden" name="return_link_url"
+  value="http://www.baum.com.au:5000/registration/status">
 
 <input type="submit" value="Go to the SecurePay checkout">
 </form>

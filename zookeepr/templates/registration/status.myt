@@ -87,7 +87,9 @@ registration</a></p>
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a>
 <br/><a href="/registration/<% c.signed_in_person.registration.id %>/pay"
->Regenerate invoice</a></p>
+>Regenerate invoice</a>
+<br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
+invoice</a></p>
 
 <h3>Summary of steps</h3>
 &#9745; Fill in registration form
