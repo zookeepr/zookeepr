@@ -345,8 +345,9 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <label for="registration.checkin">Check in on:</label>
 </p><p class="entries">
 <select name="registration.checkin">
-% for d in range(14, 21):
-<option value="<% d %>"><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
+% dates = [(d, 1) for d in range(27,32)] + [(d, 2) for d in (1,2,3)]
+% for (day, month) in dates[:-1]:
+<option value="<% day %>"><% datetime.datetime(2008, month, day).strftime('%A, %e %b') %></option>
 % #endfor
 </select>
 </p>
@@ -356,12 +357,12 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <label for="registation.checkout">Check out on:</label>
 </p><p class="entries">
 <select name="registration.checkout">
-% for d in range(15, 22):
-<option value="<% d %>"
-% 	if d == 20:
+% for day, month in dates[1:]:
+<option value="<% day %>"
+% 	if day == 2:
 selected
 % 	#endif
-><% datetime.datetime(2007, 1, d).strftime('%A, %d %b') %></option>
+><% datetime.datetime(2008, month, day).strftime('%A, %e %b') %></option>
 % #endfor
 </select>
 </p>

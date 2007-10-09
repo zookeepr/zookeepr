@@ -20,9 +20,8 @@ into the site with the password you provided with your registration.
 % #endif
 
 You can now view and pay for your invoice by visiting
-http://<% h.host_name() %>/profile/<% c.person.id %> and
-clicking on the "confirm and and pay" link. If you get a blank page
-please ensure you are signed in.
+http://<% h.host_name() %>/registration/status
+and follow the instructions, making sure you are signed in.
 
 Your account details are:
 
