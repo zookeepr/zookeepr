@@ -28,19 +28,25 @@ Your account details are:
    Ticket: <% c.registration.type %>
 
 <%python>
-if c.registration.teesize.startswith('M'):
-    teesex = 'Mens'
-else:
-    teesex = 'Womens'
+teesize = c.registration.teesize.split('_')
 
-teesize = {'S': 'small',
-           'M': 'medium',
-           'L': 'large',
-           'XL': 'X large',
-           'XXL': 'XX large',
-           'XXXL': 'XXX large'}[c.registration.teesize[2:]]
+try:
+  teesize[0] = {
+    'M': 'Mens',
+    'F': 'Womens',
+  }.get(teesize[0], teesize[0])
+
+  teesize[1] = {
+    'long': 'long-sleeve',
+    'short': 'short-sleeve',
+  }.get(teesize[1], teesize[1])
+except:
+  pass
+
+teesize = ' '.join(teesize)
+
 </%python>
- Teeshirt: <% teesex %> <% teesize %>
+ Teeshirt: <% teesize %>
 
  Extra tickets: <% c.registration.dinner |h %>
 

@@ -188,7 +188,11 @@ descMD5 = md5.new(desc).hexdigest()
 % #endif
 % for (t, p, eb) in ticket_types:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
-<label for="registration.type_<% t %>"><% t %> - $<% p %></label>
+<label for="registration.type_<% t %>"><% t %> - $<% p %>
+% if eb != p:
+($<% eb %> early-bird)
+% #endif
+</label>
 <br />
 % #endfor
 % if is_speaker:
@@ -199,6 +203,8 @@ As a speaker, you are entitled to attend for free. However, if you
 % else:
 <p class="note">
 Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for the full details of each ticket.
+One important change from past years is that Concession and Hobbyist tickets
+also include Penguin Dinner.
 </p>
 % #endif
 
@@ -214,23 +220,45 @@ Check the <% h.link_to('registration page', url="/Registration", popup=True) %> 
 
 <p class="label">
 <span class="mandatory">*</span>
-<label>Teeshirt Size:</label>
+<label>Teeshirt Size and Style:</label>
 <p class="entries">
+<%python>
+teeoptions = [
+  ('F_long',
+  """Women's long sleeve <br/><span class="note">(Small cut -
+  order 1 size up)</p>""",
+  ('8', '10', '12', '14', '16', '18')),
+
+  ('F_short',
+  "Women's short sleeve fitted",
+  ('8', '10', '12', '14', '16')),
+
+  ('M_long',
+  "Men's long sleeve",
+  ('S', 'M', 'L', 'XL', '2XL', '3XL')),
+
+  ('M_short',
+  "Men's short sleeve",
+  ('S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'))]
+teesizes = {}
+def oddeven_gen():
+  while 1:
+    yield "odd"
+    yield "even"
+oddeven = oddeven_gen().next
+</%python>
 <table>
 # FIXME:
-% for sex in ['M', 'F']:
-<tr>
+% for style, style_text, sizes in teeoptions: 
+<tr class="<% oddeven() %>">
 <td>
-%	if sex == 'M':
-Male:
-%	else:
-Female:
-%	#endif
+<% style_text %> &nbsp;
 </td>
-% 	for size, size_text in [('S', 'Small'), ('M', 'Medium'), ('L', 'Large'), ('XL', 'X Large'), ('XXL', 'XX Large'), ('XXXL', 'XXX Large')]:
+% 	for size in sizes:
+%           size_text = teesizes.get(size, size)
 <td>
-<input type="radio" name="registration.teesize" id="registration.teesize_<% sex %>_<% size %>" value="<% sex %>_<% size %>" />
-<label for="registration.teesize_<% sex %>_<% size %>"><% size_text %></label>
+<input type="radio" name="registration.teesize" id="registration.teesize_<%
+style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registration.teesize_<% style %>_<% size %>"><% size_text %></label>&nbsp;
 </td>
 % 	#endfor
 </tr>
@@ -242,7 +270,7 @@ Female:
 <label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
 </p><p class="entries">
 <% h.text_field('registration.dinner', size=10) %>
-- $60 each; not counting yourself.
+- $50 each; not counting yourself.
 <p class="note">
 One Penguin Dinner is included in the
 price of your conference ticket.  Additional Penguin Dinner tickets are
@@ -331,11 +359,20 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 <SELECT name="registration.accommodation">
 <option value="0">I will organise my own</option>
 % for a in c.accommodation_collection:
+%    if a.beds==999:
+%       places_left = ''
+%    elif is_speaker and a.name=='Trinity':
+%       places_left = ''
+%    else:
+%       places_left = '(%d places left)' % (a.beds - a.beds_taken)
+%    #endif
+%    if is_speaker or a.option!='speaker':
 <option value="<% a.id %>"><% a.name %>
 % 	if a.option:
 (<% a.option %>)
 % 	#endif
-- <% h.number_to_currency(a.cost_per_night) %> per night (<% a.beds - a.beds_taken %> places left)</option>
+- <% h.number_to_currency(a.cost_per_night) %> per night <% places_left %></option>
+%    #endif
 % #endfor
 </SELECT>
 </p>
@@ -358,11 +395,7 @@ Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=T
 </p><p class="entries">
 <select name="registration.checkout">
 % for day, month in dates[1:]:
-<option value="<% day %>"
-% 	if day == 2:
-selected
-% 	#endif
-><% datetime.datetime(2008, month, day).strftime('%A, %e %b') %></option>
+<option value="<% day %>" ><% datetime.datetime(2008, month, day).strftime('%A, %e %b') %></option>
 % #endfor
 </select>
 </p>

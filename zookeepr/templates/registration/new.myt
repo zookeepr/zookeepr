@@ -137,7 +137,7 @@ errors
 <%init>
 # work around bug in formencode, set defaults
 if not defaults:
-	defaults = {'registration.checkout': '20',
+	defaults = {'registration.checkout': '2',
 		'registration.lasignup': '1',
 		'registration.announcesignup': '1',
 		'registration.dinner': '0',

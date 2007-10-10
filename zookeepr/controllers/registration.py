@@ -175,9 +175,18 @@ class RegistrationController(BaseController, Create, Update, List):
 
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
+	    is_speaker = reduce(lambda a, b: a or b.accepted,
+				       c.signed_in_person.proposals, False)
+        else:
+	    is_speaker = False
 
         as = self.dbsession.query(model.Accommodation).select()
-        c.accommodation_collection = filter(lambda a: a.get_available_beds() >= 1, as)
+	def space_available(a):
+	  if is_speaker and a.name=='Trinity':
+	    return True
+	  return a.get_available_beds() >= 1
+        c.accommodation_collection = filter(space_available, as)
+	c.accommodation_collection.sort(cmp = lambda a, b: cmp(a.id, b.id))
 
     def edit(self, id):
         if not self.is_same_person() and not AuthRole('organiser').authorise(self):
@@ -354,34 +363,25 @@ class RegistrationController(BaseController, Create, Update, List):
 class PaymentOptions:
     def __init__(self):
         self.types = {
-                "Professional": [51750, 69000],
-                "Hobbyist": [22500, 30000],
-                "Concession": [9900, 9900]
+                "Professional": [59840, 74800],
+                "Hobbyist": [28160, 35200],
+                "Concession": [15400, 15400],
+                "Speaker": [0, 0]
                 }
-        self.dinner = {
-                1: 6000,
-                2: 12000,
-                3: 18000
-                }
-        self.accommodation = {
-                "0": 0,
-                "1": 4950,
-                "2": 5500,
-                "3": 6000,
-                "5": 3500,
-                "6": 5850
-                }
+        self.dinner = 5000
+
+# I think accomodation is in the DB?		
+#        self.accommodation = {
+#                "0": 0,
+#                "1": 4950,
+#                "2": 5500,
+#                "3": 6000,
+#                "5": 3500,
+#                "6": 5850
+#                }
         self.ebdate = datetime.datetime(2006, 11, 16, 00, 00, 00)
         #indates = [14, 15, 16, 17, 18, 19]
         #outdates = [15, 16, 17, 18, 19, 20]
-
-        self.partners = {
-                "0": 0,
-                "1": 20000, # just a partner
-                "2": 30000, # now the kids
-                "3": 40000,
-                "4": 50000
-                }
 
     def getTypeAmount(self, type, date):
         if type in self.types.keys():
@@ -395,23 +395,23 @@ class PaymentOptions:
         return result
 
     def getDinnerAmount(self, tickets):
-        dinnerAmount = self.dinner[tickets]
+        dinnerAmount = self.dinner*tickets
         return dinnerAmount
 
-    def getAccommodationRate(self, choice):
-        accommodationRate = self.accommodation[choice]
-        return accommodationRate
+#    def getAccommodationRate(self, choice):
+#        accommodationRate = self.accommodation[choice]
+#        return accommodationRate
 
-    def getAccommodationAmount(self, rate, indate, outdate):
-        accommodationAmount = (outdate - indate) * rate
-        return accommodationAmount
+#    def getAccommodationAmount(self, rate, indate, outdate):
+#        accommodationAmount = (outdate - indate) * rate
+#        return accommodationAmount
 
     def getPartnersAmount(self, partner, kids):
         count = partner + kids
         if count == 0:
             partnersAmount = 0
         else:
-            partnersAmount = (count + 1) * 10000
+            partnersAmount = partner * 29700 + kids * 14300
         return partnersAmount
 
 

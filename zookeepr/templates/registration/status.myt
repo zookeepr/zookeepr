@@ -20,7 +20,7 @@ otherwise.</p>
 <br/>&#9744; Generate invoice
 <br/>&#9744; Pay
 <br/>&#9744; Attend conference
-% elif not hasattr(c.signed_in_person, 'registration'):
+% elif not hasattr(c.signed_in_person, 'registration') or c.signed_in_person.registration==None:
 <p><b>Not registered.</b>
 
 <h3>Next step</h3>

@@ -1,6 +1,6 @@
 Subject: Payment error: <% subject %>
-To: <% h.contact_email %>
-From: payment error <<% h.contact_email %>>
+To: <% h.contact_email() %>
+From: payment error <<% h.contact_email() %>>
 
 Something went horribly wrong whilst someone was trying to pay!
 
