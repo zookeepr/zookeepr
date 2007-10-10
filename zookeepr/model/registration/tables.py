@@ -63,6 +63,11 @@ registration = Table('registration', metadata,
                      Column('lasignup', Boolean),
                      Column('announcesignup', Boolean),
                      Column('delegatesignup', Boolean),
+
+		     Column('speaker_record', Boolean),
+		     Column('speaker_video_release', Boolean),
+		     Column('speaker_slides_release', Boolean),
+
                      Column('prevlca', PickleType),
                      Column('miniconf', PickleType),
 

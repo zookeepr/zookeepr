@@ -141,5 +141,8 @@ if not defaults:
 		'registration.lasignup': '1',
 		'registration.announcesignup': '1',
 		'registration.dinner': '0',
+		'registration.speaker_record': '1',
+		'registration.speaker_video_release': '1',
+		'registration.speaker_slides_release': '1',
 		}
 </%init>

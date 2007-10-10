@@ -23,7 +23,7 @@ errors
 # the values in c.registration
 if not defaults:
 	defaults = {}
-	for k in ['address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone', 'company', 'shell', 'shelltext', 'editor', 'editortext', 'distro', 'distrotext', 'nick', 'prevlca', 'type', 'discount_code', 'teesize', 'dinner', 'diet', 'special', 'miniconf', 'opendaydrag', 'accommodation', 'checkin', 'checkout', 'partner_email', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10', 'lasignup', 'announcesignup', 'delegatesignup']:
+	for k in ['address1', 'address2', 'city', 'state', 'country', 'postcode', 'phone', 'company', 'shell', 'shelltext', 'editor', 'editortext', 'distro', 'distrotext', 'nick', 'prevlca', 'type', 'discount_code', 'teesize', 'dinner', 'diet', 'special', 'miniconf', 'opendaydrag', 'accommodation', 'checkin', 'checkout', 'partner_email', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10', 'lasignup', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
 		v = getattr(c.registration, k)
 		if v is not None:
 			defaults['registration.' + k] = getattr(c.registration, k)

@@ -450,6 +450,39 @@ If you are planning on bringing your partner, please enter their email address h
 
 </fieldset>
 
+% if is_speaker:
+<fieldset>
+<h2>Speaker recording consent and release</h2>
+<p>As a service to Linux Australia members and to other interested Linux users,
+Linux Australia would like to make your presentation available to the public.
+This involves video­taping your talk, and offering the video/audio and slides
+(for download, or on CD­ROM).</p>
+
+<p class="entries">
+<% h.check_box('registration.speaker_record') %>
+<label for="registration.speaker_record">I allow Linux Australia to record my presentation</label>
+</p>
+
+<p class="entries">
+<% h.check_box('registration.speaker_video_release') %>
+<label for="registration.speaker_video_release">I allow Linux Australia to
+release my video under the Creative Commons ShareAlike License</label>
+</p>
+
+<p class="entries">
+<% h.check_box('registration.speaker_slides_release') %>
+<label for="registration.speaker_slides_release">I allow Linux Australia to share my slides</label>
+</p>
+
+<p>If you have allowed Linux Australia to publish your slides, please send them
+to <a href="mailto:committee@linux.org.au">committee@linux.org.au</a> if we
+don't already have them. We will publish them under the Creative Commons
+Attribution License unless you have an equivalent preference that you let us
+know.</p>
+
+</fieldset>
+% #endif
+
 <% h.hidden_field('registration.silly_description_md5', value=descMD5) %>
 <%init>
 import datetime

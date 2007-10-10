@@ -56,7 +56,17 @@ class DuplicateDiscountCodeValidator(validators.FancyValidator):
                 if r.person_id != session['signed_in_person_id']:
                     raise Invalid("Discount code already in use!", value, state)
 
-
+class SpeakerDiscountValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['type']=='Speaker' or value['accommodation'] in (51,52,53):
+	    if 'signed_in_person_id' in session:
+		signed_in_person = state.query(model.Person).get_by(id=session['signed_in_person_id'])
+		is_speaker = reduce(lambda a, b: a or b.accepted,
+					 signed_in_person.proposals, False)
+		if not is_speaker:
+		    raise Invalid("You don't appear to be a speaker, don't claim a speaker discount.", value, state)
+	    else:
+		raise Invalid("Please log in before claiming a speaker discount!", value, state)
 
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -116,9 +126,13 @@ class RegistrationSchema(Schema):
     lasignup = validators.Bool()
     announcesignup = validators.Bool()
     delegatesignup = validators.Bool()
+
+    speaker_record = validators.Bool()
+    speaker_video_release = validators.Bool()
+    speaker_slides_release = validators.Bool()
     
     chained_validators = [DuplicateDiscountCodeValidator(),
-						     SillyDescriptionMD5()]
+			 SillyDescriptionMD5(), SpeakerDiscountValidator()]
 
 class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
