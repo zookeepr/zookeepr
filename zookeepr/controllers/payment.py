@@ -42,6 +42,8 @@ class PaymentController(BaseController, Create, View):
         pd = {}
         for a,b in [('invoice_id', 'InvoiceID'),
                     ('payment_amount', 'Amount'),
+		    ('bank_reference', 'AuthNum'),
+		    ('payment_number', 'TransID'),
                     ('HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED_FOR'),
 		    ]:
             if a in fields:

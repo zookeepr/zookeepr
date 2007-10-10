@@ -393,7 +393,7 @@ class PaymentOptions:
 #                "5": 3500,
 #                "6": 5850
 #                }
-        self.ebdate = datetime.datetime(2006, 11, 16, 00, 00, 00)
+        self.ebdate = datetime.datetime(2007, 11, 15, 00, 00, 00)
         #indates = [14, 15, 16, 17, 18, 19]
         #outdates = [15, 16, 17, 18, 19, 20]
 

@@ -36,7 +36,7 @@ payment.
 
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
 <input type="hidden" name="reply_link_url"
-  value="http://www.baum.com.au/mel8/payment/new?invoice_id=&payment_amount=">
+  value="http://www.baum.com.au/mel8/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
 <input type="hidden" name="return_link_url"
   value="http://www.baum.com.au:5000/registration/status">
 
