@@ -45,10 +45,15 @@
 </table>
 
 <strong>Extra Dinner Tickets: </strong><% extra_dinners %><br>
+<!-- (seven calculation, ours is different)
 <strong>Total Dinner Tickets: </strong><% extra_dinners + rego_nonspeaker['Professional'] + speakers_registered %><br>
+-->
 <br>
 <!-- <strong>Total Speakers (hard coded, seven number):</strong> 83<br> -->
 <strong>Speakers Registered: </strong><% speakers_registered %><br>
+<br>
+<strong>Earlybird status:</strong> <% earlybird |h%>,
+<% `c.eb` |h%>, <% c.ebtext |h%><br>
 <br>
 <strong>Money in Bank:</strong> <% h.number_to_currency(money_in_bank) %> <br>
 <br>
@@ -76,6 +81,7 @@ speakers_registered = 0
 extra_dinners = 0
 money_in_bank = 0
 accommodation_paid = {}
+earlybird = 0
 
 # Loop through regos
 for r in c.registration_collection:
@@ -107,6 +113,13 @@ for r in c.registration_collection:
 			accommodation_paid[r.accommodation_option_id] += 1
 		else:
 			accommodation_paid[r.accommodation_option_id] = 1
+	if type in ('Hobbyist', 'Professional') and not speaker:
+	    earlybird += 1
 
+from datetime import datetime
+if datetime.now() > c.ebdate:
+    earlybird = 'too late'
+else:
+    earlybird = '%d taken' % earlybird
 
 </%init>

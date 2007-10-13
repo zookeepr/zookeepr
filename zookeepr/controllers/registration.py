@@ -285,16 +285,17 @@ class RegistrationController(BaseController, Create, Update, List):
 
         # Registration
         description = registration.type + " Registration"
-        if p.is_earlybird(registration.creation_timestamp):
+	eb = self.check_earlybird()[0]
+        if eb:
             description = description + " (earlybird)"
-        cost = p.getTypeAmount(registration.type, registration.creation_timestamp)
+        cost = p.getTypeAmount(registration.type, eb)
 
         # Check for discount
         result, errors = self.check_discount()
         if result:
             discount = registration.discount
             description = description + " (Discounted " + discount.type + ")"
-            discount_amount =  p.getTypeAmount(discount.type, registration.creation_timestamp) * discount.percentage/100
+            discount_amount =  p.getTypeAmount(discount.type, eb) * discount.percentage/100
             if discount_amount > cost:
                 cost = 0
             else:
@@ -368,7 +369,9 @@ class RegistrationController(BaseController, Create, Update, List):
             abort(403)
 
 	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).select())
+	setattr(c, 'ebdate', PaymentOptions().ebdate)
 
+        (c.eb, c.ebtext) = self.check_earlybird()
 
         return super(RegistrationController, self).index()
 
@@ -389,9 +392,37 @@ class RegistrationController(BaseController, Create, Update, List):
 
         return True, "Your discount code has been applied"
 
-    def status(self):
-        return render_response("registration/status.myt")
+    def check_earlybird(self):
+        count = 0
+	po = PaymentOptions()
+	if datetime.datetime.now() > po.ebdate:
+	    return False, "Too late."
+        for r in self.dbsession.query(self.model).select():
+	    if type not in ('Hobbyist', 'Professional'):
+	        continue
+	    if not r.person.invoices or not r.person.invoices[0].good_payments:
+	        continue
+	    speaker = 0
+	    if r.person.proposals:
+		for proposal in r.person.proposals:
+		    if proposal.accepted:
+			speaker = 1
+	    if not speaker:
+	        count += 1
+	if count >= po.eblimit:
+	    return False, "All gone."
+	left = po.eblimit - count
+	percent = int(round((20.0 * left) / po.eblimit) * 5)
+	if percent == 0:
+	    return True, "Almost all gone."
+	elif percent <= 30:
+	    return True, ("Only %d%% left."%percent)
+	else:
+	    return True, ("%d%% left."%percent)
 
+    def status(self):
+        (c.eb, c.ebtext) = self.check_earlybird()
+        return render_response("registration/status.myt")
 
 
 class PaymentOptions:
@@ -414,19 +445,20 @@ class PaymentOptions:
 #                "6": 5850
 #                }
         self.ebdate = datetime.datetime(2007, 11, 15, 00, 00, 00)
+        self.eblimit = 15
         #indates = [14, 15, 16, 17, 18, 19]
         #outdates = [15, 16, 17, 18, 19, 20]
 
-    def getTypeAmount(self, type, date):
+    def getTypeAmount(self, type, eb):
         if type in self.types.keys():
-            if self.is_earlybird(date):
+            if eb:
                 return self.types[type][0]
             else:
                 return self.types[type][1]
 
-    def is_earlybird(self, date):
-        result = date.date() < self.ebdate.date()
-        return result
+#    def is_earlybird(self, date):
+#        result = date.date() < self.ebdate.date()
+#        return result
 
     def getDinnerAmount(self, tickets):
         dinnerAmount = self.dinner*tickets

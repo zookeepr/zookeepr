@@ -227,15 +227,15 @@ teeoptions = [
   ('F_long',
   """Women's long sleeve <br/><span class="note">(Small cut -
   order 1 size up)</p>""",
-  ('8', '10', '12', '14', '16', '18')),
+  ('8', '10', '12', '14', '16', '18', '', '')),
 
   ('F_short',
   "Women's short sleeve fitted",
-  ('8', '10', '12', '14', '16')),
+  ('8', '10', '12', '14', '16', '', '', '')),
 
   ('M_long',
   "Men's long sleeve",
-  ('S', 'M', 'L', 'XL', '2XL', '3XL')),
+  ('S', 'M', 'L', 'XL', '2XL', '3XL', '', '')),
 
   ('M_short',
   "Men's short sleeve",
@@ -256,10 +256,14 @@ oddeven = oddeven_gen().next
 </td>
 % 	for size in sizes:
 %           size_text = teesizes.get(size, size)
+%           if size_text == '':
+<td>&nbsp;</td>
+%           else:
 <td>
 <input type="radio" name="registration.teesize" id="registration.teesize_<%
 style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registration.teesize_<% style %>_<% size %>"><% size_text %></label>&nbsp;
 </td>
+%           #endif
 % 	#endfor
 </tr>
 % #endfor
