@@ -68,6 +68,17 @@ class SpeakerDiscountValidator(validators.FancyValidator):
 	    else:
 		raise Invalid("Please log in before claiming a speaker discount!", value, state)
 
+class PPValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+	for k in ['kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11',
+							     'kids_12_17']:
+            if value[k] and not value['pp_adults']:
+		raise Invalid("Can't have children without an adult in the partners programme")
+	if value['partner_email'] and not value['pp_adults']:
+	    raise Invalid("Please specify number of people in the partners programme (or remove partner's email address)")
+	if value['pp_adults'] and not value['partner_email']:
+	    raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme")
+
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         if value == 'own':
@@ -116,7 +127,9 @@ class RegistrationSchema(Schema):
     kids_0_3 = BoundedInt(min=0)
     kids_4_6 = BoundedInt(min=0)
     kids_7_9 = BoundedInt(min=0)
-    kids_10 = BoundedInt(min=0)
+    kids_10_11 = BoundedInt(min=0)
+    kids_12_17 = BoundedInt(min=0)
+    pp_adults = BoundedInt(min=0)
 
     accommodation = AccommodationValidator()
     
@@ -132,7 +145,7 @@ class RegistrationSchema(Schema):
     speaker_slides_release = validators.Bool()
     
     chained_validators = [DuplicateDiscountCodeValidator(),
-			 SillyDescriptionMD5(), SpeakerDiscountValidator()]
+	  SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator()]
 
 class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
@@ -314,21 +327,24 @@ class RegistrationController(BaseController, Create, Update, List):
 
         # Partner's Programme
         partner = 0
-        if registration.partner_email:
+	for p in [registration.kids_12_17, registration.pp_adults]:
+	  if p is not None:
+	    partner += p
+        if partner > 0:
             iipa = model.InvoiceItem(description = "Partner's Programme - Adult",
-                                     qty = 1,
-                                     cost=20000)
+                                     qty = partner,
+                                     cost=29700)
             self.dbsession.save(iipa)
             invoice.items.append(iipa)
             
         kids = 0
-        for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10]:
+        for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10_11]:
             if k is not None:
                 kids += k
         if kids > 0:
             iipc = model.InvoiceItem(description="Partner's Programme - Child",
                                     qty = kids,
-                                    cost=10000)
+                                    cost=14300)
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
 
@@ -424,13 +440,13 @@ class PaymentOptions:
 #        accommodationAmount = (outdate - indate) * rate
 #        return accommodationAmount
 
-    def getPartnersAmount(self, partner, kids):
-        count = partner + kids
-        if count == 0:
-            partnersAmount = 0
-        else:
-            partnersAmount = partner * 29700 + kids * 14300
-        return partnersAmount
+#    def getPartnersAmount(self, partner, kids):
+#        count = partner + kids
+#        if count == 0:
+#            partnersAmount = 0
+#        else:
+#            partnersAmount = partner * 29700 + kids * 14300
+#        return partnersAmount
 
 
 

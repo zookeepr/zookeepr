@@ -413,19 +413,31 @@ If you are planning on bringing your partner, please enter their email address h
 </p>
 
 <p class="label">
-<label for="registration.children">Are you bringing children?</label>
+<label for="registration.children">How many people?</label>
 </p><p class="entries">
-<label for="registration.kids_0_3">This many under 3 year olds:</label>
-<% h.text_field('registration.kids_0_3', size=10) %>
+<label for="registration.pp_adults">Adults:</label>
+<% h.text_field('registration.pp_adults', size=10) %>
+- $297.00
 <br />
-<label for="registration.kids_4_6">This many 4-6 year olds:</label>
-<% h.text_field('registration.kids_4_6', size=10) %>
+<label for="registration.kids_12_17">Young adults (12-17):</label>
+<% h.text_field('registration.kids_12_17', size=10) %>
+- $297.00
 <br />
-<label for="registration.kids_7_9">This many 7-9 year olds:</label>
+<label for="registration.kids_10_11">Children 10-11:</label>
+<% h.text_field('registration.kids_10_11', size=10) %>
+- $143.00
+<br />
+<label for="registration.kids_7_9">Children 7-9:</label>
 <% h.text_field('registration.kids_7_9', size=10) %>
+- $143.00
 <br />
-<label for="registration.kids_10">This many aged 10 or above:</label>
-<% h.text_field('registration.kids_10', size=10) %>
+<label for="registration.kids_4_6">Children 4-6:</label>
+<% h.text_field('registration.kids_4_6', size=10) %>
+- $143.00
+<br />
+<label for="registration.kids_0_3">Children under 3:</label>
+<% h.text_field('registration.kids_0_3', size=10) %>
+- $143.00
 <br />
 </p>
 </fieldset>
@@ -474,11 +486,10 @@ release my video under the Creative Commons ShareAlike License</label>
 <label for="registration.speaker_slides_release">I allow Linux Australia to share my slides</label>
 </p>
 
-<p>If you have allowed Linux Australia to publish your slides, please send them
-to <a href="mailto:committee@linux.org.au">committee@linux.org.au</a> if we
-don't already have them. We will publish them under the Creative Commons
-Attribution License unless you have an equivalent preference that you let us
-know.</p>
+<p>If you have allowed Linux Australia to publish your slides, there will
+be an upload mechanism closer to the conference. We will publish them under
+the Creative Commons Attribution License unless you have an equivalent
+preference that you let us know.</p>
 
 </fieldset>
 % #endif
