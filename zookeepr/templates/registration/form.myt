@@ -296,7 +296,7 @@ Please enter any requirements if necessary; access requirements, etc.
 </p>
 
 <p class="label">
-<label for="registration.miniconfs">Preferred miniconfs:</label>
+<label for="registration.miniconfs">Preferred mini-confs:</label>
 </p><p class="entries">
 
 <%python>
@@ -327,15 +327,16 @@ mclist = (
 </table>
 
 <p class="note">
-Please check the <% h.link_to('Miniconfs', url="/programme/mini-confs") %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
+Please check the <% h.link_to('mini-confs', url="/programme/mini-confs") %>
+page for details on each event. You can choose to attend multiple mini-confs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
 </p>
 
 <p class="label">
-<label for="registration.opendaydrag">How many people are you bringing to <% h.link_to("Open Day", url="/OpenDay", popup=True) %>:</label>
+<label for="registration.opendaydrag">How many people are you bringing to Open Day?</label>
 </p><p class="entries">
 <% h.text_field('registration.opendaydrag', size=10) %>
 </p><p class="note">
-Open Day is open to friends and family, and is targetted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.
+<% h.link_to("Open Day", url="/OpenDay", popup=True) %> is open to friends and family, and is targetted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.
 </p>
 
 </fieldset>
@@ -349,7 +350,7 @@ Open Day is open to friends and family, and is targetted to a non-technical audi
 
 
 <p>
-Please check out the <% h.link_to('accommodation', url="/Accommodation", popup=True) %> page before committing to any accommodation choices.
+Please check out the <% h.link_to('accommodation', url="/register/accommodation", popup=True) %> page before committing to any accommodation choices.
 </p>
 
 <p class="label">
