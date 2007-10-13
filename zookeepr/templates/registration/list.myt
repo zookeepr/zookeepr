@@ -47,7 +47,7 @@
 <strong>Extra Dinner Tickets: </strong><% extra_dinners %><br>
 <strong>Total Dinner Tickets: </strong><% extra_dinners + rego_nonspeaker['Professional'] + speakers_registered %><br>
 <br>
-<strong>Total Speakers (hard coded):</strong> 83<br>
+<!-- <strong>Total Speakers (hard coded, seven number):</strong> 83<br> -->
 <strong>Speakers Registered: </strong><% speakers_registered %><br>
 <br>
 <strong>Money in Bank:</strong> <% h.number_to_currency(money_in_bank) %> <br>
