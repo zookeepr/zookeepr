@@ -24,7 +24,7 @@ class InvoiceController(SecureController, Read):
         """
         if c.invoice.person.invoices:
             if c.invoice.good_payments or c.invoice.bad_payments:
-                redirect_to("/Errors/InvoiceAlreadyPaid")
+                return render_response('invoice/already.myt')
 
         # get our merchant id and secret
         merchant_id = request.environ['paste.config']['app_conf'].get('commsecure_merchantid')

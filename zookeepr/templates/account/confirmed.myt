@@ -1,5 +1,5 @@
 <p>
-Thanks for confirming your registration!
+Thanks for confirming your account!
 </p>
 
 <p>

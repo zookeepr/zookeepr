@@ -209,7 +209,8 @@ class RegistrationController(BaseController, Create, Update, List):
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
-                redirect_to("/Errors/InvoiceAlreadyPaid")
+	        c.invoice = registration.person.invoices[0]
+                return render_response('invoice/already.myt')
 
         return super(RegistrationController, self).edit(id)
 
@@ -257,7 +258,8 @@ class RegistrationController(BaseController, Create, Update, List):
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
-                redirect_to("/Errors/InvoiceAlreadyPaid")
+	        c.invoice = registration.person.invoices[0]
+                return render_response('invoice/already.myt')
             invoice = registration.person.invoices[0]
             for ii in invoice.items:
                 self.dbsession.delete(ii)
@@ -302,8 +304,10 @@ class RegistrationController(BaseController, Create, Update, List):
             description = 'Accommodation - %s' % registration.accommodation.name
             if registration.accommodation.option:
                 description += " (%s)" % registration.accommodation.option
+            accom_qty=registration.checkout-registration.checkin
+	    while accom_qty<0: accom_qty += 31 #January has 31 days
             iia = model.InvoiceItem(description,
-                                    qty=registration.checkout-registration.checkin,
+                                    qty=accom_qty,
                                     cost=registration.accommodation.cost_per_night * 100)
             self.dbsession.save(iia)
             invoice.items.append(iia)
