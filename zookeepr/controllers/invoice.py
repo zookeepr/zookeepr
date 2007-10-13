@@ -1,3 +1,5 @@
+import datetime
+
 import hmac
 import sha
 
@@ -25,6 +27,10 @@ class InvoiceController(SecureController, Read):
         if c.invoice.person.invoices:
             if c.invoice.good_payments or c.invoice.bad_payments:
                 return render_response('invoice/already.myt')
+
+        age = datetime.datetime.now() - c.invoice.last_modification_timestamp
+        if age > dt.timedelta(hours=1):
+	    return render_response('invoice/expired.myt')
 
         # get our merchant id and secret
         merchant_id = request.environ['paste.config']['app_conf'].get('commsecure_merchantid')

@@ -117,8 +117,8 @@ This invoice has been issued as a result of an application to attend
 </table>
 
 <p>
-Further information on your registration is available at
-<a href="/profile">http://<% h.host_name() %>/profile</a>.
+Further information on your registration is available at:
+<a href="/registration/status">http://<% h.host_name() %>/registration/status</a>
 </p>
 
 <p>
