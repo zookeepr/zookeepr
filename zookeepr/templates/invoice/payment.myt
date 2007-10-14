@@ -8,7 +8,7 @@
 # <input type="hidden" name="<% k %>" value="<% fields[k] %>">
 # % # end for
 
-<input type="hidden" name="Invoice <% fields['InvoiceID'] %>"
+<input type="hidden" name="linux.conf.au MEL8OURNE2008"
   VALUE="<% "%.2f" % (fields['Amount']/100.0) %>">
 
 <p>
@@ -33,6 +33,9 @@ payment.
 <input type="hidden" name="invoice_id" value="<% fields['InvoiceID'] %>">
 <input type="hidden" name="hidden_fields" value="invoice_id">
 <input type="hidden" name="information_fields" value="invoice_id">
+
+<input type="hidden" name="payment_reference"
+  value="i-<% fields['InvoiceID'] %> p-<% c.invoice.person.id %>">
 
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
 <input type="hidden" name="reply_link_url"

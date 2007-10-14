@@ -127,9 +127,11 @@ Number of people you've invited to Open Day: <% c.profile.registration.opendaydr
 Partner's email address: <% c.profile.registration.partner_email |h %>
 </p>
 
+<!-- Not updated for new fields!
 <p>
-Kids coming: aged 0-3: <% c.profile.registration.kids_0_3 |h %>; 4-6: <% c.profile.registration.kids_4_6 |h %>; 7-9: <% c.profile.registration.kids_7_9 |h %>; 10+: <% c.profile.registration.kids_10 |h %>
+Kids coming: aged 0-3: <% c.profile.registration.kids_0_3 |h %>; 4-6: <% c.profile.registration.kids_4_6 |h %>; 7-9: <% c.profile.registration.kids_7_9 |h %>; 10-11: <% c.profile.registration.kids_10_11 |h %>
 </p>
+-->
 
 </fieldset>
 

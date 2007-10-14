@@ -43,6 +43,20 @@ if not defaults:
 	else:
 		defaults['registration.delegatesignup'] = 0
 
+	if c.registration.speaker_record:
+		defaults['registration.speaker_record'] = 1
+	else:
+		defaults['registration.speaker_record'] = 0
+	if c.registration.speaker_video_release:
+		defaults['registration.speaker_video_release'] = 1
+	else:
+		defaults['registration.speaker_video_release'] = 0
+	if c.registration.speaker_slides_release:
+		defaults['registration.speaker_slides_release'] = 1
+	else:
+		defaults['registration.speaker_slides_release'] = 0
+
+
 	if c.registration.miniconf:
 		for mc in c.registration.miniconf:
 			defaults['registration.miniconf.' + mc] = 1
