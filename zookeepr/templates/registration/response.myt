@@ -60,11 +60,22 @@ teesize = ' '.join(teesize)
 %		opt = " (%s) " % a.option
 %	else:
 %		opt = ' '
+%       def date_of(d):
+%		if d==1:
+%			return "%dst of February" % d
+%		elif d==2:
+%			return "%dnd of February" % d
+%		elif d==3:
+%			return "%drd of February" % d
+%		elif d<15:
+%			return "%dth of February" % d
+%		else:
+%			return "%dth of January" % d
 %
 %	accom = "%s%s(%s per night)" % (a.name, opt, h.number_to_currency(a.cost_per_night))
  Accommodation: <% accom %>
-       Checkin: <% c.registration.checkin %>th January
-      Checkout: <% c.registration.checkout %>th January
+       Checkin: <% date_of(c.registration.checkin) %>
+      Checkout: <% date_of(c.registration.checkout) %>
 % else:
  Accommodation: none selected
 % #endif
