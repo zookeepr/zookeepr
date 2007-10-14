@@ -65,7 +65,7 @@ Other: <% h.text_field('registration.shelltext') %>
 </p><p class="entries">
 <SELECT name="registration.editor">
 <option value="-">-</option>
-% for e in ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed']:
+% for e in ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']:
 <option value="<% e %>"><% e %></option>
 % #endfor
 </SELECT>

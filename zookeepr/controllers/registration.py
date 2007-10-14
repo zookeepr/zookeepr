@@ -403,7 +403,7 @@ class RegistrationController(BaseController, Create, Update, List):
 	timeleft = " %.1f days to go." % (timeleft.days +
 					     timeleft.seconds / (3600*24.))
         for r in self.dbsession.query(self.model).select():
-	    if type not in ('Hobbyist', 'Professional'):
+	    if r.type not in ('Hobbyist', 'Professional'):
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].good_payments:
 	        continue

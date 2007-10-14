@@ -6,24 +6,28 @@ Dear <% c.person.firstname %>,
 Thankyou for registering for <% h.event_name() %>!
 
 % if not c.signed_in_person:
-If you would like to log into the <% h.event_name() %> site, please
-start by confirming your registration by clicking on the URL
-below:
+Please validate your account by clicking on this URL:
 
 http://<% h.host_name() %><% h.url_for('acct_confirm', id=id) %>
 
 (If clicking does not work, please paste it into your web browser.)
 
-Once your account has been confirmed, you will be able to log
-into the site with the password you provided with your registration.
+Once your account has been confirmed, you will be able to log into the web
+site with the password you provided with your registration. You will then
+be able to pay or view your invoice by visiting this page:
+http://<% h.host_name() %>/registration/status
+and follow the instructions to finalise your payment.
+
+% else:
+
+To pay or view your invoice, sign in to the website by visiting this page:
+http://<% h.host_name() %>/registration/status
+and follow the instructions to finalise your payment.
 
 % #endif
 
-You can now view and pay for your invoice by visiting
-http://<% h.host_name() %>/registration/status
-and follow the instructions, making sure you are signed in.
 
-Your account details are:
+Your registration details are:
 
    Ticket: <% c.registration.type %>
 

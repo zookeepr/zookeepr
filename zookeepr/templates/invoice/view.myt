@@ -135,12 +135,12 @@ Enquiries may be emailed to the organisers:
 <a href="http://linux.conf.au">linux.conf.au</a> is a project of <a href="http://linux.org.au">Linux Australia, Incorporated</a>.
 </p>
 <p>
-              GPO Box 4788,  Sydney NSW 2001, Australia
+              PO Box 13272, Law Courts  VIC  8010, Australia
 <br />
                          ABN 56 987 117 479
 #                         NZ GST #90-792-369
 <br />
-                        fax: +61 2 8211 5211
+                        fax: +61 3 9235 5454
 </p>
 </div>
 
