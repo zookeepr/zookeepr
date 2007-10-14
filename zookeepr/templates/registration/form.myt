@@ -340,7 +340,12 @@ page for details on each event. You can choose to attend multiple mini-confs in 
 </p><p class="entries">
 <% h.text_field('registration.opendaydrag', size=10) %>
 </p><p class="note">
-<% h.link_to("Open Day", url="/OpenDay", popup=True) %> is open to friends and family, and is targetted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.
+<!-- <% h.link_to("Open Day", url="/programme/open-day", popup=True) %> -->
+Open Day
+<!-- -->
+is open to friends and family, and is targeted to a non-technical
+audience.  If you want to show off FOSS culture to some people, you can
+give us an idea of how many people to expect.
 </p>
 
 </fieldset>
@@ -414,11 +419,19 @@ Please check out the <% h.link_to('accommodation', url="/register/accommodation"
 </p><p class="entries">
 <% h.text_field('registration.partner_email', size=50) %>
 </p><p class="note">
-If you are planning on bringing your partner, please enter their email address here so that our <% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) %> manager can contact them.  <% h.link_to("Contact us", url="/PartnersProgramme", popup=True) %> if you have any problems registering your partner for the programme.
+If you are planning on bringing your partner, please enter their email
+address here so that our
+<!--
+<% h.link_to('Partners Programme', url="/PartnersProgramme", popup=True) %>
+-->
+Partners Programme
+<!-- -->
+manager can contact them.
 </p>
 
 <p class="label">
-<label for="registration.children">How many people?</label>
+<label for="registration.children">How many people for the partners
+programme?</label>
 </p><p class="entries">
 <label for="registration.pp_adults">Adults:</label>
 <% h.text_field('registration.pp_adults', size=10) %>

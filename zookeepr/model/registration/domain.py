@@ -70,7 +70,9 @@ class Registration(object):
         self.kids_0_3 = kids_0_3
         self.kids_4_6 = kids_4_6
         self.kids_7_9 = kids_7_9
-        self.kids_10 = kids_10
+        self.kids_10_11=kids_10_11,
+        self.kids_12_17=kids_12_17,
+        self.pp_adults=pp_adults,
         self.checkin = checkin
         self.checkout = checkout
         self.lasignup = lasignup

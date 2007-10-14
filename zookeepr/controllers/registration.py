@@ -73,11 +73,11 @@ class PPValidator(validators.FancyValidator):
 	for k in ['kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11',
 							     'kids_12_17']:
             if value[k] and not value['pp_adults']:
-		raise Invalid("Can't have children without an adult in the partners programme")
+		raise Invalid("Can't have children without an adult in the partners programme", value, state)
 	if value['partner_email'] and not value['pp_adults']:
-	    raise Invalid("Please specify number of people in the partners programme (or remove partner's email address)")
+	    raise Invalid("Please specify number of people in the partners programme (or remove partner's email address)", value, state)
 	if value['pp_adults'] and not value['partner_email']:
-	    raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme")
+	    raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme", value, state)
 
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -349,6 +349,8 @@ class RegistrationController(BaseController, Create, Update, List):
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
 
+	invoice.last_modification_timestamp = 'now'
+
         self.dbsession.save(invoice)
         self.dbsession.flush()
 
@@ -395,8 +397,11 @@ class RegistrationController(BaseController, Create, Update, List):
     def check_earlybird(self):
         count = 0
 	po = PaymentOptions()
-	if datetime.datetime.now() > po.ebdate:
+	timeleft = po.ebdate - datetime.datetime.now()
+	if timeleft < datetime.timedelta(0):
 	    return False, "Too late."
+	timeleft = " %.1f days to go." % (timeleft.days +
+					     timeleft.seconds / (3600*24.))
         for r in self.dbsession.query(self.model).select():
 	    if type not in ('Hobbyist', 'Professional'):
 	        continue
@@ -414,11 +419,11 @@ class RegistrationController(BaseController, Create, Update, List):
 	left = po.eblimit - count
 	percent = int(round((20.0 * left) / po.eblimit) * 5)
 	if percent == 0:
-	    return True, "Almost all gone."
+	    return True, ("Almost all gone," + timeleft)
 	elif percent <= 30:
-	    return True, ("Only %d%% left."%percent)
+	    return True, ("Only %d%% left,"%percent + timeleft)
 	else:
-	    return True, ("%d%% left."%percent)
+	    return True, ("%d%% left,"%percent + timeleft)
 
     def status(self):
         (c.eb, c.ebtext) = self.check_earlybird()
