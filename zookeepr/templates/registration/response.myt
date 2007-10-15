@@ -69,6 +69,8 @@ teesize = ' '.join(teesize)
 %			return "%drd of February" % d
 %		elif d<15:
 %			return "%dth of February" % d
+%		elif d==31:
+%			return "%dst of January" % d
 %		else:
 %			return "%dth of January" % d
 %
