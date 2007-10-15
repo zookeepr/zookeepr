@@ -339,7 +339,7 @@ class RegistrationController(BaseController, Create, Update, List):
 
         # Partner's Programme
 	is_speaker = reduce(lambda a, b: a or b.accepted,
-					 signed_in_person.proposals, False)
+					 registration.person.proposals, False)
         if is_speaker:
 	  partner = registration.speaker_pp_pay_adult
         else:

@@ -492,6 +492,9 @@ As a speaker, your partner and your children are entitled to attend the
 partners programme for free. If you are bringing anyone more distantly
 related than that (or you <i>want</i> to pay), please put numbers in here.
 </p>
+% else:
+<% h.hidden_field('registration.speaker_pp_pay_adult', value=0) %>
+<% h.hidden_field('registration.speaker_pp_pay_child', value=0) %>
 % #endif
 </fieldset>
 
