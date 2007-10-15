@@ -32,6 +32,8 @@ class Registration(object):
                  kids_10_11=None,
                  kids_12_17=None,
                  pp_adults=None,
+                 speaker_pp_pay_adult=None,
+                 speaker_pp_pay_child=None,
                  checkin=None,
                  checkout=None,
                  lasignup=None,
@@ -73,6 +75,8 @@ class Registration(object):
         self.kids_10_11=kids_10_11,
         self.kids_12_17=kids_12_17,
         self.pp_adults=pp_adults,
+        self.speaker_pp_pay_adult=speaker_pp_pay_adult,
+        self.speaker_pp_pay_child=speaker_pp_pay_child,
         self.checkin = checkin
         self.checkout = checkout
         self.lasignup = lasignup

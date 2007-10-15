@@ -113,14 +113,15 @@ Your email address will only be used to correspond with you, and is your login n
 % #endif
 </p>
 <p class="note">
-Your display name will be used to identify you on the website. For an IRC
-nick or handle to be shown on the badge, see below.
+Your display name will be used to identify you on the website. It's not
+actually used for much. For an IRC nick or handle to be shown on the badge,
+see "superhero name" below.
 </p>
 </fieldset>
 
 <& form.myt &>
 
-<% h.submit("Register me!") %>
+<p class="submit"><% h.submit("Register me!") %></p>
 <span class="fielddesc">
 If you encounter any problems signing up please email <% h.contact_email() %>
 </span>

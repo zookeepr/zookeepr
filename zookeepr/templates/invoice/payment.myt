@@ -42,8 +42,10 @@ payment.
   value="http://www.baum.com.au/mel8/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
 <input type="hidden" name="return_link_url"
   value="http://www.baum.com.au:5000/registration/status">
+<input type="hidden" name="return_link_text"
+  value="Return to the linux.conf.au website">
 
-<input type="submit" value="Go to the SecurePay checkout">
+<p class="submit"><input type="submit" value="Go to the SecurePay checkout"></p>
 </form>
 
 <%args>

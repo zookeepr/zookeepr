@@ -88,6 +88,15 @@ class AccommodationValidator(validators.FancyValidator):
     def _from_python(self, value):
         return value.id
 
+class NonblankForSpeakers(validators.String):
+    def validate_python(self, value, state):
+        validators.String.validate_python(self, value, state)
+	if 'signed_in_person_id' in session:
+            signed_in_person = state.query(model.Person).get_by(id=session['signed_in_person_id'])
+	    is_speaker = reduce(lambda a, b: a or b.accepted,
+					 signed_in_person.proposals, False)
+	    if is_speaker and len(value)<3:
+		raise Invalid("Missing value", value, state)
 
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
@@ -97,7 +106,7 @@ class RegistrationSchema(Schema):
     country = validators.String(not_empty=True)
     postcode = validators.String(not_empty=True)
 
-    phone = validators.String()
+    phone = NonblankForSpeakers()
     
     company = validators.String()
     nick = validators.String()
@@ -130,6 +139,8 @@ class RegistrationSchema(Schema):
     kids_10_11 = BoundedInt(min=0)
     kids_12_17 = BoundedInt(min=0)
     pp_adults = BoundedInt(min=0)
+    speaker_pp_pay_adult = BoundedInt(min=0)
+    speaker_pp_pay_child = BoundedInt(min=0)
 
     accommodation = AccommodationValidator()
     
@@ -327,10 +338,15 @@ class RegistrationController(BaseController, Create, Update, List):
             invoice.items.append(iia)
 
         # Partner's Programme
-        partner = 0
-	for p in [registration.kids_12_17, registration.pp_adults]:
-	  if p is not None:
-	    partner += p
+	is_speaker = reduce(lambda a, b: a or b.accepted,
+					 signed_in_person.proposals, False)
+        if is_speaker:
+	  partner = registration.speaker_pp_pay_adult
+        else:
+	  partner = 0
+	  for p in [registration.kids_12_17, registration.pp_adults]:
+	    if p is not None:
+	      partner += p
         if partner > 0:
             iipa = model.InvoiceItem(description = "Partner's Programme - Adult",
                                      qty = partner,
@@ -338,10 +354,13 @@ class RegistrationController(BaseController, Create, Update, List):
             self.dbsession.save(iipa)
             invoice.items.append(iipa)
             
-        kids = 0
-        for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10_11]:
-            if k is not None:
-                kids += k
+        if is_speaker:
+	  kids = registration.speaker_pp_pay_child
+        else:
+	  kids = 0
+	  for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10_11]:
+	      if k is not None:
+		  kids += k
         if kids > 0:
             iipc = model.InvoiceItem(description="Partner's Programme - Child",
                                     qty = kids,

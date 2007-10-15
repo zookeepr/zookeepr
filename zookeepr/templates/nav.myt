@@ -14,9 +14,9 @@
 % #endfor
 
 % if 'signed_in_person_id' not in session:
-        <li><a href="<% h.url(controller='account', action='signin', id=None)() %>" <% cls('login') %>>login / register</a></li>
+        <li><a href="<% h.url(controller='account', action='signin', id=None)() %>" <% cls('login') %>>sign in</a></li>
 % else:
-        <li><a href="<% h.url(controller='account', action='signout', id=None)() %>" <% cls('login') %>>logout</a></li>
+        <li><a href="<% h.url(controller='account', action='signout', id=None)() %>" <% cls('login') %>>sign out</a></li>
 % #endif
     </ul>
 </div>

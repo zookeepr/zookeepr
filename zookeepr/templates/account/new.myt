@@ -8,6 +8,9 @@ Enter your name, and email address, and password, and we'll email you with a con
 If you've already got an account but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='account', action='forgotten_password')) %>.
 </p>
 
+<p><b>To register for the conference, <a href="/registration/new">go
+directly to the registration form</a></b>, don't bother with this one.</p>
+
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <form method="post" id="login-form" action="<% h.url_for() %>" >

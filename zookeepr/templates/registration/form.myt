@@ -35,7 +35,18 @@
 <% h.text_field('registration.postcode', size=40) %>
 </p>
 
-</p><p class="label">
+% if 'signed_in_person_id' in session:
+%   proposals = c.signed_in_person.proposals
+%   is_speaker = reduce(lambda a, b: a or b.accepted, proposals, False)
+% else:
+%   proposals = []
+%   is_speaker = False
+% #endif
+
+<p class="label">
+% if is_speaker:
+<span class="mandatory">*</span>
+% #endif
 <label for="registration.phone">Mobile/Cell number:</label>
 </p><p class="entries">
 <% h.text_field('registration.phone') %>
@@ -169,14 +180,6 @@ descMD5 = md5.new(desc).hexdigest()
 <span class="mandatory">*</span> - Mandatory field
 </p>
 
-% if 'signed_in_person_id' in session:
-%   proposals = c.signed_in_person.proposals
-%   is_speaker = reduce(lambda a, b: a or b.accepted, proposals, False)
-% else:
-%   proposals = []
-%   is_speaker = False
-% #endif
-
 <p class="label">
 <span class="mandatory">*</span>
 <label for="registration.type">What type of ticket do you want?</label>
@@ -188,7 +191,7 @@ descMD5 = md5.new(desc).hexdigest()
 % #endif
 % for (t, p, eb) in ticket_types:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
-<label for="registration.type_<% t %>"><% t %> - $<% p %>
+<label for="registration.type_<% t %>"><% t %> &#215; $<% p %>
 % if eb != p:
 ($<% eb %> early-bird)
 % #endif
@@ -268,13 +271,17 @@ style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registra
 </tr>
 % #endfor
 </table>
+</p><p class="note">
+<br/>A conference teeshirt is included with your ticket. Please tell us
+what size and shape you prefer.
 </p>
+
 
 <p class="label">
 <label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
 </p><p class="entries">
 <% h.text_field('registration.dinner', size=10) %>
-- $50 each; not counting yourself.
+&#215; $50 each; not counting yourself.
 <p class="note">
 One Penguin Dinner is included in the
 price of your conference ticket.  Additional Penguin Dinner tickets are
@@ -433,31 +440,59 @@ manager can contact them.
 <label for="registration.children">How many people for the partners
 programme?</label>
 </p><p class="entries">
+% if is_speaker:
+%   price = '&#215; $0.00'
+% else:
+%   price = '&#215; $297.00'
+% #endif
 <label for="registration.pp_adults">Adults:</label>
 <% h.text_field('registration.pp_adults', size=10) %>
-- $297.00
+<% price %>
 <br />
 <label for="registration.kids_12_17">Young adults (12-17):</label>
 <% h.text_field('registration.kids_12_17', size=10) %>
-- $297.00
+<% price %>
 <br />
+% if is_speaker:
+%   price = '&#215; $0.00'
+% else:
+%   price = '&#215; $143.00'
+% #endif
 <label for="registration.kids_10_11">Children 10-11:</label>
 <% h.text_field('registration.kids_10_11', size=10) %>
-- $143.00
+<% price %>
 <br />
 <label for="registration.kids_7_9">Children 7-9:</label>
 <% h.text_field('registration.kids_7_9', size=10) %>
-- $143.00
+<% price %>
 <br />
 <label for="registration.kids_4_6">Children 4-6:</label>
 <% h.text_field('registration.kids_4_6', size=10) %>
-- $143.00
+<% price %>
 <br />
 <label for="registration.kids_0_3">Children under 3:</label>
 <% h.text_field('registration.kids_0_3', size=10) %>
-- $143.00
+<% price %>
 <br />
 </p>
+
+% if is_speaker:
+<p class="label">
+<label for="registration.children">How many of these are you paying for?</label>
+</p><p class="entries">
+<label for="registration.speaker_pp_pay_adult">Adults and young adults:</label>
+<% h.text_field('registration.speaker_pp_pay_adult', size=10) %>
+&#215; $297.00
+<br />
+<label for="registration.speaker_pp_pay_child">Children:</label>
+<% h.text_field('registration.speaker_pp_pay_child', size=10) %>
+&#215; $143.00
+</p><p class="note">
+As a speaker, your partner and your children are entitled to attend the
+partners programme for free. If you are bringing anyone more distantly
+related than that (or you <i>want</i> to pay), please put numbers in here.
+</p>
+% #endif
 </fieldset>
 
 <fieldset>
@@ -512,6 +547,7 @@ preference that you let us know.</p>
 </fieldset>
 % #endif
 
+<br/>
 <% h.hidden_field('registration.silly_description_md5', value=descMD5) %>
 <%init>
 import datetime

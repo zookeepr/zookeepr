@@ -59,6 +59,8 @@ registration = Table('registration', metadata,
                      Column('kids_10_11', Integer),
                      Column('kids_12_17', Integer),
                      Column('pp_adults', Integer),
+                     Column('speaker_pp_pay_adult', Integer),
+                     Column('speaker_pp_pay_child', Integer),
 
                      Column('checkin', Integer),
                      Column('checkout', Integer),
