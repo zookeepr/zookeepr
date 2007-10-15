@@ -159,7 +159,7 @@ action='status')) %>
 %    pass
 % elif c.invoice.bad_payments:
 Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a>
-% elif not c.invoice.good_payments:
+% elif not c.invoice.paid():
 <% h.link_to('(Pay this invoice)', url=h.url(controller='invoice', action='pay')) %>
 % if c.invoice.person.registration:
     <% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>

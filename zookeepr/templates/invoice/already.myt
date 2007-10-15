@@ -1,5 +1,7 @@
 <%python>
 status = []
+if c.invoice.total()==0:
+  status.append('zero balance')
 if c.invoice.good_payments:
   status.append('paid')
   if len(c.invoice.good_payments)>1:

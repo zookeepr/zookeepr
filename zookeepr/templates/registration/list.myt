@@ -104,7 +104,7 @@ for r in c.registration_collection:
         rego_nonspeaker[type] = 1 + rego_nonspeaker.get(type, 0)
         rego_total_nonspeaker += 1;
 
-    if r.person.invoices and r.person.invoices[0].good_payments:
+    if r.person.invoices and r.person.invoices[0].paid():
         rego_paid[type] += 1
         rego_total_paid += 1
         money_in_bank += r.person.invoices[0].total()/100.0

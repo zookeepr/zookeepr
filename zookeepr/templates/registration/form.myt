@@ -223,7 +223,7 @@ also include Penguin Dinner.
 
 <p class="label">
 <span class="mandatory">*</span>
-<label>Teeshirt Size and Style:</label>
+<label>T-shirt Size and Style:</label>
 <p class="entries">
 <%python>
 teeoptions = [
@@ -272,7 +272,7 @@ style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registra
 % #endfor
 </table>
 </p><p class="note">
-<br/>A conference teeshirt is included with your ticket. Please tell us
+<br/>A conference T-shirt is included with your ticket. Please tell us
 what size and shape you prefer.
 </p>
 
@@ -478,7 +478,7 @@ programme?</label>
 
 % if is_speaker:
 <p class="label">
-<label for="registration.children">How many of these are you paying for?</label>
+<label for="registration.children">How many of the above do you want to pay for?</label>
 </p><p class="entries">
 <label for="registration.speaker_pp_pay_adult">Adults and young adults:</label>
 <% h.text_field('registration.speaker_pp_pay_adult', size=10) %>
@@ -489,8 +489,7 @@ programme?</label>
 &#215; $143.00
 </p><p class="note">
 As a speaker, your partner and your children are entitled to attend the
-partners programme for free. If you are bringing anyone more distantly
-related than that (or you <i>want</i> to pay), please put numbers in here.
+partners programme for free.
 </p>
 % else:
 <% h.hidden_field('registration.speaker_pp_pay_adult', value=0) %>

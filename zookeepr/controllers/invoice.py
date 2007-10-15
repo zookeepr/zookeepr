@@ -25,7 +25,7 @@ class InvoiceController(SecureController, Read):
         This method bounces the user off to the commsecure website.
         """
         if c.invoice.person.invoices:
-            if c.invoice.good_payments or c.invoice.bad_payments:
+            if c.invoice.paid() or c.invoice.bad_payments:
                 return render_response('invoice/already.myt')
 
         age = datetime.datetime.now() - c.invoice.last_modification_timestamp

@@ -34,6 +34,10 @@ class Invoice(object):
             t += ii.total()
         return t
 
+    def paid(self):
+        """Return whether the invoice is paid (or zero-balance) """
+        return self.good_payments or self.total()==0
+
 
 class PaymentReceived(object):
     def __repr__(self):

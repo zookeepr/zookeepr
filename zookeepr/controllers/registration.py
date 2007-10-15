@@ -424,7 +424,7 @@ class RegistrationController(BaseController, Create, Update, List):
         for r in self.dbsession.query(self.model).select():
 	    if r.type not in ('Hobbyist', 'Professional'):
 	        continue
-	    if not r.person.invoices or not r.person.invoices[0].good_payments:
+	    if not r.person.invoices or not r.person.invoices[0].paid():
 	        continue
 	    speaker = 0
 	    if r.person.proposals:
