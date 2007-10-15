@@ -153,18 +153,18 @@ Enquiries may be emailed to the organisers:
 
 <%method actions>
 <div id="actions">
-<% h.link_to('(Registration status)', url=h.url(controller='registration',
-action='status')) %>
+<% h.link_to('Registration status', url=h.url(controller='registration',
+action='status')) %><br/>
 % if c.invoice.total() == 0:
 %    pass
 % elif c.invoice.bad_payments:
 Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a>
 % elif not c.invoice.paid():
-<% h.link_to('(Pay this invoice)', url=h.url(controller='invoice', action='pay')) %>
+<% h.link_to('Pay this invoice', url=h.url(controller='invoice', action='pay')) %><br/>
 % if c.invoice.person.registration:
-    <% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
+    <% h.link_to('Regenerate invoice', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %><br/>
 % #endif
-<% h.link_to('(Printable version)', url=h.url(controller='invoice', action='printable')) %>
+<% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %>
 <br/>
 <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
 <small><strong>Please Note:</strong> To qualify for the earlybird discount
@@ -173,7 +173,7 @@ tickets sold out earlier).</small>
 </p>
 
 % else:
-<% h.link_to('(Printable version)', url=h.url(controller='invoice', action='printable')) %>
+<% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %>
 <p>
 Invoice has been paid.
 % #endif
