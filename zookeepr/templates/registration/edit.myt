@@ -5,6 +5,32 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <% h.form(h.url()) %>
+
+<h2>About yourself</h2>
+
+<p class="label">
+<label for="person.firstname">Your first name:</label></p>
+<p>
+<% c.signed_in_person.firstname | h %>
+</p>
+
+<p class="label">
+<label for="person.lastname">Your last name:</label></p>
+<p>
+<% c.signed_in_person.lastname | h %>
+</p>
+
+<p class="label">
+<label for="person.email_address">Email address:</label></p>
+<p>
+<% c.signed_in_person.email_address | h %>
+</p>
+<p class="note">
+Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
+</p>
+
+</fieldset>
+
 <& form.myt &>
 <p class="submit"><% h.submit('Update') %></p>
 <% h.end_form() %>

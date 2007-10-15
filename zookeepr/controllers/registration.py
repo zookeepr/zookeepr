@@ -77,7 +77,7 @@ class PPValidator(validators.FancyValidator):
 	if value['partner_email'] and not value['pp_adults']:
 	    raise Invalid("Please specify number of people in the partners programme (or remove partner's email address)", value, state)
 	if value['pp_adults'] and not value['partner_email']:
-	    raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme", value, state)
+	    raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme)", value, state)
 
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):

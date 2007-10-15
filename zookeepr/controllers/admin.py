@@ -144,6 +144,15 @@ class AdminController(SecureController):
 	    person.firstname, person.lastname, assistance_type.name
 	  ORDER BY proposal.id ASC;
 	""")
+    def rego_great_big_dump(self):
+        """ All registrations with everything """
+	return sql_response("""
+	  select * from registration full outer join person on
+	  person_id=person.id full outer join account on account_id=account.id
+	  full outer join invoice on person.id=invoice.person_id full outer join
+	  payment_received on invoice.id = payment_received.invoice_id;
+	""")
+
     def draft_timetable(self):
         """ Draft schedule for the conference """
         def talk(id):

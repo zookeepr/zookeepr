@@ -49,7 +49,7 @@ otherwise.</p>
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/pay"
 >Generate invoice</a></p>
 
-<h3>Alternate step</h3>
+<h3>Other option</h3>
 
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a></p>
@@ -67,7 +67,7 @@ otherwise.</p>
 <p>Attend conference.</p>
 
 %   if not c.signed_in_person.invoices[0].good_payments:
-<h3>Alternate steps</h3>
+<h3>Other options</h3>
 
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a>
@@ -111,7 +111,7 @@ invoice <% c.signed_in_person.invoices[0].id %>.</p>
 <p><a href="/invoice/<% c.signed_in_person.invoices[0].id %>/pay" >Pay your
 registration</a></p>
 
-<h3>Alternate steps</h3>
+<h3>Other options</h3>
 
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a>

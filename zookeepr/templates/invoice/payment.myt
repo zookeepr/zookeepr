@@ -48,6 +48,15 @@ payment.
 <p class="submit"><input type="submit" value="Go to the SecurePay checkout"></p>
 </form>
 
+<table border=0><tr><td valign="middle">
+<img alt="[SecurePay logo]" width="200" height="79"
+style="margin-right: 0.5em"
+src="http://linux.conf.au/__data/assets/image/0015/474/securepay200white.gif"
+/></td>
+<td valign="middle">Direct One Payment Solutions kindly provided by
+SecurePay Australia</td>
+</tr></table>
+
 <%args>
 fields
 </%args>

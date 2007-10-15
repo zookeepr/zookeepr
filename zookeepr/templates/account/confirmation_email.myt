@@ -1,9 +1,8 @@
-From: <% h.event_name() %> <%h.contact_email() %>
 Subject: <% h.event_name() %> Forgotten Password Reset Confirmation
 To: <% c.conf_rec.email_address %>
 
-To initiate the process for resetting the control panel password for
-<% c.conf_rec.email_address %>, please click on the link below:
+To reset the password on the linux.conf.au 2008 website account
+for <% c.conf_rec.email_address %>, please click on the link below:
 
 http://<% h.host_name() %><% h.url_for(controller='account', action='reset_password', url_hash=c.conf_rec.url_hash) %>
 

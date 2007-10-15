@@ -9,7 +9,11 @@
   <tr class="<% oddeven.next() %>">
 %   for item in row:
       <td class="list">
+%     try:
         <% item | h %>
+%     except:
+        <% `item` | h %>
+%     #endtry
       </td>
 %   # endfor
   </tr>
