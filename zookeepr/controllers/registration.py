@@ -236,7 +236,10 @@ class RegistrationController(BaseController, Create, Update, List):
 	        c.invoice = registration.person.invoices[0]
                 return render_response('invoice/already.myt')
 
-        return super(RegistrationController, self).edit(id)
+	try:
+            return super(RegistrationController, self).edit(id)
+	finally:
+	    self.pay(id, quiet=1) #regenerate the invoice
 
     def new(self):
         errors = {}
@@ -274,15 +277,18 @@ class RegistrationController(BaseController, Create, Update, List):
 		    render('registration/response.myt',
 		        id=c.person.url_hash, fragment=True))
 
+		self.obj = c.registration
+		self.pay(c.registration.id, quiet=1)
                 return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
-    def pay(self, id):
+    def pay(self, id, quiet=0):
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
 	        c.invoice = registration.person.invoices[0]
+		if quiet: return
                 return render_response('invoice/already.myt')
             invoice = registration.person.invoices[0]
             for ii in invoice.items:
@@ -373,6 +379,7 @@ class RegistrationController(BaseController, Create, Update, List):
         self.dbsession.save(invoice)
         self.dbsession.flush()
 
+	if quiet: return
         redirect_to(controller='invoice', action='view', id=invoice.id)
 
     # FIXME There is probably a way to get this to use the List thingy from CRUD

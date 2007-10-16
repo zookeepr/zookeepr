@@ -113,8 +113,12 @@ class AccountController(BaseController):
                     if 'sign_in_redirect' in session:
                         redirect_to(session['sign_in_redirect'])
 
+                    # return to the registration status
+		    # (while registrations are open)
+                    redirect_to('/registration/status')
+
                     # return home
-                    redirect_to('home')
+                    #redirect_to('home')
 
         return render_response('account/signin.myt', defaults=defaults, errors=errors)
 

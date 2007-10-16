@@ -124,6 +124,25 @@ class AdminController(SecureController):
 	    person.firstname, person.lastname, assistance_type.name
 	  ORDER BY proposal.id ASC;
 	""")
+    def acc_papers_details(self):
+        """ Accepted papers with bios and abstracts """
+	return sql_response("""
+	  SELECT proposal.id, proposal.title,
+	    person.firstname || ' ' || person.lastname as name,
+	    proposal.abstract, person.bio
+	  FROM proposal
+	    LEFT JOIN person_proposal_map
+	      ON(person_proposal_map.proposal_id=proposal.id)
+	    LEFT JOIN person
+	      ON (person.id=person_proposal_map.person_id)
+	    LEFT JOIN assistance_type
+	      ON(assistance_type.id=proposal.assistance_type_id)
+	  WHERE proposal.accepted=true and proposal_type_id=1
+	  GROUP BY proposal.id, proposal.title, 
+	    person.firstname, person.lastname, assistance_type.name,
+	    proposal.abstract, person.bio
+	  ORDER BY proposal.id ASC;
+	""")
     def acc_papers_tutes(self):
         """ Accepted papers/tutes with type and travel assistance status """
 	return sql_response("""
