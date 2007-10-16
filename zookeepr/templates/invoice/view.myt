@@ -156,7 +156,7 @@ Enquiries may be emailed to the organisers:
 <% h.link_to('Registration status', url=h.url(controller='registration',
 action='status')) %><br/>
 % if c.invoice.total() == 0:
-%    pass
+<% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %><br/>
 % elif c.invoice.bad_payments:
 Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a>
 % elif not c.invoice.paid():

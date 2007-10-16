@@ -66,18 +66,22 @@ otherwise.</p>
 
 <p>Attend conference.</p>
 
-%   if not c.signed_in_person.invoices[0].good_payments:
 <h3>Other options</h3>
 
-<p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
->Edit details</a>
-<br/><a href="/registration/<% c.signed_in_person.registration.id %>/pay"
->Regenerate invoice</a>
-<br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
-invoice</a>
-<br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>/printable" >View
-printable invoice</a></p>
+<p>
+%   if not c.signed_in_person.invoices[0].good_payments:
+<a href="/registration/<% c.signed_in_person.registration.id %>/edit"
+>Edit details</a><br/>
+<a href="/registration/<% c.signed_in_person.registration.id %>/pay"
+>Regenerate invoice</a><br/>
+%   else:
+<a href="/registration/<% c.signed_in_person.registration.id %>"
+>View details</a><br/>
 %   #endif
+<a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
+invoice</a><br/>
+<a href="/invoice/<% c.signed_in_person.invoices[0].id %>/printable" >View
+printable invoice</a></p>
 
 <h3>Summary of steps</h3>
 &#9745; Fill in registration form
@@ -97,6 +101,10 @@ printable invoice</a></p>
 person <% c.signed_in_person.id %>,
 registration <% c.signed_in_person.registration.id %>, 
 invoice <% c.signed_in_person.invoices[0].id %>.</p>
+
+<h3>Other option</h3>
+<a href="/registration/<% c.signed_in_person.registration.id %>"
+>View registration details</a><br/>
 
 <h3>Summary of steps</h3>
 &#9745; Fill in registration form

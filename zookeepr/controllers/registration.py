@@ -191,7 +191,7 @@ class EditRegistrationSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class RegistrationController(BaseController, Create, Update, List):
+class RegistrationController(SecureController, Create, Update, List, Read):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
@@ -201,8 +201,10 @@ class RegistrationController(BaseController, Create, Update, List):
                     }
     permissions = { 'remind': [AuthRole('organiser')],
                     'list': [AuthRole('organiser')],
+		    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
+		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
-    anon_actions = ['status']
+    anon_actions = ['status', 'new']
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -279,6 +281,9 @@ class RegistrationController(BaseController, Create, Update, List):
 
 		self.obj = c.registration
 		self.pay(c.registration.id, quiet=1)
+
+		if c.signed_in_person:
+		    redirect_to('/registration/status')
                 return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)

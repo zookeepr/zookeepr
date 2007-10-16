@@ -205,7 +205,7 @@ As a speaker, you are entitled to attend for free. However, if you
 </p>
 % else:
 <p class="note">
-Check the <% h.link_to('registration page', url="/Registration", popup=True) %> for the full details of each ticket.
+Check the <% h.link_to('registration page', url="/register", popup=True) %> for the full details of each ticket.
 One important change from past years is that Concession and Hobbyist tickets
 also include Penguin Dinner.
 </p>

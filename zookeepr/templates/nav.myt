@@ -33,6 +33,8 @@ map = [
   ('/cfp', 'mini-confs'),
   ('/papers', 'presentations'),
   ('/presentations', 'presentations'),
+  ('/registration', 'register'),
+  ('/invoice', 'register'),
   ('/2008/contact', 'contact'),
   ('/account', 'login'),
   ('/error', ''),
