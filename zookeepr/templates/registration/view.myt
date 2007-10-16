@@ -1,6 +1,8 @@
 <h2>Your registration details</h2>
 
-Here are the registration details we have for you.
+<p>Here are the registration details we have for you.</p>
+
+<p><a href="/registration/status">Registration status</a></p>
 
 <h2>About yourself</h2>
 
@@ -79,9 +81,9 @@ see "superhero name" below.
 % if is_speaker:
 <span class="mandatory">*</span>
 % #endif
-<label for="registration.phone">Mobile/Cell number:</label>
+Mobile/Cell number:
 </p><p >
-<% h.text_field('registration.phone') %>
+<% c.registration.phone %>
 </p>
 
 </p><p class="label">
@@ -152,7 +154,7 @@ Concession and Hobbyist tickets also include Penguin Dinner.
 <p class="label">
 <label for="registration.discount_code">Discount Code:</label>
 </p><p >
-<% h.text_field('registration.discount_code') %>
+<% c.registration.discount_code %>
 </p>
 % else:
 <% h.hidden_field('registration.discount_code', value='') %>
@@ -398,7 +400,6 @@ partners programme for free.
 </fieldset>
 
 % if is_speaker:
-<fieldset>
 <h2>Speaker recording consent and release</h2>
 <p>As a service to Linux Australia members and to other interested Linux users,
 Linux Australia would like to make your presentation available to the public.
@@ -425,6 +426,9 @@ release my video under the Creative Commons ShareAlike License</label>
 be an upload mechanism closer to the conference. We will publish them under
 the Creative Commons Attribution License unless you have an equivalent
 preference that you let us know.</p>
+% #endif
+
+<p><br/><a href="/registration/status">Registration status</a></p>
 
 <%init>
 def yesno(bool):
