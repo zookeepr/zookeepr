@@ -361,7 +361,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         if partner > 0:
             iipa = model.InvoiceItem(description = "Partner's Programme - Adult",
                                      qty = partner,
-                                     cost=29700)
+                                     cost=22000)
             self.dbsession.save(iipa)
             invoice.items.append(iipa)
             
@@ -375,7 +375,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         if kids > 0:
             iipc = model.InvoiceItem(description="Partner's Programme - Child",
                                     qty = kids,
-                                    cost=14300)
+                                    cost=13200)
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
 
@@ -480,8 +480,8 @@ class PaymentOptions:
 #                "5": 3500,
 #                "6": 5850
 #                }
-        self.ebdate = datetime.datetime(2007, 11, 15, 00, 00, 00)
-        self.eblimit = 15
+        self.ebdate = datetime.datetime(2007, 11, 18, 00, 00, 00)
+        self.eblimit = 220
         #indates = [14, 15, 16, 17, 18, 19]
         #outdates = [15, 16, 17, 18, 19, 20]
 
@@ -513,7 +513,7 @@ class PaymentOptions:
 #        if count == 0:
 #            partnersAmount = 0
 #        else:
-#            partnersAmount = partner * 29700 + kids * 14300
+#            partnersAmount = partner * 22000 + kids * 13200
 #        return partnersAmount
 
 

@@ -286,7 +286,7 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 %     # endif
 <br>
 <small><strong>Please Note:</strong> To qualify for the earlybird discount
-you must have registered and paid by the 14th of November (unless earlybird
+you must have registered and paid by the 17th of November (unless earlybird
 tickets sold out earlier).
 %     #endif
 % else:

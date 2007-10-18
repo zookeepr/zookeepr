@@ -168,7 +168,7 @@ Invalid payments have been applied to this invoice, please email <% h.contact_em
 <br/>
 <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
 <small><strong>Please Note:</strong> To qualify for the earlybird discount
-you must have registered and paid by the 14th of November (unless earlybird
+you must have registered and paid by the 17th of November (unless earlybird
 tickets sold out earlier).</small>
 </p>
 

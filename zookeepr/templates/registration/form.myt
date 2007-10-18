@@ -443,7 +443,7 @@ programme?</label>
 % if is_speaker:
 %   price = '&#215; $0.00'
 % else:
-%   price = '&#215; $297.00'
+%   price = '&#215; $220.00'
 % #endif
 <label for="registration.pp_adults">Adults:</label>
 <% h.text_field('registration.pp_adults', size=10) %>
@@ -456,7 +456,7 @@ programme?</label>
 % if is_speaker:
 %   price = '&#215; $0.00'
 % else:
-%   price = '&#215; $143.00'
+%   price = '&#215; $132.00'
 % #endif
 <label for="registration.kids_10_11">Children 10-11:</label>
 <% h.text_field('registration.kids_10_11', size=10) %>
@@ -482,11 +482,11 @@ programme?</label>
 </p><p class="entries">
 <label for="registration.speaker_pp_pay_adult">Adults and young adults:</label>
 <% h.text_field('registration.speaker_pp_pay_adult', size=10) %>
-&#215; $297.00
+&#215; $220.00
 <br />
 <label for="registration.speaker_pp_pay_child">Children:</label>
 <% h.text_field('registration.speaker_pp_pay_child', size=10) %>
-&#215; $143.00
+&#215; $132.00
 </p><p class="note">
 As a speaker, your partner and your children are entitled to attend the
 partners programme for free.
