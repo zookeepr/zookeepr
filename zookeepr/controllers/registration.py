@@ -67,6 +67,12 @@ class SpeakerDiscountValidator(validators.FancyValidator):
 		    raise Invalid("You don't appear to be a speaker, don't claim a speaker discount.", value, state)
 	    else:
 		raise Invalid("Please log in before claiming a speaker discount!", value, state)
+        if value['type']=='Mini-conf organiser':
+	    if 'signed_in_person_id' in session:
+	        if not session['signed_in_person_id'] in PaymentOptions().miniconf_orgs:
+		    raise Invalid("You don't appear to be a mini-conf organiser, don't claim a mini-conf organiser discount.", value, state)
+	    else:
+		raise Invalid("Please log in before claiming a mini-conf organiser discount!", value, state)
 
 class PPValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -238,6 +244,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        c.invoice = registration.person.invoices[0]
                 return render_response('invoice/already.myt')
 
+	c.is_miniconf_org = c.signed_in_person and c.signed_in_person.id in PaymentOptions().miniconf_orgs
 	try:
             return super(RegistrationController, self).edit(id)
 	finally:
@@ -286,6 +293,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		    redirect_to('/registration/status')
                 return render_response('registration/thankyou.myt')
 
+	c.is_miniconf_org = c.signed_in_person and c.signed_in_person.id in PaymentOptions().miniconf_orgs
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
     def pay(self, id, quiet=0):
@@ -387,6 +395,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	if quiet: return
         redirect_to(controller='invoice', action='view', id=invoice.id)
 
+    def list_miniconf_orgs(self):
+        res = ''
+        for mc_id in PaymentOptions().miniconf_orgs:
+	    res += `mc_id` + ' ' 
+            mc = self.dbsession.query(model.Person).get_by(id=mc_id)
+	    if mc==None:
+	      res += '(unknown)'
+	    else:
+	      res += ' '.join((mc.firstname, mc.lastname, mc.email_address))
+	    res += '<br/>'
+	return Response(res)
+
     # FIXME There is probably a way to get this to use the List thingy from CRUD
     def remind(self):
         setattr(c, 'registration_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
@@ -468,9 +488,12 @@ class PaymentOptions:
                 "Professional": [59840, 74800],
                 "Hobbyist": [28160, 35200],
                 "Concession": [15400, 15400],
-                "Speaker": [0, 0]
+                "Speaker": [0, 0],
+                "Mini-conf organiser": [0, 0],
                 }
         self.dinner = 5000
+	self.miniconf_orgs = [35, 123, 15, 36, 55, 29, 18, 22, 86, 66, 46,
+	        73, 71, 496, 81]
 
 # I think accomodation is in the DB?		
 #        self.accommodation = {

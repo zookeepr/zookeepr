@@ -39,6 +39,10 @@ class AdminController(SecureController):
           ('/proposal/summary', ''' summary of the reviewed papers '''),
           ('/review/summary', ''' summary of reviews '''),
 
+          ('/registration/list_miniconf_orgs', ''' list of miniconf
+	  organisers (as the registration code knows them, for miniconf
+	  discount) '''),
+
 	]
 
 	# show it!

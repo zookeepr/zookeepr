@@ -188,6 +188,8 @@ descMD5 = md5.new(desc).hexdigest()
 % ticket_types = [('Fairy Penguin Sponsor', '1650.00', '1650.00'), ('Professional', '748.00', '598.40'), ('Hobbyist', '352.00', '281.60'), ('Concession', '154.00', '154.00')]
 % if is_speaker:
 %   ticket_types = [('Speaker', '0.00', '0.00')] + ticket_types
+% elif c.is_miniconf_org:
+%   ticket_types = [('Mini-conf organiser', '0.00', '0.00')] + ticket_types
 % #endif
 % for (t, p, eb) in ticket_types:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
