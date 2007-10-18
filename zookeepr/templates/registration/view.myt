@@ -8,20 +8,19 @@
 
 <p class="label">
 <label for="person.firstname">Your first name:</label></p>
-% if c.signed_in_person:
 <p>
-<% c.signed_in_person.firstname | h %>
+<% c.registration.person.firstname | h %>
 </p>
 
 <p class="label">
 <label for="person.lastname">Your last name:</label></p>
 <p>
-<% c.signed_in_person.lastname | h %>
+<% c.registration.person.lastname | h %>
 
 <p class="label">
 <label for="person.email_address">Email address:</label></p>
 <p>
-<% c.signed_in_person.email_address | h %>
+<% c.registration.person.email_address | h %>
 </p>
 <p class="note">
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
@@ -30,7 +29,7 @@ Your email address will only be used to correspond with you, and is your login n
 <p class="label">
 <label for="person.handle">Display name/handle/nickname:</label></p>
 <p>
-<% c.signed_in_person.handle |h %>
+<% c.registration.person.handle |h %>
 </p>
 <p class="note">
 Your display name will be used to identify you on the website. It's not
