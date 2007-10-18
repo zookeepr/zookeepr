@@ -207,6 +207,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                     }
     permissions = { 'remind': [AuthRole('organiser')],
                     'list': [AuthRole('organiser')],
+		    'list_miniconf_orgs': [AuthRole('organiser')],
 		    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
 		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
@@ -493,7 +494,7 @@ class PaymentOptions:
                 }
         self.dinner = 5000
 	self.miniconf_orgs = [35, 123, 15, 36, 55, 29, 18, 22, 86, 66, 46,
-	        73, 71, 496, 81]
+	        73, 71, 496, 81, 44]
 
 # I think accomodation is in the DB?		
 #        self.accommodation = {
