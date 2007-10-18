@@ -1,4 +1,3 @@
-From: <% h.event_name() %> <% h.contact_email() %>
 Subject: <% h.event_name() %> Forgotten Password Reset Confirmation
 To: <% c.conf_rec.email_address %>
 
