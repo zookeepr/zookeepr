@@ -308,7 +308,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         # Registration
         description = registration.type + " Registration"
 	eb = self.check_earlybird()[0]
-        if eb:
+        if eb and registration.type in ('Hobbyist', 'Professional'):
             description = description + " (earlybird)"
         cost = p.getTypeAmount(registration.type, eb)
 
@@ -464,6 +464,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 class PaymentOptions:
     def __init__(self):
         self.types = {
+                "Fairy Penguin Sponsor": [165000, 165000],
                 "Professional": [59840, 74800],
                 "Hobbyist": [28160, 35200],
                 "Concession": [15400, 15400],
