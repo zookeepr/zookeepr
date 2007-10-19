@@ -206,12 +206,11 @@ class RegistrationController(SecureController, Create, Update, List, Read):
     redirect_map = {'edit': dict(controller='registration', action='status'),
                     }
     permissions = { 'remind': [AuthRole('organiser')],
-                    'list': [AuthRole('organiser')],
 		    'list_miniconf_orgs': [AuthRole('organiser')],
 		    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
 		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
-    anon_actions = ['status', 'new']
+    anon_actions = ['status', 'new', 'list']
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -418,9 +417,9 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
             if not r.authorise(self):
-            	abort(403)
+		redirect_to('/registration/status')
         else:
-            abort(403)
+	    redirect_to('/registration/status')
 
 	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).select())
 	setattr(c, 'ebdate', PaymentOptions().ebdate)
