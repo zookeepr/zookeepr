@@ -1,7 +1,7 @@
 <h1>Pay invoice</h1>
 
 <form method="POST"
-  action="https://vault.safepay.com.au/cgi-bin/test_payment.pl"
+  action="https://vault.safepay.com.au/cgi-bin/make_payment.pl"
   onSubmit="return disableForm(this);" >
 
 # % for k in fields.keys():
@@ -39,9 +39,9 @@ payment.
 
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
 <input type="hidden" name="reply_link_url"
-  value="http://www.baum.com.au/mel8/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
+  value="http://linux.conf.au/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
 <input type="hidden" name="return_link_url"
-  value="http://www.baum.com.au:5000/registration/status">
+  value="http://linux.conf.au/registration/status">
 <input type="hidden" name="return_link_text"
   value="Return to the linux.conf.au website">
 
