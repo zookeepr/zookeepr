@@ -68,9 +68,11 @@
 
 rego_all = {
     'Hobbyist': 0,
+    'Fairy Penguin Sponsor': 0,
     'Professional': 0,
     'Concession': 0,
     'Speaker': 0,
+    'Mini-conf organiser': 0,
 }
 rego_nonspeaker = rego_all.copy()
 rego_paid = rego_all.copy()

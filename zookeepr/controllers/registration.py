@@ -210,7 +210,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
 		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
-    anon_actions = ['status', 'new', 'list']
+    anon_actions = ['status', 'new', 'index']
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
