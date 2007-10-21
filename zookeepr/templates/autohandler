@@ -56,16 +56,18 @@
     <!-- end content -->
     </div>
 
-<div id="footer">
-            <p class="spons emperor">
-   <a href="http://linux.conf.au/sponsors-media" id="sponhp" ><img src="http://linux.conf.au/__data/assets/image/0010/424/small-hp-logo.gif" alt="Hewlett-Packard Logo" /></a>
+        <div id="footer">
+
+<p class="spons emperor">
+   <a href="http://linux.conf.au/sponsors-media" id="sponhp" ><img src="http://linux.conf.au/__data/assets/image/0010/424/HP-front.png" alt="Hewlett-Packard Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponibm"><img src="http://linux.conf.au/__data/assets/image/0011/425/IBM-front.png" alt="IBM Logo" /></a>
+</p>
+<p>
    <a href="http://linux.conf.au/sponsors-media" id="sponlf"><img src="http://linux.conf.au/__data/assets/image/0016/484/LinuxFoundation-Small.jpg" alt="Linux Foundation Logo" /></a>
    <a href="http://linux.conf.au/sponsors-media" id="sponmmv"><img src="http://linux.conf.au/__data/assets/image/0012/426/small-mmv-logo.gif" alt="Multimedia Victoria Logo" /></a>
    <a href="http://linux.conf.au/sponsors-media" id="spongle"><img src="http://linux.conf.au/__data/assets/image/0013/427/small-google-logo.gif" alt="Google Logo" /></a>
-   <a href="http://linux.conf.au/sponsors-media" id="sponibm"><img src="http://linux.conf.au/__data/assets/image/0011/425/small-ibm-logo.gif" alt="IBM Logo" /></a>
 </p>        </div>
-	    </p>
-</div>
+
     </div>
 
     <p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE LCA2008
