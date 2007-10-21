@@ -7,13 +7,14 @@ from zookeepr.lib.base import *
 from zookeepr.lib.auth import *
 from zookeepr.lib.crud import *
 
-class InvoiceController(SecureController, Read):
+class InvoiceController(SecureController, Read, List):
     model = model.Invoice
     individual = 'invoice'
     permissions = {'view': [AuthFunc('is_payee'), AuthRole('organiser')],
                    'printable': [AuthFunc('is_payee'), AuthRole('organiser')],
                    'pay': [AuthFunc('is_payee'), AuthRole('organiser')],
                    'remind': [AuthRole('organiser')],
+                   'index': [AuthRole('organiser')],
                    }
 
     def is_payee(self):
