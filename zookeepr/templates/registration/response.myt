@@ -52,7 +52,9 @@ teesize = ' '.join(teesize)
 </%python>
  T-shirt: <% teesize %>
 
- Extra t-shirts: <% c.extra_tee_count |h %> (<% c.extra_tee_sizes |h %>)
+% if c.registration.extra_tee_count:
+ Extra t-shirts: <% c.registration.extra_tee_count |h %> (<% c.registration.extra_tee_sizes |h %>)
+% #endif
 
  Extra tickets: <% c.registration.dinner |h %>
 
