@@ -383,7 +383,7 @@ Please check out the <% h.link_to('accommodation', url="/register/accommodation"
 %    elif is_speaker and a.name=='Trinity':
 %       places_left = ''
 %    else:
-%       places_left = '(%d places left)' % (a.beds - c.accom_taken[a.name])
+%       places_left = '(%d places left)' % (a.beds - c.accom_taken.get(a.name,0))
 %    #endif
 %    if is_speaker or a.option!='speaker':
 <option value="<% a.id %>"><% a.name %>
