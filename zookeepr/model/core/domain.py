@@ -46,6 +46,9 @@ class Person(object):
         """Check the given password is equal to the stored one"""
         return self.password_hash == md5.new(value).hexdigest()
 
+    def is_speaker(self):
+        return reduce(lambda a, b: a or b.accepted, self.proposals, False)
+
     def _set_creation_timestamp(self, value):
         if value is None:
             self._creation_timestamp = datetime.datetime.now()

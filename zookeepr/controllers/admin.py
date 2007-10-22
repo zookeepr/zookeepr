@@ -1,6 +1,7 @@
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.controllers.proposal import Proposal
+from zookeepr.model import Registration
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -188,6 +189,29 @@ class AdminController(SecureController):
 	    return res
         c.talk = talk
 	return render_response('admin/draft_timetable.myt')
+
+    def t_shirts(self):
+        """ T-shirts that have been ordered and paid for """
+	normal = {}; extra = []
+	for r in self.dbsession.query(Registration).select():
+	    paid = r.person.invoices and r.person.invoices[0].paid()
+	    if paid or r.person.is_speaker():
+	        normal[r.teesize] = normal.get(r.teesize, 0) + 1
+	    if paid and r.extra_tee_count:
+	        extra.append((r.id, r.extra_tee_count, r.extra_tee_sizes,
+						   r.person.email_address))
+	        
+        c.text = '<h2>Normal T-shirts</h2>'
+	c.columns = 'style / size', 'count'
+	c.data = normal.items()
+	c.data.sort()
+        c.text = render('admin/table.myt', fragment=True)
+
+	c.text += '<br/><h2>Extra T-shirts</h2>'
+	c.columns = 'rego', 'count', 'styles and sizes', 'e-mail'
+	c.data = extra
+	c.data.sort()
+	return render_response('admin/table.myt')
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table

@@ -9,7 +9,7 @@
 % for row in c.data:
   <tr class="<% oddeven.next() %>">
 %   for item in row:
-    <td class="list"><% item %></td>
+    <td class="list"><% item |h%></td>
 %   # endfor
   </tr>
 % # endfor
