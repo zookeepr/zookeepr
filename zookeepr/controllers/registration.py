@@ -345,15 +345,34 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             invoice.items.append(iid)
         
         # Accommodation:
+	accom_not_available = False
         if registration.accommodation:
             description = 'Accommodation - %s' % registration.accommodation.name
             if registration.accommodation.option:
                 description += " (%s)" % registration.accommodation.option
             accom_qty=registration.checkout-registration.checkin
 	    while accom_qty<0: accom_qty += 31 #January has 31 days
+            accom_cost=registration.accommodation.cost_per_night * 100
+	    if registration.accommodation.beds <= \
+		     c.accom_taken.get(registration.accommodation.name, 0):
+                if registration.accommodation.name=='Trinity' and \
+                   registration.accommodation.option=='speaker':
+		     pass
+                else:
+		   description += " (NOT AVAILABLE)"
+                   accom_cost += 1
+		   accom_not_available = True
+		   
             iia = model.InvoiceItem(description,
                                     qty=accom_qty,
-                                    cost=registration.accommodation.cost_per_night * 100)
+                                    cost=accom_cost)
+            self.dbsession.save(iia)
+            invoice.items.append(iia)
+
+        if accom_not_available:
+            iia = model.InvoiceItem('INVALID INVOICE (accommodation full)',
+                                    qty=1,
+                                    cost=1)
             self.dbsession.save(iia)
             invoice.items.append(iia)
 
@@ -394,6 +413,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         self.dbsession.flush()
 
 	if quiet: return
+	if accom_not_available:
+            return render_response('registration/accom_full.myt')
         redirect_to(controller='invoice', action='view', id=invoice.id)
 
     def list_miniconf_orgs(self):
