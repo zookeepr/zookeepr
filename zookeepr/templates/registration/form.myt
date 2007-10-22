@@ -281,13 +281,14 @@ what size and shape you prefer.
 <label for="registration.extra_tee_count">Additional T-shirts:</label>
 </p><p class="entries">
 <% h.text_field('registration.extra_tee_count', size=10) %>
-&#215; $25 each.
+&#215; $24.75 each.
 <br/>
 <label for="registration.extra_tee_sizes">Sizes and styles:</label>
-<% h.text_field('registration.extra_tee_count', size=60) %>
+<% h.text_field('registration.extra_tee_sizes', size=60) %>
 </p><p class="note">
-Additional t-shirts for partners, friends or yourself. Please tell us how many
-in total and what size and shape each of them should be.
+Additional t-shirts for partners, friends or yourself. Please tell us how
+many extra t-shirts you want and what size and shape each of them should
+be.
 </p>
 
 <p class="label">

@@ -189,7 +189,7 @@ A conference T-shirt is included with your ticket.
 <p class="label">Additional T-shirts:</label>
 </p><p >
 <% c.registration.extra_tee_count %>
-&#215; $25 each; sizes and styles:
+&#215; $24.75 each; sizes and styles:
 <% c.registration.extra_tee_sizes |h%>
 </p>
 

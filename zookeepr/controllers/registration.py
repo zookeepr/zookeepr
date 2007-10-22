@@ -342,7 +342,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         if registration.extra_tee_count > 0:
             iid = model.InvoiceItem(description='Additional T-shirts',
                                     qty=registration.extra_tee_count,
-                                    cost=2500)
+                                    cost=2475)
             self.dbsession.save(iid)
             invoice.items.append(iid)
         
