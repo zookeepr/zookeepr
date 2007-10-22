@@ -58,7 +58,7 @@
 %         if a.option:
 %             loc += '-' + a.option
 %         #endif
-<% a.beds - c.accom_taken.get(loc, c.accom_taken.get(a.name)) |h %>
+<% a.beds - c.accom_taken.get(loc, c.accom_taken.get(a.name, 0)) |h %>
 %     else:
 <% a.get_available_beds() |h %>
 %     #endif
