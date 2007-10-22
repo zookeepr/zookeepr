@@ -231,7 +231,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	def space_available(a):
 	  if is_speaker and a.name=='Trinity':
 	    return True
-	  return a.beds > c.accom_taken[a.name]
+	  return a.beds > c.accom_taken.get(a.name,0)
         c.accommodation_collection = filter(space_available, as)
 	c.accommodation_collection.sort(cmp = lambda a, b: cmp(a.id, b.id))
 
