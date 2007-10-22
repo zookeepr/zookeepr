@@ -50,7 +50,9 @@ except:
 teesize = ' '.join(teesize)
 
 </%python>
- Teeshirt: <% teesize %>
+ T-shirt: <% teesize %>
+
+ Extra t-shirts: <% extra_tee_count |h %> (<% extra_tee_sizes |h %>)
 
  Extra tickets: <% c.registration.dinner |h %>
 

@@ -21,6 +21,8 @@ class Registration(object):
                  type=None,
                  discount_code=None,
                  teesize=None,
+                 extra_tee_count=None,
+                 extra_tee_sizes=None,
                  dinner=None,
                  diet=None,
                  special=None,
@@ -64,6 +66,8 @@ class Registration(object):
         self.type = type
         self.discount_code = discount_code
         self.teesize = teesize
+        self.extra_tee_count = extra_tee_count
+        self.extra_tee_sizes = extra_tee_sizes
         self.dinner = dinner
         self.diet = diet
         self.special = special

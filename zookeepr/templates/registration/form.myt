@@ -253,7 +253,6 @@ def oddeven_gen():
 oddeven = oddeven_gen().next
 </%python>
 <table>
-# FIXME:
 % for style, style_text, sizes in teeoptions: 
 <tr class="<% oddeven() %>">
 <td>
@@ -278,13 +277,25 @@ style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registra
 what size and shape you prefer.
 </p>
 
+<p class="label">
+<label for="registration.extra_tee_count">Additional T-shirts:</label>
+</p><p class="entries">
+<% h.text_field('registration.extra_tee_count', size=10) %>
+&#215; $25 each.
+<br/>
+<label for="registration.extra_tee_sizes">Sizes and styles:</label>
+<% h.text_field('registration.extra_tee_count', size=60) %>
+</p><p class="note">
+Additional t-shirts for partners, friends or yourself. Please tell us how many
+in total and what size and shape each of them should be.
+</p>
 
 <p class="label">
 <label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
 </p><p class="entries">
 <% h.text_field('registration.dinner', size=10) %>
 &#215; $50 each; not counting yourself.
-<p class="note">
+</p><p class="note">
 One Penguin Dinner is included in the
 price of your conference ticket.  Additional Penguin Dinner tickets are
 intended for partners or friends not

@@ -132,6 +132,8 @@ class RegistrationSchema(Schema):
     discount_code = validators.String()
 
     teesize = validators.String(not_empty=True)
+    extra_tee_count = BoundedInt(min=0)
+    extra_tee_sizes = validators.String()
     dinner = BoundedInt(min=0)
     diet = validators.String()
     special = validators.String()
@@ -336,6 +338,14 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
+        # extra T-shirts:
+        if registration.extra_tee_count > 0:
+            iid = model.InvoiceItem(description='Additional T-shirts',
+                                    qty=registration.extra_tee_count,
+                                    cost=2500)
+            self.dbsession.save(iid)
+            invoice.items.append(iid)
+        
         # Dinner:
         if registration.dinner > 0:
             iid = model.InvoiceItem(description='Additional Penguin Dinner Tickets',

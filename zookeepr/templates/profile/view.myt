@@ -33,6 +33,12 @@ teesize: <% c.profile.registration.teesize |h %>
 </p>
 
 <p>
+Additional t-shirts:
+  <% c.profile.registration.extra_tee_count |h %>
+  (<% c.profile.registration.extra_tee_sizes |h %>)
+</p>
+
+<p>
 Additional dinner tickets: <% c.profile.registration.dinner |h %>
 </p>
 

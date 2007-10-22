@@ -186,13 +186,20 @@ teesize = ' '.join(teesize)
 A conference T-shirt is included with your ticket.
 </p>
 
+<p class="label">Additional T-shirts:</label>
+</p><p >
+<% c.registration.extra_tee_count %>
+&#215; $25 each; sizes and styles:
+<% c.registration.extra_tee_sizes |h%>
+</p>
+
 
 <p class="label">
 <label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
 </p><p >
 <% c.registration.dinner %>
 &#215; $50 each; not counting yourself.
-<p class="note">
+</p><p class="note">
 One Penguin Dinner is included in the
 price of your conference ticket.  Additional Penguin Dinner tickets are
 intended for partners or friends not

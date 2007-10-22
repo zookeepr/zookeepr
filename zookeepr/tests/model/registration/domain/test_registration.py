@@ -19,6 +19,8 @@ class TestRegistration(CRUDModelTest):
                     type='type1',
                     discount_code='discount_code1',
                     teesize='teesize1',
+		    extra_tee_count=1,
+		    extra_tee_sizes='extra_tee_sizes1',
                     dinner=1,
                     diet='diet1',
                     special='special1',
