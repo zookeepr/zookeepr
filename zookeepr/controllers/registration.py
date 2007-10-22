@@ -226,11 +226,12 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         else:
 	    is_speaker = False
 
+        c.accom_taken = self.accom_taken()
         as = self.dbsession.query(model.Accommodation).select()
 	def space_available(a):
 	  if is_speaker and a.name=='Trinity':
 	    return True
-	  return a.get_available_beds() >= 1
+	  return a.beds > c.accom_taken[a.name]
         c.accommodation_collection = filter(space_available, as)
 	c.accommodation_collection.sort(cmp = lambda a, b: cmp(a.id, b.id))
 
@@ -406,6 +407,20 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	      res += ' '.join((mc.firstname, mc.lastname, mc.email_address))
 	    res += '<br/>'
 	return Response(res)
+
+    def accom_taken(self):
+        res = {}
+        for r in self.dbsession.query(model.Registration).select():
+	    if r.accommodation==None: continue
+	    if r.accommodation.option != 'speaker':
+		if not r.person.invoices: continue
+		if not r.person.invoices[0].paid(): continue
+	    location = r.accommodation.name
+	    if (r.accommodation.name=='Trinity' and
+		r.accommodation.option=='speaker'):
+		    location = 'Trinity-speaker'
+	    res[location] = res.get(location, 0)+1
+        return res
 
     # FIXME There is probably a way to get this to use the List thingy from CRUD
     def remind(self):
