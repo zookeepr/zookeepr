@@ -32,8 +32,11 @@
        <b>mismatch!</b>
 %      #endif
        <% "$%.2f" % (p.Amount / 100.0) %>
-       <small><% p.TransID |h%> /
-       <% p.HTTP_X_FORWARDED_FOR |h%></small>
+       <small><% p.TransID |h%></small>
+%      if p.HTTP_X_FORWARDED_FOR != '203.89.255.156':
+       <br/><b>unknown IP!</b>
+       <% p.HTTP_X_FORWARDED_FOR |h%>
+%      #endif
 
 %    #endfor
 %  else:
