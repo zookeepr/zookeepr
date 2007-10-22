@@ -57,8 +57,6 @@
 <br>
 <strong>Money in Bank:</strong> <% h.number_to_currency(money_in_bank) %> <br>
 <br>
-<b>Accom actually taken:</b> <% c.accom_taken |h%>
-<br>
 <& ../accommodation/list.myt, accommodation_paid = accommodation_paid &>
 
 % else:
