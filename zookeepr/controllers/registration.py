@@ -539,7 +539,7 @@ class PaymentOptions:
                 }
         self.dinner = 5000
 	self.miniconf_orgs = [35, 123, 15, 36, 55, 29, 18, 22, 86, 66, 46,
-	        73, 71, 496, 81, 44, 279,
+	        73, 71, 496, 81, 44, 279, 50014,
 		]
 
 # I think accomodation is in the DB?		

@@ -51,6 +51,7 @@ class AdminController(SecureController):
 	c.data = [('<a href="%s">%s</a>'%(fn,fn), desc)
 						   for (fn, desc) in funcs]
         c.text = 'List of admin functions.'
+	c.noescape = True
 	return render_response('admin/table.myt')
 
     def test(self):
