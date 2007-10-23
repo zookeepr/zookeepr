@@ -201,16 +201,18 @@ class AdminController(SecureController):
 	        normal[r.teesize] = normal.get(r.teesize, 0) + 1
 	    if paid and r.extra_tee_count:
 	        extra.append((r.id, r.extra_tee_count, r.extra_tee_sizes,
-						   r.person.email_address))
+				           r.person.email_address, r.teesize))
 	        
         c.text = '<h2>Normal T-shirts</h2>'
-	c.columns = 'style / size', 'count'
-	c.data = normal.items()
+	c.columns = 'M/F', 'style', 'size', 'count'
+	c.data = [s.split('_') + [cnt] for (s, cnt) in normal.items()]
 	c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
 	c.text += '<br/><h2>Extra T-shirts</h2>'
-	c.columns = 'rego', 'count', 'styles and sizes', 'e-mail'
+	c.text += '''(The "normal" column is for reference only; it's
+				already included in the above table.)'''
+	c.columns = 'rego', 'count', 'styles and sizes', 'e-mail', 'normal'
 	c.data = extra
 	c.data.sort()
 	return render_response('admin/table.myt')
