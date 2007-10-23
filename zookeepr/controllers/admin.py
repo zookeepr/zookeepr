@@ -32,7 +32,8 @@ class AdminController(SecureController):
  	  ('/invoice/remind', ''' '''),
  	  ('/openday', ''' '''),
  	  ('/proposal', ''' '''),
- 	  ('/registration', ''' '''),
+ 	  ('/registration', ''' Summary of registrations '''),
+ 	  ('/invoice', ''' List of invoices (that is, registrations).'''),
  	  ('/pony', ''' OMG! Ponies!!!'''),
 
           ('/proposal', ''' To see what you need to reveiw '''),

@@ -5,7 +5,8 @@
 
 <title><& SELF:title &></title>
 
-<link rel="stylesheet" media="screen" href="http://linux.conf.au/zookeepr.css" type="text/css"/>
+# <link rel="stylesheet" media="screen" href="http://linux.conf.au/zookeepr.css" type="text/css"/>
+<link rel="stylesheet" media="screen" href="/__data/assets/file/0013/76/main.css" type="text/css"/>
 <link rel="stylesheet" media="print" href="/print.css" type="text/css"/>
 <link rel="icon" type="image/png" href="/favicon.png" />
 
@@ -59,13 +60,13 @@
         <div id="footer">
 
 <p class="spons emperor">
-   <a href="http://linux.conf.au/sponsors-media" id="sponhp" ><img src="http://linux.conf.au/__data/assets/image/0010/424/HP-front.png" alt="Hewlett-Packard Logo" /></a>
-   <a href="http://linux.conf.au/sponsors-media" id="sponibm"><img src="http://linux.conf.au/__data/assets/image/0011/425/IBM-front.png" alt="IBM Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponhp" ><img src="/__data/assets/image/0010/424/HP-front.png" alt="Hewlett-Packard Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponibm"><img src="/__data/assets/image/0011/425/IBM-front.png" alt="IBM Logo" /></a>
 </p>
 <p>
-   <a href="http://linux.conf.au/sponsors-media" id="sponlf"><img src="http://linux.conf.au/__data/assets/image/0016/484/LinuxFoundation-Small.jpg" alt="Linux Foundation Logo" /></a>
-   <a href="http://linux.conf.au/sponsors-media" id="sponmmv"><img src="http://linux.conf.au/__data/assets/image/0012/426/small-mmv-logo.gif" alt="Multimedia Victoria Logo" /></a>
-   <a href="http://linux.conf.au/sponsors-media" id="spongle"><img src="http://linux.conf.au/__data/assets/image/0013/427/small-google-logo.gif" alt="Google Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponlf"><img src="/__data/assets/image/0016/484/LinuxFoundation-Small.jpg" alt="Linux Foundation Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="sponmmv"><img src="/__data/assets/image/0012/426/small-mmv-logo.gif" alt="Multimedia Victoria Logo" /></a>
+   <a href="http://linux.conf.au/sponsors-media" id="spongle"><img src="/__data/assets/image/0013/427/small-google-logo.gif" alt="Google Logo" /></a>
 </p>        </div>
 
     </div>
