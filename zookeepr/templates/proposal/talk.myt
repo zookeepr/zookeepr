@@ -1,7 +1,7 @@
 <h1><% c.proposal.title | h %></h1>
 
 <p>
-<% c.proposal.abstract.replace('\n', '<br/>') %>
+<% paras(c.proposal.abstract) %>
 </p>
 
 <p>
@@ -21,12 +21,17 @@ Project:
 % for person in c.proposal.people:
 <h2><% person.firstname | h%> <% person.lastname | h%></h2>
 
-%   if person.bio:
-<% person.bio.replace('\n', '<br/>') %>
-%   #endif
+<% paras(person.bio) %>
 % #endfor
 
 <%method title>
-<% h.truncate(c.proposal.title) %> - <% c.proposal.type.name %> - <& PARENT:title &>
+Programme // Talk Details - <& PARENT:title &>
 </%method>
 
+<%init>
+import re
+def paras(s):
+  if not s:
+    return ''
+  return re.sub(r'\n+', '<br/>', s)
+</%init>
