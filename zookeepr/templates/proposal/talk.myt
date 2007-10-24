@@ -33,5 +33,7 @@ import re
 def paras(s):
   if not s:
     return ''
+  if '<p>' in s:
+    return s
   return re.sub(r'\n+', '<br/>', s)
 </%init>
