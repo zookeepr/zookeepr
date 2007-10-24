@@ -71,6 +71,7 @@ class ProposalController(SecureController, View, Modify):
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer'), AuthRole('organiser')],
                    }
+    anon_actions = ['talk']
 
     def __before__(self, **kwargs):
         super(ProposalController, self).__before__(**kwargs)
