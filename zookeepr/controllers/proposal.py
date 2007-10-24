@@ -192,6 +192,12 @@ class ProposalController(SecureController, View, Modify):
         session.save()
         return super(ProposalController, self).view()
 
+    def talk(self, id):
+        if c.proposal.accepted:
+	    return render_response('proposal/talk.myt')
+	else:
+	    return redirect_to('/programme')
+
     def edit(self, id):
         c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
 	c.cfptypes = self.dbsession.query(ProposalType).select()
