@@ -1,3 +1,4 @@
+from datetime import datetime
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.controllers.proposal import Proposal
@@ -216,6 +217,15 @@ class AdminController(SecureController):
 	c.data = extra
 	c.data.sort()
 	return render_response('admin/table.myt')
+
+    def countdown(self):
+        """ How many days until conference opens """
+	timeleft = datetime(2008, 1, 28, 9, 0, 00) - datetime.now()
+	res = Response ("%.1f days" % (timeleft.days +
+					       timeleft.seconds / (3600*24.)))
+	res.headers['Refresh'] = 3600
+	return res
+
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
