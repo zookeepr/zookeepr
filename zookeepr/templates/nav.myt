@@ -34,6 +34,7 @@ map = [
   ('/papers', 'presentations'),
   ('/presentations', 'presentations'),
   ('/registration', 'register'),
+  ('/proposal', 'programme'),
   ('/invoice', 'register'),
   ('/2008/contact', 'contact'),
   ('/account', 'login'),
