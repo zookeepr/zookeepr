@@ -258,7 +258,7 @@ class AdminController(SecureController):
 	      else:
 		res.append('no invoice')
 
-              res[-1] += ' (<a href="/registration/%d/view">%d</a>)' % (
+              res[-1] += ' (<a href="/registration/%d">%d</a>)' % (
 				     p.registration.id, p.registration.id )
 
               cons = [con.replace('_', ' ') for con in cons_list
