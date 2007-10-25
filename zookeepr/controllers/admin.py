@@ -229,11 +229,14 @@ class AdminController(SecureController):
     def speakers(self):
         """ Listing of speakers and various stuff about them """
 	c.data = []
+	c.noescape = True
 	cons_list = ('speaker_record', 'speaker_video_release',
 						  'speaker_slides_release')
 	for p in self.dbsession.query(Person).select():
 	    if not p.is_speaker(): continue
-	    res = [p.id, p.firstname + ' ' + p.lastname]
+	    res = [p.id, p.firstname + ' ' + p.lastname +
+	      ' <a href="mailto:%s">&lt;%s&gt;</a>'%((p.email_address,)*2)
+	    ]
 	    if p.bio:
 	      res.append(len(p.bio))
 	    else:
