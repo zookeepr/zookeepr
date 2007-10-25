@@ -234,25 +234,32 @@ class AdminController(SecureController):
 						  'speaker_slides_release')
 	for p in self.dbsession.query(Person).select():
 	    if not p.is_speaker(): continue
-	    res = ['<a href="/profile/%d">%d'%(p.id, p.id),
-	           p.firstname + ' ' + p.lastname +
-			 ' (<a href="mailto:%s">email</a>)'%p.email_address
+	    res = [
+      '%s %s (<a href="/profile/%d">%d</a>, <a href="mailto:%s">email</a>)'
+		  % (p.firstname, p.lastname, p.id, p.id, p.email_address)
 	    ]
 	    if p.bio:
 	      res.append(len(p.bio))
 	    else:
 	      res.append('-')
 	    talks = [talk for talk in p.proposals if talk.accepted]
-	    res.append('; '.join([t.title for t in talks]))
+	    res.append('; '.join([
+		'<a href="/programme/detail?TalkID=%d">%s</a>'
+					% (t.id, t.title) for t in talks]))
 	    res.append('; '.join([t.assistance.name for t in talks]))
 	    if p.registration:
 	      if p.invoices:
 		if p.invoices[0].paid():
 		  res.append('OK')
 		else:
-		  res.append('owes $%.2f'%(p.invoices[0].total()/100.0))
+		  res.append('<a href="/invoice/%d">owes $%.2f</a>'%(
+			   p.invoices[0].id, p.invoices[0].total()/100.0) )
 	      else:
 		res.append('no invoice')
+
+              res[-1] += ' (<a href="/registration/%d/view">%d</a>)' % (
+				     p.registration.id, p.registration.id )
+
               cons = [con.replace('_', ' ') for con in cons_list
 					   if getattr(p.registration, con)] 
               if len(cons)==3:
@@ -261,12 +268,27 @@ class AdminController(SecureController):
 	        res.append('-')
 	      else:
 	        res.append(' and '.join(cons))
+
+	      if p.registration.accommodation:
+	        acc = p.registration.accommodation.name
+		if p.registration.accommodation.option:
+		  acc += ' (%s)' % p.registration.accommodation.option
+		acc += ' [%d&#8211;%d]' % (p.registration.checkin,
+						   p.registration.checkout)
+	        res.append(acc)
+	      else:
+	        res.append('-')
 	    else:
-	      res+=['no rego', '']
+	      res+=['no rego', '', 'no rego']
 	    #res.append(`dir(p.registration)`)
 	    c.data.append(res)
-	c.columns = ('id', 'name', 'len bio', 'titles', 'assistance',
-	             'rego', 'consent')
+	c.columns = ('name', 'bio', 'talk', 'assist',
+	             'rego', 'c', 'accom')
+        c.text = '''
+	  Fields:
+	    bio = length of bio (characters);
+	    c = consent for recording/video/slides
+	'''
 	return render_response('admin/table.myt')
 
 
