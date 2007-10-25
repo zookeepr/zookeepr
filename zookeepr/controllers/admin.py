@@ -245,8 +245,9 @@ class AdminController(SecureController):
 	    talks = [talk for talk in p.proposals if talk.accepted]
 	    res.append('; '.join([
 		'<a href="/programme/detail?TalkID=%d">%s</a>'
-					% (t.id, t.title) for t in talks]))
-	    res.append('; '.join([t.assistance.name for t in talks]))
+				% (t.id, h.truncate(t.title)) for t in talks]))
+	    res.append('; '.join([t.assistance.name.replace(' assistance', '')
+							      for t in talks]))
 	    if p.registration:
 	      if p.invoices:
 		if p.invoices[0].paid():
