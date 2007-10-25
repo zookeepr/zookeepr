@@ -2,7 +2,7 @@ from datetime import datetime
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration
+from zookeepr.model import Registration, Person
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -225,6 +225,45 @@ class AdminController(SecureController):
 					       timeleft.seconds / (3600*24.)))
 	res.headers['Refresh'] = 3600
 	return res
+
+    def speakers(self):
+        """ Listing of speakers and various stuff about them """
+	c.data = []
+	cons_list = ('speaker_record', 'speaker_video_release',
+						  'speaker_slides_release')
+	for p in self.dbsession.query(Person).select():
+	    if not p.is_speaker(): continue
+	    res = [p.id, p.firstname + ' ' + p.lastname]
+	    if p.bio:
+	      res.append(len(p.bio))
+	    else:
+	      res.append('-')
+	    talks = [talk for talk in p.proposals if talk.accepted]
+	    res.append('; '.join([t.title for t in talks]))
+	    res.append('; '.join([t.assistance.name for t in talks]))
+	    if p.registration:
+	      if p.invoices:
+		if p.invoices[0].paid():
+		  res.append('OK')
+		else:
+		  res.append('owes $%.2f'%p.invoices[0].total())
+	      else:
+		res.append('no invoice')
+              cons = [con.replace('_', ' ') for con in cons_list
+					   if getattr(p.registration, con)] 
+              if len(cons)==3:
+	        res.append('all')
+	      elif len(cons)==0:
+	        res.append('-')
+	      else:
+	        res.append(' and '.join(cons))
+	    else:
+	      res+=['no rego', '']
+	    #res.append(`dir(p.registration)`)
+	    c.data.append(res)
+	c.columns = ('id', 'name', 'len bio', 'titles', 'assistance',
+	             'rego', 'consent')
+	return render_response('admin/table.myt')
 
 
 def sql_response(sql):
