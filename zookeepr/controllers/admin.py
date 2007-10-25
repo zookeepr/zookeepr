@@ -234,8 +234,9 @@ class AdminController(SecureController):
 						  'speaker_slides_release')
 	for p in self.dbsession.query(Person).select():
 	    if not p.is_speaker(): continue
-	    res = [p.id, p.firstname + ' ' + p.lastname +
-	      ' <a href="mailto:%s">&lt;%s&gt;</a>'%((p.email_address,)*2)
+	    res = ['<a href="/profile/%d">%d'%(p.id, p.id),
+	           p.firstname + ' ' + p.lastname +
+			 ' (<a href="mailto:%s">email</a>)'%p.email_address
 	    ]
 	    if p.bio:
 	      res.append(len(p.bio))
@@ -249,7 +250,7 @@ class AdminController(SecureController):
 		if p.invoices[0].paid():
 		  res.append('OK')
 		else:
-		  res.append('owes $%.2f'%p.invoices[0].total())
+		  res.append('owes $%.2f'%(p.invoices[0].total()/100.0))
 	      else:
 		res.append('no invoice')
               cons = [con.replace('_', ' ') for con in cons_list
