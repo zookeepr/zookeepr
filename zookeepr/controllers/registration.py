@@ -534,6 +534,7 @@ class PaymentOptions:
                 "Professional": [59840, 74800],
                 "Hobbyist": [28160, 35200],
                 "Concession": [15400, 15400],
+                "Student": [15400, 15400],
                 "Speaker": [0, 0],
                 "Mini-conf organiser": [0, 0],
                 }

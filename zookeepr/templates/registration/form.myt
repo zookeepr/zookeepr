@@ -185,7 +185,7 @@ descMD5 = md5.new(desc).hexdigest()
 <label for="registration.type">What type of ticket do you want?</label>
 </p><p class="entries">
 # FIXME: dynamic content
-% ticket_types = [('Fairy Penguin Sponsor', '1650.00', '1650.00'), ('Professional', '748.00', '598.40'), ('Hobbyist', '352.00', '281.60'), ('Concession', '154.00', '154.00')]
+% ticket_types = [('Fairy Penguin Sponsor', '1650.00', '1650.00'), ('Professional', '748.00', '598.40'), ('Hobbyist', '352.00', '281.60'), ('Student', '154.00', '154.00')]
 % if is_speaker:
 %   ticket_types = [('Speaker', '0.00', '0.00')] + ticket_types
 % elif c.is_miniconf_org:
@@ -208,7 +208,7 @@ As a speaker, you are entitled to attend for free. However, if you
 % else:
 <p class="note">
 Check the <% h.link_to('registration page', url="/register", popup=True) %> for the full details of each ticket.
-One important change from past years is that Concession and Hobbyist tickets
+One important change from past years is that Student and Hobbyist tickets
 also include Penguin Dinner.
 </p>
 % #endif
@@ -302,7 +302,7 @@ price of your conference ticket.  Additional Penguin Dinner tickets are
 intended for partners or friends not
 attending the conference.
 </p><p class="note-bene">
-Note that unlike past years, <b>Concession and Hobbyist tickets already
+Note that unlike past years, <b>Student and Hobbyist tickets already
 include</b> one Penguin Dinner ticket.
 </p>
 

@@ -71,6 +71,7 @@ rego_all = {
     'Fairy Penguin Sponsor': 0,
     'Professional': 0,
     'Concession': 0,
+    'Student': 0,
     'Speaker': 0,
     'Mini-conf organiser': 0,
 }

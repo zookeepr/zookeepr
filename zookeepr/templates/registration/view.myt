@@ -146,7 +146,7 @@ Your IRC nick or other handle you go by.
 <p class="note">
 Check the <% h.link_to('registration page', url="/register") %> for the
 full details of each ticket.  One important change from past years is that
-Concession and Hobbyist tickets also include Penguin Dinner.
+Student and Hobbyist tickets also include Penguin Dinner.
 </p>
 
 % if 0:
@@ -205,7 +205,7 @@ price of your conference ticket.  Additional Penguin Dinner tickets are
 intended for partners or friends not
 attending the conference.
 </p><p class="note-bene">
-Note that unlike past years, <b>Concession and Hobbyist tickets already
+Note that unlike past years, <b>Student and Hobbyist tickets already
 include</b> one Penguin Dinner ticket.
 </p>
 
