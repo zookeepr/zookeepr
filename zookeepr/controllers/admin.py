@@ -196,13 +196,16 @@ class AdminController(SecureController):
     def t_shirts(self):
         """ T-shirts that have been ordered and paid for """
 	normal = {}; extra = []
+	total_n = 0; total_e = 0
 	for r in self.dbsession.query(Registration).select():
 	    paid = r.person.invoices and r.person.invoices[0].paid()
 	    if paid or r.person.is_speaker():
 	        normal[r.teesize] = normal.get(r.teesize, 0) + 1
+		total_n += 1
 	    if paid and r.extra_tee_count:
 	        extra.append((r.id, r.extra_tee_count, r.extra_tee_sizes,
 				           r.person.email_address, r.teesize))
+		total_e += int(r.extra_tee_count)
 	        
         c.text = '<h2>Normal T-shirts</h2>'
 	c.columns = 'M/F', 'style', 'size', 'count'
@@ -216,6 +219,15 @@ class AdminController(SecureController):
 	c.columns = 'rego', 'count', 'styles and sizes', 'e-mail', 'normal'
 	c.data = extra
 	c.data.sort()
+        c.text = render('admin/table.myt', fragment=True)
+
+	c.text += '<br/><h2>Totals</h2>'
+	c.columns = ('type', 'total')
+	c.data = [
+	  ('Normal', total_n),
+	  ('Extra', total_e),
+	  ('All', total_n + total_e),
+	]
 	return render_response('admin/table.myt')
 
     def countdown(self):
