@@ -81,12 +81,17 @@ earlybird = 0
 # Loop through regos
 for r in c.registration_collection:
     speaker = r.person.is_speaker()
+    paid = r.person.invoices and r.person.invoices[0].paid()
 
     # skip unpaid registrations, except speakers
-    if not ((r.person.invoices and r.person.invoices[0].paid()) or speaker):
+    if not (paid or speaker):
       continue
 
     type = r.type
+
+    if speaker and not paid:
+      # until they pay, their ticket type is effectively "Speaker"
+      type = 'Speaker'
 
     # All proposals
     rego_all[type] = 1 + rego_all.get(type, 0)
