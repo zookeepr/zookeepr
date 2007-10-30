@@ -38,7 +38,8 @@
 % #endfor
   </items>
 
-% gst = c.invoice.total()/11.0
-  <gst cents="<% '%.2f'%gst %>"><% h.number_to_currency(gst/100.0) %></gst>
+% gst = int(c.invoice.total()/11.0 + 0.5)
+# +0.5 for rounding
+  <gst cents="<% gst %>"><% h.number_to_currency(gst/100.0) %></gst>
 
 </invoice>
