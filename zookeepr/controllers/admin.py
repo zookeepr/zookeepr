@@ -244,8 +244,13 @@ class AdminController(SecureController):
 	c.noescape = True
 	cons_list = ('speaker_record', 'speaker_video_release',
 						  'speaker_slides_release')
+        speaker_list = []
 	for p in self.dbsession.query(Person).select():
 	    if not p.is_speaker(): continue
+	    speaker_list.append((p.lastname+' '+p.firstname, p))
+        speaker_list.sort()
+
+        for (sortkey, p) in speaker_list:
 	    res = [
       '%s %s (<a href="/profile/%d">%d</a>, <a href="mailto:%s">email</a>)'
 		  % (p.firstname, p.lastname, p.id, p.id, p.email_address)
