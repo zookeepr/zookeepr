@@ -309,21 +309,27 @@ class AdminController(SecureController):
         for (r_id,) in sql_data(r"""
 	  select id from registration
 	  where (diet ~ '.*\\S.*' or special ~ '.*\\S.*')
+	  order by id
 	"""):
 	  r = self.dbsession.query(Registration).get(r_id)
 	  p = r.person
 	  if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+	    if p.is_speaker():
+	      speaker = 's'
+	    else:
+	      speaker = ''
 	    c.data.append((
 	      '<a href="/registration/%d">%d</a>'%(r.id, r.id),
 	      '<a href="mailto:%s">%s %s'% (h.esc(p.email_address),
 				    h.esc(p.firstname), h.esc(p.lastname)),
+              speaker,
 	      h.esc(r.dinner),
 	      h.esc(r.diet),
 	      h.esc(r.special)
 	    ))
 	c.noescape = True
-	c.text = 'ED = extra dinners'
-	c.columns = ('rego', 'name / email', 'ED', 'diet', 'special reqs')
+	c.text = 's = speaker; ED = extra dinners'
+	c.columns = ('rego', 'name / email', 's', 'ED', 'diet', 'special reqs')
 	return render_response('admin/table.myt')
 
 def sql_response(sql):
