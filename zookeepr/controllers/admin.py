@@ -303,6 +303,15 @@ class AdminController(SecureController):
 	    c = consent for recording/video/slides
 	'''
 	return render_response('admin/table.myt')
+    def special_requirements(self):
+        """ Special requirements and diets """
+        return sql_response(r"""
+	  select firstname || ' ' || lastname as name,
+	    email_address, diet, special
+	  from account, person, registration
+	  where person.id=person_id and account.id=account_id and
+	    (diet ~ '.*\\S.*' or special ~ '.*\\S.*')
+	""")
 
 
 def sql_response(sql):
