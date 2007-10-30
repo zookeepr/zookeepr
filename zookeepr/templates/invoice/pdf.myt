@@ -1,74 +1,44 @@
-<% c.xml.toprettyxml(indent="  ") %>
+% date_format = "<date><day>%d</day><month>%b</month><year>%Y</year></date>"
+<invoice>
+  <number><% c.invoice.id %></number>
+  <issued><% c.invoice.issue_date.strftime(date_format) %></issued>
+  <due><% c.invoice.due_date.strftime(date_format) %></due>
 
-<hr />
-
-<!-- 
-<% c.invoice.issue_date.strftime("%d %b %Y") %>
-<% c.invoice.due_date.strftime("%d %b %Y") %>
+% amt = c.invoice.total()
+  <amount cents="<% amt %>"><% h.number_to_currency(amt/100.0) %></amount>
 % if c.invoice.good_payments:
-  Invoice Paid
+  <paid/>
 % elif c.invoice.total() == 0:
-  No pay required
+  <zero/>
 % else:
-  <% h.number_to_currency(c.invoice.total()/100.0) %>
+  <owed/>
+% #endif
+% if c.invoice.bad_payments:
+  <badpayments/>
 % #endif
 
-<% c.invoice.person.firstname %> <% c.invoice.person.lastname %>
+  <name><% c.invoice.person.firstname %> <% c.invoice.person.lastname %></name>
+  <firstname><% c.invoice.person.firstname %></firstname>
+  <lastname><% c.invoice.person.lastname %></lastname>
+
 % if c.invoice.person.registration and c.invoice.person.registration.company:
- <% c.invoice.person.registration.company %>
+  <company><% c.invoice.person.registration.company %></company>
 % # endif
 
-<% h.event_name() %>.
+  <event><% h.event_name() %></event>
 
+  <items>
 % for item in c.invoice.items:
-<% item.description %>
-<% item.qty %>
-<% h.number_to_currency(item.cost/100.0) %>
-<% h.number_to_currency(item.total()/100.0) %>
+    <item>
+      <description><% item.description %></description>
+      <qty><% item.qty %></qty>
+      <each cents="<% item.cost %>"><% h.number_to_currency(item.cost/100.0) %></each>
+      <subtotal><% h.number_to_currency(item.total()/100.0) %></subtotal>
+    </item>
 % #endfor
+  </items>
 
-<% h.number_to_currency(c.invoice.total()/100.0) %>
-<% h.number_to_currency(c.invoice.total()/100.0/11) %>
+% gst = c.invoice.total()/11.0
+  <gst cents="<% '%.2f'%gst %>"><% h.number_to_currency(gst/100.0) %></gst>
 
-<%method actions>
-<div id="actions">
-% if c.invoice.total() == 0:
-%    pass
-% elif c.invoice.bad_payments:
-Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a>
-% elif not c.invoice.good_payments:
-<p>
-<% h.link_to('(Pay this invoice)', url=h.url(controller='invoice', action='pay')) %>
-% if c.invoice.person.registration:
-    <% h.link_to('(Regenerate invoice)', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
-% #endif
-<br>
-<small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
-<small><strong>Please Note:</strong> To qualify for the earlybird discount you must have registred by the 15th November and you need to pay by the <strong>15th December</strong>.
-</p>
-
-% else:
-Invoice has been paid.
-% #endif
-</div>
-</%method>
-
-<%method title>
-Tax Invoice/Statement - <& PARENT:title &>
-</%method>
-
-// Convert this sucker to SVG via an XSLT transform.
-
-// Write SVG to disk.
-
-// Call inkscpae and convert SVG to PDF.
-
-// Convert PDF to PS.
-
-// Reconvert PS to PDF :-)
-
-// Display!
-
-// Remove temp files.
-
--->
+</invoice>

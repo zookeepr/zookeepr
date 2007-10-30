@@ -77,40 +77,9 @@ class InvoiceController(SecureController, Read, List):
         return render_response('invoice/remind.myt')
 
     def pdf(self):
-    	from xml.dom.minidom import Document
-
-	# Create a nice XML fragement.
-	doc = Document()
-
-	invoice = doc.createElement("invoice")
-	doc.appendChild(invoice)
-
-	code = doc.createElement("code")
-	code.setAttribute( "zookeepr", str( c.invoice.id ) )
-	code.setAttribute( "directone", str( c.invoice.id ) )
-	invoice.appendChild(code)
-
-	user = doc.createElement( "user ")
-	invoice.appendChild( user )
-	
-	firstname = doc.createElement( "firstname ")
-	content = doc.createTextNode( c.invoice.person.firstname )
-	firstname.appendChild( content )
-	user.appendChild( firstname )
-
-	lastname = doc.createElement( "lastname ")
-	content = doc.createTextNode( c.invoice.person.lastname )
-	lastname.appendChild( content )
-	user.appendChild( lastname )
-
-	company = doc.createElement( "company ")
-	content = doc.createTextNode( c.invoice.person.registration.company )
-	company.appendChild( content )
-	user.appendChild( company )
-
-	c.xml = doc
-
         res = render('%s/pdf.myt' % self.individual, fragment=True)
-	return Response(res)
+	res = Response(res)
+	res.headers['Content-type']='text/plain'
+	return res
 
 	# return Response(doc.toprettyxml(indent="  ")
