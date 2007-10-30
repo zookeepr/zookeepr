@@ -33,7 +33,7 @@
       <description><% item.description %></description>
       <qty><% item.qty %></qty>
       <each cents="<% item.cost %>"><% h.number_to_currency(item.cost/100.0) %></each>
-      <subtotal><% h.number_to_currency(item.total()/100.0) %></subtotal>
+      <subtotal cents="<% item.total() %>"><% h.number_to_currency(item.total()/100.0) %></subtotal>
     </item>
 % #endfor
   </items>
