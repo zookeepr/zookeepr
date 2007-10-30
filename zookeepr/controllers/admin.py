@@ -305,14 +305,26 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
     def special_requirements(self):
         """ Special requirements and diets """
-        return sql_response(r"""
-	  select firstname || ' ' || lastname as name,
-	    email_address, diet, special
-	  from account, person, registration
-	  where person.id=person_id and account.id=account_id and
-	    (diet ~ '.*\\S.*' or special ~ '.*\\S.*')
-	""")
-
+	c.data = []
+        for (r_id,) in sql_data(r"""
+	  select id from registration
+	  where (diet ~ '.*\\S.*' or special ~ '.*\\S.*')
+	"""):
+	  r = self.dbsession.query(Registration).get(r_id)
+	  p = r.person
+	  if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+	    c.data.append((
+	      '<a href="/registration/%d">%d</a>'%(r.id, r.id),
+	      '<a href="mailto:%s">%s %s'% (h.esc(p.email_address),
+				    h.esc(p.firstname), h.esc(p.lastname)),
+	      h.esc(r.dinner),
+	      h.esc(r.diet),
+	      h.esc(r.special)
+	    ))
+	c.noescape = True
+	c.text = 'ED = extra dinners'
+	c.columns = ('rego', 'name / email', 'ED', 'diet', 'special reqs')
+	return render_response('admin/table.myt')
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table

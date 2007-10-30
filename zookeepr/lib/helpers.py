@@ -9,6 +9,7 @@ from wiki import wiki_here, wiki_fragment, wiki_html_fragment
 import urllib
 from glob import glob
 import os.path, random, array
+import re
 
 def counter(*args, **kwargs):
     """Return the next cardinal in a sequence.
@@ -139,3 +140,15 @@ def random_pic(subdir):
 	return htmlprefix+subdir+'/'+file
     except IndexError:
         return "no images found"
+
+esc_re = re.compile(r'([<>&])')
+def esc(s):
+    """ HTML-escape the argument"""
+    def esc_m(m):
+      return {'>': '&gt;', '<': '&lt;', '&': '&amp;'}[m.group(1)]
+    if s is None:
+      return ''
+    try:
+      return esc_re.sub(esc_m, s)
+    except:
+      return esc_re.sub(esc_m, `s`)
