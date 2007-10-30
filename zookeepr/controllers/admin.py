@@ -247,7 +247,7 @@ class AdminController(SecureController):
         speaker_list = []
 	for p in self.dbsession.query(Person).select():
 	    if not p.is_speaker(): continue
-	    speaker_list.append((p.lastname+' '+p.firstname, p))
+	    speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
         speaker_list.sort()
 
         for (sortkey, p) in speaker_list:
