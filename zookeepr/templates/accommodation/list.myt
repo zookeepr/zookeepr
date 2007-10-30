@@ -10,17 +10,17 @@
 
 <th>Cost per night</th>
 
-<th>Capacity (# beds)</th>
-
-<th>Availability (# beds left)</th>
-
-% if accommodation_paid:
-<th> Paid </th>
-% # endif
+<th>Capacity</th>
 
 % if hasattr(c, 'accom_taken'):
 <th> Taken </th>
 % #endif
+
+<th>Remain</th>
+
+% if accommodation_paid:
+<th> Per option </th>
+% # endif
 
 
 % beds_total = 0
@@ -52,12 +52,18 @@
 <% a.beds |h %>
 </td>
 
-<td>
 %     if hasattr(c, 'accom_taken'):
 %         loc = a.name
 %         if a.option:
 %             loc += '-' + a.option
 %         #endif
+<td>
+<% c.accom_taken.get(loc, '-') %>
+</td>
+%     # endif
+
+<td>
+%     if hasattr(c, 'accom_taken'):
 <% a.beds - c.accom_taken.get(loc, c.accom_taken.get(a.name, 0)) |h %>
 %     else:
 <% a.get_available_beds() |h %>
@@ -74,11 +80,6 @@
 %         # endif
 </td>
 %     # endif
-%     if hasattr(c, 'accom_taken'):
-<td>
-<% c.accom_taken.get(loc, '-') %>
-</td>
-%     # endif
 
 
 </tr>
@@ -92,12 +93,12 @@
     <td>&nbsp;</td>
 
     <td><% beds_total %></td>
+%     if hasattr(c, 'accom_taken'):
+    <td><% sum(c.accom_taken.values()) %></td>
+%     # endif
     <td><% beds_available %></td>
 %     if accommodation_paid:
     <td><% beds_paid %></td>
-%     # endif
-%     if hasattr(c, 'accom_taken'):
-    <td><% sum(c.accom_taken.values()) %></td>
 %     # endif
 </tr>
 
