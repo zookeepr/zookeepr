@@ -15,6 +15,7 @@ class InvoiceController(SecureController, Read, List):
                    'pay': [AuthFunc('is_payee'), AuthRole('organiser')],
                    'remind': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
+                   'pdf': [AuthFunc('is_payee'), AuthRole('organiser')],
                    }
 
     def is_payee(self):
@@ -81,5 +82,3 @@ class InvoiceController(SecureController, Read, List):
 	res = Response(res)
 	res.headers['Content-type']='text/plain'
 	return res
-
-	# return Response(doc.toprettyxml(indent="  ")
