@@ -27,14 +27,17 @@
 
   <event><% h.event_name() %></event>
 
+  <itemcount><% len(c.invoice.items) %></itemcount>
   <items>
+% itemid = 0
 % for item in c.invoice.items:
-    <item>
+%   itemid += 1
+    <item<% itemid %>>
       <description><% item.description %></description>
       <qty><% item.qty %></qty>
       <each cents="<% item.cost %>"><% h.number_to_currency(item.cost/100.0) %></each>
       <subtotal cents="<% item.total() %>"><% h.number_to_currency(item.total()/100.0) %></subtotal>
-    </item>
+    </item<% itemid %>>
 % #endfor
   </items>
 
