@@ -80,5 +80,5 @@ class InvoiceController(SecureController, Read, List):
     def pdf(self):
         res = render('%s/pdf.myt' % self.individual, fragment=True)
 	res = Response(res)
-	res.headers['Content-type']='text/plain'
+	res.headers['Content-type']='text/plain; charset=utf-8'
 	return res

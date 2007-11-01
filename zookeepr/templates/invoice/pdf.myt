@@ -42,18 +42,22 @@
 
   <event><% h.event_name() %></event>
 
+  <itemcount><% len(c.invoice.items) %></itemcount>
   <items>
+% itemid = 0
 % for item in c.invoice.items:
-    <item>
+%   itemid += 1
+    <item<% itemid %>>
       <description><% item.description %></description>
       <qty><% item.qty %></qty>
       <each cents="<% item.cost %>"><% h.number_to_currency(item.cost/100.0) %></each>
-      <subtotal><% h.number_to_currency(item.total()/100.0) %></subtotal>
-    </item>
+      <subtotal cents="<% item.total() %>"><% h.number_to_currency(item.total()/100.0) %></subtotal>
+    </item<% itemid %>>
 % #endfor
   </items>
 
-% gst = c.invoice.total()/11.0
-  <gst cents="<% '%.2f'%gst %>"><% h.number_to_currency(gst/100.0) %></gst>
+% gst = int(c.invoice.total()/11.0 + 0.5)
+# +0.5 for rounding
+  <gst cents="<% gst %>"><% h.number_to_currency(gst/100.0) %></gst>
 
 </invoice>
