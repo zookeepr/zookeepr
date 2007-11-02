@@ -1,10 +1,10 @@
 <h2>Discount Codes</h2>
 
-<table>.
+<table>
     <tr>
         <th>Code</th>
         <th>Rego Type</th>
-        <th>Percentage Discount</th>
+        <th>Disc.</th>
         <th>Comment</th>
         <th>Used By</th>
     </tr>
@@ -13,13 +13,14 @@
     <tr class="<% h.cycle('even', 'odd')%>">
         <td><% d.code %></td>
         <td><% d.type %></td>
-        <td><% d.percentage %></td>
+        <td><% d.percentage %>%</td>
         <td><% d.comment %></td>
 %     if d.registrations:
         <td><% d.registrations[0].person.firstname %> <% d.registrations[0].person.lastname %>
 %          if d.registrations[0].company:
                 <% "(" + d.registrations[0].company + ")"%>
 %          # endif
+           &lt;<% d.registrations[0].person.email_address %>&gt;
 </td>
 %     else:
         <td><strong>Hasn't been used</strong></td>

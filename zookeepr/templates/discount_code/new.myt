@@ -13,3 +13,13 @@ Discount Code - <& PARENT:title &>
 defaults
 errors
 </%args>
+
+<%init>
+if not defaults:
+  defaults = {
+    'discount_code.count': '1',
+    'discount_code.percentage': '100',
+    'discount_code.type': 'Professional',
+  }
+
+</%init>

@@ -6,10 +6,20 @@
 
 <p>
 <span class="mandatory">*</span>
-<label for="discount_code.code">Code:</label>
+<label for="discount_code.count">Count:</label>
+<% h.text_field('discount_code.count', size=5) %>
+<br />
+<span class="fielddesc">How many discount codes to generate.</span>
+</p>
+
+<p>
+<label for="discount_code.code">Code prefix:</label>
 <% h.text_field('discount_code.code', size=40) %>
 <br />
-<span class="fielddesc">Suggest you use pwgen prefixed by something eg IBM-ahl3Oona</span>
+<span class="fielddesc">If you enter "foo", it might generate
+"foo-ooH4epe7". If blank, it'll just generate "ooH4epe7". Theoretically it
+might be a good idea to avoid 1, I, 0 and O, but I'm not sure how else one
+would spell IBM or GOOGLE :-) </span>
 </p>
 
 <p>

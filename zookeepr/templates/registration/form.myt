@@ -213,11 +213,15 @@ also include Penguin Dinner.
 </p>
 % #endif
 
-% if 0:
+% if 1:
 <p class="label">
 <label for="registration.discount_code">Discount Code:</label>
 </p><p class="entries">
 <% h.text_field('registration.discount_code') %>
+<p class="note">
+Discount or group-booking code. For group bookings, note that we will give
+your name, company and email address to the group leader for verification.
+</p>
 </p>
 % else:
 <% h.hidden_field('registration.discount_code', value='') %>
