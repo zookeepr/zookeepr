@@ -323,20 +323,23 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             description = description + " (earlybird)"
         cost = p.getTypeAmount(registration.type, eb)
 
+        ii = model.InvoiceItem(description=description, qty=1, cost=cost)
+        self.dbsession.save(ii)
+        invoice.items.append(ii)
+
         # Check for discount
         result, errors = self.check_discount()
         if result:
             discount = registration.discount
-            description = description + " (Discounted " + discount.type + ")"
+            description = discount.comment
             discount_amount =  p.getTypeAmount(discount.type, eb) * discount.percentage/100
             if discount_amount > cost:
-                cost = 0
-            else:
-                cost -= discount_amount
+                discount_amount = cost
 
-        ii = model.InvoiceItem(description=description, qty=1, cost=cost)
-        self.dbsession.save(ii)
-        invoice.items.append(ii)
+	    ii = model.InvoiceItem(description=description, qty=1,
+						     cost=-discount_amount)
+	    self.dbsession.save(ii)
+	    invoice.items.append(ii)
 
         # extra T-shirts:
         if registration.extra_tee_count > 0:
