@@ -486,7 +486,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             return False, "Discount code already used"
 
         if discount.type != registration.type:
-            error = "You're discount is for " + discount.type + ", but you are registering for " + registration.type + ". This is fine if what you are registering for is more expensive a bit silly otherwise."
+            error = "Your discount is for " + discount.type + ", but you are registering for " + registration.type + ". This is fine if what you are registering for is more expensive, a bit of a waste otherwise."
             return True, error
 
         return True, "Your discount code has been applied"
