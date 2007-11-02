@@ -17,7 +17,7 @@
 % elif c.invoice.total() == 0:
   <zero/>
 % else:
-  <owed/>
+  <owed cents="<% amt %>"/>
 % #endif
 % if c.invoice.bad_payments:
   <badpayments/>
@@ -37,6 +37,7 @@
     <city><% rego.city %></city>
     <country><% rego.country %></country>
     <postcode><% rego.postcode %></postcode>
+    <state><% rego.state %></state>
   </address>
 % # endif
 
