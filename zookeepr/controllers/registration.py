@@ -332,7 +332,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         if result:
             discount = registration.discount
             description = discount.comment
-            discount_amount =  p.getTypeAmount(discount.type, eb) * discount.percentage/100
+            discount_amount =  p.getTypeAmount(discount.type, eb) * discount.percentage/100.0
             if discount_amount > cost:
                 discount_amount = cost
 
