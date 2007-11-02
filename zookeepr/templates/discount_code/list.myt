@@ -1,10 +1,24 @@
 <h2>Discount Codes</h2>
 
+% if admin:
+This table lists all the discount codes.
+%   actionlink = h.link_to('(Add another)', url=h.url(controller='discount_code', action='new'))
+% else:
+This table lists the discount codes for your group.
+%   actionlink = ''
+%   if not discount_codes:
+(Note: you do not appear to be a group leader, so the table is blank.)
+%   #endif
+% #endif
+
 <table>
     <tr>
         <th>Code</th>
         <th>Rego Type</th>
         <th>Disc.</th>
+% if admin:
+	<th>Leader</th>
+% #endif
         <th>Comment</th>
         <th>Used By</th>
     </tr>
@@ -14,7 +28,17 @@
         <td><% d.code %></td>
         <td><% d.type %></td>
         <td><% d.percentage %>%</td>
-        <td><% d.comment %></td>
+%    if admin:
+        <td>
+%      if d.leader:
+	  <% d.leader.firstname |h%> <% d.leader.lastname |h%>
+	  &lt;<% d.leader.email_address |h%>&gt;
+%      else:
+          (no leader)
+%      #endif
+	</td>
+%    #endif
+        <td><% d.comment |h%></td>
 %     if d.registrations:
         <td><% d.registrations[0].person.firstname %> <% d.registrations[0].person.lastname %>
 %          if d.registrations[0].company:
@@ -24,18 +48,21 @@
 </td>
 %     else:
         <td><strong>Hasn't been used</strong></td>
-%     # endif
+%     #endif
     </tr>
 % #endfor
 
 </table>
+
 <br />
- <% h.link_to('(Add another)', url=h.url(controller='discount_code', action='new')) %>
+<% actionlink %>
 
 <%init>
 
-discount_codes = c.discount_code_collection
+admin = 'organiser' in [r.name for r in c.signed_in_person.roles]
 
+if admin:
+  discount_codes = c.discount_code_collection
+else:
+  discount_codes = c.signed_in_person.discount_codes
 </%init>
-
-

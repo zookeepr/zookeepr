@@ -153,6 +153,11 @@ discount_code = Table('discount_code', metadata,
 
                 Column('comment', String, nullable=False),
 
+                Column('leader_id', Integer,
+                       ForeignKey('person.id'),
+                       nullable=False,
+                       ),
+
                 Column('creation_timestamp', DateTime,
                        nullable=False,
                        default=func.current_timestamp()),

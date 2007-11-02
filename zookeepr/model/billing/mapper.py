@@ -57,6 +57,10 @@ mapper(DiscountCode, discount_code,
                                   uselist=True,
                                   primaryjoin=registration.c.discount_code==discount_code.c.code,
                                   foreignkey=discount_code.c.code,
-                                  )
+                                  ),
+    'leader': relation(Person,
+                       lazy=True,
+                       backref=backref('discount_codes', cascade="all, delete-orphan"),
+                       ),
         }
       )

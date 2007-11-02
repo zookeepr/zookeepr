@@ -21,21 +21,24 @@ class NotExistingDiscountCodeValidator(validators.FancyValidator):
         if discount_code is not None:
             raise Invalid("Code already exists!", value, state)
 
-class PercentageValidator(validators.FancyValidator):
+class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        percentage = value['percentage']
-        if not (percentage > 0 and percentage <= 100):
-            raise Invalid("Invalid percentage!", value, state)
+        leader_id = value['leader_id']
+        leader = state.query(model.Person).get_by(id=leader_id)
+        if leader is None:
+            raise Invalid("Unknown person ID for leader!", value, state)
 
 
 class DiscountCodeSchema(BaseSchema):
     count = BoundedInt(min=1, max=100)
+    leader_id = BoundedInt()
     code = validators.String()
     type = validators.String(not_empty=True)
-    percentage = validators.Int(not_empty=True)
+    percentage = BoundedInt(min=1, max=100)
     comment = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingDiscountCodeValidator, PercentageValidator]
+    chained_validators = [NotExistingDiscountCodeValidator,
+						   ExistingPersonValidator]
 
 class NewDiscountCodeSchema(BaseSchema):
     discount_code = DiscountCodeSchema()
@@ -53,6 +56,7 @@ class DiscountCodeController(SecureController, Read, Create, List):
 
     permissions = {'new': [AuthRole('organiser')],
                    'view': [AuthRole('organiser')],
+		   'list': [AuthTrue()],
                    }
 
     def __before__(self, **kwargs):
@@ -72,14 +76,16 @@ class DiscountCodeController(SecureController, Read, Create, List):
                     warnings.warn("form validation failed: %s" % errors)
             else:
 	        values = results['discount_code']
+		leader = self.dbsession.query(model.Person).get_by(id=values['leader_id'])
 	        for i in xrange(values['count']):
-		    c.discount_code = model.DiscountCode()
+		    discount_code = model.DiscountCode()
 		    for k in values:
-			setattr(c.discount_code, k, values[k])
-		    if c.discount_code.code !='':
-		      c.discount_code.code += '-'
-		    c.discount_code.code += generate_code()
-		    self.dbsession.save(c.discount_code)
+			setattr(discount_code, k, values[k])
+		    if discount_code.code !='':
+		      discount_code.code += '-'
+		    discount_code.code += generate_code()
+		    discount_code.leader = leader
+		    self.dbsession.save(discount_code)
 
 		self.dbsession.flush()
 

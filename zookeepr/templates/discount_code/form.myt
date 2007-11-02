@@ -13,6 +13,16 @@
 </p>
 
 <p>
+<span class="mandatory">*</span>
+<label for="discount_code.leader_id">Group leader:</label>
+<% h.text_field('discount_code.leader_id', size=5) %>
+<br />
+<span class="fielddesc">ID of person who should be given the codes and
+allowed to see who's using them, as per <a href="/profile">the profile
+list</a>. If nobody, use your own ID: <% c.signed_in_person.id %></span>
+</p>
+
+<p>
 <label for="discount_code.code">Code prefix:</label>
 <% h.text_field('discount_code.code', size=40) %>
 <br />
