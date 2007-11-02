@@ -28,7 +28,7 @@ class AdminController(SecureController):
 			   option to view/change their zookeepr roles)'''),
 
  	  ('/accommodation', ''' '''),
- 	  ('/discount_code', ''' '''),
+ 	  ('/discount_code', ''' Discount / group-booking codes '''),
  	  ('/profile', ''' List of all website accounts (with links...)'''),
  	  ('/invoice/remind', ''' '''),
  	  ('/openday', ''' '''),
