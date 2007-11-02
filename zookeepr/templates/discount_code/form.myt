@@ -28,7 +28,7 @@ list</a>. If nobody, use your own ID: <% c.signed_in_person.id %></span>
 <br />
 <span class="fielddesc">If you enter "foo", it might generate
 "foo-ooH4epe7". If blank, it'll just generate "ooH4epe7". Theoretically it
-might be a good idea to avoid 1, I, 0 and O, but I'm not sure how else one
+might be a good idea to avoid 1, l, I, 0 and O, but I'm not sure how else one
 would spell IBM or GOOGLE :-) </span>
 </p>
 
