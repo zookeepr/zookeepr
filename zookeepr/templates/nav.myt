@@ -43,13 +43,30 @@ map = [
 
 # Import the navbar from Matrix ("mm" stands for "matrix menu")
 import re, urllib
-mm = 'http://matrix.mel8ourne.org/_designs/zookeepr-files/menu-list'
-mm = urllib.urlopen(mm).readlines()
-# mm = []
-mm = [mme.split(',', 2) for mme in mm]
+# mm = 'http://matrix.mel8ourne.org/_designs/zookeepr-files/menu-list'
+mm = 'http://linux.conf.au/_designs/zookeepr-files/menu-list'
+try:
+  # Don't try to look up our own name in the DNS - apparently,
+  # munnari.oz.au is currently having problems.
+  raise 'foo'
+  mm = urllib.urlopen(mm).readlines()
+except:
+  mm = []
+mm = [mme.split(',', 2) for mme in mm if ',' in mme]
 mm = [(t.strip(' \t"'), re.sub('^http://[^/]*/', '/', u.strip(' \t\n"')))
 							  for (t, u) in mm]
 mm = [(t, u, u.split('/')[1]) for (t, u) in mm if u!='/account/signin']
+
+if not mm:
+  mm = [
+    ('Home', '/home', 'home'),
+    ('About', '/about', 'about'),
+    ('Sponsors / Media', '/sponsors-media', 'sponsors-media'),
+    ('Register', '/register', 'register'),
+    ('Programme', '/programme', 'programme'),
+    ('Social Events', '/social-events', 'social-events'),
+    ('Contact', '/contact', 'contact'),
+  ]
 
 map = map + [(u, c) for (t, u, c) in mm]
 
