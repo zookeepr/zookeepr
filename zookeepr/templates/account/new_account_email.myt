@@ -19,4 +19,4 @@ http://lists.mel8ourne.org/
 Thanks, and have a great day!
 
 The <% h.event_name() %> team
-http://linux.conf.au/contact
+http://<% h.host_name() %>/contact

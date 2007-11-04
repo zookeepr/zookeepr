@@ -39,9 +39,9 @@ payment.
 
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
 <input type="hidden" name="reply_link_url"
-  value="http://linux.conf.au/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
+  value="http://<% h.host_name() %>/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
 <input type="hidden" name="return_link_url"
-  value="http://linux.conf.au/registration/status">
+  value="http://<% h.host_name() %>/registration/status">
 <input type="hidden" name="return_link_text"
   value="Return to the linux.conf.au website">
 
@@ -51,7 +51,7 @@ payment.
 <table border=0><tr><td valign="middle">
 <img alt="[SecurePay logo]" width="200" height="79"
 style="margin-right: 0.5em"
-src="http://linux.conf.au/__data/assets/image/0015/474/securepay200white.gif"
+src="http://<% h.host_name() %>/__data/assets/image/0015/474/securepay200white.gif"
 /></td>
 <td valign="middle">Direct One Payment Solutions kindly provided by
 SecurePay Australia</td>

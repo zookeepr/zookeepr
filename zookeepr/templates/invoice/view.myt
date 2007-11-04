@@ -132,7 +132,7 @@ Enquiries may be emailed to the organisers:
 
 <div style="text-align:center">
 <p>
-<a href="http://linux.conf.au">linux.conf.au</a> is a project of <a href="http://linux.org.au">Linux Australia, Incorporated</a>.
+<a href="http://<% h.host_name() %>">linux.conf.au</a> is a project of <a href="http://linux.org.au">Linux Australia, Incorporated</a>.
 </p>
 <p>
               PO Box 13272, Law Courts  VIC  8010, Australia
