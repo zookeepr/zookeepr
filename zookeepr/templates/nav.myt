@@ -48,7 +48,8 @@ mm = 'http://linux.conf.au/_designs/zookeepr-files/menu-list'
 try:
   # Don't try to look up our own name in the DNS - apparently,
   # munnari.oz.au is currently having problems.
-  raise 'foo'
+  #raise 'foo'
+  # Now in our own /etc/hosts
   mm = urllib.urlopen(mm).readlines()
 except:
   mm = []
@@ -58,6 +59,7 @@ mm = [(t.strip(' \t"'), re.sub('^http://[^/]*/', '/', u.strip(' \t\n"')))
 mm = [(t, u, u.split('/')[1]) for (t, u) in mm if u!='/account/signin']
 
 if not mm:
+  # fallback if fetching the navbar fails
   mm = [
     ('Home', '/home', 'home'),
     ('About', '/about', 'about'),
