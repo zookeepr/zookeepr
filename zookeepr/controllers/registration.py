@@ -454,9 +454,10 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         res = {}
         for r in self.dbsession.query(model.Registration).select():
 	    if r.accommodation==None: continue
+	    paid = r.person.invoices and r.person.invoices[0].paid()
 	    if r.accommodation.option != 'speaker':
-		if not r.person.invoices: continue
-		if not r.person.invoices[0].paid(): continue
+		if not paid and not r.person.is_speaker():
+		    continue
 	    location = r.accommodation.name
 	    if (r.accommodation.name=='Trinity' and
 		r.accommodation.option=='speaker'):
