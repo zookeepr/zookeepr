@@ -104,6 +104,14 @@ class NonblankForSpeakers(validators.String):
 	    if is_speaker and len(value)<3:
 		raise Invalid("Missing value", value, state)
 
+class TicketTypeValidator(validators.String):
+    def validate_python(self, value, state):
+        validators.String.validate_python(self, value, state)
+	valid_tickets = ( "Fairy Penguin Sponsor", "Professional",
+	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",)
+	if value not in valid_tickets:
+	    raise Invalid("Invalid type", value, state)
+
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
     address2 = validators.String()
@@ -128,7 +136,7 @@ class RegistrationSchema(Schema):
 
     prevlca = DictSet(if_missing=None)
 
-    type = validators.String(not_empty=True)
+    type = TicketTypeValidator(not_empty=True)
     discount_code = validators.String()
 
     teesize = validators.String(not_empty=True)
