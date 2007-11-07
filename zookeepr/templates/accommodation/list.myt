@@ -27,7 +27,10 @@
 % beds_available = 0
 % beds_paid = 0
 % for a in c.accommodation_collection:
-%     beds_total += a.beds
+%     beds = a.beds
+%     if a.name='Trinity' and a.option='speaker':
+%       beds = 100-beds
+%     beds_total += beds
 %     beds_available += a.get_available_beds()
 
 <tr class="<% h.cycle('even', 'odd')%>">
@@ -49,7 +52,7 @@
 </td>
 
 <td>
-<% a.beds |h %>
+<% beds |h %>
 </td>
 
 %     if hasattr(c, 'accom_taken'):
@@ -64,7 +67,7 @@
 
 <td>
 %     if hasattr(c, 'accom_taken'):
-<% a.beds - c.accom_taken.get(loc, c.accom_taken.get(a.name, 0)) |h %>
+<% beds - c.accom_taken.get(loc, c.accom_taken.get(a.name, 0)) |h %>
 %     else:
 <% a.get_available_beds() |h %>
 %     #endif
