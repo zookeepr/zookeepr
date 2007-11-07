@@ -28,8 +28,9 @@
 % beds_paid = 0
 % for a in c.accommodation_collection:
 %     beds = a.beds
-%     if a.name='Trinity' and a.option='speaker':
+%     if a.name=='Trinity' and a.option=='speaker':
 %       beds = 100-beds
+%     #endif
 %     beds_total += beds
 %     beds_available += a.get_available_beds()
 
