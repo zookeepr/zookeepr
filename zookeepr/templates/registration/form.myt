@@ -207,7 +207,8 @@ As a speaker, you are entitled to attend for free. However, if you
 </p>
 % else:
 <p class="note">
-Check the <% h.link_to('registration page', url="/register", popup=True) %> for the full details of each ticket.
+Check the <% h.link_to('registration page', url="/register", popup=True) %> for the full details of each ticket. The Fairy Penguin sponsorship is designed for those who wish to attend the conference as a Professional delegate and make a supporting contribution to the conference.
+</p><p class="note">
 One important change from past years is that Student and Hobbyist tickets
 also include Penguin Dinner.
 </p>

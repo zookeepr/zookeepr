@@ -528,11 +528,11 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	left = po.eblimit - count
 	percent = int(round((20.0 * left) / po.eblimit) * 5)
 	if percent == 0:
-	    return True, ("Almost all gone," + timeleft)
+	    return True, ("Almost all earlybirds gone," + timeleft)
 	elif percent <= 30:
-	    return True, ("Only %d%% left,"%percent + timeleft)
+	    return True, ("Only %d%% earlybirds left,"%percent + timeleft)
 	else:
-	    return True, ("%d%% left,"%percent + timeleft)
+	    return True, ("%d%% earlybirds left,"%percent + timeleft)
 
     def status(self):
         (c.eb, c.ebtext) = self.check_earlybird()
