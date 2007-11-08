@@ -381,7 +381,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		     pass
                 else:
 		   description += " (NOT AVAILABLE)"
-                   accom_cost += 1
+                   #accom_cost += 1
 		   accom_not_available = True
 		   
             iia = model.InvoiceItem(description,
