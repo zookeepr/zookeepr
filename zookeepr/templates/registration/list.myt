@@ -46,7 +46,12 @@
 <strong>Earlybird status:</strong> <% earlybird |h%>,
 available=<% `c.eb` |h%>, <% c.ebtext |h%><br>
 <br>
-<strong>Money in Bank:</strong> <% h.number_to_currency(money_in_bank) %> <br>
+%   test_payments = 11.20
+<strong>Money in Bank:</strong>
+<% h.number_to_currency(money_in_bank + test_payments) %>
+(including <% h.number_to_currency(test_payments) %> of test payments, so
+this number should agree with DirectOne's "Paid/Real Invoices" total)
+<br>
 <br>
 <& ../accommodation/list.myt, accommodation_paid = accommodation_paid &>
 
