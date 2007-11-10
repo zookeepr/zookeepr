@@ -259,7 +259,10 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	try:
             return super(RegistrationController, self).edit(id)
 	finally:
-	    self.pay(id, quiet=1) #regenerate the invoice
+	    try:
+	        self.pay(id, quiet=1) #regenerate the invoice
+	    except:
+	        self.pay(id, quiet=1) #retry once
 
     def new(self):
         errors = {}
