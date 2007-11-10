@@ -339,7 +339,7 @@ class AdminController(SecureController):
     def payments_received(self):
         """ Payments received, as known by zookeepr """
 	return sql_response("""
-	  select invoice_id, trans_id, amount, auth_num, status, result, ip_address, creation_timestamp
+	  select invoice_id, trans_id, amount, auth_num, status, result, ip_address, to_char(creation_timestamp, 'YYYY-MM-DD') as date
 	  from payment_received
 	  order by trans_id;
 	""")
