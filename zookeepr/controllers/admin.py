@@ -336,6 +336,13 @@ class AdminController(SecureController):
 	c.text = 's = speaker; ED = extra dinners'
 	c.columns = ('rego', 'name / email', 's', 'ED', 'diet', 'special reqs')
 	return render_response('admin/table.myt')
+    def payments_received(self):
+        """ Payments received, as known by zookeepr """
+	return sql_response("""
+	  select invoice_id, trans_id, amount, auth_num, status, result, ip_address
+	  from payment_received
+	  order by trans_id;
+	""")
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
