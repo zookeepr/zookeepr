@@ -345,7 +345,7 @@ class AdminController(SecureController):
 	""")
     def tentative_regos(self):
         """ People who have tentatively registered but not paid and aren't
-	speakers """
+	speakers. """
 	c.data = []
 	for r in self.dbsession.query(Registration).select():
 	    p = r.person
@@ -362,7 +362,9 @@ class AdminController(SecureController):
 	  return cmp(a[-1], b[-1]) or cmp(a, b)
         c.data.sort(lastcmp)
 	c.text = """ People who have tentatively registered but not paid
-	and aren't speakers """
+	and aren't speakers. <b>Professional and Hobbyist only</b> at the
+	moment because those are the ones to remind about earlybird expiry.
+	"""
 	c.columns = ('rego', 'person', 'type', 'amount',
 					  'email', 'firstname', 'lastname')
 	return render_response('admin/table.myt')
