@@ -69,7 +69,7 @@ else:
 # The following allows additional persons to view particular groups. The
 # list is pairs of person IDs.
 # Note that a viewer shouldn't also be a group leader.
-for (viewer, leader) in ((3, 253), ):
+for (viewer, leader) in ((50097, 253), ):
   if c.signed_in_person.id == viewer:
     from zookeepr.model.core import Person
     discount_codes = c.dbsession.query(Person).get_by(id=leader).discount_codes
