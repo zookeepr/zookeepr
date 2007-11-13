@@ -65,4 +65,12 @@ if admin:
   discount_codes = c.discount_code_collection
 else:
   discount_codes = c.signed_in_person.discount_codes
+
+# The following allows additional persons to view particular groups. The
+# list is pairs of person IDs.
+for (viewer, leader) in ((3, 253), ):
+  if c.signed_in_person.id == viewer:
+    from zookeepr.model.core import Person
+    discount_codes += c.dbsession.query(Person).get_by(id=leader).discount_codes
+    # note: c.dbsession is assigned in __before__ in the controller
 </%init>

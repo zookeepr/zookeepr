@@ -61,7 +61,7 @@ class DiscountCodeController(SecureController, Read, Create, List):
 
     def __before__(self, **kwargs):
         super(DiscountCodeController, self).__before__(**kwargs)
-
+	c.dbsession = self.dbsession # for the use of list.myt
 
     def new(self):
         errors = {}
