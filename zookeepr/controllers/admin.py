@@ -343,6 +343,29 @@ class AdminController(SecureController):
 	  from payment_received
 	  order by trans_id;
 	""")
+    def tentative_regos(self):
+        """ People who have tentatively registered but not paid and aren't
+	speakers """
+	c.data = []
+	for r in self.dbsession.query(Registration).select():
+	    p = r.person
+	    if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+	      continue
+            if p.invoices:
+	      amt = "$%.2f" % (p.invoices[0].total()/100.0)
+	    else:
+	      amt = '-'
+            if r.type in ("Professional", "Hobbyist"):
+	      c.data.append((r.id, p.id, r.type, amt,
+				p.email_address, p.firstname, p.lastname,))
+        def lastcmp(a, b):
+	  return cmp(a[-1], b[-1]) or cmp(a, b)
+        c.data.sort(lastcmp)
+	c.text = """ People who have tentatively registered but not paid
+	and aren't speakers """
+	c.columns = ('rego', 'person', 'type', 'amount',
+					  'email', 'firstname', 'lastname')
+	return render_response('admin/table.myt')
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
