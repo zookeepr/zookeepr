@@ -356,7 +356,7 @@ class AdminController(SecureController):
 	    else:
 	      amt = '-'
             if r.type in ("Professional", "Hobbyist"):
-	      c.data.append((r.id, p.id, r.type, amt,
+	      c.data.append((r.id, p.id, `p.activated`[0], r.type, amt,
 				p.email_address, p.firstname, p.lastname,))
         def lastcmp(a, b):
 	  return cmp(a[-1], b[-1]) or cmp(a, b)
@@ -364,8 +364,9 @@ class AdminController(SecureController):
 	c.text = """ People who have tentatively registered but not paid
 	and aren't speakers. <b>Professional and Hobbyist only</b> at the
 	moment because those are the ones to remind about earlybird expiry.
+	The "act?" column lists whether the account has been activated.
 	"""
-	c.columns = ('rego', 'person', 'type', 'amount',
+	c.columns = ('rego', 'person', 'act?', 'type', 'amount',
 					  'email', 'firstname', 'lastname')
 	return render_response('admin/table.myt')
 
