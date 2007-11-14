@@ -223,7 +223,7 @@ also include Penguin Dinner.
 <% h.text_field('registration.discount_code') %>
 <p class="note">
 Discount or group-booking code. For group bookings, note that your name,
-company and email address will be visible to the group leader for
+company and email address will be visible to the group leader(s) for
 verification.
 </p>
 </p>
