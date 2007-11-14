@@ -369,6 +369,48 @@ class AdminController(SecureController):
 	c.columns = ('rego', 'person', 'act?', 'type', 'amount',
 					  'email', 'firstname', 'lastname')
 	return render_response('admin/table.myt')
+    def accom_summary(self):
+        """ Summary of accommodation. """
+	c.data = []
+	d = {}
+	for r in self.dbsession.query(Registration).select():
+	    p = r.person
+	    if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
+	      continue
+	    if not r.accommodation: continue
+	    if not d.has_key(r.accommodation.name):
+	      d[r.accommodation.name] = {}
+	    if not d[r.accommodation.name].has_key(r.checkin):
+	      d[r.accommodation.name][r.checkin] = {'ci': 0, 'co': 0}
+	    if not d[r.accommodation.name].has_key(r.checkout):
+	      d[r.accommodation.name][r.checkout] = {'ci': 0, 'co': 0}
+	    d[r.accommodation.name][r.checkin]['ci'] += 1
+	    d[r.accommodation.name][r.checkout]['co'] += 1
+
+	def date_sort(a, b):
+	  if a<15: a+=100
+	  if b<15: b+=100
+	  return cmp(a, b)
+
+        cum = 0
+	for name in d.keys():
+	  dates = d[name].keys()
+	  dates.sort(date_sort)
+	  for date in dates:
+	    ci = d[name][date]['ci']; co = d[name][date]['co']
+	    cum += ci - co
+	    c.data.append((name, date, ci, co, cum))
+	  if cum != 0:
+	    c.data.append(('error! in/out mismatch!', '', '', cum, 0))
+	    cum = 0
+
+        c.text = """ Summary of accommodation. Summarises how many people
+	are checking in and out of each accommodation, and therefore how
+	many will be sleeping there that night. Note: skips days on which
+	there is no change. """
+        c.columns = 'where', 'day', 'in', 'out', 'beds'
+	return render_response('admin/table.myt')
+
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
