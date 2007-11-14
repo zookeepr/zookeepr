@@ -190,7 +190,7 @@ descMD5 = md5.new(desc).hexdigest()
 %   ticket_types = [('Speaker', '0.00', '0.00')] + ticket_types
 % elif c.is_miniconf_org:
 %   ticket_types = [('Mini-conf organiser', '0.00', '0.00')] + ticket_types
-% elif 'team' in [r.name for r in c.signed_in_person.roles]:
+% elif c.signed_in_person and ('team' in [r.name for r in c.signed_in_person.roles]):
 %   ticket_types = [('Team', '0.00', '0.00')] + ticket_types
 % #endif
 % for (t, p, eb) in ticket_types:
