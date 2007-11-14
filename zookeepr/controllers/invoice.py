@@ -78,7 +78,21 @@ class InvoiceController(SecureController, Read, List):
         return render_response('invoice/remind.myt')
 
     def pdf(self):
+        import os
+	def pipe(cmd, s):
+	    (cmdin, cmdout) = os.popen2(cmd)
+	    cmdin.write(s); cmdin.close()
+	    s = cmdout.read(); cmdout.close()
+	    return s
+	  
         res = render('%s/pdf.myt' % self.individual, fragment=True)
+
+	xsl = request.environ['paste.config']['app_conf']['myghty_data_dir']
+	xsl += '/invoice/pdf.xsl'
+
+        #res = pipe('saxon - %s' % xsl, res)
+        #res = pipe('inkscape -z -f - -A -', res)
+
 	res = Response(res)
 	res.headers['Content-type']='text/plain; charset=utf-8'
 	return res

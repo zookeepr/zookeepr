@@ -10,7 +10,7 @@
   <paid>
 % pp = []
 %   for p in c.invoice.good_payments:
-%     pp.append(p.TransID)
+%     pp.append(str(p.TransID))
 %   #endfor
     <transaction><% '-'.join(pp) %></transaction>
   </paid>
