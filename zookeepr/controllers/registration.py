@@ -73,6 +73,12 @@ class SpeakerDiscountValidator(validators.FancyValidator):
 		    raise Invalid("You don't appear to be a mini-conf organiser, don't claim a mini-conf organiser discount.", value, state)
 	    else:
 		raise Invalid("Please log in before claiming a mini-conf organiser discount!", value, state)
+        if value['type']=='Team':
+	    if 'signed_in_person_id' in session:
+	        if 'team' not in [r.name for r in c.signed_in_person.roles]:
+		    raise Invalid("You don't appear to be a team member, don't claim a team member discount.", value, state)
+	    else:
+		raise Invalid("Please log in before claiming a team member discount!", value, state)
 
 class PPValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -108,7 +114,8 @@ class TicketTypeValidator(validators.String):
     def validate_python(self, value, state):
         validators.String.validate_python(self, value, state)
 	valid_tickets = ( "Fairy Penguin Sponsor", "Professional",
-	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",)
+	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",
+	    "Team",)
 	if value not in valid_tickets:
 	    raise Invalid("Invalid type", value, state)
 
@@ -552,6 +559,7 @@ class PaymentOptions:
                 "Student": [15400, 15400],
                 "Speaker": [0, 0],
                 "Mini-conf organiser": [0, 0],
+                "Team": [0, 0],
                 }
         self.dinner = 5000
 	self.miniconf_orgs = [35, 123, 15, 36, 55, 29, 18, 22, 86, 66, 46,

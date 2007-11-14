@@ -70,6 +70,7 @@ rego_all = {
     'Student': 0,
     'Speaker': 0,
     'Mini-conf organiser': 0,
+    'Team': 0,
 }
 rego_nonspeaker = rego_all.copy()
 rego_speaker = rego_all.copy()
