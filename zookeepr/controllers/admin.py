@@ -411,6 +411,14 @@ class AdminController(SecureController):
         c.columns = 'where', 'day', 'in', 'out', 'beds'
 	return render_response('admin/table.myt')
 
+    def acc_papers_xml(self):
+        """ An XML file with titles and speakers of accepted talks, for use
+	in AV splash screens """
+	c.talks = self.dbsession.query(Proposal).select_by(accepted=True)
+
+	res = render_response('admin/acc_papers_xml.myt', fragment=True)
+	res.headers['Content-type']='text/plain; charset=utf-8'
+	return res
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
