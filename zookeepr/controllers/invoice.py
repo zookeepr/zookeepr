@@ -101,6 +101,7 @@ class InvoiceController(SecureController, Read, List):
         pdf_f = file(pdf)
 	res = Response(pdf_f.read())
 	pdf_f.close()
-	res.headers['Content-type']='application/pdf'
+	#res.headers['Content-type']='application/pdf'
+	res.headers['Content-type']='application/octet-stream'
 	#res.headers['Content-type']='text/plain; charset=utf-8'
 	return res
