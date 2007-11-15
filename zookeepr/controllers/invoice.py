@@ -78,21 +78,29 @@ class InvoiceController(SecureController, Read, List):
         return render_response('invoice/remind.myt')
 
     def pdf(self):
-        import os
-	def pipe(cmd, s):
-	    (cmdin, cmdout) = os.popen2(cmd)
-	    cmdin.write(s); cmdin.close()
-	    s = cmdout.read(); cmdout.close()
-	    return s
-	  
+        import os, tempfile
+
         res = render('%s/pdf.myt' % self.individual, fragment=True)
 
-	xsl = request.environ['paste.config']['app_conf']['myghty_data_dir']
-	xsl += '/invoice/pdf.xsl'
+	xsl = request.environ['paste.config']['global_conf']['here']
+	xsl += '/templates/invoice/pdf.xsl'
 
-        #res = pipe('saxon - %s' % xsl, res)
-        #res = pipe('inkscape -z -f - -A -', res)
+	(xml_fd, xml) = tempfile.mkstemp('.xml')
+	(svg_fd, svg) = tempfile.mkstemp('.svg')
+	(pdf_fd, pdf) = tempfile.mkstemp('.pdf')
 
-	res = Response(res)
-	res.headers['Content-type']='text/plain; charset=utf-8'
+        xml_f = os.fdopen(xml_fd, 'w')
+        xml_f.write(res)
+	xml_f.close()
+
+	os.close(svg_fd); os.close(pdf_fd)
+
+        os.system('saxon %s %s > %s' % (xml, xsl, svg))
+        os.system('inkscape -z -f %s -A %s' % (svg, pdf))
+
+        pdf_f = file(pdf)
+	res = Response(pdf_f.read())
+	pdf_f.close()
+	res.headers['Content-type']='application/pdf'
+	#res.headers['Content-type']='text/plain; charset=utf-8'
 	return res
