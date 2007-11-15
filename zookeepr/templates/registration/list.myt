@@ -123,7 +123,12 @@ for r in c.registration_collection:
 	    else:
 		    accommodation_paid[r.accommodation_option_id] = 1
     if type in ('Hobbyist', 'Professional') and not speaker:
-	earlybird += 1
+        if r.discount_code and r.discount_code.startswith('GOOGLE-'):
+	    pass
+        else:
+	    earlybird += 1
+
+earlybird += 20 # the GOOGLE group booking is deemed all taken
 
 from datetime import datetime
 if datetime.now() > c.ebdate:
