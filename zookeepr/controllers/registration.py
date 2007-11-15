@@ -526,6 +526,9 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
 	        continue
+	    if r.discount_code and r.discount_code.startswith('GOOGLE-'):
+	        continue
+		# see below about GOOGLE
 	    speaker = 0
 	    if r.person.proposals:
 		for proposal in r.person.proposals:
@@ -533,6 +536,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 			speaker = 1
 	    if not speaker:
 	        count += 1
+	count += 20 # GOOGLE group booking is deemed all earlybird
 	if count >= po.eblimit:
 	    return False, "All gone."
 	left = po.eblimit - count
