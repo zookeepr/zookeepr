@@ -157,6 +157,7 @@ Enquiries may be emailed to the organisers:
 action='status')) %><br/>
 % if c.invoice.total() == 0:
 <% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %><br/>
+<a href="/invoice/<% c.invoice.id %>.pdf" >PDF version</a><br/>
 % elif c.invoice.bad_payments:
 Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a>
 % elif not c.invoice.paid():
@@ -164,8 +165,9 @@ Invalid payments have been applied to this invoice, please email <% h.contact_em
 % if c.invoice.person.registration:
     <% h.link_to('Regenerate invoice', url=h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %><br/>
 % #endif
-<% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %>
-<br/>
+<% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %><br/>
+<a href="/invoice/<% c.invoice.id %>.pdf" >PDF
+version</a><br/>
 <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
 <small><strong>Please Note:</strong> To qualify for the earlybird discount
 you must have registered and paid by the 17th of November (unless earlybird
@@ -173,7 +175,8 @@ tickets sold out earlier).</small>
 </p>
 
 % else:
-<% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %>
+<% h.link_to('Printable version', url=h.url(controller='invoice', action='printable')) %><br/>
+<a href="/invoice/<% c.invoice.id %>.pdf" >PDF version</a>
 <p>
 Invoice has been paid.
 % #endif

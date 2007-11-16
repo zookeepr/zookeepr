@@ -81,7 +81,9 @@ otherwise.</p>
 <a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
 invoice</a><br/>
 <a href="/invoice/<% c.signed_in_person.invoices[0].id %>/printable" >View
-printable invoice</a></p>
+printable invoice (html)</a><br/>
+<a href="/invoice/<% c.signed_in_person.invoices[0].id %>.pdf" >Get
+printable invoice (pdf)</a></p>
 
 <h3>Summary of steps</h3>
 &#9745; Fill in registration form
@@ -128,7 +130,9 @@ registration</a></p>
 <br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
 invoice</a>
 <br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>/printable" >View
-printable invoice</a></p>
+printable invoice (html)</a>
+<br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>.pdf" >View
+printable invoice (pdf)</a></p>
 
 <h3>Summary of steps</h3>
 &#9745; Fill in registration form
