@@ -303,6 +303,7 @@
          height="135.24078"
          x="22.545654"
          y="18.379829" />
+<!--
       <rect
          y="42.647942"
          x="22.784088"
@@ -310,6 +311,7 @@
          width="698.52631"
          id="rect3108"
          style="opacity:0.625;fill:url(#linearGradient3116);fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
+-->
       <rect
          y="126.59102"
          x="22.784119"

@@ -53,6 +53,9 @@ available=<% `c.eb` |h%>, <% c.ebtext |h%><br>
 this number should agree with DirectOne's "Paid/Real Invoices" total)
 <br>
 <br>
+<strong>Google discount code:</strong> <% google |h %> used
+<br>
+<br>
 <& ../accommodation/list.myt, accommodation_paid = accommodation_paid &>
 
 % else:
@@ -83,11 +86,15 @@ extra_dinners = 0
 money_in_bank = 0
 accommodation_paid = {}
 earlybird = 0
+google = 0
 
 # Loop through regos
 for r in c.registration_collection:
     speaker = r.person.is_speaker()
     paid = r.person.invoices and r.person.invoices[0].paid()
+
+    if r.discount_code and r.discount_code.startswith('GOOGLE-'):
+        google += 1
 
     # skip unpaid registrations, except speakers
     if not (paid or speaker):
