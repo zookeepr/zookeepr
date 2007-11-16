@@ -537,6 +537,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    if not speaker:
 	        count += 1
 	count += 20 # GOOGLE group booking is deemed all earlybird
+	count += 10 # other group bookings
 	if count >= po.eblimit:
 	    return False, "All gone."
 	left = po.eblimit - count

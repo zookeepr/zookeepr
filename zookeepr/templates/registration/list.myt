@@ -45,6 +45,8 @@
 <br>
 <strong>Earlybird status:</strong> <% earlybird |h%>,
 available=<% `c.eb` |h%>, <% c.ebtext |h%><br>
+("Taken" figure includes 20 for google but not catalyst or SGI.)
+<br>
 <br>
 %   test_payments = 11.20
 <strong>Money in Bank:</strong>

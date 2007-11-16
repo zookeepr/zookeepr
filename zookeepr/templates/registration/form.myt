@@ -196,9 +196,9 @@ descMD5 = md5.new(desc).hexdigest()
 % for (t, p, eb) in ticket_types:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
 <label for="registration.type_<% t %>"><% t %> &#215; $<% p %>
-% if eb != p:
-($<% eb %> early-bird)
-% #endif
+#% if eb != p:
+#($<% eb %> early-bird)
+#% #endif
 </label>
 <br />
 % #endfor
