@@ -6,8 +6,10 @@
 % # endfor
 </tr>
 
+% rows = 0
 % for row in c.data:
   <tr class="<% oddeven.next() %>">
+%   rows += 1
 %   for item in row:
 %     if c.noescape:
         <td class="list"><% item %></td>
@@ -18,6 +20,7 @@
   </tr>
 % # endfor
 </table>
+(<% rows |h %> rows)<br/>
 
 <%init>
 def oddeven():

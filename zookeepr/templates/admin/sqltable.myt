@@ -5,8 +5,10 @@
 % # endfor
 </tr>
 
+% rows = 0
 % for row in c.data:
   <tr class="<% oddeven.next() %>">
+%   rows += 1
 %   for item in row:
       <td class="list">
 %     try:
@@ -19,6 +21,7 @@
   </tr>
 % # endfor
 </table>
+(<% rows |h%> rows)<br/>
 
 <br><p class="note">
 <% c.sql %>
