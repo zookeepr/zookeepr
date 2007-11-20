@@ -579,12 +579,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	  else:
 	      res.text = "%d%% tickets left."%percent
 	else:
-	    res.text = 'All gone.'
+	    res.text = 'All tickets gone.'
 
 	return res
 
     def status(self):
         (c.eb, c.ebtext) = self.check_earlybird()
+	c.ceiling = self.check_ceiling()
         return render_response("registration/status.myt")
 
 

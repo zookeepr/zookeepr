@@ -1,6 +1,8 @@
 <div style="float: right; border: solid lightgray; text-align: center;
 padding-top: 1em; padding-bottom: 1em; padding-left: 1em; padding-right: 1em;
 margin-top: 0.5em; margin-bottom: 0.5em; ">
+<b>Overall registration status</b><br/><br/>
+<% c.ceiling.text %><br/><br/>
 % if c.eb:
 <b>Earlybird</b> is available.<br/><br/><% c.ebtext |h%>
 % else:
