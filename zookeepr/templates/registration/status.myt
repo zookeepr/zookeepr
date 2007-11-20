@@ -4,9 +4,9 @@ margin-top: 0.5em; margin-bottom: 0.5em; ">
 <b>Overall registration status</b><br/><br/>
 <% c.ceiling.text %><br/><br/>
 % if c.eb:
-<b>Earlybird</b> is available.<br/><br/><% c.ebtext |h%>
+<b>Earlybird</b> is available<br/><br/><% c.ebtext |h%>
 % else:
-<b>Earlybird no longer available</b>.<br/><br/><% c.ebtext |h%>
+<b>Earlybird no longer available</b><br/><br/><% c.ebtext |h%>
 % #endif
 </div>
 <h2>Your registration status</h2>
