@@ -35,7 +35,7 @@
 </tr>
 
 </table>
-
+<br/>
 <strong>Extra Dinner Tickets: </strong><% extra_dinners %><br>
 
 <!-- (seven calculation, ours is different)
