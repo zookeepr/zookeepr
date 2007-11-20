@@ -9,7 +9,15 @@ margin-top: 0.5em; margin-bottom: 0.5em; ">
 <b>Earlybird no longer available</b><br/><br/><% c.ebtext |h%>
 % #endif
 </div>
+% if c.ceiling.open:
 <h2>Your registration status</h2>
+% else:
+<h2>Registrations are closed</h2>
+<p>Registrations are now closed. You will only be able to register if you
+have an existing discount code or if you're otherwise entitled to attend
+for free (eg speakers).</p>
+<h3>Your registration status</h3>
+% #endif
 
 % if not 'signed_in_person_id' in session:
 <p><b>Not signed in or not registered.</b></p>
