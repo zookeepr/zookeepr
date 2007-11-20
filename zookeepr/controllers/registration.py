@@ -11,6 +11,7 @@ from zookeepr.lib.crud import *
 from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
+from zookeepr.model.billing import DiscountCode
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -493,6 +494,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	setattr(c, 'ebdate', PaymentOptions().ebdate)
 
         (c.eb, c.ebtext) = self.check_earlybird()
+	c.ceiling = self.check_ceiling()
 
         return super(RegistrationController, self).index()
 
@@ -548,6 +550,38 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    return True, ("Only %d%% earlybirds left,"%percent + timeleft)
 	else:
 	    return True, ("%d%% earlybirds left,"%percent + timeleft)
+
+    def check_ceiling(self):
+        class struct: pass
+	res = struct()
+        res.regos = 0
+        for r in self.dbsession.query(self.model).select():
+	    if r.type not in ('Student', 'Concession', 'Hobbyist',
+				  'Professional', 'Fairy Penguin Sponsor'):
+	        continue
+	    if not r.person.invoices or not r.person.invoices[0].paid():
+	        continue
+	    if r.discount_code and r.discount_code!='':
+	        continue # counted as "discounts", whether or not used
+	    res.regos += 1
+	res.discounts = len(self.dbsession.query(DiscountCode).select())
+	res.total = res.regos + res.discounts
+	res.limit = 500
+	res.open = res.total < res.limit
+
+	if res.open:
+	  res.left = res.limit - res.total
+	  percent = int(round((20.0 * res.left) / res.limit) * 5)
+	  if percent == 0:
+	      res.text = "Almost all tickets gone."
+	  elif percent <= 30:
+	      res.text = "Only %d%% tickets left."%percent
+	  else:
+	      res.text = "%d%% tickets left."%percent
+	else:
+	    res.text = 'All gone.'
+
+	return res
 
     def status(self):
         (c.eb, c.ebtext) = self.check_earlybird()

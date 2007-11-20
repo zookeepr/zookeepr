@@ -48,6 +48,11 @@ available=<% `c.eb` |h%>, <% c.ebtext |h%><br>
 ("Taken" figure includes 20 for google but not catalyst or SGI.)
 <br>
 <br>
+<strong>Ceiling status:</strong> <% `c.ceiling.__dict__` |h%>
+(Note: 'regos' excludes discounted regos and counts only the paying ticket
+types.)
+<br>
+<br>
 %   test_payments = 11.20
 <strong>Money in Bank:</strong>
 <% h.number_to_currency(money_in_bank + test_payments) %>
