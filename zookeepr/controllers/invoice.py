@@ -106,4 +106,6 @@ class InvoiceController(SecureController, Read, List):
 	#res.headers['Content-type']='application/pdf'
 	res.headers['Content-type']='application/octet-stream'
 	#res.headers['Content-type']='text/plain; charset=utf-8'
+	res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
+							   % c.invoice.id )
 	return res
