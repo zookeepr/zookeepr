@@ -49,8 +49,6 @@ available=<% `c.eb` |h%>, <% c.ebtext |h%><br>
 <br>
 <br>
 <strong>Ceiling status:</strong> <% `c.ceiling.__dict__` |h%>
-(Note: 'regos' excludes discounted regos and counts only the paying ticket
-types.)
 <br>
 <br>
 %   test_payments = 11.20

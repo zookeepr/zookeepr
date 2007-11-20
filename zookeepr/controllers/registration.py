@@ -554,7 +554,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
     def check_ceiling(self):
         class struct: pass
 	res = struct()
-        res.regos = 0
+        res.regos = 0; res.disc_regos = 0
         for r in self.dbsession.query(self.model).select():
 	    if r.type not in ('Student', 'Concession', 'Hobbyist',
 				  'Professional', 'Fairy Penguin Sponsor'):
@@ -562,10 +562,10 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    if not r.person.invoices or not r.person.invoices[0].paid():
 	        continue
 	    if r.discount_code and r.discount_code!='':
-	        continue # counted as "discounts", whether or not used
+	        res.disc_regos += 1
 	    res.regos += 1
 	res.discounts = len(self.dbsession.query(DiscountCode).select())
-	res.total = res.regos + res.discounts
+	res.total = res.regos + res.discounts - res.disc_regos
 	res.limit = 500
 	res.open = res.total < res.limit
 
