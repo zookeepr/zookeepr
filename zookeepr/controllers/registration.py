@@ -335,20 +335,33 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         p = PaymentOptions()
 
+	is_speaker = reduce(lambda a, b: a or b.accepted,
+					 registration.person.proposals, False)
+
+        # Check for discount
+        discount_result, errors = self.check_discount()
+
+	# Check conference ceiling
+	rego_closed = not self.check_ceiling(registration.type).ok
+	if discount_result:
+	    rego_closed = False # discounted tickets are always available
+	if is_speaker or registration.person.id in p.miniconf_orgs:
+	    rego_closed = False # rego never closes for speakers or MC orgs
+
         # Registration
         description = registration.type + " Registration"
 	eb = self.check_earlybird()[0]
         if eb and registration.type in ('Hobbyist', 'Professional'):
             description = description + " (earlybird)"
+        if rego_closed:
+            description = description + " (NOT AVAILABLE)"
         cost = p.getTypeAmount(registration.type, eb)
 
         ii = model.InvoiceItem(description=description, qty=1, cost=cost)
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
-        # Check for discount
-        result, errors = self.check_discount()
-        if result:
+        if discount_result:
             discount = registration.discount
             description = discount.comment
             discount_amount =  p.getTypeAmount(discount.type, eb) * discount.percentage/100.0
@@ -359,6 +372,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 						     cost=-discount_amount)
 	    self.dbsession.save(ii)
 	    invoice.items.append(ii)
+
+        if rego_closed:
+            iia = model.InvoiceItem('INVALID INVOICE (registration closed)',
+                                    qty=1,
+                                    cost=1)
+            self.dbsession.save(iia)
+            invoice.items.append(iia)
 
         # extra T-shirts:
         if registration.extra_tee_count > 0:
@@ -409,8 +429,6 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             invoice.items.append(iia)
 
         # Partner's Programme
-	is_speaker = reduce(lambda a, b: a or b.accepted,
-					 registration.person.proposals, False)
         if is_speaker:
 	  partner = registration.speaker_pp_pay_adult
         else:
@@ -445,6 +463,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         self.dbsession.flush()
 
 	if quiet: return
+	if rego_closed:
+            return render_response('registration/rego_closed.myt')
 	if accom_not_available:
             return render_response('registration/accom_full.myt')
         redirect_to(controller='invoice', action='view', id=invoice.id)
@@ -551,13 +571,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	else:
 	    return True, ("%d%% earlybirds left,"%percent + timeleft)
 
-    def check_ceiling(self):
+    def check_ceiling(self, check_type=None):
+	""" Checks the ceiling, returning various information in a struct.
+	Given a registration type, it also returns whether it's OK to
+	register for that type (returned in the .ok field). """
+
         class struct: pass
 	res = struct()
         res.regos = 0; res.disc_regos = 0
+	ceiling_types = ('Student', 'Concession', 'Hobbyist',
+				   'Professional', 'Fairy Penguin Sponsor')
         for r in self.dbsession.query(self.model).select():
-	    if r.type not in ('Student', 'Concession', 'Hobbyist',
-				  'Professional', 'Fairy Penguin Sponsor'):
+	    if r.type not in ceiling_types:
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
 	        continue
@@ -580,6 +605,12 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	      res.text = "%d%% tickets left."%percent
 	else:
 	    res.text = 'All tickets gone.'
+
+        if check_type:
+	    if check_type in ceiling_types:
+	        res.ok = res.open
+	    else:
+	        res.ok = True
 
 	return res
 
