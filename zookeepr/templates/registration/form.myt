@@ -193,6 +193,12 @@ descMD5 = md5.new(desc).hexdigest()
 % elif c.signed_in_person and ('team' in [r.name for r in c.signed_in_person.roles]):
 %   ticket_types = [('Team', '0.00', '0.00')] + ticket_types
 % #endif
+% if c.signed_in_person and ('monday-pass' in [r.name for r in c.signed_in_person.roles]):
+%   ticket_types = [('Monday pass', '0.00', '0.00')] + ticket_types
+% #endif
+% if c.signed_in_person and ('tuesday-pass' in [r.name for r in c.signed_in_person.roles]):
+%   ticket_types = [('Tuesday pass', '0.00', '0.00')] + ticket_types
+% #endif
 % for (t, p, eb) in ticket_types:
 <input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
 <label for="registration.type_<% t %>"><% t %> &#215; $<% p %>
