@@ -195,33 +195,35 @@ class AdminController(SecureController):
 
     def t_shirts(self):
         """ T-shirts that have been ordered and paid for """
-	normal = {}; team = {}; extra = []
-	total_n = 0; total_t = 0; total_e = 0
+	normal = {}; organiser = {}; extra = []
+	total_n = 0; total_o = 0; total_e = 0
 	for r in self.dbsession.query(Registration).select():
 	    paid = r.person.invoices and r.person.invoices[0].paid()
 	    if paid or r.person.is_speaker():
 	        if r.type in ("Monday pass", "Tuesday pass"):
 		    pass # sorry, had to say it :-)
-		elif r.type == "Team":
-		    team[r.teesize] = team.get(r.teesize, 0) + 1
-		    total_t += 1
 		else:
 		    normal[r.teesize] = normal.get(r.teesize, 0) + 1
 		    total_n += 1
+		if 'organiser' in [rl.name for rl in r.person.roles]:
+		    organiser[r.teesize] = organiser.get(r.teesize, 0) + 1
+		    total_o += 1
 	    if paid and r.extra_tee_count:
 	        extra.append((r.id, r.extra_tee_count, r.extra_tee_sizes,
 				           r.person.email_address, r.teesize))
 		total_e += int(r.extra_tee_count)
 	        
         c.text = '<h2>Normal T-shirts</h2>'
+	c.text += '''(Includes organisers. So we can blend.)'''
 	c.columns = 'M/F', 'style', 'size', 'count'
 	c.data = [s.split('_') + [cnt] for (s, cnt) in normal.items()]
 	c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
-        c.text += '<h2>Team T-shirts</h2>'
+        c.text += '<h2>Organiser T-shirts</h2>'
+	c.text += '''(Based on the 'organiser' role in zookeepr.)'''
 	c.columns = 'M/F', 'style', 'size', 'count'
-	c.data = [s.split('_') + [cnt] for (s, cnt) in team.items()]
+	c.data = [s.split('_') + [cnt] for (s, cnt) in organiser.items()]
 	c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
@@ -237,9 +239,9 @@ class AdminController(SecureController):
 	c.columns = ('type', 'total')
 	c.data = [
 	  ('Normal', total_n),
-	  ('Team', total_t),
 	  ('Extra', total_e),
-	  ('All', total_n + total_e + total_t),
+	  ('All', total_n + total_e),
+	  ('Organiser', total_o),
 	]
 	return render_response('admin/table.myt')
 
