@@ -12,7 +12,7 @@
         <th>Speakers</th>
         <th>Total</th>
     </tr>
-%   for type in rego_all:
+%   for type in rego_types:
     <tr class="<% h.cycle('even', 'odd')%> ">
         <td><% type %></td>
         <td><% rego_nonspeaker.get(type, '-') %></td>
@@ -70,18 +70,22 @@ this number should agree with DirectOne's "Paid/Real Invoices" total)
 
 <%init>
 
-rego_all = {
-    'Hobbyist': 0,
-    'Fairy Penguin Sponsor': 0,
-    'Professional': 0,
-    'Concession': 0,
-    'Student': 0,
-    'Speaker': 0,
-    'Mini-conf organiser': 0,
-    'Team': 0,
-    'Monday pass': 0,
-    'Tuesday pass': 0,
-}
+rego_types = (
+    'Fairy Penguin Sponsor',
+    'Professional',
+    'Hobbyist',
+    'Concession',
+    'Student',
+    'Speaker',
+    'Mini-conf organiser',
+    'Team',
+    'Monday pass',
+    'Tuesday pass',
+)
+rego_all = {}
+for t in rego_types:
+    rego_all[t] = 0
+
 rego_nonspeaker = rego_all.copy()
 rego_speaker = rego_all.copy()
 rego_paid = rego_all.copy()
