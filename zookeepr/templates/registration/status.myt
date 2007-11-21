@@ -1,7 +1,11 @@
 <div style="float: right; border: solid lightgray; text-align: center;
 padding-top: 1em; padding-bottom: 1em; padding-left: 1em; padding-right: 1em;
 margin-top: 0.5em; margin-bottom: 0.5em; ">
-<b>Overall registration status</b><br/><br/>
+% if c.ceiling.open:
+<b>Registrations</b> are open<br/><br/>
+% else:
+<b>Registrations are closed</b><br/><br/>
+% #endif
 <% c.ceiling.text %><br/><br/>
 % if c.eb:
 <b>Earlybird</b> is available<br/><br/><% c.ebtext |h%>
