@@ -2,7 +2,7 @@ from datetime import datetime
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration, Person
+from zookeepr.model import Registration, Person, Invoice
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -434,6 +434,25 @@ class AdminController(SecureController):
 	res = render_response('admin/acc_papers_xml.myt', fragment=True)
 	res.headers['Content-type']='text/plain; charset=utf-8'
 	return res
+    def paid_summary(self):
+        """ Summary of paid invoices. """
+	total = {u'\u2211': 0}
+	for i in self.dbsession.query(Invoice).select():
+	    if not i.paid():
+	        continue
+            for ii in i.items:
+		desc = ii.description
+	        amt = ii.total()
+		if amt != 0:
+		    amt /= 100.0
+		    total[desc] = total.get(desc, 0) + amt
+		    total[u'\u2211'] += amt
+        c.columns = 'description', 'total'
+        c.data = [(desc, h.number_to_currency(amt))
+					  for (desc, amt) in total.items()]
+	c.data.sort()
+	c.text = "Summary of paid invoices."
+	return render_response('admin/table.myt')
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
