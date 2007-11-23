@@ -436,20 +436,38 @@ class AdminController(SecureController):
 	return res
     def paid_summary(self):
         """ Summary of paid invoices. """
-	total = {u'\u2211': 11.20, u'[test payments]': 11.20}
+	def add(key, amt, qty):
+	    if amt==0: return
+	    amt /= 100.0
+	    if total.has_key(key):
+	        total[key][0] += qty
+	        total[key][1] += amt
+	    else:
+	        total[key] = [qty, amt]
+
+        keywords = ('Registration', 'Accommodation', 'Discount', 'Partner',
+							       'earlybird')
+
+	total = {}
+	add(u'\u2211', 11.20, 1)
+	add(u'[test payments]', 11.20, 1)
+
 	for i in self.dbsession.query(Invoice).select():
 	    if not i.paid():
 	        continue
             for ii in i.items:
 		desc = ii.description
 	        amt = ii.total()
-		if amt != 0:
-		    amt /= 100.0
-		    total[desc] = total.get(desc, 0) + amt
-		    total[u'\u2211'] += amt
-        c.columns = 'description', 'total'
-        c.data = [(desc, h.number_to_currency(amt))
-					  for (desc, amt) in total.items()]
+		add(desc, amt, ii.qty)
+		add(u'\u2211', amt, ii.qty)
+		for kw in keywords:
+		    if kw in desc:
+			add(u'\u2211 '+kw, amt, ii.qty)
+        c.columns = 'description', 'count', 'Inc GST', 'Ex GST', 'GST'
+        c.data = [(desc, qty, h.number_to_currency(amt),
+	           h.number_to_currency(amt * 10/11.),
+	           h.number_to_currency(amt / 11.))
+				   for (desc, (qty, amt)) in total.items()]
 	c.data.sort()
 	c.text = "Summary of paid invoices."
 	return render_response('admin/table.myt')
