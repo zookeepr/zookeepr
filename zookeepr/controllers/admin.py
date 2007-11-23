@@ -34,7 +34,9 @@ class AdminController(SecureController):
  	  ('/openday', ''' '''),
  	  ('/proposal', ''' '''),
  	  ('/registration', ''' Summary of registrations '''),
- 	  ('/invoice', ''' List of invoices (that is, registrations).'''),
+ 	  ('/invoice', ''' List of invoices (that is, registrations). This
+	  is probably the best place to check whether a given person has or
+	  hasn't registered and/or paid.'''),
  	  ('/pony', ''' OMG! Ponies!!!'''),
 
           ('/proposal', ''' To see what you need to reveiw '''),
