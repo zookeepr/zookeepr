@@ -436,7 +436,7 @@ class AdminController(SecureController):
 	return res
     def paid_summary(self):
         """ Summary of paid invoices. """
-	total = {u'\u2211': 11.20, u'test payments': 11.20}
+	total = {u'\u2211': 11.20, u'[test payments]': 11.20}
 	for i in self.dbsession.query(Invoice).select():
 	    if not i.paid():
 	        continue
