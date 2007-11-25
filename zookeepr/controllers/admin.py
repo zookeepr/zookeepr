@@ -451,8 +451,8 @@ class AdminController(SecureController):
 							       'earlybird')
 
 	total = {}
-	add(u'\u2211', 11.20, 1)
-	add(u'[test payments]', 11.20, 1)
+	add(u'\u2211', 1120, 1)
+	add(u'[test payments]', 1120, 1)
 
 	for i in self.dbsession.query(Invoice).select():
 	    if not i.paid():

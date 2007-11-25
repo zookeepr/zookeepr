@@ -52,10 +52,13 @@ available=<% `c.eb` |h%>, <% c.ebtext |h%><br>
 <br>
 <br>
 %   test_payments = 11.20
+%   non_d1_payments = 1196.80 + 671.60
 <strong>Money in Bank:</strong>
 <% h.number_to_currency(money_in_bank + test_payments) %>
-(including <% h.number_to_currency(test_payments) %> of test payments, so
-this number should agree with DirectOne's "Paid/Real Invoices" total)
+(including <% h.number_to_currency(test_payments) %> of test payments; this is 
+<% h.number_to_currency(non_d1_payments) %> +
+<% h.number_to_currency(money_in_bank + test_payments - non_d1_payments) %>,
+the latter of which should agree with DirectOne's "Paid/Real Invoices" total)
 <br>
 <br>
 <strong>Google discount code:</strong> <% google |h %> used

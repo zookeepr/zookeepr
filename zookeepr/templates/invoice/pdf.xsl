@@ -860,7 +860,34 @@
            y="544.12726" /></flowRegion><flowPara
          id="flowPara3220"
          style="font-size:16px;font-weight:bold;text-align:end;text-anchor:end;font-family:DejaVu Sans">Amount Owing:  <xsl:value-of select="invoice/amount"/></flowPara></flowRoot>
-</xsl:if>  
+</xsl:if>
+<xsl:variable name="paid" select="invoice/paid/transaction" />
+<xsl:if test="$paid &gt; 0">  
+    <g
+       id="g3103"
+       transform="matrix(0.9849509,-0.1728342,0.1728342,0.9849509,-27.167098,98.892221)">
+      <text
+         sodipodi:linespacing="100%"
+         id="text2516"
+         y="942.19031"
+         x="420.41605"
+         style="font-size:144px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;opacity:1;fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:#000000;stroke-width:20;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1;font-family:Bitstream Vera Sans"
+         xml:space="preserve"><tspan
+           style="font-size:36px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;text-align:center;line-height:100%;writing-mode:lr-tb;text-anchor:middle;fill:#cc0000;fill-opacity:1;stroke:none;font-family:Bitstream Vera Sans"
+           y="942.19031"
+           x="420.41605"
+           id="tspan2518"
+           sodipodi:role="line">PAID</tspan></text>
+      <rect
+         y="904.29114"
+         x="363.12665"
+         height="47.594273"
+         width="113.6974"
+         id="paidfingie"
+         style="opacity:1;fill:none;fill-opacity:1;fill-rule:evenodd;stroke:#cc0000;stroke-width:6;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-dashoffset:0;stroke-opacity:1"
+         inkscape:label="#rect3101" />
+    </g>
+</xsl:if>
   </g>
 </svg>
 </xsl:template>
