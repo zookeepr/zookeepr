@@ -30,11 +30,11 @@ class ExistingPersonValidator(validators.FancyValidator):
 
 
 class DiscountCodeSchema(BaseSchema):
-    count = BoundedInt(min=0, max=100)
+    count = BoundedInt(min=1, max=100)
     leader_id = BoundedInt()
     code = validators.String()
     type = validators.String(not_empty=True)
-    percentage = BoundedInt(min=1, max=100)
+    percentage = BoundedInt(min=0, max=100)
     comment = validators.String(not_empty=True)
 
     chained_validators = [NotExistingDiscountCodeValidator,
