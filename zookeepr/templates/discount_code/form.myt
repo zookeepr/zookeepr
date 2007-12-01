@@ -53,7 +53,7 @@ would spell IBM or GOOGLE :-)
 </p><p class="entries">
 <% h.text_field('discount_code.percentage', size=5) %>
 </p><p class="note">
-Between 1-100
+Between 0-100
 </p>
 
 <p class="label">

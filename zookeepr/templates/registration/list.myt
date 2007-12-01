@@ -122,8 +122,9 @@ for r in c.registration_collection:
 
     # All proposals
     rego_all[type] = 1 + rego_all.get(type, 0)
-    rego_total += 1;
-    extra_dinners += r.dinner
+    rego_total += 1
+    if r.dinner != None:
+    	extra_dinners += r.dinner
 
     # Don't count speakers
     if speaker:
