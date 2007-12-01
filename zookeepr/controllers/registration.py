@@ -470,6 +470,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             invoice.items.append(iipc)
 
 	invoice.last_modification_timestamp = 'now'
+	invoice.due_date = 'now'
 
         self.dbsession.save(invoice)
         self.dbsession.flush()
