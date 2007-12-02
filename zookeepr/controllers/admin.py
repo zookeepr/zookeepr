@@ -386,6 +386,33 @@ class AdminController(SecureController):
 	c.columns = ('rego', 'person', 'act?', 'type', 'amount',
 					  'email', 'firstname', 'lastname')
 	return render_response('admin/table.myt')
+    def newcomers(self):
+        """ People who have not ticked any of the "previously attended"
+	boxes. """
+	c.text = """ People who have not ticked any of the "previously
+	attended" boxes. """
+	c.data = []
+	for r in self.dbsession.query(Registration).select():
+	    if r.prevlca:
+	        continue
+	    p = r.person
+	    if p.is_speaker():
+	        if r.type != 'Speaker':
+		    comment = ' (speaker)'
+		else:
+		    comment = ''
+	    elif p.invoices and p.invoices[0].paid():
+	        comment = ''
+	    else:
+	        continue
+            c.data.append((p.lastname.lower(), p.firstname.lower(), p.id,
+							    r, p, comment))
+        c.data.sort()
+	c.data = [(p.id, r.id, p.firstname + ' ' + p.lastname, p.email_address,
+							   r.type + comment)
+	    for (last, first, id, r, p, comment) in c.data]
+        c.columns = ('person', 'rego', 'name', 'email', 'type')
+	return render_response('admin/table.myt')
     def accom_summary(self):
         """ Summary of accommodation. """
 	c.data = []
