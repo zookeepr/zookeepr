@@ -1,4 +1,5 @@
 from datetime import datetime
+import re
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.controllers.proposal import Proposal
@@ -413,6 +414,52 @@ class AdminController(SecureController):
 	    for (last, first, id, r, p, comment) in c.data]
         c.columns = ('person', 'rego', 'name', 'email', 'type')
 	return render_response('admin/table.myt')
+    def partners_programme(self):
+        """ Partners programme information """
+
+	fields = ('pp_adults', 'kids_12_17', 'kids_10_11', 'kids_7_9',
+						    'kids_4_6', 'kids_0_3')
+
+	c.text = """ Data for the partners programme. Note that the partner
+	e-mail address is not validated in any way, unlike the rego e-mail.
+	The last row is totals. The last column contains the "diet" and
+	"special requirements" from the rego, in case they refer to the
+	partner (there aren't separate ones for PP). """
+
+	c.data = []
+	totals = dict([(f, 0) for f in fields])
+	for r in self.dbsession.query(Registration).select():
+	    comments = []
+	    if not r.partner_email:
+	        continue
+	    p = r.person
+	    if p.is_speaker():
+		comments += ['speaker partner']
+	    elif p.invoices and p.invoices[0].paid():
+	        pass
+	    else:
+	        continue
+            row = [r.partner_email] 
+	    row += [getattr(r, f) for f in fields]
+	    for f in fields:
+	        if getattr(r, f):
+		    totals[f] += getattr(r, f)
+	    if r.diet:
+	        comments += ['rego diet:' + r.diet]
+	    if r.special:
+	        comments += ['rego special:' + r.special]
+	    row += [p.email_address, '; '.join(comments)]
+            c.data.append(row)
+
+        row = [u'\u2211: %s' % sum(totals.values())]
+	row += [totals[f] for f in fields]
+	c.data.append(row)
+
+	c.columns = ['email'] 
+	c.columns += [re.sub('^.*?_', '', f).replace('_', '-') for f in fields]
+	c.columns += ['rego email', 'comment'] 
+	return render_response('admin/table.myt')
+
     def accom_summary(self):
         """ Summary of accommodation. """
 	c.data = []
