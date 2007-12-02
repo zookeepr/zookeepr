@@ -445,9 +445,9 @@ class AdminController(SecureController):
 	        if getattr(r, f):
 		    totals[f] += getattr(r, f)
 	    if r.diet:
-	        comments += ['rego diet:' + r.diet]
+	        comments += ['rego diet: ' + r.diet]
 	    if r.special:
-	        comments += ['rego special:' + r.special]
+	        comments += ['rego special: ' + r.special]
 	    row += [p.email_address, '; '.join(comments)]
             c.data.append(row)
 
