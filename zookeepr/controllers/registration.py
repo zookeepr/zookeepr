@@ -483,16 +483,29 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         redirect_to(controller='invoice', action='view', id=invoice.id)
 
     def list_miniconf_orgs(self):
-        res = ''
+        c.data = []
         for mc_id in PaymentOptions().miniconf_orgs:
-	    res += `mc_id` + ' ' 
+	    row = [mc_id]
             mc = self.dbsession.query(model.Person).get_by(id=mc_id)
 	    if mc==None:
-	      res += '(unknown)'
+		row.append('(unknown)')
 	    else:
-	      res += ' '.join((mc.firstname, mc.lastname, mc.email_address))
-	    res += '<br/>'
-	return Response(res)
+		row += (mc.firstname, mc.lastname, mc.email_address)
+		if mc.registration is None:
+		    row.append('(no rego)')
+		else:
+		    r = mc.registration
+		    row += (r.id, r.type)
+		    if not mc.invoice:
+			row += ('no invoice',)
+		    elif mc.is_speaker():
+			row += ('speaker',)
+		    elif mc.invoice[0].paid():
+			row += ('paid',)
+		    else:
+			row += ('owes %.2f' % mc.invoice[0].total(), )
+	    c.data.append(row)
+	return render_response('admin/table.myt')
 
     def accom_taken(self):
         res = {}
