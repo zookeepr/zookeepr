@@ -503,7 +503,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		    elif mc.invoice[0].paid():
 			row += ('paid',)
 		    else:
-			row += ('owes %.2f' % mc.invoice[0].total(), )
+			row += ('owes $%.2f' % (mc.invoice[0].total()/100.0), )
 	    c.data.append(row)
 	return render_response('admin/table.myt')
 
@@ -617,7 +617,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    res.regos += 1
 	res.discounts = len(self.dbsession.query(DiscountCode).select())
 	res.total = res.regos + res.discounts - res.disc_regos
-	res.limit = 500
+	res.limit = 495
 	res.open = res.total < res.limit
 
 	if res.open:
