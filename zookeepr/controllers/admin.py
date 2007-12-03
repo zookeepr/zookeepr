@@ -502,6 +502,44 @@ class AdminController(SecureController):
         c.columns = 'where', 'day', 'in', 'out', 'beds'
 	return render_response('admin/table.myt')
 
+    def accom_details(self):
+        """ List of accommodation. """
+	c.data = []
+	d = {}
+	for r in self.dbsession.query(Registration).select():
+	    p = r.person
+	    if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
+	      continue
+	    if not r.accommodation: continue
+	    comments = []
+	    if r.diet: comments.append('diet: '+r.diet)
+	    if r.special: comments.append('special: '+r.special)
+	    comments = '; '.join(comments)
+	    c.data.append((r.accommodation.name, p.firstname, p.lastname,
+		p.email_address, p.phone, r.checkin, r.checkout, comments))
+
+	def my_cmp(a, b):
+	  if cmp(a[0], b[0]):
+	      return cmp(a[0], b[0])
+	  a_day = a[5]
+	  b_day = b[5]
+	  if a_day<15: a_day+=100
+	  if b_day<15: b_day+=100
+	  if cmp(a_day, b_day):
+	      return cmp(a_day, b_day)
+	  if cmp(a[2].lower(), b[2].lower()):
+	      return cmp(a[2].lower(), b[2].lower())
+	  return cmp(a, b)
+
+	c.data.sort(my_cmp)
+
+	c.text = """ List of accommodation. Sorted by location, checkin,
+	lastname. For totals, see the summary instead. """
+
+        c.columns = ('where', 'first', 'last', 'email', 'phone', 'in',
+							  'out', 'comment')
+	return render_response('admin/table.myt')
+
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
 	in AV splash screens """
