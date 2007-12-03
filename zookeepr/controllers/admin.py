@@ -72,7 +72,7 @@ class AdminController(SecureController):
 	c.text += ' * '.join(['<a href="#%s">%s</a>'%(s, s)
 						  for s_lower, s in sects])
 	for s_lower, s in sects:
-	    c.text += '<br><a name="%s"></a>' % s
+	    c.text += '<br/><a name="%s"></a>' % s
 	    c.text += '<h2>%s</h2>' % s
 	    c.data = sect[s]
 	    c.text = render('admin/table.myt', fragment=True)
