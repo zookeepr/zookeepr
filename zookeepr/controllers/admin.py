@@ -26,28 +26,28 @@ class AdminController(SecureController):
         # other functions should be appended to the list here.
 	funcs += [
 	  ('/profile', '''List of people signed up to the webpage (with
-			   option to view/change their zookeepr roles)'''),
+			   option to view/change their zookeepr roles)
+			   [auth]'''),
 
- 	  ('/accommodation', ''' '''),
- 	  ('/discount_code', ''' Discount / group-booking codes '''),
- 	  ('/profile', ''' List of all website accounts (with links...)'''),
+ 	  #('/accommodation', ''' [accom] '''),
+ 	  ('/discount_code', ''' Discount / group-booking codes [rego] '''),
  	  ('/invoice/remind', ''' '''),
  	  ('/openday', ''' '''),
- 	  ('/proposal', ''' '''),
- 	  ('/registration', ''' Summary of registrations '''),
+ 	  ('/registration', ''' Summary of registrations, including summary
+	  of accommodation[rego,accom] '''),
  	  ('/invoice', ''' List of invoices (that is, registrations). This
 	  is probably the best place to check whether a given person has or
-	  hasn't registered and/or paid.'''),
- 	  ('/pony', ''' OMG! Ponies!!!'''),
+	  hasn't registered and/or paid. [rego] '''),
+ 	  ('/pony', ''' OMG! Ponies!!! [ZK]'''),
 
-          ('/proposal', ''' To see what you need to reveiw '''),
-          ('/review', ''' To see what you have reviewed '''),
-          ('/proposal/summary', ''' summary of the reviewed papers '''),
-          ('/review/summary', ''' summary of reviews '''),
+          ('/proposal', ''' To see what you need to reveiw [CFP] '''),
+          ('/review', ''' To see what you have reviewed [CFP]'''),
+          ('/proposal/summary', ''' summary of the reviewed papers [CFP] '''),
+          ('/review/summary', ''' summary of reviews [CFP] '''),
 
           ('/registration/list_miniconf_orgs', ''' list of miniconf
 	  organisers (as the registration code knows them, for miniconf
-	  discount) '''),
+	  discount) [miniconf] '''),
 
 	]
 
@@ -55,42 +55,59 @@ class AdminController(SecureController):
         c.columns = ['page', 'description']
 	c.data = [('<a href="%s">%s</a>'%(fn,fn), desc)
 						   for (fn, desc) in funcs]
-        c.text = 'List of admin functions.'
+	sect = {}
+	pat = re.compile(r'\[([a-zA-Z,]+)\]')
+        for (page, desc) in funcs:
+	    m = pat.search(desc)
+	    if m:
+	        desc = pat.sub(r'<small>[\1]</small>', desc)
+	        for s in m.group(1).split(','):
+		    sect[s] = sect.get(s, []) + [(page, desc)]
+	    else:
+	        sect['Other'] = sect.get('Other', []) + [(page, desc)]
+        c.text = '<h2>List of admin functions.</h2>'
 	c.noescape = True
-	return render_response('admin/table.myt')
+
+	sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
+	for s_lower, s in sects:
+	    c.text += '<h3>%s</h3>' % s
+	    c.data = sect[s]
+	    c.text = render('admin/table.myt', fragment=True)
+	return render_response('admin/text.myt')
 
     def test(self):
         """
-	Testing, testing, 1, 2, 3.
+	Testing, testing, 1, 2, 3. [ZK]
         """
         return Response("This is a test. Hope you've studied!")
 
     def list_miniconfs(self):
-        """ List of miniconfs """
+        """ List of miniconfs [miniconf,CFP] """
         return sql_response("""select proposal.id as id, title, abstract,
 	proposal.url, firstname || ' ' || lastname as name, email_address from proposal,
 	person, person_proposal_map, account where proposal_type_id = 2 and
 	person.id=person_id and person.id=account.id and proposal.id=proposal_id order by title""")
     def list_attachments(self):
-        """ List of attachments """
+        """ List of attachments [CFP] """
         return sql_response('''
 	select title, filename from attachment, proposal where proposal.id=proposal_id;
 
 	''')
     def account_creation(self):
-        """ When did people create their accounts? """
+        """ When did people create their accounts? [auth] """
 	return sql_response("""select person.id, firstname || ' ' ||
 	lastname as name, creation_timestamp as created from account,
 	person where account.id=person.id order by person.id;
 	""")
     def auth_users(self):
-        """ List of users that are authorised for some role """
+        """ List of users that are authorised for some role [auth] """
 	return sql_response("""select role.name as role, firstname || ' '
 	|| lastname as name, person.id from role, person, person_role_map
 	where person.id=person_id and role.id=role_id order by role,
 	lastname, firstname""")
     def rej_papers(self):
-        """ Rejected papers, without abstracts (for the miniconf organisers) """
+        """ Rejected papers, without abstracts (for the miniconf
+	organisers) [CFP,miniconf] """
 	return sql_response("""
 	  select distinct miniconf, proposal.id as p,
 	    firstname || ' ' || lastname as name,
@@ -104,7 +121,8 @@ class AdminController(SecureController):
 	  order by miniconf, proposal.id
 	""")
     def rej_papers_abstracts(self):
-        """ Rejected papers, with abstracts (for the miniconf organisers) """
+        """ Rejected papers, with abstracts (for the miniconf organisers)
+	[CFP] """
 	return sql_response("""
 	  select distinct miniconf, proposal.id as p,
 	    firstname || ' ' || lastname as name,
@@ -119,7 +137,8 @@ class AdminController(SecureController):
 	  order by miniconf, proposal.id
 	""")
     def acc_papers(self):
-        """ Accepted papers (for miniconf organisers) """
+        """ Accepted papers (for miniconf organisers)
+	[CFP,miniconf,speaker]"""
 	return sql_response("""
 	  SELECT proposal.id, proposal.title,
 	    person.firstname || ' ' || person.lastname as name
@@ -136,7 +155,7 @@ class AdminController(SecureController):
 	  ORDER BY proposal.id ASC;
 	""")
     def acc_papers_details(self):
-        """ Accepted papers with bios and abstracts """
+        """ Accepted papers with bios and abstracts [CFP] """
 	return sql_response("""
 	  SELECT proposal.id, proposal.title,
 	    person.firstname || ' ' || person.lastname as name,
@@ -155,7 +174,8 @@ class AdminController(SecureController):
 	  ORDER BY proposal.id ASC;
 	""")
     def acc_papers_tutes(self):
-        """ Accepted papers/tutes with type and travel assistance status """
+        """ Accepted papers/tutes with type and travel assistance status
+	[CFP,speaker]"""
 	return sql_response("""
 	  SELECT proposal.id, proposal.title,
 	    person.firstname || ' ' || person.lastname as name,
@@ -175,7 +195,7 @@ class AdminController(SecureController):
 	  ORDER BY proposal.id ASC;
 	""")
     def rego_great_big_dump(self):
-        """ All registrations with everything """
+        """ All registrations with everything [rego]"""
 	return sql_response("""
 	  select * from registration full outer join person on
 	  person_id=person.id full outer join account on account_id=account.id
@@ -197,7 +217,7 @@ class AdminController(SecureController):
 	return render_response('admin/draft_timetable.myt')
 
     def t_shirts(self):
-        """ T-shirts that have been ordered and paid for """
+        """ T-shirts that have been ordered and paid for [rego] """
 	normal = {}; organiser = {}; extra = []
 	total_n = 0; total_o = 0; total_e = 0
 	for r in self.dbsession.query(Registration).select():
@@ -249,7 +269,8 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def t_shirts_F_long_18(self):
-        """ T-shirts that have been ordered and paid for in size F_long_18 """
+        """ T-shirts that have been ordered and paid for in size F_long_18
+	[rego] """
 	c.data = []
 	for r in self.dbsession.query(Registration).select():
 	    paid = r.person.invoices and r.person.invoices[0].paid()
@@ -276,7 +297,7 @@ class AdminController(SecureController):
 	return res
 
     def speakers(self):
-        """ Listing of speakers and various stuff about them """
+        """ Listing of speakers and various stuff about them [speaker] """
 	c.data = []
 	c.noescape = True
 	cons_list = ('speaker_record', 'speaker_video_release',
@@ -346,7 +367,7 @@ class AdminController(SecureController):
 	'''
 	return render_response('admin/table.myt')
     def special_requirements(self):
-        """ Special requirements and diets """
+        """ Special requirements and diets [rego] """
 	c.data = []
         for (r_id,) in sql_data(r"""
 	  select id from registration
@@ -374,7 +395,7 @@ class AdminController(SecureController):
 	c.columns = ('rego', 'name / email', 's', 'ED', 'diet', 'special reqs')
 	return render_response('admin/table.myt')
     def payments_received(self):
-        """ Payments received, as known by zookeepr """
+        """ Payments received, as known by zookeepr [rego] """
 	return sql_response("""
 	  select invoice_id, trans_id, amount, auth_num, status, result, ip_address, to_char(creation_timestamp, 'YYYY-MM-DD') as date
 	  from payment_received
@@ -382,7 +403,7 @@ class AdminController(SecureController):
 	""")
     def tentative_regos(self):
         """ People who have tentatively registered but not paid and aren't
-	speakers. """
+	speakers. [rego] """
 	c.data = []
 	for r in self.dbsession.query(Registration).select():
 	    p = r.person
@@ -408,7 +429,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
     def newcomers(self):
         """ People who have not ticked any of the "previously attended"
-	boxes. """
+	boxes. [rego] """
 	c.text = """ People who have not ticked any of the "previously
 	attended" boxes. """
 	c.data = []
@@ -434,7 +455,7 @@ class AdminController(SecureController):
         c.columns = ('person', 'rego', 'name', 'email', 'type')
 	return render_response('admin/table.myt')
     def partners_programme(self):
-        """ Partners programme information """
+        """ Partners programme information [PP] """
 
 	fields = ('pp_adults', 'kids_12_17', 'kids_10_11', 'kids_7_9',
 						    'kids_4_6', 'kids_0_3')
@@ -480,7 +501,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def accom_summary(self):
-        """ Summary of accommodation. """
+        """ Summary of accommodation. [accom] """
 	def blank_accom():
 	  blank = {}
 	  for d in (27,28,29,30,31,1,2,3):
@@ -528,7 +549,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def accom_details(self):
-        """ List of accommodation. """
+        """ List of accommodation. [accom] """
 	c.data = []
 	d = {}
 	for r in self.dbsession.query(Registration).select():
@@ -567,14 +588,14 @@ class AdminController(SecureController):
 
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
-	in AV splash screens """
+	in AV splash screens [CFP] """
 	c.talks = self.dbsession.query(Proposal).select_by(accepted=True)
 
 	res = render_response('admin/acc_papers_xml.myt', fragment=True)
 	res.headers['Content-type']='text/plain; charset=utf-8'
 	return res
     def paid_summary(self):
-        """ Summary of paid invoices. """
+        """ Summary of paid invoices. [rego] """
 	def add(key, amt, qty):
 	    if amt==0: return
 	    amt /= 100.0
