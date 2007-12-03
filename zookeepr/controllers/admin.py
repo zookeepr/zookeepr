@@ -65,7 +65,7 @@ class AdminController(SecureController):
 		    sect[s] = sect.get(s, []) + [(page, desc)]
 	    else:
 	        sect['Other'] = sect.get('Other', []) + [(page, desc)]
-        c.text = '<h1>List of admin functions.</h1>'
+        c.text = '<h2>List of admin functions.</h2>'
 	c.noescape = True
 
 	sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
@@ -73,7 +73,7 @@ class AdminController(SecureController):
 						  for s_lower, s in sects])
 	for s_lower, s in sects:
 	    c.text += '<a name="%s"></a>' % s
-	    c.text += '<h2>%s</h2>' % s
+	    c.text += '<h3>%s</h3>' % s
 	    c.data = sect[s]
 	    c.text = render('admin/table.myt', fragment=True)
 	return render_response('admin/text.myt')
