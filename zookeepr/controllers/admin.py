@@ -481,6 +481,12 @@ class AdminController(SecureController):
 
     def accom_summary(self):
         """ Summary of accommodation. """
+	def blank_accom():
+	  blank = {}
+	  for d in (27,28,29,30,31,1,2,3):
+	    blank[d] = {'ci': 0, 'co': 0}
+	  return blank
+
 	c.data = []
 	d = {}
 	for r in self.dbsession.query(Registration).select():
@@ -489,7 +495,7 @@ class AdminController(SecureController):
 	      continue
 	    if not r.accommodation: continue
 	    if not d.has_key(r.accommodation.name):
-	      d[r.accommodation.name] = {}
+	      d[r.accommodation.name] = blank_accom()
 	    if not d[r.accommodation.name].has_key(r.checkin):
 	      d[r.accommodation.name][r.checkin] = {'ci': 0, 'co': 0}
 	    if not d[r.accommodation.name].has_key(r.checkout):
@@ -516,8 +522,8 @@ class AdminController(SecureController):
 
         c.text = """ Summary of accommodation. Summarises how many people
 	are checking in and out of each accommodation, and therefore how
-	many will be sleeping there that night. Note: skips days on which
-	there is no change. """
+	many will be sleeping there that night. Note: skips days outside
+	the conf on which there is no change. """
         c.columns = 'where', 'day', 'in', 'out', 'beds'
 	return render_response('admin/table.myt')
 
