@@ -53,7 +53,7 @@ class AdminController(SecureController):
 
 	# show it!
         c.columns = ['page', 'description']
-	c.data = [('<a href="%s">%s</a>'%(fn,fn), desc)
+	funcs = [('<a href="%s">%s</a>'%(fn,fn), desc)
 						   for (fn, desc) in funcs]
 	sect = {}
 	pat = re.compile(r'\[([a-zA-Z,]+)\]')
