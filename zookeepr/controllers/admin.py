@@ -361,6 +361,12 @@ class AdminController(SecureController):
 	      res+=['no rego', '', 'no rego']
 	    #res.append(`dir(p.registration)`)
 	    c.data.append(res)
+
+	# sort by rego status (while that's important)
+	def my_cmp(a,b):
+	    return cmp(a[4], b[4])
+	c.data.sort(my_cmp)
+
 	c.columns = ('name', 'bio', 'talk', 'assist',
 	             'rego', 'c', 'accom')
         c.text = '''
