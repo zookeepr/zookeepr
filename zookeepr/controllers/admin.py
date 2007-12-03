@@ -248,6 +248,25 @@ class AdminController(SecureController):
 	]
 	return render_response('admin/table.myt')
 
+    def t_shirts_F_long_18(self):
+        """ T-shirts that have been ordered and paid for in size F_long_18 """
+	c.data = []
+	for r in self.dbsession.query(Registration).select():
+	    paid = r.person.invoices and r.person.invoices[0].paid()
+	    if paid or r.person.is_speaker():
+	        if r.type in ("Monday pass", "Tuesday pass"):
+		    pass # sorry, had to say it :-)
+		elif r.teesize == 'F_long_18':
+		    c.data += [[r.teesize, r.person.firstname,
+				r.person.lastname, r.person.email_address]]
+		    if 'organiser' in [rl.name for rl in r.person.roles]:
+			c.data[-1] += ['organiser']
+	        
+        c.text = """<h2>F_long_18 T-shirts</h2> Note: <b>does not include
+	extra</b> t-shirts."""
+	c.data.sort()
+	return render_response('admin/table.myt')
+
     def countdown(self):
         """ How many days until conference opens """
 	timeleft = datetime(2008, 1, 28, 9, 0, 00) - datetime.now()
