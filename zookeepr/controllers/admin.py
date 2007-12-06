@@ -668,6 +668,28 @@ class AdminController(SecureController):
 	    c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
         c.data.sort()
 	return render_response('admin/table.myt')
+    def discount_code_details(self):
+        """ Have discount code users paid their accom and other extras?
+	[rego] """
+        c.data = []
+	for r in self.dbsession.query(Registration).select():
+	    if not r.discount_code:
+	        continue
+	    p = r.person
+	    row = [r.id, p.id, p.firstname + ' ' + p.lastname, r.discount_code]
+	    if p.invoices:
+	      if p.invoices[0].paid():
+		row.append('OK')
+	      else:
+		row.append('<a href="/invoice/%d">owes $%.2f</a>'%(
+			 p.invoices[0].id, p.invoices[0].total()/100.0) )
+	    else:
+	      row.append('no invoice')
+
+        c.header = 'rego', 'person', 'name', 'code', 'paid'
+	c.noescape = True
+	return render_response('admin/table.myt')
+        
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
