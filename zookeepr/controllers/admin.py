@@ -641,6 +641,37 @@ class AdminController(SecureController):
 	c.text = "Summary of paid invoices."
 	return render_response('admin/table.myt')
 
+    def miniconf_interest(self):
+	""" What people ticked for the "interested in miniconf" question.
+	[miniconf] """
+	count={}; lencount={}; total=0
+	for r in paid_regos(self):
+	    if r.miniconf:
+	        for mc in r.miniconf:
+		    count[mc] = count.get(mc, 0) + 1
+		length = len(r.miniconf)
+	    else:
+	        length = 0
+	    lencount[length] = lencount.get(length, 0) + 1
+	    total += 1
+
+        c.data = []
+        for mc in count.keys():
+	    c.data += [(mc, count[mc], "%.1f%%"%(count[mc]*100.0/total))]
+        c.data.sort()
+	c.text = render_response('admin/table.myt', fragment=True)
+        c.data = []
+        for l in lencount.keys():
+	    c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
+        c.data.sort()
+	return render_response('admin/table.myt')
+
+def paid_regos(self):
+    for r in self.dbsession.query(Registration).select():
+	p = r.person
+	if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+	    yield r
+
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
     of results from the given SQL statement.
