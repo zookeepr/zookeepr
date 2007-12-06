@@ -655,11 +655,14 @@ class AdminController(SecureController):
 	    lencount[length] = lencount.get(length, 0) + 1
 	    total += 1
 
+        c.text = "Which ones people selected."
         c.data = []
         for mc in count.keys():
 	    c.data += [(mc, count[mc], "%.1f%%"%(count[mc]*100.0/total))]
         c.data.sort()
 	c.text = render('admin/table.myt', fragment=True)
+
+        c.text += "How many people selected."
         c.data = []
         for l in lencount.keys():
 	    c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
