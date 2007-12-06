@@ -659,7 +659,7 @@ class AdminController(SecureController):
         for mc in count.keys():
 	    c.data += [(mc, count[mc], "%.1f%%"%(count[mc]*100.0/total))]
         c.data.sort()
-	c.text = render_response('admin/table.myt', fragment=True)
+	c.text = render('admin/table.myt', fragment=True)
         c.data = []
         for l in lencount.keys():
 	    c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
