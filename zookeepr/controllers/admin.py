@@ -676,15 +676,17 @@ class AdminController(SecureController):
 	    if not r.discount_code:
 	        continue
 	    p = r.person
-	    row = [r.id, p.id, p.firstname + ' ' + p.lastname, r.discount_code]
+	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id), p.id,
+			      p.firstname + ' ' + p.lastname, r.discount_code]
 	    if p.invoices:
 	      if p.invoices[0].paid():
-		row.append('OK')
+		row.append('<a href="/invoice/%d">OK</a>'%p.invoices[0].id)
 	      else:
 		row.append('<a href="/invoice/%d">owes $%.2f</a>'%(
 			 p.invoices[0].id, p.invoices[0].total()/100.0) )
 	    else:
 	      row.append('no invoice')
+	    c.data.append(row)
 
         c.header = 'rego', 'person', 'name', 'code', 'paid'
 	c.noescape = True
