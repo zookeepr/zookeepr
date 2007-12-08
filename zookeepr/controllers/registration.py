@@ -485,7 +485,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
     def list_miniconf_orgs(self):
         c.data = []
         for mc_id in PaymentOptions().miniconf_orgs:
-	    row = [mc_id]
+	    row = ['<a href="/profile/%d">%d</a>' % (mc_id, mc_id)]
             mc = self.dbsession.query(model.Person).get_by(id=mc_id)
 	    if mc==None:
 		row.append('(unknown)')
@@ -495,16 +495,20 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		    row.append('(no rego)')
 		else:
 		    r = mc.registration
-		    row += (r.id, r.type)
+		    row += ('<a href="/registration/%d">%d</a>'%(r.id, r.id),
+								    r.type)
 		    if not mc.invoice:
 			row += ('no invoice',)
 		    elif mc.is_speaker():
 			row += ('speaker',)
 		    elif mc.invoice[0].paid():
-			row += ('paid',)
+			row += ('<a href="/invoice/%d">paid</a>' %
+							 mc.invoice[0].id,)
 		    else:
-			row += ('owes $%.2f' % (mc.invoice[0].total()/100.0), )
+			row += ('<a href="/invoice/%d">owes $%.2f</a>' %
+			 (mc.invoice[0].id, mc.invoice[0].total()/100.0), )
 	    c.data.append(row)
+	c.noescape=True
 	return render_response('admin/table.myt')
 
     def accom_taken(self):
