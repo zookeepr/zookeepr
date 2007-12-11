@@ -394,6 +394,7 @@ class AdminController(SecureController):
 	      '<a href="/registration/%d">%d</a>'%(r.id, r.id),
 	      '<a href="mailto:%s">%s %s'% (h.esc(p.email_address),
 				    h.esc(p.firstname), h.esc(p.lastname)),
+	      r.type,
               speaker,
 	      h.esc(r.dinner),
 	      h.esc(r.diet),
@@ -401,7 +402,7 @@ class AdminController(SecureController):
 	    ))
 	c.noescape = True
 	c.text = 's = speaker; ED = extra dinners'
-	c.columns = ('rego', 'name / email', 's', 'ED', 'diet', 'special reqs')
+	c.columns = ('rego', 'name / email', 'rego type', 's', 'ED', 'diet', 'special reqs')
 	return render_response('admin/table.myt')
     def payments_received(self):
         """ Payments received, as known by zookeepr [rego] """
