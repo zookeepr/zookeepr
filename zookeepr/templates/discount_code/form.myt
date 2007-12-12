@@ -40,7 +40,7 @@ would spell IBM or GOOGLE :-)
 <label for="discount_code.type">Rego Type</label>
 </p><p class="entries">
 # FIXME: dynamic content
-% for t in ['Professional', 'Hobbyist', 'Concession']:
+% for t in ['Professional', 'Hobbyist', 'Concession', 'Fairy Penguin Sponsor']:
 <input type="radio" name="discount_code.type" id="discount_code.type_<% t %>" value="<% t %>" />
 <label for="discount_code.type_<% t %>"><% t %></label>
 <br />
