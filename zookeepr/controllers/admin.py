@@ -106,7 +106,7 @@ class AdminController(SecureController):
         """ List of users that are authorised for some role [auth] """
 	return sql_response("""select role.name as role, firstname || ' '
 	|| lastname as name, email_address, person.id
-	from role, person, person_role_map, account,
+	from role, person, person_role_map, account
 	where person.id=person_id and role.id=role_id and account.id=account_id
 	order by role, lastname, firstname""")
     def rej_papers(self):
