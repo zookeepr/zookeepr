@@ -621,7 +621,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    res.regos += 1
 	res.discounts = len(self.dbsession.query(DiscountCode).select())
 	res.total = res.regos + res.discounts - res.disc_regos
-	res.limit = 495
+	res.limit = 505
 	res.open = res.total < res.limit
 
 	if res.open:
