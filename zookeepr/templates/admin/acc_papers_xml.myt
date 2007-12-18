@@ -1,9 +1,9 @@
 <talks>
-% publish = []
-% record = []
 % for t in c.talks:
   <talk id="<% t.id %>">
     <title><% t.title |h%></title>
+%   publish = []
+%   record = []
 %   speakers = [(s.lastname.lower(), s.firstname.lower(), s) for s in t.people]
 %   speakers.sort()
 %   for sortkey_1, sortkey_2, s in speakers:
@@ -16,7 +16,7 @@
 %     #endif
     <speaker id="<% s.id %>"><% s.firstname |h%> <% s.lastname |h%></speaker>
 %   #endfor
-    <record><% yesno(record) %><% `record` |h%></record>
+    <record><% yesno(record) %></record>
     <publish><% yesno(publish) %></publish>
   </talk>
 % #endfor
