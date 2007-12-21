@@ -1,7 +1,10 @@
 <h2>Register for the conference</h2>
 
-<p>
-Welcome to the conference registration. Please fill in the form as best you can. 
+#<p>
+#Welcome to the conference registration. Please fill in the form as best you can.
+#</p>
+<p class="error-message"><b>Registration is closed.</b>
+Please only fill in this form if you are special or have a discount code.
 </p>
 
 % if not 'signed_in_person_id' in session:

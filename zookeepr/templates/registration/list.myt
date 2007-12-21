@@ -84,6 +84,7 @@ rego_types = (
     'Team',
     'Monday pass',
     'Tuesday pass',
+    'Cancelled',
 )
 rego_all = {}
 for t in rego_types:

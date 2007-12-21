@@ -600,7 +600,7 @@ class AdminController(SecureController):
 
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
-	in AV splash screens [CFP] """
+	in AV splash screens [CFP,AV] """
 	c.talks = self.dbsession.query(Proposal).select_by(accepted=True)
 
 	res = render_response('admin/acc_papers_xml.myt', fragment=True)
