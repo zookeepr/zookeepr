@@ -426,7 +426,10 @@ class AdminController(SecureController):
 	    else:
 	      amt = '-'
 	    if r.discount_code:
-	      dc = r.discount.percentage
+	      if r.discount:
+		dc = r.discount.percentage
+              else:
+	        dc = 'invalid'
 	    else:
 	      dc = '-'
             if True or r.type in ("Professional", "Hobbyist"):
@@ -687,6 +690,10 @@ class AdminController(SecureController):
 	    p = r.person
 	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id), p.id,
 			      p.firstname + ' ' + p.lastname, r.discount_code]
+	    if r.discount:
+	      row.append(r.discount.percentage)
+	    else:
+	      row.append('invalid')
 	    if p.invoices:
 	      if p.invoices[0].paid():
 		row.append('<a href="/invoice/%d">OK</a>'%p.invoices[0].id)
@@ -697,7 +704,7 @@ class AdminController(SecureController):
 	      row.append('no invoice')
 	    c.data.append(row)
 
-        c.header = 'rego', 'person', 'name', 'code', 'paid'
+        c.header = 'rego', 'person', 'name', 'code', '%', 'paid'
 	c.noescape = True
 	return render_response('admin/table.myt')
         
