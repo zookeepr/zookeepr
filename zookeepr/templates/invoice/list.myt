@@ -11,10 +11,12 @@
     <td>
 %  if i.person.registration:
 %   r = i.person.registration
-    <a href="/registration/<% r.id %>"><% r.id %></a></td>
+    <a href="/registration/<% r.id %>"><% r.id %></a>
+    <% r.creation_timestamp |h%>
 %  else:
       -
 %  #endif
+    </td>
     <td><a href="/profile/<% i.person.id %>"><% i.person.firstname |h%> <%
     i.person.lastname |h%></a></td>
     <td align="right"><% "$%.2f" % (i.total()/100.0) %></td>

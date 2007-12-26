@@ -3,7 +3,7 @@
 #<p>
 #Welcome to the conference registration. Please fill in the form as best you can.
 #</p>
-<p class="error-message"><b>Registration is closed.</b>
+<p class="error-message"><i>Registration is closed.</i>
 Please only fill in this form if you are have a discount code or similar.
 </p>
 
