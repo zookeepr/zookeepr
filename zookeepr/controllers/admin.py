@@ -413,6 +413,16 @@ class AdminController(SecureController):
 	  order by trans_id;
 	""")
 
+    def payments_received_daily(self):
+        """ Payments received, as known by zookeepr, daily total [rego] """
+	return sql_response("""
+	  select sum(amount) as "daily total",
+	         to_char(creation_timestamp, 'YYYY-MM-DD') as date
+	  from payment_received
+	  group by date
+	  order by date;
+	""")
+
     def tentative_regos(self):
         """ People who have tentatively registered but not paid and aren't
 	speakers. [rego] """
@@ -712,7 +722,7 @@ class AdminController(SecureController):
 	that have been placed in the fixed location in the filesystem and
 	work from there... [rego] """
         import csv
-	d1_data = csv.reader(file('/home/jiri/mel8/reconcile-20071227/linux_report_27122007.csv'))
+	d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
 	d1_cols = d1_data.next()
 	d1_cols = [s.strip() for s in d1_cols]
 
