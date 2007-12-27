@@ -3,7 +3,7 @@ import re
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration, Person, Invoice
+from zookeepr.model import Registration, Person, Invoice, PaymentReceived
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -707,6 +707,62 @@ class AdminController(SecureController):
         c.header = 'rego', 'person', 'name', 'code', '%', 'paid'
 	c.noescape = True
 	return render_response('admin/table.myt')
+    def reconcile(self):
+        """ Reconcilliation between D1 and ZK; for now, compare the D1 data
+	that have been placed in the fixed location in the filesystem and
+	work from there... [rego] """
+        import csv
+	d1_data = csv.reader(file('/home/jiri/mel8/reconcile-20071227/linux_report_27122007.csv'))
+	d1_cols = d1_data.next()
+	d1_cols = [s.strip() for s in d1_cols]
+
+	all = {}
+
+	t_offs = d1_cols.index('payment_id')
+	amt_offs = d1_cols.index('payment_amount')
+	d1 = {}
+	for row in d1_data:
+	  t = row[t_offs]
+	  amt = row[amt_offs]
+	  if amt[-3]=='.':
+	    # remove the decimal point
+	    amt = amt[:-3] + amt[-2:]
+	  row.append(amt)
+	  all[t] = 1
+	  if d1.has_key(t):
+	    d1[t].append(row)
+	  else:
+	    d1[t] = [row]
+
+	zk = {}
+	for p in self.dbsession.query(PaymentReceived).select():
+	  t = p.TransID
+	  all[t] = 1
+	  if zk.has_key(t):
+	    zk[t].append(p)
+	  else:
+	    zk[t] = [p]
+	  
+	zk_fields =  ('InvoiceID', 'TransID', 'Amount', 'AuthNum',
+				'Status', 'result', 'HTTP_X_FORWARDED_FOR')
+
+        all = all.keys()
+	all.sort()
+	c.data = []
+	for t in all:
+	  zk_t = zk.get(t, []); d1_t = d1.get(t, [])
+	  if len(zk_t)==1 and len(d1_t)==1:
+	    if str(zk_t[0].Amount) == d1_t[0][-1]:
+	      continue
+	  c.data.append((
+	    '; '.join([', '.join([str(getattr(z, f)) for f in zk_fields])
+           						   for z in zk_t]),
+	    t,
+	    '; '.join([', '.join(d) for d in d1_t])
+	  ))
+
+	return render_response('admin/table.myt')
+
         
 
 def paid_regos(self):
