@@ -128,7 +128,8 @@ class TicketTypeValidator(validators.String):
         validators.String.validate_python(self, value, state)
 	valid_tickets = ( "Fairy Penguin Sponsor", "Professional",
 	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",
-	    "Team", "Monday pass", "Tuesday pass")
+	    "Team", "Monday pass", "Tuesday pass", "Monday only",
+	    "Tuesday only")
 	if value not in valid_tickets:
 	    raise Invalid("Invalid type", value, state)
 
@@ -663,6 +664,8 @@ class PaymentOptions:
                 "Team": [0, 0],
                 "Monday pass": [0, 0],
                 "Tuesday pass": [0, 0],
+                "Monday only": [4950, 4950],
+                "Tuesday only": [4950, 4950],
                 }
         self.dinner = 5000
 	self.miniconf_orgs = [35, 123, 15, 36, 55, 29, 18, 22, 86, 66, 46,
