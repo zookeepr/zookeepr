@@ -773,8 +773,6 @@ class AdminController(SecureController):
 
 	return render_response('admin/table.myt')
 
-        
-
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
 	p = r.person
