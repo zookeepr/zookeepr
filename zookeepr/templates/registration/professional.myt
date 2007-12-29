@@ -29,7 +29,11 @@
 
 % oe = oddeven()
 % for (p, r) in c.profs:
-  <tr class="<% oe.next() %>">
+  <tr class="<% oe.next() %>"
+%   if r.type=='Fairy Penguin Sponsor':
+      style="font-weight: bold"
+%   #endif
+  >
     <td><% p.firstname |h%> <% p.lastname |h%></td>
     <td><% r.company |h%></td>
   </tr>

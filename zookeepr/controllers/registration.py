@@ -660,11 +660,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		elif r.type=='Professional':
 		    c.profs.append((p, r))
 
-        def pr_cmp(a, b):
-            return cmp(a[0].lastname, b[0].lastname) or cmp(a[0].firstname,
-							    b[0].firstname)
-        c.fairies.sort(pr_cmp)
-        c.profs.sort(pr_cmp)
+        def name_cmp(a, b):
+            return (cmp(a[0].lastname.lower(), b[0].lastname.lower()) or
+		       cmp(a[0].firstname.lower(), b[0].firstname.lower()))
+        def company_cmp(a, b):
+            return (cmp(a[1].company.lower(), b[1].company.lower()) or
+		       cmp(a[0].lastname.lower(), b[0].lastname.lower()) or
+		       cmp(a[0].firstname.lower(), b[0].firstname.lower()))
+
+        c.profs += c.fairies
+
+        c.fairies.sort(company_cmp)
+        c.profs.sort(name_cmp)
 
         return render_response('registration/professional.myt')
 
