@@ -46,6 +46,8 @@ def make_map():
     m.connect('/registration/remind', controller='registration', action='remind', id=None)
     m.connect('/registration/status', controller='registration',
 						  action='status', id=None)
+    m.connect('/registration/professional', controller='registration',
+					    action='professional', id=None)
     m.connect('/registration/list_miniconf_orgs', controller='registration',
 				      action='list_miniconf_orgs', id=None)
 

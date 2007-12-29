@@ -650,6 +650,23 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	c.ceiling = self.check_ceiling()
         return render_response("registration/status.myt")
 
+    def professional(self):
+        c.fairies = []; c.profs = []
+        for r in self.dbsession.query(self.model).select():
+            p = r.person; i = p.invoices
+            if (i and i[0].paid()) or p.is_speaker():
+		if type=='Fairy Penguin Sponsor':
+		    c.fairies.append((p, r))
+		elif type=='Professional':
+		    c.profs.append((p, r))
+
+        def pr_cmp(a, b):
+            return cmp(a[0].lastname, b[0].lastname) or cmp(a[0].firstname,
+							    b[0].firstname)
+        c.fairies.sort(pr_cmp)
+        c.profs.sort(pr_cmp)
+
+        return render_response('registration/professional.myt')
 
 class PaymentOptions:
     def __init__(self):
