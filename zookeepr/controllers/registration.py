@@ -655,9 +655,9 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         for r in self.dbsession.query(self.model).select():
             p = r.person; i = p.invoices
             if (i and i[0].paid()) or p.is_speaker():
-		if type=='Fairy Penguin Sponsor':
+		if r.type=='Fairy Penguin Sponsor':
 		    c.fairies.append((p, r))
-		elif type=='Professional':
+		elif r.type=='Professional':
 		    c.profs.append((p, r))
 
         def pr_cmp(a, b):

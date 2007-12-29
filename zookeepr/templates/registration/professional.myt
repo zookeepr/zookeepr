@@ -13,7 +13,7 @@
 % for (p, r) in c.fairies:
   <tr class="<% oe.next() %>">
     <td><% p.firstname |h%> <% p.lastname |h%></td>
-    <td><% p.company |h%></td>
+    <td><% r.company |h%></td>
   </tr>
 % # endfor
 </table>
@@ -31,7 +31,7 @@
 % for (p, r) in c.profs:
   <tr class="<% oe.next() %>">
     <td><% p.firstname |h%> <% p.lastname |h%></td>
-    <td><% p.company |h%></td>
+    <td><% r.company |h%></td>
   </tr>
 % # endfor
 </table>
