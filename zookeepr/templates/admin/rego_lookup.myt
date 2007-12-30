@@ -1,11 +1,31 @@
 <% h.form(h.url()) %>
-<p class="entries" style="float: right">ID: <% h.text_field('id', size=10, tabindex=1) %></p>
+<p class="entries" style="float: right">ID or name: <% h.text_field('id', size=10, tabindex=1) %></p>
 <% h.end_form() %>
 % if c.error:
 %   if c.id:
 Error looking up <% c.id |h%>:
 %   #endif
 <% c.error %>
+% elif c.many:
+<p>Looked up: <% c.id |h%> (name) but found <% len(c.many) %></p>
+<table>
+%   for p in c.many:
+  <tr class="<% oddeven() %>">
+    <td><a href="/admin/rego_lookup?id=<% p.id |h%>"><% p.firstname |h%>
+					       <% p.lastname |h%></td>
+    <td>
+%     if p.registration:
+%       if p.invoices and p.invoices[0].paid():
+	  <b><% p.registration.type |h%></b>
+%       else:
+	  not paid
+%       #endif
+%     else:
+	no rego
+%     #endif
+  </tr>
+%   #endfor
+</table>
 % else:
 <p>Looked up: <% c.id |h%> (<% c.id_type %>)</p>
 

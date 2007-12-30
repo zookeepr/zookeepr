@@ -844,45 +844,59 @@ class AdminController(SecureController):
 	id = args['id']; c.id = id
 	try:
 	    id = int(id)
+
+	    i = self.dbsession.query(Invoice).select_by(id=id)
+	    if i:
+		c.id_type = 'invoice'
+		c.p = i[0].person
+		c.r = c.p.registration; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+
+	    r = self.dbsession.query(Registration).select_by(id=id)
+	    if r:
+		c.id_type = 'rego'
+		c.r = r[0]
+		c.p = c.r.person; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+	    
+	    p = self.dbsession.query(Person).select_by(id=id)
+	    if p:
+		c.id_type = 'person'
+		c.p = p[0]
+		c.r = c.p.registration; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+
+	    p = self.dbsession.query(Person).select_by(account_id=id)
+	    if p:
+		c.id_type = 'account'
+		c.p = p[0]
+		c.r = c.p.registration; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+
+	    p = self.dbsession.query(Person).select_by(TransID=id)
+	    if p:
+		c.id_type = 'transaction'
+		c.p = p[0]
+		c.r = c.p.registration; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+	
 	except:
-	    c.error = 'ID should be an integer.'
-	    return render_response('admin/rego_lookup.myt')
+	    p = self.dbsession.query(Person).select_by(firstname=id)
+	    p += self.dbsession.query(Person).select_by(lastname=id)
+	    if len(p)==1:
+		c.id_type = 'name'
+		c.p = p[0]
+		c.r = c.p.registration; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+	    elif len(p)>1:
+		c.id_type = 'name'
+		c.many = p
+		c.many.sort(lambda a, b:
+		  cmp(a.lastname.lower(), b.lastname.lower()) or 
+		  cmp(a.firstname.lower(), b.firstname.lower()))
+		return render_response('admin/rego_lookup.myt')
 
-	i = self.dbsession.query(Invoice).select_by(id=id)
-	if i:
-	    c.id_type = 'invoice'
-	    c.p = i[0].person
-	    c.r = c.p.registration; c.i = c.p.invoices
-	    return render_response('admin/rego_lookup.myt')
 
-	r = self.dbsession.query(Registration).select_by(id=id)
-	if r:
-	    c.id_type = 'rego'
-	    c.r = r[0]
-	    c.p = c.r.person; c.i = c.p.invoices
-	    return render_response('admin/rego_lookup.myt')
-	
-	p = self.dbsession.query(Person).select_by(id=id)
-	if p:
-	    c.id_type = 'person'
-	    c.p = p[0]
-	    c.r = c.p.registration; c.i = c.p.invoices
-	    return render_response('admin/rego_lookup.myt')
-
-	p = self.dbsession.query(Person).select_by(account_id=id)
-	if p:
-	    c.id_type = 'account'
-	    c.p = p[0]
-	    c.r = c.p.registration; c.i = c.p.invoices
-	    return render_response('admin/rego_lookup.myt')
-
-	p = self.dbsession.query(Person).select_by(TransID=id)
-	if p:
-	    c.id_type = 'transaction'
-	    c.p = p[0]
-	    c.r = c.p.registration; c.i = c.p.invoices
-	    return render_response('admin/rego_lookup.myt')
-	
 	c.error = 'Not found.'
 	return render_response('admin/rego_lookup.myt')
 
