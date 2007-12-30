@@ -7,7 +7,7 @@ Error looking up <% c.id |h%>:
 %   #endif
 <% c.error %>
 % else:
-<p>Looked up: <% c.id |h%></p>
+<p>Looked up: <% c.id |h%> (<% c.id_type %>)</p>
 
 <p><b><% person.firstname |h%> <% person.lastname |h%></b>
 &lt;<a href="mailto:<% person.email_address |h%>"><% person.email_address |h%></a>&gt;
@@ -21,14 +21,17 @@ Error looking up <% c.id |h%>:
 <strong><% ', '.join([role.name for role in person.roles]) %></strong><br/>
 %   #endif
 %   if registration:
+%     if invoices and invoices[0].paid():
 <b><% registration.type |h%></b> rego <a href="/registration/<%registration.id%>"><%registration.id%></a>
+%     else:
+<b>Tentative</b> <% registration.type |h%> rego <a href="/registration/<%registration.id%>"><%registration.id%></a>; <b>not paid</b>
+%     #endif
 %   else:
 not registered
 %   #endif
 </p>
 
 <p>
-<strong><% yesno( invoices and invoices[0].paid(), 'paid', 'not paid') %></strong>
 %   if invoices:
 %     for i in invoices:
 invoice <a href="/invoice/<%i.id%>"><% i.id %></a> (<% h.number_to_currency(i.total()/100.0) %> <% yesno(i.paid(), 'paid', 'not paid')%>)

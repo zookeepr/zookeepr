@@ -850,30 +850,35 @@ class AdminController(SecureController):
 
 	i = self.dbsession.query(Invoice).select_by(id=id)
 	if i:
+	    c.id_type = 'invoice'
 	    c.p = i[0].person
 	    c.r = c.p.registration; c.i = c.p.invoices
 	    return render_response('admin/rego_lookup.myt')
 
 	r = self.dbsession.query(Registration).select_by(id=id)
 	if r:
+	    c.id_type = 'rego'
 	    c.r = r[0]
 	    c.p = c.r.person; c.i = c.p.invoices
 	    return render_response('admin/rego_lookup.myt')
 	
 	p = self.dbsession.query(Person).select_by(id=id)
 	if p:
+	    c.id_type = 'person'
 	    c.p = p[0]
 	    c.r = c.p.registration; c.i = c.p.invoices
 	    return render_response('admin/rego_lookup.myt')
 
 	p = self.dbsession.query(Person).select_by(account_id=id)
 	if p:
+	    c.id_type = 'account'
 	    c.p = p[0]
 	    c.r = c.p.registration; c.i = c.p.invoices
 	    return render_response('admin/rego_lookup.myt')
 
 	p = self.dbsession.query(Person).select_by(TransID=id)
 	if p:
+	    c.id_type = 'transaction'
 	    c.p = p[0]
 	    c.r = c.p.registration; c.i = c.p.invoices
 	    return render_response('admin/rego_lookup.myt')
