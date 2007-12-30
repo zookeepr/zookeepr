@@ -193,6 +193,10 @@ fixed_speakers = 74
 keynote_total += fixed_speakers - keynote['Speaker']
 keynote['Speaker'] = '%d (hardcoded)' % fixed_speakers
 
+fixed_mcorgs = 20
+keynote_total += fixed_mcorgs - keynote['Mini-conf organiser']
+keynote['Mini-conf organiser'] = '%d (hardcoded)' % fixed_mcorgs
+
 earlybird += 20 # the GOOGLE group booking is deemed all taken
 
 from datetime import datetime
