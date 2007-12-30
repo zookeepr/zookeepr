@@ -11,7 +11,7 @@ Error looking up <% c.id |h%>:
 <table>
 %   for p in c.many:
   <tr class="<% oddeven() %>">
-    <td><a href="/admin/rego_lookup?id=<% p.id |h%>"><% p.firstname |h%>
+    <td><a href="/admin/rego_lookup?id=<% p.id |h%>" tabindex="2"><% p.firstname |h%>
 					       <% p.lastname |h%></td>
     <td>
 %     if p.registration:
