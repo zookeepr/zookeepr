@@ -118,10 +118,10 @@ class AdminController(SecureController):
 	  count[t] = count.get(t, 0) + 1
 	total = len(objects); scale = 100.0 / total
 	objects = None #avoid having the data twice...
-        c.data = [(-num, '%.1f%%' % (num * scale), t)
+        c.data = [(num, '%.1f%%' % (num * scale), t)
 					 for (t, num) in count.iteritems()]
-	c.data.sort()
-	c.columns = '-count', '%', 'type'
+	c.data.sort(reverse=True)
+	c.columns = 'count', '%', 'type'
 	c.text = "Total: %d" % total
         return render_response('admin/table.myt')
 
