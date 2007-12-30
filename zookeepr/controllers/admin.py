@@ -121,7 +121,7 @@ class AdminController(SecureController):
         c.data = [(-num, '%.1f%%' % (num * scale), t)
 					 for (t, num) in count.iteritems()]
 	c.data.sort()
-	c.headers = '-count', '%', 'type'
+	c.columns = '-count', '%', 'type'
 	c.text = "Total: %d" % total
         return render_response('admin/table.myt')
 
