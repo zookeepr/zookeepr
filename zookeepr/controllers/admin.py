@@ -833,6 +833,54 @@ class AdminController(SecureController):
 
 	return render_response('admin/table.myt')
 
+    def rego_lookup(self):
+        """ Look up a rego, based on any of the associated IDs, showing the
+	details as would be required for rego desk. [rego] """
+	# c.talks = self.dbsession.query(Proposal).select_by(accepted=True)
+	args = request.POST or request.GET
+	if not args or not args.has_key('id'):
+	    c.error = 'No ID given.'
+	    return render_response('admin/rego_lookup.myt')
+	id = args['id']; c.id = id
+	try:
+	    id = int(id)
+	except:
+	    c.error = 'ID should be an integer.'
+	    return render_response('admin/rego_lookup.myt')
+
+	i = self.dbsession.query(Invoice).select_by(id=id)
+	if i:
+	    c.p = i[0].person
+	    c.r = c.p.registration; c.i = c.p.invoices
+	    return render_response('admin/rego_lookup.myt')
+
+	r = self.dbsession.query(Registration).select_by(id=id)
+	if r:
+	    c.r = r[0]
+	    c.p = c.r.person; c.i = c.p.invoices
+	    return render_response('admin/rego_lookup.myt')
+	
+	p = self.dbsession.query(Person).select_by(id=id)
+	if p:
+	    c.p = p[0]
+	    c.r = c.p.registration; c.i = c.p.invoices
+	    return render_response('admin/rego_lookup.myt')
+
+	p = self.dbsession.query(Person).select_by(account_id=id)
+	if p:
+	    c.p = p[0]
+	    c.r = c.p.registration; c.i = c.p.invoices
+	    return render_response('admin/rego_lookup.myt')
+
+	p = self.dbsession.query(Person).select_by(TransID=id)
+	if p:
+	    c.p = p[0]
+	    c.r = c.p.registration; c.i = c.p.invoices
+	    return render_response('admin/rego_lookup.myt')
+	
+	c.error = 'Not found.'
+	return render_response('admin/rego_lookup.myt')
+
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
 	p = r.person
