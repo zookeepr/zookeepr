@@ -105,6 +105,25 @@ class AdminController(SecureController):
 	  garbage, uncollectable,
 	  after,
 	))
+    def known_objects(self):
+        """
+	List known objects by type. (Invokes GC first.) [ZK]
+        """
+	import gc
+	gc.collect()
+	count = {}
+	objects = gc.get_objects()
+	for o in objects:
+	  t = type(o)
+	  count[t] = count.get(t, 0) + 1
+	total = len(objects); scale = 100.0 / total
+	objects = None #avoid having the data twice...
+        c.data = [(-num, '%.1f%%' % (num * scale), t)
+					 for (t, num) in count.iteritems()]
+	c.data.sort()
+	c.headers = '-count', '%', 'type'
+	c.text = "Total: %d" % total
+        return render_response('admin/table.myt')
 
     def list_miniconfs(self):
         """ List of miniconfs [miniconf,CFP] """
