@@ -238,10 +238,11 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                     }
     permissions = { 'remind': [AuthRole('organiser')],
 		    'list_miniconf_orgs': [AuthRole('organiser')],
+		    'professional': [AuthRole('organiser')],
 		    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
 		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
-    anon_actions = ['status', 'new', 'index', 'professional']
+    anon_actions = ['status', 'new', 'index']
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
