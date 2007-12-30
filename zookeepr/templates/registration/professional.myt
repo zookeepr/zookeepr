@@ -2,7 +2,7 @@
 
 <h2>Fairy Penguin Sponsors</h2>
 
-<table>
+<table width="100%">
 #<tr>
 #% for header in c.columns:
 #  <th><% header %></th>
@@ -20,7 +20,7 @@
 
 <h2>Professional</h2>
 
-<table>
+<table width="100%">
 #<tr>
 #% for header in c.columns:
 #  <th><% header %></th>
