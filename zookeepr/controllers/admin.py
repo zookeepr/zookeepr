@@ -84,6 +84,28 @@ class AdminController(SecureController):
         """
         return Response("This is a test. Hope you've studied!")
 
+    def collect_garbage(self):
+        """
+	Invoke the garbage collector. [ZK]
+        """
+	import gc
+	before = len(gc.get_objects())
+	garbage = gc.collect()
+	after = len(gc.get_objects())
+	uncollectable = len(gc.garbage)
+	del(gc.garbage[:])
+        return Response("""
+	Is automatic garbage collection enabled? %s.
+	<br>Garbage collector knows of %d objects.
+	<br>Full collection: %d pieces of garbage found, %d uncollectable.
+	<br>Garbage collector knows of %d objects.
+	""" % (
+          gc.isenabled(),
+	  before,
+	  garbage, uncollectable,
+	  after,
+	))
+
     def list_miniconfs(self):
         """ List of miniconfs [miniconf,CFP] """
         return sql_response("""select proposal.id as id, title, abstract,
