@@ -704,6 +704,25 @@ class AdminController(SecureController):
 	c.text = "Summary of paid invoices."
 	return render_response('admin/table.myt')
 
+    def linux_australia_signup(self):
+	""" People who ticked "I want to sign up for (free) Linux Australia
+	membership!" [rego] """
+
+	c.text = """ People who ticked "I want to sign up for (free) Linux
+	Australia membership!" (whether or not they then went on to pay for
+	the conference)."""
+        c.data = []
+	for r in self.dbsession.query(Registration).select():
+	    if not r.lasignup:
+	        continue
+	    p = r.person
+            c.data.append((
+	      p.firstname, p.lastname,
+	      p.email_address,
+	    ))
+	c.columns = 'first name', 'surname', 'email'
+	return render_response('admin/table.myt')
+
     def miniconf_interest(self):
 	""" What people ticked for the "interested in miniconf" question.
 	[miniconf] """
