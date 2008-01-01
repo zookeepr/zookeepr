@@ -11,11 +11,11 @@
 %   person = registration.person
 %   invoices = person.invoices
 %   comments = []
-<tr class=<% oddeven() %>">
-<td><% person.firstname |h%> <% person.lastname |h%>
+<tr class="<% oddeven() %>">
+<td valign="top"><% person.firstname |h%> <% person.lastname |h%>
 &lt;<a href="mailto:<% person.email_address |h%>"><% person.email_address |h%></a>&gt;
 <br><% registration.company |h%></td>
-<td>
+<td valign="top">
 %   if person.is_speaker():
 %     comments.append('speaker')
 %   #endif
@@ -23,16 +23,16 @@
 %     comments.append('roles: ' + ', '.join([role.name for role in person.roles]))
 %   #endif
 <b><% registration.type |h%></b> <a href="/admin/rego_lookup?id=<%registration.id%>"><%registration.id%></a>
-</td><td>
+</td><td valign="top">
 %   if invoices:
 %     for i in invoices:
 <a href="/invoice/<%i.id%>"><% i.id %></a> (<% h.number_to_currency(i.total()/100.0) %><% yesno(i.paid(), '', ' <b>not paid</b>')%>)
 %     #endfor
 %   #endif
-</td><td>
+</td><td valign="top">
 <% registration.teesize |h%>
 %   if registration.extra_tee_count:
- + <%  registration.extra_tee_count |h%>: <% registration.extra_tee_sizes %>
+<br>+<%  registration.extra_tee_count |h%>: <% registration.extra_tee_sizes %>
 %   #endif
 
 %   if not registration.prevlca:
@@ -50,7 +50,7 @@
 %     comments.append('special: %s' % registration.special)
 %   #endif
 </td>
-<td>
+<td valign="top">
 %   if registration.accommodation:
 <% registration.accommodation.name %>
 %       if registration.accommodation.option:
@@ -63,7 +63,7 @@
 %   #endif
 </p>
 
-<td>
+<td valign="top">
 <% '; '.join(comments) |h%>
 </td>
 
