@@ -900,6 +900,16 @@ class AdminController(SecureController):
 	c.error = 'Not found.'
 	return render_response('admin/rego_lookup.myt')
 
+    def rego_list(self):
+        """ List of paid regos. [rego] """
+	c.data = list(paid_regos(self))
+	c.data.sort(lambda a,b:
+	  cmp(a.person.lastname, b.person.lastname) or
+	  cmp(a.person.firstname, b.person.firstname) or
+	  cmp(a.id, b.id)
+	)
+	return render_response('admin/rego_list.myt')
+
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
 	p = r.person
