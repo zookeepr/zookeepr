@@ -473,6 +473,8 @@ class AdminController(SecureController):
 	    p = r.person
 	    if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
 	      continue
+            if 'miniconf' in [rl.name for rl in p.roles]:
+	      continue
             if p.invoices:
 	      amt = "$%.2f" % (p.invoices[0].total()/100.0)
 	    else:
