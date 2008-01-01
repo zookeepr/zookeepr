@@ -844,6 +844,31 @@ class AdminController(SecureController):
 	id = args['id']; c.id = id
 	try:
 	    id = int(id)
+	except:
+	    # conversion of id to an integer failed, look it up as a name
+	    p = self.dbsession.query(Person).select_by(email_address=id)
+	    if p:
+		c.id_type = 'email'
+		c.p = p[0]
+		c.r = c.p.registration; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+
+	    p = self.dbsession.query(Person).select_by(firstname=id)
+	    p += self.dbsession.query(Person).select_by(lastname=id)
+	    if len(p)==1:
+		c.id_type = 'name'
+		c.p = p[0]
+		c.r = c.p.registration; c.i = c.p.invoices
+		return render_response('admin/rego_lookup.myt')
+	    elif len(p)>1:
+		c.id_type = 'name'
+		c.many = p
+		c.many.sort(lambda a, b:
+		  cmp(a.lastname.lower(), b.lastname.lower()) or 
+		  cmp(a.firstname.lower(), b.firstname.lower()))
+		return render_response('admin/rego_lookup.myt')
+	else:
+	    # conversion of id to an integer succeeded, look it up as ID
 
 	    i = self.dbsession.query(Invoice).select_by(id=id)
 	    if i:
@@ -880,22 +905,6 @@ class AdminController(SecureController):
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 	
-	except:
-	    p = self.dbsession.query(Person).select_by(firstname=id)
-	    p += self.dbsession.query(Person).select_by(lastname=id)
-	    if len(p)==1:
-		c.id_type = 'name'
-		c.p = p[0]
-		c.r = c.p.registration; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
-	    elif len(p)>1:
-		c.id_type = 'name'
-		c.many = p
-		c.many.sort(lambda a, b:
-		  cmp(a.lastname.lower(), b.lastname.lower()) or 
-		  cmp(a.firstname.lower(), b.firstname.lower()))
-		return render_response('admin/rego_lookup.myt')
-
 
 	c.error = 'Not found.'
 	return render_response('admin/rego_lookup.myt')

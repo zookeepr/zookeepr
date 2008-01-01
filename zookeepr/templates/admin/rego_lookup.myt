@@ -73,8 +73,10 @@ plus <%  registration.extra_tee_count |h%> extra: <% registration.extra_tee_size
 %     #endif
 
 %     if registration.discount:
-Discount: <% registration.discount.code.split['-'][0] %>
-<% registration.discount.percentabe %>% <% registration.discount.type %>
+Discount:
+<% registration.discount.percentage %>% <% registration.discount.type %>
+&#8212;
+<% registration.discount.code.split('-')[0] %>
 &#8212;
 <% registration.discount.comment |h%>
 %     #endif
