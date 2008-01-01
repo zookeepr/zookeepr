@@ -22,7 +22,7 @@
 %   if person.roles:
 %     comments.append('roles: ' + ', '.join([role.name for role in person.roles]))
 %   #endif
-<b><% registration.type |h%></b> <a href="/registration/<%registration.id%>"><%registration.id%></a>
+<b><% registration.type |h%></b> <a href="/admin/rego_lookup?id=<%registration.id%>"><%registration.id%></a>
 </td><td>
 %   if invoices:
 %     for i in invoices:
