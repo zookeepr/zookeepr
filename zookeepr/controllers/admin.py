@@ -902,12 +902,11 @@ class AdminController(SecureController):
 
     def rego_list(self):
         """ List of paid regos. [rego] """
-	c.data = list(paid_regos(self))
-	c.data.sort(lambda a,b:
-	  cmp(a.person.lastname, b.person.lastname) or
-	  cmp(a.person.firstname, b.person.firstname) or
-	  cmp(a.id, b.id)
-	)
+	c.data = [
+	   (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r)
+						 for r in paid_regos(self)]
+	c.data.sort()
+	c.data = [row[-1] for row in c.data]
 	return render_response('admin/rego_list.myt')
 
 def paid_regos(self):
