@@ -289,8 +289,8 @@ style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registra
 % #endfor
 </table>
 </p><p class="note">
-<br/>A conference T-shirt is included with your ticket. Please tell us
-what size and shape you prefer.
+<br/>A conference T-shirt is included with all Student, Hobbyist, Professional
+and Sponsor tickets. Please tell us what size and shape you prefer.
 </p>
 
 <p class="label">
@@ -314,7 +314,9 @@ be.
 &#215; $50 each; not counting yourself.
 </p><p class="note">
 One Penguin Dinner is included in the
-price of your conference ticket.  Additional Penguin Dinner tickets are
+price of a Student, Hobbyist, Professional or Sponsor conference ticket.
+Other tickets types do not include access to the Penguin Dinner.
+Additional Penguin Dinner tickets are
 intended for partners or friends not
 attending the conference.
 </p><p class="note-bene">
