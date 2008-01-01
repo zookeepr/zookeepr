@@ -4,7 +4,10 @@
 #Welcome to the conference registration. Please fill in the form as best you can.
 #</p>
 <p class="error-message"><i>Registration is closed.</i>
-Please only fill in this form if you are have a discount code or similar.
+Please only use this form: <ul>
+<li>to buy the Monday, Tuesday or No Keynote Access tickets, or</li>
+<li>if you are have a discount code or similar.</li>
+</ul>
 </p>
 
 % if not 'signed_in_person_id' in session:

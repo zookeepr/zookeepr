@@ -187,6 +187,7 @@ descMD5 = md5.new(desc).hexdigest()
 # FIXME: dynamic content
 % ticket_types = [('Fairy Penguin Sponsor', '1650.00', '1650.00'), ('Professional', '748.00', '598.40'), ('Hobbyist', '352.00', '281.60'), ('Student', '154.00', '154.00')]
 % ticket_types += [('Monday only', '49.50', '49.50'), ('Tuesday only', '49.50', '49.50')]
+% ticket_types += [('Professional - No Keynote Access', '748.00', '598.40'), ('Hobbyist - No Keynote Access', '352.00', '281.60')]
 % if is_speaker:
 %   ticket_types = [('Speaker', '0.00', '0.00')] + ticket_types
 % elif c.is_miniconf_org:

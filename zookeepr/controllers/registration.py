@@ -129,7 +129,8 @@ class TicketTypeValidator(validators.String):
 	valid_tickets = ( "Fairy Penguin Sponsor", "Professional",
 	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",
 	    "Team", "Monday pass", "Tuesday pass", "Monday only",
-	    "Tuesday only")
+	    "Tuesday only", 'Professional - No Keynote Access',
+	    'Hobbyist - No Keynote Access')
 	if value not in valid_tickets:
 	    raise Invalid("Invalid type", value, state)
 
@@ -610,21 +611,31 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         class struct: pass
 	res = struct()
-        res.regos = 0; res.disc_regos = 0
+        res.regos = 0; res.disc_regos = 0; res.nk_regos = 0
 	ceiling_types = ('Student', 'Concession', 'Hobbyist',
 				   'Professional', 'Fairy Penguin Sponsor')
+	nk_types = ('Professional - No Keynote Access',
+					    'Hobbyist - No Keynote Access')
+        all_ceiling = ceiling_types + nk_types
         for r in self.dbsession.query(self.model).select():
-	    if r.type not in ceiling_types:
+	    if r.type not in all_ceiling:
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
 	        continue
 	    if r.discount_code and r.discount_code!='':
 	        res.disc_regos += 1
-	    res.regos += 1
+            if r.type in ceiling_types:
+		res.regos += 1
+            else:
+	        res.nk_regos += 1
 	res.discounts = len(self.dbsession.query(DiscountCode).select())
 	res.total = res.regos + res.discounts - res.disc_regos
 	res.limit = 505
 	res.open = res.total < res.limit
+
+	res.nk_limit = 40
+	res.nk_open = res.nk_regos < res.nk_limit
+	res.nk_left = res.nk_limit - res.nk_regos
 
 	if res.open:
 	  res.left = res.limit - res.total
@@ -641,6 +652,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         if check_type:
 	    if check_type in ceiling_types:
 	        res.ok = res.open
+	    elif check_type in nk_types:
+	        res.ok = res.nk_open
 	    else:
 	        res.ok = True
 
@@ -682,6 +695,8 @@ class PaymentOptions:
                 "Fairy Penguin Sponsor": [165000, 165000],
                 "Professional": [59840, 74800],
                 "Hobbyist": [28160, 35200],
+		'Professional - No Keynote Access': [59840, 74800],
+		'Hobbyist - No Keynote Access': [28160, 35200],
                 "Concession": [15400, 15400],
                 "Student": [15400, 15400],
                 "Speaker": [0, 0],
