@@ -72,6 +72,14 @@ plus <%  registration.extra_tee_count |h%> extra: <% registration.extra_tee_size
 <% registration.dinner %> additional dinner tickets.
 %     #endif
 
+%     if registration.discount:
+Discount: <% registration.discount.code.split['-'][0] %>
+<% registration.discount.percentabe %>% <% registration.discount.type %>
+&#8212;
+<% registration.discount.comment |h%>
+%     #endif
+
+
 %     if registration.diet:
 <p>Dietary requirements: <% registration.diet %></p>
 %    #endif

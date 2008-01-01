@@ -39,6 +39,10 @@
 %     comments.append('first-time')
 %   #endif
 
+%   if registration.discount:
+%     comments.append('DC: %d%% %s' % (registration.discount.percentage, registration.discount.comment))
+%   #endif
+
 %   if registration.dinner:
 %     comments.append('+%d dinners'% registration.dinner)
 %   #endif
