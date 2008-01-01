@@ -466,9 +466,10 @@ class AdminController(SecureController):
 
     def tentative_regos(self):
         """ People who have tentatively registered but not paid and aren't
-	speakers. [rego] """
+	speakers and don't have a discount code. [rego] """
 	c.data = []
 	for r in self.dbsession.query(Registration).select():
+	    if r.discount: continue
 	    p = r.person
 	    if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
 	      continue
@@ -493,6 +494,7 @@ class AdminController(SecureController):
 	and aren't speakers. """
 	# <b>Professional and Hobbyist only</b> at the
 	# moment because those are the ones to remind about earlybird expiry.
+	c.text += """ Excludes people with discount codes. """
 	c.text += """ The "act?" column lists whether the account has been
 	activated; dc=discount code (percentage).  """
 	c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
