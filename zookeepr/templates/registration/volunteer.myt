@@ -24,7 +24,7 @@ desc = {
   'week after': 'Available during the week after the conference (3-8 Feb)',
 }
 selected = []; other = []
-for a in c.registration.volunteer.split(';'):
+for a in (c.registration.volunteer or '').split(';'):
   a = a.strip();
   if a in areas:
       selected.append(a)

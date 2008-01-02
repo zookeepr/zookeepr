@@ -1,5 +1,5 @@
 #!/bin/sh
-psql -c "
+psql -U zookeepr -c "
     SELECT
         firstname,
         lastname,

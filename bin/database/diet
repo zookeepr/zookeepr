@@ -1,6 +1,6 @@
 #!/bin/sh
 
-psql -c "
+psql -U zookeepr -c "
     SELECT
         registration.id,
         person.lastname || ', ' || person.firstname,
