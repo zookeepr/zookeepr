@@ -242,6 +242,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		    'professional': [AuthRole('organiser')],
 		    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
 		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
+		    'volunteer': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
     anon_actions = ['status', 'new', 'index']
 
@@ -689,22 +690,33 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         return render_response('registration/professional.myt')
     def volunteer(self):
+	c.message = '''<p>Please indicate your areas of interest and
+	ability.</p>'''
         if request.POST:
 	    a = []
 	    for k, v in request.POST.iteritems():
 	        if k=='commit':
 		    continue
 		if k=='other':
-		    a.append(v)
+		    if v!='':
+		        a.append(v)
 		elif v=='1':
 		    a.append(k)
 		else:
 		    a.append('ERROR: %s=%s' % (k, v))
-	    setattr(self.obj, 'volunteer', '; '.join(a))
+            if a:
+	        a = '; '.join(a)
+		c.message = '''<p><b>Thank you for indicating your areas of
+		interest and ability.</b></p>'''
+            else:
+	        a = None
+		c.message = '''<p><b>Areas of interest and ability
+		reset.</b> If you are a volunteer, please indicate your
+		areas of interest and ability.</p>'''
+
+	    setattr(self.obj, 'volunteer', a)
 	    self.dbsession.save(self.obj)
 	    self.dbsession.flush()
-	    c.message = '''<p><b>Thank you for indicating your areas of
-	    interest and ability.</b></p>'''
 		    
         return render_response('registration/volunteer.myt')
 
