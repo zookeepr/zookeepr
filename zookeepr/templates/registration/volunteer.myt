@@ -19,7 +19,8 @@
 <tr class="<% oddeven() %>">
 <td colspan="2">
 <p class="entries">Other: <% h.text_field('other', size=80, value=other) %></p>
-<p class="note">Any other areas of interest or useful skills.</p>
+<p class="note">Any other areas of interest or useful skills. Arrival and
+departure dates, if you're not local.</p>
 </table>
 
 <p class="submit"><% h.submit('Update') %></p>
