@@ -26,6 +26,7 @@ class Registration(object):
                  dinner=None,
                  diet=None,
                  special=None,
+                 volunteer=None,
                  opendaydrag=None,
                  partner_email=None,
                  kids_0_3=None,
@@ -71,6 +72,7 @@ class Registration(object):
         self.dinner = dinner
         self.diet = diet
         self.special = special
+        self.volunteer = volunteer
         self.opendaydrag = opendaydrag
         self.partner_email = partner_email
         self.kids_0_3 = kids_0_3
