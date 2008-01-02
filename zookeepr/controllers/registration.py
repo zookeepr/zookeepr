@@ -688,6 +688,25 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         c.profs.sort(name_cmp)
 
         return render_response('registration/professional.myt')
+    def volunteer(self):
+        if request.POST:
+	    a = []
+	    for k, v in request.POST.iteritems():
+	        if k=='commit':
+		    continue
+		if k=='other':
+		    a.append(v)
+		elif v=='1':
+		    a.append(k)
+		else:
+		    a.append('ERROR: %s=%s' % (k, v))
+	    setattr(self.obj, 'volunteer', '; '.join(a))
+	    self.dbsession.save(self.obj)
+	    self.dbsession.flush()
+	    c.message = '''<p><b>Thank you for indicating your areas of
+	    interest and ability.</b></p>'''
+		    
+        return render_response('registration/volunteer.myt')
 
 class PaymentOptions:
     def __init__(self):
