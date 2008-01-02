@@ -935,6 +935,35 @@ class AdminController(SecureController):
 	c.data = [row[-1] for row in c.data]
 	return render_response('admin/rego_list.myt')
 
+    def volunteer_list(self):
+        """ List of volunteers. [volunteer] """
+        c.data = []
+        for (id,) in sql_data("""select registration.id
+	from person, registration
+	where ((registration.volunteer is not null)
+	   or (registration.type='Volunteer'))
+	  and (person_id = person.id)
+	  order by lastname, firstname
+	"""):
+	    r = self.dbsession.query(Registration).get_by(id=id)
+	    p = r.person
+	    t = r.type
+	    if (p.invoices and p.invoices[0].paid()):
+	        pass
+	    elif p.is_speaker():
+	        t += ' (speaker)'
+	    else:
+	        t += ' (not paid)'
+	    c.data.append((
+	        p.firstname + ' ' + p.lastname,
+	        p.email_address,
+	        t,
+		r.volunteer
+	    ))
+        c.columns = ('name', 'email', 'type', 'areas of interest')
+	return render_response('admin/table.myt')
+	  
+
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
 	p = r.person
