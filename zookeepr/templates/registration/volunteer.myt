@@ -17,14 +17,22 @@
 
 <%init>
 areas = (
-'A/V', 'rego desk', 'give directions', 'airport pickups',
-'partners programme', 'open day',
+'Administration', 'Rego Desk',
+'AV',
+'Network helper',
+'Partners Program helper',
+'Exec Offsider', 'Runner',
+'Speaker Liaison helper',
+'Venue Helper',
 
 'driver',
 
 'week before', 'week after',
 )
 desc = {
+  'Network helper': 'short term',
+  'Partners Program helper': 'short term',
+  'Venue Helper': 'helping with setting up break times, managing venues and introducing speakers, etc',
   'driver': "Have driver's licence, will travel.",
   'week before': 'Available during the week before the conference (21-26 Jan)',
   'week after': 'Available during the week after the conference (3-8 Feb)',
