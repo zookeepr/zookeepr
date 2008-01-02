@@ -5,12 +5,16 @@
 <% c.registration.person.lastname |h%>'s info, not your own!</b></p>
 % #endif
 <% h.form(h.url()) %>
+<table>
 % for a in areas:
-<p class="entries"><% a %>: <% h.check_box(a, checked = a in selected) %></p>
+<tr class="<% oddeven() %>"><td><% a %>
 %   if desc.has_key(a):
 <p class="note"><% desc[a] %></p>
 %   #endif
+<td><p class="entries">
+<% h.check_box(a, checked = a in selected) %></p>
 % #endfor
+</table>
 
 <p class="entries">Other: <% h.text_field('other', size=80, value=other) %>
 <p class="note">Any other areas of interest or useful skills.</p>
@@ -49,4 +53,10 @@ for a in (c.registration.volunteer or '').split(';'):
   else:
       other.append(a)
 other = '; '.join(other)
+
+def oddeven():
+  while 1:
+    yield "odd"
+    yield "even"
+oddeven = oddeven().next
 </%init>
