@@ -470,6 +470,8 @@ class AdminController(SecureController):
 	c.data = []
 	for r in self.dbsession.query(Registration).select():
 	    if r.discount: continue
+	    if r.type=='Fairy Penguin Sponsor':
+	      continue
 	    p = r.person
 	    if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
 	      continue
@@ -497,6 +499,8 @@ class AdminController(SecureController):
 	# <b>Professional and Hobbyist only</b> at the
 	# moment because those are the ones to remind about earlybird expiry.
 	c.text += """ Excludes people with discount codes. """
+	c.text += """ Excludes miniconf orgs. """
+	c.text += """ Excludes fairy penguins. """
 	c.text += """ The "act?" column lists whether the account has been
 	activated; dc=discount code (percentage).  """
 	c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
