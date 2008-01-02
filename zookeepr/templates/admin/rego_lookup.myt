@@ -51,6 +51,10 @@ not registered
 %   #endif
 </p>
 
+%   if registration.volunteer:
+<p>Volunteering areas of interest: <% registration.volunteer |h%></p>
+%   #endif
+
 <p>
 %   if invoices:
 %     for i in invoices:
