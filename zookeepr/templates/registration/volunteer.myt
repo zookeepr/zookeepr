@@ -7,17 +7,20 @@
 <% h.form(h.url()) %>
 <table>
 % for a in areas:
-<tr class="<% oddeven() %>"><td><% a %>
+<tr class="<% oddeven() %>">
+<td valign="middle" align="center"><% h.check_box(a, checked = a in selected) %></td>
+<td><% a %>
 %   if desc.has_key(a):
-<p class="note"><% desc[a] %></p>
+<br><small><% desc[a] %></small>
 %   #endif
-<td><p class="entries">
-<% h.check_box(a, checked = a in selected) %></p>
+</td>
+</tr>
 % #endfor
-</table>
-
-<p class="entries">Other: <% h.text_field('other', size=80, value=other) %>
+<tr class="<% oddeven() %>">
+<td colspan="2">
+<p class="entries">Other: <% h.text_field('other', size=80, value=other) %></p>
 <p class="note">Any other areas of interest or useful skills.</p>
+</table>
 
 <p class="submit"><% h.submit('Update') %></p>
 
