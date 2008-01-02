@@ -130,7 +130,7 @@ class TicketTypeValidator(validators.String):
 	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",
 	    "Team", "Monday pass", "Tuesday pass", "Monday only",
 	    "Tuesday only", 'Professional - No Keynote Access',
-	    'Hobbyist - No Keynote Access')
+	    'Hobbyist - No Keynote Access', 'Volunteer')
 	if value not in valid_tickets:
 	    raise Invalid("Invalid type", value, state)
 
@@ -733,6 +733,7 @@ class PaymentOptions:
                 "Speaker": [0, 0],
                 "Mini-conf organiser": [0, 0],
                 "Team": [0, 0],
+                "Volunteer": [0, 0],
                 "Monday pass": [0, 0],
                 "Tuesday pass": [0, 0],
                 "Monday only": [4950, 4950],

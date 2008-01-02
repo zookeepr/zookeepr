@@ -55,6 +55,29 @@ otherwise.</p>
 <br/>&#9744; Generate invoice
 <br/>&#9744; Pay
 <br/>&#9744; Attend conference
+% elif c.signed_in_person.registration.type=='Volunteer' and not c.signed_in_person.registration.volunteer:
+<p><b>Tentatively volunteered.</b></p>
+
+<h3>Next step</h3>
+
+<p><a href="/registration/<% c.signed_in_person.registration.id %>/volunteer"
+>Select areas of interest and ability</a></p>
+
+<h3>Other option</h3>
+
+<p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
+>Edit details</a></p>
+
+<h3>Summary of steps</h3>
+&#9745; Fill in registration form
+%   if c.signed_in_person.invoices and c.signed_in_person.invoices[0].paid():
+<br/>&#9745; Generate invoice
+<br/>&#9745; Pay
+%   else:
+<br/>&#9744; Generate invoice
+<br/>&#9744; Pay
+%   #endif
+<br/>&#9744; Attend conference
 % elif not c.signed_in_person.invoices:
 <p><b>Tentatively registered.</b></p>
 
@@ -66,7 +89,12 @@ otherwise.</p>
 <h3>Other option</h3>
 
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
->Edit details</a></p>
+>Edit details</a>
+%   if c.signed_in_person.registration.type=='Volunteer':
+<br/><a href="/registration/<% c.signed_in_person.registration.id %>/volunteer"
+>Change areas of interest and ability</a>
+%   #endif
+</p>
 
 <h3>Summary of steps</h3>
 &#9745; Fill in registration form
@@ -83,6 +111,10 @@ otherwise.</p>
 <h3>Other options</h3>
 
 <p>
+%   if c.signed_in_person.registration.type=='Volunteer':
+<a href="/registration/<% c.signed_in_person.registration.id %>/volunteer"
+>Change areas of interest and ability</a><br/>
+%   #endif
 %   if not c.signed_in_person.invoices[0].good_payments:
 <a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a><br/>

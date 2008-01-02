@@ -105,6 +105,7 @@ rego_types = (
     'Tuesday only',
     'Professional - No Keynote Access',
     'Hobbyist - No Keynote Access',
+    'Volunteer',
     'Unused discount codes',
 )
 rego_all = {}

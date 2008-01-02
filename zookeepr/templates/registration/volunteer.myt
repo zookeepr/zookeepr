@@ -17,10 +17,15 @@
 
 <%init>
 areas = (
-'A/V',
-'week before', 'week after'
+'A/V', 'rego desk', 'give directions', 'airport pickups',
+'partners programme', 'open day',
+
+'driver',
+
+'week before', 'week after',
 )
 desc = {
+  'driver': "Have driver's licence, will travel.",
   'week before': 'Available during the week before the conference (21-26 Jan)',
   'week after': 'Available during the week after the conference (3-8 Feb)',
 }
