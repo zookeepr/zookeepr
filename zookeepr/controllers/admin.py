@@ -958,9 +958,10 @@ class AdminController(SecureController):
 	        p.firstname + ' ' + p.lastname,
 	        p.email_address,
 	        t,
+		r.teesize,
 		r.volunteer
 	    ))
-        c.columns = ('name', 'email', 'type', 'areas of interest')
+        c.columns = ('name', 'email', 'type', 'T-shirt', 'areas of interest')
 	return render_response('admin/table.myt')
 	  
 
