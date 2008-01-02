@@ -1,5 +1,9 @@
 <h1>Volunteer preferences, skills and abilities</h1>
 <% c.message %>
+% if c.signed_in_person.id != c.registration.person.id:
+<p><b>You're looking at (and editing) <% c.registration.person.firstname |h%>
+<% c.registration.person.lastname |h%>'s info, not your own!</b></p>
+% #endif
 <% h.form(h.url()) %>
 % for a in areas:
 <p class="entries"><% a %>: <% h.check_box(a, checked = a in selected) %></p>
