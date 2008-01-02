@@ -5,6 +5,7 @@
 #</p>
 <p class="error-message"><i>Registration is closed.</i></p>
 <p class="error-message">Please only use this form: <ul class="error-message">
+<li>to volunteer to help at the conference, or</li>
 <li>to buy the Monday, Tuesday or No Keynote Access tickets, or</li>
 <li>if you are have a discount code or similar.</li>
 </ul></p>

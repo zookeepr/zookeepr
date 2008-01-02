@@ -35,7 +35,7 @@ areas = (
 'Partners Program helper',
 'Exec Offsider', 'Runner',
 'Speaker Liaison helper',
-'Venue Helper',
+'Venue Helper', 'Usher',
 
 'driver',
 
