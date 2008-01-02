@@ -1,13 +1,14 @@
+<h1>Volunteer preferences, skills and abilities</h1>
 <% c.message %>
 <% h.form(h.url()) %>
 % for a in areas:
-<p class="entries"><% a %> <% h.check_box(a, checked = a in selected) %></p>
+<p class="entries"><% a %>: <% h.check_box(a, checked = a in selected) %></p>
 %   if desc.has_key(a):
 <p class="note"><% desc[a] %></p>
 %   #endif
 % #endfor
 
-<p class="entries">Other: <% h.text_field('other', size=100, value=other) %>
+<p class="entries">Other: <% h.text_field('other', size=80, value=other) %>
 <p class="note">Any other areas of interest or useful skills.</p>
 
 <p class="submit"><% h.submit('Update') %></p>
