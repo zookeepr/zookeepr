@@ -7,7 +7,7 @@ Error looking up <% c.id |h%>:
 %   #endif
 <% c.error %>
 % elif c.many:
-<p>Looked up: <% c.id |h%> (name) but found <% len(c.many) %></p>
+<p>Looked up: <% c.id |h%> (<% c.id_type %>) but found <% len(c.many) %></p>
 <table>
 %   for p in c.many:
   <tr class="<% oddeven() %>">

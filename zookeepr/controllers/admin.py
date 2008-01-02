@@ -857,15 +857,24 @@ class AdminController(SecureController):
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 
-	    p = self.dbsession.query(Person).select_by(firstname=id)
-	    p += self.dbsession.query(Person).select_by(lastname=id)
-	    if len(p)==1:
+	    p = self.dbsession.query(Person).select(
+					Person.c.firstname.op('ilike')(id))
+	    p += self.dbsession.query(Person).select_by(
+					 Person.c.lastname.op('ilike')(id))
+	    if len(p)>0:
 		c.id_type = 'name'
+	    else:
+		c.id_type = 'partial name'
+		p = self.dbsession.query(Person).select(
+				Person.c.firstname.op('ilike')('%'+id+'%'))
+		p += self.dbsession.query(Person).select_by(
+				 Person.c.lastname.op('ilike')('%'+id+'%'))
+
+	    if len(p)==1:
 		c.p = p[0]
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 	    elif len(p)>1:
-		c.id_type = 'name'
 		c.many = p
 		c.many.sort(lambda a, b:
 		  cmp(a.lastname.lower(), b.lastname.lower()) or 
