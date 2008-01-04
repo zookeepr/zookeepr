@@ -396,6 +396,15 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             self.dbsession.save(iia)
             invoice.items.append(iia)
 
+        if ('No Keynote Access' in registration.type and
+	  registration.creation_timestamp > datetime.datetime(2008, 1, 3)):
+            iia = model.InvoiceItem(
+			'Waiting list only (not for payment at this time)',
+                                    qty=1,
+                                    cost=1)
+            self.dbsession.save(iia)
+            invoice.items.append(iia)
+
         # extra T-shirts:
         if registration.extra_tee_count > 0:
             iid = model.InvoiceItem(description='Additional T-shirts',
