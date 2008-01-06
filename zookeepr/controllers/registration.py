@@ -104,6 +104,12 @@ class PPValidator(validators.FancyValidator):
 	if value['pp_adults'] and not value['partner_email']:
 	    raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme)", value, state)
 
+class TeesizeValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+	if (not value['teesize']) and (not value['type'] in ("Monday pass",
+			    "Tuesday pass", "Monday only", "Tuesday only"):
+	    raise Invalid("Please specify your T-shirt size.", value, state)
+
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         if value == 'own':
@@ -161,7 +167,7 @@ class RegistrationSchema(Schema):
     type = TicketTypeValidator(not_empty=True)
     discount_code = validators.String()
 
-    teesize = validators.String(not_empty=True)
+    teesize = validators.String()
     extra_tee_count = BoundedInt(min=0)
     extra_tee_sizes = validators.String()
     dinner = BoundedInt(min=0)
@@ -194,7 +200,8 @@ class RegistrationSchema(Schema):
     speaker_slides_release = validators.Bool()
     
     chained_validators = [DuplicateDiscountCodeValidator(),
-	  SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator()]
+	  SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator(),
+	  TeesizeValidator()]
 
 class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
