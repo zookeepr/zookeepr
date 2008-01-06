@@ -852,7 +852,7 @@ class AdminController(SecureController):
 	if not args or not args.has_key('id'):
 	    c.error = 'No ID given.'
 	    return render_response('admin/rego_lookup.myt')
-	id = args['id']; c.id = id
+	id = args['id']; c.id = id; raw_id = id
 	try:
 	    id = int(id)
 	except:
@@ -925,6 +925,35 @@ class AdminController(SecureController):
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 	
+	phone_pat = '[ \t()/-]*'.join(raw_id)
+        r = self.dbsession.query(Registration).select(
+				   Registration.c.phone.op('~')(phone_pat))
+	if len(r)==1:
+	    c.id_type = 'phone'
+	    c.r = r[0]
+	    c.p = c.r.person; c.i = c.p.invoices
+	    return render_response('admin/rego_lookup.myt')
+	elif len(r)>1:
+	    c.many = [rego.person for rego in r]
+	    c.many.sort(lambda a, b:
+	      cmp(a.lastname.lower(), b.lastname.lower()) or 
+	      cmp(a.firstname.lower(), b.firstname.lower()))
+	    return render_response('admin/rego_lookup.myt')
+
+	phone_pat = '.*' + phone_pat + '.*'
+        r = self.dbsession.query(Registration).select(
+				   Registration.c.phone.op('~')(phone_pat))
+	if len(r)==1:
+	    c.id_type = 'partial phone'
+	    c.r = r[0]
+	    c.p = c.r.person; c.i = c.p.invoices
+	    return render_response('admin/rego_lookup.myt')
+	elif len(r)>1:
+	    c.many = [rego.person for rego in r]
+	    c.many.sort(lambda a, b:
+	      cmp(a.lastname.lower(), b.lastname.lower()) or 
+	      cmp(a.firstname.lower(), b.firstname.lower()))
+	    return render_response('admin/rego_lookup.myt')
 
 	c.error = 'Not found.'
 	return render_response('admin/rego_lookup.myt')
