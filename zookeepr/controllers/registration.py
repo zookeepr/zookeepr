@@ -717,6 +717,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		if k=='other':
 		    if v!='':
 		        a.append(v)
+		elif k=='phone':
+	            setattr(self.obj, 'phone', v)
 		elif v=='1':
 		    a.append(k)
 		else:

@@ -988,7 +988,7 @@ class AdminController(SecureController):
 	    c.data.append((
 	        p.firstname + ' ' + p.lastname,
 	        p.email_address,
-	        p.phone,
+	        r.phone or p.phone,
 	        t,
 		r.teesize,
 		r.volunteer
