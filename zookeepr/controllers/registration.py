@@ -106,7 +106,7 @@ class PPValidator(validators.FancyValidator):
 
 class TeesizeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-	if (not value['teesize']) and (not value['type'] in ("Monday pass",
+	if (not value['teesize']) and not value['type'] in ("Monday pass",
 			    "Tuesday pass", "Monday only", "Tuesday only"):
 	    raise Invalid("Please specify your T-shirt size.", value, state)
 
