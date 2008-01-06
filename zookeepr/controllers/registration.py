@@ -244,7 +244,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
 		    'volunteer': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
-    anon_actions = ['status', 'new', 'index']
+    anon_actions = ['status', 'new', 'index', 'volunteer_redirect']
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -698,6 +698,14 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         c.profs.sort(name_cmp)
 
         return render_response('registration/professional.myt')
+
+    def volunteer_redirect(self):
+        if c.signed_in_person and c.signed_in_person.registration:
+	    redirect_to('/registration/%d/volunteer' %
+					c.signed_in_person.registration.id)
+	    
+        return render_response('registration/volunteer_redirect.myt')
+
     def volunteer(self):
 	c.message = '''<p>Please indicate your areas of interest and
 	ability.</p>'''
