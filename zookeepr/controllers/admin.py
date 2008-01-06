@@ -927,7 +927,7 @@ class AdminController(SecureController):
 	
 	phone_pat = '[ \t()/-]*'.join(raw_id)
         r = self.dbsession.query(Registration).select(
-				   Registration.c.phone.op('~')(phone_pat))
+			   Registration.c.phone.op('~')('^'+phone_pat+'$'))
 	if len(r)==1:
 	    c.id_type = 'phone'
 	    c.r = r[0]
@@ -940,7 +940,6 @@ class AdminController(SecureController):
 	      cmp(a.firstname.lower(), b.firstname.lower()))
 	    return render_response('admin/rego_lookup.myt')
 
-	phone_pat = '.*' + phone_pat + '.*'
         r = self.dbsession.query(Registration).select(
 				   Registration.c.phone.op('~')(phone_pat))
 	if len(r)==1:
