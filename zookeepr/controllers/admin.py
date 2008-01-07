@@ -131,6 +131,16 @@ class AdminController(SecureController):
 	proposal.url, firstname || ' ' || lastname as name, email_address from proposal,
 	person, person_proposal_map, account where proposal_type_id = 2 and
 	person.id=person_id and person.id=account.id and proposal.id=proposal_id order by title""")
+    def speaker_meta_info(self):
+        """ Additional info about speakers. [speaker] """
+	return sql_response("""
+	    select p.firstname,p.lastname,r.city,r.state,r.postcode,r.country,pr.code,pr.scheduled,pr.building,pr.theatre
+	    FROM person_proposal_map AS pp
+	    LEFT JOIN person AS p ON (p.id=pp.person_id)
+	    LEFT JOIN registration AS r ON (p.id=r.person_id)
+	    LEFT JOIN proposal AS pr ON (pp.proposal_id=pr.id)
+	    WHERE pr.code > 0;
+	""")
     def list_attachments(self):
         """ List of attachments [CFP] """
         return sql_response('''
