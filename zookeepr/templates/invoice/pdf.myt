@@ -23,21 +23,21 @@
   <badpayments/>
 % #endif
 
-  <name><% c.invoice.person.firstname %> <% c.invoice.person.lastname %></name>
-  <firstname><% c.invoice.person.firstname %></firstname>
-  <lastname><% c.invoice.person.lastname %></lastname>
-  <email><% c.invoice.person.email_address %></email>
+  <name><% c.invoice.person.firstname | h %> <% c.invoice.person.lastname | h %></name>
+  <firstname><% c.invoice.person.firstname | h %></firstname>
+  <lastname><% c.invoice.person.lastname | h %></lastname>
+  <email><% c.invoice.person.email_address | h %></email>
 
 % if c.invoice.person.registration and c.invoice.person.registration.company:
 %   rego = c.invoice.person.registration
-  <company><% rego.company %></company>
+  <company><% rego.company | h %></company>
   <address>
-    <address1><% rego.address1 %></address1>
-    <address2><% rego.address2 %></address2>
-    <city><% rego.city %></city>
-    <country><% rego.country %></country>
-    <postcode><% rego.postcode %></postcode>
-    <state><% rego.state %></state>
+    <address1><% rego.address1 | h %></address1>
+    <address2><% rego.address2 | h %></address2>
+    <city><% rego.city | h %></city>
+    <country><% rego.country | h %></country>
+    <postcode><% rego.postcode | h %></postcode>
+    <state><% rego.state | h %></state>
   </address>
 % # endif
 
