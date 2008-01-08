@@ -1149,7 +1149,22 @@ class AdminController(SecureController):
 	    ))
         c.columns = ('name', 'email', 'phone', 'type', 'T-shirt', 'areas of interest')
 	return render_response('admin/table.myt')
-	  
+
+    def by_country(self):
+        """ Regos by country [stats] """
+	data = {}
+	for r in paid_regos(self):
+	    data[r.country] = data.get(r.country, 0) + 1
+	c.data = data.items()
+	c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+	c.text = '''
+	  <img float="right"
+	  src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+	''' % (
+	    ','.join([str(count) for (label, count) in c.data]),
+	    '|'.join([label for (label, count) in c.data]),
+	)
+	return render_response('admin/table.myt')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
