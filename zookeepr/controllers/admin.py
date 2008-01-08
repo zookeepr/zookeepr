@@ -1154,11 +1154,12 @@ class AdminController(SecureController):
         """ Regos by country [stats] """
 	data = {}
 	for r in paid_regos(self):
-	    data[r.country] = data.get(r.country, 0) + 1
+	    country = r.country.capitalize()
+	    data[country] = data.get(country, 0) + 1
 	c.data = data.items()
 	c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
 	c.text = '''
-	  <img float="right"
+	  <img float="right" width="400" height="200"
 	  src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
 	''' % (
 	    ','.join([str(count) for (label, count) in c.data]),
