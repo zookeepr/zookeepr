@@ -944,6 +944,7 @@ class AdminController(SecureController):
 	    c.p = c.r.person; c.i = c.p.invoices
 	    return render_response('admin/rego_lookup.myt')
 	elif len(r)>1:
+	    c.id_type = 'phone'
 	    c.many = [rego.person for rego in r]
 	    c.many.sort(lambda a, b:
 	      cmp(a.lastname.lower(), b.lastname.lower()) or 
@@ -958,6 +959,7 @@ class AdminController(SecureController):
 	    c.p = c.r.person; c.i = c.p.invoices
 	    return render_response('admin/rego_lookup.myt')
 	elif len(r)>1:
+	    c.id_type = 'partial phone'
 	    c.many = [rego.person for rego in r]
 	    c.many.sort(lambda a, b:
 	      cmp(a.lastname.lower(), b.lastname.lower()) or 
@@ -1076,7 +1078,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def speaker_dinner_list(self):
-        """ List of speaker dinner. [events] """
+        """ List of speaker dinner. [events,speaker] """
 	c.text = """ List of speaker dinner. """
 	c.data = []
 	rr = [
@@ -1097,7 +1099,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def speaker_dinner_diets(self):
-        """ List of speaker dinner dietary requirements. [events] """
+        """ List of speaker dinner dietary requirements. [events,speaker] """
 	c.text = """ List of speaker dinner dietary requirements. """
 	c.data = []
 	rr = [
