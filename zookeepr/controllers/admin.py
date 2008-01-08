@@ -1030,6 +1030,94 @@ class AdminController(SecureController):
         c.columns = 'name', 'email', 'phone', '', 'dietary requirements'
 	return render_response('admin/table.myt')
 
+    def PDNS_list(self):
+        """ List of PDNS. [rego] """
+	c.text = """ List of PDNS. """
+	c.data = []
+	rr = [
+	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+						 for r in paid_regos(self)]
+	rr.sort()
+	for (sortkey, r) in rr:
+	    p = r.person
+	    if r.type in ("Fairy Penguin Sponsor", "Professional",
+		 "Speaker", "Mini-conf organiser",
+		"Team", 'Professional - No Keynote Access') or p.is_speaker():
+	        c.data.append((
+		  p.firstname + ' ' + p.lastname,
+		  p.email_address,
+		  r.phone or p.phone,
+		  r.diet
+		))
+        c.columns = 'name', 'email', 'phone', 'dietary requirements'
+	return render_response('admin/table.myt')
+
+    def PDNS_diets(self):
+        """ List of PDNS. [rego] """
+	c.text = """ List of PDNS dietary requirements. """
+	c.data = []
+	rr = [
+	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+						 for r in paid_regos(self)]
+	rr.sort()
+	for (sortkey, r) in rr:
+	    p = r.person
+	    if (r.type in ("Fairy Penguin Sponsor", "Professional",
+		 "Speaker", "Mini-conf organiser", "Team",
+		 'Professional - No Keynote Access') or
+						p.is_speaker()) and r.diet:
+	        c.data.append((
+		  p.firstname + ' ' + p.lastname,
+		  p.email_address,
+		  r.phone or p.phone,
+		  r.diet
+		))
+        c.columns = 'name', 'email', 'phone', 'dietary requirements'
+	return render_response('admin/table.myt')
+
+    def speaker_dinner_list(self):
+        """ List of speaker dinner. [rego] """
+	c.text = """ List of speaker dinner. """
+	c.data = []
+	rr = [
+	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+						 for r in paid_regos(self)]
+	rr.sort()
+	for (sortkey, r) in rr:
+	    p = r.person
+	    if (r.type in ("Speaker", "Mini-conf organiser", "Team") or
+							    p.is_speaker()):
+	        c.data.append((
+		  p.firstname + ' ' + p.lastname,
+		  p.email_address,
+		  r.phone or p.phone,
+		  r.diet
+		))
+        c.columns = 'name', 'email', 'phone', 'dietary requirements'
+	return render_response('admin/table.myt')
+
+    def speaker_dinner_diets(self):
+        """ List of speaker dinner dietary requirements. [rego] """
+	c.text = """ List of speaker dinner dietary requirements. """
+	c.data = []
+	rr = [
+	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+						 for r in paid_regos(self)]
+	rr.sort()
+	for (sortkey, r) in rr:
+	    p = r.person
+	    if r.type in (("Speaker", "Mini-conf organiser", "Team") or
+						p.is_speaker()) and r.diet:
+	        c.data.append((
+		  p.firstname + ' ' + p.lastname,
+		  p.email_address,
+		  r.phone or p.phone,
+		  r.diet
+		))
+        c.columns = 'name', 'email', 'phone', 'dietary requirements'
+	return render_response('admin/table.myt')
+
+
     def volunteer_list(self):
         """ List of volunteers. [volunteer] """
         c.data = []
