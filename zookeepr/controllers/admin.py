@@ -976,8 +976,36 @@ class AdminController(SecureController):
 	c.data = [row[-1] for row in c.data]
 	return render_response('admin/rego_list.myt')
 
+    def dinner_diets(self):
+        """ List of penguin dinner diet requirements. [rego] """
+        c.text = """ List of penguin dinner diet requirements. """
+	c.data = []
+	rr = [
+	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+						 for r in paid_regos(self)]
+	rr.sort()
+	for (sortkey, r) in rr:
+	    dinner = r.dinner or 0
+	    if r.type not in ("Monday pass", "Tuesday pass",
+			       "Monday only", "Tuesday only"):
+	        dinner += 1
+	    if dinner > 0 and r.diet:
+	        p = r.person
+	        c.data.append((
+		  p.firstname + ' ' + p.lastname,
+		  p.email_address,
+		  r.phone or p.phone,
+		  1,
+		  r.diet
+		))
+	        for n in range(2, dinner+1):
+		  c.data.append(('', '', '', n, ''))
+        c.columns = 'name', 'email', 'phone', '', 'dietary requirements'
+	return render_response('admin/table.myt')
+
     def dinner_list(self):
         """ List of penguin dinners. [rego] """
+	c.text = """ List of penguin dinners. """
 	c.data = []
 	rr = [
 	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
@@ -999,7 +1027,7 @@ class AdminController(SecureController):
 		))
 	        for n in range(2, dinner+1):
 		  c.data.append(('', '', '', n, ''))
-        c.columns = 'name', 'email', 'phone' '', 'dietary requirements'
+        c.columns = 'name', 'email', 'phone', '', 'dietary requirements'
 	return render_response('admin/table.myt')
 
     def volunteer_list(self):
