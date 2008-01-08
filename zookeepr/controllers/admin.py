@@ -780,7 +780,7 @@ class AdminController(SecureController):
 	        continue
 	    p = r.person
 	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id), p.id,
-			      p.firstname + ' ' + p.lastname, r.discount_code]
+		   p.firstname + ' ' + p.lastname, r.type, r.discount_code]
 	    if r.discount:
 	      row.append(r.discount.percentage)
 	    else:
@@ -795,7 +795,7 @@ class AdminController(SecureController):
 	      row.append('no invoice')
 	    c.data.append(row)
 
-        c.header = 'rego', 'person', 'name', 'code', '%', 'paid'
+        c.columns = 'rego', 'person', 'name', 'rego type', 'code', '%', 'paid'
 	c.noescape = True
 	return render_response('admin/table.myt')
     def reconcile(self):
