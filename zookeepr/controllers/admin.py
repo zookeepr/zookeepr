@@ -416,7 +416,7 @@ class AdminController(SecureController):
 
 	# sort by rego status (while that's important)
 	def my_cmp(a,b):
-	    return cmp(a[4][0], b[4][0])
+	    return cmp('OK' in a[4], 'OK' in b[4])
 	c.data.sort(my_cmp)
 
 	c.columns = ('name', 'bio', 'talk', 'assist',
