@@ -1225,6 +1225,7 @@ class AdminController(SecureController):
 	  'organiser': 'red',
 	  'tuesday': 'green',
 	  'monday': 'purple',
+	  'media': 'orange',
 	}
 
 	for (r, p) in rr:
@@ -1242,6 +1243,8 @@ class AdminController(SecureController):
                 dinners = r.dinner or 0
 	    else:
                 dinners = (r.dinner or 0) + 1
+	    if r.discount and r.discount.code.startswith('MEDIA-'):
+	        type = 'media'
 	    c.data.append([
 	        p.firstname + ' ' + p.lastname,
 	        r.company,
