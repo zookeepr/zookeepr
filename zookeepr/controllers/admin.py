@@ -1213,6 +1213,19 @@ class AdminController(SecureController):
 	}
 	keynote_types=('Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
 		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
+        colour_map = {
+	  'speaker': 'blue',
+	  'mini-conf': 'blue',
+	  'fairy penguin sponsor': 'orange',
+	  'professional': 'orange',
+	  'hobbyist': 'yellow',
+	  'concession': 'yellow',
+	  'student': 'yellow',
+	  'volunteer': 'red',
+	  'organiser': 'red',
+	  'tuesday': 'green',
+	  'monday': 'purple',
+	}
 
 	for (r, p) in rr:
 	    if r.type=='Cancelled': continue
@@ -1234,6 +1247,7 @@ class AdminController(SecureController):
 	        r.company,
 	        r.id,
 		type,
+		colour_map.get(type, '???'),
 		nka,
 		dinners,
 		r.nick,
@@ -1242,8 +1256,8 @@ class AdminController(SecureController):
 		r.editortext or r.editor,
 		r.distrotext or r.distro,
 	    ])
-	c.columns = ('name', 'company', 'rego', 'type', 'nka', 'dinners',
-		  'nick', 'silly description', 'shell', 'editor', 'distro')
+	c.columns = ('name', 'company', 'rego', 'type', 'colour', 'nka',
+	  'dinners', 'nick', 'silly description', 'shell', 'editor', 'distro')
 	return render_response('admin/table.myt')
 
 def paid_regos(self):

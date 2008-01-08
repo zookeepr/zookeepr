@@ -140,6 +140,7 @@ money_in_bank = 0
 accommodation_paid = {}
 earlybird = 0
 google = 0
+speaker_keynote_reduce = 0
 
 # Loop through regos
 for r in c.registration_collection:
@@ -171,6 +172,8 @@ for r in c.registration_collection:
     if speaker:
         speakers_registered += 1
         rego_speaker[type] = 1 + rego_speaker.get(type, 0)
+	if type!='Speaker' and type in keynote_types:
+	    speaker_keynote_reduce += 1
     else:
         rego_nonspeaker[type] = 1 + rego_nonspeaker.get(type, 0)
         rego_total_nonspeaker += 1;
@@ -204,7 +207,7 @@ rego_total_nonspeaker += unused
 rego_total += unused
 keynote_total += unused
 
-fixed_speakers = 74
+fixed_speakers = 74 - speaker_keynote_reduce
 keynote_total += fixed_speakers - keynote['Speaker']
 keynote['Speaker'] = '%d (hardcoded)' % fixed_speakers
 
