@@ -1221,9 +1221,9 @@ class AdminController(SecureController):
 	        nka = 'NKA'
             if r.type in ("Monday pass", "Tuesday pass",
 					    "Monday only", "Tuesday only"):
-                dinners = r.dinner
+                dinners = r.dinner or 0
 	    else:
-                dinners = r.dinner + 1
+                dinners = (r.dinner or 0) + 1
 	    c.data.append([
 	        p.firstname + ' ' + p.lastname,
 	        r.company,
