@@ -992,12 +992,14 @@ class AdminController(SecureController):
 	        p = r.person
 	        c.data.append((
 		  p.firstname + ' ' + p.lastname,
+		  p.email_address,
+		  r.phone or p.phone,
 		  1,
 		  r.diet
 		))
 	        for n in range(2, dinner+1):
-		  c.data.append(('', n, ''))
-        c.columns = 'name', '', 'dietary requirements'
+		  c.data.append(('', '', '', n, ''))
+        c.columns = 'name', 'email', 'phone' '', 'dietary requirements'
 	return render_response('admin/table.myt')
 
     def volunteer_list(self):
