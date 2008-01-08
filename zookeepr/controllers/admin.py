@@ -984,7 +984,7 @@ class AdminController(SecureController):
 						 for r in paid_regos(self)]
 	rr.sort()
 	for (sortkey, r) in rr:
-	    dinner = r.dinner
+	    dinner = r.dinner or 0
 	    if r.type not in ("Monday pass", "Tuesday pass",
 			       "Monday only", "Tuesday only"):
 	        dinner += 1
