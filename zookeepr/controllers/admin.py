@@ -771,6 +771,27 @@ class AdminController(SecureController):
 	    c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
         c.data.sort()
 	return render_response('admin/table.myt')
+
+    def discount_code_NKA(self):
+        """ data useful for reconciling NKA discount codes [rego] """
+        c.data = []
+	for r in self.dbsession.query(Registration).select():
+	    if not r.discount_code:
+	        continue
+	    p = r.person
+	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id),
+		   r.type, r.discount_code]
+	    if r.discount:
+	      if r.discount.percentage!=0:
+	        continue
+              row.append(r.discount.comment)
+	    else:
+	      continue
+	    c.data.append(row)
+
+        c.columns = 'rego',  'rego type', 'discount code', 'comment'
+	c.noescape = True
+	return render_response('admin/table.myt')
     def discount_code_details(self):
         """ Have discount code users paid their accom and other extras?
 	[rego] """
@@ -780,7 +801,7 @@ class AdminController(SecureController):
 	        continue
 	    p = r.person
 	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id), p.id,
-		   p.firstname + ' ' + p.lastname, r.type, r.discount_code]
+			   p.firstname + ' ' + p.lastname, r.discount_code]
 	    if r.discount:
 	      row.append(r.discount.percentage)
 	    else:
@@ -795,7 +816,7 @@ class AdminController(SecureController):
 	      row.append('no invoice')
 	    c.data.append(row)
 
-        c.columns = 'rego', 'person', 'name', 'rego type', 'code', '%', 'paid'
+        c.columns = 'rego', 'person', 'name', 'code', '%', 'paid'
 	c.noescape = True
 	return render_response('admin/table.myt')
     def reconcile(self):
