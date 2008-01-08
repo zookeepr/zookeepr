@@ -1236,13 +1236,14 @@ class AdminController(SecureController):
 		type,
 		nka,
 		dinners,
+		r.nick,
 		r.silly_description,
 		r.shelltext or r.shell,
 		r.editortext or r.editor,
 		r.distrotext or r.distro,
 	    ])
 	c.columns = ('name', 'company', 'rego', 'type', 'nka', 'dinners',
-			  'silly description', 'shell', 'editor', 'distro')
+		  'nick', 'silly description', 'shell', 'editor', 'distro')
 	return render_response('admin/table.myt')
 
 def paid_regos(self):
