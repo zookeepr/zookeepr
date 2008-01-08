@@ -784,12 +784,17 @@ class AdminController(SecureController):
 	    if r.discount:
 	      if r.discount.percentage!=0:
 	        continue
+              row.append(r.discount.leader.firstname)
               row.append(r.discount.comment)
 	    else:
 	      continue
 	    c.data.append(row)
 
-        c.columns = 'rego',  'rego type', 'discount code', 'comment'
+	c.data.sort(lambda a, b:
+	    cmp('No Keynote Access' in a[1], 'No Keynote Access' in b[1])
+	    or cmp(a[-2:], b[-2:])
+	    or cmp(a, b))
+        c.columns = 'rego',  'rego type', 'discount code', 'leader', 'comment'
 	c.noescape = True
 	return render_response('admin/table.myt')
     def discount_code_details(self):
