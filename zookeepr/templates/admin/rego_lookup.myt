@@ -30,7 +30,7 @@ Error looking up <% c.id |h%>:
 <p>Looked up: <% c.id |h%> (<% c.id_type %>)</p>
 
 <p><b><% person.firstname |h%> <% person.lastname |h%></b>
-&lt;<a href="mailto:<% person.email_address |h%>"><% person.email_address |h%></a>&gt;
+&lt;<a href="mailto:<% person.email_address |h%>"><% person.email_address |h%></a>&gt; (<a href="/profile/<% person.id |h%>"><% person.id |h%></a>)
 <br><% registration.company |h%></p>
 
 <p>
