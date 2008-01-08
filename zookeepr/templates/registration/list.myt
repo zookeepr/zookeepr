@@ -13,6 +13,8 @@
         <th>Total</th>
         <th>Keynote</th>
     </tr>
+%   total_chart = []
+%   keynote_chart = []
 %   for type in rego_types:
     <tr class="<% h.cycle('even', 'odd')%> ">
         <td><% type %></td>
@@ -24,8 +26,10 @@
 %     #endif
         <td><% rego_speaker.get(type, '-') %></td>
         <td><% rego_all[type] %></td>
+%     total_chart.append((type, float(rego_all[type])))
 %     if type in keynote_types:
-	<td><% keynote[type] %></td>
+        <td><% keynote[type] %></td>
+%       keynote_chart.append((type, float(str(keynote[type]).split(' ')[0])))
 %     else:
         <td>-</td>
 %     #endif
@@ -42,6 +46,13 @@
 </tr>
 
 </table>
+<table>
+<tr><th>Total</th><th>Keynote</th></tr>
+<tr>
+  <td> <img width="400" height="200" src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:<% ','.join([str(count) for (label, count) in total_chart]) %>&chl=<% '|'.join([label for (label, count) in total_chart]) %>"></td>
+  <td> <img width="400" height="200" src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:<% ','.join([str(count) for (label, count) in keynote_chart]) %>&chl=<% '|'.join([label for (label, count) in keynote_chart]) %>"></td>
+</table>
+
 <br/>
 <strong>Extra Dinner Tickets: </strong><% extra_dinners %><br>
 
