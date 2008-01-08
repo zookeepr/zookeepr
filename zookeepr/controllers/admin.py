@@ -997,7 +997,7 @@ class AdminController(SecureController):
 		))
 	        for n in range(2, dinner+1):
 		  c.data.append(('', n, ''))
-        c.columns ('name', '', 'dietary requirements')
+        c.columns = 'name', '', 'dietary requirements'
 	return render_response('admin/table.myt')
 
     def volunteer_list(self):
