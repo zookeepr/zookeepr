@@ -1192,6 +1192,51 @@ class AdminController(SecureController):
 	    '|'.join([label for (label, count) in c.data]),
 	)
 	return render_response('admin/table.myt')
+    def badge_data(self):
+        """ Data for the badges (draft, for now) [rego] """
+        c.data = []
+	rr = [(r, r.person) for r in paid_regos(self)]
+	rr.sort(lambda a, b:
+	    cmp(a[1].lastname.lower(), b[1].lastname.lower()) or
+	    cmp(a[1].firstname.lower(), b[1].firstname.lower()) or
+	    cmp(a[0].id, b[0].id)
+	)
+	type_map = {
+	  'Monday pass': 'Monday',
+	  'Monday only': 'Monday',
+	  'Tuesday pass': 'Tuesday',
+	  'Tuesday only': 'Tuesday',
+	}
+	keynote_types=('Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
+		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
+
+	for (r, p) in rr:
+            type = r.type.replace(' - No Keynote Access', '')
+	    type = type_map.get(type, type)
+	    if r.type in keynote_types:
+	        nka = 'k'
+            else:
+	        nka = 'NKA'
+            if r.type in ("Monday pass", "Tuesday pass",
+					    "Monday only", "Tuesday only"):
+                dinners = r.dinner
+	    else:
+                dinners = r.dinner + 1
+	    c.data.append([
+	        p.firstname + ' ' + p.lastname,
+	        r.company,
+	        r.id,
+		type,
+		nka,
+		dinners,
+		r.silly_description,
+		r.shelltext or r.shell,
+		r.editortext or r.editor,
+		r.distrotext or r.distro,
+	    ])
+	c.columns = ('name', 'company', 'rego', 'type', 'nka', 'dinners',
+			  'silly description', 'shell', 'editor', 'distro')
+	return render_response('admin/table.myt')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
