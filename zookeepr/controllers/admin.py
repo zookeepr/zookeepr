@@ -976,6 +976,30 @@ class AdminController(SecureController):
 	c.data = [row[-1] for row in c.data]
 	return render_response('admin/rego_list.myt')
 
+    def dinner_list(self):
+        """ List of penguin dinners. [rego] """
+	c.data = []
+	rr = [
+	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+						 for r in paid_regos(self)]
+	rr.sort()
+	for (sortkey, r) in rr:
+	    dinner = r.dinner
+	    if r.type not in ("Monday pass", "Tuesday pass",
+			       "Monday only", "Tuesday only"):
+	        dinner += 1
+	    if dinner > 0:
+	        p = r.person
+	        c.data.append((
+		  p.firstname + ' ' + p.lastname,
+		  1,
+		  r.diet
+		))
+	        for n in range(2, dinner+1):
+		  c.data.append(('', n, ''))
+        c.columns ('name', '', 'dietary requirements')
+	return render_response('admin/table.myt')
+
     def volunteer_list(self):
         """ List of volunteers. [volunteer] """
         c.data = []
