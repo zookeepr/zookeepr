@@ -1215,6 +1215,7 @@ class AdminController(SecureController):
 		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
 
 	for (r, p) in rr:
+	    if r.type=='Cancelled': continue
             type = r.type.replace(' - No Keynote Access', '')
 	    type = type_map.get(type, type).lower()
 	    if p.is_speaker():
