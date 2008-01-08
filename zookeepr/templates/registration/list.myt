@@ -49,8 +49,8 @@
 <table>
 <tr><th>Total</th><th>Keynote</th></tr>
 <tr>
-  <td> <img width="400" height="200" src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:<% ','.join([str(count) for (label, count) in total_chart]) %>&chl=<% '|'.join([label for (label, count) in total_chart]) %>"></td>
-  <td> <img width="400" height="200" src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:<% ','.join([str(count) for (label, count) in keynote_chart]) %>&chl=<% '|'.join([label for (label, count) in keynote_chart]) %>"></td>
+  <td> <img width="400" height="200" src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:<% ','.join([str(count/rego_total) for (label, count) in total_chart]) %>&chl=<% '|'.join([label for (label, count) in total_chart]) %>"></td>
+  <td> <img width="400" height="200" src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:<% ','.join([str(count/keynote_total) for (label, count) in keynote_chart]) %>&chl=<% '|'.join([label for (label, count) in keynote_chart]) %>"></td>
 </table>
 
 <br/>
