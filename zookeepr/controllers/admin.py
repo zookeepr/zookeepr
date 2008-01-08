@@ -1209,6 +1209,7 @@ class AdminController(SecureController):
 	  'Tuesday pass': 'Tuesday',
 	  'Tuesday only': 'Tuesday',
 	  'Mini-conf organiser': 'Mini-conf',
+	  'Team': 'Organiser',
 	}
 	keynote_types=('Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
 		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
@@ -1216,6 +1217,8 @@ class AdminController(SecureController):
 	for (r, p) in rr:
             type = r.type.replace(' - No Keynote Access', '')
 	    type = type_map.get(type, type).lower()
+	    if p.is_speaker():
+	        type = 'speaker'
 	    if r.type in keynote_types:
 	        nka = 'k'
             else:
