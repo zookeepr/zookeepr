@@ -404,7 +404,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             invoice.items.append(iia)
 
         if ('No Keynote Access' in registration.type and
-	  registration.creation_timestamp > datetime.datetime(2008, 1, 3)):
+	  not discount_result and
+	  registration.creation_timestamp.replace(tzinfo=None) > datetime.datetime(2008, 1, 3)):
             iia = model.InvoiceItem(
 			'Waiting list only (not for payment at this time)',
                                     qty=1,
