@@ -428,7 +428,7 @@ class AdminController(SecureController):
 	'''
 	return render_response('admin/table.myt')
     def special_requirements(self):
-        """ Special requirements and diets [rego] """
+        """ Special requirements and diets [rego,events] """
 	c.data = []
         for (r_id,) in sql_data(r"""
 	  select id from registration
@@ -977,7 +977,7 @@ class AdminController(SecureController):
 	return render_response('admin/rego_list.myt')
 
     def dinner_diets(self):
-        """ List of penguin dinner diet requirements. [rego] """
+        """ List of penguin dinner diet requirements. [events] """
         c.text = """ List of penguin dinner diet requirements. """
 	c.data = []
 	rr = [
@@ -1004,7 +1004,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def dinner_list(self):
-        """ List of penguin dinners. [rego] """
+        """ List of penguin dinners. [events] """
 	c.text = """ List of penguin dinners. """
 	c.data = []
 	rr = [
@@ -1031,7 +1031,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def PDNS_list(self):
-        """ List of PDNS. [rego] """
+        """ List of PDNS. [events] """
 	c.text = """ List of PDNS. """
 	c.data = []
 	rr = [
@@ -1053,7 +1053,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def PDNS_diets(self):
-        """ List of PDNS. [rego] """
+        """ List of PDNS dietary requirements. [events] """
 	c.text = """ List of PDNS dietary requirements. """
 	c.data = []
 	rr = [
@@ -1076,7 +1076,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def speaker_dinner_list(self):
-        """ List of speaker dinner. [rego] """
+        """ List of speaker dinner. [events] """
 	c.text = """ List of speaker dinner. """
 	c.data = []
 	rr = [
@@ -1097,7 +1097,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
     def speaker_dinner_diets(self):
-        """ List of speaker dinner dietary requirements. [rego] """
+        """ List of speaker dinner dietary requirements. [events] """
 	c.text = """ List of speaker dinner dietary requirements. """
 	c.data = []
 	rr = [
