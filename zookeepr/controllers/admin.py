@@ -788,6 +788,8 @@ class AdminController(SecureController):
               row.append(r.discount.comment)
 	    else:
 	      continue
+	    if p.is_speaker():
+	      row[1] += ' (speaker)'
 	    c.data.append(row)
 
 	c.data.sort(lambda a, b:
