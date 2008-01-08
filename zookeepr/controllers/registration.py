@@ -633,7 +633,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	ceiling_types = ('Student', 'Concession', 'Hobbyist',
 				   'Professional', 'Fairy Penguin Sponsor')
 	nk_types = ('Professional - No Keynote Access',
-					    'Hobbyist - No Keynote Access')
+	     'Hobbyist - No Keynote Access', 'Student - No Keynote Access')
         all_ceiling = ceiling_types + nk_types
         for r in self.dbsession.query(self.model).select():
 	    if r.type not in all_ceiling:

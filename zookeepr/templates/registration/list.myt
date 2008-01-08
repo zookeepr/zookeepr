@@ -116,6 +116,7 @@ rego_types = (
     'Tuesday only',
     'Professional - No Keynote Access',
     'Hobbyist - No Keynote Access',
+    'Student - No Keynote Access',
     'Volunteer',
     'Unused discount codes',
 )
