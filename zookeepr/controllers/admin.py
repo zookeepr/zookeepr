@@ -1216,16 +1216,16 @@ class AdminController(SecureController):
         colour_map = {
 	  'speaker': 'blue',
 	  'mini-conf': 'blue',
-	  'fairy penguin sponsor': 'orange',
-	  'professional': 'orange',
-	  'hobbyist': 'yellow',
-	  'concession': 'yellow',
-	  'student': 'yellow',
+	  'fairy penguin sponsor': 'gold',
+	  'professional': 'gold',
+	  'hobbyist': 'gold',
+	  'concession': 'gold',
+	  'student': 'gold',
 	  'volunteer': 'red',
 	  'organiser': 'red',
 	  'tuesday': 'green',
 	  'monday': 'purple',
-	  'media': 'orange',
+	  'media': 'gold',
 	}
 
 	for (r, p) in rr:
@@ -1245,13 +1245,20 @@ class AdminController(SecureController):
                 dinners = (r.dinner or 0) + 1
 	    if r.discount and r.discount.code.startswith('MEDIA-'):
 	        type = 'media'
+	    if type in ('fairy penguin sponsor', 'professional', 'media',
+					 'speaker', 'mini-conf', 'organiser'):
+	        company = r.company
+		pdns = 'PDNS'
+            else:
+	        company = ''; pdns = '-'
 	    c.data.append([
 	        p.firstname + ' ' + p.lastname,
-	        r.company,
+	        company,
 	        r.id,
 		type,
 		colour_map.get(type, '???'),
 		nka,
+		pdns,
 		dinners,
 		r.nick,
 		r.silly_description,
@@ -1260,7 +1267,7 @@ class AdminController(SecureController):
 		r.distrotext or r.distro,
 	    ])
 	c.columns = ('name', 'company', 'rego', 'type', 'colour', 'nka',
-	  'dinners', 'nick', 'silly description', 'shell', 'editor', 'distro')
+    'pdns', 'dinners', 'nick', 'silly description', 'shell', 'editor', 'distro')
 	return render_response('admin/table.myt')
 
 def paid_regos(self):
