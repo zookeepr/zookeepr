@@ -1216,16 +1216,16 @@ class AdminController(SecureController):
         colour_map = {
 	  'speaker': 'blue',
 	  'mini-conf': 'blue',
-	  'fairy penguin sponsor': 'gold',
-	  'professional': 'gold',
-	  'hobbyist': 'gold',
-	  'concession': 'gold',
-	  'student': 'gold',
+	  'fairy penguin sponsor': 'orange',
+	  'professional': 'orange',
+	  'hobbyist': 'orange',
+	  'concession': 'orange',
+	  'student': 'orange',
 	  'volunteer': 'red',
 	  'organiser': 'red',
 	  'tuesday': 'green',
 	  'monday': 'purple',
-	  'media': 'gold',
+	  'media': 'bright something',
 	}
 
 	for (r, p) in rr:
