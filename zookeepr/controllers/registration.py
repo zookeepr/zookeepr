@@ -411,7 +411,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	      if now.day > 12:
 	          cutoff_day = 31
 	      elif now.day == 12:
-	          cutoff_day = max(3, now.hour/2)
+	          cutoff_day = 10
 	      else:
 		  cutoff_day = 3
 	      if (registration.creation_timestamp.day > cutoff_day and

@@ -482,6 +482,8 @@ class AdminController(SecureController):
 	    if r.discount: continue
 	    if r.type=='Fairy Penguin Sponsor':
 	      continue
+	    if r.type in ('Monday only', 'Tuesday only', 'Volunteer'):
+	      continue
 	    p = r.person
 	    if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
 	      continue
@@ -502,8 +504,7 @@ class AdminController(SecureController):
 	      dc = '-'
             if True or r.type in ("Professional", "Hobbyist"):
 	      c.data.append((r.id, p.id, `p.activated`[0], r.type, dc, amt,
-				p.email_address, p.firstname, p.lastname,
-				r.creation_timestamp.day * 2))
+				p.email_address, p.firstname, p.lastname,))
         def lastcmp(a, b):
 	  return cmp(a[-1], b[-1]) or cmp(a, b)
         c.data.sort(lastcmp)
@@ -514,12 +515,12 @@ class AdminController(SecureController):
 	c.text += """ Excludes people with discount codes. """
 	c.text += """ Excludes miniconf orgs. """
 	c.text += """ Excludes fairy penguins. """
+	c.text += """ Excludes day tickets and volunteers. """
 	c.text += """ Excludes people registering before 3.1.2008. """
 	c.text += """ The "act?" column lists whether the account has been
 	activated; dc=discount code (percentage).  """
 	c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
-					  'email', 'firstname', 'lastname',
-					  'hour')
+					  'email', 'firstname', 'lastname',)
 	return render_response('admin/table.myt')
 
     def newcomers(self):
