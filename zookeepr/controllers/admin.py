@@ -487,8 +487,8 @@ class AdminController(SecureController):
 	      continue
             if 'miniconf' in [rl.name for rl in p.roles]:
 	      continue
-	    #if r.creation_timestamp > datetime(2008, 1, 3):
-	    #  continue
+	    if r.creation_timestamp.day<3 or r.creation_timestamp.month!=1:
+	      continue
             if p.invoices:
 	      amt = "$%.2f" % (p.invoices[0].total()/100.0)
 	    else:
@@ -502,7 +502,8 @@ class AdminController(SecureController):
 	      dc = '-'
             if True or r.type in ("Professional", "Hobbyist"):
 	      c.data.append((r.id, p.id, `p.activated`[0], r.type, dc, amt,
-				p.email_address, p.firstname, p.lastname,))
+				p.email_address, p.firstname, p.lastname,
+				r.creation_timestamp.day * 2))
         def lastcmp(a, b):
 	  return cmp(a[-1], b[-1]) or cmp(a, b)
         c.data.sort(lastcmp)
@@ -513,11 +514,12 @@ class AdminController(SecureController):
 	c.text += """ Excludes people with discount codes. """
 	c.text += """ Excludes miniconf orgs. """
 	c.text += """ Excludes fairy penguins. """
-	#c.text += """ Excludes people registering after 3.1.2008. """
+	c.text += """ Excludes people registering before 3.1.2008. """
 	c.text += """ The "act?" column lists whether the account has been
 	activated; dc=discount code (percentage).  """
 	c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
-					  'email', 'firstname', 'lastname')
+					  'email', 'firstname', 'lastname',
+					  'hour')
 	return render_response('admin/table.myt')
 
     def newcomers(self):

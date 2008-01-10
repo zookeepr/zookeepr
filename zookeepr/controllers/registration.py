@@ -406,15 +406,22 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             self.dbsession.save(iia)
             invoice.items.append(iia)
 
-        if ('No Keynote Access' in registration.type and
-	  not discount_result and
-	  registration.creation_timestamp.replace(tzinfo=None) > datetime.datetime(2008, 1, 3)):
-            iia = model.InvoiceItem(
-			'Waiting list only (not for payment at this time)',
-                                    qty=1,
-                                    cost=1)
-            self.dbsession.save(iia)
-            invoice.items.append(iia)
+        elif 'No Keynote Access' in registration.type and not discount_result:
+	      now = datetime.datetime.now()
+	      if now.day > 12:
+	          cutoff_day = 31
+	      elif now.day == 12:
+	          cutoff_day = max(3, now.hour/2)
+	      else:
+		  cutoff_day = 3
+	      if (registration.creation_timestamp.day > cutoff_day and
+			       registration.creation_timestamp.month == 1):
+		iia = model.InvoiceItem(
+			    'Waiting list only (not for payment at this time)',
+					qty=1,
+					cost=1)
+		self.dbsession.save(iia)
+		invoice.items.append(iia)
 
         # extra T-shirts:
         if registration.extra_tee_count > 0:
