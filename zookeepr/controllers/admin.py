@@ -1115,11 +1115,16 @@ class AdminController(SecureController):
 	rr = [
 	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
 						 for r in paid_regos(self)]
+        rr.append((('mcpherson', 'amanda', 'Amanda McPherson'), None))
 	rr.sort()
 	for (sortkey, r) in rr:
+	    if not r:
+	        c.data.append((sortkey[-1], '-', '-', '-'))
+		continue
 	    p = r.person
-	    if (r.type in ("Speaker", "Mini-conf organiser", "Team") or
-							    p.is_speaker()):
+	    if (r.type in ("Speaker", "Mini-conf organiser") or
+							  p.is_speaker() or
+			     'exec' in [rl.name for rl in r.person.roles]):
 	        c.data.append((
 		  p.firstname + ' ' + p.lastname,
 		  p.email_address,
@@ -1139,8 +1144,9 @@ class AdminController(SecureController):
 	rr.sort()
 	for (sortkey, r) in rr:
 	    p = r.person
-	    if r.type in (("Speaker", "Mini-conf organiser", "Team") or
-						p.is_speaker()) and r.diet:
+	    if (r.type in ("Speaker", "Mini-conf organiser") or
+							  p.is_speaker() or
+			     'exec' in [rl.name for rl in r.person.roles]):
 	        c.data.append((
 		  p.firstname + ' ' + p.lastname,
 		  p.email_address,
