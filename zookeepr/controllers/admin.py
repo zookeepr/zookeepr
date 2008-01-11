@@ -1145,8 +1145,8 @@ class AdminController(SecureController):
 	for (sortkey, r) in rr:
 	    p = r.person
 	    if (r.type in ("Speaker", "Mini-conf organiser") or
-							  p.is_speaker() or
-			     'exec' in [rl.name for rl in r.person.roles]):
+		  p.is_speaker() or
+		  'exec' in [rl.name for rl in r.person.roles]) and r.diet:
 	        c.data.append((
 		  p.firstname + ' ' + p.lastname,
 		  p.email_address,
