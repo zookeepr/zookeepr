@@ -351,6 +351,19 @@ class AdminController(SecureController):
 	res.headers['Refresh'] = 3600
 	return res
 
+    def unregistered_team(self):
+        """ Listing of team members (with "team" role)
+					  who haven't registered [rego] """
+	c.data = []
+	for p in self.dbsession.query(Person).select():
+            if 'team' in [rl.name for rl in p.roles]:
+	        if not p.registration:
+		    c.data.append((
+		      p.firstname + ' ' + p.lastname,
+		      p.email_address,
+		    ))
+	return render_response('admin/table.myt')
+
     def speakers(self):
         """ Listing of speakers and various stuff about them [speaker] """
 	c.data = []
