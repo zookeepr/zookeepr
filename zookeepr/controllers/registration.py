@@ -59,6 +59,8 @@ class DuplicateDiscountCodeValidator(validators.FancyValidator):
 							      value, state)
                 if r.person_id != session['signed_in_person_id']:
                     raise Invalid("Discount code already in use!", value, state)
+        else:
+	    raise Invalid("Unknown discount code!", value, state)
 
 class SpeakerDiscountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
