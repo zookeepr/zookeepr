@@ -1328,6 +1328,10 @@ class AdminController(SecureController):
 	       country = 'nz'
             else:
 		country = '-'
+	    if type == 'organiser':
+	        prompt = '#'
+	    else:
+	        prompt = '$'
 	    c.data.append([
 	        p.firstname,
 		p.lastname,
@@ -1341,7 +1345,7 @@ class AdminController(SecureController):
 		country,
 		r.nick,
 		r.silly_description,
-		', '.join([t for t in (
+		prompt + ', '.join([t for t in (
 		    r.shelltext or r.shell,
 		    r.editortext or r.editor,
 		    r.distrotext or r.distro,
