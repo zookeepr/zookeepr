@@ -1274,15 +1274,16 @@ class AdminController(SecureController):
 		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
         colour_map = {
 	  #  type    k/NKA    text, type bg, main bg
-	  ('speaker', 'k'): ['white', 'blue', 'white'],
-	  ('mini-conf', 'k'): ['white', 'blue', 'white'],
-	  ('delegate', 'k'): ['white', 'orange', 'white'],
-	  ('delegate', 'NKA'): ['black', 'white', 'light orange'],
-	  ('volunteer', 'k'): ['white', 'red', 'white'],
-	  ('organiser', 'k'): ['white', 'red', 'white'],
-	  ('monday', 'NKA'): ['black', 'white', 'light purple'],
-	  ('tuesday', 'NKA'): ['black', 'white', 'light green'],
-	  ('media', 'k'): ['white', 'bright something', 'white'],
+	  ('speaker', 'k'): ['white', 'blue 2925C', 'white'],
+	  ('mini-conf', 'k'): ['white', 'blue 2925C', 'white'],
+	  ('delegate', 'k'): ['white', 'orange 1505C', 'white'],
+	  ('delegate', 'NKA'): ['black', 'white', 'yellow 102C'],
+	  ('volunteer', 'NKA'): ['white', 'red 1797C', 'white'],
+	  ('organiser', 'NKA'): ['white', 'red 1797C', 'white'],
+	  ('monday', 'NKA'): ['black', 'white', 'light pink 236C'],
+	  ('tuesday', 'NKA'): ['black', 'white', 'light green 374C'],
+	  ('media', 'k'): ['white', 'bright pink 239C', 'white'],
+	  # V.I.P: 2738C (Navy/Violet)
 	}
 
 	for (r, p) in rr:
@@ -1312,7 +1313,8 @@ class AdminController(SecureController):
             else:
 	        company = ''; pdns = '-'
 	    c.data.append([
-	        p.firstname + ' ' + p.lastname,
+	        p.firstname,
+		p.lastname,
 	        company,
 	        r.id,
 		type,
@@ -1321,13 +1323,15 @@ class AdminController(SecureController):
 		dinners,
 		r.nick,
 		r.silly_description,
-		r.shelltext or r.shell,
-		r.editortext or r.editor,
-		r.distrotext or r.distro,
+		', '.join([t for t in (
+		    r.shelltext or r.shell,
+		    r.editortext or r.editor,
+		    r.distrotext or r.distro,
+		) if t!='-'])
 	    ])
-	c.columns = ('name', 'company', 'rego', 'type', 'type colour',
-		     'type bg', 'main bg', 'pdns', 'dinners', 'nick',
-		     'silly description', 'shell', 'editor', 'distro')
+	c.columns = ('first name', 'surname', 'company', 'rego', 'type',
+	             'type colour', 'type bg', 'main bg', 'pdns', 'dinners',
+		     'nick', 'silly description', 'favourites')
 	if request.GET.has_key('csv'):
 	    import csv, StringIO
 	    f = StringIO.StringIO()
