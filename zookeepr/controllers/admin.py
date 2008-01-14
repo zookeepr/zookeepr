@@ -1328,7 +1328,18 @@ class AdminController(SecureController):
 	c.columns = ('name', 'company', 'rego', 'type', 'type colour',
 		     'type bg', 'main bg', 'pdns', 'dinners', 'nick',
 		     'silly description', 'shell', 'editor', 'distro')
-	return render_response('admin/table.myt')
+	if request.GET.has_key('csv'):
+	    import csv, StringIO
+	    f = StringIO.StringIO()
+	    w = csv.writer(f)
+	    w.writerow(c.columns)
+	    w.writerows(c.data)
+	    res = Response(f.getvalue())
+	    res.headers['Content-type']='text/plain; charset=utf-8'
+	    return res
+	else:
+	    c.text = '<a href="/admin/badge_data?csv">CSV</a>'
+	    return render_response('admin/table.myt')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
