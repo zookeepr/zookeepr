@@ -1312,6 +1312,15 @@ class AdminController(SecureController):
 		pdns = '-'
             else:
 	        company = ''; pdns = '-'
+	    if r.type in ("Student", "Student - No Keynote Access",
+					       "Concession") and pdns=='-':
+		pdns = 'party'
+	    if (r.type in ("Speaker", "Mini-conf organiser") or
+							  p.is_speaker() or
+			     'exec' in [rl.name for rl in r.person.roles]):
+		sd = 'SD'
+            else:
+		sd = '-'
 	    c.data.append([
 	        p.firstname,
 		p.lastname,
