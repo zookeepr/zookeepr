@@ -1280,8 +1280,8 @@ class AdminController(SecureController):
 	  ('delegate', 'NKA'): ['black', 'white', 'light orange'],
 	  ('volunteer', 'k'): ['white', 'red', 'white'],
 	  ('organiser', 'k'): ['white', 'red', 'white'],
-	  ('monday', 'k'): ['black', 'white', 'light purple'],
-	  ('tuesday', 'k'): ['black', 'white', 'light green'],
+	  ('monday', 'NKA'): ['black', 'white', 'light purple'],
+	  ('tuesday', 'NKA'): ['black', 'white', 'light green'],
 	  ('media', 'k'): ['white', 'bright something', 'white'],
 	}
 
