@@ -1274,14 +1274,14 @@ class AdminController(SecureController):
 		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
         colour_map = {
 	  #  type    k/NKA    text, type bg, main bg
-	  ('speaker', 'k'): ('white', 'blue', 'white'),
-	  ('mini-conf', 'k'): ('white', 'blue', 'white'),
-	  ('delegate', 'k'): ('white', 'orange', 'white'),
-	  ('volunteer', 'k'): ('white', 'red', 'white'),
-	  ('organiser', 'k'): ('white', 'red', 'white'),
-	  ('tuesday', 'k'): ('white', 'green', 'white'),
-	  ('monday', 'k'): ('white', 'purple', 'white'),
-	  ('media', 'k'): ('white', 'bright something', 'white'),
+	  ('speaker', 'k'): ['white', 'blue', 'white'],
+	  ('mini-conf', 'k'): ['white', 'blue', 'white'],
+	  ('delegate', 'k'): ['white', 'orange', 'white'],
+	  ('volunteer', 'k'): ['white', 'red', 'white'],
+	  ('organiser', 'k'): ['white', 'red', 'white'],
+	  ('tuesday', 'k'): ['white', 'green', 'white'],
+	  ('monday', 'k'): ['white', 'purple', 'white'],
+	  ('media', 'k'): ['white', 'bright something', 'white'],
 	}
 
 	for (r, p) in rr:
@@ -1315,7 +1315,7 @@ class AdminController(SecureController):
 	        company,
 	        r.id,
 		type,
-		] + colour_map.get((type, nka), ('???', type, nka)) + [
+		] + colour_map.get((type, nka), ['???', type, nka]) + [
 		pdns,
 		dinners,
 		r.nick,
