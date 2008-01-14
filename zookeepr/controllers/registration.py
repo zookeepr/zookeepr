@@ -663,7 +663,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	res.limit = 505
 	res.open = res.total < res.limit
 
-	res.nk_limit = 56
+	res.nk_limit = 53
 	res.nk_open = res.nk_regos < res.nk_limit
 	res.nk_left = res.nk_limit - res.nk_regos
 
