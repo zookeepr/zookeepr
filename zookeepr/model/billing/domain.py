@@ -11,7 +11,7 @@ class InvoiceItem(object):
 
     def total(self):
         """Return the total cost of this item"""
-        return self.cost * self.qty
+        return (self.cost or 0) * self.qty
 
 
 class Invoice(object):
