@@ -1321,6 +1321,13 @@ class AdminController(SecureController):
 		sd = 'SD'
             else:
 		sd = '-'
+	    if r.country.lower() in ('australia', 'au', 'aust', 'australi',
+	    'nsw'):
+	       country = 'au'
+	    elif r.country.lower() in ('new zealand', 'nz'):
+	       country = 'nz'
+            else:
+		country = '-'
 	    c.data.append([
 	        p.firstname,
 		p.lastname,
@@ -1328,8 +1335,10 @@ class AdminController(SecureController):
 	        r.id,
 		type,
 		] + colour_map.get((type, nka), ['???', type, nka]) + [
-		pdns,
 		dinners,
+		pdns,
+		sd,
+		country,
 		r.nick,
 		r.silly_description,
 		', '.join([t for t in (
@@ -1339,7 +1348,8 @@ class AdminController(SecureController):
 		) if t!='-'])
 	    ])
 	c.columns = ('first name', 'surname', 'company', 'rego', 'type',
-	             'type colour', 'type bg', 'main bg', 'pdns', 'dinners',
+	             'type colour', 'type bg', 'main bg',
+		     'dinners', 'pdns', 'sd', 'country',
 		     'nick', 'silly description', 'favourites')
 	if request.GET.has_key('csv'):
 	    import csv, StringIO
