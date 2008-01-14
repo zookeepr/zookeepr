@@ -1262,22 +1262,26 @@ class AdminController(SecureController):
 	  'Tuesday only': 'Tuesday',
 	  'Mini-conf organiser': 'Mini-conf',
 	  'Team': 'Organiser',
+
+          'Fairy Penguin Sponsor': 'Delegate',
+	  'Professional': 'Delegate',
+	  'Hobbyist': 'Delegate',
+	  'Concession': 'Delegate',
+	  'Student': 'Delegate',
+
 	}
 	keynote_types=('Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
 		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
         colour_map = {
-	  'speaker': 'blue',
-	  'mini-conf': 'blue',
-	  'fairy penguin sponsor': 'orange',
-	  'professional': 'orange',
-	  'hobbyist': 'orange',
-	  'concession': 'orange',
-	  'student': 'orange',
-	  'volunteer': 'red',
-	  'organiser': 'red',
-	  'tuesday': 'green',
-	  'monday': 'purple',
-	  'media': 'bright something',
+	  #  type    k/NKA    text, type bg, main bg
+	  ('speaker', 'k'): ('white', 'blue', 'white'),
+	  ('mini-conf', 'k'): ('white', 'blue', 'white'),
+	  ('delegate', 'k'): ('white', 'orange', 'white'),
+	  ('volunteer', 'k'): ('white', 'red', 'white'),
+	  ('organiser', 'k'): ('white', 'red', 'white'),
+	  ('tuesday', 'k'): ('white', 'green', 'white'),
+	  ('monday', 'k'): ('white', 'purple', 'white'),
+	  ('media', 'k'): ('white', 'bright something', 'white'),
 	}
 
 	for (r, p) in rr:
@@ -1301,6 +1305,9 @@ class AdminController(SecureController):
 					 'speaker', 'mini-conf', 'organiser'):
 	        company = r.company
 		pdns = 'PDNS'
+            elif r.type in ("Monday pass", "Tuesday pass",):
+	        company = r.company
+		pdns = '-'
             else:
 	        company = ''; pdns = '-'
 	    c.data.append([
@@ -1308,8 +1315,7 @@ class AdminController(SecureController):
 	        company,
 	        r.id,
 		type,
-		colour_map.get(type, '???'),
-		nka,
+		] + colour_map.get((type, nka), ('???', type, nka)) + [
 		pdns,
 		dinners,
 		r.nick,
