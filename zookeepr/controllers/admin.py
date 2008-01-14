@@ -1277,10 +1277,11 @@ class AdminController(SecureController):
 	  ('speaker', 'k'): ['white', 'blue', 'white'],
 	  ('mini-conf', 'k'): ['white', 'blue', 'white'],
 	  ('delegate', 'k'): ['white', 'orange', 'white'],
+	  ('delegate', 'NKA'): ['black', 'white', 'light orange'],
 	  ('volunteer', 'k'): ['white', 'red', 'white'],
 	  ('organiser', 'k'): ['white', 'red', 'white'],
-	  ('tuesday', 'k'): ['white', 'green', 'white'],
-	  ('monday', 'k'): ['white', 'purple', 'white'],
+	  ('monday', 'k'): ['black', 'white', 'light purple'],
+	  ('tuesday', 'k'): ['black', 'white', 'light green'],
 	  ('media', 'k'): ['white', 'bright something', 'white'],
 	}
 
@@ -1324,8 +1325,9 @@ class AdminController(SecureController):
 		r.editortext or r.editor,
 		r.distrotext or r.distro,
 	    ])
-	c.columns = ('name', 'company', 'rego', 'type', 'colour', 'nka',
-    'pdns', 'dinners', 'nick', 'silly description', 'shell', 'editor', 'distro')
+	c.columns = ('name', 'company', 'rego', 'type', 'type colour',
+		     'type bg', 'main bg', 'pdns', 'dinners', 'nick',
+		     'silly description', 'shell', 'editor', 'distro')
 	return render_response('admin/table.myt')
 
 def paid_regos(self):
