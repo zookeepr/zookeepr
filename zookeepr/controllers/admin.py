@@ -1329,9 +1329,9 @@ class AdminController(SecureController):
             else:
 		country = '-'
 	    if type == 'organiser':
-	        prompt = '#'
+	        prompt = '# '
 	    else:
-	        prompt = '$'
+	        prompt = '$ '
 	    c.data.append([
 	        p.firstname,
 		p.lastname,

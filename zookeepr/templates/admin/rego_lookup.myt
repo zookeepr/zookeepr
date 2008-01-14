@@ -1,4 +1,4 @@
-<% h.form(h.url()) %>
+<% h.form(h.url(), method='get') %>
 <p class="entries" style="float: right">ID or name: <% h.text_field('id', size=10, tabindex=1) %></p>
 <% h.end_form() %>
 % if c.error:
