@@ -364,6 +364,36 @@ class AdminController(SecureController):
 		    ))
 	return render_response('admin/table.myt')
 
+    def speaker_emails(self):
+        """ Listing of speakers for bulk-mailing [speaker] """
+	c.data = []
+	c.noescape = True
+        speaker_list = []
+	for p in self.dbsession.query(Person).select():
+	    if not p.is_speaker(): continue
+	    speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
+        speaker_list.sort()
+
+        for (sortkey, p) in speaker_list:
+	    res = [p.firstname, p.lastname,
+	    '<a href="/admin/rego_lookup?id=%d">%d</a>' % (p.id, p.id),
+	    p.email_address]
+
+	    talks = [talk for talk in p.proposals if talk.accepted]
+	    res.append('; '.join([t.title for t in talks]))
+	    res.append('; '.join([
+		'<a href="/programme/detail?TalkID=%d">%s</a>'
+				% (t.id, t.id) for t in talks]))
+	    c.data.append(res)
+
+	c.columns = ('first name', 'last name', 'id', 'email', 'talks',
+	'ids')
+        c.text = '''
+	    List of speakers for open-day mail-out (and probably other
+	    purposes).
+	'''
+	return render_response('admin/table.myt')
+
     def speakers(self):
         """ Listing of speakers and various stuff about them [speaker] """
 	c.data = []
