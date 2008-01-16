@@ -18,11 +18,19 @@
 %   #endfor
     <record><% yesno(record) %></record>
     <publish><% yesno(publish) %></publish>
-code: <% `t.code` %>
-scheduled: <% `t.scheduled` %>
-finished: <% `t.finished` %>
-theatre: <% `t.theatre` %>
-building: <% `t.building` %>
+    <scheduled>
+      <code><% t.code %></code>
+      <time>
+        <date><% t.scheduled.strftime('%Y-%m-%d') |h%></date>
+        <dow><% t.scheduled.strftime('%a') |h%></dow>
+        <start><% t.scheduled.strftime('%H:%M') |h%></start>
+        <end><% t.finished.strftime('%H:%M') |h%></end>
+      </time>
+      <venue>
+        <building><% t.building |h%></building>
+        <theatre><% t.theatre |h%></theatre>
+      </venue>
+    </scheduled>
   </talk>
 % #endfor
 </talks>
