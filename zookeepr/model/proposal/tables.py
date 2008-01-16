@@ -46,6 +46,12 @@ proposal = Table('proposal', metadata,
                    # Is it accepted?
                    Column('accepted', Boolean),
 
+                   Column('code', Integer),
+                   Column('scheduled', DateTime),
+                   Column('finished', DateTime),
+                   Column('theatre', String()),
+                   Column('building', String()),
+
                    Column('creation_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp()),

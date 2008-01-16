@@ -12,7 +12,7 @@ class AssistanceType(object):
 
 ## Proposals
 class Proposal(object):
-    def __init__(self, id=None, title=None, type=None, assistance=None, abstract=None, url=None, attachment=None):
+    def __init__(self, id=None, title=None, type=None, assistance=None, abstract=None, url=None, attachment=None, scheduled=None):
         self.id = id
         self.title = title
         self.type = type
@@ -20,6 +20,11 @@ class Proposal(object):
         self.abstract = abstract
         self.url = url
         self.attachment = attachment
+	self.code = code
+        self.scheduled = scheduled
+        self.finished = finished
+	self.theatre = theatre
+	self.building = building
 
     def __repr__(self):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)

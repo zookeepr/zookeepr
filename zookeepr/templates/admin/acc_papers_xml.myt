@@ -18,11 +18,11 @@
 %   #endfor
     <record><% yesno(record) %></record>
     <publish><% yesno(publish) %></publish>
-code: `t.code`
-scheduled: `t.scheduled`
-finished: `t.finished`
-theatre: `t.theatre`
-building: `t.building`
+code: <% `t.code` %>
+scheduled: <% `t.scheduled` %>
+finished: <% `t.finished` %>
+theatre: <% `t.theatre` %>
+building: <% `t.building` %>
   </talk>
 % #endfor
 </talks>
