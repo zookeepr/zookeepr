@@ -1337,6 +1337,7 @@ class AdminController(SecureController):
 		p.lastname,
 	        company,
 	        r.id,
+		p.email_address,
 		type,
 		] + colour_map.get((type, nka), ['???', type, nka]) + [
 		dinners,
@@ -1351,8 +1352,8 @@ class AdminController(SecureController):
 		    r.distrotext or r.distro,
 		) if t!='-'])
 	    ])
-	c.columns = ('first name', 'surname', 'company', 'rego', 'type',
-	             'type colour', 'type bg', 'main bg',
+	c.columns = ('first name', 'surname', 'company', 'rego', 'email',
+	             'type', 'type colour', 'type bg', 'main bg',
 		     'dinners', 'pdns', 'sd', 'country',
 		     'nick', 'silly description', 'favourites')
 	if request.GET.has_key('csv'):
