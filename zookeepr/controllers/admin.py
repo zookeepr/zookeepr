@@ -4,6 +4,7 @@ from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.controllers.proposal import Proposal
 from zookeepr.model import Registration, Person, Invoice, PaymentReceived
+from zookeepr.model.registration import RegoNote
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -932,11 +933,15 @@ class AdminController(SecureController):
         """ Look up a rego, based on any of the associated IDs, showing the
 	details as would be required for rego desk. [rego] """
 	# c.talks = self.dbsession.query(Proposal).select_by(accepted=True)
-	args = request.POST or request.GET
+	args = request.POST; post=True
+	if not args:
+	    args = request.GET
+	    post = False
 	if not args or not args.has_key('id'):
 	    c.error = 'No ID given.'
 	    return render_response('admin/rego_lookup.myt')
 	id = args['id']; c.id = id; raw_id = id
+
 	try:
 	    id = int(id)
 	except:
@@ -973,6 +978,17 @@ class AdminController(SecureController):
 		return render_response('admin/rego_lookup.myt')
 	else:
 	    # conversion of id to an integer succeeded, look it up as ID
+
+	    # first, check if there's a note to be posted; in this case, ID
+	    # must be a rego ID, because that's how the form is set up.
+	    if post and args.has_key('note'):
+		r = self.dbsession.query(Registration).select_by(id=id)
+
+		n = RegoNote(note=args['note'])
+		self.dbsession.save(n)
+		r[0].notes.append(n)
+		c.signed_in_person.notes_made.append(n)
+		self.dbsession.flush()
 
 	    i = self.dbsession.query(Invoice).select_by(id=id)
 	    if i:

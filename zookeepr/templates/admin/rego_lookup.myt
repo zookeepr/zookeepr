@@ -10,7 +10,7 @@ Error looking up <% c.id |h%>:
 <p>Looked up: <% c.id |h%> (<% c.id_type %>) but found <% len(c.many) %></p>
 <table>
 %   for p in c.many:
-  <tr class="<% oddeven() %>">
+  <tr class="<% oddeven1() %>">
     <td><a href="/admin/rego_lookup?id=<% p.id |h%>" tabindex="2"><% p.firstname |h%>
 					       <% p.lastname |h%></td>
     <td>
@@ -50,6 +50,15 @@ Error looking up <% c.id |h%>:
 not registered
 %   #endif
 </p>
+
+%   if registration:
+<% h.form(h.url(), method='post') %>
+<p class="entries" style="float: right">Add note:
+<% h.text_field('note', size=10, tabindex=2, value='Here!') %>
+<% h.hidden_field('id', value=registration.id) %>
+</p>
+<% h.end_form() %>
+%   #endif
 
 %   if registration.volunteer:
 <p>Volunteering areas of interest: <% registration.volunteer |h%></p>
@@ -123,7 +132,7 @@ I will organise my own.
   </tr>
 %   for i in invoices:
 %     for ii in i.items:
-  <tr class="<% oddeven() %>">
+  <tr class="<% oddeven1() %>">
     <td align="center"><% i.id %><% yesno(i.paid(), '', ' (unpaid)')%></td>
     <td><% ii.description %></td>
     <td align="center"><% ii.qty %></td>
@@ -131,6 +140,23 @@ I will organise my own.
     <td align="right"><% h.number_to_currency(ii.total()/100.0) %></td>
   </tr>
 %     #endfor
+%   #endfor
+</table>
+% #endif
+
+% if registration.notes:
+<table width="100%">
+  <tr>
+    <th>when</td>
+    <th>note</td>
+    <th>by</td>
+  </tr>
+%   for n in registration.notes:
+  <tr class="<% oddeven2() %>">
+    <td align="left"><% n.entered.strftime('%Y-%m-%d %a %H:%M') %></td>
+    <td align="left"><% n.note |h%></td>
+    <td align="left"><% n.by.firstname |h%> <% n.by.lastname |h%></td>
+  </tr>
 %   #endfor
 </table>
 % #endif
@@ -160,7 +186,8 @@ def oddeven():
   while 1:
     yield "odd"
     yield "even"
-oddeven = oddeven().next
+oddeven1 = oddeven().next
+oddeven2 = oddeven().next
 
 class blank:
   def __getattr__(self, name):

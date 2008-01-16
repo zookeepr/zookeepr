@@ -87,3 +87,11 @@ registration = Table('registration', metadata,
                         onupdate='now'),
 
                      )
+
+rego_note = Table('rego_note', metadata,
+    Column('id', Integer, primary_key=True),
+    Column('rego_id', Integer, ForeignKey('registration.id')),
+    Column('note', String),
+    Column('by_id', Integer, ForeignKey('person.id'), nullable=False),
+    Column('entered', DateTime, default=func.current_timestamp()),
+)

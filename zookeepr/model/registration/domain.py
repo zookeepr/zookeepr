@@ -126,3 +126,11 @@ class Accommodation(object):
 
     def __repr__(self):
         return '<Accommodation name=%r option=%r beds=%d available_beds=%d cost_per_night=%r>' % (self.name, self.option, self.beds, self.get_available_beds(), self.cost_per_night)
+
+class RegoNote(object):
+    def __init__(self, note=None):
+        self.note = note
+
+    def __repr__(self):
+        return '<RegoNote note=%r>' % (self.note)
+

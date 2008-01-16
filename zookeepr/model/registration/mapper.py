@@ -1,8 +1,8 @@
 from sqlalchemy import mapper, join, relation, and_, select, func, outerjoin, backref
 
-from tables import registration, accommodation_location, accommodation_option
+from tables import registration, accommodation_location, accommodation_option, rego_note
 from zookeepr.model.billing.tables import discount_code
-from domain import Registration, Accommodation, AccommodationLocation, AccommodationOption
+from domain import Registration, Accommodation, AccommodationLocation, AccommodationOption, RegoNote
 from zookeepr.model.billing.domain import DiscountCode
 from zookeepr.model.core import Person
 
@@ -59,3 +59,14 @@ mapper(Registration, registration,
         )
     }
        )
+
+mapper(RegoNote, rego_note,
+  properties = {
+    'rego': relation(Registration,
+                     backref=backref('notes', cascade="all, delete-orphan",
+                                       lazy=True)),
+    'by': relation(Person,
+                   backref=backref('notes_made', cascade="all, delete-orphan",
+                                       lazy=True)),
+  }
+)
