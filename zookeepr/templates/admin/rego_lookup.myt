@@ -41,6 +41,12 @@ Error looking up <% c.id |h%>:
 <strong><% ', '.join([role.name for role in person.roles]) %></strong><br/>
 %   #endif
 %   if registration:
+<% h.form(h.url(), method='post') %>
+<p class="entries" style="float: right">Add note:
+<% h.text_field('note', size=30, tabindex=2, value='Here!') %>
+<% h.hidden_field('id', value=registration.id) %>
+</p>
+<% h.end_form() %>
 %     if invoices and invoices[0].paid():
 <b><% registration.type |h%></b> rego <a href="/registration/<%registration.id%>"><%registration.id%></a>
 %     else:
@@ -50,15 +56,6 @@ Error looking up <% c.id |h%>:
 not registered
 %   #endif
 </p>
-
-%   if registration:
-<% h.form(h.url(), method='post') %>
-<p class="entries" style="float: right">Add note:
-<% h.text_field('note', size=10, tabindex=2, value='Here!') %>
-<% h.hidden_field('id', value=registration.id) %>
-</p>
-<% h.end_form() %>
-%   #endif
 
 %   if registration.volunteer:
 <p>Volunteering areas of interest: <% registration.volunteer |h%></p>
