@@ -1364,6 +1364,7 @@ class AdminController(SecureController):
 	    w.writerows(c.data)
 	    res = Response(f.getvalue())
 	    res.headers['Content-type']='text/plain; charset=utf-8'
+	    res.headers['Content-Disposition']='attachment; filename="badge_data.csv"'
 	    return res
 	else:
 	    c.text = '<a href="/admin/badge_data?csv">CSV</a>'
