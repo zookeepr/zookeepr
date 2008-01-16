@@ -144,7 +144,7 @@ I will organise my own.
 </table>
 % #endif
 
-% if registration.notes:
+% if registration and registration.notes:
 <table width="100%">
   <tr>
     <th>when</td>
@@ -153,7 +153,7 @@ I will organise my own.
   </tr>
 %   for n in registration.notes:
   <tr class="<% oddeven2() %>">
-    <td align="left"><% n.entered.strftime('%Y-%m-%d %a %H:%M') %></td>
+    <td align="left"><% n.entered.strftime('%Y-%m-%d %a %H:%M:%S') %></td>
     <td align="left"><% n.note |h%></td>
     <td align="left"><% n.by.firstname |h%> <% n.by.lastname |h%></td>
   </tr>
