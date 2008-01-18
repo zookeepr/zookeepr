@@ -1263,7 +1263,7 @@ class AdminController(SecureController):
 	)
 	return render_response('admin/table.myt')
     def badge_data(self):
-        """ Data for the badges (draft, for now) [rego] """
+        """ Data for the badges [rego] """
         c.data = []
 	rr = [(r, r.person) for r in paid_regos(self)]
 	rr.sort(lambda a, b:
@@ -1320,7 +1320,7 @@ class AdminController(SecureController):
 	    if r.discount and r.discount.code.startswith('MEDIA-'):
 	        type = 'media'
 	    if (r.type in ('Fairy Penguin Sponsor', 'Professional',
-			  'Speaker', 'Mini-conf organiser',
+			  'Speaker', 'Mini-conf organiser', 'Team',
 			  'Professional - No Keynote Access')
 							  or p.is_speaker()
 			  or 'team' in [rl.name for rl in r.person.roles]):
