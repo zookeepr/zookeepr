@@ -1308,7 +1308,7 @@ class AdminController(SecureController):
 	    type = type_map.get(type, type).lower()
 	    if p.is_speaker():
 	        type = 'speaker'
-	    elif 'team' in [rl.name for rl in r.person.roles]):
+	    elif 'team' in [rl.name for rl in r.person.roles]:
 	        type = 'organiser'
 	    if r.type in keynote_types:
 	        nka = 'k'
