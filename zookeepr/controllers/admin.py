@@ -1390,6 +1390,34 @@ class AdminController(SecureController):
 	else:
 	    c.text = '<a href="/admin/badge_data?csv">CSV</a>'
 	    return render_response('admin/table.myt')
+    def regos_nonspeaker_mailmerge(self):
+        """ All [rego]s (except speaker) for the final reminder e-mail. """
+	def addmonth(d):
+	    if d>15:
+	        return '%d Jan' % d
+	    else:
+	        return '%d Feb' % d
+	c.data = []
+	for r in paid_regos(self):
+	    if r.type=='Speaker' or r.person.is_speaker():
+	        continue
+	    p = r.person
+	    if r.accommodation:
+	        accom = r.accommodation.name
+	    else:
+	        accom = ''
+            c.data.append((
+	        p.firstname,
+		p.lastname,
+		p.email_address,
+		accom,
+		addmonth(r.checkin),
+		addmonth(r.checkout),
+		r.diet,
+	    ))
+	c.columns = ('firstname', 'lastname', 'email',
+				    'accom', 'checkin', 'checkout', 'diet')
+	return render_response('admin/table.myt')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
