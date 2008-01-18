@@ -1296,6 +1296,7 @@ class AdminController(SecureController):
 	  ('delegate', 'NKA'): ['black', 'white', 'yellow 102C'],
 	  ('volunteer', 'NKA'): ['white', 'red 1797C', 'white'],
 	  ('organiser', 'NKA'): ['white', 'red 1797C', 'white'],
+	  ('organiser', 'k'): ['white', 'red 1797C', 'white'],
 	  ('monday', 'NKA'): ['black', 'white', 'light pink 236C'],
 	  ('tuesday', 'NKA'): ['black', 'white', 'light green 374C'],
 	  ('media', 'k'): ['white', 'bright pink 239C', 'white'],
@@ -1407,6 +1408,7 @@ class AdminController(SecureController):
 	    else:
 	        accom = ''
             c.data.append((
+		r.id,
 	        p.firstname,
 		p.lastname,
 		p.email_address,
@@ -1415,7 +1417,7 @@ class AdminController(SecureController):
 		addmonth(r.checkout),
 		r.diet,
 	    ))
-	c.columns = ('firstname', 'lastname', 'email',
+	c.columns = ('id', 'firstname', 'lastname', 'email',
 				    'accom', 'checkin', 'checkout', 'diet')
 	return render_response('admin/table.myt')
 
