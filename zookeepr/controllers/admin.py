@@ -1319,8 +1319,11 @@ class AdminController(SecureController):
                 dinners = (r.dinner or 0) + 1
 	    if r.discount and r.discount.code.startswith('MEDIA-'):
 	        type = 'media'
-	    if type in ('fairy penguin sponsor', 'professional', 'media',
-					 'speaker', 'mini-conf', 'organiser'):
+	    if (r.type in ('Fairy Penguin Sponsor', 'Professional',
+			  'Speaker', 'Mini-conf organiser',
+			  'Professional - No Keynote Access')
+							  or p.is_speaker()
+			  or 'team' in [rl.name for rl in r.person.roles]):
 	        company = r.company
 		pdns = 'PDNS'
             elif r.type in ("Monday pass", "Tuesday pass",):
