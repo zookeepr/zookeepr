@@ -112,7 +112,8 @@ class PPValidator(validators.FancyValidator):
 class TeesizeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
 	if (not value['teesize']) and not value['type'] in ("Monday pass",
-			    "Tuesday pass", "Monday only", "Tuesday only"):
+			    "Tuesday pass", "Monday only", "Tuesday only",
+			    "Penguin Dinner only"):
 	    raise Invalid("Please specify your T-shirt size.", value, state)
 
 class AccommodationValidator(validators.FancyValidator):
@@ -141,7 +142,8 @@ class TicketTypeValidator(validators.String):
 	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",
 	    "Team", "Monday pass", "Tuesday pass", "Monday only",
 	    "Tuesday only", 'Professional - No Keynote Access',
-	    'Hobbyist - No Keynote Access', 'Volunteer')
+	    'Hobbyist - No Keynote Access', 'Volunteer',
+	    'Penguin Dinner only')
 	if value not in valid_tickets:
 	    raise Invalid("Invalid type", value, state)
 
@@ -777,6 +779,7 @@ class PaymentOptions:
                 "Tuesday pass": [0, 0],
                 "Monday only": [4950, 4950],
                 "Tuesday only": [4950, 4950],
+                "Penguin Dinner only": [5000, 5000],
                 }
         self.dinner = 5000
 	self.miniconf_orgs = [35, 123, 15, 36, 55, 29, 18, 22, 86, 66, 46,

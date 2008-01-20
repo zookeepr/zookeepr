@@ -118,6 +118,7 @@ rego_types = (
     'Hobbyist - No Keynote Access',
     'Student - No Keynote Access',
     'Volunteer',
+    'Penguin Dinner only',
     'Unused discount codes',
 )
 rego_all = {}
