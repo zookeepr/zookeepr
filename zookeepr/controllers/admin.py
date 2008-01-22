@@ -1360,6 +1360,14 @@ class AdminController(SecureController):
 	        prompt = '# '
 	    else:
 	        prompt = '$ '
+            if p.invoices:
+		if p.invoices[0].good_payments:
+		    date = p.invoices[0].good_payments[0].creation_timestamp
+		else:
+		    date = p.invoices[0].last_modification_timestamp
+            else:
+	        date = r.last_modification_timestamp
+            date = date.strftime('%Y-%m-%d')
 	    c.data.append([
 	        p.firstname,
 		p.lastname,
@@ -1378,12 +1386,13 @@ class AdminController(SecureController):
 		    r.shelltext or r.shell,
 		    r.editortext or r.editor,
 		    r.distrotext or r.distro,
-		) if t!='-'])
+		) if t!='-']),
+		date
 	    ])
 	c.columns = ('first name', 'surname', 'company', 'rego', 'email',
 	             'type', 'type colour', 'type bg', 'main bg',
 		     'dinners', 'pdns', 'sd', 'country',
-		     'nick', 'silly description', 'favourites')
+		     'nick', 'silly description', 'favourites', 'date paid')
 	if request.GET.has_key('csv'):
 	    import csv, StringIO
 	    f = StringIO.StringIO()
