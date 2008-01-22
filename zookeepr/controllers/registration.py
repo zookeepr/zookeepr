@@ -771,6 +771,7 @@ class PaymentOptions:
 		'Hobbyist - No Keynote Access': [28160, 35200],
                 "Concession": [15400, 15400],
                 "Student": [15400, 15400],
+                "Student - No Keynote Access": [15400, 15400],
                 "Speaker": [0, 0],
                 "Mini-conf organiser": [0, 0],
                 "Team": [0, 0],

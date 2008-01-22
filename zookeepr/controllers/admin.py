@@ -1129,8 +1129,14 @@ class AdminController(SecureController):
 	rr = [
 	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
 						 for r in paid_regos(self)]
+        rr.append((('joo', 'david', 'David Joo'), None))
+        rr.append((('tan', 'yew wei', 'Yew Wei Tan'), None))
+        rr.append((('thomas', 'david', 'David Thomas'), None))
 	rr.sort()
 	for (sortkey, r) in rr:
+	    if not r:
+	        c.data.append((sortkey[-1], '-', '-', '-'))
+		continue
 	    p = r.person
 	    if r.type in ("Fairy Penguin Sponsor", "Professional",
 		 "Speaker", "Mini-conf organiser",
