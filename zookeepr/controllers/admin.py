@@ -1367,7 +1367,7 @@ class AdminController(SecureController):
 		    date = p.invoices[0].last_modification_timestamp
             else:
 	        date = r.last_modification_timestamp
-            date = date.strftime('%Y-%m-%d')
+            date = date.strftime('%Y-%m-%d %H:%M:%S')
 	    c.data.append([
 	        p.firstname,
 		p.lastname,
@@ -1389,6 +1389,7 @@ class AdminController(SecureController):
 		) if t!='-']),
 		date
 	    ])
+	c.data.sort(lambda a, b: cmp(a[-1], b[-1]))
 	c.columns = ('first name', 'surname', 'company', 'rego', 'email',
 	             'type', 'type colour', 'type bg', 'main bg',
 		     'dinners', 'pdns', 'sd', 'country',
