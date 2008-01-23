@@ -1437,6 +1437,21 @@ class AdminController(SecureController):
 				    'accom', 'checkin', 'checkout', 'diet')
 	return render_response('admin/table.myt')
 
+    def trinity(self):
+        """ All people staying at Trinity. [accom] """
+	c.data = []
+	for r in paid_regos(self):
+	    if r.accommodation and r.accommodation.name=='Trinity':
+		p = r.person
+		c.data.append((
+		    r.id,
+		    p.firstname,
+		    p.lastname,
+		    p.email_address,
+		))
+	c.columns = ('id', 'firstname', 'lastname', 'email')
+	return render_response('admin/table.myt')
+
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
 	p = r.person
