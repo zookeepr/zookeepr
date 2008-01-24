@@ -68,7 +68,7 @@ not registered
 %   PP = []
 %   for k in ('pp_adults', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11', 'kids_12_17'):
 %     count = getattr(registration, k, 0)
-%     if count:
+%     if count and count!='-':
 %       PP.append('%d&#215; %s' % (count, k.replace('_', ' ',1).replace('_', '-')))
 %     #endif
 %   #endfor
