@@ -1066,6 +1066,7 @@ class AdminController(SecureController):
 						 for r in paid_regos(self)]
 	c.data.sort()
 	c.data = [row[-1] for row in c.data]
+	c.prn = request.GET.has_key('print')
 	return render_response('admin/rego_list.myt')
 
     def dinner_diets(self):

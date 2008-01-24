@@ -1,9 +1,22 @@
+% if not c.prn:
+<a href="/admin/rego_list?print">print version</a>
+% #endif
 <table>
 <tr>
+% if c.prn:
+  <th>Lastname</th>
+  <th>Firstname</th>
+  <th>E-mail</th>
+  <th>Organisation</th>
+% else:
   <th>Name</th>
+% #endif
   <th>Rego</th>
   <th>Invoices</th>
   <th>T-shirt</th>
+% if c.prn:
+  <th>Extra shirt</th>
+% #endif
   <th>Accom</th>
   <th>Remarks</th>
 </tr>
@@ -12,9 +25,16 @@
 %   invoices = person.invoices
 %   comments = []
 <tr class="<% oddeven() %>">
+%   if c.prn:
+<td valign="top"><% person.lastname |h%></td>
+<td valign="top"><% person.firstname |h%></td>
+<td valign="top"><% person.email_address |h%></td>
+<td valign="top"><% registration.company |h%></td>
+%   else:
 <td valign="top"><% person.firstname |h%> <% person.lastname |h%>
 &lt;<a href="mailto:<% person.email_address |h%>"><% person.email_address |h%></a>&gt;
 <br><% registration.company |h%></td>
+%   #endif
 <td valign="top">
 %   if person.is_speaker():
 %     comments.append('speaker')
@@ -31,6 +51,9 @@
 %   #endif
 </td><td valign="top">
 <% registration.teesize |h%>
+%   if c.prn:
+</td><td valign="top">
+%   #endif
 %   if registration.extra_tee_count:
 <br>+<%  registration.extra_tee_count |h%>: <% registration.extra_tee_sizes %>
 %   #endif
