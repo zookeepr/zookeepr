@@ -26,6 +26,7 @@ class InvoiceController(SecureController, Read, List):
 
         This method bounces the user off to the commsecure website.
         """
+        #return render_response('registration/really_closed.myt')
         if c.invoice.person.invoices:
             if c.invoice.paid() or c.invoice.bad_payments:
                 return render_response('invoice/already.myt')
