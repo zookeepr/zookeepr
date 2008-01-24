@@ -6,8 +6,8 @@
 % if c.prn:
   <th>Lastname</th>
   <th>Firstname</th>
-  <th>E-mail</th>
   <th>Organisation</th>
+  <th>E-mail</th>
 % else:
   <th>Name</th>
 % #endif
@@ -28,8 +28,8 @@
 %   if c.prn:
 <td valign="top"><% person.lastname |h%></td>
 <td valign="top"><% person.firstname |h%></td>
-<td valign="top"><% person.email_address |h%></td>
 <td valign="top"><% registration.company |h%></td>
+<td valign="top"><% person.email_address |h%></td>
 %   else:
 <td valign="top"><% person.firstname |h%> <% person.lastname |h%>
 &lt;<a href="mailto:<% person.email_address |h%>"><% person.email_address |h%></a>&gt;
