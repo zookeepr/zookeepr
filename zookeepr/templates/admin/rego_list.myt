@@ -43,6 +43,10 @@
 %     comments.append('DC: %d%% %s' % (registration.discount.percentage, registration.discount.comment))
 %   #endif
 
+%   if registration.type in ("Monday pass", "Tuesday pass", "Monday only", "Tuesday only"):
+%     comments.append('no included dinner')
+%   #endif
+
 %   if registration.dinner:
 %     comments.append('+%d dinners'% registration.dinner)
 %   #endif

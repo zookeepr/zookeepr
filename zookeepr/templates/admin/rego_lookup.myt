@@ -93,6 +93,10 @@ plus <%  registration.extra_tee_count |h%> extra: <% registration.extra_tee_size
 
 <% yesno(registration.prevlca, '', '<p>first-time attendee</p>') %>
 
+%     if registration.type in ("Monday pass", "Tuesday pass", "Monday only", "Tuesday only"):
+No included dinner.
+%     #endif
+
 %     if registration.dinner:
 <% registration.dinner %> additional dinner tickets.
 %     #endif
