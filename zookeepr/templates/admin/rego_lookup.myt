@@ -61,6 +61,21 @@ not registered
 <p>Volunteering areas of interest: <% registration.volunteer |h%></p>
 %   #endif
 
+%   if registration.phone or person.phone:
+<p>Phone: <% registration.phone or person.phone |h%></p>
+%   #endif
+
+%   PP = []
+%   for k in ('pp_adults', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11', 'kids_12_17'):
+%     count = getattr(registration, k, 0)
+%     if count:
+%       PP.append('%d&#215; %s' % (count, k.replace('_', ' ',1).replace('_', '-')))
+%     #endif
+%   #endfor
+%   if PP:
+<p>PP: <% ", ".join(PP) %></p>
+%   #endif
+
 <p>
 %   if invoices:
 %     for i in invoices:
