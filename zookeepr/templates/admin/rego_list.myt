@@ -6,12 +6,14 @@
 % if c.prn:
   <th>Lastname</th>
   <th>Firstname</th>
-  <th>E-mail</th>
   <th>Organisation</th>
+  <th>E-mail</th>
+  <th>Type</th>
+  <th>Rego</th>
 % else:
   <th>Name</th>
-% #endif
   <th>Rego</th>
+% #endif
   <th>Invoices</th>
   <th>T-shirt</th>
 % if c.prn:
@@ -28,8 +30,8 @@
 %   if c.prn:
 <td valign="top"><% person.lastname |h%></td>
 <td valign="top"><% person.firstname |h%></td>
-<td valign="top"><% person.email_address |h%></td>
 <td valign="top"><% registration.company |h%></td>
+<td valign="top"><% person.email_address |h%></td>
 %   else:
 <td valign="top"><% person.firstname |h%> <% person.lastname |h%>
 &lt;<a href="mailto:<% person.email_address |h%>"><% person.email_address |h%></a>&gt;
@@ -42,11 +44,18 @@
 %   if person.roles:
 %     comments.append('roles: ' + ', '.join([role.name for role in person.roles]))
 %   #endif
-<b><% registration.type |h%></b> <a href="/admin/rego_lookup?id=<%registration.id%>"><%registration.id%></a>
+<b><% registration.type |h%></b>
+%   if c.prn:
+</td><td valign="top">
+%   #endif
+<a href="/admin/rego_lookup?id=<%registration.id%>"><%registration.id%></a>
 </td><td valign="top">
 %   if invoices:
 %     for i in invoices:
-<a href="/invoice/<%i.id%>"><% i.id %></a> (<% h.number_to_currency(i.total()/100.0) %><% yesno(i.paid(), '', ' <b>not paid</b>')%>)
+%       if not c.prn:
+<a href="/invoice/<%i.id%>"><% i.id %></a>
+%       #endif
+(<% h.number_to_currency(i.total()/100.0) %><% yesno(i.paid(), '', ' <b>not paid</b>')%>)
 %     #endfor
 %   #endif
 </td><td valign="top">
