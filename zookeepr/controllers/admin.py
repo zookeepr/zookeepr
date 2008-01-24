@@ -1452,6 +1452,71 @@ class AdminController(SecureController):
 	c.columns = ('id', 'firstname', 'lastname', 'email')
 	return render_response('admin/table.myt')
 
+    def rego_note_dump(self):
+        """ A list of *all* rego notes in chronological order. [rego] """
+        c.data = []
+        for n in self.dbsession.query(RegoNote).select():
+	    c.data.append((
+                n.id,
+		n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
+                '<a href="/admin/rego_lookup?%d">%s</a>'%(
+                  n.rego.id,
+		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
+		n.note,
+		n.by.firstname + ' ' + n.by.lastname,
+	    ))
+        c.columns = ('id', 'date', 'about', 'text', 'by')
+	c.noescape = True
+	return render_response('admin/table.myt')
+
+    def rego_note_interesting(self):
+        """ A list of rego notes other than just "Here!". [rego] """
+        c.text = """ A list of rego notes other than just "Here!", by
+	surname. """
+        notes = {} 
+        for n in self.dbsession.query(RegoNote).select():
+            if notes.has_key(n.rego.id):
+                notes[n.rego.id].append(n)
+            else:
+	        notes[n.rego.id] = [n]
+	notes2 = []
+        for nn in notes.values():
+	    if len(nn)==1 and nn[0].note=='Here!':
+	        continue
+	    for n in nn:
+	        notes2.append(((n.rego.person.lastname.lower(),
+				n.rego.person.firstname.lower(), n.id), n))
+	notes2.sort()
+        c.data = []
+        for (sortkey, n) in notes2:
+	    c.data.append((
+                n.id,
+		n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
+                '<a href="/admin/rego_lookup?%d">%s</a>'%(
+                  n.rego.id,
+		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
+		n.note,
+		n.by.firstname + ' ' + n.by.lastname,
+	    ))
+        c.columns = ('id', 'date', 'about', 'text', 'by')
+	c.noescape = True
+	return render_response('admin/table.myt')
+    def rego_note_stats(self):
+        """ Per-day stats of rego notes. [rego] """
+        stats = {} 
+        for n in self.dbsession.query(RegoNote).select():
+	    day = n.entered.strftime('%Y-%m-%d %a')
+	    if not stats.has_key(day):
+	        stats[day] = [0, 0]
+	    if n.note=='Here!':
+	        stats[day][0] += 1
+	    else:
+	        stats[day][1] += 1
+        c.data = [[k, v1, v2, v1+v2] for (k, (v1, v2)) in stats.items()]
+	c.data.sort()
+        c.columns = ('day', 'Here!', 'other', 'total')
+	return render_response('admin/table.myt')
+
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
 	p = r.person
