@@ -284,7 +284,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	c.accommodation_collection.sort(cmp = lambda a, b: cmp(a.id, b.id))
 
     def edit(self, id):
-        return render_response('registration/really_closed.myt')
+        if c.signed_in_person:
+	    if c.signed_in_person.id in (50581, 50582):
+	        pass
+	    else:
+		return render_response('registration/really_closed.myt')
+	else:
+	    return render_response('registration/really_closed.myt')
         if not self.is_same_person() and not AuthRole('organiser').authorise(self):
             abort(403)
 
@@ -304,7 +310,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        self.pay(id, quiet=1) #retry once
 
     def new(self):
-        return render_response('registration/really_closed.myt')
+        if c.signed_in_person:
+	    if c.signed_in_person.id in (50581, 50582):
+	        pass
+	    else:
+		return render_response('registration/really_closed.myt')
+	else:
+	    return render_response('registration/really_closed.myt')
         errors = {}
         defaults = dict(request.POST)
 
@@ -351,7 +363,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
     def pay(self, id, quiet=0):
-        return render_response('registration/really_closed.myt')
+        if c.signed_in_person:
+	    if c.signed_in_person.id in (50581, 50582):
+	        pass
+	    else:
+		return render_response('registration/really_closed.myt')
+	else:
+	    return render_response('registration/really_closed.myt')
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
