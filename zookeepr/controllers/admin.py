@@ -1553,11 +1553,18 @@ class AdminController(SecureController):
 	d = {}
 	for (name, id, type) in list:
 	    d[int(id), type.lower()] = prefix + name
+        num_files = len(d)
         for t in self.dbsession.query(Proposal).select():
 	    t.recorded_ogg = d.get((t.id, 'ogg'), None)
 	    t.recorded_spx = d.get((t.id, 'spx'), None)
+	    if d.has_key((t.id, 'ogg')): del d[t.id, 'ogg']
+	    if d.has_key((t.id, 'spx')): del d[t.id, 'spx']
 	self.dbsession.flush()
-        return Response("Success!<br>%d file(s) recorded.<br>" % len(d) 
+	num_files -= len(d)
+	leftover = ['%3d/%s'%(id, t) for (id, t) in d.keys()]
+	leftover.sort()
+        return Response("Success!<br>%d file(s) recorded<br>" % num_files
+	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
 	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
 
 def paid_regos(self):
