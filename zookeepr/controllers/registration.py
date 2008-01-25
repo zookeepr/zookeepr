@@ -285,7 +285,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def edit(self, id):
         if c.signed_in_person:
-	    if c.signed_in_person.id in (50581, 50582):
+	    if c.signed_in_person.id in (50581, 50582, 233):
 	        pass
 	    else:
 		return render_response('registration/really_closed.myt')
@@ -311,7 +311,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def new(self):
         if c.signed_in_person:
-	    if c.signed_in_person.id in (50581, 50582):
+	    if c.signed_in_person.id in (50581, 50582, 233):
 	        pass
 	    else:
 		return render_response('registration/really_closed.myt')
@@ -364,7 +364,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def pay(self, id, quiet=0):
         if c.signed_in_person:
-	    if c.signed_in_person.id in (50581, 50582):
+	    if c.signed_in_person.id in (50581, 50582, 233):
 	        pass
 	    else:
 		return render_response('registration/really_closed.myt')
