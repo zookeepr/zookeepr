@@ -197,7 +197,8 @@ class AdminController(SecureController):
 	""")
     def acc_papers(self):
         """ Accepted papers (for miniconf organisers)
-	[CFP,miniconf,speaker]"""
+	[CFP,miniconf,speaker,AV]"""
+	# note: for AV purposes, this has been made to include tutorials
 	return sql_response("""
 	  SELECT proposal.id, proposal.title,
 	    person.firstname || ' ' || person.lastname as name
@@ -208,13 +209,14 @@ class AdminController(SecureController):
 	      ON (person.id=person_proposal_map.person_id)
 	    LEFT JOIN assistance_type
 	      ON(assistance_type.id=proposal.assistance_type_id)
-	  WHERE proposal.accepted=true and proposal_type_id=1
+	  WHERE proposal.accepted=true and proposal_type_id<>2
 	  GROUP BY proposal.id, proposal.title, 
 	    person.firstname, person.lastname, assistance_type.name
 	  ORDER BY proposal.title ASC;
 	""")
     def acc_papers_by_theatre(self):
         """ Accepted papers by theatre [AV]"""
+	# note: for AV purposes, this has been made to include tutorials
 	return sql_response("""
 	  SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
 	  proposal.id, proposal.title,
@@ -224,7 +226,7 @@ class AdminController(SecureController):
 	      ON(person_proposal_map.proposal_id=proposal.id)
 	    LEFT JOIN person
 	      ON (person.id=person_proposal_map.person_id)
-	  WHERE proposal.accepted=true and proposal_type_id=1
+	  WHERE proposal.accepted=true and proposal_type_id<>2
 	  GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
 	    person.firstname, person.lastname
 	  ORDER BY theatre, scheduled ASC;
