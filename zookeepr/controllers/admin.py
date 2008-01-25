@@ -1510,7 +1510,7 @@ class AdminController(SecureController):
         """ Per-day stats of rego notes. [rego] """
         stats = {} 
         for n in self.dbsession.query(RegoNote).select():
-	    day = n.entered.strftime('%Y-%m-%d %a')
+	    day = n.entered.strftime('%Y-%m-%d %a %P')
 	    if not stats.has_key(day):
 	        stats[day] = [0, 0]
 	    if n.note=='Here!':
