@@ -211,7 +211,23 @@ class AdminController(SecureController):
 	  WHERE proposal.accepted=true and proposal_type_id=1
 	  GROUP BY proposal.id, proposal.title, 
 	    person.firstname, person.lastname, assistance_type.name
-	  ORDER BY proposal.title ASC;
+	  ORDER BY proposal.id ASC;
+	""")
+    def acc_papers_by_theatre(self):
+        """ Accepted papers by theatre [AV]"""
+	return sql_response("""
+	  SELECT theatre, to_char(scheduled, 'Mon HH24:MI') as start,
+	  proposal.id, proposal.title,
+	    person.firstname || ' ' || person.lastname as name
+	  FROM proposal
+	    LEFT JOIN person_proposal_map
+	      ON(person_proposal_map.proposal_id=proposal.id)
+	    LEFT JOIN person
+	      ON (person.id=person_proposal_map.person_id)
+	  WHERE proposal.accepted=true and proposal_type_id=1
+	  GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
+	    person.firstname, person.lastname
+	  ORDER BY theatre, scheduled ASC;
 	""")
     def acc_papers_details(self):
         """ Accepted papers with bios and abstracts [CFP] """
