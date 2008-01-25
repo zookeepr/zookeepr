@@ -216,7 +216,7 @@ class AdminController(SecureController):
     def acc_papers_by_theatre(self):
         """ Accepted papers by theatre [AV]"""
 	return sql_response("""
-	  SELECT theatre, to_char(scheduled, 'Mon HH24:MI') as start,
+	  SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
 	  proposal.id, proposal.title,
 	    person.firstname || ' ' || person.lastname as name
 	  FROM proposal
