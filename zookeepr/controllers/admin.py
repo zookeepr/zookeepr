@@ -211,7 +211,7 @@ class AdminController(SecureController):
 	  WHERE proposal.accepted=true and proposal_type_id=1
 	  GROUP BY proposal.id, proposal.title, 
 	    person.firstname, person.lastname, assistance_type.name
-	  ORDER BY proposal.id ASC;
+	  ORDER BY proposal.title ASC;
 	""")
     def acc_papers_by_theatre(self):
         """ Accepted papers by theatre [AV]"""
