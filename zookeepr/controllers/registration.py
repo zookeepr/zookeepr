@@ -692,6 +692,9 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	res.nk_open = res.nk_regos < res.nk_limit
 	res.nk_left = res.nk_limit - res.nk_regos
 
+	res.nk_open = True # force them open now that nobody can get here
+	                   # --Jiri 25.1.2008
+
 	if res.open:
 	  res.left = res.limit - res.total
 	  percent = int(round((20.0 * res.left) / res.limit) * 5)
