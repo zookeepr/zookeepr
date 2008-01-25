@@ -13,6 +13,8 @@ from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
 from zookeepr.model.billing import DiscountCode
 
+rego_closed_exceptions_list = (1, 50581, 50582, 233, 50583, 50584)
+
 class DictSet(validators.Set):
     def _from_python(self, value):
         value = super(DictSet, self)._from_python(value, state)
@@ -285,7 +287,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def edit(self, id):
         if c.signed_in_person:
-	    if c.signed_in_person.id in (50581, 50582, 233):
+	    if c.signed_in_person.id in rego_closed_exceptions_list:
 	        pass
 	    else:
 		return render_response('registration/really_closed.myt')
@@ -311,7 +313,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def new(self):
         if c.signed_in_person:
-	    if c.signed_in_person.id in (50581, 50582, 233):
+	    if c.signed_in_person.id in rego_closed_exceptions_list:
 	        pass
 	    else:
 		return render_response('registration/really_closed.myt')
@@ -364,7 +366,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def pay(self, id, quiet=0):
         if c.signed_in_person:
-	    if c.signed_in_person.id in (50581, 50582, 233):
+	    if c.signed_in_person.id in rego_closed_exceptions_list:
 	        pass
 	    else:
 		return render_response('registration/really_closed.myt')
