@@ -211,7 +211,7 @@ class AdminController(SecureController):
 	  WHERE proposal.accepted=true and proposal_type_id=1
 	  GROUP BY proposal.id, proposal.title, 
 	    person.firstname, person.lastname, assistance_type.name
-	  ORDER BY proposal.id ASC;
+	  ORDER BY proposal.title ASC;
 	""")
     def acc_papers_details(self):
         """ Accepted papers with bios and abstracts [CFP] """
@@ -1463,7 +1463,7 @@ class AdminController(SecureController):
 	    c.data.append((
                 n.id,
 		n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
-                '<a href="/admin/rego_lookup?%d">%s</a>'%(
+                '<a href="/admin/rego_lookup?id=%d">%s</a>'%(
                   n.rego.id,
 		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
 		n.note,
@@ -1496,7 +1496,7 @@ class AdminController(SecureController):
 	    c.data.append((
                 n.id,
 		n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
-                '<a href="/admin/rego_lookup?%d">%s</a>'%(
+                '<a href="/admin/rego_lookup?id=%d">%s</a>'%(
                   n.rego.id,
 		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
 		n.note,
