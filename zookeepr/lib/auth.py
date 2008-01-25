@@ -190,11 +190,11 @@ class AuthFunc(object):
         return result
 
 class AuthTrue(object):
-    def authorise(self):
+    def authorise(self, cls):
         return True
 
 class AuthFalse(object):
-    def authorise(self):
+    def authorise(self, cls):
         return False
 
 class AuthRole(object):

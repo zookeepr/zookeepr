@@ -52,6 +52,9 @@ proposal = Table('proposal', metadata,
                    Column('theatre', String()),
                    Column('building', String()),
 
+                   Column('recorded_ogg', String()),
+                   Column('recorded_spx', String()),
+
                    Column('creation_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp()),
