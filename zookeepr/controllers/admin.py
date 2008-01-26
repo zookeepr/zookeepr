@@ -217,7 +217,7 @@ class AdminController(SecureController):
     def acc_papers_by_theatre(self):
         """ Accepted papers by theatre [AV]"""
 	# note: for AV purposes, this has been made to include tutorials
-	return sql_response("""
+	c.data = sql_data("""
 	  SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
 	  proposal.id, proposal.title,
 	    person.firstname || ' ' || person.lastname as name,
@@ -238,6 +238,46 @@ class AdminController(SecureController):
 	    registration.speaker_video_release
 	  ORDER BY theatre, scheduled ASC;
 	""")
+	for i in xrange(1, len(c.data)).__reversed__():
+	    if c.data[i][2] == c.data[i-1][2]:
+	        c.data[i] = ('', )*4 + tuple(c.data[i])[4:]
+	c.columns = ('theatre', 'start', 'id', 'title', 'speaker',
+						     'record?', 'publish?')
+	return render_response('admin/table.myt')
+
+    def theatre_running_sheet(self):
+        """ Accepted papers by theatre, with abstracts and bios [AV]"""
+	# note: for AV purposes, this has been made to include tutorials
+	c.data = sql_data("""
+	  SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
+	  proposal.id, proposal.title, proposal.abstract,
+	    person.firstname || ' ' || person.lastname as name,
+	    person.bio,
+	    CASE WHEN registration.speaker_record THEN 'yes' ELSE 'NO' END
+	    as "record?",
+	    CASE WHEN registration.speaker_video_release THEN 'yes' ELSE 'NO' END
+	    as "publish?"
+	  FROM proposal
+	    LEFT JOIN person_proposal_map
+	      ON(person_proposal_map.proposal_id=proposal.id)
+	    LEFT JOIN person
+	      ON (person.id=person_proposal_map.person_id)
+	    LEFT JOIN registration
+	      ON (registration.person_id = person.id)
+	  WHERE proposal.accepted=true and proposal_type_id<>2
+	  GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
+	    proposal.abstract, person.firstname, person.lastname,
+	    person.bio, registration.speaker_record,
+	    registration.speaker_video_release
+	  ORDER BY theatre, scheduled ASC;
+	""")
+	for i in xrange(1, len(c.data)).__reversed__():
+	    if c.data[i][2] == c.data[i-1][2]:
+	        c.data[i] = ('', )*5 + tuple(c.data[i])[5:]
+	c.columns = ('theatre', 'start', 'id', 'title', 'abstract',
+				   'speaker', 'bio', 'record?', 'publish?')
+	return render_response('admin/table.myt')
+
     def acc_papers_details(self):
         """ Accepted papers with bios and abstracts [CFP] """
 	return sql_response("""
