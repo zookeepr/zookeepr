@@ -1642,7 +1642,7 @@ class AdminController(SecureController):
 	for r in random.sample(delegates, count):
 	    p = r.person
 	    c.data.append((
-	      p.firstname + ' ' + p.lastname, p.id
+	      p.firstname + ' ' + p.lastname,
 	    ))
 	return render_response('admin/table.myt')
 
