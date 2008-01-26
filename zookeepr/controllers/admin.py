@@ -220,15 +220,22 @@ class AdminController(SecureController):
 	return sql_response("""
 	  SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
 	  proposal.id, proposal.title,
-	    person.firstname || ' ' || person.lastname as name
+	    person.firstname || ' ' || person.lastname as name,
+	    CASE WHEN registration.speaker_record THEN 'yes' ELSE 'NO' END
+	    as "record?",
+	    CASE WHEN registration.speaker_video_release THEN 'yes' ELSE 'NO' END
+	    as "publish?"
 	  FROM proposal
 	    LEFT JOIN person_proposal_map
 	      ON(person_proposal_map.proposal_id=proposal.id)
 	    LEFT JOIN person
 	      ON (person.id=person_proposal_map.person_id)
+	    LEFT JOIN registration
+	      ON (registration.person_id = person.id)
 	  WHERE proposal.accepted=true and proposal_type_id<>2
 	  GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
-	    person.firstname, person.lastname
+	    person.firstname, person.lastname, registration.speaker_record,
+	    registration.speaker_video_release
 	  ORDER BY theatre, scheduled ASC;
 	""")
     def acc_papers_details(self):
