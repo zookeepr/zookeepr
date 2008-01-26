@@ -1001,6 +1001,33 @@ class AdminController(SecureController):
 
 	return render_response('admin/table.myt')
 
+    def bulk_checkin(self):
+        """ bulk entry of rego_note info [rego] """
+        if request.POST:
+	    args = request.POST
+	    c.data = []
+	    for id in re.split(r'[ \n\t-]+', args['ids']):
+	      if id=='': continue
+	      try:
+		  id = int(id)
+	      except:
+		  c.data.append((id, 'ERROR: must be a number'))
+	      else:
+		  r = self.dbsession.query(Registration).get_by(id=id)
+		  if r:
+		      n = RegoNote(note=args['note'])
+		      n.entered=args['entered']
+		      self.dbsession.save(n)
+		      r.notes.append(n)
+		      c.signed_in_person.notes_made.append(n)
+		      c.data.append((id, 'OK: %s %s' %
+			    (r.person.firstname, r.person.lastname)))
+		  else:
+		      c.data.append((id, 'ERROR: not found'))
+	    self.dbsession.flush()
+	    return render_response('admin/table.myt')
+	else:
+	    return render_response('admin/bulk_checkin.myt')
     def rego_lookup(self):
         """ Look up a rego, based on any of the associated IDs, showing the
 	details as would be required for rego desk. [rego] """
@@ -1554,7 +1581,7 @@ class AdminController(SecureController):
 	        notes[n.rego.id] = [n]
 	notes2 = []
         for nn in notes.values():
-	    if len(nn)==1 and nn[0].note=='Here!':
+	    if len(nn)==1 and nn[0].note.strip() in ('Here!', 'Here! (bulk)'):
 	        continue
 	    for n in nn:
 	        notes2.append(((n.rego.person.lastname.lower(),
@@ -1582,7 +1609,7 @@ class AdminController(SecureController):
 	    day = n.entered.strftime('%Y-%m-%d %a %P')
 	    if not stats.has_key(day):
 	        stats[day] = [0, 0]
-	    if n.note=='Here!':
+	    if n.note.strip() in ('Here!', 'Here! (bulk)'):
 	        stats[day][0] += 1
 	    else:
 	        stats[day][1] += 1
