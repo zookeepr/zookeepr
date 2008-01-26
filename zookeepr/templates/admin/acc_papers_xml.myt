@@ -18,6 +18,7 @@
 %   #endfor
     <record><% yesno(record) %></record>
     <publish><% yesno(publish) %></publish>
+%   if t.scheduled:
     <scheduled>
       <code><% t.code %></code>
       <time>
@@ -31,6 +32,7 @@
         <theatre><% t.theatre |h%></theatre>
       </venue>
     </scheduled>
+%   #endif
   </talk>
 % #endfor
 </talks>
