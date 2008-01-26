@@ -1,5 +1,5 @@
 from datetime import datetime
-import re, urllib
+import random, re, urllib
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
@@ -1619,13 +1619,14 @@ class AdminController(SecureController):
 	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
 
     def random_delegate(self):
-        """ Pick a random delegate. """
-        count = request.GET.get('count', 0) or 1
+        """ Pick a random delegate (or append ?count=X to the URL to pick
+	several). """
+        count = int(request.GET.get('count', 0) or 1)
 	if count==1:
 	    c.text = '1 delegate'
         else:
 	    c.text = '%d delegates' % count
-	c.text = """ randomly selected from the Fairy Penguin Sponsor,
+	c.text += """ randomly selected from the Fairy Penguin Sponsor,
 	Professional, Hobbyist, Concession, Student, Speaker, Mini-conf
 	organiser and the No Keynote Access tickets."""
         delegates = [r for r in paid_regos(self) if r.type in (
@@ -1637,7 +1638,8 @@ class AdminController(SecureController):
 	if count > len(delegates):
 	    return Response("%d is too many!" % count)
 	c.data = []
-	for r in delegates:
+	random.seed()
+	for r in random.sample(delegates, count):
 	    p = r.person
 	    c.data.append((
 	      p.firstname + ' ' + p.lastname, p.id
