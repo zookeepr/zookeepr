@@ -256,7 +256,9 @@ class AdminController(SecureController):
 	    CASE WHEN registration.speaker_record THEN 'yes' ELSE 'NO' END
 	    as "record?",
 	    CASE WHEN registration.speaker_video_release THEN 'yes' ELSE 'NO' END
-	    as "publish?"
+	    as "publish?",
+	    CASE WHEN registration.speaker_slides_release THEN 'yes' ELSE 'NO' END
+	    as "slides?"
 	  FROM proposal
 	    LEFT JOIN person_proposal_map
 	      ON(person_proposal_map.proposal_id=proposal.id)
@@ -268,14 +270,15 @@ class AdminController(SecureController):
 	  GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
 	    proposal.abstract, person.firstname, person.lastname,
 	    person.bio, registration.speaker_record,
-	    registration.speaker_video_release
+	    registration.speaker_video_release,
+	    registration.speaker_slides_release
 	  ORDER BY theatre, scheduled ASC;
 	""")
 	for i in xrange(1, len(c.data)).__reversed__():
 	    if c.data[i][2] == c.data[i-1][2]:
 	        c.data[i] = ('', )*5 + tuple(c.data[i])[5:]
 	c.columns = ('theatre', 'start', 'id', 'title', 'abstract',
-				   'speaker', 'bio', 'record?', 'publish?')
+			'speaker', 'bio', 'record?', 'publish?', 'slides?')
 	return render_response('admin/table.myt')
 
     def acc_papers_details(self):
