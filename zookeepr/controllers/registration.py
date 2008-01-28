@@ -13,7 +13,7 @@ from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
 from zookeepr.model.billing import DiscountCode
 
-rego_closed_exceptions_list = (1, )
+rego_closed_exceptions_list = (1, 419, 50589)
 
 class DictSet(validators.Set):
     def _from_python(self, value):

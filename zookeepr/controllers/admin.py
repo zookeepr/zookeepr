@@ -524,8 +524,9 @@ class AdminController(SecureController):
 	        res.append(acc)
 	      else:
 	        res.append('-')
+	      res.append('; '.join([n.note for n in p.registration.notes]))
 	    else:
-	      res+=['no rego', '', 'no rego']
+	      res+=['no rego', '', 'no rego', '']
 	    #res.append(`dir(p.registration)`)
 	    c.data.append(res)
 
@@ -535,7 +536,7 @@ class AdminController(SecureController):
 	c.data.sort(my_cmp)
 
 	c.columns = ('name', 'bio', 'talk', 'assist',
-	             'rego', 'c', 'accom')
+	             'rego', 'c', 'accom', 'rego notes')
         c.text = '''
 	  Fields:
 	    bio = length of bio (characters);
