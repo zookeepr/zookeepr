@@ -1603,6 +1603,37 @@ class AdminController(SecureController):
 	c.noescape = True
 	return render_response('admin/table.myt')
 
+    def rego_note_here(self):
+        """ A list of rego notes other than just "Here!". [rego] """
+        c.text = """ A list of "Here!" rego notes by surname. """
+        notes = {} 
+        for n in self.dbsession.query(RegoNote).select():
+            if notes.has_key(n.rego.id):
+                notes[n.rego.id].append(n)
+            else:
+	        notes[n.rego.id] = [n]
+	notes2 = []
+        for nn in notes.values():
+	    for n in nn:
+	        if n.note.strip() in ('Here!', 'Here! (bulk)'):
+	            notes2.append(((n.rego.person.lastname.lower(),
+				n.rego.person.firstname.lower(), n.id), n))
+	notes2.sort()
+        c.data = []
+        for (sortkey, n) in notes2:
+	    c.data.append((
+                n.id,
+		n.entered.strftime('%a %P'),
+                '<a href="/admin/rego_lookup?id=%d">%s</a>'%(
+                  n.rego.id,
+		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
+		n.note,
+		n.by.firstname + ' ' + n.by.lastname,
+	    ))
+        c.columns = ('id', 'date', 'about', 'text', 'by')
+	c.noescape = True
+	return render_response('admin/table.myt')
+
     def rego_note_stats(self):
         """ Per-day stats of rego notes. [rego] """
         stats = {} 
