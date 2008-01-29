@@ -1677,6 +1677,12 @@ class AdminController(SecureController):
 	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
 	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
 
+    def make_wiki_name(self):
+        """ Make the wiki_name field out of proposal title. [AV] """
+        for t in self.dbsession.query(Proposal).select():
+	    t.wiki_name = urllib.quote_plus(t.title.replace(' ', '_'))
+        return Response("Success")
+
     def random_delegate(self):
         """ Pick a random delegate (or append ?count=X to the URL to pick
 	several). """

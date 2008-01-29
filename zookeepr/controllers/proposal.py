@@ -70,6 +70,7 @@ class ProposalController(SecureController, View, Modify):
                    "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer'), AuthRole('organiser')],
+                   "attach": [AuthRole('organiser')],
                    }
     anon_actions = ['talk']
 

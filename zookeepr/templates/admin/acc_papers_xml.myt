@@ -32,6 +32,12 @@
         <theatre><% t.theatre |h%></theatre>
       </venue>
     </scheduled>
+%   elif t.id>=500:
+    <scheduled>
+      <time>
+        <dow><% {5: 'Sun', 6: 'Mon', 7: 'Tue'}[t.id / 100] |h%></dow>
+      </time>
+    </scheduled>
 %   #endif
   </talk>
 % #endfor
