@@ -1677,9 +1677,9 @@ class AdminController(SecureController):
 	        if d.has_key((k, 'spx')):
 		    spx.append((d[k, 'spx'], label))
 		    del d[k, 'spx']
-	    t.recorded_ogg = ', '.join(['<a href="%s">OGG%s</a>'%(url, label)
+	    t.recorded_ogg = ' '.join(['<a href="%s">OGG%s</a>'%(url, label)
 						       for (url, label) in ogg])
-	    t.recorded_spx = ', '.join(['<a href="%s">SPX%s</a>'%(url, label)
+	    t.recorded_spx = ' '.join(['<a href="%s">SPX%s</a>'%(url, label)
 						       for (url, label) in spx])
 	self.dbsession.flush()
 	num_files -= len(d)
