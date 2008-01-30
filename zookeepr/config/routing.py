@@ -60,6 +60,7 @@ def make_map():
 
     # admin controller
     m.connect('/admin/:action', controller='admin')
+    m.connect('/programme/mini-confs/recorded', controller='admin', action='recorded_miniconf_talks')
 
     # OpenDay
     m.connect('openday', '/OpenDay', controller='openday', action='new')
