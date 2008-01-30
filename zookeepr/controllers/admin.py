@@ -25,7 +25,7 @@ class AdminController(SecureController):
 			      'logged_in', 'permissions', 'start_response']
 
 	# get the ones in this controller by introspection.
-	funcs = [('/admin/'+x, getattr(self, x).__doc__)
+	funcs = [('/admin/'+x, getattr(self, x).__doc__ or '')
 		       for x in res if x[0] != '_' and x not in exceptions]
 
         # other functions should be appended to the list here.
@@ -1712,10 +1712,18 @@ class AdminController(SecureController):
         c.data.sort()
 	c.noescape = True
 	c.text = """
+	<p><b>Delegates:</b> please check the mini-conf webpages for titles
+	of these talks.
+	</p>
 	<p><b>Mini-conf organisers:</b> please check these recordings and
 	copy the links to your wikis and webpages with the appropriate
 	talk titles and speaker names.</p>
 	"""
+	return render_response('admin/table.myt')
+
+    def foo(self):
+	import pylons
+        c.data = pylons.config.response_defaults.items()
 	return render_response('admin/table.myt')
 
     def make_wiki_name(self):
@@ -1751,6 +1759,17 @@ class AdminController(SecureController):
 	      p.firstname + ' ' + p.lastname,
 	    ))
 	return render_response('admin/table.myt')
+    def slides_uploaded_wrongly(self):
+        """ Slides that were uploaded but shouldn't have been. """
+	return sql_response("""
+	select attachment.proposal_id, proposal.title
+	from proposal, registration, person_proposal_map, attachment
+	where not registration.speaker_slides_release
+	  and registration.person_id = person_proposal_map.person_id
+	  and person_proposal_map.proposal_id = attachment.proposal_id
+	  and proposal.id=attachment.proposal_id 
+	  and proposal.accepted;
+	""")
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
