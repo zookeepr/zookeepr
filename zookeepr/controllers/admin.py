@@ -1693,7 +1693,7 @@ class AdminController(SecureController):
         """ List of recordings of mini-conf talks. [AV,miniconf] """
         c.data = []
         for t in self.dbsession.query(Proposal).select():
-	    if t.id < 500: continue
+	    if t.id < 500 or t.id > 800: continue
 	    if t.recorded_ogg or t.recorded_spx:
 		if t.recorded_ogg:
 		    ogg_link = '[%s]' % t.recorded_ogg
@@ -1719,11 +1719,6 @@ class AdminController(SecureController):
 	copy the links to your wikis and webpages with the appropriate
 	talk titles and speaker names.</p>
 	"""
-	return render_response('admin/table.myt')
-
-    def foo(self):
-	import pylons
-        c.data = pylons.config.response_defaults.items()
 	return render_response('admin/table.myt')
 
     def make_wiki_name(self):
