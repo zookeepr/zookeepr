@@ -1765,6 +1765,13 @@ class AdminController(SecureController):
 	  and proposal.id=attachment.proposal_id 
 	  and proposal.accepted;
 	""")
+    def total_opendaydrag(self):
+        """ Total of the open day drag entries. """
+	res = 0
+	for r in paid_regos(self):
+	    res += (r.opendaydrag or 0)
+	c.data = [[res]]
+	return render_response('admin/table.myt')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
