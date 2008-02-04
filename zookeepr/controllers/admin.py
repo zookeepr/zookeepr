@@ -1801,11 +1801,11 @@ class AdminController(SecureController):
         for t in self.dbsession.query(Proposal).select():
 	    if d.has_key(t.id):
 	        if len(d[t.id])==1:
-	            t.slides_link = '<a href="%s%s">slides</a>'%(prefix,
+	            t.slides_link = '<a href="%s%s">Slides</a>'%(prefix,
 								   d[t.id][0])
 	        else:
 	            t.slides_link = ' '.join([
-	                '<a href="%s%s">slides&nbsp;%d</a>'
+	                '<a href="%s%s">Slides&nbsp;%d</a>'
 			% (prefix, name, number)
 	                for (name, number) in zip(d[t.id], xrange(1, 1000))])
                 del d[t.id]
@@ -1817,6 +1817,27 @@ class AdminController(SecureController):
         return Response("Success!<br>"
 	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
 	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
+
+    def talks_without_slides(self):
+        """ Talks that do not have slides """
+	c.data = []
+	for t in self.dbsession.query(Proposal).select():
+	    if not t.accepted: continue
+	    if t.slides_link: continue
+	    release = []
+	    for p in t.people:
+	        if p.registration:
+		    release.append({True: 'yes', False: 'NO', None: '?'}[p.registration.speaker_slides_release])
+		else:
+		    release.append('??')
+	    c.data.append((
+	      t.id,
+	      t.title,
+	      ', '.join(['%s %s <%s>'%(p.firstname,p.lastname,p.email_address) 
+							   for p in t.people]),
+	      ', '.join(release),
+	    ))
+	return render_response('admin/table.myt')
 
     def total_opendaydrag(self):
         """ Total of the open day drag entries. """
