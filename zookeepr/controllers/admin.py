@@ -1,5 +1,5 @@
 from datetime import datetime
-import random, re, urllib
+import os, random, re, urllib
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
@@ -1660,7 +1660,7 @@ class AdminController(SecureController):
 	# This will be prepended to the bare filename:
 	prefix = index
 	d = {}
-	for day in ('Mon', 'Tue', 'Wed', 'Thu', 'Fri'):
+	for day in ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'):
 	    list = urllib.urlopen(index+day+'/').read()
 	    list = re.findall(r'(mel8-([\d]{3}[ab]?).(ogg|spx))', list)
 	    for (name, id, type) in list:
@@ -1683,7 +1683,7 @@ class AdminController(SecureController):
 						       for (url, label) in spx])
 	self.dbsession.flush()
 	num_files -= len(d)
-	leftover = ['%3d/%s'%(id, t) for (id, t) in d.keys()]
+	leftover = ['%s/%s'%(id, t) for (id, t) in d.keys()]
 	leftover.sort()
         return Response("Success!<br>%d file(s) recorded<br>" % num_files
 	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
@@ -1765,6 +1765,59 @@ class AdminController(SecureController):
 	  and proposal.id=attachment.proposal_id 
 	  and proposal.accepted;
 	""")
+
+    def dump_slides(self):
+        """ Dump slides into a fixed directory """
+	c.data = []
+        for t in self.dbsession.query(Proposal).select():
+	    if not t.accepted: continue
+	    for a in t.attachments:
+	        prefix = "%03d-" % t.id
+		if a.filename.startswith(prefix):
+		    fname = a.filename
+		else:
+		    fname = prefix + a.filename
+		if fname == '194-194_lca08_Weatherall_StopintheNameofLaw.odp':
+		    fname = '194-lca08_Weatherall_StopintheNameofLaw.odp'
+		f = file('/home/jiri/slides/%s' % fname, 'w')
+		f.write(a.content)
+		f.close()
+	        c.data.append((t.id, a.filename, fname))
+	return render_response('admin/table.myt')
+
+    def slides_ping(self):
+        """ Update the list of links to slides. [AV] """
+	# This directory should contain the slides that have been uploaded
+	index = '/home/jiri/slides/'
+	# This will be prepended to the bare filename:
+	prefix = 'http://mirror.linux.org.au/pub/linux.conf.au/2008/slides/'
+	d = {}
+	for name in os.listdir(index):
+	    id = int(name[:3])
+	    if d.has_key(id):
+	        d[id].append(name)
+            else:
+	        d[id]=[name]
+        for t in self.dbsession.query(Proposal).select():
+	    if d.has_key(t.id):
+	        if len(d[t.id])==1:
+	            t.slides_link = '<a href="%s%s">slides</a>'%(prefix,
+								   d[t.id][0])
+	        else:
+	            t.slides_link = ' '.join([
+	                '<a href="%s%s">slides&nbsp;%d</a>'
+			% (prefix, name, number)
+	                for (name, number) in zip(d[t.id], xrange(1, 1000))])
+                del d[t.id]
+	    else:
+	        t.slides_link = ''
+	self.dbsession.flush()
+	leftover = d.values()
+	leftover.sort()
+        return Response("Success!<br>"
+	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
+	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
+
     def total_opendaydrag(self):
         """ Total of the open day drag entries. """
 	res = 0

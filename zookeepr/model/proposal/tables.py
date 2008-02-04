@@ -55,6 +55,7 @@ proposal = Table('proposal', metadata,
                    Column('recorded_ogg', String()),
                    Column('recorded_spx', String()),
                    Column('wiki_name', String()),
+                   Column('slides_link', String()),
 
                    Column('creation_timestamp', DateTime,
                         nullable=False,
