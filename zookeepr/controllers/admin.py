@@ -1835,8 +1835,10 @@ class AdminController(SecureController):
 	      t.title,
 	      ', '.join(['%s %s <%s>'%(p.firstname,p.lastname,p.email_address) 
 							   for p in t.people]),
+	      ', '.join([p.firstname for p in t.people]),
 	      ', '.join(release),
 	    ))
+	c.columns = 'id', 'title', 'emails', 'firstnames', 'consents'
 	return render_response('admin/table.myt')
 
     def total_opendaydrag(self):
