@@ -1799,6 +1799,7 @@ class AdminController(SecureController):
             else:
 	        d[id]=[name]
 	talks = 0; num_files = 0
+	alerts = ''
         for t in self.dbsession.query(Proposal).select():
 	    if d.has_key(t.id):
 	        if len(d[t.id])==1:
@@ -1810,6 +1811,9 @@ class AdminController(SecureController):
 			% (prefix, name, number)
 	                for (name, number) in zip(d[t.id], xrange(1, 1000))])
 		talks += 1; num_files += len(d[t.id])
+		if t.id==117:
+		    alerts += """<br><br>
+				  Tell kellyd that edale's slides are up!!!"""
                 del d[t.id]
 	    else:
 	        t.slides_link = ''
@@ -1819,7 +1823,8 @@ class AdminController(SecureController):
         return Response("Success!<br>"
 	       + "%d file(s) recorded for %d talks<br>" % (num_files, talks)
 	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
-	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
+	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") 
+	       + alerts)
 
     def talks_without_slides(self):
         """ Talks that do not have slides """
