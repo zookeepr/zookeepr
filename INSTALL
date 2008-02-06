@@ -1,47 +1,97 @@
 ====== Zookeepr Install Documentation ======
 Authors: Lindsay Holmwood <auxesis@gmail.com>, Jamie Wilkinson <jaq@spacepants.org>
+Modified by Jiri Baum <jiri@baum.com.au> 6.2.2008
 
-This document details how to set up the zookeepr development environment, installing zookeepr, and running zookeepr.
+This document details how to set up the zookeepr development environment,
+installing zookeepr, and running zookeepr.
 
 ====== Setting up the development environment for Python 2.4 ======
 
-These steps will set up the development environment under Ubuntu Dapper in your home directory. It assumes that you have sudo access to your machine. 
+These steps will set up the development environment under Ubuntu Dapper in
+your home directory. It assumes that you have sudo access to your machine. 
 
 Requirements:
- * bzr installed
+ - bzr installed
 
 Tested on:
- * Ubuntu Dapper
- * Debian Testing
+ - Ubuntu Dapper
+ - Debian Testing
 
 Debian-specific notes:
- * Repoint the /usr/bin/python symlink to /usr/bin/python2.4
- * Remove python2.4-sqlalchemy
+ - Repoint the /usr/bin/python symlink to /usr/bin/python2.4
+   - is that still necessary? (python2.4 should now be the default...)
+ - Remove python2.4-sqlalchemy
+   - is that still necessary?
 
-Steps:
- * Remove python-setuptools, python2.4-setuptools if they are installed
- * Check that python2.4-dev, python2.4-profiler, python2.4-pysqlite2, python2.4-paramiko are installed
- * Download virtual Python from http://peak.telecommunity.com/dist/virtual-python.py. 
- * Run `python virtual-python.py`. This will set up a Python installation in your home directory.
- * Download ez_setup.py from http://peak.telecommunity.com/dist/ez_setup.py
- * Run python `ez_setup.py`. This will install setup_tool, the Python package manager.
- * Check out zookeepr `bzr branch http://repo.spacepants.org/zookeepr/zookeepr.dev zookeepr`
- * run `python setup.py develop` from within the zookeepr source tree. This will pull down all necessary dependencies for zookeepr
- * run `nosetests` to see whether you have any libraries missing
+STEPS:
+=====
+
+ - Remove python-setuptools, python2.4-setuptools if they are installed
+   - is that still necessary?
+ - Check that python2.4-dev, python2.4-profiler, python2.4-pysqlite2,
+   python2.4-paramiko are installed
+ - MoinMoin has to be newer than in Debian etch - I'm told 1.5.4 will do
+   it, I've gone with 1.5.6 (newest at the time lca2008 was setting up ZK)
+
+Virtual python - I (JB) wouldn't recommend it unless you actually need it;
+normally, you'd skip these two steps.
+ - Download virtual Python from
+   http://peak.telecommunity.com/dist/virtual-python.py. 
+ - Run `python virtual-python.py`. This will set up a Python installation
+   in your home directory.
+
+EZ setup:
+ - Download ez_setup.py from http://peak.telecommunity.com/dist/ez_setup.py
+ - Run python `ez_setup.py`. This will install setup_tool, the Python
+   package manager.
+
+Get zookeepr - though if you're reading this file, I guess you've already
+done that :-)
+
+ - Currently, the best branch to get is http://lists.mel8ourne.org/zookeepr
+   - bzr branch http://lists.mel8ourne.org/zookeepr
+   - this is a bzr branch only, there is no web page there
+ - The branch location likely to change once we have a zookeepr project
+   separate from lca (and if we don't, the best branch will shift to lca09)
+
+Making sure you have all the dependencies:
+ - run `python setup.py develop` from within the zookeepr source tree. This
+   will pull down all necessary dependencies for zookeepr
+
+ - Run `nosetests` to see whether you have any libraries missing. However,
+   while nosetests reports real problems, it will also tend to report
+   illusory problems that don't actually exist.
+
+Misc notes:
+  - I've had to do "ln -s zookeepr.egg-info/moin", not sure why
+  -  I've had to change .../MoinMoin/auth.py line 185 to handle None
+     explicitly; presumably that's actually a bug somewhere else...
+  - I've also had a problem because my browser is set to accept Czech
+    first, then English - moin was giving out localised utf-8 strings, but
+    zookeepr wasn't converting them back to unicode. Eventually, something
+    tried to convert them to unicode assuming they're ascii and choked on
+    them. As a work-around, I've changed the default encoding in
+    lib/python2.4/site.py to utf-8, but someone should fix that properly
+    sometime...
 
 ====== Installing and setting up Zookeepr ======
 
 From within zookeepr/zookeepr:
- * Install zookeepr using easy_install: `easy_install zookeepr`
- * Make a config file as follows: `paster make-config zookeepr config.ini`
- * Tweak config.ini file as appropriate 
- * Setup the application: `paster setup-app config.ini`
+ - Install zookeepr using easy_install: `easy_install zookeepr`
+ - Make a config file as follows: `paster make-config zookeepr config.ini`
+ - Tweak config.ini file as appropriate 
+     - change "sqlite://filename=" to "sqlite:///"
+     - add a line to the app:main section to set the dynamic_html_dir, for
+       instance to %(here)/data/dynamic_html
+ - cp test.db somedb.db
+ - Setup the application: `paster setup-app config.ini`
 
 You are good to go!
 
 ====== Running zookeepr ======
 
 From within zookeepr/
- * Run `paster serve -v --reload development.ini`
- * Point your browser to http://localhost:5000/
+ - Run `paster serve -v --reload development.ini`
+   - or config.ini or whatever .ini file you're testing at the time
+ - Point your browser to http://localhost:5000/
 
