@@ -1798,6 +1798,7 @@ class AdminController(SecureController):
 	        d[id].append(name)
             else:
 	        d[id]=[name]
+	talks = 0; num_files = 0
         for t in self.dbsession.query(Proposal).select():
 	    if d.has_key(t.id):
 	        if len(d[t.id])==1:
@@ -1808,6 +1809,7 @@ class AdminController(SecureController):
 	                '<a href="%s%s">Slides&nbsp;%d</a>'
 			% (prefix, name, number)
 	                for (name, number) in zip(d[t.id], xrange(1, 1000))])
+		talks += 1; num_files += len(d[t.id])
                 del d[t.id]
 	    else:
 	        t.slides_link = ''
@@ -1815,6 +1817,7 @@ class AdminController(SecureController):
 	leftover = d.values()
 	leftover.sort()
         return Response("Success!<br>"
+	       + "%d file(s) recorded for %d talks<br>" % (num_files, talks)
 	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
 	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
 
