@@ -1,0 +1,83 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <title>Structure of zookeepr</title>
+</head>
+<body>
+<h2>How a request is handled</h2>
+<ul>
+  <li>First it goes into <tt>config/middleware.py</tt> which does
+various miscellaneous stuff, loading the config and environment, <br>
+filtering error messages etc. The <tt>/pony</tt> page is also diverted
+here.<br>
+  </li>
+  <li>The vast majority of requests then goes to <tt>config/routing.py</tt>
+where they're translated into a controller, action and (often) ID.<br>
+  </li>
+  <li>The controllers are in the <tt>controllers</tt> directory, and
+the action is used as a method name. If there is an ID, it's provided
+to the method in <tt>self.obj</tt></li>
+</ul>
+<h2>Controllers</h2>
+<ul>
+  <li>Controllers are in the <tt>controllers</tt> directory in
+appropriately-named files. For instance, the registration controller is
+in <tt>controllers/registration.py</tt> and is called <tt>RegistrationController</tt>.
+The corresponding template files are in the <tt>templates/registration</tt>
+directory.<br>
+  </li>
+  <li>They inherit from BaseController or SecureController; generally
+speaking, they should now all inherit from SecureController since it
+can now handle publicly-accessible pages.</li>
+  <li>"CRUD" - Create, Read, Update, Delete (and List) are mix-ins,
+which add standard actions to the controller. They're defined in <tt>lib/crud.py</tt><br>
+  </li>
+  <li>The "admin" controller is my (Jiri's) place for random bits of
+functionality.</li>
+</ul>
+<h2>Data model<br>
+</h2>
+The data model is defined in the <tt>model</tt> directory. It is
+broken up into conceptual submodules:<br>
+<dl>
+  <dt>core</dt>
+  <dd>persons/accounts, roles, password reset confirmations<br>
+  </dd>
+  <dt>billing</dt>
+  <dd>invoices, payments, discount codes<br>
+  </dd>
+  <dt>openday</dt>
+  <dd> (no idea)<br>
+  </dd>
+  <dt>proposal</dt>
+  <dd>proposals (incl. assistance requirements, attachments), reviews<br>
+  </dd>
+  <dt>registration</dt>
+  <dd>registration, accommodation<br>
+  </dd>
+  <dt>schedule</dt>
+  <dd> (no idea, I think this is skeleton-only, never implemented)<br>
+  </dd>
+</dl>
+Within each submodule, the data model is broken up into an MVC-like
+pattern (which is heavily supported by the SQLAlchemy ORM):
+<dl>
+  <dt><tt>tables.py</tt></dt>
+  <dd>SQLAlchemy table schema definition, the 'model' of
+the model.
+  </dd>
+  <dt><tt>domain.py</tt></dt>
+  <dd>Python classes representing the data model we want to
+present
+to the application, the 'view' of the model.
+  </dd>
+  <dt><tt>mapper.py</tt></dt>
+  <dd>The heavy lifting, which maps the table schemas to
+the view layer, i.e. the 'controller' of the model.
+  </dd>
+  <dt><tt>__init__.py</tt></dt>
+  <dd>Exposes only the Python classes to the application.
+  </dd>
+</dl>
+</body>
+</html>
