@@ -34,6 +34,11 @@ which add standard actions to the controller. They're defined in <tt>lib/crud.py
   </li>
   <li>The "admin" controller is my (Jiri's) place for random bits of
 functionality.</li>
+  <ul>
+    <li>Everything in <tt>admin.py</tt> (other than the <tt>index</tt>
+action) is therefore a candidate for re-factoring elsewhere.<br>
+    </li>
+  </ul>
 </ul>
 <h2>Data model<br>
 </h2>
@@ -64,20 +69,16 @@ pattern (which is heavily supported by the SQLAlchemy ORM):
 <dl>
   <dt><tt>tables.py</tt></dt>
   <dd>SQLAlchemy table schema definition, the 'model' of
-the model.
-  </dd>
+the model. </dd>
   <dt><tt>domain.py</tt></dt>
   <dd>Python classes representing the data model we want to
 present
-to the application, the 'view' of the model.
-  </dd>
+to the application, the 'view' of the model. </dd>
   <dt><tt>mapper.py</tt></dt>
   <dd>The heavy lifting, which maps the table schemas to
-the view layer, i.e. the 'controller' of the model.
-  </dd>
+the view layer, i.e. the 'controller' of the model. </dd>
   <dt><tt>__init__.py</tt></dt>
-  <dd>Exposes only the Python classes to the application.
-  </dd>
+  <dd>Exposes only the Python classes to the application. </dd>
 </dl>
 </body>
 </html>
