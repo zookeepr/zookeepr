@@ -1554,6 +1554,27 @@ class AdminController(SecureController):
 	c.columns = ('id', 'firstname', 'lastname', 'email')
 	return render_response('admin/table.myt')
 
+    def no_shows(self):
+        """ People who didn't show up [rego] """
+	c.data = []
+	for r in paid_regos(self):
+	    nn = [n.note.strip() for n in r.notes]
+	    if 'Here!' in nn or 'Here! (bulk)' in nn:
+	        continue
+	    p = r.person
+	    dc = r.discount_code
+	    if '-' in dc:
+	        dc = dc.split('-')[0]
+            c.data.append((
+	      p.firstname, p.lastname,
+	      r.type, dc,
+	      '; '.join(nn)
+	    ))
+	c.columns = 'firstname', 'lastname', 'type', 'disc', 'notes'
+	c.data.sort(lambda a, b: cmp(a[1].lower(), b[1].lower)
+				or cmp(a[0].lower(), b[0].lower) or cmp(a, b))
+	return render_response('admin/table.myt')
+
     def rego_note_dump(self):
         """ A list of *all* rego notes in chronological order. [rego] """
         c.data = []
