@@ -1,5 +1,5 @@
 from pylons import h
-from sqlalchemy import create_session
+from sqlalchemy.orm import create_session
 
 from zookeepr.model.core.domain import Person
 

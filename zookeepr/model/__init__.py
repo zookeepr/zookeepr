@@ -7,7 +7,7 @@ from billing import InvoiceItem, Invoice, PaymentReceived, Payment, DiscountCode
 
 def init_model(app_conf):
     from paste.deploy.converters import asbool
-    from sqlalchemy import BoundMetaData
+    from sqlalchemy.schema import MetaData as BoundMetaData
 
     global metadata
 
@@ -16,7 +16,7 @@ def init_model(app_conf):
     # multiple times.
     if not globals().get('metadata'):
         metadata = BoundMetaData(app_conf['dburi'])
-        metadata.engine.echo = asbool(app_conf.get('echo_queries', 'false'))
+        #metadata.engine.echo = asbool(app_conf.get('echo_queries', 'false'))
 
         import core.mapper
         import proposal.mapper

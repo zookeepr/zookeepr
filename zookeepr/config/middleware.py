@@ -30,10 +30,13 @@ def make_app(global_conf, **app_conf):
     
     # Load our Pylons configuration defaults
     config = load_environment()
-    config.init_app(global_conf, app_conf, package='zookeepr')
+    print `dir(config)`
+    config.init_app(global_conf, app_conf, package='zookeepr',
+					    template_engine='pylonsmyghty')
     
     # Include stuff like flickr into the myghty component root
-    config.myghty['component_root'].append( {'dynamic_html': app_conf['dynamic_html_dir'] })
+    # Commented out while porting to newer pylons --Jiri 26.4.2008
+    #config.myghty['component_root'].append( {'dynamic_html': app_conf['dynamic_html_dir'] })
 
     # Load our default Pylons WSGI app and make g available
     app = pylons.wsgiapp.PylonsApp(config,

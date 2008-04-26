@@ -1,6 +1,6 @@
 import md5
 
-from sqlalchemy import create_session
+from sqlalchemy.orm import create_session
 
 from zookeepr.lib.base import *
 from zookeepr.model import Person, Role

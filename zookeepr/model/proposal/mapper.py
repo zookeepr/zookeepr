@@ -1,4 +1,4 @@
-from sqlalchemy import mapper, relation
+from sqlalchemy.orm import mapper, relation
 
 from zookeepr.model.core import Person
 from zookeepr.model.schedule import Stream

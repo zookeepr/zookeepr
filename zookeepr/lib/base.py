@@ -7,7 +7,7 @@ from pylons.controllers import WSGIController
 from pylons.decorators import jsonify, rest, validate
 from pylons.templating import render, render_response
 from pylons.helpers import abort, redirect_to, etag_cache
-from sqlalchemy import create_session, Query
+from sqlalchemy.orm import create_session, Query
 
 from zookeepr import model
 

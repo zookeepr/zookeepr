@@ -1,4 +1,4 @@
-from sqlalchemy import mapper, relation, backref
+from sqlalchemy.orm import mapper, relation, backref
 
 from tables import *
 from domain import *

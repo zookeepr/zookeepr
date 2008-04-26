@@ -1,4 +1,5 @@
-from sqlalchemy import mapper, select, relation
+from sqlalchemy.orm import mapper, relation
+from sqlalchemy.sql import select
 
 from tables import stream
 from domain import Stream, Talk
