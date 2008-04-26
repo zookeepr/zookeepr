@@ -1895,7 +1895,7 @@ def sql_response(sql):
 	    return sql_response('select * from person')
     """
     import zookeepr.model
-    res = zookeepr.model.metadata.get_engine().execute(sql);
+    res = zookeepr.model.metadata.bind.execute(sql);
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql
