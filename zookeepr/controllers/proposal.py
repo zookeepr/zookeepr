@@ -77,8 +77,8 @@ class ProposalController(SecureController, View, Modify):
     def __before__(self, **kwargs):
         super(ProposalController, self).__before__(**kwargs)
 
-        c.proposal_types = self.dbsession.query(ProposalType).select()
-        c.assistance_types = self.dbsession.query(AssistanceType).select()
+        c.proposal_types = self.dbsession.query(ProposalType).all()
+        c.assistance_types = self.dbsession.query(AssistanceType).all()
 
     def new(self, id):
         errors = {}
@@ -117,7 +117,7 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
 
         # Next ID for skipping
-        collection = self.dbsession.query(self.model).select_by(Proposal.c.proposal_type_id <> 2)
+        collection = self.dbsession.query(self.model).filter(Proposal.c.proposal_type_id <> 2).all()
         random.shuffle(collection)
         min_reviews = 100
         for p in collection:
@@ -159,7 +159,7 @@ class ProposalController(SecureController, View, Modify):
 
                 return redirect_to(action='index')
 
-        c.streams = self.dbsession.query(Stream).select()
+        c.streams = self.dbsession.query(Stream).all()
 
         return render_response('proposal/review.myt', defaults=defaults, errors=errors)
 
@@ -201,9 +201,9 @@ class ProposalController(SecureController, View, Modify):
 	    return redirect_to('/programme')
 
     def edit(self, id):
-        c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
-	c.cfptypes = self.dbsession.query(ProposalType).select()
-	c.tatypes = self.dbsession.query(AssistanceType).select()
+        c.person = c.signed_in_person # FIXME - is this correct? --Jiri 27.4.2008
+	c.cfptypes = self.dbsession.query(ProposalType).all()
+	c.tatypes = self.dbsession.query(AssistanceType).all()
 
         errors = {}
         defaults = dict(request.POST)
@@ -237,25 +237,25 @@ class ProposalController(SecureController, View, Modify):
 
 
     def index(self):
-        c.person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+        c.person = c.signed_in_person
         # hack for bug#34, don't show miniconfs to reviewers
 	# Jiri: unless they're also organisers...
         if 'organiser' in [r.name for r in c.signed_in_person.roles]:
-            c.proposal_types = self.dbsession.query(ProposalType).select()
+            c.proposal_types = self.dbsession.query(ProposalType).all()
         else:
-            c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
+            c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()
 
-        c.assistance_types = self.dbsession.query(AssistanceType).select()
+        c.assistance_types = self.dbsession.query(AssistanceType).all()
 
         c.num_proposals = 0
-        reviewer_role = self.dbsession.query(Role).select_by(Role.c.name == 'reviewer')
+        reviewer_role = self.dbsession.query(Role).filter(Role.c.name == 'reviewer').all()
         c.num_reviewers = len(reviewer_role[0].people)
         for pt in c.proposal_types:
-            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.proposal_type_id==pt.id).all()
             c.num_proposals += len(stuff)
             setattr(c, '%s_collection' % pt.name, stuff)
         for at in c.assistance_types:
-            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.assistance_type_id==at.id).all()
             setattr(c, '%s_collection' % at.name, stuff)
        
 
@@ -265,18 +265,18 @@ class ProposalController(SecureController, View, Modify):
     def summary(self):
 
         if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
-            c.proposal_types = self.dbsession.query(ProposalType).select()
+            c.proposal_types = self.dbsession.query(ProposalType).all()
         else:
-            c.proposal_types = self.dbsession.query(ProposalType).select_by(ProposalType.c.name <> 'Miniconf')
+            c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()
 
-        c.assistance_types = self.dbsession.query(AssistanceType).select()
+        c.assistance_types = self.dbsession.query(AssistanceType).all()
 
         for pt in c.proposal_types:
-            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.proposal_type_id==pt.id)
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.proposal_type_id==pt.id).all()
             stuff.sort(self.score_sort)
             setattr(c, '%s_collection' % pt.name, stuff)
         for at in c.assistance_types:
-            stuff = self.dbsession.query(Proposal).select_by(Proposal.c.assistance_type_id==at.id)
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.assistance_type_id==at.id).all()
             setattr(c, '%s_collection' % at.name, stuff)
 
         return render_response('proposal/summary.myt')

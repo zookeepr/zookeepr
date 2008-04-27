@@ -277,7 +277,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    is_speaker = False
 
         c.accom_taken = self.accom_taken()
-        as = self.dbsession.query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).all()
 	def space_available(a):
 	  if is_speaker and a.name=='Trinity':
 	    return True
@@ -571,7 +571,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def accom_taken(self):
         res = {}
-        for r in self.dbsession.query(model.Registration).select():
+        for r in self.dbsession.query(model.Registration).all():
 	    if r.accommodation==None: continue
 	    paid = r.person.invoices and r.person.invoices[0].paid()
 	    if r.accommodation.option != 'speaker':
@@ -586,19 +586,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     # FIXME There is probably a way to get this to use the List thingy from CRUD
     def remind(self):
-        setattr(c, 'registration_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        setattr(c, 'registration_collection', self.dbsession.query(self.model).order_by(self.model.c.id).all())
         return render_response('registration/remind.myt')
 
     def index(self):
         r = AuthRole('organiser')
-        if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+        if self.logged_in():
             if not r.authorise(self):
 		redirect_to('/registration/status')
         else:
 	    redirect_to('/registration/status')
 
-	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).select())
+	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).all())
 	setattr(c, 'ebdate', PaymentOptions().ebdate)
 
         (c.eb, c.ebtext) = self.check_earlybird()
@@ -631,7 +630,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    return False, "Too late."
 	timeleft = " %.1f days to go." % (timeleft.days +
 					     timeleft.seconds / (3600*24.))
-        for r in self.dbsession.query(self.model).select():
+        for r in self.dbsession.query(self.model).all():
 	    if r.type not in ('Hobbyist', 'Professional'):
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
@@ -672,7 +671,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	nk_types = ('Professional - No Keynote Access',
 	     'Hobbyist - No Keynote Access', 'Student - No Keynote Access')
         all_ceiling = ceiling_types + nk_types
-        for r in self.dbsession.query(self.model).select():
+        for r in self.dbsession.query(self.model).all():
 	    if r.type not in all_ceiling:
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
@@ -683,7 +682,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		res.regos += 1
             else:
 	        res.nk_regos += 1
-	res.discounts = len(self.dbsession.query(DiscountCode).select())
+	res.discounts = len(self.dbsession.query(DiscountCode).all())
 	res.total = res.regos + res.discounts - res.disc_regos
 	res.limit = 505
 	res.open = res.total < res.limit
@@ -724,7 +723,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def professional(self):
         c.fairies = []; c.profs = []
-        for r in self.dbsession.query(self.model).select():
+        for r in self.dbsession.query(self.model).all():
             p = r.person; i = p.invoices
             if (i and i[0].paid()) or p.is_speaker():
 		if r.type=='Fairy Penguin Sponsor':
