@@ -21,8 +21,8 @@ class AdminController(SecureController):
 
     def index(self):
         res = dir(self)
-	exceptions = ['check_permissions', 'dbsession', 'index',
-			      'logged_in', 'permissions', 'start_response']
+	exceptions = ['anon_actions', 'check_permissions', 'dbsession',
+		     'index', 'logged_in', 'permissions', 'start_response']
 
 	# get the ones in this controller by introspection.
 	funcs = [('/admin/'+x, getattr(self, x).__doc__ or '')
