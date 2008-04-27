@@ -20,8 +20,10 @@ mapper(Proposal, proposal,
         'assistance': relation(AssistanceType),
         'people': relation(Person, secondary=person_proposal_map,
             backref='proposals'),
-        'attachments': relation(Attachment, lazy=True, private=True),
-        'reviews' : relation(Review, private=True, backref='proposal'),
+        'attachments': relation(Attachment, lazy=True,
+					     cascade="all, delete-orphan"),
+        'reviews' : relation(Review, cascade="all, delete-orphan",
+						       backref='proposal'),
     }
     )
 

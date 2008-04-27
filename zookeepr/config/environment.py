@@ -14,7 +14,7 @@ from zookeepr.config.routing import make_map
 def load_environment(global_conf, app_conf):
     # Setup our paths
     root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-    paths = {'root_path': root_path,
+    paths = {'root': root_path,
              'controllers': os.path.join(root_path, 'controllers'),
              'templates': [os.path.join(root_path, path) for path in \
                            ('components', 'templates')],

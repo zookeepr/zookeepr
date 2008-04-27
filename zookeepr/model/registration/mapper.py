@@ -56,7 +56,7 @@ mapper(Registration, registration,
     'discount': relation(DiscountCode,
                          uselist=False,
                          primaryjoin=registration.c.discount_code==discount_code.c.code,
-                         foreignkey=discount_code.c.code,
+                         foreign_keys=discount_code.c.code,
         )
     }
        )

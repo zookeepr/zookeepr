@@ -7,8 +7,7 @@ import helpers as h
 from pylons.controllers import WSGIController
 from pylons.decorators import jsonify, rest, validate
 from pylons.templating import render
-from pylons.helpers import abort, etag_cache
-from pylons.controllers.util import redirect_to
+from pylons.controllers.util import abort, etag_cache, redirect_to
 from sqlalchemy.orm import create_session, Query
 
 # the distinction between render and render_response is no longer
