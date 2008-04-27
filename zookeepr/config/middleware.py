@@ -29,10 +29,8 @@ def make_app(global_conf, **app_conf):
     """
     
     # Load our Pylons configuration defaults
-    config = load_environment()
-    print `dir(config)`
-    config.init_app(global_conf, app_conf, package='zookeepr',
-					    template_engine='pylonsmyghty')
+    from pylons import config 
+    load_environment(global_conf, app_conf)
     
     # Include stuff like flickr into the myghty component root
     # Commented out while porting to newer pylons --Jiri 26.4.2008
@@ -40,8 +38,8 @@ def make_app(global_conf, **app_conf):
 
     # Load our default Pylons WSGI app and make g available
     app = pylons.wsgiapp.PylonsApp(config,
-            helpers=zookeepr.lib.helpers,
-            g=app_globals.Globals
+            #helpers=zookeepr.lib.helpers,
+            #g=app_globals.Globals
             )
     app = ConfigMiddleware(app, {'app_conf':app_conf,
         'global_conf':global_conf})

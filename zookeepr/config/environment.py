@@ -4,10 +4,14 @@ import os
 import pylons.config
 import webhelpers
 
+from pylons import config
+
+import zookeepr.lib.app_globals as app_globals
+import zookeepr.lib.helpers
+
 from zookeepr.config.routing import make_map
 
-def load_environment():
-    map = make_map()
+def load_environment(global_conf, app_conf):
     # Setup our paths
     root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     paths = {'root_path': root_path,
@@ -20,6 +24,15 @@ def load_environment():
     # MoinMoin environment setup, needs to find wikiconfig.py which is in this dir
 
     sys.path.insert(0, os.path.join(root_path, 'config'))
+
+    # Initialize config with the basic options
+    config.init_app(global_conf, app_conf, package='zookeepr',
+                    template_engine='pylonsmyghty', paths=paths)
+
+    config['pylons.g'] = app_globals.Globals(global_conf, app_conf)
+    config['pylons.h'] = zookeepr.lib.helpers
+    config['routes.map'] = make_map()
+    tmpl_options = pylons.config['buffet.template_options']
     
     # The following options are passed directly into Myghty, so all configuration options
     # available to the Myghty handler are available for your use here
@@ -37,4 +50,5 @@ def load_environment():
     # any Pylons config options
     
     # Return our loaded config object
-    return pylons.config.Config(myghty, map, paths)
+    # (no longer needed in new pylons --Jiri 27.4.2008)
+    #return pylons.config.Config(myghty, map, paths)
