@@ -1015,7 +1015,7 @@ class AdminController(SecureController):
 	      except:
 		  c.data.append((id, 'ERROR: must be a number'))
 	      else:
-		  r = self.dbsession.query(Registration).get_by(id=id)
+		  r = self.dbsession.query(Registration).filter_by(id=id).one()
 		  if r:
 		      n = RegoNote(note=args['note'])
 		      n.entered=args['entered']
@@ -1334,7 +1334,7 @@ class AdminController(SecureController):
 	  and (person_id = person.id)
 	  order by lastname, firstname
 	"""):
-	    r = self.dbsession.query(Registration).get_by(id=id)
+	    r = self.dbsession.query(Registration).filter_by(id=id).one()
 	    p = r.person
 	    t = r.type
 	    if (p.invoices and p.invoices[0].paid()):

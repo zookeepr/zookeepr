@@ -49,7 +49,7 @@ class ProfileController(SecureController, Read, Update, List):
 	  role = int(data['role'])
 	  act = data['commit']
 	  if act not in ['Grant', 'Revoke']: raise "foo!"
-	  r = self.dbsession.query(Role).get_by(id=role)
+	  r = self.dbsession.query(Role).filter_by(id=role).one()
 	  res += '<p>' + act + ' ' + r.name + '.'
 	  if act=='Revoke':
 	    person_role_map.delete(and_(

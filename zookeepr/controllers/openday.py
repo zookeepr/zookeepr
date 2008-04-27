@@ -9,7 +9,7 @@ from zookeepr.lib.validators import BaseSchema, EmailAddress
 
 class NotExistingOpendayValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        openday = state.query(model.Openday).get_by(email_address=value['email_address'])
+        openday = state.query(model.Openday).filter_by(email_address=value['email_address']).one()
         if openday is not None:
             raise Invalid("You have already registered!", value, state)
 

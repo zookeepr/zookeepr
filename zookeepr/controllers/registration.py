@@ -28,11 +28,11 @@ class DictSet(validators.Set):
 # FIXME: merge with account.py controller and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = state.query(model.Person).get_by(email_address=value['email_address'])
+        account = state.query(model.Person).filter_by(email_address=value['email_address']).one()
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
 
-        account = state.query(model.Person).get_by(handle=value['handle'])
+        account = state.query(model.Person).filter_by(handle=value['handle']).one()
         if account is not None:
             raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
 
@@ -46,14 +46,14 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         rego = None
         if 'signed_in_person_id' in session:
-            rego = state.query(model.Registration).get_by(person_id=session['signed_in_person_id'])
+            rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).one()
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
 # Only cares about real discount codes
 class DuplicateDiscountCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        discount_code = state.query(model.DiscountCode).get_by(code=value['discount_code'])
+        discount_code = state.query(model.DiscountCode).filter_by(code=value['discount_code']).one()
         if discount_code:
             for r in discount_code.registrations:
 		if not 'signed_in_person_id' in session:
@@ -68,7 +68,7 @@ class SpeakerDiscountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         if value['type']=='Speaker' or value['accommodation'] in (51,52,53):
 	    if 'signed_in_person_id' in session:
-		signed_in_person = state.query(model.Person).get_by(id=session['signed_in_person_id'])
+		signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
 		is_speaker = reduce(lambda a, b: a or b.accepted,
 					 signed_in_person.proposals, False)
 		if not is_speaker:
@@ -131,7 +131,7 @@ class NonblankForSpeakers(validators.String):
     def validate_python(self, value, state):
         validators.String.validate_python(self, value, state)
 	if 'signed_in_person_id' in session:
-            signed_in_person = state.query(model.Person).get_by(id=session['signed_in_person_id'])
+            signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
 	    is_speaker = reduce(lambda a, b: a or b.accepted,
 					 signed_in_person.proposals, False)
 	    if is_speaker and len(value)<3:
@@ -270,7 +270,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             super(RegistrationController, self).__before__(**kwargs)
 
         if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
 	    is_speaker = reduce(lambda a, b: a or b.accepted,
 				       c.signed_in_person.proposals, False)
         else:
@@ -544,7 +544,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         c.data = []
         for mc_id in PaymentOptions().miniconf_orgs:
 	    row = ['<a href="/profile/%d">%d</a>' % (mc_id, mc_id)]
-            mc = self.dbsession.query(model.Person).get_by(id=mc_id)
+            mc = self.dbsession.query(model.Person).filter_by(id=mc_id).one()
 	    if mc==None:
 		row.append('(unknown)')
 	    else:

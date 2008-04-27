@@ -17,14 +17,14 @@ def generate_code():
 
 class NotExistingDiscountCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        discount_code = state.query(model.DiscountCode).get_by(code=value['code'])
+        discount_code = state.query(model.DiscountCode).filter_by(code=value['code']).one()
         if discount_code is not None:
             raise Invalid("Code already exists!", value, state)
 
 class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         leader_id = value['leader_id']
-        leader = state.query(model.Person).get_by(id=leader_id)
+        leader = state.query(model.Person).filter_by(id=leader_id).one()
         if leader is None:
             raise Invalid("Unknown person ID for leader!", value, state)
 
@@ -76,7 +76,7 @@ class DiscountCodeController(SecureController, Read, Create, List):
                     warnings.warn("form validation failed: %s" % errors)
             else:
 	        values = results['discount_code']
-		leader = self.dbsession.query(model.Person).get_by(id=values['leader_id'])
+		leader = self.dbsession.query(model.Person).filter_by(id=values['leader_id']).one()
 	        for i in xrange(values['count']):
 		    discount_code = model.DiscountCode()
 		    for k in values:
