@@ -59,7 +59,7 @@ class ProfileController(SecureController, Read, Update, List):
 
 
         res += '<table>'
-        for r in self.dbsession.query(Role).select():
+        for r in self.dbsession.query(Role).all():
 	  res += '<tr>'
 	  # can't use AuthRole here, because it may be out of date
 	  has = len(person_role_map.select(whereclause = 
