@@ -15,8 +15,7 @@ class ProfileController(SecureController, Read, Update, List):
 
     def index(self):
         r = AuthRole('organiser')
-        if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+        if self.logged_in():
             if not r.authorise(self):
                 redirect_to(action='view', id=session['signed_in_person_id'])
         else:
@@ -28,9 +27,8 @@ class ProfileController(SecureController, Read, Update, List):
         # hack because we don't use SecureController
 
         c.registration_status = request.environ['paste.config']['app_conf'].get('registration_status')
-        if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
-            roles = self.dbsession.query(Role).select()
+        if self.logged_in():
+            roles = self.dbsession.query(Role).all()
             for role in roles:
                 r = AuthRole(role.name)
                 if r.authorise(self):

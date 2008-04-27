@@ -109,7 +109,7 @@ class List(CRUDBase):
         #setattr(c, model_name + '_collection', collection)
 
         # assign list of objects to template global
-        setattr(c, model_name + '_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        setattr(c, model_name + '_collection', self.dbsession.query(self.model).order_by(self.model.c.id).all())
 
         c.can_edit = self._can_edit()
         # exec the template
