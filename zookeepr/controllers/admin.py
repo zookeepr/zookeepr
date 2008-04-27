@@ -348,7 +348,7 @@ class AdminController(SecureController):
         """ T-shirts that have been ordered and paid for [rego] """
 	normal = {}; organiser = {}; extra = []
 	total_n = 0; total_o = 0; total_e = 0
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    paid = r.person.invoices and r.person.invoices[0].paid()
 	    if paid or r.person.is_speaker():
 	        if r.type in ("Monday pass", "Tuesday pass"):
@@ -400,7 +400,7 @@ class AdminController(SecureController):
         """ T-shirts that have been ordered and paid for in size F_long_18
 	[rego] """
 	c.data = []
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    paid = r.person.invoices and r.person.invoices[0].paid()
 	    if paid or r.person.is_speaker():
 	        if r.type in ("Monday pass", "Tuesday pass"):
@@ -428,7 +428,7 @@ class AdminController(SecureController):
         """ Listing of team members (with "team" role)
 					  who haven't registered [rego] """
 	c.data = []
-	for p in self.dbsession.query(Person).select():
+	for p in self.dbsession.query(Person).all():
             if 'team' in [rl.name for rl in p.roles]:
 	        if not p.registration:
 		    c.data.append((
@@ -442,7 +442,7 @@ class AdminController(SecureController):
 	c.data = []
 	c.noescape = True
         speaker_list = []
-	for p in self.dbsession.query(Person).select():
+	for p in self.dbsession.query(Person).all():
 	    if not p.is_speaker(): continue
 	    speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
         speaker_list.sort()
@@ -474,7 +474,7 @@ class AdminController(SecureController):
 	cons_list = ('speaker_record', 'speaker_video_release',
 						  'speaker_slides_release')
         speaker_list = []
-	for p in self.dbsession.query(Person).select():
+	for p in self.dbsession.query(Person).all():
 	    if not p.is_speaker(): continue
 	    speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
         speaker_list.sort()
@@ -595,7 +595,7 @@ class AdminController(SecureController):
         """ People who have tentatively registered but not paid and aren't
 	speakers and don't have a discount code. [rego] """
 	c.data = []
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    if r.discount: continue
 	    if r.type=='Fairy Penguin Sponsor':
 	      continue
@@ -646,7 +646,7 @@ class AdminController(SecureController):
 	c.text = """ People who have not ticked any of the "previously
 	attended" boxes. """
 	c.data = []
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    if r.prevlca:
 	        continue
 	    p = r.person
@@ -681,7 +681,7 @@ class AdminController(SecureController):
 
 	c.data = []
 	totals = dict([(f, 0) for f in fields])
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    comments = []
 	    if not r.partner_email:
 	        continue
@@ -723,7 +723,7 @@ class AdminController(SecureController):
 
 	c.data = []
 	d = {}
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    p = r.person
 	    if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
 	      continue
@@ -765,7 +765,7 @@ class AdminController(SecureController):
         """ List of accommodation. [accom] """
 	c.data = []
 	d = {}
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    p = r.person
 	    if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
 	      continue
@@ -802,8 +802,8 @@ class AdminController(SecureController):
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
 	in AV splash screens [CFP,AV] """
-	c.talks = self.dbsession.query(Proposal).select_by(accepted=True)
-	c.talks += self.dbsession.query(Proposal).select_by(proposal_type_id=4)
+	c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
+	c.talks += self.dbsession.query(Proposal).filter_by(proposal_type_id=4).all()
 
 	res = render_response('admin/acc_papers_xml.myt', fragment=True)
 	res.headers['Content-type']='text/plain; charset=utf-8'
@@ -826,7 +826,7 @@ class AdminController(SecureController):
 	add(u'\u2211', 1120, 1)
 	add(u'[test payments]', 1120, 1)
 
-	for i in self.dbsession.query(Invoice).select():
+	for i in self.dbsession.query(Invoice).all():
 	    if not i.paid():
 	        continue
             for ii in i.items:
@@ -854,7 +854,7 @@ class AdminController(SecureController):
 	Australia membership!" (whether or not they then went on to pay for
 	the conference)."""
         c.data = []
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    if not r.lasignup:
 	        continue
 	    p = r.person
@@ -896,7 +896,7 @@ class AdminController(SecureController):
     def discount_code_NKA(self):
         """ data useful for reconciling NKA discount codes [rego] """
         c.data = []
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    if not r.discount_code:
 	        continue
 	    p = r.person
@@ -924,7 +924,7 @@ class AdminController(SecureController):
         """ Have discount code users paid their accom and other extras?
 	[rego] """
         c.data = []
-	for r in self.dbsession.query(Registration).select():
+	for r in self.dbsession.query(Registration).all():
 	    if not r.discount_code:
 	        continue
 	    p = r.person
@@ -975,7 +975,7 @@ class AdminController(SecureController):
 	    d1[t] = [row]
 
 	zk = {}
-	for p in self.dbsession.query(PaymentReceived).select():
+	for p in self.dbsession.query(PaymentReceived).all():
 	  t = p.TransID
 	  all[t] = 1
 	  if zk.has_key(t):
@@ -1033,7 +1033,7 @@ class AdminController(SecureController):
     def rego_lookup(self):
         """ Look up a rego, based on any of the associated IDs, showing the
 	details as would be required for rego desk. [rego] """
-	# c.talks = self.dbsession.query(Proposal).select_by(accepted=True)
+	# c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
 	args = request.POST; post=True
 	if not args:
 	    args = request.GET
@@ -1047,25 +1047,25 @@ class AdminController(SecureController):
 	    id = int(id)
 	except:
 	    # conversion of id to an integer failed, look it up as a name
-	    p = self.dbsession.query(Person).select_by(email_address=id)
+	    p = self.dbsession.query(Person).filter_by(email_address=id).all()
 	    if p:
 		c.id_type = 'email'
 		c.p = p[0]
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 
-	    p = self.dbsession.query(Person).select(
-					Person.c.firstname.op('ilike')(id))
-	    p += self.dbsession.query(Person).select_by(
-					 Person.c.lastname.op('ilike')(id))
+	    p = self.dbsession.query(Person).filter(
+				       Person.c.firstname.op('ilike')(id)).all()
+	    p += self.dbsession.query(Person).filter(
+					Person.c.lastname.op('ilike')(id)).all()
 	    if len(p)>0:
 		c.id_type = 'name'
 	    else:
 		c.id_type = 'partial name'
-		p = self.dbsession.query(Person).select(
-				Person.c.firstname.op('ilike')('%'+id+'%'))
-		p += self.dbsession.query(Person).select_by(
-				 Person.c.lastname.op('ilike')('%'+id+'%'))
+		p = self.dbsession.query(Person).filter(
+			       Person.c.firstname.op('ilike')('%'+id+'%')).all()
+		p += self.dbsession.query(Person).filter(
+				Person.c.lastname.op('ilike')('%'+id+'%')).all()
 
 	    if len(p)==1:
 		c.p = p[0]
@@ -1083,7 +1083,7 @@ class AdminController(SecureController):
 	    # first, check if there's a note to be posted; in this case, ID
 	    # must be a rego ID, because that's how the form is set up.
 	    if post and args.has_key('note'):
-		r = self.dbsession.query(Registration).select_by(id=id)
+		r = self.dbsession.query(Registration).filter_by(id=id).all()
 
 		n = RegoNote(note=args['note'])
 		self.dbsession.save(n)
@@ -1091,35 +1091,35 @@ class AdminController(SecureController):
 		c.signed_in_person.notes_made.append(n)
 		self.dbsession.flush()
 
-	    i = self.dbsession.query(Invoice).select_by(id=id)
+	    i = self.dbsession.query(Invoice).filter_by(id=id).all()
 	    if i:
 		c.id_type = 'invoice'
 		c.p = i[0].person
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 
-	    r = self.dbsession.query(Registration).select_by(id=id)
+	    r = self.dbsession.query(Registration).filter_by(id=id).all()
 	    if r:
 		c.id_type = 'rego'
 		c.r = r[0]
 		c.p = c.r.person; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 	    
-	    p = self.dbsession.query(Person).select_by(id=id)
+	    p = self.dbsession.query(Person).filter_by(id=id).all()
 	    if p:
 		c.id_type = 'person'
 		c.p = p[0]
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 
-	    p = self.dbsession.query(Person).select_by(account_id=id)
+	    p = self.dbsession.query(Person).filter_by(account_id=id).all()
 	    if p:
 		c.id_type = 'account'
 		c.p = p[0]
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')
 
-	    p = self.dbsession.query(Person).select_by(TransID=id)
+	    p = self.dbsession.query(Person).filter_by(TransID=id).all()
 	    if p:
 		c.id_type = 'transaction'
 		c.p = p[0]
@@ -1127,8 +1127,8 @@ class AdminController(SecureController):
 		return render_response('admin/rego_lookup.myt')
 	
 	phone_pat = '[ \t()/-]*'.join(raw_id)
-        r = self.dbsession.query(Registration).select(
-			   Registration.c.phone.op('~')('^'+phone_pat+'$'))
+        r = self.dbsession.query(Registration).filter(
+			  Registration.c.phone.op('~')('^'+phone_pat+'$')).all()
 	if len(r)==1:
 	    c.id_type = 'phone'
 	    c.r = r[0]
@@ -1142,8 +1142,8 @@ class AdminController(SecureController):
 	      cmp(a.firstname.lower(), b.firstname.lower()))
 	    return render_response('admin/rego_lookup.myt')
 
-        r = self.dbsession.query(Registration).select(
-				   Registration.c.phone.op('~')(phone_pat))
+        r = self.dbsession.query(Registration).filter(
+				  Registration.c.phone.op('~')(phone_pat)).all()
 	if len(r)==1:
 	    c.id_type = 'partial phone'
 	    c.r = r[0]
@@ -1578,7 +1578,7 @@ class AdminController(SecureController):
     def rego_note_dump(self):
         """ A list of *all* rego notes in chronological order. [rego] """
         c.data = []
-        for n in self.dbsession.query(RegoNote).select():
+        for n in self.dbsession.query(RegoNote).all():
 	    c.data.append((
                 n.id,
 		n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
@@ -1597,7 +1597,7 @@ class AdminController(SecureController):
         c.text = """ A list of rego notes other than just "Here!", by
 	surname. """
         notes = {} 
-        for n in self.dbsession.query(RegoNote).select():
+        for n in self.dbsession.query(RegoNote).all():
             if notes.has_key(n.rego.id):
                 notes[n.rego.id].append(n)
             else:
@@ -1629,7 +1629,7 @@ class AdminController(SecureController):
         """ A list of rego notes other than just "Here!". [rego] """
         c.text = """ A list of "Here!" rego notes by surname. """
         notes = {} 
-        for n in self.dbsession.query(RegoNote).select():
+        for n in self.dbsession.query(RegoNote).all():
             if notes.has_key(n.rego.id):
                 notes[n.rego.id].append(n)
             else:
@@ -1659,7 +1659,7 @@ class AdminController(SecureController):
     def rego_note_stats(self):
         """ Per-day stats of rego notes. [rego] """
         stats = {} 
-        for n in self.dbsession.query(RegoNote).select():
+        for n in self.dbsession.query(RegoNote).all():
 	    day = n.entered.strftime('%Y-%m-%d %a %P')
 	    if not stats.has_key(day):
 	        stats[day] = [0, 0]
@@ -1687,7 +1687,7 @@ class AdminController(SecureController):
 	    for (name, id, type) in list:
 	        d[id, type.lower()] = prefix + day + '/' + name
         num_files = len(d)
-        for t in self.dbsession.query(Proposal).select():
+        for t in self.dbsession.query(Proposal).all():
 	    id = '%03d' % t.id
 	    ogg = []; spx = []
 	    for (k, label) in ((id, ''), (id+'a', ' part A'),
@@ -1713,7 +1713,7 @@ class AdminController(SecureController):
     def recorded_miniconf_talks(self):
         """ List of recordings of mini-conf talks. [AV,miniconf] """
         c.data = []
-        for t in self.dbsession.query(Proposal).select():
+        for t in self.dbsession.query(Proposal).all():
 	    if t.id < 500 or t.id > 800: continue
 	    if t.recorded_ogg or t.recorded_spx:
 		if t.recorded_ogg:
@@ -1744,7 +1744,7 @@ class AdminController(SecureController):
 
     def make_wiki_name(self):
         """ Make the wiki_name field out of proposal title. [AV] """
-        for t in self.dbsession.query(Proposal).select():
+        for t in self.dbsession.query(Proposal).all():
 	    t.wiki_name = urllib.quote_plus(t.title.replace(' ', '_'))
         return Response("Success")
 
@@ -1790,7 +1790,7 @@ class AdminController(SecureController):
     def dump_slides(self):
         """ Dump slides into a fixed directory """
 	c.data = []
-        for t in self.dbsession.query(Proposal).select():
+        for t in self.dbsession.query(Proposal).all():
 	    if not t.accepted: continue
 	    for a in t.attachments:
 	        prefix = "%03d-" % t.id
@@ -1821,7 +1821,7 @@ class AdminController(SecureController):
 	        d[id]=[name]
 	talks = 0; num_files = 0
 	alerts = ''
-        for t in self.dbsession.query(Proposal).select():
+        for t in self.dbsession.query(Proposal).all():
 	    if d.has_key(t.id):
 	        if len(d[t.id])==1:
 	            t.slides_link = '<a href="%s%s">Slides</a>'%(prefix,
@@ -1850,7 +1850,7 @@ class AdminController(SecureController):
     def talks_without_slides(self):
         """ Talks that do not have slides """
 	c.data = []
-	for t in self.dbsession.query(Proposal).select():
+	for t in self.dbsession.query(Proposal).all():
 	    if not t.accepted: continue
 	    if t.slides_link: continue
 	    release = []
@@ -1879,7 +1879,7 @@ class AdminController(SecureController):
 	return render_response('admin/table.myt')
 
 def paid_regos(self):
-    for r in self.dbsession.query(Registration).select():
+    for r in self.dbsession.query(Registration).all():
 	p = r.person
 	if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
 	    yield r
