@@ -57,10 +57,11 @@ def make_app(global_conf, **app_conf):
     app = httpexceptions.make_middleware(app, global_conf)
     
     # @@@ Error Handling @@@
-    app = ErrorHandler(app, global_conf, error_template=error_template, **config.errorware)
+    app = ErrorHandler(app, global_conf, error_template=error_template,
+				       **pylons.config['pylons.errorware'])
     
     # @@@ Static Files in public directory @@@
-    static_app = StaticURLParser(config.paths['static_files'])
+    static_app = StaticURLParser(pylons.config['pylons.paths']['static_files'])
 
     # @@@ WebHelper's static javascript files @@@
     javascripts_app = StaticJavascripts()
