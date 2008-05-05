@@ -26,3 +26,6 @@ zookeepr.egg-info/moin/data/pages/*
 zookeepr/public/att-data
 dynamic_html/att-data
 dynamic_html
+./moin
+./moin_underlay
+moin_underlay

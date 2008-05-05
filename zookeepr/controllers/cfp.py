@@ -10,12 +10,6 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator, AssistanceTypeValidator
 from zookeepr.model import ProposalType, Proposal, Attachment, AssistanceType
 
-class CFPModeValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
-        if cfp_mode == 'miniconf' and value['type'].name != 'Miniconf':
-            raise Invalid("You can only register miniconfs at this time.", value, state)
-
 class PersonSchema(Schema):
     experience = validators.String()
     bio = validators.String(not_empty=True)
@@ -29,8 +23,6 @@ class ProposalSchema(Schema):
     project = validators.String(not_empty=True)
     url = validators.String()
     abstract_video_url = validators.String()
-
-    chained_validators = [CFPModeValidator]
 
 class NewCFPSchema(BaseSchema):
     person = PersonSchema()
@@ -52,8 +44,6 @@ class MiniProposalSchema(Schema):
     url = validators.String()
     #abstract_video_url = validators.String()
 
-    chained_validators = [CFPModeValidator]
-
 class NewMiniSchema(BaseSchema):
     person = MiniPersonSchema()
     proposal = MiniProposalSchema()
@@ -68,6 +58,8 @@ class CfpController(SecureController):
 
     def __init__(self, *args):
         c.cfp_status = request.environ['paste.config']['app_conf'].get('cfp_status')
+        c.cfmini_status = request.environ['paste.config']['app_conf'].get('cfmini_status')
+
 
         # Anyone can submit while the CFP is open
         if c.cfp_status == 'open' and 'submit' in self.permissions:
@@ -77,18 +69,17 @@ class CfpController(SecureController):
         return render_response("cfp/list.myt")
 
     def submit(self):
-        # to close the CFP, change "if 0" to "if 1" :-)
-
 
         c.cfptypes = self.dbsession.query(ProposalType).select()
         c.tatypes = self.dbsession.query(AssistanceType).select()
-        c.cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
         c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
         c.person = c.signed_in_person
 
-	# Let in one poor suse guy who missed out.
-	if c.person.id != 427:
+	# if call for papers has closed:
+	if c.cfp_status == 'closed':
 	  return render_response("cfp/closed.myt")
+	elif c.cfp_status == 'not_open':
+	  return render_response("cfp/not_open.myt")
 
         # if 1:
 	#    return render_response("cfp/closed.myt")
@@ -124,12 +115,13 @@ class CfpController(SecureController):
     def submit_mini(self):
 
         # call-for-miniconfs now closed
-        if 1: 
+        if c.cfmini_status == 'closed':
 	    return render_response("cfp/closed_mini.myt")
+	elif c.cfmini_status == 'not_open':
+	  return render_response("cfp/not_open_mini.myt")
 
         c.cfptypes = self.dbsession.query(ProposalType).select()
         c.tatypes = self.dbsession.query(AssistanceType).select()
-        c.cfp_mode = request.environ['paste.config']['app_conf'].get('cfp_mode')
         c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
         c.person = c.signed_in_person
 
@@ -157,7 +149,7 @@ class CfpController(SecureController):
                     c.proposal.attachments.append(c.attachment)
 
                 email((c.person.email_address, 
-                          'miniconf-props@lists.mel8ourne.org'),
+                          request.environ['paste.config']['app_conf'].get('mini_conf_email')),
                       render('cfp/thankyou_mini_email.myt', fragment=True))
 
                 return render_response('cfp/thankyou_mini.myt')
