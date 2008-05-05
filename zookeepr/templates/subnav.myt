@@ -1,6 +1,6 @@
 % if submenus.has_key(where):
-<div id="youarehere">
-  <ul id="sub">
+
+  <ul class="sub_menu">
 %   for sub in submenus[where]:
 %     link = '/'+where+'/'+sub
 %     link = link.replace(' ', '_')
@@ -13,7 +13,7 @@
 %     #endif
 %   #endfor
   </ul>
-</div>
+
 % #endif
 <%init>
 # Edit the list of submenus here :-)

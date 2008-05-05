@@ -1,94 +1,42 @@
-<?xml version="1.0"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-us">
 <head>
-
-<title><& SELF:title &></title>
-
-# <link rel="stylesheet" media="screen" href="http://<% h.host_name() %>/zookeepr.css" type="text/css"/>
-<link rel="stylesheet" media="screen" href="/__data/assets/file/0013/76/main.css" type="text/css"/>
-<link rel="stylesheet" media="print" href="/print.css" type="text/css"/>
-<link rel="icon" type="image/png" href="/favicon.png" />
-
-<!-- Web //-->
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
-<meta name="robots" content="index,follow" />
-
-
-<!-- Mandatory //-->
-<meta name="description" content="linux.conf.au is Australia's annual linux conference. It is fun, informal and seriously technical." />
-<meta name="keywords" content="fun, technical, linux, kernel, open source, conference, melbourne, australia, linux.conf.au, lca 2008, LCA08, LCA2008, best linux conference" />
-
-
-<meta name="Generator" content="Zookeepr" />
-<meta name="dc.creator.e-mail" content="contact@mel8ourne.org" />
-<meta name="dc.creator.name" content="Webmaster" />
-<meta name="tgn.id" content="7001933" />
-<meta name="tgn.name" content="Melbourne" />
-<meta name="tgn.nation" content="Australia" />
-<meta name="geo.position" content="-37.81;144.96" />
-<meta name="geo.placename" content="Melbourne, Victoria" />
-<meta name="geo.country" content="AU" />
-<meta name="ICBM" content="-37.81, 144.96" />
-
-
-<!-- Optional, but helpful //-->
-<meta name="verify-v1" content="tzwNjZWupzXRqk9eIq3XKQMwFdHhBxU2PFPG2s9zQyI=" />
-<meta name="MSSmartTagsPreventParsing" content="TRUE" />
-
-<meta name="InCaseOfBrainExplosion" content="Davyd Madeley Memorial Linux.conf.au" />
-
+	<title><& SELF:title &></title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+	<link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css"/>
 </head>
+
 <body>
-
-<div id="container">
-    <div id="header">
-        <h1><a href="/"><img src="/css-images/hed.new2.png" alt="linux.conf.au - melbourne 2008 - 28jan - 02feb" width="300" height="93" /></a></h1>
-        <& nav.myt &>
-    </div>
-        <& subnav.myt &>
-
-<div id="main">
-    <& pics.myt &>
-
-    <div id="shiz">
-    <!-- start content -->
-    <& content-body.myt &>
-    <!-- end content -->
-    </div>
-
-        <div id="footer">
-
-<p class="spons emperor">
-   <a href="http://<% h.host_name() %>/sponsors-media" id="sponhp" ><img src="/__data/assets/image/0010/424/HP-front.png" alt="Hewlett-Packard Logo" /></a>
-   <a href="http://<% h.host_name() %>/sponsors-media" id="sponibm"><img src="/__data/assets/image/0011/425/IBM-front.png" alt="IBM Logo" /></a>
-</p>
-<p>
-   <a href="http://<% h.host_name() %>/sponsors-media" id="sponlf"><img src="/__data/assets/image/0016/484/LinuxFoundation-Small.jpg" alt="Linux Foundation Logo" /></a>
-   <a href="http://<% h.host_name() %>/sponsors-media" id="sponmmv"><img src="/__data/assets/image/0012/426/small-mmv-logo.gif" alt="Multimedia Victoria Logo" /></a>
-   <a href="http://<% h.host_name() %>/sponsors-media" id="spongle"><img src="/__data/assets/image/0013/427/small-google-logo.gif" alt="Google Logo" /></a>
-</p>        </div>
-
-    </div>
-
-    <p id="redtape">&copy; 2007 MEL<span class="eight">8</span>OURNE LCA2008
-        and <a href="http://www.linux.org.au/">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | 
-        <a href="http://<% h.host_name() %>/site-map">Site map</a> | 
-        <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a></p>
-
-        <a id="cred" title="made with love" href="http://www.raena.net/">rja</a> 
-</div>
-
-<script src="http://www.google-analytics.com/urchin.js"
-  type="text/ javascript">
-</script>
-<script type="text/javascript">
-  _uacct = "UA-322683-4";
-  urchinTracker();
-</script>
+	<div class = 'content'>
+		<div class = 'banner'>
+			<img src = '/images/mountain.png' alt = 'Mount Wellington' class = 'mountain'>
+			<img src = '/images/tuz.png' alt = 'mascot' class = 'mascot'>
+			<img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'>
+			<img src = '/images/marchsouth.png' alt = 'march south together'>
+		</div>
+		<div class = 'menu'>
+			<& nav.myt &>
+			<& subnav.myt &>
+		</div>
+		<!-- start content -->
+		<& content-body.myt &>
+		<!-- end content -->
+		
+	</div>
+	<div class = 'footer'>
+		<div class = 'photos'>
+			<img src = '/images/photo1.png' alt = 'Salamanca Markets'>
+			<img src = '/images/photo2.png' alt = 'Salamanca Markets'>
+			<img src = '/images/photo3.png' alt = 'Salamanca Markets'>
+			<img src = '/images/photo4.png' alt = 'Salamanca Markets'>
+			<img src = '/images/photo5.png' alt = 'Salamanca Markets'>
+		</div>
+		<div class = 'copyright'>&copy; 2008-2009 <a href = '#'>Linux Australia</a> and LCA09 | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">HTML 4.01 Strict</a>
+		</div>
+	</div>
 </body>
 </html>
-
 <%method title>
-linux.conf.au 2008 | 28 Jan - 2 Feb | LCA2008 in MEL8OURNE 
+linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart
 </%method>

@@ -59,7 +59,7 @@ class PasswordResetSchema(BaseSchema):
 # FIXME: merge with registration controller validator and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = state.query(Person).filter_by(email_address=value['email_address']).one()
+        account = state.query(Person).filter_by(email_address=value['email_address']).first()
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.", value, state)
 
@@ -67,7 +67,7 @@ class NotExistingAccountValidator(validators.FancyValidator):
 # FIXME: merge with registration controller validator and move to validators
 class NotExistingHandleValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = state.query(Person).filter_by(handle=value['handle']).one()
+        account = state.query(Person).filter_by(handle=value['handle']).first()
         if account is not None:
             raise Invalid("This handle already exists.  Please try signing in first, or choosing a new handle.", value, state)
 

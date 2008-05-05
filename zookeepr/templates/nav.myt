@@ -1,5 +1,4 @@
-<div id="navcontainer">
-    <ul id="navlist">
+    <ul class="main_menu">
       <!--
         <li><a href="/" <%cls('home')%> >Home</a></li>
         <li><a href="/2008/about" <% cls('about') %>>About</a></li>
@@ -19,7 +18,7 @@
         <li><a href="<% h.url(controller='account', action='signout', id=None)() %>" <% cls('login') %>>sign out</a></li>
 % #endif
     </ul>
-</div>
+
 
 <%init>
 # The current URL can be accessed as h.url()()
