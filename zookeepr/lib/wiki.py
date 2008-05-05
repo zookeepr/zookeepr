@@ -3,7 +3,7 @@
 from exceptions import ImportError
 
 from paste.httpexceptions import HTTPException
-from sqlalchemy import create_session
+from sqlalchemy.orm import create_session
 
 from zookeepr.lib.base import *
 from zookeepr.lib.BeautifulSoup import BeautifulSoup

@@ -28,11 +28,11 @@ class DictSet(validators.Set):
 # FIXME: merge with account.py controller and move to validators
 class NotExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = state.query(model.Person).get_by(email_address=value['email_address'])
+        account = state.query(model.Person).filter_by(email_address=value['email_address']).one()
         if account is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
 
-        account = state.query(model.Person).get_by(handle=value['handle'])
+        account = state.query(model.Person).filter_by(handle=value['handle']).one()
         if account is not None:
             raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
 
@@ -46,14 +46,14 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         rego = None
         if 'signed_in_person_id' in session:
-            rego = state.query(model.Registration).get_by(person_id=session['signed_in_person_id'])
+            rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).one()
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
 # Only cares about real discount codes
 class DuplicateDiscountCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        discount_code = state.query(model.DiscountCode).get_by(code=value['discount_code'])
+        discount_code = state.query(model.DiscountCode).filter_by(code=value['discount_code']).one()
         if discount_code:
             for r in discount_code.registrations:
 		if not 'signed_in_person_id' in session:
@@ -68,7 +68,7 @@ class SpeakerDiscountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         if value['type']=='Speaker' or value['accommodation'] in (51,52,53):
 	    if 'signed_in_person_id' in session:
-		signed_in_person = state.query(model.Person).get_by(id=session['signed_in_person_id'])
+		signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
 		is_speaker = reduce(lambda a, b: a or b.accepted,
 					 signed_in_person.proposals, False)
 		if not is_speaker:
@@ -131,7 +131,7 @@ class NonblankForSpeakers(validators.String):
     def validate_python(self, value, state):
         validators.String.validate_python(self, value, state)
 	if 'signed_in_person_id' in session:
-            signed_in_person = state.query(model.Person).get_by(id=session['signed_in_person_id'])
+            signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
 	    is_speaker = reduce(lambda a, b: a or b.accepted,
 					 signed_in_person.proposals, False)
 	    if is_speaker and len(value)<3:
@@ -270,14 +270,14 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             super(RegistrationController, self).__before__(**kwargs)
 
         if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.query(model.Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
 	    is_speaker = reduce(lambda a, b: a or b.accepted,
 				       c.signed_in_person.proposals, False)
         else:
 	    is_speaker = False
 
         c.accom_taken = self.accom_taken()
-        as = self.dbsession.query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).all()
 	def space_available(a):
 	  if is_speaker and a.name=='Trinity':
 	    return True
@@ -544,7 +544,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         c.data = []
         for mc_id in PaymentOptions().miniconf_orgs:
 	    row = ['<a href="/profile/%d">%d</a>' % (mc_id, mc_id)]
-            mc = self.dbsession.query(model.Person).get_by(id=mc_id)
+            mc = self.dbsession.query(model.Person).filter_by(id=mc_id).one()
 	    if mc==None:
 		row.append('(unknown)')
 	    else:
@@ -571,7 +571,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def accom_taken(self):
         res = {}
-        for r in self.dbsession.query(model.Registration).select():
+        for r in self.dbsession.query(model.Registration).all():
 	    if r.accommodation==None: continue
 	    paid = r.person.invoices and r.person.invoices[0].paid()
 	    if r.accommodation.option != 'speaker':
@@ -586,19 +586,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     # FIXME There is probably a way to get this to use the List thingy from CRUD
     def remind(self):
-        setattr(c, 'registration_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        setattr(c, 'registration_collection', self.dbsession.query(self.model).order_by(self.model.c.id).all())
         return render_response('registration/remind.myt')
 
     def index(self):
         r = AuthRole('organiser')
-        if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
+        if self.logged_in():
             if not r.authorise(self):
 		redirect_to('/registration/status')
         else:
 	    redirect_to('/registration/status')
 
-	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).select())
+	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).all())
 	setattr(c, 'ebdate', PaymentOptions().ebdate)
 
         (c.eb, c.ebtext) = self.check_earlybird()
@@ -631,7 +630,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	    return False, "Too late."
 	timeleft = " %.1f days to go." % (timeleft.days +
 					     timeleft.seconds / (3600*24.))
-        for r in self.dbsession.query(self.model).select():
+        for r in self.dbsession.query(self.model).all():
 	    if r.type not in ('Hobbyist', 'Professional'):
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
@@ -672,7 +671,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	nk_types = ('Professional - No Keynote Access',
 	     'Hobbyist - No Keynote Access', 'Student - No Keynote Access')
         all_ceiling = ceiling_types + nk_types
-        for r in self.dbsession.query(self.model).select():
+        for r in self.dbsession.query(self.model).all():
 	    if r.type not in all_ceiling:
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
@@ -683,7 +682,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		res.regos += 1
             else:
 	        res.nk_regos += 1
-	res.discounts = len(self.dbsession.query(DiscountCode).select())
+	res.discounts = len(self.dbsession.query(DiscountCode).all())
 	res.total = res.regos + res.discounts - res.disc_regos
 	res.limit = 505
 	res.open = res.total < res.limit
@@ -724,7 +723,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def professional(self):
         c.fairies = []; c.profs = []
-        for r in self.dbsession.query(self.model).select():
+        for r in self.dbsession.query(self.model).all():
             p = r.person; i = p.invoices
             if (i and i[0].paid()) or p.is_speaker():
 		if r.type=='Fairy Penguin Sponsor':

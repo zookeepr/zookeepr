@@ -1,4 +1,5 @@
-from sqlalchemy import mapper, join, relation, backref
+from sqlalchemy.orm import mapper, relation, backref
+from sqlalchemy.sql import join
 
 from tables import account, person, role, person_role_map, password_reset_confirmation
 from domain import Person, Role, PasswordResetConfirmation

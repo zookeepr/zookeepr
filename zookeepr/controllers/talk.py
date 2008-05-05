@@ -15,5 +15,5 @@ class TalkController(BaseController, View):
             super(BaseController, self).__before__(**kwargs)
 
         if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.query(Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
 

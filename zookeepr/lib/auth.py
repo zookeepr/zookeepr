@@ -1,6 +1,6 @@
 import md5
 
-from sqlalchemy import create_session
+from sqlalchemy.orm import create_session
 
 from zookeepr.lib.base import *
 from zookeepr.model import Person, Role
@@ -19,7 +19,7 @@ class PersonAuthenticator(object):
     def authenticate(self, username, password):
         dbsession = create_session()
 
-        person = dbsession.query(Person).get_by(email_address=username)
+        person = dbsession.query(Person).filter_by(email_address=username).one()
         
         if person is None:
             return retcode.FAILURE
@@ -130,10 +130,10 @@ class SecureController(BaseController):
         if self.logged_in():
             # Retrieve the Person object from the object store
             # and attach it to the magic 'c' global.
-            c.signed_in_person = self.dbsession.query(Person).get_by(id=session['signed_in_person_id'])
+            c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
 
             # Setup some roles for mghty to utilise
-            roles = self.dbsession.query(Role).select()
+            roles = self.dbsession.query(Role).all()
             for role in roles:
                 r = AuthRole(role.name)
                 if r.authorise(self):
@@ -202,6 +202,6 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
-        role = cls.dbsession.query(Role).get_by(name=self.role_name)
+        role = cls.dbsession.query(Role).filter_by(name=self.role_name).one()
         retval = role in c.signed_in_person.roles
         return retval

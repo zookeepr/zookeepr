@@ -29,16 +29,17 @@ def make_app(global_conf, **app_conf):
     """
     
     # Load our Pylons configuration defaults
-    config = load_environment()
-    config.init_app(global_conf, app_conf, package='zookeepr')
+    from pylons import config 
+    load_environment(global_conf, app_conf)
     
     # Include stuff like flickr into the myghty component root
-    config.myghty['component_root'].append( {'dynamic_html': app_conf['dynamic_html_dir'] })
+    # Commented out while porting to newer pylons --Jiri 26.4.2008
+    #config.myghty['component_root'].append( {'dynamic_html': app_conf['dynamic_html_dir'] })
 
     # Load our default Pylons WSGI app and make g available
     app = pylons.wsgiapp.PylonsApp(config,
-            helpers=zookeepr.lib.helpers,
-            g=app_globals.Globals
+            #helpers=zookeepr.lib.helpers,
+            #g=app_globals.Globals
             )
     app = ConfigMiddleware(app, {'app_conf':app_conf,
         'global_conf':global_conf})
@@ -54,10 +55,11 @@ def make_app(global_conf, **app_conf):
     app = httpexceptions.make_middleware(app, global_conf)
     
     # @@@ Error Handling @@@
-    app = ErrorHandler(app, global_conf, error_template=error_template, **config.errorware)
+    app = ErrorHandler(app, global_conf, error_template=error_template,
+				       **pylons.config['pylons.errorware'])
     
     # @@@ Static Files in public directory @@@
-    static_app = StaticURLParser(config.paths['static_files'])
+    static_app = StaticURLParser(pylons.config['pylons.paths']['static_files'])
 
     # @@@ WebHelper's static javascript files @@@
     javascripts_app = StaticJavascripts()

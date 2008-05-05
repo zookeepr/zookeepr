@@ -1,4 +1,4 @@
-from sqlalchemy import mapper, relation, backref
+from sqlalchemy.orm import mapper, relation, backref
 
 from tables import *
 from domain import *
@@ -56,7 +56,7 @@ mapper(DiscountCode, discount_code,
         'registrations': relation(Registration,
                                   uselist=True,
                                   primaryjoin=registration.c.discount_code==discount_code.c.code,
-                                  foreignkey=discount_code.c.code,
+                                  foreign_keys=discount_code.c.code,
                                   ),
     'leader': relation(Person,
                        lazy=True,

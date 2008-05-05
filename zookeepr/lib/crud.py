@@ -109,7 +109,7 @@ class List(CRUDBase):
         #setattr(c, model_name + '_collection', collection)
 
         # assign list of objects to template global
-        setattr(c, model_name + '_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
+        setattr(c, model_name + '_collection', self.dbsession.query(self.model).order_by(self.model.c.id).all())
 
         c.can_edit = self._can_edit()
         # exec the template
@@ -152,10 +152,10 @@ class RUDBase(CRUDBase):
             pass
 
         if use_oid:
-            self.obj = self.dbsession.query(self.model).get_by(id=id)
+            self.obj = self.dbsession.query(self.model).filter_by(id=id).one()
         elif hasattr(self, 'key'):
             query_dict = {self.key: kwargs['id']}
-            self.obj = self.dbsession.query(self.model).get_by(**query_dict)
+            self.obj = self.dbsession.query(self.model).filter_by(**query_dict).one()
 
         if not hasattr(self, 'obj') or self.obj is None:
             abort(404, "No such object: cannot %s nonexistent id = %r" % (kwargs['action'],
