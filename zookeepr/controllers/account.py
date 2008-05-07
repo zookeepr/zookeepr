@@ -29,8 +29,8 @@ class AuthenticationValidator(validators.FancyValidator):
 
 class ExistingAccountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        accounts = state.query(Person).select_by(email_address=value['email_address'])
-        if len(accounts) == 0:
+        accounts = state.query(Person).filter_by(email_address=value['email_address']).first()
+        if accounts == None:
             raise Invalid("""Your sign-in details are incorrect; try the
 		'Forgotten your password' link below or sign up for a new
 		account.""", value, state)
