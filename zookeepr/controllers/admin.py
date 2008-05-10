@@ -1877,6 +1877,31 @@ class AdminController(SecureController):
 	    res += (r.opendaydrag or 0)
 	c.data = [[res]]
 	return render_response('admin/table.myt')
+    def olpc_lookup(self):
+        """ look up people who got the OLPC laptop... """
+        names = """
+          names go here
+          one per line
+          ** may be preceded by asterisks
+	"""
+	c.data = []
+	for line in names.split('\n'):
+	    line = line.strip()
+	    try:
+	        (first,last) = line.strip('* ').split(' ')
+	    except:
+                if line=='':
+	            c.data.append((line, ''))
+                else:
+	            c.data.append((line, '???'))
+		continue
+	    pp = self.dbsession.query(Person).select_by(firstname=first,
+								  lastname=last)
+	    if pp:
+	      c.data.append((line, '; '.join([p.email_address for p in pp])))
+            else:
+	      c.data.append((line, 'Not found'))
+	return render_response('admin/table.myt')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).select():
