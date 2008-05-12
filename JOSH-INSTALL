@@ -1,0 +1,27 @@
+Josh's install instructions.
+
+Here be my way of getting zookeepr going.
+This be instructions for Ubuntu 8.04. Main reason for this is so we can use apt to get the 
+latest (for now) versions of python, pylons and all that jazz. Plus being an LTS release we felt that
+this would be a good platform to deploy on.
+
+This document is most likely incomplete. I'm trying to make the install as minimal as possible but I probably have packages
+installed on my machine that I forgot to list down here.
+
+====== Dependencies ======
+I'm not a fan of of eggs (well... not fried, but poached are nice).
+So, start by getting the usual junk. These were all installed via apt-get. Generally these were for python2.5, but 2.4 may work.
+
+sudo apt-get install python-dev, python-pylons, python-sqlalchemy, python-simplejson, python-setuptools, python-dnspython
+
+====== Installing and setting up Zookeepr ======
+
+From within zookeepr/zookeepr:
+ - Install zookeepr using easy_install: `easy_install zookeepr`
+ - Make a config file as follows: `paster make-config zookeepr config.ini`
+ - Tweak config.ini file as appropriate 
+     - Set up dburi to something appropriate (possibly sqlite:/// or a postgre setup).
+ - Generate an empty database: `paster setup-app config.ini`
+ 
+====== Running Zookeepr ======
+paster serve --reload -v config.ini
