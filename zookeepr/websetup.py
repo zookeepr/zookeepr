@@ -31,6 +31,7 @@ def setup_config(command, filename, section, vars):
             else:
                 raise e
 
+""" We don't need moin anymore
     try:
         mkdir(os.path.join(app_conf['moin_data'], 'pages'))
         mkdir(os.path.join(app_conf['moin_data'], 'attachments'))
@@ -44,6 +45,7 @@ def setup_config(command, filename, section, vars):
             pass
         else:
             raise e
+
     try:
         mkdir(app_conf['dynamic_html_dir'])
     except OSError, e:
@@ -69,3 +71,5 @@ def setup_config(command, filename, section, vars):
             print "skipping, file exists"
         else:
             raise e
+"""
+

@@ -4,6 +4,7 @@ from schedule import Stream, Talk
 from registration import Registration, Accommodation
 from openday import Openday
 from billing import InvoiceItem, Invoice, PaymentReceived, Payment, DiscountCode
+from db_content import DBContent
 
 def init_model(app_conf):
     from paste.deploy.converters import asbool
@@ -24,6 +25,7 @@ def init_model(app_conf):
         import registration.mapper
         import openday.mapper
         import billing.mapper
+        import db_content.mapper
 
 def create_all(app_conf):
     """This is called from ``websetup`` to create everything."""

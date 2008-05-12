@@ -87,7 +87,7 @@ class AdminController(SecureController):
         """
 	Testing, testing, 1, 2, 3. [ZK]
         """
-        return Response("This is a test. Hope you've studied!")
+        return Response("This is a test. Hope you've studied! - oh no! the exams are coming!")
 
     def collect_garbage(self):
         """

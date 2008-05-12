@@ -26,19 +26,19 @@ url = h.url()()
 
 where = 'home'
 map = [
-  ('/2008/about', 'about'),
-  ('/2008/sponsors-media', 'sponsors-media'),
-  ('/mini-confs', 'mini-confs'),
-  ('/cfp', 'mini-confs'),
-  ('/papers', 'presentations'),
-  ('/presentations', 'presentations'),
-  ('/registration', 'register'),
-  ('/proposal', 'programme'),
-  ('/invoice', 'register'),
-  ('/wiki', 'wiki'),
-  ('/2008/contact', 'contact'),
-  ('/account', 'login'),
-  ('/error', ''),
+  ('/2008/about', 'about'),				# zookeepr
+  ('/2008/sponsors-media', 'sponsors-media'),		# zookeepr
+  ('/mini-confs', 'mini-confs'),			# zookeepr?
+  ('/cfp', 'mini-confs'),				# zookeepr
+  ('/papers', 'presentations'),				# zookeepr
+  ('/presentations', 'presentations'),			# 
+  ('/registration', 'register'),			# zookeepr
+  ('/proposal', 'programme'),				# 
+  ('/invoice', 'register'),				# zookeepr
+  ('/wiki', 'wiki'),					# 
+  ('/2008/contact', 'contact'),				# 
+  ('/account', 'login'),				# zookeepr
+  ('/error', ''),					#
 ]
 
 # Import the navbar from Matrix ("mm" stands for "matrix menu")
@@ -61,13 +61,13 @@ mm = [(t, u, u.split('/')[1]) for (t, u) in mm if u!='/account/signin']
 if not mm:
   # fallback if fetching the navbar fails
   mm = [
-    ('Home', '/home', 'home'),
-    ('About', '/about', 'about'),
-    ('Sponsors / Media', '/sponsors-media', 'sponsors-media'),
-    ('Register', '/register', 'register'),
-    ('Programme', '/programme', 'programme'),
-    ('Social Events', '/social-events', 'social-events'),
-    ('Contact', '/contact', 'contact'),
+    ('Home', '/home', 'home'),					# zookeepr
+    ('About', '/about', 'about'),				# 
+    ('Sponsors / Media', '/sponsors-media', 'sponsors-media'),	#
+    ('Register', '/register', 'register'),			#
+    ('Programme', '/programme', 'programme'),			#
+    ('Social Events', '/social-events', 'social-events'),	#
+    ('Contact', '/contact', 'contact'),				#
   ]
 
 map = map + [(u, c) for (t, u, c) in mm]
