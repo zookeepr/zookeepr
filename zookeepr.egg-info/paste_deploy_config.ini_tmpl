@@ -50,3 +50,7 @@ commsecure_secret = zing
 
 # Contact email for the committee
 contact_email = contact@yourdomain.com
+webmaster_email = contact@yourdomain.com
+
+# Name of the event
+event_name = linux.conf.au 20XX
