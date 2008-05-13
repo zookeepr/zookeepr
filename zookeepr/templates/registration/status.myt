@@ -18,7 +18,7 @@ margin-top: 0.5em; margin-bottom: 0.5em; ">
 % else:
 <h2>Registrations are closed</h2>
 <p>Registrations are now closed. You will only be able to register if you
-have an existing discount code or if you're otherwise entitled to attend
+have an existing voucher code or if you're otherwise entitled to attend
 for free (eg speakers).</p>
 <h3>Your registration status</h3>
 % #endif

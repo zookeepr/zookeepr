@@ -228,17 +228,17 @@ also include Penguin Dinner.
 
 % if 1:
 <p class="label">
-<label for="registration.discount_code">Discount Code:</label>
+<label for="registration.voucher_code">Voucher Code:</label>
 </p><p class="entries">
-<% h.text_field('registration.discount_code') %>
+<% h.text_field('registration.voucher_code') %>
 <p class="note">
-Discount or group-booking code. For group bookings, note that your name,
+Voucher code. For group booking vouchers, note that your name,
 company and email address will be visible to the group leader(s) for
 verification.
 </p>
 </p>
 % else:
-<% h.hidden_field('registration.discount_code', value='') %>
+<% h.hidden_field('registration.voucher_code', value='') %>
 % #endif
 
 <p class="label">

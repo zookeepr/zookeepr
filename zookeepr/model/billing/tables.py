@@ -142,7 +142,7 @@ payment_received = Table('payment_received', metadata,
                                 onupdate='now'),
                          )
 
-discount_code = Table('discount_code', metadata,
+voucher_code = Table('voucher_code', metadata,
                 Column('id', Integer, primary_key=True),
 
                 Column('code', String, nullable=False, unique=True),

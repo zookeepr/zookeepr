@@ -79,7 +79,7 @@ available=<% `c.eb` |h%>, <% c.ebtext |h%><br>
 the latter of which should agree with DirectOne's "Paid/Real Invoices" total)
 <br>
 <br>
-<strong>Google discount code:</strong> <% google |h %> used
+<strong>Google voucher code:</strong> <% google |h %> used
 <br>
 <br>
 <& ../accommodation/list.myt, accommodation_paid = accommodation_paid &>
@@ -99,7 +99,7 @@ keynote_types = (
     'Student',
     'Speaker',
     'Mini-conf organiser',
-    'Unused discount codes',
+    'Unused voucher codes',
 )
 rego_types = (
     'Fairy Penguin Sponsor',
@@ -119,7 +119,7 @@ rego_types = (
     'Student - No Keynote Access',
     'Volunteer',
     'Penguin Dinner only',
-    'Unused discount codes',
+    'Unused voucher codes',
 )
 rego_all = {}
 for t in rego_types:
@@ -150,7 +150,7 @@ for r in c.registration_collection:
     speaker = r.person.is_speaker()
     paid = r.person.invoices and r.person.invoices[0].paid()
 
-    if r.discount_code and r.discount_code.startswith('GOOGLE-'):
+    if r.voucher_code and r.voucher_code.startswith('GOOGLE-'):
         google += 1
 
     # skip unpaid registrations, except speakers
@@ -194,16 +194,16 @@ for r in c.registration_collection:
 	    else:
 		    accommodation_paid[r.accommodation_option_id] = 1
     if type in ('Hobbyist', 'Professional') and not speaker:
-        if r.discount_code and r.discount_code.startswith('GOOGLE-'):
+        if r.voucher_code and r.voucher_code.startswith('GOOGLE-'):
 	    pass
         else:
 	    earlybird += 1
 
 
-unused = c.ceiling.discounts - c.ceiling.disc_regos
-rego_nonspeaker['Unused discount codes'] += unused
-rego_all['Unused discount codes'] += unused
-keynote['Unused discount codes'] += unused
+unused = c.ceiling.vouchers - c.ceiling.disc_regos
+rego_nonspeaker['Unused voucher codes'] += unused
+rego_all['Unused voucher codes'] += unused
+keynote['Unused voucher codes'] += unused
 rego_total_nonspeaker += unused
 rego_total += unused
 keynote_total += unused

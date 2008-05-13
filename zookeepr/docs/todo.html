@@ -62,7 +62,7 @@ Wish-List</span></a></li>
 <h2> Discussion
 points</h2>
 <ul>
-  <li>editing rego after payment (is_paid vs $0 balance vs discount
+  <li>editing rego after payment (is_paid vs $0 balance vs voucher
 codes) </li>
   <li>non sequential id numbers, possibly used as capabilities (eg.
 public unique URL for invoices)</li>
@@ -481,9 +481,9 @@ currently<br>
 <ul>
   <li> "Edit registration" should show the correct person details when
 somebody else (an organiser) is editing the registration. </li>
-  <li> Discount codes should be validated against the list of discount
+  <li> Voucher codes should be validated against the list of voucher
 codes... </li>
-  <li> Discount codes should be made a little more powerful so that
+  <li> Voucher codes should be made a little more powerful so that
 they can replace the monday-pass and tuesday-pass roles (which are
 currently a bit of a pain: the mini-conf speaker has to sign in but not
 pay, then one of the organisers has to grant the role, then the
@@ -491,23 +491,19 @@ mini-conf speaker has to edit the registration to select the ticket
 type.)
     <ul>
       <li> This would also enable codes that are NKA-only, rather than
-me doing that manually (which is what /admin/discount_code_NKA is for -
+me doing that manually (which is what /admin/voucher_code_NKA is for -
 list of codes I need to check to make sure they're NKA like they should
 be). </li>
-      <li> (from Donna) Maybe discount codes that can be used for
+      <li> (from Donna) Maybe voucher codes that can be used for
 EITHER a free day pass OR a 20% discount for whole-conference ticket
 types </li>
-      <li> Using discount codes would also means that the mini-conf
+      <li> Using voucher codes would also means that the mini-conf
 organisers could be designated as team leaders and would therefore be
 able to follow up on their mini-conf speakers that haven't registered.
 Currently, they can't check, so we can't blame them for not checking...
       </li>
     </ul>
   </li>
-  <li> (from Donna) rename "disc. code" to "rego code" or something,
-because people expect a discount from a "discount code" and we've been
-using them for non-discount things (group payments, rego-close
-exceptions). </li>
   <li> Password reset should work multiple times, especially if
 several months have elapsed (as between proposal submission and
 registration). </li>
@@ -673,7 +669,7 @@ cost&lt;=total_paid is the one that counts (except for calculation of
 amount owed). That way, the whole registration can be edited.
     <ul>
       <li> Also handle refunds. </li>
-      <li> Alternately, payments could behave like discount codes -
+      <li> Alternately, payments could behave like voucher codes -
 holding a place under the conf ceiling (and accom limit), but otherwise
 not blocking anything. On subsequent invoices, they would show up as
 "Payment - thank you". When invoice is paid or regenerated with balance
@@ -693,7 +689,7 @@ Once there's a status code, it might as well also have the options
 additional items, though I guess additional items work well enough. </li>
   <li> Some way for organisers to mark "hold rego &amp; accom" for
 people who have payment problems just before these sell out. For rego,
-this can be done with 0% discount codes, but accom cannot... </li>
+this can be done with 0% voucher codes, but accom cannot... </li>
   <li> earlybirds taken should only be counted in one place
 (currently: controllers/registration.py and
 templates/registration/list.myt) </li>

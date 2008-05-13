@@ -5,7 +5,7 @@ extra_where=$2
 
 if [ -z $type ]
 then
-    echo "Usage: $0 hobby|prof|discount_hobby|discount_prof|speakers [where clause]"
+    echo "Usage: $0 hobby|prof|voucher_hobby|voucher_prof|speakers [where clause]"
     exit 1
 fi
 
@@ -21,11 +21,11 @@ normal_clause="
     $extra_where
 "
 
-discount_clause="
+voucher_clause="
     AND
     person.id = registration.person_id
     AND
-    registration.discount_code = discount_code.code
+    registration.voucher_code = voucher_code.code
 "
 
 extra_tables=""
@@ -45,22 +45,22 @@ case $type in
             $normal_clause
         "
         ;;
-    "discount_hobby")
+    "voucher_hobby")
         rego_type="('Hobbyist', 'Concession')"
         where_clause="
             registration.type IN $rego_type 
-            $discount_clause
+            $voucher_clause
         "
-        extra_tables="discount_code,"
+        extra_tables="voucher_code,"
         ;;
 
-    "discount_prof")
+    "voucher_prof")
         rego_type="('Professional')"
         where_clause="
             registration.type IN $rego_type 
-            $discount_clause
+            $voucher_clause
         "
-        extra_tables="discount_code,"
+        extra_tables="voucher_code,"
         ;;
 
     "speakers")

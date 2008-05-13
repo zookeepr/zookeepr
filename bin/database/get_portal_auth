@@ -13,7 +13,7 @@ psql -A -P pager -F '#' -c "
             OR
             registration.id IN (SELECT id FROM speaker_rego WHERE id IS NOT NULL)
             OR
-            registration.id IN (SELECT registration.id FROM registration, discount_code WHERE registration.discount_code = discount_code.code)
+            registration.id IN (SELECT registration.id FROM registration, voucher_code WHERE registration.voucher_code = voucher_code.code)
         )
         AND
         registration.person_id = person.id

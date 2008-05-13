@@ -51,16 +51,16 @@ mapper(Invoice, invoice,
     },
        )
 
-mapper(DiscountCode, discount_code,
+mapper(VoucherCode, voucher_code,
         properties = {
         'registrations': relation(Registration,
                                   uselist=True,
-                                  primaryjoin=registration.c.discount_code==discount_code.c.code,
-                                  foreign_keys=discount_code.c.code,
+                                  primaryjoin=registration.c.voucher_code==voucher_code.c.code,
+                                  foreign_keys=voucher_code.c.code,
                                   ),
     'leader': relation(Person,
                        lazy=True,
-                       backref=backref('discount_codes', cascade="all, delete-orphan"),
+                       backref=backref('voucher_codes', cascade="all, delete-orphan"),
                        ),
         }
       )

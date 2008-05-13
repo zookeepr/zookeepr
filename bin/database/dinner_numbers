@@ -34,14 +34,14 @@ prof=`psql -Atc "
         type='Professional'
 "`
 
-discount_code=`psql -Atc "
+voucher_code=`psql -Atc "
     SELECT
         COUNT(registration.id)
     FROM
         registration,
-        discount_code
+        voucher_code
     WHERE
-        registration.discount_code = discount_code.code
+        registration.voucher_code = voucher_code.code
 "`
 
 speakers=`psql -Atc "
@@ -53,9 +53,9 @@ speakers=`psql -Atc "
 
 echo Extra Tickets:  $extra_dinner
 echo Professionals:  $prof
-echo Discount Codes: $discount_code
+echo Voucher Codes:  $voucher_code
 echo Speakers:       $speakers
 echo
-echo Total:          $((exra_dinner + prof + discount_code + speakers))
+echo Total:          $((exra_dinner + prof + voucher_code + speakers))
 
 echo "Remember to add anything else to total above that isn't covered by entries in the DB"

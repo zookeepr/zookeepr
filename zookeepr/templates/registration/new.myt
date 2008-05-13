@@ -7,7 +7,7 @@
 <p class="error-message">Please only use this form: <ul class="error-message">
 <li>to volunteer to help at the conference, or</li>
 <li>to buy the Monday, Tuesday or Penguin Dinner tickets, or</li>
-<li>if you are have a discount code or similar.</li>
+<li>if you are have a voucher code or similar.</li>
 </ul></p>
 
 % if not 'signed_in_person_id' in session:

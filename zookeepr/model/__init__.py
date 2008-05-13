@@ -3,7 +3,7 @@ from proposal import Proposal, ProposalType, Attachment, Review, AssistanceType
 from schedule import Stream, Talk
 from registration import Registration, Accommodation
 from openday import Openday
-from billing import InvoiceItem, Invoice, PaymentReceived, Payment, DiscountCode
+from billing import InvoiceItem, Invoice, PaymentReceived, Payment, VoucherCode
 from db_content import DBContent
 
 def init_model(app_conf):

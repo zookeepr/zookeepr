@@ -11,7 +11,7 @@ from zookeepr.lib.crud import *
 from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
-from zookeepr.model.billing import DiscountCode
+from zookeepr.model.billing import VoucherCode
 
 rego_closed_exceptions_list = (1, 419, 50589)
 
@@ -50,19 +50,19 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
-# Only cares about real discount codes
-class DuplicateDiscountCodeValidator(validators.FancyValidator):
+# Only cares about real voucher codes
+class DuplicateVoucherCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        discount_code = state.query(model.DiscountCode).filter_by(code=value['discount_code']).one()
-        if discount_code:
-            for r in discount_code.registrations:
+        voucher_code = state.query(model.VoucherCode).filter_by(code=value['voucher_code']).one()
+        if voucher_code:
+            for r in voucher_code.registrations:
 		if not 'signed_in_person_id' in session:
-		   raise Invalid("Discount code already in use! (not logged in)",
+		   raise Invalid("Voucher code already in use! (not logged in)",
 							      value, state)
                 if r.person_id != session['signed_in_person_id']:
-                    raise Invalid("Discount code already in use!", value, state)
-        elif value['discount_code']:
-	    raise Invalid("Unknown discount code!", value, state)
+                    raise Invalid("Voucher code already in use!", value, state)
+        elif value['voucher_code']:
+	    raise Invalid("Unknown voucher code!", value, state)
 
 class SpeakerDiscountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -174,7 +174,7 @@ class RegistrationSchema(Schema):
     prevlca = DictSet(if_missing=None)
 
     type = TicketTypeValidator(not_empty=True)
-    discount_code = validators.String()
+    voucher_code = validators.String()
 
     teesize = validators.String()
     extra_tee_count = BoundedInt(min=0)
@@ -208,8 +208,8 @@ class RegistrationSchema(Schema):
     speaker_video_release = validators.Bool()
     speaker_slides_release = validators.Bool()
     
-    chained_validators = [DuplicateDiscountCodeValidator(),
-	  SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator(),
+    chained_validators = [DuplicateVoucherCodeValidator(),
+	  SillyDescriptionMD5(), SpeakerVoucherValidator(), PPValidator(),
 	  TeesizeValidator()]
 
 class PersonSchema(Schema):
@@ -391,13 +391,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	is_speaker = reduce(lambda a, b: a or b.accepted,
 					 registration.person.proposals, False)
 
-        # Check for discount
-        discount_result, errors = self.check_discount()
+        # Check for voucher
+        voucher_result, errors = self.check_voucher()
 
 	# Check conference ceiling
 	rego_closed = not self.check_ceiling(registration.type).ok
-	if discount_result:
-	    rego_closed = False # discounted tickets are always available
+	if voucher_result:
+	    rego_closed = False # voucher tickets are always available
 	if is_speaker or registration.person.id in p.miniconf_orgs:
 	    rego_closed = False # rego never closes for speakers or MC orgs
 
@@ -414,15 +414,15 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         self.dbsession.save(ii)
         invoice.items.append(ii)
 
-        if discount_result:
-            discount = registration.discount
-            description = discount.comment
-            discount_amount =  p.getTypeAmount(discount.type, eb) * discount.percentage/100.0
-            if discount_amount > cost:
-                discount_amount = cost
+        if voucher_result:
+            voucher = registration.voucher
+            description = voucher.comment
+            voucher_amount =  p.getTypeAmount(voucher.type, eb) * voucher.percentage/100.0
+            if voucher_amount > cost:
+                voucher_amount = cost
 
 	    ii = model.InvoiceItem(description=description, qty=1,
-						     cost=-discount_amount)
+						     cost=-voucher_amount)
 	    self.dbsession.save(ii)
 	    invoice.items.append(ii)
 
@@ -433,7 +433,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             self.dbsession.save(iia)
             invoice.items.append(iia)
 
-        elif 'No Keynote Access' in registration.type and not discount_result:
+        elif 'No Keynote Access' in registration.type and not voucher_result:
 	      now = datetime.datetime.now()
 	      if now.day > 12:
 	          cutoff_day = 31
@@ -605,22 +605,22 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         return super(RegistrationController, self).index()
 
-    def check_discount(self):
+    def check_voucher(self):
         registration = self.obj
 
-        discount = registration.discount
-        # No discount code match
-        if not discount:
+        voucher = registration.voucher
+        # No voucher code match
+        if not voucher:
             return False, None
 
-        if len(discount.registrations) > 1:
-            return False, "Discount code already used"
+        if len(voucher.registrations) > 1:
+            return False, "Voucher code already used"
 
-        if discount.type != registration.type:
-            error = "Your discount is for " + discount.type + ", but you are registering for " + registration.type + ". This is fine if what you are registering for is more expensive, a bit of a waste otherwise."
+        if voucher.type != registration.type:
+            error = "Your voucher is for " + voucher.type + ", but you are registering for " + registration.type + ". This is fine if what you are registering for is more expensive, a bit of a waste otherwise."
             return True, error
 
-        return True, "Your discount code has been applied"
+        return True, "Your voucher code has been applied"
 
     def check_earlybird(self):
         count = 0
@@ -635,7 +635,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
 	        continue
-	    if r.discount_code and r.discount_code.startswith('GOOGLE-'):
+	    if r.voucher_code and r.voucher_code.startswith('GOOGLE-'):
 	        continue
 		# see below about GOOGLE
 	    speaker = 0
@@ -676,14 +676,14 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        continue
 	    if not r.person.invoices or not r.person.invoices[0].paid():
 	        continue
-	    if r.discount_code and r.discount_code!='':
+	    if r.voucher_code and r.voucher_code!='':
 	        res.disc_regos += 1
             if r.type in ceiling_types:
 		res.regos += 1
             else:
 	        res.nk_regos += 1
-	res.discounts = len(self.dbsession.query(DiscountCode).all())
-	res.total = res.regos + res.discounts - res.disc_regos
+	res.vouchers = len(self.dbsession.query(VoucherCode).all())
+	res.total = res.regos + res.vouchers - res.disc_regos
 	res.limit = 505
 	res.open = res.total < res.limit
 

@@ -35,7 +35,7 @@ class AdminController(SecureController):
 			   [auth]'''),
 
  	  #('/accommodation', ''' [accom] '''),
- 	  ('/discount_code', ''' Discount / group-booking codes [rego] '''),
+ 	  ('/voucher_code', ''' Voucher codes [rego] '''),
  	  ('/invoice/remind', ''' '''),
  	  ('/openday', ''' '''),
  	  ('/registration', ''' Summary of registrations, including summary
@@ -52,7 +52,7 @@ class AdminController(SecureController):
 
           ('/registration/list_miniconf_orgs', ''' list of miniconf
 	  organisers (as the registration code knows them, for miniconf
-	  discount) [miniconf] '''),
+	  voucher) [miniconf] '''),
 
 	]
 
@@ -593,10 +593,10 @@ class AdminController(SecureController):
 
     def tentative_regos(self):
         """ People who have tentatively registered but not paid and aren't
-	speakers and don't have a discount code. [rego] """
+	speakers and don't have a voucher code. [rego] """
 	c.data = []
 	for r in self.dbsession.query(Registration).all():
-	    if r.discount: continue
+	    if r.voucher: continue
 	    if r.type=='Fairy Penguin Sponsor':
 	      continue
 	    if r.type in ('Monday only', 'Tuesday only', 'Volunteer'):
@@ -612,9 +612,9 @@ class AdminController(SecureController):
 	      amt = "$%.2f" % (p.invoices[0].total()/100.0)
 	    else:
 	      amt = '-'
-	    if r.discount_code:
-	      if r.discount:
-		dc = r.discount.percentage
+	    if r.voucher_code:
+	      if r.voucher:
+		dc = r.voucher.percentage
               else:
 	        dc = 'invalid'
 	    else:
@@ -629,13 +629,13 @@ class AdminController(SecureController):
 	and aren't speakers. """
 	# <b>Professional and Hobbyist only</b> at the
 	# moment because those are the ones to remind about earlybird expiry.
-	c.text += """ Excludes people with discount codes. """
+	c.text += """ Excludes people with voucher codes. """
 	c.text += """ Excludes miniconf orgs. """
 	c.text += """ Excludes fairy penguins. """
 	c.text += """ Excludes day tickets and volunteers. """
 	c.text += """ Excludes people registering before 3.1.2008. """
 	c.text += """ The "act?" column lists whether the account has been
-	activated; dc=discount code (percentage).  """
+	activated; dc=voucher code (percentage).  """
 	c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
 					  'email', 'firstname', 'lastname',)
 	return render_response('admin/table.myt')
@@ -819,7 +819,7 @@ class AdminController(SecureController):
 	    else:
 	        total[key] = [qty, amt]
 
-        keywords = ('Registration', 'Accommodation', 'Discount', 'Partner',
+        keywords = ('Registration', 'Accommodation', 'Voucher', 'Partner',
 							       'earlybird')
 
 	total = {}
@@ -893,20 +893,20 @@ class AdminController(SecureController):
         c.data.sort()
 	return render_response('admin/table.myt')
 
-    def discount_code_NKA(self):
-        """ data useful for reconciling NKA discount codes [rego] """
+    def voucher_code_NKA(self):
+        """ data useful for reconciling NKA voucher codes [rego] """
         c.data = []
 	for r in self.dbsession.query(Registration).all():
-	    if not r.discount_code:
+	    if not r.voucher_code:
 	        continue
 	    p = r.person
 	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id),
-		   r.type, r.discount_code]
-	    if r.discount:
-	      if r.discount.percentage!=0:
+		   r.type, r.voucher_code]
+	    if r.voucher:
+	      if r.voucher.percentage!=0:
 	        continue
-              row.append(r.discount.leader.firstname)
-              row.append(r.discount.comment)
+              row.append(r.voucher.leader.firstname)
+              row.append(r.voucher.comment)
 	    else:
 	      continue
 	    if p.is_speaker():
@@ -917,21 +917,21 @@ class AdminController(SecureController):
 	    cmp('No Keynote Access' in a[1], 'No Keynote Access' in b[1])
 	    or cmp(a[-2:], b[-2:])
 	    or cmp(a, b))
-        c.columns = 'rego',  'rego type', 'discount code', 'leader', 'comment'
+        c.columns = 'rego',  'rego type', 'voucher code', 'leader', 'comment'
 	c.noescape = True
 	return render_response('admin/table.myt')
-    def discount_code_details(self):
-        """ Have discount code users paid their accom and other extras?
+    def voucher_code_details(self):
+        """ Have voucher code users paid their accom and other extras?
 	[rego] """
         c.data = []
 	for r in self.dbsession.query(Registration).all():
-	    if not r.discount_code:
+	    if not r.voucher_code:
 	        continue
 	    p = r.person
 	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id), p.id,
-			   p.firstname + ' ' + p.lastname, r.discount_code]
-	    if r.discount:
-	      row.append(r.discount.percentage)
+			   p.firstname + ' ' + p.lastname, r.voucher_code]
+	    if r.voucher:
+	      row.append(r.voucher.percentage)
 	    else:
 	      row.append('invalid')
 	    if p.invoices:
@@ -1428,7 +1428,7 @@ class AdminController(SecureController):
                 dinners = r.dinner or 0
 	    else:
                 dinners = (r.dinner or 0) + 1
-	    if r.discount and r.discount.code.startswith('MEDIA-'):
+	    if r.voucher and r.voucher.code.startswith('MEDIA-'):
 	        type = 'media'
 	    if (r.type in ('Fairy Penguin Sponsor', 'Professional',
 			  'Speaker', 'Mini-conf organiser', 'Team',
@@ -1562,7 +1562,7 @@ class AdminController(SecureController):
 	    if 'Here!' in nn or 'Here! (bulk)' in nn:
 	        continue
 	    p = r.person
-	    dc = r.discount_code
+	    dc = r.voucher_code
 	    if '-' in dc:
 	        dc = dc.split('-')[0]
             c.data.append((

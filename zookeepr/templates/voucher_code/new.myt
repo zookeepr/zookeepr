@@ -6,7 +6,7 @@
 </&>
 
 <%method title>
-Discount Code - <& PARENT:title &>
+Voucher Code - <& PARENT:title &>
 </%method>
 
 <%args>
@@ -17,9 +17,9 @@ errors
 <%init>
 if not defaults:
   defaults = {
-    'discount_code.count': '1',
-    'discount_code.percentage': '100',
-    'discount_code.type': 'Professional',
+    'voucher_code.count': '1',
+    'voucher_code.percentage': '100',
+    'voucher_code.type': 'Professional',
   }
 
 </%init>

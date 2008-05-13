@@ -19,7 +19,7 @@ class Registration(object):
                  distrotext=None,
                  silly_description=None,
                  type=None,
-                 discount_code=None,
+                 voucher_code=None,
                  teesize=None,
                  extra_tee_count=None,
                  extra_tee_sizes=None,
@@ -65,7 +65,7 @@ class Registration(object):
         self.distrotext = distrotext
         self.silly_description = silly_description
         self.type = type
-        self.discount_code = discount_code
+        self.voucher_code = voucher_code
         self.teesize = teesize
         self.extra_tee_count = extra_tee_count
         self.extra_tee_sizes = extra_tee_sizes

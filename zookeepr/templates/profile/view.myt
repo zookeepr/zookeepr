@@ -291,7 +291,7 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 <% h.link_to('(confirm invoice and pay)', url=h.url(controller='registration', action='pay', id=c.profile.registration.id)) %>
 %     # endif
 <br>
-<small><strong>Please Note:</strong> To qualify for the earlybird discount
+<small><strong>Please Note:</strong> To qualify for the earlybird voucher
 you must have registered and paid by the 17th of November (unless earlybird
 tickets sold out earlier).
 %     #endif

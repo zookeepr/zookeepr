@@ -151,12 +151,12 @@ Student and Hobbyist tickets also include Penguin Dinner.
 
 % if 0:
 <p class="label">
-<label for="registration.discount_code">Discount Code:</label>
+<label for="registration.voucher_code">Voucher Code:</label>
 </p><p >
-<% c.registration.discount_code %>
+<% c.registration.voucher_code %>
 </p>
 % else:
-<% h.hidden_field('registration.discount_code', value='') %>
+<% h.hidden_field('registration.voucher_code', value='') %>
 % #endif
 
 <p class="label">

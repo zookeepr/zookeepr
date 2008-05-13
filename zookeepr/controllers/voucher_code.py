@@ -15,10 +15,10 @@ def generate_code():
     raise "pwgen call failed"
   return res
 
-class NotExistingDiscountCodeValidator(validators.FancyValidator):
+class NotExistingVoucherCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        discount_code = state.query(model.DiscountCode).filter_by(code=value['code']).one()
-        if discount_code is not None:
+        voucher_code = state.query(model.VoucherCode).filter_by(code=value['code']).one()
+        if voucher_code is not None:
             raise Invalid("Code already exists!", value, state)
 
 class ExistingPersonValidator(validators.FancyValidator):
@@ -29,7 +29,7 @@ class ExistingPersonValidator(validators.FancyValidator):
             raise Invalid("Unknown person ID for leader!", value, state)
 
 
-class DiscountCodeSchema(BaseSchema):
+class VoucherCodeSchema(BaseSchema):
     count = BoundedInt(min=1, max=100)
     leader_id = BoundedInt()
     code = validators.String()
@@ -37,21 +37,21 @@ class DiscountCodeSchema(BaseSchema):
     percentage = BoundedInt(min=0, max=100)
     comment = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingDiscountCodeValidator,
+    chained_validators = [NotExistingVoucherCodeValidator,
 						   ExistingPersonValidator]
 
-class NewDiscountCodeSchema(BaseSchema):
-    discount_code = DiscountCodeSchema()
+class NewVoucherCodeSchema(BaseSchema):
+    voucher_code = VoucherCodeSchema()
 
     pre_validators = [variabledecode.NestedVariables]
 
 
 
-class DiscountCodeController(SecureController, Read, Create, List):
-    model = model.DiscountCode
-    individual = 'discount_code'
+class VoucherCodeController(SecureController, Read, Create, List):
+    model = model.VoucherCode
+    individual = 'voucher_code'
 
-    schemas = {'new': NewDiscountCodeSchema(),
+    schemas = {'new': NewVoucherCodeSchema(),
               }
 
     permissions = {'new': [AuthRole('organiser')],
@@ -60,7 +60,7 @@ class DiscountCodeController(SecureController, Read, Create, List):
                    }
 
     def __before__(self, **kwargs):
-        super(DiscountCodeController, self).__before__(**kwargs)
+        super(VoucherCodeController, self).__before__(**kwargs)
 	c.dbsession = self.dbsession # for the use of list.myt
 
     def new(self):
@@ -68,28 +68,28 @@ class DiscountCodeController(SecureController, Read, Create, List):
         defaults = dict(request.POST)
 
         if defaults:
-            results, errors = NewDiscountCodeSchema().validate(defaults, self.dbsession)
+            results, errors = NewVoucherCodeSchema().validate(defaults, self.dbsession)
             print errors
 
             if errors: #FIXME: make this only print if debug enabled
                 if request.environ['paste.config']['app_conf'].get('debug'):
                     warnings.warn("form validation failed: %s" % errors)
             else:
-	        values = results['discount_code']
+	        values = results['voucher_code']
 		leader = self.dbsession.query(model.Person).filter_by(id=values['leader_id']).one()
 	        for i in xrange(values['count']):
-		    discount_code = model.DiscountCode()
+		    voucher_code = model.VoucherCode()
 		    for k in values:
-			setattr(discount_code, k, values[k])
-		    if discount_code.code !='':
-		      discount_code.code += '-'
-		    discount_code.code += generate_code()
-		    discount_code.leader = leader
-		    self.dbsession.save(discount_code)
+			setattr(voucher_code, k, values[k])
+		    if voucher_code.code !='':
+		      voucher_code.code += '-'
+		    voucher_code.code += generate_code()
+		    voucher_code.leader = leader
+		    self.dbsession.save(voucher_code)
 
 		self.dbsession.flush()
 
-                return redirect_to('/discount_code')
+                return redirect_to('/voucher_code')
 
-        return render_response("discount_code/new.myt", defaults=defaults, errors=errors)
+        return render_response("voucher_code/new.myt", defaults=defaults, errors=errors)
 
