@@ -40,9 +40,9 @@ psql -t -AF "#" -c "
                                 registration.id
                             FROM
                                 registration,
-                                discount_code
+                                voucher_code
                             WHERE
-                                discount_code = discount_code.code
+                                voucher_code = voucher_code.code
                            )
         )
     ORDER BY

@@ -88,9 +88,9 @@ class Payment(object):
         return '<Payment id=%r>' % (self.id)
 
 
-class DiscountCode(object):
+class VoucherCode(object):
     def __repr__(self):
-        return '<DiscountCode id=%r code=%r type=%r percentage=%r comment=%r>' % (self.id, self.code, self.type, self.percentage, self.comment)
+        return '<VoucherCode id=%r code=%r type=%r percentage=%r comment=%r>' % (self.id, self.code, self.type, self.percentage, self.comment)
 
     def __init__(self,
                  code=None,

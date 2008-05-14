@@ -17,7 +17,7 @@ class TestRegistration(CRUDModelTest):
                     distro='distro1',
                     distrotext='distrotext1',
                     type='type1',
-                    discount_code='discount_code1',
+                    voucher_code='voucher_code1',
                     teesize='teesize1',
 		    extra_tee_count=1,
 		    extra_tee_sizes='extra_tee_sizes1',

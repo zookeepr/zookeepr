@@ -21,7 +21,7 @@ class TestRegistrationController(CRUDControllerTest):
                                       distrotext='distrotext1',
                                       silly_description='foo',
                                       type='Professional',
-                                      discount_code='discount_code1',
+                                      voucher_code='voucher_code1',
                                       teesize='M_M',
                                       extra_tee_count=1,
                                       extra_tee_sizes='M_M',

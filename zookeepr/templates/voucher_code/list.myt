@@ -1,12 +1,12 @@
-<h2>Discount Codes</h2>
+<h2>Voucher Codes</h2>
 
 % if admin:
-This table lists all the discount codes.
-%   actionlink = h.link_to('(Add another)', url=h.url(controller='discount_code', action='new'))
+This table lists all the voucher codes.
+%   actionlink = h.link_to('(Add another)', url=h.url(controller='voucher_code', action='new'))
 % else:
-This table lists the discount codes for your group.
+This table lists the voucher codes for your group.
 %   actionlink = ''
-%   if not discount_codes:
+%   if not voucher_codes:
 (Note: you do not appear to be a group leader, so the table is blank.)
 %   #endif
 % #endif
@@ -23,7 +23,7 @@ This table lists the discount codes for your group.
         <th>Used By</th>
     </tr>
 
-% for d in discount_codes:
+% for d in voucher_codes:
     <tr class="<% h.cycle('even', 'odd')%>">
         <td><% d.code %></td>
         <td><% d.type %></td>
@@ -62,9 +62,9 @@ This table lists the discount codes for your group.
 admin = 'organiser' in [r.name for r in c.signed_in_person.roles]
 
 if admin:
-  discount_codes = c.discount_code_collection
+  voucher_codes = c.voucher_code_collection
 else:
-  discount_codes = c.signed_in_person.discount_codes
+  voucher_codes = c.signed_in_person.voucher_codes
 
 # The following allows additional persons to view particular groups. The
 # list is pairs of person IDs.
@@ -72,6 +72,6 @@ else:
 for (viewer, leader) in ((50097, 253), ):
   if c.signed_in_person.id == viewer:
     from zookeepr.model.core import Person
-    discount_codes = c.dbsession.query(Person).get_by(id=leader).discount_codes
+    voucher_codes = c.dbsession.query(Person).get_by(id=leader).voucher_codes
     # note: c.dbsession is assigned in __before__ in the controller
 </%init>

@@ -17,11 +17,11 @@ psql -c "
                 WHEN
                     registration.type in ('Hobbyist', 'Concession')
                     AND
-                    registration.discount_code IN (
+                    registration.voucher_code IN (
                                                     SELECT
                                                         code
                                                     FROM
-                                                        discount_code
+                                                        voucher_code
                                                   )
                 THEN
                     1
@@ -52,11 +52,11 @@ psql -c "
                                                 speaker_rego
                                        )
                     OR
-                    registration.discount_code IN (
+                    registration.voucher_code IN (
                                                     SELECT
                                                         code
                                                     FROM 
-                                                        discount_code
+                                                        voucher_code
                                                    )
                 )
                 AND

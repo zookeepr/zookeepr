@@ -101,13 +101,13 @@ No included dinner.
 <% registration.dinner %> additional dinner tickets.
 %     #endif
 
-%     if registration.discount:
-Discount:
-<% registration.discount.percentage %>% <% registration.discount.type %>
+%     if registration.voucher:
+Voucher:
+<% registration.voucher.percentage %>% <% registration.voucher.type %>
 &#8212;
-<% registration.discount.code.split('-')[0] %>
+<% registration.voucher.code.split('-')[0] %>
 &#8212;
-<% registration.discount.comment |h%>
+<% registration.voucher.comment |h%>
 %     #endif
 
 

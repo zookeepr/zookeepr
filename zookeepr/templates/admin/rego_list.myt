@@ -71,8 +71,8 @@
 %     comments.append('first-time')
 %   #endif
 
-%   if registration.discount:
-%     comments.append('DC: %d%% %s' % (registration.discount.percentage, registration.discount.comment))
+%   if registration.voucher:
+%     comments.append('VC: %d%% %s' % (registration.voucher.percentage, registration.voucher.comment))
 %   #endif
 
 %   if registration.type in ("Monday pass", "Tuesday pass", "Monday only", "Tuesday only"):
