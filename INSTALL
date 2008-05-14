@@ -16,20 +16,26 @@ Requirements:
 Tested on:
  - Ubuntu Dapper
  - Debian Testing
+ - Ubuntu Hardy
 
 Debian-specific notes:
  - Repoint the /usr/bin/python symlink to /usr/bin/python2.4
    - is that still necessary? (python2.4 should now be the default...)
+     - Not on Ubuntu Hardy
  - Remove python2.4-sqlalchemy
    - is that still necessary?
+     - Not on Ubuntu hardy/
 
 STEPS:
 =====
 
  - Remove python-setuptools, python2.4-setuptools if they are installed
    - is that still necessary?
+     - Not on Ubuntu Hardy.
  - Check that python2.4-dev, python2.4-profiler, python2.4-pysqlite2,
    python2.4-paramiko are installed
+     - Not on Ubuntu Hardy.
+ - Install python-cheetah
  - MoinMoin has to be newer than in Debian etch - I'm told 1.5.4 will do
    it, I've gone with 1.5.6 (newest at the time lca2008 was setting up ZK)
 
@@ -61,6 +67,7 @@ Making sure you have all the dependencies:
  - Run `nosetests` to see whether you have any libraries missing. However,
    while nosetests reports real problems, it will also tend to report
    illusory problems that don't actually exist.
+   - I received errors on Hardy, but zookeepr runs.
 
 Misc notes:
   - I've had to do "ln -s zookeepr.egg-info/moin", not sure why
@@ -82,8 +89,11 @@ From within zookeepr/zookeepr:
  - Tweak config.ini file as appropriate 
      - change "sqlite://filename=" to "sqlite:///"
      - add a line to the app:main section to set the dynamic_html_dir, for
-       instance to %(here)/data/dynamic_html
+       instance to %(here)/data/dynamic_html (this appears to be automagic now)
+     - add a line to set host_name.
+     - also set webmaster_email.
  - cp test.db somedb.db
+   - There is no test.db in bzr.
  - Setup the application: `paster setup-app config.ini`
 
 You are good to go!

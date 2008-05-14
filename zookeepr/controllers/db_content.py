@@ -8,5 +8,4 @@ class DbContentController(BaseController):
 
     def index(self):
         c.title = "Test"
-        c.body = "<p>Hello<br />There</p>"
         return render('/db_content/db_content.myt')

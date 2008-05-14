@@ -14,9 +14,27 @@ here.<br>
   <li>The vast majority of requests then goes to <tt>config/routing.py</tt>
 where they're translated into a controller, action and (often) ID.<br>
   </li>
-  <li>The controllers are in the <tt>controllers</tt> directory, and
+  <ul>
+    <li>The controllers are in the <tt>controllers</tt> directory, and
 the action is used as a method name. If there is an ID, it's provided
 to the method in <tt>self.obj</tt></li>
+  </ul>
+  <li>Other sources of data are the two directory hierarchies, <tt>public</tt>
+and <tt>template/content</tt><tt><br>
+    </tt></li>
+  <ul>
+    <li>Files in the <tt>public</tt> directory are simply served, as
+they are. This is mostly suitable for non-html files, like images,
+stylesheets etc. The code responsible for this is in <tt>config/middleware.py</tt>
+using <tt>StaticURLParser</tt> </li>
+    <li>Files in <tt>&#65279;templates/content</tt> are run through the
+templating system, which means that &#65279;they (a) get the standard headers
+and (b) can use the myghty templating directives. This is sutiable for
+static html files that should get the standard styling, navigation,
+etc. The code responsible for this is the <tt>content</tt> controller
+in <tt>controllers/content.py</tt><br>
+    </li>
+  </ul>
 </ul>
 <h2>Controllers</h2>
 <ul>
