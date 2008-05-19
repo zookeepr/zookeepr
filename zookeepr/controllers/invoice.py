@@ -7,6 +7,8 @@ from zookeepr.lib.base import *
 from zookeepr.lib.auth import *
 from zookeepr.lib.crud import *
 
+from zookeepr.config.lca_info import lca_info
+
 class InvoiceController(SecureController, Read, List):
     model = model.Invoice
     individual = 'invoice'
@@ -38,8 +40,8 @@ class InvoiceController(SecureController, Read, List):
 	    return render_response('invoice/invalid.myt')
 
         # get our merchant id and secret
-        merchant_id = request.environ['paste.config']['app_conf'].get('commsecure_merchantid')
-        secret = request.environ['paste.config']['app_conf'].get('commsecure_secret')
+        merchant_id = lca_info['commsecure_merchantid']
+        secret = lca_info['commsecure_secret']
 
         # create payment entry
         payment = model.Payment()

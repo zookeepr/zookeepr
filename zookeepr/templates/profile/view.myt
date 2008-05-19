@@ -227,7 +227,7 @@ Miniconfs likely to attend:
 <& actions &>
 
 %   else:
-%       if c.registration_status == 'open':
+%       if h.lca_info['registration_status'] == 'open':
 <p>
 You haven't yet registered for the conference.  <% h.link_to('Register now!', url=h.url('/Registration')) %>
 </p>

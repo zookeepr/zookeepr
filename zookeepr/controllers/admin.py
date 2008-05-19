@@ -806,7 +806,8 @@ class AdminController(SecureController):
 	c.talks += self.dbsession.query(Proposal).filter_by(proposal_type_id=4).all()
 
 	res = render_response('admin/acc_papers_xml.myt', fragment=True)
-	res.headers['Content-type']='text/plain; charset=utf-8'
+	#res.headers['Content-type']='text/plain; charset=utf-8'
+	# res has no attribute headers?
 	return res
     def paid_summary(self):
         """ Summary of paid invoices. [rego] """

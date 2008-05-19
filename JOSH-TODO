@@ -1,0 +1,47 @@
+LCA09 TODO:
+(Mostly taken from docs/todo.html - a lot of these may be done)
+
+	Timeframe:
+		** CFP
+			Website up with zookpr running to receive papers
+		** CFP Close (call for mini-confs closes here final)
+		** Re-open CFP
+		** CFP Close
+		** Paper Assessment
+			Paper Committee
+		** F2F meeting
+		** Finalise Programme
+			Publish Programme (web)
+		** EB tickets on sale
+		** EB end
+
+	Terminology:
+		Call for presentations/papers/talks?
+		Registration is used in too many places
+
+	Theme/Design:
+		Fix up template files with proper CSS (things like radio buttons aren't padded correctly etc).
+		Design Attractive homepage for placing annoucements on. Perhaps a count down to conference etc
+			Call for mini-confs
+			Call for presentations
+			Reopening of CFP
+			Call for presentations closed
+			Early birds opening soon
+			Early birds avaliable
+			Early birds over
+			Conference countdown
+			Todays news (for at the conference)
+
+	Registration:
+		Make sure the form shows earlybird prices when appropriate 
+		speakers - hotel / college preference 
+		Why is the company called "SecurePay", the form is processed by "SafePay" and the explanations are from "DirectOne"? 
+
+	Accomidation:
+		Set up a config file for details rather then hackery
+		Integrate Wrest Point booking system?
+
+	At Conference:
+		A more structured way of handling at-conference talk attachments - videos in multiple formats, slides, additional files
+	
+	Payment:

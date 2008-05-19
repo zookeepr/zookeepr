@@ -10,6 +10,7 @@ import zookeepr.lib.app_globals as app_globals
 import zookeepr.lib.helpers
 
 from zookeepr.config.routing import make_map
+from zookeepr.config.lca import config as lca_config
 
 def load_environment(global_conf, app_conf):
     # Setup our paths
@@ -43,7 +44,7 @@ def load_environment(global_conf, app_conf):
     # escaping functions, for great justice.
     # http://www.myghty.org/docs/filtering.myt#filtering_escaping_custom
     myghty['escapes'] = {'l': webhelpers.auto_link,
-                         's': webhelpers.simple_format,
+                         's': webhelpers.simple_format
                          }
     
     # Add your own Myghty config options here, note that all config options will override

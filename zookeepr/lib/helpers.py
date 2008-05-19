@@ -10,6 +10,7 @@ import urllib
 from glob import glob
 import os.path, random, array
 import re
+from zookeepr.config.lca_info import lca_info
 
 def counter(*args, **kwargs):
     """Return the next cardinal in a sequence.
@@ -94,9 +95,9 @@ def contact_email(text=None):
     Renders a link to the committee; optionally takes a text, which will be
     the text of the anchor (defaults to the e-mail address).
     """
-    email = request_config().environ['paste.config']['app_conf']['contact_email']
-    if text==None:
-      text = '<tt>'+email+'</tt>'
+    email = lca_info['contact_email']
+    if text == None:
+        text = '<tt>'+email+'</tt>'
     return '<a href="mailto:'+email+'">'+text+'</a>'
 
 def host_name():
@@ -111,7 +112,7 @@ def event_name():
 
     Returns the name of the event we're running (yay).
     """
-    return request_config().environ['paste.config']['app_conf']['event_name']
+    return lca_info['event_name']
 
 def get_temperature():
     """ Fetch temperature from the BOM website.

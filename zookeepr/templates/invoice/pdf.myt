@@ -42,6 +42,7 @@
 % # endif
 
   <event><% h.event_name() %></event>
+  <contact><% h.lca_info['contact_email'] %></contact>
 
   <itemcount><% len(c.invoice.items) %></itemcount>
   <items>

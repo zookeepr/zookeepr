@@ -1,13 +1,10 @@
-#
 # zookeepr - Pylons configuration
-#
 # The %(here) variable will be replaced with the parent directory of this file
-#
 [DEFAULT]
-debug = false
-email_to = you@yourdomain.com
-smtp_server = localhost
-error_email_from = paste@exceptions.com
+debug = true
+email_to = josh@nitrotech.org
+smtp_server = mail.internode.on.net
+error_email_from = josh@nitrotech.org
 
 [server:main]
 use = egg:Paste#http
@@ -16,41 +13,20 @@ port = 5000
 
 [app:main]
 use = egg:zookeepr
-myghty_data_dir = %(here)s/data/templates
-cache_data_dir = %(here)s/data/cache
+data_dir = %(here)s/data/templates
 dynamic_html_dir = %(here)s/data/dynamic_html
-session_data_dir = %(here)s/data/sessions
-session_key = zookeepr
-session_secret = ${app_instance_secret}
-app_instance_uuid = ${app_instance_uuid}
-
-# When using MoinMoin as our mash-in wiki fallback, we need to
-# specify where to set up the data and underlay directories.
-# Use 'paster setup-app' to populate these on a new install.
-moin_data = %(here)s/moin/data
-moin_underlay = %(here)s/moin_underlay
-
-# Possible statuses not_open|open|closed
-cfp_status = open
-registration_status = not_open
-# Wether we are collecting miniconfs or papers
-cfp_mode = miniconf
+app_instance_uuid = {23c37553-c244-4ea2-ac71-fff823bcfbd6}
 
 # We're using SQLAlchemy, the database is initialised in
 # `Globals.__init__()`, and connected to per thread/request in
 # `BaseController.__call__()`.  Note the URL syntax depends
 # on the SQLAlchemy documentation for `global_connect`.
-dburi = sqlite://filename=%(here)s/somedb.db
+#dburi = sqlite://%(here)s/somedb.db
+#dburi = sqlite:///somedb.db
+dburi = postgres://postgres:pass@localhost/zookeepr
 # echo_queries = true
 
-# CommSecure (the payment gateway provider) requires a Merchant ID
-# and a shared secret
-commsecure_merchantid = TestZookeeprMerchantID
-commsecure_secret = zing
 
-# Contact email for the committee
-contact_email = contact@yourdomain.com
-webmaster_email = contact@yourdomain.com
-
-# Name of the event
-event_name = linux.conf.au 20XX
+#CHANGE THESE:
+host_name = localhost
+webmaster_email = webmaster@linux.conf.au

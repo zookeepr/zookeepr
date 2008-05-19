@@ -202,6 +202,6 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
-        role = cls.dbsession.query(Role).filter_by(name=self.role_name).one()
+        role = cls.dbsession.query(Role).filter_by(name=self.role_name).first()
         retval = role in c.signed_in_person.roles
         return retval

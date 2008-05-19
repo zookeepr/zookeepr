@@ -10,6 +10,8 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator, AssistanceTypeValidator
 from zookeepr.model import ProposalType, Proposal, Attachment, AssistanceType
 
+from zookeepr.config.lca_info import lca_info
+
 class PersonSchema(Schema):
     experience = validators.String()
     bio = validators.String(not_empty=True)
@@ -57,8 +59,8 @@ class CfpController(SecureController):
     anon_actions = ['index']
 
     def __init__(self, *args):
-        c.cfp_status = request.environ['paste.config']['app_conf'].get('cfp_status')
-        c.cfmini_status = request.environ['paste.config']['app_conf'].get('cfmini_status')
+        c.cfp_status = lca_info['cfp_status']
+        c.cfmini_status = lca_info['cfmini_status']
 
 
         # Anyone can submit while the CFP is open
@@ -149,7 +151,7 @@ class CfpController(SecureController):
                     c.proposal.attachments.append(c.attachment)
 
                 email((c.person.email_address, 
-                          request.environ['paste.config']['app_conf'].get('mini_conf_email')),
+                          lca_info['mini_conf_email']),
                       render('cfp/thankyou_mini_email.myt', fragment=True))
 
                 return render_response('cfp/thankyou_mini.myt')

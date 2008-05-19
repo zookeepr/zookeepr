@@ -6,6 +6,8 @@ from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.mail import *
 
+from zookeepr.config.lca_info import lca_info
+
 class PaymentController(BaseController, Create, View):
     """This controller receives payment advice from CommSecure.
 
@@ -102,8 +104,8 @@ class PaymentController(BaseController, Create, View):
 
 
     def _verify_hmac(self, fields):
-        merchantid =  request.environ['paste.config']['app_conf'].get('commsecure_merchantid')
-        secret =  request.environ['paste.config']['app_conf'].get('commsecure_secret')
+        merchantid = lca_info['commsecure_merchantid']
+        secret =  lca_info['commsecure_secret']
 
         # Check for MAC
         if 'MAC' not in fields:
@@ -124,5 +126,5 @@ class PaymentController(BaseController, Create, View):
 
 
     def _mail_warn(self, msg, pr):
-        email(request.environ['paste.config']['app_conf'].get('contact_email'),
+        email(lca_info['contact_email'],
 	    render('payment/warning.myt', fragment=True, subject=msg, pr=pr))
