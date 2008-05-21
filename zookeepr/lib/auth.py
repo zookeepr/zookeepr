@@ -143,7 +143,7 @@ class SecureController(BaseController):
         elif (hasattr(self, 'anon_actions')
 	          and kwargs['action'] in self.anon_actions):
 	    # No-one's logged in, but this action is OK with that.
-	    pass
+	    return
 
         else:
             # No-one's logged in, so send them to the signin page.
@@ -157,7 +157,11 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-        if self.check_permissions(kwargs['action']):
+        if (hasattr(self, 'anon_actions')
+	          and kwargs['action'] in self.anon_actions):
+	    # Someone's logged in, but this action is public anyway
+	    return
+        elif self.check_permissions(kwargs['action']):
             return
         else:
             abort(403, "computer says no")
