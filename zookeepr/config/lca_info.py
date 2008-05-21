@@ -12,7 +12,7 @@ lca_info = {
   'event_name' : 'linux.conf.au 2009',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'open',
+  'cfp_status' : 'closed',
   'cfmini_status' : 'open',
   'registration_status' : 'not_open',
 # Wether we are collecting miniconfs or papers.

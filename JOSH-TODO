@@ -71,6 +71,7 @@ LCA09 TODO:
 		The miniconf role and the list of miniconf organisers in the registration controller should be unified, or at least the difference made clear. Probably as one or two roles, to make them easy to manage. 
 
 	Call for papers:
+		If call for papers is closed or not-open display message to all roles. Currently only organiser is seeing the correct message.
 		Number of presenters needs to be more clearly defined. There needs to be one lead presenter and the others will not get funded.
 		Choose method of funding... I particularly like having a set limit for national and international presenters that we will fund up to.
 			Thus if two people are presenting the one paper, then they can split the funding between them, or pay for one and a bit of the other etc etc.

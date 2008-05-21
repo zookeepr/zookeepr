@@ -54,8 +54,8 @@ class NewMiniSchema(BaseSchema):
 
 
 class CfpController(SecureController):
-    permissions = {'submit': [AuthRole('organiser')]
-                  }
+    #permissions removed since submit* displays appropirate template file upon closed/not_open settings.
+    permissions = {}
     anon_actions = ['index']
 
     def __init__(self, *args):
@@ -63,28 +63,27 @@ class CfpController(SecureController):
         c.cfmini_status = lca_info['cfmini_status']
 
 
-        # Anyone can submit while the CFP is open
-        if c.cfp_status == 'open' and 'submit' in self.permissions:
-            del self.permissions['submit']
+        # When the CFP status is closed or not open we allow anonymous requests to the submit() action which responds appropriately with a nice message. 
+        if c.cfp_status == 'closed' or c.cfp_status == 'not_open':
+            self.anon_actions.append('submit')
+        if c.cfmini_status == 'closed' or c.cfmini_status == 'not_open':
+            self.anon_actions.append('submit_mini')
 
     def index(self):
         return render_response("cfp/list.myt")
 
     def submit(self):
+        # if call for papers has closed:
+        if c.cfp_status == 'closed':
+           return render_response("cfp/closed.myt")
+        elif c.cfp_status == 'not_open':
+           return render_response("cfp/not_open.myt")
+
 
         c.cfptypes = self.dbsession.query(ProposalType).select()
         c.tatypes = self.dbsession.query(AssistanceType).select()
         c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
         c.person = c.signed_in_person
-
-	# if call for papers has closed:
-	if c.cfp_status == 'closed':
-	  return render_response("cfp/closed.myt")
-	elif c.cfp_status == 'not_open':
-	  return render_response("cfp/not_open.myt")
-
-        # if 1:
-	#    return render_response("cfp/closed.myt")
 
         errors = {}
         defaults = dict(request.POST)

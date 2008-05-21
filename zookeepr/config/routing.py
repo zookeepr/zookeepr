@@ -23,6 +23,7 @@ def make_map():
 
     # The CFP named routes
     m.connect('cfp', '/cfp', controller='cfp', action='index')
+    #m.connect('presentations', '/presentations', controller='cfp', action='index')
     m.connect('submit_cfp', '/papers/submit_a_paper', controller='cfp', action='submit')
     m.connect('submit_cfp', '/papers/submit_a_presentation', controller='cfp', action='submit')
     m.connect('submit_cfp', '/presentations/submit_a_presentation', controller='cfp', action='submit')

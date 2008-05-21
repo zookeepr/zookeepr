@@ -97,7 +97,7 @@ class SecureController(BaseController):
     from this class instead of `BaseController`.
     
     In the permissions list, the special name 'ALL' sets the default
-    (normally no access).
+    (normally open access).
 
     Example:
       permissions = { 'view': [AuthRole('reviewer'), AuthRole('organiser')],
@@ -164,16 +164,16 @@ class SecureController(BaseController):
 
     def check_permissions(self, action):
         if not hasattr(self, 'permissions'):
-             # no access by default
-            return False
+             # Open access by default
+            return True
 
         if action in self.permissions.keys():
 	    perms = self.permissions[action]
         elif 'ALL' in self.permissions.keys():
 	    perms = self.permissions['ALL']
 	else:
-            # no access by default
-	    return False
+            # open access by default
+	    return True
 
         results = map(lambda x: x.authorise(self), perms)
         return reduce(lambda x, y: x or y, results, False)
