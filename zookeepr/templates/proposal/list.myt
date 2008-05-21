@@ -5,7 +5,8 @@
 <% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %>
 </p>
 
-
+% if c.num_reviewers <= 0:
+%	c.num_reviewers = 1
 You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. 
 
 

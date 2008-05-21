@@ -11,7 +11,10 @@ class ProfileController(SecureController, Read, Update, List):
     individual = 'profile'
 
     permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
-                   'roles': [AuthRole('organiser')]}
+                   'roles': [AuthRole('organiser')],
+                   'index': [AuthRole('organiser')]
+                   }
+    anon_action = []
 
     def index(self):
         r = AuthRole('organiser')

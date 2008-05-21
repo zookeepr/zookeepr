@@ -71,6 +71,7 @@ class ProposalController(SecureController, View, Modify):
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer'), AuthRole('organiser')],
                    "attach": [AuthRole('organiser')],
+                   "review": [AuthRole('reviewer')]
                    }
     anon_actions = ['talk']
 
@@ -135,7 +136,7 @@ class ProposalController(SecureController, View, Modify):
 	else:
 	    # somehow didn't find one, so pick one at random
 	    # (the collection is shuffled, so item 0 is random enough)
-	    c.next_review_id = collection[0].id 
+	    c.next_review_id = 1
 
 
 

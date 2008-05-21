@@ -56,7 +56,7 @@ class VoucherCodeController(SecureController, Read, Create, List):
 
     permissions = {'new': [AuthRole('organiser')],
                    'view': [AuthRole('organiser')],
-		   'list': [AuthTrue()],
+                   'list': [AuthTrue()],
                    }
 
     def __before__(self, **kwargs):
