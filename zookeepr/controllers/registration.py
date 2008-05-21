@@ -209,7 +209,7 @@ class RegistrationSchema(Schema):
     speaker_slides_release = validators.Bool()
     
     chained_validators = [DuplicateVoucherCodeValidator(),
-	  SillyDescriptionMD5(), SpeakerVoucherValidator(), PPValidator(),
+	  SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator(),
 	  TeesizeValidator()]
 
 class PersonSchema(Schema):
