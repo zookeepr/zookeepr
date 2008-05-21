@@ -12,14 +12,11 @@ lca_info = {
   'event_name' : 'linux.conf.au 2009',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'not_open',
+  'cfp_status' : 'open',
   'cfmini_status' : 'open',
   'registration_status' : 'not_open',
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',
-  
-# Available Tickets
-  'total_ticets' = 700,
-  'speakers_coming' = 70 # hard coded to the number of speakers... do we need this since speakers register?
+
 }
 

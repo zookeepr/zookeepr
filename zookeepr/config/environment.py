@@ -10,7 +10,7 @@ import zookeepr.lib.app_globals as app_globals
 import zookeepr.lib.helpers
 
 from zookeepr.config.routing import make_map
-from zookeepr.config.lca import config as lca_config
+from zookeepr.config.lca_info import lca_info
 
 def load_environment(global_conf, app_conf):
     # Setup our paths
