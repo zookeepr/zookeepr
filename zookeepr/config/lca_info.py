@@ -17,9 +17,9 @@ lca_info = {
   'date' : datetime(2009, 1, 19, 9, 0, 00),
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'closed',
+  'cfp_status' : 'open',
   'cfmini_status' : 'open',
-  'registration_status' : 'not_open',
+  'registration_status' : 'open',
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 

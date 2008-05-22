@@ -78,37 +78,38 @@ class CfpController(SecureController):
            return render_response("cfp/closed.myt")
         elif c.cfp_status == 'not_open':
            return render_response("cfp/not_open.myt")
+        elif self.logged_in() is False:
+           return render_response("cfp/mini_log_in.myt")
+        else:
+            c.cfptypes = self.dbsession.query(ProposalType).select()
+            c.tatypes = self.dbsession.query(AssistanceType).select()
+            c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
+            c.person = c.signed_in_person
 
+            errors = {}
+            defaults = dict(request.POST)
 
-        c.cfptypes = self.dbsession.query(ProposalType).select()
-        c.tatypes = self.dbsession.query(AssistanceType).select()
-        c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
-        c.person = c.signed_in_person
+            if request.method == 'POST' and defaults:
+                result, errors = NewCFPSchema().validate(defaults, self.dbsession)
 
-        errors = {}
-        defaults = dict(request.POST)
+                if not errors:
+                    c.proposal = Proposal()
+                    # update the objects with the validated form data
+                    for k in result['proposal']:
+                        setattr(c.proposal, k, result['proposal'][k])
 
-        if request.method == 'POST' and defaults:
-            result, errors = NewCFPSchema().validate(defaults, self.dbsession)
+                    c.person.proposals.append(c.proposal)
 
-            if not errors:
-                c.proposal = Proposal()
-                # update the objects with the validated form data
-                for k in result['proposal']:
-                    setattr(c.proposal, k, result['proposal'][k])
+                    for k in result['person']:
+                        setattr(c.person, k, result['person'][k])
 
-                c.person.proposals.append(c.proposal)
+                    #if result['attachment'] is not None:
+                    #    c.attachment = Attachment()
+                    #    for k in result['attachment']:
+                    #        setattr(c.attachment, k, result['attachment'][k])
+                    #    c.proposal.attachments.append(c.attachment)
 
-                for k in result['person']:
-                    setattr(c.person, k, result['person'][k])
-
-                #if result['attachment'] is not None:
-                #    c.attachment = Attachment()
-                #    for k in result['attachment']:
-                #        setattr(c.attachment, k, result['attachment'][k])
-                #    c.proposal.attachments.append(c.attachment)
-
-                return render_response('cfp/thankyou.myt')
+                    return render_response('cfp/thankyou.myt')
 
         return render_response("cfp/new.myt",
                                defaults=defaults, errors=errors)
@@ -117,43 +118,45 @@ class CfpController(SecureController):
 
         # call-for-miniconfs now closed
         if c.cfmini_status == 'closed':
-	    return render_response("cfp/closed_mini.myt")
-	elif c.cfmini_status == 'not_open':
-	  return render_response("cfp/not_open_mini.myt")
+            return render_response("cfp/closed_mini.myt")
+        elif c.cfmini_status == 'not_open':
+            return render_response("cfp/not_open_mini.myt")
+        elif self.logged_in() is False:
+            return render_response("cfp/mini_log_in.myt")
+        else:
+            c.cfptypes = self.dbsession.query(ProposalType).select()
+            c.tatypes = self.dbsession.query(AssistanceType).select()
+            c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
+            c.person = c.signed_in_person
 
-        c.cfptypes = self.dbsession.query(ProposalType).select()
-        c.tatypes = self.dbsession.query(AssistanceType).select()
-        c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
-        c.person = c.signed_in_person
+            errors = {}
+            defaults = dict(request.POST)
 
-        errors = {}
-        defaults = dict(request.POST)
+            if request.method == 'POST' and defaults:
+                result, errors = NewMiniSchema().validate(defaults, self.dbsession)
 
-        if request.method == 'POST' and defaults:
-            result, errors = NewMiniSchema().validate(defaults, self.dbsession)
+                if not errors:
+                    c.proposal = Proposal()
+                    # update the objects with the validated form data
+                    for k in result['proposal']:
+                        setattr(c.proposal, k, result['proposal'][k])
 
-            if not errors:
-                c.proposal = Proposal()
-                # update the objects with the validated form data
-                for k in result['proposal']:
-                    setattr(c.proposal, k, result['proposal'][k])
+                    c.person.proposals.append(c.proposal)
 
-                c.person.proposals.append(c.proposal)
+                    for k in result['person']:
+                        setattr(c.person, k, result['person'][k])
 
-                for k in result['person']:
-                    setattr(c.person, k, result['person'][k])
+                    if result['attachment'] is not None:
+                        c.attachment = Attachment()
+                        for k in result['attachment']:
+                            setattr(c.attachment, k, result['attachment'][k])
+                        c.proposal.attachments.append(c.attachment)
 
-                if result['attachment'] is not None:
-                    c.attachment = Attachment()
-                    for k in result['attachment']:
-                        setattr(c.attachment, k, result['attachment'][k])
-                    c.proposal.attachments.append(c.attachment)
+                    email((c.person.email_address, 
+                              lca_info['mini_conf_email']),
+                          render('cfp/thankyou_mini_email.myt', fragment=True))
 
-                email((c.person.email_address, 
-                          lca_info['mini_conf_email']),
-                      render('cfp/thankyou_mini_email.myt', fragment=True))
+                    return render_response('cfp/thankyou_mini.myt')
 
-                return render_response('cfp/thankyou_mini.myt')
-
-        return render_response("cfp/new_mini.myt",
-                               defaults=defaults, errors=errors)
+            return render_response("cfp/new_mini.myt",
+                                   defaults=defaults, errors=errors)

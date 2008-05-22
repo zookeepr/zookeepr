@@ -1,0 +1,75 @@
+* is main menu
+** is submenu
+ - is description
+The first submenu item is the same as the parent link
+stage 1 is before CFP close
+stage 2 is after papers are published
+
+ * Home:
+   - A generic splash with short info
+   - Latest news and media
+   - Sponsors logos
+ * About:
+   ** The event/history
+   ** Tasmania/Hobart
+   ** Venue
+     - Accessibility (Wheelchair etc)
+   ** Linux/Open Source
+     - What is it?
+     - Linux Australia
+     - OSIA
+ * Sponsors/Partners
+   ** Sponsors
+     - A list of sponsors
+   ** Become a sponsor
+     - Sponsorship application/email address
+     - Types of sponsorship/prospectus
+ * Programme (stage 1)
+   ** About Programme
+     - About the sort of talks we are after/what LCA is like technically speaking
+     - about mini confs
+     - open day blurb
+   ** Submit paper
+   ** Edit submission
+ * Programme (stage 2)
+    ** About Programme
+     - About the sort of talks we are after/what LCA is like technically speaking
+     - about mini confs
+     - open day blurb
+   ** Mini-confs
+     - A list of registered ones
+     - A link to each mini-conference website (they quite often just set up their own wiki page).
+   ** Schedule
+     - List of papers/talks
+     - Detailed information on papers + presenters
+   ** Official social events
+     - What is happening at what night
+     - Where to meet/how to get to the social event
+   ** Open day information
+     - What it is
+     - Where it is
+ * Register (stage 2)
+   ** Prices/Ticket types
+     - What do you get?
+     - Under each ticket type a "purchase ticket" button
+   ** Terms and Conditions  
+     - eg cancellations etc.
+   ** Accommodation
+     -  prices and alternative options
+   ** Partners programme
+     - Information
+     - Prices
+     - Programme (Details/events)
+ * Login
+   - For changing details/checking up conference etc
+ * Delegates wiki
+   - A wiki for LCA members to edit themselves.
+   - Can be used to organise shared transport or arrange unofficial social events etc.
+   - Hopefully we (the LCA09 team) won't have to touch this much
+   - Disclaimer on user generated content
+ * Media
+   ** News
+   ** In the press
+   ** Planet/blog?
+ * Contact
+   - a whole bunch of phone numbers and email addresses
