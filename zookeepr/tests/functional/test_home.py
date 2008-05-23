@@ -24,7 +24,7 @@ class TestHomeController(ControllerTest):
         pid = p.id
         sid = s.id
 
-        resp = self.app.get(url_for(controller='account',action='signin'))
+        resp = self.app.get(url_for(controller='person',action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'

@@ -3,7 +3,7 @@
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
-<% h.form(h.url_for(controller='/account', action='signout')) %>
+<% h.form(h.url_for(controller='/person', action='signout')) %>
 
 	<p class="submit"><% h.submit('Sign out') %></p>
 

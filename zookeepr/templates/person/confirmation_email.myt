@@ -4,7 +4,7 @@ To: <% c.conf_rec.email_address %>
 To reset the password on the linux.conf.au 2008 website account
 for <% c.conf_rec.email_address %>, please click on the link below:
 
-http://<% h.host_name() %><% h.url_for(controller='account', action='reset_password', url_hash=c.conf_rec.url_hash) %>
+http://<% h.host_name() %><% h.url_for(controller='person', action='reset_password', url_hash=c.conf_rec.url_hash) %>
 
 If clicking the link does not work, copy and paste it into your web
 browser.

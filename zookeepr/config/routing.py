@@ -35,8 +35,8 @@ def make_map():
 							     action='edit')
 
     # account confirmation named route
-    m.connect('acct_confirm', '/account/confirm/:id',
-              controller='account',
+    m.connect('acct_confirm', '/person/confirm/:id',
+              controller='person',
               action='confirm')
 
     # Verify stuff from commsecure
@@ -56,8 +56,8 @@ def make_map():
 
     # special case for account controller, again in the style of the
     # original routes controller
-    m.connect('/account/:action', controller='account')
-    m.connect('/account/reset_password/:url_hash', controller='account', action='reset_password')
+    m.connect('/person/:action', controller='person')
+    m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
 
     # admin controller
     m.connect('/admin/:action', controller='admin')

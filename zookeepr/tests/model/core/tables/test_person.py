@@ -4,7 +4,7 @@ class TestPerson(TableTest):
     """Test the ``person`` table.
 
     This table stores auxiliary information about a person: their name,
-    their contact details, etc, and references an account table that
+    their contact details, etc, and references an person table that
     contains the person's login details.
     """
     table = model.core.tables.person

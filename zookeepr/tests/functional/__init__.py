@@ -373,7 +373,7 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
         self.dbsession.save(self.person)
         self.dbsession.flush()
         self.pid = self.person.id
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
                                     action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'

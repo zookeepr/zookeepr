@@ -135,8 +135,8 @@ class AdminController(SecureController):
         """ List of miniconfs [miniconf,CFP] """
         return sql_response("""select proposal.id as id, title, abstract,
 	proposal.url, firstname || ' ' || lastname as name, email_address from proposal,
-	person, person_proposal_map, account where proposal_type_id = 2 and
-	person.id=person_id and person.id=account.id and proposal.id=proposal_id order by title""")
+	person, person_proposal_map where proposal_type_id = 2 and
+	 and and proposal.id=proposal_id order by title""")
     def speaker_meta_info(self):
         """ Additional info about speakers. [speaker] """
 	return sql_response("""
@@ -153,18 +153,18 @@ class AdminController(SecureController):
 	select title, filename from attachment, proposal where proposal.id=proposal_id;
 
 	''')
-    def account_creation(self):
+    def person_creation(self):
         """ When did people create their accounts? [auth] """
 	return sql_response("""select person.id, firstname || ' ' ||
-	lastname as name, creation_timestamp as created from account,
-	person where account.id=person.id order by person.id;
+	lastname as name, creation_timestamp as created from person
+	order by person.id;
 	""")
     def auth_users(self):
         """ List of users that are authorised for some role [auth] """
 	return sql_response("""select role.name as role, firstname || ' '
 	|| lastname as name, email_address, person.id
-	from role, person, person_role_map, account
-	where person.id=person_id and role.id=role_id and account.id=account_id
+	from role, person, person_role_map, 
+	where person.id=person_id and role.id=role_id
 	order by role, lastname, firstname""")
     def rej_papers(self):
         """ Rejected papers, without abstracts (for the miniconf
@@ -174,7 +174,7 @@ class AdminController(SecureController):
 	    firstname || ' ' || lastname as name,
 	    title, project,
 	    proposal.url, email_address as email, person.url as homepage
-	  from proposal, person, account, person_proposal_map, review
+	  from proposal, person, person_proposal_map, review
 	  where person_id = person.id and review.proposal_id = proposal.id
 	    and person_proposal_map.proposal_id = proposal.id
 	    and account_id = account.id and account_id = person.id 
@@ -190,10 +190,10 @@ class AdminController(SecureController):
 	    title, project,
 	    abstract,
 	    proposal.url, email_address as email, person.url as homepage
-	  from proposal, person, account, person_proposal_map, review
+	  from proposal, person, person_proposal_map, review
 	  where person_id = person.id and review.proposal_id = proposal.id
 	    and person_proposal_map.proposal_id = proposal.id
-	    and account_id = account.id and account_id = person.id 
+	    and account_id = person.id 
 	    and proposal_type_id = 1 and accepted is null
 	  order by miniconf, proposal.id
 	""")
@@ -327,9 +327,8 @@ class AdminController(SecureController):
         """ All registrations with everything [rego]"""
 	return sql_response("""
 	  select * from registration full outer join person on
-	  person_id=person.id full outer join account on account_id=account.id
-	  full outer join invoice on person.id=invoice.person_id full outer join
-	  payment_received on invoice.id = payment_received.invoice_id;
+	  person_id=person.id full outer join invoice on person.id=invoice.person_id
+	  full outer join payment_received on invoice.id = payment_received.invoice_id;
 	""")
 
     def draft_timetable(self):
@@ -1110,13 +1109,6 @@ class AdminController(SecureController):
 	    p = self.dbsession.query(Person).filter_by(id=id).all()
 	    if p:
 		c.id_type = 'person'
-		c.p = p[0]
-		c.r = c.p.registration; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
-
-	    p = self.dbsession.query(Person).filter_by(account_id=id).all()
-	    if p:
-		c.id_type = 'account'
 		c.p = p[0]
 		c.r = c.p.registration; c.i = c.p.invoices
 		return render_response('admin/rego_lookup.myt')

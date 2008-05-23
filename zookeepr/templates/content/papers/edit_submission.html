@@ -20,7 +20,7 @@ oddeven = oddeven()
 <h1>Edit a presentation</h1>
 
 % if 'signed_in_person_id' not in session:
-  <meta http-equiv="Refresh" content="1; /account/signin?url=presentations%2Fedit_submission">
+  <meta http-equiv="Refresh" content="1; /person/signin?url=presentations%2Fedit_submission">
   You need to <a href="/account/signin?url=presentations%2Fedit_submission">sign in first</a>.
 % elif len(talks)==0:
   You have no presentation submissions to edit!  <a
