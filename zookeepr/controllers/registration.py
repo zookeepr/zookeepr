@@ -209,7 +209,7 @@ class RegistrationSchema(Schema):
     speaker_slides_release = validators.Bool()
     
     chained_validators = [DuplicateVoucherCodeValidator(),
-	  SillyDescriptionMD5(), SpeakerVoucherValidator(), PPValidator(),
+	  SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator(),
 	  TeesizeValidator()]
 
 class PersonSchema(Schema):
@@ -544,7 +544,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         c.data = []
         for mc_id in PaymentOptions().miniconf_orgs:
 	    row = ['<a href="/profile/%d">%d</a>' % (mc_id, mc_id)]
-            mc = self.dbsession.query(model.Person).filter_by(id=mc_id).one()
+            mc = self.dbsession.query(model.Person).filter_by(id=mc_id).first()
 	    if mc==None:
 		row.append('(unknown)')
 	    else:

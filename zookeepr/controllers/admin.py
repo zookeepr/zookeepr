@@ -5,6 +5,7 @@ from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
 from zookeepr.model import Registration, Person, Invoice, PaymentReceived
 from zookeepr.model.registration import RegoNote
+from zookeepr.config.lca_info import lca_info
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -182,7 +183,7 @@ class AdminController(SecureController):
 	""")
     def rej_papers_abstracts(self):
         """ Rejected papers, with abstracts (for the miniconf organisers)
-	[CFP] """
+	[CFP,miniconf] """
 	return sql_response("""
 	  select distinct miniconf, proposal.id as p,
 	    firstname || ' ' || lastname as name,
@@ -418,7 +419,7 @@ class AdminController(SecureController):
 
     def countdown(self):
         """ How many days until conference opens """
-	timeleft = datetime(2008, 1, 28, 9, 0, 00) - datetime.now()
+	timeleft = lca_info['date'] - datetime.now()
 	res = Response ("%.1f days" % (timeleft.days +
 					       timeleft.seconds / (3600*24.)))
 	res.headers['Refresh'] = 3600
@@ -1934,4 +1935,4 @@ def sql_data(sql):
     Ideally, of course, it should never be used.
     """
     import zookeepr.model
-    return zookeepr.model.metadata.get_engine().execute(sql).fetchall();
+    return zookeepr.model.metadata.bind.execute(sql).fetchall();

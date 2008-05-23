@@ -24,7 +24,7 @@ From within zookeepr/zookeepr:
  - Make a config file as follows: "paster make-config zookeepr config.ini"
  - Tweak config.ini file as appropriate 
      - Set up dburi to something appropriate (possibly sqlite:/// or a postgre setup).
- - Generate an empty database: `paster setup-app config.ini`
+ - Generate an empty database: "paster setup-app config.ini"
  
 ====== Running Zookeepr ======
 paster serve --reload -v config.ini
