@@ -64,23 +64,14 @@ class NotExistingPersonValidator(validators.FancyValidator):
             raise Invalid("This person already exists.  Please try signing in first.", value, state)
 
 
-# FIXME: merge with registration controller validator and move to validators
-class NotExistingHandleValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        person = state.query(Person).filter_by(handle=value['handle']).first()
-        if person is not None:
-            raise Invalid("This handle already exists.  Please try signing in first, or choosing a new handle.", value, state)
-
-
 class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
-    handle = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     
-    chained_validators = [NotExistingPersonValidator(), NotExistingHandleValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 
 class NewRegistrationSchema(BaseSchema):
