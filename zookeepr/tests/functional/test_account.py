@@ -380,15 +380,14 @@ class TestPersonController(ControllerTest):
         Dummy_smtplib.install()
         
         # get the home page
-        resp = self.app.get('/')
+        resp = self.app.get('/person/signin')
         # click on the 'create new account' link
-        resp = resp.click('new user?')
+        resp = resp.click('Sign up')
         # fill out the form
         f = resp.form
         f['registration.email_address'] = 'testguy@example.org'
         f['registration.firstname'] = 'Testguy'
         f['registration.lastname'] = 'McTest'
-        f['registration.handle'] = 'testguy'
         f['registration.password'] = 'test'
         f['registration.password_confirm'] = 'test'
         resp = f.submit()
@@ -459,7 +458,6 @@ class TestPersonController(ControllerTest):
         f['registration.email_address'] = 'testguy@example.org'
         f['registration.firstname'] = 'Testguy'
         f['registration.lastname'] = 'McTest'
-        f['registration.handle'] = 'tg'
         f['registration.password'] = 'test'
         f['registration.password_confirm'] = 'test'
         resp = f.submit()
