@@ -137,7 +137,7 @@ class PersonController(BaseController):
 
         r[0].activated = True
 
-        self.dbsession.save(r[0])
+        self.dbsession.update(r[0])
         self.dbsession.flush()
 
         return render_response('person/confirmed.myt')
