@@ -32,9 +32,8 @@ directly to the registration form</a></b>, don't bother with this one.</p>
 	<p class="label"><span class="mandatory">*</span><label for="registration.password_confirm">Confirm your password:</label></p>
 	<p class="entries"><% h.password_field("registration.password_confirm", size=40) %></p>
 
-	<p class="label"><span class="mandatory">*</span><label for="registration.handle">Display name:</label></p>
-	<p class="entries"><% h.text_field('registration.handle', size=40) %></p>
-	<p class="note">Your display name will be used to identify you on the website.</p>
+
+<& form.myt &>
 
 	<p class="submit"><% h.submit("Create a new account") %></p>
 
