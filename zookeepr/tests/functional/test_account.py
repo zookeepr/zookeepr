@@ -464,7 +464,7 @@ class TestPersonController(ControllerTest):
         f['registration.password_confirm'] = 'test'
         resp = f.submit()
 
-        resp.mustcontain('This account already exists')
+        resp.mustcontain('This person already exists')
 
         resp.click('recover your password')
 
