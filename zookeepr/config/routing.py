@@ -55,6 +55,11 @@ def make_map():
     m.connect('/registration/list_miniconf_orgs', controller='registration',
 				      action='list_miniconf_orgs', id=None)
 
+    # special case for account controller, again in the style of the
+    # original routes controller
+    m.connect('/person/:action', controller='person')
+    m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
+
     # admin controller
     m.connect('/admin/:action', controller='admin')
     m.connect('/programme/mini-confs/recorded', controller='admin', action='recorded_miniconf_talks')
@@ -73,12 +78,6 @@ def make_map():
     #m.connect('/wiki', controller='wiki', action='view', url='/wiki')
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
-    m.connect('/person/new', controller='person', action='new')
-    m.connect('/person/signin', controller='person', action='signin')
-    m.connect('/person/signout', controller='person', action='signout')
-    m.connect('/person/forgotten_password', controller='person',
-					       action='forgotten_password')
-    m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
 
     m.connect('/person', controller='profile', action='index', id=None)
     m.connect('/person/:id', controller='profile', action='view')

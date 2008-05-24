@@ -1,6 +1,7 @@
 import warnings
 
-from sqlalchemy import create_session, select, func
+from sqlalchemy.orm import create_session
+from sqlalchemy import select, func
 
 from zookeepr import model
 from zookeepr.tests import TestBase, monkeypatch

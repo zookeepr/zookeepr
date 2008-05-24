@@ -55,7 +55,7 @@ def monkeypatch(cls, test_name, func_name):
     setattr(cls, test_name, new.function(code, g, test_name))
 
 
-def setUp():
+def setup():
     try:
         os.unlink('test.db')
     except OSError:
