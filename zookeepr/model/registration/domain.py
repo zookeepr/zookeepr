@@ -8,7 +8,6 @@ class Registration(object):
                  state=None,
                  country=None,
                  postcode=None,
-                 phone=None,
                  company=None,
                  nick=None,
                  shell=None,
@@ -54,7 +53,6 @@ class Registration(object):
         self.state = state
         self.country = country
         self.postcode = postcode
-        self.phone = phone
         self.company = company
         self.nick = nick
         self.shell = shell
