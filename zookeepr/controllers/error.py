@@ -15,10 +15,11 @@ class ErrorController(WSGIController):
         """
         Change this method to change how error documents are displayed
         """
-        try:
-            return render_response('error/%s.myt'%request.params['code'])
-        except:
-            return render_response('error/default.myt')
+        if not request.environ['paste.config']['global_conf'].get('debug'):
+            try:
+                return render_response('error/%s.myt'%request.params['code'])
+            except:
+                return render_response('error/default.myt')
 
         if request.params['code'] == "500":
             return render_response('error/500.myt')

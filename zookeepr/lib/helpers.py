@@ -9,7 +9,7 @@ import urllib
 from glob import glob
 import os.path, random, array
 import re
-from zookeepr.config.lca_info import lca_info, lca_menu, lca_submenus
+from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus
 
 def counter(*args, **kwargs):
     """Return the next cardinal in a sequence.
