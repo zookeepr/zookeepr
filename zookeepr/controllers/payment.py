@@ -44,17 +44,17 @@ class PaymentController(BaseController, Create, View):
         pd = {}
         for a,b in [('invoice_id', 'InvoiceID'),
                     ('payment_amount', 'Amount'),
-		    ('bank_reference', 'AuthNum'),
-		    ('payment_number', 'TransID'),
+                    ('bank_reference', 'AuthNum'),
+                    ('payment_number', 'TransID'),
                     ('HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED_FOR'),
-		    ]:
+                    ]:
             if a in fields:
                 pd[b] = fields[a]
 
-	# convert from string dollars and cents to integer cents
-	# (hopefully not losing any precision, given the amounts involved)
+        # convert from string dollars and cents to integer cents
+        # (hopefully not losing any precision, given the amounts involved)
         if 'Amount' in pd:
-	    pd['Amount'] = int(round(float(pd['Amount'])*100))
+            pd['Amount'] = int(round(float(pd['Amount'])*100))
 
         pr = model.PaymentReceived(**pd)
         self.dbsession.save(pr)
@@ -79,10 +79,10 @@ class PaymentController(BaseController, Create, View):
             error = '/Errors/UserPaidDifferentAmount'
 
             self._mail_warn("Amount Paid Doesn't Match What We Asked", pr)
-            
+
         else:
             pr.result = 'OK'
-	    pr.Status = 'Accepted'
+            pr.Status = 'Accepted'
             error = None
 
         self.dbsession.flush()
@@ -95,13 +95,13 @@ class PaymentController(BaseController, Create, View):
             redirect_to(error)
         else:
             return Response("Recorded, thank you.") #only goes to SecurePay
-	    #c.person = pr.payment_sent.invoice.person
-	    c.person = pr.invoice.person
-	    c.payment = pr
-	    email(c.person.email_address,
-		render('payment/response.myt', id=c.person.url_hash,
-		    fragment=True))
 
+        #c.person = pr.payment_sent.invoice.person
+            c.person = pr.invoice.person
+            c.payment = pr
+            email(c.person.email_address,
+                    render('payment/response.myt', id=c.person.url_hash,
+                        fragment=True))
 
     def _verify_hmac(self, fields):
         merchantid = lca_info['commsecure_merchantid']

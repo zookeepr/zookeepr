@@ -7,16 +7,25 @@ class TestProfileController(ControllerTest):
                          handle='testguy',
                          firstname='Testguy',
                          lastname='McTest',
+                         password='p4ssw0rd',
                          )
+        p.activated = True
         self.dbsession.save(p)
         self.dbsession.flush()
 
         pid = p.id
 
+        # try to log in
+        resp = self.app.get(url_for(controller='person',
+            action='signin'))
+        f = resp.form
+        f['email_address'] = 'testguy@example.org'
+        f['password'] = 'p4ssw0rd'
+        resp = f.submit()
+
         resp = self.app.get('/profile/%d' % p.id)
 
-        print resp
-        resp.mustcontain("Testguy McTest")
+        resp.mustcontain("McTest")
 
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
