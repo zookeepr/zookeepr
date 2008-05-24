@@ -7,14 +7,12 @@
 <% h.hidden_field('proposal.assistance', 0) %>
 
 % #endfor
-	<br><p class="note"><span class="mandatory">*</span> - Mandatory
-	field</p>
 
-	<p class="label"><span class="mandatory">*</span><label for="proposal.title">Title:</label></p>
+	<p class="label"><label for="proposal.title">Title:</label><span class="mandatory">*</span></p>
 	<p class="entries"><% h.text_field('proposal.title', size=70) %></p>
 		<p class="note">The name of your miniconf.</p>
 
-	<p class="label"><span class="mandatory">*</span><label for="proposal.abstract">Mini-conf summary:</label></p>
+	<p class="label"><label for="proposal.abstract">Mini-conf summary:</label><span class="mandatory">*</span></p>
 	<p class="entries"><% h.text_area('proposal.abstract', size="70x10") %></p>
 		<p class="note-bene">Please indicate any special needs your
 		miniconf will have (e.g. facilities required), preferred
@@ -36,9 +34,9 @@ presentations.</em></p>
 
 % if c.signed_in_person:
 %     c.person = c.signed_in_person
-	<p class="label"><span class="mandatory">*</span><span
-	class="publishable">&#8224;</span><label
-	for="name">Organiser name:</label></p>
+	<p class="label"><label
+	for="name">Organiser name:</label><span class="mandatory">*</span><span
+    class="publishable">&#8224;</span></p>
 	<p class="entries"><% h.text_field('name',
 	value=c.person.firstname + " " + c.person.lastname, size=70,
 	disabled=True) %></p>
@@ -47,13 +45,13 @@ presentations.</em></p>
 <& ../person/form.myt &>
 % #endif
 
-	<p class="label"><span class="mandatory">*</span><span
-	class="publishable">&#8224;</span><label
-	for="person.url">Organiser homepage:</label></p>
+	<p class="label"><label
+	for="person.url">Organiser homepage:</label><span class="mandatory">*</span><span
+    class="publishable">&#8224;</span></p>
 	<p class="entries"><% h.text_field('person.url', size=70) %></p>
 		<p class="note">Your homepage.</p>
 
-	<p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
+	<p class="label"><label for="person.experience">Relevant experience:</label><span class="mandatory">*</span></p>
 	<p class="entries"><% h.text_area('person.experience', size="70x6") %></p>
 		<p class="note">Have you had any experience presenting
 		elsewhere? If so, we'd like to know.  Anything you put here
@@ -61,7 +59,11 @@ presentations.</em></p>
 		convince them why they should accept your mini-confs and
 		presentations.</p>
 
-	<p class="label"><span class="mandatory">*</span><label for="person.bio">Bio:</label></p>
+	<p class="label"><label for="person.bio">Bio:</label><span class="mandatory">*</span></p>
 	<p class="entries"><% h.text_area('person.bio', size="70x6") %></p>
 		<p class="note">Your Bio, this will appear on the
 		conference website for your presentations.</p>
+
+	<br><p class="note"><span class="mandatory">*</span> - Mandatory
+	field</p>
+

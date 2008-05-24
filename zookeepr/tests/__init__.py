@@ -61,13 +61,6 @@ def setup():
     except OSError:
         pass
 
-    # MoinMoin has surge protection.  This is bad because it introduces timing
-    # assumptions about usage, and if we're testing we can't have timing
-    # assumptions, because we don't know how fast we'll run.
-    surge_log = 'moin/data/cache/surgeprotect/surge-log'
-    if os.path.exists(surge_log):
-        os.unlink(surge_log)
-
     from zookeepr.model import create_all
     create_all({'dburi': 'sqlite:///test.db',
                 'echo_queries': 'true'})
