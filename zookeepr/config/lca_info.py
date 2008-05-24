@@ -23,14 +23,15 @@ lca_info = {
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 
-  'lca_rego' : { 
+}
+
+lca_rego = { 
 # Id's used for speaker accom
 	'speaker_accom_options' : (51,52,53),
 
 # Date Early Bird ends
 	'earlybird_enddate' : datetime(2008, 11, 18, 00, 00, 00),
 	'earlybird_limit' : 220
-  }
 }
 
 lca_menu = [
