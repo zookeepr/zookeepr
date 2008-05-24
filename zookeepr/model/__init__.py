@@ -56,7 +56,7 @@ def populate_data():
             dict(name='Can\'t attend without partial assistance'),
             )
         model.proposal.tables.assistance_type.insert().execute(
-            dict(name='Will try to get my employer to pay'),
+            dict(name='May need assistance'),
             )
         model.proposal.tables.assistance_type.insert().execute(
             dict(name='Don\'t need assistance'),
@@ -71,69 +71,11 @@ def populate_data():
         model.core.tables.role.insert().execute(
             dict(name='organiser'),
             )
-    except SQLError:
-        pass
-
-    try:
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=1,
-                 name="New College",
-                 beds=125,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="no breakfast",
-                 cost_per_night=49.50,
-                 accommodation_location_id=1,
-                 )
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="",
-                 cost_per_night=55.00,
-                 accommodation_location_id=1,
-                 )
-            )
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=2,
-                 name="Shalom",
-                 beds=90,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="",
-                 cost_per_night=60.00,
-                 accommodation_location_id=2,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="with ensuite",
-                 cost_per_night=80.00,
-                 accommodation_location_id=2,
-                 )
-            )
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=3,
-                 name="International house",
-                 beds=50,
-                 ),
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="no breakfast",
-                 cost_per_night=35.00,
-                 accommodation_location_id=3,
-                 )
-            )
-        model.registration.tables.accommodation_location.insert().execute(
-            dict(id=4,
-                 name="Warrane",
-                 beds=50,
-                 )
-            )
-        model.registration.tables.accommodation_option.insert().execute(
-            dict(name="male only",
-                 cost_per_night=58.50,
-                 accommodation_location_id=4,
-                 )
-            )
+	model.core.tables.role.insert().execute(
+            dict(name='miniconf'),
+	    )
+	model.core.tables.role.insert().execute(
+	    dict(name='team'),
+	    )
     except SQLError:
         pass
