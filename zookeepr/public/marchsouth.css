@@ -14,6 +14,8 @@
 		text-align: left;
 		width: 90%;
 		margin-left: 5%;
+		padding-bottom: 100px;
+		min-height: 400px;
 	}
 	
 	.banner
@@ -62,8 +64,9 @@
 	
 	.main_menu
 	{
-		background-color: #615aaa;
+		background-color: #827ebb;
 		background-image: url(images/menu_bg.png);
+		background-repeat: repeat-x;
 		display: block;
 		margin: 0;
 		padding: 2px 0;
@@ -76,6 +79,7 @@
 		display: block;
 		padding: 2px 0 2px 0;
 		text-align: center;
+		background-color: #ffffff;
 	}
 	
 	.main_menu li, .sub_menu li
@@ -220,6 +224,7 @@
 		border: 2px solid #d5e0ff;
 		border-spacing: 0 1px;
 		background-color: #5850a5;
+		font-size: 0.75em;
 	}
 	
 	td
@@ -266,7 +271,6 @@
 	.footer
 	{
 		clear: both;
-		margin-top: 100px;
 		margin-bottom: 10px;
 		background-image: url(images/footer_bg.png);
 		background-repeat: repeat-x;
@@ -319,10 +323,10 @@
 	.error-message
 	{
 		background-color: inherit;
-		color: #0fffff;
+		color: #ff0f0f;
 	}
 
 	.error
 	{
-		background-color: #0fffff;
+		border-color: #ff0000;
 	}
