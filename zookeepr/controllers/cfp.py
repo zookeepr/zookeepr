@@ -7,12 +7,34 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator, AssistanceTypeValidator
+from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress
 from zookeepr.model import ProposalType, Proposal, Attachment, AssistanceType
 
 from zookeepr.config.lca_info import lca_info
 
-class PersonSchema(Schema):
+# FIXME: merge with account.py controller and move to validators
+class NotExistingPersonValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        person = state.query(model.Person).filter_by(email_address=value['email_address']).one()
+        if person is not None:
+            raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
+
+
+class NewPersonSchema(Schema):
+    email_address = EmailAddress(resolve_domain=True, not_empty=True)
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
+    handle = validators.String(not_empty=True)
+
+    experience = validators.String()
+    bio = validators.String(not_empty=True)
+    url = validators.String()
+
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+
+class ExistingPersonSchema(Schema):
     experience = validators.String()
     bio = validators.String(not_empty=True)
     url = validators.String()
@@ -26,16 +48,36 @@ class ProposalSchema(Schema):
     url = validators.String()
     abstract_video_url = validators.String()
 
-class NewCFPSchema(BaseSchema):
-    person = PersonSchema()
+class ExistingCFPSchema(BaseSchema):
+    person = ExistingPersonSchema()
     proposal = ProposalSchema()
     #attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
 
-class MiniPersonSchema(Schema):
+class NewNewCFPSchema(BaseSchema):
+    person = NewPersonSchema()
+    proposal = ProposalSchema()
+    #attachment = FileUploadValidator()
+    pre_validators = [NestedVariables]
+
+class NewMiniPersonSchema(Schema):
+    email_address = EmailAddress(resolve_domain=True, not_empty=True)
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
+    handle = validators.String(not_empty=True)
+
     experience = validators.String()
     bio = validators.String(not_empty=True)
-    #url = validators.String()
+    url = validators.String()
+
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+
+class ExistingMiniPersonSchema(Schema):
+    experience = validators.String()
+    bio = validators.String(not_empty=True)
+    url = validators.String()
 
 class MiniProposalSchema(Schema):
     title = validators.String(not_empty=True)
@@ -46,8 +88,14 @@ class MiniProposalSchema(Schema):
     url = validators.String()
     #abstract_video_url = validators.String()
 
-class NewMiniSchema(BaseSchema):
-    person = MiniPersonSchema()
+class NewNewMiniSchema(BaseSchema):
+    person = NewMiniPersonSchema()
+    proposal = MiniProposalSchema()
+    attachment = FileUploadValidator()
+    pre_validators = [NestedVariables]
+
+class ExistingMiniSchema(BaseSchema):
+    person = ExistingMiniPersonSchema()
     proposal = MiniProposalSchema()
     attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
@@ -78,30 +126,37 @@ class CfpController(SecureController):
            return render_response("cfp/closed.myt")
         elif c.cfp_status == 'not_open':
            return render_response("cfp/not_open.myt")
-        elif self.logged_in() is False:
-           return render_response("cfp/log_in.myt")
         else:
             c.cfptypes = self.dbsession.query(ProposalType).select()
             c.tatypes = self.dbsession.query(AssistanceType).select()
-            c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
-            c.person = c.signed_in_person
 
             errors = {}
             defaults = dict(request.POST)
 
             if request.method == 'POST' and defaults:
-                result, errors = NewCFPSchema().validate(defaults, self.dbsession)
+                if c.signed_in_person:
+                    schema = ExistingCFPSchema
+                else:
+                    schema = NewNewCFPSchema
 
+                result, errors = schema().validate(defaults, self.dbsession)
                 if not errors:
                     c.proposal = Proposal()
                     # update the objects with the validated form data
                     for k in result['proposal']:
                         setattr(c.proposal, k, result['proposal'][k])
 
-                    c.person.proposals.append(c.proposal)
+                    if not c.signed_in_person:
+                        c.person = model.Person()
+                        for k in results['person']:
+                            setattr(c.person, k, results['person'][k])
+                        self.dbsession.save(c.person)
+                    else:
+                        c.person = c.signed_in_person
+                        for k in result['person']:
+                            setattr(c.person, k, result['person'][k])
 
-                    for k in result['person']:
-                        setattr(c.person, k, result['person'][k])
+                    c.person.proposals.append(c.proposal)
 
                     #if result['attachment'] is not None:
                     #    c.attachment = Attachment()
@@ -121,8 +176,6 @@ class CfpController(SecureController):
             return render_response("cfp/closed_mini.myt")
         elif c.cfmini_status == 'not_open':
             return render_response("cfp/not_open_mini.myt")
-        elif self.logged_in() is False:
-            return render_response("cfp/mini_log_in.myt")
         else:
             c.cfptypes = self.dbsession.query(ProposalType).select()
             c.tatypes = self.dbsession.query(AssistanceType).select()
@@ -133,13 +186,27 @@ class CfpController(SecureController):
             defaults = dict(request.POST)
 
             if request.method == 'POST' and defaults:
-                result, errors = NewMiniSchema().validate(defaults, self.dbsession)
+                if c.signed_in_person:
+                    schema = ExistingMiniSchema
+                else:
+                    schema = NewNewMiniSchema
+                result, errors = schema().validate(defaults, self.dbsession)
 
                 if not errors:
                     c.proposal = Proposal()
                     # update the objects with the validated form data
                     for k in result['proposal']:
                         setattr(c.proposal, k, result['proposal'][k])
+
+                    if not c.signed_in_person:
+                        c.person = model.Person()
+                        for k in results['person']:
+                            setattr(c.person, k, results['person'][k])
+                        self.dbsession.save(c.person)
+                    else:
+                        c.person = c.signed_in_person
+                        for k in result['person']:
+                            setattr(c.person, k, result['person'][k])
 
                     c.person.proposals.append(c.proposal)
 

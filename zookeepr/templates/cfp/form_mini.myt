@@ -34,6 +34,24 @@
 <p><em>Note: These are common for all your proposals, both mini-confs and
 presentations.</em></p>
 
+% if c.signed_in_person_id:
+	<p class="label"><span class="mandatory">*</span><span
+	class="publishable">&#8224;</span><label
+	for="name">Organiser name:</label></p>
+	<p class="entries"><% h.text_field('name',
+	value=c.person.firstname + " " + c.person.lastname, size=70,
+	disabled=True) %></p>
+		<p class="note">(Can't be changed here.)</p>
+% else:
+<& ../person/form.myt &>
+% #endif
+
+	<p class="label"><span class="mandatory">*</span><span
+	class="publishable">&#8224;</span><label
+	for="person.url">Organiser homepage:</label></p>
+	<p class="entries"><% h.text_field('person.url', size=70) %></p>
+		<p class="note">Your homepage.</p>
+
 	<p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
 	<p class="entries"><% h.text_area('person.experience', size="70x6") %></p>
 		<p class="note">Have you had any experience presenting
