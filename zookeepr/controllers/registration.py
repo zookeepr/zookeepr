@@ -595,12 +595,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             return False, "All gone."
         left = po.eblimit - count
         percent = int(round((20.0 * left) / po.eblimit) * 5)
+	actualpercent = (100.0 * left) / po.eblimit
         if percent == 0:
-            return True, ("Almost all earlybirds gone," + timeleft)
+            return True, ("Almost all earlybirds gone," + timeleft), actualpercent
         elif percent <= 30:
-            return True, ("Only %d%% earlybirds left,"%percent + timeleft)
+            return True, ("Only %d%% earlybirds left,"%percent + timeleft), actualpercent
         else:
-            return True, ("%d%% earlybirds left,"%percent + timeleft)
+            return True, ("%d%% earlybirds left,"%percent + timeleft), actualpercent
 
     def check_ceiling(self, check_type=None):
         """ Checks the ceiling, returning various information in a struct.
@@ -640,7 +641,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         if res.open:
           res.left = res.limit - res.total
-          percent = int(round((20.0 * res.left) / res.limit) * 5)
+	  res.percent = (100.0 * res.left) / res.limit
+	  percent = int(round((20.0 * res.left) / res.limit) * 5)
           if percent == 0:
               res.text = "Almost all tickets gone."
           elif percent <= 30:
@@ -649,6 +651,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
               res.text = "%d%% tickets left."%percent
         else:
             res.text = 'All tickets gone.'
+	    res.percent = 0.0
 
         if check_type:
             if check_type in ceiling_types:
@@ -661,7 +664,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         return res
 
     def status(self):
-        (c.eb, c.ebtext) = self.check_earlybird()
+        (c.eb, c.ebtext, c.ebpercent) = self.check_earlybird()
         c.ceiling = self.check_ceiling()
         return render_response("registration/status.myt")
 
