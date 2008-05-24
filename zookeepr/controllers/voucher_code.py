@@ -41,7 +41,6 @@ class VoucherCodeSchema(BaseSchema):
 
 class NewVoucherCodeSchema(BaseSchema):
     voucher_code = VoucherCodeSchema()
-
     pre_validators = [variabledecode.NestedVariables]
 
 

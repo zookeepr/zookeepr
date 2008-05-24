@@ -12,7 +12,7 @@ log = logging.getLogger(__name__)
 class DbContentSchema(BaseSchema):
     title = validators.String(not_empty=True)
     url = validators.String(not_empty=True)
-    content = validators.String(not_empty=True)
+    body = validators.String(not_empty=True)
 
 class NewContentSchema(BaseSchema):
     db_content = DbContentSchema()

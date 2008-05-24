@@ -151,15 +151,16 @@
 
 	h1, h2, h3, h4, th, dt
 	{
-		clear: right;
+		/*clear: right;*/
 		font-family: "Arial", sans-serif;
 		font-style: oblique;
 		color: #5850a5;
 		background-color: inherit;
-		padding-left: 60px;
+		padding-left: 40px;
 		padding-right: 40px;
 		margin-bottom: 0;
-		margin-top: 2em;
+		/*margin-top: 2em;*/
+		margin-top: 20pt;
 	}
 
 	p
@@ -167,7 +168,7 @@
 		background-color: inherit;
 		color: #303030;
 		text-align: justify;
-		padding-left: 60px;
+		padding-left: 40px;
 		padding-right: 40px;
 	}
 
@@ -183,7 +184,7 @@
 	
 	dl
 	{
-		margin-left: 80px;
+		margin-left: 60px;
 	}
 	
 	dt
@@ -199,7 +200,7 @@
 	
 	ol
 	{
-		margin-left: 60px;
+		margin-left: 40px;
 	}
 
 	ul li, ol li
@@ -219,8 +220,8 @@
 	
 	table
 	{
-		margin-left: auto;
-		margin-right: auto;
+		margin-left: 40px;
+		margin-right: 40px;
 		border: 2px solid #d5e0ff;
 		border-spacing: 0 1px;
 		background-color: #5850a5;

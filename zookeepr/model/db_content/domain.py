@@ -6,5 +6,5 @@ class DBContent(object):
                  ):
         self.title = title
         self.urls = urls
-        self.content = content
+        self.body = body
 

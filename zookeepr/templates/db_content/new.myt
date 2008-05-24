@@ -1,7 +1,6 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
-<% h.submit('Add!') %>
 <% h.end_form() %>
 </&>
 
