@@ -26,6 +26,6 @@ The URL after the linux.conf.au/ that this page should be rendered for. EG: 'abo
 </p><p class="note">
 The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate.
 </p>
-<% h.submit('Add!') %>
+<% h.submit('Save') %>
 </fieldset>
 
