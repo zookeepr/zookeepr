@@ -1,5 +1,6 @@
 from sqlalchemy import *
 
+
 from zookeepr.model import metadata
 
 # Stores conference stream names
