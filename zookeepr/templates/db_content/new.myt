@@ -15,11 +15,4 @@ errors
 </%args>
 
 <%init>
-if not defaults:
-  defaults = {
-    'voucher_code.count': '1',
-    'voucher_code.percentage': '100',
-    'voucher_code.type': 'Professional',
-  }
-
 </%init>
