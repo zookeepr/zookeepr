@@ -24,7 +24,7 @@ The URL after the linux.conf.au/ that this page should be rendered for. EG: 'abo
 <span class="mandatory">*</span>
 <label for="db_content.body">Body:</label>
 </p><p class="entries">
-<% h.text_area('db_content.body', size="70x6") %>
+<% h.text_area('db_content.content', size="70x6") %>
 </p><p class="note">
 The HTML rendered body.
 </p>

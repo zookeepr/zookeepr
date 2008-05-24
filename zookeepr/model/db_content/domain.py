@@ -8,4 +8,3 @@ class DBContent(object):
         self.urls = urls
         self.content = content
 
-

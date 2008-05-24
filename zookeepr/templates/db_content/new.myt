@@ -1,5 +1,3 @@
-<% `errors` |h%>
-
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
