@@ -12,8 +12,7 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
 from zookeepr.model.billing import VoucherCode
-
-rego_closed_exceptions_list = (1, 419, 50589)
+from zookeepr.config.lca_info import lca_info
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -46,14 +45,14 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         rego = None
         if 'signed_in_person_id' in session:
-            rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).one()
+            rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).first()
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
 # Only cares about real voucher codes
 class DuplicateVoucherCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        voucher_code = state.query(model.VoucherCode).filter_by(code=value['voucher_code']).one()
+        voucher_code = state.query(model.VoucherCode).filter_by(code=value['voucher_code']).first()
         if voucher_code:
             for r in voucher_code.registrations:
 		if not 'signed_in_person_id' in session:
@@ -66,7 +65,7 @@ class DuplicateVoucherCodeValidator(validators.FancyValidator):
 
 class SpeakerDiscountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        if value['type']=='Speaker' or value['accommodation'] in (51,52,53):
+        if value['type']=='Speaker' or value['accommodation'] in lca_info['lca_rego']['speaker_accom_options']:
 	    if 'signed_in_person_id' in session:
 		signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
 		is_speaker = reduce(lambda a, b: a or b.accepted,
@@ -77,7 +76,7 @@ class SpeakerDiscountValidator(validators.FancyValidator):
 		raise Invalid("Please log in before claiming a speaker discount!", value, state)
         if value['type']=='Mini-conf organiser':
 	    if 'signed_in_person_id' in session:
-	        if not session['signed_in_person_id'] in PaymentOptions().miniconf_orgs:
+	    	if 'miniconf' not in [r.name for r in c.signed_in_person.roles]:
 		    raise Invalid("You don't appear to be a mini-conf organiser, don't claim a mini-conf organiser discount.", value, state)
 	    else:
 		raise Invalid("Please log in before claiming a mini-conf organiser discount!", value, state)
@@ -286,13 +285,6 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	c.accommodation_collection.sort(cmp = lambda a, b: cmp(a.id, b.id))
 
     def edit(self, id):
-        if c.signed_in_person:
-	    if c.signed_in_person.id in rego_closed_exceptions_list:
-	        pass
-	    else:
-		return render_response('registration/really_closed.myt')
-	else:
-	    return render_response('registration/really_closed.myt')
         if not self.is_same_person() and not AuthRole('organiser').authorise(self):
             abort(403)
 
@@ -302,7 +294,6 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        c.invoice = registration.person.invoices[0]
                 return render_response('invoice/already.myt')
 
-	c.is_miniconf_org = c.signed_in_person and c.signed_in_person.id in PaymentOptions().miniconf_orgs
 	try:
             return super(RegistrationController, self).edit(id)
 	finally:
@@ -312,13 +303,6 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        self.pay(id, quiet=1) #retry once
 
     def new(self):
-        if c.signed_in_person:
-	    if c.signed_in_person.id in rego_closed_exceptions_list:
-	        pass
-	    else:
-		return render_response('registration/really_closed.myt')
-	#else:
-	    #return render_response('registration/really_closed.myt')
         errors = {}
         defaults = dict(request.POST)
 
@@ -361,17 +345,9 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 		    redirect_to('/registration/status')
                 return render_response('registration/thankyou.myt')
 
-	c.is_miniconf_org = c.signed_in_person and c.signed_in_person.id in PaymentOptions().miniconf_orgs
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
 
     def pay(self, id, quiet=0):
-        if c.signed_in_person:
-	    if c.signed_in_person.id in rego_closed_exceptions_list:
-	        pass
-	    else:
-		return render_response('registration/really_closed.myt')
-	else:
-	    return render_response('registration/really_closed.myt')
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
@@ -388,8 +364,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         p = PaymentOptions()
 
-	is_speaker = reduce(lambda a, b: a or b.accepted,
-					 registration.person.proposals, False)
+	is_speaker = registration.person.is_speaker()
 
         # Check for voucher
         voucher_result, errors = self.check_voucher()
@@ -398,7 +373,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	rego_closed = not self.check_ceiling(registration.type).ok
 	if voucher_result:
 	    rego_closed = False # voucher tickets are always available
-	if is_speaker or registration.person.id in p.miniconf_orgs:
+	if is_speaker:
 	    rego_closed = False # rego never closes for speakers or MC orgs
 
         # Registration
@@ -432,23 +407,6 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                                     cost=1)
             self.dbsession.save(iia)
             invoice.items.append(iia)
-
-        elif 'No Keynote Access' in registration.type and not voucher_result:
-	      now = datetime.datetime.now()
-	      if now.day > 12:
-	          cutoff_day = 31
-	      elif now.day == 12:
-	          cutoff_day = 10
-	      else:
-		  cutoff_day = 3
-	      if (registration.creation_timestamp.day > cutoff_day and
-			       registration.creation_timestamp.month == 1):
-		iia = model.InvoiceItem(
-			    'Waiting list only (not for payment at this time)',
-					qty=1,
-					cost=1)
-		self.dbsession.save(iia)
-		invoice.items.append(iia)
 
         # extra T-shirts:
         if registration.extra_tee_count > 0:
@@ -792,39 +750,18 @@ class PaymentOptions:
                 "Fairy Penguin Sponsor": [165000, 165000],
                 "Professional": [59840, 74800],
                 "Hobbyist": [28160, 35200],
-		'Professional - No Keynote Access': [59840, 74800],
-		'Hobbyist - No Keynote Access': [28160, 35200],
-                "Concession": [15400, 15400],
                 "Student": [15400, 15400],
-                "Student - No Keynote Access": [15400, 15400],
                 "Speaker": [0, 0],
                 "Mini-conf organiser": [0, 0],
                 "Team": [0, 0],
                 "Volunteer": [0, 0],
-                "Monday pass": [0, 0],
-                "Tuesday pass": [0, 0],
                 "Monday only": [4950, 4950],
-                "Tuesday only": [4950, 4950],
-                "Penguin Dinner only": [5000, 5000],
+                "Tuesday only": [4950, 4950]
                 }
         self.dinner = 5000
-	self.miniconf_orgs = [35, 123, 15, 36, 55, 29, 18, 22, 86, 66, 46,
-	        73, 71, 496, 81, 44, 279, 50014, 50283,
-		]
 
-# I think accomodation is in the DB?		
-#        self.accommodation = {
-#                "0": 0,
-#                "1": 4950,
-#                "2": 5500,
-#                "3": 6000,
-#                "5": 3500,
-#                "6": 5850
-#                }
-        self.ebdate = datetime.datetime(2007, 11, 18, 00, 00, 00)
-        self.eblimit = 220
-        #indates = [14, 15, 16, 17, 18, 19]
-        #outdates = [15, 16, 17, 18, 19, 20]
+        self.ebdate = lca_info['lca_rego']['earlybird_enddate']
+        self.eblimit = lca_info['lca_rego']['earlybird_limit']
 
     def getTypeAmount(self, type, eb):
         if type in self.types.keys():
