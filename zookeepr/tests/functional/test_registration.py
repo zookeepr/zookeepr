@@ -258,6 +258,24 @@ class TestNotSignedInRegistrationController(ControllerTest):
         self.dbsession.save(p)
         self.dbsession.flush()
 
+        r = model.Registration(address1='a1',
+            city='Sydney',
+            state='NSW',
+            country='Australia',
+            postcode='2001',
+            type='Professional',
+            nick='testguy',
+            teesize='M_long_M',
+            extra_tee_count=1,
+            extra_tee_sizes='M_long_M',
+            checkin=28,
+            checkout=3,
+            accommodation=0)
+        r.person = p
+        self.dbsession.save(r)
+        self.dbsession.flush()
+
+
         pid = p.id
 
         resp = self.app.get('/registration/new')
