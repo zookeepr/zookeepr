@@ -14,11 +14,20 @@ class DbContentSchema(BaseSchema):
     url = validators.String(not_empty=True)
     body = validators.String(not_empty=True)
 
+class NewContentSchema(BaseSchema):
+    db_content = DbContentSchema()
+    pre_validators = [variabledecode.NestedVariables]
+
+class UpdateContentSchema(BaseSchema):
+    db_content = DbContentSchema()
+    pre_validators = [variabledecode.NestedVariables]
+
+
 class DbContentController(SecureController, Create):
     individual = 'db_content'
-    schemas = {'new': DbContentSchema(),
+    model = model.DBContent
+    schemas = {'new': NewContentSchema(),
               }
 
     permissions = {'new': [AuthRole('organiser')]
                    }
-
