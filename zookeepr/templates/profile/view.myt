@@ -12,9 +12,6 @@
 email address: <% c.profile.email_address |h %>
 </p>
 <p>
-display name: <% c.profile.handle |h %>
-</p>
-<p>
 first name: <% c.profile.firstname |h %>
 last name: <% c.profile.lastname |h %>
 </p>
@@ -25,6 +22,11 @@ last name: <% c.profile.lastname |h %>
 <fieldset>
 
 <p>
+
+<p>
+display name: <% c.profile.registration.nick |h %>
+</p>
+
 ticket: <% c.profile.registration.type |h %>
 </p>
 
