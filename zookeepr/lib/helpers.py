@@ -8,7 +8,7 @@ from webhelpers import *
 import urllib
 from glob import glob
 import os.path, random, array
-import re
+import gzip, re
 from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus
 
 def counter(*args, **kwargs):
@@ -152,3 +152,20 @@ def esc(s):
       return esc_re.sub(esc_m, s)
     except:
       return esc_re.sub(esc_m, `s`)
+
+def countries():
+    """ list of countries, as retrieved from the miscfiles package
+        (stripping of all diacritical marks)
+    """
+    res = []
+    import unicodedata as ud
+    for line in gzip.open('/usr/share/misc/countries.gz').readlines():
+        if line[0]=='#' or line=='\n':
+            continue
+        cc = line.split(':')[3].decode('utf8')
+        s = ''
+        for ch in cc:
+            s += ud.normalize('NFD', ch)[0]
+        res.append(s)
+    res.sort()
+    return res
