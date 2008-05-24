@@ -95,8 +95,8 @@ class TestRegistrationController(CRUDControllerTest):
 
 class TestSignedInRegistrationController(SignedInCRUDControllerTest):
 
-    def test_existing_account_registration(self):
-        """Test that someone with an existing account can register.
+    def test_existing_person_registration(self):
+        """Test that someone with an existing person can register.
 
         """
         resp = self.app.get('/registration/new')
@@ -242,7 +242,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
 
         resp = f.submit()
 
-        resp.mustcontain('This account already exists.')
+        resp.mustcontain('This person already exists.')
 
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))

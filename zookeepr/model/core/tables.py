@@ -2,7 +2,7 @@ from sqlalchemy import *
 
 from zookeepr.model import metadata
 
-account = Table('account', metadata,
+person = Table('person', metadata,
                 Column('id', Integer, primary_key=True),
 
                 Column('email_address', String,
@@ -27,26 +27,13 @@ account = Table('account', metadata,
                 # (responded to their confirmation email)
                 Column('activated', Boolean,
                        nullable=False),
-                )
-
-person = Table('person', metadata,
-               Column('id', Integer, primary_key=True),
-
-               Column('account_id', Integer, ForeignKey('account.id'),
-                      nullable=False),
-
-               # secondary key, unique identifier within the zookeepr app
-               # useful for URLs, not required though (a-la flickr)
-               Column('handle', String(40),
-                      unique=True,
-                      ),
 
                # other personal details
                # the lengths of the fields are chosen arbitrarily
                Column('firstname', String(1024)),
                Column('lastname', String(1024)),
                Column('phone', String(32)),
-               Column('fax', String(32)),
+               Column('mobile', String(32)),
 
                Column('url', String()),
 

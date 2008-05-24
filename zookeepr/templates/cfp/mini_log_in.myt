@@ -1,7 +1,7 @@
-<h2>Submit proposal for Miniconf</h2>
+<h2>Submit proposal for miniconf</h2>
 
 <p>
-Please register or log in to submit a presentation.
+Please register or log in to submit a proposal for a miniconf.
 </p>
 
 <p>

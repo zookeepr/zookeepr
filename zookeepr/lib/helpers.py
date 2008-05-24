@@ -5,12 +5,11 @@ All names available in this module will be available under the Pylons h object.
 """
 from routes import request_config
 from webhelpers import *
-from wiki import wiki_here, wiki_fragment, wiki_html_fragment
 import urllib
 from glob import glob
 import os.path, random, array
 import re
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, lca_menu, lca_submenus
 
 def counter(*args, **kwargs):
     """Return the next cardinal in a sequence.
@@ -137,8 +136,8 @@ def random_pic(subdir):
     fileprefix = '/srv/zookeepr/zookeepr/public/random-pix/'
     htmlprefix = '/random-pix/'
     try:
-	file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
-	return htmlprefix+subdir+'/'+file
+        file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
+        return htmlprefix+subdir+'/'+file
     except IndexError:
         return "no images found"
 

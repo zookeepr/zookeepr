@@ -4,7 +4,7 @@ class TestPerson(TableTest):
     """Test the ``person`` table.
 
     This table stores auxiliary information about a person: their name,
-    their contact details, etc, and references an account table that
+    their contact details, etc, and references an person table that
     contains the person's login details.
     """
     table = model.core.tables.person
@@ -12,14 +12,14 @@ class TestPerson(TableTest):
                     firstname='Testguy',
                     lastname='McTest',
                     phone='+61295555555',
-                    fax='+61295555556',
+                    mobile='+61295555556',
                     account_id=1,
                     ),
                dict(handle='testgirl',
                     firstname='Testgirl',
                     lastname='Van Test',
                     phone='+37',
-                    fax='42',
+                    mobile='42',
                     account_id=2,
                     ),
                ]

@@ -12,7 +12,6 @@ import pylons.wsgiapp
 
 import zookeepr.lib.app_globals as app_globals
 import zookeepr.lib.helpers
-from zookeepr.lib import wiki
 
 from zookeepr.config.environment import load_environment
 

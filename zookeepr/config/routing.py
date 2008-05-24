@@ -22,21 +22,22 @@ def make_map():
     m.connect('/error/:action/:id', controller='error')
 
     # The CFP named routes
-    m.connect('cfp', '/cfp', controller='cfp', action='index')
+    #m.connect('cfp', '/cfp', controller='cfp', action='index')
     #m.connect('presentations', '/presentations', controller='cfp', action='index')
-    m.connect('submit_cfp', '/papers/submit_a_paper', controller='cfp', action='submit')
-    m.connect('submit_cfp', '/papers/submit_a_presentation', controller='cfp', action='submit')
-    m.connect('submit_cfp', '/presentations/submit_a_presentation', controller='cfp', action='submit')
-    m.connect('/papers/thankyou', controller='cfp', action='thankyou')
-    m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
-    m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
-					      controller='cfp', action='submit_mini')
-    m.connect('/presentations/edit/:id', controller='proposal',
-							     action='edit')
+    #m.connect('submit_cfp', '/papers/submit_a_paper', controller='cfp', action='submit')
+    #m.connect('submit_cfp', '/papers/submit_a_presentation', controller='cfp', action='submit')
+    #m.connect('submit_cfp', '/presentations/submit_a_presentation', controller='cfp', action='submit')
+    #m.connect('/papers/thankyou', controller='cfp', action='thankyou')
+    #m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
+    #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
+	#				      controller='cfp', action='submit_mini')
+    #m.connect('/presentations/edit/:id', controller='proposal',
+	#						     action='edit')
+    m.connect('/programme/submit_a_presentation', controller='cfp', action='submit')
 
     # account confirmation named route
-    m.connect('acct_confirm', '/account/confirm/:id',
-              controller='account',
+    m.connect('acct_confirm', '/person/confirm/:id',
+              controller='person',
               action='confirm')
 
     # Verify stuff from commsecure
@@ -56,8 +57,8 @@ def make_map():
 
     # special case for account controller, again in the style of the
     # original routes controller
-    m.connect('/account/:action', controller='account')
-    m.connect('/account/reset_password/:url_hash', controller='account', action='reset_password')
+    m.connect('/person/:action', controller='person')
+    m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
 
     # admin controller
     m.connect('/admin/:action', controller='admin')
@@ -76,6 +77,7 @@ def make_map():
     # usual :controller rules...
     #m.connect('/wiki', controller='wiki', action='view', url='/wiki')
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
+
 
     m.connect('/person', controller='profile', action='index', id=None)
     m.connect('/person/:id', controller='profile', action='view')

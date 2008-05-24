@@ -13,10 +13,10 @@
 % if not 'signed_in_person_id' in session:
 <p>
 If you already have an account (through a prior registration, or other
-interaction with this site), then please <a href="/account/signin">sign in</a>.
+interaction with this site), then please <a href="/person/signin">sign in</a>.
 </p>
 <p>If you can't log in, you can try
-<% h.link_to('recovering your password', url=h.url(controller='account', action='forgotten_password', id=None)) %>.
+<% h.link_to('recovering your password', url=h.url(controller='person', action='forgotten_password', id=None)) %>.
 </p>
 % #endif
 

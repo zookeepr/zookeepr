@@ -1,4 +1,4 @@
-<h2>Submit Presentations</h2>
+<h2>Submit proposal for presentations</h2>
 
 <p>
 Please register or log in to submit a presentation.

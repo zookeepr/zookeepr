@@ -7,7 +7,7 @@ from formencode import variabledecode
 from paste.deploy import loadapp
 from paste.fixture import TestApp
 from routes import url_for
-from sqlalchemy import create_session
+from sqlalchemy.orm import create_session
 
 from zookeepr import model
 from zookeepr.config.routing import make_map
@@ -373,7 +373,7 @@ class SignedInCRUDControllerTest(CRUDControllerTest):
         self.dbsession.save(self.person)
         self.dbsession.flush()
         self.pid = self.person.id
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
                                     action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'

@@ -9,7 +9,7 @@
 <th>First Name</th>
 <th>Last Name</th>
 <th>Phone</th>
-<th>Fax</th>
+<th>Mobile</th>
 </tr>
 % #endif
 
@@ -20,7 +20,7 @@
 	<td><% p.firstname %></td>
 	<td><% p.lastname %></td>
 	<td><% p.phone %></td>
-	<td><% p.fax %></td>
+	<td><% p.mobile %></td>
 
 % 	if c.can_edit:
 %		for action in ['edit', 'delete']:

@@ -13,7 +13,7 @@ address.
 
 current objects look like:
 
- account + person tables => person object
+ person table => person object
  account + registration tables => registration object
  account + person + proposal => CFP object
 

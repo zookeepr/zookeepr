@@ -25,15 +25,11 @@ class DictSet(validators.Set):
 
 
 # FIXME: merge with account.py controller and move to validators
-class NotExistingAccountValidator(validators.FancyValidator):
+class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        account = state.query(model.Person).filter_by(email_address=value['email_address']).one()
-        if account is not None:
+        person = state.query(model.Person).filter_by(email_address=value['email_address']).one()
+        if person is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
-
-        account = state.query(model.Person).filter_by(handle=value['handle']).one()
-        if account is not None:
-            raise Invalid("This display name has been taken, sorry.  Please use another.", value, state)
 
 class SillyDescriptionMD5(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -219,7 +215,7 @@ class PersonSchema(Schema):
     lastname = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingAccountValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 
 class NewRegistrationSchema(BaseSchema):
@@ -485,8 +481,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
 
-	invoice.last_modification_timestamp = 'now'
-	invoice.due_date = 'now'
+    invoice.last_modification_timestamp = func.current_timestamp()
+	invoice.due_date = func.current_timestamp()
 
         self.dbsession.save(invoice)
         self.dbsession.flush()
