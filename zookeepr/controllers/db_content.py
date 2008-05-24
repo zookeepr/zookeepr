@@ -30,7 +30,7 @@ class DbContentController(SecureController, Create, List):
               }
 
     permissions = {'new': [AuthRole('organiser')],
-                   'list': [AuthRole('organiser')]
+                   'index': [AuthRole('organiser')]
                    }
                    
     def __before__(self, **kwargs):

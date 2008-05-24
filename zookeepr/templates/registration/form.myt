@@ -47,9 +47,9 @@
 % if is_speaker:
 <span class="mandatory">*</span>
 % #endif
-<label for="registration.phone">Mobile/Cell number:</label>
+<label for="person.mobile">Mobile/Cell number:</label>
 </p><p class="entries">
-<% h.text_field('registration.phone') %>
+<% h.text_field('person.mobile') %>
 </p>
 
 </p><p class="label">
