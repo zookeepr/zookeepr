@@ -22,8 +22,3 @@ class DbContentController(SecureController, Create):
     permissions = {'new': [AuthRole('organiser')]
                    }
 
-    
-    
-
-
-
