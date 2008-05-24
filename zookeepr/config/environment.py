@@ -21,8 +21,6 @@ def load_environment(global_conf, app_conf):
                            ('components', 'templates')],
              'static_files': os.path.join(root_path, 'public')
              }
-    
-    # MoinMoin environment setup, needs to find wikiconfig.py which is in this dir
 
     sys.path.insert(0, os.path.join(root_path, 'config'))
 
