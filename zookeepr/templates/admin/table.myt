@@ -20,7 +20,7 @@
   </tr>
 % # endfor
 </table>
-(<% rows |h %> rows)<br/>
+<p>(<% rows |h %> rows)</p>
 
 <%init>
 def oddeven():

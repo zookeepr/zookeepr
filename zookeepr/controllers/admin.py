@@ -71,14 +71,15 @@ class AdminController(SecureController):
 		    sect[s] = sect.get(s, []) + [(page, desc)]
 	    else:
 	        sect['Other'] = sect.get('Other', []) + [(page, desc)]
-        c.text = '<h1>List of admin functions.</h1>'
+        c.text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
 	c.noescape = True
 
 	sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
-	c.text += ' * '.join(['<a href="#%s">%s</a>'%(s, s)
+	c.text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
 						  for s_lower, s in sects])
+	c.text += '\t\t\t</ul>\n\t\t\t</div>'
 	for s_lower, s in sects:
-	    c.text += '<br/><a name="%s"></a>' % s
+	    c.text += '<a name="%s"></a>' % s
 	    c.text += '<h2>%s</h2>' % s
 	    c.data = sect[s]
 	    c.text = render('admin/table.myt', fragment=True)
