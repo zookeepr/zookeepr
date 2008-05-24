@@ -188,7 +188,7 @@ class TestPersonController(ControllerTest):
         f.submit()
 
         # check that the confirmation record was created
-        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
+        crecs = self.dbsession.query(PasswordResetConfirmation).filter_by(email_address='testguy@example.org').all()
         self.failIfEqual(0, len(crecs))
 
         # check our email
@@ -225,7 +225,7 @@ class TestPersonController(ControllerTest):
         self.assertEqual(p_hash, p.password_hash)
 
         # check that the confirmatin record is gone
-        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(email_address='testguy@example.org')
+        crecs = self.dbsession.query(PasswordResetConfirmation).filter_by(email_address='testguy@example.org').all()
         self.assertEqual(0, len(crecs))
 
         # clean up
@@ -248,7 +248,7 @@ class TestPersonController(ControllerTest):
         print resp
         resp.mustcontain("Your sign-in details are incorrect")
 
-        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(email_address='nonexistent@example.org')
+        crecs = self.dbsession.query(PasswordResetConfirmation).filter_by(email_address='nonexistent@example.org').all()
         self.assertEqual(0, len(crecs), "contact records found: %r" % crecs)
         self.assertEqual(None, Dummy_smtplib.existing)
 
@@ -345,7 +345,7 @@ class TestPersonController(ControllerTest):
         f['email_address'] = email
         f.submit()
 
-        crec = self.dbsession.query(PasswordResetConfirmation).get_by(email_address=email)
+        crec = self.dbsession.query(PasswordResetConfirmation).filter_by(email_address=email).one()
         self.failIfEqual(None, crec)
         crecid = crec.id
 
@@ -421,14 +421,14 @@ class TestPersonController(ControllerTest):
         print resp
         
         # check the rego worked
-        regs = self.dbsession.query(Person).select()
+        regs = self.dbsession.query(Person).all()
         self.failIfEqual([], regs)
         print regs[0]
         self.assertEqual(True, regs[0].activated, "account was not activated!")
         rid = regs[0].id
         # ok, now try to log in
 
-        resp = resp.click('sign in', index=1)
+        resp = resp.click('sign in')
         f = resp.form
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'

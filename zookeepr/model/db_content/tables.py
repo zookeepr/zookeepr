@@ -5,9 +5,9 @@ from zookeepr.model import metadata
 db_content = Table('db_content', metadata,
                      Column('id', Integer, primary_key=True),
 
-                     Column('title', String),
-                     Column('url', String),
-                     Column('body', String),
+                     Column('title', Text),
+                     Column('url', Text),
+                     Column('body', Text),
 
                      Column('creation_timestamp', DateTime,
                         nullable=False,

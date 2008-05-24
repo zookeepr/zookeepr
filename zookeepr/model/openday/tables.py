@@ -5,11 +5,11 @@ from zookeepr.model import metadata
 openday = Table('openday', metadata,
                      Column('id', Integer, primary_key=True),
 
-                     Column('firstname', String),
-                     Column('lastname', String),
-                     Column('email_address', String),
-                     Column('heardfrom', String),
-                     Column('heardfromtext', String),
+                     Column('firstname', Text),
+                     Column('lastname', Text),
+                     Column('email_address', Text),
+                     Column('heardfrom', Text),
+                     Column('heardfromtext', Text),
                      Column('opendaydrag', Integer),
 
                      Column('creation_timestamp', DateTime,

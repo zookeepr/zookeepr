@@ -5,11 +5,11 @@ from zookeepr.model import metadata
 person = Table('person', metadata,
                 Column('id', Integer, primary_key=True),
 
-                Column('email_address', String,
+                Column('email_address', Text,
                        nullable=False,
                        unique=True),
 
-                Column('password_hash', String),
+                Column('password_hash', Text),
 
 
                 # creation timestamp of the registration
@@ -35,11 +35,11 @@ person = Table('person', metadata,
                Column('phone', String(32)),
                Column('mobile', String(32)),
 
-               Column('url', String()),
+               Column('url', Text),
 
                # Proposal bits
-               Column('experience', String()),
-               Column('bio', String()),
+               Column('experience', Text),
+               Column('bio', Text),
               )
 
 # describe account roles to grant levels of access
@@ -47,7 +47,7 @@ role = Table('role', metadata,
              Column('id', Integer, primary_key=True),
 
              # name of role
-             Column('name', String,
+             Column('name', Text,
                     unique=True,
                     nullable=False),
              )
@@ -62,11 +62,11 @@ person_role_map = Table('person_role_map', metadata,
 password_reset_confirmation = Table('password_reset_confirmation', metadata,
     Column('id', Integer, primary_key=True),
 
-    Column('email_address', String,
+    Column('email_address', Text,
         nullable=False,
         unique=True,
         ),
-    Column('url_hash', String,
+    Column('url_hash', Text,
         nullable=False,
         unique=True,
         ),

@@ -41,7 +41,7 @@ class ControllerTest(TestBase):
                 model = self.model
                 
         if model:
-            contents = self.dbsession.query(model).select()
+            contents = self.dbsession.query(model).all()
             self.assertEqual([], contents, "model %r is not empty (contains %r)" % (model, contents))
 
 
@@ -62,7 +62,8 @@ class CRUDControllerTestGenerator(type):
 
         # patch if we have a model defined
         if 'model' not in classdict:
-            warnings.warn("no model attribute in %s" % name, stacklevel=2)
+            #warnings.warn("no model attribute in %s" % name, stacklevel=2)
+            pass
         else:
             for t in ['create', 'edit', 'delete',
                       'invalid_get_on_edit',

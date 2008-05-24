@@ -41,7 +41,8 @@ class CRUDModelTestGenerator(type):
             return
 
         if 'domain' not in classdict:
-            warnings.warn("no domain attribute found in %s" % name, stacklevel=2)
+            #warnings.warn("no domain attribute found in %s" % name, stacklevel=2)
+            pass
         else:
             monkeypatch(cls, 'test_crud', 'crud')
 
