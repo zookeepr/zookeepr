@@ -5,7 +5,6 @@ All names available in this module will be available under the Pylons h object.
 """
 from routes import request_config
 from webhelpers import *
-from wiki import wiki_here, wiki_fragment, wiki_html_fragment
 import urllib
 from glob import glob
 import os.path, random, array
