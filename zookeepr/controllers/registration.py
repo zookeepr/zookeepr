@@ -147,8 +147,6 @@ class RegistrationSchema(Schema):
     country = validators.String(not_empty=True)
     postcode = validators.String(not_empty=True)
 
-    phone = NonblankForSpeakers()
-
     company = validators.String()
     nick = validators.String()
 
@@ -209,6 +207,7 @@ class PersonSchema(Schema):
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
     handle = validators.String(not_empty=True)
+    mobile = NonblankForSpeakers()
 
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
@@ -220,6 +219,8 @@ class NewRegistrationSchema(BaseSchema):
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
+class ExistingPersonSchema(Schema):
+    mobile = NonblankForSpeakers()
 
 class ExistingPersonRegoSchema(BaseSchema):
     registration = RegistrationSchema()
