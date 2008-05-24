@@ -66,12 +66,4 @@ if admin:
 else:
   voucher_codes = c.signed_in_person.voucher_codes
 
-# The following allows additional persons to view particular groups. The
-# list is pairs of person IDs.
-# Note that a viewer shouldn't also be a group leader.
-for (viewer, leader) in ((50097, 253), ):
-  if c.signed_in_person.id == viewer:
-    from zookeepr.model.core import Person
-    voucher_codes = c.dbsession.query(Person).get_by(id=leader).voucher_codes
-    # note: c.dbsession is assigned in __before__ in the controller
 </%init>
