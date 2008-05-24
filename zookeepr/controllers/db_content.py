@@ -14,13 +14,14 @@ class DbContentSchema(BaseSchema):
     url = validators.String(not_empty=True)
     body = validators.String(not_empty=True)
 
-class DbContentController(Create):
-
+class DbContentController(SecureController, Create):
+    individual = 'db_content'
     schemas = {'new': DbContentSchema(),
               }
 
     permissions = {'new': [AuthRole('organiser')]
                    }
+
     
     
 

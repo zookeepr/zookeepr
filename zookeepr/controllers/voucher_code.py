@@ -10,10 +10,10 @@ from zookeepr.lib.validators import BaseSchema, BoundedInt
 import os
 
 def generate_code():
-  res = os.popen('pwgen -Bnc').read().strip()
-  if len(res)<3:
-    raise "pwgen call failed"
-  return res
+    res = os.popen('pwgen -Bnc').read().strip()
+    if len(res)<3:
+        raise "pwgen call failed"
+    return res
 
 class NotExistingVoucherCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -37,8 +37,7 @@ class VoucherCodeSchema(BaseSchema):
     percentage = BoundedInt(min=0, max=100)
     comment = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingVoucherCodeValidator,
-						   ExistingPersonValidator]
+    chained_validators = [NotExistingVoucherCodeValidator, ExistingPersonValidator]
 
 class NewVoucherCodeSchema(BaseSchema):
     voucher_code = VoucherCodeSchema()
