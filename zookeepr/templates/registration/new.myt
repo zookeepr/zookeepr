@@ -104,25 +104,6 @@ Your email address will only be used to correspond with you, and is your login n
 <% h.password_field("person.password_confirm", size=40) %>
 </p>
 % #endif
-
-<p class="label">
-% if not c.signed_in_person:
-<span class="mandatory">*</span>
-% #endif
-<label for="person.handle">Display name/handle/nickname:</label></p>
-% if c.signed_in_person:
-<p>
-<% c.signed_in_person.handle |h %>
-% else:
-<p class="entries">
-<% h.text_field('person.handle', size=40) %>
-% #endif
-</p>
-<p class="note">
-Your display name will be used to identify you on the website. It's not
-actually used for much. For an IRC nick or handle to be shown on the badge,
-see "superhero name" below.
-</p>
 </fieldset>
 
 <& form.myt &>

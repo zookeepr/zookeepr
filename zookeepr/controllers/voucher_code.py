@@ -10,10 +10,10 @@ from zookeepr.lib.validators import BaseSchema, BoundedInt
 import os
 
 def generate_code():
-  res = os.popen('pwgen -Bnc').read().strip()
-  if len(res)<3:
-    raise "pwgen call failed"
-  return res
+    res = os.popen('pwgen -Bnc').read().strip()
+    if len(res)<3:
+        raise "pwgen call failed"
+    return res
 
 class NotExistingVoucherCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -37,8 +37,7 @@ class VoucherCodeSchema(BaseSchema):
     percentage = BoundedInt(min=0, max=100)
     comment = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingVoucherCodeValidator,
-						   ExistingPersonValidator]
+    chained_validators = [NotExistingVoucherCodeValidator, ExistingPersonValidator]
 
 class NewVoucherCodeSchema(BaseSchema):
     voucher_code = VoucherCodeSchema()
@@ -61,7 +60,7 @@ class VoucherCodeController(SecureController, Read, Create, List):
 
     def __before__(self, **kwargs):
         super(VoucherCodeController, self).__before__(**kwargs)
-	c.dbsession = self.dbsession # for the use of list.myt
+        c.dbsession = self.dbsession # for the use of list.myt
 
     def new(self):
         errors = {}
@@ -75,19 +74,19 @@ class VoucherCodeController(SecureController, Read, Create, List):
                 if request.environ['paste.config']['app_conf'].get('debug'):
                     warnings.warn("form validation failed: %s" % errors)
             else:
-	        values = results['voucher_code']
-		leader = self.dbsession.query(model.Person).filter_by(id=values['leader_id']).one()
-	        for i in xrange(values['count']):
-		    voucher_code = model.VoucherCode()
-		    for k in values:
-			setattr(voucher_code, k, values[k])
-		    if voucher_code.code !='':
-		      voucher_code.code += '-'
-		    voucher_code.code += generate_code()
-		    voucher_code.leader = leader
-		    self.dbsession.save(voucher_code)
+                values = results['voucher_code']
+                leader = self.dbsession.query(model.Person).filter_by(id=values['leader_id']).one()
+                for i in xrange(values['count']):
+                    voucher_code = model.VoucherCode()
+                    for k in values:
+                        setattr(voucher_code, k, values[k])
+                    if voucher_code.code !='':
+                      voucher_code.code += '-'
+                    voucher_code.code += generate_code()
+                    voucher_code.leader = leader
+                    self.dbsession.save(voucher_code)
 
-		self.dbsession.flush()
+                self.dbsession.flush()
 
                 return redirect_to('/voucher_code')
 

@@ -65,8 +65,7 @@ class TestPersonController(ControllerTest):
         self.assertSignedIn(resp.session, p.id)
 
         # sign out
-        resp = resp.goto(url_for(controller='person',
-                                 action='signout'))
+        resp = resp.goto('/person/signout')
 
         print "resp.session", resp.session
 
@@ -134,7 +133,7 @@ class TestPersonController(ControllerTest):
         
         # visit the link
         response = self.app.get('/person/confirm/' + url_hash)
-        response.mustcontain('Thanks for confirming your registration')
+        response.mustcontain('Thanks for confirming your account')
         
         # test that it's activated
         r = self.dbsession.get(Person,rid)

@@ -163,7 +163,7 @@ class AdminController(SecureController):
         """ List of users that are authorised for some role [auth] """
 	return sql_response("""select role.name as role, firstname || ' '
 	|| lastname as name, email_address, person.id
-	from role, person, person_role_map, 
+	from role, person, person_role_map
 	where person.id=person_id and role.id=role_id
 	order by role, lastname, firstname""")
     def rej_papers(self):
@@ -824,8 +824,6 @@ class AdminController(SecureController):
 							       'earlybird')
 
 	total = {}
-	add(u'\u2211', 1120, 1)
-	add(u'[test payments]', 1120, 1)
 
 	for i in self.dbsession.query(Invoice).all():
 	    if not i.paid():

@@ -1,11 +1,29 @@
 import logging
-
+from formencode import validators, variabledecode
+from formencode.schema import Schema
+from zookeepr.lib.base import *
+from zookeepr.lib.auth import *
+from zookeepr.lib.crud import *
+from zookeepr.lib.validators import BaseSchema, BoundedInt
 from zookeepr.lib.base import *
 
 log = logging.getLogger(__name__)
 
-class DbContentController(BaseController):
+class DbContentSchema(BaseSchema):
+    title = validators.String(not_empty=True)
+    url = validators.String(not_empty=True)
+    body = validators.String(not_empty=True)
 
-    def index(self):
-        c.title = "Test"
-        return render('/db_content/db_content.myt')
+class DbContentController(SecureController, Create):
+    individual = 'db_content'
+    schemas = {'new': DbContentSchema(),
+              }
+
+    permissions = {'new': [AuthRole('organiser')]
+                   }
+
+    
+    
+
+
+
