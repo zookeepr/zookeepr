@@ -80,7 +80,8 @@ presentations.</em></p>
 for the primary speaker; mention the other speakers in the Abstract, eg.
 "(with Bob Vaxhacker and Eve Solo)".</p>
 
-% if c.signed_in_person_id:
+% if c.signed_in_person:
+%     c.person = c.signed_in_person
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label
 	for="name">Speaker name:</label></p>

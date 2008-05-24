@@ -141,9 +141,7 @@ class SecureController(BaseController):
 
         elif not hasattr(self, 'permissions'):
             abort(403, "no permissions configured controller... denied")
-        elif not self.permissions.has_key(kwargs['action']):
-            abort(403, "no permissions configured for action... denied")
-        elif self.permissions[kwargs['action']]==True:
+        elif self.permissions.get(kwargs['action'],False)==True:
             # No-one's logged in, but this action is OK with that.
             return
         else:
@@ -158,10 +156,7 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-        if self.permissions[kwargs['action']]==True:
-            # Someone's logged in, but this action is public anyway
-            return
-        elif self.check_permissions(kwargs['action']):
+        if self.check_permissions(kwargs['action']):
             return
         else:
             abort(403, "computer says no")
@@ -178,6 +173,10 @@ class SecureController(BaseController):
 	else:
             # no access by default
 	    return False
+
+        if perms==True:
+            # anonymous action
+            return True
 
         results = map(lambda x: x.authorise(self), perms)
         return reduce(lambda x, y: x or y, results, False)
