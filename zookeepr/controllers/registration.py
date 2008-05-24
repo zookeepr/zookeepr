@@ -117,6 +117,10 @@ class TeesizeValidator(validators.FancyValidator):
             raise Invalid("Please specify your T-shirt size.", value, state)
 
 class AccommodationValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        raise Invalid(`value`, value, state)
+        if value == '-':
+            raise Invalid("Please specify an accomodation option", value, state)
     def _to_python(self, value, state):
         if value == 'own':
             return None
@@ -151,7 +155,6 @@ class RegistrationSchema(Schema):
     address2 = validators.String()
     city = validators.String(not_empty=True)
     state = validators.String()
-    country = validators.String(not_empty=True)
     postcode = validators.String(not_empty=True)
 
     company = validators.String()
@@ -213,6 +216,7 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
     mobile = NonblankForSpeakers()
 
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
@@ -599,7 +603,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             return False, "All gone."
         left = po.eblimit - count
         percent = int(round((20.0 * left) / po.eblimit) * 5)
-	actualpercent = (100.0 * left) / po.eblimit
+        actualpercent = (100.0 * left) / po.eblimit
         if percent == 0:
             return True, ("Almost all earlybirds gone"), actualpercent, timeleft
         elif percent <= 30:
@@ -644,18 +648,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                            # --Jiri 25.1.2008
 
         if res.open:
-          res.left = res.limit - res.total
-	  res.percent = (100.0 * res.left) / res.limit
-	  percent = int(round((20.0 * res.left) / res.limit) * 5)
-          if percent == 0:
-              res.text = "Almost all tickets gone"
-          elif percent <= 30:
-              res.text = "Only %d%% tickets left"%percent
-          else:
-              res.text = "%d%% tickets left"%percent
+            res.left = res.limit - res.total
+            res.percent = (100.0 * res.left) / res.limit
+            percent = int(round((20.0 * res.left) / res.limit) * 5)
+            if percent == 0:
+                res.text = "Almost all tickets gone"
+            elif percent <= 30:
+                res.text = "Only %d%% tickets left"%percent
+            else:
+                res.text = "%d%% tickets left"%percent
         else:
             res.text = 'All tickets gone.'
-	    res.percent = 0.0
+            res.percent = 0.0
 
         if check_type:
             if check_type in ceiling_types:
