@@ -268,12 +268,12 @@ class TestNotSignedInRegistrationController(ControllerTest):
             country='Australia',
             postcode='2001',
             type='Professional',
-            handle='testguy',
-            teesize='M_M',
+            nick='testguy',
+            teesize='M_long_M',
             extra_tee_count=1,
-            extra_tee_sizes='M_M',
-            checkin=14,
-            checkout=20,
+            extra_tee_sizes='M_long_M',
+            checkin=28,
+            checkout=3,
             accommodation=0,
             )
         for k in sample_data.keys():
