@@ -12,13 +12,13 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
 from zookeepr.model.billing import VoucherCode
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_rego
 
 class DictSet(validators.Set):
     def _from_python(self, value):
         value = super(DictSet, self)._from_python(value, state)
         return dict(zip(value, [1]*len(value)))
-        
+
     def _to_python(self, value, state):
         value = value.keys()
         return super(DictSet, self)._to_python(value, state)
@@ -34,8 +34,8 @@ class NotExistingPersonValidator(validators.FancyValidator):
 class SillyDescriptionMD5(validators.FancyValidator):
     def validate_python(self, value, state):
         checksum = md5.new(value['silly_description']).hexdigest()
-	if value['silly_description_md5'] != checksum:
-	    raise Invalid("Smart enough to hack the silly description, not smart enough to hack the MD5.", value, state)
+        if value['silly_description_md5'] != checksum:
+            raise Invalid("Smart enough to hack the silly description, not smart enough to hack the MD5.", value, state)
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -51,67 +51,64 @@ class DuplicateVoucherCodeValidator(validators.FancyValidator):
         voucher_code = state.query(model.VoucherCode).filter_by(code=value['voucher_code']).first()
         if voucher_code:
             for r in voucher_code.registrations:
-		if not 'signed_in_person_id' in session:
-		   raise Invalid("Voucher code already in use! (not logged in)",
-							      value, state)
+                if not 'signed_in_person_id' in session:
+                    raise Invalid("Voucher code already in use! (not logged in)", value, state)
                 if r.person_id != session['signed_in_person_id']:
                     raise Invalid("Voucher code already in use!", value, state)
         elif value['voucher_code']:
-	    raise Invalid("Unknown voucher code!", value, state)
+            raise Invalid("Unknown voucher code!", value, state)
 
 class SpeakerDiscountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        if value['type']=='Speaker' or value['accommodation'] in lca_info['lca_rego']['speaker_accom_options']:
-	    if 'signed_in_person_id' in session:
-		signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
-		is_speaker = reduce(lambda a, b: a or b.accepted,
-					 signed_in_person.proposals, False)
-		if not is_speaker:
-		    raise Invalid("You don't appear to be a speaker, don't claim a speaker discount.", value, state)
-	    else:
-		raise Invalid("Please log in before claiming a speaker discount!", value, state)
+        if value['type']=='Speaker' or value['accommodation'] in lca_rego['speaker_accom_options']:
+            if 'signed_in_person_id' in session:
+                signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
+                is_speaker = reduce(lambda a, b: a or b.accepted, signed_in_person.proposals, False)
+                if not is_speaker:
+                    raise Invalid("You don't appear to be a speaker, don't claim a speaker discount.", value, state)
+            else:
+                raise Invalid("Please log in before claiming a speaker discount!", value, state)
         if value['type']=='Mini-conf organiser':
-	    if 'signed_in_person_id' in session:
-	    	if 'miniconf' not in [r.name for r in c.signed_in_person.roles]:
-		    raise Invalid("You don't appear to be a mini-conf organiser, don't claim a mini-conf organiser discount.", value, state)
-	    else:
-		raise Invalid("Please log in before claiming a mini-conf organiser discount!", value, state)
+            if 'signed_in_person_id' in session:
+                if 'miniconf' not in [r.name for r in c.signed_in_person.roles]:
+                    raise Invalid("You don't appear to be a mini-conf organiser, don't claim a mini-conf organiser discount.", value, state)
+            else:
+                raise Invalid("Please log in before claiming a mini-conf organiser discount!", value, state)
         if value['type']=='Team':
-	    if 'signed_in_person_id' in session:
-	        if 'team' not in [r.name for r in c.signed_in_person.roles]:
-		    raise Invalid("You don't appear to be a team member, don't claim a team member discount.", value, state)
-	    else:
-		raise Invalid("Please log in before claiming a team member discount!", value, state)
+            if 'signed_in_person_id' in session:
+                if 'team' not in [r.name for r in c.signed_in_person.roles]:
+                    raise Invalid("You don't appear to be a team member, don't claim a team member discount.", value, state)
+            else:
+                raise Invalid("Please log in before claiming a team member discount!", value, state)
         if value['type']=='Monday pass':
-	    if 'signed_in_person_id' in session:
-	        if 'monday-pass' not in [r.name for r in c.signed_in_person.roles]:
-		    raise Invalid("You don't appear to be entitled to a Monday pass. ", value, state)
-	    else:
-		raise Invalid("Please log in before claiming a pass!", value, state)
+            if 'signed_in_person_id' in session:
+                if 'monday-pass' not in [r.name for r in c.signed_in_person.roles]:
+                    raise Invalid("You don't appear to be entitled to a Monday pass. ", value, state)
+            else:
+                raise Invalid("Please log in before claiming a pass!", value, state)
         if value['type']=='Tuesday pass':
-	    if 'signed_in_person_id' in session:
-	        if 'tuesday-pass' not in [r.name for r in c.signed_in_person.roles]:
-		    raise Invalid("You don't appear to be entitled to a Tuesday pass. ", value, state)
-	    else:
-		raise Invalid("Please log in before claiming a pass!", value, state)
+            if 'signed_in_person_id' in session:
+                if 'tuesday-pass' not in [r.name for r in c.signed_in_person.roles]:
+                    raise Invalid("You don't appear to be entitled to a Tuesday pass. ", value, state)
+            else:
+                raise Invalid("Please log in before claiming a pass!", value, state)
 
 class PPValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-	for k in ['kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11',
-							     'kids_12_17']:
+        for k in ['kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11', 'kids_12_17']:
             if value[k] and not value['pp_adults']:
-		raise Invalid("Can't have children without an adult in the partners programme", value, state)
-	if value['partner_email'] and not value['pp_adults']:
-	    raise Invalid("Please specify number of people in the partners programme (or remove partner's email address)", value, state)
-	if value['pp_adults'] and not value['partner_email']:
-	    raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme)", value, state)
+                raise Invalid("Can't have children without an adult in the partners programme", value, state)
+        if value['partner_email'] and not value['pp_adults']:
+            raise Invalid("Please specify number of people in the partners programme (or remove partner's email address)", value, state)
+        if value['pp_adults'] and not value['partner_email']:
+            raise Invalid("Please fill in partner's email address (or zero how many people are attending partners programme)", value, state)
 
 class TeesizeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-	if (not value['teesize']) and not value['type'] in ("Monday pass",
-			    "Tuesday pass", "Monday only", "Tuesday only",
-			    "Penguin Dinner only"):
-	    raise Invalid("Please specify your T-shirt size.", value, state)
+        if (not value['teesize']) and not value['type'] in ("Monday pass",
+                            "Tuesday pass", "Monday only", "Tuesday only",
+                            "Penguin Dinner only"):
+            raise Invalid("Please specify your T-shirt size.", value, state)
 
 class AccommodationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -125,24 +122,23 @@ class AccommodationValidator(validators.FancyValidator):
 class NonblankForSpeakers(validators.String):
     def validate_python(self, value, state):
         validators.String.validate_python(self, value, state)
-	if 'signed_in_person_id' in session:
+        if 'signed_in_person_id' in session:
             signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
-	    is_speaker = reduce(lambda a, b: a or b.accepted,
-					 signed_in_person.proposals, False)
-	    if is_speaker and len(value)<3:
-		raise Invalid("Missing value", value, state)
+            is_speaker = reduce(lambda a, b: a or b.accepted, signed_in_person.proposals, False)
+            if is_speaker and len(value)<3:
+                raise Invalid("Missing value", value, state)
 
 class TicketTypeValidator(validators.String):
     def validate_python(self, value, state):
         validators.String.validate_python(self, value, state)
-	valid_tickets = ( "Fairy Penguin Sponsor", "Professional",
-	    "Hobbyist", "Student", "Speaker", "Mini-conf organiser",
-	    "Team", "Monday pass", "Tuesday pass", "Monday only",
-	    "Tuesday only", 'Professional - No Keynote Access',
-	    'Hobbyist - No Keynote Access', 'Volunteer',
-	    'Penguin Dinner only')
-	if value not in valid_tickets:
-	    raise Invalid("Invalid type", value, state)
+        valid_tickets = ( "Fairy Penguin Sponsor", "Professional",
+            "Hobbyist", "Student", "Speaker", "Mini-conf organiser",
+            "Team", "Monday pass", "Tuesday pass", "Monday only",
+            "Tuesday only", 'Professional - No Keynote Access',
+            'Hobbyist - No Keynote Access', 'Volunteer',
+            'Penguin Dinner only')
+        if value not in valid_tickets:
+            raise Invalid("Invalid type", value, state)
 
 class RegistrationSchema(Schema):
     address1 = validators.String(not_empty=True)
@@ -153,7 +149,7 @@ class RegistrationSchema(Schema):
     postcode = validators.String(not_empty=True)
 
     phone = NonblankForSpeakers()
-    
+
     company = validators.String()
     nick = validators.String()
 
@@ -191,7 +187,7 @@ class RegistrationSchema(Schema):
     speaker_pp_pay_child = BoundedInt(min=0)
 
     accommodation = AccommodationValidator()
-    
+
     checkin = BoundedInt(min=0)
     checkout = BoundedInt(min=0)
 
@@ -202,10 +198,10 @@ class RegistrationSchema(Schema):
     speaker_record = validators.Bool()
     speaker_video_release = validators.Bool()
     speaker_slides_release = validators.Bool()
-    
+
     chained_validators = [DuplicateVoucherCodeValidator(),
-	  SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator(),
-	  TeesizeValidator()]
+          SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator(),
+          TeesizeValidator()]
 
 class PersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
@@ -249,11 +245,12 @@ class RegistrationController(SecureController, Create, Update, List, Read):
     redirect_map = {'edit': dict(controller='registration', action='status'),
                     }
     permissions = { 'remind': [AuthRole('organiser')],
-		    'list_miniconf_orgs': [AuthRole('organiser')],
-		    'professional': [AuthRole('organiser')],
-		    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
-		    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
-		    'volunteer': [AuthFunc('is_same_person'), AuthRole('organiser')],
+                    'list_miniconf_orgs': [AuthRole('organiser')],
+                    'professional': [AuthRole('organiser')],
+                    'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
+                    'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
+                    'pay': [AuthFunc('is_same_person'), AuthRole('organiser')],
+                    'volunteer': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
     anon_actions = ['status', 'new', 'index', 'volunteer_redirect']
 
@@ -266,19 +263,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
-	    is_speaker = reduce(lambda a, b: a or b.accepted,
-				       c.signed_in_person.proposals, False)
+            is_speaker = reduce(lambda a, b: a or b.accepted, c.signed_in_person.proposals, False)
         else:
-	    is_speaker = False
+            is_speaker = False
 
         c.accom_taken = self.accom_taken()
         as = self.dbsession.query(model.Accommodation).all()
-	def space_available(a):
-	  if is_speaker and a.name=='Trinity':
-	    return True
-	  return a.beds > c.accom_taken.get(a.name,0)
+        def space_available(a):
+          if is_speaker and a.name=='Trinity':
+            return True
+          return a.beds > c.accom_taken.get(a.name,0)
         c.accommodation_collection = filter(space_available, as)
-	c.accommodation_collection.sort(cmp = lambda a, b: cmp(a.id, b.id))
+        c.accommodation_collection.sort(cmp = lambda a, b: cmp(a.id, b.id))
 
     def edit(self, id):
         if not self.is_same_person() and not AuthRole('organiser').authorise(self):
@@ -287,16 +283,16 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
-	        c.invoice = registration.person.invoices[0]
+                c.invoice = registration.person.invoices[0]
                 return render_response('invoice/already.myt')
 
-	try:
+        try:
             return super(RegistrationController, self).edit(id)
-	finally:
-	    try:
-	        self.pay(id, quiet=1) #regenerate the invoice
-	    except:
-	        self.pay(id, quiet=1) #retry once
+        finally:
+            try:
+                self.pay(id, quiet=1) #regenerate the invoice
+            except:
+                self.pay(id, quiet=1) #retry once
 
     def new(self):
         errors = {}
@@ -329,16 +325,16 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                 c.registration.person = c.person
                 self.dbsession.flush()
 
-		email(
-		    c.person.email_address,
-		    render('registration/response.myt',
-		        id=c.person.url_hash, fragment=True))
+                email(
+                    c.person.email_address,
+                    render('registration/response.myt',
+                        id=c.person.url_hash, fragment=True))
 
-		self.obj = c.registration
-		self.pay(c.registration.id, quiet=1)
+                self.obj = c.registration
+                self.pay(c.registration.id, quiet=1)
 
-		if c.signed_in_person:
-		    redirect_to('/registration/status')
+                if c.signed_in_person:
+                    redirect_to('/registration/status')
                 return render_response('registration/thankyou.myt')
 
         return render_response("registration/new.myt", defaults=defaults, errors=errors)
@@ -347,34 +343,34 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         registration = self.obj
         if registration.person.invoices:
             if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
-	        c.invoice = registration.person.invoices[0]
-		if quiet: return
+                c.invoice = registration.person.invoices[0]
+                if quiet: return
                 return render_response('invoice/already.myt')
             invoice = registration.person.invoices[0]
             for ii in invoice.items:
                 self.dbsession.delete(ii)
-                
+
         else:
             invoice = model.Invoice()
             invoice.person = registration.person
 
         p = PaymentOptions()
 
-	is_speaker = registration.person.is_speaker()
+        is_speaker = registration.person.is_speaker()
 
         # Check for voucher
         voucher_result, errors = self.check_voucher()
 
-	# Check conference ceiling
-	rego_closed = not self.check_ceiling(registration.type).ok
-	if voucher_result:
-	    rego_closed = False # voucher tickets are always available
-	if is_speaker:
-	    rego_closed = False # rego never closes for speakers or MC orgs
+        # Check conference ceiling
+        rego_closed = not self.check_ceiling(registration.type).ok
+        if voucher_result:
+            rego_closed = False # voucher tickets are always available
+        if is_speaker:
+            rego_closed = False # rego never closes for speakers or MC orgs
 
         # Registration
         description = registration.type + " Registration"
-	eb = self.check_earlybird()[0]
+        eb = self.check_earlybird()[0]
         if eb and registration.type in ('Hobbyist', 'Professional'):
             description = description + " (earlybird)"
         if rego_closed:
@@ -392,10 +388,9 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             if voucher_amount > cost:
                 voucher_amount = cost
 
-	    ii = model.InvoiceItem(description=description, qty=1,
-						     cost=-voucher_amount)
-	    self.dbsession.save(ii)
-	    invoice.items.append(ii)
+            ii = model.InvoiceItem(description=description, qty=1, cost=-voucher_amount)
+            self.dbsession.save(ii)
+            invoice.items.append(ii)
 
         if rego_closed:
             iia = model.InvoiceItem('INVALID INVOICE (registration closed)',
@@ -411,7 +406,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                                     cost=2475)
             self.dbsession.save(iid)
             invoice.items.append(iid)
-        
+
         # Dinner:
         if registration.dinner > 0:
             iid = model.InvoiceItem(description='Additional Penguin Dinner Tickets',
@@ -419,26 +414,26 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                                     cost=p.getDinnerAmount(1))
             self.dbsession.save(iid)
             invoice.items.append(iid)
-        
+
         # Accommodation:
-	accom_not_available = False
+        accom_not_available = False
         if registration.accommodation:
             description = 'Accommodation - %s' % registration.accommodation.name
             if registration.accommodation.option:
                 description += " (%s)" % registration.accommodation.option
             accom_qty=registration.checkout-registration.checkin
-	    while accom_qty<0: accom_qty += 31 #January has 31 days
+            while accom_qty<0: accom_qty += 31 #January has 31 days
             accom_cost=registration.accommodation.cost_per_night * 100
-	    if registration.accommodation.beds <= \
-		     c.accom_taken.get(registration.accommodation.name, 0):
+            if registration.accommodation.beds <= \
+                     c.accom_taken.get(registration.accommodation.name, 0):
                 if registration.accommodation.name=='Trinity' and \
                    registration.accommodation.option=='speaker':
-		     pass
+                     pass
                 else:
-		   description += " (NOT AVAILABLE)"
+                   description += " (NOT AVAILABLE)"
                    #accom_cost += 1
-		   accom_not_available = True
-		   
+                   accom_not_available = True
+
             iia = model.InvoiceItem(description,
                                     qty=accom_qty,
                                     cost=accom_cost)
@@ -454,88 +449,80 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         # Partner's Programme
         if is_speaker:
-	  partner = registration.speaker_pp_pay_adult
+                partner = registration.speaker_pp_pay_adult
         else:
-	  partner = 0
-	  for p in [registration.kids_12_17, registration.pp_adults]:
-	    if p is not None:
-	      partner += p
+            partner = 0
+            for p in [registration.kids_12_17, registration.pp_adults]:
+                if p is not None:
+                    partner += p
         if partner > 0:
             iipa = model.InvoiceItem(description = "Partner's Programme - Adult",
-                                     qty = partner,
-                                     cost=22000)
+                                     qty = partner, cost=22000)
             self.dbsession.save(iipa)
             invoice.items.append(iipa)
-            
+
         if is_speaker:
-	  kids = registration.speaker_pp_pay_child
+            kids = registration.speaker_pp_pay_child
         else:
-	  kids = 0
-	  for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10_11]:
-	      if k is not None:
-		  kids += k
+            kids = 0
+            for k in [registration.kids_0_3, registration.kids_4_6, registration.kids_7_9, registration.kids_10_11]:
+                if k is not None:
+                    kids += k
         if kids > 0:
             iipc = model.InvoiceItem(description="Partner's Programme - Child",
-                                    qty = kids,
-                                    cost=13200)
+                                    qty = kids, cost=13200)
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
-
-        invoice.last_modification_timestamp = func.current_timestamp()
-        invoice.due_date = func.current_timestamp()
 
         self.dbsession.save(invoice)
         self.dbsession.flush()
 
-	if quiet: return
-	if rego_closed:
+        if quiet: return
+        if rego_closed:
             return render_response('registration/rego_closed.myt')
-	if accom_not_available:
+        if accom_not_available:
             return render_response('registration/accom_full.myt')
         redirect_to(controller='invoice', action='view', id=invoice.id)
 
     def list_miniconf_orgs(self):
         c.data = []
         for mc_id in PaymentOptions().miniconf_orgs:
-	    row = ['<a href="/profile/%d">%d</a>' % (mc_id, mc_id)]
+            row = ['<a href="/profile/%d">%d</a>' % (mc_id, mc_id)]
             mc = self.dbsession.query(model.Person).filter_by(id=mc_id).first()
-	    if mc==None:
-		row.append('(unknown)')
-	    else:
-		row += (mc.firstname, mc.lastname, mc.email_address)
-		if mc.registration is None:
-		    row.append('(no rego)')
-		else:
-		    r = mc.registration
-		    row += ('<a href="/registration/%d">%d</a>'%(r.id, r.id),
-								    r.type)
-		    if not mc.invoice:
-			row += ('no invoice',)
-		    elif mc.is_speaker():
-			row += ('speaker',)
-		    elif mc.invoice[0].paid():
-			row += ('<a href="/invoice/%d">paid</a>' %
-							 mc.invoice[0].id,)
-		    else:
-			row += ('<a href="/invoice/%d">owes $%.2f</a>' %
-			 (mc.invoice[0].id, mc.invoice[0].total()/100.0), )
-	    c.data.append(row)
-	c.noescape=True
-	return render_response('admin/table.myt')
+            if mc==None:
+                row.append('(unknown)')
+            else:
+                row += (mc.firstname, mc.lastname, mc.email_address)
+                if mc.registration is None:
+                    row.append('(no rego)')
+                else:
+                    r = mc.registration
+                    row += ('<a href="/registration/%d">%d</a>'%(r.id, r.id), r.type)
+                    if not mc.invoice:
+                        row += ('no invoice',)
+                    elif mc.is_speaker():
+                        row += ('speaker',)
+                    elif mc.invoice[0].paid():
+                        row += ('<a href="/invoice/%d">paid</a>' % mc.invoice[0].id,)
+                    else:
+                        row += ('<a href="/invoice/%d">owes $%.2f</a>' % (mc.invoice[0].id, mc.invoice[0].total()/100.0), )
+            c.data.append(row)
+        c.noescape=True
+        return render_response('admin/table.myt')
 
     def accom_taken(self):
         res = {}
         for r in self.dbsession.query(model.Registration).all():
-	    if r.accommodation==None: continue
-	    paid = r.person.invoices and r.person.invoices[0].paid()
-	    if r.accommodation.option != 'speaker':
-		if not paid and not r.person.is_speaker():
-		    continue
-	    location = r.accommodation.name
-	    if (r.accommodation.name=='Trinity' and
-		r.accommodation.option=='speaker'):
-		    location = 'Trinity-speaker'
-	    res[location] = res.get(location, 0)+1
+            if r.accommodation==None: continue
+            paid = r.person.invoices and r.person.invoices[0].paid()
+            if r.accommodation.option != 'speaker':
+                if not paid and not r.person.is_speaker():
+                    continue
+            location = r.accommodation.name
+            if (r.accommodation.name=='Trinity' and
+                r.accommodation.option=='speaker'):
+                    location = 'Trinity-speaker'
+            res[location] = res.get(location, 0)+1
         return res
 
     # FIXME There is probably a way to get this to use the List thingy from CRUD
@@ -547,15 +534,15 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         r = AuthRole('organiser')
         if self.logged_in():
             if not r.authorise(self):
-		redirect_to('/registration/status')
+                redirect_to('/registration/status')
         else:
-	    redirect_to('/registration/status')
+            redirect_to('/registration/status')
 
-	setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).all())
-	setattr(c, 'ebdate', PaymentOptions().ebdate)
+        setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).all())
+        setattr(c, 'ebdate', PaymentOptions().ebdate)
 
         (c.eb, c.ebtext) = self.check_earlybird()
-	c.ceiling = self.check_ceiling()
+        c.ceiling = self.check_ceiling()
 
         return super(RegistrationController, self).index()
 
@@ -578,101 +565,101 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def check_earlybird(self):
         count = 0
-	po = PaymentOptions()
-	timeleft = po.ebdate - datetime.datetime.now()
-	if timeleft < datetime.timedelta(0):
-	    return False, "Too late."
-	timeleft = " %.1f days to go." % (timeleft.days +
-					     timeleft.seconds / (3600*24.))
+        po = PaymentOptions()
+        timeleft = po.ebdate - datetime.datetime.now()
+        if timeleft < datetime.timedelta(0):
+            return False, "Too late."
+        timeleft = " %.1f days to go." % (timeleft.days +
+                                             timeleft.seconds / (3600*24.))
         for r in self.dbsession.query(self.model).all():
-	    if r.type not in ('Hobbyist', 'Professional'):
-	        continue
-	    if not r.person.invoices or not r.person.invoices[0].paid():
-	        continue
-	    if r.voucher_code and r.voucher_code.startswith('GOOGLE-'):
-	        continue
-		# see below about GOOGLE
-	    speaker = 0
-	    if r.person.proposals:
-		for proposal in r.person.proposals:
-		    if proposal.accepted:
-			speaker = 1
-	    if not speaker:
-	        count += 1
-	count += 20 # GOOGLE group booking is deemed all earlybird
-	count += 10 # other group bookings
-	if count >= po.eblimit:
-	    return False, "All gone."
-	left = po.eblimit - count
-	percent = int(round((20.0 * left) / po.eblimit) * 5)
-	if percent == 0:
-	    return True, ("Almost all earlybirds gone," + timeleft)
-	elif percent <= 30:
-	    return True, ("Only %d%% earlybirds left,"%percent + timeleft)
-	else:
-	    return True, ("%d%% earlybirds left,"%percent + timeleft)
+            if r.type not in ('Hobbyist', 'Professional'):
+                continue
+            if not r.person.invoices or not r.person.invoices[0].paid():
+                continue
+            if r.voucher_code and r.voucher_code.startswith('GOOGLE-'):
+                continue
+                # see below about GOOGLE
+            speaker = 0
+            if r.person.proposals:
+                for proposal in r.person.proposals:
+                    if proposal.accepted:
+                        speaker = 1
+            if not speaker:
+                count += 1
+        count += 20 # GOOGLE group booking is deemed all earlybird
+        count += 10 # other group bookings
+        if count >= po.eblimit:
+            return False, "All gone."
+        left = po.eblimit - count
+        percent = int(round((20.0 * left) / po.eblimit) * 5)
+        if percent == 0:
+            return True, ("Almost all earlybirds gone," + timeleft)
+        elif percent <= 30:
+            return True, ("Only %d%% earlybirds left,"%percent + timeleft)
+        else:
+            return True, ("%d%% earlybirds left,"%percent + timeleft)
 
     def check_ceiling(self, check_type=None):
-	""" Checks the ceiling, returning various information in a struct.
-	Given a registration type, it also returns whether it's OK to
-	register for that type (returned in the .ok field). """
+        """ Checks the ceiling, returning various information in a struct.
+        Given a registration type, it also returns whether it's OK to
+        register for that type (returned in the .ok field). """
 
         class struct: pass
-	res = struct()
+        res = struct()
         res.regos = 0; res.disc_regos = 0; res.nk_regos = 0
-	ceiling_types = ('Student', 'Concession', 'Hobbyist',
-				   'Professional', 'Fairy Penguin Sponsor')
-	nk_types = ('Professional - No Keynote Access',
-	     'Hobbyist - No Keynote Access', 'Student - No Keynote Access')
+        ceiling_types = ('Student', 'Concession', 'Hobbyist',
+                                   'Professional', 'Fairy Penguin Sponsor')
+        nk_types = ('Professional - No Keynote Access',
+             'Hobbyist - No Keynote Access', 'Student - No Keynote Access')
         all_ceiling = ceiling_types + nk_types
         for r in self.dbsession.query(self.model).all():
-	    if r.type not in all_ceiling:
-	        continue
-	    if not r.person.invoices or not r.person.invoices[0].paid():
-	        continue
-	    if r.voucher_code and r.voucher_code!='':
-	        res.disc_regos += 1
+            if r.type not in all_ceiling:
+                continue
+            if not r.person.invoices or not r.person.invoices[0].paid():
+                continue
+            if r.voucher_code and r.voucher_code!='':
+                res.disc_regos += 1
             if r.type in ceiling_types:
-		res.regos += 1
+                res.regos += 1
             else:
-	        res.nk_regos += 1
-	res.vouchers = len(self.dbsession.query(VoucherCode).all())
-	res.total = res.regos + res.vouchers - res.disc_regos
-	res.limit = 505
-	res.open = res.total < res.limit
+                res.nk_regos += 1
+        res.vouchers = len(self.dbsession.query(VoucherCode).all())
+        res.total = res.regos + res.vouchers - res.disc_regos
+        res.limit = 505
+        res.open = res.total < res.limit
 
-	res.nk_limit = 59
-	res.nk_open = res.nk_regos < res.nk_limit
-	res.nk_left = res.nk_limit - res.nk_regos
+        res.nk_limit = 59
+        res.nk_open = res.nk_regos < res.nk_limit
+        res.nk_left = res.nk_limit - res.nk_regos
 
-	res.nk_open = True # force them open now that nobody can get here
-	                   # --Jiri 25.1.2008
+        res.nk_open = True # force them open now that nobody can get here
+                           # --Jiri 25.1.2008
 
-	if res.open:
-	  res.left = res.limit - res.total
-	  percent = int(round((20.0 * res.left) / res.limit) * 5)
-	  if percent == 0:
-	      res.text = "Almost all tickets gone."
-	  elif percent <= 30:
-	      res.text = "Only %d%% tickets left."%percent
-	  else:
-	      res.text = "%d%% tickets left."%percent
-	else:
-	    res.text = 'All tickets gone.'
+        if res.open:
+          res.left = res.limit - res.total
+          percent = int(round((20.0 * res.left) / res.limit) * 5)
+          if percent == 0:
+              res.text = "Almost all tickets gone."
+          elif percent <= 30:
+              res.text = "Only %d%% tickets left."%percent
+          else:
+              res.text = "%d%% tickets left."%percent
+        else:
+            res.text = 'All tickets gone.'
 
         if check_type:
-	    if check_type in ceiling_types:
-	        res.ok = res.open
-	    elif check_type in nk_types:
-	        res.ok = res.nk_open
-	    else:
-	        res.ok = True
+            if check_type in ceiling_types:
+                res.ok = res.open
+            elif check_type in nk_types:
+                res.ok = res.nk_open
+            else:
+                res.ok = True
 
-	return res
+        return res
 
     def status(self):
         (c.eb, c.ebtext) = self.check_earlybird()
-	c.ceiling = self.check_ceiling()
+        c.ceiling = self.check_ceiling()
         return render_response("registration/status.myt")
 
     def professional(self):
@@ -680,18 +667,18 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         for r in self.dbsession.query(self.model).all():
             p = r.person; i = p.invoices
             if (i and i[0].paid()) or p.is_speaker():
-		if r.type=='Fairy Penguin Sponsor':
-		    c.fairies.append((p, r))
-		elif r.type=='Professional':
-		    c.profs.append((p, r))
+                if r.type=='Fairy Penguin Sponsor':
+                    c.fairies.append((p, r))
+                elif r.type=='Professional':
+                    c.profs.append((p, r))
 
         def name_cmp(a, b):
             return (cmp(a[0].lastname.lower(), b[0].lastname.lower()) or
-		       cmp(a[0].firstname.lower(), b[0].firstname.lower()))
+                       cmp(a[0].firstname.lower(), b[0].firstname.lower()))
         def company_cmp(a, b):
             return (cmp(a[1].company.lower(), b[1].company.lower()) or
-		       cmp(a[0].lastname.lower(), b[0].lastname.lower()) or
-		       cmp(a[0].firstname.lower(), b[0].firstname.lower()))
+                       cmp(a[0].lastname.lower(), b[0].lastname.lower()) or
+                       cmp(a[0].firstname.lower(), b[0].firstname.lower()))
 
         c.profs += c.fairies
 
@@ -702,42 +689,42 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
     def volunteer_redirect(self):
         if c.signed_in_person and c.signed_in_person.registration:
-	    redirect_to('/registration/%d/volunteer' %
-					c.signed_in_person.registration.id)
-	    
+            redirect_to('/registration/%d/volunteer' %
+                                        c.signed_in_person.registration.id)
+
         return render_response('registration/volunteer_redirect.myt')
 
     def volunteer(self):
-	c.message = '''<p>Please indicate your areas of interest and
-	ability.</p>'''
+        c.message = '''<p>Please indicate your areas of interest and
+        ability.</p>'''
         if request.POST:
-	    a = []
-	    for k, v in request.POST.iteritems():
-	        if k=='commit':
-		    continue
-		if k=='other':
-		    if v!='':
-		        a.append(v)
-		elif k=='phone':
-	            setattr(self.obj, 'phone', v)
-		elif v=='1':
-		    a.append(k)
-		else:
-		    a.append('ERROR: %s=%s' % (k, v))
+            a = []
+            for k, v in request.POST.iteritems():
+                if k=='commit':
+                    continue
+                if k=='other':
+                    if v!='':
+                        a.append(v)
+                elif k=='phone':
+                    setattr(self.obj, 'phone', v)
+                elif v=='1':
+                    a.append(k)
+                else:
+                    a.append('ERROR: %s=%s' % (k, v))
             if a:
-	        a = '; '.join(a)
-		c.message = '''<p><b>Thank you for indicating your areas of
-		interest and ability.</b></p>'''
+                a = '; '.join(a)
+                c.message = '''<p><b>Thank you for indicating your areas of
+                interest and ability.</b></p>'''
             else:
-	        a = None
-		c.message = '''<p><b>Areas of interest and ability
-		reset.</b> If you are a volunteer, please indicate your
-		areas of interest and ability.</p>'''
+                a = None
+                c.message = '''<p><b>Areas of interest and ability
+                reset.</b> If you are a volunteer, please indicate your
+                areas of interest and ability.</p>'''
 
-	    setattr(self.obj, 'volunteer', a)
-	    self.dbsession.save(self.obj)
-	    self.dbsession.flush()
-		    
+            setattr(self.obj, 'volunteer', a)
+            self.dbsession.save(self.obj)
+            self.dbsession.flush()
+
         return render_response('registration/volunteer.myt')
 
 class PaymentOptions:
@@ -756,8 +743,8 @@ class PaymentOptions:
                 }
         self.dinner = 5000
 
-        self.ebdate = lca_info['lca_rego']['earlybird_enddate']
-        self.eblimit = lca_info['lca_rego']['earlybird_limit']
+        self.ebdate = lca_rego['earlybird_enddate']
+        self.eblimit = lca_rego['earlybird_limit']
 
     def getTypeAmount(self, type, eb):
         if type in self.types.keys():

@@ -26,17 +26,6 @@
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
 </p>
 
-<p class="label">
-<label for="person.handle">Display name/handle/nickname:</label></p>
-<p>
-<% c.registration.person.handle |h %>
-</p>
-<p class="note">
-Your display name will be used to identify you on the website. It's not
-actually used for much. For an IRC nick or handle to be shown on the badge,
-see "superhero name" below.
-</p>
-
 <h2>Personal Information</h2>
 
 <p class="label">

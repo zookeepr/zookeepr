@@ -31,8 +31,14 @@ errors
 # Working around a bug in formencode, we need to set the defaults to the c.proposal
 # values
 if not defaults:
-    defaults = {
-        'person.experience': c.person.experience,
-        'person.bio': c.person.bio
-    }
+    if c.signed_in_person_id:
+        defaults = {
+            'person.experience': c.person.experience,
+            'person.bio': c.person.bio
+        }
+    else:
+        defaults = {
+            'person.experience': '',
+            'person.bio': ''
+        }
 </%init>
