@@ -34,7 +34,8 @@
 <p><em>Note: These are common for all your proposals, both mini-confs and
 presentations.</em></p>
 
-% if c.signed_in_person_id:
+% if c.signed_in_person:
+%     c.person = c.signed_in_person
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label
 	for="name">Organiser name:</label></p>
