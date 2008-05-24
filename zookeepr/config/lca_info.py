@@ -23,5 +23,33 @@ lca_info = {
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 
+  'lca_rego' : { 
+# Id's used for speaker accom
+	'speaker_accom_options' : (51,52,53),
+
+# Date Early Bird ends
+	'earlybird_enddate' : datetime(2008, 11, 18, 00, 00, 00),
+	'earlybird_limit' : 220
+  }
 }
 
+lca_menu = [
+    ('Home', '/home', 'home'),
+    ('About', '/about/the_event_history', 'about'),
+    ('Sponsors', '/sponsors/sponsors', 'sponsors'),
+    ('Programme', '/programme/about_programme', 'programme'),
+    #('Register', '/register', 'register'), # -- Stage 2
+    ('Wiki', '/wiki', 'wiki'),
+    ('Media', '/media', 'media'),
+    ('Contact', '/contact', 'contact'),
+]
+
+lca_submenus = {
+  'about': ('The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'),
+  'sponsors': ('Sponsors','Become a Sponsor'),
+  'programme': ('About Programme', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'), # stage 1
+  #'programme': ('About Programme', 'miniconfs','Schedule','Official social events','Open day'), # stage 2
+  #'register': ('Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'), # stage 2
+  'sponsors': ('Sponsors','Become a Sponsor'),
+  'media': ('News','In the press','Planet/blog')
+}

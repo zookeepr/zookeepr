@@ -1,6 +1,6 @@
 <h1>Test Setup</h1>
 
-<p> <a href="/presentations">Call for Presentations</a> </p>
+<p> <a href="/programme/submit_a_presentation">Call for Presentations</a> </p>
 
 <!--
 FIXME: Dirty hack so all the tests don't fail

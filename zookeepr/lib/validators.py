@@ -18,10 +18,10 @@ class BoundedInt(validators.Int):
 
     def __init__(self, *args, **kw):
         validators.Int.__init__(self, *args, **kw)
-	if not hasattr(self, 'min'):
-	  self.min = -2147483648
-	if not hasattr(self, 'max'):
-	  self.max = +2147483647
+	if not hasattr(self, 'min') or self.min==None:
+	  self.min = -2147483648 # Smallest number that fits in postgres
+	if not hasattr(self, 'max') or self.max==None:
+	  self.max = +2147483647 # Largest number that fits in postgres
     def validate_python(self, value, state):
         if value>self.max:
 	    raise Invalid('Too large (maximum %d)'%self.max, value, state)

@@ -54,8 +54,10 @@
 	{
 		background-image: url(images/menu_shadow.png);
 		background-repeat: repeat-x;
-		background-position: top;
+		background-position: bottom;
+		font-size: 0.75em;
 		padding-top: 5px;
+		padding-bottom: 8px;
 	}
 	
 	.main_menu
@@ -64,7 +66,7 @@
 		background-image: url(images/menu_bg.png);
 		display: block;
 		margin: 0;
-		padding: 0 0 2px 0;
+		padding: 2px 0;
 		text-align: center;
 	}
 	
@@ -72,10 +74,7 @@
 	{
 		margin: 0;
 		display: block;
-		background-image: url(images/menu_shadow.png);
-		background-repeat: repeat-x;
-		background-position: bottom;
-		padding: 0 0 8px 0;
+		padding: 2px 0 2px 0;
 		text-align: center;
 	}
 	
@@ -86,33 +85,31 @@
 		padding-right: 1em;
 		background:transparent;
 		font-family: "Arial", sans-serif;
-		font-size: 0.75em;
 		letter-spacing: 0.1em;
 	}
 	
 	.main_menu li a
 	{
-		padding-top: 0.55em;
+		padding-top: 3px;
 		color: #cccccc;
 		background-color: inherit;
 	}
 	
-	.main_menu li a:hover, .main_menu li span
+	.main_menu li a:hover, .main_menu li .now /*.main_menu li span*/
 	{
 		color: #ffffff;
-		padding-top: 0.55em;
 		background-color: inherit;
 		background-image: url(images/menu_arrow.png);
 		background-position: center top;
 		background-repeat: no-repeat;
 		text-decoration: none;
 	}
-	.main_menu li span
+	.main_menu li .now /*.main_menu li span*/
 	{
 		font-weight: bold;
 	}
 	
-	.sub_menu li span
+	.sub_menu li .now /*.sub_menu li span*/
 	{
 		color: #3030ff;
 		background: inherit;
@@ -317,4 +314,15 @@
 	a img
 	{
 		border: 0;
+	}
+	
+	.error-message
+	{
+		background-color: inherit;
+		color: #0fffff;
+	}
+
+	.error
+	{
+		background-color: #0fffff;
 	}
