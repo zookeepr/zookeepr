@@ -79,7 +79,7 @@ class CfpController(SecureController):
         elif c.cfp_status == 'not_open':
            return render_response("cfp/not_open.myt")
         elif self.logged_in() is False:
-           return render_response("cfp/mini_log_in.myt")
+           return render_response("cfp/log_in.myt")
         else:
             c.cfptypes = self.dbsession.query(ProposalType).select()
             c.tatypes = self.dbsession.query(AssistanceType).select()
