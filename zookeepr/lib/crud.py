@@ -62,6 +62,7 @@ class Create(CRUDBase):
                     warnings.warn("new: form validation failed: %s" % errors)
             else:
                 self.obj = self.model()
+                model_name = self.individual
 
                 # make new_object accessible to the template
                 setattr(c, self.individual, self.obj)
