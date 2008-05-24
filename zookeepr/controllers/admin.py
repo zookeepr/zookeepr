@@ -17,12 +17,13 @@ class AdminController(SecureController):
       'rej_papers_abstracts': [AuthRole('miniconf'), AuthRole('organiser')],
       'AV_ping': [AuthTrue()],
       'recorded_miniconf_talks': [AuthTrue()],
+      'AV_ping': True,
+      'recorded_miniconf_talks': True,
     }
-    anon_actions = ['AV_ping', 'recorded_miniconf_talks']
 
     def index(self):
         res = dir(self)
-	exceptions = ['anon_actions', 'check_permissions', 'dbsession',
+	exceptions = ['check_permissions', 'dbsession',
 		     'index', 'logged_in', 'permissions', 'start_response']
 
 	# get the ones in this controller by introspection.

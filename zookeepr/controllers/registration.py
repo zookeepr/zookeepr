@@ -251,8 +251,11 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                     'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
                     'pay': [AuthFunc('is_same_person'), AuthRole('organiser')],
                     'volunteer': [AuthFunc('is_same_person'), AuthRole('organiser')],
+                    'status': True,
+                    'new': True,
+                    'index': True,
+                    'volunteer_redirect': True
                    }
-    anon_actions = ['status', 'new', 'index', 'volunteer_redirect']
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person

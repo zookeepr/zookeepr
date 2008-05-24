@@ -9,9 +9,8 @@ class AttachmentController(SecureController, Delete):
     redirect_map = {'delete': dict(controller='proposal', action='view', id=session.get('proposal_id', 0))}
 
     permissions = {
-      'view': [AuthTrue()],
+      'view': True
     }
-    anon_actions = ['view']
 
     def view(self, id):
         att = self.dbsession.query(model.Attachment).get(id)

@@ -103,8 +103,11 @@ class ExistingMiniSchema(BaseSchema):
 
 class CfpController(SecureController):
     #permissions removed since submit* displays appropirate template file upon closed/not_open settings.
-    permissions = {}
-    anon_actions = ['index', 'submit', 'submit_mini']
+    permissions = {
+      'index': True,
+      'submit': True,
+      'submit_mini': True,
+    }
 
     def __init__(self, *args):
         c.cfp_status = lca_info['cfp_status']
@@ -113,9 +116,9 @@ class CfpController(SecureController):
 
         # When the CFP status is closed or not open we allow anonymous requests to the submit() action which responds appropriately with a nice message. 
         #if c.cfp_status == 'closed' or c.cfp_status == 'not_open':
-        #    self.anon_actions.append('submit')
+        #    self.permissions['submit'] = True
         #if c.cfmini_status == 'closed' or c.cfmini_status == 'not_open':
-        #    self.anon_actions.append('submit_mini')
+        #    self.permissions['submit_mini'] = True
 
     def index(self):
         return render_response("cfp/list.myt")
@@ -179,8 +182,6 @@ class CfpController(SecureController):
         else:
             c.cfptypes = self.dbsession.query(ProposalType).select()
             c.tatypes = self.dbsession.query(AssistanceType).select()
-            c.signed_in_person = self.dbsession.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
-            c.person = c.signed_in_person
 
             errors = {}
             defaults = dict(request.POST)

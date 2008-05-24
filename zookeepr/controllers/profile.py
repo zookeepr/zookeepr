@@ -14,7 +14,6 @@ class ProfileController(SecureController, Read, Update, List):
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')]
                    }
-    anon_action = []
 
     def index(self):
         r = AuthRole('organiser')
