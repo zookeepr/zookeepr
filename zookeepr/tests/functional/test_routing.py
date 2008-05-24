@@ -45,7 +45,7 @@ class TestRouting(unittest.TestCase):
                          self.map.match('/cfp'))
 
     def test_cfp_named_route(self):
-        self.assertEqual('/cfp',
+        self.assertEqual('cfp',
                          url_for('cfp'))
 
     def test_cfp_proposal_url(self):
