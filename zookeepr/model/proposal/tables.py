@@ -63,7 +63,7 @@ proposal = Table('proposal', metadata,
                    Column('last_modification_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp(),
-                        onupdate='now'),
+                        onupdate=func.current_timestamp()),
 			# onupdate should really use
 			#   func.current_timestamp()
 			# but the version of sqlalchemy on the server can't
@@ -133,7 +133,7 @@ review = Table('review', metadata,
                Column('last_modification_timestamp', DateTime,
                       nullable=False,
                       default=func.current_timestamp(),
-		      onupdate='now'),
+		      onupdate=func.current_timestamp()),
 		      # onupdate should really use
 		      #   func.current_timestamp()
 		      # but the version of sqlalchemy on the server can't
