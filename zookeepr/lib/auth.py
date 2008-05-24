@@ -141,9 +141,7 @@ class SecureController(BaseController):
 
         elif not hasattr(self, 'permissions'):
             abort(403, "no permissions configured controller... denied")
-        elif not self.permissions.has_key(kwargs['action']):
-            abort(403, "no permissions configured for action... denied")
-        elif self.permissions[kwargs['action']]==True:
+        elif self.permissions.get(kwargs['action'],False)==True:
             # No-one's logged in, but this action is OK with that.
             return
         else:
