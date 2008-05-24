@@ -428,7 +428,7 @@ class TestPersonController(ControllerTest):
         rid = regs[0].id
         # ok, now try to log in
 
-        resp = resp.click('sign in', index=1)
+        resp = resp.click('sign in')
         f = resp.form
         f['email_address'] = 'testguy@example.org'
         f['password'] = 'test'
