@@ -102,7 +102,7 @@ class PersonController(BaseController):
 
                     # Redirect to original URL if it exists
                     if 'sign_in_redirect' in session:
-                        redirect_to(session['sign_in_redirect'])
+                        redirect_to(str(session['sign_in_redirect']))
 
                     # return to the registration status
 		    # (while registrations are open)
