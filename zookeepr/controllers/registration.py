@@ -249,6 +249,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                     'professional': [AuthRole('organiser')],
                     'edit': [AuthFunc('is_same_person'), AuthRole('organiser')],
                     'view': [AuthFunc('is_same_person'), AuthRole('organiser')],
+                    'pay': [AuthFunc('is_same_person'), AuthRole('organiser')],
                     'volunteer': [AuthFunc('is_same_person'), AuthRole('organiser')],
                    }
     anon_actions = ['status', 'new', 'index', 'volunteer_redirect']
@@ -472,9 +473,6 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                                     qty = kids, cost=13200)
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
-
-        invoice.last_modification_timestamp = func.current_timestamp()
-        invoice.due_date = func.current_timestamp()
 
         self.dbsession.save(invoice)
         self.dbsession.flush()
