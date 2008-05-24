@@ -43,7 +43,6 @@ class TestRegistrationController(CRUDControllerTest):
                                       shell='-',
                                       prevlca={'99': '1'},
                                       miniconf={'Debian': '1'},
-                                      accommodation=1,
                                       ),
                     person=dict(email_address='testguy@example.org',
                                 password='test',
@@ -114,7 +113,6 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
             extra_tee_sizes='M_M',
             checkin=14,
             checkout=20,
-            accommodation='0',
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -229,7 +227,6 @@ class TestNotSignedInRegistrationController(ControllerTest):
             extra_tee_sizes='M_M',
             checkin=14,
             checkout=20,
-            accommodation=0,
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -269,8 +266,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
             extra_tee_count=1,
             extra_tee_sizes='M_long_M',
             checkin=28,
-            checkout=3,
-            accommodation=0)
+            checkout=3)
         r.person = p
         self.dbsession.save(r)
         self.dbsession.flush()
