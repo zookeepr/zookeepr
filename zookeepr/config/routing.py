@@ -22,17 +22,18 @@ def make_map():
     m.connect('/error/:action/:id', controller='error')
 
     # The CFP named routes
-    m.connect('cfp', '/cfp', controller='cfp', action='index')
+    #m.connect('cfp', '/cfp', controller='cfp', action='index')
     #m.connect('presentations', '/presentations', controller='cfp', action='index')
-    m.connect('submit_cfp', '/papers/submit_a_paper', controller='cfp', action='submit')
-    m.connect('submit_cfp', '/papers/submit_a_presentation', controller='cfp', action='submit')
-    m.connect('submit_cfp', '/presentations/submit_a_presentation', controller='cfp', action='submit')
-    m.connect('/papers/thankyou', controller='cfp', action='thankyou')
-    m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
-    m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
-					      controller='cfp', action='submit_mini')
-    m.connect('/presentations/edit/:id', controller='proposal',
-							     action='edit')
+    #m.connect('submit_cfp', '/papers/submit_a_paper', controller='cfp', action='submit')
+    #m.connect('submit_cfp', '/papers/submit_a_presentation', controller='cfp', action='submit')
+    #m.connect('submit_cfp', '/presentations/submit_a_presentation', controller='cfp', action='submit')
+    #m.connect('/papers/thankyou', controller='cfp', action='thankyou')
+    #m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
+    #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
+	#				      controller='cfp', action='submit_mini')
+    #m.connect('/presentations/edit/:id', controller='proposal',
+	#						     action='edit')
+    m.connect('/programme/submit_a_presentation', controller='cfp', action='submit')
 
     # account confirmation named route
     m.connect('acct_confirm', '/person/confirm/:id',

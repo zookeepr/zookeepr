@@ -12,7 +12,7 @@ installed on my machine that I forgot to list down here.
 I'm not a fan of of eggs (well... not fried, but poached are nice).
 So, start by getting the usual junk. These were all installed via apt-get. Generally these were for python2.5, but 2.4 may work.
 
-sudo apt-get install python-dev, python-pylons, python-sqlalchemy, python-simplejson, python-setuptools, python-dnspython
+sudo apt-get install python-dev python-pylons python-sqlalchemy python-simplejson python-setuptools python-dnspython python-cheetah python-psycopg2
 
 ====== Installing and setting up Zookeepr ======
 
