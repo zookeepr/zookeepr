@@ -180,13 +180,13 @@ from zookeepr.tests.functional import *
 #         self.failUnlessEqual(None, html_match, "HTML in message!")
         
 #         # check that the message has a url hash in it
-#         match = re.match(r'^.*/account/confirm/(\S+)', message.message, re.DOTALL)
+#         match = re.match(r'^.*/person/confirm/(\S+)', message.message, re.DOTALL)
 #         print "match:", match
 #         self.failIfEqual(None, match, "url not found")
 
 #         # visit the url
 #         print "match: '''%s'''" % match.group(1)
-#         res = self.app.get('/account/confirm/%s' % match.group(1))
+#         res = self.app.get('/person/confirm/%s' % match.group(1))
 #         print res
         
 #         # check the rego worked

@@ -23,7 +23,7 @@ class PaymentController(BaseController, Create, View):
             c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
 
             if c.signed_in_person != c.payment.payment_sent.invoice.person:
-                redirect_to('/account/signin')
+                redirect_to('/person/signin')
                                                     
         c.person = c.payment.payment_sent.invoice.person
 

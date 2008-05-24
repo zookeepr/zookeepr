@@ -7,39 +7,39 @@ from paste.fixture import Dummy_smtplib
 from zookeepr.model import Person, PasswordResetConfirmation
 from zookeepr.tests.functional import *
 
-class TestAccountController(ControllerTest):
+class TestPersonController(ControllerTest):
 
     def test_registration_confirmation_url(self):
         """test the routing of the registration confirmation url"""
-        self.assertEqual(dict(controller='account',
+        self.assertEqual(dict(controller='person',
                               action='confirm',
                               id='N'),
-                         self.map.match('/account/confirm/N'))
+                         self.map.match('/person/confirm/N'))
 
     def test_registratrion_confirmation_named_route(self):
         reg_confirm = url_for('acct_confirm', id='N')
-        self.assertEqual('/account/confirm/N',
+        self.assertEqual('/person/confirm/N',
                          reg_confirm)
 
-    def test_account_signin_routing(self):
-        self.assertEqual(dict(controller='account',
+    def test_person_signin_routing(self):
+        self.assertEqual(dict(controller='person',
                               action='signin'),
-                         self.map.match('/account/signin'))
+                         self.map.match('/person/signin'))
         
-    def test_account_signin_url(self):
-        self.assertEqual('/account/signin',
-                         url_for(controller='account', action='signin', id=None))
+    def test_person_signin_url(self):
+        self.assertEqual('/person/signin',
+                         url_for(controller='person', action='signin', id=None))
 
-    def test_account_signout_url(self):
-        self.assertEqual('/account/signout',
-                         url_for(controller='account', action='signout', id=None))
+    def test_person_signout_url(self):
+        self.assertEqual('/person/signout',
+                         url_for(controller='person', action='signout', id=None))
 
     def assertSignedIn(self, session, id):
         self.failUnless('signed_in_person_id' in session)
         self.assertEqual(id, session['signed_in_person_id'])
 
     def test_signin_signout(self):
-        """Test account sign in"""
+        """Test person sign in"""
         # create a user
         p = model.core.Person(email_address='testguy@example.org',
                          password='p4ssw0rd',
@@ -50,7 +50,7 @@ class TestAccountController(ControllerTest):
         self.dbsession.flush()
         
         # try to log in
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
                                     action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'
@@ -65,7 +65,7 @@ class TestAccountController(ControllerTest):
         self.assertSignedIn(resp.session, p.id)
 
         # sign out
-        resp = resp.goto(url_for(controller='account',
+        resp = resp.goto(url_for(controller='person',
                                  action='signout'))
 
         print "resp.session", resp.session
@@ -79,7 +79,7 @@ class TestAccountController(ControllerTest):
     def test_signin_invalid(self):
         """Test invalid login details"""
         # login
-        resp = self.app.get(url_for(controller='/account', action='signin'))
+        resp = self.app.get(url_for(controller='/person', action='signin'))
         f = resp.form
         f['email_address'] = 'testguy'
         f['password'] = 'password'
@@ -98,7 +98,7 @@ class TestAccountController(ControllerTest):
         pid = p.id
         
         # try to login
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
                                     action='signin'))
         f = resp.form
         f['email_address'] = 'testguy@example.org'
@@ -133,7 +133,7 @@ class TestAccountController(ControllerTest):
         self.dbsession.clear()
         
         # visit the link
-        response = self.app.get('/account/confirm/' + url_hash)
+        response = self.app.get('/person/confirm/' + url_hash)
         response.mustcontain('Thanks for confirming your registration')
         
         # test that it's activated
@@ -148,26 +148,26 @@ class TestAccountController(ControllerTest):
         """test that an invalid has doesn't activate anything"""
         self.assertEmptyModel(Person)
 
-        response = self.app.get('/account/confirm/nonexistent', status=404)
+        response = self.app.get('/person/confirm/nonexistent', status=404)
 
-    def test_account_password_routing(self):
-        self.assertEqual(dict(controller='account',
+    def test_person_password_routing(self):
+        self.assertEqual(dict(controller='person',
                               action='forgotten_password'),
-                         self.map.match('/account/forgotten_password'))
+                         self.map.match('/person/forgotten_password'))
 
-    def test_account_password_url_for(self):
-        self.assertEqual('/account/forgotten_password',
-                         url_for(controller='account', action='forgotten_password'))
+    def test_person_password_url_for(self):
+        self.assertEqual('/person/forgotten_password',
+                         url_for(controller='person', action='forgotten_password'))
 
-    def test_account_confirm_routing(self):
-        self.assertEqual(dict(controller='account',
+    def test_person_confirm_routing(self):
+        self.assertEqual(dict(controller='person',
                               action='reset_password',
                               url_hash='N'),
-                         self.map.match('/account/reset_password/N'))
+                         self.map.match('/person/reset_password/N'))
 
-    def test_account_password_url_for(self):
-        self.assertEqual('/account/reset_password/N',
-                         url_for(controller='/account', action='reset_password', url_hash='N'))
+    def test_person_password_url_for(self):
+        self.assertEqual('/person/reset_password/N',
+                         url_for(controller='/person', action='reset_password', url_hash='N'))
 
     def test_forgotten_password(self):
         p = model.Person(email_address='testguy@example.org')
@@ -179,7 +179,7 @@ class TestAccountController(ControllerTest):
         Dummy_smtplib.install()
 
         # get the login page
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
             action='signin'))
         # click on the forgotten password link
         resp = resp.click('Forgotten your password?')
@@ -207,7 +207,7 @@ class TestAccountController(ControllerTest):
         self.assertEqual(None, html_match, "HTML in message")
 
         # check that the message has a url hash in it
-        url_match = re.match(r'^.*(/account/reset_password/\S+)', Dummy_smtplib.existing.message, re.DOTALL)
+        url_match = re.match(r'^.*(/person/reset_password/\S+)', Dummy_smtplib.existing.message, re.DOTALL)
         self.failIfEqual(None, url_match, "reset password url not found in message")
 
         # ok go to the URL, on treadmills
@@ -234,12 +234,12 @@ class TestAccountController(ControllerTest):
         self.dbsession.delete(p)
         self.dbsession.flush()
 
-    def test_forgotten_password_no_account(self):
+    def test_forgotten_password_no_person(self):
         """Test that an invalid email address doesn't start a password change.
         """
         Dummy_smtplib.install()
 
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
                                     action='signin'))
         resp = resp.click('Forgotten your password?')
         f = resp.forms[0]
@@ -256,7 +256,7 @@ class TestAccountController(ControllerTest):
     def test_confirm_404(self):
         """Test that an attempt to access an invalid url_hash throws a 404"""
         resp = self.app.get(url_for(action='reset_password',
-            controller='account',
+            controller='person',
             url_hash='n'), status=404)
 
     def test_confirm_old_url_hash(self):
@@ -269,7 +269,7 @@ class TestAccountController(ControllerTest):
         self.dbsession.flush()
         cid = c.id
 
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
             action='reset_password',
             url_hash=c.url_hash))
         # check for warning
@@ -296,7 +296,7 @@ class TestAccountController(ControllerTest):
         pid = p.id
         cid = c.id
 
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
             action='reset_password',
             url_hash=c.url_hash))
 
@@ -339,7 +339,7 @@ class TestAccountController(ControllerTest):
         # trap smtp
         Dummy_smtplib.install()
 
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
                                     action='signin'))
         resp = resp.click('Forgotten your password?')
         f = resp.forms[0]
@@ -364,7 +364,7 @@ class TestAccountController(ControllerTest):
     def test_login_failed_warning(self):
         """Test that you get an appropriate warning message from the form when you try to log in with invalid credentials.
         """
-        resp = self.app.get(url_for(controller='account',
+        resp = self.app.get(url_for(controller='person',
                                     action='signin'))
         f = resp.form
         f['email_address'] = 'test'
@@ -374,8 +374,8 @@ class TestAccountController(ControllerTest):
         resp.mustcontain("Your sign-in details are incorrect")
 
 
-    def test_create_account(self):
-        """Test the process of creating new accounts.
+    def test_create_person(self):
+        """Test the process of creating new persons.
         """
         Dummy_smtplib.install()
         
@@ -414,12 +414,12 @@ class TestAccountController(ControllerTest):
         html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
         self.failUnlessEqual(None, html_match, "HTML in message!")
         # check that the message has a url hash in it
-        match = re.match(r'^.*/account/confirm/(\S+)',
+        match = re.match(r'^.*/person/confirm/(\S+)',
                          message.message, re.DOTALL)
         self.failIfEqual(None, match, "url not found")
         # visit the url
         print "match: '''%s'''" % match.group(1)
-        resp = self.app.get('/account/confirm/%s' % match.group(1))
+        resp = self.app.get('/person/confirm/%s' % match.group(1))
         print resp
         
         # check the rego worked
@@ -444,7 +444,7 @@ class TestAccountController(ControllerTest):
         self.dbsession.delete(self.dbsession.query(Person).get(rid))
         self.dbsession.flush()
 
-    def test_create_duplicate_account(self):
+    def test_create_duplicate_person(self):
         Dummy_smtplib.install()
         
         # create a fake user
@@ -454,7 +454,7 @@ class TestAccountController(ControllerTest):
         self.dbsession.flush()
         pid = p.id
 
-        resp = self.app.get('/account/new')
+        resp = self.app.get('/person/new')
         f = resp.form
         f['registration.email_address'] = 'testguy@example.org'
         f['registration.firstname'] = 'Testguy'

@@ -5,9 +5,9 @@
 % #endfor
 
 % if 'signed_in_person_id' in session:
-        <li><a href="<% h.url(controller='account', action='signin', id=None)() %>" <% cls('login') %>>Sign in</a></li>
+        <li><a href="<% h.url(controller='person', action='signin', id=None)() %>" <% cls('login') %>>Sign in</a></li>
 % else:
-        <li><a href="<% h.url(controller='account', action='signout', id=None)() %>" <% cls('login') %>>Sign out</a></li>
+        <li><a href="<% h.url(controller='person', action='signout', id=None)() %>" <% cls('login') %>>Sign out</a></li>
 % #endif
     </ul>
 
