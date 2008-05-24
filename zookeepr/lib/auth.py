@@ -99,20 +99,19 @@ class SecureController(BaseController):
     In the permissions list, the special name 'ALL' sets the default
     (normally no access).
 
+    Normally, users will be redirected to log in if they aren't already.
+    If the permissions list for the action is just True, the action is
+    permitted without login ("anonymous action").
+
     Example:
       permissions = { 'view': [AuthRole('reviewer'), AuthRole('organiser')],
+                      'submit': True,
                       'ALL': [AuthRole('organiser)] }
 
     As a bonus, they will have access to `c.person` which is a
-    `model.Person` object that will identify the user
-    who is currently logged in.
+    `model.Person` object that will identify the user who is currently
+    logged in. Anonymous actions then may or may not have a c.person.
 
-    Normally, users will be redirected to log in if they aren't already.
-    The anon_actions list can make exceptions where appropriate. Those
-    actions then may or may not have a c.person.
-
-    Example:
-      anon_actions = ['index']
     """
 
     def logged_in(self):
@@ -140,14 +139,16 @@ class SecureController(BaseController):
                     setattr(c, 'is_%s_role' % role.name, True)
 
 
-        elif (hasattr(self, 'anon_actions')
-	          and kwargs['action'] in self.anon_actions):
-	    # No-one's logged in, but this action is OK with that.
-	    return
-
+        elif not hasattr(self, 'permissions'):
+            abort(403, "no permissions configured controller... denied")
+        elif not self.permissions.has_key(kwargs['action']):
+            abort(403, "no permissions configured for action... denied")
+        elif self.permissions[kwargs['action']]==True:
+            # No-one's logged in, but this action is OK with that.
+            return
         else:
             # No-one's logged in, so send them to the signin page.
-	    
+
             # If we were being nice and WSGIy, we'd raise a 403 or 401 error
             # (depending) and let a security middleware layer take care
             # of the redirect.  Save that for a rainy day...
@@ -157,10 +158,9 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-        if (hasattr(self, 'anon_actions')
-	          and kwargs['action'] in self.anon_actions):
-	    # Someone's logged in, but this action is public anyway
-	    return
+        if self.permissions[kwargs['action']]==True:
+            # Someone's logged in, but this action is public anyway
+            return
         elif self.check_permissions(kwargs['action']):
             return
         else:
