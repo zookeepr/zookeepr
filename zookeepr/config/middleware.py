@@ -66,13 +66,6 @@ def make_app(global_conf, **app_conf):
     # @@@ Cascade @@@ 
     app = Cascade([static_app, javascripts_app, app])
     
-    # @@@ Display error documents for 401, 403, 404 status codes (if debug is disabled also
-    # intercepts 500) @@@
-    #e = error_mapper
-    #if wiki.has_moin:
-    #    e = error_mapper_wrapper
-    #app = ErrorDocuments(app, global_conf, mapper=e, **app_conf)
-
     app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
 
     # PrefixMiddleware fixes up the hostname when zookeepr is being proxied.
