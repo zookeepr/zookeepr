@@ -268,6 +268,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
             country='Australia',
             postcode='2001',
             type='Professional',
+            handle='testguy',
             teesize='M_M',
             extra_tee_count=1,
             extra_tee_sizes='M_M',
@@ -280,7 +281,6 @@ class TestNotSignedInRegistrationController(ControllerTest):
         f['person.email_address'] = 'testguy2@example.org'
         f['person.firstname'] = 'testguy'
         f['person.lastname'] = 'mctest'
-        f['person.handle']= 'testguy'
         f['person.password'] = 'test'
         f['person.password_confirm'] = 'test'
 
