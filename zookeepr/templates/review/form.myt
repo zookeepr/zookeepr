@@ -63,8 +63,6 @@ Proposal submitted by:
 <br />
 <% h.radio('review.score', -1, "-1 (reject) I want this proposal to be rejected") %>
 <br />
-<% h.radio('review.score', 0, "0 (indifferent) This proposal has no particular faults but no particular strengths") %>
-<br />
 <% h.radio('review.score', +1, "+1 (accept) I want this proposal to be accepted") %>
 <br />
 <% h.radio('review.score', +2, "+2 (strong accept) I want this proposal to be accepted, and if asked to I will advocate for it to be accepted.") %>

@@ -23,7 +23,7 @@ invoice = Table('invoice', metadata,
                 Column('last_modification_timestamp', DateTime,
                        nullable=False,
                        default=func.current_timestamp(),
-                       onupdate='now'),
+                       onupdate=func.current_timestamp()),
 
                 )
 
@@ -47,7 +47,7 @@ invoice_item = Table('invoice_item', metadata,
                      Column('last_modification_timestamp', DateTime,
                             nullable=False,
                             default=func.current_timestamp(),
-                            onupdate='now'),
+                            onupdate=func.current_timestamp()),
                     )
 
 payment = Table('payment', metadata,
@@ -66,7 +66,7 @@ payment = Table('payment', metadata,
                 Column('last_modification_timestamp', DateTime,
                        nullable=False,
                        default=func.current_timestamp(),
-                       onupdate='now'),
+                       onupdate=func.current_timestamp()),
                 )
 
 payment_received = Table('payment_received', metadata,
@@ -139,7 +139,7 @@ payment_received = Table('payment_received', metadata,
                          Column('last_modification_timestamp', DateTime,
                                 nullable=False,
                                 default=func.current_timestamp(),
-                                onupdate='now'),
+                                onupdate=func.current_timestamp()),
                          )
 
 voucher_code = Table('voucher_code', metadata,
@@ -164,7 +164,7 @@ voucher_code = Table('voucher_code', metadata,
                 Column('last_modification_timestamp', DateTime,
                        nullable=False,
                        default=func.current_timestamp(),
-                       onupdate='now'),
+                       onupdate=func.current_timestamp()),
 
                 )
 

@@ -46,7 +46,7 @@ class TestTemplateController(ControllerTest):
     def _login(self):
         if not self.logged_in:
             # log in
-            resp = self.app.get(url_for(controller='account',
+            resp = self.app.get(url_for(controller='person',
                                     action='signin'))
             f = resp.form
             f['email_address'] = 'testguy@example.org'

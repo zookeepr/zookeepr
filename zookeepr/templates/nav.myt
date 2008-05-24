@@ -13,9 +13,9 @@
 % #endfor
 
 % if 'signed_in_person_id' not in session:
-        <li><a href="<% h.url(controller='account', action='signin', id=None)() %>" <% cls('login') %>>sign in</a></li>
+        <li><a href="<% h.url(controller='person', action='signin', id=None)() %>" <% cls('login') %>>sign in</a></li>
 % else:
-        <li><a href="<% h.url(controller='account', action='signout', id=None)() %>" <% cls('login') %>>sign out</a></li>
+        <li><a href="<% h.url(controller='person', action='signout', id=None)() %>" <% cls('login') %>>sign out</a></li>
 % #endif
     </ul>
 
@@ -37,7 +37,7 @@ map = [
   ('/invoice', 'register'),				# zookeepr
   ('/wiki', 'wiki'),					# 
   ('/2008/contact', 'contact'),				# 
-  ('/account', 'login'),				# zookeepr
+  ('/person', 'login'),					# zookeepr
   ('/error', ''),					#
 ]
 
@@ -56,7 +56,7 @@ except:
 mm = [mme.split(',', 2) for mme in mm if ',' in mme]
 mm = [(t.strip(' \t"'), re.sub('^http://[^/]*/', '/', u.strip(' \t\n"')))
 							  for (t, u) in mm]
-mm = [(t, u, u.split('/')[1]) for (t, u) in mm if u!='/account/signin']
+mm = [(t, u, u.split('/')[1]) for (t, u) in mm if u!='/person/signin']
 
 if not mm:
   # fallback if fetching the navbar fails

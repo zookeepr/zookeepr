@@ -3,8 +3,8 @@ import md5
 
 from zookeepr.tests.model import *
 
-class TestAccountTable(TableTest):
-    """Test the `account` table.
+class TestPersonTable(TableTest):
+    """Test the `person` table.
 
     This table stores the basic login information for a user, as well as data
     that handles the user's registration process.
@@ -16,7 +16,7 @@ class TestAccountTable(TableTest):
     is typically stored hashed in this table (but we don't care how; we use MD5
     in upper layers of the business logic; here it's just a string).
 
-    ``creation_timestamp`` is the time stamp of the account creation.
+    ``creation_timestamp`` is the time stamp of the person creation.
 
     ``url_hash`` stores a hash used by the confirmatoin sustem to identify this
     registration, typically made up of a hash of the email address, timestamp,
@@ -26,7 +26,7 @@ class TestAccountTable(TableTest):
     confirmed, and the user may log in.
     """
     # What's the table object?
-    table = model.core.tables.account
+    table = model.core.tables.person
     # What's some sample data we can use for the generic table testing?
     samples = [dict(email_address='testguy@example.org',
                     password_hash='password_hash1',

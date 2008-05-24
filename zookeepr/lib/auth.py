@@ -153,7 +153,7 @@ class SecureController(BaseController):
             # of the redirect.  Save that for a rainy day...
             session['sign_in_redirect'] = h.current_url()
             session.save()
-            redirect_to(controller='account',
+            redirect_to(controller='person',
                         action='signin',
                         id=None)
 

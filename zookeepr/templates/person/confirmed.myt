@@ -3,7 +3,7 @@ Thanks for confirming your account!
 </p>
 
 <p>
-You can now <% h.link_to('sign in', url=h.url(controller='account', action='signin', id=None)) %> to your account.
+You can now <% h.link_to('sign in', url=h.url(controller='person', action='signin', id=None)) %> to your account.
 </p>
 
 <p>

@@ -84,7 +84,7 @@ registration = Table('registration', metadata,
                      Column('last_modification_timestamp', DateTime,
                         nullable=False,
                         default=func.current_timestamp(),
-                        onupdate='now'),
+                        onupdate=func.current_timestamp()),
 
                      )
 

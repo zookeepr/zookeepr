@@ -4,10 +4,6 @@ import random
 
 class Person(object):
     """Stores both account login details and personal information.
-
-    We assume a 1-1 mapping of user accounts to personal details,
-    for convenience, and so through the act of logging in we get
-    all the information about that person.
     """
     def __init__(self, handle=None, email_address=None, password=None,
                  firstname=None, lastname=None, phone=None, fax=None,

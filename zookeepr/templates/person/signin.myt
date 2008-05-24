@@ -1,10 +1,10 @@
 <h1 class="pop">Sign in</h1>
 
-<p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='account', action='new')) %> now!</p>
+<p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='person', action='new')) %> now!</p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
-<% h.form(h.url_for(controller='/account', action='signin')) %>
+<% h.form(h.url_for(controller='/person', action='signin')) %>
 
 	<p class="label"><label for="email_address">Email address:</label></p>
 	<p class="entries"><% h.text_field('email_address', size=60) %></p>

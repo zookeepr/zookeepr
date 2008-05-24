@@ -42,7 +42,7 @@ map = (
   ('/papers', 'presentations'),
   ('/presentations', 'presentations'),
   ('/2008/contact', '2008/contact'),
-  ('/account', 'login'),
+  ('/person', 'login'),
   ('/error', ''),
 )
 
