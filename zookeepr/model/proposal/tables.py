@@ -24,9 +24,9 @@ proposal = Table('proposal', metadata,
                    Column('id', Integer, primary_key=True),
 
                    # title of proposal
-                   Column('title', String()),
+                   Column('title', Text),
                    # abstract or description
-                   Column('abstract', String()),
+                   Column('abstract', Text),
 
                    # type, enumerated in the proposal_type table
                    Column('proposal_type_id', Integer,
@@ -37,11 +37,11 @@ proposal = Table('proposal', metadata,
                           ForeignKey('assistance_type.id')),
 
                    # name and url of the project
-                   Column('project', String()),
-                   Column('url', String()),
+                   Column('project', Text),
+                   Column('url', Text),
 
                    # url to a short video
-                   Column('abstract_video_url', String()),
+                   Column('abstract_video_url', Text),
 
                    # Is it accepted?
                    Column('accepted', Boolean),
@@ -49,13 +49,13 @@ proposal = Table('proposal', metadata,
                    Column('code', Integer),
                    Column('scheduled', DateTime),
                    Column('finished', DateTime),
-                   Column('theatre', String()),
-                   Column('building', String()),
+                   Column('theatre', Text),
+                   Column('building', Text),
 
-                   Column('recorded_ogg', String()),
-                   Column('recorded_spx', String()),
-                   Column('wiki_name', String()),
-                   Column('slides_link', String()),
+                   Column('recorded_ogg', Text),
+                   Column('recorded_spx', Text),
+                   Column('wiki_name', Text),
+                   Column('slides_link', Text),
 
                    Column('creation_timestamp', DateTime,
                         nullable=False,
@@ -85,10 +85,10 @@ attachment = Table('attachment', metadata,
 
                    Column('proposal_id', Integer, ForeignKey('proposal.id')),
 
-                   Column('filename', String,
+                   Column('filename', Text,
                           key='_filename',
                           nullable=False),
-                   Column('content_type', String,
+                   Column('content_type', Text,
                           key='_content_type',
                           nullable=False),
                    
@@ -124,8 +124,8 @@ review = Table('review', metadata,
                Column('stream_id', Integer,
                       ForeignKey('stream.id'),
                       ),
-               Column('miniconf', String),
-               Column('comment', String),
+               Column('miniconf', Text),
+               Column('comment', Text),
 
                Column('creation_timestamp', DateTime,
                       nullable=False,

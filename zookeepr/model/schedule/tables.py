@@ -7,7 +7,7 @@ from zookeepr.model import metadata
 stream = Table('stream', metadata,
                Column('id', Integer, primary_key=True),
 
-               Column('name', String,
+               Column('name', Text,
                       nullable=False,
                       unique=True,
                       ),

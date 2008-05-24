@@ -130,7 +130,7 @@ class PersonController(BaseController):
         they regsitered, and a nonce.
 
         """
-        r = self.dbsession.query(Person).select_by(url_hash=id)
+        r = self.dbsession.query(Person).filter_by(url_hash=id).all()
 
         if len(r) < 1:
             abort(404)
@@ -203,7 +203,7 @@ class PersonController(BaseController):
         If the record doesn't exist, throw an error, delete the
         confirmation record.
         """
-        crecs = self.dbsession.query(PasswordResetConfirmation).select_by(url_hash=url_hash)
+        crecs = self.dbsession.query(PasswordResetConfirmation).filter_by(url_hash=url_hash).all()
         if len(crecs) == 0:
             abort(404)
 
@@ -225,7 +225,7 @@ class PersonController(BaseController):
             result, errors = PasswordResetSchema().validate(defaults, self.dbsession)
 
             if not errors:
-                persons = self.dbsession.query(Person).select_by(email_address=c.conf_rec.email_address)
+                persons = self.dbsession.query(Person).filter_by(email_address=c.conf_rec.email_address).all()
                 if len(persons) == 0:
                     raise RuntimeError, "Person doesn't exist %s" % c.conf_rec.email_address
 
