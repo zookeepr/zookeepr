@@ -158,10 +158,7 @@ class SecureController(BaseController):
                         action='signin',
                         id=None)
 
-        if self.permissions[kwargs['action']]==True:
-            # Someone's logged in, but this action is public anyway
-            return
-        elif self.check_permissions(kwargs['action']):
+        if self.check_permissions(kwargs['action']):
             return
         else:
             abort(403, "computer says no")
@@ -178,6 +175,10 @@ class SecureController(BaseController):
 	else:
             # no access by default
 	    return False
+
+        if perms==True:
+            # anonymous action
+            return True
 
         results = map(lambda x: x.authorise(self), perms)
         return reduce(lambda x, y: x or y, results, False)
