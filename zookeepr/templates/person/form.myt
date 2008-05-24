@@ -27,6 +27,6 @@
 %
 <% h.text_field('person.phone') %></p>
 
-<p><label for="person.fax">Fax number</label>
+<p><label for="person.mobile">Mobile number</label>
 <br />
-<% h.text_field('person.fax') %></p>
+<% h.text_field('person.mobile') %></p>

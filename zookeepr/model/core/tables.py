@@ -33,7 +33,7 @@ person = Table('person', metadata,
                Column('firstname', String(1024)),
                Column('lastname', String(1024)),
                Column('phone', String(32)),
-               Column('fax', String(32)),
+               Column('mobile', String(32)),
 
                Column('url', String()),
 
