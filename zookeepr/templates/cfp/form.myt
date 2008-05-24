@@ -80,6 +80,7 @@ presentations.</em></p>
 for the primary speaker; mention the other speakers in the Abstract, eg.
 "(with Bob Vaxhacker and Eve Solo)".</p>
 
+% if c.signed_in_person_id:
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label
 	for="name">Speaker name:</label></p>
@@ -87,6 +88,9 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 	value=c.person.firstname + " " + c.person.lastname, size=70,
 	disabled=True) %></p>
 		<p class="note">(Can't be changed here.)</p>
+% else:
+<& ../person/form.myt &>
+% #endif
 
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label
