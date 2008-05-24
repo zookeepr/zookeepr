@@ -18,7 +18,7 @@ stage 2 is after papers are published
      - What is it?
      - Linux Australia
      - OSIA
- * Sponsors/Partners
+ * Sponsors
    ** Sponsors
      - A list of sponsors
    ** Become a sponsor

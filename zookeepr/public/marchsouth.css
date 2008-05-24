@@ -64,7 +64,7 @@
 		background-image: url(images/menu_bg.png);
 		display: block;
 		margin: 0;
-		padding: 0 0 2px 0;
+		padding: 0 0 0px 0;
 		text-align: center;
 	}
 	
@@ -92,27 +92,27 @@
 	
 	.main_menu li a
 	{
-		padding-top: 0.55em;
+		/*padding-top: 0.55em;*/
 		color: #cccccc;
 		background-color: inherit;
 	}
 	
-	.main_menu li a:hover, .main_menu li span
+	.main_menu li a:hover, .main_menu li .now/* .main_menu li span */
 	{
 		color: #ffffff;
-		padding-top: 0.55em;
+		/*padding-top: 0.55em;*/
 		background-color: inherit;
 		background-image: url(images/menu_arrow.png);
 		background-position: center top;
 		background-repeat: no-repeat;
 		text-decoration: none;
 	}
-	.main_menu li span
+	.main_menu li .now /*.main_menu li span*/
 	{
 		font-weight: bold;
 	}
 	
-	.sub_menu li span
+	.sub_menu li .now /*.sub_menu li span*/
 	{
 		color: #3030ff;
 		background: inherit;
