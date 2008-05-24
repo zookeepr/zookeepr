@@ -22,6 +22,11 @@ last name: <% c.profile.lastname |h %>
 <fieldset>
 
 <p>
+
+<p>
+display name: <% c.profile.registration.nick |h %>
+</p>
+
 ticket: <% c.profile.registration.type |h %>
 </p>
 

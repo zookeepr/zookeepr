@@ -481,8 +481,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
 
-    invoice.last_modification_timestamp = func.current_timestamp()
-	invoice.due_date = func.current_timestamp()
+        invoice.last_modification_timestamp = func.current_timestamp()
+        invoice.due_date = func.current_timestamp()
 
         self.dbsession.save(invoice)
         self.dbsession.flush()
