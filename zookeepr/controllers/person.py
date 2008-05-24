@@ -106,10 +106,10 @@ class PersonController(BaseController):
 
                     # return to the registration status
 		    # (while registrations are open)
-                    redirect_to('/registration/status')
+                #    redirect_to('/registration/status')
 
                     # return home
-                    #redirect_to('home')
+                    redirect_to('home')
 
         return render_response('person/signin.myt', defaults=defaults, errors=errors)
 
