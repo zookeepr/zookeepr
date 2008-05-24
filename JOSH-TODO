@@ -54,7 +54,6 @@ LCA09 TODO:
 		Password reset should work multiple times, especially if several months have elapsed (as between proposal submission and registration). 
 		Give an error message when cookies are blocked (rather than just mysteriously failing to log in). 
 		login should trim() the username before it checks the DB. it should also be case-insensitive
-		sign-in password shouldn't be sent in the clear, should use https 
 
 	Registration:
 		Should we enforce a "not registered until paid for" rule. This should probably apply to user accounts but becomes difficult with speaker and mini-conf etc accounts.

@@ -313,8 +313,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	        pass
 	    else:
 		return render_response('registration/really_closed.myt')
-	else:
-	    return render_response('registration/really_closed.myt')
+	#else:
+	    #return render_response('registration/really_closed.myt')
         errors = {}
         defaults = dict(request.POST)
 
