@@ -73,6 +73,7 @@ def make_map():
     #m.connect('/wiki', controller='wiki', action='view', url='/wiki')
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
+    m.connect('/person/new', controller='person', action='new')
     m.connect('/person/signin', controller='person', action='signin')
     m.connect('/person/signout', controller='person', action='signout')
     m.connect('/person/forgotten_password', controller='person',
