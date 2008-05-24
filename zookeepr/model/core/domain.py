@@ -6,7 +6,7 @@ class Person(object):
     """Stores both account login details and personal information.
     """
     def __init__(self, handle=None, email_address=None, password=None,
-                 firstname=None, lastname=None, phone=None, fax=None,
+                 firstname=None, lastname=None, phone=None, mobile=None,
                  experience=None, bio=None,
                  creation_timestamp=None,
                  activated=None
@@ -21,7 +21,7 @@ class Person(object):
         self.firstname = firstname
         self.lastname = lastname
         self.phone = phone
-        self.fax = fax
+        self.mobile = mobile
 
         self.experience = experience
         self.bio = bio

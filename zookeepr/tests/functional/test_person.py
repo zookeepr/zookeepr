@@ -12,7 +12,7 @@
 #                     password_confirm='p4ssw0rd',
 #                     fullname='Testy Guy',
 #                     phone='37373737',
-#                     fax='42424242'
+#                     mobile='42424242'
 #                     ),
 #                dict(handle='testgirl',
 #                     email_address='testgirl@example.com',
@@ -20,7 +20,7 @@
 #                     password_confirm='test',
 #                     fullname='Ytset Girl',
 #                     phone='12121212',
-#                     fax='23232323'
+#                     mobile='23232323'
 #                     ),
 #                ]
 #     no_test = ['password_confirm']

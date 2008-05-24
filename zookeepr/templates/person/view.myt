@@ -37,8 +37,8 @@ profile</h2>
 </p>
 
 <p>
-<b>Fax:</b>
-<% c.person.fax %>
+<b>Mobile:</b>
+<% c.person.mobile %>
 </p>
 
 #<h2>proposals</h2>

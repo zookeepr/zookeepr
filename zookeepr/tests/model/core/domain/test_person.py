@@ -21,7 +21,7 @@ class TestPerson(CRUDModelTest):
                     firstname='Testgirl',
                     lastname='Van test',
                     phone="37",
-                    fax="42",
+                    mobile="42",
                     activated=False,
                     ),
                ]
