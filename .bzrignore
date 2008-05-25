@@ -16,3 +16,4 @@ zookeepr/config.ini
 zookeepr/public/att-data
 dynamic_html/att-data
 dynamic_html
+.coverage
