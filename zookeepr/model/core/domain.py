@@ -5,9 +5,17 @@ import random
 class Person(object):
     """Stores both account login details and personal information.
     """
-    def __init__(self, handle=None, email_address=None, password=None,
-                 firstname=None, lastname=None, phone=None, mobile=None,
-                 experience=None, bio=None,
+    def __init__(self,
+                 handle=None,
+                 email_address=None,
+                 password=None,
+                 firstname=None,
+                 lastname=None,
+                 country=None,
+                 phone=None,
+                 mobile=None,
+                 experience=None,
+                 bio=None,
                  creation_timestamp=None,
                  activated=None
                  ):
@@ -20,6 +28,7 @@ class Person(object):
         self.handle = handle
         self.firstname = firstname
         self.lastname = lastname
+        self.country = country
         self.phone = phone
         self.mobile = mobile
 

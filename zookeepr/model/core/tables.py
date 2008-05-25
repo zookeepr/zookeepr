@@ -30,10 +30,11 @@ person = Table('person', metadata,
 
                # other personal details
                # the lengths of the fields are chosen arbitrarily
-               Column('firstname', String(1024)),
-               Column('lastname', String(1024)),
-               Column('phone', String(32)),
-               Column('mobile', String(32)),
+               Column('firstname', Text),
+               Column('lastname', Text),
+               Column('country', Text),
+               Column('phone', Text),
+               Column('mobile', Text),
 
                Column('url', Text),
 

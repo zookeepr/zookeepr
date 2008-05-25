@@ -17,6 +17,10 @@ sudo apt-get install python-dev python-pylons python-sqlalchemy python-simplejso
 ====== Installing and setting up Zookeepr ======
 
 From within zookeepr:
+ - May have to run this: "sudo python setup.py develop"
+   (Although you should already have everything the setup.py installs... Try without this first).
+From within zookeepr/zookeepr:
+ - Install zookeepr using easy_install: "sudo easy_install zookeepr"
  - Make a config file as follows: "paster make-config zookeepr config.ini"
  - Tweak config.ini file as appropriate 
      - Set up dburi to something appropriate (possibly sqlite:/// or a postgre setup).
