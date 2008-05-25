@@ -656,7 +656,7 @@ numbers. </li>
 as to avoid confusion between person ID, invoice ID and
 rego ID. Workaround: </li>
 </ul>
-<pre>SELECT setval('invoice_id_seq', 30000);<br>SELECT setval('registration_id_seq', 20000);<br>SELECT setval('person_id_seq', 50000);<br>SELECT setval('rego_note_id_seq', 70000);<br></pre>
+<pre>SELECT setval('invoice_id_seq', 30000);<br>SELECT setval('registration_id_seq', 20000);<br>SELECT setval('person_id_seq', 50000);<br>SELECT setval('proposal_id_seq', 60000);<br>SELECT setval('rego_note_id_seq', 70000);<br>SELECT setval('payment_received_id_seq', 80000);<br></pre>
 <ul>
   <li> the extra t-shirt order should have proper sizes/styles
 selection rather than a free-form text field </li>
