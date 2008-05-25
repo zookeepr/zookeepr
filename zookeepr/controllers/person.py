@@ -103,9 +103,9 @@ class PersonController(SecureController, Read, Update, List):
     model = model.Person
     permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
                    'roles': [AuthRole('organiser')],
-                   'index': [AuthRole('organiser')]
+                   'index': [AuthRole('organiser')],
+                   'signin': True,
                    }
-    permissions = {'ALL': True}
 
 
     def signin(self):
