@@ -39,6 +39,7 @@ if not defaults:
     else:
         defaults = {
             'person.experience': '',
-            'person.bio': ''
+            'person.bio': '',
+            'person.country': 'Australia',
         }
 </%init>

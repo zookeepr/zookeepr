@@ -26,3 +26,9 @@ directly to the registration form</a></b>, don't bother with this one.</p>
 defaults
 errors
 </%args>
+<%init>
+if not defaults:
+    defaults = {
+        'person.country': 'Australia',
+    }
+</%init>
