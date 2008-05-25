@@ -68,14 +68,16 @@ class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    phone = validators.String(not_empty=True)
+    mobile = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 
-class NewRegistrationSchema(BaseSchema):
-    registration = PersonSchema()
+class NewPersonSchema(BaseSchema):
+    person = PersonSchema()
 
     pre_validators = [NestedVariables]
 
@@ -255,13 +257,13 @@ class PersonController(BaseController):
         errors = {}
 
         if defaults:
-            result, errors = NewRegistrationSchema().validate(defaults, self.dbsession)
+            result, errors = NewPersonSchema().validate(defaults, self.dbsession)
 
             if not errors:
                 c.person = Person()
                 # update the objects with the validated form data
-                for k in result['registration']:
-                    setattr(c.person, k, result['registration'][k])
+                for k in result['person']:
+                    setattr(c.person, k, result['person'][k])
                 self.dbsession.save(c.person)
                 self.dbsession.flush()
 
