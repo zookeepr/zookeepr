@@ -27,7 +27,7 @@
 #if c.role_pages.current.next:
 #    m.write(h.link_to('Next page', url=h.url(page=c.role_pages.current.next)))
 
-m.write('<br />')
+m.write('<br>')
 if c.can_edit:
     m.write(h.link_to('New role', url=h.url(action='new')))
 </%python>

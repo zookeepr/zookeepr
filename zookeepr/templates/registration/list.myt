@@ -53,7 +53,7 @@
   <td> <img width="400" height="200" src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:<% ','.join([str(count/keynote_total) for (label, count) in keynote_chart]) %>&chl=<% '|'.join([label for (label, count) in keynote_chart]) %>"></td>
 </table>
 
-<br/>
+<br>
 <strong>Extra Dinner Tickets: </strong><% extra_dinners %><br>
 
 <!-- (seven calculation, ours is different)

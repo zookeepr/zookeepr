@@ -85,7 +85,7 @@ Paper cannot be reviewed again untill all papers have been reviewed at least <% 
 % 	#endfor collection
 </table>
 
-<br />
+<br>
 
 % #endfor proposal types
 
@@ -95,7 +95,7 @@ Paper cannot be reviewed again untill all papers have been reviewed at least <% 
 #if c.proposal_pages.current.next:
 #    m.write(h.link_to('Next page', url=h.url(page=c.proposal_pages.current.next)))
 
-#m.write('<br />')
+#m.write('<br>')
 #if c.can_edit:
 #    m.write(h.link_to('New proposal', url=h.url(action='new')))
 </%python>

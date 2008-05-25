@@ -35,10 +35,10 @@ Error looking up <% c.id |h%>:
 
 <p>
 %   if person.is_speaker():
-<strong>speaker</strong><br/>
+<strong>speaker</strong><br>
 %   #endif
 %   if person.roles:
-<strong><% ', '.join([role.name for role in person.roles]) %></strong><br/>
+<strong><% ', '.join([role.name for role in person.roles]) %></strong><br>
 %   #endif
 %   if registration:
 <% h.form(h.url(), method='post') %>

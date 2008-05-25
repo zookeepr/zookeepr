@@ -938,7 +938,7 @@ class BeautifulStoneSoup(Tag, SGMLParser):
         The default parser massage techniques fix the two most common
         instances of invalid HTML that choke sgmllib:
 
-         <br/> (No space between name of closing tag and tag close)
+         <br> (No space between name of closing tag and tag close)
          <! --Comment--> (Extraneous whitespace in declaration)
 
         You can pass in a custom list of (RE object, replace method)

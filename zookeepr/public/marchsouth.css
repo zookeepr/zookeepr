@@ -23,6 +23,15 @@
 		background-color: transparent;	
 	}
 	
+	fieldset h1, fieldset h2, fieldset h3, fieldset h4, fieldset th, fieldset dt
+	{
+		background-color: transparent;
+	}
+	
+	.note
+	{
+		font-size: small;
+	}
 	.content
 	{
 		background-image: url(images/content_bg.png);
@@ -169,11 +178,15 @@
 
 	h1, h2, h3, h4, th, dt
 	{
+		color: #5850a5;
+		background-color: inherit;
+	}
+	
+	h1, h2, h3, h4, th, dt
+	{
 		/*clear: right;*/
 		font-family: "Arial", sans-serif;
 		font-style: oblique;
-		color: #5850a5;
-		background-color: inherit;
 		padding-left: 40px;
 		padding-right: 40px;
 		margin-bottom: 0;

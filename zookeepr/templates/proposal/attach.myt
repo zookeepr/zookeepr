@@ -3,11 +3,11 @@
 <% h.form(url=h.url(), multipart=True) %>
 
 <label for="attachment">Attach a file</label>
-<br />
+<br>
 <% h.file_field('attachment', size=50) %>
 
-<br />
-<br />
+<br>
+<br>
 
 <% h.submit('Ok!') %>
 
