@@ -92,13 +92,13 @@ teesize = ' '.join(teesize)
  Other requirements:
     <% c.registration.special %>
 
-  Address: <% c.registration.address1 %>
-           <% c.registration.address2 %>
-           <% c.registration.city %>
-           <% c.registration.state %>, <% c.registration.postcode %>
+  Address: <% c.registration.person.address1 %>
+           <% c.registration.person.address2 %>
+           <% c.registration.person.city %>
+           <% c.registration.person.state %>, <% c.registration.person.postcode %>
            <% c.registration.person.country %>
     Phone: <% c.registration.person.phone %>
-  Company: <% c.registration.company %>
+  Company: <% c.registration.person.company %>
  IRC Nick: <% c.registration.nick %>
 
     Shell: <% c.registration.shelltext or c.registration.shell %>

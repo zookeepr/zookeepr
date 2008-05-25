@@ -1,61 +1,33 @@
 <h2>Your registration details</h2>
-
 <p>Here are the registration details we have for you.</p>
-
 <p><a href="/registration/status">Registration status</a></p>
 
 <h2>About yourself</h2>
-
-<p class="label">
-<label for="person.firstname">Your first name:</label></p>
-<p>
-<% c.registration.person.firstname | h %>
-</p>
-
-<p class="label">
-<label for="person.lastname">Your last name:</label></p>
-<p>
-<% c.registration.person.lastname | h %>
-
-<p class="label">
-<label for="person.email_address">Email address:</label></p>
-<p>
-<% c.registration.person.email_address | h %>
-</p>
+<p class="label">Your first name:</p>
+<p><% c.registration.person.firstname | h %></p>
+<p class="label">Your last name:</p>
+<p><% c.registration.person.lastname | h %></p>
+<p class="label">Email address:</p>
+<p><% c.registration.person.email_address | h %></p>
 <p class="note">
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
 </p>
 
 <h2>Personal Information</h2>
-
-<p class="label">
-<span class="mandatory">*</span>
-<label for="registration.address">Address:</label>
-</p><p >
-<% c.registration.address1 %>
-<br />
-<% c.registration.address2 %>
+<p class="label">Address:</p>
+<p>
+<% c.registration.person.address1 %>
+<br>
+<% c.registration.person.address2 %>
 </p>
-<p class="label">
-<span class="mandatory">*</span>
-<label for="registration.city">City/Suburb:</label>
-</p><p >
-<% c.registration.city %>
-</p><p class="label">
-<label for="registration.state">State/Province:</label>
-</p><p >
-<% c.registration.state %>
-</p><p class="label">
-<span class="mandatory">*</span>
-<label for="person.country">Country:</label>
-</p><p >
-<% c.registration.person.country %>
-</p><p class="label">
-<span class="mandatory">*</span>
-<label for="registration.postcode">Postcode/ZIP:</label>
-</p><p >
-<% c.registration.postcode %>
-</p>
+<p class="label">City/Suburb:</p>
+<p><% c.registration.person.city %></p>
+<p class="label">State/Province:</p>
+<p><% c.registration.person.state %></p>
+<p class="label">Country:</p>
+<p><% c.registration.person.country %></p>
+<p class="label">Postcode/ZIP:</p>
+<p><% c.registration.person.postcode %></p>
 
 % if 'signed_in_person_id' in session:
 %   proposals = c.signed_in_person.proposals
@@ -65,60 +37,28 @@ Your email address will only be used to correspond with you, and is your login n
 %   is_speaker = False
 % #endif
 
-<p class="label">
-% if is_speaker:
-<span class="mandatory">*</span>
-% #endif
-Mobile/Cell number:
-</p><p >
-<% c.registration.person.mobile %>
-</p>
+<p class="label">Mobile/Cell number:</p>
+<p><% c.registration.person.mobile %></p>
+<p class="label">Company:</p>
+<p><% c.registration.company %></p>
+<p class="label">Your favourite shell:</p>
+<p><% c.registration.shelltext or c.registration.shell %></p>
+<p class="label">Your favourite editor:</p>
+<p><% c.registration.editortext or c.registration.editor %></p>
+<p class="label">Your favourite distro:</p>
+<p><% c.registration.distrotext or c.registration.distro %></p>
 
-</p><p class="label">
-<label for="registration.company">Company:</label>
-</p><p >
-<% c.registration.company %>
-</p>
+<p class="label">Superhero name:</p>
+<p><% c.registration.nick %></p>
+<p class="note">Your IRC nick or other handle you go by.</p>
 
-<p class="label">
-# FIXME: dynamic :)
-<label for="registration.shell">Your favourite shell:</label>
-</p><p >
-<% c.registration.shelltext or c.registration.shell %>
-</p>
+<p class="label">Description:</p>
+<p><% c.registration.silly_description %></p>
 
-
-<p class="label">
-<label for="registration.editor">Your favourite editor:</label>
-</p><p >
-<% c.registration.editortext or c.registration.editor %>
-</p>
-
-<p class="label">
-<label for="registration.distro">Your favourite distro:</label>
-</p><p >
-<% c.registration.distrotext or c.registration.distro %>
-</p>
-
-</p><p class="label">
-<label for="registration.nick">Superhero name:</label>
-</p><p >
-<% c.registration.nick %>
-</p><p class="note">
-Your IRC nick or other handle you go by.
-</p>
-
-<p class="label">
-<label for="registration.silly_description">Description:</label>
-</p><p>
-<% c.registration.silly_description %>
-</p>
-
-<p class="label">
-<label for="registration.prevlca">Have you attended linux.conf.au before?</label>
-</p><p >
+<p class="label">Have you attended linux.conf.au before?</p>
+<p>
 % for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)')]:
-%	label = 'registration.prevlca.%s' % year
+%   label = 'registration.prevlca.%s' % year
 <br />
 <% yesno(year in (c.registration.prevlca or [])) %>
 <% desc %>

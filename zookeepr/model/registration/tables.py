@@ -28,13 +28,7 @@ registration = Table('registration', metadata,
 
                      Column('accommodation_option_id', Integer, ForeignKey('accommodation_option.id'),
                             ),
-                     
-                     Column('address1', Text),
-                     Column('address2', Text),
-                     Column('city', Text),
-                     Column('state', Text),
-                     Column('postcode', Text),
-                     Column('company', Text),
+
                      Column('nick', Text),
                      Column('shell', Text),
                      Column('shelltext', Text),
@@ -69,9 +63,9 @@ registration = Table('registration', metadata,
                      Column('announcesignup', Boolean),
                      Column('delegatesignup', Boolean),
 
-		     Column('speaker_record', Boolean),
-		     Column('speaker_video_release', Boolean),
-		     Column('speaker_slides_release', Boolean),
+                     Column('speaker_record', Boolean),
+                     Column('speaker_video_release', Boolean),
+                     Column('speaker_slides_release', Boolean),
 
                      Column('prevlca', PickleType),
                      Column('miniconf', PickleType),

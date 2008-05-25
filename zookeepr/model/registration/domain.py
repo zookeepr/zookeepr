@@ -2,12 +2,6 @@ import datetime
 
 class Registration(object):
     def __init__(self,
-                 address1=None,
-                 address2=None,
-                 city=None,
-                 state=None,
-                 postcode=None,
-                 company=None,
                  nick=None,
                  shell=None,
                  shelltext=None,
@@ -46,12 +40,6 @@ class Registration(object):
                  prevlca=None,
                  miniconf=None,
                  ):
-        self.address1 = address1
-        self.address2 = address2
-        self.city = city
-        self.state = state
-        self.postcode = postcode
-        self.company = company
         self.nick = nick
         self.shell = shell
         self.shelltext = shelltext
