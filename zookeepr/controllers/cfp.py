@@ -130,8 +130,8 @@ class CfpController(SecureController):
         elif c.cfp_status == 'not_open':
            return render_response("cfp/not_open.myt")
         else:
-            c.cfptypes = self.dbsession.query(ProposalType).all()
-            c.tatypes = self.dbsession.query(AssistanceType).all()
+            c.cfptypes = self.dbsession.query(ProposalType).select()
+            c.tatypes = self.dbsession.query(AssistanceType).select()
 
             errors = {}
             defaults = dict(request.POST)
@@ -180,8 +180,8 @@ class CfpController(SecureController):
         elif c.cfmini_status == 'not_open':
             return render_response("cfp/not_open_mini.myt")
         else:
-            c.cfptypes = self.dbsession.query(ProposalType).all()
-            c.tatypes = self.dbsession.query(AssistanceType).all()
+            c.cfptypes = self.dbsession.query(ProposalType).select()
+            c.tatypes = self.dbsession.query(AssistanceType).select()
 
             errors = {}
             defaults = dict(request.POST)

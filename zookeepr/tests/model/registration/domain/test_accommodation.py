@@ -60,9 +60,9 @@ class TestAccommodationModel(ModelTest):
         self.dbsession.save(ao)
         self.dbsession.flush()
 
-        print "accommodations:", self.dbsession.query(model.registration.Accommodation).select()
+        print "accommodations:", self.dbsession.query(model.registration.Accommodation).all()
 
-        a = self.dbsession.query(model.registration.Accommodation).get_by(id=1)
+        a = self.dbsession.query(model.registration.Accommodation).filter_by(id=1).one()
         self.failIfEqual(None, a)
 
         print "registrations using this accommodation:", a.registrations
@@ -103,11 +103,11 @@ class TestAccommodationModel(ModelTest):
         self.dbsession.flush()
 
         # assert that there are two accommodations now
-        as = self.dbsession.query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).all()
         print "accommodations 2:", as
         self.assertEqual(2, len(as))
 
-        a1 = self.dbsession.query(model.registration.Accommodation).get_by(id=ao1.id)
+        a1 = self.dbsession.query(model.registration.Accommodation).filter_by(id=ao1.id).one()
         
         print "a beds available:", a.get_available_beds()
         print "a1 beds available:", a1.get_available_beds()
@@ -115,7 +115,7 @@ class TestAccommodationModel(ModelTest):
         # both options should have no beds because the first registration filled them all
         self.assertEqual(0, a1.get_available_beds(), "accommodation options should both have no beds available")
 
-        as = self.dbsession.query(model.Accommodation).select()
+        as = self.dbsession.query(model.Accommodation).all()
         print 'as:', as
         self.assertEqual(2, len(as))
 

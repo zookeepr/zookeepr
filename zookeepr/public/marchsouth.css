@@ -5,6 +5,24 @@
 		margin: 0;
 	}
 	
+	
+	fieldset
+	{
+		padding: 0;
+		margin: 40px;
+		border-left: 0;
+		border-right: 0;
+		background-color: #ffffff;
+		background-image: url(images/fieldset_bg.png);
+		background-repeat: repeat-x;
+		background-position: bottom;
+	}
+		
+	fieldset p
+	{
+		background-color: transparent;	
+	}
+	
 	.content
 	{
 		background-image: url(images/content_bg.png);
@@ -255,11 +273,17 @@
 		background-color: #ffffff;
 		padding: 0 1em 0 1em;
 		border-bottom: 2px solid #dfdfff;
-		vertical-align: center;
+		vertical-align: middle;
 	}
 	
 	table .empty
 	{
+	}
+	
+	.mandatory
+	{
+		color: #ff0000;
+		background: inherit;
 	}
 
 	table .odd td, table .odd th
@@ -353,9 +377,14 @@
 	.graph-bar
 	{
 		background-color: #efefff;
+		line-height: 1.2em;
+		height: 1.2em;
 	}
 	
 	.graph-bar-text
 	{
-		margin-top: -1em;
+		margin-top: -1.2em;
+		line-height: 1.2em;
+		height: 1.2em;
+		border: 1px solid #a0a0a0;
 	}

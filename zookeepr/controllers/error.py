@@ -1,7 +1,6 @@
 import os.path
 from paste import fileapp
 from pylons.middleware import media_path, error_document_template
-from pylons.util import get_prefix
 from zookeepr.lib.base import *
 
 class ErrorController(WSGIController):
@@ -25,7 +24,7 @@ class ErrorController(WSGIController):
             return render_response('error/500.myt')
 
         page = error_document_template % {
-            'prefix': get_prefix(request.environ),
+            'prefix': request.environ.get('SCRIPT_NAME', ''),
             'code': request.params.get('code', ''),
             'message': request.params.get('message', ''),
         }
