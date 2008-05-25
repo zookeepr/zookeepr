@@ -37,6 +37,6 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    'delete': [AuthRole('organiser')]
                    }
 
-    def view(self, id):
+    def view(self):
         return self.redirect_to('not_found', 'view')
         
