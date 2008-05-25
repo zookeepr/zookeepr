@@ -13,7 +13,7 @@
         <td><% h.link_to(str(d.id) + ' (edit)', url=h.url(controller='db_content', action='edit', id=d.id)) %></td>
         <td><% h.link_to(d.title + ' (view)', url='/' + d.url) %></td>
         <td><% d.url %></td>
-        <td>X (delete)</td>
+        <td><% h.link_to('X (delete)', url=h.url(controller='db_content', action='delete', id=d.id)) %></td>
     </tr>
 % #endfor
 </table>

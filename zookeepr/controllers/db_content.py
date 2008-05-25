@@ -23,7 +23,7 @@ class UpdateContentSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class DbContentController(SecureController, Create, List, Read, Update):
+class DbContentController(SecureController, Create, List, Read, Update, Delete):
     individual = 'db_content'
     model = model.DBContent
     schemas = {'new': NewContentSchema(),
@@ -33,7 +33,8 @@ class DbContentController(SecureController, Create, List, Read, Update):
     permissions = {'new': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'view': [AuthTrue()],
-                   'edit': [AuthRole('organiser')]
+                   'edit': [AuthRole('organiser')],
+                   'delete': [AuthRole('organiser')]
                    }
                    
     def __before__(self, **kwargs):
