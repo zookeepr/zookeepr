@@ -153,7 +153,7 @@ class RUDBase(CRUDBase):
             pass
 
         if use_oid:
-            self.obj = self.dbsession.query(self.model).filter_by(id=id).one()
+            self.obj = self.dbsession.query(self.model).filter_by(id=id).first()
         elif hasattr(self, 'key'):
             query_dict = {self.key: kwargs['id']}
             self.obj = self.dbsession.query(self.model).filter_by(**query_dict).one()

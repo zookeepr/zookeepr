@@ -10,7 +10,7 @@
     <% h.link_to('Edit', url=h.url(controller='proposal',action='edit',id=c.talk.id)) %>
 % #endif
 <div id="abstract">
-<% c.talk.abstract |s %>
+<% c.talk.abstract |h %>
 </div>
 
 

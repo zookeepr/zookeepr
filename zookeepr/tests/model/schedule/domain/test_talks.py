@@ -22,7 +22,7 @@ class TestTalkDomainModel(ModelTest):
 
         self.dbsession.flush()
 
-        talks = self.dbsession.query(model.schedule.Talk).select()
+        talks = self.dbsession.query(model.schedule.Talk).all()
 
         print "talks:", talks
 
@@ -39,4 +39,4 @@ class TestTalkDomainModel(ModelTest):
         self.dbsession.flush()
 
         # test cleanup
-        self.failUnlessEqual([], self.dbsession.query(model.schedule.Talk).select())
+        self.failUnlessEqual([], self.dbsession.query(model.schedule.Talk).all())
