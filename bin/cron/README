@@ -1,7 +1,0 @@
-Stuff that gets run out of cron
-
-flickr-lca
-    * Creates dynamic html snippet to display LCA stuff in flickr
-
-planet-feeds
-    * Creates planet config from wiki page listing planet feeds
