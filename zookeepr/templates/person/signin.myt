@@ -7,12 +7,12 @@
 <% h.form(h.url_for(controller='/person', action='signin')) %>
 
 	<p class="label"><label for="email_address">Email address:</label></p>
-	<p class="entries"><% h.text_field('email_address', size=60) %></p>
+	<p class="entries"><% h.textfield('email_address', size=60) %></p>
 
 	<p class="label"><label for="password">Password:</label></p>
 	<p class="entries"><% h.password_field('password') %></p>
 
-	<p class="submit"><% h.submit('Sign in') %></p>
+	<p class="submit"><% h.submitbutton('Sign in') %></p>
 
 <% h.end_form() %>
 

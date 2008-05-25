@@ -8,7 +8,7 @@
 <span class="mandatory">*</span>
 <label for="voucher_code.count">Count:</label>
 </p><p class="entries">
-<% h.text_field('voucher_code.count', size=5) %>
+<% h.textfield('voucher_code.count', size=5) %>
 </p><p class="note">
 How many voucher codes to generate.
 </p>
@@ -17,7 +17,7 @@ How many voucher codes to generate.
 <span class="mandatory">*</span>
 <label for="voucher_code.leader_id">Group leader:</label>
 </p><p class="entries">
-<% h.text_field('voucher_code.leader_id', size=5) %>
+<% h.textfield('voucher_code.leader_id', size=5) %>
 </p><p class="note">
 ID of person who should be given the codes and
 allowed to see who's using them, as per <a href="/profile">the profile
@@ -27,7 +27,7 @@ list</a>. If nobody, use your own ID: <% c.signed_in_person.id %>
 <p class="label">
 <label for="voucher_code.code">Code prefix:</label>
 </p><p class="entries">
-<% h.text_field('voucher_code.code', size=40) %>
+<% h.textfield('voucher_code.code', size=40) %>
 </p><p class="note">
 If you enter "foo", it might generate
 "foo-ooH4epe7". If blank, it'll just generate "ooH4epe7". Theoretically it
@@ -51,7 +51,7 @@ would spell IBM or GOOGLE :-)
 <span class="mandatory">*</span>
 <label for="voucher_code.percentage">Percentage Discount:</label>
 </p><p class="entries">
-<% h.text_field('voucher_code.percentage', size=5) %>
+<% h.textfield('voucher_code.percentage', size=5) %>
 </p><p class="note">
 Between 0-100
 </p>
@@ -60,7 +60,7 @@ Between 0-100
 <span class="mandatory">*</span>
 <label for="voucher_code.comment">Comment:</label>
 </p><p class="entries">
-<% h.text_field('voucher_code.comment', size=60) %>
+<% h.textfield('voucher_code.comment', size=60) %>
 </p><p class="note">
 Why are they getting a voucher? <b>This will appear on the invoices</b>
 as the item description for the negative amount - phrase accordingly...

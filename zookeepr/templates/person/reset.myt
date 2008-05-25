@@ -23,7 +23,7 @@ Enter the new password for <em><% c.conf_rec.email_address %></em> in the form b
 <p class="entries"><% h.password_field('password_confirm') %></p>
 </p>
 
-<p class="submit"><% h.submit() %></p>
+<p class="submit"><% h.submitbutton() %></p>
 
 <% h.end_form() %>
 

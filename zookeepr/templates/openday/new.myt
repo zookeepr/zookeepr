@@ -16,20 +16,20 @@ Please fill in the form as best you can.
 <p>
 <span class="mandatory">*</span>
 <label for="openday.firstname">Your first name:</label>
-<% h.text_field('openday.firstname', size=40) %>
+<% h.textfield('openday.firstname', size=40) %>
 </p>
 
 
 <p>
 <span class="mandatory">*</span>
 <label for="openday.lastname">Your last name:</label>
-<% h.text_field('openday.lastname', size=40) %>
+<% h.textfield('openday.lastname', size=40) %>
 </p>
 
 <p>
 <span class="mandatory">*</span>
 <label for="openday.email_address">Email address:</label>
-<% h.text_field('openday.email_address', size=40) %>
+<% h.textfield('openday.email_address', size=40) %>
 <br>
 <span class="fielddesc">
 Your email address will only be used to correspond with you about the Open Day event. It will not be shown or used otherwise.
@@ -41,7 +41,7 @@ Your email address will only be used to correspond with you about the Open Day e
 <p>
 <span class="mandatory">*</span>
 <label for="openday.opendaydrag">How many people are you bringing to Open Day:</label>
-<% h.text_field('openday.opendaydrag', size=10) %>
+<% h.textfield('openday.opendaydrag', size=10) %>
 </span>
 </p>
 
@@ -54,10 +54,10 @@ Your email address will only be used to correspond with you about the Open Day e
 <option value="<%s%>"><% s %></option>
 % #endfor
 </SELECT>
-Other: <% h.text_field('openday.heardfromtext') %>
+Other: <% h.textfield('openday.heardfromtext') %>
 </p>
 
-<% h.submit("Submit!") %>
+<% h.submitbutton("Submit!") %>
 <span class="fielddesc">
 If you encounter any problems signing up please email <% h.contact_email() %>
 </span>

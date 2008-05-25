@@ -122,7 +122,7 @@ for mc in miniconfs] ) ) %>
 <p class="label">Comments (optional, readable by other reviewers, will not be shown to the submitter)
 </p>
 <p class="entries">
-<% h.text_area('review.comment', size="80x10") %>
+<% h.textarea('review.comment', size="80x10") %>
 </p>
 
 </fieldset>
@@ -132,7 +132,7 @@ for mc in miniconfs] ) ) %>
 </p>
 
 <p class="submit">
-<% h.submit('Submit review and jump to next proposal!') %>
+<% h.submitbutton('Submit review and jump to next proposal!') %>
 </p>
 
 % if c.next_review_id:

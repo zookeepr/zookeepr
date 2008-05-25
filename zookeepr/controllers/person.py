@@ -361,7 +361,7 @@ class PersonController(SecureController, Read, Update, List):
 
           res += td+h.form(h.url())
           res += h.hidden_field('role', r.id)
-          res += h.submit(('Grant', 'Revoke')[has])
+          res += h.submitbutton(('Grant', 'Revoke')[has])
           res += h.end_form()
 
         res += '</table>'

@@ -14,7 +14,7 @@
 <% h.form(h.url(), multipart=True) %>
 <& form_mini.myt &>
 
-	<p class="submit"><% h.submit('Submit!') %></p>
+	<p class="submit"><% h.submitbutton('Submit!') %></p>
 <% h.end_form() %>
 </&>
 

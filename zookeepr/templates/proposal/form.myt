@@ -9,7 +9,7 @@
 
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label for="proposal.title">Title:</label></p>
-	<p class="entries"><% h.text_field('proposal.title', size=70) %></p>
+	<p class="entries"><% h.textfield('proposal.title', size=70) %></p>
 		<p class="note">The name of your presentation.</p>
 
 	<p class="label"><span class="mandatory">*</span><span
@@ -18,7 +18,7 @@
 %   if st.name == 'Miniconf':
 %     continue
 %   # endif
-    <label><% h.radio_button('proposal.type', st.id) %>
+    <label><% h.radio('proposal.type', st.id) %>
 %   if st.name == 'Presentation':
       Talk</label><br>
 %   else:
@@ -31,7 +31,7 @@
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label
 	for="proposal.abstract">Abstract:</label></p>
-	<p class="entries"><% h.text_area('proposal.abstract', size="70x10") %></p>
+	<p class="entries"><% h.textarea('proposal.abstract', size="70x10") %></p>
 		<p class="note">This will appear in the conference
 		programme. You will have an opportunity to update it once
 		the presentation is accepted, but it should reasonably
@@ -41,20 +41,20 @@
 
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label for="proposal.project">Project:</label></p>
-	<p class="entries"><% h.text_field('proposal.project', size=70) %></p>
+	<p class="entries"><% h.textfield('proposal.project', size=70) %></p>
 		<p class="note">The name of the project you will be talking
 		about.</p>
 
 	<p class="label"><span 
 	        class="publishable">&#8224;</span><label for="proposal.url">Project homepage:</label></p>
-	<p class="entries"><% h.text_field('proposal.url', size=70) %></p>
+	<p class="entries"><% h.textfield('proposal.url', size=70) %></p>
 		<p class="note">If your project has a webpage, specify the
 		URL here so the committee can find out more about your
 		proposal.</p>
 
 	<p class="label"><label for="proposal.abstract_video_url">Video
 	abstract:</label></p>
-	<p class="entries"><% h.text_field('proposal.abstract_video_url', size=70) %></p>
+	<p class="entries"><% h.textfield('proposal.abstract_video_url', size=70) %></p>
 		<p class="note">URL for a short "elevator pitch" (20s -
 		3min) video about your presentation, your project or
 		yourself (eg: YouTube link).</p>
@@ -68,7 +68,7 @@
 %   else:
 %       czeched = False
 %   #endif
-    <p class="entries"><label><% h.radio_button('proposal.assistance', ta.id, checked=czeched) %>
+    <p class="entries"><label><% h.radio('proposal.assistance', ta.id, checked=czeched) %>
     <% ta.name |h %></label></p>
 % #endfor
 		<p class="note" style="margin-top: 0em">Travel assistance
@@ -88,7 +88,7 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label
 	for="name">Speaker name:</label></p>
-	<p class="entries"><% h.text_field('name',
+	<p class="entries"><% h.textfield('name',
 	value=c.person.firstname + " " + c.person.lastname, size=70,
 	disabled=True) %></p>
 		<p class="note">(Can't be changed here.)</p>
@@ -96,19 +96,19 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label
 	for="person.url">Speaker homepage:</label></p>
-	<p class="entries"><% h.text_field('person.url', size=70) %></p>
+	<p class="entries"><% h.textfield('person.url', size=70) %></p>
 		<p class="note">Your homepage.</p>
 
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label for="person.bio">Bio:</label></p>
-	<p class="entries"><% h.text_area('person.bio', size="70x6") %></p>
+	<p class="entries"><% h.textarea('person.bio', size="70x6") %></p>
 		<p class="note">This will appear on the conference website
 		and in the programme for your talks and tutorials. Please
 		write in the third person, eg "Alice is a Mozilla
 		hacker...", 150-200 words.</p>
 
 	<p class="label"><label for="person.experience">Relevant experience:</label></p>
-	<p class="entries"><% h.text_area('person.experience', size="70x6") %></p>
+	<p class="entries"><% h.textarea('person.experience', size="70x6") %></p>
 		<p class="note">Have you had any experience presenting
 		elsewhere? If so, we'd like to know. Anything you put here
 		will only be seen by the organisers and reviewers; use it

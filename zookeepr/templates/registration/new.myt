@@ -56,7 +56,7 @@ re-submit.</p>
 <% c.signed_in_person.firstname | h %>
 % else:
 <p class="entries">
-<% h.text_field('person.firstname', size=40) %>
+<% h.textfield('person.firstname', size=40) %>
 % #endif
 </p>
 
@@ -70,7 +70,7 @@ re-submit.</p>
 <% c.signed_in_person.lastname | h %>
 % else:
 <p class="entries">
-<% h.text_field('person.lastname', size=40) %>
+<% h.textfield('person.lastname', size=40) %>
 % #endif
 </p>
 
@@ -85,7 +85,7 @@ re-submit.</p>
 <% c.signed_in_person.email_address | h %>
 % else:
 <p class="entries">
-<% h.text_field('person.email_address', size=40) %>
+<% h.textfield('person.email_address', size=40) %>
 % #endif
 </p>
 <p class="note">
@@ -111,7 +111,7 @@ Your email address will only be used to correspond with you, and is your login n
 
 <& form.myt &>
 
-<p class="submit"><% h.submit("Register me!") %></p>
+<p class="submit"><% h.submitbutton("Register me!") %></p>
 <span class="fielddesc">
 If you encounter any problems signing up please email <% h.contact_email() %>
 </span>

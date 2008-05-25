@@ -5,7 +5,7 @@
 
 <% h.form(h.url_for(controller='/person', action='signout')) %>
 
-	<p class="submit"><% h.submit('Sign out') %></p>
+	<p class="submit"><% h.submitbutton('Sign out') %></p>
 
 <% h.end_form() %>
 
