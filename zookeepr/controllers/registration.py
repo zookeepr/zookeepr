@@ -26,9 +26,10 @@ class DictSet(validators.Set):
 # FIXME: merge with account.py controller and move to validators
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        person = state.query(model.Person).filter_by(email_address=value['email_address']).one()
+        person = state.query(model.Person).filter_by(email_address=value['email_address']).first()
         if person is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
+
 
 class SillyDescriptionMD5(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -43,6 +44,12 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
             rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).first()
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+
+class NotExistingNickValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        r = state.query(model.Registration).filter_by(nick=value['registration']['nick']).first()
+        if r is not None:
+            raise Invalid("This nick has been taken, sorry.  Please use another.", value, state)
 
 # Only cares about real voucher codes
 class DuplicateVoucherCodeValidator(validators.FancyValidator):
@@ -206,8 +213,6 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
-    handle = validators.String(not_empty=True)
-    mobile = NonblankForSpeakers()
 
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
@@ -216,7 +221,7 @@ class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
     registration = RegistrationSchema()
 
-    chained_validators = [NotExistingRegistrationValidator()]
+    chained_validators = [NotExistingRegistrationValidator(), NotExistingNickValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
 class ExistingPersonSchema(Schema):

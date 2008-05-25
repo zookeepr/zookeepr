@@ -29,7 +29,6 @@ class TestRegistration(CRUDModelTest):
                     kids_0_3=1,
                     kids_4_6=1,
                     kids_7_9=1,
-                    kids_10=1,
                     checkin=1,
                     checkout=1,
                     lasignup=1,

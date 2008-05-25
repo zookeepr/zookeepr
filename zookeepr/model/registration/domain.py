@@ -76,11 +76,11 @@ class Registration(object):
         self.kids_0_3 = kids_0_3
         self.kids_4_6 = kids_4_6
         self.kids_7_9 = kids_7_9
-        self.kids_10_11=kids_10_11,
-        self.kids_12_17=kids_12_17,
-        self.pp_adults=pp_adults,
-        self.speaker_pp_pay_adult=speaker_pp_pay_adult,
-        self.speaker_pp_pay_child=speaker_pp_pay_child,
+        self.kids_10_11=kids_10_11
+        self.kids_12_17=kids_12_17
+        self.pp_adults=pp_adults
+        self.speaker_pp_pay_adult=speaker_pp_pay_adult
+        self.speaker_pp_pay_child=speaker_pp_pay_child
         self.checkin = checkin
         self.checkout = checkout
         self.lasignup = lasignup
