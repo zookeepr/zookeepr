@@ -3,8 +3,8 @@
 [DEFAULT]
 debug = true
 email_to = josh@nitrotech.org
-smtp_server = mail.internode.on.net
-error_email_from = josh@nitrotech.org
+smtp_server = localhost
+error_email_from = webmaster@linux.conf.au
 
 [server:main]
 use = egg:Paste#http

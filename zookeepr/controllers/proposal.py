@@ -66,7 +66,7 @@ class ProposalController(SecureController, View, Modify):
     permissions = {"new": [AuthFalse()],
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
-						        AuthRole('organiser')],
+                                                        AuthRole('organiser')],
                    "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "index": [AuthRole('reviewer'), AuthRole('organiser')],
@@ -118,25 +118,32 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
 
         # Next ID for skipping
-        collection = self.dbsession.query(self.model).filter(Proposal.c.proposal_type_id <> 2).all()
-        random.shuffle(collection)
-        min_reviews = 100
-        for p in collection:
-            if len(p.reviews) < min_reviews:
-		if not [ r for r in p.reviews if r.reviewer ==
-						      c.signed_in_person ]:
-		    min_reviews = len(p.reviews)
-            elif not p.reviews:
-                min_reviews = 0
+        collection = self.dbsession.from_statement("""
+                            SELECT
+                                *
+                            FROM
+                                    review AS r
+                            LEFT JOIN
+                                    proposal AS p
+                                            ON(p.id=r.proposal_id)
+                            WHERE        
+                                    p.proposal_type_id IN(1,3)
+                            GROUP BY
+                                    r.proposal_id
+                            HAVING COUNT(r.proposal_id) < (
+                                    (SELECT COUNT(id) FROM review) /
+                                    (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
+                            ORDER BY
+                                    RANDOM()""")
         for proposal in collection:
             #print proposal.id
-            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and (not proposal.reviews or len(proposal.reviews) <= min_reviews) and proposal.id != id:
+            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
                 c.next_review_id = proposal.id
                 break
-	else:
-	    # somehow didn't find one, so pick one at random
-	    # (the collection is shuffled, so item 0 is random enough)
-	    c.next_review_id = 1
+        else:
+            # somehow didn't find one, so pick one at random
+            # (the collection is shuffled, so item 0 is random enough)
+            c.next_review_id = 1
 
 
 
@@ -197,14 +204,14 @@ class ProposalController(SecureController, View, Modify):
 
     def talk(self, id):
         if c.proposal.accepted:
-	    return render_response('proposal/talk.myt')
-	else:
-	    return redirect_to('/programme')
+            return render_response('proposal/talk.myt')
+        else:
+            return redirect_to('/programme')
 
     def edit(self, id):
         c.person = c.signed_in_person # FIXME - is this correct? --Jiri 27.4.2008
-	c.cfptypes = self.dbsession.query(ProposalType).all()
-	c.tatypes = self.dbsession.query(AssistanceType).all()
+        c.cfptypes = self.dbsession.query(ProposalType).all()
+        c.tatypes = self.dbsession.query(AssistanceType).all()
 
         errors = {}
         defaults = dict(request.POST)
@@ -240,7 +247,7 @@ class ProposalController(SecureController, View, Modify):
     def index(self):
         c.person = c.signed_in_person
         # hack for bug#34, don't show miniconfs to reviewers
-	# Jiri: unless they're also organisers...
+        # Jiri: unless they're also organisers...
         if 'organiser' in [r.name for r in c.signed_in_person.roles]:
             c.proposal_types = self.dbsession.query(ProposalType).all()
         else:
@@ -289,7 +296,7 @@ class ProposalController(SecureController, View, Modify):
         total_score = 0
         num_reviewers = 0
         for review in proposal.reviews:
-	    if review.score is not None:
+            if review.score is not None:
                 num_reviewers += 1
                 total_score += review.score
         if num_reviewers == 0:
