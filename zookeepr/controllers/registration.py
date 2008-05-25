@@ -544,7 +544,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         setattr(c, 'accommodation_collection', self.dbsession.query(Accommodation).all())
         setattr(c, 'ebdate', PaymentOptions().ebdate)
 
-        (c.eb, c.ebtext) = self.check_earlybird()
+        (c.eb, c.ebtext, c.ebpercent, c.timeleft) = self.check_earlybird()
         c.ceiling = self.check_ceiling()
 
         return super(RegistrationController, self).index()
@@ -597,11 +597,11 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         percent = int(round((20.0 * left) / po.eblimit) * 5)
 	actualpercent = (100.0 * left) / po.eblimit
         if percent == 0:
-            return True, ("Almost all earlybirds gone," + timeleft), actualpercent
+            return True, ("Almost all earlybirds gone"), actualpercent, timeleft
         elif percent <= 30:
-            return True, ("Only %d%% earlybirds left,"%percent + timeleft), actualpercent
+            return True, ("Only %d%% earlybirds left"%percent), actualpercent, timeleft
         else:
-            return True, ("%d%% earlybirds left,"%percent + timeleft), actualpercent
+            return True, ("%d%% earlybirds left"%percent), actualpercent, timeleft
 
     def check_ceiling(self, check_type=None):
         """ Checks the ceiling, returning various information in a struct.
@@ -644,11 +644,11 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 	  res.percent = (100.0 * res.left) / res.limit
 	  percent = int(round((20.0 * res.left) / res.limit) * 5)
           if percent == 0:
-              res.text = "Almost all tickets gone."
+              res.text = "Almost all tickets gone"
           elif percent <= 30:
-              res.text = "Only %d%% tickets left."%percent
+              res.text = "Only %d%% tickets left"%percent
           else:
-              res.text = "%d%% tickets left."%percent
+              res.text = "%d%% tickets left"%percent
         else:
             res.text = 'All tickets gone.'
 	    res.percent = 0.0
@@ -664,7 +664,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         return res
 
     def status(self):
-        (c.eb, c.ebtext, c.ebpercent) = self.check_earlybird()
+        (c.eb, c.ebtext, c.ebpercent, c.timeleft) = self.check_earlybird()
         c.ceiling = self.check_ceiling()
         return render_response("registration/status.myt")
 
