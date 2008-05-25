@@ -15,4 +15,10 @@ errors
 </%args>
 
 <%init>
+if not defaults:
+    defaults = {
+        'db_content.title': c.db_content.title,
+        'db_content.url': c.db_content.url,
+        'db_content.body': c.db_content.body,
+    }
 </%init>

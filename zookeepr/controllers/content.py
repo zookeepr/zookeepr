@@ -13,6 +13,6 @@ class ContentController(BaseController):
         status message.
         """
         c.title = url
-	c.url = url
+        c.url = url
         return render_response('content.myt')
 

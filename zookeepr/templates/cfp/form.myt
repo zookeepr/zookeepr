@@ -14,6 +14,7 @@
 
 	<p class="label"><span class="mandatory">*</span><span
 	class="publishable">&#8224;</span><label for="proposal.type">Type:</label></p>
+	<p class="entries">
 % for st in c.cfptypes:
 %   if st.name == 'Miniconf':
 %     continue
@@ -25,6 +26,7 @@
       <% st.name |h %></label><br />
 %   #endif
 % #endfor
+	</p>
 		<p class="note" style="margin-top: 0em">The type of your
 		presentation. If in doubt, choose "Talk".</p>
 
@@ -62,10 +64,12 @@
 	<p class="label"><span class="mandatory">*</span><label
 	for="proposal.assistance">Travel &amp; Accommodation
 	Assistance:</label></p>
+	<p class="entries">
 % for ta in c.tatypes:
     <label><% h.radio_button('proposal.assistance', ta.id) %>
     <% ta.name |h %></label><br />
 % #endfor
+	</p>
 		<p class="note" style="margin-top: 0em">Travel assistance
 		is available to speakers who qualify. If you think you need
 		it, please let us know. Please put any additional details
