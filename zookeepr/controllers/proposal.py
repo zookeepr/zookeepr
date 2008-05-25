@@ -118,19 +118,26 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
 
         # Next ID for skipping
-        collection = self.dbsession.query(self.model).filter(Proposal.c.proposal_type_id <> 2).all()
-        random.shuffle(collection)
-        min_reviews = 100
-        for p in collection:
-            if len(p.reviews) < min_reviews:
-		if not [ r for r in p.reviews if r.reviewer ==
-						      c.signed_in_person ]:
-		    min_reviews = len(p.reviews)
-            elif not p.reviews:
-                min_reviews = 0
+        collection = self.dbsession.from_statement("
+SELECT
+    *
+FROM
+	review AS r
+LEFT JOIN
+	proposal AS p
+		ON(p.id=r.proposal_id)
+WHERE	
+	p.proposal_type_id IN(1,3)
+GROUP BY
+	r.proposal_id
+HAVING COUNT(r.proposal_id) < (
+	(SELECT COUNT(id) FROM review) /
+	(SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
+ORDER BY
+	RANDOM()")
         for proposal in collection:
             #print proposal.id
-            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and (not proposal.reviews or len(proposal.reviews) <= min_reviews) and proposal.id != id:
+            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
                 c.next_review_id = proposal.id
                 break
 	else:
