@@ -32,7 +32,7 @@ Your email address will only be used to correspond with you, and is your login n
 </fieldset>
 
 <& form.myt &>
-<p class="submit"><% h.submit('Update') %></p>
+<p class="submit"><% h.submitbutton('Update') %></p>
 <% h.end_form() %>
 
 </&>

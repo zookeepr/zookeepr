@@ -91,7 +91,7 @@ for mc in miniconfs] ) ) %>
 
 <p>4. Comments (optional, readable by other reviewers, will not be shown to the submitter)
 
-<% h.text_area('review.comment', size="80x10") %>
+<% h.textarea('review.comment', size="80x10") %>
 </p>
 
 </fieldset>

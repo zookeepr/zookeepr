@@ -4,7 +4,7 @@
 
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
-<% h.submit("New") %>
+<% h.submitbutton("New") %>
 <% h.end_form() %>
 
 </&>

@@ -10,19 +10,19 @@
 <span class="mandatory">*</span>
 <label for="person.address">Address:</label>
 </p><p class="entries">
-<% h.text_field('person.address1', size=40) %>
+<% h.textfield('person.address1', size=40) %>
 <br>
-<% h.text_field('person.address2', size=40) %>
+<% h.textfield('person.address2', size=40) %>
 </p>
 <p class="label">
 <span class="mandatory">*</span>
 <label for="person.city">City/Suburb:</label>
 </p><p class="entries">
-<% h.text_field('person.city', size=40) %>
+<% h.textfield('person.city', size=40) %>
 </p><p class="label">
 <label for="person.state">State/Province:</label>
 </p><p class="entries">
-<% h.text_field('person.state', size=40) %>
+<% h.textfield('person.state', size=40) %>
 </p><p class="label">
 <span class="mandatory">*</span>
 <label for="person.country">Country:</label>
@@ -36,7 +36,7 @@
 <span class="mandatory">*</span>
 <label for="person.postcode">Postcode/ZIP:</label>
 </p><p class="entries">
-<% h.text_field('person.postcode', size=40) %>
+<% h.textfield('person.postcode', size=40) %>
 </p>
 
 % if 'signed_in_person_id' in session:
@@ -53,13 +53,13 @@
 % #endif
 <label for="person.mobile">Mobile/Cell number:</label>
 </p><p class="entries">
-<% h.text_field('person.mobile') %>
+<% h.textfield('person.mobile') %>
 </p>
 
 </p><p class="label">
 <label for="person.company">Company:</label>
 </p><p class="entries">
-<% h.text_field('person.company', size=60) %>
+<% h.textfield('person.company', size=60) %>
 </p>
 
 <p class="label">
@@ -72,7 +72,7 @@
 <option value="<%s%>"><% s %></option>
 % #endfor
 </SELECT>
-Other: <% h.text_field('registration.shelltext') %>
+Other: <% h.textfield('registration.shelltext') %>
 </p>
 
 <p class="label">
@@ -84,7 +84,7 @@ Other: <% h.text_field('registration.shelltext') %>
 <option value="<% e %>"><% e %></option>
 % #endfor
 </SELECT>
-Other: <% h.text_field('registration.editortext') %>
+Other: <% h.textfield('registration.editortext') %>
 </p>
 
 <p class="label">
@@ -96,13 +96,13 @@ Other: <% h.text_field('registration.editortext') %>
 <option value="<% d %>"><% d %></option>
 % #endfor
 </SELECT>
-Other: <% h.text_field('registration.distrotext') %>
+Other: <% h.textfield('registration.distrotext') %>
 </p>
 
 </p><p class="label">
 <label for="registration.nick">Superhero name:</label>
 </p><p class="entries">
-<% h.text_field('registration.nick', size=30) %>
+<% h.textfield('registration.nick', size=30) %>
 </p><p class="note">
 Your IRC nick or other handle you go by.
 </p>
@@ -234,7 +234,7 @@ also include Penguin Dinner.
 <p class="label">
 <label for="registration.voucher_code">Voucher Code:</label>
 </p><p class="entries">
-<% h.text_field('registration.voucher_code') %>
+<% h.textfield('registration.voucher_code') %>
 <p class="note">
 Voucher code. For group booking vouchers, note that your name,
 company and email address will be visible to the group leader(s) for
@@ -302,11 +302,11 @@ and Sponsor tickets. Please tell us what size and shape you prefer.
 <p class="label">
 <label for="registration.extra_tee_count">Additional T-shirts:</label>
 </p><p class="entries">
-<% h.text_field('registration.extra_tee_count', size=10) %>
+<% h.textfield('registration.extra_tee_count', size=10) %>
 &#215; $24.75 each.
 <br>
 <label for="registration.extra_tee_sizes">Sizes and styles:</label>
-<% h.text_field('registration.extra_tee_sizes', size=60) %>
+<% h.textfield('registration.extra_tee_sizes', size=60) %>
 </p><p class="note">
 Additional t-shirts for partners, friends or yourself. Please tell us how
 many extra t-shirts you want and what size and shape each of them should
@@ -316,7 +316,7 @@ be.
 <p class="label">
 <label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
 </p><p class="entries">
-<% h.text_field('registration.dinner', size=10) %>
+<% h.textfield('registration.dinner', size=10) %>
 &#215; $50 each; not counting yourself.
 </p><p class="note">
 One Penguin Dinner is included in the
@@ -333,13 +333,13 @@ include</b> one Penguin Dinner ticket.
 <p class="label">
 <label for="registration.diet">Dietary requirements:</label>
 </p><p class="entries">
-<% h.text_field('registration.diet', size=100) %>
+<% h.textfield('registration.diet', size=100) %>
 </p>
 
 <p class="label">
 <label for="registration.special">Other special requirements</label>
 </p><p class="entries">
-<% h.text_field('registration.special', size=100) %>
+<% h.textfield('registration.special', size=100) %>
 </p><p class="note">
 Please enter any requirements if necessary; access requirements, etc.
 </p>
@@ -383,7 +383,7 @@ page for details on each event. You can choose to attend multiple mini-confs in 
 <p class="label">
 <label for="registration.opendaydrag">How many people are you bringing to Open Day?</label>
 </p><p class="entries">
-<% h.text_field('registration.opendaydrag', size=10) %>
+<% h.textfield('registration.opendaydrag', size=10) %>
 </p><p class="note">
 <!-- <% h.link_to("Open Day", url="/programme/open-day", popup=True) %> -->
 Open Day
@@ -463,7 +463,7 @@ Please check out the <% h.link_to('accommodation', url="/register/accommodation"
 <p class="label">
 <label for="registration.partner_email">Your partner's email address:</label>
 </p><p class="entries">
-<% h.text_field('registration.partner_email', size=50) %>
+<% h.textfield('registration.partner_email', size=50) %>
 </p><p class="note">
 If you are planning on bringing your partner, please enter their email
 address here so that our
@@ -485,11 +485,11 @@ programme?</label>
 %   price = '&#215; $220.00'
 % #endif
 <label for="registration.pp_adults">Adults:</label>
-<% h.text_field('registration.pp_adults', size=10) %>
+<% h.textfield('registration.pp_adults', size=10) %>
 <% price %>
 <br>
 <label for="registration.kids_12_17">Young adults (12-17):</label>
-<% h.text_field('registration.kids_12_17', size=10) %>
+<% h.textfield('registration.kids_12_17', size=10) %>
 <% price %>
 <br>
 % if is_speaker:
@@ -498,19 +498,19 @@ programme?</label>
 %   price = '&#215; $132.00'
 % #endif
 <label for="registration.kids_10_11">Children 10-11:</label>
-<% h.text_field('registration.kids_10_11', size=10) %>
+<% h.textfield('registration.kids_10_11', size=10) %>
 <% price %>
 <br>
 <label for="registration.kids_7_9">Children 7-9:</label>
-<% h.text_field('registration.kids_7_9', size=10) %>
+<% h.textfield('registration.kids_7_9', size=10) %>
 <% price %>
 <br>
 <label for="registration.kids_4_6">Children 4-6:</label>
-<% h.text_field('registration.kids_4_6', size=10) %>
+<% h.textfield('registration.kids_4_6', size=10) %>
 <% price %>
 <br>
 <label for="registration.kids_0_3">Children under 3:</label>
-<% h.text_field('registration.kids_0_3', size=10) %>
+<% h.textfield('registration.kids_0_3', size=10) %>
 <% price %>
 <br>
 </p>
@@ -520,11 +520,11 @@ programme?</label>
 <label for="registration.children">How many of the above do you want to pay for?</label>
 </p><p class="entries">
 <label for="registration.speaker_pp_pay_adult">Adults and young adults:</label>
-<% h.text_field('registration.speaker_pp_pay_adult', size=10) %>
+<% h.textfield('registration.speaker_pp_pay_adult', size=10) %>
 &#215; $220.00
 <br>
 <label for="registration.speaker_pp_pay_child">Children:</label>
-<% h.text_field('registration.speaker_pp_pay_child', size=10) %>
+<% h.textfield('registration.speaker_pp_pay_child', size=10) %>
 &#215; $132.00
 </p><p class="note">
 As a speaker, your partner and your children are entitled to attend the

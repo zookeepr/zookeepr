@@ -9,7 +9,7 @@
 <br>
 <br>
 
-<% h.submit('Ok!') %>
+<% h.submitbutton('Ok!') %>
 
 <% h.end_form() %>
 

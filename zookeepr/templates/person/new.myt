@@ -17,7 +17,7 @@ directly to the registration form</a></b>, don't bother with this one.</p>
 
 <& form.myt &>
 
-<p class="submit"><% h.submit("Create a new account") %></p>
+<p class="submit"><% h.submitbutton("Create a new account") %></p>
 
 </form>
 </&>

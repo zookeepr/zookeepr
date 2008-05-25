@@ -1,5 +1,5 @@
 <% h.form(h.url(), method='get') %>
-<p class="entries" style="float: right">ID or name: <% h.text_field('id', size=10, tabindex=1) %></p>
+<p class="entries" style="float: right">ID or name: <% h.textfield('id', size=10, tabindex=1) %></p>
 <% h.end_form() %>
 % if c.error:
 %   if c.id:
@@ -43,7 +43,7 @@ Error looking up <% c.id |h%>:
 %   if registration:
 <% h.form(h.url(), method='post') %>
 <p class="entries" style="float: right">Add note:
-<% h.text_field('note', size=30, tabindex=2, value='Here!') %>
+<% h.textfield('note', size=30, tabindex=2, value='Here!') %>
 <% h.hidden_field('id', value=registration.id) %>
 </p>
 <% h.end_form() %>
