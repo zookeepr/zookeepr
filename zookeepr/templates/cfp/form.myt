@@ -4,7 +4,6 @@
 
 	<p class="label"><label for="proposal.type">Type:</label><span class="mandatory">*</span><span class="publishable">&#8224;</span></p>
 	<p class="entries">
->>>>>>> MERGE-SOURCE
 % for st in c.cfptypes:
 %   if st.name == 'Miniconf':
 %     continue
@@ -53,12 +52,8 @@
 
 	<p class="label"><label
 	for="proposal.assistance">Travel &amp; Accommodation
-<<<<<<< TREE
 	Assistance:</label><span class="mandatory">*</span></p>
-=======
-	Assistance:</label></p>
 	<p class="entries">
->>>>>>> MERGE-SOURCE
 % for ta in c.tatypes:
     <label><% h.radio_button('proposal.assistance', ta.id) %>
     <% ta.name |h %></label><br />
