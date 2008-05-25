@@ -59,7 +59,7 @@ Your email address will only be used to correspond with you, and is your login n
 <p>
 % for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)')]:
 %   label = 'registration.prevlca.%s' % year
-<br />
+<br>
 <% yesno(year in (c.registration.prevlca or [])) %>
 <% desc %>
 % #endfor
@@ -268,11 +268,11 @@ programme?</label>
 <label for="registration.pp_adults">Adults:</label>
 <% num(c.registration.pp_adults) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_12_17">Young adults (12-17):</label>
 <% num(c.registration.kids_12_17) %>
 <% price %>
-<br />
+<br>
 % if is_speaker:
 %   price = '&#215; $0.00'
 % else:
@@ -281,19 +281,19 @@ programme?</label>
 <label for="registration.kids_10_11">Children 10-11:</label>
 <% num(c.registration.kids_10_11) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_7_9">Children 7-9:</label>
 <% num(c.registration.kids_7_9) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_4_6">Children 4-6:</label>
 <% num(c.registration.kids_4_6) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_0_3">Children under 3:</label>
 <% num(c.registration.kids_0_3) %>
 <% price %>
-<br />
+<br>
 </p>
 
 % if is_speaker:
@@ -303,7 +303,7 @@ programme?</label>
 <label for="registration.speaker_pp_pay_adult">Adults and young adults:</label>
 <% num(c.registration.speaker_pp_pay_adult) %>
 &#215; $297.00
-<br />
+<br>
 <label for="registration.speaker_pp_pay_child">Children:</label>
 <% num(c.registration.speaker_pp_pay_child) %>
 &#215; $143.00
@@ -363,7 +363,7 @@ the Creative Commons Attribution License unless you have an equivalent
 preference that you let us know.</p>
 % #endif
 
-<p><br/><a href="/registration/status">Registration status</a></p>
+<p><br><a href="/registration/status">Registration status</a></p>
 
 <%init>
 def yesno(bool):
