@@ -36,8 +36,4 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    'edit': [AuthRole('organiser')],
                    'delete': [AuthRole('organiser')]
                    }
-                   
-    def __before__(self, **kwargs):
-        super(DbContentController, self).__before__(**kwargs)
-        c.dbsession = self.dbsession # for the use of list.myt
 
