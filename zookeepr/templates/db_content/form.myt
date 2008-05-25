@@ -28,6 +28,6 @@ The URL after the linux.conf.au/ that this page should be rendered for. EG: 'abo
 </p><p class="note">
 The HTML rendered body.
 </p>
-<% h.submit('Add!') %>
+<p><% h.submit('Add!') %></p>
 </fieldset>
 
