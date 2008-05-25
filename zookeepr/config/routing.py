@@ -51,7 +51,9 @@ def make_map():
 
     # special case for account controller, again in the style of the
     # original routes controller
-    m.connect('/person/:action', controller='person')
+    m.connect('/person/signin', controller='person', action='signin')
+    m.connect('/person/signout', controller='person', action='signout')
+    m.connect('/person/forgotten_password', controller='person', action='forgotten_password')
     m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
 
     # admin controller
@@ -72,10 +74,6 @@ def make_map():
     #m.connect('/wiki', controller='wiki', action='view', url='/wiki')
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
-
-    m.connect('/person', controller='profile', action='index', id=None)
-    m.connect('/person/:id', controller='profile', action='view')
-    m.connect('/person/:id/:action', controlle='profile', action='index', id=None)
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule

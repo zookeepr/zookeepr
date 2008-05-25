@@ -131,6 +131,7 @@ class RUDBase(CRUDBase):
         if hasattr(super(RUDBase, self), '__before__'):
             super(RUDBase, self).__before__(**kwargs)
         if 'id' not in kwargs.keys():
+            return # just ignore it...!
             if 'action' in kwargs:
                 raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
             else:
