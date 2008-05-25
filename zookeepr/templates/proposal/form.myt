@@ -68,8 +68,8 @@
 %   else:
 %       czeched = False
 %   #endif
-    <label><% h.radio_button('proposal.assistance', ta.id, checked=czeched) %>
-    <% ta.name |h %></label><br />
+    <p class="entries"><label><% h.radio_button('proposal.assistance', ta.id, checked=czeched) %>
+    <% ta.name |h %></label></p>
 % #endfor
 		<p class="note" style="margin-top: 0em">Travel assistance
 		is available to speakers who qualify. If you think you need

@@ -41,7 +41,7 @@ lca_menu = [
     ('Programme', '/programme/about_programme', 'programme'),
     #('Register', '/register', 'register'), # -- Stage 2
     ('Wiki', '/wiki', 'wiki'),
-    ('Media', '/media', 'media'),
+    ('Media', '/media/news', 'media'),
     ('Contact', '/contact', 'contact'),
 ]
 

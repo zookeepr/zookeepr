@@ -26,9 +26,10 @@ class DictSet(validators.Set):
 # FIXME: merge with account.py controller and move to validators
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        person = state.query(model.Person).filter_by(email_address=value['email_address']).one()
+        person = state.query(model.Person).filter_by(email_address=value['email_address']).first()
         if person is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
+
 
 class SillyDescriptionMD5(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -43,6 +44,12 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
             rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).first()
         if rego is not None:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+
+class NotExistingNickValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        r = state.query(model.Registration).filter_by(nick=value['registration']['nick']).first()
+        if r is not None:
+            raise Invalid("This nick has been taken, sorry.  Please use another.", value, state)
 
 # Only cares about real voucher codes
 class DuplicateVoucherCodeValidator(validators.FancyValidator):
@@ -206,8 +213,6 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
-    handle = validators.String(not_empty=True)
-    mobile = NonblankForSpeakers()
 
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
@@ -216,7 +221,7 @@ class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
     registration = RegistrationSchema()
 
-    chained_validators = [NotExistingRegistrationValidator()]
+    chained_validators = [NotExistingRegistrationValidator(), NotExistingNickValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
 class ExistingPersonSchema(Schema):
@@ -593,12 +598,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             return False, "All gone."
         left = po.eblimit - count
         percent = int(round((20.0 * left) / po.eblimit) * 5)
+	actualpercent = (100.0 * left) / po.eblimit
         if percent == 0:
-            return True, ("Almost all earlybirds gone," + timeleft)
+            return True, ("Almost all earlybirds gone," + timeleft), actualpercent
         elif percent <= 30:
-            return True, ("Only %d%% earlybirds left,"%percent + timeleft)
+            return True, ("Only %d%% earlybirds left,"%percent + timeleft), actualpercent
         else:
-            return True, ("%d%% earlybirds left,"%percent + timeleft)
+            return True, ("%d%% earlybirds left,"%percent + timeleft), actualpercent
 
     def check_ceiling(self, check_type=None):
         """ Checks the ceiling, returning various information in a struct.
@@ -638,7 +644,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
 
         if res.open:
           res.left = res.limit - res.total
-          percent = int(round((20.0 * res.left) / res.limit) * 5)
+	  res.percent = (100.0 * res.left) / res.limit
+	  percent = int(round((20.0 * res.left) / res.limit) * 5)
           if percent == 0:
               res.text = "Almost all tickets gone."
           elif percent <= 30:
@@ -647,6 +654,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
               res.text = "%d%% tickets left."%percent
         else:
             res.text = 'All tickets gone.'
+	    res.percent = 0.0
 
         if check_type:
             if check_type in ceiling_types:
@@ -659,7 +667,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         return res
 
     def status(self):
-        (c.eb, c.ebtext) = self.check_earlybird()
+        (c.eb, c.ebtext, c.ebpercent) = self.check_earlybird()
         c.ceiling = self.check_ceiling()
         return render_response("registration/status.myt")
 

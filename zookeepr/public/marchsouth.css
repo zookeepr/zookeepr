@@ -171,6 +171,12 @@
 		padding-left: 40px;
 		padding-right: 40px;
 	}
+	
+	b
+	{
+		background-color: inherit;
+		color: #505050;
+	}
 
 	a, h1 a:hover
 	{
@@ -330,4 +336,26 @@
 	.error
 	{
 		border-color: #ff0000;
+	}
+	
+	.notice-box
+	{
+		padding: 1em;
+		float: right;
+		text-align: center;
+		margin-top: 0.5em;
+		margin-bottom: 0.5em;
+		margin-left: 20px;
+		margin-right: 40px;
+		background-color: #ffffff;
+	}
+	
+	.graph-bar
+	{
+		background-color: #efefff;
+	}
+	
+	.graph-bar-text
+	{
+		margin-top: -1em;
 	}

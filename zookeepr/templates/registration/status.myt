@@ -1,14 +1,13 @@
-<div style="float: right; border: solid lightgray; text-align: center;
-padding-top: 1em; padding-bottom: 1em; padding-left: 1em; padding-right: 1em;
-margin-top: 0.5em; margin-bottom: 0.5em; ">
+<div class="notice-box">
 % if c.ceiling.open:
 <b>Registrations</b> are open<br/><br/>
 % else:
 <b>Registrations are closed</b><br/><br/>
 % #endif
-<% c.ceiling.text %><br/><br/>
+<div class = "graph-bar" style = "width:<%c.ceiling.percent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ceiling.text %></div><br/>
 % if c.eb:
-<b>Earlybird</b> is available<br/><br/><% c.ebtext |h%>
+<b>Earlybird</b> is available<br/><br/>
+<div class = "graph-bar" style = "width:<%c.ebpercent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ebtext |h%></div>
 % else:
 <b>Earlybird no longer available</b><br/><br/><% c.ebtext |h%>
 % #endif
@@ -39,10 +38,10 @@ url=h.url(controller='person', action='forgotten_password', id=None)) %>.</p>
 otherwise.</p>
 
 <h3>Summary of steps</h3>
-&#9744; Fill in registration form
+<p>&#9744; Fill in registration form
 <br/>&#9744; Generate invoice
 <br/>&#9744; Pay
-<br/>&#9744; Attend conference
+<br/>&#9744; Attend conference</p>
 % elif not hasattr(c.signed_in_person, 'registration') or c.signed_in_person.registration==None:
 <p><b>Not registered.</b>
 
@@ -51,10 +50,10 @@ otherwise.</p>
 <p><a href="/registration/new">Fill in registration form</a>.</p>
 
 <h3>Summary of steps</h3>
-&#9744; Fill in registration form
+<p>&#9744; Fill in registration form
 <br/>&#9744; Generate invoice
 <br/>&#9744; Pay
-<br/>&#9744; Attend conference
+<br/>&#9744; Attend conference</p>
 % elif c.signed_in_person.registration.type=='Volunteer' and not c.signed_in_person.registration.volunteer:
 <p><b>Tentatively volunteered.</b></p>
 
@@ -69,7 +68,7 @@ otherwise.</p>
 >Edit details</a></p>
 
 <h3>Summary of steps</h3>
-&#9745; Fill in registration form
+<p>&#9745; Fill in registration form
 %   if c.signed_in_person.invoices and c.signed_in_person.invoices[0].paid():
 <br/>&#9745; Generate invoice
 <br/>&#9745; Pay
@@ -77,7 +76,7 @@ otherwise.</p>
 <br/>&#9744; Generate invoice
 <br/>&#9744; Pay
 %   #endif
-<br/>&#9744; Attend conference
+<br/>&#9744; Attend conference</p>
 % elif not c.signed_in_person.invoices:
 <p><b>Tentatively registered.</b></p>
 
@@ -97,10 +96,10 @@ otherwise.</p>
 </p>
 
 <h3>Summary of steps</h3>
-&#9745; Fill in registration form
+<p>&#9745; Fill in registration form
 <br/>&#9744; Generate invoice
 <br/>&#9744; Pay
-<br/>&#9744; Attend conference
+<br/>&#9744; Attend conference</p>
 % elif c.signed_in_person.invoices[0].paid():
 <p><b>Registered and paid.</b></p>
 
@@ -132,10 +131,10 @@ printable invoice (html)</a><br/>
 printable invoice (pdf)</a></p>
 
 <h3>Summary of steps</h3>
-&#9745; Fill in registration form
+<p>&#9745; Fill in registration form
 <br/>&#9745; Generate invoice
 <br/>&#9745; Pay
-<br/>&#9744; Attend conference
+<br/>&#9744; Attend conference</p>
 % elif c.signed_in_person.invoices[0].bad_payments:
 <p><b>Tentatively registered and tried to pay.</b></p>
 
@@ -155,10 +154,10 @@ invoice <% c.signed_in_person.invoices[0].id %>.</p>
 >View registration details</a><br/>
 
 <h3>Summary of steps</h3>
-&#9745; Fill in registration form
+<p>&#9745; Fill in registration form
 <br/>&#9745; Generate invoice
 <br/>&#9744; Pay
-<br/>&#9744; Attend conference
+<br/>&#9744; Attend conference</p>
 % else:
 <p><b>Tentatively registered.</b></p>
 
@@ -181,8 +180,8 @@ printable invoice (html)</a>
 printable invoice (pdf)</a></p>
 
 <h3>Summary of steps</h3>
-&#9745; Fill in registration form
+<p>&#9745; Fill in registration form
 <br/>&#9745; Generate invoice
 <br/>&#9744; Pay
-<br/>&#9744; Attend conference
+<br/>&#9744; Attend conference</p>
 % #endif
