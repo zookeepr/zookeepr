@@ -108,9 +108,9 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 		to convince them why they should accept your mini-confs and
 		presentations.</p>
 
-	<br><p class="note"><span class="mandatory">*</span> - Mandatory
+	<p>&nbsp;</p>
+	<p class="note"><span class="mandatory">*</span> - Mandatory
 	field</p>
-
 	<p class="note"><span class="publishable">&#8224;</span> - Will be
 	published (if your presentation is accepted)</p>
 
