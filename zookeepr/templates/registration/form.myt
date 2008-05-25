@@ -413,7 +413,7 @@ Please check out the <% h.link_to('accommodation', url="/register/accommodation"
 </p><p class="entries">
 <SELECT name="registration.accommodation">
 <option value="-">-</option>
-<option value="0">I will organise my own</option>
+<option value="own">I will organise my own</option>
 % for a in c.accommodation_collection:
 %    if a.beds==999:
 %       places_left = ''
