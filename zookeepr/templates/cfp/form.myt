@@ -2,7 +2,7 @@
 	<p class="entries"><% h.text_field('proposal.title', size=70) %></p>
 		<p class="note">The name of your presentation.</p>
 
-	<p class="label"><label for="proposal.type">Type:</label><span class="mandatory">*</span><span class="publishable">&#8224;</span></p>
+	<p class="label"><label>Type:</label><span class="mandatory">*</span><span class="publishable">&#8224;</span></p>
 	<p class="entries">
 % for st in c.cfptypes:
 %   if st.name == 'Miniconf':
@@ -50,8 +50,7 @@
 		3min) video about your presentation, your project or
 		yourself (eg: YouTube link).</p>
 
-	<p class="label"><label
-	for="proposal.assistance">Travel &amp; Accommodation
+	<p class="label"><label>Travel &amp; Accommodation
 	Assistance:</label><span class="mandatory">*</span></p>
 	<p class="entries">
 % for ta in c.tatypes:
