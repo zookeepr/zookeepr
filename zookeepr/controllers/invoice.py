@@ -35,9 +35,9 @@ class InvoiceController(SecureController, Read, List):
 
         age = datetime.datetime.now() - c.invoice.last_modification_timestamp
         if age > datetime.timedelta(hours=1):
-	    return render_response('invoice/expired.myt')
-	if c.invoice.total() % 5 != 0:
-	    return render_response('invoice/invalid.myt')
+            return render_response('invoice/expired.myt')
+        if c.invoice.total() % 5 != 0:
+            return render_response('invoice/invalid.myt')
 
         # get our merchant id and secret
         merchant_id = lca_info['commsecure_merchantid']
@@ -69,13 +69,13 @@ class InvoiceController(SecureController, Read, List):
         fields['MAC'] = mac
 
         res=render_response('invoice/payment.myt', fields=fields)
-	res.headers['Refresh']='300'
+        res.headers['Refresh']='300'
         return res
 
     def printable(self):
         c.printable = True
         res = render('%s/view.myt' % self.individual, fragment=True)
-	return Response(res)
+        return Response(res)
 
     # FIXME There is probably a way to get this to use the List thingy from CRUD
     def remind(self):
@@ -87,28 +87,28 @@ class InvoiceController(SecureController, Read, List):
 
         res = render('%s/pdf.myt' % self.individual, fragment=True)
 
-	xsl = request.environ['paste.config']['global_conf']['here']
-	xsl += '/templates/invoice/pdf.xsl'
+        xsl = request.environ['paste.config']['global_conf']['here']
+        xsl += '/templates/invoice/pdf.xsl'
 
-	(xml_fd, xml) = tempfile.mkstemp('.xml')
-	(svg_fd, svg) = tempfile.mkstemp('.svg')
-	(pdf_fd, pdf) = tempfile.mkstemp('.pdf')
+        (xml_fd, xml) = tempfile.mkstemp('.xml')
+        (svg_fd, svg) = tempfile.mkstemp('.svg')
+        (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
 
         xml_f = os.fdopen(xml_fd, 'w')
         xml_f.write(res)
-	xml_f.close()
+        xml_f.close()
 
-	os.close(svg_fd); os.close(pdf_fd)
+        os.close(svg_fd); os.close(pdf_fd)
 
         os.system('saxon %s %s > %s' % (xml, xsl, svg))
         os.system('inkscape -z -f %s -A %s' % (svg, pdf))
 
         pdf_f = file(pdf)
-	res = Response(pdf_f.read())
-	pdf_f.close()
-	#res.headers['Content-type']='application/pdf'
-	res.headers['Content-type']='application/octet-stream'
-	#res.headers['Content-type']='text/plain; charset=utf-8'
-	res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
-							   % c.invoice.id )
-	return res
+        res = Response(pdf_f.read())
+        pdf_f.close()
+        #res.headers['Content-type']='application/pdf'
+        res.headers['Content-type']='application/octet-stream'
+        #res.headers['Content-type']='text/plain; charset=utf-8'
+        res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
+                                                           % c.invoice.id )
+        return res
