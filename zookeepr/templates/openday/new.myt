@@ -30,7 +30,7 @@ Please fill in the form as best you can.
 <span class="mandatory">*</span>
 <label for="openday.email_address">Email address:</label>
 <% h.text_field('openday.email_address', size=40) %>
-<br />
+<br>
 <span class="fielddesc">
 Your email address will only be used to correspond with you about the Open Day event. It will not be shown or used otherwise.
 </span>

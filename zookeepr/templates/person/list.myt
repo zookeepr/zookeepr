@@ -38,7 +38,7 @@
 #if c.person_pages.current.next:
 #    m.write(h.link_to('Next page', url=h.url(page=c.person_pages.current.next)))
 
-m.write('<br />')
+m.write('<br>')
 if c.can_edit:
     m.write(h.link_to('New person', url=h.url(action='new')))
 </%python>

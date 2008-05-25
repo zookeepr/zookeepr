@@ -20,9 +20,9 @@
 %   # endif
     <label><% h.radio_button('proposal.type', st.id) %>
 %   if st.name == 'Presentation':
-      Talk</label><br />
+      Talk</label><br>
 %   else:
-      <% st.name |h %></label><br />
+      <% st.name |h %></label><br>
 %   #endif
 % #endfor
 		<p class="note" style="margin-top: 0em">The type of your

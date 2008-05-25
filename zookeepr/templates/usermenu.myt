@@ -1,4 +1,4 @@
-<br />
+<br>
 <ul id="usermenu" class="menu">
 
 % if 'signed_in_person_id' in session:

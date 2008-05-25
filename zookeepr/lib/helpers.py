@@ -70,12 +70,29 @@ def reset_counter(name='default'):
 
 def radio(name, value, label=None):
     id_str = "%s.%s" % (name, value)
-    i = '<input type="radio" name="%s" id="%s" value="%s" />' % (name, id_str, value)
+    i = '<input type="radio" name="%s" id="%s" value="%s">' % (name, id_str, value)
     if label is None:
         lab = ''
     else:
         lab = '<label for="%s">%s</label>' % (id_str, label)
     return i + lab
+
+def textarea(name, size):
+    temp = size.split("x")
+    return '<textarea name="%s" id="%s" cols="%s" rows="%s"></textarea>' % (name, name, temp[0], temp[1])
+
+def textfield(name, size=40, value=None):
+    if value is None:
+        return '<input type="text" name="%s" id="%s" size="%s">' % (name, name, size)
+    else:
+        return '<input type="text" name="%s" id="%s" size="%s" value="%s">' % (name, name, size, value)
+
+
+def passwordfield(name, size=40):
+    return '<input type="password" name="%s" id="%s" size="%s">' % (name, name, size)
+
+def submitbutton(value, name="Commit"):
+    return '<input  name="%s" type="submit" value="%s">' % (name, value)
 
 def webmaster_email(text=None):
     """ E-mail link for the conference contact.
