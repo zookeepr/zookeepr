@@ -87,7 +87,7 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 	<p class="label"><label
 	for="person.url">Speaker mobile phone:</label><span class="mandatory">*</span><span
     class="publishable">&#8224;</span></p>
-	<p class="entries"><% h.textfield('person.url', size=70) %></p>
+	<p class="entries"><% h.textfield('person.mobile', size=70) %></p>
 		<p class="note">Your mobile phone.</p>
 % else:
 %   c.mobile_is_mandatory = True
