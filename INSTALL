@@ -24,7 +24,7 @@ Debian-specific notes:
      - Not on Ubuntu Hardy
  - Remove python2.4-sqlalchemy
    - is that still necessary?
-     - Not on Ubuntu hardy/
+     - Not on Ubuntu hardy
 
 STEPS:
 =====

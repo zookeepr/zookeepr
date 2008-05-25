@@ -259,7 +259,7 @@ You haven't yet registered for the conference.  <% h.link_to('Register now!', ur
 
 % if len(c.profile.accepted_talks)>0:
 <div id="talks">
-<h2>Talks</h2>
+<h2>Proposals</h2>
 <table>
 %   for p in c.profile.accepted_talks:
 <tr class="<% h.cycle('even', 'odd') %>">
