@@ -1,23 +1,10 @@
-<h2>
-% if c.person.handle:
-% 	if c.person.handle.endswith("s"):
-<% c.person.handle |h %>'
-%	else:
-<% c.person.handle |h %>'s
-%	#endif
-% #endif
-profile</h2>
+<h2><% c.person.firstname |h %>'s profile</h2>
 
 <div class="boxed">
 
 <p>
    <b>Email:</b>
     <% c.person.email_address | h %><br />
-</p>
-
-<p>
-   <b>Display name:</b>
-    <% c.person.handle | h %><br />
 </p>
 
 <p>
@@ -71,8 +58,6 @@ profile</h2>
 
 <%method title>
 Profile -
-% if c.person.handle is not None:
-<% c.person.handle |h %> -
-%
+<% c.person.firstname |h %> <% c.person.lastname |h %> -
 <& PARENT:title &>
 </%method>
