@@ -11,7 +11,13 @@ class Person(object):
                  password=None,
                  firstname=None,
                  lastname=None,
+                 address1=None,
+                 address2=None,
+                 city=None,
+                 state=None,
+                 postcode=None,
                  country=None,
+                 company=None,
                  phone=None,
                  mobile=None,
                  experience=None,
@@ -28,7 +34,13 @@ class Person(object):
         self.handle = handle
         self.firstname = firstname
         self.lastname = lastname
+        self.address1 = address1
+        self.address2 = address2
+        self.city = city
+        self.state = state
+        self.postcode = postcode
         self.country = country
+        self.company = company
         self.phone = phone
         self.mobile = mobile
 

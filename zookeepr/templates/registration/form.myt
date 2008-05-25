@@ -8,21 +8,21 @@
 
 <p class="label">
 <span class="mandatory">*</span>
-<label for="registration.address">Address:</label>
+<label for="person.address">Address:</label>
 </p><p class="entries">
-<% h.text_field('registration.address1', size=40) %>
+<% h.text_field('person.address1', size=40) %>
 <br />
-<% h.text_field('registration.address2', size=40) %>
+<% h.text_field('person.address2', size=40) %>
 </p>
 <p class="label">
 <span class="mandatory">*</span>
-<label for="registration.city">City/Suburb:</label>
+<label for="person.city">City/Suburb:</label>
 </p><p class="entries">
-<% h.text_field('registration.city', size=40) %>
+<% h.text_field('person.city', size=40) %>
 </p><p class="label">
-<label for="registration.state">State/Province:</label>
+<label for="person.state">State/Province:</label>
 </p><p class="entries">
-<% h.text_field('registration.state', size=40) %>
+<% h.text_field('person.state', size=40) %>
 </p><p class="label">
 <span class="mandatory">*</span>
 <label for="person.country">Country:</label>
@@ -34,9 +34,9 @@
 </select>
 </p><p class="label">
 <span class="mandatory">*</span>
-<label for="registration.postcode">Postcode/ZIP:</label>
+<label for="person.postcode">Postcode/ZIP:</label>
 </p><p class="entries">
-<% h.text_field('registration.postcode', size=40) %>
+<% h.text_field('person.postcode', size=40) %>
 </p>
 
 % if 'signed_in_person_id' in session:
@@ -57,9 +57,9 @@
 </p>
 
 </p><p class="label">
-<label for="registration.company">Company:</label>
+<label for="person.company">Company:</label>
 </p><p class="entries">
-<% h.text_field('registration.company', size=60) %>
+<% h.text_field('person.company', size=60) %>
 </p>
 
 <p class="label">

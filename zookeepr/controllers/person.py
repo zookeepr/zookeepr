@@ -41,8 +41,8 @@ class ExistingPersonValidator(validators.FancyValidator):
         persons = state.query(Person).filter_by(email_address=value['email_address']).first()
         if persons == None:
             raise Invalid("""Your sign-in details are incorrect; try the
-		'Forgotten your password' link below or sign up for a new
-		person.""", value, state)
+                'Forgotten your password' link below or sign up for a new
+                person.""", value, state)
 
 
 class LoginValidator(BaseSchema):
@@ -77,11 +77,18 @@ class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
+    company = validators.String()
     phone = validators.String()
     mobile = validators.String()
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
-    
+
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 

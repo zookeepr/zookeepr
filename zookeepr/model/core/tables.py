@@ -32,7 +32,13 @@ person = Table('person', metadata,
                # the lengths of the fields are chosen arbitrarily
                Column('firstname', Text),
                Column('lastname', Text),
+               Column('address1', Text),
+               Column('address2', Text),
+               Column('city', Text),
+               Column('state', Text),
+               Column('postcode', Text),
                Column('country', Text),
+               Column('company', Text),
                Column('phone', Text),
                Column('mobile', Text),
 
