@@ -33,8 +33,8 @@ class InvoiceController(SecureController, Read, List):
             if c.invoice.paid() or c.invoice.bad_payments:
                 return render_response('invoice/already.myt')
 
-        age = datetime.datetime.now() - c.invoice.last_modification_timestamp
-        if age > datetime.timedelta(hours=1):
+        c.age = datetime.datetime.now() - c.invoice.last_modification_timestamp
+        if c.age > datetime.timedelta(hours=1):
 	    return render_response('invoice/expired.myt')
 	if c.invoice.total() % 5 != 0:
 	    return render_response('invoice/invalid.myt')

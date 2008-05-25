@@ -483,6 +483,8 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
 
+        invoice.last_modification_timestamp = datetime.datetime.now() 
+
         self.dbsession.save_or_update(invoice)
         self.dbsession.flush()
 
