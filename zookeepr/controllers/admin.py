@@ -23,29 +23,30 @@ class AdminController(SecureController):
 
     def index(self):
         res = dir(self)
-	exceptions = ['check_permissions', 'dbsession',
-		     'index', 'logged_in', 'permissions', 'start_response']
+        exceptions = ['check_permissions', 'dbsession',
+                     'index', 'logged_in', 'permissions', 'start_response']
 
-	# get the ones in this controller by introspection.
-	funcs = [('/admin/'+x, getattr(self, x).__doc__ or '')
-		       for x in res if x[0] != '_' and x not in exceptions]
+        # get the ones in this controller by introspection.
+        funcs = [('/admin/'+x, getattr(self, x).__doc__ or '')
+                       for x in res if x[0] != '_' and x not in exceptions]
 
         # other functions should be appended to the list here.
-	funcs += [
-	  ('/profile', '''List of people signed up to the webpage (with
-			   option to view/change their zookeepr roles)
-			   [auth]'''),
+        funcs += [
+          ('/db_content', '''Edit HTML pages that are stored in the database. [ZK]'''),
+          ('/profile', '''List of people signed up to the webpage (with
+                           option to view/change their zookeepr roles)
+                           [auth]'''),
 
- 	  #('/accommodation', ''' [accom] '''),
- 	  ('/voucher_code', ''' Voucher codes [rego] '''),
- 	  ('/invoice/remind', ''' '''),
- 	  ('/openday', ''' '''),
- 	  ('/registration', ''' Summary of registrations, including summary
-	  of accommodation [rego,accom] '''),
- 	  ('/invoice', ''' List of invoices (that is, registrations). This
-	  is probably the best place to check whether a given person has or
-	  hasn't registered and/or paid. [rego] '''),
- 	  ('/pony', ''' OMG! Ponies!!! [ZK]'''),
+           #('/accommodation', ''' [accom] '''),
+           ('/voucher_code', ''' Voucher codes [rego] '''),
+           ('/invoice/remind', ''' '''),
+           ('/openday', ''' '''),
+           ('/registration', ''' Summary of registrations, including summary
+          of accommodation [rego,accom] '''),
+           ('/invoice', ''' List of invoices (that is, registrations). This
+          is probably the best place to check whether a given person has or
+          hasn't registered and/or paid. [rego] '''),
+           ('/pony', ''' OMG! Ponies!!! [ZK]'''),
 
           ('/proposal', ''' To see what you need to reveiw [CFP] '''),
           ('/review', ''' To see what you have reviewed [CFP]'''),
@@ -53,1570 +54,1570 @@ class AdminController(SecureController):
           ('/review/summary', ''' summary of reviews [CFP] '''),
 
           ('/registration/list_miniconf_orgs', ''' list of miniconf
-	  organisers (as the registration code knows them, for miniconf
-	  voucher) [miniconf] '''),
+          organisers (as the registration code knows them, for miniconf
+          voucher) [miniconf] '''),
 
-	]
+        ]
 
-	# show it!
+        # show it!
         c.columns = ['page', 'description']
-	funcs = [('<a href="%s">%s</a>'%(fn,fn), desc)
-						   for (fn, desc) in funcs]
-	sect = {}
-	pat = re.compile(r'\[([a-zA-Z,]+)\]')
+        funcs = [('<a href="%s">%s</a>'%(fn,fn), desc)
+                                                   for (fn, desc) in funcs]
+        sect = {}
+        pat = re.compile(r'\[([a-zA-Z,]+)\]')
         for (page, desc) in funcs:
-	    m = pat.search(desc)
-	    if m:
-	        desc = pat.sub(r'<small>[\1]</small>', desc)
-	        for s in m.group(1).split(','):
-		    sect[s] = sect.get(s, []) + [(page, desc)]
-	    else:
-	        sect['Other'] = sect.get('Other', []) + [(page, desc)]
+            m = pat.search(desc)
+            if m:
+                desc = pat.sub(r'<small>[\1]</small>', desc)
+                for s in m.group(1).split(','):
+                    sect[s] = sect.get(s, []) + [(page, desc)]
+            else:
+                sect['Other'] = sect.get('Other', []) + [(page, desc)]
         c.text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
-	c.noescape = True
+        c.noescape = True
 
-	sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
-	c.text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
-						  for s_lower, s in sects])
-	c.text += '\t\t\t</ul>\n\t\t\t</div>'
-	for s_lower, s in sects:
-	    c.text += '<a name="%s"></a>' % s
-	    c.text += '<h2>%s</h2>' % s
-	    c.data = sect[s]
-	    c.text = render('admin/table.myt', fragment=True)
-	return render_response('admin/text.myt')
+        sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
+        c.text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
+                                                  for s_lower, s in sects])
+        c.text += '\t\t\t</ul>\n\t\t\t</div>'
+        for s_lower, s in sects:
+            c.text += '<a name="%s"></a>' % s
+            c.text += '<h2>%s</h2>' % s
+            c.data = sect[s]
+            c.text = render('admin/table.myt', fragment=True)
+        return render_response('admin/text.myt')
 
     def test(self):
         """
-	Testing, testing, 1, 2, 3. [ZK]
+        Testing, testing, 1, 2, 3. [ZK]
         """
         return Response("This is a test. Hope you've studied! - oh no! the exams are coming!")
 
     def collect_garbage(self):
         """
-	Invoke the garbage collector. [ZK]
+        Invoke the garbage collector. [ZK]
         """
-	import gc
-	before = len(gc.get_objects())
-	garbage = gc.collect()
-	after = len(gc.get_objects())
-	uncollectable = len(gc.garbage)
-	del(gc.garbage[:])
+        import gc
+        before = len(gc.get_objects())
+        garbage = gc.collect()
+        after = len(gc.get_objects())
+        uncollectable = len(gc.garbage)
+        del(gc.garbage[:])
         return Response("""
-	Is automatic garbage collection enabled? %s.
-	<br>Garbage collector knows of %d objects.
-	<br>Full collection: %d pieces of garbage found, %d uncollectable.
-	<br>Garbage collector knows of %d objects.
-	""" % (
+        Is automatic garbage collection enabled? %s.
+        <br>Garbage collector knows of %d objects.
+        <br>Full collection: %d pieces of garbage found, %d uncollectable.
+        <br>Garbage collector knows of %d objects.
+        """ % (
           gc.isenabled(),
-	  before,
-	  garbage, uncollectable,
-	  after,
-	))
+          before,
+          garbage, uncollectable,
+          after,
+        ))
     def known_objects(self):
         """
-	List known objects by type. (Invokes GC first.) [ZK]
+        List known objects by type. (Invokes GC first.) [ZK]
         """
-	import gc
-	gc.collect()
-	count = {}
-	objects = gc.get_objects()
-	for o in objects:
-	  t = type(o)
-	  count[t] = count.get(t, 0) + 1
-	total = len(objects); scale = 100.0 / total
-	objects = None #avoid having the data twice...
+        import gc
+        gc.collect()
+        count = {}
+        objects = gc.get_objects()
+        for o in objects:
+          t = type(o)
+          count[t] = count.get(t, 0) + 1
+        total = len(objects); scale = 100.0 / total
+        objects = None #avoid having the data twice...
         c.data = [(num, '%.1f%%' % (num * scale), t)
-					 for (t, num) in count.iteritems()]
-	c.data.sort(reverse=True)
-	c.columns = 'count', '%', 'type'
-	c.text = "Total: %d" % total
+                                         for (t, num) in count.iteritems()]
+        c.data.sort(reverse=True)
+        c.columns = 'count', '%', 'type'
+        c.text = "Total: %d" % total
         return render_response('admin/table.myt')
 
     def list_miniconfs(self):
         """ List of miniconfs [miniconf,CFP] """
         return sql_response("""select proposal.id as id, title, abstract,
-	proposal.url, firstname || ' ' || lastname as name, email_address from proposal,
-	person, person_proposal_map where proposal_type_id = 2 and
-	 and and proposal.id=proposal_id order by title""")
+        proposal.url, firstname || ' ' || lastname as name, email_address from proposal,
+        person, person_proposal_map where proposal_type_id = 2 and
+         and and proposal.id=proposal_id order by title""")
     def speaker_meta_info(self):
         """ Additional info about speakers. [speaker] """
-	return sql_response("""
-	    select p.firstname,p.lastname,r.city,r.state,r.postcode,r.country,pr.code,pr.scheduled,pr.building,pr.theatre
-	    FROM person_proposal_map AS pp
-	    LEFT JOIN person AS p ON (p.id=pp.person_id)
-	    LEFT JOIN registration AS r ON (p.id=r.person_id)
-	    LEFT JOIN proposal AS pr ON (pp.proposal_id=pr.id)
-	    WHERE pr.code > 0;
-	""")
+        return sql_response("""
+            select p.firstname,p.lastname,r.city,r.state,r.postcode,r.country,pr.code,pr.scheduled,pr.building,pr.theatre
+            FROM person_proposal_map AS pp
+            LEFT JOIN person AS p ON (p.id=pp.person_id)
+            LEFT JOIN registration AS r ON (p.id=r.person_id)
+            LEFT JOIN proposal AS pr ON (pp.proposal_id=pr.id)
+            WHERE pr.code > 0;
+        """)
     def list_attachments(self):
         """ List of attachments [CFP] """
         return sql_response('''
-	select title, filename from attachment, proposal where proposal.id=proposal_id;
+        select title, filename from attachment, proposal where proposal.id=proposal_id;
 
-	''')
+        ''')
     def person_creation(self):
         """ When did people create their accounts? [auth] """
-	return sql_response("""select person.id, firstname || ' ' ||
-	lastname as name, creation_timestamp as created from person
-	order by person.id;
-	""")
+        return sql_response("""select person.id, firstname || ' ' ||
+        lastname as name, creation_timestamp as created from person
+        order by person.id;
+        """)
     def auth_users(self):
         """ List of users that are authorised for some role [auth] """
-	return sql_response("""select role.name as role, firstname || ' '
-	|| lastname as name, email_address, person.id
-	from role, person, person_role_map
-	where person.id=person_id and role.id=role_id
-	order by role, lastname, firstname""")
+        return sql_response("""select role.name as role, firstname || ' '
+        || lastname as name, email_address, person.id
+        from role, person, person_role_map
+        where person.id=person_id and role.id=role_id
+        order by role, lastname, firstname""")
     def rej_papers(self):
         """ Rejected papers, without abstracts (for the miniconf
-	organisers) [CFP,miniconf] """
-	return sql_response("""
-	  select distinct miniconf, proposal.id as p,
-	    firstname || ' ' || lastname as name,
-	    title, project,
-	    proposal.url, email_address as email, person.url as homepage
-	  from proposal, person, person_proposal_map, review
-	  where person_id = person.id and review.proposal_id = proposal.id
-	    and person_proposal_map.proposal_id = proposal.id
-	    and account_id = account.id and account_id = person.id 
-	    and proposal_type_id = 1 and accepted is null
-	  order by miniconf, proposal.id
-	""")
+        organisers) [CFP,miniconf] """
+        return sql_response("""
+          select distinct miniconf, proposal.id as p,
+            firstname || ' ' || lastname as name,
+            title, project,
+            proposal.url, email_address as email, person.url as homepage
+          from proposal, person, person_proposal_map, review
+          where person_id = person.id and review.proposal_id = proposal.id
+            and person_proposal_map.proposal_id = proposal.id
+            and account_id = account.id and account_id = person.id 
+            and proposal_type_id = 1 and accepted is null
+          order by miniconf, proposal.id
+        """)
     def rej_papers_abstracts(self):
         """ Rejected papers, with abstracts (for the miniconf organisers)
-	[CFP,miniconf] """
-	return sql_response("""
-	  select distinct miniconf, proposal.id as p,
-	    firstname || ' ' || lastname as name,
-	    title, project,
-	    abstract,
-	    proposal.url, email_address as email, person.url as homepage
-	  from proposal, person, person_proposal_map, review
-	  where person_id = person.id and review.proposal_id = proposal.id
-	    and person_proposal_map.proposal_id = proposal.id
-	    and account_id = person.id 
-	    and proposal_type_id = 1 and accepted is null
-	  order by miniconf, proposal.id
-	""")
+        [CFP,miniconf] """
+        return sql_response("""
+          select distinct miniconf, proposal.id as p,
+            firstname || ' ' || lastname as name,
+            title, project,
+            abstract,
+            proposal.url, email_address as email, person.url as homepage
+          from proposal, person, person_proposal_map, review
+          where person_id = person.id and review.proposal_id = proposal.id
+            and person_proposal_map.proposal_id = proposal.id
+            and account_id = person.id 
+            and proposal_type_id = 1 and accepted is null
+          order by miniconf, proposal.id
+        """)
     def acc_papers(self):
         """ Accepted papers (for miniconf organisers)
-	[CFP,miniconf,speaker,AV]"""
-	# note: for AV purposes, this has been made to include tutorials
-	return sql_response("""
-	  SELECT proposal.id, proposal.title,
-	    person.firstname || ' ' || person.lastname as name
-	  FROM proposal
-	    LEFT JOIN person_proposal_map
-	      ON(person_proposal_map.proposal_id=proposal.id)
-	    LEFT JOIN person
-	      ON (person.id=person_proposal_map.person_id)
-	    LEFT JOIN assistance_type
-	      ON(assistance_type.id=proposal.assistance_type_id)
-	  WHERE proposal.accepted=true and proposal_type_id<>2
-	  GROUP BY proposal.id, proposal.title, 
-	    person.firstname, person.lastname, assistance_type.name
-	  ORDER BY proposal.title ASC;
-	""")
+        [CFP,miniconf,speaker,AV]"""
+        # note: for AV purposes, this has been made to include tutorials
+        return sql_response("""
+          SELECT proposal.id, proposal.title,
+            person.firstname || ' ' || person.lastname as name
+          FROM proposal
+            LEFT JOIN person_proposal_map
+              ON(person_proposal_map.proposal_id=proposal.id)
+            LEFT JOIN person
+              ON (person.id=person_proposal_map.person_id)
+            LEFT JOIN assistance_type
+              ON(assistance_type.id=proposal.assistance_type_id)
+          WHERE proposal.accepted=true and proposal_type_id<>2
+          GROUP BY proposal.id, proposal.title, 
+            person.firstname, person.lastname, assistance_type.name
+          ORDER BY proposal.title ASC;
+        """)
     def acc_papers_by_theatre(self):
         """ Accepted papers by theatre [AV]"""
-	# note: for AV purposes, this has been made to include tutorials
-	c.data = sql_data("""
-	  SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
-	  proposal.id, proposal.title,
-	    person.firstname || ' ' || person.lastname as name,
-	    CASE WHEN registration.speaker_record THEN 'yes' ELSE 'NO' END
-	    as "record?",
-	    CASE WHEN registration.speaker_video_release THEN 'yes' ELSE 'NO' END
-	    as "publish?"
-	  FROM proposal
-	    LEFT JOIN person_proposal_map
-	      ON(person_proposal_map.proposal_id=proposal.id)
-	    LEFT JOIN person
-	      ON (person.id=person_proposal_map.person_id)
-	    LEFT JOIN registration
-	      ON (registration.person_id = person.id)
-	  WHERE proposal.accepted=true and proposal_type_id<>2
-	  GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
-	    person.firstname, person.lastname, registration.speaker_record,
-	    registration.speaker_video_release
-	  ORDER BY theatre, scheduled ASC;
-	""")
-	for i in xrange(1, len(c.data)).__reversed__():
-	    if c.data[i][2] == c.data[i-1][2]:
-	        c.data[i] = ('', )*4 + tuple(c.data[i])[4:]
-	c.columns = ('theatre', 'start', 'id', 'title', 'speaker',
-						     'record?', 'publish?')
-	return render_response('admin/table.myt')
+        # note: for AV purposes, this has been made to include tutorials
+        c.data = sql_data("""
+          SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
+          proposal.id, proposal.title,
+            person.firstname || ' ' || person.lastname as name,
+            CASE WHEN registration.speaker_record THEN 'yes' ELSE 'NO' END
+            as "record?",
+            CASE WHEN registration.speaker_video_release THEN 'yes' ELSE 'NO' END
+            as "publish?"
+          FROM proposal
+            LEFT JOIN person_proposal_map
+              ON(person_proposal_map.proposal_id=proposal.id)
+            LEFT JOIN person
+              ON (person.id=person_proposal_map.person_id)
+            LEFT JOIN registration
+              ON (registration.person_id = person.id)
+          WHERE proposal.accepted=true and proposal_type_id<>2
+          GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
+            person.firstname, person.lastname, registration.speaker_record,
+            registration.speaker_video_release
+          ORDER BY theatre, scheduled ASC;
+        """)
+        for i in xrange(1, len(c.data)).__reversed__():
+            if c.data[i][2] == c.data[i-1][2]:
+                c.data[i] = ('', )*4 + tuple(c.data[i])[4:]
+        c.columns = ('theatre', 'start', 'id', 'title', 'speaker',
+                                                     'record?', 'publish?')
+        return render_response('admin/table.myt')
 
     def theatre_running_sheet(self):
         """ Accepted papers by theatre, with abstracts and bios [AV]"""
-	# note: for AV purposes, this has been made to include tutorials
-	c.data = sql_data("""
-	  SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
-	  proposal.id, proposal.title, proposal.abstract,
-	    person.firstname || ' ' || person.lastname as name,
-	    person.bio,
-	    CASE WHEN registration.speaker_record THEN 'yes' ELSE 'NO' END
-	    as "record?",
-	    CASE WHEN registration.speaker_video_release THEN 'yes' ELSE 'NO' END
-	    as "publish?",
-	    CASE WHEN registration.speaker_slides_release THEN 'yes' ELSE 'NO' END
-	    as "slides?"
-	  FROM proposal
-	    LEFT JOIN person_proposal_map
-	      ON(person_proposal_map.proposal_id=proposal.id)
-	    LEFT JOIN person
-	      ON (person.id=person_proposal_map.person_id)
-	    LEFT JOIN registration
-	      ON (registration.person_id = person.id)
-	  WHERE proposal.accepted=true and proposal_type_id<>2
-	  GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
-	    proposal.abstract, person.firstname, person.lastname,
-	    person.bio, registration.speaker_record,
-	    registration.speaker_video_release,
-	    registration.speaker_slides_release
-	  ORDER BY theatre, scheduled ASC;
-	""")
-	for i in xrange(1, len(c.data)).__reversed__():
-	    if c.data[i][2] == c.data[i-1][2]:
-	        c.data[i] = ('', )*5 + tuple(c.data[i])[5:]
-	c.columns = ('theatre', 'start', 'id', 'title', 'abstract',
-			'speaker', 'bio', 'record?', 'publish?', 'slides?')
-	return render_response('admin/table.myt')
+        # note: for AV purposes, this has been made to include tutorials
+        c.data = sql_data("""
+          SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
+          proposal.id, proposal.title, proposal.abstract,
+            person.firstname || ' ' || person.lastname as name,
+            person.bio,
+            CASE WHEN registration.speaker_record THEN 'yes' ELSE 'NO' END
+            as "record?",
+            CASE WHEN registration.speaker_video_release THEN 'yes' ELSE 'NO' END
+            as "publish?",
+            CASE WHEN registration.speaker_slides_release THEN 'yes' ELSE 'NO' END
+            as "slides?"
+          FROM proposal
+            LEFT JOIN person_proposal_map
+              ON(person_proposal_map.proposal_id=proposal.id)
+            LEFT JOIN person
+              ON (person.id=person_proposal_map.person_id)
+            LEFT JOIN registration
+              ON (registration.person_id = person.id)
+          WHERE proposal.accepted=true and proposal_type_id<>2
+          GROUP BY theatre, start, scheduled, proposal.id, proposal.title, 
+            proposal.abstract, person.firstname, person.lastname,
+            person.bio, registration.speaker_record,
+            registration.speaker_video_release,
+            registration.speaker_slides_release
+          ORDER BY theatre, scheduled ASC;
+        """)
+        for i in xrange(1, len(c.data)).__reversed__():
+            if c.data[i][2] == c.data[i-1][2]:
+                c.data[i] = ('', )*5 + tuple(c.data[i])[5:]
+        c.columns = ('theatre', 'start', 'id', 'title', 'abstract',
+                        'speaker', 'bio', 'record?', 'publish?', 'slides?')
+        return render_response('admin/table.myt')
 
     def acc_papers_details(self):
         """ Accepted papers with bios and abstracts [CFP] """
-	return sql_response("""
-	  SELECT proposal.id, proposal.title,
-	    person.firstname || ' ' || person.lastname as name,
-	    proposal.abstract, person.bio
-	  FROM proposal
-	    LEFT JOIN person_proposal_map
-	      ON(person_proposal_map.proposal_id=proposal.id)
-	    LEFT JOIN person
-	      ON (person.id=person_proposal_map.person_id)
-	    LEFT JOIN assistance_type
-	      ON(assistance_type.id=proposal.assistance_type_id)
-	  WHERE proposal.accepted=true and proposal_type_id=1
-	  GROUP BY proposal.id, proposal.title, 
-	    person.firstname, person.lastname, assistance_type.name,
-	    proposal.abstract, person.bio
-	  ORDER BY proposal.id ASC;
-	""")
+        return sql_response("""
+          SELECT proposal.id, proposal.title,
+            person.firstname || ' ' || person.lastname as name,
+            proposal.abstract, person.bio
+          FROM proposal
+            LEFT JOIN person_proposal_map
+              ON(person_proposal_map.proposal_id=proposal.id)
+            LEFT JOIN person
+              ON (person.id=person_proposal_map.person_id)
+            LEFT JOIN assistance_type
+              ON(assistance_type.id=proposal.assistance_type_id)
+          WHERE proposal.accepted=true and proposal_type_id=1
+          GROUP BY proposal.id, proposal.title, 
+            person.firstname, person.lastname, assistance_type.name,
+            proposal.abstract, person.bio
+          ORDER BY proposal.id ASC;
+        """)
     def acc_papers_tutes(self):
         """ Accepted papers/tutes with type and travel assistance status
-	[CFP,speaker]"""
-	return sql_response("""
-	  SELECT proposal.id, proposal.title,
-	    person.firstname || ' ' || person.lastname as name,
-	    assistance_type.name as assistance, proposal_type.name as type
-	  FROM proposal
-	    LEFT JOIN proposal_type
-	      ON(proposal.proposal_type_id=proposal_type.id)
-	    LEFT JOIN person_proposal_map
-	      ON(person_proposal_map.proposal_id=proposal.id)
-	    LEFT JOIN person
-	      ON (person.id=person_proposal_map.person_id)
-	    LEFT JOIN assistance_type
-	      ON(assistance_type.id=proposal.assistance_type_id)
-	  WHERE proposal.accepted=true
-	  GROUP BY proposal.id, proposal.title, proposal_type.name,
-	    person.firstname, person.lastname, assistance_type.name
-	  ORDER BY proposal.id ASC;
-	""")
+        [CFP,speaker]"""
+        return sql_response("""
+          SELECT proposal.id, proposal.title,
+            person.firstname || ' ' || person.lastname as name,
+            assistance_type.name as assistance, proposal_type.name as type
+          FROM proposal
+            LEFT JOIN proposal_type
+              ON(proposal.proposal_type_id=proposal_type.id)
+            LEFT JOIN person_proposal_map
+              ON(person_proposal_map.proposal_id=proposal.id)
+            LEFT JOIN person
+              ON (person.id=person_proposal_map.person_id)
+            LEFT JOIN assistance_type
+              ON(assistance_type.id=proposal.assistance_type_id)
+          WHERE proposal.accepted=true
+          GROUP BY proposal.id, proposal.title, proposal_type.name,
+            person.firstname, person.lastname, assistance_type.name
+          ORDER BY proposal.id ASC;
+        """)
     def rego_great_big_dump(self):
         """ All registrations with everything [rego]"""
-	return sql_response("""
-	  select * from registration full outer join person on
-	  person_id=person.id full outer join invoice on person.id=invoice.person_id
-	  full outer join payment_received on invoice.id = payment_received.invoice_id;
-	""")
+        return sql_response("""
+          select * from registration full outer join person on
+          person_id=person.id full outer join invoice on person.id=invoice.person_id
+          full outer join payment_received on invoice.id = payment_received.invoice_id;
+        """)
 
     def draft_timetable(self):
         """ Draft schedule for the conference """
         def talk(id):
-	    proposal = self.dbsession.query(Proposal).get(id)
-	    if proposal==None:
-	      return '[%s]'%id
-	    res = proposal.title
-	    if len(proposal.people)>0:
-	        res += ' &#8212; ' + ', '.join([auth.firstname + ' ' + auth.lastname for auth in proposal.people])
-	    return res
+            proposal = self.dbsession.query(Proposal).get(id)
+            if proposal==None:
+              return '[%s]'%id
+            res = proposal.title
+            if len(proposal.people)>0:
+                res += ' &#8212; ' + ', '.join([auth.firstname + ' ' + auth.lastname for auth in proposal.people])
+            return res
         c.talk = talk
-	return render_response('admin/draft_timetable.myt')
+        return render_response('admin/draft_timetable.myt')
 
     def t_shirts(self):
         """ T-shirts that have been ordered and paid for [rego] """
-	normal = {}; organiser = {}; extra = []
-	total_n = 0; total_o = 0; total_e = 0
-	for r in self.dbsession.query(Registration).all():
-	    paid = r.person.invoices and r.person.invoices[0].paid()
-	    if paid or r.person.is_speaker():
-	        if r.type in ("Monday pass", "Tuesday pass"):
-		    pass # sorry, had to say it :-)
-		else:
-		    normal[r.teesize] = normal.get(r.teesize, 0) + 1
-		    total_n += 1
-		if 'organiser' in [rl.name for rl in r.person.roles]:
-		    organiser[r.teesize] = organiser.get(r.teesize, 0) + 1
-		    total_o += 1
-	    if paid and r.extra_tee_count:
-	        extra.append((r.id, r.extra_tee_count, r.extra_tee_sizes,
-				           r.person.email_address, r.teesize))
-		total_e += int(r.extra_tee_count)
-	        
+        normal = {}; organiser = {}; extra = []
+        total_n = 0; total_o = 0; total_e = 0
+        for r in self.dbsession.query(Registration).all():
+            paid = r.person.invoices and r.person.invoices[0].paid()
+            if paid or r.person.is_speaker():
+                if r.type in ("Monday pass", "Tuesday pass"):
+                    pass # sorry, had to say it :-)
+                else:
+                    normal[r.teesize] = normal.get(r.teesize, 0) + 1
+                    total_n += 1
+                if 'organiser' in [rl.name for rl in r.person.roles]:
+                    organiser[r.teesize] = organiser.get(r.teesize, 0) + 1
+                    total_o += 1
+            if paid and r.extra_tee_count:
+                extra.append((r.id, r.extra_tee_count, r.extra_tee_sizes,
+                                           r.person.email_address, r.teesize))
+                total_e += int(r.extra_tee_count)
+                
         c.text = '<h2>Normal T-shirts</h2>'
-	c.text += '''(Includes organisers. So we can blend.)'''
-	c.columns = 'M/F', 'style', 'size', 'count'
-	c.data = [s.split('_') + [cnt] for (s, cnt) in normal.items()]
-	c.data.sort()
+        c.text += '''(Includes organisers. So we can blend.)'''
+        c.columns = 'M/F', 'style', 'size', 'count'
+        c.data = [s.split('_') + [cnt] for (s, cnt) in normal.items()]
+        c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
         c.text += '<h2>Organiser T-shirts</h2>'
-	c.text += '''(Based on the 'organiser' role in zookeepr.)'''
-	c.columns = 'M/F', 'style', 'size', 'count'
-	c.data = [s.split('_') + [cnt] for (s, cnt) in organiser.items()]
-	c.data.sort()
+        c.text += '''(Based on the 'organiser' role in zookeepr.)'''
+        c.columns = 'M/F', 'style', 'size', 'count'
+        c.data = [s.split('_') + [cnt] for (s, cnt) in organiser.items()]
+        c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
-	c.text += '<br/><h2>Extra T-shirts</h2>'
-	c.text += '''(The "normal" column is for reference only; it's
-			     already included in the first table above.)'''
-	c.columns = 'rego', 'count', 'styles and sizes', 'e-mail', 'normal'
-	c.data = extra
-	c.data.sort()
+        c.text += '<br/><h2>Extra T-shirts</h2>'
+        c.text += '''(The "normal" column is for reference only; it's
+                             already included in the first table above.)'''
+        c.columns = 'rego', 'count', 'styles and sizes', 'e-mail', 'normal'
+        c.data = extra
+        c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
-	c.text += '<br/><h2>Totals</h2>'
-	c.columns = ('type', 'total')
-	c.data = [
-	  ('Normal', total_n),
-	  ('Extra', total_e),
-	  ('All', total_n + total_e),
-	  ('Organiser', total_o),
-	]
-	return render_response('admin/table.myt')
+        c.text += '<br/><h2>Totals</h2>'
+        c.columns = ('type', 'total')
+        c.data = [
+          ('Normal', total_n),
+          ('Extra', total_e),
+          ('All', total_n + total_e),
+          ('Organiser', total_o),
+        ]
+        return render_response('admin/table.myt')
 
     def t_shirts_F_long_18(self):
         """ T-shirts that have been ordered and paid for in size F_long_18
-	[rego] """
-	c.data = []
-	for r in self.dbsession.query(Registration).all():
-	    paid = r.person.invoices and r.person.invoices[0].paid()
-	    if paid or r.person.is_speaker():
-	        if r.type in ("Monday pass", "Tuesday pass"):
-		    pass # sorry, had to say it :-)
-		elif r.teesize == 'F_long_18':
-		    c.data += [[r.teesize, r.person.firstname,
-				r.person.lastname, r.person.email_address]]
-		    if 'organiser' in [rl.name for rl in r.person.roles]:
-			c.data[-1] += ['organiser']
-	        
+        [rego] """
+        c.data = []
+        for r in self.dbsession.query(Registration).all():
+            paid = r.person.invoices and r.person.invoices[0].paid()
+            if paid or r.person.is_speaker():
+                if r.type in ("Monday pass", "Tuesday pass"):
+                    pass # sorry, had to say it :-)
+                elif r.teesize == 'F_long_18':
+                    c.data += [[r.teesize, r.person.firstname,
+                                r.person.lastname, r.person.email_address]]
+                    if 'organiser' in [rl.name for rl in r.person.roles]:
+                        c.data[-1] += ['organiser']
+                
         c.text = """<h2>F_long_18 T-shirts</h2> Note: <b>does not include
-	extra</b> t-shirts."""
-	c.data.sort()
-	return render_response('admin/table.myt')
+        extra</b> t-shirts."""
+        c.data.sort()
+        return render_response('admin/table.myt')
 
     def countdown(self):
         """ How many days until conference opens """
-	timeleft = lca_info['date'] - datetime.now()
-	res = Response ("%.1f days" % (timeleft.days +
-					       timeleft.seconds / (3600*24.)))
-	res.headers['Refresh'] = 3600
-	return res
+        timeleft = lca_info['date'] - datetime.now()
+        res = Response ("%.1f days" % (timeleft.days +
+                                               timeleft.seconds / (3600*24.)))
+        res.headers['Refresh'] = 3600
+        return res
 
     def unregistered_team(self):
         """ Listing of team members (with "team" role)
-					  who haven't registered [rego] """
-	c.data = []
-	for p in self.dbsession.query(Person).all():
+                                          who haven't registered [rego] """
+        c.data = []
+        for p in self.dbsession.query(Person).all():
             if 'team' in [rl.name for rl in p.roles]:
-	        if not p.registration:
-		    c.data.append((
-		      p.firstname + ' ' + p.lastname,
-		      p.email_address,
-		    ))
-	return render_response('admin/table.myt')
+                if not p.registration:
+                    c.data.append((
+                      p.firstname + ' ' + p.lastname,
+                      p.email_address,
+                    ))
+        return render_response('admin/table.myt')
 
     def speaker_emails(self):
         """ Listing of speakers for bulk-mailing [speaker] """
-	c.data = []
-	c.noescape = True
+        c.data = []
+        c.noescape = True
         speaker_list = []
-	for p in self.dbsession.query(Person).all():
-	    if not p.is_speaker(): continue
-	    speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
+        for p in self.dbsession.query(Person).all():
+            if not p.is_speaker(): continue
+            speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
         speaker_list.sort()
 
         for (sortkey, p) in speaker_list:
-	    res = [p.firstname, p.lastname,
-	    '<a href="/admin/rego_lookup?id=%d">%d</a>' % (p.id, p.id),
-	    p.email_address]
+            res = [p.firstname, p.lastname,
+            '<a href="/admin/rego_lookup?id=%d">%d</a>' % (p.id, p.id),
+            p.email_address]
 
-	    talks = [talk for talk in p.proposals if talk.accepted]
-	    res.append('; '.join([t.title for t in talks]))
-	    res.append('; '.join([
-		'<a href="/programme/detail?TalkID=%d">%s</a>'
-				% (t.id, t.id) for t in talks]))
-	    c.data.append(res)
+            talks = [talk for talk in p.proposals if talk.accepted]
+            res.append('; '.join([t.title for t in talks]))
+            res.append('; '.join([
+                '<a href="/programme/detail?TalkID=%d">%s</a>'
+                                % (t.id, t.id) for t in talks]))
+            c.data.append(res)
 
-	c.columns = ('first name', 'last name', 'id', 'email', 'talks',
-	'ids')
+        c.columns = ('first name', 'last name', 'id', 'email', 'talks',
+        'ids')
         c.text = '''
-	    List of speakers for open-day mail-out (and probably other
-	    purposes).
-	'''
-	return render_response('admin/table.myt')
+            List of speakers for open-day mail-out (and probably other
+            purposes).
+        '''
+        return render_response('admin/table.myt')
 
     def speakers(self):
         """ Listing of speakers and various stuff about them [speaker] """
-	c.data = []
-	c.noescape = True
-	cons_list = ('speaker_record', 'speaker_video_release',
-						  'speaker_slides_release')
+        c.data = []
+        c.noescape = True
+        cons_list = ('speaker_record', 'speaker_video_release',
+                                                  'speaker_slides_release')
         speaker_list = []
-	for p in self.dbsession.query(Person).all():
-	    if not p.is_speaker(): continue
-	    speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
+        for p in self.dbsession.query(Person).all():
+            if not p.is_speaker(): continue
+            speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
         speaker_list.sort()
 
         for (sortkey, p) in speaker_list:
-	    res = [
+            res = [
       '%s %s (<a href="/profile/%d">%d</a>, <a href="mailto:%s">email</a>)'
-		  % (p.firstname, p.lastname, p.id, p.id, p.email_address)
-	    ]
-	    if p.bio:
-	      res.append(len(p.bio))
-	    else:
-	      res.append('-')
-	    talks = [talk for talk in p.proposals if talk.accepted]
-	    res.append('; '.join([
-		'<a href="/programme/detail?TalkID=%d">%s</a>'
-				% (t.id, h.truncate(t.title)) for t in talks]))
-	    res.append('; '.join([t.assistance.name.replace(' assistance', '')
-							      for t in talks]))
-	    if p.registration:
-	      if p.invoices:
-		if p.invoices[0].paid():
-		  res.append('OK')
-		else:
-		  res.append('<a href="/invoice/%d">owes $%.2f</a>'%(
-			   p.invoices[0].id, p.invoices[0].total()/100.0) )
-	      else:
-		res.append('no invoice')
+                  % (p.firstname, p.lastname, p.id, p.id, p.email_address)
+            ]
+            if p.bio:
+              res.append(len(p.bio))
+            else:
+              res.append('-')
+            talks = [talk for talk in p.proposals if talk.accepted]
+            res.append('; '.join([
+                '<a href="/programme/detail?TalkID=%d">%s</a>'
+                                % (t.id, h.truncate(t.title)) for t in talks]))
+            res.append('; '.join([t.assistance.name.replace(' assistance', '')
+                                                              for t in talks]))
+            if p.registration:
+              if p.invoices:
+                if p.invoices[0].paid():
+                  res.append('OK')
+                else:
+                  res.append('<a href="/invoice/%d">owes $%.2f</a>'%(
+                           p.invoices[0].id, p.invoices[0].total()/100.0) )
+              else:
+                res.append('no invoice')
 
               res[-1] += ' (<a href="/registration/%d">%d</a>)' % (
-				     p.registration.id, p.registration.id )
+                                     p.registration.id, p.registration.id )
 
               cons = [con.replace('_', ' ') for con in cons_list
-					   if getattr(p.registration, con)] 
+                                           if getattr(p.registration, con)] 
               if len(cons)==3:
-	        res.append('all')
-	      elif len(cons)==0:
-	        res.append('-')
-	      else:
-	        res.append(' and '.join(cons))
+                res.append('all')
+              elif len(cons)==0:
+                res.append('-')
+              else:
+                res.append(' and '.join(cons))
 
-	      if p.registration.accommodation:
-	        acc = p.registration.accommodation.name
-		if p.registration.accommodation.option:
-		  acc += ' (%s)' % p.registration.accommodation.option
-		acc += ' [%d&#8211;%d]' % (p.registration.checkin,
-						   p.registration.checkout)
-	        res.append(acc)
-	      else:
-	        res.append('-')
-	      res.append('; '.join([n.note for n in p.registration.notes]))
-	    else:
-	      res+=['no rego', '', 'no rego', '']
-	    #res.append(`dir(p.registration)`)
-	    c.data.append(res)
+              if p.registration.accommodation:
+                acc = p.registration.accommodation.name
+                if p.registration.accommodation.option:
+                  acc += ' (%s)' % p.registration.accommodation.option
+                acc += ' [%d&#8211;%d]' % (p.registration.checkin,
+                                                   p.registration.checkout)
+                res.append(acc)
+              else:
+                res.append('-')
+              res.append('; '.join([n.note for n in p.registration.notes]))
+            else:
+              res+=['no rego', '', 'no rego', '']
+            #res.append(`dir(p.registration)`)
+            c.data.append(res)
 
-	# sort by rego status (while that's important)
-	def my_cmp(a,b):
-	    return cmp('OK' in a[4], 'OK' in b[4])
-	c.data.sort(my_cmp)
+        # sort by rego status (while that's important)
+        def my_cmp(a,b):
+            return cmp('OK' in a[4], 'OK' in b[4])
+        c.data.sort(my_cmp)
 
-	c.columns = ('name', 'bio', 'talk', 'assist',
-	             'rego', 'c', 'accom', 'rego notes')
+        c.columns = ('name', 'bio', 'talk', 'assist',
+                     'rego', 'c', 'accom', 'rego notes')
         c.text = '''
-	  Fields:
-	    bio = length of bio (characters);
-	    c = consent for recording/video/slides
-	'''
-	return render_response('admin/table.myt')
+          Fields:
+            bio = length of bio (characters);
+            c = consent for recording/video/slides
+        '''
+        return render_response('admin/table.myt')
     def special_requirements(self):
         """ Special requirements and diets [rego,events] """
-	c.data = []
+        c.data = []
         for (r_id,) in sql_data(r"""
-	  select id from registration
-	  where (diet ~ '.*\\S.*' or special ~ '.*\\S.*')
-	  order by id
-	"""):
-	  r = self.dbsession.query(Registration).get(r_id)
-	  p = r.person
-	  if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
-	    if p.is_speaker():
-	      speaker = 's'
-	    else:
-	      speaker = ''
-	    c.data.append((
-	      '<a href="/registration/%d">%d</a>'%(r.id, r.id),
-	      '<a href="mailto:%s">%s %s'% (h.esc(p.email_address),
-				    h.esc(p.firstname), h.esc(p.lastname)),
-	      r.type,
+          select id from registration
+          where (diet ~ '.*\\S.*' or special ~ '.*\\S.*')
+          order by id
+        """):
+          r = self.dbsession.query(Registration).get(r_id)
+          p = r.person
+          if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+            if p.is_speaker():
+              speaker = 's'
+            else:
+              speaker = ''
+            c.data.append((
+              '<a href="/registration/%d">%d</a>'%(r.id, r.id),
+              '<a href="mailto:%s">%s %s'% (h.esc(p.email_address),
+                                    h.esc(p.firstname), h.esc(p.lastname)),
+              r.type,
               speaker,
-	      h.esc(r.dinner),
-	      h.esc(r.diet),
-	      h.esc(r.special)
-	    ))
-	c.noescape = True
-	c.text = 's = speaker; ED = extra dinners'
-	c.columns = ('rego', 'name / email', 'rego type', 's', 'ED', 'diet', 'special reqs')
-	return render_response('admin/table.myt')
+              h.esc(r.dinner),
+              h.esc(r.diet),
+              h.esc(r.special)
+            ))
+        c.noescape = True
+        c.text = 's = speaker; ED = extra dinners'
+        c.columns = ('rego', 'name / email', 'rego type', 's', 'ED', 'diet', 'special reqs')
+        return render_response('admin/table.myt')
     def payments_received(self):
         """ Payments received, as known by zookeepr [rego] """
-	return sql_response("""
-	  select invoice_id, trans_id, amount, auth_num, status, result, ip_address, to_char(creation_timestamp, 'YYYY-MM-DD') as date
-	  from payment_received
-	  order by trans_id;
-	""")
+        return sql_response("""
+          select invoice_id, trans_id, amount, auth_num, status, result, ip_address, to_char(creation_timestamp, 'YYYY-MM-DD') as date
+          from payment_received
+          order by trans_id;
+        """)
 
     def payments_received_daily(self):
         """ Payments received, as known by zookeepr, daily total [rego] """
-	return sql_response("""
-	  select sum(amount) as "daily total",
-	         to_char(creation_timestamp, 'YYYY-MM-DD') as date
-	  from payment_received
-	  group by date
-	  order by date;
-	""")
+        return sql_response("""
+          select sum(amount) as "daily total",
+                 to_char(creation_timestamp, 'YYYY-MM-DD') as date
+          from payment_received
+          group by date
+          order by date;
+        """)
 
     def tentative_regos(self):
         """ People who have tentatively registered but not paid and aren't
-	speakers and don't have a voucher code. [rego] """
-	c.data = []
-	for r in self.dbsession.query(Registration).all():
-	    if r.voucher: continue
-	    if r.type=='Fairy Penguin Sponsor':
-	      continue
-	    if r.type in ('Monday only', 'Tuesday only', 'Volunteer'):
-	      continue
-	    p = r.person
-	    if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
-	      continue
+        speakers and don't have a voucher code. [rego] """
+        c.data = []
+        for r in self.dbsession.query(Registration).all():
+            if r.voucher: continue
+            if r.type=='Fairy Penguin Sponsor':
+              continue
+            if r.type in ('Monday only', 'Tuesday only', 'Volunteer'):
+              continue
+            p = r.person
+            if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+              continue
             if 'miniconf' in [rl.name for rl in p.roles]:
-	      continue
-	    if r.creation_timestamp.day<3 or r.creation_timestamp.month!=1:
-	      continue
+              continue
+            if r.creation_timestamp.day<3 or r.creation_timestamp.month!=1:
+              continue
             if p.invoices:
-	      amt = "$%.2f" % (p.invoices[0].total()/100.0)
-	    else:
-	      amt = '-'
-	    if r.voucher_code:
-	      if r.voucher:
-		dc = r.voucher.percentage
+              amt = "$%.2f" % (p.invoices[0].total()/100.0)
+            else:
+              amt = '-'
+            if r.voucher_code:
+              if r.voucher:
+                dc = r.voucher.percentage
               else:
-	        dc = 'invalid'
-	    else:
-	      dc = '-'
+                dc = 'invalid'
+            else:
+              dc = '-'
             if True or r.type in ("Professional", "Hobbyist"):
-	      c.data.append((r.id, p.id, `p.activated`[0], r.type, dc, amt,
-				p.email_address, p.firstname, p.lastname,))
+              c.data.append((r.id, p.id, `p.activated`[0], r.type, dc, amt,
+                                p.email_address, p.firstname, p.lastname,))
         def lastcmp(a, b):
-	  return cmp(a[-1], b[-1]) or cmp(a, b)
+          return cmp(a[-1], b[-1]) or cmp(a, b)
         c.data.sort(lastcmp)
-	c.text = """ People who have tentatively registered but not paid
-	and aren't speakers. """
-	# <b>Professional and Hobbyist only</b> at the
-	# moment because those are the ones to remind about earlybird expiry.
-	c.text += """ Excludes people with voucher codes. """
-	c.text += """ Excludes miniconf orgs. """
-	c.text += """ Excludes fairy penguins. """
-	c.text += """ Excludes day tickets and volunteers. """
-	c.text += """ Excludes people registering before 3.1.2008. """
-	c.text += """ The "act?" column lists whether the account has been
-	activated; dc=voucher code (percentage).  """
-	c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
-					  'email', 'firstname', 'lastname',)
-	return render_response('admin/table.myt')
+        c.text = """ People who have tentatively registered but not paid
+        and aren't speakers. """
+        # <b>Professional and Hobbyist only</b> at the
+        # moment because those are the ones to remind about earlybird expiry.
+        c.text += """ Excludes people with voucher codes. """
+        c.text += """ Excludes miniconf orgs. """
+        c.text += """ Excludes fairy penguins. """
+        c.text += """ Excludes day tickets and volunteers. """
+        c.text += """ Excludes people registering before 3.1.2008. """
+        c.text += """ The "act?" column lists whether the account has been
+        activated; dc=voucher code (percentage).  """
+        c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
+                                          'email', 'firstname', 'lastname',)
+        return render_response('admin/table.myt')
 
     def newcomers(self):
         """ People who have not ticked any of the "previously attended"
-	boxes. [rego] """
-	c.text = """ People who have not ticked any of the "previously
-	attended" boxes. """
-	c.data = []
-	for r in self.dbsession.query(Registration).all():
-	    if r.prevlca:
-	        continue
-	    p = r.person
-	    if p.is_speaker():
-	        if r.type != 'Speaker':
-		    comment = ' (speaker)'
-		else:
-		    comment = ''
-	    elif p.invoices and p.invoices[0].paid():
-	        comment = ''
-	    else:
-	        continue
+        boxes. [rego] """
+        c.text = """ People who have not ticked any of the "previously
+        attended" boxes. """
+        c.data = []
+        for r in self.dbsession.query(Registration).all():
+            if r.prevlca:
+                continue
+            p = r.person
+            if p.is_speaker():
+                if r.type != 'Speaker':
+                    comment = ' (speaker)'
+                else:
+                    comment = ''
+            elif p.invoices and p.invoices[0].paid():
+                comment = ''
+            else:
+                continue
             c.data.append((p.lastname.lower(), p.firstname.lower(), p.id,
-							    r, p, comment))
+                                                            r, p, comment))
         c.data.sort()
-	c.data = [(p.id, r.id, p.firstname + ' ' + p.lastname, p.email_address,
-							   r.type + comment)
-	    for (last, first, id, r, p, comment) in c.data]
+        c.data = [(p.id, r.id, p.firstname + ' ' + p.lastname, p.email_address,
+                                                           r.type + comment)
+            for (last, first, id, r, p, comment) in c.data]
         c.columns = ('person', 'rego', 'name', 'email', 'type')
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
     def partners_programme(self):
         """ Partners programme information [PP] """
 
-	fields = ('pp_adults', 'kids_12_17', 'kids_10_11', 'kids_7_9',
-						    'kids_4_6', 'kids_0_3')
+        fields = ('pp_adults', 'kids_12_17', 'kids_10_11', 'kids_7_9',
+                                                    'kids_4_6', 'kids_0_3')
 
-	c.text = """ Data for the partners programme. Note that the partner
-	e-mail address is not validated in any way, unlike the rego e-mail.
-	The last row is totals. The last column contains the "diet" and
-	"special requirements" from the rego, in case they refer to the
-	partner (there aren't separate ones for PP). """
+        c.text = """ Data for the partners programme. Note that the partner
+        e-mail address is not validated in any way, unlike the rego e-mail.
+        The last row is totals. The last column contains the "diet" and
+        "special requirements" from the rego, in case they refer to the
+        partner (there aren't separate ones for PP). """
 
-	c.data = []
-	totals = dict([(f, 0) for f in fields])
-	for r in self.dbsession.query(Registration).all():
-	    comments = []
-	    if not r.partner_email:
-	        continue
-	    p = r.person
-	    if p.is_speaker():
-		comments += ['speaker partner']
-	    elif p.invoices and p.invoices[0].paid():
-	        pass
-	    else:
-	        continue
+        c.data = []
+        totals = dict([(f, 0) for f in fields])
+        for r in self.dbsession.query(Registration).all():
+            comments = []
+            if not r.partner_email:
+                continue
+            p = r.person
+            if p.is_speaker():
+                comments += ['speaker partner']
+            elif p.invoices and p.invoices[0].paid():
+                pass
+            else:
+                continue
             row = [r.partner_email] 
-	    row += [getattr(r, f) for f in fields]
-	    for f in fields:
-	        if getattr(r, f):
-		    totals[f] += getattr(r, f)
-	    if r.diet:
-	        comments += ['rego diet: ' + r.diet]
-	    if r.special:
-	        comments += ['rego special: ' + r.special]
-	    row += [p.email_address, '; '.join(comments)]
+            row += [getattr(r, f) for f in fields]
+            for f in fields:
+                if getattr(r, f):
+                    totals[f] += getattr(r, f)
+            if r.diet:
+                comments += ['rego diet: ' + r.diet]
+            if r.special:
+                comments += ['rego special: ' + r.special]
+            row += [p.email_address, '; '.join(comments)]
             c.data.append(row)
 
         row = [u'\u2211: %s' % sum(totals.values())]
-	row += [totals[f] for f in fields]
-	c.data.append(row)
+        row += [totals[f] for f in fields]
+        c.data.append(row)
 
-	c.columns = ['email'] 
-	c.columns += [re.sub('^.*?_', '', f).replace('_', '-') for f in fields]
-	c.columns += ['rego email', 'comment'] 
-	return render_response('admin/table.myt')
+        c.columns = ['email'] 
+        c.columns += [re.sub('^.*?_', '', f).replace('_', '-') for f in fields]
+        c.columns += ['rego email', 'comment'] 
+        return render_response('admin/table.myt')
 
     def accom_summary(self):
         """ Summary of accommodation. [accom] """
-	def blank_accom():
-	  blank = {}
-	  for d in (27,28,29,30,31,1,2,3):
-	    blank[d] = {'ci': 0, 'co': 0}
-	  return blank
+        def blank_accom():
+          blank = {}
+          for d in (27,28,29,30,31,1,2,3):
+            blank[d] = {'ci': 0, 'co': 0}
+          return blank
 
-	c.data = []
-	d = {}
-	for r in self.dbsession.query(Registration).all():
-	    p = r.person
-	    if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
-	      continue
-	    if not r.accommodation: continue
-	    if not d.has_key(r.accommodation.name):
-	      d[r.accommodation.name] = blank_accom()
-	    if not d[r.accommodation.name].has_key(r.checkin):
-	      d[r.accommodation.name][r.checkin] = {'ci': 0, 'co': 0}
-	    if not d[r.accommodation.name].has_key(r.checkout):
-	      d[r.accommodation.name][r.checkout] = {'ci': 0, 'co': 0}
-	    d[r.accommodation.name][r.checkin]['ci'] += 1
-	    d[r.accommodation.name][r.checkout]['co'] += 1
+        c.data = []
+        d = {}
+        for r in self.dbsession.query(Registration).all():
+            p = r.person
+            if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
+              continue
+            if not r.accommodation: continue
+            if not d.has_key(r.accommodation.name):
+              d[r.accommodation.name] = blank_accom()
+            if not d[r.accommodation.name].has_key(r.checkin):
+              d[r.accommodation.name][r.checkin] = {'ci': 0, 'co': 0}
+            if not d[r.accommodation.name].has_key(r.checkout):
+              d[r.accommodation.name][r.checkout] = {'ci': 0, 'co': 0}
+            d[r.accommodation.name][r.checkin]['ci'] += 1
+            d[r.accommodation.name][r.checkout]['co'] += 1
 
-	def date_sort(a, b):
-	  if a<15: a+=100
-	  if b<15: b+=100
-	  return cmp(a, b)
+        def date_sort(a, b):
+          if a<15: a+=100
+          if b<15: b+=100
+          return cmp(a, b)
 
         cum = 0
-	for name in d.keys():
-	  dates = d[name].keys()
-	  dates.sort(date_sort)
-	  for date in dates:
-	    ci = d[name][date]['ci']; co = d[name][date]['co']
-	    cum += ci - co
-	    c.data.append((name, date, ci, co, cum))
-	  if cum != 0:
-	    c.data.append(('error! in/out mismatch!', '', '', cum, 0))
-	    cum = 0
+        for name in d.keys():
+          dates = d[name].keys()
+          dates.sort(date_sort)
+          for date in dates:
+            ci = d[name][date]['ci']; co = d[name][date]['co']
+            cum += ci - co
+            c.data.append((name, date, ci, co, cum))
+          if cum != 0:
+            c.data.append(('error! in/out mismatch!', '', '', cum, 0))
+            cum = 0
 
         c.text = """ Summary of accommodation. Summarises how many people
-	are checking in and out of each accommodation, and therefore how
-	many will be sleeping there that night. Note: skips days outside
-	the conf on which there is no change. """
+        are checking in and out of each accommodation, and therefore how
+        many will be sleeping there that night. Note: skips days outside
+        the conf on which there is no change. """
         c.columns = 'where', 'day', 'in', 'out', 'beds'
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def accom_details(self):
         """ List of accommodation. [accom] """
-	c.data = []
-	d = {}
-	for r in self.dbsession.query(Registration).all():
-	    p = r.person
-	    if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
-	      continue
-	    if not r.accommodation: continue
-	    comments = []
-	    if r.diet: comments.append('diet: '+r.diet)
-	    if r.special: comments.append('special: '+r.special)
-	    comments = '; '.join(comments)
-	    c.data.append((r.accommodation.name, p.firstname, p.lastname,
-		p.email_address, p.phone, r.checkin, r.checkout, comments))
+        c.data = []
+        d = {}
+        for r in self.dbsession.query(Registration).all():
+            p = r.person
+            if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
+              continue
+            if not r.accommodation: continue
+            comments = []
+            if r.diet: comments.append('diet: '+r.diet)
+            if r.special: comments.append('special: '+r.special)
+            comments = '; '.join(comments)
+            c.data.append((r.accommodation.name, p.firstname, p.lastname,
+                p.email_address, p.phone, r.checkin, r.checkout, comments))
 
-	def my_cmp(a, b):
-	  if cmp(a[0], b[0]):
-	      return cmp(a[0], b[0])
-	  a_day = a[5]
-	  b_day = b[5]
-	  if a_day<15: a_day+=100
-	  if b_day<15: b_day+=100
-	  if cmp(a_day, b_day):
-	      return cmp(a_day, b_day)
-	  if cmp(a[2].lower(), b[2].lower()):
-	      return cmp(a[2].lower(), b[2].lower())
-	  return cmp(a, b)
+        def my_cmp(a, b):
+          if cmp(a[0], b[0]):
+              return cmp(a[0], b[0])
+          a_day = a[5]
+          b_day = b[5]
+          if a_day<15: a_day+=100
+          if b_day<15: b_day+=100
+          if cmp(a_day, b_day):
+              return cmp(a_day, b_day)
+          if cmp(a[2].lower(), b[2].lower()):
+              return cmp(a[2].lower(), b[2].lower())
+          return cmp(a, b)
 
-	c.data.sort(my_cmp)
+        c.data.sort(my_cmp)
 
-	c.text = """ List of accommodation. Sorted by location, checkin,
-	lastname. For totals, see the summary instead. """
+        c.text = """ List of accommodation. Sorted by location, checkin,
+        lastname. For totals, see the summary instead. """
 
         c.columns = ('where', 'first', 'last', 'email', 'phone', 'in',
-							  'out', 'comment')
-	return render_response('admin/table.myt')
+                                                          'out', 'comment')
+        return render_response('admin/table.myt')
 
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
-	in AV splash screens [CFP,AV] """
-	c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
-	c.talks += self.dbsession.query(Proposal).filter_by(proposal_type_id=4).all()
+        in AV splash screens [CFP,AV] """
+        c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
+        c.talks += self.dbsession.query(Proposal).filter_by(proposal_type_id=4).all()
 
-	res = Response(render('admin/acc_papers_xml.myt', fragment=True))
-	res.headers['Content-type']='text/plain; charset=utf-8'
-	return res
+        res = Response(render('admin/acc_papers_xml.myt', fragment=True))
+        res.headers['Content-type']='text/plain; charset=utf-8'
+        return res
     def paid_summary(self):
         """ Summary of paid invoices. [rego] """
-	def add(key, amt, qty):
-	    if amt==0: return
-	    amt /= 100.0
-	    if total.has_key(key):
-	        total[key][0] += qty
-	        total[key][1] += amt
-	    else:
-	        total[key] = [qty, amt]
+        def add(key, amt, qty):
+            if amt==0: return
+            amt /= 100.0
+            if total.has_key(key):
+                total[key][0] += qty
+                total[key][1] += amt
+            else:
+                total[key] = [qty, amt]
 
         keywords = ('Registration', 'Accommodation', 'Voucher', 'Partner',
-							       'earlybird')
+                                                               'earlybird')
 
-	total = {}
+        total = {}
 
-	for i in self.dbsession.query(Invoice).all():
-	    if not i.paid():
-	        continue
+        for i in self.dbsession.query(Invoice).all():
+            if not i.paid():
+                continue
             for ii in i.items:
-		desc = ii.description
-	        amt = ii.total()
-		add(desc, amt, ii.qty)
-		add(u'\u2211', amt, ii.qty)
-		for kw in keywords:
-		    if kw in desc:
-			add(u'\u2211 '+kw, amt, ii.qty)
+                desc = ii.description
+                amt = ii.total()
+                add(desc, amt, ii.qty)
+                add(u'\u2211', amt, ii.qty)
+                for kw in keywords:
+                    if kw in desc:
+                        add(u'\u2211 '+kw, amt, ii.qty)
         c.columns = 'description', 'count', 'Inc GST', 'Ex GST', 'GST'
         c.data = [(desc, qty, h.number_to_currency(amt),
-	           h.number_to_currency(amt * 10/11.),
-	           h.number_to_currency(amt / 11.))
-				   for (desc, (qty, amt)) in total.items()]
-	c.data.sort()
-	c.text = "Summary of paid invoices."
-	return render_response('admin/table.myt')
+                   h.number_to_currency(amt * 10/11.),
+                   h.number_to_currency(amt / 11.))
+                                   for (desc, (qty, amt)) in total.items()]
+        c.data.sort()
+        c.text = "Summary of paid invoices."
+        return render_response('admin/table.myt')
 
     def linux_australia_signup(self):
-	""" People who ticked "I want to sign up for (free) Linux Australia
-	membership!" [rego] """
+        """ People who ticked "I want to sign up for (free) Linux Australia
+        membership!" [rego] """
 
-	c.text = """ People who ticked "I want to sign up for (free) Linux
-	Australia membership!" (whether or not they then went on to pay for
-	the conference)."""
+        c.text = """ People who ticked "I want to sign up for (free) Linux
+        Australia membership!" (whether or not they then went on to pay for
+        the conference)."""
         c.data = []
-	for r in self.dbsession.query(Registration).all():
-	    if not r.lasignup:
-	        continue
-	    p = r.person
+        for r in self.dbsession.query(Registration).all():
+            if not r.lasignup:
+                continue
+            p = r.person
             c.data.append((
-	      p.firstname, p.lastname,
-	      p.email_address,
-	    ))
-	c.columns = 'first name', 'surname', 'email'
-	return render_response('admin/table.myt')
+              p.firstname, p.lastname,
+              p.email_address,
+            ))
+        c.columns = 'first name', 'surname', 'email'
+        return render_response('admin/table.myt')
 
     def miniconf_interest(self):
-	""" What people ticked for the "interested in miniconf" question.
-	[miniconf] """
-	count={}; lencount={}; total=0
-	for r in paid_regos(self):
-	    if r.miniconf:
-	        for mc in r.miniconf:
-		    count[mc] = count.get(mc, 0) + 1
-		length = len(r.miniconf)
-	    else:
-	        length = 0
-	    lencount[length] = lencount.get(length, 0) + 1
-	    total += 1
+        """ What people ticked for the "interested in miniconf" question.
+        [miniconf] """
+        count={}; lencount={}; total=0
+        for r in paid_regos(self):
+            if r.miniconf:
+                for mc in r.miniconf:
+                    count[mc] = count.get(mc, 0) + 1
+                length = len(r.miniconf)
+            else:
+                length = 0
+            lencount[length] = lencount.get(length, 0) + 1
+            total += 1
 
         c.text = "Which ones people selected."
         c.data = []
         for mc in count.keys():
-	    c.data += [(mc, count[mc], "%.1f%%"%(count[mc]*100.0/total))]
+            c.data += [(mc, count[mc], "%.1f%%"%(count[mc]*100.0/total))]
         c.data.sort()
-	c.text = render('admin/table.myt', fragment=True)
+        c.text = render('admin/table.myt', fragment=True)
 
         c.text += "How many people selected."
         c.data = []
         for l in lencount.keys():
-	    c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
+            c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
         c.data.sort()
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def voucher_code_NKA(self):
         """ data useful for reconciling NKA voucher codes [rego] """
         c.data = []
-	for r in self.dbsession.query(Registration).all():
-	    if not r.voucher_code:
-	        continue
-	    p = r.person
-	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id),
-		   r.type, r.voucher_code]
-	    if r.voucher:
-	      if r.voucher.percentage!=0:
-	        continue
+        for r in self.dbsession.query(Registration).all():
+            if not r.voucher_code:
+                continue
+            p = r.person
+            row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id),
+                   r.type, r.voucher_code]
+            if r.voucher:
+              if r.voucher.percentage!=0:
+                continue
               row.append(r.voucher.leader.firstname)
               row.append(r.voucher.comment)
-	    else:
-	      continue
-	    if p.is_speaker():
-	      row[1] += ' (speaker)'
-	    c.data.append(row)
+            else:
+              continue
+            if p.is_speaker():
+              row[1] += ' (speaker)'
+            c.data.append(row)
 
-	c.data.sort(lambda a, b:
-	    cmp('No Keynote Access' in a[1], 'No Keynote Access' in b[1])
-	    or cmp(a[-2:], b[-2:])
-	    or cmp(a, b))
+        c.data.sort(lambda a, b:
+            cmp('No Keynote Access' in a[1], 'No Keynote Access' in b[1])
+            or cmp(a[-2:], b[-2:])
+            or cmp(a, b))
         c.columns = 'rego',  'rego type', 'voucher code', 'leader', 'comment'
-	c.noescape = True
-	return render_response('admin/table.myt')
+        c.noescape = True
+        return render_response('admin/table.myt')
     def voucher_code_details(self):
         """ Have voucher code users paid their accom and other extras?
-	[rego] """
+        [rego] """
         c.data = []
-	for r in self.dbsession.query(Registration).all():
-	    if not r.voucher_code:
-	        continue
-	    p = r.person
-	    row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id), p.id,
-			   p.firstname + ' ' + p.lastname, r.voucher_code]
-	    if r.voucher:
-	      row.append(r.voucher.percentage)
-	    else:
-	      row.append('invalid')
-	    if p.invoices:
-	      if p.invoices[0].paid():
-		row.append('<a href="/invoice/%d">OK</a>'%p.invoices[0].id)
-	      else:
-		row.append('<a href="/invoice/%d">owes $%.2f</a>'%(
-			 p.invoices[0].id, p.invoices[0].total()/100.0) )
-	    else:
-	      row.append('no invoice')
-	    c.data.append(row)
+        for r in self.dbsession.query(Registration).all():
+            if not r.voucher_code:
+                continue
+            p = r.person
+            row = ['<a href="/registration/%d">%d</a>'%(r.id, r.id), p.id,
+                           p.firstname + ' ' + p.lastname, r.voucher_code]
+            if r.voucher:
+              row.append(r.voucher.percentage)
+            else:
+              row.append('invalid')
+            if p.invoices:
+              if p.invoices[0].paid():
+                row.append('<a href="/invoice/%d">OK</a>'%p.invoices[0].id)
+              else:
+                row.append('<a href="/invoice/%d">owes $%.2f</a>'%(
+                         p.invoices[0].id, p.invoices[0].total()/100.0) )
+            else:
+              row.append('no invoice')
+            c.data.append(row)
 
         c.columns = 'rego', 'person', 'name', 'code', '%', 'paid'
-	c.noescape = True
-	return render_response('admin/table.myt')
+        c.noescape = True
+        return render_response('admin/table.myt')
     def reconcile(self):
         """ Reconcilliation between D1 and ZK; for now, compare the D1 data
-	that have been placed in the fixed location in the filesystem and
-	work from there... [rego] """
+        that have been placed in the fixed location in the filesystem and
+        work from there... [rego] """
         import csv
-	d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
-	d1_cols = d1_data.next()
-	d1_cols = [s.strip() for s in d1_cols]
+        d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
+        d1_cols = d1_data.next()
+        d1_cols = [s.strip() for s in d1_cols]
 
-	all = {}
+        all = {}
 
-	t_offs = d1_cols.index('payment_id')
-	amt_offs = d1_cols.index('payment_amount')
-	d1 = {}
-	for row in d1_data:
-	  t = row[t_offs]
-	  amt = row[amt_offs]
-	  if amt[-3]=='.':
-	    # remove the decimal point
-	    amt = amt[:-3] + amt[-2:]
-	  row.append(amt)
-	  all[t] = 1
-	  if d1.has_key(t):
-	    d1[t].append(row)
-	  else:
-	    d1[t] = [row]
+        t_offs = d1_cols.index('payment_id')
+        amt_offs = d1_cols.index('payment_amount')
+        d1 = {}
+        for row in d1_data:
+          t = row[t_offs]
+          amt = row[amt_offs]
+          if amt[-3]=='.':
+            # remove the decimal point
+            amt = amt[:-3] + amt[-2:]
+          row.append(amt)
+          all[t] = 1
+          if d1.has_key(t):
+            d1[t].append(row)
+          else:
+            d1[t] = [row]
 
-	zk = {}
-	for p in self.dbsession.query(PaymentReceived).all():
-	  t = p.TransID
-	  all[t] = 1
-	  if zk.has_key(t):
-	    zk[t].append(p)
-	  else:
-	    zk[t] = [p]
-	  
-	zk_fields =  ('InvoiceID', 'TransID', 'Amount', 'AuthNum',
-				'Status', 'result', 'HTTP_X_FORWARDED_FOR')
+        zk = {}
+        for p in self.dbsession.query(PaymentReceived).all():
+          t = p.TransID
+          all[t] = 1
+          if zk.has_key(t):
+            zk[t].append(p)
+          else:
+            zk[t] = [p]
+          
+        zk_fields =  ('InvoiceID', 'TransID', 'Amount', 'AuthNum',
+                                'Status', 'result', 'HTTP_X_FORWARDED_FOR')
 
         all = all.keys()
-	all.sort()
-	c.data = []
-	for t in all:
-	  zk_t = zk.get(t, []); d1_t = d1.get(t, [])
-	  if len(zk_t)==1 and len(d1_t)==1:
-	    if str(zk_t[0].Amount) == d1_t[0][-1]:
-	      continue
-	  c.data.append((
-	    '; '.join([', '.join([str(getattr(z, f)) for f in zk_fields])
-           						   for z in zk_t]),
-	    t,
-	    '; '.join([', '.join(d) for d in d1_t])
-	  ))
+        all.sort()
+        c.data = []
+        for t in all:
+          zk_t = zk.get(t, []); d1_t = d1.get(t, [])
+          if len(zk_t)==1 and len(d1_t)==1:
+            if str(zk_t[0].Amount) == d1_t[0][-1]:
+              continue
+          c.data.append((
+            '; '.join([', '.join([str(getattr(z, f)) for f in zk_fields])
+                                                              for z in zk_t]),
+            t,
+            '; '.join([', '.join(d) for d in d1_t])
+          ))
 
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def bulk_checkin(self):
         """ bulk entry of rego_note info [rego] """
         if request.POST:
-	    args = request.POST
-	    c.data = []
-	    for id in re.split(r'[ \n\t-]+', args['ids']):
-	      if id=='': continue
-	      try:
-		  id = int(id)
-	      except:
-		  c.data.append((id, 'ERROR: must be a number'))
-	      else:
-		  r = self.dbsession.query(Registration).filter_by(id=id).one()
-		  if r:
-		      n = RegoNote(note=args['note'])
-		      n.entered=args['entered']
-		      self.dbsession.save(n)
-		      r.notes.append(n)
-		      c.signed_in_person.notes_made.append(n)
-		      c.data.append((id, 'OK: %s %s' %
-			    (r.person.firstname, r.person.lastname)))
-		  else:
-		      c.data.append((id, 'ERROR: not found'))
-	    self.dbsession.flush()
-	    return render_response('admin/table.myt')
-	else:
-	    return render_response('admin/bulk_checkin.myt')
+            args = request.POST
+            c.data = []
+            for id in re.split(r'[ \n\t-]+', args['ids']):
+              if id=='': continue
+              try:
+                  id = int(id)
+              except:
+                  c.data.append((id, 'ERROR: must be a number'))
+              else:
+                  r = self.dbsession.query(Registration).filter_by(id=id).one()
+                  if r:
+                      n = RegoNote(note=args['note'])
+                      n.entered=args['entered']
+                      self.dbsession.save(n)
+                      r.notes.append(n)
+                      c.signed_in_person.notes_made.append(n)
+                      c.data.append((id, 'OK: %s %s' %
+                            (r.person.firstname, r.person.lastname)))
+                  else:
+                      c.data.append((id, 'ERROR: not found'))
+            self.dbsession.flush()
+            return render_response('admin/table.myt')
+        else:
+            return render_response('admin/bulk_checkin.myt')
     def rego_lookup(self):
         """ Look up a rego, based on any of the associated IDs, showing the
-	details as would be required for rego desk. [rego] """
-	# c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
-	args = request.POST; post=True
-	if not args:
-	    args = request.GET
-	    post = False
-	if not args or not args.has_key('id'):
-	    c.error = 'No ID given.'
-	    return render_response('admin/rego_lookup.myt')
-	id = args['id']; c.id = id; raw_id = id
+        details as would be required for rego desk. [rego] """
+        # c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
+        args = request.POST; post=True
+        if not args:
+            args = request.GET
+            post = False
+        if not args or not args.has_key('id'):
+            c.error = 'No ID given.'
+            return render_response('admin/rego_lookup.myt')
+        id = args['id']; c.id = id; raw_id = id
 
-	try:
-	    id = int(id)
-	except:
-	    # conversion of id to an integer failed, look it up as a name
-	    p = self.dbsession.query(Person).filter_by(email_address=id).all()
-	    if p:
-		c.id_type = 'email'
-		c.p = p[0]
-		c.r = c.p.registration; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
+        try:
+            id = int(id)
+        except:
+            # conversion of id to an integer failed, look it up as a name
+            p = self.dbsession.query(Person).filter_by(email_address=id).all()
+            if p:
+                c.id_type = 'email'
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render_response('admin/rego_lookup.myt')
 
-	    p = self.dbsession.query(Person).filter(
-				       Person.c.firstname.op('ilike')(id)).all()
-	    p += self.dbsession.query(Person).filter(
-					Person.c.lastname.op('ilike')(id)).all()
-	    if len(p)>0:
-		c.id_type = 'name'
-	    else:
-		c.id_type = 'partial name'
-		p = self.dbsession.query(Person).filter(
-			       Person.c.firstname.op('ilike')('%'+id+'%')).all()
-		p += self.dbsession.query(Person).filter(
-				Person.c.lastname.op('ilike')('%'+id+'%')).all()
+            p = self.dbsession.query(Person).filter(
+                                       Person.c.firstname.op('ilike')(id)).all()
+            p += self.dbsession.query(Person).filter(
+                                        Person.c.lastname.op('ilike')(id)).all()
+            if len(p)>0:
+                c.id_type = 'name'
+            else:
+                c.id_type = 'partial name'
+                p = self.dbsession.query(Person).filter(
+                               Person.c.firstname.op('ilike')('%'+id+'%')).all()
+                p += self.dbsession.query(Person).filter(
+                                Person.c.lastname.op('ilike')('%'+id+'%')).all()
 
-	    if len(p)==1:
-		c.p = p[0]
-		c.r = c.p.registration; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
-	    elif len(p)>1:
-		c.many = p
-		c.many.sort(lambda a, b:
-		  cmp(a.lastname.lower(), b.lastname.lower()) or 
-		  cmp(a.firstname.lower(), b.firstname.lower()))
-		return render_response('admin/rego_lookup.myt')
-	else:
-	    # conversion of id to an integer succeeded, look it up as ID
+            if len(p)==1:
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render_response('admin/rego_lookup.myt')
+            elif len(p)>1:
+                c.many = p
+                c.many.sort(lambda a, b:
+                  cmp(a.lastname.lower(), b.lastname.lower()) or 
+                  cmp(a.firstname.lower(), b.firstname.lower()))
+                return render_response('admin/rego_lookup.myt')
+        else:
+            # conversion of id to an integer succeeded, look it up as ID
 
-	    # first, check if there's a note to be posted; in this case, ID
-	    # must be a rego ID, because that's how the form is set up.
-	    if post and args.has_key('note'):
-		r = self.dbsession.query(Registration).filter_by(id=id).all()
+            # first, check if there's a note to be posted; in this case, ID
+            # must be a rego ID, because that's how the form is set up.
+            if post and args.has_key('note'):
+                r = self.dbsession.query(Registration).filter_by(id=id).all()
 
-		n = RegoNote(note=args['note'])
-		self.dbsession.save(n)
-		r[0].notes.append(n)
-		c.signed_in_person.notes_made.append(n)
-		self.dbsession.flush()
+                n = RegoNote(note=args['note'])
+                self.dbsession.save(n)
+                r[0].notes.append(n)
+                c.signed_in_person.notes_made.append(n)
+                self.dbsession.flush()
 
-	    i = self.dbsession.query(Invoice).filter_by(id=id).all()
-	    if i:
-		c.id_type = 'invoice'
-		c.p = i[0].person
-		c.r = c.p.registration; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
+            i = self.dbsession.query(Invoice).filter_by(id=id).all()
+            if i:
+                c.id_type = 'invoice'
+                c.p = i[0].person
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render_response('admin/rego_lookup.myt')
 
-	    r = self.dbsession.query(Registration).filter_by(id=id).all()
-	    if r:
-		c.id_type = 'rego'
-		c.r = r[0]
-		c.p = c.r.person; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
-	    
-	    p = self.dbsession.query(Person).filter_by(id=id).all()
-	    if p:
-		c.id_type = 'person'
-		c.p = p[0]
-		c.r = c.p.registration; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
+            r = self.dbsession.query(Registration).filter_by(id=id).all()
+            if r:
+                c.id_type = 'rego'
+                c.r = r[0]
+                c.p = c.r.person; c.i = c.p.invoices
+                return render_response('admin/rego_lookup.myt')
+            
+            p = self.dbsession.query(Person).filter_by(id=id).all()
+            if p:
+                c.id_type = 'person'
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render_response('admin/rego_lookup.myt')
 
-	    p = self.dbsession.query(Person).filter_by(TransID=id).all()
-	    if p:
-		c.id_type = 'transaction'
-		c.p = p[0]
-		c.r = c.p.registration; c.i = c.p.invoices
-		return render_response('admin/rego_lookup.myt')
-	
-	phone_pat = '[ \t()/-]*'.join(raw_id)
+            p = self.dbsession.query(Person).filter_by(TransID=id).all()
+            if p:
+                c.id_type = 'transaction'
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render_response('admin/rego_lookup.myt')
+        
+        phone_pat = '[ \t()/-]*'.join(raw_id)
         r = self.dbsession.query(Registration).filter(
-			  Registration.c.phone.op('~')('^'+phone_pat+'$')).all()
-	if len(r)==1:
-	    c.id_type = 'phone'
-	    c.r = r[0]
-	    c.p = c.r.person; c.i = c.p.invoices
-	    return render_response('admin/rego_lookup.myt')
-	elif len(r)>1:
-	    c.id_type = 'phone'
-	    c.many = [rego.person for rego in r]
-	    c.many.sort(lambda a, b:
-	      cmp(a.lastname.lower(), b.lastname.lower()) or 
-	      cmp(a.firstname.lower(), b.firstname.lower()))
-	    return render_response('admin/rego_lookup.myt')
+                          Registration.c.phone.op('~')('^'+phone_pat+'$')).all()
+        if len(r)==1:
+            c.id_type = 'phone'
+            c.r = r[0]
+            c.p = c.r.person; c.i = c.p.invoices
+            return render_response('admin/rego_lookup.myt')
+        elif len(r)>1:
+            c.id_type = 'phone'
+            c.many = [rego.person for rego in r]
+            c.many.sort(lambda a, b:
+              cmp(a.lastname.lower(), b.lastname.lower()) or 
+              cmp(a.firstname.lower(), b.firstname.lower()))
+            return render_response('admin/rego_lookup.myt')
 
         r = self.dbsession.query(Registration).filter(
-				  Registration.c.phone.op('~')(phone_pat)).all()
-	if len(r)==1:
-	    c.id_type = 'partial phone'
-	    c.r = r[0]
-	    c.p = c.r.person; c.i = c.p.invoices
-	    return render_response('admin/rego_lookup.myt')
-	elif len(r)>1:
-	    c.id_type = 'partial phone'
-	    c.many = [rego.person for rego in r]
-	    c.many.sort(lambda a, b:
-	      cmp(a.lastname.lower(), b.lastname.lower()) or 
-	      cmp(a.firstname.lower(), b.firstname.lower()))
-	    return render_response('admin/rego_lookup.myt')
+                                  Registration.c.phone.op('~')(phone_pat)).all()
+        if len(r)==1:
+            c.id_type = 'partial phone'
+            c.r = r[0]
+            c.p = c.r.person; c.i = c.p.invoices
+            return render_response('admin/rego_lookup.myt')
+        elif len(r)>1:
+            c.id_type = 'partial phone'
+            c.many = [rego.person for rego in r]
+            c.many.sort(lambda a, b:
+              cmp(a.lastname.lower(), b.lastname.lower()) or 
+              cmp(a.firstname.lower(), b.firstname.lower()))
+            return render_response('admin/rego_lookup.myt')
 
-	c.error = 'Not found.'
-	return render_response('admin/rego_lookup.myt')
+        c.error = 'Not found.'
+        return render_response('admin/rego_lookup.myt')
 
     def rego_list(self):
         """ List of paid regos. [rego] """
-	c.data = [
-	   (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r)
-						 for r in paid_regos(self)]
-	c.data.sort()
-	c.data = [row[-1] for row in c.data]
-	c.prn = request.GET.has_key('print')
-	return render_response('admin/rego_list.myt')
+        c.data = [
+           (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r)
+                                                 for r in paid_regos(self)]
+        c.data.sort()
+        c.data = [row[-1] for row in c.data]
+        c.prn = request.GET.has_key('print')
+        return render_response('admin/rego_list.myt')
 
     def dinner_diets(self):
         """ List of penguin dinner diet requirements. [events] """
         c.text = """ List of penguin dinner diet requirements. """
-	c.data = []
-	rr = [
-	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
-						 for r in paid_regos(self)]
-	rr.sort()
-	for (sortkey, r) in rr:
-	    dinner = r.dinner or 0
-	    if r.type not in ("Monday pass", "Tuesday pass",
-			       "Monday only", "Tuesday only"):
-	        dinner += 1
-	    if dinner > 0 and r.diet:
-	        p = r.person
-	        c.data.append((
-		  p.firstname + ' ' + p.lastname,
-		  p.email_address,
-		  r.phone or p.phone,
-		  1,
-		  r.diet
-		))
-	        for n in range(2, dinner+1):
-		  c.data.append(('', '', '', n, ''))
+        c.data = []
+        rr = [
+           ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+                                                 for r in paid_regos(self)]
+        rr.sort()
+        for (sortkey, r) in rr:
+            dinner = r.dinner or 0
+            if r.type not in ("Monday pass", "Tuesday pass",
+                               "Monday only", "Tuesday only"):
+                dinner += 1
+            if dinner > 0 and r.diet:
+                p = r.person
+                c.data.append((
+                  p.firstname + ' ' + p.lastname,
+                  p.email_address,
+                  r.phone or p.phone,
+                  1,
+                  r.diet
+                ))
+                for n in range(2, dinner+1):
+                  c.data.append(('', '', '', n, ''))
         c.columns = 'name', 'email', 'phone', '', 'dietary requirements'
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def dinner_list(self):
         """ List of penguin dinners. [events] """
-	c.text = """ List of penguin dinners. """
-	c.data = []
-	rr = [
-	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
-						 for r in paid_regos(self)]
-	rr.sort()
-	for (sortkey, r) in rr:
-	    dinner = r.dinner or 0
-	    if r.type not in ("Monday pass", "Tuesday pass",
-			       "Monday only", "Tuesday only"):
-	        dinner += 1
-	    if dinner > 0:
-	        p = r.person
-	        c.data.append((
-		  p.firstname + ' ' + p.lastname,
-		  p.email_address,
-		  r.phone or p.phone,
-		  1,
-		  r.diet
-		))
-	        for n in range(2, dinner+1):
-		  c.data.append(('', '', '', n, ''))
+        c.text = """ List of penguin dinners. """
+        c.data = []
+        rr = [
+           ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+                                                 for r in paid_regos(self)]
+        rr.sort()
+        for (sortkey, r) in rr:
+            dinner = r.dinner or 0
+            if r.type not in ("Monday pass", "Tuesday pass",
+                               "Monday only", "Tuesday only"):
+                dinner += 1
+            if dinner > 0:
+                p = r.person
+                c.data.append((
+                  p.firstname + ' ' + p.lastname,
+                  p.email_address,
+                  r.phone or p.phone,
+                  1,
+                  r.diet
+                ))
+                for n in range(2, dinner+1):
+                  c.data.append(('', '', '', n, ''))
         c.columns = 'name', 'email', 'phone', '', 'dietary requirements'
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def PDNS_list(self):
         """ List of PDNS. [events] """
-	c.text = """ List of PDNS. """
-	c.data = []
-	rr = [
-	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
-						 for r in paid_regos(self)]
+        c.text = """ List of PDNS. """
+        c.data = []
+        rr = [
+           ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+                                                 for r in paid_regos(self)]
         rr.append((('joo', 'david', 'David Joo'), None))
         rr.append((('tan', 'yew wei', 'Yew Wei Tan'), None))
         rr.append((('thomas', 'david', 'David Thomas'), None))
-	rr.sort()
-	for (sortkey, r) in rr:
-	    if not r:
-	        c.data.append((sortkey[-1], '-', '-', '-'))
-		continue
-	    p = r.person
-	    if r.type in ("Fairy Penguin Sponsor", "Professional",
-		 "Speaker", "Mini-conf organiser",
-		"Team", 'Professional - No Keynote Access') or p.is_speaker():
-	        c.data.append((
-		  p.firstname + ' ' + p.lastname,
-		  p.email_address,
-		  r.phone or p.phone,
-		  r.diet
-		))
+        rr.sort()
+        for (sortkey, r) in rr:
+            if not r:
+                c.data.append((sortkey[-1], '-', '-', '-'))
+                continue
+            p = r.person
+            if r.type in ("Fairy Penguin Sponsor", "Professional",
+                 "Speaker", "Mini-conf organiser",
+                "Team", 'Professional - No Keynote Access') or p.is_speaker():
+                c.data.append((
+                  p.firstname + ' ' + p.lastname,
+                  p.email_address,
+                  r.phone or p.phone,
+                  r.diet
+                ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def PDNS_diets(self):
         """ List of PDNS dietary requirements. [events] """
-	c.text = """ List of PDNS dietary requirements. """
-	c.data = []
-	rr = [
-	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
-						 for r in paid_regos(self)]
-	rr.sort()
-	for (sortkey, r) in rr:
-	    p = r.person
-	    if (r.type in ("Fairy Penguin Sponsor", "Professional",
-		 "Speaker", "Mini-conf organiser", "Team",
-		 'Professional - No Keynote Access') or
-						p.is_speaker()) and r.diet:
-	        c.data.append((
-		  p.firstname + ' ' + p.lastname,
-		  p.email_address,
-		  r.phone or p.phone,
-		  r.diet
-		))
+        c.text = """ List of PDNS dietary requirements. """
+        c.data = []
+        rr = [
+           ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+                                                 for r in paid_regos(self)]
+        rr.sort()
+        for (sortkey, r) in rr:
+            p = r.person
+            if (r.type in ("Fairy Penguin Sponsor", "Professional",
+                 "Speaker", "Mini-conf organiser", "Team",
+                 'Professional - No Keynote Access') or
+                                                p.is_speaker()) and r.diet:
+                c.data.append((
+                  p.firstname + ' ' + p.lastname,
+                  p.email_address,
+                  r.phone or p.phone,
+                  r.diet
+                ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def speaker_dinner_list(self):
         """ List of speaker dinner. [events,speaker] """
-	c.text = """ List of speaker dinner. """
-	c.data = []
-	rr = [
-	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
-						 for r in paid_regos(self)]
+        c.text = """ List of speaker dinner. """
+        c.data = []
+        rr = [
+           ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+                                                 for r in paid_regos(self)]
         rr.append((('mcpherson', 'amanda', 'Amanda McPherson'), None))
-	rr.sort()
-	for (sortkey, r) in rr:
-	    if not r:
-	        c.data.append((sortkey[-1], '-', '-', '-'))
-		continue
-	    p = r.person
-	    if (r.type in ("Speaker", "Mini-conf organiser") or
-							  p.is_speaker() or
-			     'exec' in [rl.name for rl in r.person.roles]):
-	        c.data.append((
-		  p.firstname + ' ' + p.lastname,
-		  p.email_address,
-		  r.phone or p.phone,
-		  r.diet
-		))
+        rr.sort()
+        for (sortkey, r) in rr:
+            if not r:
+                c.data.append((sortkey[-1], '-', '-', '-'))
+                continue
+            p = r.person
+            if (r.type in ("Speaker", "Mini-conf organiser") or
+                                                          p.is_speaker() or
+                             'exec' in [rl.name for rl in r.person.roles]):
+                c.data.append((
+                  p.firstname + ' ' + p.lastname,
+                  p.email_address,
+                  r.phone or p.phone,
+                  r.diet
+                ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def speaker_dinner_diets(self):
         """ List of speaker dinner dietary requirements. [events,speaker] """
-	c.text = """ List of speaker dinner dietary requirements. """
-	c.data = []
-	rr = [
-	   ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
-						 for r in paid_regos(self)]
-	rr.sort()
-	for (sortkey, r) in rr:
-	    p = r.person
-	    if (r.type in ("Speaker", "Mini-conf organiser") or
-		  p.is_speaker() or
-		  'exec' in [rl.name for rl in r.person.roles]) and r.diet:
-	        c.data.append((
-		  p.firstname + ' ' + p.lastname,
-		  p.email_address,
-		  r.phone or p.phone,
-		  r.diet
-		))
+        c.text = """ List of speaker dinner dietary requirements. """
+        c.data = []
+        rr = [
+           ((r.person.lastname.lower(), r.person.firstname.lower(), r.id), r)
+                                                 for r in paid_regos(self)]
+        rr.sort()
+        for (sortkey, r) in rr:
+            p = r.person
+            if (r.type in ("Speaker", "Mini-conf organiser") or
+                  p.is_speaker() or
+                  'exec' in [rl.name for rl in r.person.roles]) and r.diet:
+                c.data.append((
+                  p.firstname + ' ' + p.lastname,
+                  p.email_address,
+                  r.phone or p.phone,
+                  r.diet
+                ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
 
     def volunteer_list(self):
         """ List of volunteers. [volunteer] """
         c.data = []
         for (id,) in sql_data("""select registration.id
-	from person, registration
-	where ((registration.volunteer is not null)
-	   or (registration.type='Volunteer'))
-	  and (person_id = person.id)
-	  order by lastname, firstname
-	"""):
-	    r = self.dbsession.query(Registration).filter_by(id=id).one()
-	    p = r.person
-	    t = r.type
-	    if (p.invoices and p.invoices[0].paid()):
-	        pass
-	    elif p.is_speaker():
-	        t += ' (speaker)'
-	    else:
-	        t += ' (not paid)'
-	    c.data.append((
-	        p.firstname + ' ' + p.lastname,
-	        p.email_address,
-	        r.phone or p.phone,
-	        t,
-		r.teesize,
-		r.volunteer
-	    ))
+        from person, registration
+        where ((registration.volunteer is not null)
+           or (registration.type='Volunteer'))
+          and (person_id = person.id)
+          order by lastname, firstname
+        """):
+            r = self.dbsession.query(Registration).filter_by(id=id).one()
+            p = r.person
+            t = r.type
+            if (p.invoices and p.invoices[0].paid()):
+                pass
+            elif p.is_speaker():
+                t += ' (speaker)'
+            else:
+                t += ' (not paid)'
+            c.data.append((
+                p.firstname + ' ' + p.lastname,
+                p.email_address,
+                r.phone or p.phone,
+                t,
+                r.teesize,
+                r.volunteer
+            ))
         c.columns = ('name', 'email', 'phone', 'type', 'T-shirt', 'areas of interest')
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def by_country(self):
         """ Regos by country [stats] """
-	data = {}
-	for r in paid_regos(self):
-	    country = r.country.capitalize()
-	    data[country] = data.get(country, 0) + 1
-	c.data = data.items()
-	c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
-	c.text = '''
-	  <img float="right" width="400" height="200"
-	  src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
-	''' % (
-	    ','.join([str(count) for (label, count) in c.data]),
-	    '|'.join([label for (label, count) in c.data]),
-	)
-	return render_response('admin/table.myt')
+        data = {}
+        for r in paid_regos(self):
+            country = r.country.capitalize()
+            data[country] = data.get(country, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return render_response('admin/table.myt')
     def badge_data(self):
         """ Data for the badges [rego] """
         c.data = []
-	rr = [(r, r.person) for r in paid_regos(self)]
-	rr.sort(lambda a, b:
-	    cmp(a[1].lastname.lower(), b[1].lastname.lower()) or
-	    cmp(a[1].firstname.lower(), b[1].firstname.lower()) or
-	    cmp(a[0].id, b[0].id)
-	)
-	type_map = {
-	  'Monday pass': 'Monday',
-	  'Monday only': 'Monday',
-	  'Tuesday pass': 'Tuesday',
-	  'Tuesday only': 'Tuesday',
-	  'Mini-conf organiser': 'Mini-conf',
-	  'Team': 'Organiser',
+        rr = [(r, r.person) for r in paid_regos(self)]
+        rr.sort(lambda a, b:
+            cmp(a[1].lastname.lower(), b[1].lastname.lower()) or
+            cmp(a[1].firstname.lower(), b[1].firstname.lower()) or
+            cmp(a[0].id, b[0].id)
+        )
+        type_map = {
+          'Monday pass': 'Monday',
+          'Monday only': 'Monday',
+          'Tuesday pass': 'Tuesday',
+          'Tuesday only': 'Tuesday',
+          'Mini-conf organiser': 'Mini-conf',
+          'Team': 'Organiser',
 
           'Fairy Penguin Sponsor': 'Delegate',
-	  'Professional': 'Delegate',
-	  'Hobbyist': 'Delegate',
-	  'Concession': 'Delegate',
-	  'Student': 'Delegate',
+          'Professional': 'Delegate',
+          'Hobbyist': 'Delegate',
+          'Concession': 'Delegate',
+          'Student': 'Delegate',
 
-	}
-	keynote_types=('Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
-		 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
+        }
+        keynote_types=('Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
+                 'Concession', 'Student', 'Speaker', 'Mini-conf organiser')
         colour_map = {
-	  #  type    k/NKA    text, type bg, main bg
-	  ('speaker', 'k'): ['white', 'blue 2925C', 'white'],
-	  ('mini-conf', 'k'): ['white', 'blue 2925C', 'white'],
-	  ('delegate', 'k'): ['white', 'orange 1505C', 'white'],
-	  ('delegate', 'NKA'): ['black', 'white', 'yellow 102C'],
-	  ('volunteer', 'NKA'): ['white', 'red 1797C', 'white'],
-	  ('organiser', 'NKA'): ['white', 'red 1797C', 'white'],
-	  ('organiser', 'k'): ['white', 'red 1797C', 'white'],
-	  ('monday', 'NKA'): ['black', 'white', 'light pink 236C'],
-	  ('tuesday', 'NKA'): ['black', 'white', 'light green 374C'],
-	  ('media', 'k'): ['white', 'bright pink 239C', 'white'],
-	  # V.I.P: 2738C (Navy/Violet)
-	}
+          #  type    k/NKA    text, type bg, main bg
+          ('speaker', 'k'): ['white', 'blue 2925C', 'white'],
+          ('mini-conf', 'k'): ['white', 'blue 2925C', 'white'],
+          ('delegate', 'k'): ['white', 'orange 1505C', 'white'],
+          ('delegate', 'NKA'): ['black', 'white', 'yellow 102C'],
+          ('volunteer', 'NKA'): ['white', 'red 1797C', 'white'],
+          ('organiser', 'NKA'): ['white', 'red 1797C', 'white'],
+          ('organiser', 'k'): ['white', 'red 1797C', 'white'],
+          ('monday', 'NKA'): ['black', 'white', 'light pink 236C'],
+          ('tuesday', 'NKA'): ['black', 'white', 'light green 374C'],
+          ('media', 'k'): ['white', 'bright pink 239C', 'white'],
+          # V.I.P: 2738C (Navy/Violet)
+        }
 
-	for (r, p) in rr:
-	    if r.type=='Cancelled': continue
+        for (r, p) in rr:
+            if r.type=='Cancelled': continue
             type = r.type.replace(' - No Keynote Access', '')
-	    type = type_map.get(type, type).lower()
-	    if p.is_speaker():
-	        type = 'speaker'
-	    elif 'team' in [rl.name for rl in r.person.roles]:
-	        type = 'organiser'
-	    if r.type in keynote_types:
-	        nka = 'k'
+            type = type_map.get(type, type).lower()
+            if p.is_speaker():
+                type = 'speaker'
+            elif 'team' in [rl.name for rl in r.person.roles]:
+                type = 'organiser'
+            if r.type in keynote_types:
+                nka = 'k'
             else:
-	        nka = 'NKA'
+                nka = 'NKA'
             if r.type in ("Monday pass", "Tuesday pass",
-					    "Monday only", "Tuesday only"):
+                                            "Monday only", "Tuesday only"):
                 dinners = r.dinner or 0
-	    else:
+            else:
                 dinners = (r.dinner or 0) + 1
-	    if r.voucher and r.voucher.code.startswith('MEDIA-'):
-	        type = 'media'
-	    if (r.type in ('Fairy Penguin Sponsor', 'Professional',
-			  'Speaker', 'Mini-conf organiser', 'Team',
-			  'Professional - No Keynote Access')
-							  or p.is_speaker()
-			  or 'team' in [rl.name for rl in r.person.roles]):
-	        company = r.company
-		pdns = 'PDNS'
+            if r.voucher and r.voucher.code.startswith('MEDIA-'):
+                type = 'media'
+            if (r.type in ('Fairy Penguin Sponsor', 'Professional',
+                          'Speaker', 'Mini-conf organiser', 'Team',
+                          'Professional - No Keynote Access')
+                                                          or p.is_speaker()
+                          or 'team' in [rl.name for rl in r.person.roles]):
+                company = r.company
+                pdns = 'PDNS'
             elif r.type in ("Monday pass", "Tuesday pass",):
-	        company = r.company
-		pdns = '-'
+                company = r.company
+                pdns = '-'
             else:
-	        company = ''; pdns = '-'
-	    if r.type in ("Student", "Student - No Keynote Access",
-					       "Concession") and pdns=='-':
-		pdns = 'party'
-	    if (r.type in ("Speaker", "Mini-conf organiser") or
-							  p.is_speaker() or
-			     'exec' in [rl.name for rl in r.person.roles]):
-		sd = 'SD'
+                company = ''; pdns = '-'
+            if r.type in ("Student", "Student - No Keynote Access",
+                                               "Concession") and pdns=='-':
+                pdns = 'party'
+            if (r.type in ("Speaker", "Mini-conf organiser") or
+                                                          p.is_speaker() or
+                             'exec' in [rl.name for rl in r.person.roles]):
+                sd = 'SD'
             else:
-		sd = '-'
-	    if r.country.lower() in ('australia', 'au', 'aust', 'australi',
-	    'nsw'):
-	       country = 'au'
-	    elif r.country.lower() in ('new zealand', 'nz'):
-	       country = 'nz'
+                sd = '-'
+            if r.country.lower() in ('australia', 'au', 'aust', 'australi',
+            'nsw'):
+               country = 'au'
+            elif r.country.lower() in ('new zealand', 'nz'):
+               country = 'nz'
             else:
-		country = '-'
-	    if type == 'organiser':
-	        prompt = '# '
-	    else:
-	        prompt = '$ '
+                country = '-'
+            if type == 'organiser':
+                prompt = '# '
+            else:
+                prompt = '$ '
             if p.invoices:
-		if p.invoices[0].good_payments:
-		    date = p.invoices[0].good_payments[0].creation_timestamp
-		else:
-		    date = p.invoices[0].last_modification_timestamp
+                if p.invoices[0].good_payments:
+                    date = p.invoices[0].good_payments[0].creation_timestamp
+                else:
+                    date = p.invoices[0].last_modification_timestamp
             else:
-	        date = r.last_modification_timestamp
+                date = r.last_modification_timestamp
             date = date.strftime('%Y-%m-%d %H:%M:%S')
-	    c.data.append([
-	        p.firstname,
-		p.lastname,
-	        company,
-	        r.id,
-		p.email_address,
-		type,
-		] + colour_map.get((type, nka), ['???', type, nka]) + [
-		dinners,
-		pdns,
-		sd,
-		country,
-		r.nick,
-		r.silly_description,
-		prompt + ', '.join([t for t in (
-		    r.shelltext or r.shell,
-		    r.editortext or r.editor,
-		    r.distrotext or r.distro,
-		) if t!='-']),
-		date
-	    ])
-	c.data.sort(lambda a, b: cmp(a[-1], b[-1]))
-	c.columns = ('first name', 'surname', 'company', 'rego', 'email',
-	             'type', 'type colour', 'type bg', 'main bg',
-		     'dinners', 'pdns', 'sd', 'country',
-		     'nick', 'silly description', 'favourites', 'date paid')
-	if request.GET.has_key('csv'):
-	    import csv, StringIO
-	    f = StringIO.StringIO()
-	    w = csv.writer(f)
-	    w.writerow(c.columns)
-	    w.writerows(c.data)
-	    res = Response(f.getvalue())
-	    res.headers['Content-type']='text/plain; charset=utf-8'
-	    res.headers['Content-Disposition']='attachment; filename="badge_data.csv"'
-	    return res
-	else:
-	    c.text = '<a href="/admin/badge_data?csv">CSV</a>'
-	    return render_response('admin/table.myt')
+            c.data.append([
+                p.firstname,
+                p.lastname,
+                company,
+                r.id,
+                p.email_address,
+                type,
+                ] + colour_map.get((type, nka), ['???', type, nka]) + [
+                dinners,
+                pdns,
+                sd,
+                country,
+                r.nick,
+                r.silly_description,
+                prompt + ', '.join([t for t in (
+                    r.shelltext or r.shell,
+                    r.editortext or r.editor,
+                    r.distrotext or r.distro,
+                ) if t!='-']),
+                date
+            ])
+        c.data.sort(lambda a, b: cmp(a[-1], b[-1]))
+        c.columns = ('first name', 'surname', 'company', 'rego', 'email',
+                     'type', 'type colour', 'type bg', 'main bg',
+                     'dinners', 'pdns', 'sd', 'country',
+                     'nick', 'silly description', 'favourites', 'date paid')
+        if request.GET.has_key('csv'):
+            import csv, StringIO
+            f = StringIO.StringIO()
+            w = csv.writer(f)
+            w.writerow(c.columns)
+            w.writerows(c.data)
+            res = Response(f.getvalue())
+            res.headers['Content-type']='text/plain; charset=utf-8'
+            res.headers['Content-Disposition']='attachment; filename="badge_data.csv"'
+            return res
+        else:
+            c.text = '<a href="/admin/badge_data?csv">CSV</a>'
+            return render_response('admin/table.myt')
     def regos_nonspeaker_mailmerge(self):
         """ All [rego]s (except speaker) for the final reminder e-mail. """
-	def addmonth(d):
-	    if d>15:
-	        return '%d Jan' % d
-	    else:
-	        return '%d Feb' % d
-	c.data = []
-	for r in paid_regos(self):
-	    if r.type=='Speaker' or r.person.is_speaker():
-	        continue
-	    p = r.person
-	    if r.accommodation:
-	        accom = r.accommodation.name
-	    else:
-	        accom = ''
+        def addmonth(d):
+            if d>15:
+                return '%d Jan' % d
+            else:
+                return '%d Feb' % d
+        c.data = []
+        for r in paid_regos(self):
+            if r.type=='Speaker' or r.person.is_speaker():
+                continue
+            p = r.person
+            if r.accommodation:
+                accom = r.accommodation.name
+            else:
+                accom = ''
             c.data.append((
-		r.id,
-	        p.firstname,
-		p.lastname,
-		p.email_address,
-		accom,
-		addmonth(r.checkin),
-		addmonth(r.checkout),
-		r.diet,
-	    ))
-	c.columns = ('id', 'firstname', 'lastname', 'email',
-				    'accom', 'checkin', 'checkout', 'diet')
-	return render_response('admin/table.myt')
+                r.id,
+                p.firstname,
+                p.lastname,
+                p.email_address,
+                accom,
+                addmonth(r.checkin),
+                addmonth(r.checkout),
+                r.diet,
+            ))
+        c.columns = ('id', 'firstname', 'lastname', 'email',
+                                    'accom', 'checkin', 'checkout', 'diet')
+        return render_response('admin/table.myt')
 
     def trinity(self):
         """ All people staying at Trinity. [accom] """
-	c.data = []
-	for r in paid_regos(self):
-	    if r.accommodation and r.accommodation.name=='Trinity':
-		p = r.person
-		c.data.append((
-		    r.id,
-		    p.firstname,
-		    p.lastname,
-		    p.email_address,
-		))
-	c.columns = ('id', 'firstname', 'lastname', 'email')
-	return render_response('admin/table.myt')
+        c.data = []
+        for r in paid_regos(self):
+            if r.accommodation and r.accommodation.name=='Trinity':
+                p = r.person
+                c.data.append((
+                    r.id,
+                    p.firstname,
+                    p.lastname,
+                    p.email_address,
+                ))
+        c.columns = ('id', 'firstname', 'lastname', 'email')
+        return render_response('admin/table.myt')
 
     def no_shows(self):
         """ People who didn't show up [rego] """
-	c.data = []
-	for r in paid_regos(self):
-	    nn = [n.note.strip() for n in r.notes]
-	    if 'Here!' in nn or 'Here! (bulk)' in nn:
-	        continue
-	    p = r.person
-	    dc = r.voucher_code
-	    if '-' in dc:
-	        dc = dc.split('-')[0]
+        c.data = []
+        for r in paid_regos(self):
+            nn = [n.note.strip() for n in r.notes]
+            if 'Here!' in nn or 'Here! (bulk)' in nn:
+                continue
+            p = r.person
+            dc = r.voucher_code
+            if '-' in dc:
+                dc = dc.split('-')[0]
             c.data.append((
-	      p.firstname, p.lastname,
-	      r.type, dc,
-	      '; '.join(nn)
-	    ))
-	c.columns = 'firstname', 'lastname', 'type', 'disc', 'notes'
-	c.data.sort(lambda a, b: cmp(a[1].lower(), b[1].lower)
-				or cmp(a[0].lower(), b[0].lower) or cmp(a, b))
-	return render_response('admin/table.myt')
+              p.firstname, p.lastname,
+              r.type, dc,
+              '; '.join(nn)
+            ))
+        c.columns = 'firstname', 'lastname', 'type', 'disc', 'notes'
+        c.data.sort(lambda a, b: cmp(a[1].lower(), b[1].lower)
+                                or cmp(a[0].lower(), b[0].lower) or cmp(a, b))
+        return render_response('admin/table.myt')
 
     def rego_note_dump(self):
         """ A list of *all* rego notes in chronological order. [rego] """
         c.data = []
         for n in self.dbsession.query(RegoNote).all():
-	    c.data.append((
+            c.data.append((
                 n.id,
-		n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
+                n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
                 '<a href="/admin/rego_lookup?id=%d">%s</a>'%(
                   n.rego.id,
-		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
-		n.note,
-		n.by.firstname + ' ' + n.by.lastname,
-	    ))
+                  n.rego.person.firstname + ' ' + n.rego.person.lastname),
+                n.note,
+                n.by.firstname + ' ' + n.by.lastname,
+            ))
         c.columns = ('id', 'date', 'about', 'text', 'by')
-	c.noescape = True
-	return render_response('admin/table.myt')
+        c.noescape = True
+        return render_response('admin/table.myt')
 
     def rego_note_interesting(self):
         """ A list of rego notes other than just "Here!". [rego] """
         c.text = """ A list of rego notes other than just "Here!", by
-	surname. """
+        surname. """
         notes = {} 
         for n in self.dbsession.query(RegoNote).all():
             if notes.has_key(n.rego.id):
                 notes[n.rego.id].append(n)
             else:
-	        notes[n.rego.id] = [n]
-	notes2 = []
+                notes[n.rego.id] = [n]
+        notes2 = []
         for nn in notes.values():
-	    if len(nn)==1 and nn[0].note.strip() in ('Here!', 'Here! (bulk)'):
-	        continue
-	    for n in nn:
-	        notes2.append(((n.rego.person.lastname.lower(),
-				n.rego.person.firstname.lower(), n.id), n))
-	notes2.sort()
+            if len(nn)==1 and nn[0].note.strip() in ('Here!', 'Here! (bulk)'):
+                continue
+            for n in nn:
+                notes2.append(((n.rego.person.lastname.lower(),
+                                n.rego.person.firstname.lower(), n.id), n))
+        notes2.sort()
         c.data = []
         for (sortkey, n) in notes2:
-	    c.data.append((
+            c.data.append((
                 n.id,
-		n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
+                n.entered.strftime('%Y-%m-%d %a %H:%M:%S'),
                 '<a href="/admin/rego_lookup?id=%d">%s</a>'%(
                   n.rego.id,
-		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
-		n.note,
-		n.by.firstname + ' ' + n.by.lastname,
-	    ))
+                  n.rego.person.firstname + ' ' + n.rego.person.lastname),
+                n.note,
+                n.by.firstname + ' ' + n.by.lastname,
+            ))
         c.columns = ('id', 'date', 'about', 'text', 'by')
-	c.noescape = True
-	return render_response('admin/table.myt')
+        c.noescape = True
+        return render_response('admin/table.myt')
 
     def rego_note_here(self):
         """ A list of rego notes other than just "Here!". [rego] """
@@ -1626,281 +1627,281 @@ class AdminController(SecureController):
             if notes.has_key(n.rego.id):
                 notes[n.rego.id].append(n)
             else:
-	        notes[n.rego.id] = [n]
-	notes2 = []
+                notes[n.rego.id] = [n]
+        notes2 = []
         for nn in notes.values():
-	    for n in nn:
-	        if n.note.strip() in ('Here!', 'Here! (bulk)'):
-	            notes2.append(((n.rego.person.lastname.lower(),
-				n.rego.person.firstname.lower(), n.id), n))
-	notes2.sort()
+            for n in nn:
+                if n.note.strip() in ('Here!', 'Here! (bulk)'):
+                    notes2.append(((n.rego.person.lastname.lower(),
+                                n.rego.person.firstname.lower(), n.id), n))
+        notes2.sort()
         c.data = []
         for (sortkey, n) in notes2:
-	    c.data.append((
+            c.data.append((
                 n.id,
-		n.entered.strftime('%a %P'),
+                n.entered.strftime('%a %P'),
                 '<a href="/admin/rego_lookup?id=%d">%s</a>'%(
                   n.rego.id,
-		  n.rego.person.firstname + ' ' + n.rego.person.lastname),
-		n.note,
-		n.by.firstname + ' ' + n.by.lastname,
-	    ))
+                  n.rego.person.firstname + ' ' + n.rego.person.lastname),
+                n.note,
+                n.by.firstname + ' ' + n.by.lastname,
+            ))
         c.columns = ('id', 'date', 'about', 'text', 'by')
-	c.noescape = True
-	return render_response('admin/table.myt')
+        c.noescape = True
+        return render_response('admin/table.myt')
 
     def rego_note_stats(self):
         """ Per-day stats of rego notes. [rego] """
         stats = {} 
         for n in self.dbsession.query(RegoNote).all():
-	    day = n.entered.strftime('%Y-%m-%d %a %P')
-	    if not stats.has_key(day):
-	        stats[day] = [0, 0]
-	    if n.note.strip() in ('Here!', 'Here! (bulk)'):
-	        stats[day][0] += 1
-	    else:
-	        stats[day][1] += 1
+            day = n.entered.strftime('%Y-%m-%d %a %P')
+            if not stats.has_key(day):
+                stats[day] = [0, 0]
+            if n.note.strip() in ('Here!', 'Here! (bulk)'):
+                stats[day][0] += 1
+            else:
+                stats[day][1] += 1
         c.data = [[k, v1, v2, v1+v2] for (k, (v1, v2)) in stats.items()]
-	c.data.sort()
+        c.data.sort()
         c.columns = ('day', 'Here!', 'other', 'total')
-	return render_response('admin/table.myt')
+        return render_response('admin/table.myt')
 
     def AV_ping(self):
         """ Update the list of links to talk recordings. [AV] """
-	# This page should contain a list of the files that have been
-	# recorded; for instance, it might be the automatic index.html
-	# generated by the webserver:
-	index = 'http://mirror.linux.org.au/pub/linux.conf.au/2008/'
-	# This will be prepended to the bare filename:
-	prefix = index
-	d = {}
-	for day in ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'):
-	    list = urllib.urlopen(index+day+'/').read()
-	    list = re.findall(r'(mel8-([\d]{3}[ab]?).(ogg|spx))', list)
-	    for (name, id, type) in list:
-	        d[id, type.lower()] = prefix + day + '/' + name
+        # This page should contain a list of the files that have been
+        # recorded; for instance, it might be the automatic index.html
+        # generated by the webserver:
+        index = 'http://mirror.linux.org.au/pub/linux.conf.au/2008/'
+        # This will be prepended to the bare filename:
+        prefix = index
+        d = {}
+        for day in ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'):
+            list = urllib.urlopen(index+day+'/').read()
+            list = re.findall(r'(mel8-([\d]{3}[ab]?).(ogg|spx))', list)
+            for (name, id, type) in list:
+                d[id, type.lower()] = prefix + day + '/' + name
         num_files = len(d)
         for t in self.dbsession.query(Proposal).all():
-	    id = '%03d' % t.id
-	    ogg = []; spx = []
-	    for (k, label) in ((id, ''), (id+'a', ' part A'),
-							 (id+'b', ' part B')):
-	        if d.has_key((k, 'ogg')):
-		    ogg.append((d[k, 'ogg'], label))
-		    del d[k, 'ogg']
-	        if d.has_key((k, 'spx')):
-		    spx.append((d[k, 'spx'], label))
-		    del d[k, 'spx']
-	    t.recorded_ogg = ' '.join(['<a href="%s">OGG%s</a>'%(url, label)
-						       for (url, label) in ogg])
-	    t.recorded_spx = ' '.join(['<a href="%s">SPX%s</a>'%(url, label)
-						       for (url, label) in spx])
-	self.dbsession.flush()
-	num_files -= len(d)
-	leftover = ['%s/%s'%(id, t) for (id, t) in d.keys()]
-	leftover.sort()
+            id = '%03d' % t.id
+            ogg = []; spx = []
+            for (k, label) in ((id, ''), (id+'a', ' part A'),
+                                                         (id+'b', ' part B')):
+                if d.has_key((k, 'ogg')):
+                    ogg.append((d[k, 'ogg'], label))
+                    del d[k, 'ogg']
+                if d.has_key((k, 'spx')):
+                    spx.append((d[k, 'spx'], label))
+                    del d[k, 'spx']
+            t.recorded_ogg = ' '.join(['<a href="%s">OGG%s</a>'%(url, label)
+                                                       for (url, label) in ogg])
+            t.recorded_spx = ' '.join(['<a href="%s">SPX%s</a>'%(url, label)
+                                                       for (url, label) in spx])
+        self.dbsession.flush()
+        num_files -= len(d)
+        leftover = ['%s/%s'%(id, t) for (id, t) in d.keys()]
+        leftover.sort()
         return Response("Success!<br>%d file(s) recorded<br>" % num_files
-	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
-	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
+               + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
+               + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") )
 
     def recorded_miniconf_talks(self):
         """ List of recordings of mini-conf talks. [AV,miniconf] """
         c.data = []
         for t in self.dbsession.query(Proposal).all():
-	    if t.id < 500 or t.id > 800: continue
-	    if t.recorded_ogg or t.recorded_spx:
-		if t.recorded_ogg:
-		    ogg_link = '[%s]' % t.recorded_ogg
-		else:
-		    ogg_link = ''
-		if t.recorded_spx:
-		    spx_link = '[%s]' % t.recorded_spx
-		else:
-		    spx_link = ''
-	        c.data.append((
-		    t.id,
-		    t.title,
-		    ogg_link,
-		    spx_link,
-		))
+            if t.id < 500 or t.id > 800: continue
+            if t.recorded_ogg or t.recorded_spx:
+                if t.recorded_ogg:
+                    ogg_link = '[%s]' % t.recorded_ogg
+                else:
+                    ogg_link = ''
+                if t.recorded_spx:
+                    spx_link = '[%s]' % t.recorded_spx
+                else:
+                    spx_link = ''
+                c.data.append((
+                    t.id,
+                    t.title,
+                    ogg_link,
+                    spx_link,
+                ))
         c.data.sort()
-	c.noescape = True
-	c.text = """
-	<p><b>Delegates:</b> please check the mini-conf webpages for titles
-	of these talks.
-	</p>
-	<p><b>Mini-conf organisers:</b> please check these recordings and
-	copy the links to your wikis and webpages with the appropriate
-	talk titles and speaker names.</p>
-	"""
-	return render_response('admin/table.myt')
+        c.noescape = True
+        c.text = """
+        <p><b>Delegates:</b> please check the mini-conf webpages for titles
+        of these talks.
+        </p>
+        <p><b>Mini-conf organisers:</b> please check these recordings and
+        copy the links to your wikis and webpages with the appropriate
+        talk titles and speaker names.</p>
+        """
+        return render_response('admin/table.myt')
 
     def make_wiki_name(self):
         """ Make the wiki_name field out of proposal title. [AV] """
         for t in self.dbsession.query(Proposal).all():
-	    t.wiki_name = urllib.quote_plus(t.title.replace(' ', '_'))
+            t.wiki_name = urllib.quote_plus(t.title.replace(' ', '_'))
         return Response("Success")
 
     def random_delegate(self):
         """ Pick a random delegate (or append ?count=X to the URL to pick
-	several). """
+        several). """
         count = int(request.GET.get('count', 0) or 1)
-	if count==1:
-	    c.text = '1 delegate'
+        if count==1:
+            c.text = '1 delegate'
         else:
-	    c.text = '%d delegates' % count
-	c.text += """ randomly selected from the Fairy Penguin Sponsor,
-	Professional, Hobbyist, Concession, Student, Speaker, Mini-conf
-	organiser and the No Keynote Access tickets."""
+            c.text = '%d delegates' % count
+        c.text += """ randomly selected from the Fairy Penguin Sponsor,
+        Professional, Hobbyist, Concession, Student, Speaker, Mini-conf
+        organiser and the No Keynote Access tickets."""
         delegates = [r for r in paid_regos(self) if r.type in (
-	    'Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
-	    'Concession', 'Student', 'Speaker', 'Mini-conf organiser',
-	    'Professional - No Keynote Access',
-	    'Hobbyist - No Keynote Access', 'Student - No Keynote Access'
-	)]
-	if count > len(delegates):
-	    return Response("%d is too many!" % count)
-	c.data = []
-	random.seed()
-	for r in random.sample(delegates, count):
-	    p = r.person
-	    c.data.append((
-	      p.firstname + ' ' + p.lastname,
-	    ))
-	return render_response('admin/table.myt')
+            'Fairy Penguin Sponsor', 'Professional', 'Hobbyist',
+            'Concession', 'Student', 'Speaker', 'Mini-conf organiser',
+            'Professional - No Keynote Access',
+            'Hobbyist - No Keynote Access', 'Student - No Keynote Access'
+        )]
+        if count > len(delegates):
+            return Response("%d is too many!" % count)
+        c.data = []
+        random.seed()
+        for r in random.sample(delegates, count):
+            p = r.person
+            c.data.append((
+              p.firstname + ' ' + p.lastname,
+            ))
+        return render_response('admin/table.myt')
     def slides_uploaded_wrongly(self):
         """ Slides that were uploaded but shouldn't have been. """
-	return sql_response("""
-	select attachment.proposal_id, proposal.title
-	from proposal, registration, person_proposal_map, attachment
-	where not registration.speaker_slides_release
-	  and registration.person_id = person_proposal_map.person_id
-	  and person_proposal_map.proposal_id = attachment.proposal_id
-	  and proposal.id=attachment.proposal_id 
-	  and proposal.accepted;
-	""")
+        return sql_response("""
+        select attachment.proposal_id, proposal.title
+        from proposal, registration, person_proposal_map, attachment
+        where not registration.speaker_slides_release
+          and registration.person_id = person_proposal_map.person_id
+          and person_proposal_map.proposal_id = attachment.proposal_id
+          and proposal.id=attachment.proposal_id 
+          and proposal.accepted;
+        """)
 
     def dump_slides(self):
         """ Dump slides into a fixed directory """
-	c.data = []
+        c.data = []
         for t in self.dbsession.query(Proposal).all():
-	    if not t.accepted: continue
-	    for a in t.attachments:
-	        prefix = "%03d-" % t.id
-		if a.filename.startswith(prefix):
-		    fname = a.filename
-		else:
-		    fname = prefix + a.filename
-		if fname == '194-194_lca08_Weatherall_StopintheNameofLaw.odp':
-		    fname = '194-lca08_Weatherall_StopintheNameofLaw.odp'
-		f = file('/home/jiri/slides/%s' % fname, 'w')
-		f.write(a.content)
-		f.close()
-	        c.data.append((t.id, a.filename, fname))
-	return render_response('admin/table.myt')
+            if not t.accepted: continue
+            for a in t.attachments:
+                prefix = "%03d-" % t.id
+                if a.filename.startswith(prefix):
+                    fname = a.filename
+                else:
+                    fname = prefix + a.filename
+                if fname == '194-194_lca08_Weatherall_StopintheNameofLaw.odp':
+                    fname = '194-lca08_Weatherall_StopintheNameofLaw.odp'
+                f = file('/home/jiri/slides/%s' % fname, 'w')
+                f.write(a.content)
+                f.close()
+                c.data.append((t.id, a.filename, fname))
+        return render_response('admin/table.myt')
 
     def slides_ping(self):
         """ Update the list of links to slides. [AV] """
-	# This directory should contain the slides that have been uploaded
-	index = '/home/jiri/slides/'
-	# This will be prepended to the bare filename:
-	prefix = 'http://mirror.linux.org.au/pub/linux.conf.au/2008/slides/'
-	d = {}
-	for name in os.listdir(index):
-	    id = int(name[:3])
-	    if d.has_key(id):
-	        d[id].append(name)
+        # This directory should contain the slides that have been uploaded
+        index = '/home/jiri/slides/'
+        # This will be prepended to the bare filename:
+        prefix = 'http://mirror.linux.org.au/pub/linux.conf.au/2008/slides/'
+        d = {}
+        for name in os.listdir(index):
+            id = int(name[:3])
+            if d.has_key(id):
+                d[id].append(name)
             else:
-	        d[id]=[name]
-	talks = 0; num_files = 0
-	alerts = ''
+                d[id]=[name]
+        talks = 0; num_files = 0
+        alerts = ''
         for t in self.dbsession.query(Proposal).all():
-	    if d.has_key(t.id):
-	        if len(d[t.id])==1:
-	            t.slides_link = '<a href="%s%s">Slides</a>'%(prefix,
-								   d[t.id][0])
-	        else:
-	            t.slides_link = ' '.join([
-	                '<a href="%s%s">Slides&nbsp;%d</a>'
-			% (prefix, name, number)
-	                for (name, number) in zip(d[t.id], xrange(1, 1000))])
-		talks += 1; num_files += len(d[t.id])
-		if t.id==117:
-		    alerts += """<br><br>
-				  Tell kellyd that edale's slides are up!!!"""
+            if d.has_key(t.id):
+                if len(d[t.id])==1:
+                    t.slides_link = '<a href="%s%s">Slides</a>'%(prefix,
+                                                                   d[t.id][0])
+                else:
+                    t.slides_link = ' '.join([
+                        '<a href="%s%s">Slides&nbsp;%d</a>'
+                        % (prefix, name, number)
+                        for (name, number) in zip(d[t.id], xrange(1, 1000))])
+                talks += 1; num_files += len(d[t.id])
+                if t.id==117:
+                    alerts += """<br><br>
+                                  Tell kellyd that edale's slides are up!!!"""
                 del d[t.id]
-	    else:
-	        t.slides_link = ''
-	self.dbsession.flush()
-	leftover = d.values()
-	leftover.sort()
+            else:
+                t.slides_link = ''
+        self.dbsession.flush()
+        leftover = d.values()
+        leftover.sort()
         return Response("Success!<br>"
-	       + "%d file(s) recorded for %d talks<br>" % (num_files, talks)
-	       + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
-	       + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") 
-	       + alerts)
+               + "%d file(s) recorded for %d talks<br>" % (num_files, talks)
+               + "%d file(s) left over %s<br>" % (len(d),', '.join(leftover))
+               + datetime.now().strftime("The time is %Y-%m-%d %H:%M:%S") 
+               + alerts)
 
     def talks_without_slides(self):
         """ Talks that do not have slides """
-	c.data = []
-	for t in self.dbsession.query(Proposal).all():
-	    if not t.accepted: continue
-	    if t.slides_link: continue
-	    release = []
-	    for p in t.people:
-	        if p.registration:
-		    release.append({True: 'yes', False: 'NO', None: '?'}[p.registration.speaker_slides_release])
-		else:
-		    release.append('??')
-	    c.data.append((
-	      t.id,
-	      t.title,
-	      ', '.join(['%s %s <%s>'%(p.firstname,p.lastname,p.email_address) 
-							   for p in t.people]),
-	      ', '.join([p.firstname for p in t.people]),
-	      ', '.join(release),
-	    ))
-	c.columns = 'id', 'title', 'emails', 'firstnames', 'consents'
-	return render_response('admin/table.myt')
+        c.data = []
+        for t in self.dbsession.query(Proposal).all():
+            if not t.accepted: continue
+            if t.slides_link: continue
+            release = []
+            for p in t.people:
+                if p.registration:
+                    release.append({True: 'yes', False: 'NO', None: '?'}[p.registration.speaker_slides_release])
+                else:
+                    release.append('??')
+            c.data.append((
+              t.id,
+              t.title,
+              ', '.join(['%s %s <%s>'%(p.firstname,p.lastname,p.email_address) 
+                                                           for p in t.people]),
+              ', '.join([p.firstname for p in t.people]),
+              ', '.join(release),
+            ))
+        c.columns = 'id', 'title', 'emails', 'firstnames', 'consents'
+        return render_response('admin/table.myt')
 
     def total_opendaydrag(self):
         """ Total of the open day drag entries. """
-	res = 0
-	for r in paid_regos(self):
-	    res += (r.opendaydrag or 0)
-	c.data = [[res]]
-	return render_response('admin/table.myt')
+        res = 0
+        for r in paid_regos(self):
+            res += (r.opendaydrag or 0)
+        c.data = [[res]]
+        return render_response('admin/table.myt')
     def olpc_lookup(self):
         """ look up people who got the OLPC laptop... """
         names = """
           names go here
           one per line
           ** may be preceded by asterisks
-	"""
-	c.data = []
-	for line in names.split('\n'):
-	    line = line.strip()
-	    try:
-	        (first,last) = line.strip('* ').split(' ')
-	    except:
+        """
+        c.data = []
+        for line in names.split('\n'):
+            line = line.strip()
+            try:
+                (first,last) = line.strip('* ').split(' ')
+            except:
                 if line=='':
-	            c.data.append((line, ''))
+                    c.data.append((line, ''))
                 else:
-	            c.data.append((line, '???'))
-		continue
-	    pp = self.dbsession.query(Person).select_by(firstname=first,
-								  lastname=last)
-	    if pp:
-	      c.data.append((line, '; '.join([p.email_address for p in pp])))
+                    c.data.append((line, '???'))
+                continue
+            pp = self.dbsession.query(Person).select_by(firstname=first,
+                                                                  lastname=last)
+            if pp:
+              c.data.append((line, '; '.join([p.email_address for p in pp])))
             else:
-	      c.data.append((line, 'Not found'))
-	return render_response('admin/table.myt')
+              c.data.append((line, 'Not found'))
+        return render_response('admin/table.myt')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).all():
-	p = r.person
-	if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
-	    yield r
+        p = r.person
+        if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+            yield r
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
@@ -1909,8 +1910,8 @@ def sql_response(sql):
     Ideally, of course, it should never be used.
 
     Example:
-	def foo(self):
-	    return sql_response('select * from person')
+        def foo(self):
+            return sql_response('select * from person')
     """
     import zookeepr.model
     res = zookeepr.model.metadata.bind.execute(sql);

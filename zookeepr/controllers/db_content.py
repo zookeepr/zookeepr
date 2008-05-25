@@ -33,11 +33,17 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
 
     permissions = {'new': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
+                   'page': True,
                    'view': True,
                    'edit': [AuthRole('organiser')],
                    'delete': [AuthRole('organiser')]
                    }
 
-    def view(self):
+    def page(self):
+        url = h.url()()
+        if url[0]=='/': url=url[1:]
+        c.db_content = self.dbsession.query(model.DBContent).filter_by(url=url).first()
+        if c.db_content is not None:
+            return render('%s/view.myt' % self.individual)
         return not_found.NotFoundController().view()
         
