@@ -68,8 +68,8 @@ class PersonSchema(Schema):
     email_address = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
-    phone = validators.String(not_empty=True)
-    mobile = validators.String(not_empty=True)
+    phone = validators.String()
+    mobile = validators.String()
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     
