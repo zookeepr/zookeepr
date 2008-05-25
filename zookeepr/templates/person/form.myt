@@ -1,5 +1,5 @@
 <p class="label"><span class="mandatory">*</span><label for="person.firstname">Your first name:</label></p>
-<p class="entries" valign="top"><% h.text_field('person.firstname', size=40) %></p>
+<p class="entries"><% h.text_field('person.firstname', size=40) %></p>
 
 <p class="label"><span class="mandatory">*</span><label for="person.lastname">Your last name:</label></p>
 <p class="entries"><% h.text_field('person.lastname', size=40) %></p>

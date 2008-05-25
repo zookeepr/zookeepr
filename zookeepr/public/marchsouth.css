@@ -279,12 +279,6 @@
 	table .empty
 	{
 	}
-	
-	.mandatory
-	{
-		color: #ff0000;
-		background: inherit;
-	}
 
 	table .odd td, table .odd th
 	{
@@ -387,4 +381,16 @@
 		line-height: 1.2em;
 		height: 1.2em;
 		border: 1px solid #a0a0a0;
+	}
+
+	.mandatory
+	{
+		color: #ff0000;
+		background: inherit;
+	}
+
+	.publishable
+	{
+		color: #5850a5;
+		background: inherit;
 	}

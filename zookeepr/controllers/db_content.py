@@ -32,11 +32,11 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
 
     permissions = {'new': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
-                   'view': [AuthTrue()],
+                   'view': True,
                    'edit': [AuthRole('organiser')],
                    'delete': [AuthRole('organiser')]
                    }
 
     def view(self):
-        return self.redirect_to('not_found', 'view')
+        return redirect_to(controller='not_found', action='view')
         

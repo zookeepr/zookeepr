@@ -1,6 +1,9 @@
 from zookeepr.lib.base import *
 
 class NotFoundController(BaseController):
+    def index(self):
+        return self.view('')
+
     def view(self, url):
         """
         This is the last place which is tried during a request to try to find a 

@@ -29,18 +29,13 @@ def make_map():
     #m.connect('submit_cfp', '/presentations/submit_a_presentation', controller='cfp', action='submit')
     #m.connect('/papers/thankyou', controller='cfp', action='thankyou')
     #m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
-    #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal',
-	#				      controller='cfp', action='submit_mini')
-    #m.connect('/presentations/edit/:id', controller='proposal',
-	#						     action='edit')
+    #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal', controller='cfp', action='submit_mini')
+    #m.connect('/presentations/edit/:id', controller='proposal', action='edit')
     m.connect('/programme/submit_a_presentation', controller='cfp', action='submit')
-    m.connect('/programme/submit_a_miniconf', controller='cfp',
-                                                      action='submit_mini')
+    m.connect('/programme/submit_a_miniconf', controller='cfp', action='submit_mini')
 
     # account confirmation named route
-    m.connect('acct_confirm', '/person/confirm/:id',
-              controller='person',
-              action='confirm')
+    m.connect('acct_confirm', '/person/confirm/:id', controller='person', action='confirm')
 
     # Verify stuff from commsecure
     m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
@@ -48,14 +43,10 @@ def make_map():
     # Invoice Reminder
     m.connect('/invoice/remind', controller='invoice', action='remind', id=None)
     m.connect('/registration/remind', controller='registration', action='remind', id=None)
-    m.connect('/registration/status', controller='registration',
-						  action='status', id=None)
-    m.connect('/registration/volunteer', controller='registration',
-				      action='volunteer_redirect', id=None)
-    m.connect('/registration/professional', controller='registration',
-					    action='professional', id=None)
-    m.connect('/registration/list_miniconf_orgs', controller='registration',
-				      action='list_miniconf_orgs', id=None)
+    m.connect('/registration/status', controller='registration', action='status', id=None)
+    m.connect('/registration/volunteer', controller='registration', action='volunteer_redirect', id=None)
+    m.connect('/registration/professional', controller='registration', action='professional', id=None)
+    m.connect('/registration/list_miniconf_orgs', controller='registration', action='list_miniconf_orgs', id=None)
 
     # special case for account controller, again in the style of the
     # original routes controller
@@ -95,7 +86,8 @@ def make_map():
     m.connect(':controller/:id/:action', action='index', id=None)
 
     # m.connect('*url', controller='wiki', action='view')
-    #m.connect('*url', controller='db_content', action='view')
+    m.connect('*url', controller='db_content', action='view', id=None)
+    #m.connect('/db_content/view', controller='db_content', action='view', id=None)
     m.connect('*url', controller='not_found', action='view')
 
     return m
