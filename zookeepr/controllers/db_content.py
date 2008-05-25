@@ -6,6 +6,7 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.validators import BaseSchema, BoundedInt
 from zookeepr.lib.base import *
+from zookeepr.controllers import not_found
 
 log = logging.getLogger(__name__)
 
@@ -38,5 +39,5 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    }
 
     def view(self):
-        return redirect_to(controller='not_found', action='view')
+        return not_found.NotFoundController().view()
         
