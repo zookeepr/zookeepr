@@ -1,12 +1,34 @@
 zookeepr AUTHORS
 ================
 
-The following people are the primary authors of zookeepr. See also the file
-THANKS for a list of all contributors.  Discussion of development occurs on
-the zookeepr-devel@lists.zookeepr.org mailing list (also an easy way to reach
+The following people are the primary authors of zookeepr. See also the
+THANKS section for a list of all contributors.  Discussion of development occurs on
+the zookeepr-devel AT lists.zookeepr.org mailing list (also an easy way to reach
 the authors).
 
-Jamie Wilkinson <jaq@spacepants.org>
-Lindsay Holmwood <auxesis@gmail.com>
-John Ferlito <johnf@inodes.org>
-Michael Kedzierski <ycros@kruel.org>
+Active Authors:
+    Jiri Baum <jiri AT baum DOT com DOT au>
+    John Ferlito <johnf AT inodes DOT org>
+    Joshua Hesketh <josh AT nitrotech DOT org>
+    James Iseppi <james AT iseppi DOT org>
+    
+Past Authors:
+
+    Jamie Wilkinson <jaq AT spacepants DOT org>
+    Lindsay Holmwood <auxesis AT gmail DOT com>
+    Michael Kedzierski <ycros AT kruel DOT org>
+
+zookeepr THANKS
+===============
+
+Many people further contributed to zookeepr by reporting problems, suggesting
+various improvements or submitting actual code.  Here is a list of these
+people, alphabetically by surname.  Help me keep it complete and exempt of
+errors.
+
+    Ben Leslie	<benno AT benno DOT id DOT au>
+    Jeff Waugh	<jdub AT perkypants DOT org>
+    Josh Bush <cheeseness AT yahoo DOT com>
+    Peter Lieverdink <me AT cafuego DOT net>
+    Donna Benjamin
+
