@@ -27,7 +27,12 @@
 <span class="mandatory">*</span>
 <label for="registration.country">Country:</label>
 </p><p class="entries">
-<% h.text_field('registration.country', size=40) %>
+<select name="registration.country">
+<option value="">-</option>
+% for country in h.countries():
+<option value="<%country%>"><% country %></option>
+% #endfor
+</select>
 </p><p class="label">
 <span class="mandatory">*</span>
 <label for="registration.postcode">Postcode/ZIP:</label>
