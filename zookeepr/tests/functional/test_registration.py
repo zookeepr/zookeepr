@@ -236,6 +236,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
         f['person.lastname'] = 'mctest'
         f['person.password'] = 'test'
         f['person.password_confirm'] = 'test'
+        f['person.mobile'] = '123'
 
         resp = f.submit()
 
@@ -295,6 +296,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
         f['person.email_address'] = 'testguy2@example.org'
         f['person.firstname'] = 'testguy'
         f['person.lastname'] = 'mctest'
+        f['person.mobile'] = '123'
         f['person.password'] = 'test'
         f['person.password_confirm'] = 'test'
 
