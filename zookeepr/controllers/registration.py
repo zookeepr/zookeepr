@@ -230,7 +230,7 @@ class ExistingPersonSchema(Schema):
 class ExistingPersonRegoSchema(BaseSchema):
     registration = RegistrationSchema()
 
-    chained_validators = [NotExistingRegistrationValidator()]
+    chained_validators = [NotExistingRegistrationValidator(), NotExistingNickValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
 
