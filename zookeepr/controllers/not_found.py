@@ -1,6 +1,6 @@
 from zookeepr.lib.base import *
 
-class ContentController(BaseController):
+class NotFoundController(BaseController):
     def view(self, url):
         """
         This is the last place which is tried during a request to try to find a 
@@ -14,5 +14,5 @@ class ContentController(BaseController):
         """
         c.title = url
         c.url = url
-        return render_response('content.myt')
+        return render_response('not_found.myt')
 
