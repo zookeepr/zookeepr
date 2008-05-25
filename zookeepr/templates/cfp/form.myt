@@ -90,7 +90,7 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 	<p class="entries"><% h.textfield('person.url', size=70) %></p>
 		<p class="note">Your mobile phone.</p>
 % else:
-c.mobile_is_mandatory = True
+%   c.mobile_is_mandatory = True
 <& ../person/form.myt &>
 % #endif
 
