@@ -1,15 +1,15 @@
 <div class="notice-box">
 % if c.ceiling.open:
-<b>Registrations</b> are open<br/><br/>
+<b>Registrations</b> are open<br><br>
 % else:
-<b>Registrations are closed</b><br/><br/>
+<b>Registrations are closed</b><br><br>
 % #endif
-<div class = "graph-bar" style = "width:<%c.ceiling.percent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ceiling.text %></div><br/>
+<div class = "graph-bar" style = "width:<%c.ceiling.percent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ceiling.text %></div><br>
 % if c.eb:
-<b>Earlybird</b> is available<br/><br/>
-<div class = "graph-bar" style = "width:<%c.ebpercent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ebtext |h%></div><br />
+<b>Earlybird</b> is available<br><br>
+<div class = "graph-bar" style = "width:<%c.ebpercent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ebtext |h%></div><br>
 % else:
-<b>Earlybird no longer available</b><br/><br/><% c.ebtext |h%>
+<b>Earlybird no longer available</b><br><br><% c.ebtext |h%>
 % #endif
 <b><%c.timeleft %></b>
 </div>
@@ -40,9 +40,9 @@ otherwise.</p>
 
 <h3>Summary of steps</h3>
 <p>&#9744; Fill in registration form
-<br/>&#9744; Generate invoice
-<br/>&#9744; Pay
-<br/>&#9744; Attend conference</p>
+<br>&#9744; Generate invoice
+<br>&#9744; Pay
+<br>&#9744; Attend conference</p>
 % elif not hasattr(c.signed_in_person, 'registration') or c.signed_in_person.registration==None:
 <p><b>Not registered.</b>
 
@@ -52,9 +52,9 @@ otherwise.</p>
 
 <h3>Summary of steps</h3>
 <p>&#9744; Fill in registration form
-<br/>&#9744; Generate invoice
-<br/>&#9744; Pay
-<br/>&#9744; Attend conference</p>
+<br>&#9744; Generate invoice
+<br>&#9744; Pay
+<br>&#9744; Attend conference</p>
 % elif c.signed_in_person.registration.type=='Volunteer' and not c.signed_in_person.registration.volunteer:
 <p><b>Tentatively volunteered.</b></p>
 
@@ -71,13 +71,13 @@ otherwise.</p>
 <h3>Summary of steps</h3>
 <p>&#9745; Fill in registration form
 %   if c.signed_in_person.invoices and c.signed_in_person.invoices[0].paid():
-<br/>&#9745; Generate invoice
-<br/>&#9745; Pay
+<br>&#9745; Generate invoice
+<br>&#9745; Pay
 %   else:
-<br/>&#9744; Generate invoice
-<br/>&#9744; Pay
+<br>&#9744; Generate invoice
+<br>&#9744; Pay
 %   #endif
-<br/>&#9744; Attend conference</p>
+<br>&#9744; Attend conference</p>
 % elif not c.signed_in_person.invoices:
 <p><b>Tentatively registered.</b></p>
 
@@ -91,16 +91,16 @@ otherwise.</p>
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a>
 %   if c.signed_in_person.registration.type=='Volunteer':
-<br/><a href="/registration/<% c.signed_in_person.registration.id %>/volunteer"
+<br><a href="/registration/<% c.signed_in_person.registration.id %>/volunteer"
 >Change areas of interest and ability</a>
 %   #endif
 </p>
 
 <h3>Summary of steps</h3>
 <p>&#9745; Fill in registration form
-<br/>&#9744; Generate invoice
-<br/>&#9744; Pay
-<br/>&#9744; Attend conference</p>
+<br>&#9744; Generate invoice
+<br>&#9744; Pay
+<br>&#9744; Attend conference</p>
 % elif c.signed_in_person.invoices[0].paid():
 <p><b>Registered and paid.</b></p>
 
@@ -113,29 +113,29 @@ otherwise.</p>
 <p>
 %   if c.signed_in_person.registration.type=='Volunteer':
 <a href="/registration/<% c.signed_in_person.registration.id %>/volunteer"
->Change areas of interest and ability</a><br/>
+>Change areas of interest and ability</a><br>
 %   #endif
 %   if not c.signed_in_person.invoices[0].good_payments:
 <a href="/registration/<% c.signed_in_person.registration.id %>/edit"
->Edit details</a><br/>
+>Edit details</a><br>
 <a href="/registration/<% c.signed_in_person.registration.id %>/pay"
->Regenerate invoice</a><br/>
+>Regenerate invoice</a><br>
 %   else:
 <a href="/registration/<% c.signed_in_person.registration.id %>"
->View details</a><br/>
+>View details</a><br>
 %   #endif
 <a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
-invoice</a><br/>
+invoice</a><br>
 <a href="/invoice/<% c.signed_in_person.invoices[0].id %>/printable" >View
-printable invoice (html)</a><br/>
+printable invoice (html)</a><br>
 <a href="/invoice/<% c.signed_in_person.invoices[0].id %>.pdf" >Get
 printable invoice (pdf)</a></p>
 
 <h3>Summary of steps</h3>
 <p>&#9745; Fill in registration form
-<br/>&#9745; Generate invoice
-<br/>&#9745; Pay
-<br/>&#9744; Attend conference</p>
+<br>&#9745; Generate invoice
+<br>&#9745; Pay
+<br>&#9744; Attend conference</p>
 % elif c.signed_in_person.invoices[0].bad_payments:
 <p><b>Tentatively registered and tried to pay.</b></p>
 
@@ -152,13 +152,13 @@ invoice <% c.signed_in_person.invoices[0].id %>.</p>
 
 <h3>Other option</h3>
 <a href="/registration/<% c.signed_in_person.registration.id %>"
->View registration details</a><br/>
+>View registration details</a><br>
 
 <h3>Summary of steps</h3>
 <p>&#9745; Fill in registration form
-<br/>&#9745; Generate invoice
-<br/>&#9744; Pay
-<br/>&#9744; Attend conference</p>
+<br>&#9745; Generate invoice
+<br>&#9744; Pay
+<br>&#9744; Attend conference</p>
 % else:
 <p><b>Tentatively registered.</b></p>
 
@@ -171,18 +171,18 @@ registration</a></p>
 
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a>
-<br/><a href="/registration/<% c.signed_in_person.registration.id %>/pay"
+<br><a href="/registration/<% c.signed_in_person.registration.id %>/pay"
 >Regenerate invoice</a>
-<br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
+<br><a href="/invoice/<% c.signed_in_person.invoices[0].id %>" >View
 invoice</a>
-<br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>/printable" >View
+<br><a href="/invoice/<% c.signed_in_person.invoices[0].id %>/printable" >View
 printable invoice (html)</a>
-<br/><a href="/invoice/<% c.signed_in_person.invoices[0].id %>.pdf" >View
+<br><a href="/invoice/<% c.signed_in_person.invoices[0].id %>.pdf" >View
 printable invoice (pdf)</a></p>
 
 <h3>Summary of steps</h3>
 <p>&#9745; Fill in registration form
-<br/>&#9745; Generate invoice
-<br/>&#9744; Pay
-<br/>&#9744; Attend conference</p>
+<br>&#9745; Generate invoice
+<br>&#9744; Pay
+<br>&#9744; Attend conference</p>
 % #endif

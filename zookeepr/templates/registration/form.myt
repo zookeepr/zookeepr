@@ -11,7 +11,7 @@
 <label for="registration.address">Address:</label>
 </p><p class="entries">
 <% h.text_field('registration.address1', size=40) %>
-<br />
+<br>
 <% h.text_field('registration.address2', size=40) %>
 </p>
 <p class="label">
@@ -168,7 +168,7 @@ descMD5 = md5.new(desc).hexdigest()
 </p><p class="entries">
 % for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)')]:
 %	label = 'registration.prevlca.%s' % year
-<br />
+<br>
 <% h.check_box(label) %>
 <label for="<% label %>"><% desc %></label>
 % #endfor
@@ -214,7 +214,7 @@ descMD5 = md5.new(desc).hexdigest()
 #($<% eb %> early-bird)
 #% #endif
 </label>
-<br />
+<br>
 % #endfor
 % if is_speaker:
 <p class="note-bene">
@@ -252,7 +252,7 @@ verification.
 <%python>
 teeoptions = [
   ('F_long',
-  """Women's long sleeve <br/><span class="note">(Small cut -
+  """Women's long sleeve <br><span class="note">(Small cut -
   order 1 size up)</p>""",
   ('8', '10', '12', '14', '16', '18', '', '')),
 
@@ -295,7 +295,7 @@ style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registra
 % #endfor
 </table>
 </p><p class="note">
-<br/>A conference T-shirt is included with all Student, Hobbyist, Professional
+<br>A conference T-shirt is included with all Student, Hobbyist, Professional
 and Sponsor tickets. Please tell us what size and shape you prefer.
 </p>
 
@@ -304,7 +304,7 @@ and Sponsor tickets. Please tell us what size and shape you prefer.
 </p><p class="entries">
 <% h.text_field('registration.extra_tee_count', size=10) %>
 &#215; $24.75 each.
-<br/>
+<br>
 <label for="registration.extra_tee_sizes">Sizes and styles:</label>
 <% h.text_field('registration.extra_tee_sizes', size=60) %>
 </p><p class="note">
@@ -487,11 +487,11 @@ programme?</label>
 <label for="registration.pp_adults">Adults:</label>
 <% h.text_field('registration.pp_adults', size=10) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_12_17">Young adults (12-17):</label>
 <% h.text_field('registration.kids_12_17', size=10) %>
 <% price %>
-<br />
+<br>
 % if is_speaker:
 %   price = '&#215; $0.00'
 % else:
@@ -500,19 +500,19 @@ programme?</label>
 <label for="registration.kids_10_11">Children 10-11:</label>
 <% h.text_field('registration.kids_10_11', size=10) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_7_9">Children 7-9:</label>
 <% h.text_field('registration.kids_7_9', size=10) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_4_6">Children 4-6:</label>
 <% h.text_field('registration.kids_4_6', size=10) %>
 <% price %>
-<br />
+<br>
 <label for="registration.kids_0_3">Children under 3:</label>
 <% h.text_field('registration.kids_0_3', size=10) %>
 <% price %>
-<br />
+<br>
 </p>
 
 % if is_speaker:
@@ -522,7 +522,7 @@ programme?</label>
 <label for="registration.speaker_pp_pay_adult">Adults and young adults:</label>
 <% h.text_field('registration.speaker_pp_pay_adult', size=10) %>
 &#215; $220.00
-<br />
+<br>
 <label for="registration.speaker_pp_pay_child">Children:</label>
 <% h.text_field('registration.speaker_pp_pay_child', size=10) %>
 &#215; $132.00
@@ -588,7 +588,7 @@ preference that you let us know.</p>
 </fieldset>
 % #endif
 
-<br/>
+<br>
 <% h.hidden_field('registration.silly_description_md5', value=descMD5) %>
 <%init>
 import datetime

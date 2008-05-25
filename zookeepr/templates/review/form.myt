@@ -58,13 +58,13 @@ Proposal submitted by:
 <fieldset>
 <div id="q1">
 <p>1. What score do you give this paper?
-<br />
+<br>
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
-<br />
+<br>
 <% h.radio('review.score', -1, "-1 (reject) I want this proposal to be rejected") %>
-<br />
+<br>
 <% h.radio('review.score', +1, "+1 (accept) I want this proposal to be accepted") %>
-<br />
+<br>
 <% h.radio('review.score', +2, "+2 (strong accept) I want this proposal to be accepted, and if asked to I will advocate for it to be accepted.") %>
 </p>
 </div>

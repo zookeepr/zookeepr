@@ -2,7 +2,7 @@
 
 <p>
    <b>Name:</b>
-    <% c.proposaltype.name | h %><br />
+    <% c.proposaltype.name | h %><br>
 </p>
 
 % if c.can_edit:

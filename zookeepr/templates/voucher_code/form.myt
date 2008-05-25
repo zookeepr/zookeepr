@@ -43,7 +43,7 @@ would spell IBM or GOOGLE :-)
 % for t in ['Professional', 'Hobbyist', 'Concession', 'Fairy Penguin Sponsor']:
 <input type="radio" name="voucher_code.type" id="voucher_code.type_<% t %>" value="<% t %>" />
 <label for="voucher_code.type_<% t %>"><% t %></label>
-<br />
+<br>
 % #endfor
 </p>
 

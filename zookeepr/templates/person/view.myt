@@ -12,28 +12,28 @@ profile</h2>
 
 <p>
    <b>Email:</b>
-    <% c.person.email_address | h %><br />
+    <% c.person.email_address | h %><br>
 </p>
 
 <p>
    <b>Display name:</b>
-    <% c.person.handle | h %><br />
+    <% c.person.handle | h %><br>
 </p>
 
 <p>
    <b>First name:</b>
-    <% c.person.firstname | h %><br />
+    <% c.person.firstname | h %><br>
 </p>
 
 <p>
    <b>Last name:</b>
-    <% c.person.lastname | h %><br />
+    <% c.person.lastname | h %><br>
 </p>
 </div>
 
 <p>
    <b>Phone:</b>
-<% c.person.phone %><br />
+<% c.person.phone %><br>
 </p>
 
 <p>

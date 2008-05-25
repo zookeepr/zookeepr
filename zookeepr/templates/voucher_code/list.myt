@@ -54,7 +54,7 @@ This table lists the voucher codes for your group.
 
 </table>
 
-<br />
+<br>
 <% actionlink %>
 
 <%init>

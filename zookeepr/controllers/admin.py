@@ -380,7 +380,7 @@ class AdminController(SecureController):
 	c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
-	c.text += '<br/><h2>Extra T-shirts</h2>'
+	c.text += '<br><h2>Extra T-shirts</h2>'
 	c.text += '''(The "normal" column is for reference only; it's
 			     already included in the first table above.)'''
 	c.columns = 'rego', 'count', 'styles and sizes', 'e-mail', 'normal'
@@ -388,7 +388,7 @@ class AdminController(SecureController):
 	c.data.sort()
         c.text = render('admin/table.myt', fragment=True)
 
-	c.text += '<br/><h2>Totals</h2>'
+	c.text += '<br><h2>Totals</h2>'
 	c.columns = ('type', 'total')
 	c.data = [
 	  ('Normal', total_n),

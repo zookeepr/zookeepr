@@ -4,7 +4,7 @@
 	<title><& SELF:title &></title>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css"/>
+	<link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css">
 </head>
 
 <body>
