@@ -95,7 +95,7 @@ def make_map():
     m.connect(':controller/:id/:action', action='index', id=None)
 
     # m.connect('*url', controller='wiki', action='view')
-    #m.connect('*url', controller='db_content', action='view', id=None)
-    m.connect('*url', controller='not_found', action='view')
+    m.connect('*url', controller='db_content', action='view', id=None)
+    #m.connect('*url', controller='not_found', action='view')
 
     return m
