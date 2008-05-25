@@ -1,5 +1,3 @@
-<h2>Add a new page</h2>
-
 <fieldset>
 
 <p class="label">
@@ -26,8 +24,8 @@ The URL after the linux.conf.au/ that this page should be rendered for. EG: 'abo
 </p><p class="entries">
 <% h.text_area('db_content.body', size="70x6") %>
 </p><p class="note">
-The HTML rendered body.
+The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate.
 </p>
-<% h.submit('Add!') %>
+<% h.submit('Save') %>
 </fieldset>
 

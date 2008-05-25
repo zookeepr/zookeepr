@@ -20,6 +20,6 @@
 <br />
 <% h.text_field('person.phone') %></p>
 
-<p><label for="person.mobile">Mobile number</label>
+<p><label for="person.mobile">Mobile/Cell number</label>
 <br />
 <% h.text_field('person.mobile') %></p>

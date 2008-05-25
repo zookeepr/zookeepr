@@ -237,7 +237,6 @@ class Read(RUDBase):
         """View a specific object"""
         if hasattr(self, '_can_edit'):
             c.can_edit = self._can_edit()
-
         # exec the template
         response = render_response('%s/view.myt' % self.individual)
 

@@ -71,7 +71,7 @@ Your email address will only be used to correspond with you, and is your login n
 % #endif
 Mobile/Cell number:
 </p><p >
-<% c.registration.phone %>
+<% c.registration.person.mobile %>
 </p>
 
 </p><p class="label">

@@ -12,7 +12,6 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
 from zookeepr.model.registration import Accommodation
 from zookeepr.model.billing import VoucherCode
-from zookeepr.config.lca_info import lca_rego
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -67,7 +66,7 @@ class DuplicateVoucherCodeValidator(validators.FancyValidator):
 
 class SpeakerDiscountValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        if value['type']=='Speaker' or value['accommodation'] in lca_rego['speaker_accom_options']:
+        if value['type']=='Speaker' or value['accommodation'] in h.lca_rego['speaker_accom_options']:
             if 'signed_in_person_id' in session:
                 signed_in_person = state.query(model.Person).filter_by(id=session['signed_in_person_id']).one()
                 is_speaker = reduce(lambda a, b: a or b.accepted, signed_in_person.proposals, False)
@@ -155,8 +154,6 @@ class RegistrationSchema(Schema):
     country = validators.String(not_empty=True)
     postcode = validators.String(not_empty=True)
 
-    phone = NonblankForSpeakers()
-
     company = validators.String()
     nick = validators.String()
 
@@ -227,6 +224,8 @@ class NewRegistrationSchema(BaseSchema):
     chained_validators = [NotExistingRegistrationValidator(), NotExistingNickValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
+class ExistingPersonSchema(Schema):
+    mobile = NonblankForSpeakers()
 
 class ExistingPersonRegoSchema(BaseSchema):
     registration = RegistrationSchema()
@@ -595,8 +594,6 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                         speaker = 1
             if not speaker:
                 count += 1
-        count += 20 # GOOGLE group booking is deemed all earlybird
-        count += 10 # other group bookings
         if count >= po.eblimit:
             return False, "All gone."
         left = po.eblimit - count
@@ -752,8 +749,8 @@ class PaymentOptions:
                 }
         self.dinner = 5000
 
-        self.ebdate = lca_rego['earlybird_enddate']
-        self.eblimit = lca_rego['earlybird_limit']
+        self.ebdate = h.lca_rego['earlybird_enddate']
+        self.eblimit = h.lca_rego['earlybird_limit']
 
     def getTypeAmount(self, type, eb):
         if type in self.types.keys():

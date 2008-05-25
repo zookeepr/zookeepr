@@ -1,4 +1,4 @@
-<h2>Add a new page</h2>
+<h2>Edit page</h2>
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
@@ -6,7 +6,7 @@
 </&>
 
 <%method title>
-New page - <& PARENT:title &>
+Edit page - <& PARENT:title &>
 </%method>
 
 <%args>

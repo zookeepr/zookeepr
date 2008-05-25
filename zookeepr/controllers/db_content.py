@@ -23,11 +23,20 @@ class UpdateContentSchema(BaseSchema):
     pre_validators = [variabledecode.NestedVariables]
 
 
-class DbContentController(SecureController, Create):
+class DbContentController(SecureController, Create, List, Read, Update):
     individual = 'db_content'
     model = model.DBContent
     schemas = {'new': NewContentSchema(),
+               'edit': UpdateContentSchema()
               }
 
-    permissions = {'new': [AuthRole('organiser')]
+    permissions = {'new': [AuthRole('organiser')],
+                   'index': [AuthRole('organiser')],
+                   'view': [AuthTrue()],
+                   'edit': [AuthRole('organiser')]
                    }
+                   
+    def __before__(self, **kwargs):
+        super(DbContentController, self).__before__(**kwargs)
+        c.dbsession = self.dbsession # for the use of list.myt
+
