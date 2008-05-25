@@ -26,7 +26,8 @@ class NewPersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
-    handle = validators.String(not_empty=True)
+    phone = validators.String()
+    mobile = validators.String(not_empty=True)
 
     experience = validators.String()
     bio = validators.String(not_empty=True)
@@ -38,6 +39,7 @@ class ExistingPersonSchema(Schema):
     experience = validators.String()
     bio = validators.String(not_empty=True)
     url = validators.String()
+    mobile = validators.String(not_empty=True)
 
 class ProposalSchema(Schema):
     title = validators.String(not_empty=True)

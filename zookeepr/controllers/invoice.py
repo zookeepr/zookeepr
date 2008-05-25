@@ -68,7 +68,7 @@ class InvoiceController(SecureController, Read, List):
         mac = hmac.new(secret, stringToMAC, sha).hexdigest()
         fields['MAC'] = mac
 
-        res=render_response('invoice/payment.myt', fields=fields)
+        res=Response(render('invoice/payment.myt', fields=fields))
         res.headers['Refresh']='300'
         return res
 

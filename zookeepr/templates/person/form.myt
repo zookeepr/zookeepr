@@ -17,5 +17,8 @@
 <p><label for="person.phone">Phone number</label></p>
 <p class="entries"><% h.text_field('person.phone') %></p>
 
+% if c.mobile_is_mandatory:
+<p class="label"><span class="mandatory">*</span>
+% #endif
 <p><label for="person.mobile">Mobile/Cell number</label></p>
 <p class="entries"><% h.text_field('person.mobile') %></p>
