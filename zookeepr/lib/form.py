@@ -11,5 +11,5 @@ def fill(m, defaults, errors):
         form=form.replace('<error>', '<p class="error-message">', 1)
         form=form.replace('</error>', '</p>', 1)
     form=form.replace('<error>', '<span class="error-message">')
-    form=form.replace('</error>', '</span><br/>')
+    form=form.replace('</error>', '</span><br>')
     m.write(form)
