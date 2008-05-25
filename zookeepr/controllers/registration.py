@@ -149,13 +149,6 @@ class TicketTypeValidator(validators.String):
             raise Invalid("Invalid type", value, state)
 
 class RegistrationSchema(Schema):
-    address1 = validators.String(not_empty=True)
-    address2 = validators.String()
-    city = validators.String(not_empty=True)
-    state = validators.String()
-    postcode = validators.String(not_empty=True)
-
-    company = validators.String()
     nick = validators.String()
 
     shell = validators.String()
@@ -214,7 +207,13 @@ class PersonSchema(Schema):
     password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
+    company = validators.String()
     mobile = NonblankForSpeakers()
 
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
