@@ -117,11 +117,9 @@ class TeesizeValidator(validators.FancyValidator):
             raise Invalid("Please specify your T-shirt size.", value, state)
 
 class AccommodationValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        raise Invalid(`value`, value, state)
+    def _to_python(self, value, state):
         if value == '-':
             raise Invalid("Please specify an accomodation option", value, state)
-    def _to_python(self, value, state):
         if value == 'own':
             return None
         return state.query(model.Accommodation).get(value)
