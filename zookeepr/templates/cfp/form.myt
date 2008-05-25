@@ -82,7 +82,14 @@ for the primary speaker; mention the other speakers in the Abstract, eg.
 	value=c.person.firstname + " " + c.person.lastname, size=70,
 	disabled=True) %></p>
 		<p class="note">(Can't be changed here.)</p>
+
+	<p class="label"><label
+	for="person.url">Speaker mobile phone:</label><span class="mandatory">*</span><span
+    class="publishable">&#8224;</span></p>
+	<p class="entries"><% h.text_field('person.url', size=70) %></p>
+		<p class="note">Your mobile phone.</p>
 % else:
+c.mobile_is_mandatory = True
 <& ../person/form.myt &>
 % #endif
 
