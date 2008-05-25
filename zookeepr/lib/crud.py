@@ -190,7 +190,7 @@ class Update(RUDBase):
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[self.individual][k])
 
-                self.dbsession.save(self.obj)
+                self.dbsession.update(self.obj)
                 self.dbsession.flush()
 
                 # call postflush hook

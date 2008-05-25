@@ -223,7 +223,7 @@ class ProposalController(SecureController, View, Modify):
                 for k in result['person']:
                     setattr(c.person, k, result['person'][k])
 
-                self.dbsession.save(self.obj)
+                self.dbsession.update(self.obj)
                 self.dbsession.flush()
 
                 # call postflush hook
