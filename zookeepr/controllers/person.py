@@ -103,9 +103,9 @@ class PersonController(SecureController, Read, Update, List):
     model = model.Person
     permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
                    'roles': [AuthRole('organiser')],
-                   'index': [AuthRole('organiser')]
+                   'index': [AuthRole('organiser')],
+                   'signin': True,
                    }
-    permissions = {'ALL': True}
 
 
     def signin(self):
@@ -310,8 +310,6 @@ class PersonController(SecureController, Read, Update, List):
         return super(PersonController, self).index()
 
     def view(self):
-        # hack because we don't use SecureController
-
         c.registration_status = request.environ['paste.config']['app_conf'].get('registration_status')
         if self.logged_in():
             roles = self.dbsession.query(Role).all()

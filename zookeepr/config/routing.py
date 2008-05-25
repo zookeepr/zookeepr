@@ -49,8 +49,6 @@ def make_map():
     m.connect('/registration/professional', controller='registration', action='professional', id=None)
     m.connect('/registration/list_miniconf_orgs', controller='registration', action='list_miniconf_orgs', id=None)
 
-    # special case for account controller, again in the style of the
-    # original routes controller
     m.connect('/person/signin', controller='person', action='signin')
     m.connect('/person/signout', controller='person', action='signout')
     m.connect('/person/forgotten_password', controller='person', action='forgotten_password')
