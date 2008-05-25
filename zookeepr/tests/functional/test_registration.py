@@ -222,24 +222,24 @@ class TestNotSignedInRegistrationController(ControllerTest):
             country='Australia',
             postcode='2001',
             type='Professional',
-            teesize='M_M',
+            teesize='M_long_M',
             extra_tee_count=1,
-            extra_tee_sizes='M_M',
-            checkin=14,
-            checkout=20,
+            extra_tee_sizes='M_long_M',
+            nick='testguy',
+            checkin=28,
+            checkout=1,
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
         f['person.email_address'] = 'testguy@example.org'
         f['person.firstname'] = 'testguy'
         f['person.lastname'] = 'mctest'
-        f['person.handle']= 'testguy'
         f['person.password'] = 'test'
         f['person.password_confirm'] = 'test'
 
         resp = f.submit()
 
-        resp.mustcontain('This person already exists.')
+        resp.mustcontain('This account already exists.  Please try signing in first.')
 
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
@@ -300,7 +300,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
 
         resp = f.submit()
 
-        resp.mustcontain('This display name has been taken, sorry.  Please use another.')
+        resp.mustcontain('This nick has been taken, sorry.  Please use another.')
 
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
