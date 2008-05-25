@@ -105,6 +105,7 @@ class PersonController(SecureController, Read, Update, List):
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'signin': True,
+                   'new': True,
                    }
 
 
