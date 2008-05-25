@@ -38,6 +38,5 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    }
 
     def view(self):
-        return render_response('not_found.myt')
-        #return self.redirect_to('not_found', 'view')
+        return self.redirect_to('not_found', 'view')
         

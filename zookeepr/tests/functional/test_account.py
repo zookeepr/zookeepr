@@ -384,11 +384,13 @@ class TestPersonController(ControllerTest):
         resp = resp.click('Sign up')
         # fill out the form
         f = resp.form
-        f['registration.email_address'] = 'testguy@example.org'
-        f['registration.firstname'] = 'Testguy'
-        f['registration.lastname'] = 'McTest'
-        f['registration.password'] = 'test'
-        f['registration.password_confirm'] = 'test'
+        f['person.email_address'] = 'testguy@example.org'
+        f['person.firstname'] = 'Testguy'
+        f['person.lastname'] = 'McTest'
+        f['person.password'] = 'test'
+        f['person.password_confirm'] = 'test'
+        f['person.phone'] = '123'
+        f['person.mobile'] = '123'
         resp = f.submit()
         # did we get an appropriate page?
         resp.mustcontain("follow the instructions in that message")
@@ -454,11 +456,13 @@ class TestPersonController(ControllerTest):
 
         resp = self.app.get('/person/new')
         f = resp.form
-        f['registration.email_address'] = 'testguy@example.org'
-        f['registration.firstname'] = 'Testguy'
-        f['registration.lastname'] = 'McTest'
-        f['registration.password'] = 'test'
-        f['registration.password_confirm'] = 'test'
+        f['person.email_address'] = 'testguy@example.org'
+        f['person.firstname'] = 'Testguy'
+        f['person.lastname'] = 'McTest'
+        f['person.password'] = 'test'
+        f['person.password_confirm'] = 'test'
+        f['person.phone'] = '1234'
+        f['person.mobile'] = '1234'
         resp = f.submit()
 
         resp.mustcontain('This person already exists')

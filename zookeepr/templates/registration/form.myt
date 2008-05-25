@@ -28,7 +28,6 @@
 <label for="registration.country">Country:</label>
 </p><p class="entries">
 <select name="registration.country">
-<option value="">-</option>
 % for country in h.countries():
 <option value="<%country%>"><% country %></option>
 % #endfor
@@ -413,6 +412,7 @@ Please check out the <% h.link_to('accommodation', url="/register/accommodation"
 <label for="registration.accommodation">What accommodation would you like to stay at:</label>
 </p><p class="entries">
 <SELECT name="registration.accommodation">
+<option value="">-</option>
 <option value="0">I will organise my own</option>
 % for a in c.accommodation_collection:
 %    if a.beds==999:
