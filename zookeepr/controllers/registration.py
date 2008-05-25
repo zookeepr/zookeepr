@@ -482,7 +482,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             self.dbsession.save(iipc)
             invoice.items.append(iipc)
 
-        self.dbsession.save(invoice)
+        self.dbsession.save_or_update(invoice)
         self.dbsession.flush()
 
         if quiet: return
@@ -731,7 +731,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
                 areas of interest and ability.</p>'''
 
             setattr(self.obj, 'volunteer', a)
-            self.dbsession.save(self.obj)
+            self.dbsession.save_or_update(self.obj)
             self.dbsession.flush()
 
         return render_response('registration/volunteer.myt')
