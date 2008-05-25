@@ -30,14 +30,12 @@
 		will appear as-is on the website in the draft programme. Up
 		to about 500 words.</p>
 
-	<p class="label"><label for="proposal.project">Project:</label><span class="mandatory">*</span><span
-    class="publishable">&#8224;</span>
+	<p class="label"><label for="proposal.project">Project:</label><span class="publishable">&#8224;</span>
 	<p class="entries"><% h.text_field('proposal.project', size=70) %></p>
 		<p class="note">The name of the project you will be talking
 		about.</p>
 
-	<p class="label"><label for="proposal.url">Project homepage:</label><span class="mandatory">*</span><span
-    class="publishable">&#8224;</span></p>
+	<p class="label"><label for="proposal.url">Project homepage:</label><span class="publishable">&#8224;</span></p>
 	<p class="entries"><% h.text_field('proposal.url', size=70) %></p>
 		<p class="note">If your project has a webpage, specify the
 		URL here so the committee can find out more about your
