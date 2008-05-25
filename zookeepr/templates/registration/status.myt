@@ -7,10 +7,11 @@
 <div class = "graph-bar" style = "width:<%c.ceiling.percent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ceiling.text %></div><br/>
 % if c.eb:
 <b>Earlybird</b> is available<br/><br/>
-<div class = "graph-bar" style = "width:<%c.ebpercent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ebtext |h%></div>
+<div class = "graph-bar" style = "width:<%c.ebpercent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ebtext |h%></div><br />
 % else:
 <b>Earlybird no longer available</b><br/><br/><% c.ebtext |h%>
 % #endif
+<b><%c.timeleft %></b>
 </div>
 % if c.ceiling.open:
 <h2>Your registration status</h2>
