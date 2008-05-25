@@ -47,9 +47,9 @@ Your email address will only be used to correspond with you, and is your login n
 <% c.registration.state %>
 </p><p class="label">
 <span class="mandatory">*</span>
-<label for="registration.country">Country:</label>
+<label for="person.country">Country:</label>
 </p><p >
-<% c.registration.country %>
+<% c.registration.person.country %>
 </p><p class="label">
 <span class="mandatory">*</span>
 <label for="registration.postcode">Postcode/ZIP:</label>

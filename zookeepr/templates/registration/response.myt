@@ -96,8 +96,8 @@ teesize = ' '.join(teesize)
            <% c.registration.address2 %>
            <% c.registration.city %>
            <% c.registration.state %>, <% c.registration.postcode %>
-           <% c.registration.country %>
-    Phone: <% c.registration.phone %>
+           <% c.registration.person.country %>
+    Phone: <% c.registration.person.phone %>
   Company: <% c.registration.company %>
  IRC Nick: <% c.registration.nick %>
 

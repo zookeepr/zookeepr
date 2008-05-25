@@ -25,9 +25,9 @@
 <% h.text_field('registration.state', size=40) %>
 </p><p class="label">
 <span class="mandatory">*</span>
-<label for="registration.country">Country:</label>
+<label for="person.country">Country:</label>
 </p><p class="entries">
-<select name="registration.country">
+<select name="person.country">
 % for country in h.countries():
 <option value="<%country%>"><% country %></option>
 % #endfor
@@ -412,7 +412,7 @@ Please check out the <% h.link_to('accommodation', url="/register/accommodation"
 <label for="registration.accommodation">What accommodation would you like to stay at:</label>
 </p><p class="entries">
 <SELECT name="registration.accommodation">
-<option value="">-</option>
+<option value="-">-</option>
 <option value="0">I will organise my own</option>
 % for a in c.accommodation_collection:
 %    if a.beds==999:

@@ -11,19 +11,19 @@
 <p class="label">
 <label for="person.firstname">Your first name:</label></p>
 <p>
-<% c.signed_in_person.firstname | h %>
+<% c.registration.person.firstname | h %>
 </p>
 
 <p class="label">
 <label for="person.lastname">Your last name:</label></p>
 <p>
-<% c.signed_in_person.lastname | h %>
+<% c.registration.person.lastname | h %>
 </p>
 
 <p class="label">
 <label for="person.email_address">Email address:</label></p>
 <p>
-<% c.signed_in_person.email_address | h %>
+<% c.registration.person.email_address | h %>
 </p>
 <p class="note">
 Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
@@ -49,10 +49,13 @@ errors
 # the values in c.registration
 if not defaults:
 	defaults = {}
-	for k in ['address1', 'address2', 'city', 'state', 'country', 'postcode', 'company', 'shell', 'shelltext', 'editor', 'editortext', 'distro', 'distrotext', 'nick', 'prevlca', 'type', 'voucher_code', 'teesize', 'extra_tee_count', 'extra_tee_sizes', 'dinner', 'diet', 'special', 'miniconf', 'opendaydrag', 'accommodation', 'checkin', 'checkout', 'partner_email', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11', 'kids_12_17', 'pp_adults', 'speaker_pp_pay_adult', 'speaker_pp_pay_child', 'lasignup', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
+	for k in ['address1', 'address2', 'city', 'state', 'postcode', 'company', 'shell', 'shelltext', 'editor', 'editortext', 'distro', 'distrotext', 'nick', 'prevlca', 'type', 'voucher_code', 'teesize', 'extra_tee_count', 'extra_tee_sizes', 'dinner', 'diet', 'special', 'miniconf', 'opendaydrag', 'accommodation', 'checkin', 'checkout', 'partner_email', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11', 'kids_12_17', 'pp_adults', 'speaker_pp_pay_adult', 'speaker_pp_pay_child', 'lasignup', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
 		v = getattr(c.registration, k)
 		if v is not None:
 			defaults['registration.' + k] = getattr(c.registration, k)
+
+        defaults['person.country'] = c.registration.person.country
+
 	# FIXME: UGH durty hack
 	if c.registration.accommodation:
 		defaults['registration.accommodation'] = c.registration.accommodation.id

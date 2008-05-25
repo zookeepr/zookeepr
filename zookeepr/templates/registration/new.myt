@@ -128,7 +128,7 @@ errors
 <%init>
 # work around bug in formencode, set defaults
 if not defaults:
-	defaults = {'registration.country': 'Australia',
+	defaults = {'person.country': 'Australia',
 		'registration.checkout': '2',
 		'registration.lasignup': '1',
 		'registration.announcesignup': '1',
