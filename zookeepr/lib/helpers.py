@@ -81,11 +81,14 @@ def textarea(name, size):
     temp = size.split("x")
     return '<textarea name="%s" id="%s" cols="%s" rows="%s"></textarea>' % (name, name, temp[0], temp[1])
 
-def textfield(name, size=40, value=None):
+def textfield(name, size=40, value=None, disabled=False):
+    enabled = ''
+    if disabled:
+        enabled = ' disabled="disabled"'
     if value is None:
-        return '<input type="text" name="%s" id="%s" size="%s">' % (name, name, size)
+        return '<input type="text" name="%s" id="%s" size="%s"%s>' % (name, name, size, enabled)
     else:
-        return '<input type="text" name="%s" id="%s" size="%s" value="%s">' % (name, name, size, value)
+        return '<input type="text" name="%s" id="%s" size="%s" value="%s"%s>' % (name, name, size, value, enabled)
 
 
 def passwordfield(name, size=40):

@@ -107,7 +107,7 @@ class ProposalController(SecureController, View, Modify):
         return render_response('proposal/new.myt', defaults=defaults, errors=errors)
 
     def is_submitter(self):
-        return c.signed_in_person in self.obj.people
+        return c.signed_in_person in session
 
     def review(self, id):
         """Review a proposal.
