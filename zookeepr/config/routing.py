@@ -51,7 +51,7 @@ def make_map():
 
     m.connect('/person/signin', controller='person', action='signin')
     m.connect('/person/signout', controller='person', action='signout')
-    m.connect('/person/forgotten_password', controller='person', action='forgotten_password')
+    m.connect('/person/forgotten_password', controller='person', action='forgotten_password', id=None)
     m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
 
     # admin controller

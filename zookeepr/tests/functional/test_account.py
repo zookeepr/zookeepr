@@ -463,6 +463,10 @@ class TestPersonController(ControllerTest):
         f['person.password_confirm'] = 'test'
         f['person.phone'] = '1234'
         f['person.mobile'] = '1234'
+        f['person.address1'] = 'Moo St'
+        f['person.city'] = 'Tassie'
+        f['person.country'] = 'Australia'
+        f['person.postcode'] = '2000'
         resp = f.submit()
 
         resp.mustcontain('This person already exists')
