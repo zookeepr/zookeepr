@@ -13,7 +13,7 @@ from zookeepr.model import Person, PasswordResetConfirmation
 
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Read, Update, List
-from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc
+from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue
 from zookeepr import model
 from zookeepr.model.core.domain import Role
 from zookeepr.model.core.tables import person_role_map
@@ -105,6 +105,7 @@ class PersonController(SecureController, Read, Update, List):
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'signin': True,
+                   'signout': [AuthTrue()],
                    'new': True,
                    }
 
@@ -132,7 +133,7 @@ class PersonController(SecureController, Read, Update, List):
                         redirect_to(str(session['sign_in_redirect']))
 
                     # return to the registration status
-		    # (while registrations are open)
+                    # (while registrations are open)
                 #    redirect_to('/registration/status')
 
                     # return home
@@ -142,13 +143,13 @@ class PersonController(SecureController, Read, Update, List):
 
     def signout(self):
         defaults = dict(request.POST)
-	if defaults:
+        if defaults:
             # delete and invalidate the session
             session.delete()
             session.invalidate()
             # return home
             redirect_to('home')
-	return render_response('person/signout.myt', defaults=None, errors={})
+        return render_response('person/signout.myt', defaults=None, errors={})
 
     def confirm(self, id):
         """Confirm a registration with the given ID.
