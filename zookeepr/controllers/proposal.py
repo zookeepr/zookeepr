@@ -40,13 +40,13 @@ class NotYetReviewedValidator(validators.FancyValidator):
     messages = {
         "already": "You've already reviewed this proposal, try editing the existing review."
         }
-    
+
     def validate_python(self, value, state):
         review = state.query(Review).filter_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id).one()
         if review is not None:
             raise Invalid(self.message('already', None),
                           value, state)
-        
+
 
 class NewReviewSchema(BaseSchema):
     review = ReviewSchema()
@@ -99,7 +99,7 @@ class ProposalController(SecureController, View, Modify):
                         setattr(att, k, result['attachment'][k])
                     self.obj.attachments.append(att)
                     self.dbsession.save(att)
-                
+
                 self.dbsession.flush()
 
                 redirect_to(action='view', id=self.obj.id)
@@ -118,23 +118,16 @@ class ProposalController(SecureController, View, Modify):
         errors = {}
 
         # Next ID for skipping
-        collection = self.dbsession.from_statement("""
-                            SELECT
-                                *
-                            FROM
-                                    review AS r
-                            LEFT JOIN
-                                    proposal AS p
-                                            ON(p.id=r.proposal_id)
-                            WHERE        
-                                    p.proposal_type_id IN(1,3)
-                            GROUP BY
-                                    r.proposal_id
+        collection = self.dbsession.query(model.Proposal).from_statement("""
+                            SELECT *
+                            FROM review AS r
+                            LEFT JOIN proposal AS p ON(p.id=r.proposal_id)
+                            WHERE p.proposal_type_id IN(1,3)
+                            GROUP BY r.proposal_id
                             HAVING COUNT(r.proposal_id) < (
                                     (SELECT COUNT(id) FROM review) /
                                     (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
-                            ORDER BY
-                                    RANDOM()""")
+                            ORDER BY RANDOM()""")
         for proposal in collection:
             #print proposal.id
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
