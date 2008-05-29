@@ -26,7 +26,7 @@ class ReviewController(SecureController, List, Update, Read):
 
         super(ReviewController, self).__before__(**kwargs)
 
-        c.streams = self.dbsession.query(model.Stream).select()
+        c.streams = self.dbsession.query(model.Stream).all()
 
 
     def summary(self):
