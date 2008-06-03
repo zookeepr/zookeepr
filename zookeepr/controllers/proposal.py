@@ -3,7 +3,7 @@ from paste.deploy.converters import asbool
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Modify, View
+from zookeepr.lib.crud import Update, View
 from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator, StreamValidator, ReviewSchema, AssistanceTypeValidator
 from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role
 import random
@@ -57,7 +57,7 @@ class NewAttachmentSchema(BaseSchema):
     attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
-class ProposalController(SecureController, View, Modify):
+class ProposalController(SecureController, View, Update):
     model = Proposal
     individual = 'proposal'
 
