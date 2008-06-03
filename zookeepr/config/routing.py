@@ -8,7 +8,7 @@ def make_map():
     root_path = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
     m = Mapper(directory=os.path.join(root_path, 'controllers'))
-    
+
     # Define your routes. The more specific and detailed routes should be defined first,
     # so they may take precedent over the more generic routes. For more information, refer
     # to the routes manual @ http://routes.groovie.org/docs/
@@ -31,10 +31,10 @@ def make_map():
     #m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
     #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal', controller='cfp', action='submit_mini')
     #m.connect('/presentations/edit/:id', controller='proposal', action='edit')
+    m.connect('/programme/edit_submission', controller='cfp', action='index')
+    m.connect('/programme/edit_submission/:id', controller='proposal', action='edit')
     m.connect('/programme/submit_a_presentation', controller='cfp', action='submit')
     m.connect('/programme/submit_a_miniconf', controller='cfp', action='submit_mini')
-    m.connect('/programme/edit_submission/:id', controller='proposal', action='edit')
-
     # Verify stuff from commsecure
     m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
 
@@ -62,7 +62,7 @@ def make_map():
     m.connect('/Openday', controller='openday', action='new')
     m.connect('/openday', controller='openday', action='new')
     m.connect('/openDay', controller='openday', action='new')
-    
+
     m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
     m.connect('/review/summary', controller='review', action='summary', id=None)
 

@@ -14,7 +14,7 @@
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
 
-	<p class="submit"><% h.submitbutton('Submit!') %></p>
+  <p class="submit"><% h.submitbutton('Submit!') %></p>
 <% h.end_form() %>
 </&>
 
@@ -34,8 +34,8 @@ if not defaults:
     defaults = {
         'person.experience': '',
         'person.bio': '',
-	'proposal.type': 1,
-	'proposal.assistance': 4,
+        'proposal.type': 1,
+        'proposal.assistance': 4,
     }
     if c.person:
         defaults['person.experience'] = c.person.experience

@@ -15,20 +15,26 @@ from zookeepr.config.lca_info import lca_info
 # FIXME: merge with account.py controller and move to validators
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        person = state.query(model.Person).filter_by(email_address=value['email_address']).one()
+        person = state.query(model.Person).filter_by(email_address=value['email_address']).first()
         if person is not None:
             raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
 
 
 class NewPersonSchema(Schema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
-    password = validators.String(not_empty=True)
-    password_confirm = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
+    company = validators.String()
     phone = validators.String()
-    mobile = validators.String(not_empty=True)
-
+    mobile = validators.String()
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
     experience = validators.String()
     bio = validators.String(not_empty=True)
     url = validators.String()
@@ -153,8 +159,8 @@ class CfpController(SecureController):
 
                     if not c.signed_in_person:
                         c.person = model.Person()
-                        for k in results['person']:
-                            setattr(c.person, k, results['person'][k])
+                        for k in result['person']:
+                            setattr(c.person, k, result['person'][k])
                         self.dbsession.save(c.person)
                     else:
                         c.person = c.signed_in_person
