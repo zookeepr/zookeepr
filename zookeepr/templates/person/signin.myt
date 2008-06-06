@@ -19,7 +19,7 @@
 </&>
 
 <p>
-<% h.link_to('Forgotten your password?', url=h.url(action='forgotten_password')) %>
+<% h.link_to('Forgotten your password?', url=h.url(controller='person', action='forgotten_password')) %>
 </p>
 
 <p>Note: this login is for the 2009 linux.conf.au website; we have not

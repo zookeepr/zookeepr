@@ -5,7 +5,7 @@ Enter your name, and email address, and password, and we'll email you with a con
 </p>
 
 <p>
-If you've already got an account but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='person', action='forgotten_password')) %>.
+If you've already got an account but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='person',id=None,action='forgotten_password')) %>.
 </p>
 
 <p><b>To register for the conference, <a href="/registration/new">go

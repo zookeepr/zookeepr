@@ -45,7 +45,7 @@ class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         persons = state.query(Person).filter_by(email_address=value['email_address']).first()
         if persons == None:
-            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
+            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % '<a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>', value, state)
 
 
 class LoginValidator(BaseSchema):
@@ -109,7 +109,8 @@ class PersonController(SecureController, Read, Update, List):
                    'signout': [AuthTrue()],
                    'new': True,
                    'forgotten_password': True,
-                   'reset_password': True
+                   'reset_password': True,
+                   'confirm': True
                    }
 
 
@@ -154,21 +155,22 @@ class PersonController(SecureController, Read, Update, List):
             redirect_to('home')
         return render_response('person/signout.myt', defaults=None, errors={})
 
-    def confirm(self, id):
+    def confirm(self, confirm_hash):
         """Confirm a registration with the given ID.
 
-        `id` is a md5 hash of the email address of the registrant, the time
+        `confirm_hash` is a md5 hash of the email address of the registrant, the time
         they regsitered, and a nonce.
 
         """
-        r = self.dbsession.query(Person).filter_by(url_hash=id).all()
+        r = self.dbsession.query(Person).filter_by(url_hash=confirm_hash).first()
 
-        if len(r) < 1:
+        if r is None:
+            print "asdf"
             abort(404)
 
-        r[0].activated = True
+        r.activated = True
 
-        self.dbsession.update(r[0])
+        self.dbsession.update(r)
         self.dbsession.flush()
 
         return render_response('person/confirmed.myt')

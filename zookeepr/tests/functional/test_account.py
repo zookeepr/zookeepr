@@ -391,6 +391,9 @@ class TestPersonController(ControllerTest):
         f['person.password_confirm'] = 'test'
         f['person.phone'] = '123'
         f['person.mobile'] = '123'
+        f['person.address1'] = 'here'
+        f['person.city'] = 'there'
+        f['person.postcode'] = '1234'
         resp = f.submit()
         # did we get an appropriate page?
         resp.mustcontain("follow the instructions in that message")
