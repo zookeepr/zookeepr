@@ -13,11 +13,14 @@ from zookeepr.model import Person, PasswordResetConfirmation
 
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Read, Update, List
-from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue
+from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue, AuthFalse
 from zookeepr import model
 from zookeepr.model.core.domain import Role
 from zookeepr.model.core.tables import person_role_map
 from sqlalchemy import and_
+from zookeepr.config.lca_info import lca_info
+
+# TODO : formencode.Invalid support HTML for email markup...
 
 
 class AuthenticationValidator(validators.FancyValidator):
@@ -27,9 +30,11 @@ class AuthenticationValidator(validators.FancyValidator):
         if r == retcode.SUCCESS:
             pass
         elif r == retcode.FAILURE:
-            raise Invalid("Your sign-in details are incorrect.", value, state)
-        elif r == retcode.TRY_AGAIN:
-            raise Invalid("A problem occurred during sign in; please try again later.", value, state)
+            raise Invalid("""Your sign-in details are incorrect; try the
+                'Forgotten your password' link below or sign up for a new
+                person.""", value, state)
+        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
+            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
         elif r == retcode.INACTIVE:
             raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
         else:
@@ -40,21 +45,17 @@ class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         persons = state.query(Person).filter_by(email_address=value['email_address']).first()
         if persons == None:
-            raise Invalid("""Your sign-in details are incorrect; try the
-                'Forgotten your password' link below or sign up for a new
-                person.""", value, state)
+            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
 
 
 class LoginValidator(BaseSchema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
-
-    chained_validators = [ExistingPersonValidator(), AuthenticationValidator()]
+    chained_validators = [AuthenticationValidator()]
 
 
 class ForgottenPasswordSchema(BaseSchema):
     email_address = validators.String(not_empty=True)
-
     chained_validators = [ExistingPersonValidator()]
 
 
@@ -107,6 +108,8 @@ class PersonController(SecureController, Read, Update, List):
                    'signin': True,
                    'signout': [AuthTrue()],
                    'new': True,
+                   'forgotten_password': True,
+                   'reset_password': True
                    }
 
 

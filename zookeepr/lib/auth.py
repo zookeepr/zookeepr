@@ -19,7 +19,7 @@ class PersonAuthenticator(object):
     def authenticate(self, username, password):
         dbsession = create_session()
 
-        person = dbsession.query(Person).filter_by(email_address=username).one()
+        person = dbsession.query(Person).filter_by(email_address=username).first()
         
         if person is None:
             return retcode.FAILURE
