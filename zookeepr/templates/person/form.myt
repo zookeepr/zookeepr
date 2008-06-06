@@ -4,7 +4,7 @@
 <p class="label"><span class="mandatory">*</span><label for="person.lastname">Your last name:</label></p>
 <p class="entries"><% h.textfield('person.lastname', size=40) %></p>
 
-<p class="label"><span class="mandatory">*</span><label for="person.company">Company:</label></p>
+<p class="label"><label for="person.company">Company:</label></p>
 <p class="entries"><% h.textfield('person.company', size=40) %></p>
 
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>

@@ -20,8 +20,8 @@ from zookeepr.model.core.tables import person_role_map
 from sqlalchemy import and_
 from zookeepr.config.lca_info import lca_info
 
-# TODO : formencode.Invalid support HTML for email markup...
-
+# TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
+# TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
 
 class AuthenticationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -74,7 +74,7 @@ class NotExistingPersonValidator(validators.FancyValidator):
             raise Invalid("This person already exists.  Please try signing in first.", value, state)
 
 
-class PersonSchema(Schema):
+class PersonSchema(BaseSchema):
     email_address = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
@@ -90,12 +90,12 @@ class PersonSchema(Schema):
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    pre_validators = [NotExistingPersonValidator()]
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 
 class NewPersonSchema(BaseSchema):
     person = PersonSchema()
-
     pre_validators = [NestedVariables]
 
 
