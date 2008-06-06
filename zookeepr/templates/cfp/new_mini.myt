@@ -2,8 +2,8 @@
 <h1>Propose a Mini-conf</h1>
 
 % if len(errors)>0:
-<span class="error-message">Not submitted, sorry &mdash; there was a problem.</span>
-<br>Please see below for more details, edit and resubmit.
+<p class="error-message">Not submitted, sorry &mdash; there was a problem.
+<br />Please see below for more details, edit and resubmit.</p>
 %   for k in errors:
 %     if errors[k]=='Please enter a value':
 %       errors[k]='This information is required.'

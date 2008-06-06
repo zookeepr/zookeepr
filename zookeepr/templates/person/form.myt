@@ -22,8 +22,10 @@
 
 % if c.mobile_is_mandatory:
 <p class="label"><span class="mandatory">*</span>
+% else:
+<p>
 % #endif
-<p><label for="person.mobile">Mobile/Cell number</label></p>
+<label for="person.mobile">Mobile/Cell number</label></p>
 <p class="entries"><% h.textfield('person.mobile') %></p>
 
 
