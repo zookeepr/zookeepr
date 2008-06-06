@@ -256,13 +256,8 @@ class TestNotSignedInRegistrationController(ControllerTest):
         self.dbsession.save(p)
         self.dbsession.flush()
 
-        r = model.Registration(address1='a1',
-            city='Sydney',
-            state='NSW',
-            country='Australia',
-            postcode='2001',
+        r = model.Registration(
             type='Professional',
-            nick='testguy',
             teesize='M_long_M',
             extra_tee_count=1,
             extra_tee_sizes='M_long_M',
@@ -277,13 +272,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
 
         resp = self.app.get('/registration/new')
         f = resp.form
-        sample_data = dict(address1='a1',
-            city='Sydney',
-            state='NSW',
-            country='Australia',
-            postcode='2001',
-            type='Professional',
-            nick='testguy',
+        sample_data = dict(type='Professional',
             teesize='M_long_M',
             extra_tee_count=1,
             extra_tee_sizes='M_long_M',
