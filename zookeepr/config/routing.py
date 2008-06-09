@@ -35,8 +35,6 @@ def make_map():
     m.connect('/programme/submit_a_miniconf', controller='cfp', action='submit_mini')
     m.connect('/programme/edit_submission/:id', controller='proposal', action='edit')
 
-    # account confirmation named route
-    m.connect('acct_confirm', '/person/confirm/:id', controller='person', action='confirm')
 
     # Verify stuff from commsecure
     m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
@@ -49,10 +47,12 @@ def make_map():
     m.connect('/registration/professional', controller='registration', action='professional', id=None)
     m.connect('/registration/list_miniconf_orgs', controller='registration', action='list_miniconf_orgs', id=None)
 
+    # account confirmation named route
     m.connect('/person/signin', controller='person', action='signin')
     m.connect('/person/signout', controller='person', action='signout')
     m.connect('/person/forgotten_password', controller='person', action='forgotten_password', id=None)
     m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
+    m.connect('acct_confirm', '/person/confirm/:url_hash', controller='person', action='confirm')
 
     # admin controller
     m.connect('/admin/:action', controller='admin')

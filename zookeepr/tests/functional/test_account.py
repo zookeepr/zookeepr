@@ -13,11 +13,11 @@ class TestPersonController(ControllerTest):
         """test the routing of the registration confirmation url"""
         self.assertEqual(dict(controller='person',
                               action='confirm',
-                              id='N'),
+                              url_hash='N'),
                          self.map.match('/person/confirm/N'))
 
     def test_registratrion_confirmation_named_route(self):
-        reg_confirm = url_for('acct_confirm', id='N')
+        reg_confirm = url_for('acct_confirm', url_hash='N')
         self.assertEqual('/person/confirm/N',
                          reg_confirm)
 
@@ -151,7 +151,7 @@ class TestPersonController(ControllerTest):
 
     def test_person_password_routing(self):
         self.assertEqual(dict(controller='person',
-                              action='forgotten_password'),
+                              action='forgotten_password', id=None),
                          self.map.match('/person/forgotten_password'))
 
     def test_person_password_url_for(self):
@@ -179,7 +179,7 @@ class TestPersonController(ControllerTest):
 
         # get the login page
         resp = self.app.get(url_for(controller='person',
-            action='signin'))
+            action='signin', id=None))
         # click on the forgotten password link
         resp = resp.click('Forgotten your password?')
 
@@ -364,7 +364,7 @@ class TestPersonController(ControllerTest):
         """Test that you get an appropriate warning message from the form when you try to log in with invalid credentials.
         """
         resp = self.app.get(url_for(controller='person',
-                                    action='signin'))
+                                    action='signin', id=None))
         f = resp.form
         f['email_address'] = 'test'
         f['password'] = 'broken'
@@ -391,6 +391,10 @@ class TestPersonController(ControllerTest):
         f['person.password_confirm'] = 'test'
         f['person.phone'] = '123'
         f['person.mobile'] = '123'
+        f['person.address1'] = 'Moo St'
+        f['person.city'] = 'Tassie'
+        f['person.country'] = 'Australia'
+        f['person.postcode'] = '2000'
         resp = f.submit()
         # did we get an appropriate page?
         resp.mustcontain("follow the instructions in that message")

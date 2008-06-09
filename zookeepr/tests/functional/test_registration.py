@@ -103,10 +103,6 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         print f.fields.keys()
         self.failIf('person.firstname' in f.fields.keys(), "form asking for person details of signed in person")
         sample_data = dict(address1='a1',
-            city='Sydney',
-            state='NSW',
-            country='Australia',
-            postcode='2001',
             type='Professional',
             teesize='M_M',
             extra_tee_count=1,
@@ -216,11 +212,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
 
         resp = self.app.get('/registration/new')
         f = resp.form
-        sample_data = dict(address1='a1',
-            city='Sydney',
-            state='NSW',
-            country='Australia',
-            postcode='2001',
+        sample_data = dict(
             type='Professional',
             teesize='M_long_M',
             extra_tee_count=1,
@@ -237,6 +229,9 @@ class TestNotSignedInRegistrationController(ControllerTest):
         f['person.password'] = 'test'
         f['person.password_confirm'] = 'test'
         f['person.mobile'] = '123'
+        f['person.city'] = 'Tassie'
+        f['person.address1'] = 'Moo'
+        f['person.postcode'] = '1234'
 
         resp = f.submit()
 
@@ -246,64 +241,3 @@ class TestNotSignedInRegistrationController(ControllerTest):
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
         self.dbsession.flush()
 
-    def test_not_signed_in_existing_handle(self):
-        p = model.Person(email_address='testguy@example.org',
-            firstname='testguy',
-            lastname='mctest',
-            handle='testguy',
-            )
-        p.activated = True
-        self.dbsession.save(p)
-        self.dbsession.flush()
-
-        r = model.Registration(address1='a1',
-            city='Sydney',
-            state='NSW',
-            country='Australia',
-            postcode='2001',
-            type='Professional',
-            nick='testguy',
-            teesize='M_long_M',
-            extra_tee_count=1,
-            extra_tee_sizes='M_long_M',
-            checkin=28,
-            checkout=3)
-        r.person = p
-        self.dbsession.save(r)
-        self.dbsession.flush()
-
-
-        pid = p.id
-
-        resp = self.app.get('/registration/new')
-        f = resp.form
-        sample_data = dict(address1='a1',
-            city='Sydney',
-            state='NSW',
-            country='Australia',
-            postcode='2001',
-            type='Professional',
-            nick='testguy',
-            teesize='M_long_M',
-            extra_tee_count=1,
-            extra_tee_sizes='M_long_M',
-            checkin=28,
-            checkout=3,
-            accommodation=0,
-            )
-        for k in sample_data.keys():
-            f['registration.' + k] = sample_data[k]
-        f['person.email_address'] = 'testguy2@example.org'
-        f['person.firstname'] = 'testguy'
-        f['person.lastname'] = 'mctest'
-        f['person.mobile'] = '123'
-        f['person.password'] = 'test'
-        f['person.password_confirm'] = 'test'
-
-        resp = f.submit()
-
-        resp.mustcontain('This nick has been taken, sorry.  Please use another.')
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
-        self.dbsession.flush()

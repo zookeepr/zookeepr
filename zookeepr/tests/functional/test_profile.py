@@ -8,6 +8,12 @@ class TestProfileController(ControllerTest):
                          firstname='Testguy',
                          lastname='McTest',
                          password='p4ssw0rd',
+                         phone='123',
+                         mobile='123',
+                         address1='Moo St',
+                         city='Tassie',
+                         country='Australia',
+                         postcode='2000'
                          )
         p.activated = True
         self.dbsession.save(p)
@@ -23,7 +29,7 @@ class TestProfileController(ControllerTest):
         f['password'] = 'p4ssw0rd'
         resp = f.submit()
 
-        resp = self.app.get('/profile/%d' % p.id)
+        resp = self.app.get('/person/%d' % p.id)
 
         resp.mustcontain("McTest")
 

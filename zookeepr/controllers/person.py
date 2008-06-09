@@ -105,6 +105,7 @@ class PersonController(SecureController, Read, Update, List):
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'signin': True,
+                   'confirm': True,
                    'forgotten_password': True,
                    'reset_password': True,
                    'signout': [AuthTrue()],
@@ -153,14 +154,14 @@ class PersonController(SecureController, Read, Update, List):
             redirect_to('home')
         return render_response('person/signout.myt', defaults=None, errors={})
 
-    def confirm(self, id):
+    def confirm(self, url_hash):
         """Confirm a registration with the given ID.
 
         `id` is a md5 hash of the email address of the registrant, the time
         they regsitered, and a nonce.
 
         """
-        r = self.dbsession.query(Person).filter_by(url_hash=id).all()
+        r = self.dbsession.query(Person).filter_by(url_hash=url_hash).all()
 
         if len(r) < 1:
             abort(404)
@@ -169,8 +170,8 @@ class PersonController(SecureController, Read, Update, List):
 
         self.dbsession.update(r[0])
         self.dbsession.flush()
-
         return render_response('person/confirmed.myt')
+
 
     def forgotten_password(self):
         """Action to let the user request a password change.
