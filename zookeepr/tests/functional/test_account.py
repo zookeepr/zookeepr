@@ -13,11 +13,11 @@ class TestPersonController(ControllerTest):
         """test the routing of the registration confirmation url"""
         self.assertEqual(dict(controller='person',
                               action='confirm',
-                              url_hash='N'),
+                              confirm_hash='N'),
                          self.map.match('/person/confirm/N'))
 
     def test_registratrion_confirmation_named_route(self):
-        reg_confirm = url_for('acct_confirm', url_hash='N')
+        reg_confirm = url_for('acct_confirm', confirm_hash='N')
         self.assertEqual('/person/confirm/N',
                          reg_confirm)
 
@@ -245,8 +245,8 @@ class TestPersonController(ControllerTest):
         f['email_address'] = 'nonexistent@example.org'
         resp = f.submit()
 
-        print resp
-        resp.mustcontain("Your sign-in details are incorrect")
+        #print resp
+        resp.mustcontain("Your supplied e-mail does not exist in our database")
 
         crecs = self.dbsession.query(PasswordResetConfirmation).filter_by(email_address='nonexistent@example.org').all()
         self.assertEqual(0, len(crecs), "contact records found: %r" % crecs)
@@ -391,10 +391,10 @@ class TestPersonController(ControllerTest):
         f['person.password_confirm'] = 'test'
         f['person.phone'] = '123'
         f['person.mobile'] = '123'
-        f['person.address1'] = 'Moo St'
-        f['person.city'] = 'Tassie'
+        f['person.address1'] = 'here'
+        f['person.city'] = 'there'
+        f['person.postcode'] = '1234'
         f['person.country'] = 'Australia'
-        f['person.postcode'] = '2000'
         resp = f.submit()
         # did we get an appropriate page?
         resp.mustcontain("follow the instructions in that message")
@@ -424,12 +424,12 @@ class TestPersonController(ControllerTest):
         # visit the url
         print "match: '''%s'''" % match.group(1)
         resp = self.app.get('/person/confirm/%s' % match.group(1))
-        print resp
+        #print resp
         
         # check the rego worked
         regs = self.dbsession.query(Person).all()
         self.failIfEqual([], regs)
-        print regs[0]
+        #print regs[0]
         self.assertEqual(True, regs[0].activated, "account was not activated!")
         rid = regs[0].id
         # ok, now try to log in

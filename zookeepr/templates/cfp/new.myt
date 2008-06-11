@@ -2,8 +2,8 @@
 <h1>Propose a talk or tutorial</h1>
 
 % if len(errors)>0:
-<span class="error-message">Not submitted, sorry &mdash; there was a problem.</span>
-<br>Please see below for more details, edit and resubmit.
+<p class="error-message">Not submitted, sorry &mdash; there was a problem.
+<br />Please see below for more details, edit and resubmit.</p>
 %   for k in errors:
 %     if errors[k] in ('Please enter a value', 'Missing value'):
 %       errors[k]='This information is required.'
@@ -14,7 +14,7 @@
 <% h.form(h.url(), multipart=True) %>
 <& form.myt &>
 
-	<p class="submit"><% h.submitbutton('Submit!') %></p>
+  <p class="submit"><% h.submitbutton('Submit!') %></p>
 <% h.end_form() %>
 </&>
 
@@ -34,8 +34,8 @@ if not defaults:
     defaults = {
         'person.experience': '',
         'person.bio': '',
-	'proposal.type': 1,
-	'proposal.assistance': 4,
+        'proposal.type': 1,
+        'proposal.assistance': 4,
     }
     if c.person:
         defaults['person.experience'] = c.person.experience

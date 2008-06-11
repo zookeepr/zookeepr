@@ -24,7 +24,7 @@ The URL after the linux.conf.au/ that this page should be rendered for. EG: 'abo
 </p><p class="entries">
 <% h.textarea('db_content.body', size="70x6") %>
 </p><p class="note">
-The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate.
+The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate. Use &lt;h3&gt;'s to automatically create a "contents" section.
 </p>
 <p>
 <% h.submitbutton('Save') %>

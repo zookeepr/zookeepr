@@ -8,7 +8,7 @@ Thankyou for registering for <% h.event_name() %>!
 % if not c.signed_in_person:
 Please validate your account by clicking on this URL:
 
-http://<% h.host_name() %><% h.url_for('acct_confirm', id=id) %>
+http://<% h.host_name() %><% h.url_for('acct_confirm', confirm_hash=id) %>
 
 (If clicking does not work, please paste it into your web browser.)
 

@@ -29,8 +29,13 @@ stage 2 is after papers are published
      - About the sort of talks we are after/what LCA is like technically speaking
      - about mini confs
      - open day blurb
-   ** Submit paper
-   ** Edit submission
+   ** Submit a miniconf
+   ** Submit a Presentation
+   ** Edit Submission
+   ** Presenter FAQ
+     - What they get for presenting (ie accomidation/flights)
+     - What to expect (eg support)
+     - Code of conduct etc.
  * Programme (stage 2)
     ** About Programme
      - About the sort of talks we are after/what LCA is like technically speaking
@@ -60,9 +65,7 @@ stage 2 is after papers are published
      - Information
      - Prices
      - Programme (Details/events)
- * Login
-   - For changing details/checking up conference etc
- * Delegates wiki
+ * Wiki
    - A wiki for LCA members to edit themselves.
    - Can be used to organise shared transport or arrange unofficial social events etc.
    - Hopefully we (the LCA09 team) won't have to touch this much
@@ -73,3 +76,5 @@ stage 2 is after papers are published
    ** Planet/blog?
  * Contact
    - a whole bunch of phone numbers and email addresses
+ * Login
+   - For changing details/checking up conference etc

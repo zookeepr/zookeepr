@@ -4,7 +4,7 @@
 <p class="label"><span class="mandatory">*</span><label for="person.lastname">Your last name:</label></p>
 <p class="entries"><% h.textfield('person.lastname', size=40) %></p>
 
-<p class="label"><span class="mandatory">*</span><label for="person.company">Company:</label></p>
+<p class="label"><label for="person.company">Company:</label></p>
 <p class="entries"><% h.textfield('person.company', size=40) %></p>
 
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>
@@ -22,41 +22,34 @@
 
 % if c.mobile_is_mandatory:
 <p class="label"><span class="mandatory">*</span>
+% else:
+<p>
 % #endif
-<p><label for="person.mobile">Mobile/Cell number</label></p>
+<label for="person.mobile">Mobile/Cell number</label></p>
 <p class="entries"><% h.textfield('person.mobile') %></p>
 
 
-<p class="label">
-<span class="mandatory">*</span>
-<label for="person.address">Address:</label>
-</p><p class="entries">
+<p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
+<p class="entries">
 <% h.textfield('person.address1', size=40) %>
 <br>
 <% h.textfield('person.address2', size=40) %>
 </p>
-<p class="label">
-<span class="mandatory">*</span>
-<label for="person.city">City/Suburb:</label>
-</p><p class="entries">
-<% h.textfield('person.city', size=40) %>
-</p><p class="label">
-<label for="person.state">State/Province:</label>
-</p><p class="entries">
-<% h.textfield('person.state', size=40) %>
-</p><p class="label">
-<span class="mandatory">*</span>
-<label for="person.country">Country:</label>
-</p><p class="entries">
+
+<p class="label"><span class="mandatory">*</span><label for="person.city">City/Suburb:</label></p>
+<p class="entries"><% h.textfield('person.city', size=40) %></p>
+
+<p class="label"><label for="person.state">State/Province:</label></p>
+<p class="entries"><% h.textfield('person.state', size=40) %></p>
+
+<p class="label"><span class="mandatory">*</span><label for="person.postcode">Postcode/ZIP:</label></p>
+<p class="entries"><% h.textfield('person.postcode', size=40) %></p>
+
+<p class="label"><span class="mandatory">*</span><label for="person.country">Country:</label></p>
+<p class="entries">
 <select name="person.country">
 % for country in h.countries():
 <option value="<%country%>"><% country %></option>
 % #endfor
 </select>
-</p><p class="label">
-<span class="mandatory">*</span>
-<label for="person.postcode">Postcode/ZIP:</label>
-</p><p class="entries">
-<% h.textfield('person.postcode', size=40) %>
 </p>
-

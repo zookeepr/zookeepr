@@ -18,7 +18,10 @@ from zookeepr import model
 from zookeepr.model.core.domain import Role
 from zookeepr.model.core.tables import person_role_map
 from sqlalchemy import and_
+from zookeepr.config.lca_info import lca_info
 
+# TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
+# TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
 
 class AuthenticationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -27,9 +30,11 @@ class AuthenticationValidator(validators.FancyValidator):
         if r == retcode.SUCCESS:
             pass
         elif r == retcode.FAILURE:
-            raise Invalid("Your sign-in details are incorrect.", value, state)
-        elif r == retcode.TRY_AGAIN:
-            raise Invalid("A problem occurred during sign in; please try again later.", value, state)
+            raise Invalid("""Your sign-in details are incorrect; try the
+                'Forgotten your password' link below or sign up for a new
+                person.""", value, state)
+        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
+            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
         elif r == retcode.INACTIVE:
             raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
         else:
@@ -40,21 +45,18 @@ class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         persons = state.query(Person).filter_by(email_address=value['email_address']).first()
         if persons == None:
-            raise Invalid("""Your sign-in details are incorrect; try the
-                'Forgotten your password' link below or sign up for a new
-                person.""", value, state)
+            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % '<a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>', value, state)
 
 
 class LoginValidator(BaseSchema):
     email_address = validators.String(not_empty=True)
     password = validators.String(not_empty=True)
 
-    chained_validators = [ExistingPersonValidator(), AuthenticationValidator()]
+    chained_validators = [AuthenticationValidator()]
 
 
 class ForgottenPasswordSchema(BaseSchema):
     email_address = validators.String(not_empty=True)
-
     chained_validators = [ExistingPersonValidator()]
 
 
@@ -73,7 +75,7 @@ class NotExistingPersonValidator(validators.FancyValidator):
             raise Invalid("This person already exists.  Please try signing in first.", value, state)
 
 
-class PersonSchema(Schema):
+class PersonSchema(BaseSchema):
     email_address = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
@@ -89,7 +91,8 @@ class PersonSchema(Schema):
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    pre_validators = [NotExistingPersonValidator()]
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 
 class NewPersonSchema(BaseSchema):
@@ -105,11 +108,11 @@ class PersonController(SecureController, Read, Update, List):
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'signin': True,
-                   'confirm': True,
-                   'forgotten_password': True,
-                   'reset_password': True,
                    'signout': [AuthTrue()],
                    'new': True,
+                   'forgotten_password': True,
+                   'reset_password': True,
+                   'confirm': True
                    }
 
 
@@ -154,24 +157,24 @@ class PersonController(SecureController, Read, Update, List):
             redirect_to('home')
         return render_response('person/signout.myt', defaults=None, errors={})
 
-    def confirm(self, url_hash):
+    def confirm(self, confirm_hash):
         """Confirm a registration with the given ID.
 
-        `id` is a md5 hash of the email address of the registrant, the time
+        `confirm_hash` is a md5 hash of the email address of the registrant, the time
         they regsitered, and a nonce.
 
         """
-        r = self.dbsession.query(Person).filter_by(url_hash=url_hash).all()
+        r = self.dbsession.query(Person).filter_by(url_hash=confirm_hash).first()
 
-        if len(r) < 1:
+        if r is None:
             abort(404)
 
-        r[0].activated = True
+        r.activated = True
 
-        self.dbsession.update(r[0])
+        self.dbsession.update(r)
         self.dbsession.flush()
-        return render_response('person/confirmed.myt')
 
+        return render_response('person/confirmed.myt')
 
     def forgotten_password(self):
         """Action to let the user request a password change.

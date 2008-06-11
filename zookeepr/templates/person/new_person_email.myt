@@ -6,7 +6,7 @@ Dear <% c.person.firstname %>,
 Thank you for creating a login to the linux.conf.au 2008 website.
 Please validate your account by clicking on this URL:
 
-http://<% h.host_name() %><% h.url_for('acct_confirm', url_hash=c.person.url_hash) %>
+http://<% h.host_name() %><% h.url_for('acct_confirm', confirm_hash=c.person.url_hash) %>
 
 (If clicking does not work, please paste it into your web browser.)
 
