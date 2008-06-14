@@ -14,7 +14,7 @@ class NotExistingOpendayValidator(validators.FancyValidator):
             raise Invalid("You have already registered!", value, state)
 
 
-class OpendaySchema(Schema):
+class OpendaySchema(BaseSchema):
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
     email_address = EmailAddress(resolve_domain=True, not_empty=True)

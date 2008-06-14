@@ -148,7 +148,7 @@ class TicketTypeValidator(validators.String):
         if value not in valid_tickets:
             raise Invalid("Invalid type", value, state)
 
-class RegistrationSchema(Schema):
+class RegistrationSchema(BaseSchema):
     nick = validators.String()
 
     shell = validators.String()
@@ -201,7 +201,7 @@ class RegistrationSchema(Schema):
           SillyDescriptionMD5(), SpeakerDiscountValidator(), PPValidator(),
           TeesizeValidator()]
 
-class PersonSchema(Schema):
+class PersonSchema(BaseSchema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
@@ -226,7 +226,7 @@ class NewRegistrationSchema(BaseSchema):
     chained_validators = [NotExistingRegistrationValidator(), NotExistingNickValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
-class ExistingPersonSchema(Schema):
+class ExistingPersonSchema(BaseSchema):
     mobile = NonblankForSpeakers()
 
 class ExistingPersonRegoSchema(BaseSchema):
