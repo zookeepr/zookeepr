@@ -6,7 +6,7 @@ from zookeepr.lib.crud import View, Modify
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import Role
 
-class RoleSchema(Schema):
+class RoleSchema(BaseSchema):
     name = validators.PlainText()
 
 class NewRoleSchema(BaseSchema):

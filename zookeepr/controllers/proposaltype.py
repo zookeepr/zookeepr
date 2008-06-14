@@ -6,7 +6,7 @@ from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import ProposalType
 
-class ProposalTypeSchema(Schema):
+class ProposalTypeSchema(BaseSchema):
     name = validators.String(not_empty=True)
 
 class NewProposalTypeSchema(BaseSchema):
