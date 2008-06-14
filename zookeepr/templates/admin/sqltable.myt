@@ -23,9 +23,11 @@
 </table>
 <p>(<% rows |h%> rows)</p>
 
-<br><p class="note">
-<% c.sql %>
-</p>
+% if h.debug():
+    <br><p class="note">
+    <% c.sql %>
+    </p>
+% # endif
 
 <%init>
 def oddeven():

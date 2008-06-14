@@ -189,3 +189,9 @@ def countries():
         res.append(s)
     res.sort()
     return res
+
+def debug():
+    if request_config().environ['paste.config']['global_conf']['debug'] == "true":
+        return True
+    else:
+        return False
