@@ -1675,11 +1675,18 @@ class AdminController(SecureController):
         # This will be prepended to the bare filename:
         prefix = index
         d = {}
+        try:
+            list = urllib.urlopen(index+'/').read()
+        except IOError, e:
+            return Response("Unable to open mirror URL. Please check admin.py, line 1674")
         for day in ('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'):
-            list = urllib.urlopen(index+day+'/').read()
-            list = re.findall(r'(mel8-([\d]{3}[ab]?).(ogg|spx))', list)
-            for (name, id, type) in list:
-                d[id, type.lower()] = prefix + day + '/' + name
+            try:
+                list = urllib.urlopen(index+day+'/').read()
+                list = re.findall(r'(mel8-([\d]{3}[ab]?).(ogg|spx))', list)
+                for (name, id, type) in list:
+                    d[id, type.lower()] = prefix + day + '/' + name
+            except IOError, e:
+                pass
         num_files = len(d)
         for t in self.dbsession.query(Proposal).all():
             id = '%03d' % t.id
