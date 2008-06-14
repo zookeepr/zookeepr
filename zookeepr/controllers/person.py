@@ -8,7 +8,7 @@ import sqlalchemy
 from zookeepr.lib.auth import PersonAuthenticator, retcode
 from zookeepr.lib.base import *
 from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema
+from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator
 from zookeepr.model import Person, PasswordResetConfirmation
 
 from zookeepr.lib.base import *
@@ -65,15 +65,6 @@ class PasswordResetSchema(BaseSchema):
     password_confirm = validators.String(not_empty=True)
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
-
-
-# FIXME: merge with registration controller validator and move to validators
-class NotExistingPersonValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        person = state.query(Person).filter_by(email_address=value['email_address']).first()
-        if person is not None:
-            raise Invalid("This person already exists.  Please try signing in first.", value, state)
-
 
 class PersonSchema(BaseSchema):
     email_address = validators.String(not_empty=True)

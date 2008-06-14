@@ -7,20 +7,12 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress
+from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress, NotExistingPersonValidator
 from zookeepr.model import ProposalType, Proposal, Attachment, AssistanceType
 
 from zookeepr.config.lca_info import lca_info
 
-# FIXME: merge with account.py controller and move to validators
-class NotExistingPersonValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        person = state.query(model.Person).filter_by(email_address=value['email_address']).first()
-        if person is not None:
-            raise Invalid("This account already exists.  Please try signing in first.  Thanks!", value, state)
-
-
-class NewPersonSchema(Schema):
+class NewPersonSchema(BaseSchema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
@@ -39,15 +31,16 @@ class NewPersonSchema(Schema):
     bio = validators.String(not_empty=True)
     url = validators.String()
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    pre_validators = [NotExistingPersonValidator()]
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
-class ExistingPersonSchema(Schema):
+class ExistingPersonSchema(BaseSchema):
     experience = validators.String()
     bio = validators.String(not_empty=True)
     url = validators.String()
     mobile = validators.String(not_empty=True)
 
-class ProposalSchema(Schema):
+class ProposalSchema(BaseSchema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
@@ -68,7 +61,7 @@ class NewNewCFPSchema(BaseSchema):
     #attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
 
-class NewMiniPersonSchema(Schema):
+class NewMiniPersonSchema(BaseSchema):
     email_address = EmailAddress(resolve_domain=True, not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
@@ -79,15 +72,16 @@ class NewMiniPersonSchema(Schema):
     experience = validators.String()
     bio = validators.String(not_empty=True)
     url = validators.String()
+    
+    pre_validators = [NotExistingPersonValidator()]
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
-
-class ExistingMiniPersonSchema(Schema):
+class ExistingMiniPersonSchema(BaseSchema):
     experience = validators.String()
     bio = validators.String(not_empty=True)
     url = validators.String()
 
-class MiniProposalSchema(Schema):
+class MiniProposalSchema(BaseSchema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
