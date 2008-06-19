@@ -31,10 +31,11 @@ def make_map():
     #m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
     #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal', controller='cfp', action='submit_mini')
     #m.connect('/presentations/edit/:id', controller='proposal', action='edit')
-    m.connect('/programme/edit_submission', controller='cfp', action='index')
+    m.connect('/programme/edit_submission', controller='proposal', action='index')
     m.connect('/programme/edit_submission/:id', controller='proposal', action='edit')
-    m.connect('/programme/submit_a_presentation', controller='cfp', action='submit')
-    m.connect('/programme/submit_a_miniconf', controller='cfp', action='submit_mini')
+    m.connect('/programme/submit_a_presentation', controller='proposal', action='submit')
+    m.connect('/programme/submit_a_miniconf', controller='proposal', action='submit_mini')
+
     # Verify stuff from commsecure
 
     m.connect('/invoice/verify', controller='invoice', action='verify', id=None)

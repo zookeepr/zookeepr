@@ -3,36 +3,84 @@ from paste.deploy.converters import asbool
 
 from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
 from zookeepr.lib.base import *
+from zookeepr.lib.mail import *
 from zookeepr.lib.crud import Update, View
-from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalTypeValidator, FileUploadValidator, StreamValidator, ReviewSchema, AssistanceTypeValidator
+from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, PersonValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
 from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role
+
 import random
+
+from zookeepr.config.lca_info import lca_info
+
+class NewPersonSchema(BaseSchema):
+    email_address = EmailAddress(resolve_domain=True, not_empty=True)
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
+    company = validators.String()
+    phone = validators.String()
+    mobile = validators.String()
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    experience = validators.String()
+    bio = validators.String(not_empty=True)
+    url = validators.String()
+
+    pre_validators = [NotExistingPersonValidator()]
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+
+class ExistingPersonSchema(BaseSchema):
+    experience = validators.String()
+    bio = validators.String(not_empty=True)
+    url = validators.String()
+    mobile = validators.String(not_empty=True)
 
 class ProposalSchema(schema.Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
     assistance = AssistanceTypeValidator()
-    project = validators.String(not_empty=True)
+    project = validators.String()
     url = validators.String()
     abstract_video_url = validators.String()
 
 class NewProposalSchema(BaseSchema):
-    ignore_key_missing = True
+    person = NewPersonSchema()
     proposal = ProposalSchema()
+    #attachment = FileUploadValidator()
+    pre_validators = [variabledecode.NestedVariables]
+
+class ExistingProposalSchema(BaseSchema):
+    person = ExistingPersonSchema()
+    proposal = ProposalSchema()
+    #attachment = FileUploadValidator()
+    pre_validators = [variabledecode.NestedVariables]
+
+class MiniProposalSchema(BaseSchema):
+    title = validators.String(not_empty=True)
+    abstract = validators.String(not_empty=True)
+    type = ProposalTypeValidator()
+    assistance = AssistanceTypeValidator()
+    #project = validators.String(not_empty=True)
+    url = validators.String()
+    #abstract_video_url = validators.String()
+
+class NewMiniProposalSchema(BaseSchema):
+    person = NewPersonSchema()
+    proposal = MiniProposalSchema()
     attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
-class PersonSchema(BaseSchema):
-    experience = validators.String()
-    bio = validators.String(not_empty=True)
-    url = validators.String()
-
-class EditProposalSchema(BaseSchema):
-    proposal = ProposalSchema()
-    person = PersonSchema()
+class ExistingMiniProposalSchema(BaseSchema):
+    person = ExistingPersonSchema()
+    proposal = MiniProposalSchema()
+    attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
-
 
 class NotYetReviewedValidator(validators.FancyValidator):
     """Make sure the reviewer hasn't yet reviewed this proposal"""
@@ -62,7 +110,7 @@ class ProposalController(SecureController, View, Update):
     individual = 'proposal'
 
     schemas = {"new" : NewProposalSchema(),
-               "edit" : EditProposalSchema()}
+               "edit" : ExistingProposalSchema()}
     permissions = {"new": [AuthFalse()],
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
@@ -73,7 +121,13 @@ class ProposalController(SecureController, View, Update):
                    "attach": [AuthRole('organiser')],
                    "review": [AuthRole('reviewer')],
                    'talk': True,
+                   'submit': True,
+                   'submit_mini': True,
                    }
+
+    def __init__(self, *args):
+        c.cfp_status = lca_info['cfp_status']
+        c.cfmini_status = lca_info['cfmini_status']
 
     def __before__(self, **kwargs):
         super(ProposalController, self).__before__(**kwargs)
@@ -296,4 +350,108 @@ class ProposalController(SecureController, View, Update):
             return 0
         return total_score*1.0/num_reviewers
 
+    def submit(self):
+        # if call for papers has closed:
+        if c.cfp_status == 'closed':
+           return render_response("proposal/closed.myt")
+        elif c.cfp_status == 'not_open':
+           return render_response("proposal/not_open.myt")
+        else:
+            c.cfptypes = self.dbsession.query(ProposalType).all()
+            c.tatypes = self.dbsession.query(AssistanceType).all()
 
+            errors = {}
+            defaults = dict(request.POST)
+
+            if request.method == 'POST' and defaults:
+                if c.signed_in_person:
+                    schema = ExistingProposalSchema
+                else:
+                    schema = NewProposalSchema
+
+                result, errors = schema().validate(defaults, self.dbsession)
+                if not errors:
+                    c.proposal = Proposal()
+                    # update the objects with the validated form data
+                    for k in result['proposal']:
+                        setattr(c.proposal, k, result['proposal'][k])
+
+                    if not c.signed_in_person:
+                        c.person = model.Person()
+                        for k in result['person']:
+                            setattr(c.person, k, result['person'][k])
+                        self.dbsession.save(c.person)
+                    else:
+                        c.person = c.signed_in_person
+                        for k in result['person']:
+                            setattr(c.person, k, result['person'][k])
+
+                    c.person.proposals.append(c.proposal)
+
+                    #if result['attachment'] is not None:
+                    #    c.attachment = Attachment()
+                    #    for k in result['attachment']:
+                    #        setattr(c.attachment, k, result['attachment'][k])
+                    #    c.proposal.attachments.append(c.attachment)
+
+                    return render_response('proposal/thankyou.myt')
+
+        return render_response("proposal/new.myt",
+                               defaults=defaults, errors=errors)
+
+    def submit_mini(self):
+
+        # call-for-miniconfs now closed
+        if c.cfmini_status == 'closed':
+            return render_response("proposal/closed_mini.myt")
+        elif c.cfmini_status == 'not_open':
+            return render_response("proposal/not_open_mini.myt")
+        else:
+            c.cfptypes = self.dbsession.query(ProposalType).all()
+            c.tatypes = self.dbsession.query(AssistanceType).all()
+
+            errors = {}
+            defaults = dict(request.POST)
+
+            if request.method == 'POST' and defaults:
+                if c.signed_in_person:
+                    schema = ExistingMiniSchema
+                else:
+                    schema = NewNewMiniSchema
+                result, errors = schema().validate(defaults, self.dbsession)
+
+                if not errors:
+                    c.proposal = Proposal()
+                    # update the objects with the validated form data
+                    for k in result['proposal']:
+                        setattr(c.proposal, k, result['proposal'][k])
+
+                    if not c.signed_in_person:
+                        c.person = model.Person()
+                        for k in results['person']:
+                            setattr(c.person, k, results['person'][k])
+                        self.dbsession.save(c.person)
+                    else:
+                        c.person = c.signed_in_person
+                        for k in result['person']:
+                            setattr(c.person, k, result['person'][k])
+
+                    c.person.proposals.append(c.proposal)
+
+                    for k in result['person']:
+                        setattr(c.person, k, result['person'][k])
+
+                    if result['attachment'] is not None:
+                        c.attachment = Attachment()
+                        for k in result['attachment']:
+                            setattr(c.attachment, k, result['attachment'][k])
+                        c.proposal.attachments.append(c.attachment)
+
+                    email((c.person.email_address, 
+                              lca_info['mini_conf_email']),
+                          render('proposal/thankyou_mini_email.myt', fragment=True))
+
+                    return render_response('proposal/thankyou_mini.myt')
+
+            return render_response("proposal/new_mini.myt",
+                                   defaults=defaults, errors=errors)

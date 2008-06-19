@@ -1,4 +1,4 @@
-<h2>New proposal</h2>
+<h1>New Proposal</h1>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
