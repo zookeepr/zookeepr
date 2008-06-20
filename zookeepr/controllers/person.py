@@ -91,16 +91,17 @@ class NewPersonSchema(BaseSchema):
 
     pre_validators = [NestedVariables]
 
-
 class PersonController(SecureController, Read, Update, List):
-    individual = 'person'
     model = model.Person
+    individual = 'person'
+
     permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'signin': True,
                    'signout': [AuthTrue()],
                    'new': True,
+                   'edit': [AuthFunc('is_same_id')],
                    'forgotten_password': True,
                    'reset_password': True,
                    'confirm': True
@@ -258,7 +259,7 @@ class PersonController(SecureController, Read, Update, List):
                 persons[0].password = result['password']
                 # also make sure the person is activated
                 persons[0].activated = True
-                
+
                 # delete the conf rec
                 self.dbsession.delete(c.conf_rec)
                 self.dbsession.flush()

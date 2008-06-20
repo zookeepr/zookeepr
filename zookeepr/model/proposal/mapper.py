@@ -21,9 +21,9 @@ mapper(Proposal, proposal,
         'people': relation(Person, secondary=person_proposal_map,
             backref='proposals'),
         'attachments': relation(Attachment, lazy=True,
-					     cascade="all, delete-orphan"),
+            cascade="all, delete-orphan"),
         'reviews' : relation(Review, cascade="all, delete-orphan",
-						       backref='proposal'),
+             backref='proposal'),
     }
     )
 
