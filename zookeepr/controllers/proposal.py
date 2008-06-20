@@ -117,10 +117,11 @@ class ProposalController(SecureController, View, Update):
                                                         AuthRole('organiser')],
                    "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
-                   "index": [AuthRole('reviewer'), AuthRole('organiser')],
+                   "review": [AuthRole('reviewer'), AuthRole('organiser')],
                    "attach": [AuthRole('organiser')],
-                   "review": [AuthRole('reviewer')],
+                   "review-index": [AuthRole('reviewer')], 
                    'talk': True,
+                   'index': True,
                    'submit': True,
                    'submit_mini': True,
                    }
@@ -161,7 +162,7 @@ class ProposalController(SecureController, View, Update):
         return render_response('proposal/new.myt', defaults=defaults, errors=errors)
 
     def is_submitter(self):
-        return c.signed_in_person in session
+        return c.signed_in_person in self.obj.people
 
     def review(self, id):
         """Review a proposal.
@@ -256,7 +257,7 @@ class ProposalController(SecureController, View, Update):
             return redirect_to('/programme')
 
     def edit(self, id):
-        c.person = c.signed_in_person # FIXME - is this correct? --Jiri 27.4.2008
+        c.person = c.proposal.people[0];
         c.cfptypes = self.dbsession.query(ProposalType).all()
         c.tatypes = self.dbsession.query(AssistanceType).all()
 
@@ -289,9 +290,7 @@ class ProposalController(SecureController, View, Update):
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
 
-
-
-    def index(self):
+    def review-index(self):
         c.person = c.signed_in_person
         # hack for bug#34, don't show miniconfs to reviewers
         # Jiri: unless they're also organisers...
@@ -315,7 +314,6 @@ class ProposalController(SecureController, View, Update):
 
 
         return super(ProposalController, self).index()
-
 
     def summary(self):
 
@@ -349,6 +347,9 @@ class ProposalController(SecureController, View, Update):
         if num_reviewers == 0:
             return 0
         return total_score*1.0/num_reviewers
+
+    def index(self):
+        return
 
     def submit(self):
         # if call for papers has closed:

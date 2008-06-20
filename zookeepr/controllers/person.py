@@ -91,10 +91,10 @@ class NewPersonSchema(BaseSchema):
 
     pre_validators = [NestedVariables]
 
-
 class PersonController(SecureController, Read, Update, List):
-    individual = 'person'
     model = model.Person
+    individual = 'person'
+
     permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
