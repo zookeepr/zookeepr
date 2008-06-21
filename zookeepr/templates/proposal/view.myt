@@ -20,7 +20,7 @@ at
 <em>Abstract</em>
 </p>
 <blockquote>
-<% c.proposal.abstract | h, l %>
+<% c.proposal.abstract %>
 </blockquote>
 </div>
 
@@ -28,11 +28,11 @@ at
 <p class="url">
 <em>Project URL</em>
 # FIXME: I reckon this should go into the helpers logic
-%	if '://' in c.proposal.url:
+%   if '://' in c.proposal.url:
 <% h.link_to(c.proposal.url, url=c.proposal.url) %>
-%	else:
+%   else:
 <% h.link_to(c.proposal.url, url='http://' + c.proposal.url) %>
-%	#endif
+%   #endif
 </p>
 % #endif
 
@@ -40,11 +40,11 @@ at
 <p class="url">
 <em>Video Abstract</em>
 # FIXME: I reckon this should go into the helpers logic
-%	if '://' in c.proposal.abstract_video_url:
+%   if '://' in c.proposal.abstract_video_url:
 <% h.link_to(c.proposal.abstract_video_url, url=c.proposal.abstract_video_url) %>
-%	else:
+%   else:
 <% h.link_to(c.proposal.abstract_video_url, url='http://' + c.proposal.abstract_video_url) %>
-%	#endif
+%   #endif
 </p>
 % #endif
 
@@ -56,7 +56,7 @@ at
 </p>
 <blockquote>
 %   if person.experience:
-<% person.experience | h, l %>
+<% person.experience %>
 %   else:
 [none provided]
 %   #endif
@@ -69,7 +69,7 @@ at
 </p>
 <blockquote>
 %   if person.bio:
-<% person.bio | h, l %>
+<% person.bio %>
 %   else:
 [none provided]
 %   #endif
@@ -161,7 +161,7 @@ Unknown
 <th>Comment</th>
 </tr>
 
-%	for r in c.proposal.reviews:
+%   for r in c.proposal.reviews:
 <tr class="<% h.cycle('even', 'odd') %>">
 <td>
 <% h.link_to("%s - %s" % (r.id, r.reviewer.firstname), url=h.url(controller='review', id=r.id, action='view')) %>
@@ -180,7 +180,7 @@ Unknown
 </td>
 
 </tr>
-%	#endfor
+%   #endfor
 </table>
 </p>
 % #endif
