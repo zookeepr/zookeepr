@@ -30,6 +30,10 @@
     <p class="entries"><% h.textfield('proposal.abstract_video_url', size=70) %></p>
     <p class="note">URL for a short "elevator pitch" (20s - 3min) video about your presentation, your project or yourself (eg: YouTube link).</p>
 
+    <p class="label"><label for="attachment">Attach file:</label></th>
+    <p class="entries"><% h.file_field('attachment', size=60) %></p>
+    <p class="note">Any additional information, image, etc.</p>
+
     <p class="label"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></p>
     <p class="entries">
 % for ta in c.tatypes:
