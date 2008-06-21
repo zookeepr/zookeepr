@@ -30,7 +30,7 @@ lca_rego = {
 	'speaker_accom_options' : (51,52,53),
 
 # Date Early Bird ends
-	'earlybird_enddate' : datetime(2008, 5, 18, 00, 00, 00),
+	'earlybird_enddate' : datetime(2008, 11, 18, 00, 00, 00),
 	'earlybird_limit' : 220
 }
 
