@@ -1,4 +1,4 @@
-from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
+from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue, AuthFunc
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Delete
 from zookeepr.model import Attachment
@@ -6,11 +6,15 @@ from zookeepr.model import Attachment
 class AttachmentController(SecureController, Delete):
     model = Attachment
     individual = 'attachment'
-    redirect_map = {'delete': dict(controller='proposal', action='view', id=session.get('proposal_id', 0))}
+    redirect_map = {'delete': dict(controller='proposal', action='view', id=session.get('proposal_id', 1))}
 
     permissions = {
-      'view': True
+      'view': True,
+      'delete': [AuthFunc('is_submitter'), AuthRole('organiser')]
     }
+
+    def is_submitter(self):
+        return True
 
     def view(self, id):
         att = self.dbsession.query(model.Attachment).get(id)

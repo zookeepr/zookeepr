@@ -7,6 +7,6 @@ Thank you for updating your presentation submission.
 </p>
 
 <p>
-<a href="/presentations/edit_submission">Update another presentation</a> or
+<a href="/programme/edit_submission">Update another presentation</a> or
 return to the <a href="<% h.url_for("home") %>">main page</a>.
 </p>

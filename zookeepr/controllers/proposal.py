@@ -82,7 +82,7 @@ class NewReviewSchema(BaseSchema):
     chained_validators = [NotYetReviewedValidator()]
 
 class NewAttachmentSchema(BaseSchema):
-    attachment = FileUploadValidator()
+    attachment = FileUploadValidator(not_empty=True)
     pre_validators = [variabledecode.NestedVariables]
 
 class ProposalController(SecureController, View, Update):
@@ -101,7 +101,7 @@ class ProposalController(SecureController, View, Update):
                    "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "review": [AuthRole('reviewer'), AuthRole('organiser')],
-                   "attach": [AuthRole('organiser')],
+                   "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "review_index": [AuthRole('reviewer')], 
                    "talk": True,
                    "index": [AuthTrue()],

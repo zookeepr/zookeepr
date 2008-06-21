@@ -1,4 +1,5 @@
-<h1>My Proposals</h1>
+<h2>My Proposals</h2>
+<p>Below is a list of proposals you have submitted. To view one click on the title; or to edit, click on the edit link.</p>
 <table>
   <tr>
     <th>Title</th>
