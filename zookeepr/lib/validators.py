@@ -75,9 +75,6 @@ class FileUploadValidator(validators.FancyValidator):
         elif isinstance(value, str):
             filename = None
             content = value
-        else:
-            filename = None
-            content = None
         return dict(filename=filename,
                     content=content)
 

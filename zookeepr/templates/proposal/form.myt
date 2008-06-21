@@ -32,7 +32,7 @@
 
     <p class="label"><label for="attachment">Attach file:</label></th>
     <p class="entries"><% h.file_field('attachment', size=60) %></p>
-    <p class="note">Any additional information, image, etc. You can attach more files later by editing this proposal.</p>
+    <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
 
     <p class="label"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></p>
     <p class="entries">
