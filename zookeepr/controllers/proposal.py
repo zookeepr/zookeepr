@@ -119,7 +119,7 @@ class ProposalController(SecureController, View, Update):
                    "delete": [AuthFunc('is_submitter')],
                    "review": [AuthRole('reviewer'), AuthRole('organiser')],
                    "attach": [AuthRole('organiser')],
-                   "review-index": [AuthRole('reviewer')], 
+                   "review_index": [AuthRole('reviewer')], 
                    'talk': True,
                    'index': True,
                    'submit': True,
@@ -290,7 +290,7 @@ class ProposalController(SecureController, View, Update):
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
 
-    def review-index(self):
+    def review_index(self):
         c.person = c.signed_in_person
         # hack for bug#34, don't show miniconfs to reviewers
         # Jiri: unless they're also organisers...
@@ -418,7 +418,7 @@ class ProposalController(SecureController, View, Update):
                 if c.signed_in_person:
                     schema = ExistingMiniSchema
                 else:
-                    schema = NewNewMiniSchema
+                    schema = NewMiniSchema
                 result, errors = schema().validate(defaults, self.dbsession)
 
                 if not errors:
