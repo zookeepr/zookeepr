@@ -76,16 +76,16 @@ at
 </blockquote>
 </div>
 % # endfor
-
+<p></p>
 <div class="attachment">
 % if len(c.proposal.attachments) > 0:
-#<em>Attachments:</em>
+<p><em>Attachments:</em></p>
 <table>
-<caption>Attachments</caption>
 <tr>
 <th>Filename</th>
 <th>Size</th>
 <th>Date uploaded</th>
+<th>&nbsp;</th>
 </tr>
 % #endif
 
@@ -118,11 +118,9 @@ at
 </div>
 
 <p>
-Travel assistance: 
 % if c.proposal.assistance:
-<% c.proposal.assistance.name %>
-% else:
-Unknown
+<p>
+<em>Travel assistance:</em> <% c.proposal.assistance.name %></p>
 % # endif
 </p>
 
@@ -133,7 +131,7 @@ Unknown
 
 % if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <li>
-<% h.link_to('Edit', url=h.url(action='edit',id=c.proposal.id)) %>
+<% h.link_to('Edit Proposal', url=h.url(action='edit',id=c.proposal.id)) %>
 </li>
 % #endif
 

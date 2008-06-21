@@ -3,6 +3,8 @@
 
 <p>If you already have an account (from a previous proposal or otherwise) please <a href="<% h.url_for("/person/signin") %>">sign in</a> first, then return to this page.</p>
 
+<p>Please read the miniconf organiser section in the <a href="<% h.url_for("/programme/presenter_faq") %>">Presenter FAQ</a> before submitting a proposal.</p>
+
 % if len(errors)>0:
 <p class="error-message">Not submitted, sorry &mdash; there was a problem.
 <br />Please see below for more details, edit and resubmit.</p>

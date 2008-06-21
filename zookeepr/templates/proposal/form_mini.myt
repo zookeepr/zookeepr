@@ -18,11 +18,11 @@
 
     <p class="label"><label for="proposal.url">Miniconf URL:</label></p>
     <p class="entries"><% h.textfield('proposal.url', size=70) %></p>
-    <p class="note">If your miniconf has webpage, specify the URL here so the committee can find out more about your proposal.</p>
+    <p class="note">If your miniconf has a webpage, specify the URL here so the committee can find out more about your proposal.</p>
 
     <p class="label"><label for="attachment">Attach file:</label></th>
     <p class="entries"><% h.file_field('attachment', size=60) %></p>
-    <p class="note">Any additional information, image, etc.</p>
+    <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
 
     <h2>About yourself</h2>
 

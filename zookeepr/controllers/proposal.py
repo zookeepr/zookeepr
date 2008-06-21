@@ -43,11 +43,13 @@ class MiniProposalSchema(BaseSchema):
 class NewProposalSchema(BaseSchema):
     person = NewPersonSchema()
     proposal = ProposalSchema()
+    attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
 class ExistingProposalSchema(BaseSchema):
     person = ExistingPersonSchema()
     proposal = ProposalSchema()
+    attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
 class NewMiniProposalSchema(BaseSchema):
@@ -82,7 +84,7 @@ class NewReviewSchema(BaseSchema):
     chained_validators = [NotYetReviewedValidator()]
 
 class NewAttachmentSchema(BaseSchema):
-    attachment = FileUploadValidator()
+    attachment = FileUploadValidator(not_empty=True)
     pre_validators = [variabledecode.NestedVariables]
 
 class ProposalController(SecureController, View, Update):
@@ -101,7 +103,7 @@ class ProposalController(SecureController, View, Update):
                    "summary": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "review": [AuthRole('reviewer'), AuthRole('organiser')],
-                   "attach": [AuthRole('organiser')],
+                   "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "review_index": [AuthRole('reviewer')], 
                    "talk": True,
                    "index": [AuthTrue()],
@@ -379,11 +381,11 @@ class ProposalController(SecureController, View, Update):
 
                     c.person.proposals.append(c.proposal)
 
-                    #if result['attachment'] is not None:
-                    #    c.attachment = Attachment()
-                    #    for k in result['attachment']:
-                    #        setattr(c.attachment, k, result['attachment'][k])
-                    #    c.proposal.attachments.append(c.attachment)
+                    if result['attachment'] is not None:
+                        c.attachment = Attachment()
+                        for k in result['attachment']:
+                            setattr(c.attachment, k, result['attachment'][k])
+                        c.proposal.attachments.append(c.attachment)
 
                     return render_response('proposal/thankyou.myt')
 
@@ -391,8 +393,7 @@ class ProposalController(SecureController, View, Update):
                                defaults=defaults, errors=errors)
 
     def submit_mini(self):
-
-        # call-for-miniconfs now closed
+        # call for miniconfs has closed
         if c.cfmini_status == 'closed':
             return render_response("proposal/closed_mini.myt")
         elif c.cfmini_status == 'not_open':
@@ -406,11 +407,11 @@ class ProposalController(SecureController, View, Update):
 
             if request.method == 'POST' and defaults:
                 if c.signed_in_person:
-                    schema = ExistingMiniProposalSchema
+                    schema = self.schemas['mini_edit']
                 else:
-                    schema = NewMiniProposalSchema
-                result, errors = schema().validate(defaults, self.dbsession)
+                    schema = self.schemas['mini_new']
 
+                result, errors = schema().validate(defaults, self.dbsession)
                 if not errors:
                     c.proposal = Proposal()
                     # update the objects with the validated form data
