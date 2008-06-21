@@ -6,6 +6,7 @@
     <th>Abstract</th>
     <th>Project URL</th>
     <th>Submitter(s)</th>
+    <th>&nbsp;</th>
   </tr>
 % for s in c.person.proposals:
   <tr class="<% h.cycle('even', 'odd') %>">
