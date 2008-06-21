@@ -67,24 +67,23 @@ class PasswordResetSchema(BaseSchema):
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 class PersonSchema(BaseSchema):
-    email_address = validators.String(not_empty=True)
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    company = validators.String()
+    email_address = validators.String(not_empty=True)
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    phone = validators.String()
+    mobile = validators.String()
     address1 = validators.String(not_empty=True)
     address2 = validators.String()
     city = validators.String(not_empty=True)
     state = validators.String()
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
-    company = validators.String()
-    phone = validators.String()
-    mobile = validators.String()
-    password = validators.String(not_empty=True)
-    password_confirm = validators.String(not_empty=True)
 
     pre_validators = [NotExistingPersonValidator()]
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
-
 
 class NewPersonSchema(BaseSchema):
     person = PersonSchema()
@@ -329,7 +328,7 @@ class PersonController(SecureController, Read, Update, List):
         data = dict(request.POST)
         if data:
           role = int(data['role'])
-          act = data['commit']
+          act = data['Commit']
           if act not in ['Grant', 'Revoke']: raise "foo!"
           r = self.dbsession.query(Role).filter_by(id=role).one()
           res += '<p>' + act + ' ' + r.name + '.'
