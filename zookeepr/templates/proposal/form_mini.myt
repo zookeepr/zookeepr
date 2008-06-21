@@ -22,7 +22,7 @@
 
     <p class="label"><label for="attachment">Attach file:</label></th>
     <p class="entries"><% h.file_field('attachment', size=60) %></p>
-    <p class="note">Any additional information, image, etc.</p>
+    <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
 
     <h2>About yourself</h2>
 
