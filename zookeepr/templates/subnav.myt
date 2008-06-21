@@ -5,7 +5,7 @@
 %     link = sub.replace('/', '_').lower()
 %     link = '/'+where+'/'+link
 %     link = link.replace(' ', '_')
-%     if link==url:
+%     if current(link):
         <li><a href="<%link%>" class="now"><% sub %></a></li>
 %     else:
         <li><a href="<%link%>"><% sub %></a></li>
@@ -32,6 +32,12 @@ def cls(part):
     return 'class="now"'
   else:
     return 'class=""'
+
+def current(link):
+  if url.startswith(link):
+    return True
+  else:
+    return False
 
 </%init>
 
