@@ -19,7 +19,7 @@ lca_info = {
 # Possible statuses not_open|open|closed
   'cfp_status' : 'open',
   'cfmini_status' : 'open',
-  'registration_status' : 'open',
+  'registration_status' : 'not_open',
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 
@@ -30,7 +30,7 @@ lca_rego = {
 	'speaker_accom_options' : (51,52,53),
 
 # Date Early Bird ends
-	'earlybird_enddate' : datetime(2008, 11, 18, 00, 00, 00),
+	'earlybird_enddate' : datetime(2008, 5, 18, 00, 00, 00),
 	'earlybird_limit' : 220
 }
 

@@ -576,11 +576,12 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         return True, "Your voucher code has been applied"
 
     def check_earlybird(self):
+        # returns: (c.eb, c.ebtext, c.ebpercent, c.timeleft)
         count = 0
         po = PaymentOptions()
         timeleft = po.ebdate - datetime.datetime.now()
         if timeleft < datetime.timedelta(0):
-            return False, "Too late."
+            return False, "Too late.", 0, 0
         timeleft = " %.1f days to go." % (timeleft.days +
                                              timeleft.seconds / (3600*24.))
         for r in self.dbsession.query(self.model).all():
@@ -599,7 +600,7 @@ class RegistrationController(SecureController, Create, Update, List, Read):
             if not speaker:
                 count += 1
         if count >= po.eblimit:
-            return False, "All gone."
+            return False, "All gone.", 0, 0
         left = po.eblimit - count
         percent = int(round((20.0 * left) / po.eblimit) * 5)
         actualpercent = (100.0 * left) / po.eblimit
@@ -637,13 +638,13 @@ class RegistrationController(SecureController, Create, Update, List, Read):
         res.vouchers = len(self.dbsession.query(VoucherCode).all())
         res.total = res.regos + res.vouchers - res.disc_regos
         res.limit = 505
-        res.open = res.total < res.limit
+        res.open = False
 
         res.nk_limit = 59
         res.nk_open = res.nk_regos < res.nk_limit
         res.nk_left = res.nk_limit - res.nk_regos
 
-        res.nk_open = True # force them open now that nobody can get here
+        res.nk_open = False # force them open now that nobody can get here
                            # --Jiri 25.1.2008
 
         if res.open:
