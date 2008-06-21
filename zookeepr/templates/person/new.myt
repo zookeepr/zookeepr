@@ -1,8 +1,8 @@
 <h1 class="pop">New user account creation</h1>
 
 <p>
-This form is only for selected personnelle that need an account for specific purposes. <b>To register for the conference, <a href="/registration/new">go
-directly to the registration form</a></b>, don't bother with this one.</p>
+This form is only for selected personnelle that need an account for specific purposes. <b>To submit a proposal for the conference, <a href="/programme/submit_a_presentation">go
+directly to this form</a></b>, don't bother with this one.</p>
 
 <p>
 If you've already got an account but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='person',id=None,action='forgotten_password')) %>.
