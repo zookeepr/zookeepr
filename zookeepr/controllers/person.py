@@ -329,7 +329,7 @@ class PersonController(SecureController, Read, Update, List):
         data = dict(request.POST)
         if data:
           role = int(data['role'])
-          act = data['commit']
+          act = data['Commit']
           if act not in ['Grant', 'Revoke']: raise "foo!"
           r = self.dbsession.query(Role).filter_by(id=role).one()
           res += '<p>' + act + ' ' + r.name + '.'
