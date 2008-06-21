@@ -6,36 +6,21 @@ from zookeepr.lib.base import *
 from zookeepr.lib.mail import *
 from zookeepr.lib.crud import Update, View
 from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, PersonValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
-from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role
+from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role, Person
+from zookeepr.controllers.person import PersonSchema
 
 import random
 
 from zookeepr.config.lca_info import lca_info
 
-class NewPersonSchema(BaseSchema):
-    email_address = EmailAddress(resolve_domain=True, not_empty=True)
-    firstname = validators.String(not_empty=True)
-    lastname = validators.String(not_empty=True)
-    address1 = validators.String(not_empty=True)
-    address2 = validators.String()
-    city = validators.String(not_empty=True)
-    state = validators.String()
-    postcode = validators.String(not_empty=True)
-    country = validators.String(not_empty=True)
-    company = validators.String()
-    phone = validators.String()
-    mobile = validators.String()
-    password = validators.String(not_empty=True)
-    password_confirm = validators.String(not_empty=True)
-    experience = validators.String()
+class NewPersonSchema(PersonSchema):
+    experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
     url = validators.String()
+    mobile = validators.String(not_empty=True)
 
-    pre_validators = [NotExistingPersonValidator()]
-    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
-
-class ExistingPersonSchema(BaseSchema):
-    experience = validators.String()
+class ExistingPersonSchema(schema.Schema):
+    experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
     url = validators.String()
     mobile = validators.String(not_empty=True)
@@ -49,26 +34,21 @@ class ProposalSchema(schema.Schema):
     url = validators.String()
     abstract_video_url = validators.String()
 
+class MiniProposalSchema(BaseSchema):
+    title = validators.String(not_empty=True)
+    abstract = validators.String(not_empty=True)
+    type = ProposalTypeValidator()
+    url = validators.String()
+
 class NewProposalSchema(BaseSchema):
     person = NewPersonSchema()
     proposal = ProposalSchema()
-    #attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
 
 class ExistingProposalSchema(BaseSchema):
     person = ExistingPersonSchema()
     proposal = ProposalSchema()
-    #attachment = FileUploadValidator()
     pre_validators = [variabledecode.NestedVariables]
-
-class MiniProposalSchema(BaseSchema):
-    title = validators.String(not_empty=True)
-    abstract = validators.String(not_empty=True)
-    type = ProposalTypeValidator()
-    assistance = AssistanceTypeValidator()
-    #project = validators.String(not_empty=True)
-    url = validators.String()
-    #abstract_video_url = validators.String()
 
 class NewMiniProposalSchema(BaseSchema):
     person = NewPersonSchema()
@@ -110,7 +90,10 @@ class ProposalController(SecureController, View, Update):
     individual = 'proposal'
 
     schemas = {"new" : NewProposalSchema(),
-               "edit" : ExistingProposalSchema()}
+               "edit" : ExistingProposalSchema(),
+               "new_mini" : NewMiniProposalSchema(),
+               "edit_mini" : ExistingMiniProposalSchema()}
+
     permissions = {"new": [AuthFalse()],
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
@@ -119,11 +102,11 @@ class ProposalController(SecureController, View, Update):
                    "delete": [AuthFunc('is_submitter')],
                    "review": [AuthRole('reviewer'), AuthRole('organiser')],
                    "attach": [AuthRole('organiser')],
-                   "review-index": [AuthRole('reviewer')], 
-                   'talk': True,
-                   'index': True,
-                   'submit': True,
-                   'submit_mini': True,
+                   "review_index": [AuthRole('reviewer')], 
+                   "talk": True,
+                   "index": [AuthTrue()],
+                   "submit": True,
+                   "submit_mini": True,
                    }
 
     def __init__(self, *args):
@@ -265,7 +248,10 @@ class ProposalController(SecureController, View, Update):
         defaults = dict(request.POST)
 
         if defaults:
-            result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
+            if c.proposal.type.name == 'Miniconf':
+                result, errors = self.schemas['edit_mini'].validate(defaults, self.dbsession)
+            else:
+                result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
 
             if errors:
                 if asbool(request.environ['paste.config']['global_conf'].get('debug')):
@@ -290,7 +276,7 @@ class ProposalController(SecureController, View, Update):
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
 
-    def review-index(self):
+    def review_index(self):
         c.person = c.signed_in_person
         # hack for bug#34, don't show miniconfs to reviewers
         # Jiri: unless they're also organisers...
@@ -349,7 +335,11 @@ class ProposalController(SecureController, View, Update):
         return total_score*1.0/num_reviewers
 
     def index(self):
-        return
+        if self.logged_in():
+            c.person = c.signed_in_person
+            return super(ProposalController, self).index()
+        else:
+            abort(403)
 
     def submit(self):
         # if call for papers has closed:
@@ -366,9 +356,9 @@ class ProposalController(SecureController, View, Update):
 
             if request.method == 'POST' and defaults:
                 if c.signed_in_person:
-                    schema = ExistingProposalSchema
+                    schema = self.schemas['edit']
                 else:
-                    schema = NewProposalSchema
+                    schema = self.schemas['new']
 
                 result, errors = schema().validate(defaults, self.dbsession)
                 if not errors:
@@ -416,9 +406,9 @@ class ProposalController(SecureController, View, Update):
 
             if request.method == 'POST' and defaults:
                 if c.signed_in_person:
-                    schema = ExistingMiniSchema
+                    schema = ExistingMiniProposalSchema
                 else:
-                    schema = NewNewMiniSchema
+                    schema = NewMiniProposalSchema
                 result, errors = schema().validate(defaults, self.dbsession)
 
                 if not errors:

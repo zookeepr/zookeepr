@@ -5,7 +5,11 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <% h.form(h.url()) %>
+% if c.proposal.type.name == 'Miniconf':
+<& form_mini.myt &>
+% else:
 <& form.myt &>
+% #endif
 
 <p class="submit">
 <% h.submitbutton('Update') %>
@@ -35,15 +39,15 @@ errors
 
 if not defaults and c.proposal:
     defaults = {
-            'proposal.title': c.proposal.title,
-            'proposal.abstract': c.proposal.abstract,
-            'proposal.project': c.proposal.project,
-            'proposal.url': c.proposal.url,
-            'proposal.abstract_video_url': c.proposal.abstract_video_url,
-            'person.mobile': c.person.mobile,
-            'person.url': c.person.url,
-            'person.experience': c.person.experience,
-            'person.bio': c.person.bio,
+        'proposal.title': c.proposal.title,
+        'proposal.abstract': c.proposal.abstract,
+        'proposal.project': c.proposal.project,
+        'proposal.url': c.proposal.url,
+        'proposal.abstract_video_url': c.proposal.abstract_video_url,
+        'person.mobile': c.person.mobile,
+        'person.url': c.person.url,
+        'person.experience': c.person.experience,
+        'person.bio': c.person.bio,
     }
     if c.proposal.type:
         defaults['proposal.type'] = c.proposal.type.id

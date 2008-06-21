@@ -16,7 +16,7 @@
 <% h.form(h.url(), multipart=True) %>
 <& form_mini.myt &>
 
-	<p class="submit"><% h.submitbutton('Submit!') %></p>
+<p class="submit"><% h.submitbutton('Submit!') %></p>
 <% h.end_form() %>
 </&>
 
@@ -33,15 +33,15 @@ errors
 # Working around a bug in formencode, we need to set the defaults to the c.proposal
 # values
 if not defaults:
-    if c.signed_in_person_id:
+    if c.signed_in_person:
+        c.person = c.signed_in_person
         defaults = {
+            'person.mobile': c.person.mobile,
             'person.experience': c.person.experience,
             'person.bio': c.person.bio
         }
     else:
         defaults = {
-            'person.experience': '',
-            'person.bio': '',
             'person.country': 'Australia',
         }
 </%init>

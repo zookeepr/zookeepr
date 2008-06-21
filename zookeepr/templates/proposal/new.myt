@@ -34,12 +34,12 @@ errors
 # values
 if not defaults:
     defaults = {
-        'person.experience': '',
-        'person.bio': '',
         'proposal.type': 1,
         'proposal.assistance': 4,
     }
-    if c.person:
+    if c.signed_in_person:
+        c.person = c.signed_in_person
+        defaults['person.mobile'] = c.person.mobile
         defaults['person.experience'] = c.person.experience
         defaults['person.bio'] = c.person.bio
 </%init>
