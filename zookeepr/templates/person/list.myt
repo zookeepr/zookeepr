@@ -9,6 +9,8 @@
     <th>Last Name</th>
     <th>Phone</th>
     <th>Mobile</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 % #endif
 
