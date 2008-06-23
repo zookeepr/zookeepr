@@ -78,8 +78,8 @@ at
 % # endfor
 <p></p>
 <div class="attachment">
-% if len(c.proposal.attachments) > 0:
 <p><em>Attachments:</em></p>
+% if len(c.proposal.attachments) > 0:
 <table>
 <tr>
 <th>Filename</th>
