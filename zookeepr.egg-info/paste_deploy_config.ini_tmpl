@@ -1,10 +1,13 @@
+#
 # zookeepr - Pylons configuration
+#
 # The %(here) variable will be replaced with the parent directory of this file
+#
 [DEFAULT]
 debug = true
-email_to = josh@nitrotech.org
+email_to = person@example.com
 smtp_server = localhost
-error_email_from = webmaster@linux.conf.au
+error_email_from = person@example.com
 
 [server:main]
 use = egg:Paste#http
@@ -14,8 +17,13 @@ port = 5000
 [app:main]
 use = egg:zookeepr
 data_dir = %(here)s/data/templates
-dynamic_html_dir = %(here)s/data/dynamic_html
+cache.data_dir = %(here)s/data/cache
+session.data_dir = %(here)s/data/sessions
+session.key = zookeepr
+session.secret = ${app_instance_secret}
 app_instance_uuid = {23c37553-c244-4ea2-ac71-fff823bcfbd6}
+
+contact_email = contact@yourdomain.com
 
 # We're using SQLAlchemy, the database is initialised in
 # `Globals.__init__()`, and connected to per thread/request in

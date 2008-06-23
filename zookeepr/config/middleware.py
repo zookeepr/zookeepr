@@ -31,10 +31,6 @@ def make_app(global_conf, **app_conf):
     from pylons import config 
     load_environment(global_conf, app_conf)
     
-    # Include stuff like flickr into the myghty component root
-    # Commented out while porting to newer pylons --Jiri 26.4.2008
-    #config.myghty['component_root'].append( {'dynamic_html': app_conf['dynamic_html_dir'] })
-
     # Load our default Pylons WSGI app and make g available
     app = pylons.wsgiapp.PylonsApp(config,
             #helpers=zookeepr.lib.helpers,
