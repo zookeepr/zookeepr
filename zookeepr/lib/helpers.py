@@ -173,6 +173,11 @@ def esc(s):
     except:
       return esc_re.sub(esc_m, `s`)
 
+break_re = re.compile(r'(\n|\r\n)')
+def line_break(s):
+    """ Turn line breaks into <br>'s """
+    return break_re.sub('<br>', s)
+
 def countries():
     """ list of countries, as retrieved from the miscfiles package
         (stripping of all diacritical marks)

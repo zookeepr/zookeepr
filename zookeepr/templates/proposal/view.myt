@@ -7,43 +7,57 @@ Proposal for a
 <% c.proposal.type.name %> 
 submitted by
 % for p in c.proposal.people:
-<% p.firstname %> <% p.lastname %>
-&lt;<% p.email_address %>&gt;
+<% p.firstname | h %> <% p.lastname | h %>
+&lt;<% p.email_address | h %>&gt;
 % #endfor
 at
 <% c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
 (last updated at <% c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
 </p>
 
+% if c.proposal.type.name:
+<p class="url">
+<em>Proposal Type:</em>
+<% c.proposal.type.name %>
+</p>
+% #endif
+
 <div class="abstract">
 <p>
-<em>Abstract</em>
+<em>Abstract:</em>
 </p>
 <blockquote>
-<% c.proposal.abstract %>
+<% h.line_break(c.proposal.abstract) | h %>
 </blockquote>
 </div>
 
+% if c.proposal.project:
+<p class="url">
+<em>Project:</em>
+<% c.proposal.project | h %>
+</p>
+% #endif
+
 % if c.proposal.url:
 <p class="url">
-<em>Project URL</em>
+<em>URL:</em>
 # FIXME: I reckon this should go into the helpers logic
 %   if '://' in c.proposal.url:
-<% h.link_to(c.proposal.url, url=c.proposal.url) %>
+<a href="<% c.proposal.url | h %>"><% c.proposal.url | h %></a>
 %   else:
-<% h.link_to(c.proposal.url, url='http://' + c.proposal.url) %>
+<a href="http://<% c.proposal.url | h %>"><% c.proposal.url | h %></a>
 %   #endif
 </p>
 % #endif
 
 % if c.proposal.abstract_video_url:
-<p class="url">
-<em>Video Abstract</em>
+<p class="video">
+<em>Video Abstract:</em>
 # FIXME: I reckon this should go into the helpers logic
 %   if '://' in c.proposal.abstract_video_url:
-<% h.link_to(c.proposal.abstract_video_url, url=c.proposal.abstract_video_url) %>
+<a href="<% c.proposal.abstract_video_url | h %>"><% c.proposal.abstract_video_url | h %></a>
 %   else:
-<% h.link_to(c.proposal.abstract_video_url, url='http://' + c.proposal.abstract_video_url) %>
+<a href="http://<% c.proposal.abstract_video_url | h %>"><% c.proposal.abstract_video_url | h %></a>
 %   #endif
 </p>
 % #endif
@@ -56,7 +70,7 @@ at
 </p>
 <blockquote>
 %   if person.experience:
-<% person.experience %>
+<% h.line_break(person.experience) | h %>
 %   else:
 [none provided]
 %   #endif
@@ -69,7 +83,7 @@ at
 </p>
 <blockquote>
 %   if person.bio:
-<% person.bio %>
+<% h.line_break(person.bio) | h %>
 %   else:
 [none provided]
 %   #endif
@@ -78,8 +92,8 @@ at
 % # endfor
 <p></p>
 <div class="attachment">
-% if len(c.proposal.attachments) > 0:
 <p><em>Attachments:</em></p>
+% if len(c.proposal.attachments) > 0:
 <table>
 <tr>
 <th>Filename</th>
@@ -93,7 +107,7 @@ at
 <tr class="<% h.cycle('even', 'odd') %>">
 
 <td>
-<% h.link_to(a.filename, url=h.url_for(controller='attachment', action='view', id=a.id)) %>
+<% h.link_to(h.esc(a.filename), url=h.url_for(controller='attachment', action='view', id=a.id)) %>
 </td>
 
 <td>

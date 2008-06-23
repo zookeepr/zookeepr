@@ -5,6 +5,9 @@
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
 	<link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css">
+	<!--[if lt IE 7]>
+	<script defer type="text/javascript" src="/ie.js"></script>
+	<![endif]-->
 </head>
 
 <body>

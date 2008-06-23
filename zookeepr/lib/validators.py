@@ -4,6 +4,8 @@ import re
 import dns.resolver
 from formencode import Invalid, validators, schema
 
+import helpers as h
+
 from zookeepr.model import Person, ProposalType, Stream, AssistanceType
 
 class BoundedInt(validators.Int):
@@ -52,6 +54,15 @@ class BaseSchema(schema.Schema):
                 good_errors['x'] = errors
                 
             return {}, good_errors
+            
+#    def to_python(self, value_dict, state):
+#        print value_dict
+#        for key, value in value_dict.iteritems():
+#            #if isinstance(value, str):
+#                value_dict[key] = h.esc(value)
+#        #print value_dict
+#        return super(BaseSchema, self).to_python(value_dict, state)
+        
 
 
 class PersonValidator(validators.FancyValidator):
@@ -75,6 +86,8 @@ class FileUploadValidator(validators.FancyValidator):
         elif isinstance(value, str):
             filename = None
             content = value
+        if content.__len__() > 3000000: #This is not the right place to validate it, but at least it is validated...
+            raise Invalid('Files must not be bigger than 2MB', value, state)
         return dict(filename=filename,
                     content=content)
 
