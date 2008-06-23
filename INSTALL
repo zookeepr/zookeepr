@@ -27,3 +27,9 @@ aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
  
 ====== Running Zookeepr ======
 paster serve --reload -v config.ini
+
+====== Administering Zookeepr ======
+ - First create a new user by going to /person/new
+ - Then add that user to the organiser role by inserting the corresponding user and role into person_role_map
+   This is usually person_id 1 and role_id 2 by default
+ - You can then find most of the administration tools in /admin
