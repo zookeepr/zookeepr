@@ -200,3 +200,25 @@ def debug():
         return True
     else:
         return False
+
+teaser_re = re.compile(r'(\<\!\-\-break\-\-\>)')
+def make_teaser(body):
+    if teaser_re.search(body):
+        parts = teaser_re.split(body)
+        return parts[0], True
+    else:
+        return body, False
+
+_news_id = -1
+def news_id():
+    global _news_id
+    if _news_id == -1:
+        from sqlalchemy.orm import create_session
+        from zookeepr.model import DBContentType
+        _news_id = create_session().query(DBContentType).filter_by(name='News').first().id
+    return _news_id
+
+def is_news(article_id):
+    if news_id() == article_id:
+        return True
+    return False

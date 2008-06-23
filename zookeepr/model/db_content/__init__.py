@@ -1,1 +1,1 @@
-from domain import DBContent
+from domain import DBContent, DBContentType

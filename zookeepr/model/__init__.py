@@ -4,7 +4,7 @@ from schedule import Stream, Talk
 from registration import Registration, Accommodation
 from openday import Openday
 from billing import InvoiceItem, Invoice, PaymentReceived, Payment, VoucherCode
-from db_content import DBContent
+from db_content import DBContentType, DBContent
 
 def init_model(app_conf):
     from paste.deploy.converters import asbool
@@ -71,11 +71,18 @@ def populate_data():
         model.core.tables.role.insert().execute(
             dict(name='organiser'),
             )
-	model.core.tables.role.insert().execute(
+        model.core.tables.role.insert().execute(
             dict(name='miniconf'),
-	    )
-	model.core.tables.role.insert().execute(
-	    dict(name='team'),
-	    )
+            )
+        model.core.tables.role.insert().execute(
+            dict(name='team'),
+            )
+            
+        model.db_content.tables.db_content_type.insert().execute(
+            dict(name='Page'),
+            )
+        model.db_content.tables.db_content_type.insert().execute(
+            dict(name='News'),
+            )
     except SQLError:
         pass

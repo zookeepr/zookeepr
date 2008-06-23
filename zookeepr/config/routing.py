@@ -15,6 +15,8 @@ def make_map():
 
     # the top level controller is named home
     m.connect('home', '', controller='home')
+    m.connect('/media/news', controller='db_content', action='list_news', id=None)
+    m.connect('/media/news/:id', controller='db_content', action='view')
 
     # hack the old error handler back in, using the style of the old
     # routes controller.  this is necessary to get the error handler

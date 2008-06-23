@@ -6,7 +6,7 @@ from formencode import Invalid, validators, schema
 
 import helpers as h
 
-from zookeepr.model import Person, ProposalType, Stream, AssistanceType
+from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType
 
 class BoundedInt(validators.Int):
     """ Validator for integers, with bounds.
@@ -69,6 +69,9 @@ class PersonValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return Person.get(value)
 
+class DbContentTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return state.query(DBContentType).get(value)
 
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):

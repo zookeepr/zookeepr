@@ -21,4 +21,6 @@ if not defaults:
         'db_content.url': c.db_content.url,
         'db_content.body': c.db_content.body,
     }
+    if c.db_content.type:
+        defaults['db_content.type'] = c.db_content.type.id
 </%init>
