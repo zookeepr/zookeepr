@@ -14,6 +14,4 @@ zookeepr/config.ini
 *.pyo
 *~
 zookeepr/public/att-data
-dynamic_html/att-data
-dynamic_html
 .coverage
