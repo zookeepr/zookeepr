@@ -85,7 +85,7 @@ Your opinion on this proposal.
 </legend>
 
 <div id="q1">
-<p class="label">1. What score do you give this paper?</p>
+<p class="label">1. What score do you give this proposal?</p>
 <p class="entries">
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
 <br>

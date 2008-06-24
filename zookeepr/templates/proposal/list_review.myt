@@ -28,7 +28,7 @@ You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_prop
 
 <h2><% pt.name %>s (<% len(collection) %>)</h2>
 
-Paper cannot be reviewed again untill all papers have been reviewed at least <% min_reviews +1 %> times;
+Proposal cannot be reviewed again untill all proposals have been reviewed at least <% min_reviews +1 %> times;
 <table class="list">
 
 <tr>

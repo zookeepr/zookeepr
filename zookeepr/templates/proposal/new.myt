@@ -23,7 +23,7 @@
 </&>
 
 <%method title>
-Call for Papers - <& PARENT:title &>
+Call for Presentations - <& PARENT:title &>
 </%method>
 
 <%args>

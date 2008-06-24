@@ -29,7 +29,7 @@ for free (eg speakers).</p>
 <h3>Next step</h3>
 
 <p><a href="/person/signin">Sign in</a> if you already have an account
-(you've already registered, submitted a paper or similar).  If you can't
+(you've already registered, submitted a proposal or similar).  If you can't
 log in, you can try <% h.link_to('recovering your password',
 url=h.url(controller='person', action='forgotten_password', id=None)) %>.</p>
 %   session['sign_in_redirect'] = '/registration/status'
