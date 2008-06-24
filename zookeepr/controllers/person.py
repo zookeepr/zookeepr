@@ -12,7 +12,7 @@ from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator
 from zookeepr.model import Person, PasswordResetConfirmation
 
 from zookeepr.lib.base import *
-from zookeepr.lib.crud import Read, Update, List
+from zookeepr.lib.crud import Read, Update, List, Delete
 from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue
 from zookeepr import model
 from zookeepr.model.core.domain import Role
@@ -46,7 +46,6 @@ class ExistingPersonValidator(validators.FancyValidator):
         persons = state.query(Person).filter_by(email_address=value['email_address']).first()
         if persons == None:
             raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % '<a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>', value, state)
-
 
 class LoginValidator(BaseSchema):
     email_address = validators.String(not_empty=True)
@@ -87,12 +86,18 @@ class PersonSchema(BaseSchema):
 
 class NewPersonSchema(BaseSchema):
     person = PersonSchema()
-
     pre_validators = [NestedVariables]
 
-class PersonController(SecureController, Read, Update, List):
+class ExistingPersonSchema(BaseSchema):
+    person = PersonSchema()
+    pre_validators = [NestedVariables]
+
+class PersonController(SecureController, Read, Update, List, Delete):
     model = model.Person
     individual = 'person'
+
+    schemas = {"new" : NewPersonSchema(),
+               "edit" : ExistingPersonSchema()}
 
     permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
                    'roles': [AuthRole('organiser')],
@@ -100,10 +105,11 @@ class PersonController(SecureController, Read, Update, List):
                    'signin': True,
                    'signout': [AuthTrue()],
                    'new': True,
-                   'edit': [AuthFunc('is_same_id')],
+                   'edit': [AuthFunc('is_same_id'), AuthRole('organiser')],
                    'forgotten_password': True,
                    'reset_password': True,
-                   'confirm': True
+                   'confirm': True,
+                   'delete': [AuthRole('organiser')]
                    }
 
 
