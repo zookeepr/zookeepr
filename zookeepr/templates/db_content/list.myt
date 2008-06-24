@@ -20,7 +20,9 @@
         <td><% d.title %></td>
 %   #endif
         <td><% d.type.name %></td>
-%   if d.url != '':
+%   if '://' in d.url:
+        <td><% h.link_to(d.url, url=d.url) %></td>
+%   elif d.url != '':
         <td><% h.link_to(d.url, url='/' + d.url) %></td>
 %   else:
         <td>N/A</td>
