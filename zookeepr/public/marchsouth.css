@@ -28,7 +28,7 @@
 		background-color: transparent;
 	}
 	
-	.note
+	.note, .note ul
 	{
 		font-size: small;
 	}
@@ -448,3 +448,12 @@
 		margin-left: -0.4em;
 	}
 
+	blockquote p
+	{
+		background-color: transparent;	
+	}
+	
+	blockquote h1, blockquote h2, blockquote h3, blockquote h4, blockquote th, blockquote dt
+	{
+		background-color: transparent;
+	}

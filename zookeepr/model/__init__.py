@@ -84,5 +84,8 @@ def populate_data():
         model.db_content.tables.db_content_type.insert().execute(
             dict(name='News'),
             )
+        model.db_content.tables.db_content_type.insert().execute(
+            dict(name='In the press'),
+            )
     except SQLError:
         pass

@@ -15,7 +15,7 @@ class DbContentSchema(BaseSchema):
     title = validators.String(not_empty=True)
     type = DbContentTypeValidator()
     url = validators.String()
-    body = validators.String(not_empty=True)
+    body = validators.String()
 
 class NewContentSchema(BaseSchema):
     db_content = DbContentSchema()
@@ -39,7 +39,8 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    'view': True,
                    'edit': [AuthRole('organiser')],
                    'delete': [AuthRole('organiser')],
-                   'list_news': True
+                   'list_news': True,
+                   'list_press': True
                    }
 
     def __before__(self, **kwargs):
@@ -65,4 +66,9 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
         setattr(c, self.individual + '_collection', self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.id).all())
         return render_response('%s/list_news.myt' % self.individual)
+        
+    def list_press(self):
+        press_id = self.dbsession.query(model.DBContentType).filter_by(name='In the press').first().id
+        setattr(c, self.individual + '_collection', self.dbsession.query(self.model).filter_by(type_id=press_id).order_by(self.model.c.id).all())
+        return render_response('%s/list_press.myt' % self.individual)
 
