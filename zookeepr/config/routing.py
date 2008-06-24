@@ -17,7 +17,8 @@ def make_map():
     m.connect('home', '', controller='home')
     m.connect('/media/news', controller='db_content', action='list_news', id=None)
     m.connect('/media/news/:id', controller='db_content', action='view')
-
+    m.connect('/media/in_the_press', controller='db_content', action='list_press', id=None)
+    
     # hack the old error handler back in, using the style of the old
     # routes controller.  this is necessary to get the error handler
     # to not 404 when calling itself
