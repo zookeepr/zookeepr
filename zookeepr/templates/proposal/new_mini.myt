@@ -1,5 +1,5 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-<h1>Propose a Mini-conf</h1>
+<h2>Propose a Mini-conf</h2>
 
 <p>If you already have an account (from a previous proposal or otherwise) please <a href="<% h.url_for("/person/signin") %>">sign in</a> first, then return to this page.</p>
 

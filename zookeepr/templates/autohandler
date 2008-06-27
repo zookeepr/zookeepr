@@ -18,6 +18,9 @@
 			<img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'>
 			<img src = '/images/marchsouth.png' alt = 'march south together'>
 		</div>
+		<div>
+			<& SELF:big_promotion &>
+		</div>
 		<div class = 'menu'>
 			<& nav.myt &>
 			<& subnav.myt &>
@@ -40,6 +43,8 @@
 	</div>
 </body>
 </html>
+<%method big_promotion>
+</%method>
 <%method title>
 linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart
 </%method>

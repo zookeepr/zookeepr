@@ -222,3 +222,15 @@ def is_news(article_id):
     if news_id() == article_id:
         return True
     return False
+
+def featured_image(title, big = False):
+    """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left 
+    If the image is prefixed with _big_ it becomes the main header feature """
+    
+    if big:
+        # look for _big_ feature
+    else:
+        # look for normal
+    
+    return False
+    

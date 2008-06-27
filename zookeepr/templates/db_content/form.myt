@@ -19,9 +19,9 @@
 </p><p class="entries">
 <% h.textfield('db_content.url', size=60) %>
 </p>
-<ul class="note"><li>For pages and news items the URL after the linux.conf.au/ that this page should be rendered for. EG: 'about/linux'.<br>
-You don't have to supply a URL as content is still accessible via ID's. It is recommended not to create a URL alias for news items.</li>
-<li>For "In the press" this is the URL you want the item to.</li></ul>
+<ul class="note"><li>For pages and news items this is the URL after the linux.conf.au/ that this page should be rendered for. EG: 'about/linux'.<br>
+It is not mandatory supply a URL as content is still accessible via ID's. It is recommended not to create a URL alias for news items.</li>
+<li>For "In the press" this is the URL you want the item to link to.</li></ul>
 
 <p class="label">
 <label for="db_content.body">Body:</label>
@@ -30,7 +30,7 @@ You don't have to supply a URL as content is still accessible via ID's. It is re
 </p>
 <ul class="note"><li>The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate. Use &lt;h3&gt;'s to automatically create a "contents" section.</li>
 <li>For news articles you can place a &lt;!--break--&gt; statement to separate the entire body from the preview on the news page.</li>
-<li>For in the press this becomes the comment next to the link.</li></ul>
+<li>For in the press this becomes the comment under the link.</li></ul>
 <p>
 <% h.submitbutton('Save') %>
 </p>

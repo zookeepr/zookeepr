@@ -1,6 +1,6 @@
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController
-from zookeepr.model import Person
+from zookeepr.model import Person, DBContent, DBContentType
 
 class HomeController(BaseController):
 
@@ -20,6 +20,11 @@ class HomeController(BaseController):
 
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
+        
+        news_id = self.dbsession.query(DBContentType).filter_by(name='News').first().id
+        setattr(c, 'db_content_collection', self.dbsession.query(DBContent).filter_by(type_id=news_id).order_by(DBContent.c.id).all())
+        press_id = self.dbsession.query(DBContentType).filter_by(name='In the press').first().id
+        setattr(c, 'db_content_collection', self.dbsession.query(DBContent).filter_by(type_id=press_id).order_by(DBContent.c.id).all())
 
         resp = render_response('home.myt')
 
