@@ -27,7 +27,7 @@ at
 <em>Abstract:</em>
 </p>
 <blockquote>
-<% h.line_break(c.proposal.abstract) %>
+<% h.line_break(h.esc(c.proposal.abstract)) %>
 </blockquote>
 </div>
 
@@ -70,7 +70,7 @@ at
 </p>
 <blockquote>
 %   if person.experience:
-<% h.line_break(person.experience) | h %>
+<% h.line_break(h.esc(person.experience)) %>
 %   else:
 [none provided]
 %   #endif
@@ -83,7 +83,7 @@ at
 </p>
 <blockquote>
 %   if person.bio:
-<% h.line_break(person.bio) | h %>
+<% h.line_break(h.esc(person.bio)) %>
 %   else:
 [none provided]
 %   #endif
