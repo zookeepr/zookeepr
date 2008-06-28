@@ -223,14 +223,30 @@ def is_news(article_id):
         return True
     return False
 
+computer_re = re.compile(r'([^A-Za-z0-9\_\-])')
+def computer_title(title):
+    """ Turn a string into a computer friendly tag """
+    title = title.replace(' ', '_')
+    title = computer_re.sub('', title)
+    title = title.lower()
+    return title
+    
+
 def featured_image(title, big = False):
     """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left 
     If the image is prefixed with _big_ it becomes the main header feature """
     
+    fileprefix = '/home/josh/LCA09/website/db_content/public/featured/'
+    htmlprefix = '/featured/'
+
+    
     if big:
         # look for _big_ feature
+        return False
     else:
         # look for normal
+            file = os.path.basename(fileprefix + computer_title(title) + ".png")
+            return htmlprefix + file
     
     return False
     

@@ -30,7 +30,7 @@ for d in c.db_content_collection:
 </%init>
 
 <%method big_promotion>
-for d in c.db_content_collection:
-    if h.featured_image(d.title, big = True) is not False:
+%for d in c.db_content_collection:
+%    if h.featured_image(d.title, big = True) is not False:
         <a href="/media/news/<% d.id %>"><img src="<% h.featured_image(d.title) %>" alt="<% d.title %>" title="<% d.title %>" /></a>
 </%method>
