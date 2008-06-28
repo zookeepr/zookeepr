@@ -242,8 +242,8 @@ def featured_image(title, big = False):
     
     if big:
         # look for _big_ feature
-        if os.path.isfile(fileprefix + "_big_" + computer_title(title) + ".png"):
-            return htmlprefix + "_big_" + computer_title(title) + ".png"
+        if os.path.isdir(fileprefix + computer_title(title)):
+            return htmlprefix + computer_title(title) + "/"
         else:
             return False
     else:

@@ -7,7 +7,7 @@
 <% h.textfield('db_content.title', size=60) %>
 </p>
 <ul class="note"><li>To feature news items simply place (via FTP) a png image in the /featured/ folder with the same name as the title in computer friendly form. For example "Welcome to LCA!" will look for "/featured/welcome_to_lca.png" and if it exists the item will appear down the side of the home page.</li>
-<li>To make a news item a major feature (i.e above the menu bar), prefix the image with _new_. Using the above example, "/featured/_new_welcome_to_lca.png" will create a major feature.</li>
+<li>To make a news item a major feature (i.e above the menu bar), create a folder in /featured/ with parts 1.png, 2.png and 3.png. Using the above example the images would go into "/featured/welcome_to_lca/1.png"</li>
 </ul>
 
 <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Content Type:</label></p>

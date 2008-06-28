@@ -8,6 +8,7 @@
 	<!--[if lt IE 7]>
 	<script defer type="text/javascript" src="/ie.js"></script>
 	<![endif]-->
+	<& SELF:extra_head &>
 </head>
 
 <body>
@@ -43,6 +44,8 @@
 	</div>
 </body>
 </html>
+<%method extra_head>
+</%method>
 <%method big_promotion>
 </%method>
 <%method title>
