@@ -387,6 +387,9 @@ class ProposalController(SecureController, View, Update):
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
 
+                    email(c.person.email_address,
+                        render('person/new_person_email.myt', fragment=True))
+
                     return render_response('proposal/thankyou.myt')
 
         return render_response("proposal/new.myt",
@@ -439,9 +442,8 @@ class ProposalController(SecureController, View, Update):
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
 
-                    email((c.person.email_address, 
-                              lca_info['mini_conf_email']),
-                          render('proposal/thankyou_mini_email.myt', fragment=True))
+                    email(c.person.email_address,
+                        render('person/new_person_email.myt', fragment=True))
 
                     return render_response('proposal/thankyou_mini.myt')
 
