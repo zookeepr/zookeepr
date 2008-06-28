@@ -27,7 +27,7 @@ at
 <em>Abstract:</em>
 </p>
 <blockquote>
-<% h.line_break(c.proposal.abstract) | h %>
+<% h.line_break(c.proposal.abstract) %>
 </blockquote>
 </div>
 

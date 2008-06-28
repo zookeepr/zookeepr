@@ -1,6 +1,5 @@
-<h2><% c.db_content.title %></h2>
-
 <% menu %>
+<h2><% c.db_content.title %></h2>
 
 % if c.is_news:
 <p class="submitted">
