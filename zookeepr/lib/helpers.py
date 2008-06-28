@@ -236,17 +236,22 @@ def featured_image(title, big = False):
     """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left 
     If the image is prefixed with _big_ it becomes the main header feature """
     
-    fileprefix = '/home/josh/LCA09/website/db_content/public/featured/'
+    fileprefix = '/home/josh/LCA09/website/db_content/zookeepr/public/featured/'
     htmlprefix = '/featured/'
 
     
     if big:
         # look for _big_ feature
-        return False
+        if os.path.isfile(fileprefix + "_big_" + computer_title(title) + ".png"):
+            return htmlprefix + "_big_" + computer_title(title) + ".png"
+        else:
+            return False
     else:
         # look for normal
-            file = os.path.basename(fileprefix + computer_title(title) + ".png")
-            return htmlprefix + file
+        if os.path.isfile(fileprefix + computer_title(title) + ".png"):
+            return htmlprefix + computer_title(title) + ".png"
+        else:
+            return False
     
     return False
     
