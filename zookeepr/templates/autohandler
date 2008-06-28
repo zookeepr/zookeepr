@@ -8,6 +8,7 @@
 	<!--[if lt IE 7]>
 	<script defer type="text/javascript" src="/ie.js"></script>
 	<![endif]-->
+	<& SELF:extra_head &>
 </head>
 
 <body>
@@ -17,6 +18,9 @@
 			<img src = '/images/tuz.png' alt = 'mascot' class = 'mascot'>
 			<img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'>
 			<img src = '/images/marchsouth.png' alt = 'march south together'>
+		</div>
+		<div>
+			<& SELF:big_promotion &>
 		</div>
 		<div class = 'menu'>
 			<& nav.myt &>
@@ -40,6 +44,10 @@
 	</div>
 </body>
 </html>
+<%method extra_head>
+</%method>
+<%method big_promotion>
+</%method>
 <%method title>
 linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart
 </%method>

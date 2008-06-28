@@ -1,52 +1,54 @@
-<h1>Test Setup</h1>
+<h2>linux.conf.au</h2>
 
-<p> <a href="/programme/submit_a_presentation">Call for Presentations</a> </p>
-
-<!--
-FIXME: Dirty hack so all the tests don't fail
-% if c.signed_in_person:
-<div id="proposals">
-
-<p>You've submitted the following proposals to the CFP:
-<ul>
-
-% for s in c.signed_in_person.proposals:
-
-# FIXME: dirty hack
-%	if c.signed_in_person in s.people:
-<li>
-<% h.link_to(s.title, url=h.url(controller='proposal', action='view', id=s.id)) %>
-
-<span class="actions">
-[
-<% h.link_to('edit', url=h.url(controller='proposal', action='edit', id=s.id)) %>
-|
-<% h.link_to('delete', url=h.url(controller='proposal', action='delete', id=s.id)) %>
-]
-</span>
-
-</li>
+% if featured.__len__() > 0:
+<div class="featured_news">
+%   for d in featured:
+<a href="/media/news/<% d.id %>"><img src="<% h.featured_image(d.title) %>" alt="<% d.title %>" title="<% d.title %>" /></a>
+%   #endfor
+</div>
 % #endif
+
+<h3>News</h3>
+% for d in c.db_content_news:
+<p><% h.link_to(d.title, url='/media/news/' + str(d.id)) %><br>
+<span class="submitted">Submitted on <% d.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %></span>
+</p>
 % #endfor
 
-</ul>
-
+<h3>In the press</h3>
+% for d in c.db_content_press:
+<p><% h.link_to(d.title, url=d.url) %><br>
+<span class="submitted"><% d.url %>, submitted on <% d.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %></span>
 </p>
+% #endfor
 
-<p>
-<% h.link_to('submit another', url=h.url(controller='proposal', action='new')) %>
-</p>
+<%init>
+featured = []
+for d in c.db_content_news:
+    if h.featured_image(d.title) is not False:
+        featured.append(d)
+</%init>
 
-</div>
+<%method big_promotion>
+%for d in c.db_content_news:
+%    directory = h.featured_image(d.title, big = True)
+%    if directory is not False:
+        <a href="/media/news/<% d.id %>"><img src="<% directory %>/1.png" alt="<% d.title %>" title="<% d.title %>" /></a>
+%    #endif
+%#endfor
+</%method>
 
-## reviewer block
-% if 'reviewer' in [r.name for r in c.signed_in_person.roles]:
-<div id="reviewer">
-<p>
-You're a reviewer!  You can <% h.link_to("review stuff!", url=h.url(controller='proposal', action='index')) %>
-</p>
-</div>
-% #endif
-
-% #endif c.signed_in_person
--->
+<%method extra_head>
+%for d in c.db_content_news:
+%    directory = h.featured_image(d.title, big = True)
+%    if directory is not False:
+<style type="text/css">
+.content
+{
+    background-image: url(images/content_bg_tall.png);
+}
+</style>
+%        break
+%    #endif
+%#endfor
+</%method>
