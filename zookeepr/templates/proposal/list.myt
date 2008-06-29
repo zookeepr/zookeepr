@@ -14,7 +14,16 @@
     <td><% h.link_to("%s" % (h.util.html_escape(s.title)), url=h.url(action='view', id=s.id)) %></td>
     <td><% s.type.name %></td>
     <td><% h.truncate(h.util.html_escape(s.abstract)) %></td>
+% if s.url:
+# FIXME: I reckon this should go into the helpers logic
+%   if '://' in s.url:
     <td><% h.link_to(h.truncate(h.util.html_escape(s.url)), url=h.util.html_escape(s.url)) %></td>
+%   else:
+    <td><% h.link_to(h.truncate(h.util.html_escape(s.url)), url=h.util.html_escape('http://'+s.url)) %></td>
+%   #endif
+% else:
+    <td>&nbsp;</td>
+% #endif
     <td>
 %   for p in s.people:
       <% h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %>

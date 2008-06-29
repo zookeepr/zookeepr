@@ -3,7 +3,7 @@
 % if featured.__len__() > 0:
 <div class="featured_news">
 %   for d in featured:
-<a href="/media/news/<% d.id %>"><img src="<% h.featured_image(d.title) %>" alt="<% d.title %>" title="<% d.title %>" /></a>
+<a href="/media/news/<% d.id %>"><img src="<% h.featured_image(d.title) %>" alt="<% d.title %>" title="<% d.title %>"></a>
 %   #endfor
 </div>
 % #endif
@@ -36,7 +36,7 @@ for d in c.db_content_news:
 %for d in c.db_content_news:
 %    directory = h.featured_image(d.title, big = True)
 %    if directory is not False:
-        <a href="/media/news/<% d.id %>"><img src="<% directory %>/1.png" alt="<% d.title %>" title="<% d.title %>" /></a>
+        <a href="/media/news/<% d.id %>"><img src="<% directory %>/1.png" alt="<% d.title %>" title="<% d.title %>"></a>
 %    #endif
 %#endfor
 </%method>

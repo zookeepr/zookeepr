@@ -1,8 +1,8 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <h2>Propose a Mini-conf</h2>
-
+% if not c.signed_in_person:
 <p>If you already have an account (from a previous proposal or otherwise) please <a href="<% h.url_for("/person/signin") %>">sign in</a> first, then return to this page.</p>
-
+% #endif
 <p>Please read the miniconf organiser section in the <a href="<% h.url_for("/programme/presenter_faq") %>">Presenter FAQ</a> before submitting a proposal.</p>
 
 % if len(errors)>0:

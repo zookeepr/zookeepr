@@ -15,10 +15,10 @@
 <body>
 	<div class = 'content'>
 		<div class = 'banner'>
-			<img src = '/images/mountain.png' alt = 'Mount Wellington' class = 'mountain'>
-			<img src = '/images/tuz.png' alt = 'mascot' class = 'mascot'>
-			<img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'>
-			<img src = '/images/marchsouth.png' alt = 'march south together'>
+			<a href="/"><img src = '/images/mountain.png' alt = 'Mount Wellington' class = 'mountain'></a>
+			<a href="/"><img src = '/images/tuz.png' alt = 'mascot' class = 'mascot'></a>
+			<a href="/"><img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'></a>
+			<a href="/"><img src = '/images/marchsouth.png' alt = 'march south together'></a>
 		</div>
 		<div>
 			<& SELF:big_promotion &>

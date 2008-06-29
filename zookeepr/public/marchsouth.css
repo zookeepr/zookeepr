@@ -456,3 +456,8 @@
 	{
 		background-color: transparent;
 	}
+	
+	h1 a, h2 a, h3 a, h4 a, th a, dt a
+	{
+		color: #5850a5;	
+	}
