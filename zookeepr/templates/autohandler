@@ -20,10 +20,8 @@
 			<a href="/"><img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'></a>
 			<a href="/"><img src = '/images/marchsouth.png' alt = 'march south together'></a>
 		</div>
-		<div>
-			<& SELF:big_promotion &>
-		</div>
 		<div class = 'menu'>
+			<& SELF:big_promotion &>
 			<& nav.myt &>
 			<& subnav.myt &>
 		</div>
