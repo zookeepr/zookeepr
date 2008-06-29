@@ -9,6 +9,8 @@ from zookeepr.lib.base import *
 from zookeepr.controllers import not_found
 from zookeepr.model.db_content import DBContentType
 
+from webhelpers.pagination import paginate
+
 log = logging.getLogger(__name__)
 
 class DbContentSchema(BaseSchema):
@@ -64,11 +66,17 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
     
     def list_news(self):
         news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
-        setattr(c, self.individual + '_collection', self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.id).all())
+        news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).all()
+        pages, collection = paginate(news_list, per_page = 2)
+        setattr(c, self.individual + '_pages', pages)
+        setattr(c, self.individual + '_collection', collection)
         return render_response('%s/list_news.myt' % self.individual)
         
     def list_press(self):
         press_id = self.dbsession.query(model.DBContentType).filter_by(name='In the press').first().id
-        setattr(c, self.individual + '_collection', self.dbsession.query(self.model).filter_by(type_id=press_id).order_by(self.model.c.id).all())
+        press_list = self.dbsession.query(self.model).filter_by(type_id=press_id).order_by(self.model.c.creation_timestamp.desc()).all()
+        pages, collection = paginate(press_list, per_page = 1)
+        setattr(c, self.individual + '_pages', pages)
+        setattr(c, self.individual + '_collection', collection)
         return render_response('%s/list_press.myt' % self.individual)
 
