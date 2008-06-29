@@ -553,6 +553,11 @@
 		text-align: justify;
 	}
 	
+	.news_page_text_list
+	{
+		margin-left: 500px;
+	}
+	
 	.more_link
 	{
 		font-size: smaller;
