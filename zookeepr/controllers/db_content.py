@@ -75,7 +75,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
     
     def rss_news(self):
         news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
-        news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).all()
+        news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).limit(20).all()
         setattr(c, self.individual + '_collection', news_list)
         return render_response('%s/rss_news.myt' % self.individual, fragment=True)
 
@@ -86,4 +86,3 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         setattr(c, self.individual + '_pages', pages)
         setattr(c, self.individual + '_collection', collection)
         return render_response('%s/list_press.myt' % self.individual)
-
