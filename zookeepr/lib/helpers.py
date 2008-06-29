@@ -90,7 +90,7 @@ def textfield(name, size=40, value=None, disabled=False):
     else:
         return '<input type="text" name="%s" id="%s" size="%s" value="%s"%s>' % (name, name, size, value, enabled)
 
-def hiddenfield(name, size=40, value=None, disabled=False):
+def hiddenfield(name, value=None, size=40, disabled=False):
     enabled = ''
     if disabled:
         enabled = ' disabled="disabled"'
