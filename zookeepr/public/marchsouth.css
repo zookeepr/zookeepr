@@ -187,7 +187,7 @@
 		/*clear: right;*/
 		font-family: "Arial", sans-serif;
 		font-style: oblique;
-		padding-left: 40px;
+		padding-left: 60px;
 		padding-right: 40px;
 		margin-bottom: 0;
 		/*margin-top: 2em;*/
@@ -429,7 +429,7 @@
 		color:#505050;
 		display:block;
 		font-style:italic;
-		margin:20px 60px 0pt;
+		margin:20px 80px 0pt;
 		padding:10px 20px 10px 20px;
 		text-align:justify;
 		width:50%;
@@ -571,5 +571,10 @@
 		background-image: url(images/extlink2.png);
 		background-repeat: no-repeat;
 		background-position: right center;
+	}
+
+	.feedicon
+	{
+		padding-left: 5px;
 	}
 

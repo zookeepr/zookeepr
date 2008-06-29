@@ -1,5 +1,5 @@
 		<img src = '/images/heightfix.png' class = 'heightfix' alt = ''>
-		<h3 class = 'news_item_list_heading'><a href = '/media/news'>News updates</a></h3>
+		<h3 class = 'news_item_list_heading'><a href = '/media/news'>News updates</a><a href="/media/news/rss"><img class = 'feedicon' src = '/images/feedicon_16.png'></a></h3>
 		<ul class = 'news_item_list'>
 % for d in c.db_content_news:
 <li><% h.link_to(d.title, url='/media/news/' + str(d.id)) %><br><span><% d.creation_timestamp.strftime("%Y-%m-%d") %></span></li>
@@ -10,7 +10,7 @@
 		<h3 class = 'news_item_list_heading'><a href = '/media/in_the_press'>LCA elsewhere</a></h3>
 		<ul class = 'news_item_list'>
 % for d in c.db_content_press:
-			<li><a href = '<% d.url %>' class = 'external'><% d.title %></a><br><span><% d.url %> - <% d.creation_timestamp.strftime("%Y-%m-%d") %></span></li>
+			<li><a href = '<% d.url %>' class = 'external'><% d.title %></a><br><span><% h.domain_only(d.url) %> - <% d.creation_timestamp.strftime("%Y-%m-%d") %></span></li>
 % #endfor
 			<li class = 'more_link'><a href = '/media/in_the_press'>More items...</a></li>
 		</ul>
