@@ -28,8 +28,11 @@
 
 		<p class = 'news_page_text'>Mauris tellus. Sed a leo non mi consectetuer tincidunt. Vivamus risus urna, dignissim non, tempor sed, malesuada vel, libero. Aenean placerat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut a eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur mauris quam, lacinia ac, varius id, elementum vitae, quam. Quisque mattis pharetra neque. Integer lorem. Donec id nulla nec dolor mattis hendrerit. Curabitur libero. Suspendisse a augue. Donec id enim et nisl blandit accumsan. Fusce sit amet augue. Suspendisse tristique vulputate risus. Aliquam sapien. Maecenas adipiscing. Donec eget massa.</p>
 
-		<p class = 'news_page_text'>Maecenas tincidunt ullamcorper eros. Vivamus eleifend porttitor justo. Aenean placerat. Pellentesque sapien risus, pellentesque non, tristique aliquet, imperdiet non, felis. Vestibulum nulla dui, hendrerit a, imperdiet id, viverra et, lorem. Mauris sit amet lorem non nisi suscipit venenatis. Nam mauris urna, eleifend eget, dapibus quis, sollicitudin eu, sem. Etiam magna. Donec dictum. Phasellus dignissim ante nec lectus tristique ultrices. Mauris a mauris ut lorem posuere dapibus. Integer lobortis lacinia ipsum. Integer dolor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Donec porttitor mollis velit. Aenean ipsum quam, rutrum sit amet, facilisis accumsan, imperdiet vel, elit. Curabitur aliquet felis et lectus. Praesent nibh ipsum, gravida vitae, malesuada in, pellentesque at, eros. Cras ipsum odio, mollis non, molestie eget, ullamcorper eget, urna. Donec pellentesque scelerisque lacus.</p>
-
+		<ul class = 'news_page_text_list'>
+				<li><a href = '/pdfs/LCA09Release.pdf'>LCA 2009 Press Release</a></li>
+				<li><a href = '/pdfs/LCA09Bid.pdf'>LCA 2009 Bid Document</a></li>
+				<li><a href = '/pdfs/Ghosts_Meeting_in_Hobart.pdf'>Ghosts Meeting in Hobart Press Release</a></li>
+		</ul>
 
 <%init>
 featured = []

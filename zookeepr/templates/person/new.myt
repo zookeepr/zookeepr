@@ -1,4 +1,4 @@
-<h1 class="pop">New user account creation</h1>
+<h2 class="pop">New user account creation</h2>
 
 <p>
 This form is only for selected personnelle that need an account for specific purposes. <b>To submit a proposal for the conference, <a href="/programme/submit_a_presentation">go

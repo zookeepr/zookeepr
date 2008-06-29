@@ -1,4 +1,4 @@
-<h1>Expired!</h1>
+<h2>Expired!</h2>
 
 <p>
 This password recovery session has expired. Please send in another request to have your password set.

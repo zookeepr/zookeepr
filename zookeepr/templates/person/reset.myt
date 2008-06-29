@@ -1,4 +1,4 @@
-<h1>reset password</h1>
+<h2>reset password</h2>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 

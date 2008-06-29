@@ -1,4 +1,4 @@
-<h1 class="pop">New Account</h1>
+<h2 class="pop">New Account</h2>
 
 <h2>Thank You</h2>
 

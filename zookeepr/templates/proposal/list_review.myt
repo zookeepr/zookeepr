@@ -1,5 +1,5 @@
 % import random
-<h1>Proposal List</h1>
+<h2>Proposal List</h2>
 
 <p>
 <% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %>

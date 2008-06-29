@@ -1,4 +1,4 @@
-<h1 class="pop">Sign in</h1>
+<h2 class="pop">Sign in</h2>
 
 <p>Don't have an account? <% h.link_to('Sign up', url=h.url(controller='person', action='new')) %> now!</p>
 
