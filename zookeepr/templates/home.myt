@@ -51,10 +51,10 @@ for d in c.db_content_news:
 %    if directory is not False:
 			<div class = 'news_banner'>
 				<div class = 'news_banner_left'>
-					<img src = '<% directory %>/1.png' alt="<% d.title %>" title="<% d.title %>">
+					<a href = '/media/news/<% d.id %>'><img src = '<% directory %>/1.png' alt="<% d.title %>" title="<% d.title %>"></a>
 				</div>
 				<div class = 'news_banner_right'>
-					<img src = '<% directory %>/3.png' alt="<% d.title %>" title="<% d.title %>">
+					<a href = '/media/news/<% d.id %>'><img src = '<% directory %>/3.png' alt="<% d.title %>" title="<% d.title %>"></a>
 				</div>
 				<a href = '/media/news/<% d.id %>'>
 				<img src = '<% directory %>/2.png' alt="<% d.title %>" title="<% d.title %>">
