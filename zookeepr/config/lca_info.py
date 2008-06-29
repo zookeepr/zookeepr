@@ -51,6 +51,5 @@ lca_submenus = {
   'programme': ('About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'), # stage 1
   #'programme': ('About Programme', 'miniconfs','Schedule','Official social events','Open day'), # stage 2
   #'register': ('Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'), # stage 2
-  'sponsors': ('Sponsors','Become a Sponsor'),
   'media': ('News','In the press','Planet/blog')
 }
