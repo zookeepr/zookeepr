@@ -37,10 +37,10 @@ lca_rego = {
 lca_menu = [
     ('Home', '/home', 'home'),
     ('About', '/about/the_event_history', 'about'),
-    ('Sponsors', '/sponsors/sponsors', 'sponsors'),
+    ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
     ('Programme', '/programme/about_programme', 'programme'),
     #('Register', '/register', 'register'), # -- Stage 2
-    ('Wiki', '/wiki', 'wiki'),
+    #('Wiki', '/wiki', 'wiki'),
     ('Media', '/media/news', 'media'),
     ('Contact', '/contact', 'contact'),
 ]
@@ -51,5 +51,5 @@ lca_submenus = {
   'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
   #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
-  'media': ['News','In the press','Planet/blog']
+  'media': ['News','In the press']
 }
