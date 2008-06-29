@@ -1,4 +1,4 @@
-<h2>linux.conf.au 2009 News</h2>
+<h2>linux.conf.au 2009 News<a href="/media/news/rss"><img class = 'feedicon' src = '/images/feedicon_16.png'></a></h2>
 
 
 % for d in c.db_content_collection:

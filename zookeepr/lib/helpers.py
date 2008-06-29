@@ -263,3 +263,11 @@ def featured_image(title, big = False):
     
     return False
     
+domain_re = re.compile('^(http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})')
+def domain_only(url):
+    """ Truncates a url to the domain only. For use with "in the press" """
+    match = domain_re.match(url)
+    if match:
+        return match.group(2)
+    else:
+        return url
