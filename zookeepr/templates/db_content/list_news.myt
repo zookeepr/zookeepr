@@ -13,6 +13,14 @@ Submitted on <% d.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
 % #endif
 % #endfor
 
+<%python>
+if c.db_content_pages.current.previous:
+    m.write(h.link_to('Previous page', url=h.url(page=c.db_content_pages.current.previous)) + '  ')
+if c.db_content_pages.current.next:
+    m.write(h.link_to('Next page', url=h.url(page=c.db_content_pages.current.next)))
+</%python>
+
+
 <%method title>
 News - <& PARENT:title &>
 </%method>

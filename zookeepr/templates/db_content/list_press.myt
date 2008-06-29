@@ -11,6 +11,13 @@
 %   #endif
 % #endfor
 
+<%python>
+if c.db_content_pages.current.previous:
+    m.write(h.link_to('Previous page', url=h.url(page=c.db_content_pages.current.previous)) + '  ')
+if c.db_content_pages.current.next:
+    m.write(h.link_to('Next page', url=h.url(page=c.db_content_pages.current.next)))
+</%python>
+
 <%method title>
 In the press - <& PARENT:title &>
 </%method>

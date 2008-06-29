@@ -24,9 +24,12 @@
 
 <%init>
 featured = []
+i = 0
+limit = 5
 for d in c.db_content_news:
-    if h.featured_image(d.title) is not False:
+    if (h.featured_image(d.title) is not False) and (i < limit):
         featured.append(d)
+        i += 1
 </%init>
 
 <%method big_promotion>
