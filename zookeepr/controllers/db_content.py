@@ -42,7 +42,8 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    'edit': [AuthRole('organiser')],
                    'delete': [AuthRole('organiser')],
                    'list_news': True,
-                   'list_press': True
+                   'list_press': True,
+                   'rss_news': True
                    }
 
     def __before__(self, **kwargs):
@@ -71,7 +72,13 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         setattr(c, self.individual + '_pages', pages)
         setattr(c, self.individual + '_collection', collection)
         return render_response('%s/list_news.myt' % self.individual)
-        
+    
+    def rss_news(self):
+        news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
+        news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).all()
+        setattr(c, self.individual + '_collection', news_list)
+        return render_response('%s/rss_news.myt' % self.individual, fragment=True)
+
     def list_press(self):
         press_id = self.dbsession.query(model.DBContentType).filter_by(name='In the press').first().id
         press_list = self.dbsession.query(self.model).filter_by(type_id=press_id).order_by(self.model.c.creation_timestamp.desc()).all()
