@@ -374,6 +374,8 @@ class ProposalController(SecureController, View, Update):
                         for k in result['person']:
                             setattr(c.person, k, result['person'][k])
                         self.dbsession.save(c.person)
+                        email(c.person.email_address,
+                            render('person/new_person_email.myt', fragment=True))                        
                     else:
                         c.person = c.signed_in_person
                         for k in result['person']:
@@ -386,9 +388,6 @@ class ProposalController(SecureController, View, Update):
                         for k in result['attachment']:
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
-
-                    email(c.person.email_address,
-                        render('person/new_person_email.myt', fragment=True))
 
                     return render_response('proposal/thankyou.myt')
 
@@ -426,6 +425,8 @@ class ProposalController(SecureController, View, Update):
                         for k in result['person']:
                             setattr(c.person, k, result['person'][k])
                         self.dbsession.save(c.person)
+                        email(c.person.email_address,
+                            render('person/new_person_email.myt', fragment=True))
                     else:
                         c.person = c.signed_in_person
                         for k in result['person']:
@@ -441,9 +442,6 @@ class ProposalController(SecureController, View, Update):
                         for k in result['attachment']:
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
-
-                    email(c.person.email_address,
-                        render('person/new_person_email.myt', fragment=True))
 
                     return render_response('proposal/thankyou_mini.myt')
 
