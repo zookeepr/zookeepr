@@ -30,7 +30,7 @@
     <p class="entries"><% h.textfield('proposal.abstract_video_url', size=70) %></p>
     <p class="note">URL for a short "elevator pitch" (20s - 3min) video about your presentation, your project or yourself (eg: YouTube link).</p>
 
-    <p class="label"><label for="attachment">Attach file:</label></th>
+    <p class="label"><label for="attachment">Attach file:</label></p>
     <p class="entries"><% h.file_field('attachment', size=60) %></p>
     <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
 
@@ -76,7 +76,7 @@
     <p class="entries"><% h.textarea('person.experience', size="70x6") %></p>
     <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your mini-confs and presentations.</p>
 
-    <br>
+    <p>&nbsp;</p>
     <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
     <p class="note"><span class="publishable">&#8224;</span> - Will be published (if your presentation is accepted)</p>
 

@@ -170,4 +170,4 @@ class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         person = state.query(Person).filter_by(email_address=value['email_address']).first()
         if person is not None:
-            raise Invalid("This person already exists.  Please try signing in first.", value, state)
+            raise Invalid("A person with this email already exists.  Please try signing in first.", value, state)

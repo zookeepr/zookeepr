@@ -421,39 +421,43 @@
 
 	blockquote 
 	{
-		border: 2px solid #d5e0ff;
-		background-color: #ffffff;
-		background-image: url(images/fieldset_bg.png);
-		background-repeat: repeat-x;
-		background-position: bottom;
-		display: block;
-		color: #000;
-		padding: 20px 0px 0 60px;
-		margin: 20px 60px 0 60px;
-		min-height: 55px;
-	}
-
-	blockquote:before, blockquote:after
-	{
-		color: #7ae;
-		display: block;
-		font-size: 700%;
+		background-color:#D3DEFF;
+		background-image:url(images/blockquote_bg.png);
+		background-position:center top;
+		background-repeat:repeat-x;
+		border:2px solid #D5E0FF;
+		color:#505050;
+		display:block;
+		font-style:italic;
+		margin:20px 60px 0pt;
+		padding:10px 20px 10px 20px;
+		text-align:justify;
+		width:50%;
 	}
 
 	blockquote:before
 	{
-		font-family: arial;
-		content: open-quote;
-		height: 0;
-		margin-left: -0.4em;
+		margin-left: -50px;
+		width: 60px;
+		height: 40px;
+		display: block;
+		content: url(images/quote.png);
+		margin-bottom: -40px;
 	}
 
 	blockquote p
 	{
-		background-color: transparent;	
+		background-color: transparent;
+		padding: 0 0 10px 0;
+		margin: 0;
 	}
 	
 	blockquote h1, blockquote h2, blockquote h3, blockquote h4, blockquote th, blockquote dt
 	{
 		background-color: transparent;
+	}
+	
+	h1 a, h2 a, h3 a, h4 a, th a, dt a
+	{
+		color: #5850a5;	
 	}

@@ -68,7 +68,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
     def list_news(self):
         news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
         news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).all()
-        pages, collection = paginate(news_list, per_page = 2)
+        pages, collection = paginate(news_list, per_page = 20)
         setattr(c, self.individual + '_pages', pages)
         setattr(c, self.individual + '_collection', collection)
         return render_response('%s/list_news.myt' % self.individual)
@@ -82,7 +82,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
     def list_press(self):
         press_id = self.dbsession.query(model.DBContentType).filter_by(name='In the press').first().id
         press_list = self.dbsession.query(self.model).filter_by(type_id=press_id).order_by(self.model.c.creation_timestamp.desc()).all()
-        pages, collection = paginate(press_list, per_page = 1)
+        pages, collection = paginate(press_list, per_page = 20)
         setattr(c, self.individual + '_pages', pages)
         setattr(c, self.individual + '_collection', collection)
         return render_response('%s/list_press.myt' % self.individual)
