@@ -46,10 +46,10 @@ lca_menu = [
 ]
 
 lca_submenus = {
-  'about': ('The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'),
-  'sponsors': ('Sponsors','Become a Sponsor'),
-  'programme': ('About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'), # stage 1
-  #'programme': ('About Programme', 'miniconfs','Schedule','Official social events','Open day'), # stage 2
-  #'register': ('Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'), # stage 2
-  'media': ('News','In the press','Planet/blog')
+  'about': ['The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'],
+  'sponsors': ['Become a Sponsor'],
+  'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
+  #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
+  #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
+  'media': ['News','In the press','Planet/blog']
 }
