@@ -1,5 +1,5 @@
 % import string
-<h1><% c.profile.firstname |h %> <% c.profile.lastname |h %></h1>
+<h2><% c.profile.firstname |h %> <% c.profile.lastname |h %></h2>
 
 # Show personal details
 % if 'signed_in_person_id' in session and session['signed_in_person_id'] == c.profile.id or c.is_organiser_role:
