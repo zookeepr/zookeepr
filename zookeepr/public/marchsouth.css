@@ -203,7 +203,7 @@
 	p, .error-message
 	{
 		text-align: justify;
-		padding-left: 40px;
+		padding-left: 60px;
 		padding-right: 40px;
 	}
 	
@@ -527,9 +527,9 @@
 		text-align: right;
 	}
 	
-		.news_item_list li
+	.news_item_list li
 	{
-		baclground-color: inherit;
+		background-color: inherit;
 		color: #505050;
 		overflow: auto;
 		background-image: none;
