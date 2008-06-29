@@ -27,7 +27,7 @@ at
 <em>Abstract:</em>
 </p>
 <blockquote>
-<% h.line_break(h.esc(c.proposal.abstract)) %>
+<p><% h.line_break(h.esc(c.proposal.abstract)) %></p>
 </blockquote>
 </div>
 
@@ -68,26 +68,26 @@ at
 <p>
 <em>Speaking experience:</em>
 </p>
-<blockquote>
+<blockquote><p>
 %   if person.experience:
 <% h.line_break(h.esc(person.experience)) %>
 %   else:
 [none provided]
 %   #endif
-</blockquote>
+</p></blockquote>
 </div>
 
 <div class="bio">
 <p>
 <em>Speaker bio:</em>
 </p>
-<blockquote>
+<blockquote><p>
 %   if person.bio:
 <% h.line_break(h.esc(person.bio)) %>
 %   else:
 [none provided]
 %   #endif
-</blockquote>
+</p></blockquote>
 </div>
 % # endfor
 <p></p>
@@ -131,16 +131,14 @@ at
 </p>
 </div>
 
-<p>
 % if c.proposal.assistance:
 <p>
 <em>Travel assistance:</em> <% c.proposal.assistance.name %></p>
 % # endif
-</p>
 
-<hr />
+<hr>
 
-<p class="actions">
+
 <ul>
 
 % if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
@@ -158,13 +156,11 @@ at
 % #endif
 
 </ul>
-</p>
 
 </div>
 
 
 % if ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
-<p>
 <table>
 <tr>
 <th># - Reviewer</th>
@@ -194,7 +190,6 @@ at
 </tr>
 %   #endfor
 </table>
-</p>
 % #endif
 
 # FIXME: wiki disabled

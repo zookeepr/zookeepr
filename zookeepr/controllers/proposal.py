@@ -93,8 +93,8 @@ class ProposalController(SecureController, View, Update):
 
     schemas = {"new" : NewProposalSchema(),
                "edit" : ExistingProposalSchema(),
-               "new_mini" : NewMiniProposalSchema(),
-               "edit_mini" : ExistingMiniProposalSchema()}
+               "mini_new" : NewMiniProposalSchema(),
+               "mini_edit" : ExistingMiniProposalSchema()}
 
     permissions = {"new": [AuthFalse()],
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
@@ -251,7 +251,7 @@ class ProposalController(SecureController, View, Update):
 
         if defaults:
             if c.proposal.type.name == 'Miniconf':
-                result, errors = self.schemas['edit_mini'].validate(defaults, self.dbsession)
+                result, errors = self.schemas['mini_edit'].validate(defaults, self.dbsession)
             else:
                 result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
 

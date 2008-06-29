@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>linux.conf.au News</title>
     <link>http://<% h.host_name() %></link>
@@ -14,5 +14,6 @@
       <guid>http://linux.conf.au/media/news/<% d.id %></guid>
     </item>
 % #endfor
+    <atom:link href="http://<% h.host_name() %>/media/news/rss" rel="self" type="application/rss+xml" />
   </channel>
 </rss>

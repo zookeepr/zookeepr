@@ -90,6 +90,14 @@ def textfield(name, size=40, value=None, disabled=False):
     else:
         return '<input type="text" name="%s" id="%s" size="%s" value="%s"%s>' % (name, name, size, value, enabled)
 
+def hiddenfield(name, size=40, value=None, disabled=False):
+    enabled = ''
+    if disabled:
+        enabled = ' disabled="disabled"'
+    if value is None:
+        return '<input type="hidden" name="%s" id="%s" size="%s"%s>' % (name, name, size, enabled)
+    else:
+        return '<input type="hidden" name="%s" id="%s" size="%s" value="%s"%s>' % (name, name, size, value, enabled)
 
 def passwordfield(name, size=40):
     return '<input type="password" name="%s" id="%s" size="%s">' % (name, name, size)
