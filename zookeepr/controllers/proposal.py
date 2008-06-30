@@ -96,7 +96,7 @@ class ProposalController(SecureController, View, Update):
                "mini_new" : NewMiniProposalSchema(),
                "mini_edit" : ExistingMiniProposalSchema()}
 
-    permissions = {"new": [AuthTrue()],
+    permissions = {"new": [AuthFalse()],
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
                                                         AuthRole('organiser')],
@@ -107,8 +107,8 @@ class ProposalController(SecureController, View, Update):
                    "review_index": [AuthRole('reviewer')], 
                    "talk": True,
                    "index": [AuthTrue()],
-                   "submit": [AuthTrue()],
-                   "submit_mini": [AuthTrue()],
+                   "submit": True,
+                   "submit_mini": True,
                    }
 
     def __init__(self, *args):
@@ -122,7 +122,29 @@ class ProposalController(SecureController, View, Update):
         c.assistance_types = self.dbsession.query(AssistanceType).all()
 
     def new(self, id):
-        return self.submit()
+        errors = {}
+        defaults = dict(request.POST)
+        if defaults:
+            result, errors = self.schemas['new'].validate(defaults, self.dbsession)
+
+            if not errors:
+                c.proposal = self.obj = self.model()
+                for k in result['proposal']:
+                    setattr(c.proposal, k, result['proposal'][k])
+                self.obj.people.append(c.signed_in_person)
+                self.dbsession.save(c.proposal)
+                if result.has_key('attachment') and result['attachment'] is not None:
+                    att = Attachment()
+                    for k in result['attachment']:
+                        setattr(att, k, result['attachment'][k])
+                    self.obj.attachments.append(att)
+                    self.dbsession.save(att)
+
+                self.dbsession.flush()
+
+                redirect_to(action='view', id=self.obj.id)
+
+        return render_response('proposal/new.myt', defaults=defaults, errors=errors)
 
     def is_submitter(self):
         return c.signed_in_person in self.obj.people
