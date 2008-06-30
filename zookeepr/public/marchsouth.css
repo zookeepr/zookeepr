@@ -1,3 +1,10 @@
+	html, body
+	{
+		margin: 0;
+		padding: 0;
+		border: 0;
+	}
+	
 	body
 	{
 		background-image: url(images/body_bg2.png);
@@ -51,6 +58,9 @@
 		background-position: center 106px;
 		background-repeat: repeat-x;
 		text-align: center;
+		padding: 0;
+		margin: 0;
+		border: 0;
 	}
 	
 	.banner img
@@ -256,7 +266,6 @@
 		background-image: url(images/bullet.png);
 		background-position: left center;
 		background-repeat: no-repeat;	
-
 	}
 	
 	table
@@ -488,6 +497,11 @@
 		background-image: url(images/news_banner_right.png);
 		background-repeat: no-repeat;
 		background-position: top right;
+
+	}
+
+	.home_content
+	{
 
 	}
 
