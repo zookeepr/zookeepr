@@ -8,7 +8,7 @@
 <p class="entries"><% h.textfield('person.company', size=40) %></p>
 
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>
-<p class="entries"><% h.textfield('person.email_address', size=70) %></p>
+<p class="entries"><% h.textfield('person.email_address', size=40) %></p>
 <p class="note">You will be using this email address to login, please make sure you don't typo.</p>
 
 <p class="label"><span class="mandatory">*</span><label for="person.password">Choose a password:</label></p>
