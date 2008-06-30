@@ -38,7 +38,7 @@ lca_menu = [
     ('Home', '/home', 'home'),
     ('About', '/about/the_event_history', 'about'),
     ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
-    ('Programme', '/programme/about_programme', 'programme'),
+    ('Programme/Participate', '/programme/about_programme', 'programme'),
     #('Register', '/register', 'register'), # -- Stage 2
     #('Wiki', '/wiki', 'wiki'),
     ('Media', '/media/news', 'media'),
