@@ -19,6 +19,8 @@ url = h.url()()
 mm = h.lca_menu
 
 where = ''
+if url == '' or url == '/':
+    where = 'home'
 
 map = [(u, c) for (t, u, c) in mm]
 
