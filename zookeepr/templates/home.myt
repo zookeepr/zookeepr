@@ -11,7 +11,7 @@
 
 
 		<div class = 'home_news'>
-			<h3 class = 'news_item_list_heading'><a href = '/media/news'>News updates</a><a href="/media/news/rss"><img class = 'feedicon' src = '/images/feedicon_16.png'></a></h3>
+			<h3 class = 'news_item_list_heading'><a href = '/media/news'>News updates</a><a href="/media/news/rss"><img class = 'feedicon' src = '/images/feedicon_16.png' alt="Subscribe to feed" title="Subscribe to feed"></a></h3>
 			<ul class = 'news_item_list'>
 % for d in c.db_content_news:
 	<li><% h.link_to(d.title, url='/media/news/' + str(d.id)) %><br><span><% d.creation_timestamp.strftime("%Y-%m-%d") %></span></li>
