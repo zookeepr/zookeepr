@@ -35,6 +35,8 @@
   </tr>
 % #endfor
 </table>
+%else:
+    <p>You haven't submitted any proposals. To propose a miniconf, presentation or tutorial, please use the links above.</p>
 %#endif
 
 <%python>
