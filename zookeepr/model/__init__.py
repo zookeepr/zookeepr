@@ -1,9 +1,9 @@
 from core import Person, Role, PasswordResetConfirmation
 from proposal import Proposal, ProposalType, Attachment, Review, AssistanceType
 from schedule import Stream, Talk
-from registration import Registration, Accommodation
+from registration import *
 from openday import Openday
-from billing import InvoiceItem, Invoice, PaymentReceived, Payment, VoucherCode
+from billing import *
 from db_content import DBContentType, DBContent
 
 def init_model(app_conf):
