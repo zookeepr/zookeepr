@@ -1,1 +1,1 @@
-from domain import Ceiling, Product, InvoiceItem, Invoice, PaymentReceived, Payment, VoucherCode
+from domain import Ceiling, ProductCategory, Product, InvoiceItem, Invoice, PaymentReceived, Payment, VoucherCode
