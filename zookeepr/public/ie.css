@@ -31,17 +31,7 @@
 		);
 	}
 	
-	.news_item_list_heading
+	.home_news
 	{
-		margin-left: 110px;
-	}
-	
-	.news_item_list
-	{
-		margin-left: 130px;
-	}
-	
-	.news_item_list_heading
-	{
-		text-align: right;
+		padding-left: 0;
 	}
