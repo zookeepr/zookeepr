@@ -1,5 +1,43 @@
 import datetime
 
+class Ceiling(object):
+    def __init__(self, name=None, max_sold=None):
+        self.name = name
+        self.max_sold = max_sold
+
+    def __repr__(self):
+        return '<Ceiling id=%r name=%r max_sold=%r' % (self.id, self.name, self.max_sold)
+
+    def ceiling_used(self):
+        qty_used = 0
+        for ii in self.products:
+            for jj in ii.invoice_item:
+                qty_used += jj.qty
+        return qty_used
+
+    def ceiling_remaining(self):
+        return self.max_sold - self.ceiling_used()
+
+    def ceiling_soldout(self):
+        return self.max_sold < self.ceiling_used()
+
+
+class Product(object):
+    def __init__(self, description=None, cost=None, registration=False):
+        self.description = description
+        self.cost = cost
+        self.registration = registration
+
+    def __repr__(self):
+        return '<Product id=%r description=%r cost=%r registration=%r' % (self.id, self.description, self.cost, self.registration)
+
+    def product_soldout(self):
+        for ii in self.ceilings:
+            if ii.ceiling_soldout():
+                return True
+        return False
+
+
 class InvoiceItem(object):
     def __init__(self, description=None, qty=None, cost=None):
         self.description = description
