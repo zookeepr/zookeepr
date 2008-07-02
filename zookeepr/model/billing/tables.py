@@ -56,19 +56,20 @@ invoice_item = Table('invoice_item', metadata,
 
 product = Table('product', metadata,
                 Column('id', Integer, primary_key=True),
-                Column('category_id', Integer, ForeignKey('product_categories.id'), nullable=False),
+                Column('category_id', Integer, ForeignKey('product_category.id'), nullable=True),
                 Column('active', Boolean, nullable=False),
                 Column('description', Text, nullable=False),
                 Column('cost', Integer, nullable=False),
                 )
 
-product_categories = Table('product_categories', metadata,
-                           Column('id', Integer, primary_key=True),
-                           Column('name', Text, nullable=False),
-                           Column('display', Text, nullable=False),
-                           Column('min_qty', Integer, nullable=False),
-                           Column('max_qty', Integer, nullable=False),
-                          )
+product_category = Table('product_category', metadata,
+                         Column('id', Integer, primary_key=True),
+                         Column('name', Text, nullable=False),
+                         Column('description', Text, nullable=False),
+                         Column('display', Text, nullable=False),
+                         Column('min_qty', Integer, nullable=False),
+                         Column('max_qty', Integer, nullable=False),
+                        )
 
 product_ceiling_map = Table('product_ceiling_map', metadata,
                            Column('product_id', Integer, ForeignKey('product.id'), nullable=False),

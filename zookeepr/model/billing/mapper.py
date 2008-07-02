@@ -8,6 +8,8 @@ from zookeepr.model.registration.tables import registration
 
 mapper(Ceiling, ceiling)
 
+mapper(ProductCategory, product_category)
+
 mapper(Product, product,
        properties = {
              'ceilings': relation(Ceiling, secondary=product_ceiling_map, lazy=False,
