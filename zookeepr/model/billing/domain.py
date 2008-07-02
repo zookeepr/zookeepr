@@ -8,18 +8,23 @@ class Ceiling(object):
     def __repr__(self):
         return '<Ceiling id=%r name=%r max_sold=%r' % (self.id, self.name, self.max_sold)
 
-    def ceiling_used(self):
-        qty_used = 0
-        for ii in self.products:
-            for jj in ii.invoice_item:
-                qty_used += jj.qty
-        return qty_used
+    def qty_sold(self):
+        qty = 0
+        for p in self.products:
+            qty += p.qty_sold()
+        return qty
+
+    def qty_invoiced(self):
+        qty = 0
+        for p in self.products:
+            qty += p.qty_invoice()
+        return qty
 
     def ceiling_remaining(self):
-        return self.max_sold - self.ceiling_used()
+        return self.max_sold - self.qty_sold()
 
     def ceiling_soldout(self):
-        return self.max_sold < self.ceiling_used()
+        return self.max_sold > self.qty_sold()
 
 
 class Product(object):
@@ -31,9 +36,29 @@ class Product(object):
     def __repr__(self):
         return '<Product id=%r description=%r cost=%r registration=%r' % (self.id, self.description, self.cost, self.registration)
 
+    def qty_sold(self):
+        qty = 0
+        for ii in self.invoice_items:
+            if ii.invoice.paid:
+                qty += ii.qty
+        return qty
+
+    def qty_invoiced(self):
+        qty = 0
+        for ii in self.invoice_items:
+            qty += ii.qty
+        return qty
+
+    def product_remaining(self):
+        max_ceiling = 0
+        for c in self.ceilings:
+            if c.ceiling_remaining > max_ceiling:
+                max_ceiling = c.ceiling_remaining
+        return max_ceiling
+
     def product_soldout(self):
-        for ii in self.ceilings:
-            if ii.ceiling_soldout():
+        for c in self.ceilings:
+            if c.ceiling_soldout():
                 return True
         return False
 
