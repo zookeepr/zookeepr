@@ -26,15 +26,45 @@ class Ceiling(object):
     def ceiling_soldout(self):
         return self.max_sold > self.qty_sold()
 
+    def can_i_sell(self, qty):
+        if self.ceiling_remaining() > qty)
+            return True
+        else:
+            return False
+
+
+class ProductCategory(object):
+    def __init__(self, name=None, display='qty', min_qty=0, max_qty=100)
+        self.name = name
+        self.display = display
+        self.min_qty = min_qty
+        self.max_qty = max_qty
+
+    def __reprt__(self):
+        return '<ProductCategory id=%r name=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.display, self.min_qty, self.max_qty)
+
+    def qty_person_sold(self, person):
+        qty = 0
+        for i in person.invoices:
+            for ii in i.invoice_items:
+                if ii.product.category == self:
+                    qty += ii.qty
+        return qty
+
+    def can_i_sell(self, person, qty)
+        if self.qty_person_sold(person) + qty <= self.max_qty:
+            return True
+        else:
+            return False
+
 
 class Product(object):
-    def __init__(self, description=None, cost=None, registration=False):
+    def __init__(self, description=None, cost=None):
         self.description = description
         self.cost = cost
-        self.registration = registration
 
     def __repr__(self):
-        return '<Product id=%r description=%r cost=%r registration=%r' % (self.id, self.description, self.cost, self.registration)
+        return '<Product id=%r description=%r cost=%r' % (self.id, self.description, self.cost)
 
     def qty_sold(self):
         qty = 0
@@ -61,6 +91,14 @@ class Product(object):
             if c.ceiling_soldout():
                 return True
         return False
+
+    def can_i_sell(self, person, qty):
+        if ! self.category.can_i_sell(person, qty):
+            return False
+        for c in self.ceiling:
+            if ! c.can_i_sell(qty):
+                return False
+        return True
 
 
 class InvoiceItem(object):
