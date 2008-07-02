@@ -87,12 +87,19 @@ class PersonSchema(BaseSchema):
 
 class NewPersonSchema(BaseSchema):
     person = PersonSchema()
+    pre_validators = [NestedVariables]
 
+class UpdatePersonSchema(BaseSchema):
+    person = PersonSchema()
     pre_validators = [NestedVariables]
 
 class PersonController(SecureController, Read, Update, List):
     model = model.Person
     individual = 'person'
+    
+    schemas = {'new': NewPersonSchema(),
+               'edit': UpdatePersonSchema()
+              }
 
     permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
                    'roles': [AuthRole('organiser')],
@@ -100,7 +107,7 @@ class PersonController(SecureController, Read, Update, List):
                    'signin': True,
                    'signout': [AuthTrue()],
                    'new': True,
-                   'edit': [AuthFunc('is_same_id')],
+                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
                    'forgotten_password': True,
                    'reset_password': True,
                    'confirm': True
