@@ -31,10 +31,21 @@
 
 		<div class = 'home_content' >
 			<h3 class = 'news_page_text_heading'>Welcome!</h3>
-			<p class = 'news_page_text'>Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Ut lacus. Donec pede quam, cursus bibendum, dapibus eget, tincidunt id, metus. Nam porttitor dignissim lorem. Sed at odio. Nunc nec elit sit amet neque condimentum luctus. Nunc facilisis risus eu leo. In sed sem eu justo ullamcorper sodales. Suspendisse ac arcu. Ut at dui ac felis condimentum adipiscing. Cras aliquet nisl ac orci.</p>
+			<p class = 'news_page_text'>
+				linux.conf.au is marching south to Hobart, Tasmania for its 10th anniversary in 2009!  It is widely regarded as one of the world's best technical conferences, and this year it will be held in one of the most unique locations, for the first time.
+			</p>
 
-			<p class = 'news_page_text'>Mauris tellus. Sed a leo non mi consectetuer tincidunt. Vivamus risus urna, dignissim non, tempor sed, malesuada vel, libero. Aenean placerat. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut a eros. Lorem ipsum dolor sit amet, consectetuer adipiscing elit. Curabitur mauris quam, lacinia ac, varius id, elementum vitae, quam. Quisque mattis pharetra neque. Integer lorem. Donec id nulla nec dolor mattis hendrerit. Curabitur libero. Suspendisse a augue. Donec id enim et nisl blandit accumsan. Fusce sit amet augue. Suspendisse tristique vulputate risus. Aliquam sapien. Maecenas adipiscing. Donec eget massa.</p>
-
+			<h3 class = 'news_page_text_heading'>When:</h3>
+			<p class = 'news_page_text'>
+				linux.conf.au opens on Wednesday January 21st 2009 and runs through Wednesday, Thursday and Friday.  The event finishes with a spectacle of colour and activity with the Open Day on Saturday January 24 2009.  Miniconfs will be held as usual on Monday 19th and Tuesday 20th.
+			</p>
+			<h3 class = 'news_page_text_heading'>Where:</h3>
+			<p class = 'news_page_text'>
+				The University of Tasmania's Sandy Bay campus will play host to this year's activities.
+			</p>
+			<p class = 'news_page_text'>
+				Don't miss it - March South to Tasmania for linux.conf.au 2009!
+			</p>
 			<ul class = 'news_page_text_list'>
 					<li><a href = '/pdfs/LCA09Release.pdf'>LCA 2009 Press Release</a></li>
 					<li><a href = '/pdfs/LCA09Bid.pdf'>LCA 2009 Bid Document</a></li>
