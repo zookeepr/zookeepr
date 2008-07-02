@@ -59,12 +59,13 @@ class ProductCategory(object):
 
 
 class Product(object):
-    def __init__(self, description=None, cost=None):
+    def __init__(self, active=False, description=None, cost=None):
+        self.active = active
         self.description = description
         self.cost = cost
 
     def __repr__(self):
-        return '<Product id=%r description=%r cost=%r' % (self.id, self.description, self.cost)
+        return '<Product id=%r active=%r description=%r cost=%r' % (self.id, self.active, self.description, self.cost)
 
     def qty_sold(self):
         qty = 0
