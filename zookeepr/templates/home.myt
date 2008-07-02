@@ -35,22 +35,17 @@
 				linux.conf.au is marching south to Hobart, Tasmania for its 10th anniversary in 2009!  It is widely regarded as one of the world's best technical conferences, and this year it will be held in one of the most unique locations, for the first time.
 			</p>
 
-			<h3 class = 'news_page_text_heading'>When:</h3>
+			<h3 class = 'news_page_text_heading'>When</h3>
 			<p class = 'news_page_text'>
 				linux.conf.au opens on Wednesday January 21st 2009 and runs through Wednesday, Thursday and Friday.  The event finishes with a spectacle of colour and activity with the Open Day on Saturday January 24 2009.  Miniconfs will be held as usual on Monday 19th and Tuesday 20th.
 			</p>
-			<h3 class = 'news_page_text_heading'>Where:</h3>
+			<h3 class = 'news_page_text_heading'>Where</h3>
 			<p class = 'news_page_text'>
 				The University of Tasmania's Sandy Bay campus will play host to this year's activities.
 			</p>
 			<p class = 'news_page_text'>
 				Don't miss it - March South to Tasmania for linux.conf.au 2009!
 			</p>
-			<ul class = 'news_page_text_list'>
-					<li><a href = '/pdfs/LCA09Release.pdf'>LCA 2009 Press Release</a></li>
-					<li><a href = '/pdfs/LCA09Bid.pdf'>LCA 2009 Bid Document</a></li>
-					<li><a href = '/pdfs/Ghosts_Meeting_in_Hobart.pdf'>Ghosts Meeting in Hobart Press Release</a></li>
-			</ul>
 		</div>
 
 

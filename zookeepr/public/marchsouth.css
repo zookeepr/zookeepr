@@ -522,7 +522,7 @@
 		margin-top: 20px;
 		padding-left: 40px;
 		padding-right: 0;
-		text-align: right;
+		text-align: left;
 	}
 	
 	.news_item_list
@@ -559,7 +559,8 @@
 
 	.news_page_text_heading
 	{
-		padding-right: 40px;
+		padding-left: 60px;
+		margin-left: 470px;
 	}
 	.news_page_text
 	{
