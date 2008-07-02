@@ -27,14 +27,14 @@ class Ceiling(object):
         return self.max_sold > self.qty_sold()
 
     def can_i_sell(self, qty):
-        if self.ceiling_remaining() > qty)
+        if self.ceiling_remaining() > qty:
             return True
         else:
             return False
 
 
 class ProductCategory(object):
-    def __init__(self, name=None, display='qty', min_qty=0, max_qty=100)
+    def __init__(self, name=None, display='qty', min_qty=0, max_qty=100):
         self.name = name
         self.display = display
         self.min_qty = min_qty
@@ -51,7 +51,7 @@ class ProductCategory(object):
                     qty += ii.qty
         return qty
 
-    def can_i_sell(self, person, qty)
+    def can_i_sell(self, person, qty):
         if self.qty_person_sold(person) + qty <= self.max_qty:
             return True
         else:
@@ -93,10 +93,10 @@ class Product(object):
         return False
 
     def can_i_sell(self, person, qty):
-        if ! self.category.can_i_sell(person, qty):
+        if not self.category.can_i_sell(person, qty):
             return False
         for c in self.ceiling:
-            if ! c.can_i_sell(qty):
+            if not c.can_i_sell(qty):
                 return False
         return True
 
