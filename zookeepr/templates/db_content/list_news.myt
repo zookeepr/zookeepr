@@ -2,7 +2,7 @@
 
 
 % for d in c.db_content_collection:
-<h3><% h.link_to(d.title, url='/media/news/' + str(d.id)) %></h3>
+<h2><% h.link_to(d.title, url='/media/news/' + str(d.id)) %></h2>
 <p class="submitted">
 Submitted on <% d.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
 </p>
