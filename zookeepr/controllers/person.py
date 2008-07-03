@@ -45,7 +45,7 @@ class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         persons = state.query(Person).filter_by(email_address=value['email_address']).first()
         if persons == None:
-            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % '<a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>', value, state)
+            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email'], value, state)
 
 
 class LoginValidator(BaseSchema):
