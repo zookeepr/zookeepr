@@ -80,4 +80,4 @@
     <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
     <p class="note"><span class="publishable">&#8224;</span> - Will be published (if your presentation is accepted)</p>
 
-    <p class="note-bene">We reserve the right to forward submissions (accepted or not) to the miniconf organisers.</p>
+    <p>We reserve the right to forward submissions (accepted or not) to the miniconf organisers for possible inclusion in the miniconf programme.</p>
