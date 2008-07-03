@@ -283,6 +283,9 @@ class PersonController(SecureController, Read, Update, List):
 
         See ``cfp.py`` for more person creation code.
         """
+        if c.signed_in_person:
+            return render_response('person/already_loggedin.myt')
+        
         defaults = dict(request.POST)
         errors = {}
 
