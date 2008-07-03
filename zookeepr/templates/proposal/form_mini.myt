@@ -13,7 +13,7 @@
 
     <p class="label"><span class="mandatory">*</span><label for="proposal.abstract">Mini-conf summary:</label></p>
     <p class="entries"><% h.textarea('proposal.abstract', size="70x10") %></p>
-    <p class="note-bene">Please indicate any special needs your miniconf will have (e.g. facilities required), preferred duration (1 day / 2 days) and anticipated number of attendees, if possible.</p>
+    <p class="note">Please indicate any special needs your miniconf will have (e.g. facilities required), preferred duration (1 day / 2 days) and anticipated number of attendees, if possible.</p>
 
     <p class="label"><label for="proposal.url">Miniconf URL:</label></p>
     <p class="entries"><% h.textfield('proposal.url', size=70) %></p>
@@ -48,7 +48,7 @@
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="person.bio">Bio:</label></p>
     <p class="entries"><% h.textarea('person.bio', size="70x6") %></p>
-    <p class="note">This will appear on the conference website and in the programme for your talks and tutorials. Please write in the third person, eg "Alice is a Mozilla hacker...", 150-200 words.</p>
+    <p class="note">Please write in the third person, eg "Alice is a Mozilla hacker...", 150-200 words.</p>
 
     <p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
     <p class="entries"><% h.textarea('person.experience', size="70x6") %></p>
