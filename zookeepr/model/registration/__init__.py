@@ -1,1 +1,1 @@
-from domain import Registration, Accommodation, AccommodationLocation, AccommodationOption, RegoNote
+from domain import Registration, RegistrationProduct, RegoNote
