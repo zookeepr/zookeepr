@@ -45,6 +45,11 @@
 			<p class = 'news_page_text'>
 				The University of Tasmania's Sandy Bay campus will play host to this year's activities.
 			</p>
+			<h3 class = 'news_page_text_heading'>More</h3>
+			<p class = 'news_page_text'>
+				Keep up to date by subscribing to <a href="/media/news/rss">our news feed here</a>, or join our mailing lists <a href="http://lists.marchsouth.org">http://lists.marchsouth.org</a>. For more information, please visit our <a href="/contact">contact</a> section.
+			</p>
+
 			<p class = 'news_page_text'>
 				Don't miss it - March South to Tasmania for linux.conf.au 2009!
 			</p>

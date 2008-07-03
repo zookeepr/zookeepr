@@ -19,11 +19,6 @@
 </div>
 
 <p>
-   <b>Phone:</b>
-<% c.person.phone %><br>
-</p>
-
-<p>
 <b>Mobile:</b>
 <% c.person.mobile %>
 </p>
