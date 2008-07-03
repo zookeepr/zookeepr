@@ -90,7 +90,7 @@ for d in c.db_content_news:
 <style type="text/css">
 .content
 {
-    background-image: url(images/content_bg_tall.png);
+    background-image: url(/images/content_bg_tall.png);
 }
 </style>
 %        break
