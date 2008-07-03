@@ -1,8 +1,6 @@
 		<img src = '/images/heightfix.png' class = 'heightfix' alt = ''>
 
 		<ul class = 'news_hero_items'>
-			<li><a href = '/programme/submit_a_presentation'><img src = '/featured/direct_call_for_presentations.png' alt = 'Call for Presentations'></a></li>
-			<li><a href = '/programme/submit_a_miniconf'><img src = '/featured/direct_call_for_miniconfs.png' alt = 'Call for Miniconfs'></a></li>
 % for d in featured:
 			<li><a href = '/media/news/<% d.id %>'><img src = '<% h.featured_image(d.title) %>' alt = '<% d.title %>'></a></li>
 % #endfor
@@ -59,7 +57,7 @@
 <%init>
 featured = []
 count = 0
-limit = 2
+limit = 4
 for d in c.db_content_news:
     if (h.featured_image(d.title) is not False) and (count < limit):
         featured.append(d)
@@ -67,17 +65,6 @@ for d in c.db_content_news:
 </%init>
 
 <%method big_promotion>
-			<div class = 'news_banner'>
-				<div class = 'news_banner_left'>
-					<a href = '/programme/submit_a_presentation'><img src = '/featured/direct_call_for_presentations/1.png' alt="Call for presentations" title="Call for presentations"></a>
-				</div>
-				<div class = 'news_banner_right'>
-					<a href = '/programme/submit_a_presentation'><img src = '/featured/direct_call_for_presentations/3.png' alt="Call for presentations" title="Call for presentations"></a>
-				</div>
-				<a href = '/programme/submit_a_presentation'>
-					<img src = '/featured/direct_call_for_presentations/2.png' alt="Call for presentations" title="Call for presentations">
-				</a>
-			</div>
 %for d in c.db_content_news:
 %    directory = h.featured_image(d.title, big = True)
 %    if directory is not False:
@@ -97,12 +84,6 @@ for d in c.db_content_news:
 </%method>
 
 <%method extra_head>
-<style type="text/css">
-.content
-{
-    background-image: url(images/content_bg_tall.png);
-}
-</style>
 %for d in c.db_content_news:
 %    directory = h.featured_image(d.title, big = True)
 %    if directory is not False:
