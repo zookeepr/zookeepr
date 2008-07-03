@@ -40,51 +40,50 @@ def populate_data():
         # Proposals
         model.proposal.tables.proposal_type.insert().execute(
             dict(name='Presentation'),
-        )
-        model.proposal.tables.proposal_type.insert().execute(
             dict(name='Miniconf'),
-            )
-        model.proposal.tables.proposal_type.insert().execute(
             dict(name='Tutorial'),
             )
 
         # Assistance
         model.proposal.tables.assistance_type.insert().execute(
             dict(name='Can\'t attend without full assistance'),
-            )
-        model.proposal.tables.assistance_type.insert().execute(
             dict(name='Can\'t attend without partial assistance'),
-            )
-        model.proposal.tables.assistance_type.insert().execute(
             dict(name='May need assistance'),
-            )
-        model.proposal.tables.assistance_type.insert().execute(
             dict(name='Don\'t need assistance'),
             )
 
+        # Stream
         model.schedule.tables.stream.insert().execute(
             dict(name='Free Love and Open Sensual Stimulation'),
             )
+
+        # Roles
         model.core.tables.role.insert().execute(
             dict(name='reviewer'),
-            )
-        model.core.tables.role.insert().execute(
             dict(name='organiser'),
-            )
-        model.core.tables.role.insert().execute(
             dict(name='miniconf'),
-            )
-        model.core.tables.role.insert().execute(
             dict(name='team'),
             )
-            
+
+        # Product Categories
+        model.billing.tables.product_category.insert().execute(
+            dict(name='registration', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
+            dict(name='shirt', description='Please choose how many shirts you would like. One is included with your registration.', display='qty', min_qty=1, max_qty=10),
+            dict(name='dinner', description='Would you like any extra dinner tickets?', display='qty', min_qty=0, max_qty=5),
+            dict(name='accomodation', description='Where would you like to stay during the conference?', display='radio', min_qty=0, max_qty=10),
+            dict(name='partner', description='Would your partner like to participate in the partners program?', display='qty', min_qty=0, max_qty=10),
+            )
+
+        # Product Ceilings
+        model.billing.tables.ceiling.insert().execute(
+            dict(name='conference'),
+            dict(name='earlybird'),
+            )
+
+        # DB Content
         model.db_content.tables.db_content_type.insert().execute(
             dict(name='Page'),
-            )
-        model.db_content.tables.db_content_type.insert().execute(
             dict(name='News'),
-            )
-        model.db_content.tables.db_content_type.insert().execute(
             dict(name='In the press'),
             )
     except SQLError:
