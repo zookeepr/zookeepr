@@ -10,7 +10,7 @@
       <title><% d.title %></title>
       <link>http://<% h.host_name() %>/media/news/<% d.id %></link>
       <description><% d.body |h %></description>
-      <pubDate><% d.creation_timestamp.strftime("%a, %d %b %Y %H:%M:%S +1100") %></pubDate>
+      <pubDate><% d.creation_timestamp.strftime("%a, %d %b %Y %H:%M:%S +1000") %></pubDate>
       <guid>http://linux.conf.au/media/news/<% d.id %></guid>
     </item>
 % #endfor

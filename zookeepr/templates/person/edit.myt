@@ -1,10 +1,12 @@
 <h2>Edit person</h2>
 
+<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+
 <% h.form(h.url(id=c.person.id)) %>
 <& form.myt &>
-<% h.submitbutton('Update') %>
+<p><% h.submitbutton('Update') %><br><% h.link_to('back', url=h.url(action='index', id=None)) %></p>
 <% h.end_form() %>
-<% h.link_to('back', url=h.url(action='index', id=None)) %>
+</&>
 
 <%args>
 defaults
@@ -21,5 +23,4 @@ if not defaults:
         v = getattr(c.person, k)
         if v is not None:
             defaults['person.' + k] = getattr(c.person, k)
-
 </%init>

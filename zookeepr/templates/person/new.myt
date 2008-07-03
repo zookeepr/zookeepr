@@ -1,6 +1,6 @@
 <h2 class="pop">New user account creation</h2>
 
-<p>This form is for creating an account on linux.conf.au. After you have created an account you may submit a miniconf or presentation from the Programme menu.</p>
+<p>This form is for creating an account on linux.conf.au. After you have created an account you may submit a miniconf or presentation from the Programme/Participate menu.</p>
 
 <p>
 If you've already got an account but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='person',id=None,action='forgotten_password')) %>.
