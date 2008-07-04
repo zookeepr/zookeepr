@@ -65,10 +65,10 @@ def make_map():
     m.connect('/programme/mini-confs/recorded', controller='admin', action='recorded_miniconf_talks')
 
     # OpenDay
-    m.connect('openday', '/OpenDay', controller='openday', action='new')
-    m.connect('/Openday', controller='openday', action='new')
-    m.connect('/openday', controller='openday', action='new')
-    m.connect('/openDay', controller='openday', action='new')
+    #m.connect('openday', '/OpenDay', controller='openday', action='new')
+    #m.connect('/Openday', controller='openday', action='new')
+    #m.connect('/openday', controller='openday', action='new')
+    #m.connect('/openDay', controller='openday', action='new')
 
     m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
     m.connect('/review/summary', controller='review', action='summary', id=None)
