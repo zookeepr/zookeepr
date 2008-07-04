@@ -76,7 +76,7 @@ def make_map():
     m.connect('/openday', controller='not_found', action='page')
     m.connect('/openDay', controller='not_found', action='page')
 
-    m.connect('/become_a_sponsor', controller='db_content', action='page', id=8)
+    m.connect('/become_a_sponsor', controller='db_content', action='view', id=8)
 
     m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
     m.connect('/review/summary', controller='review', action='summary', id=None)
