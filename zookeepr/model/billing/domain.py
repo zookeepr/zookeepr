@@ -197,12 +197,10 @@ class VoucherCode(object):
 
     def __init__(self,
                  code=None,
-                 type=None,
                  percentage=None,
                  comment=None,
                  ):
         self.code = code
-        self.type = type
         self.percentage = percentage
         self.comment = comment
 

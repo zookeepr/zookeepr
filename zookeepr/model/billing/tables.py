@@ -179,7 +179,7 @@ voucher_code = Table('voucher_code', metadata,
 
                 Column('code', Text, nullable=False, unique=True),
 
-                Column('type', Text, nullable=False),
+                Column('product_id', Integer, ForeignKey('product.id'), nullable=False),
 
                 Column('percentage', Integer, nullable=False),
 
