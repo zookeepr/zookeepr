@@ -77,7 +77,10 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
         news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).limit(20).all()
         setattr(c, self.individual + '_collection', news_list)
-        return render_response('%s/rss_news.myt' % self.individual, fragment=True)
+        content = render_response('%s/rss_news.myt' % self.individual, fragment=True)
+        response = Response(content)
+        response.headers['Content-type'] = 'application/rss+xml'
+        return response
 
     def list_press(self):
         press_id = self.dbsession.query(model.DBContentType).filter_by(name='In the press').first().id
