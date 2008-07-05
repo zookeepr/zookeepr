@@ -20,7 +20,7 @@ class HomeController(BaseController):
 
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
-        
+
         news = self.dbsession.query(DBContentType).filter_by(name='News').first()
         if news:
             setattr(c, 'db_content_news', self.dbsession.query(DBContent).filter_by(type_id=news.id).order_by(DBContent.c.creation_timestamp.desc()).limit(6).all())
