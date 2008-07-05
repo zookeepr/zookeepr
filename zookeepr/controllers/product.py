@@ -2,11 +2,20 @@ from formencode import validators, compound, variabledecode
 from formencode.schema import Schema
 
 from zookeepr.lib.auth import SecureController, AuthRole
+from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, BoundedInt
 from zookeepr.model import Product, ProductCategory
 
+class ProductCategoryValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return state.query(model.ProductCategory).get(value)
+
+    def _from_python(self, value):
+        return value.id
+
 class ProductSchema(BaseSchema):
+    category = ProductCategoryValidator()
     active = validators.Bool()
     description = validators.String(not_empty=True)
     cost = BoundedInt(min=0)
@@ -34,7 +43,7 @@ class ProductController(SecureController, View, Modify):
     redirect_map = dict(new=dict(action='index'))
 
     def __before__(self, **kwargs):
-        if hasattr(super(SecureController, self), '__before__'):
-            super(SecureController,self).__before__(**kwargs)
+        if hasattr(super(ProductController, self), '__before__'):
+            super(ProductController, self).__before__(**kwargs)
 
         c.product_categories = self.dbsession.query(ProductCategory).all()

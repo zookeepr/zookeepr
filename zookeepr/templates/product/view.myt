@@ -1,19 +1,9 @@
 <h2>View product</h2>
 
-<p>
-   <b>Active:</b>
-    <% c.product.active | h %><br>
-</p>
-
-<p>
-   <b>Description:</b>
-    <% c.product.description | h %><br>
-</p>
-
-<p>
-   <b>Cost:</b>
-    <% c.product.cost | h %><br>
-</p>
+<p><b>Category:</b><% c.product.category.name %><br></p>
+<p><b>Active:</b><% c.product.active | h %><br></p>
+<p><b>Description:</b><% c.product.description | h %><br></p>
+<p><b>Cost:</b><% c.product.cost | h %><br></p>
 
 
 

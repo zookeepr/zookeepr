@@ -19,6 +19,7 @@ errors
 <%init>
 if not defaults and c.product:
     defaults = {
+        'product.category': c.product.category.id,
         'product.description': c.product.description,
         'product.cost': c.product.cost,
     }
