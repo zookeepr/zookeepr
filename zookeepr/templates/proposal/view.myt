@@ -64,26 +64,27 @@ at
 
 % for person in c.proposal.people:
 <h2><% person.firstname | h%> <% person.lastname | h%></h2>
-<div class="experience">
+
+<div class="bio">
 <p>
-<em>Speaking experience:</em>
+<em>Bio:</em>
 </p>
 <blockquote><p>
-%   if person.experience:
-<% h.line_break(h.esc(person.experience)) %>
+%   if person.bio:
+<% h.line_break(h.esc(person.bio)) %>
 %   else:
 [none provided]
 %   #endif
 </p></blockquote>
 </div>
 
-<div class="bio">
+<div class="experience">
 <p>
-<em>Speaker bio:</em>
+<em>Experience:</em>
 </p>
 <blockquote><p>
-%   if person.bio:
-<% h.line_break(h.esc(person.bio)) %>
+%   if person.experience:
+<% h.line_break(h.esc(person.experience)) %>
 %   else:
 [none provided]
 %   #endif

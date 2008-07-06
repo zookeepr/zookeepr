@@ -32,11 +32,11 @@
 	</div>
 	<div class = 'footer'>
 		<div class = 'photos'>
-			<img src = '/images/photo1.png' alt = 'Salamanca Markets'>
-			<img src = '/images/photo2.png' alt = 'Salamanca Markets'>
-			<img src = '/images/photo3.png' alt = 'Salamanca Markets'>
-			<img src = '/images/photo4.png' alt = 'Salamanca Markets'>
-			<img src = '/images/photo5.png' alt = 'Salamanca Markets'>
+			<img src = '/images/photo1.png' alt = 'Tasmania'>
+			<img src = '/images/photo2.png' alt = 'Tasmania'>
+			<img src = '/images/photo3.png' alt = 'Tasmania'>
+			<img src = '/images/photo4.png' alt = 'Tasmania'>
+			<img src = '/images/photo5.png' alt = 'Tasmania'>
 		</div>
 		<div class = 'copyright'>&copy; 2008-2009 <a href = '#'>Linux Australia</a> and LCA09 | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">HTML 4.01 Strict</a>
 		</div>

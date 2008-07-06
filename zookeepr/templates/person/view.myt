@@ -23,7 +23,12 @@
 <% c.person.mobile %>
 </p>
 
-<hr />
+<p>
+<b>Phone:</b>
+<% c.person.phone %>
+</p>
+
+<hr>
 
 #% if c.can_edit:
 #<% h.link_to('Edit', url=h.url(action='edit',id=c.person.get_unique())) %> |
