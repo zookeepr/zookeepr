@@ -113,7 +113,6 @@ class PersonController(SecureController, Read, Update, List):
                    'confirm': True
                    }
 
-
     def signin(self):
         defaults = dict(request.POST)
         errors = {}
@@ -317,6 +316,9 @@ class PersonController(SecureController, Read, Update, List):
             abort(403)
 
         return super(PersonController, self).index()
+
+    def _can_edit(self):
+        return self.is_same_id() or AuthRole('organiser')
 
     def view(self):
         c.registration_status = request.environ['paste.config']['app_conf'].get('registration_status')

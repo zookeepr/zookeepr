@@ -17,13 +17,13 @@
 % for p in c.person_collection:
   <tr>
     <td><% h.link_to(p.id, url=h.url(action='view', id=p.id)) %></td>
-    <td><% p.email_address %></td>
-    <td><% p.firstname %></td>
-    <td><% p.lastname %></td>
-    <td><% p.phone %></td>
-    <td><% p.mobile %></td>
+    <td><% p.email_address |h %></td>
+    <td><% p.firstname |h %></td>
+    <td><% p.lastname |h %></td>
+    <td><% p.phone |h %></td>
+    <td><% p.mobile |h %></td>
 
-%   for action in ['edit', 'delete']:
+%   for action in ['view', 'edit']:
     <td><% h.link_to(action, url=h.url(action=action, id=p.id)) %></td>
 %   #endfor
   </tr>

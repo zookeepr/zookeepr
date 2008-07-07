@@ -1,39 +1,53 @@
 <h2><% c.person.firstname |h %>'s profile</h2>
 
-<div class="boxed">
-
-<p>
-   <b>Email:</b>
-    <% c.person.email_address | h %><br>
-</p>
-
-<p>
-   <b>First name:</b>
-    <% c.person.firstname | h %><br>
-</p>
-
-<p>
-   <b>Last name:</b>
-    <% c.person.lastname | h %><br>
-</p>
-</div>
-
-<p>
-<b>Mobile:</b>
-<% c.person.mobile %>
-</p>
-
-<p>
-<b>Phone:</b>
-<% c.person.phone %>
-</p>
+<table>
+    <tr>
+        <td><p><b>First name:</b></p></td>
+        <td><p><% c.person.firstname | h %></p></td>
+    </tr>
+    <tr>
+        <td><p><b>Last name:</b></p></td>
+        <td><p><% c.person.lastname | h %></p></td>
+    </tr>
+    <tr>
+        <td><p><b>Email:</b></p></td>
+        <td><p><% c.person.email_address | h %></p></td>
+    </tr>
+%if c.person.phone:
+    <tr>
+        <td><p><b>Phone:</b></p></td>
+        <td><p><% c.person.phone | h %></p></td>
+    </tr>
+%#endif
+%if c.person.mobile:
+    <tr>
+        <td><p><b>Mobile:</b></p></td>
+        <td><p><% c.person.mobile | h %></p></td>
+    </tr>
+%#endif
+%if c.person.company:
+    <tr>
+        <td><p><b>Company:</b></p></td>
+        <td><p><% c.person.company | h %></p></td>
+    </tr>
+%#endif
+    <tr>
+        <td><p><b>Address:</b></p></td>
+        <td><p><% c.person.address1 |h %><br>
+%if c.person.address2:
+                <% c.person.address2 |h %><br>
+%#endif
+                <% c.person.city |h %><br>
+                <% c.person.state |h %> <% c.person.postcode |h %><br>
+                <% c.person.country |h %></p></td>
+    </tr>
+</table>
 
 <hr>
 
-#% if c.can_edit:
-#<% h.link_to('Edit', url=h.url(action='edit',id=c.person.get_unique())) %> |
-#% #end if
-#<% h.link_to('Back', url=h.url(action='index')) %>
+% if c.can_edit:
+<ul><li><% h.link_to('Edit', url=h.url(action='edit',id=c.person.id)) %></li></ul>
+% #end if
 
 <%method title>
 Profile -
