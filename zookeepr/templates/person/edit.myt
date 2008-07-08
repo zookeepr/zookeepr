@@ -4,7 +4,7 @@
 
 <% h.form(h.url(id=c.person.id)) %>
 <& form.myt &>
-<p><% h.submitbutton('Update') %><br><% h.link_to('back', url=h.url(action='index', id=None)) %></p>
+<p><% h.submitbutton('Update') %></p>
 <% h.end_form() %>
 </&>
 

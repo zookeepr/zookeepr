@@ -14,7 +14,7 @@ class ErrorController(WSGIController):
         """
         Change this method to change how error documents are displayed
         """
-        if request.params['code'] == "403" and request.environ['paste.config']['global_conf'].get('debug') == 'false':
+        if (request.params['code'] == "403" or request.params['code'] == "404") and request.environ['paste.config']['global_conf'].get('debug') == 'false':
             return render_response('error/404.myt')
         elif request.environ['paste.config']['global_conf'].get('debug') == 'false':
             try:
