@@ -5,8 +5,7 @@ There was a server error dealing with your request!
 </p>
 
 <p>
-The site maintainers and their herd of flying monkeys have been mailed a 
-trace dump, and will attend to your problem shortly.  If it's desperately critical, <% h.webmaster_email("send us an email") %> and we'll help you out.
+An email has been sent to the webmaster with details to look into this problem. If you continue having trouble, you can <% h.webmaster_email("send us an email") %> and we'll try to help you out.
 </p>
 
 <p>
