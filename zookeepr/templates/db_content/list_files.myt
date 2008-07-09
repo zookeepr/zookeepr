@@ -18,7 +18,7 @@
     <tr class="<% h.cycle('even', 'odd')%>">
         <td><img src="/images/icons/folder.png" alt="[folder icon]" title="folder"></td>
         <td><a href="/db_content/list_files?folder=<% c.current_path + folder %>"><% folder %></a></td>
-        <td><a href="/db_content/delete_file?folder=<% c.current_path + folder %>">Delete</a></td>
+        <td><a href="/db_content/delete_folder?folder=<% c.current_path + folder %>&current_path=<% c.current_path %>">Delete</a></td>
    </tr>
 % #endfor
 % for file in c.file_list:
@@ -33,6 +33,10 @@
             <form action="/db_content/upload?folder=<% c.current_path %>" method="post" enctype="multipart/form-data">
             <p>Upload file to <% c.current_path %>: <input type="file" name="myfile" id="myfile" />
                          <input type="submit" name="submit" value="Upload" /></p>
+            </form>
+            <form action="/db_content/list_files?folder=<% c.current_path %>" method="post" enctype="multipart/form-data">
+            <p>New folder: <input type="text" name="folder" id="folder" />
+                         <input type="submit" name="submit" value="Create" /></p>
             </form>
 
 <%method title>

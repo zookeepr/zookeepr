@@ -50,6 +50,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    'upload': [AuthRole('organiser')],
                    'list_files': [AuthRole('organiser')],
                    'delete_file': [AuthRole('organiser')],
+                   'delete_folder': [AuthRole('organiser')],
                    }
 
     def __before__(self, **kwargs):
@@ -101,6 +102,24 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
 
         return render('%s/file_uploaded.myt' % self.individual)
 
+    def delete_folder(self):
+        try:
+            if request.GET['folder'] is not None:
+                c.folder += request.GET['folder']
+                c.current_folder += request.GET['current_path']
+        except KeyError:
+           abort(404)
+
+        directory = file_paths['public_path']
+        defaults = dict(request.POST)
+        if defaults:
+            try:
+                os.rmdir(directory + c.folder)
+            except OSError:
+                return render('%s/folder_full.myt' % self.individual)
+            return render('%s/folder_deleted.myt' % self.individual)
+        return render('%s/delete_folder.myt' % self.individual)
+
     def delete_file(self):
         try:
             if request.GET['file'] is not None:
@@ -138,6 +157,15 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                 current_path = request.GET['folder']
         except KeyError:
             download_path += '/'
+            
+        defaults = dict(request.POST)
+        if defaults:
+            try:
+                if request.POST['folder'] is not None:
+                    os.mkdir(directory + request.POST['folder'])
+            except KeyError:
+                pass        
+        
         files = []
         folders = []
         for filename in os.listdir(directory):
