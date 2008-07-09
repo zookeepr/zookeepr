@@ -34,6 +34,13 @@ lca_rego = {
 	'earlybird_limit' : 220
 }
 
+file_paths = {
+    'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
+    'pulic_html': '',
+    'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
+    'news_htmlprefix': '/featured'
+}
+
 lca_menu = [
     ('Home', '/home', 'home'),
     ('About', '/about/the_event_history', 'about'),

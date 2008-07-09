@@ -9,7 +9,7 @@ import urllib
 from glob import glob
 import os.path, random, array
 import gzip, re
-from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus
+from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
 
 def counter(*args, **kwargs):
     """Return the next cardinal in a sequence.
@@ -244,20 +244,19 @@ def featured_image(title, big = False):
     """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left 
     If the image is prefixed with _big_ it becomes the main header feature """
     
-    fileprefix = '/home/josh/LCA09/website/db_content/zookeepr/public/featured/'
-    htmlprefix = '/featured/'
+    fileprefix = file_paths['news_fileprefix']
+    htmlprefix = file_paths['news_htmlprefix']
 
-    
     if big:
         # look for _big_ feature
-        if os.path.isdir(fileprefix + computer_title(title)):
-            return htmlprefix + computer_title(title) + "/"
+        if os.path.isdir(fileprefix + "/" + computer_title(title)):
+            return htmlprefix + "/" + computer_title(title) + "/"
         else:
             return False
     else:
         # look for normal
-        if os.path.isfile(fileprefix + computer_title(title) + ".png"):
-            return htmlprefix + computer_title(title) + ".png"
+        if os.path.isfile(fileprefix + "/" + computer_title(title) + ".png"):
+            return htmlprefix + "/" + computer_title(title) + ".png"
         else:
             return False
     
@@ -271,3 +270,7 @@ def domain_only(url):
         return match.group(2)
     else:
         return url
+        
+def extension(name):
+    """ Return the extension of a file name"""
+    return name.split('.')[-1]
