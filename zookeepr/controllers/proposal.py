@@ -104,7 +104,7 @@ class ProposalController(SecureController, View, Update):
                    "delete": [AuthFunc('is_submitter')],
                    "review": [AuthRole('reviewer'), AuthRole('organiser')],
                    "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
-                   "review_index": [AuthRole('reviewer')], 
+                   "review_index": [AuthRole('reviewer'), AuthRole('organiser')], 
                    "talk": True,
                    "index": [AuthTrue()],
                    "submit": [AuthTrue()],
@@ -279,7 +279,7 @@ class ProposalController(SecureController, View, Update):
             setattr(c, '%s_collection' % at.name, stuff)
 
 
-        return super(ProposalController, self).index()
+        return render_response('proposal/list_review.myt')
 
     def summary(self):
 

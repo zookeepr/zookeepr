@@ -35,6 +35,7 @@ def make_map():
     #m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
     #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal', controller='cfp', action='submit_mini')
     #m.connect('/presentations/edit/:id', controller='proposal', action='edit')
+    m.connect('/proposal/review_index', controller='proposal', action='review_index')
     m.connect('/programme/edit_submission', controller='proposal', action='index')
     m.connect('/programme/edit_submission/:id', controller='proposal', action='view')
     m.connect('/programme/edit_submission/:id/edit', controller='proposal', action='edit')
