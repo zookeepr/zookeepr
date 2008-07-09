@@ -36,7 +36,7 @@ lca_rego = {
 
 file_paths = {
     'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
-    'pulic_html': '',
+    'public_html': '',
     'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
     'news_htmlprefix': '/featured'
 }

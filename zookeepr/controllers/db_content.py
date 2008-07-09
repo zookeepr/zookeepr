@@ -10,31 +10,12 @@ from zookeepr.controllers import not_found
 from zookeepr.model.db_content import DBContentType
 from pylons import response
 from zookeepr.config.lca_info import file_paths
+import os
+import cgi
 
 from webhelpers.pagination import paginate
 
 log = logging.getLogger(__name__)
-
-# Code taken from http://jimmyg.org/2007/09/25/file-uploads-in-python/ . License undefined... I'm assuming under the same license as pylons (GPL)
-import os
-import shutil
-import cgi
-
-class ProgressFile(file):
-    def write(self, *k, **p):
-        if hasattr(self, 'callback'):
-            self.callback(self, *k, **p)
-        return file.write(self, *k,**p)
-
-    def set_callback(self, callback):
-        self.callback = callback
-
-def stream(file_object):
-    class CustomFieldStorage(cgi.FieldStorage):
-        def make_file(self, binary=None):
-            self.open_file = file_object
-            return self.open_file
-    return CustomFieldStorage
 
 class DbContentSchema(BaseSchema):
     title = validators.String(not_empty=True)
@@ -67,7 +48,8 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                    'list_press': True,
                    'rss_news': True,
                    'upload': [AuthRole('organiser')],
-                   'list_files': [AuthRole('organiser')]
+                   'list_files': [AuthRole('organiser')],
+                   'delete_file': [AuthRole('organiser')],
                    }
 
     def __before__(self, **kwargs):
@@ -105,18 +87,34 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         return render_response('%s/rss_news.myt' % self.individual, fragment=True)
 
     def upload(self):
-        def callback(file, *k, **p):
-            log.debug("Logged %s", [file.tell()])
-        print asdf
-        fp = ProgressFile('zookeepr/public/somefile', 'wb')
-        fp.set_callback(callback)
-        custom_field_storage = stream(fp)(
-            environ=request.environ,
-            strict_parsing=True,
-            fp=request.environ['wsgi.input']
-        )
+        directory = file_paths['public_path'] + "/"
+        try:
+            if request.GET['folder'] is not None:
+                directory += request.GET['folder']
+        except KeyError:
+           abort(404)
+        
+        file_data = request.POST['myfile'].value
+        fp = open(directory + request.POST['myfile'].filename,'wb')
+        fp.write(file_data)
         fp.close()
+
         return render('%s/file_uploaded.myt' % self.individual)
+
+    def delete_file(self):
+        try:
+            if request.GET['file'] is not None:
+                c.file += request.GET['file']
+                c.current_folder += request.GET['folder']
+        except KeyError:
+           abort(404)
+
+        directory = file_paths['public_path']
+        defaults = dict(request.POST)
+        if defaults:
+            os.remove(directory + c.file)
+            return render('%s/file_deleted.myt' % self.individual)
+        return render('%s/delete_file.myt' % self.individual)
 
     def list_files(self):
         # Taken from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/170242
@@ -131,17 +129,18 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
             return [x[1] for x in tupleList]
 
         directory = file_paths['public_path']
+        download_path = file_paths['public_html']
         current_path = "/"
         try:
             if request.GET['folder'] is not None:
-                directory += "/" + request.GET['folder']
+                directory += request.GET['folder']
+                download_path += request.GET['folder']
                 current_path = request.GET['folder']
         except KeyError:
-            pass
+            download_path += '/'
         files = []
         folders = []
         for filename in os.listdir(directory):
-            print filename, directory
             if os.path.isdir(directory + "/" + filename):
                 folders.append(filename + "/")
             else:
@@ -150,6 +149,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         c.file_list = caseinsensitive_sort(files)
         c.folder_list = caseinsensitive_sort(folders)
         c.current_path = current_path
+        c.download_path = download_path
         return render('%s/list_files.myt' % self.individual)
 
     def list_press(self):
