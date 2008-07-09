@@ -7,7 +7,7 @@
 
 % if c.num_reviewers <= 0:
 %	c.num_reviewers = 1
-You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. 
+<p>You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. </p>
 
 
 
@@ -28,7 +28,7 @@ You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_prop
 
 <h2><% pt.name %>s (<% len(collection) %>)</h2>
 
-Proposal cannot be reviewed again untill all proposals have been reviewed at least <% min_reviews +1 %> times;
+<p>Proposal cannot be reviewed again untill all proposals have been reviewed at least <% min_reviews +1 %> times;</p>
 <table class="list">
 
 <tr>

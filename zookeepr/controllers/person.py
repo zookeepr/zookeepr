@@ -322,7 +322,7 @@ class PersonController(SecureController, Read, Update, List):
             permission = (self.obj.id == session['signed_in_person_id']) or AuthRole('organiser')
         except AttributeError:
             #FIXME: ugly work around for when an individual person object isn't loaded.
-            # This method is meant to be used to display the "edit" link when an organisor or the owner views a person's profile.
+            # This method is meant to be used to display the "edit" link when an organiser or the owner views a person's profile.
             # However, the index method in the CRUD middleware also uses the _can_edit definition so we have this ugly workaround.
             permission = False
         return permission
