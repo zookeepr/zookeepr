@@ -1,4 +1,7 @@
 <h2>File manager</h2>
+
+<p>Below is a list of files available from the root directory /. If you upload a file, you can access it with /current_folder/file_name.png</p>
+
 <h3>Current folder: <% c.current_path %></h3>
 
 <table>
@@ -34,10 +37,12 @@
             <p>Upload file to <% c.current_path %>: <input type="file" name="myfile" id="myfile" />
                          <input type="submit" name="submit" value="Upload" /></p>
             </form>
+            <p class="note">There are no checks on files except for authentication. Please do not upload anything too large or malicious.</p>
             <form action="/db_content/list_files?folder=<% c.current_path %>" method="post" enctype="multipart/form-data">
             <p>New folder: <input type="text" name="folder" id="folder" />
                          <input type="submit" name="submit" value="Create" /></p>
             </form>
+            <p class="note">Please keep file names safe and not duplicated.</p>
 
 <%method title>
 List of Files - <& PARENT:title &>
