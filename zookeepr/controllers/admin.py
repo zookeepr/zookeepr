@@ -32,7 +32,8 @@ class AdminController(SecureController):
 
         # other functions should be appended to the list here.
         funcs += [
-          ('/db_content', '''Edit HTML pages that are stored in the database. [ZK]'''),
+          ('/db_content', '''Edit HTML pages that are stored in the database. [Content]'''),
+          ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
           ('/person', '''List of people signed up to the webpage (with
                            option to view/change their zookeepr roles)
                            [auth]'''),
