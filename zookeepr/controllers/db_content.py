@@ -88,12 +88,14 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         return render_response('%s/rss_news.myt' % self.individual, fragment=True)
 
     def upload(self):
-        directory = file_paths['public_path'] + "/"
+        directory = file_paths['public_path']
         try:
             if request.GET['folder'] is not None:
                 directory += request.GET['folder']
+                c.current_folder = request.GET['folder']
         except KeyError:
-           abort(404)
+           directory = file_paths['public_path'] + "/"
+           c.current_folder = '/'
         
         file_data = request.POST['myfile'].value
         fp = open(directory + request.POST['myfile'].filename,'wb')
