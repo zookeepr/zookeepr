@@ -19,7 +19,19 @@ def make_map():
     m.connect('/media/news/rss', controller='db_content', action='rss_news', id=None)
     m.connect('/media/news/:id', controller='db_content', action='view')
     m.connect('/media/in_the_press', controller='db_content', action='list_press', id=None)
-    
+
+    # DB content
+    m.connect('/db_content/list_files', controller='db_content', action='list_files', id=None)
+    m.connect('/db_content/delete_file', controller='db_content', action='delete_file', id=None)
+    m.connect('/db_content/delete_folder', controller='db_content', action='delete_folder', id=None)
+    m.connect('/db_content/upload', controller='db_content', action='upload', id=None)
+
+    # Review
+    m.connect('/proposal/review_index', controller='proposal', action='review_index', id=None)
+    m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
+    m.connect('/review/summary', controller='review', action='summary', id=None)
+
+
     # hack the old error handler back in, using the style of the old
     # routes controller.  this is necessary to get the error handler
     # to not 404 when calling itself
@@ -70,16 +82,14 @@ def make_map():
     #m.connect('/openday', controller='openday', action='new')
     #m.connect('/openDay', controller='openday', action='new')
    
-
+    #HACK: links from 08 keep on going to /openday and currently the controller is broken... Simply send a 404
     m.connect('openday', '/OpenDay', controller='not_found', action='page')
     m.connect('/Openday', controller='not_found', action='page')
     m.connect('/openday', controller='not_found', action='page')
     m.connect('/openDay', controller='not_found', action='page')
 
+    #HACK: this is because of an incorrect link in the press release
     m.connect('/become_a_sponsor', controller='db_content', action='view', id=8)
-
-    m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
-    m.connect('/review/summary', controller='review', action='summary', id=None)
 
     # special case the wiki controller so that it's not gobbled by the
     # usual :controller rules...
@@ -91,7 +101,6 @@ def make_map():
     # routing rule
     m.connect(':controller/new', action='new', id=None)
     m.connect(':controller', action='index', id=None)
-    m.connect(':controller/:action', action=None, id=None)
     # default action when not specified is 'view'
     m.connect(':controller/:id', action='view')
     # default url scheme
