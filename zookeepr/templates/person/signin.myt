@@ -2,6 +2,8 @@
 
 <p>You need an account to submit proposals. Don't have an account? <% h.link_to('Sign up', url=h.url(controller='person', action='new')) %> now!</p>
 
+<p>Not sure if you want to submit yet? <a href="/programme/presenter_faq">Read the FAQ</a>! or <a href="/">return home</a>.</p>
+
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <% h.form(h.url_for(controller='/person', action='signin')) %>
