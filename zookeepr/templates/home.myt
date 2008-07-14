@@ -22,7 +22,7 @@
 			<h3 class = 'news_item_list_heading'><a href = '/media/in_the_press'>LCA elsewhere</a></h3>
 			<ul class = 'news_item_list'>
 % for d in c.db_content_press:
-				<li><a href = '<% d.url %>' class = 'external'><% d.title %></a><br><span><% h.domain_only(d.url) %> - <% d.creation_timestamp.strftime("%Y-%m-%d") %></span></li>
+				<li><a href = '<% d.url |h %>' class = 'external'><% d.title %></a><br><span><% h.domain_only(d.url) %> - <% d.creation_timestamp.strftime("%Y-%m-%d") %></span></li>
 % #endfor
 				<li class = 'more_link'><a href = '/media/in_the_press'>More items...</a></li>
 			</ul>
@@ -45,7 +45,7 @@
 			</p>
 			<h3 class = 'news_page_text_heading'>More</h3>
 			<p class = 'news_page_text'>
-				Keep up to date by subscribing to <a href="/media/news/rss">our news feed here</a>. For more information, please visit our <a href="/contact">contact</a> section.
+				Keep up to date by subscribing to <a href="/media/news/rss">our news feed here</a>, or join our mailing lists: <i><a href="http://lists.linux.org.au/listinfo/lca-announce">announce</a>, <a href="http://lists.marchsouth.org/mailman/listinfo/lca09_chat_lists.marchsouth.org">chat</a></i>. For more information, please visit our <a href="/contact">contact</a> section.
 			</p>
 
 			<p class = 'news_page_text'>
