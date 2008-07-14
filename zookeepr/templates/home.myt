@@ -45,7 +45,7 @@
 			</p>
 			<h3 class = 'news_page_text_heading'>More</h3>
 			<p class = 'news_page_text'>
-				Keep up to date by subscribing to <a href="/media/news/rss">our news feed here</a>, or join our mailing lists <a href="http://lists.marchsouth.org">http://lists.marchsouth.org</a>. For more information, please visit our <a href="/contact">contact</a> section.
+				Keep up to date by subscribing to <a href="/media/news/rss">our news feed here</a>, or join our mailing lists: <i><a href="http://lists.linux.org.au/listinfo/lca-announce">announce</a>, <a href="http://lists.marchsouth.org/mailman/listinfo/lca09_chat_lists.marchsouth.org">chat</a></i>. For more information, please visit our <a href="/contact">contact</a> section.
 			</p>
 
 			<p class = 'news_page_text'>
