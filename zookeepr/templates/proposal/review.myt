@@ -4,10 +4,12 @@
 
 <% h.form(h.url_for()) %>
 
+<p>
 % if c.next_review_id:
-<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
+<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %> - 
 % #endif
-<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='index')) %>
+<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='review_index')) %>
+</p>
 
 <h2>#<% c.proposal.id %> - "<% c.proposal.title | h %>"</h2>
 
