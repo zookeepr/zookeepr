@@ -100,11 +100,11 @@ class ProposalController(SecureController, View, Update):
                    "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
                                                         AuthRole('organiser')],
-                   "summary": [AuthRole('organiser'), AuthRole('reviewer')],
+                   "summary": [AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
-                   "review": [AuthRole('reviewer'), AuthRole('organiser')],
+                   "review": [AuthRole('reviewer')],
                    "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
-                   "review_index": [AuthRole('reviewer'), AuthRole('organiser')], 
+                   "review_index": [AuthRole('reviewer')], 
                    "talk": True,
                    "index": [AuthTrue()],
                    "submit": [AuthTrue()],
@@ -136,16 +136,7 @@ class ProposalController(SecureController, View, Update):
         errors = {}
 
         # Next ID for skipping
-        collection = self.dbsession.query(model.Proposal).from_statement("""
-                            SELECT *
-                            FROM review AS r
-                            LEFT JOIN proposal AS p ON(p.id=r.proposal_id)
-                            WHERE p.proposal_type_id IN(1,3)
-                            GROUP BY r.proposal_id
-                            HAVING COUNT(r.proposal_id) < (
-                                    (SELECT COUNT(id) FROM review) /
-                                    (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
-                            ORDER BY RANDOM()""")
+        collection = self.dbsession.query(model.Proposal).all()
         for proposal in collection:
             #print proposal.id
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:

@@ -12,10 +12,10 @@ class EditReviewSchema(BaseSchema):
 class ReviewController(SecureController, List, Update, Read):
     model = model.Review
     individual = 'review'
-    permissions = {'index': [AuthRole('reviewer'), AuthRole('organiser')],
-                   'edit': [AuthRole('reviewer'), AuthRole('organiser')],
-                   'view': [AuthRole('reviewer'), AuthRole('organiser')],
-                   'summary': [AuthRole('reviewer'), AuthRole('organiser')]
+    permissions = {'index': [AuthRole('reviewer')],
+                   'edit': [AuthRole('reviewer')],
+                   'view': [AuthRole('reviewer')],
+                   'summary': [AuthRole('reviewer')]
                    }
     schemas = {'edit': EditReviewSchema(),
                }
