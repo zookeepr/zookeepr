@@ -54,10 +54,6 @@
 % #endfor
 </table>
 
-<p>
-<% h.link_to('Go to your unreviewed proposals', url=h.url(controller='proposal', action='review_index', id=None)) %>
-</p>
-
 <%method title>
 Reviews - <& PARENT:title &>
 </%method>
