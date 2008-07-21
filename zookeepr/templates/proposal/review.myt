@@ -20,7 +20,7 @@ Your opinion on this proposal.
 </legend>
 
 <div id="q1">
-<p class="label">1. What score do you give this proposal?</p>
+<p class="label"><span class="mandatory">*</span>1. What score do you give this proposal?</p>
 <p class="entries">
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
 <br>
@@ -34,7 +34,7 @@ Your opinion on this proposal.
 
 <div id="q2">
 <p class="label">
-2. What stream do you think this talk is most suitable for?
+<span class="mandatory">*</span>2. What stream do you think this talk is most suitable for?
 </p>
 
 <p>

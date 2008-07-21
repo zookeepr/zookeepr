@@ -178,20 +178,20 @@ at
 
 %   for r in c.proposal.reviews:
 <tr class="<% h.cycle('even', 'odd') %>">
-<td>
+<td style="vertical-align: top;">
 <% h.link_to("%s - %s" % (r.id, r.reviewer.firstname), url=h.url(controller='review', id=r.id, action='view')) %>
 </td>
 
-<td>
+<td style="vertical-align: top;">
 <% r.score | h %>
 </td>
 
-<td>
+<td style="vertical-align: top;">
 <% r.stream.name | h %>
 </td>
 
-<td>
-<% r.comment | h %>
+<td style="vertical-align: top;">
+<% h.line_break(r.comment) %>
 </td>
 
 </tr>

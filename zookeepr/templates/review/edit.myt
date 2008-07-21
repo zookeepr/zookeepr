@@ -1,20 +1,16 @@
+<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <h1>Review update</h1>
 
-<h2>#<% c.review.proposal.id %> - "<% c.review.proposal.title %>"</h2>
+<& ../proposal/view.myt &>
 
 <div id="review">
-
-<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-
 <% h.form(h.url()) %>
 <& form.myt &>
 <% h.submitbutton('Update') %>
 <% h.end_form() %>
-
-</&>
-
 </div>
 
+</&>
 <%args>
 defaults
 errors
@@ -23,6 +19,7 @@ errors
 <%init>
 # Working around a bug in formencode, we need to set the defaults to the
 # c.review values
+c.proposal = c.review.proposal
 if not defaults:
     defaults = {'review.score': c.review.score,
         'review.comment': c.review.comment,
