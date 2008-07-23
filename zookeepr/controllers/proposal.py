@@ -251,10 +251,11 @@ class ProposalController(SecureController, View, Update):
         c.person = c.signed_in_person
         # hack for bug#34, don't show miniconfs to reviewers
         # Jiri: unless they're also organisers...
-        if 'organiser' in [r.name for r in c.signed_in_person.roles]:
-            c.proposal_types = self.dbsession.query(ProposalType).all()
-        else:
-            c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()
+        # Josh: 09's reviewers are helping pick the miniconfs
+        #if 'organiser' in [r.name for r in c.signed_in_person.roles]:
+        c.proposal_types = self.dbsession.query(ProposalType).all()
+        #else:
+        #    c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()
 
         c.assistance_types = self.dbsession.query(AssistanceType).all()
 
