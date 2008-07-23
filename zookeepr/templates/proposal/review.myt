@@ -4,16 +4,23 @@
 
 <% h.form(h.url_for()) %>
 
-<p>
 % if c.next_review_id:
-<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %> - 
+<ul><li><% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %></li></ul>
 % #endif
-<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='review_index')) %>
-</p>
-
+<div class="contents"><h3>Review Pages</h3>
+<ul>
+<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
+<li><% h.link_to('Go the proposal summary', url=h.url(controller='proposal', action='summary')) %></li>
+<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+</ul>
+</div>
 <& view.myt &>
 
 <h3>Review</h3>
+% print c.signed_in_person.reviews
+% if c.signed_in_person in [x.reviewer for x in c.proposal.reviews]:
+<p>You have already reviewered this proposal. To modify your review, <% h.link_to('click here', url=h.url(controller='review', action='edit', id=x.id)) %>.</p>
+% else:
 <fieldset>
 <legend>
 Your opinion on this proposal.
@@ -68,9 +75,14 @@ for mc in miniconfs] ) ) %>
 <% h.submitbutton('Submit review and jump to next proposal!') %>
 </p>
 
-% if c.next_review_id:
-<p><% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %></p>
 % #endif
+
+<p>
+% if c.next_review_id:
+<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %> - 
+% #endif
+<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='review_index')) %>
+</p>
 <% h.end_form() %>
 
 </&>

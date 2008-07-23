@@ -274,7 +274,7 @@ class ProposalController(SecureController, View, Update):
 
     def summary(self):
 
-        if 'reviewer' not in [r.name for r in c.signed_in_person.roles]:
+        if 'organiser' in [r.name for r in c.signed_in_person.roles]:
             c.proposal_types = self.dbsession.query(ProposalType).all()
         else:
             c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()

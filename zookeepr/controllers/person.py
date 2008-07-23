@@ -121,7 +121,7 @@ class PersonController(SecureController, Read, Update, List):
                'edit': UpdatePersonSchema()
               }
 
-    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
+    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser'), AuthRole('reviewer')],
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'signin': True,

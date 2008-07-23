@@ -67,6 +67,7 @@ at
 %   if h.url()().endswith('review') is True and ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <p class="submitted">
 <% person.firstname | h %> <% person.lastname | h %>&lt;<% person.email_address %>&gt;
+<% h.link_to('(view details)', url=h.url(controller='person', action='view', id=person.id)) %>
 <% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
 <% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
 <% h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % person.email_address) %>
@@ -158,7 +159,7 @@ at
 
 
 # Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
-% if h.url()().endswith('review') is not True and 'reviewer' in [x.name for x in c.signed_in_person.roles] and c.signed_in_person not in [x.reviewer for x in c.proposal.reviews]:
+% if h.url()().endswith('review') is not True and h.url()().endswith('edit') is not True and 'reviewer' in [x.name for x in c.signed_in_person.roles]:
 <ul><li>
 <% h.link_to('Review this proposal', url=h.url(action='review')) %>
 </li></ul>

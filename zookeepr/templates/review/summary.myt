@@ -1,5 +1,13 @@
 <h2>Reviews Summary</h2>
 
+<div class="contents"><h3>Review Pages</h3>
+<ul>
+<li><% h.link_to('Review some papers', url=h.url(controller='proposal', action='review_index')) %></li>
+<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
+<li><% h.link_to('Go the proposal summary', url=h.url(controller='proposal', action='summary')) %></li>
+</ul>
+</div>
+
 % review_summary = {}
 % for r in c.review_collection:
 %     if r.reviewer in review_summary:

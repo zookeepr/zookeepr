@@ -1,8 +1,12 @@
-<p>
-<% h.link_to('Go to your unreviewed proposals', url=h.url(controller='proposal', action='review_index', id=None)) %>
-</p>
+<h2>Your reviews</h2>
 
-<h2>Reviews</h2>
+<div class="contents"><h3>Review Pages</h3>
+<ul>
+<li><% h.link_to('Go to your unreviewed proposals', url=h.url(controller='proposal', action='review_index')) %></li>
+<li><% h.link_to('Go to the summary of proposals', url=h.url(controller='proposal', action='summary')) %></li>
+<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+</ul>
+</div>
 
 <table>
 <tr>
