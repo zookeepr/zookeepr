@@ -1,63 +1,10 @@
+<h3>Review</h3>
 <fieldset>
-<legend>Proposal's technical content</legend>
-
-<p>
-This is a proposal for a <strong><% c.review.proposal.type.name %></strong>
-submitted at
-<% c.review.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
-(last updated at <% c.review.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
-</p>
-
-<p>
-Project URL:
-% if c.review.proposal.url:
-<% h.link_to(c.review.proposal.url, url=c.review.proposal.url) %>.
-% else:
-<em>none given</em>.
-% #endif
-</p>
-
-<h3>Abstract:</h3>
-<blockquote>
-<% h.auto_link(h.simple_format(c.review.proposal.abstract)) %>
-</blockquote>
-
-</fieldset>
-<fieldset>
-<legend>Presenter's experience</legend>
-% for person in c.review.proposal.people:
-<h2><% person.firstname %> <% person.lastname %></h2>
-<strong>Experience</strong>
-<blockquote>
-<% h.auto_link(h.simple_format(person.experience)) %>
-</blockquote>
-<strong>Bio</strong>
-<blockquote>
-<% h.auto_link(h.simple_format(person.bio)) %>
-</blockquote>
-
-<div id="stalk">
-<p>
-Proposal submitted by:
-
-<ul>
-<li>
-<% person.firstname | h %> <% person.lastname | h %> &lt;<% person.email_address %>&gt;
-<% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
-<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
-<% h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % person.email_address) %>
-</li>
-</ul>
-</p>
-</div>
-
-% #endfor
-</fieldset>
-
-
-<fieldset>
+<legend>
+Your opinion on this proposal.
+</legend>
 <div id="q1">
-<p>1. What score do you give this proposal?
+<p><span class="mandatory">*</span>1. What score do you give this proposal?
 <br>
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
 <br>
@@ -71,7 +18,7 @@ Proposal submitted by:
 
 <div id="q2">
 <p>
-2. What stream do you think this talk is most suitable for?
+<span class="mandatory">*</span>2. What stream do you think this talk is most suitable for?
 </p>
 
 <p>

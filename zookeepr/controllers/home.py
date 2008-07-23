@@ -24,7 +24,7 @@ class HomeController(BaseController):
         news_id = self.dbsession.query(DBContentType).filter_by(name='News').first().id
         setattr(c, 'db_content_news', self.dbsession.query(DBContent).filter_by(type_id=news_id).order_by(DBContent.c.creation_timestamp.desc()).limit(6).all())
         press_id = self.dbsession.query(DBContentType).filter_by(name='In the press').first().id
-        setattr(c, 'db_content_press', self.dbsession.query(DBContent).filter_by(type_id=press_id).order_by(DBContent.c.creation_timestamp.desc()).limit(4).all())
+        setattr(c, 'db_content_press', self.dbsession.query(DBContent).filter_by(type_id=press_id).order_by(DBContent.c.creation_timestamp.desc()).limit(3).all())
 
         resp = render_response('home.myt')
 

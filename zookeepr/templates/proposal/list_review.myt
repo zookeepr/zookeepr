@@ -1,13 +1,18 @@
 % import random
 <h2>Proposal List</h2>
 
-<p>
-<% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %>
-</p>
+<div class="contents"><h3>Review Pages</h3>
+<ul>
+<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
+<li><% h.link_to('Go to the summary of proposals', url=h.url(controller='proposal', action='summary')) %></li>
+<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+</ul>
+</div>
 
 % if c.num_reviewers <= 0:
 %	c.num_reviewers = 1
-<p>You have reviewd <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. </p>
+% #endif
+<p>You have reviewed <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. </p>
 
 
 

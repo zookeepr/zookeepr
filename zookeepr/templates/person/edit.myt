@@ -1,5 +1,7 @@
 <h2>Edit person</h2>
 
+<p class="label">If you need to change your password you may <a href="/person/forgotten_password">reset it here</a>. We would like to avoid the changing of email addresses, however if you require your account email address to be updated, please contact <% h.webmaster_email() %>.</p>
+
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <% h.form(h.url(id=c.person.id)) %>
@@ -14,6 +16,8 @@ errors
 </%args>
 
 <%init>
+c.form = 'edit'
+
 # working around a bug in formencode, we need to set the defaults to
 # the values in c.person
 if not defaults:

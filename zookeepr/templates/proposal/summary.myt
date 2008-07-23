@@ -44,6 +44,14 @@ function toggleDiv(id,flagit) {
 
 <h2>Review Summary</h2>
 
+<div class="contents"><h3>Review Pages</h3>
+<ul>
+<li><% h.link_to('Review some papers', url=h.url(controller='proposal', action='review_index')) %></li>
+<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
+<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+</ul>
+</div>
+
 <p>
 <ul>
 <li>Mouse over reviewers name for their comments
@@ -84,7 +92,7 @@ function toggleDiv(id,flagit) {
 <div onMouseOver="toggleDiv('<% "assistance%s" % proposal.id | h%>',1)" onMouseOut="toggleDiv('<% "assistance%s" % proposal.id | h%>',0)">
 <% h.link_to(proposal.id, url=h.url(controller='proposal', action='review', id=proposal.id)) %>
 </div>
-<div id="<% "assistance%s" % proposal.id %>" class="commentdiv"><% proposal.assistance.name %></div>
+
 </td>
 
 
@@ -116,7 +124,7 @@ function toggleDiv(id,flagit) {
 %                   if review.score is not None:
 % 			num_reviewers += 1
 % 			total_score += review.score
-% 			scores += review.reviewer.handle + ": %s " % review.score
+% 			scores += review.reviewer.firstname + " " + review.reviewer.lastname + ": %s " % review.score + "<br>"
 % 			if review.stream.name in streams:
 % 				streams[review.stream.name] += 1
 % 			else:
@@ -146,10 +154,10 @@ function toggleDiv(id,flagit) {
 link_to doesn't let us pass javascript tags
 -->
 % 			if review.comment:
-<a href="/review/<%review.id%>" onMouseOver="toggleDiv('<% "%s%s" % (review.id, review.reviewer.handle) | h%>',1)" onMouseOut="toggleDiv('<% "%s%s" % (review.id, review.reviewer.handle) | h%>',0)"><% review.reviewer.handle | h%></a>
-<div id="<% "%s%s" % (review.id, review.reviewer.handle) | h%>" class="commentdiv"><% review.reviewer.handle + ": " + review.comment |h%></div>
+<a href="/review/<%review.id%>" onMouseOver="toggleDiv('<% "%s%s" % (review.id, review.reviewer.id) | h%>',1)" onMouseOut="toggleDiv('<% "%s%s" % (review.id, review.reviewer.id) | h%>',0)"><% review.reviewer.firstname + " " + review.reviewer.lastname | h%></a>, 
+<div id="<% "%s%s" % (review.id, review.reviewer.id) | h%>" class="commentdiv"><% review.reviewer.firstname + " " + review.reviewer.lastname + ": " + review.comment |h%></div>
 % 			else:
-<% h.link_to(review.reviewer.handle, url=h.url(controller='review', action='view', id=review.id)) %>
+<% h.link_to(review.reviewer.firstname + " " + review.reviewer.lastname, url=h.url(controller='review', action='view', id=review.id)) %>, 
 % 			#endif
 % 		# endfor
 </td>

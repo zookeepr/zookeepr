@@ -1,3 +1,5 @@
+<p><% h.link_to('Export as CSV', url=h.url(controller='admin', action='csv')) %></p>
+
 <table border="1">
 <tr>
 % for header in c.columns:

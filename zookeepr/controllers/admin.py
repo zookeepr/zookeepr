@@ -51,8 +51,8 @@ class AdminController(SecureController):
 
           ('/proposal/review_index', ''' To see what you need to reveiw [CFP] '''),
           ('/review', ''' To see what you have reviewed [CFP]'''),
-          ('/proposal/summary', ''' summary of the reviewed papers [CFP] '''),
-          ('/review/summary', ''' summary of reviews [CFP] '''),
+          ('/proposal/summary', ''' Summary of the reviewed papers [CFP] '''),
+          ('/review/summary', ''' List of reviewers and scores [CFP] '''),
           
           #('/registration/list_miniconf_orgs', ''' list of miniconf
           #organisers (as the registration code knows them, for miniconf
@@ -157,6 +157,22 @@ class AdminController(SecureController):
         res.headers['Refresh'] = 3600
         return res
 
+def csv_response(sql):
+    import zookeepr.model
+    res = zookeepr.model.metadata.bind.execute(sql);
+    c.columns = res.keys
+    c.data = res.fetchall()
+    c.sql = sql
+    
+    import csv, StringIO
+    f = StringIO.StringIO()
+    w = csv.writer(f)
+    w.writerow(c.columns)
+    w.writerows(c.data)
+    res = Response(f.getvalue())
+    res.headers['Content-type']='text/plain; charset=utf-8'
+    res.headers['Content-Disposition']='attachment; filename="table.csv"'
+    return res
 
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table

@@ -64,7 +64,15 @@ at
 
 % for person in c.proposal.people:
 <h2><% person.firstname | h%> <% person.lastname | h%></h2>
-
+%   if h.url()().endswith('review') is True and ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
+<p class="submitted">
+<% person.firstname | h %> <% person.lastname | h %>&lt;<% person.email_address %>&gt;
+<% h.link_to('(view details)', url=h.url(controller='person', action='view', id=person.id)) %>
+<% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
+<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
+<% h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % person.email_address) %>
+</p>
+%   #endif
 <div class="bio">
 <p>
 <em>Bio:</em>
@@ -127,9 +135,11 @@ at
 % if len(c.proposal.attachments) > 0:
 </table>
 % #endfor
+% if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <p>
 <% h.link_to('Add an attachment', url=h.url(action='attach')) %>
 </p>
+% #endfor
 </div>
 
 % if c.proposal.assistance:
@@ -138,27 +148,24 @@ at
 % # endif
 
 <hr>
+</div>
 
-
-<ul>
 
 % if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
-<li>
+<ul><li>
 <% h.link_to('Edit Proposal', url=h.url(action='edit',id=c.proposal.id)) %>
-</li>
+</li></ul>
 % #endif
 
 
 # Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
-% if 'reviewer' in [x.name for x in c.signed_in_person.roles] and c.signed_in_person not in [x.reviewer for x in c.proposal.reviews]:
-<li>
+% if h.url()().endswith('review') is not True and h.url()().endswith('edit') is not True and 'reviewer' in [x.name for x in c.signed_in_person.roles]:
+<ul><li>
 <% h.link_to('Review this proposal', url=h.url(action='review')) %>
-</li>
+</li></ul>
 % #endif
 
-</ul>
 
-</div>
 
 
 % if ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
@@ -172,20 +179,20 @@ at
 
 %   for r in c.proposal.reviews:
 <tr class="<% h.cycle('even', 'odd') %>">
-<td>
+<td style="vertical-align: top;">
 <% h.link_to("%s - %s" % (r.id, r.reviewer.firstname), url=h.url(controller='review', id=r.id, action='view')) %>
 </td>
 
-<td>
+<td style="vertical-align: top;">
 <% r.score | h %>
 </td>
 
-<td>
+<td style="vertical-align: top;">
 <% r.stream.name | h %>
 </td>
 
-<td>
-<% r.comment | h %>
+<td style="vertical-align: top;">
+<% h.line_break(r.comment) %>
 </td>
 
 </tr>

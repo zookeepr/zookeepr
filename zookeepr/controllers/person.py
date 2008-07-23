@@ -89,8 +89,28 @@ class NewPersonSchema(BaseSchema):
     person = PersonSchema()
     pre_validators = [NestedVariables]
 
+class _UpdatePersonSchema(BaseSchema):
+    # Redefine the schema to remove email and password validation
+    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
+    company = validators.String()
+    phone = validators.String()
+    mobile = validators.String()
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
+
+    pre_validators = []
+    chained_validators = []
+
 class UpdatePersonSchema(BaseSchema):
-    person = PersonSchema()
+    # Redefine the schema to remove email and password validation
+    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
+    person = _UpdatePersonSchema()
     pre_validators = [NestedVariables]
 
 class PersonController(SecureController, Read, Update, List):
@@ -101,7 +121,7 @@ class PersonController(SecureController, Read, Update, List):
                'edit': UpdatePersonSchema()
               }
 
-    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser')],
+    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser'), AuthRole('reviewer')],
                    'roles': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'signin': True,
@@ -274,6 +294,26 @@ class PersonController(SecureController, Read, Update, List):
         # FIXME: test the process above
         return render_response('person/reset.myt', defaults=defaults, errors=errors)
 
+    def edit(self):
+        """UPDATE PERSON"""
+        defaults = dict(request.POST)
+        errors = {}
+
+        if defaults:
+            result, errors = UpdatePersonSchema().validate(defaults, self.dbsession)
+
+            if not errors:
+                # update the objects with the validated form data
+                for k in result['person']:
+                    setattr(self.obj, k, result['person'][k])
+                self.dbsession.update(self.obj)
+                self.dbsession.flush()
+                
+                default_redirect = dict(action='view', id=self.identifier(self.obj))
+                self.redirect_to('edit', default_redirect)
+
+        return render_response('person/edit.myt',
+                               defaults=defaults, errors=errors)
 
     def new(self):
         """Create a new person.

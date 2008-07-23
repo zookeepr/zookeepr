@@ -1,93 +1,33 @@
-<h1>Proposal Review</h1>
+<h2>Proposal Review - #<% c.proposal.id %></h2>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
 <% h.form(h.url_for()) %>
 
-<p>
 % if c.next_review_id:
-<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %> - 
+<ul><li><% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %></li></ul>
 % #endif
-<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='review_index')) %>
-</p>
-
-<h2>#<% c.proposal.id %> - "<% c.proposal.title | h %>"</h2>
-
-
-<fieldset>
-<legend>Proposal's technical content</legend>
-
-<p><p>Type: <strong><% c.proposal.type.name %></strong>
-
-<p>Submitted at:
-<% c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>
-(last updated at <% c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") %>)
-</p>
-
-<p>
-Project URL:
-% if c.proposal.url:
-<% h.link_to(c.proposal.url, url=c.proposal.url) %>.
-% else:
-<em>none given</em>.
-% #endif
-</p>
-
-<p>
-Video URL:
-% if c.proposal.abstract_video_url:
-<% h.link_to(c.proposal.abstract_video_url, url=c.proposal.abstract_video_url) %>.
-% else:
-<em>none given</em>.
-% #endif
-</p>
-
-<h3>Abstract:</h3>
-<blockquote>
-<% h.auto_link(h.simple_format(c.proposal.abstract)) %>
-</blockquote>
-
-</fieldset>
-<fieldset>
-<legend>Presenter's experience/biography</legend>
-% for person in c.proposal.people:
-<h2><% person.firstname %> <% person.lastname %></h2>
-<strong>Experience</strong>
-<blockquote>
-<% h.auto_link(h.simple_format(person.experience)) %>
-</blockquote>
-<strong>Bio</strong>
-<blockquote>
-<% h.auto_link(h.simple_format(person.bio)) %>
-</blockquote>
-
-<div id="stalk">
-<p>
-Proposal submitted by:
-
+<div class="contents"><h3>Review Pages</h3>
 <ul>
-<li>
-<% person.firstname | h %> <% person.lastname | h %>&lt;<% person.email_address %>&gt;
-<% h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
-<% h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) %>
-<% h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % person.email_address) %>
-</li>
+<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
+<li><% h.link_to('Go the proposal summary', url=h.url(controller='proposal', action='summary')) %></li>
+<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
 </ul>
-</p>
 </div>
-
-% #endfor
-</fieldset>
-
+<& view.myt &>
 
 <h3>Review</h3>
+% print c.signed_in_person.reviews
+% if c.signed_in_person in [x.reviewer for x in c.proposal.reviews]:
+<p>You have already reviewered this proposal. To modify your review, <% h.link_to('click here', url=h.url(controller='review', action='edit', id=x.id)) %>.</p>
+% else:
 <fieldset>
 <legend>
 Your opinion on this proposal.
 </legend>
 
 <div id="q1">
-<p class="label">1. What score do you give this proposal?</p>
+<p class="label"><span class="mandatory">*</span>1. What score do you give this proposal?</p>
 <p class="entries">
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
 <br>
@@ -101,7 +41,7 @@ Your opinion on this proposal.
 
 <div id="q2">
 <p class="label">
-2. What stream do you think this talk is most suitable for?
+<span class="mandatory">*</span>2. What stream do you think this talk is most suitable for?
 </p>
 
 <p>
@@ -135,9 +75,14 @@ for mc in miniconfs] ) ) %>
 <% h.submitbutton('Submit review and jump to next proposal!') %>
 </p>
 
-% if c.next_review_id:
-<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %>
 % #endif
+
+<p>
+% if c.next_review_id:
+<% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %> - 
+% #endif
+<% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='review_index')) %>
+</p>
 <% h.end_form() %>
 
 </&>
