@@ -1,6 +1,14 @@
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <h1>Review update</h1>
 
+<div class="contents"><h3>Review Pages</h3>
+<ul>
+<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
+<li><% h.link_to('Go the proposal summary', url=h.url(controller='proposal', action='summary')) %></li>
+<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+</ul>
+</div>
+
 <& ../proposal/view.myt &>
 
 <div id="review">
