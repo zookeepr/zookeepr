@@ -630,6 +630,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 else:
                     for registration in registration_list:
                         data.append(self._registration_badge_data(registration, stamp))
+                        registration.person.badge_printed = True
             else:
                 registration_list = self.dbsession.query(self.model).all()
                 for registration in registration_list:
@@ -661,7 +662,9 @@ class RegistrationController(SecureController, Update, List, Read):
                                 append = True
                         if append:
                             data.append(self._registration_badge_data(registration, stamp))
-     
+                            registration.person.badge_printed = True
+
+            self.dbsession.flush() # save badge printed data
             setattr(c, 'data', data)
 
             import os, tempfile

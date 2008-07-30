@@ -47,6 +47,8 @@ person = Table('person', metadata,
                # Proposal bits
                Column('experience', Text),
                Column('bio', Text),
+               
+               Column('badge_printed', Boolean)
               )
 
 # describe account roles to grant levels of access

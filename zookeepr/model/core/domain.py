@@ -22,6 +22,7 @@ class Person(object):
                  mobile=None,
                  experience=None,
                  bio=None,
+                 badge_printed=False,
                  creation_timestamp=None,
                  activated=None
                  ):
@@ -47,6 +48,7 @@ class Person(object):
         self.experience = experience
         self.bio = bio
 
+        self.badge_printed = badge_printed
         # url_hash should never be modifiable by the caller directly
         self._update_url_hash()
 
