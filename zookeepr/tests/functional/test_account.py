@@ -473,7 +473,7 @@ class TestPersonController(ControllerTest):
         f['person.postcode'] = '2000'
         resp = f.submit()
 
-        resp.mustcontain('This person already exists')
+        resp.mustcontain('A person with this email already exists.')
 
         resp.click('recover your password')
 

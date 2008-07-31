@@ -10,7 +10,7 @@ lca_info = {
   'commsecure_secret' : 'zing',
 
 # Contact email for the committee
-  'contact_email' : 'josh@nitrotech.org',
+  'contact_email' : 'joshua.hesketh@marchsouth.org',
 
 # Event information
   'event_name' : 'linux.conf.au 2009',
@@ -30,8 +30,8 @@ lca_rego = {
 	'speaker_accom_options' : (51,52,53),
 
 # Date Early Bird ends
-	'earlybird_enddate' : datetime(2008, 11, 18, 00, 00, 00),
-	'earlybird_limit' : 220
+	'earlybird_enddate' : datetime(2008, 1, 1, 00, 00, 00),
+	'earlybird_limit' : 0
 }
 
 file_paths = {

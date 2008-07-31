@@ -38,7 +38,6 @@ class TestHomeController(ControllerTest):
         print resp.request.url
         self.assertEqual('/', resp.request.url)
         resp.mustcontain("Sign out")
-        resp.mustcontain("Test Setup")
 
         self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
