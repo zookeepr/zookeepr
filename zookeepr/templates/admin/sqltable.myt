@@ -1,4 +1,4 @@
-<p><% h.link_to('Export as CSV', url=h.url(controller='admin', action='csv')) %></p>
+<p><a href="?csv=true">Export as CSV</a></p>
 
 <table border="1">
 <tr>

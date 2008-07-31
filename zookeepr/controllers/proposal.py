@@ -136,7 +136,43 @@ class ProposalController(SecureController, View, Update):
         errors = {}
 
         # Next ID for skipping
-        collection = self.dbsession.query(model.Proposal).all()
+          #SELECT
+          #    p.id, count(r.id)
+          #FROM
+          #        proposal AS p
+          #LEFT JOIN
+          #        review AS r
+          #                ON(p.id=r.proposal_id)
+          #WHERE   
+          #        p.proposal_type_id IN(1,3)
+          #GROUP BY
+          #        p.id
+          #HAVING COUNT(r.proposal_id) < (
+          #        (SELECT COUNT(id) FROM review) /
+          #        (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
+          #ORDER BY
+          #        RANDOM()   
+         
+        collection = self.dbsession.query(model.Proposal).from_statement("""
+              SELECT
+                  p.id
+              FROM
+                      proposal AS p
+              LEFT JOIN
+                      review AS r
+                              ON(p.id=r.proposal_id)
+              WHERE   
+                      p.proposal_type_id IN(1,3)
+              GROUP BY
+                      p.id
+              HAVING COUNT(r.proposal_id) < (
+                      (SELECT COUNT(id) FROM review) /
+                      (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
+              ORDER BY
+                      RANDOM()
+              LIMIT 10                     
+        """)
+        print collection
         for proposal in collection:
             #print proposal.id
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
