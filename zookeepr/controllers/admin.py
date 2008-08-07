@@ -66,7 +66,7 @@ class AdminController(SecureController):
                                                    for (fn, desc) in funcs]
         sect = {}
         pat = re.compile(r'\[([a-zA-Z,]+)\]')
-        for (page, desc) in funcs:
+        for (page, desc) in funcs:                
             m = pat.search(desc)
             if m:
                 desc = pat.sub(r'<small>[\1]</small>', desc)
@@ -184,6 +184,8 @@ def sql_response(sql):
         def foo(self):
             return sql_response('select * from person')
     """
+    if request.GET.has_key('csv'):
+        return csv_response(sql)
     import zookeepr.model
     res = zookeepr.model.metadata.bind.execute(sql);
     c.columns = res.keys
