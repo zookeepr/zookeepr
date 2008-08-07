@@ -383,7 +383,7 @@ class PersonController(SecureController, Read, Update, List):
 
         td = '<td valign="middle">'
         res = ''
-        res += '<b>'+self.obj.firstname+' '+self.obj.lastname+'</b><br>'
+        res += '<p><b>'+self.obj.firstname+' '+self.obj.lastname+'</b></p><br>'
         data = dict(request.POST)
         if data:
           role = int(data['role'])
@@ -424,7 +424,9 @@ class PersonController(SecureController, Read, Update, List):
 
         res += '</table>'
 
-        return Response(res)
+        c.res = res
+
+        return render_response('person/roles.myt')
 
     def is_same_id(self, *args):
         return self.obj.id == session['signed_in_person_id']

@@ -11,6 +11,7 @@
     <th>Mobile</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 % #endif
 
@@ -23,7 +24,7 @@
     <td><% p.phone |h %></td>
     <td><% p.mobile |h %></td>
 
-%   for action in ['view', 'edit']:
+%   for action in ['roles', 'view', 'edit']:
     <td><% h.link_to(action, url=h.url(action=action, id=p.id)) %></td>
 %   #endfor
   </tr>
@@ -37,6 +38,4 @@
 #if c.person_pages.current.next:
 #    m.write(h.link_to('Next page', url=h.url(page=c.person_pages.current.next)))
 
-m.write('<br>')
-m.write(h.link_to('New person', url=h.url(action='new')))
 </%python>
