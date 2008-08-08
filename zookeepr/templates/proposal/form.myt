@@ -29,11 +29,13 @@
     <p class="label"><label for="proposal.abstract_video_url">Video abstract:</label></p>
     <p class="entries"><% h.textfield('proposal.abstract_video_url', size=70) %></p>
     <p class="note">URL for a short "elevator pitch" (20s - 3min) video about your presentation, your project or yourself (eg: YouTube link).</p>
-
+% if h.url()().endswith('edit') is not True:
     <p class="label"><label for="attachment">Attach file:</label></p>
     <p class="entries"><% h.file_field('attachment', size=60) %></p>
     <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
-
+% else:
+    <p class="entries"><% h.link_to('Add an attachment', url=h.url(action='attach')) %> <span class="note">You can attach multiple files by following this link.</span></p>
+% #
     <p class="label"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></p>
     <p class="entries">
 % for ta in c.tatypes:

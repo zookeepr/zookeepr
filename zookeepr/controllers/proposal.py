@@ -172,7 +172,7 @@ class ProposalController(SecureController, View, Update):
                       RANDOM()
               LIMIT 10                     
         """)
-        print collection
+        #print collection
         for proposal in collection:
             #print proposal.id
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:

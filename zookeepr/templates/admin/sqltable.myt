@@ -1,3 +1,4 @@
+<h1><% h.url()().split('/')[-1].replace('_', ' ').title() %></h1>
 <p><a href="?csv=true">Export as CSV</a></p>
 
 <table border="1">
