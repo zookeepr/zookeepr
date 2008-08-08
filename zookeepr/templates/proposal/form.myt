@@ -34,7 +34,7 @@
     <p class="entries"><% h.file_field('attachment', size=60) %></p>
     <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
 % else:
-    <p class="entries"><% h.link_to('Add an attachment', url=h.url(action='attach')) %> <span class="note">You can attach multiple files by following this link.</span></p>
+    <p class="entries"><% h.link_to('Add an attachment', url=h.url(action='attach')) %> <% h.hidden_field('attachment', size=60) %><span class="note">You can attach multiple files by following this link.</span></p>
 % #
     <p class="label"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></p>
     <p class="entries">
