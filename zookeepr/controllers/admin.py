@@ -36,7 +36,7 @@ class AdminController(SecureController):
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
           ('/person', '''List of people signed up to the webpage (with
                            option to view/change their zookeepr roles)
-                           [auth]'''),
+                           [Accounts]'''),
 
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
@@ -136,18 +136,28 @@ class AdminController(SecureController):
 
         ''')
     def person_creation(self):
-        """ When did people create their accounts? [auth] """
+        """ When did people create their accounts? [Accounts] """
         return sql_response("""select person.id, firstname || ' ' ||
         lastname as name, creation_timestamp as created from person
         order by person.id;
         """)
     def auth_users(self):
-        """ List of users that are authorised for some role [auth] """
+        """ List of users that are authorised for some role [Accounts] """
         return sql_response("""select role.name as role, firstname || ' '
         || lastname as name, email_address, person.id
         from role, person, person_role_map
         where person.id=person_id and role.id=role_id
         order by role, lastname, firstname""")
+
+    def proposal_list(self):
+        """ Large table of all the proposals, presenters and dates. [CFP] """
+        return sql_response("""
+          SELECT proposal.*,
+            person.firstname || ' ' || person.lastname as name, person.email_address, person.address1, person.address2, person.city, person.state, person.postcode, person.country, person.company, person.phone, person.mobile, person.url, person.experience, person.bio, person.creation_timestamp as account_creation
+          FROM proposal, person, person_proposal_map
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id
+          ORDER BY proposal.title ASC;
+        """)
 
     def countdown(self):
         """ How many days until conference opens """
