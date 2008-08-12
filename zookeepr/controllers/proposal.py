@@ -161,13 +161,11 @@ class ProposalController(SecureController, View, Update):
               LEFT JOIN
                       review AS r
                               ON(p.id=r.proposal_id)
-              WHERE   
-                      p.proposal_type_id IN(1,3)
               GROUP BY
                       p.id
               HAVING COUNT(r.proposal_id) < (
                       (SELECT COUNT(id) FROM review) /
-                      (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
+                      (SELECT COUNT(id) FROM proposal) + 1)
               ORDER BY
                       RANDOM()
               LIMIT 10                     
@@ -310,12 +308,7 @@ class ProposalController(SecureController, View, Update):
         return render_response('proposal/list_review.myt')
 
     def summary(self):
-
-        if 'organiser' in [r.name for r in c.signed_in_person.roles]:
-            c.proposal_types = self.dbsession.query(ProposalType).all()
-        else:
-            c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()
-
+        c.proposal_types = self.dbsession.query(ProposalType).all()
         c.assistance_types = self.dbsession.query(AssistanceType).all()
 
         for pt in c.proposal_types:
