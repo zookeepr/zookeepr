@@ -49,7 +49,7 @@ class AdminController(SecureController):
           #hasn't registered and/or paid. [rego] '''),
            #('/pony', ''' OMG! Ponies!!! [ZK]'''),
 
-          ('/review/help', ''' Information on how to get started reviewing. '''),
+          ('/review/help', ''' Information on how to get started reviewing [CFP] '''),
           ('/proposal/review_index', ''' To see what you need to reveiw [CFP] '''),
           ('/review', ''' To see what you have reviewed [CFP]'''),
           ('/proposal/summary', ''' Summary of the reviewed papers [CFP] '''),
