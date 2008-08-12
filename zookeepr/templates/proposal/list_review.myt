@@ -3,9 +3,11 @@
 
 <div class="contents"><h3>Review Pages</h3>
 <ul>
-<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
-<li><% h.link_to('Go to the summary of proposals', url=h.url(controller='proposal', action='summary')) %></li>
-<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+<li><a href="/review/help">How to review</a></li>
+<li><% h.link_to('Review proposals', url=h.url(controller='proposal', action='review_index')) %></li>
+<li><% h.link_to('Your reviews', url=h.url(controller='review', action='index')) %></li>
+<li><% h.link_to('Summary of proposals', url=h.url(controller='proposal', action='summary')) %></li>
+<li><% h.link_to('Reviewer summary', url=h.url(controller='review', action='summary')) %></li>
 </ul>
 </div>
 
