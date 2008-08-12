@@ -153,9 +153,10 @@ class AdminController(SecureController):
         """ Large table of all the proposals, presenters and dates. [CFP] """
         return sql_response("""
           SELECT proposal.*,
+            assistance_type.name as assistance_type_name,
             person.firstname || ' ' || person.lastname as name, person.email_address, person.address1, person.address2, person.city, person.state, person.postcode, person.country, person.company, person.phone, person.mobile, person.url, person.experience, person.bio, person.creation_timestamp as account_creation
-          FROM proposal, person, person_proposal_map
-          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id
+          FROM proposal, person, person_proposal_map, assistance_type
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND assistance_type.id = proposal.assistance_type_id
           ORDER BY proposal.title ASC;
         """)
 
