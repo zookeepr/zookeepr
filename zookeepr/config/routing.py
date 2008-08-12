@@ -90,6 +90,7 @@ def make_map():
 
     #HACK: this is because of an incorrect link in the press release
     m.connect('/become_a_sponsor', controller='db_content', action='view', id=8)
+    m.connect('/review/help', controller='db_content', action='view', id=25)
 
     # special case the wiki controller so that it's not gobbled by the
     # usual :controller rules...

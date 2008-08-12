@@ -35,6 +35,8 @@ c.proposal = c.review.proposal
 if not defaults:
     defaults = {'review.score': c.review.score,
         'review.comment': c.review.comment,
+        'review.miniconf': c.review.miniconf,
+        'review.stream': c.review.stream.id
         }
 </%init>
 
