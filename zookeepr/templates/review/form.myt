@@ -4,7 +4,7 @@
 Your opinion on this proposal.
 </legend>
 <div id="q1">
-<p><span class="mandatory">*</span>1. What score do you give this proposal?
+<p><span class="mandatory">*</span><b>What score do you give this proposal?</b>
 <br>
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
 <br>
@@ -18,7 +18,7 @@ Your opinion on this proposal.
 
 <div id="q2">
 <p>
-<span class="mandatory">*</span>2. What stream do you think this talk is most suitable for?
+<span class="mandatory">*</span><b>What stream do you think this talk is most suitable for?</b>
 </p>
 
 <p>
@@ -26,17 +26,23 @@ Your opinion on this proposal.
 </p>
 </div>
 
+% if c.proposal.proposal_type_id is not 2:
+<div id="q3">
 <p class="label">
-3. What miniconf would this talk be most suitable for, if it's not accepted?
+<b>What miniconf would this talk be most suitable for, if it's not accepted?</b>
 </p>
 
 <p>
 <% h.select('review.miniconf', option_tags=h.options_for_select( [ [mc, mc]
 for mc in miniconfs] ) ) %>
 </p>
+</div>
+% else:
+<% h.hiddenfield('review.miniconf') %>
+% #endif
 
 
-<p>4. Comments (optional, readable by other reviewers, will not be shown to the submitter)
+<p><b>Comments</b> (optional, readable by other reviewers, will not be shown to the submitter)
 
 <% h.textarea('review.comment', size="80x10") %>
 </p>
@@ -49,7 +55,6 @@ for mc in miniconfs] ) ) %>
 <%init>
 # warning: this list must match the one in ../proposal/review.myt
 miniconfs = (
-  '',
   '(none)',
   'Debian',
   'Distro Summit',
