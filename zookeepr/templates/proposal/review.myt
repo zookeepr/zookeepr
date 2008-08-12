@@ -9,9 +9,11 @@
 % #endif
 <div class="contents"><h3>Review Pages</h3>
 <ul>
-<li><% h.link_to('Go to your list of reviews', url=h.url(controller='review')) %></li>
-<li><% h.link_to('Go the proposal summary', url=h.url(controller='proposal', action='summary')) %></li>
-<li><% h.link_to('Go to reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+<li><a href="/review/help">How to review</a></li>
+<li><% h.link_to('Review proposals', url=h.url(controller='proposal', action='review_index')) %></li>
+<li><% h.link_to('Your reviews', url=h.url(controller='review', action='index')) %></li>
+<li><% h.link_to('Summary of proposals', url=h.url(controller='proposal', action='summary')) %></li>
+<li><% h.link_to('Reviewer summary', url=h.url(controller='review', action='summary')) %></li>
 </ul>
 </div>
 <& view.myt &>
@@ -27,7 +29,7 @@ Your opinion on this proposal.
 </legend>
 
 <div id="q1">
-<p class="label"><span class="mandatory">*</span>1. What score do you give this proposal?</p>
+<p class="label"><span class="mandatory">*</span><b>What score do you give this proposal?</b></p>
 <p class="entries">
 <% h.radio('review.score', -2, "-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") %>
 <br>
@@ -41,7 +43,7 @@ Your opinion on this proposal.
 
 <div id="q2">
 <p class="label">
-<span class="mandatory">*</span>2. What stream do you think this talk is most suitable for?
+<span class="mandatory">*</span><b>What stream do you think this talk is most suitable for?</b>
 </p>
 
 <p>
@@ -49,9 +51,10 @@ Your opinion on this proposal.
 </p>
 </div>
 
+% if c.proposal.proposal_type_id is not 2:
 <div id="q3">
 <p class="label">
-3. What miniconf would this talk be most suitable for, if it's not accepted?
+<b>What miniconf would this talk be most suitable for, if it's not accepted?</b>
 </p>
 
 <p>
@@ -59,7 +62,11 @@ Your opinion on this proposal.
 for mc in miniconfs] ) ) %>
 </p>
 </div>
-<p class="label">Comments (optional, readable by other reviewers, will not be shown to the submitter)
+% else:
+<% h.hiddenfield('review.miniconf') %>
+% #endif
+
+<p class="label"><b>Comments</b> (optional, readable by other reviewers, will not be shown to the submitter)
 </p>
 <p class="entries">
 <% h.textarea('review.comment', size="80x10") %>
@@ -98,7 +105,6 @@ errors
 <%init>
 # warning: this list must match the one in ../review/form.myt
 miniconfs = (
-  '',
   '(none)',
   'Debian',
   'Distro Summit',
