@@ -65,6 +65,7 @@ miniconfs = (
   'High Performance Linix BoF'
   'Joomla!',
   'Lifehacker',
+  'LinuxChix',
   'Linux Kernel',
   'Linux Security',
   'Mobile Devices',
