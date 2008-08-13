@@ -112,7 +112,7 @@ miniconfs = (
   'Gaming',
   'Gentoo Down Under',
   'GNOME.conf.au',
-  'High Performance Linix BoF'
+  'High Performance Linix BoF',
   'Joomla!',
   'Lifehacker',
   'LinuxChix',
