@@ -1,6 +1,6 @@
 from formencode import variabledecode
 
-from zookeepr.lib.auth import AuthRole, SecureController
+from zookeepr.lib.auth import AuthRole, SecureController, AuthFunc
 from zookeepr.lib.base import c, render_response, model
 from zookeepr.lib.crud import List, Update, Read
 from zookeepr.lib.validators import BaseSchema, ReviewSchema
@@ -13,7 +13,7 @@ class ReviewController(SecureController, List, Update, Read):
     model = model.Review
     individual = 'review'
     permissions = {'index': [AuthRole('reviewer')],
-                   'edit': [AuthRole('reviewer')],
+                   'edit': [AuthFunc('is_reviewer')],
                    'view': [AuthRole('reviewer')],
                    'summary': [AuthRole('reviewer')]
                    }
@@ -27,6 +27,9 @@ class ReviewController(SecureController, List, Update, Read):
         super(ReviewController, self).__before__(**kwargs)
 
         c.streams = self.dbsession.query(model.Stream).all()
+
+    def is_reviewer(self):
+        return c.signed_in_person is self.obj.reviewer
 
 
     def summary(self):
