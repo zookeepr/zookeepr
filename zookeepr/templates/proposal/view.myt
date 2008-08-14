@@ -153,7 +153,7 @@ at
 
 % if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <ul><li>
-<% h.link_to('Edit Proposal', url=h.url(action='edit',id=c.proposal.id)) %>
+<% h.link_to('Edit Proposal', url=h.url(controller='proposal', action='edit',id=c.proposal.id)) %>
 </li></ul>
 % #endif
 

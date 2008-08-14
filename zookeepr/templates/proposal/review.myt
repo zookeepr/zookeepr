@@ -19,10 +19,14 @@
 <& view.myt &>
 
 <h3>Review</h3>
-% print c.signed_in_person.reviews
-% if c.signed_in_person in [x.reviewer for x in c.proposal.reviews]:
+% reviewed_already = False
+% for x in c.proposal.reviews:
+%   if x.reviewer == c.signed_in_person:
 <p>You have already reviewered this proposal. To modify your review, <% h.link_to('click here', url=h.url(controller='review', action='edit', id=x.id)) %>.</p>
-% else:
+%       reviewed_already = True
+%       break
+% #endfor
+% if not reviewed_already:
 <fieldset>
 <legend>
 Your opinion on this proposal.
