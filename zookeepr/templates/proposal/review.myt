@@ -4,8 +4,10 @@
 
 <% h.form(h.url_for()) %>
 
-% if c.next_review_id:
+% if not c.reviewed_everything:
 <ul><li><% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %></li></ul>
+% else:
+<ul><li><em>Skip!</em> - You have reviewed everything!</li></ul>
 % #endif
 <div class="contents"><h3>Review Pages</h3>
 <ul>
@@ -89,7 +91,7 @@ for mc in miniconfs] ) ) %>
 % #endif
 
 <p>
-% if c.next_review_id:
+% if not c.reviewed_everything:
 <% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %> - 
 % #endif
 <% h.link_to('Back to proposal list', url=h.url(controller='proposal', action='review_index')) %>
