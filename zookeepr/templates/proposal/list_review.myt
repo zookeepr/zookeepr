@@ -14,6 +14,7 @@
 % if c.num_reviewers <= 0:
 %	c.num_reviewers = 1
 % #endif
+<p>Below is all of the proposals that you have not yet reviewed. To start, please click "review now".</p>
 <p>You have reviewed <% len(c.person.reviews) %> out of your quota of  <% c.num_proposals * 3 / c.num_reviewers %>. </p>
 
 

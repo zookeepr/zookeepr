@@ -175,11 +175,12 @@ class ProposalController(SecureController, View, Update):
             #print proposal.id
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
                 c.next_review_id = proposal.id
+                c.reviewed_everything = False
                 break
             else:
-                # somehow didn't find one, so pick one at random
-                # (the collection is shuffled, so item 0 is random enough)
-                c.next_review_id = 1
+                # looks like you've reviewed everything!
+                c.next_review_id = id
+                c.reviewed_everything = True
 
 
 
