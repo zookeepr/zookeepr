@@ -1,6 +1,11 @@
 <h2>My Proposals</h2>
 
 %if c.person.proposals.__len__() > 0:
+%  declined = False
+
+%  if c.paper_editing == 'closed':
+<p>Proposal editing has been disabled while the review committee assess your proposals. Editing will be available later for updating details on your accepted presentations.</p>
+%  #endif
 <p>Below is a list of proposals you have submitted. To view one click on the title; or to edit, click on the edit link.</p>
 <table>
   <tr>
@@ -9,6 +14,7 @@
     <th>Abstract</th>
     <th>Project URL</th>
     <th>Submitter(s)</th>
+    <th>Status</th>
     <th>&nbsp;</th>
   </tr>
 %   for s in c.person.proposals:
@@ -31,10 +37,25 @@
       <% h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
 %     #endfor
     </td>
+    <td>
+%     if s.accepted == None:
+        <p><i>Undergoing review</i></p>
+%     elif s.accepted:
+        <p>Accepted</p>
+%     else:
+%       declined = True
+        <p>Declined<sup>[1]</sup></p>
+%     #endif    
+    </td>
     <td><% h.link_to("edit", url=h.url(controller='proposal', action='edit', id=s.id)) %></td>
   </tr>
 % #endfor
 </table>
+
+%   if declined:
+<p>[1] Your proposal has been passed onto miniconf organisors for possible inclusion in their programmes. They <i>may</i> contact you.</p>
+%   #endif
+
 %else:
     <p>You haven't submitted any proposals. To propose a miniconf, presentation or tutorial, please use the links above.</p>
 %#endif

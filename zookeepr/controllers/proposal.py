@@ -114,6 +114,7 @@ class ProposalController(SecureController, View, Update):
     def __init__(self, *args):
         c.cfp_status = lca_info['cfp_status']
         c.cfmini_status = lca_info['cfmini_status']
+        c.paper_editing = lca_info['paper_editing']
 
     def __before__(self, **kwargs):
         super(ProposalController, self).__before__(**kwargs)

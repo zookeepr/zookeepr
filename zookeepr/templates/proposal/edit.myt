@@ -1,6 +1,10 @@
-<h2>Edit proposal <% c.proposal.id %></h2>
+<h2>Edit proposal "<% c.proposal.title %>"</h2>
 
 <div id="proposal">
+
+% if c.paper_editing == 'closed':
+<p>Editing has been disabled while proposals are reviewed. If your paper is successful in its submission, you will be able to update your details later when the schedule is finalised.</p>
+% else:
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
@@ -18,7 +22,7 @@
 <% h.end_form() %>
 
 </&>
-
+% #endif
 </div>
 
 <%args>
