@@ -160,6 +160,41 @@ class AdminController(SecureController):
           ORDER BY proposal.title ASC;
         """)
 
+    def proposals_by_strong_rank(self):
+        """ List of proposals ordered by number of certain score / total number of reviewers [CFP] """
+        query = """
+SELECT 
+    proposal.id, 
+    proposal.title, 
+    review.score, 
+    COUNT(review.id) AS "#reviewers at this score", 
+    (
+        SELECT COUNT(review2.id) 
+            FROM review as review2 
+            WHERE review2.proposal_id = proposal.id
+    ) AS "#total reviewers",
+    CAST(
+        CAST(
+            COUNT(review.id) AS float(8)
+        ) / CAST(
+            (SELECT COUNT(review2.id) 
+                FROM review as review2 
+                WHERE review2.proposal_id = proposal.id
+            ) AS float(8)
+        ) AS float(8)
+    ) AS "#reviewers at this score / #total reviews %%" 
+FROM proposal LEFT JOIN review ON (proposal.id=review.proposal_id) 
+WHERE 
+    (
+        SELECT COUNT(review2.id) 
+            FROM review as review2 
+            WHERE review2.proposal_id = proposal.id
+    ) != 0
+GROUP BY proposal.id, proposal.title, review.score 
+ORDER BY review.score DESC, proposal.id ASC """
+
+        return sql_response(query)
+
     def countdown(self):
         """ How many days until conference opens """
         timeleft = lca_info['date'] - datetime.now()
