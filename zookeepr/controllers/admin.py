@@ -191,7 +191,7 @@ WHERE
             WHERE review2.proposal_id = proposal.id
     ) != 0
 GROUP BY proposal.id, proposal.title, review.score 
-ORDER BY review.score DESC, proposal.id ASC """
+ORDER BY review.score DESC, "#reviewers at this score / #total reviews %%" DESC, proposal.id ASC """
 
         return sql_response(query)
 
