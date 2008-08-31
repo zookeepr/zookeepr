@@ -12,6 +12,7 @@ mapper(Product, product,
        properties = {
              'ceilings': relation(Ceiling, secondary=product_ceiling_map, lazy=False,
                                  backref='products'),
+             'category': relation(ProductCategory, lazy=True, backref='products'),
             },
      )
 
