@@ -28,29 +28,29 @@ lca_info = {
 
 lca_rego = { 
 # Id's used for speaker accom
-	'speaker_accom_options' : (51,52,53),
+  'speaker_accom_options' : (51,52,53),
 
 # Date Early Bird ends
-	'earlybird_enddate' : datetime(2008, 1, 1, 00, 00, 00),
-	'earlybird_limit' : 0
+  'earlybird_enddate' : datetime(2008, 1, 1, 00, 00, 00),
+  'earlybird_limit' : 0
 }
 
 file_paths = {
-    'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
-    'public_html': '',
-    'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
-    'news_htmlprefix': '/featured'
+  'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
+  'public_html': '',
+  'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
+  'news_htmlprefix': '/featured'
 }
 
 lca_menu = [
-    ('Home', '/home', 'home'),
-    ('About', '/about/the_event_history', 'about'),
-    ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
-    ('Programme/Participate', '/programme/about_programme', 'programme'),
-    #('Register', '/register', 'register'), # -- Stage 2
-    #('Wiki', '/wiki', 'wiki'),
-    ('Media', '/media/news', 'media'),
-    ('Contact', '/contact', 'contact'),
+  ('Home', '/home', 'home'),
+  ('About', '/about/the_event_history', 'about'),
+  ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
+  ('Programme/Participate', '/programme/about_programme', 'programme'),
+  #('Register', '/register', 'register'), # -- Stage 2
+  #('Wiki', '/wiki', 'wiki'),
+  ('Media', '/media/news', 'media'),
+  ('Contact', '/contact', 'contact'),
 ]
 
 lca_submenus = {

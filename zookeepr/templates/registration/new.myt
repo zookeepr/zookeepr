@@ -1,7 +1,3 @@
-<h2>Registrations are not open yet.</h2>
-
-% """
-
 <h2>Register for the conference</h2>
 
 % if h.lca_info['registration_status'] == 'open': 
@@ -142,4 +138,3 @@ if not defaults:
 		'registration.speaker_slides_release': '1',
 		}
 </%init>
-% """

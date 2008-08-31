@@ -47,9 +47,9 @@
 
 <p>
 <strong>Attention:</strong> <% c.invoice.person.firstname %> <% c.invoice.person.lastname %>
-% if c.invoice.person.registration and c.invoice.person.registration.company:
+% if c.invoice.person.registration and c.invoice.person.company:
 <br>
-<strong>Company:</strong> <% c.invoice.person.registration.company %>
+<strong>Company:</strong> <% c.invoice.person.company %>
 % # endif
 </p>
 
