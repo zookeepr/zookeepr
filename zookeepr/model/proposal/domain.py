@@ -20,11 +20,11 @@ class Proposal(object):
         self.abstract = abstract
         self.url = url
         self.attachment = attachment
-	self.code = code
+        self.code = code
         self.scheduled = scheduled
         self.finished = finished
-	self.theatre = theatre
-	self.building = building
+        self.theatre = theatre
+        self.building = building
 
     def __repr__(self):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)
