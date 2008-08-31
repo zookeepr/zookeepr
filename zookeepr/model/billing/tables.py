@@ -57,6 +57,7 @@ invoice_item = Table('invoice_item', metadata,
 product = Table('product', metadata,
                 Column('id', Integer, primary_key=True),
                 Column('category_id', Integer, ForeignKey('product_categories.id'), nullable=False),
+                Column('active', Boolean, nullable=False),
                 Column('description', Text, nullable=False),
                 Column('cost', Integer, nullable=False),
                 )
