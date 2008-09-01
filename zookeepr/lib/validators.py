@@ -20,15 +20,15 @@ class BoundedInt(validators.Int):
 
     def __init__(self, *args, **kw):
         validators.Int.__init__(self, *args, **kw)
-	if not hasattr(self, 'min') or self.min==None:
-	  self.min = -2147483648 # Smallest number that fits in postgres
-	if not hasattr(self, 'max') or self.max==None:
-	  self.max = +2147483647 # Largest number that fits in postgres
+        if not hasattr(self, 'min') or self.min==None:
+            self.min = -2147483648 # Smallest number that fits in postgres
+        if not hasattr(self, 'max') or self.max==None:
+            self.max = +2147483647 # Largest number that fits in postgres
     def validate_python(self, value, state):
         if value>self.max:
-	    raise Invalid('Too large (maximum %d)'%self.max, value, state)
+            raise Invalid('Too large (maximum %d)'%self.max, value, state)
         if value<self.min:
-	    raise Invalid('Too small (minimum %d)'%self.min, value, state)
+            raise Invalid('Too small (minimum %d)'%self.min, value, state)
 
 class BaseSchema(schema.Schema):
     allow_extra_fields = True
@@ -52,9 +52,9 @@ class BaseSchema(schema.Schema):
                         good_errors[key] = errors[key]
             except AttributeError:
                 good_errors['x'] = errors
-                
+
             return {}, good_errors
-            
+
 #    def to_python(self, value_dict, state):
 #        print value_dict
 #        for key, value in value_dict.iteritems():
@@ -62,7 +62,7 @@ class BaseSchema(schema.Schema):
 #                value_dict[key] = h.esc(value)
 #        #print value_dict
 #        return super(BaseSchema, self).to_python(value_dict, state)
-        
+
 
 
 class PersonValidator(validators.FancyValidator):
@@ -168,7 +168,6 @@ class EmailAddress(validators.FancyValidator):
 # TODO: have link to signin field
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        
         person = state.query(Person).filter_by(email_address=value['email_address']).first()
         if person is not None:
             raise Invalid("A person with this email already exists.  Please try signing in first.", value, state)

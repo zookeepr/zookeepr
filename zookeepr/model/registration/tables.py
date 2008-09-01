@@ -2,32 +2,17 @@ from sqlalchemy import *
 
 from zookeepr.model import metadata
 
-accommodation_location = Table('accommodation_location', metadata, 
-                               Column('id', Integer, primary_key=True),
-
-                               Column('name', Text, nullable=False, unique=True),
-                               Column('beds', Integer, nullable=False),
-                               )
-
-accommodation_option = Table('accommodation_option', metadata,
-                             Column('id', Integer, primary_key=True),
-
-                             Column('accommodation_location_id', Integer,
-                                    ForeignKey('accommodation_location.id'),
-                                    nullable=False),
-
-                             Column('name', Text),
-                             Column('cost_per_night', Float, nullable=False),
-                             )
+registration_product = Table('registration_product', metadata,
+                             Column('registration_id', Integer, ForeignKey('registration.id'), primary_key=True),
+                             Column('product_id', Integer, ForeignKey('product.id'), primary_key=True),
+                             Column('qty', Integer, nullable=False),
+                            )
 
 registration = Table('registration', metadata,
                      Column('id', Integer, primary_key=True),
 
                      Column('person_id', Integer, ForeignKey('person.id'),
                             unique=True),
-
-                     Column('accommodation_option_id', Integer, ForeignKey('accommodation_option.id'),
-                            ),
 
                      Column('nick', Text),
                      Column('shell', Text),
@@ -37,25 +22,12 @@ registration = Table('registration', metadata,
                      Column('distro', Text),
                      Column('distrotext', Text),
                      Column('silly_description', Text),
-                     Column('type', Text),
                      Column('voucher_code', Text),
-                     Column('teesize', Text),
-                     Column('extra_tee_count', Integer),
-                     Column('extra_tee_sizes', Text),
-                     Column('dinner', Integer),
                      Column('diet', Text),
                      Column('special', Text),
                      Column('volunteer', Text),
                      Column('opendaydrag', Integer),
                      Column('partner_email', Text),
-                     Column('kids_0_3', Integer),
-                     Column('kids_4_6', Integer),
-                     Column('kids_7_9', Integer),
-                     Column('kids_10_11', Integer),
-                     Column('kids_12_17', Integer),
-                     Column('pp_adults', Integer),
-                     Column('speaker_pp_pay_adult', Integer),
-                     Column('speaker_pp_pay_child', Integer),
 
                      Column('checkin', Integer),
                      Column('checkout', Integer),

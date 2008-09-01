@@ -1,5 +1,108 @@
 import datetime
 
+class Ceiling(object):
+    def __init__(self, name=None, max_sold=None):
+        self.name = name
+        self.max_sold = max_sold
+
+    def __repr__(self):
+        return '<Ceiling id=%r name=%r max_sold=%r' % (self.id, self.name, self.max_sold)
+
+    def qty_sold(self):
+        qty = 0
+        for p in self.products:
+            qty += p.qty_sold()
+        return qty
+
+    def qty_invoiced(self):
+        qty = 0
+        for p in self.products:
+            qty += p.qty_invoice()
+        return qty
+
+    def ceiling_remaining(self):
+        return self.max_sold - self.qty_sold()
+
+    def ceiling_soldout(self):
+        return self.max_sold > self.qty_sold()
+
+    def can_i_sell(self, qty):
+        if self.ceiling_remaining() > qty:
+            return True
+        else:
+            return False
+
+
+class ProductCategory(object):
+    def __init__(self, name=None, description=None, display='qty', min_qty=0, max_qty=100):
+        self.name = name
+        self.description = description
+        self.display = display
+        self.min_qty = min_qty
+        self.max_qty = max_qty
+
+    def __reprt__(self):
+        return '<ProductCategory id=%r name=%r description=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.display, self.min_qty, self.max_qty)
+
+    def qty_person_sold(self, person):
+        qty = 0
+        for i in person.invoices:
+            for ii in i.invoice_items:
+                if ii.product.category == self:
+                    qty += ii.qty
+        return qty
+
+    def can_i_sell(self, person, qty):
+        if self.qty_person_sold(person) + qty <= self.max_qty:
+            return True
+        else:
+            return False
+
+
+class Product(object):
+    def __init__(self, active=False, description=None, cost=None):
+        self.active = active
+        self.description = description
+        self.cost = cost
+
+    def __repr__(self):
+        return '<Product id=%r active=%r description=%r cost=%r' % (self.id, self.active, self.description, self.cost)
+
+    def qty_sold(self):
+        qty = 0
+        for ii in self.invoice_items:
+            if ii.invoice.paid:
+                qty += ii.qty
+        return qty
+
+    def qty_invoiced(self):
+        qty = 0
+        for ii in self.invoice_items:
+            qty += ii.qty
+        return qty
+
+    def product_remaining(self):
+        max_ceiling = 0
+        for c in self.ceilings:
+            if c.ceiling_remaining > max_ceiling:
+                max_ceiling = c.ceiling_remaining
+        return max_ceiling
+
+    def product_soldout(self):
+        for c in self.ceilings:
+            if c.ceiling_soldout():
+                return True
+        return False
+
+    def can_i_sell(self, person, qty):
+        if not self.category.can_i_sell(person, qty):
+            return False
+        for c in self.ceiling:
+            if not c.can_i_sell(qty):
+                return False
+        return True
+
+
 class InvoiceItem(object):
     def __init__(self, description=None, qty=None, cost=None):
         self.description = description
