@@ -34,14 +34,15 @@ class Ceiling(object):
 
 
 class ProductCategory(object):
-    def __init__(self, name=None, display='qty', min_qty=0, max_qty=100):
+    def __init__(self, name=None, description=None, display='qty', min_qty=0, max_qty=100):
         self.name = name
+        self.description = description
         self.display = display
         self.min_qty = min_qty
         self.max_qty = max_qty
 
     def __reprt__(self):
-        return '<ProductCategory id=%r name=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.display, self.min_qty, self.max_qty)
+        return '<ProductCategory id=%r name=%r description=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.display, self.min_qty, self.max_qty)
 
     def qty_person_sold(self, person):
         qty = 0
