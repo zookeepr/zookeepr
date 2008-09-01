@@ -20,7 +20,7 @@ class PersonAuthenticator(object):
         dbsession = create_session()
 
         person = dbsession.query(Person).filter_by(email_address=username).first()
-        
+
         if person is None:
             return retcode.FAILURE
 
@@ -54,7 +54,7 @@ class PersonAuthenticator(object):
 #         elif not auth.user_exists(value):
 #             raise formencode.Invalid('No such user', value, state)
 #         return value
-    
+
 # class SignIn(formencode.Schema):
 #     go = formencode.validators.String()
 #     email_address = ExistingEmailAddress()
@@ -66,7 +66,7 @@ class PersonAuthenticator(object):
 # class UserModelAuthStore(object):
 #     def __init__(self):
 #         self.status = {}
-        
+
 #     def user_exists(self, value):
 #         session = create_session()
 #         ps = session.query(Person).select_by(email_address=value)
@@ -87,7 +87,7 @@ class PersonAuthenticator(object):
 #                 is_signed_in = True
 
 #             return signed_in and is_signed_in
-        
+
 #         return True
 
 class SecureController(BaseController):
@@ -95,7 +95,7 @@ class SecureController(BaseController):
 
     Controllers that require someone to be logged in can inherit
     from this class instead of `BaseController`.
-    
+
     In the permissions list, the special name 'ALL' sets the default
     (normally no access).
 
@@ -167,12 +167,12 @@ class SecureController(BaseController):
             return False
 
         if action in self.permissions.keys():
-	    perms = self.permissions[action]
+            perms = self.permissions[action]
         elif 'ALL' in self.permissions.keys():
-	    perms = self.permissions['ALL']
-	else:
+            perms = self.permissions['ALL']
+        else:
             # no access by default
-	    return False
+            return False
 
         if perms==True:
             # anonymous action
