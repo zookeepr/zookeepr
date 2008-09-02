@@ -12,15 +12,9 @@ class AdminController(SecureController):
 
     permissions = {
       'ALL': [AuthRole('organiser')],
-      'acc_papers': [AuthRole('miniconf'), AuthRole('organiser')],
-      'rej_papers': [AuthRole('miniconf'), AuthRole('organiser')],
-      'rej_papers_abstracts': [AuthRole('miniconf'), AuthRole('organiser')],
-      'AV_ping': [AuthTrue()],
-      'recorded_miniconf_talks': [AuthTrue()],
-      'AV_ping': True,
-      'recorded_miniconf_talks': True,
+      'proposals_by_strong_rank': [AuthRole('reviewer')],
+      'proposals_by_max_rank': [AuthRole('reviewer')]
     }
-
     def index(self):
         res = dir(self)
         exceptions = ['check_permissions', 'dbsession',
@@ -166,6 +160,7 @@ class AdminController(SecureController):
 SELECT 
     proposal.id, 
     proposal.title, 
+    proposal_type.name AS "proposal type",
     review.score, 
     COUNT(review.id) AS "#reviewers at this score", 
     (
@@ -183,17 +178,36 @@ SELECT
             ) AS float(8)
         ) AS float(8)
     ) AS "#reviewers at this score / #total reviews %%" 
-FROM proposal LEFT JOIN review ON (proposal.id=review.proposal_id) 
+FROM proposal 
+    LEFT JOIN review ON (proposal.id=review.proposal_id) 
+    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
 WHERE 
     (
         SELECT COUNT(review2.id) 
             FROM review as review2 
             WHERE review2.proposal_id = proposal.id
     ) != 0
-GROUP BY proposal.id, proposal.title, review.score 
-ORDER BY review.score DESC, "#reviewers at this score / #total reviews %%" DESC, proposal.id ASC """
+GROUP BY proposal.id, proposal.title, review.score, proposal_type.name
+ORDER BY proposal_type.name ASC, review.score DESC, "#reviewers at this score / #total reviews %%" DESC, proposal.id ASC"""
 
         return sql_response(query)
+
+    def proposals_by_max_rank(self):
+        """ List of all the proposals ordered max score, min score then average [CFP] """
+        return sql_response("""
+SELECT
+    proposal.id, 
+    proposal.title, 
+    proposal_type.name AS "proposal type",
+    MAX(review.score),
+    MIN(review.score),
+    AVG(review.score)
+FROM proposal 
+    LEFT JOIN review ON (proposal.id=review.proposal_id)
+    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+GROUP BY proposal.id, proposal.title, proposal_type.name
+ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+""")
 
     def countdown(self):
         """ How many days until conference opens """

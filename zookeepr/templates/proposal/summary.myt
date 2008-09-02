@@ -52,6 +52,10 @@ function toggleDiv(id,flagit) {
 <li><% h.link_to('Summary of proposals', url=h.url(controller='proposal', action='summary')) %></li>
 <li><% h.link_to('Reviewer summary', url=h.url(controller='review', action='summary')) %></li>
 </ul>
+<ul>
+<li><a href="/admin/proposals_by_strong_rank">List of proposals by number of certain score / number of reviewers</a></li>
+<li><a href="/admin/proposals_by_max_rank">List of proposals by max score, min score then average</a></li>
+</ul>
 </div>
 
 <p>
@@ -61,6 +65,8 @@ function toggleDiv(id,flagit) {
 <li>Mouse over reviewer name for Bio and Experience
 <li>Mouse over stream for Stream Stats
 </ul>
+
+<div style="clear: both;"></div>
 
 % for pt in c.proposal_types:
 % 	collection = getattr(c, '%s_collection' % pt.name)
