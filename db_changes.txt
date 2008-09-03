@@ -1,0 +1,18 @@
+2008-09-02 (changes from live to new rego models):
+      * Added Ceiling and Product models
+       * ceiling is linked to product by ceiling_product_map
+       * an invoice_item can optionally have a product
+       * added calculation of total qty of a ceiling used (should be seperated into product and ceiling model)
+       * added methods to determine whether a product is soldout and how many are remaining
+       * Made qty checking code more uniform
+           * Added Product Categories
+           * Removed registration field from product as it will now be a category
+           * Added can_i_sell(person, qty) to Product which checks the limits in the Product and the Products associated ceilings
+           * added active field to products
+   * Name product_category table correctly
+   * Remove all product related fields from registration
+   * Add registration<->Product relationship table and class
+   * Remove all Accomodation tables as these will be replaced by products and ceilings
+   * Remove the pretty much non-existant Accomodation controller
+   * Changed VoucherCode to use products
+  

@@ -47,6 +47,11 @@
 %   is_speaker = False
 % #endif
 
+<p class="label"><label for="person.mobile">Phone number:</label>
+</p><p class="entries">
+<% h.textfield('person.phone') %>
+</p>
+
 <p class="label">
 % if is_speaker:
 <span class="mandatory">*</span>
@@ -63,384 +68,13 @@
 </p>
 
 <p class="label">
-# FIXME: dynamic :)
-<label for="registration.shell">Your favourite shell:</label>
-</p><p class="entries">
-<select name="registration.shell">
-<option value="-">-</option>
-% for s in ['zsh', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold']:
-<option value="<%s%>"><% s %></option>
-% #endfor
-</SELECT>
-Other: <% h.textfield('registration.shelltext') %>
-</p>
-
-<p class="label">
-<label for="registration.editor">Your favourite editor:</label>
-</p><p class="entries">
-<SELECT name="registration.editor">
-<option value="-">-</option>
-% for e in ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']:
-<option value="<% e %>"><% e %></option>
-% #endfor
-</SELECT>
-Other: <% h.textfield('registration.editortext') %>
-</p>
-
-<p class="label">
-<label for="registration.distro">Your favourite distro:</label>
-</p><p class="entries">
-<SELECT name="registration.distro">
-<option value="-">-</option>
-% for d in ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu']:
-<option value="<% d %>"><% d %></option>
-% #endfor
-</SELECT>
-Other: <% h.textfield('registration.distrotext') %>
-</p>
-
-</p><p class="label">
-<label for="registration.nick">Superhero name:</label>
-</p><p class="entries">
-<% h.textfield('registration.nick', size=30) %>
-</p><p class="note">
-Your IRC nick or other handle you go by.
-</p>
-
-<%python>
-starts = ["a", "a", "a", "one", "no"] # bias toward "a"
-adverbs = ["strongly",
-		       "poorly", "badly", "well", "dynamically",
-		       "hastily", "statically", "mysteriously",
-		       "buggily", "extremely", "nicely", "strangely",
-		       "irritatingly", "unquestionably", "clearly",
-		       "plainly", "silently", "abstractly", "validly",
-		       "invalidly", "immutably", "oddly", "disturbingly",
-		       "atonally", "randomly", "amusingly", "widely",
-		       "narrowly", "manually", "automatically", "audibly",
-		       "brilliantly", "independently", "definitively",
-		       "provably", "improbably", "distortingly",
-		       "confusingly", "decidedly", "historically"]
-adjectives = ["invalid", "valid",
-		       "referenced", "dereferenced", "unreferenced",
-		       "illegal", "legal",
-		       "questionable", 
-		       "alternate", "implemented", "unimplemented",
-		       "terminal", "non-terminal",
-		       "static", "dynamic",
-		       "qualified", "unqualified", 
-		       "constant", "variable",
-		       "volatile", "non-volatile",
-		       "abstract", "concrete",
-		       "fungible", "non-fungible",
-		       "untyped", "variable",
-		       "mutable", "immutable",
-		       "sizable", "miniscule",
-		       "perverse", "immovable",
-		       "compressed", "uncompressed",
-		       "surreal", "allegorical",
-		       "trivial", "nontrivial"]
-nouns = ["pointer", "structure",
-		       "definition", "declaration", "type", "union",
-		       "coder", "admin", "hacker", "kitten", "mistake",
-		       "conversion", "implementation", "design", "analysis",
-		       "neophyte", "expert", "bundle", "package",
-		       "abstraction", "theorem", "display", "distro",
-		       "restriction", "device", "function", "reference"]
-adverb = random.choice(adverbs)
-adjective = random.choice(adjectives)
-noun = random.choice(nouns)
-start = random.choice(starts)
-if start == 'a' and adverb[0] in ['a', 'e', 'i', 'o', 'u']:
-    start = 'an'
-desc = '%s %s %s %s' % (start, adverb, adjective, noun)
-descMD5 = md5.new(desc).hexdigest()
-</%python>
-<p class="label">
-<label for="registration.silly_description">Description:</label>
-</p><p>
-<% desc %>
-<% h.hidden_field('registration.silly_description', value=desc) %>
-</p>
-
-<p class="label">
-<label for="registration.prevlca">Have you attended linux.conf.au before?</label>
-</p><p class="entries">
-% for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)')]:
-%	label = 'registration.prevlca.%s' % year
-<br>
-<% h.check_box(label) %>
-<label for="<% label %>"><% desc %></label>
-% #endfor
-</p>
-
-
-</fieldset>
-
-<fieldset id="registration">
-<h2>Conference Information</h2>
-
-<br><p class="note">
-<span class="mandatory">*</span> - Mandatory field
-</p>
-
-<p class="label">
-<span class="mandatory">*</span>
-<label for="registration.type">What type of ticket do you want?</label>
-</p><p class="entries">
-# FIXME: dynamic content
-% ticket_types = [('Fairy Penguin Sponsor', '1650.00', '1650.00'), ('Professional', '748.00', '598.40'), ('Hobbyist', '352.00', '281.60'), ('Student', '154.00', '154.00')]
-% ticket_types += [('Monday only', '49.50', '49.50'), ('Tuesday only', '49.50', '49.50')]
-# ticket_types += [('Professional - No Keynote Access', '748.00', '598.40'), ('Hobbyist - No Keynote Access', '352.00', '281.60')]
-% ticket_types += [('Penguin Dinner only', '50.00', '50.00')]
-% ticket_types += [('Volunteer', '0.00', '0.00')]
-% if is_speaker:
-%   ticket_types = [('Speaker', '0.00', '0.00')] + ticket_types
-% elif c.is_miniconf_org:
-%   ticket_types = [('Mini-conf organiser', '0.00', '0.00')] + ticket_types
-% elif c.signed_in_person and ('team' in [r.name for r in c.signed_in_person.roles]):
-%   ticket_types = [('Team', '0.00', '0.00')] + ticket_types
-% #endif
-% if c.signed_in_person and ('monday-pass' in [r.name for r in c.signed_in_person.roles]):
-%   ticket_types = [('Monday pass', '0.00', '0.00')] + ticket_types
-% #endif
-% if c.signed_in_person and ('tuesday-pass' in [r.name for r in c.signed_in_person.roles]):
-%   ticket_types = [('Tuesday pass', '0.00', '0.00')] + ticket_types
-% #endif
-% for (t, p, eb) in ticket_types:
-<input type="radio" name="registration.type" id="registration.type_<% t %>" value="<% t %>" />
-<label for="registration.type_<% t %>"><% t %> &#215; $<% p %>
-#% if eb != p:
-#($<% eb %> early-bird)
-#% #endif
-</label>
-<br>
-% #endfor
-% if is_speaker:
-<p class="note-bene">
-As a speaker, you are entitled to attend for free. However, if you
-<i>want</i> to pay, we aren't stopping you :-)
-</p>
-% else:
-<p class="note">
-Check the <% h.link_to('registration page', url="/register", popup=True) %> for the full details of each ticket. The Fairy Penguin sponsorship is designed for those who wish to attend the conference as a Professional delegate and make a supporting contribution to the conference.
-</p><p class="note">
-One important change from past years is that Student and Hobbyist tickets
-also include Penguin Dinner.
-</p>
-% #endif
-
-% if 1:
-<p class="label">
-<label for="registration.voucher_code">Voucher Code:</label>
-</p><p class="entries">
-<% h.textfield('registration.voucher_code') %>
-<p class="note">
-Voucher code. For group booking vouchers, note that your name,
-company and email address will be visible to the group leader(s) for
-verification.
-</p>
-</p>
-% else:
-<% h.hidden_field('registration.voucher_code', value='') %>
-% #endif
-
-<p class="label">
-<span class="mandatory">*</span>
-<label>T-shirt Size and Style:</label>
-<p class="entries">
-<%python>
-teeoptions = [
-  ('F_long',
-  """Women's long sleeve <br><span class="note">(Small cut -
-  order 1 size up)</p>""",
-  ('8', '10', '12', '14', '16', '18', '', '')),
-
-  ('F_short',
-  "Women's short sleeve fitted",
-  ('8', '10', '12', '14', '16', '', '', '')),
-
-  ('M_long',
-  "Men's long sleeve",
-  ('S', 'M', 'L', 'XL', '2XL', '3XL', '', '')),
-
-  ('M_short',
-  "Men's short sleeve",
-  ('S', 'M', 'L', 'XL', '2XL', '3XL', '4XL', '5XL'))]
-teesizes = {}
-def oddeven_gen():
-  while 1:
-    yield "odd"
-    yield "even"
-oddeven = oddeven_gen().next
-</%python>
-<table>
-% for style, style_text, sizes in teeoptions: 
-<tr class="<% oddeven() %>">
-<td>
-<% style_text %> &nbsp;
-</td>
-% 	for size in sizes:
-%           size_text = teesizes.get(size, size)
-%           if size_text == '':
-<td>&nbsp;</td>
-%           else:
-<td>
-<input type="radio" name="registration.teesize" id="registration.teesize_<%
-style %>_<% size %>" value="<% style %>_<% size %>" />&nbsp;<label for="registration.teesize_<% style %>_<% size %>"><% size_text %></label>&nbsp;
-</td>
-%           #endif
-% 	#endfor
-</tr>
-% #endfor
-</table>
-</p><p class="note">
-<br>A conference T-shirt is included with all Student, Hobbyist, Professional
-and Sponsor tickets. Please tell us what size and shape you prefer.
-</p>
-
-<p class="label">
-<label for="registration.extra_tee_count">Additional T-shirts:</label>
-</p><p class="entries">
-<% h.textfield('registration.extra_tee_count', size=10) %>
-&#215; $24.75 each.
-<br>
-<label for="registration.extra_tee_sizes">Sizes and styles:</label>
-<% h.textfield('registration.extra_tee_sizes', size=60) %>
-</p><p class="note">
-Additional t-shirts for partners, friends or yourself. Please tell us how
-many extra t-shirts you want and what size and shape each of them should
-be.
-</p>
-
-<p class="label">
-<label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
-</p><p class="entries">
-<% h.textfield('registration.dinner', size=10) %>
-&#215; $50 each; not counting yourself.
-</p><p class="note">
-One Penguin Dinner is included in the
-price of a Student, Hobbyist, Professional or Sponsor conference ticket.
-Other tickets types do not include access to the Penguin Dinner.
-Additional Penguin Dinner tickets are
-intended for partners or friends not
-attending the conference.
-</p><p class="note-bene">
-Note that unlike past years, <b>Student and Hobbyist tickets already
-include</b> one Penguin Dinner ticket.
-</p>
-
-<p class="label">
-<label for="registration.diet">Dietary requirements:</label>
-</p><p class="entries">
-<% h.textfield('registration.diet', size=100) %>
-</p>
-
-<p class="label">
-<label for="registration.special">Other special requirements</label>
-</p><p class="entries">
-<% h.textfield('registration.special', size=100) %>
-</p><p class="note">
-Please enter any requirements if necessary; access requirements, etc.
-</p>
-
-<p class="label">
-<label for="registration.miniconfs">Preferred mini-confs:</label>
-</p><p class="entries">
-
-<%python>
-# FIXME: CLEARLY this needs to be dynamic
-mclist = (
-    ('Monday',
-	('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security',
-	'Virtualisation', 'Wireless')),
-    ('Tuesday',
-	('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel',
-	'LinuxChix', 'MySQL', 'SysAdmin')))
-</%python>
-<table><tr>
-% for day, mcs in mclist: 
-<th><% day %>
-% #endfor
-<tr>
-% for day, mcs in mclist: 
-<td>
-%   for mc in mcs:
-% 	l = 'registration.miniconf.%s' % mc.replace(' ', '_')
-<% h.check_box(l) %>
-<label for="<% l %>"><% mc %></label>
-<br>
-%   #endfor
-&nbsp;
-% #endfor
-</table>
-
-<p class="note">
-Please check the <% h.link_to('mini-confs', url="/programme/mini-confs") %>
-page for details on each event. You can choose to attend multiple mini-confs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
-</p>
-
-<p class="label">
-<label for="registration.opendaydrag">How many people are you bringing to Open Day?</label>
-</p><p class="entries">
-<% h.textfield('registration.opendaydrag', size=10) %>
-</p><p class="note">
-<!-- <% h.link_to("Open Day", url="/programme/open-day", popup=True) %> -->
-Open Day
-<!-- -->
-is open to friends and family, and is targeted to a non-technical
-audience.  If you want to show off FOSS culture to some people, you can
-give us an idea of how many people to expect.
-</p>
-
-</fieldset>
-
-<fieldset id="accommodation">
-<h2>Accommodation</h2>
-
-<br><p class="note">
-<span class="mandatory">*</span> - Mandatory field
-</p>
-
-
-<p>
-Please check out the <% h.link_to('accommodation', url="/register/accommodation", popup=True) %> page before committing to any accommodation choices.
-</p>
-
-<p class="label">
-<span class="mandatory">*</span>
-<label for="registration.accommodation">What accommodation would you like to stay at:</label>
-</p><p class="entries">
-<SELECT name="registration.accommodation">
-<option value="-">-</option>
-<option value="own">I will organise my own</option>
-% for a in c.accommodation_collection:
-%    if a.beds==999:
-%       places_left = ''
-%    elif is_speaker and a.name=='Trinity':
-%       places_left = ''
-%    else:
-%       places_left = '(%d places left)' % (a.beds - c.accom_taken.get(a.name,0))
-%    #endif
-%    if is_speaker or a.option!='speaker':
-<option value="<% a.id %>"><% a.name %>
-% 	if a.option:
-(<% a.option %>)
-% 	#endif
-- <% h.number_to_currency(a.cost_per_night) %> per night <% places_left %></option>
-%    #endif
-% #endfor
-</SELECT>
-</p>
-
-<p class="label">
 <span class="mandatory">*</span>
 <label for="registration.checkin">Check in on:</label>
 </p><p class="entries">
 <select name="registration.checkin">
-% dates = [(d, 1) for d in range(27,32)] + [(d, 2) for d in (1,2,3)]
-% for (day, month) in dates[:-1]:
-<option value="<% day %>"><% datetime.datetime(2008, month, day).strftime('%A, %e %b') %></option>
+% dates = [(d, 1) for d in range(18,26)]
+% for (day, month) in dates:
+<option value="<% day %>"><% datetime.datetime(2009, month, day).strftime('%A, %e %b') %></option>
 % #endfor
 </select>
 </p>
@@ -456,6 +90,33 @@ Please check out the <% h.link_to('accommodation', url="/register/accommodation"
 </select>
 </p>
 </fieldset>
+
+% for category in c.product_categories:
+    <fieldset id="<% h.computer_title(category.name) %>">
+    <h2><% category.name.title() %></h2>
+    <p class="note"><% category.description %></p>
+%   if category.display == 'radio':
+%       for product in category.products:
+%           if product.active:
+                <p><label><input type="radio" name="registration.product.<% category.name %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
+%           #endif
+%       #endfor
+%   elif category.display == 'options':
+%       for product in category.products:
+%           if product.active:
+                <p><label><input type="option" name="registration.product.<% category.name %>.<% product.id %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
+%           #endif
+%       #endfor
+%   else: #qty
+%       for product in category.products:
+%           if product.active:
+                <p><% product.description %> x <input type="text" name="registration.product.<% category.name %>.<% product.id %>" size="2" /></p>
+%           #endif
+%       #endfor
+%   #endif
+    </fieldset>
+% #endfor
+
 
 <fieldset id="partners">
 <h2>Partners Programme</h2>
@@ -537,6 +198,208 @@ partners programme for free.
 </fieldset>
 
 <fieldset>
+<h2>Further Information</h2>
+<p class="label">
+<label for="registration.diet">Dietary requirements:</label>
+</p><p class="entries">
+<% h.textfield('registration.diet', size=100) %>
+</p>
+
+<p class="label">
+<label for="registration.special">Other special requirements</label>
+</p><p class="entries">
+<% h.textfield('registration.special', size=100) %>
+</p><p class="note">
+Please enter any requirements if necessary; access requirements, etc.
+</p>
+
+<p class="label">
+<label for="registration.miniconfs">Preferred mini-confs:</label>
+</p><p class="entries">
+
+<%python>
+# FIXME: CLEARLY this needs to be dynamic
+mclist = (
+    ('Monday',
+	('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security',
+	'Virtualisation', 'Wireless')),
+    ('Tuesday',
+	('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel',
+	'LinuxChix', 'MySQL', 'SysAdmin')))
+</%python>
+<table><tr>
+% for day, mcs in mclist: 
+<th><% day %>
+% #endfor
+<tr>
+% for day, mcs in mclist: 
+<td>
+%   for mc in mcs:
+% 	l = 'registration.miniconf.%s' % mc.replace(' ', '_')
+<% h.check_box(l) %>
+<label for="<% l %>"><% mc %></label>
+<br>
+%   #endfor
+&nbsp;
+% #endfor
+</table>
+
+<p class="note">
+Please check the <% h.link_to('mini-confs', url="/programme/mini-confs") %>
+page for details on each event. You can choose to attend multiple mini-confs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.
+</p>
+
+<p class="label">
+<label for="registration.opendaydrag">How many people are you bringing to Open Day?</label>
+</p><p class="entries">
+<% h.textfield('registration.opendaydrag', size=10) %>
+</p><p class="note">
+<!-- <% h.link_to("Open Day", url="/programme/open-day", popup=True) %> -->
+Open Day
+<!-- -->
+is open to friends and family, and is targeted to a non-technical
+audience.  If you want to show off FOSS culture to some people, you can
+give us an idea of how many people to expect.
+</p>
+
+<p class="label">
+# FIXME: dynamic :)
+<label for="registration.shell">Your favourite shell:</label>
+</p><p class="entries">
+<select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
+<option value="-">(please select)</option>
+% shells = ['bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold', 'zsh']
+% for s in shells:
+<option value="<%s%>"><% s %></option>
+% #endfor
+<option value="other">OTHER:</option>
+</SELECT>
+% if defaults['registration.shell'] in shells:
+<span id="shell_other" style="display: none"><% h.textfield('registration.shelltext') %></span>
+% else:
+<span id="shell_other" style="display: inline"><% h.textfield('registration.shelltext') %></span>
+% #endif
+</p>
+
+<p class="label">
+<label for="registration.editor">Your favourite editor:</label>
+</p><p class="entries">
+<select id="registration.editor" name="registration.editor" onchange="toggle_select_hidden(this.id, 'editor_other')">
+<option value="-">(please select)</option>
+% editors = ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']
+% for e in editors:
+<option value="<% e %>"><% e %></option>
+% #endfor
+<option value="other">OTHER:</option>
+</SELECT>
+% if defaults['registration.editor'] in editors:
+<span id="editor_other" style="display: none"><% h.textfield('registration.editortext') %></span>
+% else:
+<span id="editor_other" style="display: inline"><% h.textfield('registration.editortext') %></span>
+% #endif
+</p>
+
+<p class="label">
+<label for="registration.distro">Your favourite distro:</label>
+</p><p class="entries">
+<select id="registration.distro" name="registration.distro" onchange="toggle_select_hidden(this.id, 'distro_other')">
+<option value="-">(please select)</option>
+% distros = ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu']
+% for d in distros:
+<option value="<% d %>"><% d %></option>
+% #endfor
+<option value="other">OTHER:</option>
+</SELECT>
+% if defaults['registration.distro'] in distros:
+<span id="distro_other" style="display: none"><% h.textfield('registration.distrotext') %></span>
+% else:
+<span id="distro_other" style="display: inline"><% h.textfield('registration.distrotext') %></span>
+% #endif
+</p>
+
+</p><p class="label">
+<label for="registration.nick">Superhero name:</label>
+</p><p class="entries">
+<% h.textfield('registration.nick', size=30) %>
+</p><p class="note">
+Your IRC nick or other handle you go by.
+</p>
+
+<p class="label">
+<label for="registration.prevlca">Have you attended linux.conf.au before?</label>
+</p><p class="entries">
+% for (year, desc) in [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)'), ('08', '2008 (Melbourne)')]:
+%   label = 'registration.prevlca.%s' % year
+<br>
+<% h.check_box(label) %>
+<label for="<% label %>"><% desc %></label>
+% #endfor
+</p>
+
+
+<%python>
+starts = ["a", "a", "a", "one", "no"] # bias toward "a"
+adverbs = ["strongly",
+		       "poorly", "badly", "well", "dynamically",
+		       "hastily", "statically", "mysteriously",
+		       "buggily", "extremely", "nicely", "strangely",
+		       "irritatingly", "unquestionably", "clearly",
+		       "plainly", "silently", "abstractly", "validly",
+		       "invalidly", "immutably", "oddly", "disturbingly",
+		       "atonally", "randomly", "amusingly", "widely",
+		       "narrowly", "manually", "automatically", "audibly",
+		       "brilliantly", "independently", "definitively",
+		       "provably", "improbably", "distortingly",
+		       "confusingly", "decidedly", "historically"]
+adjectives = ["invalid", "valid",
+		       "referenced", "dereferenced", "unreferenced",
+		       "illegal", "legal",
+		       "questionable", 
+		       "alternate", "implemented", "unimplemented",
+		       "terminal", "non-terminal",
+		       "static", "dynamic",
+		       "qualified", "unqualified", 
+		       "constant", "variable",
+		       "volatile", "non-volatile",
+		       "abstract", "concrete",
+		       "fungible", "non-fungible",
+		       "untyped", "variable",
+		       "mutable", "immutable",
+		       "sizable", "miniscule",
+		       "perverse", "immovable",
+		       "compressed", "uncompressed",
+		       "surreal", "allegorical",
+		       "trivial", "nontrivial"]
+nouns = ["pointer", "structure",
+		       "definition", "declaration", "type", "union",
+		       "coder", "admin", "hacker", "kitten", "mistake",
+		       "conversion", "implementation", "design", "analysis",
+		       "neophyte", "expert", "bundle", "package",
+		       "abstraction", "theorem", "display", "distro",
+		       "restriction", "device", "function", "reference"]
+adverb = random.choice(adverbs)
+adjective = random.choice(adjectives)
+noun = random.choice(nouns)
+start = random.choice(starts)
+if start == 'a' and adverb[0] in ['a', 'e', 'i', 'o', 'u']:
+    start = 'an'
+desc = '%s %s %s %s' % (start, adverb, adjective, noun)
+descMD5 = md5.new(desc).hexdigest()
+</%python>
+<p class="label">
+<label for="registration.silly_description">Description:</label>
+</p>
+<blockquote><p>
+<% desc %>
+<% h.hidden_field('registration.silly_description', value=desc) %>
+</p></blockquote>
+<p class="note">
+This is a randomly chosen description for your name badge
+</p>
+
+</fieldset>
+
+<fieldset>
 <h2>Subscriptions</h2>
 
 <p class="entries">
@@ -590,6 +453,10 @@ preference that you let us know.</p>
 
 <br>
 <% h.hidden_field('registration.silly_description_md5', value=descMD5) %>
+<%args>
+defaults
+errors
+</%args>
 <%init>
 import datetime
 import md5

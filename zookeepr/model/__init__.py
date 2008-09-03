@@ -67,11 +67,36 @@ def populate_data():
 
         # Product Categories
         model.billing.tables.product_category.insert().execute(
-            dict(name='registration', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
-            dict(name='shirt', description='Please choose how many shirts you would like. One is included with your registration.', display='qty', min_qty=1, max_qty=10),
-            dict(name='dinner', description='Would you like any extra dinner tickets?', display='qty', min_qty=0, max_qty=5),
-            dict(name='accomodation', description='Where would you like to stay during the conference?', display='radio', min_qty=0, max_qty=10),
-            dict(name='partner', description='Would your partner like to participate in the partners program?', display='qty', min_qty=0, max_qty=10),
+            dict(name='Tickets', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
+            dict(name='Shirts', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=10),
+            dict(name='Dinner Tickets', description='Would you like any dinner tickets? (The first one is free with professional registrations)', display='qty', min_qty=0, max_qty=5),
+            dict(name='Accomodation', description='Where would you like to stay during the conference?', display='radio', min_qty=0, max_qty=10),
+            dict(name='Partners Program', description='Would your partner like to participate in the partners program?', display='qty', min_qty=0, max_qty=10),
+            )
+
+        model.billing.tables.product.insert().execute(
+            dict(category_id='1', active=True, description="Earlybird Student Ticket", cost="160"),
+            dict(category_id='1', active=True, description="Earlybird Hobbiest Ticket", cost="290"),
+            dict(category_id='1', active=True, description="Earlybird Professional Ticket", cost="635"),
+            dict(category_id='1', active=False, description="Student Ticket", cost="160"),
+            dict(category_id='1', active=False, description="Hobbiest Ticket", cost="365"),
+            dict(category_id='1', active=False, description="Professional Ticket", cost="785"),
+            dict(category_id='2', active=True, description="Men's Small Shirt", cost="20"),
+            dict(category_id='2', active=True, description="Men's Medium Shirt", cost="20"),
+            dict(category_id='2', active=True, description="Men's Large Shirt", cost="20"),
+            dict(category_id='2', active=True, description="Women's Small Shirt", cost="20"),
+            dict(category_id='2', active=True, description="Women's Medium Shirt", cost="20"),
+            dict(category_id='2', active=True, description="Women's Large Shirt", cost="20"),
+            dict(category_id='3', active=True, description="Dinner Tickets", cost="80"),
+            dict(category_id='4', active=True, description="I will organise my own", cost="0"),
+            dict(category_id='4', active=True, description="University Accommodation (price per night)", cost="80"),
+            dict(category_id='4', active=True, description="Wrest Point (Follow this link to book)", cost="0"),
+            dict(category_id='5', active=True, description="Adult", cost="200"),
+            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Adult (4-6 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Adult (7-9 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Adult (10-12 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Adult (13-17 years old)", cost="200"),
             )
 
         # Product Ceilings

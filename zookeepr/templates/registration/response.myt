@@ -28,64 +28,6 @@ and follow the instructions to finalise your payment.
 
 
 Your registration details are:
-
-   Ticket: <% c.registration.type %>
-
-<%python>
-teesize = c.registration.teesize.split('_')
-
-try:
-  teesize[0] = {
-    'M': 'Mens',
-    'F': 'Womens',
-  }.get(teesize[0], teesize[0])
-
-  teesize[1] = {
-    'long': 'long-sleeve',
-    'short': 'short-sleeve',
-  }.get(teesize[1], teesize[1])
-except:
-  pass
-
-teesize = ' '.join(teesize)
-
-</%python>
- T-shirt: <% teesize %>
-
-% if c.registration.extra_tee_count:
- Extra t-shirts: <% c.registration.extra_tee_count |h %> (<% c.registration.extra_tee_sizes |h %>)
-% #endif
-
- Extra tickets: <% c.registration.dinner |h %>
-
-% if c.registration.accommodation:
-%	a = c.registration.accommodation
-%	if a.option:
-%		opt = " (%s) " % a.option
-%	else:
-%		opt = ' '
-%       def date_of(d):
-%		if d==1:
-%			return "%dst of February" % d
-%		elif d==2:
-%			return "%dnd of February" % d
-%		elif d==3:
-%			return "%drd of February" % d
-%		elif d<15:
-%			return "%dth of February" % d
-%		elif d==31:
-%			return "%dst of January" % d
-%		else:
-%			return "%dth of January" % d
-%
-%	accom = "%s%s(%s per night)" % (a.name, opt, h.number_to_currency(a.cost_per_night))
- Accommodation: <% accom %>
-       Checkin: <% date_of(c.registration.checkin) %>
-      Checkout: <% date_of(c.registration.checkout) %>
-% else:
- Accommodation: none selected
-% #endif
-
  Dietary requirements:
     <% c.registration.diet %>
 

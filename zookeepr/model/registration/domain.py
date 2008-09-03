@@ -4,7 +4,6 @@ class Registration(object):
     def __init__(self,
                  nick=None,
                  shell=None,
-                 shelltext=None,
                  editor=None,
                  editortext=None,
                  distro=None,
@@ -29,11 +28,8 @@ class Registration(object):
                  ):
         self.nick = nick
         self.shell = shell
-        self.shelltext = shelltext
         self.editor = editor
-        self.editortext = editortext
         self.distro = distro
-        self.distrotext = distrotext
         self.silly_description = silly_description
         self.voucher_code = voucher_code
         self.diet = diet
