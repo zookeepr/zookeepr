@@ -268,12 +268,17 @@ give us an idea of how many people to expect.
 </p><p class="entries">
 <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
 <option value="-">(please select)</option>
-% for s in ['bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold', 'zsh']:
+% shells = ['bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold', 'zsh']
+% for s in shells:
 <option value="<%s%>"><% s %></option>
 % #endfor
 <option value="other">OTHER:</option>
 </SELECT>
-<span id="shell_other"><% h.textfield('registration.shelltext') %></span>
+% if defaults['registration.shell'] in shells:
+<span id="shell_other" style="display: none"><% h.textfield('registration.shelltext') %></span>
+% else:
+<span id="shell_other" style="display: inline"><% h.textfield('registration.shelltext') %></span>
+% #endif
 </p>
 
 <p class="label">
@@ -281,12 +286,17 @@ give us an idea of how many people to expect.
 </p><p class="entries">
 <select id="registration.editor" name="registration.editor" onchange="toggle_select_hidden(this.id, 'editor_other')">
 <option value="-">(please select)</option>
-% for e in ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']:
+% editors = ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']
+% for e in editors:
 <option value="<% e %>"><% e %></option>
 % #endfor
 <option value="other">OTHER:</option>
 </SELECT>
-<span id="editor_other"><% h.textfield('registration.shelltext') %></span>
+% if defaults['registration.editor'] in editors:
+<span id="editor_other" style="display: none"><% h.textfield('registration.editortext') %></span>
+% else:
+<span id="editor_other" style="display: inline"><% h.textfield('registration.editortext') %></span>
+% #endif
 </p>
 
 <p class="label">
@@ -294,12 +304,17 @@ give us an idea of how many people to expect.
 </p><p class="entries">
 <select id="registration.distro" name="registration.distro" onchange="toggle_select_hidden(this.id, 'distro_other')">
 <option value="-">(please select)</option>
-% for d in ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu']:
+% distros = ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu']
+% for d in distros:
 <option value="<% d %>"><% d %></option>
 % #endfor
 <option value="other">OTHER:</option>
 </SELECT>
-<span id="distro_other"><% h.textfield('registration.shelltext') %></span>
+% if defaults['registration.distro'] in distros:
+<span id="distro_other" style="display: none"><% h.textfield('registration.distrotext') %></span>
+% else:
+<span id="distro_other" style="display: inline"><% h.textfield('registration.distrotext') %></span>
+% #endif
 </p>
 
 </p><p class="label">
@@ -438,6 +453,10 @@ preference that you let us know.</p>
 
 <br>
 <% h.hidden_field('registration.silly_description_md5', value=descMD5) %>
+<%args>
+defaults
+errors
+</%args>
 <%init>
 import datetime
 import md5

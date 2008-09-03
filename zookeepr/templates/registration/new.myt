@@ -109,7 +109,7 @@ Your email address will only be used to correspond with you, and is your login n
 % #endif
 </fieldset>
 
-<& form.myt &>
+<& form.myt, defaults=defaults, errors=errors &>
 
 <p class="submit"><% h.submitbutton("Register me!") %></p>
 <span class="fielddesc">
@@ -136,6 +136,9 @@ if not defaults:
 		'registration.speaker_record': '1',
 		'registration.speaker_video_release': '1',
 		'registration.speaker_slides_release': '1',
+		'registration.shell': '-',
+		'registration.editor': '-',
+		'registration.distro': '-'
 		}
 </%init>
 
@@ -144,12 +147,6 @@ Register - <& PARENT:title &>
 </%method>
 
 <%method extra_head>
-<style type="text/css">
- #shell_other, #editor_other, #distro_other
-{
-    display: none;
-}
-</style>
 <script type="text/javascript">
 function toggle_select_hidden(select, field)
 {
