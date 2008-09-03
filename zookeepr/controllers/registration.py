@@ -15,6 +15,17 @@ from zookeepr.controllers.person import PersonSchema
 from zookeepr.model.billing import ProductCategory, Product
 from zookeepr.model.registration import Registration
 
+class ExistingPersonSchema(schema.Schema):
+    company = validators.String()
+    phone = validators.String()
+    mobile = validators.String()
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
+
 class RegisterSchema(BaseSchema):
     nick = validators.String()
     shell = validators.String()
@@ -42,18 +53,26 @@ class NewRegistrationSchema(BaseSchema):
     registration = RegisterSchema()
     pre_validators = [variabledecode.NestedVariables]
 
-class RegistrationController(SecureController):
+class UpdateRegistrationSchema(BaseSchema):
+    person = ExistingPersonSchema()
+    registration = RegisterSchema()
+    pre_validators = [variabledecode.NestedVariables]
+
+class RegistrationController(SecureController, Update, Read):
     individual = 'registration'
     model = model.Registration
-    schemas = {'new': NewRegistrationSchema()
-              }
+    schemas = {'new': NewRegistrationSchema(),
+               'edit': UpdateRegistrationSchema()
+            }
     permissions = {'new': True,
+                   'edit': [AuthRole('organiser'), AuthFunc('is_same_person')],
+                   'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                }
 
     def __before__(self, **kwargs):
         super(RegistrationController, self).__before__(**kwargs)
         c.product_categories = self.dbsession.query(ProductCategory).all()
-        c.products = self.dbsession.query(Product).all()
+        #c.products = self.dbsession.query(Product).all()
 
     def _able_to_register(self):
         """ Dummy method until ceilings are integrated """
@@ -62,6 +81,9 @@ class RegistrationController(SecureController):
     def _registrations_closed(self):
         """ Dummy method until ceilings are integrated (will display whether or not regos are closed and the reason why (eg sold out). """
         return "Registrations are closed. (Sold out?)"
+
+    def is_same_person(self):
+        return c.signed_in_person == c.registration.person
 
     def new(self, id):
         if self._able_to_register() is not True:
@@ -102,3 +124,23 @@ class RegistrationController(SecureController):
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                            defaults=defaults, errors=errors)
+
+    def index(self):
+        print 'test'
+        
+    def edit(self, id):
+        registration = self.obj
+        # FIXME: Add here the check for paid invoices
+        #if registration.person.invoices:
+        #    if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
+        #        c.invoice = registration.person.invoices[0]
+        #        return render_response('invoice/already.myt')
+
+        #try:
+        return super(RegistrationController, self).edit(id)
+        #finally:
+        #    try:
+        #        self.pay(id, quiet=1) #regenerate the invoice
+        #    except:
+        #        self.pay(id, quiet=1) #retry once
+        

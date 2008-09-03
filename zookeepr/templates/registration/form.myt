@@ -91,6 +91,33 @@
 </p>
 </fieldset>
 
+% for category in c.product_categories:
+    <fieldset id="<% h.computer_title(category.name) %>">
+    <h2><% category.name.title() %></h2>
+    <p class="note"><% category.description %></p>
+%   if category.display == 'radio':
+%       for product in category.products:
+%           if product.active:
+                <p><label><input type="radio" name="registration.product.<% category.name %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
+%           #endif
+%       #endfor
+%   elif category.display == 'options':
+%       for product in category.products:
+%           if product.active:
+                <p><label><input type="option" name="registration.product.<% category.name %>.<% product.id %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
+%           #endif
+%       #endfor
+%   else: #qty
+%       for product in category.products:
+%           if product.active:
+                <p><% product.description %> x <input type="text" name="registration.product.<% category.name %>.<% product.id %>" size="2" /></p>
+%           #endif
+%       #endfor
+%   #endif
+    </fieldset>
+% #endfor
+
+
 <fieldset id="partners">
 <h2>Partners Programme</h2>
 

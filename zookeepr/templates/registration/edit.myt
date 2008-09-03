@@ -47,9 +47,10 @@ errors
 <%init>
 # working around a bug in formencode, we need to set the defaults to
 # the values in c.registration
+#FIXME: Partner program
 if not defaults:
     defaults = {}
-    for k in ['shell', 'shelltext', 'editor', 'editortext', 'distro', 'distrotext', 'nick', 'prevlca', 'type', 'voucher_code', 'teesize', 'extra_tee_count', 'extra_tee_sizes', 'dinner', 'diet', 'special', 'miniconf', 'opendaydrag', 'accommodation', 'checkin', 'checkout', 'partner_email', 'kids_0_3', 'kids_4_6', 'kids_7_9', 'kids_10_11', 'kids_12_17', 'pp_adults', 'speaker_pp_pay_adult', 'speaker_pp_pay_child', 'lasignup', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
+    for k in ['shell', 'editor', 'distro', 'nick', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'partner_email', 'lasignup', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
         v = getattr(c.registration, k)
         if v is not None:
             defaults['registration.' + k] = getattr(c.registration, k)
@@ -60,8 +61,6 @@ if not defaults:
             defaults['person.' + k] = getattr(c.registration.person, k)
 
     # FIXME: UGH durty hack
-    if c.registration.accommodation:
-        defaults['registration.accommodation'] = c.registration.accommodation.id
     if c.registration.lasignup:
         defaults['registration.lasignup'] = 1
     else:

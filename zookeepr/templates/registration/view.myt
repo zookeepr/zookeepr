@@ -40,13 +40,13 @@ Your email address will only be used to correspond with you, and is your login n
 <p class="label">Mobile/Cell number:</p>
 <p><% c.registration.person.mobile %></p>
 <p class="label">Company:</p>
-<p><% c.registration.company %></p>
+<p><% c.registration.person.company %></p>
 <p class="label">Your favourite shell:</p>
-<p><% c.registration.shelltext or c.registration.shell %></p>
+<p><% c.registration.shell %></p>
 <p class="label">Your favourite editor:</p>
-<p><% c.registration.editortext or c.registration.editor %></p>
+<p><% c.registration.editor %></p>
 <p class="label">Your favourite distro:</p>
-<p><% c.registration.distrotext or c.registration.distro %></p>
+<p><% c.registration.distro %></p>
 
 <p class="label">Superhero name:</p>
 <p><% c.registration.nick %></p>
@@ -69,8 +69,8 @@ Your email address will only be used to correspond with you, and is your login n
 
 <p class="label">
 <label for="registration.type">Type of ticket:</label>
-</p><p >
-<% c.registration.type %>
+</p><p>
+#  <% c.registration.type %>
 </p>
 <p class="note">
 Check the <% h.link_to('registration page', url="/register") %> for the
@@ -87,56 +87,6 @@ Student and Hobbyist tickets also include Penguin Dinner.
 % else:
 <% h.hidden_field('registration.voucher_code', value='') %>
 % #endif
-
-<p class="label">
-<label>T-shirt Size and Style:</label>
-<p >
-<%python>
-teesize = c.registration.teesize.split('_')
-
-try:
-  teesize[0] = {
-    'M': 'Mens',
-    'F': 'Womens',
-  }.get(teesize[0], teesize[0])
-
-  teesize[1] = {
-    'long': 'long-sleeve',
-    'short': 'short-sleeve',
-  }.get(teesize[1], teesize[1])
-except:
-  pass
-
-teesize = ' '.join(teesize)
-
-</%python>
-<% teesize %>
-</p><p class="note">
-A conference T-shirt is included with your ticket.
-</p>
-
-<p class="label">Additional T-shirts:</label>
-</p><p >
-<% c.registration.extra_tee_count or 0 %>
-&#215; $24.75 each; sizes and styles:
-<% c.registration.extra_tee_sizes |h%>
-</p>
-
-
-<p class="label">
-<label for="registration.dinner">Additional Penguin Dinner Tickets:</label>
-</p><p >
-<% c.registration.dinner %>
-&#215; $50 each; not counting yourself.
-</p><p class="note">
-One Penguin Dinner is included in the
-price of your conference ticket.  Additional Penguin Dinner tickets are
-intended for partners or friends not
-attending the conference.
-</p><p class="note-bene">
-Note that unlike past years, <b>Student and Hobbyist tickets already
-include</b> one Penguin Dinner ticket.
-</p>
 
 <p class="label">
 <label for="registration.diet">Dietary requirements:</label>
@@ -200,43 +150,6 @@ give us an idea of how many people to expect.
 </p>
 
 </fieldset>
-
-<fieldset id="accommodation">
-<h2>Accommodation</h2>
-
-<p>
-Please check the <% h.link_to('accommodation', url="/register/accommodation") %>
-page for more details.
-</p>
-
-% if c.registration.accommodation:
-<p class="label">
-Accommodation type
-</p><p>
-<% c.registration.accommodation.name %>
-%   if c.registration.accommodation.option:
-(<% c.registration.accommodation.option %>)
-%   #endif
-- $<% "%.2f" % c.registration.accommodation.cost_per_night %> per night
-</p>
-
-<p class="label">
-<label for="registration.checkin">Check in on:</label>
-</p><p >
-<% date(c.registration.checkin) %>
-</p>
-
-<p class="label">
-<span class="mandatory">*</span>
-<label for="registation.checkout">Check out on:</label>
-</p><p >
-<% date(c.registration.checkout) %>
-</p>
-% else:
-<p>
-I will organise my own.
-</p>
-% #endif
 
 <fieldset id="partners">
 <h2>Partners Programme</h2>
