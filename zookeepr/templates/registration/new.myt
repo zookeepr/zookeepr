@@ -15,7 +15,7 @@ Welcome to the conference registration. Please fill in the form as best you can.
 
 % if not 'signed_in_person_id' in session:
 <p>
-If you already have an account (through a prior registration, or other
+If you already have an account (through a submitting a proposal, or other
 interaction with this site), then please <a href="/person/signin">sign in</a>.
 </p>
 <p>If you can't log in, you can try
@@ -113,7 +113,7 @@ Your email address will only be used to correspond with you, and is your login n
 
 <p class="submit"><% h.submitbutton("Register me!") %></p>
 <span class="fielddesc">
-If you encounter any problems signing up please email <% h.contact_email() %>
+<p>If you encounter any problems signing up please email <% h.contact_email() %>.</p>
 </span>
 
 
@@ -138,3 +138,29 @@ if not defaults:
 		'registration.speaker_slides_release': '1',
 		}
 </%init>
+
+<%method title>
+Register - <& PARENT:title &>
+</%method>
+
+<%method extra_head>
+<style type="text/css">
+ #shell_other, #editor_other, #distro_other
+{
+    display: none;
+}
+</style>
+<script type="text/javascript">
+function toggle_select_hidden(select, field)
+{
+    if ( document.getElementById(select).value == 'other' ) 
+    {
+        document.getElementById(field).style.display = 'inline';
+    }
+    else
+    {
+        document.getElementById(field).style.display = 'none';
+    }
+}
+</script>
+</%method>
