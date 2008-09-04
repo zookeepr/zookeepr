@@ -9,13 +9,13 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress
+from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress, DictSet
 
 from zookeepr.controllers.person import PersonSchema
 from zookeepr.model.billing import ProductCategory, Product
 from zookeepr.model.registration import Registration
 
-class ExistingPersonSchema(schema.Schema):
+class ExistingPersonSchema(BaseSchema):
     company = validators.String()
     phone = validators.String()
     mobile = validators.String()
@@ -37,16 +37,16 @@ class RegisterSchema(BaseSchema):
     special = validators.String()
     opendaydrag = validators.Int()
     partner_email = EmailAddress()
-    checkin = validators.Int()
-    checkout = validators.Int()
+    checkin = BoundedInt(min=0)
+    checkout = BoundedInt(min=0)
     lasignup = validators.Bool()
     announcesignup = validators.Bool()
     delegatesignup = validators.Bool()
     speaker_record = validators.Bool()
     speaker_video_release = validators.Bool()
     speaker_side_release = validators.Bool()
-    prevlca = validators.String()
-    miniconf = validators.String()
+    prevlca = DictSet(if_missing=None)
+    miniconf = DictSet(if_missing=None)
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -72,22 +72,31 @@ class RegistrationController(SecureController, Update, Read):
     def __before__(self, **kwargs):
         super(RegistrationController, self).__before__(**kwargs)
         c.product_categories = self.dbsession.query(ProductCategory).all()
+        self._generate_product_schema()
         #c.products = self.dbsession.query(Product).all()
 
     def _able_to_register(self):
-        """ Dummy method until ceilings are integrated """
-        return True
+        """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't register (eg sold out) """
+        return True, "You can register"
         
-    def _registrations_closed(self):
-        """ Dummy method until ceilings are integrated (will display whether or not regos are closed and the reason why (eg sold out). """
-        return "Registrations are closed. (Sold out?)"
+    def _able_to_edit(self):
+        """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't edit (eg already paid) """
+        return True, "You can edit"
+
+    def _generate_product_schema(self):
+        product_dict = {}
+        #for category in c.product_categories:
+        #    for product in category.products:
+        #        if category.display == 'qty':
+        #            product_dict[category.name][product.id] = validators.Int()
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
 
     def new(self, id):
-        if self._able_to_register() is not True:
-            return self._registrations_closed()
+        able, response = self._able_to_register()
+        if not able:
+            return response
         errors = {}
         defaults = dict(request.POST)
 
@@ -124,11 +133,11 @@ class RegistrationController(SecureController, Update, Read):
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                            defaults=defaults, errors=errors)
-
-    def index(self):
-        print 'test'
         
     def edit(self, id):
+        able, response = self._able_to_edit()
+        if not able:
+            return response
         registration = self.obj
         # FIXME: Add here the check for paid invoices
         #if registration.person.invoices:

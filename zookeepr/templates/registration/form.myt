@@ -267,8 +267,7 @@ give us an idea of how many people to expect.
 <label for="registration.shell">Your favourite shell:</label>
 </p><p class="entries">
 <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
-<option value="-">(please select)</option>
-% shells = ['bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold', 'zsh']
+% shells = ['(please select)', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold', 'zsh']
 % for s in shells:
 <option value="<%s%>"><% s %></option>
 % #endfor
@@ -285,8 +284,7 @@ give us an idea of how many people to expect.
 <label for="registration.editor">Your favourite editor:</label>
 </p><p class="entries">
 <select id="registration.editor" name="registration.editor" onchange="toggle_select_hidden(this.id, 'editor_other')">
-<option value="-">(please select)</option>
-% editors = ['vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']
+% editors = ['(please select)', 'vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']
 % for e in editors:
 <option value="<% e %>"><% e %></option>
 % #endfor
@@ -303,8 +301,7 @@ give us an idea of how many people to expect.
 <label for="registration.distro">Your favourite distro:</label>
 </p><p class="entries">
 <select id="registration.distro" name="registration.distro" onchange="toggle_select_hidden(this.id, 'distro_other')">
-<option value="-">(please select)</option>
-% distros = ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu']
+% distros = ['(please select)', 'CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu']
 % for d in distros:
 <option value="<% d %>"><% d %></option>
 % #endfor

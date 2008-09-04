@@ -8,6 +8,15 @@ import helpers as h
 
 from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType
 
+class DictSet(validators.Set):
+    def _from_python(self, value):
+        value = super(DictSet, self)._from_python(value, state)
+        return dict(zip(value, [1]*len(value)))
+
+    def _to_python(self, value, state):
+        value = value.keys()
+        return super(DictSet, self)._to_python(value, state)
+
 class BoundedInt(validators.Int):
     """ Validator for integers, with bounds.
 
