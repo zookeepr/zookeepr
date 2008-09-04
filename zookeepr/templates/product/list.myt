@@ -8,6 +8,8 @@
     <th>Active</th>
     <th>Description</th>
     <th>Cost</th>
+    <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 %       if len(pc.products) > 0:
 %           for st in c.product_collection:
@@ -34,8 +36,7 @@
 #if c.product_pages.current.next:
 #    m.write(h.link_to('Next page', url=h.url(page=c.product_pages.current.next)))
 
-m.write('<br>')
 if c.can_edit:
-    m.write(h.link_to('New product', url=h.url(action='new')))
+    m.write('<p>' + h.link_to('New product', url=h.url(action='new')) + '</p>')
 </%python>
  
