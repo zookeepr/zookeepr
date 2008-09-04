@@ -128,18 +128,25 @@ errors
 <%init>
 # work around bug in formencode, set defaults
 if not defaults:
-	defaults = {'person.country': 'Australia',
-		'registration.checkout': '2',
-		'registration.lasignup': '1',
-		'registration.announcesignup': '1',
-		'registration.dinner': '0',
-		'registration.speaker_record': '1',
-		'registration.speaker_video_release': '1',
-		'registration.speaker_slides_release': '1',
-		'registration.shell': '(please select)',
-		'registration.editor': '(please select)',
-		'registration.distro': '(please select)'
-		}
+    defaults = {'person.country': 'Australia',
+        'registration.checkout': '2',
+        'registration.lasignup': '1',
+        'registration.announcesignup': '1',
+        'registration.dinner': '0',
+        'registration.speaker_record': '1',
+        'registration.speaker_video_release': '1',
+        'registration.speaker_slides_release': '1',
+        'registration.shell': '(please select)',
+        'registration.editor': '(please select)',
+        'registration.distro': '(please select)'
+    }
+    if c.signed_in_person:
+        for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country']:
+            v = getattr(c.signed_in_person, k)
+            if v is not None:
+                defaults['person.' + k] = getattr(c.signed_in_person, k)
+
+
 </%init>
 
 <%method title>
