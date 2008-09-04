@@ -136,9 +136,9 @@ if not defaults:
 		'registration.speaker_record': '1',
 		'registration.speaker_video_release': '1',
 		'registration.speaker_slides_release': '1',
-		'registration.shell': '-',
-		'registration.editor': '-',
-		'registration.distro': '-'
+		'registration.shell': '(please select)',
+		'registration.editor': '(please select)',
+		'registration.distro': '(please select)'
 		}
 </%init>
 
