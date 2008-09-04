@@ -78,7 +78,7 @@ class RegistrationController(SecureController, Update, Read):
     def _able_to_register(self):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't register (eg sold out) """
         return True, "You can register"
-        
+
     def _able_to_edit(self):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't edit (eg already paid) """
         return True, "You can edit"
@@ -100,8 +100,13 @@ class RegistrationController(SecureController, Update, Read):
         errors = {}
         defaults = dict(request.POST)
 
+        if c.signed_in_person:
+            schema = self.schemas['edit']
+        else:
+            schema = self.schemas['new']
+
         if request.method == 'POST' and defaults:
-            result, errors = NewRegistrationSchema().validate(defaults, self.dbsession)
+            result, errors = schema.validate(defaults, self.dbsession)
             if not errors:
                 c.registration = model.Registration()
                 for k in result['registration']:
@@ -126,14 +131,14 @@ class RegistrationController(SecureController, Update, Read):
                         id=c.person.url_hash, fragment=True))
 
                 self.obj = c.registration
-                self.pay(c.registration.id, quiet=1)
+                #self.pay(c.registration.id, quiet=1)
 
                 if c.signed_in_person:
                     redirect_to('/registration/status')
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                            defaults=defaults, errors=errors)
-        
+
     def edit(self, id):
         able, response = self._able_to_edit()
         if not able:
@@ -152,4 +157,4 @@ class RegistrationController(SecureController, Update, Read):
         #        self.pay(id, quiet=1) #regenerate the invoice
         #    except:
         #        self.pay(id, quiet=1) #retry once
-        
+
