@@ -43,9 +43,9 @@ Your registration details are:
   Company: <% c.registration.person.company %>
  IRC Nick: <% c.registration.nick %>
 
-    Shell: <% c.registration.shelltext or c.registration.shell %>
-   Editor: <% c.registration.editortext or c.registration.editor %>
-   Distro: <% c.registration.distrotext or c.registration.distro %>
+    Shell: <% c.registration.shell %>
+   Editor: <% c.registration.editor %>
+   Distro: <% c.registration.distro %>
 
 If you want to change your details, please log into the website.
 

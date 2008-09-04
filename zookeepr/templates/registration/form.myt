@@ -85,7 +85,7 @@
 </p><p class="entries">
 <select name="registration.checkout">
 % for day, month in dates[1:]:
-<option value="<% day %>" ><% datetime.datetime(2008, month, day).strftime('%A, %e %b') %></option>
+<option value="<% day %>" ><% datetime.datetime(2009, month, day).strftime('%A, %e %b') %></option>
 % #endfor
 </select>
 </p>
@@ -98,19 +98,19 @@
 %   if category.display == 'radio':
 %       for product in category.products:
 %           if product.active:
-                <p><label><input type="radio" name="registration.product.<% category.name %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
+                <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
 %           #endif
 %       #endfor
 %   elif category.display == 'options':
 %       for product in category.products:
 %           if product.active:
-                <p><label><input type="option" name="registration.product.<% category.name %>.<% product.id %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
+                <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - $<% product.cost %></label></p>
 %           #endif
 %       #endfor
 %   else: #qty
 %       for product in category.products:
 %           if product.active:
-                <p><% product.description %> x <input type="text" name="registration.product.<% category.name %>.<% product.id %>" size="2" /></p>
+                <p><% product.description %> x <input type="text" name="products.qty<% category.id %>_product_<% product.id %>" size="2" /></p>
 %           #endif
 %       #endfor
 %   #endif
