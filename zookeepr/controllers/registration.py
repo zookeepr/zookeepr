@@ -78,7 +78,7 @@ class RegistrationController(SecureController, Update, Read):
     def _able_to_register(self):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't register (eg sold out) """
         return True, "You can register"
-        
+
     def _able_to_edit(self):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't edit (eg already paid) """
         return True, "You can edit"
@@ -133,7 +133,7 @@ class RegistrationController(SecureController, Update, Read):
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                            defaults=defaults, errors=errors)
-        
+
     def edit(self, id):
         able, response = self._able_to_edit()
         if not able:
@@ -152,4 +152,4 @@ class RegistrationController(SecureController, Update, Read):
         #        self.pay(id, quiet=1) #regenerate the invoice
         #    except:
         #        self.pay(id, quiet=1) #retry once
-        
+
