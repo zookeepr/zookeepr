@@ -9,7 +9,7 @@ from zookeepr.lib.auth import *
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import *
 from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema, BoundedInt, EmailAddress, DictSet
+from zookeepr.lib.validators import *
 
 from zookeepr.controllers.person import PersonSchema
 from zookeepr.model.billing import ProductCategory, Product
@@ -78,17 +78,27 @@ class RegistrationController(SecureController, Update, Read):
     def _able_to_register(self):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't register (eg sold out) """
         return True, "You can register"
-        
+
     def _able_to_edit(self):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't edit (eg already paid) """
         return True, "You can edit"
 
     def _generate_product_schema(self):
-        product_dict = {}
-        #for category in c.product_categories:
-        #    for product in category.products:
-        #        if category.display == 'qty':
-        #            product_dict[category.name][product.id] = validators.Int()
+        class ProductSchema(BaseSchema):
+            pass
+        for category in c.product_categories:
+            if category.display == 'radio':
+                ProductSchema.add_field('category_' + str(category.id), BoundedInt())
+            elif category.display == 'options':
+                for product in category.products:
+                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
+            else:
+                # qty
+                product_fields = []
+                for product in category.products:
+                    ProductSchema.add_field('qty' + str(category.id) + '_product_' + str(product.id), BoundedInt())
+                ProductSchema.add_chained_validator(ProductQtyMinMax()) ############################## NOT WORKING
+        self.schemas['new'].add_field('products', ProductSchema)
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -100,8 +110,13 @@ class RegistrationController(SecureController, Update, Read):
         errors = {}
         defaults = dict(request.POST)
 
+        if c.signed_in_person:
+            current_schema = self.schemas['edit']
+        else:
+            current_schema = self.schemas['new']
+
         if request.method == 'POST' and defaults:
-            result, errors = NewRegistrationSchema().validate(defaults, self.dbsession)
+            result, errors = current_schema.validate(defaults, self.dbsession)
             if not errors:
                 c.registration = model.Registration()
                 for k in result['registration']:
@@ -126,14 +141,14 @@ class RegistrationController(SecureController, Update, Read):
                         id=c.person.url_hash, fragment=True))
 
                 self.obj = c.registration
-                self.pay(c.registration.id, quiet=1)
+                #self.pay(c.registration.id, quiet=1)
 
                 if c.signed_in_person:
                     redirect_to('/registration/status')
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                            defaults=defaults, errors=errors)
-        
+
     def edit(self, id):
         able, response = self._able_to_edit()
         if not able:
@@ -152,4 +167,4 @@ class RegistrationController(SecureController, Update, Read):
         #        self.pay(id, quiet=1) #regenerate the invoice
         #    except:
         #        self.pay(id, quiet=1) #retry once
-        
+

@@ -16,7 +16,7 @@
 <tr>
   <td><% product.active %></td>
   <td><% h.link_to(product.description, url=h.url(action='view', id=product.id)) %></td>
-  <td><% product.cost %></td>
+  <td>$<% product.cost %></td>
 %               if c.can_edit:
 %                   for action in ['edit', 'delete']:
   <td><% h.link_to(action, url=h.url(action=action, id=product.id)) %></td>

@@ -4,12 +4,10 @@
 
 <% h.form(h.url(id=c.product.id)) %>
 <& form.myt &>
-<% h.submitbutton('Update') %>
+<p><% h.submitbutton('Update') %> <% h.link_to('back', url=h.url(action='index', id=None)) %></p>
 <% h.end_form() %>
 
 </&>
-
-<% h.link_to('back', url=h.url(action='index', id=None)) %>
 
 <%args>
 defaults

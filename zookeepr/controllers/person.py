@@ -22,6 +22,7 @@ from zookeepr.config.lca_info import lca_info
 
 # TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
 # TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
+# TODO : Proper email validation? I thought it existed but it doesn't seem like it. Should be easy to add in, just too late to mess with this year - Josh H 05/09/08
 
 class AuthenticationValidator(validators.FancyValidator):
     def validate_python(self, value, state):

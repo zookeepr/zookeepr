@@ -180,3 +180,14 @@ class NotExistingPersonValidator(validators.FancyValidator):
         person = state.query(Person).filter_by(email_address=value['email_address']).first()
         if person is not None:
             raise Invalid("A person with this email already exists.  Please try signing in first.", value, state)
+
+class ProductQtyMinMax(validators.FancyValidator):  
+    def _to_python(self, value, state):
+        print "1SDFSDF"
+        adf
+        
+    def validate_python(self, value, state):
+        print "2SDFSDF"
+        adf
+        
+        raise Invalid("Bad selection!", value, state)
