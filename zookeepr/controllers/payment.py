@@ -24,7 +24,7 @@ class PaymentController(BaseController, Create, View):
 
             if c.signed_in_person != c.payment.payment_sent.invoice.person:
                 redirect_to('/person/signin')
-                                                    
+
         c.person = c.payment.payment_sent.invoice.person
 
         return super(PaymentController, self).view()
@@ -127,4 +127,4 @@ class PaymentController(BaseController, Create, View):
 
     def _mail_warn(self, msg, pr):
         email(lca_info['contact_email'],
-	    render('payment/warning.myt', fragment=True, subject=msg, pr=pr))
+              render('payment/warning.myt', fragment=True, subject=msg, pr=pr))

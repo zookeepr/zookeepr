@@ -71,7 +71,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         if c.db_content is not None:
             return self.view()
         return not_found.NotFoundController().view()
-    
+
     def list_news(self):
         news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
         news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).all()
@@ -79,7 +79,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         setattr(c, self.individual + '_pages', pages)
         setattr(c, self.individual + '_collection', collection)
         return render_response('%s/list_news.myt' % self.individual)
-    
+
     def rss_news(self):
         news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
         news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).limit(20).all()
@@ -96,7 +96,7 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         except KeyError:
            directory = file_paths['public_path'] + "/"
            c.current_folder = '/'
-        
+
         file_data = request.POST['myfile'].value
         fp = open(directory + request.POST['myfile'].filename,'wb')
         fp.write(file_data)
@@ -159,15 +159,15 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                 current_path = request.GET['folder']
         except KeyError:
             download_path += '/'
-            
+
         defaults = dict(request.POST)
         if defaults:
             try:
                 if request.POST['folder'] is not None:
                     os.mkdir(directory + request.POST['folder'])
             except KeyError:
-                pass        
-        
+                pass
+
         files = []
         folders = []
         for filename in os.listdir(directory):

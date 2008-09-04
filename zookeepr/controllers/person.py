@@ -116,7 +116,7 @@ class UpdatePersonSchema(BaseSchema):
 class PersonController(SecureController, Read, Update, List):
     model = model.Person
     individual = 'person'
-    
+
     schemas = {'new': NewPersonSchema(),
                'edit': UpdatePersonSchema()
               }
@@ -308,7 +308,7 @@ class PersonController(SecureController, Read, Update, List):
                     setattr(self.obj, k, result['person'][k])
                 self.dbsession.update(self.obj)
                 self.dbsession.flush()
-                
+
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 self.redirect_to('edit', default_redirect)
 
@@ -324,7 +324,7 @@ class PersonController(SecureController, Read, Update, List):
         """
         if c.signed_in_person:
             return render_response('person/already_loggedin.myt')
-        
+
         defaults = dict(request.POST)
         errors = {}
 
@@ -404,7 +404,7 @@ class PersonController(SecureController, Read, Update, List):
         for r in self.dbsession.query(Role).all():
           res += '<tr>'
           # can't use AuthRole here, because it may be out of date
-          has = len(person_role_map.select(whereclause = 
+          has = len(person_role_map.select(whereclause =
             and_(person_role_map.c.person_id == self.obj.id,
               person_role_map.c.role_id == r.id)).execute().fetchall())
 

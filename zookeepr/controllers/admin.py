@@ -48,7 +48,7 @@ class AdminController(SecureController):
           ('/review', ''' To see what you have reviewed [CFP]'''),
           ('/proposal/summary', ''' Summary of the reviewed papers [CFP] '''),
           ('/review/summary', ''' List of reviewers and scores [CFP] '''),
-          
+
           #('/registration/list_miniconf_orgs', ''' list of miniconf
           #organisers (as the registration code knows them, for miniconf
           #voucher) [miniconf] '''),
@@ -61,7 +61,7 @@ class AdminController(SecureController):
                                                    for (fn, desc) in funcs]
         sect = {}
         pat = re.compile(r'\[([a-zA-Z,]+)\]')
-        for (page, desc) in funcs:                
+        for (page, desc) in funcs:
             m = pat.search(desc)
             if m:
                 desc = pat.sub(r'<small>[\1]</small>', desc)
@@ -157,34 +157,34 @@ class AdminController(SecureController):
     def proposals_by_strong_rank(self):
         """ List of proposals ordered by number of certain score / total number of reviewers [CFP] """
         query = """
-SELECT 
-    proposal.id, 
-    proposal.title, 
+SELECT
+    proposal.id,
+    proposal.title,
     proposal_type.name AS "proposal type",
-    review.score, 
-    COUNT(review.id) AS "#reviewers at this score", 
+    review.score,
+    COUNT(review.id) AS "#reviewers at this score",
     (
-        SELECT COUNT(review2.id) 
-            FROM review as review2 
+        SELECT COUNT(review2.id)
+            FROM review as review2
             WHERE review2.proposal_id = proposal.id
     ) AS "#total reviewers",
     CAST(
         CAST(
             COUNT(review.id) AS float(8)
         ) / CAST(
-            (SELECT COUNT(review2.id) 
-                FROM review as review2 
+            (SELECT COUNT(review2.id)
+                FROM review as review2
                 WHERE review2.proposal_id = proposal.id
             ) AS float(8)
         ) AS float(8)
-    ) AS "#reviewers at this score / #total reviews %%" 
-FROM proposal 
-    LEFT JOIN review ON (proposal.id=review.proposal_id) 
+    ) AS "#reviewers at this score / #total reviews %%"
+FROM proposal
+    LEFT JOIN review ON (proposal.id=review.proposal_id)
     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-WHERE 
+WHERE
     (
-        SELECT COUNT(review2.id) 
-            FROM review as review2 
+        SELECT COUNT(review2.id)
+            FROM review as review2
             WHERE review2.proposal_id = proposal.id
     ) != 0
 GROUP BY proposal.id, proposal.title, review.score, proposal_type.name
@@ -196,13 +196,13 @@ ORDER BY proposal_type.name ASC, review.score DESC, "#reviewers at this score / 
         """ List of all the proposals ordered max score, min score then average [CFP] """
         return sql_response("""
 SELECT
-    proposal.id, 
-    proposal.title, 
+    proposal.id,
+    proposal.title,
     proposal_type.name AS "proposal type",
     MAX(review.score),
     MIN(review.score),
     AVG(review.score)
-FROM proposal 
+FROM proposal
     LEFT JOIN review ON (proposal.id=review.proposal_id)
     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
 GROUP BY proposal.id, proposal.title, proposal_type.name
@@ -223,7 +223,7 @@ def csv_response(sql):
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql
-    
+
     import csv, StringIO
     f = StringIO.StringIO()
     w = csv.writer(f)
@@ -252,7 +252,7 @@ def sql_response(sql):
     c.data = res.fetchall()
     c.sql = sql
     return render_response('admin/sqltable.myt')
-    
+
 def sql_data(sql):
     """ This function bypasses all the MVC stuff and just gives you a
     two-dimensional array based on the given SQL statement.
