@@ -31,7 +31,7 @@ class ErrorController(WSGIController):
 
     def img(self, id):
         return self._serve_file(os.path.join(media_path, 'img', id))
-        
+
     def style(self, id):
         return self._serve_file(os.path.join(media_path, 'style', id))
 

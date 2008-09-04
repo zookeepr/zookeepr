@@ -104,7 +104,7 @@ class ProposalController(SecureController, View, Update):
                    "delete": [AuthFunc('is_submitter')],
                    "review": [AuthRole('reviewer')],
                    "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
-                   "review_index": [AuthRole('reviewer')], 
+                   "review_index": [AuthRole('reviewer')],
                    "talk": True,
                    "index": [AuthTrue()],
                    "submit": [AuthTrue()],
@@ -144,7 +144,7 @@ class ProposalController(SecureController, View, Update):
           #LEFT JOIN
           #        review AS r
           #                ON(p.id=r.proposal_id)
-          #WHERE   
+          #WHERE
           #        p.proposal_type_id IN(1,3)
           #GROUP BY
           #        p.id
@@ -152,8 +152,8 @@ class ProposalController(SecureController, View, Update):
           #        (SELECT COUNT(id) FROM review) /
           #        (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
           #ORDER BY
-          #        RANDOM()   
-         
+          #        RANDOM()
+
         collection = self.dbsession.query(model.Proposal).from_statement("""
               SELECT
                   p.id
@@ -169,7 +169,7 @@ class ProposalController(SecureController, View, Update):
                       (SELECT COUNT(id) FROM proposal) + 1)
               ORDER BY
                       RANDOM()
-              LIMIT 10                     
+              LIMIT 10
         """)
         #print collection
         for proposal in collection:
@@ -376,7 +376,7 @@ class ProposalController(SecureController, View, Update):
                             setattr(c.person, k, result['person'][k])
                         self.dbsession.save(c.person)
                         email(c.person.email_address,
-                            render('person/new_person_email.myt', fragment=True))                        
+                            render('person/new_person_email.myt', fragment=True))
                     else:
                         c.person = c.signed_in_person
                         for k in result['person']:
