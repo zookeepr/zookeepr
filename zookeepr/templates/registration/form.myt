@@ -267,7 +267,7 @@ give us an idea of how many people to expect.
 <label for="registration.shell">Your favourite shell:</label>
 </p><p class="entries">
 <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
-% shells = ['(please select)', 'bash', 'sh', 'csh', 'tcsh', 'emacs', 'ksh', 'smrsh', 'busybox', 'dash', 'XTree Gold', 'zsh']
+% shells = ['(please select)', 'bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh']
 % for s in shells:
 <option value="<%s%>"><% s %></option>
 % #endfor
@@ -284,7 +284,7 @@ give us an idea of how many people to expect.
 <label for="registration.editor">Your favourite editor:</label>
 </p><p class="entries">
 <select id="registration.editor" name="registration.editor" onchange="toggle_select_hidden(this.id, 'editor_other')">
-% editors = ['(please select)', 'vi', 'vim', 'emacs', 'xemacs', 'gedit', 'nano', 'kate', 'jed', 'bluefish']
+% editors = ['(please select)', 'bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs']
 % for e in editors:
 <option value="<% e %>"><% e %></option>
 % #endfor
