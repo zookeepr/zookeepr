@@ -104,7 +104,7 @@
 %   elif category.display == 'options':
 %       for product in category.products:
 %           if product.active:
-                <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - $<% product.cost %></label></p>
+                <p><label><input type="checkbox" name="products.options<% category.id %>_product_<% product.id %>" value="1" /> <% product.description %> - $<% product.cost %></label></p>
 %           #endif
 %       #endfor
 %   else: #qty
