@@ -88,17 +88,24 @@ class RegistrationController(SecureController, Update, Read):
             pass
         for category in c.product_categories:
             if category.display == 'radio':
+                # min/max can't be calculated on this form. You should only have 1 selected.
                 ProductSchema.add_field('category_' + str(category.id), BoundedInt())
             elif category.display == 'options':
+                product_fields = []
                 for product in category.products:
                     ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
+                    product_fields.append('options' + str(category.id) + '_product_' + str(product.id))
+                ProductSchema.add_pre_validator(ProductOptionsMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             else:
                 # qty
                 product_fields = []
                 for product in category.products:
                     ProductSchema.add_field('qty' + str(category.id) + '_product_' + str(product.id), BoundedInt())
-                ProductSchema.add_chained_validator(ProductQtyMinMax()) ############################## NOT WORKING
+                    product_fields.append('qty' + str(category.id) + '_product_' + str(product.id))
+                ProductSchema.add_pre_validator(ProductQtyMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
+                # FIXME: I have spent far too long to try and get this working. Technically this should be a chained validator, not a pre validator but no matter what I do I can't get it to work (read heaps of docs etc etc). The result of being a pre-validator is that if there is an error the pre validator doesn't pick up (like an unfilled field) that the normal validation would pick up it isn't highlighted until the pre-validator doesn't find any errors. For example if you dont' select any shirts and have "asdf" in one of the dinner ticket fields you should see two errors: 1. you have no shirts and 2. tickets need to be integers. Once you select a shirt and resubmit the other error will show up. So it's a usability issue and doesn't make the form less secure, but damn this one is annoying!
         self.schemas['new'].add_field('products', ProductSchema)
+        self.schemas['edit'].add_field('products', ProductSchema)
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person

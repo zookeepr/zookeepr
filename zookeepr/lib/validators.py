@@ -181,13 +181,28 @@ class NotExistingPersonValidator(validators.FancyValidator):
         if person is not None:
             raise Invalid("A person with this email already exists.  Please try signing in first.", value, state)
 
-class ProductQtyMinMax(validators.FancyValidator):  
-    def _to_python(self, value, state):
-        print "1SDFSDF"
-        adf
-        
+class ProductOptionsMinMax(validators.FormValidator):  
     def validate_python(self, value, state):
-        print "2SDFSDF"
-        adf
-        
-        raise Invalid("Bad selection!", value, state)
+        total = 0
+        for field in self.product_fields:
+            try:
+                total += int(value[field])
+            except:
+                pass
+        if total < self.min_qty:
+            raise Invalid("You must have at least " + str(self.min_qty) + " of " + self.category_name, value, state)
+        if total > self.max_qty:
+            raise Invalid("You can not order more than " + str(self.max_qty) + " " + self.category_name, value, state)
+
+class ProductQtyMinMax(validators.FormValidator):  
+    def validate_python(self, value, state):
+        total = 0
+        for field in self.product_fields:
+            try:
+                total += int(value[field])
+            except:
+                pass
+        if total < self.min_qty:
+            raise Invalid("You must have at least " + str(self.min_qty) + " of " + self.category_name, value, state)
+        if total > self.max_qty:
+            raise Invalid("You can not order more than " + str(self.max_qty) + " " + self.category_name, value, state)
