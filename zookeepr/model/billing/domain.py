@@ -70,6 +70,12 @@ class ProductCategory(object):
         else:
             return False
 
+class ProductInclude(object):
+    def __init__(self, qty=None):
+        self.qty = qty
+
+    def __repr__(self):
+        return '<ProductInclude product_id=%r include_product_id=%r include_qty=%r>' % (self.product_id, self.include_product_id, self.include_qty)
 
 class Product(object):
     def __init__(self, active=False, description=None, cost=None):
@@ -130,7 +136,8 @@ class InvoiceItem(object):
 
 
 class Invoice(object):
-    def __init__(self, issue_date=None, due_date=None):
+    def __init__(self, void=False, issue_date=None, due_date=None):
+        self.void = void
         self.issue_date = issue_date
         self.due_date = due_date
 
@@ -140,7 +147,7 @@ class Invoice(object):
             self.due_date = datetime.datetime.now() + datetime.timedelta(14, 0, 0)
 
     def __repr__(self):
-        return '<Invoice id=%r person=%r>' % (self.id, self.person_id)
+        return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)
 
     def total(self):
         """Return the total value of this invoice"""

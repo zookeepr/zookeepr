@@ -10,6 +10,13 @@ mapper(Ceiling, ceiling)
 
 mapper(ProductCategory, product_category)
 
+mapper(ProductInclude, product_include,
+       properties = {
+            'product': relation(Product, backref='included', lazy=False),
+            'include_category': relation(ProductCategory),
+            },
+       )
+
 mapper(Product, product,
        properties = {
              'ceilings': relation(Ceiling, secondary=product_ceiling_map, lazy=False,
