@@ -71,8 +71,8 @@ class ProductCategory(object):
             return False
 
 class ProductInclude(object):
-    def __init__(self, qty=None):
-        self.qty = qty
+    def __init__(self, include_qty=None):
+        self.include_qty = include_qty
 
     def __repr__(self):
         return '<ProductInclude product_id=%r include_product_id=%r include_qty=%r>' % (self.product_id, self.include_product_id, self.include_qty)
