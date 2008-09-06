@@ -97,6 +97,8 @@
     <p class="note"><% category.description %></p>
 %   if category.display == 'radio':
 %       for product in category.products:
+%           if product in c.registration.products:
+%               defaults['product.category_' + str(category.id)] = product.id
 %           if product.active:
                 <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
 %           #endif
@@ -221,11 +223,11 @@ Please enter any requirements if necessary; access requirements, etc.
 # FIXME: CLEARLY this needs to be dynamic
 mclist = (
     ('Monday',
-	('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security',
-	'Virtualisation', 'Wireless')),
+    ('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security',
+    'Virtualisation', 'Wireless')),
     ('Tuesday',
-	('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel',
-	'LinuxChix', 'MySQL', 'SysAdmin')))
+    ('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel',
+    'LinuxChix', 'MySQL', 'SysAdmin')))
 </%python>
 <table><tr>
 % for day, mcs in mclist: 
@@ -235,7 +237,7 @@ mclist = (
 % for day, mcs in mclist: 
 <td>
 %   for mc in mcs:
-% 	l = 'registration.miniconf.%s' % mc.replace(' ', '_')
+%     l = 'registration.miniconf.%s' % mc.replace(' ', '_')
 <% h.check_box(l) %>
 <label for="<% l %>"><% mc %></label>
 <br>
@@ -337,43 +339,43 @@ Your IRC nick or other handle you go by.
 <%python>
 starts = ["a", "a", "a", "one", "no"] # bias toward "a"
 adverbs = ["strongly",
-		       "poorly", "badly", "well", "dynamically",
-		       "hastily", "statically", "mysteriously",
-		       "buggily", "extremely", "nicely", "strangely",
-		       "irritatingly", "unquestionably", "clearly",
-		       "plainly", "silently", "abstractly", "validly",
-		       "invalidly", "immutably", "oddly", "disturbingly",
-		       "atonally", "randomly", "amusingly", "widely",
-		       "narrowly", "manually", "automatically", "audibly",
-		       "brilliantly", "independently", "definitively",
-		       "provably", "improbably", "distortingly",
-		       "confusingly", "decidedly", "historically"]
+               "poorly", "badly", "well", "dynamically",
+               "hastily", "statically", "mysteriously",
+               "buggily", "extremely", "nicely", "strangely",
+               "irritatingly", "unquestionably", "clearly",
+               "plainly", "silently", "abstractly", "validly",
+               "invalidly", "immutably", "oddly", "disturbingly",
+               "atonally", "randomly", "amusingly", "widely",
+               "narrowly", "manually", "automatically", "audibly",
+               "brilliantly", "independently", "definitively",
+               "provably", "improbably", "distortingly",
+               "confusingly", "decidedly", "historically"]
 adjectives = ["invalid", "valid",
-		       "referenced", "dereferenced", "unreferenced",
-		       "illegal", "legal",
-		       "questionable", 
-		       "alternate", "implemented", "unimplemented",
-		       "terminal", "non-terminal",
-		       "static", "dynamic",
-		       "qualified", "unqualified", 
-		       "constant", "variable",
-		       "volatile", "non-volatile",
-		       "abstract", "concrete",
-		       "fungible", "non-fungible",
-		       "untyped", "variable",
-		       "mutable", "immutable",
-		       "sizable", "miniscule",
-		       "perverse", "immovable",
-		       "compressed", "uncompressed",
-		       "surreal", "allegorical",
-		       "trivial", "nontrivial"]
+               "referenced", "dereferenced", "unreferenced",
+               "illegal", "legal",
+               "questionable", 
+               "alternate", "implemented", "unimplemented",
+               "terminal", "non-terminal",
+               "static", "dynamic",
+               "qualified", "unqualified", 
+               "constant", "variable",
+               "volatile", "non-volatile",
+               "abstract", "concrete",
+               "fungible", "non-fungible",
+               "untyped", "variable",
+               "mutable", "immutable",
+               "sizable", "miniscule",
+               "perverse", "immovable",
+               "compressed", "uncompressed",
+               "surreal", "allegorical",
+               "trivial", "nontrivial"]
 nouns = ["pointer", "structure",
-		       "definition", "declaration", "type", "union",
-		       "coder", "admin", "hacker", "kitten", "mistake",
-		       "conversion", "implementation", "design", "analysis",
-		       "neophyte", "expert", "bundle", "package",
-		       "abstraction", "theorem", "display", "distro",
-		       "restriction", "device", "function", "reference"]
+               "definition", "declaration", "type", "union",
+               "coder", "admin", "hacker", "kitten", "mistake",
+               "conversion", "implementation", "design", "analysis",
+               "neophyte", "expert", "bundle", "package",
+               "abstraction", "theorem", "display", "distro",
+               "restriction", "device", "function", "reference"]
 adverb = random.choice(adverbs)
 adjective = random.choice(adjectives)
 noun = random.choice(nouns)
