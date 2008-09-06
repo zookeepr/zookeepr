@@ -97,22 +97,29 @@
     <p class="note"><% category.description %></p>
 %   if category.display == 'radio':
 %       for product in category.products:
-%           if product in c.registration.products:
-%               defaults['product.category_' + str(category.id)] = product.id
 %           if product.active:
                 <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
 %           #endif
 %       #endfor
-%   elif category.display == 'options':
+%   elif category.display == 'select':
+                <p><select name="products.category_<% category.id %>">
 %       for product in category.products:
 %           if product.active:
-                <p><label><input type="checkbox" name="products.options<% category.id %>_product_<% product.id %>" value="1" /> <% product.description %> - $<% product.cost %></label></p>
+                  <option value="<% product.id %>"> <% product.description %> - $<% product.cost %></option>
 %           #endif
 %       #endfor
-%   else: #qty
+                </select></p>
+
+%   elif category.display == 'checkbox':
 %       for product in category.products:
 %           if product.active:
-                <p><% product.description %> x <input type="text" name="products.qty<% category.id %>_product_<% product.id %>" size="2" /></p>
+                <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - $<% product.cost %></label></p>
+%           #endif
+%       #endfor
+%   elif category.display == 'qty':
+%       for product in category.products:
+%           if product.active:
+                <p><% product.description %> x <input type="text" name="products.product_<% product.id %>_qty" size="2" /></p>
 %           #endif
 %       #endfor
 %   #endif

@@ -88,21 +88,21 @@ class RegistrationController(SecureController, Update, Read):
         class ProductSchema(BaseSchema):
             pass
         for category in c.product_categories:
-            if category.display == 'radio':
+            if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
                 ProductSchema.add_field('category_' + str(category.id), BoundedInt())
-            elif category.display == 'options':
+            elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
                     ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                    product_fields.append('options' + str(category.id) + '_product_' + str(product.id))
+                    product_fields.append('product_' + str(product.id))
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             elif category.display == 'qty':
                 # qty
                 product_fields = []
                 for product in category.products:
-                    ProductSchema.add_field('qty' + str(category.id) + '_product_' + str(product.id), BoundedInt())
-                    product_fields.append('qty' + str(category.id) + '_product_' + str(product.id))
+                    ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
+                    product_fields.append('product_' + str(product.id) + '_qty')
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
                 # FIXME: I have spent far too long to try and get this working. Technically this should be a chained validator, not a pre validator but no matter what I do I can't get it to work (read heaps of docs etc etc). The result of being a pre-validator is that if there is an error the pre validator doesn't pick up (like an unfilled field) that the normal validation would pick up it isn't highlighted until the pre-validator doesn't find any errors. For example if you dont' select any shirts and have "asdf" in one of the dinner ticket fields you should see two errors: 1. you have no shirts and 2. tickets need to be integers. Once you select a shirt and resubmit the other error will show up. So it's a usability issue and doesn't make the form less secure, but damn this one is annoying!
         self.schemas['new'].add_field('products', ProductSchema)
@@ -177,12 +177,13 @@ class RegistrationController(SecureController, Update, Read):
             setattr(c.registration, k, result['registration'][k])
         self.dbsession.save_or_update(c.registration)
 
+        # Always delete the current products
         for rego_product in c.registration.products:
             self.dbsession.delete(rego_product)
 
         # Store Product details
         for category in c.product_categories:
-            if category.display == 'radio':
+            if category.display in ('radio', 'select'):
                 product = self.dbsession.query(model.Product).get(result['products']['category_' + str(category.id)])
                 if product != None:
                     rego_product = model.RegistrationProduct()
@@ -192,9 +193,9 @@ class RegistrationController(SecureController, Update, Read):
                     c.registration.products.append(rego_product)
                 else:
                     raise Exception
-            elif category.display == 'options':
+            elif category.display == 'checkbox':
                 for product in category.products:
-                    if result['products']['options' + str(category.id) + '_product_' + str(product.id)] == True:
+                    if result['products']['product_' + str(product.id)] == True:
                         rego_product = model.RegistrationProduct()
                         rego_product.product = product
                         rego_product.qty = 1
@@ -202,10 +203,10 @@ class RegistrationController(SecureController, Update, Read):
                         c.registration.products.append(rego_product)
             elif category.display == 'qty':
                 for product in category.products:
-                    if result['products']['qty' + str(category.id) + '_product_' + str(product.id)] not in [0, None]:
+                    if result['products']['product_' + str(product.id) + '_qty'] not in [0, None]:
                         rego_product = model.RegistrationProduct()
                         rego_product.product = product
-                        rego_product.qty = result['products']['qty' + str(category.id) + '_product_' + str(product.id)]
+                        rego_product.qty = result['products']['product_' + str(product.id) + '_qty']
                         self.dbsession.save(rego_product)
                         c.registration.products.append(rego_product)
 
