@@ -31,7 +31,7 @@ Your email address will only be used to correspond with you, and is your login n
 
 </fieldset>
 
-<& form.myt &>
+<& form.myt, defaults=defaults, errors=errors &>
 <p class="submit"><% h.submitbutton('Update') %></p>
 <% h.end_form() %>
 
@@ -55,10 +55,10 @@ if not defaults:
         if v is not None:
             defaults['registration.' + k] = getattr(c.registration, k)
 
-    for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country']:
-        v = getattr(c.registration.person, k)
+    for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
+        v = getattr(c.signed_in_person, k)
         if v is not None:
-            defaults['person.' + k] = getattr(c.registration.person, k)
+            defaults['person.' + k] = getattr(c.signed_in_person, k)
 
     # FIXME: UGH durty hack
     if c.registration.lasignup:

@@ -67,6 +67,7 @@ class RegistrationController(SecureController, Update, Read):
     permissions = {'new': True,
                    'edit': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
+                   'status': True
                }
 
     def __before__(self, **kwargs):
@@ -96,7 +97,7 @@ class RegistrationController(SecureController, Update, Read):
                     ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
                     product_fields.append('options' + str(category.id) + '_product_' + str(product.id))
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
-            else:
+            elif category.display == 'qty':
                 # qty
                 product_fields = []
                 for product in category.products:
@@ -125,20 +126,11 @@ class RegistrationController(SecureController, Update, Read):
         if request.method == 'POST' and defaults:
             result, errors = current_schema.validate(defaults, self.dbsession)
             if not errors:
+                # A blank registration
                 c.registration = model.Registration()
-                for k in result['registration']:
-                    setattr(c.registration, k, result['registration'][k])
-                self.dbsession.save(c.registration)
+                self.save_details(result)
 
-                if not c.signed_in_person:
-                    c.person = model.Person()
-                    for k in result['person']:
-                        setattr(c.person, k, result['person'][k])
-
-                    self.dbsession.save(c.person)
-                else:
-                    c.person = c.signed_in_person
-
+                # Create person<->registration relationship
                 c.registration.person = c.person
                 self.dbsession.flush()
 
@@ -154,24 +146,83 @@ class RegistrationController(SecureController, Update, Read):
                     redirect_to('/registration/status')
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
-                           defaults=defaults, errors=errors)
+                               defaults=defaults, errors=errors)
 
     def edit(self, id):
         able, response = self._able_to_edit()
         if not able:
             return response
-        registration = self.obj
-        # FIXME: Add here the check for paid invoices
-        #if registration.person.invoices:
-        #    if registration.person.invoices[0].good_payments or registration.person.invoices[0].bad_payments:
-        #        c.invoice = registration.person.invoices[0]
-        #        return render_response('invoice/already.myt')
+        errors = {}
+        defaults = dict(request.POST)
 
-        #try:
-        return super(RegistrationController, self).edit(id)
-        #finally:
-        #    try:
-        #        self.pay(id, quiet=1) #regenerate the invoice
-        #    except:
-        #        self.pay(id, quiet=1) #retry once
+        current_schema = self.schemas['edit']
 
+        if request.method == 'POST' and defaults:
+            result, errors = current_schema.validate(defaults, self.dbsession)
+            if not errors:
+                self.save_details(result)
+
+                self.dbsession.flush()
+
+                self.obj = c.registration
+                #self.pay(c.registration.id, quiet=1)
+
+                redirect_to('/registration/status')
+        return render_response("registration/edit.myt",
+                               defaults=defaults, errors=errors)
+
+    def save_details(self, result):
+        # Store Registration details
+        for k in result['registration']:
+            setattr(c.registration, k, result['registration'][k])
+        self.dbsession.save_or_update(c.registration)
+
+        for rego_product in c.registration.products:
+            self.dbsession.delete(rego_product)
+
+        # Store Product details
+        for category in c.product_categories:
+            if category.display == 'radio':
+                product = self.dbsession.query(model.Product).get(result['products']['category_' + str(category.id)])
+                if product != None:
+                    rego_product = model.RegistrationProduct()
+                    rego_product.product = product
+                    rego_product.qty = 1
+                    self.dbsession.save(rego_product)
+                    c.registration.products.append(rego_product)
+                else:
+                    raise Exception
+            elif category.display == 'options':
+                for product in category.products:
+                    if result['products']['options' + str(category.id) + '_product_' + str(product.id)] == True:
+                        rego_product = model.RegistrationProduct()
+                        rego_product.product = product
+                        rego_product.qty = 1
+                        self.dbsession.save(rego_product)
+                        c.registration.products.append(rego_product)
+            elif category.display == 'qty':
+                for product in category.products:
+                    if result['products']['qty' + str(category.id) + '_product_' + str(product.id)] not in [0, None]:
+                        rego_product = model.RegistrationProduct()
+                        rego_product.product = product
+                        rego_product.qty = result['products']['qty' + str(category.id) + '_product_' + str(product.id)]
+                        self.dbsession.save(rego_product)
+                        c.registration.products.append(rego_product)
+
+        # Check whether we're already signed in or not, and store person details
+        if not c.signed_in_person:
+            c.person = model.Person()
+            for k in result['person']:
+                setattr(c.person, k, result['person'][k])
+
+            self.dbsession.save(c.person)
+        else:
+            c.person = c.signed_in_person
+
+
+
+
+    def status(self):
+        c.conference_ceiling = self.dbsession.query(model.Ceiling).filter_by(name='conference').one()
+        c.earlybird_ceiling = self.dbsession.query(model.Ceiling).filter_by(name='earlybird').one()
+        return render_response("registration/status.myt")
