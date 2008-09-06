@@ -223,6 +223,7 @@ class RegistrationController(SecureController, Update, Read):
 
 
     def status(self):
-        c.conference_ceiling = self.dbsession.query(model.Ceiling).filter_by(name='conference').one()
-        c.earlybird_ceiling = self.dbsession.query(model.Ceiling).filter_by(name='earlybird').one()
+        c.ceilings = {}
+        c.ceilings['conference'] = self.dbsession.query(model.Ceiling).filter_by(name='conference').one()
+        c.ceilings['earlybird'] = self.dbsession.query(model.Ceiling).filter_by(name='earlybird').one()
         return render_response("registration/status.myt")

@@ -20,14 +20,26 @@ class Ceiling(object):
             qty += p.qty_invoice()
         return qty
 
-    def ceiling_remaining(self):
+    def remaining(self):
         return self.max_sold - self.qty_sold()
 
-    def ceiling_soldout(self):
-        return self.max_sold > self.qty_sold()
+    def soldout(self):
+        return self.qty_sold() >= self.max_sold
+
+    def percent_sold(self):
+        if self.max_sold == None:
+            return 0
+        else:
+            return self.qty_sold() / self.max_sold
+
+    def percent_invoiced(self):
+        if self.max_sold == None:
+            return 0
+        else:
+            return self.qty_invoiced() / self.max_sold
 
     def can_i_sell(self, qty):
-        if self.ceiling_remaining() > qty:
+        if self.remaining() > qty:
             return True
         else:
             return False
@@ -81,16 +93,16 @@ class Product(object):
             qty += ii.qty
         return qty
 
-    def product_remaining(self):
+    def remaining(self):
         max_ceiling = 0
         for c in self.ceilings:
-            if c.ceiling_remaining > max_ceiling:
-                max_ceiling = c.ceiling_remaining
+            if c.remaining() > max_ceiling:
+                max_ceiling = c.remaining
         return max_ceiling
 
-    def product_soldout(self):
+    def soldout(self):
         for c in self.ceilings:
-            if c.ceiling_soldout():
+            if c.soldout():
                 return True
         return False
 
