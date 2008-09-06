@@ -213,15 +213,15 @@ class RegistrationController(SecureController, Update, Read):
         # Check whether we're already signed in or not, and store person details
         if not c.signed_in_person:
             c.person = model.Person()
-            for k in result['person']:
-                setattr(c.person, k, result['person'][k])
-
-            self.dbsession.save(c.person)
+        elif c.registration.person:
+            c.person = c.registration.person
         else:
             c.person = c.signed_in_person
 
+        for k in result['person']:
+            setattr(c.person, k, result['person'][k])
 
-
+        self.dbsession.save_or_update(c.person)
 
     def status(self):
         c.ceilings = {}
