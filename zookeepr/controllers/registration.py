@@ -67,6 +67,7 @@ class RegistrationController(SecureController, Update, Read):
     permissions = {'new': True,
                    'edit': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
+                   'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'status': True
                }
 
@@ -228,3 +229,34 @@ class RegistrationController(SecureController, Update, Read):
         c.ceilings['conference'] = self.dbsession.query(model.Ceiling).filter_by(name='conference').one()
         c.ceilings['earlybird'] = self.dbsession.query(model.Ceiling).filter_by(name='earlybird').one()
         return render_response("registration/status.myt")
+
+    def pay(self, id, quiet=0):
+        registration = self.obj
+        if registration.person.invoices:
+            for invoice in registration.person.invoices:
+                if invoice.good_payments or invoice.bad_payments:
+                    c.invoice = invoice
+                    if quiet: return
+                    return render_response('invoice/already.myt')
+                else:
+                    invoice.void = True
+
+        invoice = model.Invoice()
+        invoice.person = registration.person
+
+        # Check for voucher
+        #voucher_result, errors = self.check_voucher()
+
+        for rproduct in registration.products:
+            ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
+            ii.product = rproduct.product
+            self.dbsession.save(ii)
+            invoice.items.append(ii)
+
+        invoice.last_modification_timestamp = datetime.datetime.now()
+
+        self.dbsession.save(invoice)
+        self.dbsession.flush()
+
+        if quiet: return
+        redirect_to(controller='invoice', action='view', id=invoice.id)
