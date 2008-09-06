@@ -49,7 +49,7 @@ class Registration(object):
         self.miniconf = miniconf
 
     def __repr__(self):
-        return '<Registration id=%r type=%r person_id=%r>' % (self.id, self.type, self.person_id)
+        return '<Registration id=%r person_id=%r>' % (self.id, self.person_id)
 
 
 class RegistrationProduct(object):
