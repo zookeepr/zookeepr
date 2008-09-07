@@ -15,6 +15,14 @@ from zookeepr.controllers.person import PersonSchema
 from zookeepr.model.billing import ProductCategory, Product
 from zookeepr.model.registration import Registration
 
+class NotExistingRegistrationValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        rego = None
+        if 'signed_in_person_id' in session:
+            rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).first()
+        if rego is not None:
+            raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
     phone = validators.String()
@@ -51,11 +59,15 @@ class RegisterSchema(BaseSchema):
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
     registration = RegisterSchema()
+
+    chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
 class UpdateRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
     registration = RegisterSchema()
+
+    chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
 class RegistrationController(SecureController, Update, Read):
@@ -78,6 +90,8 @@ class RegistrationController(SecureController, Update, Read):
         #c.products = self.dbsession.query(Product).all()
 
     def _able_to_register(self):
+        if c.signed_in_person and c.signed_in_person.registration:
+            return False, "Thanks for your keenness, but you've already registered!"
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't register (eg sold out) """
         return True, "You can register"
 
@@ -115,7 +129,7 @@ class RegistrationController(SecureController, Update, Read):
     def new(self, id):
         able, response = self._able_to_register()
         if not able:
-            return response
+            return render_response("registration/error.myt", error=response)
         errors = {}
         defaults = dict(request.POST)
 
