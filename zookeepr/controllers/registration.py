@@ -1,5 +1,4 @@
 import datetime
-import md5
 import warnings
 
 from formencode import validators, compound, variabledecode, schema
@@ -23,6 +22,12 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
         if rego is not None and rego != c.registration:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
+class SillyDescriptionChecksum(validators.FancyValidator):
+    def validate_python(self, value, state):
+        checksum = h.silly_description_checksum(value['silly_description'])
+        if value['silly_description_checksum'] != checksum:
+            raise Invalid("Smart enough to hack the silly description, not smart enough to hack the checksum.", value, state)
+
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
     phone = validators.String()
@@ -43,6 +48,7 @@ class RegisterSchema(BaseSchema):
     distro = validators.String()
     distrotext = validators.String()
     silly_description = validators.String()
+    silly_description_checksum = validators.String(strip=True)
     #voucher_code = validators.String()
     diet = validators.String()
     special = validators.String()
@@ -58,6 +64,8 @@ class RegisterSchema(BaseSchema):
     speaker_side_release = validators.Bool()
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
+
+    chained_validators = [SillyDescriptionChecksum()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -84,7 +92,8 @@ class RegistrationController(SecureController, Update, List, Read):
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'index': [AuthRole('organiser')],
-                   'status': True
+                   'status': True,
+                   'silly_description': True
                }
 
     def __before__(self, **kwargs):
@@ -253,6 +262,10 @@ class RegistrationController(SecureController, Update, List, Read):
         c.ceilings['conference'] = self.dbsession.query(model.Ceiling).filter_by(name='conference').one()
         c.ceilings['earlybird'] = self.dbsession.query(model.Ceiling).filter_by(name='earlybird').one()
         return render_response("registration/status.myt")
+
+    def silly_description(self):
+        desc, descChecksum = h.silly_description()
+        return descChecksum + ' ' + desc
 
     def pay(self, id, quiet=0):
         registration = self.obj
