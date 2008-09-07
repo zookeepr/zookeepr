@@ -20,7 +20,7 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
         rego = None
         if 'signed_in_person_id' in session:
             rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).first()
-        if rego is not None:
+        if rego is not None and rego != c.registration:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
 class ExistingPersonSchema(BaseSchema):
@@ -70,7 +70,7 @@ class UpdateRegistrationSchema(BaseSchema):
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
-class RegistrationController(SecureController, Update, Read):
+class RegistrationController(SecureController, Update, List, Read):
     individual = 'registration'
     model = model.Registration
     schemas = {'new': NewRegistrationSchema(),
@@ -80,6 +80,7 @@ class RegistrationController(SecureController, Update, Read):
                    'edit': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
+                   'index': [AuthRole('organiser')],
                    'status': True
                }
 
