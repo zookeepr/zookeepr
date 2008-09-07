@@ -265,7 +265,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
     def silly_description(self):
         desc, descChecksum = h.silly_description()
-        return descChecksum + ' ' + desc
+        return descChecksum + ',' + desc
 
     def pay(self, id, quiet=0):
         registration = self.obj
