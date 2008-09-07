@@ -111,7 +111,7 @@
 %   if category.display == 'radio':
 %       for product in category.products:
 %           if product.active:
-          <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - $<% product.cost %></label></p>
+          <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endif
 %       #endfor
 %   elif category.display == 'select':
@@ -120,7 +120,7 @@
               <option value=""> - </option>
 %       for product in category.products:
 %           if product.active:
-              <option value="<% product.id %>"> <% product.description %> - $<% product.cost %></option>
+              <option value="<% product.id %>"> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></option>
 %           #endif
 %       #endfor
             </select>
@@ -128,13 +128,13 @@
 %   elif category.display == 'checkbox':
 %       for product in category.products:
 %           if product.active:
-          <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - $<% product.cost %></label></p>
+          <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endif
 %       #endfor
 %   elif category.display == 'qty':
 %       for product in category.products:
 %           if product.active:
-          <p><% product.description %> x <input type="text" name="products.product_<% product.id %>_qty" size="2" /> - $<% product.cost %></p>
+          <p><% product.description %> x <input type="text" name="products.product_<% product.id %>_qty" size="2" /> x <% h.number_to_currency(product.cost/100.0) %></p>
 %           #endif
 %       #endfor
 %   #endif

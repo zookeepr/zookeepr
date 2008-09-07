@@ -47,9 +47,9 @@
 %       for rproduct in c.registration.products:
 %           if rproduct.product == product:
 %               if category.display == 'qty':
-        <p><% rproduct.qty %> x <% product.description %> - $<% product.cost %></p>
+        <p><% rproduct.qty %> x <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></p>
 %               else:
-        <p><% product.description %> - $<% product.cost %></p>
+        <p><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></p>
 %               #endif
 %           #endif
 %       #endfor
