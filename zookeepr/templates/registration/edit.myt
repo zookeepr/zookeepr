@@ -70,8 +70,6 @@ if not defaults:
     if c.registration.miniconf:
         for mc in c.registration.miniconf:
             defaults['registration.miniconf.' + mc] = 1
-            if mc == 'OpenOffice':
-                defaults['registration.miniconf.OpenOffice.org'] = 1
     if c.registration.prevlca:
         for p in c.registration.prevlca:
             defaults['registration.prevlca.' + p] = 1

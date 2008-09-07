@@ -188,9 +188,9 @@
 % for day, miniconfs in h.lca_rego['miniconfs']:
                 <td>
 %   for miniconf in miniconfs:
-%     l = 'registration.miniconf.%s' % miniconf.replace(' ', '_')
-                  <% h.check_box(l) %>
-                  <label for="<% l %>"><% miniconf %></label>
+%       label = 'registration.miniconf.%s' % miniconf.replace(' ', '_').replace('.', '_')
+                  <% h.check_box(label) %>
+                  <label for="<% label %>"><% miniconf %></label>
                   <br>
 %   #endfor
                 </td>
