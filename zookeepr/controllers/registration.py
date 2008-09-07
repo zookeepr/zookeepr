@@ -105,7 +105,7 @@ class RegistrationController(SecureController, Update, Read):
         for category in c.product_categories:
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
-                ProductSchema.add_field('category_' + str(category.id), BoundedInt())
+                ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, not_empty=True))
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
