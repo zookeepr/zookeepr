@@ -1,49 +1,20 @@
-<h1>Edit registration</h1>
+    <h1>Edit registration</h1>
 
-<div id="registration">
+    <div id="registration">
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
-<% h.form(h.url()) %>
-
-<h2>About yourself</h2>
-
-<p class="label">
-<label for="person.firstname">Your first name:</label></p>
-<p>
-<% c.registration.person.firstname | h %>
-</p>
-
-<p class="label">
-<label for="person.lastname">Your last name:</label></p>
-<p>
-<% c.registration.person.lastname | h %>
-</p>
-
-<p class="label">
-<label for="person.email_address">Email address:</label></p>
-<p>
-<% c.registration.person.email_address | h %>
-</p>
-<p class="note">
-Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
-</p>
-
-</fieldset>
-
+      <% h.form(h.url()) %>
 <& form.myt, defaults=defaults, errors=errors &>
-<p class="submit"><% h.submitbutton('Update') %></p>
-<% h.end_form() %>
+        <p class="submit"><% h.submitbutton('Update') %></p>
+      <% h.end_form() %>
 
 </&>
-
-</div>
-
+    </div>
 <%args>
 defaults
 errors
 </%args>
-
 <%init>
 # working around a bug in formencode, we need to set the defaults to
 # the values in c.registration
@@ -106,3 +77,14 @@ if not defaults:
             defaults['registration.prevlca.' + p] = 1
 
 </%init>
+<%method extra_head>
+  <script type="text/javascript">
+    function toggle_select_hidden(select, field) {
+      if ( document.getElementById(select).value == 'other' ) {
+        document.getElementById(field).style.display = 'inline';
+      } else {
+        document.getElementById(field).style.display = 'none';
+      }
+    }
+  </script>
+</%method>

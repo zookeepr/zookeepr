@@ -274,3 +274,15 @@ def domain_only(url):
 def extension(name):
     """ Return the extension of a file name"""
     return name.split('.')[-1]
+
+def silly_description():
+    import md5
+    adverb = random.choice(lca_rego['silly_description']['adverbs'])
+    adjective = random.choice(lca_rego['silly_description']['adjectives'])
+    noun = random.choice(lca_rego['silly_description']['nouns'])
+    start = random.choice(lca_rego['silly_description']['starts'])
+    if start == 'a' and adverb[0] in ['a', 'e', 'i', 'o', 'u']:
+        start = 'an'
+    desc = '%s %s %s %s' % (start, adverb, adjective, noun)
+    descChecksum = md5.new(desc).hexdigest()
+    return desc, descChecksum
