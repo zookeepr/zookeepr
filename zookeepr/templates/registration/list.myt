@@ -145,8 +145,6 @@ speaker_keynote_reduce = 0
 
 # Loop through regos
 for r in c.registration_collection:
-    if r.type=='Cancelled':
-        continue
     speaker = r.person.is_speaker()
     paid = r.person.invoices and r.person.invoices[0].paid()
 
@@ -167,21 +165,21 @@ for r in c.registration_collection:
     rego_all[type] = 1 + rego_all.get(type, 0)
     rego_total += 1
     if r.dinner != None:
-    	extra_dinners += r.dinner
+        extra_dinners += r.dinner
 
     # Don't count speakers
     if speaker:
         speakers_registered += 1
         rego_speaker[type] = 1 + rego_speaker.get(type, 0)
-	if type!='Speaker' and type in keynote_types:
-	    speaker_keynote_reduce += 1
+        if type!='Speaker' and type in keynote_types:
+            speaker_keynote_reduce += 1
     else:
         rego_nonspeaker[type] = 1 + rego_nonspeaker.get(type, 0)
         rego_total_nonspeaker += 1;
 
     if r.type in keynote_types:
         keynote[r.type] += 1
-	keynote_total += 1
+        keynote_total += 1
 
     for i in r.person.invoices:
       if i.paid():
@@ -189,39 +187,15 @@ for r in c.registration_collection:
     rego_paid[type] += 1
     rego_total_paid += 1
     if r.accommodation_option_id > 0:
-	    if r.accommodation_option_id in accommodation_paid:
-		    accommodation_paid[r.accommodation_option_id] += 1
-	    else:
-		    accommodation_paid[r.accommodation_option_id] = 1
+            if r.accommodation_option_id in accommodation_paid:
+                    accommodation_paid[r.accommodation_option_id] += 1
+            else:
+                    accommodation_paid[r.accommodation_option_id] = 1
     if type in ('Hobbyist', 'Professional') and not speaker:
         if r.voucher_code and r.voucher_code.startswith('GOOGLE-'):
-	    pass
+            pass
         else:
-	    earlybird += 1
+            earlybird += 1
 
-
-unused = c.ceiling.vouchers - c.ceiling.disc_regos
-rego_nonspeaker['Unused voucher codes'] += unused
-rego_all['Unused voucher codes'] += unused
-keynote['Unused voucher codes'] += unused
-rego_total_nonspeaker += unused
-rego_total += unused
-keynote_total += unused
-
-fixed_speakers = 74 - speaker_keynote_reduce
-keynote_total += fixed_speakers - keynote['Speaker']
-keynote['Speaker'] = '%d (hardcoded)' % fixed_speakers
-
-fixed_mcorgs = 20
-keynote_total += fixed_mcorgs - keynote['Mini-conf organiser']
-keynote['Mini-conf organiser'] = '%d (hardcoded)' % fixed_mcorgs
-
-earlybird += 20 # the GOOGLE group booking is deemed all taken
-
-from datetime import datetime
-if datetime.now() > c.ebdate:
-    earlybird = 'too late'
-else:
-    earlybird = '%d taken' % earlybird
 
 </%init>
