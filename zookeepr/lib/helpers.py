@@ -55,7 +55,7 @@ def counter(*args, **kwargs):
         while True:
             yield start
             start += step
-            
+
     counter = counters.setdefault(name, do_counter(start, step))
 
     return counter.next()
@@ -238,12 +238,12 @@ def computer_title(title):
     title = computer_re.sub('', title)
     title = title.lower()
     return title
-    
+
 
 def featured_image(title, big = False):
-    """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left 
+    """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left
     If the image is prefixed with _big_ it becomes the main header feature """
-    
+
     fileprefix = file_paths['news_fileprefix']
     htmlprefix = file_paths['news_htmlprefix']
 
@@ -259,9 +259,9 @@ def featured_image(title, big = False):
             return htmlprefix + "/" + computer_title(title) + ".png"
         else:
             return False
-    
+
     return False
-    
+
 domain_re = re.compile('^(http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})')
 def domain_only(url):
     """ Truncates a url to the domain only. For use with "in the press" """
@@ -270,7 +270,7 @@ def domain_only(url):
         return match.group(2)
     else:
         return url
-        
+
 def extension(name):
     """ Return the extension of a file name"""
     return name.split('.')[-1]
