@@ -24,8 +24,8 @@ mapper(Registration, registration,
 
 mapper(RegistrationProduct, registration_product,
        properties = {
-            'registration': relation(Registration, backref='products', lazy=True),
-            'product': relation(Product, backref='registrationse', lazy=False),
+            'registration': relation(Registration, backref=backref('products', lazy=False, cascade='all, delete-orphan'), lazy=False),
+            'product': relation(Product, backref=backref('registrations', lazy=True, cascade='all, delete-orphan'), lazy=False),
             }
       )
 

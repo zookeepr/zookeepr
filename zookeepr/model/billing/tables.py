@@ -10,6 +10,8 @@ invoice = Table('invoice', metadata,
                        nullable=False,
                        ),
 
+                Column('void', Boolean, nullable=False),
+
                 Column('issue_date', DateTime,
                        default=func.current_timestamp(),
                        nullable=False),
@@ -62,6 +64,12 @@ product = Table('product', metadata,
                 Column('cost', Integer, nullable=False),
                 )
 
+product_include = Table('product_include', metadata,
+                      Column('product_id', Integer, ForeignKey('product.id'), primary_key=True),
+                      Column('include_category_id', Integer, ForeignKey('product_category.id'), primary_key=True),
+                      Column('include_qty', Integer, nullable=False),
+                      )
+
 product_category = Table('product_category', metadata,
                          Column('id', Integer, primary_key=True),
                          Column('name', Text, nullable=False),
@@ -69,7 +77,7 @@ product_category = Table('product_category', metadata,
                          Column('display', Text, nullable=False),
                          Column('min_qty', Integer, nullable=False),
                          Column('max_qty', Integer, nullable=False),
-                        )
+                         )
 
 product_ceiling_map = Table('product_ceiling_map', metadata,
                            Column('product_id', Integer, ForeignKey('product.id'), nullable=False),

@@ -31,7 +31,7 @@ Your email address will only be used to correspond with you, and is your login n
 
 </fieldset>
 
-<& form.myt &>
+<& form.myt, defaults=defaults, errors=errors &>
 <p class="submit"><% h.submitbutton('Update') %></p>
 <% h.end_form() %>
 
@@ -55,10 +55,18 @@ if not defaults:
         if v is not None:
             defaults['registration.' + k] = getattr(c.registration, k)
 
-    for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country']:
-        v = getattr(c.registration.person, k)
+    for rproduct in c.registration.products:
+        if rproduct.product.category.display in ('radio', 'select'):
+            defaults['products.category_' + str(rproduct.product.category.id)] = rproduct.product.id
+        elif rproduct.product.category.display == 'checkbox':
+            defaults['products.product_' + str(rproduct.product.id)] = 1
+        elif rproduct.product.category.display == 'qty':
+            defaults['products.product_' + str(rproduct.product.id) + '_qty'] = rproduct.qty
+
+    for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
+        v = getattr(c.signed_in_person, k)
         if v is not None:
-            defaults['person.' + k] = getattr(c.registration.person, k)
+            defaults['person.' + k] = getattr(c.signed_in_person, k)
 
     # FIXME: UGH durty hack
     if c.registration.lasignup:

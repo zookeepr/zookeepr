@@ -93,16 +93,21 @@ def populate_data():
             dict(category_id='4', active=True, description="Wrest Point (Follow this link to book)", cost="0"),
             dict(category_id='5', active=True, description="Adult", cost="200"),
             dict(category_id='5', active=True, description="Child (0-3 years old)", cost="200"),
-            dict(category_id='5', active=True, description="Adult (4-6 years old)", cost="200"),
-            dict(category_id='5', active=True, description="Adult (7-9 years old)", cost="200"),
-            dict(category_id='5', active=True, description="Adult (10-12 years old)", cost="200"),
-            dict(category_id='5', active=True, description="Adult (13-17 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Child (4-6 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Child (7-9 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Child (10-12 years old)", cost="200"),
+            dict(category_id='5', active=True, description="Child (13-17 years old)", cost="200"),
+            )
+
+        model.billing.tables.product_include.insert().execute(
+            dict(product_id='3', include_category_id='2', include_qty='1'),
+            dict(product_id='3', include_category_id='3', include_qty='1'),
             )
 
         # Product Ceilings
         model.billing.tables.ceiling.insert().execute(
-            dict(name='conference'),
-            dict(name='earlybird'),
+            dict(name='conference', max_sold=1000),
+            dict(name='earlybird', max_sold=400),
             )
 
         # DB Content
