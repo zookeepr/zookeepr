@@ -20,14 +20,26 @@ class Ceiling(object):
             qty += p.qty_invoice()
         return qty
 
-    def ceiling_remaining(self):
+    def remaining(self):
         return self.max_sold - self.qty_sold()
 
-    def ceiling_soldout(self):
-        return self.max_sold > self.qty_sold()
+    def soldout(self):
+        return self.qty_sold() >= self.max_sold
+
+    def percent_sold(self):
+        if self.max_sold == None:
+            return 0
+        else:
+            return self.qty_sold() / self.max_sold
+
+    def percent_invoiced(self):
+        if self.max_sold == None:
+            return 0
+        else:
+            return self.qty_invoiced() / self.max_sold
 
     def can_i_sell(self, qty):
-        if self.ceiling_remaining() > qty:
+        if self.remaining() > qty:
             return True
         else:
             return False
@@ -58,6 +70,12 @@ class ProductCategory(object):
         else:
             return False
 
+class ProductInclude(object):
+    def __init__(self, include_qty=None):
+        self.include_qty = include_qty
+
+    def __repr__(self):
+        return '<ProductInclude product_id=%r include_product_id=%r include_qty=%r>' % (self.product_id, self.include_product_id, self.include_qty)
 
 class Product(object):
     def __init__(self, active=False, description=None, cost=None):
@@ -81,16 +99,16 @@ class Product(object):
             qty += ii.qty
         return qty
 
-    def product_remaining(self):
+    def remaining(self):
         max_ceiling = 0
         for c in self.ceilings:
-            if c.ceiling_remaining > max_ceiling:
-                max_ceiling = c.ceiling_remaining
+            if c.remaining() > max_ceiling:
+                max_ceiling = c.remaining
         return max_ceiling
 
-    def product_soldout(self):
+    def soldout(self):
         for c in self.ceilings:
-            if c.ceiling_soldout():
+            if c.soldout():
                 return True
         return False
 
@@ -118,7 +136,8 @@ class InvoiceItem(object):
 
 
 class Invoice(object):
-    def __init__(self, issue_date=None, due_date=None):
+    def __init__(self, void=False, issue_date=None, due_date=None):
+        self.void = void
         self.issue_date = issue_date
         self.due_date = due_date
 
@@ -128,7 +147,7 @@ class Invoice(object):
             self.due_date = datetime.datetime.now() + datetime.timedelta(14, 0, 0)
 
     def __repr__(self):
-        return '<Invoice id=%r person=%r>' % (self.id, self.person_id)
+        return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)
 
     def total(self):
         """Return the total value of this invoice"""

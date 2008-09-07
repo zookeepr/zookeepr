@@ -1,10 +1,10 @@
 <div class="notice-box">
-% if c.ceiling.open:
-<b>Registrations</b> are open<br><br>
-% else:
+% if c.ceilings['conference'].soldout():
 <b>Registrations are closed</b><br><br>
+% else:
+<b>Registrations</b> are open<br><br>
 % #endif
-<div class = "graph-bar" style = "width:<%c.ceiling.percent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ceiling.text %></div><br>
+<div class = "graph-bar" style = "width:<%c.ceilings['conference'].percent_sold() %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ceilings['conference'].percent_sold() %></div><br>
 % if c.eb:
 <b>Earlybird</b> is available<br><br>
 <div class = "graph-bar" style = "width:<%c.ebpercent %>%">&nbsp;</div><div class = "graph-bar-text"><% c.ebtext |h%></div><br>
@@ -13,15 +13,13 @@
 % #endif
 <b><%c.timeleft %></b>
 </div>
-% if c.ceiling.open:
-<h2>Your registration status</h2>
-% else:
+% if c.ceilings['conference'].soldout():
 <h2>Registrations are closed</h2>
 <p>Registrations are now closed. You will only be able to register if you
 have an existing voucher code or if you're otherwise entitled to attend
 for free (eg speakers).</p>
-<h3>Your registration status</h3>
 % #endif
+<h3>Your registration status</h3>
 
 % if not 'signed_in_person_id' in session:
 <p><b>Not signed in or not registered.</b></p>
@@ -55,7 +53,7 @@ otherwise.</p>
 <br>&#9744; Generate invoice
 <br>&#9744; Pay
 <br>&#9744; Attend conference</p>
-% elif c.signed_in_person.registration.type=='Volunteer' and not c.signed_in_person.registration.volunteer:
+% elif False and c.signed_in_person and not c.signed_in_person.registration.volunteer:
 <p><b>Tentatively volunteered.</b></p>
 
 <h3>Next step</h3>
@@ -90,7 +88,7 @@ otherwise.</p>
 
 <p><a href="/registration/<% c.signed_in_person.registration.id %>/edit"
 >Edit details</a>
-%   if c.signed_in_person.registration.type=='Volunteer':
+%   if False and c.signed_in_person.registration.type=='Volunteer':
 <br><a href="/registration/<% c.signed_in_person.registration.id %>/volunteer"
 >Change areas of interest and ability</a>
 %   #endif
