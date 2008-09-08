@@ -21,12 +21,15 @@ errors
 #FIXME: Partner program
 if not defaults:
     defaults = {}
-    for k in ['shell', 'editor', 'distro', 'nick', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'partner_email', 'lasignup', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
+    for k in ['shell', 'editor', 'distro', 'nick', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'partner_email', 'lasignup', 'silly_description', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
         v = getattr(c.registration, k)
         if v is not None:
             if k in ('shell', 'editor', 'distro') and v not in h.lca_rego[k + 's']:
                 defaults['registration.' + k] = 'other'
                 defaults['registration.' + k + 'text'] = getattr(c.registration, k)
+            elif k == 'silly_description':
+                defaults['registration.' + k] = getattr(c.registration, k)
+                defaults['registration.silly_description_checksum'] = h.silly_description_checksum(getattr(c.registration, k))
             else:
                 defaults['registration.' + k] = getattr(c.registration, k)
 
@@ -87,6 +90,12 @@ if not defaults:
       } else {
         document.getElementById(field).style.display = 'none';
       }
+    }
+
+    function silly_description() {
+        document.getElementById('silly_description')
+        document.getElementById('registration.silly_description')
+        document.getElementByid('registration.silly_description_checksum')
     }
   </script>
 </%method>
