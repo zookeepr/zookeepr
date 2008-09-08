@@ -272,9 +272,11 @@
 % #endfor
             </p>
 
-% desc, descMD5 = h.silly_description()
             <p class="label"><label for="registration.silly_description">Description:</label></p>
-            <blockquote><p><% desc %><% h.hidden_field('registration.silly_description', value=desc) %></p></blockquote>
+            <blockquote><p id='silly_description'><% defaults['registration.silly_description'] %></p></blockquote>
+            <p><input type="button" value="New Description" onclick="silly_description()"></p>
+            <% h.hidden_field('registration.silly_description') %>
+            <% h.hidden_field('registration.silly_description_checksum') %>
             <p class="note">This is a randomly chosen description for your name badge</p>
           </fieldset>
 
@@ -327,7 +329,6 @@
             preference that you let us know.</p>
           </fieldset>
 % #endif
-          <% h.hidden_field('registration.silly_description_md5', value=descMD5) %>
 <%args>
 defaults
 errors
