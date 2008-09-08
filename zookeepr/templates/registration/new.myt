@@ -48,6 +48,8 @@ errors
 <%init>
 # work around bug in formencode, set defaults
 if not defaults:
+    desc, descChecksum = h.silly_description()
+
     defaults = {'person.country': 'Australia',
         'registration.checkout': '2',
         'registration.lasignup': '1',
@@ -58,7 +60,9 @@ if not defaults:
         'registration.speaker_slides_release': '1',
         'registration.shell': '',
         'registration.editor': '',
-        'registration.distro': ''
+        'registration.distro': '',
+        'registration.silly_description': desc,
+        'registration.silly_description_checksum': descChecksum,
     }
     if c.signed_in_person:
         for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:

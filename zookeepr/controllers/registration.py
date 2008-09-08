@@ -122,15 +122,17 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                    product_fields.append('product_' + str(product.id))
+                    if product.is_available():
+                        ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
+                        product_fields.append('product_' + str(product.id))
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             elif category.display == 'qty':
                 # qty
                 product_fields = []
                 for product in category.products:
-                    ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
-                    product_fields.append('product_' + str(product.id) + '_qty')
+                    if product.is_available():
+                        ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
+                        product_fields.append('product_' + str(product.id) + '_qty')
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
                 # FIXME: I have spent far too long to try and get this working. Technically this should be a chained validator, not a pre validator but no matter what I do I can't get it to work (read heaps of docs etc etc). The result of being a pre-validator is that if there is an error the pre validator doesn't pick up (like an unfilled field) that the normal validation would pick up it isn't highlighted until the pre-validator doesn't find any errors. For example if you dont' select any shirts and have "asdf" in one of the dinner ticket fields you should see two errors: 1. you have no shirts and 2. tickets need to be integers. Once you select a shirt and resubmit the other error will show up. So it's a usability issue and doesn't make the form less secure, but damn this one is annoying!
         self.schemas['new'].add_field('products', ProductSchema)
@@ -225,8 +227,6 @@ class RegistrationController(SecureController, Update, List, Read):
                     rego_product.qty = 1
                     self.dbsession.save(rego_product)
                     c.registration.products.append(rego_product)
-                else:
-                    raise Exception
             elif category.display == 'checkbox':
                 for product in category.products:
                     if result['products']['product_' + str(product.id)] == True:

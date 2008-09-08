@@ -197,6 +197,6 @@ class ProductMinMax(validators.FancyValidator):
 class ProductInCategory(validators.FancyValidator):
     def validate_python(self, value, state):
         for product in self.category.products:
-            if product.id == int(value):
+            if product.id == int(value) and product.is_available():
                 return
-        raise Invalid("Product " + value + " is not in category " + self.category.name, value, state)
+        raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
