@@ -24,7 +24,11 @@ if not defaults:
     for k in ['shell', 'editor', 'distro', 'nick', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'partner_email', 'lasignup', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
         v = getattr(c.registration, k)
         if v is not None:
-            defaults['registration.' + k] = getattr(c.registration, k)
+            if k in ('shell', 'editor', 'distro') and v not in h.lca_rego[k + 's']:
+                defaults['registration.' + k] = 'other'
+                defaults['registration.' + k + 'text'] = getattr(c.registration, k)
+            else:
+                defaults['registration.' + k] = getattr(c.registration, k)
 
     for rproduct in c.registration.products:
         if rproduct.product.category.display in ('radio', 'select'):

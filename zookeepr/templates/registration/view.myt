@@ -18,27 +18,27 @@
 
         <p class="label">Address:</p>
         <p>
-          <% c.registration.person.address1 %>
+          <% c.registration.person.address1 | h %>
           <br>
-          <% c.registration.person.address2 %>
+          <% c.registration.person.address2 | h %>
         </p>
         <p class="label">City/Suburb:</p>
-        <p><% c.registration.person.city %></p>
+        <p><% c.registration.person.city | h %></p>
         <p class="label">State/Province:</p>
-        <p><% c.registration.person.state %></p>
+        <p><% c.registration.person.state | h %></p>
         <p class="label">Country:</p>
-        <p><% c.registration.person.country %></p>
+        <p><% c.registration.person.country | h %></p>
         <p class="label">Postcode/ZIP:</p>
-        <p><% c.registration.person.postcode %></p>
+        <p><% c.registration.person.postcode | h %></p>
 
         <p class="label">Phone number:</p>
-        <p><% c.registration.person.phone %></p>
+        <p><% c.registration.person.phone | h %></p>
 
         <p class="label">Mobile/Cell number:</p>
-        <p><% c.registration.person.mobile %></p>
+        <p><% c.registration.person.mobile | h %></p>
 
         <p class="label">Company:</p>
-        <p><% c.registration.person.company %></p>
+        <p><% c.registration.person.company | h %></p>
 
 % for category in c.product_categories:
 
@@ -47,9 +47,9 @@
 %       for rproduct in c.registration.products:
 %           if rproduct.product == product:
 %               if category.display == 'qty':
-        <p><% rproduct.qty %> x <% product.description %> - $<% product.cost %></p>
+        <p><% rproduct.qty %> x <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></p>
 %               else:
-        <p><% product.description %> - $<% product.cost %></p>
+        <p><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></p>
 %               #endif
 %           #endif
 %       #endfor
@@ -64,17 +64,17 @@
 %   elif category.name == 'Partners Programme':
 
         <p class="label">Your partner's email address:</p>
-        <p><% c.registration.partner_email %></p>
+        <p><% c.registration.partner_email | h %></p>
 %   #endif
 % #endfor
 
         <h2>Further Information</h2>
 
         <p class="label">Dietary requirements:</p>
-        <p><% c.registration.diet %></p>
+        <p><% c.registration.diet | h %></p>
 
         <p class="label">Other special requirements:</p>
-        <p><% c.registration.special %></p>
+        <p><% c.registration.special | h %></p>
 
         <p class="label">Preferred mini-confs:</p>
         <p>
@@ -104,16 +104,16 @@
           <p class="note">Open Day is open to friends and family, and is targeted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.</p>
 
           <p class="label">Your favourite shell:</p>
-          <p><% c.registration.shell %>
+          <p><% c.registration.shell | h %>
 
           <p class="label">Your favourite editor:</p>
-          <p><% c.registration.editor %>
+          <p><% c.registration.editor | h %>
 
           <p class="label">Your favourite distro:</p>
-          <p><% c.registration.distro %>
+          <p><% c.registration.distro | h %>
 
           <p class="label">Superhero name:</p>
-          <p><% c.registration.nick %>
+          <p><% c.registration.nick | h %>
           <p class="note">Your IRC nick or other handle you go by.</p>
 
           <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
@@ -126,7 +126,7 @@
           </p>
 
           <p class="label"><label for="registration.silly_description">Description:</label></p>
-          <blockquote><p><% c.registration.silly_description %></p></blockquote>
+          <blockquote><p><% c.registration.silly_description | h %></p></blockquote>
           <p class="note">This is a randomly chosen description for your name badge</p>
 
           <h2>Subscriptions</h2>
