@@ -37,8 +37,11 @@ class ExistingPersonSchema(BaseSchema):
 class RegisterSchema(BaseSchema):
     nick = validators.String()
     shell = validators.String()
+    shelltext = validators.String()
     editor = validators.String()
+    editortext = validators.String()
     distro = validators.String()
+    distrotext = validators.String()
     silly_description = validators.String()
     #voucher_code = validators.String()
     diet = validators.String()
@@ -190,7 +193,13 @@ class RegistrationController(SecureController, Update, List, Read):
     def save_details(self, result):
         # Store Registration details
         for k in result['registration']:
-            setattr(c.registration, k, result['registration'][k])
+            if k in ('shell', 'editor', 'distro'):
+                if result['registration'][k] == 'other':
+                    setattr(c.registration, k, result['registration'][k + 'text'])
+                else:
+                    setattr(c.registration, k, result['registration'][k])
+            else:
+                setattr(c.registration, k, result['registration'][k])
         self.dbsession.save_or_update(c.registration)
 
         # Always delete the current products
