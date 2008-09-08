@@ -83,8 +83,7 @@ class PersonSchema(BaseSchema):
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
 
-    pre_validators = [NotExistingPersonValidator()]
-    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 class NewPersonSchema(BaseSchema):
     person = PersonSchema()

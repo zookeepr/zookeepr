@@ -10,7 +10,7 @@ proposal_type = Table('proposal_type', metadata,
                                nullable=False),
                         )
 
-# types of assistance: 
+# types of assistance:
 assistance_type = Table('assistance_type', metadata,
                         Column('id', Integer, primary_key=True),
                         Column('name', String(40),
@@ -64,11 +64,11 @@ proposal = Table('proposal', metadata,
                         nullable=False,
                         default=func.current_timestamp(),
                         onupdate=func.current_timestamp()),
-			# onupdate should really use
-			#   func.current_timestamp()
-			# but the version of sqlalchemy on the server can't
-			# cope with that, saying something about
-			# timezones...
+                        # onupdate should really use
+                        #   func.current_timestamp()
+                        # but the version of sqlalchemy on the server can't
+                        # cope with that, saying something about
+                        # timezones...
                    )
 
 # for doing n-n mappings of people and proposals
@@ -91,7 +91,7 @@ attachment = Table('attachment', metadata,
                    Column('content_type', Text,
                           key='_content_type',
                           nullable=False),
-                   
+
                    Column('creation_timestamp', DateTime,
                           nullable=False,
                           default=func.current_timestamp()),
@@ -133,10 +133,10 @@ review = Table('review', metadata,
                Column('last_modification_timestamp', DateTime,
                       nullable=False,
                       default=func.current_timestamp(),
-		      onupdate=func.current_timestamp()),
-		      # onupdate should really use
-		      #   func.current_timestamp()
-		      # but the version of sqlalchemy on the server can't
-		      # cope with that, saying something about
-		      # timezones...
+                      onupdate=func.current_timestamp()),
+                      # onupdate should really use
+                      #   func.current_timestamp()
+                      # but the version of sqlalchemy on the server can't
+                      # cope with that, saying something about
+                      # timezones...
                )

@@ -1,16 +1,13 @@
-    <ul class="main_menu">
-
+      <ul class="main_menu">
 % for (t, u, c) in mm:
         <li><a href="<% u %>" <% cls(c) %>><% t %></a></li>
 % #endfor
-
 % if 'signed_in_person_id' in session:
         <li><a href="<% h.url(controller='person', action='signout', id=None)() %>" <% cls('login') %>>Sign out</a></li>
 % else:
         <li><a href="<% h.url(controller='person', action='signin', id=None)() %>" <% cls('login') %>>Sign in</a></li>
 % #endif
-    </ul>
-
+      </ul>
 
 <%init>
 # The current URL can be accessed as h.url()()

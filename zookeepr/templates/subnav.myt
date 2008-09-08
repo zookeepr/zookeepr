@@ -1,6 +1,5 @@
 % if submenus.has_key(where):
-
-  <ul class="sub_menu">
+      <ul class="sub_menu">
 %   for sub in submenus[where]:
 %     link = sub.replace('/', '_').lower()
 %     link = '/'+where+'/'+link
@@ -11,9 +10,9 @@
         <li><a href="<%link%>"><% sub %></a></li>
 %     #endif
 %   #endfor
-  </ul>
-
+      </ul>
 % #endif
+
 <%init>
 # Edit the list of submenus here :-)
 submenus = h.lca_submenus
@@ -40,4 +39,3 @@ def current(link):
     return False
 
 </%init>
-
