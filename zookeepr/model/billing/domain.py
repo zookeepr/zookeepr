@@ -40,7 +40,7 @@ class Ceiling(object):
     def soldout(self):
         return self.qty_sold() >= self.max_sold
 
-    def is_available(self):
+    def available(self):
         if self.soldout():
             return False
         elif self.available_from is not None and self.available_from <= datetime.datetime.now():
@@ -67,6 +67,13 @@ class ProductCategory(object):
 
     def __reprt__(self):
         return '<ProductCategory id=%r name=%r description=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.display, self.min_qty, self.max_qty)
+
+    def available_products(self, person):
+        products = []
+        for product in self.products:
+            if product.available():
+                products.append(product)
+        return products
 
     def qty_person_sold(self, person):
         qty = 0
@@ -101,7 +108,7 @@ class Product(object):
     def qty_sold(self):
         qty = 0
         for ii in self.invoice_items:
-            if ii.invoice.paid:
+            if ii.invoice.paid():
                 qty += ii.qty
         return qty
 
@@ -119,16 +126,18 @@ class Product(object):
                 max_ceiling = c.remaining
         return max_ceiling
 
-    def is_available(self):
+    def available(self):
         if self.active:
            for c in self.ceilings:
-                if not c.is_available():
+                if not c.available():
                     return False
            return True
         else:
             return False
 
     def can_i_sell(self, person, qty):
+        if not self.available():
+            return False
         if not self.category.can_i_sell(person, qty):
             return False
         for c in self.ceiling:

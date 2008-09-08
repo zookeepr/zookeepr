@@ -122,7 +122,7 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if product.is_available():
+                    if product.available():
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
                         product_fields.append('product_' + str(product.id))
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
@@ -130,7 +130,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if product.is_available():
+                    if product.available():
                         ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
                         product_fields.append('product_' + str(product.id) + '_qty')
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
@@ -224,7 +224,10 @@ class RegistrationController(SecureController, Update, List, Read):
                 if product != None:
                     rego_product = model.RegistrationProduct()
                     rego_product.product = product
-                    rego_product.qty = 1
+                    if product.category.name == 'Accomodation':
+                        rego_product.qty = c.registration.checkout - c.registration.checkin
+                    else:
+                        rego_product.qty = 1
                     self.dbsession.save(rego_product)
                     c.registration.products.append(rego_product)
             elif category.display == 'checkbox':
