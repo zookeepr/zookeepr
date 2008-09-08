@@ -17,13 +17,13 @@ class Globals(object):
             configuration file.
 
         ``app_conf``
-            The same as the ``kw`` dictionary used throughout 
-            ``config/middleware.py`` namely, the variables the section 
+            The same as the ``kw`` dictionary used throughout
+            ``config/middleware.py`` namely, the variables the section
             in the config file for your application.
 
         ``extra``
-            The configuration returned from ``load_config`` in 
-            ``config/middleware.py`` which may be of use in the setup of 
+            The configuration returned from ``load_config`` in
+            ``config/middleware.py`` which may be of use in the setup of
             your global variables.
 
         """
@@ -31,7 +31,7 @@ class Globals(object):
 
     def __del__(self):
         """
-        Put any cleanup code to be run when the application finally exits 
+        Put any cleanup code to be run when the application finally exits
         here.
         """
         pass
