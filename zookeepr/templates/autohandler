@@ -1,52 +1,50 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en-us">
 <head>
-	<title><& SELF:title &></title>
-	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-	<link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css">
-	<link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA09 News">
-	<!--[if lt IE 7]>
-	<link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
-	<![endif]-->
-	<& SELF:extra_head &>
+  <title><& SELF:title &></title>
+  <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+  <link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css">
+  <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA09 News">
+  <!--[if lt IE 7]>
+  <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
+  <![endif]-->
+  <& SELF:extra_head &>
 </head>
 
 <body>
-	<div class = 'content'>
-		<div class = 'banner'>
-			<a href="/"><img src = '/images/mountain.png' alt = 'Mount Wellington' class = 'mountain'></a>
-			<a href="/"><img src = '/images/tuz.png' alt = 'mascot' class = 'mascot'></a>
-			<a href="/"><img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'></a>
-			<a href="/"><img src = '/images/marchsouth.png' alt = 'march south together'></a>
-		</div>
-		<div class = 'menu'>
-			<& SELF:big_promotion &>
-			<& nav.myt &>
-			<& subnav.myt &>
-		</div>
-		<!-- start content -->
-		<& content-body.myt &>
-		<!-- end content -->
-		
-	</div>
-	<div class = 'footer'>
-		<div class = 'photos'>
-			<img src = '/images/photo1.png' alt = 'Tasmania'>
-			<img src = '/images/photo2.png' alt = 'Tasmania'>
-			<img src = '/images/photo3.png' alt = 'Tasmania'>
-			<img src = '/images/photo4.png' alt = 'Tasmania'>
-			<img src = '/images/photo5.png' alt = 'Tasmania'>
-		</div>
-		<div class = 'copyright'>&copy; 2008-2009 <a href = '#'>Linux Australia</a> and LCA09 | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">HTML 4.01 Strict</a>
-		</div>
-	</div>
+  <div class = 'content'>
+    <div class = 'banner'>
+      <a href="/"><img src = '/images/mountain.png' alt = 'Mount Wellington' class = 'mountain'></a>
+      <a href="/"><img src = '/images/tuz.png' alt = 'mascot' class = 'mascot'></a>
+      <a href="/"><img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'></a>
+      <a href="/"><img src = '/images/marchsouth.png' alt = 'march south together'></a>
+    </div>
+    <div class = 'menu'>
+      <& SELF:big_promotion &>
+<& nav.myt &>
+<& subnav.myt &>
+    </div>
+    <!-- start content -->
+<& content-body.myt &>
+    <!-- end content -->
+
+  </div>
+  <div class = 'footer'>
+    <div class = 'photos'>
+      <img src = '/images/photo1.png' alt = 'Tasmania'>
+      <img src = '/images/photo2.png' alt = 'Tasmania'>
+      <img src = '/images/photo3.png' alt = 'Tasmania'>
+      <img src = '/images/photo4.png' alt = 'Tasmania'>
+      <img src = '/images/photo5.png' alt = 'Tasmania'>
+    </div>
+    <div class = 'copyright'>&copy; 2008-2009 <a href = '#'>Linux Australia</a> and LCA09 | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">HTML 4.01 Strict</a>
+    </div>
+  </div>
 </body>
 </html>
 <%method extra_head>
 </%method>
 <%method big_promotion>
 </%method>
-<%method title>
-linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart
-</%method>
+<%method title>linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart</%method>
