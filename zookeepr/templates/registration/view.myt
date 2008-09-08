@@ -77,7 +77,7 @@
         <p><% c.registration.special %></p>
 
         <p class="label">Preferred mini-confs:</p>
-        <p class="entries">
+        <p>
           <table>
             <tr>
 % for day, miniconfs in h.lca_rego['miniconfs']:
@@ -88,7 +88,7 @@
 % for day, miniconfs in h.lca_rego['miniconfs']:
               <td>
 %   for miniconf in miniconfs:
-%     l = 'registration.miniconf.%s' % miniconf.replace(' ', '_')
+%       l = '%s' % miniconf.replace(' ', '_').replace('.', '_')
                 <% yesno(l in (c.registration.miniconf or [])) %>
                 <% miniconf %>
                 <br>

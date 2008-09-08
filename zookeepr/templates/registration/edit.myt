@@ -35,9 +35,9 @@ if not defaults:
             defaults['products.product_' + str(rproduct.product.id) + '_qty'] = rproduct.qty
 
     for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
-        v = getattr(c.signed_in_person, k)
+        v = getattr(c.registration.person, k)
         if v is not None:
-            defaults['person.' + k] = getattr(c.signed_in_person, k)
+            defaults['person.' + k] = getattr(c.registration.person, k)
 
     # FIXME: UGH durty hack
     if c.registration.lasignup:
@@ -70,8 +70,6 @@ if not defaults:
     if c.registration.miniconf:
         for mc in c.registration.miniconf:
             defaults['registration.miniconf.' + mc] = 1
-            if mc == 'OpenOffice':
-                defaults['registration.miniconf.OpenOffice.org'] = 1
     if c.registration.prevlca:
         for p in c.registration.prevlca:
             defaults['registration.prevlca.' + p] = 1
