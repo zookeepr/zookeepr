@@ -4,56 +4,23 @@ from zookeepr.model import metadata
 
 invoice = Table('invoice', metadata,
                 Column('id', Integer, primary_key=True),
-
-                Column('person_id', Integer,
-                       ForeignKey('person.id'),
-                       nullable=False,
-                       ),
-
+                Column('person_id', Integer, ForeignKey('person.id'), nullable=False),
                 Column('void', Boolean, nullable=False),
-
-                Column('issue_date', DateTime,
-                       default=func.current_timestamp(),
-                       nullable=False),
-                Column('due_date', DateTime,
-                       default=func.current_timestamp(),
-                       nullable=False),
-
-                Column('creation_timestamp', DateTime,
-                       nullable=False,
-                       default=func.current_timestamp()),
-                Column('last_modification_timestamp', DateTime,
-                       nullable=False,
-                       default=func.current_timestamp(),
-                       onupdate=func.current_timestamp()),
-
-                )
+                Column('issue_date', DateTime, default=func.current_timestamp(), nullable=False),
+                Column('due_date', DateTime, default=func.current_timestamp(), nullable=False),
+                Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
+                Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
+               )
 
 invoice_item = Table('invoice_item', metadata,
                      Column('id', Integer, primary_key=True),
-
-                     Column('invoice_id', Integer,
-                            ForeignKey('invoice.id'),
-                            nullable=False),
-
-                     Column('product_id', Integer,
-                            ForeignKey('product.id'),
-                            nullable=True),
-
-                     Column('description', Text,
-                            nullable=False),
-                     Column('qty', Integer,
-                            nullable=False),
-                     Column('cost', Integer,
-                            nullable=False),
-
-                     Column('creation_timestamp', DateTime,
-                            nullable=False,
-                            default=func.current_timestamp()),
-                     Column('last_modification_timestamp', DateTime,
-                            nullable=False,
-                            default=func.current_timestamp(),
-                            onupdate=func.current_timestamp()),
+                     Column('invoice_id', Integer, ForeignKey('invoice.id'), nullable=False),
+                     Column('product_id', Integer, ForeignKey('product.id'), nullable=True),
+                     Column('description', Text, nullable=False),
+                     Column('qty', Integer, nullable=False),
+                     Column('cost', Integer, nullable=False),
+                     Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
+                     Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
                     )
 
 product = Table('product', metadata,
@@ -62,33 +29,35 @@ product = Table('product', metadata,
                 Column('active', Boolean, nullable=False),
                 Column('description', Text, nullable=False),
                 Column('cost', Integer, nullable=False),
-                )
+               )
 
 product_include = Table('product_include', metadata,
-                      Column('product_id', Integer, ForeignKey('product.id'), primary_key=True),
-                      Column('include_category_id', Integer, ForeignKey('product_category.id'), primary_key=True),
-                      Column('include_qty', Integer, nullable=False),
-                      )
+                        Column('product_id', Integer, ForeignKey('product.id'), primary_key=True),
+                        Column('include_category_id', Integer, ForeignKey('product_category.id'), primary_key=True),
+                        Column('include_qty', Integer, nullable=False),
+                       )
 
 product_category = Table('product_category', metadata,
                          Column('id', Integer, primary_key=True),
-                         Column('name', Text, nullable=False),
+                         Column('name', Text, nullable=False, unique=True),
                          Column('description', Text, nullable=False),
                          Column('display', Text, nullable=False),
                          Column('min_qty', Integer, nullable=False),
                          Column('max_qty', Integer, nullable=False),
-                         )
+                        )
 
 product_ceiling_map = Table('product_ceiling_map', metadata,
-                           Column('product_id', Integer, ForeignKey('product.id'), nullable=False),
-                           Column('ceiling_id', Integer, ForeignKey('ceiling.id'), nullable=False),
+                            Column('product_id', Integer, ForeignKey('product.id'), primary_key=True, nullable=False),
+                            Column('ceiling_id', Integer, ForeignKey('ceiling.id'), primary_key=True, nullable=False),
                            )
 
 ceiling = Table('ceiling', metadata,
                 Column('id', Integer, primary_key=True),
-                Column('name', Text, nullable=False),
+                Column('name', Text, nullable=False, unique=True),
                 Column('max_sold', Integer, nullable=True),
-                )
+                Column('available_from', DateTime, nullable=True),
+                Column('available_until', DateTime, nullable=True),
+               )
 
 payment = Table('payment', metadata,
                 Column('id', Integer, primary_key=True),

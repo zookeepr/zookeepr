@@ -1,12 +1,14 @@
 import datetime
 
 class Ceiling(object):
-    def __init__(self, name=None, max_sold=None):
+    def __init__(self, name=None, max_sold=None, available_from=None, available_until=None):
         self.name = name
         self.max_sold = max_sold
+        self.available_from = available_from
+        self.available_until = available_until
 
     def __repr__(self):
-        return '<Ceiling id=%r name=%r max_sold=%r' % (self.id, self.name, self.max_sold)
+        return '<Ceiling id=%r name=%r max_sold=%r available_from=%r, available_until=%r' % (self.id, self.name, self.max_sold, self.available_from, self.available_until)
 
     def qty_sold(self):
         qty = 0
@@ -17,14 +19,8 @@ class Ceiling(object):
     def qty_invoiced(self):
         qty = 0
         for p in self.products:
-            qty += p.qty_invoice()
+            qty += p.qty_invoiced()
         return qty
-
-    def remaining(self):
-        return self.max_sold - self.qty_sold()
-
-    def soldout(self):
-        return self.qty_sold() >= self.max_sold
 
     def percent_sold(self):
         if self.max_sold == None:
@@ -38,8 +34,24 @@ class Ceiling(object):
         else:
             return self.qty_invoiced() / self.max_sold
 
+    def remaining(self):
+        return self.max_sold - self.qty_sold()
+
+    def soldout(self):
+        return self.qty_sold() >= self.max_sold
+
+    def is_available(self):
+        if self.soldout():
+            return False
+        elif self.available_from is not None and self.available_from <= datetime.datetime.now():
+            return False
+        elif self.available_until is not None and self.available_until >= datetime.datetime.now():
+            return False
+        else:
+            return True
+
     def can_i_sell(self, qty):
-        if self.remaining() > qty:
+        if not self.soldout() and self.remaining() > qty:
             return True
         else:
             return False
@@ -96,7 +108,8 @@ class Product(object):
     def qty_invoiced(self):
         qty = 0
         for ii in self.invoice_items:
-            qty += ii.qty
+            if not ii.invoice.void:
+                qty += ii.qty
         return qty
 
     def remaining(self):
@@ -106,11 +119,14 @@ class Product(object):
                 max_ceiling = c.remaining
         return max_ceiling
 
-    def soldout(self):
-        for c in self.ceilings:
-            if c.soldout():
-                return True
-        return False
+    def is_available(self):
+        if self.active:
+           for c in self.ceilings:
+                if not c.is_available():
+                    return False
+           return True
+        else:
+            return False
 
     def can_i_sell(self, person, qty):
         if not self.category.can_i_sell(person, qty):
@@ -119,7 +135,6 @@ class Product(object):
             if not c.can_i_sell(qty):
                 return False
         return True
-
 
 class InvoiceItem(object):
     def __init__(self, description=None, qty=None, cost=None):
