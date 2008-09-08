@@ -5,13 +5,13 @@
         <h2>About yourself</h2>
 
         <p class="label">Your first name:</p>
-        <p><% c.signed_in_person.firstname | h %></p>
+        <p><% c.registration.person.firstname | h %></p>
 
         <p class="lavel">Your last name:</p>
-        <p><% c.signed_in_person.lastname | h %></p>
+        <p><% c.registration.person.lastname | h %></p>
 
         <p class="label">Email address:</p>
-        <p><% c.signed_in_person.email_address | h %></p>
+        <p><% c.registration.person.email_address | h %></p>
         <p class="note">Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.</p>
 
         <h2>Personal Information</h2>
@@ -57,10 +57,10 @@
 %   if category.name == 'Accomodation':
 
         <p class="label">Check in on:</p>
-        <p><% date(c.registration.checkin) %></p>
+        <p><% h.date(c.registration.checkin) %></p>
 
         <p class="label">Check out on:</p>
-        <p><% date(c.registration.checkout) %></p>
+        <p><% h.date(c.registration.checkout) %></p>
 %   elif category.name == 'Partners Programme':
 
         <p class="label">Your partner's email address:</p>
@@ -89,7 +89,7 @@
               <td>
 %   for miniconf in miniconfs:
 %       l = '%s' % miniconf.replace(' ', '_').replace('.', '_')
-                <% yesno(l in (c.registration.miniconf or [])) %>
+                <% h.yesno(l in (c.registration.miniconf or [])) %>
                 <% miniconf %>
                 <br>
 %   #endfor
@@ -120,7 +120,7 @@
           <p class="entries">
 % for (year, desc) in h.lca_rego['past_confs']:
             <br>
-            <% yesno(year in (c.registration.prevlca or [])) %>
+            <% h.yesno(year in (c.registration.prevlca or [])) %>
             <% desc %>
 % #endfor
           </p>
@@ -131,11 +131,11 @@
 
           <h2>Subscriptions</h2>
 
-          <p><% yesno(c.registration.lasignup) %> I want to sign up for (free) Linux Australia membership!</p>
+          <p><% h.yesno(c.registration.lasignup) %> I want to sign up for (free) Linux Australia membership!</p>
 
-          <p><% yesno(c.registration.announcesignup) %> I want to sign up to the low traffic conference announcement mailing list!</p>
+          <p><% h.yesno(c.registration.announcesignup) %> I want to sign up to the low traffic conference announcement mailing list!</p>
 
-          <p><% yesno(c.registration.delegatesignup) %> I want to sign up to the conference attendees mailing list!</p>
+          <p><% h.yesno(c.registration.delegatesignup) %> I want to sign up to the conference attendees mailing list!</p>
 
 % if c.registration.person.is_speaker():
           <h2>Speaker recording consent and release</h2>
@@ -155,29 +155,3 @@
           the Creative Commons Attribution License unless you have an equivalent
           preference that you let us know.</p>
 % #endif
-<%init>
-def yesno(bool):
-    if bool:
-        return '&#9745'
-    else:
-        return '&#9744'
-def num(x):
-    if x==None:
-        return 'none'
-    else:
-        return x
-def date(d):
-    if d==1:
-        return "%dst of January" % d
-    elif d==2:
-        return "%dnd of January" % d
-    elif d==3:
-        return "%drd of January" % d
-    elif d<15:
-        return "%dth of January" % d
-    elif d==31:
-        return "%dst of January" % d
-    else:
-        return "%dth of January" % d
-
-</%init>
