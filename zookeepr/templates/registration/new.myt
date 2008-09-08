@@ -1,124 +1,44 @@
-<h2>Register for the conference</h2>
-
+    <h2>Register for the conference</h2>
+    <div id="registration">
 % if h.lca_info['registration_status'] == 'open': 
-<p>
-Welcome to the conference registration. Please fill in the form as best you can.
-</p>
+      <p>Welcome to the conference registration. Please fill in the form as best you can.</p>
 % else:
-<p class="error-message"><i>Registration is closed.</i></p>
-<p class="error-message">Please only use this form: <ul class="error-message">
-<li>to volunteer to help at the conference, or</li>
-<li>to buy the Monday, Tuesday or Penguin Dinner tickets, or</li>
-<li>if you are have a voucher code or similar.</li>
-</ul></p>
+      <p class="error-message"><i>Registration is closed.</i></p>
+      <p class="error-message">
+        Please only use this form:
+        <ul class="error-message">
+          <li>to volunteer to help at the conference, or</li>
+          <li>to buy the Monday, Tuesday or Penguin Dinner tickets, or</li>
+          <li>if you are have a voucher code or similar.</li>
+        </ul>
+      </p>
 % #endif
 
 % if not 'signed_in_person_id' in session:
-<p>
-If you already have an account (through a submitting a proposal, or other
-interaction with this site), then please <a href="/person/signin">sign in</a>.
-</p>
-<p>If you can't log in, you can try
-<% h.link_to('recovering your password', url=h.url(controller='person', action='forgotten_password', id=None)) %>.
-</p>
+      <p>If you already have an account (through a submitting a proposal, or other interaction with this site), then please <a href="/person/signin">sign in</a>.</p>
+      <p>If you can't log in, you can try <% h.link_to('recovering your password', url=h.url(controller='person', action='forgotten_password', id=None)) %>.</p>
 % #endif
 
 % if errors:
-<p class="error-message">There
+      <p class="error-message">There
 %   if len(errors)==1:
-is one problem
+      is one problem
 %   else:
-are <% `len(errors)` |h %> problems
+      are <% `len(errors)` |h %> problems
 %   #endif
-with your registration form, highlighted in red below. Please correct and
-re-submit.</p>
+      with your registration form, highlighted in red below. Please correct and re-submit.</p>
 % #endif
 
-<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-<% h.form(h.url()) %>
-
-<fieldset id="person">
-<h2>About yourself</h2>
-
-% if not c.signed_in_person:
-<br><p class="note">
-<span class="mandatory">*</span> - Mandatory field
-</p>
-% #endif
-
-<p class="label">
-% if not c.signed_in_person:
-<span class="mandatory">*</span>
-% #endif
-<label for="person.firstname">Your first name:</label></p>
-% if c.signed_in_person:
-<p>
-<% c.signed_in_person.firstname | h %>
-% else:
-<p class="entries">
-<% h.textfield('person.firstname', size=40) %>
-% #endif
-</p>
-
-<p class="label">
-% if not c.signed_in_person:
-<span class="mandatory">*</span>
-% #endif
-<label for="person.lastname">Your last name:</label></p>
-% if c.signed_in_person:
-<p>
-<% c.signed_in_person.lastname | h %>
-% else:
-<p class="entries">
-<% h.textfield('person.lastname', size=40) %>
-% #endif
-</p>
-
-
-<p class="label">
-% if not c.signed_in_person:
-<span class="mandatory">*</span>
-% #endif
-<label for="person.email_address">Email address:</label></p>
-% if c.signed_in_person:
-<p>
-<% c.signed_in_person.email_address | h %>
-% else:
-<p class="entries">
-<% h.textfield('person.email_address', size=40) %>
-% #endif
-</p>
-<p class="note">
-Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.
-</p>
-
-% if not c.signed_in_person:
-<p class="label">
-<span class="mandatory">*</span>
-<label for="person.password">Choose a password:</label>
-</p><p class="entries">
-<% h.password_field("person.password", size=40) %>
-</p>
-
-<p class="label">
-<span class="mandatory">*</span>
-<label for="person.password_confirm">Confirm your password:</label>
-</p><p class="entries">
-<% h.password_field("person.password_confirm", size=40) %>
-</p>
-% #endif
-</fieldset>
+      <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+      <% h.form(h.url()) %>
 
 <& form.myt, defaults=defaults, errors=errors &>
 
-<p class="submit"><% h.submitbutton("Register me!") %></p>
-<span class="fielddesc">
-<p>If you encounter any problems signing up please email <% h.contact_email() %>.</p>
-</span>
+        <p class="submit"><% h.submitbutton("Register me!") %></p>
+        <span class="fielddesc"><p>If you encounter any problems signing up please email <% h.contact_email() %>.</p></span>
 
-
-<% h.end_form() %>
-</&>
+      <% h.end_form() %>
+      </&>
 
 <%args>
 defaults
@@ -136,9 +56,9 @@ if not defaults:
         'registration.speaker_record': '1',
         'registration.speaker_video_release': '1',
         'registration.speaker_slides_release': '1',
-        'registration.shell': '(please select)',
-        'registration.editor': '(please select)',
-        'registration.distro': '(please select)'
+        'registration.shell': '',
+        'registration.editor': '',
+        'registration.distro': ''
     }
     if c.signed_in_person:
         for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
@@ -154,17 +74,13 @@ Register - <& PARENT:title &>
 </%method>
 
 <%method extra_head>
-<script type="text/javascript">
-function toggle_select_hidden(select, field)
-{
-    if ( document.getElementById(select).value == 'other' ) 
-    {
+  <script type="text/javascript">
+    function toggle_select_hidden(select, field) {
+      if ( document.getElementById(select).value == 'other' ) {
         document.getElementById(field).style.display = 'inline';
-    }
-    else
-    {
+      } else {
         document.getElementById(field).style.display = 'none';
+      }
     }
-}
-</script>
+  </script>
 </%method>

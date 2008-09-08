@@ -181,7 +181,7 @@ class NotExistingPersonValidator(validators.FancyValidator):
         if person is not None:
             raise Invalid("A person with this email already exists.  Please try signing in first.", value, state)
 
-class ProductMinMax(validators.FormValidator):
+class ProductMinMax(validators.FancyValidator):
     def validate_python(self, value, state):
         total = 0
         for field in self.product_fields:
@@ -194,3 +194,9 @@ class ProductMinMax(validators.FormValidator):
         if total > self.max_qty:
             raise Invalid("You can not order more than " + str(self.max_qty) + ' ' + self.category_name, value, state)
 
+class ProductInCategory(validators.FancyValidator):
+    def validate_python(self, value, state):
+        for product in self.category.products:
+            if product.id == int(value):
+                return
+        raise Invalid("Product " + value + " is not in category " + self.category.name, value, state)
