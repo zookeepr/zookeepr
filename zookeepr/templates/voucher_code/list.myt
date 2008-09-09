@@ -17,7 +17,7 @@ This table lists the voucher codes for your group.
         <th>Rego Type</th>
         <th>Disc.</th>
 % if admin:
-	<th>Leader</th>
+        <th>Leader</th>
 % #endif
         <th>Comment</th>
         <th>Used By</th>
@@ -31,12 +31,12 @@ This table lists the voucher codes for your group.
 %    if admin:
         <td>
 %      if d.leader:
-	  <% d.leader.firstname |h%> <% d.leader.lastname |h%>
-	  &lt;<% d.leader.email_address |h%>&gt;
+          <% d.leader.firstname |h%> <% d.leader.lastname |h%>
+          &lt;<% d.leader.email_address |h%>&gt;
 %      else:
           (no leader)
 %      #endif
-	</td>
+        </td>
 %    #endif
         <td><% d.comment |h%></td>
 %     if d.registrations:
