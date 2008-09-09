@@ -19,7 +19,7 @@ lca_info = {
 # Possible statuses not_open|open|closed
   'cfp_status' : 'closed',
   'cfmini_status' : 'closed',
-  'paper_editing' : 'closed',
+  'paper_editing' : 'open',
   'registration_status' : 'not_open',
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',

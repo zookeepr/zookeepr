@@ -3,8 +3,9 @@ from zookeepr.lib.crud import View
 from zookeepr import model
 from zookeepr.model import Proposal
 from zookeepr.lib.base import *
-from datetime import date, datetime
 
+from datetime import date, datetime
+from zookeepr.lib.sort import odict
 
 
 class ScheduleController(BaseController):
@@ -20,17 +21,16 @@ class ScheduleController(BaseController):
         if day.lower() in self.day_dates:
             # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
             talks = talks.filter(Proposal.scheduled >= self.day_dates[day.lower()] and Proposal.scheduled < self.day_dates[day.lower()].replace(day=self.day_dates[day.lower()].day+1))
-        c.programme = {}
-        for talk in talks.order_by(Proposal.scheduled.asc()).all():
+        c.programme = odict()
+        for talk in talks.order_by((Proposal.scheduled.asc(), Proposal.finished.desc())).all():
             if isinstance(talk.scheduled, date):
-                day = talk.scheduled.strftime('%A')
-                if c.programme.has_key(day) is not True:
-                    c.programme[day] = {}
+                talk_day = talk.scheduled.strftime('%A')
+                if c.programme.has_key(talk_day) is not True:
+                    c.programme[talk_day] = odict()
                 if talk.building is not None:
-                    if c.programme[day].has_key(talk.building) is not True:
-                        c.programme[day][talk.building] = {}
-                    if c.programme[day][talk.building].has_key(talk.theatre) is not True:
-                        c.programme[day][talk.building][talk.theatre] = []
-                    c.programme[day][talk.building][talk.theatre].append(talk)
-        adsf
+                    if c.programme[talk_day].has_key(talk.building) is not True:
+                        c.programme[talk_day][talk.building] = odict()
+                    if c.programme[talk_day][talk.building].has_key(talk.theatre) is not True:
+                        c.programme[talk_day][talk.building][talk.theatre] = []
+                    c.programme[talk_day][talk.building][talk.theatre].append(talk)
         return render_response('schedule/table.myt')

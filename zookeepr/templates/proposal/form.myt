@@ -51,8 +51,6 @@
 
     <p>If two or more people are presenting together, this information should for the primary speaker; mention the other speakers in the Abstract, eg. "(with Bob Vaxhacker and Eve Duo)".</p>
 
-% if c.signed_in_person:
-%     c.person = c.signed_in_person
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="name">Speaker name:</label></p>
     <p class="entries"><% h.textfield('name', value=c.person.firstname + " " + c.person.lastname, size=70,disabled=True) %></p>
     <p class="note">(Can't be changed here.)</p>
@@ -61,10 +59,6 @@
     <p class="entries"><% h.textfield('person.mobile', size=70) %></p>
     <p class="note">Your mobile phone.</p>
 
-% else:
-%   c.mobile_is_mandatory = True
-<& ../person/form.myt &>
-% #endif
 
     <p class="label"><span class="publishable">&#8224;</span><label for="person.url">Speaker homepage:</label></p>
     <p class="entries"><% h.textfield('person.url', size=70) %></p>
