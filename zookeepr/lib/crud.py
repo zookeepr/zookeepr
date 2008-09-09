@@ -19,12 +19,12 @@ class CRUDBase(object):
             return obj.id
         else:
             return oid
-        
+
     def redirect_to(self, action, default):
         """Redirect to the preferred controller/action target.
 
         Used to redirect the browser after a successful POST.
-    
+
         If ``self`` has an attribute ``redirect_map``, then that is used as
         a map to look up the destination for the redirect for this ``action``.
 
@@ -96,14 +96,14 @@ class Create(CRUDBase):
 class List(CRUDBase):
     def _can_edit(self):
         return issubclass(self.__class__, Modify)
-    
+
     def index(self):
         """Show a list of all objects currently in the system."""
         # GET, POST -> return list of objects
 
         # get name we refer to the model by in the controller
         model_name = self.individual
-        
+
         #options = getattr(self, 'conditions', {})
         #pages, collection = paginate(object_mapper(self.model), m.request_args.get('page', 0), **options)
         #setattr(c, model_name + '_pages', pages)
@@ -127,7 +127,7 @@ class RUDBase(CRUDBase):
 
     def __before__(self, **kwargs):
         #print "RUDBase.__before__:", kwargs
-        
+
         if hasattr(super(RUDBase, self), '__before__'):
             super(RUDBase, self).__before__(**kwargs)
         if 'id' not in kwargs.keys():
@@ -136,7 +136,7 @@ class RUDBase(CRUDBase):
                 raise RuntimeError, "id not in kwargs for %s" % (kwargs['action'],)
             else:
                 raise RuntimeError, "id not in kwargs, additionally don't know what action is being performend (did you forget to pass in **kwargs in super.__before__?)"
-        
+
         use_oid = False # Determines if we look up on a key or the OID
 
         # FIXME: wtf.
@@ -211,7 +211,7 @@ class Update(RUDBase):
         successful form post.
         """
         pass
-        
+
 
 class Delete(RUDBase):
     def delete(self):
@@ -221,7 +221,7 @@ class Delete(RUDBase):
 
         POST requests will delete the item.
         """
-        
+
         if request.method == 'POST' and self.obj is not None:
             self.dbsession.delete(self.obj)
             self.dbsession.flush()

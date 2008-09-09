@@ -26,6 +26,9 @@ def make_map():
     m.connect('/db_content/delete_folder', controller='db_content', action='delete_folder', id=None)
     m.connect('/db_content/upload', controller='db_content', action='upload', id=None)
 
+    # Schedule
+    m.connect('/schedule/:day', controller='schedule', day='All')
+
     # Review
     m.connect('/proposal/review_index', controller='proposal', action='review_index', id=None)
     m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
@@ -38,15 +41,6 @@ def make_map():
     m.connect('/error/:action/:id', controller='error')
 
     # The CFP named routes
-    #m.connect('cfp', '/cfp', controller='cfp', action='index')
-    #m.connect('presentations', '/presentations', controller='cfp', action='index')
-    #m.connect('submit_cfp', '/papers/submit_a_paper', controller='cfp', action='submit')
-    #m.connect('submit_cfp', '/papers/submit_a_presentation', controller='cfp', action='submit')
-    #m.connect('submit_cfp', '/presentations/submit_a_presentation', controller='cfp', action='submit')
-    #m.connect('/papers/thankyou', controller='cfp', action='thankyou')
-    #m.connect('/presentations/thankyou', controller='cfp', action='thankyou')
-    #m.connect('submit_mini', '/mini-confs/submit_mini-conf_proposal', controller='cfp', action='submit_mini')
-    #m.connect('/presentations/edit/:id', controller='proposal', action='edit')
     m.connect('/programme/edit_submission', controller='proposal', action='index')
     m.connect('/programme/edit_submission/:id', controller='proposal', action='view')
     m.connect('/programme/edit_submission/:id/edit', controller='proposal', action='edit')

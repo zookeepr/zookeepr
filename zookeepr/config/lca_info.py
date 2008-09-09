@@ -26,7 +26,7 @@ lca_info = {
 
 }
 
-lca_rego = { 
+lca_rego = {
 # Date Early Bird ends
   'earlybird_enddate' : datetime(2008, 1, 1, 00, 00, 00),
   'miniconfs' : (
@@ -55,11 +55,11 @@ lca_rego = {
         'adjectives' : ["invalid", "valid",
                "referenced", "dereferenced", "unreferenced",
                "illegal", "legal",
-               "questionable", 
+               "questionable",
                "alternate", "implemented", "unimplemented",
                "terminal", "non-terminal",
                "static", "dynamic",
-               "qualified", "unqualified", 
+               "qualified", "unqualified",
                "constant", "variable",
                "volatile", "non-volatile",
                "abstract", "concrete",

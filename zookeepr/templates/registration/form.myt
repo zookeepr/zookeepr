@@ -104,66 +104,61 @@
 
         </fieldset>
 % for category in c.product_categories:
+%   products = category.available_products(c.signed_in_person)
+%   if len(products) > 0:
 
         <fieldset id="<% h.computer_title(category.name) %>">
           <h2><% category.name.title() %></h2>
           <p class="note"><% category.description %></p>
-%   if category.display == 'radio':
-%       for product in category.products:
-%           if product.active:
+%       if category.display == 'radio':
+%           for product in products:
           <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
-%           #endif
-%       #endfor
-%   elif category.display == 'select':
+%           #endfor
+%       elif category.display == 'select':
           <p class="entries">
             <select name="products.category_<% category.id %>">
               <option value=""> - </option>
-%       for product in category.products:
-%           if product.active:
+%           for product in products:
               <option value="<% product.id %>"> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></option>
-%           #endif
-%       #endfor
+%           #endfor
             </select>
           </p>
-%   elif category.display == 'checkbox':
-%       for product in category.products:
-%           if product.active:
+%       elif category.display == 'checkbox':
+%           for product in products:
           <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
-%           #endif
-%       #endfor
-%   elif category.display == 'qty':
-%       for product in category.products:
-%           if product.active:
+%           #endfor
+%       elif category.display == 'qty':
+%           for product in products:
           <p><% product.description %> x <input type="text" name="products.product_<% product.id %>_qty" size="2" /> x <% h.number_to_currency(product.cost/100.0) %></p>
-%           #endif
-%       #endfor
-%   #endif
-%   if category.name == 'Accomodation':
+%           #endfor
+%       #endif
+%       if category.name == 'Accomodation':
 
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">
-%       dates = [(d, 1) for d in range(18,26)]
-%       for (day, month) in dates:
+%           dates = [(d, 1) for d in range(18,26)]
+%           for (day, month) in dates:
               <option value="<% day %>"><% datetime.datetime(2009, month, day).strftime('%A, %e %b') %></option>
-%       #endfor
+%           #endfor
             </select>
           </p>
 
           <p class="label"><span class="mandatory">*</span><label for="registation.checkout">Check out on:</label></p>
           <p class="entries">
             <select name="registration.checkout">
-%       for day, month in dates[1:]:
+%           for day, month in dates[1:]:
               <option value="<% day %>" ><% datetime.datetime(2009, month, day).strftime('%A, %e %b') %></option>
-%       #endfor
+%           #endfor
             </select>
           </p>
-%   elif category.name == 'Partners Programme':
+%       elif category.name == 'Partners Programme':
           <p class="label"><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries"><% h.textfield('registration.partner_email', size=50) %></p>
           <p class="note">If your partner will be participating in the programme, please enter their email address here so that our Partners Programme manager can contact them.</p>
-%   #endif
+%       #endif
         </fieldset>
+%   #endif
 % #endfor
 
         <fieldset>

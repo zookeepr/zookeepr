@@ -247,7 +247,10 @@ class ProposalController(SecureController, View, Update):
             return redirect_to('/programme')
 
     def edit(self, id):
-        c.person = c.proposal.people[0];
+        c.person = c.proposal.people[0]
+        for person in c.proposal.people:
+            if c.signed_in_person == person:
+                c.person = person
         c.cfptypes = self.dbsession.query(ProposalType).all()
         c.tatypes = self.dbsession.query(AssistanceType).all()
 

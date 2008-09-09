@@ -9,7 +9,7 @@ def profile_url(email_address):
     users = session.query(Person).select_by(email_address=email_address)
     if len(users) < 1:
         return None
-    
+
     user = users[0]
 
     if user.handle is not None:
