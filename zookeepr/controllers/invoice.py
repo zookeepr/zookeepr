@@ -36,7 +36,7 @@ class InvoiceController(SecureController, Read, List):
         age = datetime.datetime.now() - c.invoice.last_modification_timestamp
         if age > datetime.timedelta(hours=1):
             return render_response('invoice/expired.myt')
-        if c.invoice.total() % 5 != 0:
+        if c.invoice.void:
             return render_response('invoice/invalid.myt')
 
         # get our merchant id and secret

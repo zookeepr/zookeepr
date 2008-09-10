@@ -272,14 +272,6 @@ class RegistrationController(SecureController, Update, List, Read):
 
     def pay(self, id, quiet=0):
         registration = self.obj
-        if registration.person.invoices:
-            for invoice in registration.person.invoices:
-                if invoice.good_payments or invoice.bad_payments:
-                    c.invoice = invoice
-                    if quiet: return
-                    return render_response('invoice/already.myt')
-                else:
-                    invoice.void = True
 
         invoice = model.Invoice()
         invoice.person = registration.person
@@ -287,16 +279,72 @@ class RegistrationController(SecureController, Update, List, Read):
         # Check for voucher
         #voucher_result, errors = self.check_voucher()
 
+        # Create Invoice
         for rproduct in registration.products:
             ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
             ii.product = rproduct.product
+            product_expires = rproduct.product.available_until() 
+            if product_expires != None and product_expires < invoice.due_date:
+                invoice.due_date = product_expires
             self.dbsession.save(ii)
             invoice.items.append(ii)
 
-        invoice.last_modification_timestamp = datetime.datetime.now()
+        # Check for included products
+        for ii in invoice.items:
+            if ii.product and ii.product.included:
+                for iproduct in ii.product.included:
+                    included_qty = iproduct.include_qty
+                    included_category = iproduct.include_category
+                    free_qty = 0
+                    free_cost = 0
+                    for ii2 in invoice.items:
+                        if ii2.product and ii2.product.category == included_category:
+                            if free_qty + ii2.qty > included_qty:
+                                free_cost += (included_qty - free_qty) * ii2.product.cost
+                                free_qty += (included_qty - free_qty)
+                            else:
+                                free_cost += ii2.qty * ii2.product.cost
+                                free_qty += ii2.qty
 
-        self.dbsession.save(invoice)
+                    # We have included products, create a discount for the cost of them.
+                    # This is not perfect, products of different prices can be discounted,
+                    # and it can either favor the customer or LCA, depending on the order
+                    # of items on the invoice
+                    if free_cost > 0:
+                        discount_item = model.InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
+                        self.dbsession.save(discount_item)
+                        invoice.items.append(discount_item)
+
+        # We should add the discount from any voucher here
+
+
+        # complicated check to see whether invoices are already in the system
+        new_invoice = invoice
+        for old_invoice in registration.person.invoices:
+            if old_invoice != new_invoice and old_invoice.void == False:
+                if self.invoices_identical(old_invoice, new_invoice):
+                    self.dbsession.expunge(new_invoice)
+                    invoice = old_invoice
+                else:
+                    if old_invoice.due_date < new_invoice.due_date:
+                        new_invoice.due_date = old_invoice.due_date
+                    old_invoice.void = True
+
+        invoice.last_modification_timestamp = datetime.datetime.now()
+        self.dbsession.save_or_update(invoice)
         self.dbsession.flush()
 
         if quiet: return
         redirect_to(controller='invoice', action='view', id=invoice.id)
+
+    def invoices_identical(self, invoice1, invoice2):
+        if invoice1.total() == invoice2.total():
+            if len(invoice1.items) == len(invoice2.items):
+                matched_products = 0
+                for invoice1_item in invoice1.items:
+                    for invoice2_item in invoice2.items:
+                        if invoice1_item.product == invoice2_item.product and invoice1_item.description == invoice2_item.description and invoice1_item.qty == invoice2_item.qty and invoice1_item.cost == invoice2_item.cost:
+                            matched_products += 1
+                if len(invoice1.items) == matched_products:
+                    return True
+        return False
