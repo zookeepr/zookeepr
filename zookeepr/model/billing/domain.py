@@ -43,9 +43,9 @@ class Ceiling(object):
     def available(self):
         if self.soldout():
             return False
-        elif self.available_from is not None and self.available_from <= datetime.datetime.now():
+        elif self.available_from is not None and self.available_from >= datetime.datetime.now():
             return False
-        elif self.available_until is not None and self.available_until >= datetime.datetime.now():
+        elif self.available_until is not None and self.available_until <= datetime.datetime.now():
             return False
         else:
             return True
@@ -120,7 +120,7 @@ class Product(object):
         return qty
 
     def remaining(self):
-        max_ceiling = 0
+        max_ceiling = None
         for c in self.ceilings:
             if c.remaining() > max_ceiling:
                 max_ceiling = c.remaining
@@ -144,6 +144,14 @@ class Product(object):
             if not c.can_i_sell(qty):
                 return False
         return True
+
+    def available_until(self):
+        until = []
+        for ceiling in self.ceilings:
+            if ceiling.available_until != None:
+                until.append(ceiling.available_until)
+        if len(until) > 0:
+            return max(until)
 
 class InvoiceItem(object):
     def __init__(self, description=None, qty=None, cost=None):
