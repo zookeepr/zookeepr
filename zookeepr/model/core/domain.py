@@ -95,6 +95,12 @@ class Person(object):
                               nonce)
         self.url_hash = md5.new(magic).hexdigest()
 
+    def valid_invoice(self):
+        for invoice in self.invoices:
+            if invoice.void == False:
+                return True
+        return False
+
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 

@@ -318,3 +318,17 @@ def silly_description():
 def silly_description_checksum(desc):
     import hashlib
     return hashlib.sha1(desc).hexdigest()
+
+def ticket_percentage_text(percent, earlybird = False):
+    if percent == 100:
+        return 'All tickets gone.'
+    elif percent >= 97.5:
+        if earliybird:
+            return "Earlybird almost soldout."
+        else:
+            return "Almost all tickets gone."
+    else:
+        if earlybird:
+            return "%d%% earlybird sold." % percent 
+        else:
+            return "%d%% tickets sold." % percent
