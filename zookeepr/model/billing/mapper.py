@@ -19,7 +19,7 @@ mapper(ProductInclude, product_include,
 
 mapper(Product, product,
        properties = {
-             'ceilings': relation(Ceiling, secondary=product_ceiling_map, lazy=False,
+             'ceilings': relation(Ceiling, secondary=product_ceiling_map, lazy=True,
                                  backref='products'),
              'category': relation(ProductCategory, lazy=True, backref='products'),
             },

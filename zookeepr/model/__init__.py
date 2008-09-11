@@ -104,9 +104,10 @@ def populate_data():
             dict(category_id='1', active=True, description="Earlybird Student Ticket", cost="16000"),
             dict(category_id='1', active=True, description="Earlybird Hobbiest Ticket", cost="29000"),
             dict(category_id='1', active=True, description="Earlybird Professional Ticket", cost="63500"),
-            dict(category_id='1', active=False, description="Student Ticket", cost="16000"),
-            dict(category_id='1', active=False, description="Hobbiest Ticket", cost="36500"),
-            dict(category_id='1', active=False, description="Professional Ticket", cost="78500"),
+            dict(category_id='1', active=True, description="Student Ticket", cost="16000"),
+            dict(category_id='1', active=True, description="Hobbiest Ticket", cost="36500"),
+            dict(category_id='1', active=True, description="Professional Ticket", cost="78500"),
+            dict(category_id='1', active=True, description="Speaker Ticket", cost="0"),
             dict(category_id='2', active=True, description="Men's Small Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Men's Medium Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Men's Large Shirt", cost="2000"),
@@ -132,8 +133,22 @@ def populate_data():
     try:
         # Included Products
         model.billing.tables.product_include.insert().execute(
+            # Include 1 Shirt in all registration types
+            dict(product_id='1', include_category_id='2', include_qty='1'),
+            dict(product_id='2', include_category_id='2', include_qty='1'),
             dict(product_id='3', include_category_id='2', include_qty='1'),
+            dict(product_id='4', include_category_id='2', include_qty='1'),
+            dict(product_id='5', include_category_id='2', include_qty='1'),
+            dict(product_id='6', include_category_id='2', include_qty='1'),
+            dict(product_id='7', include_category_id='2', include_qty='1'),
+            # Include 1 Dinner for Professional and Speaker registrations
             dict(product_id='3', include_category_id='3', include_qty='1'),
+            dict(product_id='6', include_category_id='3', include_qty='1'),
+            dict(product_id='7', include_category_id='3', include_qty='1'),
+            # Include 7 nights of accom for speakers
+            dict(product_id='7', include_category_id='4', include_qty='7'),
+            # Include 5 partners in the partners program for speakers
+            dict(product_id='7', include_category_id='5', include_qty='5'),
             )
 
     except SQLError, inst:

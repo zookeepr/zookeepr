@@ -23,6 +23,8 @@
     <td>
 %  if i.paid():
       <b>paid</b>
+%  elif i.void:
+      <b>VOID</b>
 %  else:
       &nbsp;
 %  #endif
