@@ -174,7 +174,7 @@ class RegistrationController(SecureController, Update, List, Read):
                         id=c.person.url_hash, fragment=True))
 
                 self.obj = c.registration
-                #self.pay(c.registration.id, quiet=1)
+                self.pay(c.registration.id, quiet=1)
 
                 if c.signed_in_person:
                     redirect_to('/registration/status')
@@ -199,7 +199,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.dbsession.flush()
 
                 self.obj = c.registration
-                #self.pay(c.registration.id, quiet=1)
+                self.pay(c.registration.id, quiet=1)
 
                 redirect_to('/registration/status')
         return render_response("registration/edit.myt",
