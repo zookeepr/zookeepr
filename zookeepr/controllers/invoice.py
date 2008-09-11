@@ -34,10 +34,10 @@ class InvoiceController(SecureController, Read, List):
                 return render_response('invoice/already.myt')
 
         age = datetime.datetime.now() - c.invoice.last_modification_timestamp
+        if c.invoice.void:
+            return render_response('invoice/invalid.myt')
         if age > datetime.timedelta(hours=1):
             return render_response('invoice/expired.myt')
-        if c.invoice.total() % 5 != 0:
-            return render_response('invoice/invalid.myt')
 
         # get our merchant id and secret
         merchant_id = lca_info['commsecure_merchantid']

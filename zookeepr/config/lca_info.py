@@ -20,7 +20,6 @@ lca_info = {
   'cfp_status' : 'closed',
   'cfmini_status' : 'closed',
   'paper_editing' : 'closed',
-  'registration_status' : 'open',
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 
@@ -28,7 +27,6 @@ lca_info = {
 
 lca_rego = {
 # Date Early Bird ends
-  'earlybird_enddate' : datetime(2008, 1, 1, 00, 00, 00),
   'miniconfs' : (
               ('Monday',('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security', 'Virtualisation', 'Wireless')),
               ('Tuesday',('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel', 'LinuxChix', 'MySQL', 'SysAdmin'))
