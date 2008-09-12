@@ -10,7 +10,9 @@
 % #endif
             <label for="person.firstname">Your first name:</label>
           </p>
-% if c.signed_in_person:
+% if c.registration and c.registration.person:
+          <p><% c.registration.person.firstname | h %></p>
+% elif c.signed_in_person:
           <p><% c.signed_in_person.firstname | h %></p>
 % else:
           <p class="entries"><% h.textfield('person.firstname', size=40) %></p>
@@ -22,7 +24,9 @@
 % #endif
             <label for="person.lastname">Your last name:</label>
           </p>
-% if c.signed_in_person:
+% if c.registration and c.registration.person:
+          <p><% c.registration.person.lastname | h %></p>
+% elif c.signed_in_person:
           <p><% c.signed_in_person.lastname | h %></p>
 % else:
           <p class="entries"><% h.textfield('person.lastname', size=40) %></p>
@@ -34,7 +38,9 @@
 % #endif
             <label for="person.email_address">Email address:</label>
           </p>
-% if c.signed_in_person:
+% if c.registration and c.registration.person:
+          <p><% c.registration.person.email_address | h %></p>
+% elif c.signed_in_person:
           <p><% c.signed_in_person.email_address | h %></p>
 % else:
           <p class="entries"><% h.textfield('person.email_address', size=40) %></p>
