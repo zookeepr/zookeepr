@@ -78,5 +78,5 @@ Register - <& PARENT:title &>
 </%method>
 
 <%method extra_head>
-  <script src="/silly.js"></script>
+  
 </%method>

@@ -94,5 +94,4 @@ if not defaults:
 
 </%init>
 <%method extra_head>
-    <script src="/silly.js"></script>
 </%method>

@@ -52,6 +52,7 @@ def make_map():
     m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
 
     # Invoice Reminder
+    m.connect('/invoice/pdf/:id', controller='invoice', action='pdf', id=None)
     m.connect('/invoice/remind', controller='invoice', action='remind', id=None)
     m.connect('/registration/remind', controller='registration', action='remind', id=None)
     m.connect('/registration/status', controller='registration', action='status', id=None)

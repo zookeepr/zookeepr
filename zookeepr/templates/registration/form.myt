@@ -274,8 +274,9 @@
             </p>
 
             <p class="label"><label for="registration.silly_description">Description:</label></p>
+            <script src="/silly.js"></script>
             <blockquote><p id='silly_description'><% defaults['registration.silly_description'] %></p></blockquote>
-            <p><input type="button" value="New Description" onclick="silly_description()"></p>
+#            <p><input type="button" value="New Description" onclick="silly_description()"></p>
             <% h.hidden_field('registration.silly_description') %>
             <% h.hidden_field('registration.silly_description_checksum') %>
             <p class="note">This is a randomly chosen description for your name badge</p>

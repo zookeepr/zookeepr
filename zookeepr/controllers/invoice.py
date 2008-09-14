@@ -82,7 +82,7 @@ class InvoiceController(SecureController, Read, List):
         setattr(c, 'invoice_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
         return render_response('invoice/remind.myt')
 
-    def pdf(self):
+    def pdf(self, id):
         import os, tempfile
 
         res = render('%s/pdf.myt' % self.individual, fragment=True)
