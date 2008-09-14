@@ -166,7 +166,7 @@
           </p>
 %       elif category.name == 'Partners Programme':
           <p class="label"><label for="registration.partner_email">Your partner's email address:</label></p>
-          <p class="entries"><% h.textfield('registration.partner_email', size=50) %></p>
+          <p class="entries"><% h.textfield('products.partner_email', size=50) %></p>
           <p class="note">If your partner will be participating in the programme, please enter their email address here so that our Partners Programme manager can contact them.</p>
 %       #endif
         </fieldset>

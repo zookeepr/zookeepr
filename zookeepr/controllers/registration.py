@@ -53,7 +53,6 @@ class RegisterSchema(BaseSchema):
     diet = validators.String()
     special = validators.String()
     opendaydrag = validators.Int()
-    partner_email = EmailAddress()
     checkin = BoundedInt(min=0)
     checkout = BoundedInt(min=0)
     lasignup = validators.Bool()
@@ -129,6 +128,7 @@ class RegistrationController(SecureController, Update, List, Read):
     def _generate_product_schema(self):
         class ProductSchema(BaseSchema):
             pass
+        ProductSchema.add_field('partner_email', EmailAddress()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
         for category in c.product_categories:
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
@@ -238,6 +238,7 @@ class RegistrationController(SecureController, Update, List, Read):
                     setattr(c.registration, k, result['registration'][k])
             else:
                 setattr(c.registration, k, result['registration'][k])
+        setattr(c.registration, 'partner_email', result['products']['partner_email']) # hacky method to make validating sane
         self.dbsession.save_or_update(c.registration)
 
         # Always delete the current products
@@ -305,7 +306,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
         # Create Invoice
         for rproduct in registration.products:
-            if self._product_available(rproduct.product.available()):
+            if self._product_available(rproduct.product):
                 ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until() 
