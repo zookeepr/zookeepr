@@ -159,7 +159,7 @@ class SecureController(BaseController):
         if self.check_permissions(kwargs['action']):
             return
         else:
-            abort(403, "computer says no")
+            abort(403, "LCA goes oh no!")
 
     def check_permissions(self, action):
         if not hasattr(self, 'permissions'):
@@ -186,6 +186,8 @@ class AuthFunc(object):
         self.callable = callable
 
     def authorise(self, cls):
+        if not self.logged_in():
+            return False
         result = getattr(cls, self.callable)()
         if result is None:
             # None is bad.  Return True or False
@@ -205,6 +207,8 @@ class AuthRole(object):
         self.role_name = role_name
 
     def authorise(self, cls):
+        if not c.signed_in_person:
+            return False
         role = cls.dbsession.query(Role).filter_by(name=self.role_name).first()
         retval = role in c.signed_in_person.roles
         return retval

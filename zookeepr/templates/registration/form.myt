@@ -110,7 +110,13 @@
 
         </fieldset>
 % for category in c.product_categories:
-%   products = category.available_products(c.signed_in_person)
+%   all_products = category.available_products(c.signed_in_person)
+%   products = []
+%   for product in all_products:
+%       if c.product_available(product):
+%           products.append(product)
+%       #endif
+%   #endfor
 %   if len(products) > 0:
 
         <fieldset id="<% h.computer_title(category.name) %>">

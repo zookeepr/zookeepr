@@ -105,6 +105,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
         self._generate_product_schema()
         #c.products = self.dbsession.query(Product).all()
+        c.product_available = self._product_available
 
     def _able_to_register(self):
         if c.signed_in_person and c.signed_in_person.registration:
@@ -116,6 +117,15 @@ class RegistrationController(SecureController, Update, List, Read):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't edit (eg already paid) """
         return True, "You can edit"
 
+    def _product_available(self, product):
+        if not product.available():
+            return False
+        if product.auth is not None:
+            exec("auth = " + product.auth)
+            if not auth:
+                return False
+        return True
+
     def _generate_product_schema(self):
         class ProductSchema(BaseSchema):
             pass
@@ -126,7 +136,7 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if product.available():
+                    if self._product_available:
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
                         product_fields.append('product_' + str(product.id))
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
@@ -134,7 +144,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if product.available():
+                    if self._product_available:
                         ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
                         product_fields.append('product_' + str(product.id) + '_qty')
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
@@ -282,7 +292,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
         # Create Invoice
         for rproduct in registration.products:
-            if rproduct.product.available():
+            if self._product_available(rproduct.product.available()):
                 ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until() 

@@ -99,10 +99,12 @@ class ProductInclude(object):
         return '<ProductInclude product_id=%r include_product_id=%r include_qty=%r>' % (self.product_id, self.include_product_id, self.include_qty)
 
 class Product(object):
-    def __init__(self, active=False, description=None, cost=None):
+    def __init__(self, active=False, description=None, cost=None, auth=None, validate=None):
         self.active = active
         self.description = description
         self.cost = cost
+        self.auth = auth
+        self.validate = validate
 
     def __repr__(self):
         return '<Product id=%r active=%r description=%r cost=%r' % (self.id, self.active, self.description, self.cost)

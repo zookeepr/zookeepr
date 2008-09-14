@@ -29,6 +29,8 @@ product = Table('product', metadata,
                 Column('active', Boolean, nullable=False),
                 Column('description', Text, nullable=False),
                 Column('cost', Integer, nullable=False),
+                Column('auth', Text, nullable=True),
+                Column('validate', Text, nullable=True),
                )
 
 product_include = Table('product_include', metadata,
