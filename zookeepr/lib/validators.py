@@ -200,3 +200,21 @@ class ProductInCategory(validators.FancyValidator):
             if product.id == int(value) and product.available():
                 return
         raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
+
+class PPChildrenAdult(validators.FancyValidator):
+    # Check if a child in the PP has an adult with them
+    # takes current_field, adult_field
+    
+    def validate_python(self, value, state):
+        try:
+            current_field = int(value[self.current_field])
+        except:
+            # they didn't order any of this field
+            return
+        try:
+            adult_field = int(value[self.adult_field])
+        except:
+            raise Invalid("Any children in the partners programme must be accompanied by an adult.", value, state)
+        if current_field > 0 and adult_field < 1:
+            raise Invalid("Any children in the partners programme must be accompanied by an adult.", value, state)
+        return

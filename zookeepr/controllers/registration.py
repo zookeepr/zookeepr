@@ -133,12 +133,19 @@ class RegistrationController(SecureController, Update, List, Read):
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
                 ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, not_empty=True))
+                for product in category.products:
+                    if product.validate is not None:
+                        exec("validator = " + product.validate)
+                        ProductSchema.add_pre_validator(validator)
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
                     if self._product_available:
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
                         product_fields.append('product_' + str(product.id))
+                        if product.validate is not None:
+                            exec("validator = " + product.validate)
+                            ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             elif category.display == 'qty':
                 # qty
@@ -147,6 +154,9 @@ class RegistrationController(SecureController, Update, List, Read):
                     if self._product_available:
                         ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
                         product_fields.append('product_' + str(product.id) + '_qty')
+                    if product.validate is not None:
+                        exec("validator = " + product.validate)
+                        ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
                 # FIXME: I have spent far too long to try and get this working. Technically this should be a chained validator, not a pre validator but no matter what I do I can't get it to work (read heaps of docs etc etc). The result of being a pre-validator is that if there is an error the pre validator doesn't pick up (like an unfilled field) that the normal validation would pick up it isn't highlighted until the pre-validator doesn't find any errors. For example if you dont' select any shirts and have "asdf" in one of the dinner ticket fields you should see two errors: 1. you have no shirts and 2. tickets need to be integers. Once you select a shirt and resubmit the other error will show up. So it's a usability issue and doesn't make the form less secure, but damn this one is annoying!
         self.schemas['new'].add_field('products', ProductSchema)
