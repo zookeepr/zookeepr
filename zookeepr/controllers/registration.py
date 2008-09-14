@@ -152,6 +152,9 @@ class RegistrationController(SecureController, Update, List, Read):
         self.schemas['new'].add_field('products', ProductSchema)
         self.schemas['edit'].add_field('products', ProductSchema)
 
+    def is_speaker(self):
+        return c.signed_in_person.is_speaker()
+
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
 

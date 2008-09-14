@@ -186,7 +186,7 @@ class AuthFunc(object):
         self.callable = callable
 
     def authorise(self, cls):
-        if not self.logged_in():
+        if not c.signed_in_person:
             return False
         result = getattr(cls, self.callable)()
         if result is None:
