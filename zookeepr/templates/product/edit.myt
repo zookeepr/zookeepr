@@ -20,6 +20,8 @@ if not defaults and c.product:
         'product.category': c.product.category.id,
         'product.description': c.product.description,
         'product.cost': c.product.cost,
+        'product.auth': c.product.auth,
+        'product.validate': c.product.validate
     }
     if c.product.active:
         defaults['product.active'] = 1

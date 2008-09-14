@@ -90,8 +90,8 @@ def populate_data():
         # Product Categories
         model.billing.tables.product_category.insert().execute(
             dict(name='Ticket', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
-            dict(name='Shirts', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=10),
-            dict(name='Dinner Tickets', description='How many people will be attending the dinner (make sure you include yourself)? One (1) free ticket is included with professional registration but you are still required to accept this in the field below.', display='qty', min_qty=0, max_qty=5),
+            dict(name='Shirt', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=10),
+            dict(name='Dinner Ticket', description='How many people will be attending the dinner (make sure you include yourself)? One (1) free ticket is included with professional registration but you are still required to accept this in the field below.', display='qty', min_qty=0, max_qty=5),
             dict(name='Accomodation', description='Where would you like to stay during the conference?', display='select', min_qty=0, max_qty=10),
             dict(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=10),
             )

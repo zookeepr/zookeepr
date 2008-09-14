@@ -28,9 +28,8 @@ class AdminController(SecureController):
         funcs += [
           ('/db_content', '''Edit HTML pages that are stored in the database. [Content]'''),
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
-          ('/person', '''List of people signed up to the webpage (with
-                           option to view/change their zookeepr roles)
-                           [Accounts]'''),
+          ('/person', '''List of people signed up to the webpage (with option to view/change their zookeepr roles) [Accounts]'''),
+          ('/product', '''Manage all of zookeeprs products. [Inventory]'''),
 
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
