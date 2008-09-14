@@ -124,11 +124,11 @@ def populate_data():
             dict(category_id='4', active=True, description="Wrest Point (Follow this link to book)", cost="0"),
             dict(category_id='4', active=True, description="University Accommodation (price per night)", cost="8000"),
             dict(category_id='5', active=True, description="Adult", cost="20000"),
-            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="20000"),
-            dict(category_id='5', active=True, description="Child (4-6 years old)", cost="20000"),
-            dict(category_id='5', active=True, description="Child (7-9 years old)", cost="20000"),
-            dict(category_id='5', active=True, description="Child (10-12 years old)", cost="20000"),
-            dict(category_id='5', active=True, description="Child (13-17 years old)", cost="20000"),
+            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_19_qty',adult_field='product_18_qty')"),
+            dict(category_id='5', active=True, description="Child (4-6 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_20_qty',adult_field='product_18_qty')"),
+            dict(category_id='5', active=True, description="Child (7-9 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_21_qty',adult_field='product_18_qty')"),
+            dict(category_id='5', active=True, description="Child (10-12 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_22_qty',adult_field='product_18_qty')"),
+            dict(category_id='5', active=True, description="Child (13-17 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_23_qty',adult_field='product_18_qty')"),
             )
 
     except SQLError, inst:
