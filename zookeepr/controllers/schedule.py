@@ -17,12 +17,14 @@ class ScheduleController(BaseController):
                  'saturday':  date(2009,1,24)}
 
     def index(self, day):
-        talks = self.dbsession.query(Proposal).filter_by(accepted=True)
+        c.day = day.lower()
+        c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
         if day.lower() in self.day_dates:
             # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
-            talks = talks.filter(Proposal.scheduled >= self.day_dates[day.lower()] and Proposal.scheduled < self.day_dates[day.lower()].replace(day=self.day_dates[day.lower()].day+1))
+            c.talks = c.talks.filter(Proposal.scheduled >= self.day_dates[day.lower()] and Proposal.scheduled < self.day_dates[day.lower()].replace(day=self.day_dates[day.lower()].day+1))
         c.programme = odict()
-        for talk in talks.order_by((Proposal.scheduled.asc(), Proposal.finished.desc())).all():
+        c.talks.order_by((Proposal.scheduled.asc(), Proposal.finished.desc())).all()
+        for talk in c.talks:
             if isinstance(talk.scheduled, date):
                 talk_day = talk.scheduled.strftime('%A')
                 if c.programme.has_key(talk_day) is not True:

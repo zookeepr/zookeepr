@@ -53,7 +53,6 @@ class RegisterSchema(BaseSchema):
     diet = validators.String()
     special = validators.String()
     opendaydrag = validators.Int()
-    partner_email = EmailAddress()
     checkin = BoundedInt(min=0)
     checkout = BoundedInt(min=0)
     lasignup = validators.Bool()
@@ -105,6 +104,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
         self._generate_product_schema()
         #c.products = self.dbsession.query(Product).all()
+        c.product_available = self._product_available
 
     def _able_to_register(self):
         if c.signed_in_person and c.signed_in_person.registration:
@@ -116,31 +116,54 @@ class RegistrationController(SecureController, Update, List, Read):
         """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't edit (eg already paid) """
         return True, "You can edit"
 
+    def _product_available(self, product):
+        if not product.available():
+            return False
+        if product.auth is not None:
+            exec("auth = " + product.auth)
+            if not auth:
+                return False
+        return True
+
     def _generate_product_schema(self):
         class ProductSchema(BaseSchema):
             pass
+        ProductSchema.add_field('partner_email', EmailAddress()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
         for category in c.product_categories:
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
                 ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, not_empty=True))
+                for product in category.products:
+                    if product.validate is not None:
+                        exec("validator = " + product.validate)
+                        ProductSchema.add_pre_validator(validator)
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if product.available():
+                    if self._product_available:
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
                         product_fields.append('product_' + str(product.id))
+                        if product.validate is not None:
+                            exec("validator = " + product.validate)
+                            ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             elif category.display == 'qty':
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if product.available():
+                    if self._product_available:
                         ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
                         product_fields.append('product_' + str(product.id) + '_qty')
+                    if product.validate is not None:
+                        exec("validator = " + product.validate)
+                        ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
                 # FIXME: I have spent far too long to try and get this working. Technically this should be a chained validator, not a pre validator but no matter what I do I can't get it to work (read heaps of docs etc etc). The result of being a pre-validator is that if there is an error the pre validator doesn't pick up (like an unfilled field) that the normal validation would pick up it isn't highlighted until the pre-validator doesn't find any errors. For example if you dont' select any shirts and have "asdf" in one of the dinner ticket fields you should see two errors: 1. you have no shirts and 2. tickets need to be integers. Once you select a shirt and resubmit the other error will show up. So it's a usability issue and doesn't make the form less secure, but damn this one is annoying!
         self.schemas['new'].add_field('products', ProductSchema)
         self.schemas['edit'].add_field('products', ProductSchema)
+
+    def is_speaker(self):
+        return c.signed_in_person.is_speaker()
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -174,7 +197,7 @@ class RegistrationController(SecureController, Update, List, Read):
                         id=c.person.url_hash, fragment=True))
 
                 self.obj = c.registration
-                #self.pay(c.registration.id, quiet=1)
+                self.pay(c.registration.id, quiet=1)
 
                 if c.signed_in_person:
                     redirect_to('/registration/status')
@@ -199,7 +222,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.dbsession.flush()
 
                 self.obj = c.registration
-                #self.pay(c.registration.id, quiet=1)
+                self.pay(c.registration.id, quiet=1)
 
                 redirect_to('/registration/status')
         return render_response("registration/edit.myt",
@@ -215,6 +238,7 @@ class RegistrationController(SecureController, Update, List, Read):
                     setattr(c.registration, k, result['registration'][k])
             else:
                 setattr(c.registration, k, result['registration'][k])
+        setattr(c.registration, 'partner_email', result['products']['partner_email']) # hacky method to make validating sane
         self.dbsession.save_or_update(c.registration)
 
         # Always delete the current products
@@ -282,7 +306,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
         # Create Invoice
         for rproduct in registration.products:
-            if rproduct.product.available():
+            if self._product_available(rproduct.product):
                 ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until() 

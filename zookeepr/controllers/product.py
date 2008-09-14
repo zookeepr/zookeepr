@@ -19,6 +19,8 @@ class ProductSchema(BaseSchema):
     active = validators.Bool()
     description = validators.String(not_empty=True)
     cost = BoundedInt(min=0)
+    auth = validators.String()
+    validate = validators.String()
 
 class NewProductSchema(BaseSchema):
     product = ProductSchema()

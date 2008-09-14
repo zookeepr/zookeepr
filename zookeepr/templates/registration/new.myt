@@ -51,7 +51,7 @@ if not defaults:
     desc, descChecksum = h.silly_description()
 
     defaults = {'person.country': 'Australia',
-        'registration.checkout': '2',
+        'registration.checkout': '24',
         'registration.lasignup': '1',
         'registration.announcesignup': '1',
         'registration.dinner': '0',
@@ -78,5 +78,5 @@ Register - <& PARENT:title &>
 </%method>
 
 <%method extra_head>
-  <script src="/silly.js"></script>
+  
 </%method>

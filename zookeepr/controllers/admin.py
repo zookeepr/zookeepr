@@ -13,7 +13,8 @@ class AdminController(SecureController):
     permissions = {
       'ALL': [AuthRole('organiser')],
       'proposals_by_strong_rank': [AuthRole('reviewer')],
-      'proposals_by_max_rank': [AuthRole('reviewer')]
+      'proposals_by_max_rank': [AuthRole('reviewer')],
+      'proposals_by_stream': [AuthRole('reviewer')]
     }
     def index(self):
         res = dir(self)
@@ -28,9 +29,8 @@ class AdminController(SecureController):
         funcs += [
           ('/db_content', '''Edit HTML pages that are stored in the database. [Content]'''),
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
-          ('/person', '''List of people signed up to the webpage (with
-                           option to view/change their zookeepr roles)
-                           [Accounts]'''),
+          ('/person', '''List of people signed up to the webpage (with option to view/change their zookeepr roles) [Accounts]'''),
+          ('/product', '''Manage all of zookeeprs products. [Inventory]'''),
 
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
@@ -206,6 +206,26 @@ FROM proposal
     LEFT JOIN review ON (proposal.id=review.proposal_id)
     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
 GROUP BY proposal.id, proposal.title, proposal_type.name
+ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+""")
+
+    def proposals_by_stream(self):
+        """ List of all the proposals ordered by stream, max score, min score then average [CFP] """
+        return sql_response("""
+SELECT
+    proposal.id, 
+    proposal.title, 
+    proposal_type.name AS "proposal type",
+    stream.name AS stream,
+    MAX(review.score),
+    MIN(review.score),
+    AVG(review.score)
+FROM proposal 
+    LEFT JOIN review ON (proposal.id=review.proposal_id)
+    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+    LEFT JOIN stream ON (review.stream_id=stream.id)
+WHERE review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
+GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
 ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
 """)
 

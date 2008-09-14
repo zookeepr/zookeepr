@@ -10,7 +10,9 @@
 % #endif
             <label for="person.firstname">Your first name:</label>
           </p>
-% if c.signed_in_person:
+% if c.registration and c.registration.person:
+          <p><% c.registration.person.firstname | h %></p>
+% elif c.signed_in_person:
           <p><% c.signed_in_person.firstname | h %></p>
 % else:
           <p class="entries"><% h.textfield('person.firstname', size=40) %></p>
@@ -22,7 +24,9 @@
 % #endif
             <label for="person.lastname">Your last name:</label>
           </p>
-% if c.signed_in_person:
+% if c.registration and c.registration.person:
+          <p><% c.registration.person.lastname | h %></p>
+% elif c.signed_in_person:
           <p><% c.signed_in_person.lastname | h %></p>
 % else:
           <p class="entries"><% h.textfield('person.lastname', size=40) %></p>
@@ -34,7 +38,9 @@
 % #endif
             <label for="person.email_address">Email address:</label>
           </p>
-% if c.signed_in_person:
+% if c.registration and c.registration.person:
+          <p><% c.registration.person.email_address | h %></p>
+% elif c.signed_in_person:
           <p><% c.signed_in_person.email_address | h %></p>
 % else:
           <p class="entries"><% h.textfield('person.email_address', size=40) %></p>
@@ -104,7 +110,13 @@
 
         </fieldset>
 % for category in c.product_categories:
-%   products = category.available_products(c.signed_in_person)
+%   all_products = category.available_products(c.signed_in_person)
+%   products = []
+%   for product in all_products:
+%       if c.product_available(product):
+%           products.append(product)
+%       #endif
+%   #endfor
 %   if len(products) > 0:
 
         <fieldset id="<% h.computer_title(category.name) %>">
@@ -154,7 +166,7 @@
           </p>
 %       elif category.name == 'Partners Programme':
           <p class="label"><label for="registration.partner_email">Your partner's email address:</label></p>
-          <p class="entries"><% h.textfield('registration.partner_email', size=50) %></p>
+          <p class="entries"><% h.textfield('products.partner_email', size=50) %></p>
           <p class="note">If your partner will be participating in the programme, please enter their email address here so that our Partners Programme manager can contact them.</p>
 %       #endif
         </fieldset>
@@ -268,8 +280,9 @@
             </p>
 
             <p class="label"><label for="registration.silly_description">Description:</label></p>
+            <script src="/silly.js"></script>
             <blockquote><p id='silly_description'><% defaults['registration.silly_description'] %></p></blockquote>
-            <p><input type="button" value="New Description" onclick="silly_description()"></p>
+#            <p><input type="button" value="New Description" onclick="silly_description()"></p>
             <% h.hidden_field('registration.silly_description') %>
             <% h.hidden_field('registration.silly_description_checksum') %>
             <p class="note">This is a randomly chosen description for your name badge</p>

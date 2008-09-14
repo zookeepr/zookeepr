@@ -1,3 +1,4 @@
+from __future__ import division
 import datetime
 
 class Ceiling(object):
@@ -26,19 +27,20 @@ class Ceiling(object):
         if self.max_sold == None:
             return 0
         else:
-            return self.qty_sold() / self.max_sold
+            return self.qty_sold() / self.max_sold * 100
 
     def percent_invoiced(self):
         if self.max_sold == None:
             return 0
         else:
-            return self.qty_invoiced() / self.max_sold
+            return self.qty_invoiced() / self.max_sold * 100
 
     def remaining(self):
         return self.max_sold - self.qty_sold()
 
     def soldout(self):
-        return self.qty_sold() >= self.max_sold
+        return self.qty_invoiced() >= self.max_sold
+        #return self.qty_sold() >= self.max_sold
 
     def available(self):
         if self.soldout():
@@ -97,10 +99,12 @@ class ProductInclude(object):
         return '<ProductInclude product_id=%r include_product_id=%r include_qty=%r>' % (self.product_id, self.include_product_id, self.include_qty)
 
 class Product(object):
-    def __init__(self, active=False, description=None, cost=None):
+    def __init__(self, active=False, description=None, cost=None, auth=None, validate=None):
         self.active = active
         self.description = description
         self.cost = cost
+        self.auth = auth
+        self.validate = validate
 
     def __repr__(self):
         return '<Product id=%r active=%r description=%r cost=%r' % (self.id, self.active, self.description, self.cost)
@@ -115,7 +119,7 @@ class Product(object):
     def qty_invoiced(self):
         qty = 0
         for ii in self.invoice_items:
-            if not ii.invoice.void:
+            if ii.invoice.void == False and ii.invoice.due_date >= datetime.datetime.now():
                 qty += ii.qty
         return qty
 
