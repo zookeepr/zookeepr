@@ -113,14 +113,20 @@ class Product(object):
         qty = 0
         for ii in self.invoice_items:
             if ii.invoice.paid():
-                qty += ii.qty
+                if self.category.name == 'Accomodation':
+                    qty += 1
+                else:
+                    qty += ii.qty
         return qty
 
     def qty_invoiced(self):
         qty = 0
         for ii in self.invoice_items:
             if ii.invoice.void == False and ii.invoice.due_date >= datetime.datetime.now():
-                qty += ii.qty
+                if self.category.name == 'Accomodation':
+                    qty += 1
+                else:
+                    qty += ii.qty
         return qty
 
     def remaining(self):
