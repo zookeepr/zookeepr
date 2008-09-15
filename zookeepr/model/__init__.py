@@ -114,11 +114,19 @@ def populate_data():
             dict(category_id='2', active=True, description="Men's Small Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Men's Medium Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Men's Large Shirt", cost="2000"),
-            dict(category_id='2', active=True, description="Men's X Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Men's XX Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Men's XXX Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Men's XXXX Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Men's XXXXX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Men's X Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Men's XX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Men's XXX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Men's XXXX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Men's XXXXX Large Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Women's Small Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Women's Medium Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Women's Large Shirt", cost="2000"),
-            dict(category_id='2', active=True, description="Women's X Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Women's XX Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Women's XXX Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Women's XXXX Large Shirt", cost="2000"), dict(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Women's X Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Women's XX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Women's XXX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Women's XXXX Large Shirt", cost="2000"),
+            dict(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2000"),
             dict(category_id='3', active=True, description="Dinner Tickets", cost="8000"),
             dict(category_id='4', active=True, description="I will organise my own", cost="0"),
             dict(category_id='4', active=True, description="Wrest Point (Follow this link to book)", cost="0"),
@@ -165,6 +173,7 @@ def populate_data():
         model.billing.tables.ceiling.insert().execute(
             dict(name='conference', max_sold=1000),
             dict(name='earlybird', max_sold=400),
+            dict(name='uniaccom', max_sold=240),
             )
 
     except SQLError, inst:
@@ -183,6 +192,7 @@ def populate_data():
             dict(product_id='4', ceiling_id='1'),
             dict(product_id='5', ceiling_id='1'),
             dict(product_id='6', ceiling_id='1'),
+            dict(product_id='28', ceiling_id='3'),
             )
     except SQLError, inst:
         print inst
