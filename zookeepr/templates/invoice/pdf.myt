@@ -28,16 +28,16 @@
   <lastname><% c.invoice.person.lastname | h %></lastname>
   <email><% c.invoice.person.email_address | h %></email>
 
-% if c.invoice.person.registration and c.invoice.person.registration.company:
+% if c.invoice.person.registration and c.invoice.person.company:
 %   rego = c.invoice.person.registration
-  <company><% rego.company | h %></company>
+  <company><% rego.person.company | h %></company>
   <address>
-    <address1><% rego.address1 | h %></address1>
-    <address2><% rego.address2 | h %></address2>
-    <city><% rego.city | h %></city>
-    <country><% rego.country | h %></country>
-    <postcode><% rego.postcode | h %></postcode>
-    <state><% rego.state | h %></state>
+    <address1><% rego.person.address1 | h %></address1>
+    <address2><% rego.person.address2 | h %></address2>
+    <city><% rego.person.city | h %></city>
+    <country><% rego.person.country | h %></country>
+    <postcode><% rego.person.postcode | h %></postcode>
+    <state><% rego.person.state | h %></state>
   </address>
 % # endif
 
