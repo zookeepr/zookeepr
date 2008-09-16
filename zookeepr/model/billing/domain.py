@@ -107,7 +107,7 @@ class Product(object):
         self.validate = validate
 
     def __repr__(self):
-        return '<Product id=%r active=%r description=%r cost=%r' % (self.id, self.active, self.description, self.cost)
+        return '<Product id=%r active=%r description=%r cost=%r auth=%r validate%r>' % (self.id, self.active, self.description, self.cost, self.auth, self.validate)
 
     def qty_sold(self):
         qty = 0

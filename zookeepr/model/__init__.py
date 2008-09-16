@@ -79,7 +79,8 @@ def populate_data():
             dict(name='miniconf'),
             dict(name='team'),
             dict(name='tentative_volunteer'),
-            dict(name='volunteer')
+            dict(name='volunteer'),
+            dict(name='speaker_free_accom')
             )
 
     except SQLError, inst:
@@ -110,6 +111,8 @@ def populate_data():
             dict(category_id='1', active=True, description="Hobbiest Ticket", cost="36500"),
             dict(category_id='1', active=True, description="Professional Ticket", cost="78500"),
             dict(category_id='1', active=True, description="Speaker Ticket", cost="0", auth="AuthFunc('is_speaker').authorise(self)"),
+            dict(category_id='1', active=True, description="Speaker Ticket - With free Accommodation", cost="0", auth="AuthRole('speaker_free_accom').authorise(self)"),
+            dict(category_id='1', active=True, description="Miniconf Organiser Ticket", cost="0", auth="AuthFunc('is_miniconf').authorise(self)"),
             dict(category_id='1', active=True, description="Volunteer Ticket", cost="0", auth="AuthRole('tentative_volunteer').authorise(self)"),
             dict(category_id='2', active=True, description="Men's Small Shirt", cost="2000"),
             dict(category_id='2', active=True, description="Men's Medium Shirt", cost="2000"),
@@ -131,12 +134,12 @@ def populate_data():
             dict(category_id='4', active=True, description="I will organise my own", cost="0"),
             dict(category_id='4', active=True, description="Wrest Point (Follow this link to book)", cost="0"),
             dict(category_id='4', active=True, description="University Accommodation (price per night)", cost="8000"),
-            dict(category_id='5', active=True, description="Adult", cost="20000", validate="PPEmail(adult_field='product_18_qty',email_field='partner_email')"),
-            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_19_qty',adult_field='product_18_qty')"),
-            dict(category_id='5', active=True, description="Child (4-6 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_20_qty',adult_field='product_18_qty')"),
-            dict(category_id='5', active=True, description="Child (7-9 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_21_qty',adult_field='product_18_qty')"),
-            dict(category_id='5', active=True, description="Child (10-12 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_22_qty',adult_field='product_18_qty')"),
-            dict(category_id='5', active=True, description="Child (13-17 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_23_qty',adult_field='product_18_qty')"),
+            dict(category_id='5', active=True, description="Adult", cost="20000", validate="PPEmail(adult_field='product_20_qty',email_field='partner_email')"),
+            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_21_qty',adult_field='product_20_qty')"),
+            dict(category_id='5', active=True, description="Child (4-6 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_22_qty',adult_field='product_20_qty')"),
+            dict(category_id='5', active=True, description="Child (7-9 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_23_qty',adult_field='product_20_qty')"),
+            dict(category_id='5', active=True, description="Child (10-12 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_24_qty',adult_field='product_20_qty')"),
+            dict(category_id='5', active=True, description="Child (13-17 years old)", cost="20000", validate="PPChildrenAdult(current_field='product_25_qty',adult_field='product_20_qty')"),
             )
 
     except SQLError, inst:
@@ -154,14 +157,17 @@ def populate_data():
             dict(product_id='5', include_category_id='2', include_qty='1'),
             dict(product_id='6', include_category_id='2', include_qty='1'),
             dict(product_id='7', include_category_id='2', include_qty='1'),
-            # Include 1 Dinner for Professional and Speaker registrations
+            dict(product_id='8', include_category_id='2', include_qty='1'),
+            # Include 1 Dinner for Professional and 2 for Speaker registrations
             dict(product_id='3', include_category_id='3', include_qty='1'),
             dict(product_id='6', include_category_id='3', include_qty='1'),
-            dict(product_id='7', include_category_id='3', include_qty='1'),
+            dict(product_id='7', include_category_id='3', include_qty='2'),
+            dict(product_id='8', include_category_id='3', include_qty='2'),
             # Include 7 nights of accom for speakers
-            dict(product_id='7', include_category_id='4', include_qty='7'),
+            dict(product_id='8', include_category_id='4', include_qty='7'),
             # Include 5 partners in the partners program for speakers
             dict(product_id='7', include_category_id='5', include_qty='5'),
+            dict(product_id='8', include_category_id='5', include_qty='5'),
             )
 
     except SQLError, inst:
