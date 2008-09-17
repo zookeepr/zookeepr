@@ -13,8 +13,17 @@ lca_info = {
   'contact_email' : 'joshua.hesketh@marchsouth.org',
 
 # Event information
+  'event_parent_organisation' : 'Linux Australia, Incorporated',
+  'event_parent_url' : 'http://www.linux.org.au/',
   'event_name' : 'linux.conf.au 2009',
+  'event_url' : 'http://www.linux.conf.au/',
+  'event_tax_number' : 'ABN 56 987 117 479',
+# 'event_tax_number' : 'NZ GST #90-792-369',
+  'event_postal_address' : 'GPO Box 4788, Sydney NSW 2001, Australia',
+  'event_fax_number' : '+61 3 9235 5454',
   'date' : datetime(2009, 1, 19, 9, 0, 00),
+
+  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 17th of November (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
   'cfp_status' : 'closed',
