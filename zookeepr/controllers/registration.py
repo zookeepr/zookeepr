@@ -105,15 +105,19 @@ class RegistrationController(SecureController, Update, List, Read):
         self._generate_product_schema()
         #c.products = self.dbsession.query(Product).all()
         c.product_available = self._product_available
+        c.able_to_register = self._able_to_register
+        c.able_to_edit = self._able_to_edit
 
     def _able_to_register(self):
         if c.signed_in_person and c.signed_in_person.registration:
             return False, "Thanks for your keenness, but you've already registered!"
-        """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't register (eg sold out) """
         return True, "You can register"
 
     def _able_to_edit(self):
-        """ Dummy method until ceilings are integrated. Returns boolean and message/reason if you can't edit (eg already paid) """
+        for invoice in c.signed_in_person.invoices:
+            if invoice.void == False:
+                if invoice.paid():
+                    return False, "Sorry, you've already paid"
         return True, "You can edit"
 
     def _product_available(self, product):
@@ -208,7 +212,7 @@ class RegistrationController(SecureController, Update, List, Read):
     def edit(self, id):
         able, response = self._able_to_edit()
         if not able:
-            return response
+            return render_response("registration/error.myt", error=response)
         errors = {}
         defaults = dict(request.POST)
 
@@ -306,16 +310,13 @@ class RegistrationController(SecureController, Update, List, Read):
 
         # Create Invoice
         for rproduct in registration.products:
-            if self._product_available(rproduct.product):
-                ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
-                ii.product = rproduct.product
-                product_expires = rproduct.product.available_until() 
-                if product_expires != None and product_expires < invoice.due_date:
-                    invoice.due_date = product_expires
-                self.dbsession.save(ii)
-                invoice.items.append(ii)
-            else:
-                invoice.void = True
+            ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
+            ii.product = rproduct.product
+            product_expires = rproduct.product.available_until() 
+            if product_expires != None and product_expires < invoice.due_date:
+                invoice.due_date = product_expires
+            self.dbsession.save(ii)
+            invoice.items.append(ii)
 
         # Check for included products
         for ii in invoice.items:
@@ -351,12 +352,21 @@ class RegistrationController(SecureController, Update, List, Read):
         for old_invoice in registration.person.invoices:
             if old_invoice != new_invoice and old_invoice.void == False:
                 if self.invoices_identical(old_invoice, new_invoice):
+                    for ii in new_invoice.items:
+                        self.dbsession.expunge(ii)
                     self.dbsession.expunge(new_invoice)
                     invoice = old_invoice
                 else:
                     if old_invoice.due_date < new_invoice.due_date:
                         new_invoice.due_date = old_invoice.due_date
                     old_invoice.void = True
+
+        for ii in invoice.items:
+            if ii.product and not self._product_available(ii.product):
+                ii2 = model.InvoiceItem(description="Product " + ii.product.description + " is no longer available", qty=0, cost=0)
+                self.dbsession.save(ii2)
+                invoice.items.append(ii2)
+                invoice.void = True
 
         invoice.last_modification_timestamp = datetime.datetime.now()
         if invoice.void == True:

@@ -1,14 +1,15 @@
 <h1>Pay invoice</h1>
 
+# on go live test_payment.pl becomes make_payment.pl
 <form method="POST"
-  action="https://vault.safepay.com.au/cgi-bin/make_payment.pl"
+  action="https://vault.safepay.com.au/cgi-bin/test_payment.pl"
   onSubmit="return disableForm(this);" >
 
 # % for k in fields.keys():
 # <input type="hidden" name="<% k %>" value="<% fields[k] %>">
 # % # end for
 
-<input type="hidden" name="linux.conf.au MEL8OURNE2008"
+<input type="hidden" name="linux.conf.au - Marchsouth 2009"
   VALUE="<% "%.2f" % (fields['Amount']/100.0) %>">
 
 <p>
@@ -39,7 +40,7 @@ payment.
 
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
 <input type="hidden" name="reply_link_url"
-  value="http://<% h.host_name() %>/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
+  value="http://hesketh.no-ip.org:5000/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=&card_number=&card_type=">
 <input type="hidden" name="return_link_url"
   value="http://<% h.host_name() %>/registration/status">
 <input type="hidden" name="return_link_text"
@@ -51,11 +52,13 @@ payment.
 <table border=0><tr><td valign="middle">
 <img alt="[SecurePay logo]" width="200" height="79"
 style="margin-right: 0.5em"
-src="http://<% h.host_name() %>/__data/assets/image/0015/474/securepay200white.gif"
+src="http://<% h.host_name() %>:5000/images/securepay200white.gif"
 /></td>
-<td valign="middle">Direct One Payment Solutions kindly provided by
-SecurePay Australia</td>
-</tr></table>
+<td valign="middle"><p>Direct One Payment Solutions kindly provided by
+SecurePay Australia</p></td>
+</tr>
+
+</table>
 
 <%args>
 fields
