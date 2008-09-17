@@ -80,9 +80,9 @@
         <td><% invoice.status() %></td>
         <td><% h.number_to_currency(invoice.total() / 100) %></td>
         <td>
-          <% h.link_to('View', h.url(action='view', id=invoice.id)) %>
-          <% h.link_to('Printable (html)', h.url(action='printable', id=invoice.id)) %>
-          <% h.link_to('Get Printable (pdf)', h.url(action='pdf', id=invoice.id)) %>
+          <% h.link_to('View', h.url(controller='invoice', action='view', id=invoice.id)) %>
+          <% h.link_to('Printable (html)', h.url(controller='invoice', action='printable', id=invoice.id)) %>
+          <% h.link_to('Get Printable (pdf)', h.url(controller='invoice', action='pdf', id=invoice.id)) %>
         </td>
       </tr>
 %   #endfor
