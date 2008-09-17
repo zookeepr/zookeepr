@@ -89,29 +89,27 @@
 % if c.printable:
   </body>
 </html>
-% else:
-<& actions &>
 % #endif
 
 <%method actions>
     <div id="actions">
-      <% h.link_to('Registration status', url=h.url(controller='registration', action='status')) %><br>
-      <% h.link_to('Printable version', url=h.url(action='printable')) %><br>
-      <% h.link_to('PDF version', url=h.url(action='pdf')) %><br>
+      <ul><li><% h.link_to('Registration status', url=h.url(controller='registration', action='status')) %></li>
+      <li><% h.link_to('Printable version', url=h.url(action='printable')) %></li>
+      <li><% h.link_to('PDF version', url=h.url(action='pdf')) %></li>
 % if not c.invoice.void and c.invoice.paid():
-      <p>Invoice has been paid.</p>
+      <li>Invoice has been paid.</li>
 % elif c.invoice.bad_payments:
-      <p>Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a></p>
+      <li>Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a></li>
 % elif not c.invoice.void and not c.invoice.paid():
-      <% h.link_to('Pay this invoice', url = h.url(action='pay')) %>
+      <li><% h.link_to('Pay this invoice', url = h.url(action='pay')) %></li>
 % elif c.invoice.person.registration:
-      <% h.link_to('Regenerate invoice', url = h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %><br>
+      <li><% h.link_to('Regenerate invoice', url = h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
       <p>
         <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
 %   if 'invoice_message' in h.lca_info:
         <small><strong>Please Note:</strong> <% h.lca_info['invoice_message'] %></small>
 %   #endif
-      </p>
+      </p></li>
 % #endif
     </div>
 </%method>
