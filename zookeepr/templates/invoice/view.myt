@@ -93,24 +93,26 @@
 
 <%method actions>
     <div id="actions">
-      <ul><li><% h.link_to('Registration status', url=h.url(controller='registration', action='status')) %></li>
-      <li><% h.link_to('Printable version', url=h.url(action='printable')) %></li>
-      <li><% h.link_to('PDF version', url=h.url(action='pdf')) %></li>
+      <ul>
+        <li><% h.link_to('Registration status', url=h.url(controller='registration', action='status')) %></li>
+        <li><% h.link_to('Printable version', url=h.url(action='printable')) %></li>
+        <li><% h.link_to('PDF version', url=h.url(action='pdf')) %></li>
 % if not c.invoice.void and c.invoice.paid():
-      <li>Invoice has been paid.</li>
+        <li>Invoice has been paid.</li>
 % elif c.invoice.bad_payments:
-      <li>Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a></li>
+        <li>Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a></li>
 % elif not c.invoice.void and not c.invoice.paid():
-      <li><% h.link_to('Pay this invoice', url = h.url(action='pay')) %></li>
-% elif c.invoice.person.registration:
-      <li><% h.link_to('Regenerate invoice', url = h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
-      <p>
-        <small>Use the regenerate invoice link to if you have edited your registration but the invoice doesn't look quite right.</small><br>
+        <li><% h.link_to('Pay this invoice', url = h.url(action='pay')) %></li>
+        <li>
+          <% h.link_to('Regenerate invoice', url = h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %></li>
+          <p><small>Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</small></p>
 %   if 'invoice_message' in h.lca_info:
-        <small><strong>Please Note:</strong> <% h.lca_info['invoice_message'] %></small>
+          <p><small><strong>Please Note:</strong> <% h.lca_info['invoice_message'] %></small></p>
 %   #endif
-      </p></li>
+          </p>
+        </li>
 % #endif
+      </ul>
     </div>
 </%method>
 
