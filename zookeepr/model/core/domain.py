@@ -98,7 +98,7 @@ class Person(object):
     def valid_invoice(self):
         for invoice in self.invoices:
             if invoice.void == False:
-                return True
+                return invoice
         return False
 
     def __repr__(self):
