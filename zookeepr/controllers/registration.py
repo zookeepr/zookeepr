@@ -358,11 +358,14 @@ class RegistrationController(SecureController, Update, List, Read):
                 else:
                     if old_invoice.due_date < new_invoice.due_date:
                         new_invoice.due_date = old_invoice.due_date
+                    ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
+                    self.dbsession.save(ii2)
+                    old_invoice.items.append(ii2)
                     old_invoice.void = True
 
         for ii in invoice.items:
             if ii.product and not self._product_available(ii.product):
-                ii2 = model.InvoiceItem(description="Product " + ii.product.description + " is no longer available", qty=0, cost=0)
+                ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
                 self.dbsession.save(ii2)
                 invoice.items.append(ii2)
                 invoice.void = True
