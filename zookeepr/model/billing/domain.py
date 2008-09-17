@@ -176,7 +176,6 @@ class InvoiceItem(object):
         """Return the total cost of this item"""
         return (self.cost or 0) * self.qty
 
-
 class Invoice(object):
     def __init__(self, void=False, issue_date=None, due_date=None):
         self.void = void
@@ -202,6 +201,13 @@ class Invoice(object):
         """Return whether the invoice is paid (or zero-balance) """
         return bool(self.good_payments or self.total()==0)
 
+    def status(self):
+        if self.void == True:
+            return "Invalid"
+        elif self.paid():
+            return "Paid"
+        else:
+            return ""
 
 class PaymentReceived(object):
     def __repr__(self):
