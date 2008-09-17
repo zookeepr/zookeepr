@@ -40,7 +40,7 @@ payment.
 
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
 <input type="hidden" name="reply_link_url"
-  value="http://hesketh.no-ip.org:5000/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=&card_number=&card_type=">
+  value="http://<% h.host_name() %>/payment/new?invoice_id=&payment_amount=&bank_reference=&payment_number=">
 <input type="hidden" name="return_link_url"
   value="http://<% h.host_name() %>/registration/status">
 <input type="hidden" name="return_link_text"
@@ -49,7 +49,8 @@ payment.
 <p class="submit"><input type="submit" value="Go to the SecurePay checkout"></p>
 </form>
 
-<table border=0><tr><td valign="middle">
+<table border=0>
+<tr><td valign="middle">
 <img alt="[SecurePay logo]" width="200" height="79"
 style="margin-right: 0.5em"
 src="http://<% h.host_name() %>:5000/images/securepay200white.gif"

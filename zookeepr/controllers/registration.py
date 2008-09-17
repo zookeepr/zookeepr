@@ -116,7 +116,7 @@ class RegistrationController(SecureController, Update, List, Read):
     def _able_to_edit(self):
         for invoice in c.signed_in_person.invoices:
             if invoice.void == False:
-                if invoice.paid():
+                if invoice.paid() and invoice.total() != 0:
                     return False, "Sorry, you've already paid"
         return True, "You can edit"
 
@@ -246,8 +246,7 @@ class RegistrationController(SecureController, Update, List, Read):
         self.dbsession.save_or_update(c.registration)
 
         # Always delete the current products
-        for rego_product in c.registration.products:
-            self.dbsession.delete(rego_product)
+        c.registration.products = []
 
         # Store Product details
         for category in c.product_categories:
@@ -359,11 +358,14 @@ class RegistrationController(SecureController, Update, List, Read):
                 else:
                     if old_invoice.due_date < new_invoice.due_date:
                         new_invoice.due_date = old_invoice.due_date
+                    ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
+                    self.dbsession.save(ii2)
+                    old_invoice.items.append(ii2)
                     old_invoice.void = True
 
         for ii in invoice.items:
             if ii.product and not self._product_available(ii.product):
-                ii2 = model.InvoiceItem(description="Product " + ii.product.description + " is no longer available", qty=0, cost=0)
+                ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
                 self.dbsession.save(ii2)
                 invoice.items.append(ii2)
                 invoice.void = True

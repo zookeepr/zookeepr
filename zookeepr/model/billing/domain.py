@@ -207,7 +207,7 @@ class Invoice(object):
         elif self.paid():
             return "Paid"
         else:
-            return ""
+            return "Unpaid"
 
 class PaymentReceived(object):
     def __repr__(self):
