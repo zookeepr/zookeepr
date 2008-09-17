@@ -42,11 +42,15 @@ class PaymentController(BaseController, Create, View):
             fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
 
         pd = {}
+        
+        # these are used to match up direct one fields with the legacy fields in the db from commsecure
         for a,b in [('invoice_id', 'InvoiceID'),
                     ('payment_amount', 'Amount'),
                     ('bank_reference', 'AuthNum'),
                     ('payment_number', 'TransID'),
                     ('HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED_FOR'),
+                    ('card_number', 'CardNumber'),
+                    ('card_type', 'CardType')
                     ]:
             if a in fields:
                 pd[b] = fields[a]
@@ -62,48 +66,20 @@ class PaymentController(BaseController, Create, View):
         # the validation blows up
         self.dbsession.flush()
 
-        # Start long chain of validation.
-        # I'd like to replace this with a "Chain of Command" pattern to do
-        # the validation, possibly even using a regular formencode validation
-        # chain.
-        if pr.ORIGINAL_AMOUNT is not None and pr.payment_sent.amount != string.atoi(pr.ORIGINAL_AMOUNT):
-            # Check amounts match
-            pr.result = 'AmountMisMatch'
-            error = '/Errors/BadAmount'
-
-            self._mail_warn("Amount Paid Doesn't Match What We Stored", pr)
-
-        elif pr.ORIGINAL_AMOUNT is not None and pr.Amount != pr.ORIGINAL_AMOUNT:
-            # Check they paid what we asked
-            pr.result = 'DifferentAmountPaid'
-            error = '/Errors/UserPaidDifferentAmount'
-
-            self._mail_warn("Amount Paid Doesn't Match What We Asked", pr)
-
-        else:
-            pr.result = 'OK'
-            pr.Status = 'Accepted'
-            error = None
+        pr.result = 'OK'
+        pr.Status = 'Accepted'
 
         self.dbsession.flush()
 
         # OK we now have a valid transaction, we redirect the user to the view page
         # so they can see if their transaction was accepted or declined
 
+        return Response("Recorded, thank you.") #only goes to SecurePay
 
-        if error:
-            redirect_to(error)
-        else:
-            return Response("Recorded, thank you.") #only goes to SecurePay
-
-        #c.person = pr.payment_sent.invoice.person
-            c.person = pr.invoice.person
-            c.payment = pr
-            email(c.person.email_address,
-                    render('payment/response.myt', id=c.person.url_hash,
-                        fragment=True))
 
     def _verify_hmac(self, fields):
+        # do we still use/need this?
+
         merchantid = lca_info['commsecure_merchantid']
         secret =  lca_info['commsecure_secret']
 
@@ -123,8 +99,3 @@ class PaymentController(BaseController, Create, View):
             return True
 
         return False
-
-
-    def _mail_warn(self, msg, pr):
-        email(lca_info['contact_email'],
-              render('payment/warning.myt', fragment=True, subject=msg, pr=pr))
