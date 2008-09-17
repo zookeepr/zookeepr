@@ -23,7 +23,7 @@
     <p><strong>Invoice Status:</strong> <% c.invoice.status() %></p>
     <p><strong>Issue Date:</strong> <% c.invoice.issue_date.strftime("%d %b %Y") %></p>
     <p><strong>Due Date:</strong> <% c.invoice.due_date.strftime("%d %b %Y") %></p>
-% if c.invoice.good_payments:
+% if c.invoice.paid():
     <p><strong>Invoice Paid</strong></p>
 % elif c.invoice.total() == 0:
     <p><strong>No Payment Required</strong></p>
