@@ -87,10 +87,8 @@
           <p class="entries"><% h.textfield('person.postcode', size=40) %></p>
 
 % if 'signed_in_person_id' in session:
-%   proposals = c.signed_in_person.proposals
 %   is_speaker = c.signed_in_person.is_speaker()
 % else:
-%   proposals = []
 %   is_speaker = False
 % #endif
 
@@ -175,6 +173,10 @@
 
         <fieldset>
           <h2>Further Information</h2>
+
+          <p class="label"><label for="registration.voucher_code">Voucher Code</label></p>
+          <p class="entries"><% h.textfield('registration.voucher_code', size=15) %></p>
+          <p class="note">If you have been provided with a voucher code enter it here.</p>
 
           <p class="label"><label for="registration.diet">Dietary requirements:</label></p>
           <p class="entries"><% h.textfield('registration.diet', size=100) %></p>

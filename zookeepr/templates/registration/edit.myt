@@ -31,7 +31,7 @@ errors
 #FIXME: Partner program
 if not defaults:
     defaults = {}
-    for k in ['shell', 'editor', 'distro', 'nick', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'lasignup', 'silly_description', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
+    for k in ['shell', 'editor', 'distro', 'nick', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'lasignup', 'silly_description', 'voucher_code', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
         v = getattr(c.registration, k)
         if v is not None:
             if k in ('shell', 'editor', 'distro') and v not in h.lca_rego[k + 's']:
@@ -43,7 +43,7 @@ if not defaults:
             else:
                 defaults['registration.' + k] = getattr(c.registration, k)
     defaults['products.partner_email'] = getattr(c.registration, 'partner_email')
-    
+
     for rproduct in c.registration.products:
         if rproduct.product and rproduct.product.category:
             if rproduct.product.category.display in ('radio', 'select'):
