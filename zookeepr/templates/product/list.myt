@@ -8,6 +8,8 @@
     <th>Active</th>
     <th>Description</th>
     <th>Cost</th>
+    <th>Invoiced</th>
+    <th>Sold</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
@@ -17,6 +19,8 @@
   <td><% product.active %></td>
   <td><% h.link_to(product.description, url=h.url(action='view', id=product.id)) %></td>
   <td><% h.number_to_currency(product.cost/100.0) | h %></td>
+  <td><% product.qty_invoiced() %></td>
+  <td><% product.qty_sold() %></td>
 %               if c.can_edit:
 %                   for action in ['edit', 'delete']:
   <td><% h.link_to(action, url=h.url(action=action, id=product.id)) %></td>
