@@ -5,7 +5,7 @@ from formencode.schema import Schema
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import *
 from zookeepr.lib.crud import *
-from zookeepr.lib.validators import BaseSchema, BoundedInt
+from zookeepr.lib.validators import *
 
 import os
 
@@ -17,23 +17,22 @@ def generate_code():
 
 class NotExistingVoucherCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        voucher_code = state.query(model.VoucherCode).filter_by(code=value['code']).one()
+        voucher_code = state.query(model.VoucherCode).filter_by(code=value['code']).first()
         if voucher_code is not None:
             raise Invalid("Code already exists!", value, state)
 
 class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         leader_id = value['leader_id']
-        leader = state.query(model.Person).filter_by(id=leader_id).one()
+        leader = state.query(model.Person).filter_by(id=leader_id).first()
         if leader is None:
             raise Invalid("Unknown person ID for leader!", value, state)
-
 
 class VoucherCodeSchema(BaseSchema):
     count = BoundedInt(min=1, max=100)
     leader_id = BoundedInt()
     code = validators.String()
-    type = validators.String(not_empty=True)
+    product = ProductValidator()
     percentage = BoundedInt(min=0, max=100)
     comment = validators.String(not_empty=True)
 
@@ -60,6 +59,7 @@ class VoucherCodeController(SecureController, Read, Create, List):
     def __before__(self, **kwargs):
         super(VoucherCodeController, self).__before__(**kwargs)
         c.dbsession = self.dbsession # for the use of list.myt
+        c.products = self.dbsession.query(model.Product).all()
 
     def new(self):
         errors = {}

@@ -26,7 +26,7 @@ This table lists the voucher codes for your group.
 % for d in voucher_codes:
     <tr class="<% h.cycle('even', 'odd')%>">
         <td><% d.code %></td>
-        <td><% d.type %></td>
+        <td><% d.product.description %></td>
         <td><% d.percentage %>%</td>
 %    if admin:
         <td>
