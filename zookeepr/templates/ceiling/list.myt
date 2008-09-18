@@ -4,9 +4,10 @@
 <table>
   <tr>
     <th>Name</th>
-    <th>Ceiling limit</th>
+    <th>Limit</th>
     <th>Available From</th>
     <th>Available Until</th>
+    <th>Available</th>
     <th>Invoiced</th>
     <th>Sold</th>
     <th>&nbsp;</th>
@@ -16,8 +17,17 @@
   <tr>
     <td><% h.link_to(ceiling.name, url=h.url(action='view', id=ceiling.id)) %></td>
     <td><% ceiling.max_sold %></td>
-    <td><% ceiling.available_from %></td>
-    <td><% ceiling.available_until %></td>
+%       if ceiling.available_from:
+    <td><% ceiling.available_from.strftime('%d/%m/%y') %></td>
+%       else:
+    <td></td>
+%       #endif
+%       if ceiling.available_until:
+    <td><% ceiling.available_until.strftime('%d/%m/%y') %></td>
+%       else:
+    <td></td>
+%       #endif
+    <td><% h.yesno(ceiling.available()) %></td>
     <td><% ceiling.qty_invoiced() %></td>
     <td><% ceiling.qty_sold() %></td>
 %       if c.can_edit:

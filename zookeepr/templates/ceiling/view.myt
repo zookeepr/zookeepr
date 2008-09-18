@@ -1,9 +1,22 @@
     <h2>View ceiling</h2>
 
     <p><b>Name:</b> <% c.ceiling.name %><br></p>
-    <p><b>Ceiling Limit:</b> <% c.ceiling.max_sold | h %><br></p>
-    <p><b>Available From:</b> <% c.ceiling.available_from | h %><br></p>
-    <p><b>Available Until:</b> <% c.ceiling.available_until | h %><br></p>
+    <p><b>Limit:</b> <% c.ceiling.max_sold | h %><br></p>
+    <p>
+      <b>Available From:</b>
+% if c.ceiling.available_from:
+      <% c.ceiling.available_from.strftime('%d/%m/%y') | h %>
+% #endif
+      <br>
+    </p>
+    <p>
+      <b>Available Until:</b>
+% if c.ceiling.available_until:
+      <% c.ceiling.available_until.strftime('%d/%m/%y') | h %>
+% #endif
+      <br>
+    </p>
+    <p><b>Currently Available:</b> <% h.yesno(c.ceiling.available()) %> <br></p>
     <p><b>Invoiced:</b> <% c.ceiling.qty_invoiced() | h %><br></p>
     <p><b>Sold:</b> <% c.ceiling.qty_sold() | h %><br></p>
 % if len(c.ceiling.products) > 0:
@@ -19,7 +32,7 @@
       </tr>
 % for product in c.ceiling.products:
       <tr>
-        <td><% product.description | h %></td>
+        <td><% h.link_to(product.description, url=h.url(controller='product', action='view', id=product.id)) %></td>
         <td><% product.category.name | h %></td>
         <td><% h.yesno(product.active) %></td>
         <td><% h.number_to_currency(product.cost/100.0) %></td>

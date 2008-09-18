@@ -19,7 +19,9 @@ if not defaults and c.ceiling:
     defaults = {
         'ceiling.name': c.ceiling.name,
         'ceiling.max_sold': c.ceiling.max_sold,
-        'ceiling.available_from': c.ceiling.available_from,
-        'ceiling.available_until': c.ceiling.available_until,
     }
+    if c.ceiling.available_from:
+        defaults['ceiling.available_from'] = c.ceiling.available_from.strftime('%d/%m/%y')
+    if c.ceiling.available_until:
+        defaults['ceiling.available_until'] = c.ceiling.available_until.strftime('%d/%m/%y')
 </%init>
