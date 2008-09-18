@@ -11,7 +11,7 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import *
 
 from zookeepr.controllers.person import PersonSchema
-from zookeepr.model.billing import ProductCategory, Product
+from zookeepr.model.billing import ProductCategory, Product, VoucherCode
 from zookeepr.model.registration import Registration
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
@@ -21,6 +21,18 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
             rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).first()
         if rego is not None and rego != c.registration:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+
+class DuplicateVoucherCodeValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        voucher_code = state.query(VoucherCode).filter_by(code=value['voucher_code']).first()
+        if voucher_code != None:
+            for r in voucher_code.registrations:
+                if not 'signed_in_person_id' in session:
+                    raise Invalid("Voucher code already in use! (not logged in)", value, state)
+                if r.person_id != session['signed_in_person_id']:
+                    raise Invalid("Voucher code already in use!", value, state)
+        elif value['voucher_code']:
+            raise Invalid("Unknown voucher code!", value, state)
 
 class SillyDescriptionChecksum(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -49,7 +61,7 @@ class RegisterSchema(BaseSchema):
     distrotext = validators.String()
     silly_description = validators.String()
     silly_description_checksum = validators.String(strip=True)
-    #voucher_code = validators.String()
+    voucher_code = validators.String()
     diet = validators.String()
     special = validators.String()
     opendaydrag = validators.Int()
@@ -64,7 +76,7 @@ class RegisterSchema(BaseSchema):
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
-    chained_validators = [SillyDescriptionChecksum()]
+    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherCodeValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -304,9 +316,6 @@ class RegistrationController(SecureController, Update, List, Read):
         invoice = model.Invoice()
         invoice.person = registration.person
 
-        # Check for voucher
-        #voucher_result, errors = self.check_voucher()
-
         # Create Invoice
         for rproduct in registration.products:
             ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
@@ -344,6 +353,26 @@ class RegistrationController(SecureController, Update, List, Read):
                         invoice.items.append(discount_item)
 
         # We should add the discount from any voucher here
+        if c.registration.voucher:
+            voucher = c.registration.voucher
+            max_discount = voucher.product.cost / voucher.percentage
+            for item in invoice.items:
+                # If we have an exact match
+                if item.product == voucher.product:
+                    discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + voucher.product.description, qty=1, cost=-max_discount)
+                    self.dbsession.save(discount_item)
+                    invoice.items.append(discount_item)
+                    break
+                # if we have a category match
+                elif item.product.category == voucher.product.category:
+                    if item.product.cost <= max_discount:
+                        discount = max_discount
+                    else:
+                        discount = item.product.cost
+                    discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + voucher.product.description, qty=1, cost=-discount)
+                    self.dbsession.save(discount_item)
+                    invoice.items.append(discount_item)
+                    break
 
 
         # complicated check to see whether invoices are already in the system

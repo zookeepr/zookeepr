@@ -63,22 +63,11 @@ ceiling = Table('ceiling', metadata,
 
 payment = Table('payment', metadata,
                 Column('id', Integer, primary_key=True),
-
-                Column('invoice_id', Integer,
-                       ForeignKey('invoice.id'),
-                       nullable=False),
-
-                Column('amount', Integer,
-                       nullable=False),
-
-                Column('creation_timestamp', DateTime,
-                       nullable=False,
-                       default=func.current_timestamp()),
-                Column('last_modification_timestamp', DateTime,
-                       nullable=False,
-                       default=func.current_timestamp(),
-                       onupdate=func.current_timestamp()),
-                )
+                Column('invoice_id', Integer,  ForeignKey('invoice.id'), nullable=False),
+                Column('amount', Integer, nullable=False),
+                Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
+                Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
+               )
 
 payment_received = Table('payment_received', metadata,
                          Column('id', Integer, primary_key=True),
@@ -151,30 +140,15 @@ payment_received = Table('payment_received', metadata,
                                 nullable=False,
                                 default=func.current_timestamp(),
                                 onupdate=func.current_timestamp()),
-                         )
+                        )
 
 voucher_code = Table('voucher_code', metadata,
-                Column('id', Integer, primary_key=True),
-
-                Column('code', Text, nullable=False, unique=True),
-
-                Column('product_id', Integer, ForeignKey('product.id'), nullable=False),
-
-                Column('percentage', Integer, nullable=False),
-
-                Column('comment', Text, nullable=False),
-
-                Column('leader_id', Integer,
-                       ForeignKey('person.id'),
-                       nullable=False,
-                       ),
-
-                Column('creation_timestamp', DateTime,
-                       nullable=False,
-                       default=func.current_timestamp()),
-                Column('last_modification_timestamp', DateTime,
-                       nullable=False,
-                       default=func.current_timestamp(),
-                       onupdate=func.current_timestamp()),
-
-                )
+                     Column('id', Integer, primary_key=True),
+                     Column('code', Text, nullable=False, unique=True),
+                     Column('product_id', Integer, ForeignKey('product.id'), nullable=False),
+                     Column('percentage', Integer, nullable=False),
+                     Column('comment', Text, nullable=False),
+                     Column('leader_id', Integer, ForeignKey('person.id'), nullable=False),
+                     Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
+                     Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
+                    )

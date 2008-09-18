@@ -44,28 +44,38 @@
     <p><% h.link_to('Fill in registration form', h.url(action='new')) %>.</p>
 
 % elif c.signed_in_person and c.signed_in_person.registration:
+%   if c.signed_in_person.paid():
+    <p><b>Registered and paid.</b></p>
+%   else:
     <p><b>Tentatively registered.</b></p>
+%   #endif
 
+%   if not c.signed_in_person.paid():
     <h3>Next step</h3>
 
-%   if False and not c.signed_in_person.registration.volunteer:
+%       if False and not c.signed_in_person.registration.volunteer:
     <p><% h.link_to('Select areas of interest and ability', h.url(action='volunteer', id=c.signed_in_person.registration.id)) %></p>
-%   else:
-%       if c.signed_in_person.valid_invoice():
-    <p><% h.link_to('View Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
 %       else:
+%           if c.signed_in_person.valid_invoice():
+%               if c.signed_in_person.paid():
+    <p><% h.link_to('View Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
+%               else:
+    <p><% h.link_to('Pay Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
+%               #endif
+%           else:
     <p><% h.link_to('Generate Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
+%           #endif
 %       #endif
 %   #endif
 
-    <h3>Other option</h3>
+    <h3>Other options</h3>
 
     <p>
 %   if False and c.signed_in_person.registration.type=='Volunteer':
     <% h.link_to('Change areas of interest and ability', h.url(action='volunteer', id=c.signed_in_person.registration.id)) %><br>
 %   #endif
     <% h.link_to('Edit details', h.url(action='edit', id=c.signed_in_person.registration.id)) %><br>
-    <% h.link_to('Regenerate invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %><br>
+    <% h.link_to('View invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %><br>
     <% h.link_to('View details', h.url(action='view', id=c.signed_in_person.registration.id)) %><br>
     <table>
       <tr>
@@ -76,7 +86,7 @@
       </tr>
 %   for invoice in c.signed_in_person.invoices:
       <tr>
-        <td><% invoice.id %></td>
+        <td><% h.link_to(invoice.id, h.url(controller='invoice', action='view', id=invoice.id)) %></td>
         <td><% invoice.status() %></td>
         <td><% h.number_to_currency(invoice.total() / 100) %></td>
         <td>
@@ -113,7 +123,7 @@
 % if c.signed_in_person:
     <p><% h.yesno(c.signed_in_person.registration != None) %> Fill in registration form
     <br><% h.yesno(c.signed_in_person.valid_invoice()) %> Generate invoice
-    <br><% h.yesno(c.able_to_edit()) %> Pay
+    <br><% h.yesno(c.signed_in_person.paid()) %> Pay
     <br><% h.yesno(False) %> Attend conference</p>
 % else:
     <p><% h.yesno(False) %> Fill in registration form

@@ -6,7 +6,7 @@ from formencode import Invalid, validators, schema
 
 import helpers as h
 
-from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType
+from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType, Product
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -108,6 +108,12 @@ class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return state.query(Stream).get(value)
 
+class ProductValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return state.query(Product).get(value)
+
+    def _from_python(self, value, state):
+        return value.id
 
 class ReviewSchema(schema.Schema):
     score = BoundedInt()
