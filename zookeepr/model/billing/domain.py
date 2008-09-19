@@ -112,7 +112,7 @@ class Product(object):
     def qty_sold(self):
         qty = 0
         for ii in self.invoice_items:
-            if ii.invoice.paid():
+            if not ii.invoice.void and ii.invoice.paid():
                 if self.category.name == 'Accomodation':
                     qty += 1
                 else:

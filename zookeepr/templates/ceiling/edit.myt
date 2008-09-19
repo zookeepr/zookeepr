@@ -1,12 +1,11 @@
-<h2>Edit ceiling</h2>
+    <h2>Edit ceiling</h2>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
-<% h.form(h.url(id=c.ceiling.id)) %>
+    <% h.form(h.url(id=c.ceiling.id)) %>
 <& form.myt &>
-<p><% h.submitbutton('Update') %> <% h.link_to('back', url=h.url(action='index', id=None)) %></p>
-<% h.end_form() %>
-
+      <p><% h.submitbutton('Update') %> <% h.link_to('back', url=h.url(action='index', id=None)) %></p>
+    <% h.end_form() %>
 </&>
 
 <%args>
@@ -20,6 +19,9 @@ if not defaults and c.ceiling:
         'ceiling.name': c.ceiling.name,
         'ceiling.max_sold': c.ceiling.max_sold,
     }
+    defaults['ceiling.products'] = []
+    for product in c.ceiling.products:
+        defaults['ceiling.products'].append(product.id)
     if c.ceiling.available_from:
         defaults['ceiling.available_from'] = c.ceiling.available_from.strftime('%d/%m/%y')
     if c.ceiling.available_until:

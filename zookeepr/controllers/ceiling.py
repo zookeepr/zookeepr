@@ -1,11 +1,11 @@
-from formencode import validators, compound, variabledecode
+from formencode import validators, compound, variabledecode, ForEach
 from formencode.schema import Schema
 
 from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
-from zookeepr.lib.validators import BaseSchema, BoundedInt
-from zookeepr.model import Ceiling
+from zookeepr.lib.validators import BaseSchema, BoundedInt, ProductValidator
+from zookeepr.model import Ceiling, ProductCategory
 
 class NotExistingCeilingValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -18,6 +18,7 @@ class CeilingSchema(BaseSchema):
     max_sold = BoundedInt(min=0)
     available_from = validators.DateConverter(month_style='dd/mm/yy')
     available_until = validators.DateConverter(month_style='dd/mm/yy')
+    products = ForEach(ProductValidator())
     chained_validators = [NotExistingCeilingValidator()]
 
 class NewCeilingSchema(BaseSchema):
@@ -41,3 +42,9 @@ class CeilingController(SecureController, View, Modify):
     model = Ceiling
     individual = 'ceiling'
     redirect_map = dict(new=dict(action='index'))
+
+
+    def __before__(self, **kwargs):
+        c.product_categories = self.dbsession.query(ProductCategory).all()
+        if hasattr(super(CeilingController, self), '__before__'):
+            super(CeilingController, self).__before__(**kwargs)
