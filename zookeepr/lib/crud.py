@@ -52,7 +52,7 @@ class Create(CRUDBase):
         """
 
         errors = {}
-        defaults = dict(request.POST)
+        defaults = request.POST
 
         if defaults:
             result, errors = self.schemas['new'].validate(defaults, self.dbsession)
@@ -178,7 +178,7 @@ class Update(RUDBase):
         """
 
         errors = {}
-        defaults = dict(request.POST)
+        defaults = request.POST
 
         if defaults:
             result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
