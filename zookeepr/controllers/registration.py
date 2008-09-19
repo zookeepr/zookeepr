@@ -26,10 +26,10 @@ class DuplicateVoucherCodeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         voucher_code = state.query(VoucherCode).filter_by(code=value['voucher_code']).first()
         if voucher_code != None:
-            for r in voucher_code.registrations:
+            if voucher_code.registration:
                 if not 'signed_in_person_id' in session:
                     raise Invalid("Voucher code already in use! (not logged in)", value, state)
-                if r.person_id != session['signed_in_person_id']:
+                if voucher_code.registration.person_id != session['signed_in_person_id']:
                     raise Invalid("Voucher code already in use!", value, state)
         elif value['voucher_code']:
             raise Invalid("Unknown voucher code!", value, state)

@@ -52,7 +52,6 @@ class VoucherCodeController(SecureController, Read, Create, List):
               }
 
     permissions = {'new': [AuthRole('organiser')],
-                   'view': [AuthRole('organiser')],
                    'index': [AuthTrue()],
                    }
 
