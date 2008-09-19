@@ -41,7 +41,7 @@ This table lists the voucher codes for your group.
         <td><% d.comment |h%></td>
 %     if d.registrations:
         <td><% d.registrations[0].person.firstname %> <% d.registrations[0].person.lastname %>
-%          if d.registrations[0].company:
+%          if d.registrations[0].person.company:
                 <% "(" + d.registrations[0].company + ")"%>
 %          # endif
            &lt;<% d.registrations[0].person.email_address %>&gt;

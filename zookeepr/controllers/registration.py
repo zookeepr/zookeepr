@@ -355,7 +355,7 @@ class RegistrationController(SecureController, Update, List, Read):
         # We should add the discount from any voucher here
         if c.registration.voucher:
             voucher = c.registration.voucher
-            max_discount = voucher.product.cost / voucher.percentage
+            max_discount = voucher.product.cost * voucher.percentage / 100
             for item in invoice.items:
                 # If we have an exact match
                 if item.product == voucher.product:
@@ -365,7 +365,7 @@ class RegistrationController(SecureController, Update, List, Read):
                     break
                 # if we have a category match
                 elif item.product.category == voucher.product.category:
-                    if item.product.cost <= max_discount:
+                    if item.product.cost >= max_discount:
                         discount = max_discount
                     else:
                         discount = item.product.cost
