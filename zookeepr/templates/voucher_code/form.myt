@@ -37,12 +37,12 @@ would spell IBM or GOOGLE :-)
 
 <p class="label">
 <span class="mandatory">*</span>
-<label for="voucher_code.type">Rego Type</label>
-</p><p class="entries">
-# FIXME: dynamic content
-% for t in ['Professional', 'Hobbyist', 'Concession', 'Fairy Penguin Sponsor']:
-<input type="radio" name="voucher_code.type" id="voucher_code.type_<% t %>" value="<% t %>" />
-<label for="voucher_code.type_<% t %>"><% t %></label>
+<label for="voucher_code.product">Product</label>
+</p>
+<p class="entries">
+% for product in c.products:
+<input type="radio" name="voucher_code.product" id="voucher_code.product_<% product.id %>" value="<% product.id %>" />
+<label for="voucher_code.product_<% product.id %>"><% product.description %></label>
 <br>
 % #endfor
 </p>

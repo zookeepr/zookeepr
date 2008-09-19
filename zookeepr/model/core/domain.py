@@ -98,8 +98,17 @@ class Person(object):
     def valid_invoice(self):
         for invoice in self.invoices:
             if invoice.void == False:
-                return invoice
+                return True
         return False
+
+    def paid(self):
+        status = False
+        for invoice in self.invoices:
+            if not invoice.void and not invoice.paid():
+                return False
+            else:
+                status = True
+        return status
 
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)

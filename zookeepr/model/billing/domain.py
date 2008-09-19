@@ -260,7 +260,7 @@ class Payment(object):
 
 class VoucherCode(object):
     def __repr__(self):
-        return '<VoucherCode id=%r code=%r type=%r percentage=%r comment=%r>' % (self.id, self.code, self.type, self.percentage, self.comment)
+        return '<VoucherCode id=%r code=%r percentage=%r comment=%r>' % (self.id, self.code, self.percentage, self.comment)
 
     def __init__(self,
                  code=None,

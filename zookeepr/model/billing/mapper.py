@@ -77,8 +77,8 @@ mapper(Invoice, invoice,
 
 mapper(VoucherCode, voucher_code,
         properties = {
-             'registrations': relation(Registration,
-                                       uselist=True,
+             'registration': relation(Registration,
+                                       uselist=False,
                                        primaryjoin=registration.c.voucher_code==voucher_code.c.code,
                                        foreign_keys=voucher_code.c.code,
                                       ),

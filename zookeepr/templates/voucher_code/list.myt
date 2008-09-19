@@ -1,18 +1,18 @@
-<h2>Voucher Codes</h2>
+    <h2>Voucher Codes</h2>
 
 % if admin:
-This table lists all the voucher codes.
+    <p>This table lists all the voucher codes.</p>
 %   actionlink = h.link_to('(Add another)', url=h.url(controller='voucher_code', action='new'))
 % else:
-This table lists the voucher codes for your group.
+    <p>This table lists the voucher codes for your group.</p>
 %   actionlink = ''
 %   if not voucher_codes:
-(Note: you do not appear to be a group leader, so the table is blank.)
+    <p>(Note: you do not appear to be a group leader, so the table is blank.)</p>
 %   #endif
 % #endif
 
-<table>
-    <tr>
+    <table>
+      <tr>
         <th>Code</th>
         <th>Rego Type</th>
         <th>Disc.</th>
@@ -21,12 +21,12 @@ This table lists the voucher codes for your group.
 % #endif
         <th>Comment</th>
         <th>Used By</th>
-    </tr>
+      </tr>
 
 % for d in voucher_codes:
-    <tr class="<% h.cycle('even', 'odd')%>">
+      <tr class="<% h.cycle('even', 'odd')%>">
         <td><% d.code %></td>
-        <td><% d.type %></td>
+        <td><% d.product.description %></td>
         <td><% d.percentage %>%</td>
 %    if admin:
         <td>
@@ -39,23 +39,23 @@ This table lists the voucher codes for your group.
         </td>
 %    #endif
         <td><% d.comment |h%></td>
-%     if d.registrations:
-        <td><% d.registrations[0].person.firstname %> <% d.registrations[0].person.lastname %>
-%          if d.registrations[0].company:
-                <% "(" + d.registrations[0].company + ")"%>
+%     if d.registration:
+        <td><% d.registration.person.firstname %> <% d.registration.person.lastname %>
+%          if d.registration.person.company:
+           <% "(" + d.registration.person.company + ")"%>
 %          # endif
-           &lt;<% d.registrations[0].person.email_address %>&gt;
-</td>
+           &lt;<% d.registration.person.email_address %>&gt;
+        </td>
 %     else:
         <td><strong>Hasn't been used</strong></td>
 %     #endif
-    </tr>
+      </tr>
 % #endfor
 
-</table>
+    </table>
 
-<br>
-<% actionlink %>
+    <br>
+    <% actionlink %>
 
 <%init>
 
