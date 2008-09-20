@@ -14,7 +14,7 @@
     <table>
       <tr>
         <th>Code</th>
-        <th>Rego Type</th>
+        <th>Product</th>
         <th>Disc.</th>
 % if admin:
         <th>Leader</th>
