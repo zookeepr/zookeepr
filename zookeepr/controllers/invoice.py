@@ -35,9 +35,10 @@ class InvoiceController(SecureController, Read, List):
 
         if c.invoice.void:
             return render_response('invoice/invalid.myt')
-        for ii in c.invoice.items:
-            if ii.product and not ii.product.available():
-                return render_response('invoice/expired.myt')
+        if c.invoice.overdue():
+            for ii in c.invoice.items:
+                if ii.product and not ii.product.available():
+                    return render_response('invoice/expired.myt')
 
         # get our merchant id and secret
         merchant_id = lca_info['commsecure_merchantid']
