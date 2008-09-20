@@ -39,8 +39,9 @@ class Ceiling(object):
         return self.max_sold - self.qty_sold()
 
     def soldout(self):
-        return self.qty_invoiced() >= self.max_sold
-        #return self.qty_sold() >= self.max_sold
+        if self.max_sold != None:
+            return self.qty_invoiced() >= self.max_sold
+            #return self.qty_sold() >= self.max_sold
 
     def available(self):
         if self.soldout():
