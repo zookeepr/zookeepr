@@ -75,17 +75,23 @@ mapper(Invoice, invoice,
             },
        )
 
-mapper(VoucherCode, voucher_code,
-        properties = {
-             'registration': relation(Registration,
-                                       uselist=False,
-                                       primaryjoin=registration.c.voucher_code==voucher_code.c.code,
-                                       foreign_keys=voucher_code.c.code,
-                                      ),
-             'product': relation(Product, lazy=True),
-             'leader': relation(Person,
-                                lazy=True,
-                                backref=backref('voucher_codes', cascade="all, delete-orphan"),
-                               ),
+mapper(Voucher, voucher,
+       properties = {
+            'registration': relation(Registration, uselist=False,
+                                       primaryjoin=registration.c.voucher_code==voucher.c.code,
+                                       foreign_keys=voucher.c.code,
+                                    ),
+            'leader': relation(Person,
+                               backref=backref('voucher_codes', cascade="all, delete-orphan"),
+                              ),
+            },
+      )
+
+mapper(VoucherProduct, voucher_product,
+       properties = {
+            'voucher': relation(Voucher, lazy=True,
+                                backref=backref('products', lazy=False), cascade="all, delete-orphan"),
+            'product': relation(Product, lazy=True,
+                                cascade="all, delete-orphan")
             },
       )

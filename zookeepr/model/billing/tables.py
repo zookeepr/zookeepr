@@ -142,13 +142,18 @@ payment_received = Table('payment_received', metadata,
                                 onupdate=func.current_timestamp()),
                         )
 
-voucher_code = Table('voucher_code', metadata,
+voucher = Table('voucher', metadata,
                      Column('id', Integer, primary_key=True),
                      Column('code', Text, nullable=False, unique=True),
-                     Column('product_id', Integer, ForeignKey('product.id'), nullable=False),
-                     Column('percentage', Integer, nullable=False),
                      Column('comment', Text, nullable=False),
                      Column('leader_id', Integer, ForeignKey('person.id'), nullable=False),
                      Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
                      Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
                     )
+
+voucher_product = Table('voucher_product', metadata,
+                        Column('voucher_id', Integer, ForeignKey('voucher.id'), primary_key=True),
+                        Column('product_id', Integer, ForeignKey('product.id'), primary_key=True),
+                        Column('qty', Integer, nullable=False),
+                        Column('percentage', Integer, nullable=False),
+                       )

@@ -11,7 +11,7 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import *
 
 from zookeepr.controllers.person import PersonSchema
-from zookeepr.model.billing import ProductCategory, Product, VoucherCode
+from zookeepr.model.billing import ProductCategory, Product, Voucher
 from zookeepr.model.registration import Registration
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
@@ -22,14 +22,14 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
         if rego is not None and rego != c.registration:
             raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
 
-class DuplicateVoucherCodeValidator(validators.FancyValidator):
+class DuplicateVoucherValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        voucher_code = state.query(VoucherCode).filter_by(code=value['voucher_code']).first()
-        if voucher_code != None:
-            if voucher_code.registration:
+        voucher = state.query(Voucher).filter_by(code=value['voucher_code']).first()
+        if voucher != None:
+            if voucher.registration:
                 if not 'signed_in_person_id' in session:
                     raise Invalid("Voucher code already in use! (not logged in)", value, state)
-                if voucher_code.registration.person_id != session['signed_in_person_id']:
+                if voucher.registration.person_id != session['signed_in_person_id']:
                     raise Invalid("Voucher code already in use!", value, state)
         elif value['voucher_code']:
             raise Invalid("Unknown voucher code!", value, state)
@@ -76,7 +76,7 @@ class RegisterSchema(BaseSchema):
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
-    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherCodeValidator()]
+    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -352,27 +352,29 @@ class RegistrationController(SecureController, Update, List, Read):
                         self.dbsession.save(discount_item)
                         invoice.items.append(discount_item)
 
-        # We should add the discount from any voucher here
+        # Voucher code calculation
         if c.registration.voucher:
             voucher = c.registration.voucher
-            max_discount = voucher.product.cost * voucher.percentage / 100
-            for item in invoice.items:
-                # If we have an exact match
-                if item.product == voucher.product:
-                    discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + voucher.product.description, qty=1, cost=-max_discount)
-                    self.dbsession.save(discount_item)
-                    invoice.items.append(discount_item)
-                    break
-                # if we have a category match
-                elif item.product.category == voucher.product.category:
-                    if item.product.cost >= max_discount:
-                        discount = max_discount
-                    else:
-                        discount = item.product.cost
-                    discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + voucher.product.description, qty=1, cost=-discount)
-                    self.dbsession.save(discount_item)
-                    invoice.items.append(discount_item)
-                    break
+            for vproduct in voucher.products:
+                for ii in invoice.items:
+                    # if we have a category match
+                    if ii.product.category == vproduct.product.category:
+                        # The qty we will give
+                        if ii.qty < vproduct.qty:
+                            qty = ii.qty
+                        else:
+                            qty = vproduct.qty
+
+                        # the discount we will give
+                        max_discount = vproduct.product.cost * vproduct.percentage / 100
+                        if ii.product.cost >= max_discount:
+                            discount = max_discount
+                        else:
+                            discount = ii.product.cost
+                        discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
+                        self.dbsession.save(discount_item)
+                        invoice.items.append(discount_item)
+                        break
 
 
         # complicated check to see whether invoices are already in the system
