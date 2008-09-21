@@ -2,7 +2,7 @@
 
 % if admin:
     <p>This table lists all the voucher codes.</p>
-%   actionlink = h.link_to('(Add another)', url=h.url(controller='voucher_code', action='new'))
+%   actionlink = h.link_to('Add another', url=h.url(controller='voucher_code', action='new'))
 % else:
     <p>This table lists the voucher codes for your group.</p>
 %   actionlink = ''
@@ -55,7 +55,7 @@
     </table>
 
     <br>
-    <% actionlink %>
+    <p><% actionlink %></p>
 
 <%init>
 

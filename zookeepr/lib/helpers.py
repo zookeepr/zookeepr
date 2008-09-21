@@ -323,7 +323,7 @@ def ticket_percentage_text(percent, earlybird = False):
     if percent == 100:
         return 'All tickets gone.'
     elif percent >= 97.5:
-        if earliybird:
+        if earlybird:
             return "Earlybird almost soldout."
         else:
             return "Almost all tickets gone."
