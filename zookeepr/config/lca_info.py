@@ -37,8 +37,8 @@ lca_info = {
 lca_rego = {
 # Date Early Bird ends
   'miniconfs' : (
-              ('Monday',('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security', 'Virtualisation', 'Wireless')),
-              ('Tuesday',('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel', 'LinuxChix', 'MySQL', 'SysAdmin'))
+              ('Monday',('Open Source databases', 'The Linux Kernel', 'Virtualisation and Management', 'LinuxChix', 'Multimedia', 'The Business of Open Source Software - for developers')),
+              ('Tuesday',('Open Source databases', 'System Administration', 'MythTV', 'Multimedia', 'Gaming', 'LinuxChix', 'Free as in Freedom', 'Mobile devices'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
