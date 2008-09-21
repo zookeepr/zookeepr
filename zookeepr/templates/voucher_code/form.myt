@@ -20,8 +20,7 @@ How many voucher codes to generate.
 <% h.textfield('voucher_code.leader_id', size=5) %>
 </p><p class="note">
 ID of person who should be given the codes and
-allowed to see who's using them, as per <a href="/profile">the profile
-list</a>. If nobody, use your own ID: <% c.signed_in_person.id %>
+allowed to see who's using them, as per the <% h.link_to('profile list', url=h.url(controller='person', action='index')) %>. If nobody, use your own ID: <% c.signed_in_person.id %>
 </p>
 
 <p class="label">
