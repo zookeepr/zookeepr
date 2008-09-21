@@ -157,7 +157,7 @@ class PersonController(SecureController, Read, Update, List):
 
                     # return to the registration status
                     # (while registrations are open)
-                #    redirect_to('/registration/status')
+                    redirect_to('/registration/status')
 
                     # return home
                     redirect_to('home')

@@ -33,11 +33,11 @@ class InvoiceController(SecureController, Read, List):
             if c.invoice.paid() or c.invoice.bad_payments:
                 return render_response('invoice/already.myt')
 
-        age = datetime.datetime.now() - c.invoice.last_modification_timestamp
         if c.invoice.void:
             return render_response('invoice/invalid.myt')
-        if age > datetime.timedelta(hours=1):
-            return render_response('invoice/expired.myt')
+        for ii in c.invoice.items:
+            if ii.product and not ii.product.available():
+                return render_response('invoice/expired.myt')
 
         # get our merchant id and secret
         merchant_id = lca_info['commsecure_merchantid']
