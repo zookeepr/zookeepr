@@ -1,10 +1,12 @@
 <h2 class="pop">New user account creation</h2>
 
-<p>This form is for creating an account on linux.conf.au. After you have created an account you may submit a miniconf or presentation from the Programme/Participate menu.</p>
+<p>Enter your name, and email address, and password, and we'll email you with a confirmation to create your account.</p>
 
 <p>
 If you've already got an account but can't log in, you can <% h.link_to('recover your password', url=h.url(controller='person',id=None,action='forgotten_password')) %>.
 </p>
+
+<p><b>To register for the conference, <% h.link_to('go directly to the registration form', url=h.url(controller='registration', action='new')) %>, don't bother with this one.</b></p>
 
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 
