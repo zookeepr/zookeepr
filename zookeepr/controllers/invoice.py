@@ -89,7 +89,7 @@ class InvoiceController(SecureController, Read, List):
         res = render('%s/pdf.myt' % self.individual, fragment=True)
 
         xsl = request.environ['paste.config']['global_conf']['here']
-        xsl += '/templates/invoice/pdf.xsl'
+        xsl += '/zookeepr/templates/invoice/pdf.xsl'
 
         (xml_fd, xml) = tempfile.mkstemp('.xml')
         (svg_fd, svg) = tempfile.mkstemp('.svg')
