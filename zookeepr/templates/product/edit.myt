@@ -1,8 +1,6 @@
-<h2>Edit product</h2>
-
+    <h2>Edit product</h2>
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-
-<% h.form(h.url(id=c.product.id)) %>
+    <% h.form(h.url(id=c.product.id)) %>
 <& form.myt &>
 <p><% h.submitbutton('Update') %> <% h.link_to('back', url=h.url(action='index', id=None)) %></p>
 <% h.end_form() %>
@@ -27,5 +25,7 @@ if not defaults and c.product:
         defaults['product.active'] = 1
     else:
         defaults['product.active'] = 0
-
+    defaults['product.ceilings'] = []
+    for ceiling in c.product.ceilings:
+        defaults['product.ceilings'].append(ceiling.id)
 </%init>
