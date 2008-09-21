@@ -122,7 +122,7 @@
           <p class="note"><% category.description %></p>
 %       if category.display == 'radio':
 %           for product in products:
-          <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
+          <p><label><% h.radio_button('products.category_' + str(category.id), product.id) %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endfor
 %       elif category.display == 'select':
           <p class="entries">
@@ -135,11 +135,11 @@
           </p>
 %       elif category.display == 'checkbox':
 %           for product in products:
-          <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
+          <p><label><% h.check_box('products.product_' + str(product.id)) %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endfor
 %       elif category.display == 'qty':
 %           for product in products:
-          <p><% product.description %> x <input type="text" name="products.product_<% product.id %>_qty" size="2" /> x <% h.number_to_currency(product.cost/100.0) %></p>
+          <p><% product.description %> <% h.text_field('products.product_' + str(product.id) + '_qty', size=2) %> x <% h.number_to_currency(product.cost/100.0) %></p>
 %           #endfor
 %       #endif
 %       if category.name == 'Accomodation':
@@ -284,7 +284,7 @@
             <p class="label"><label for="registration.silly_description">Description:</label></p>
             <script src="/silly.js"></script>
             <blockquote><p id='silly_description'><% defaults['registration.silly_description'] %></p></blockquote>
-#            <p><input type="button" value="New Description" onclick="silly_description()"></p>
+#            <p><% h.button_to_function('New Description', function='silly_description()') %></p>
             <% h.hidden_field('registration.silly_description') %>
             <% h.hidden_field('registration.silly_description_checksum') %>
             <p class="note">This is a randomly chosen description for your name badge</p>
