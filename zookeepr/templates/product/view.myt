@@ -2,11 +2,26 @@
 
     <p><b>Description:</b> <% c.product.description | h %><br></p>
     <p><b>Category:</b> <% c.product.category.name %><br></p>
-    <p><b>Active:</b> <% c.product.active | h %><br></p>
+    <p><b>Active:</b> <% h.yesno(c.product.active) %><br></p>
     <p><b>Cost:</b> <% h.number_to_currency(c.product.cost/100.0) | h %><br></p>
     <p><b>Auth code:</b> <% c.product.auth | h %><br></p>
     <p><b>Validate code:</b> <% c.product.validate | h %><br></p>
 
+% if len(c.product.included) > 0:
+    <h3>Included Products</h3>
+    <table>
+      <tr>
+        <th>Name</th>
+        <th>Qty</th>
+      </tr>
+%   for iproduct in c.product.included:
+      <tr>
+        <td><% iproduct.include_category.name %></td>
+        <td><% iproduct.include_qty %></td>
+      </tr>
+%   #endfor
+    </table>
+% #endif
 % if len(c.product.ceilings) > 0:
     <h3>This Products Ceilings</h3>
     <table>

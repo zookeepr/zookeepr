@@ -1,5 +1,4 @@
     <h2>List products</h2>
-
 % if len(c.product_categories) > 0:
     <table>
 %   for category in c.product_categories:

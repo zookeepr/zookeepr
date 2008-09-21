@@ -3,7 +3,7 @@
 
       <p>
         <label for="product.category">Category</label>
-        <select name="product.category">
+        <select id="product.category" name="product.category">
 % for category in c.product_categories:
           <option value="<%category.id%>"><% category.name %></option>
 % #endfor
@@ -22,17 +22,17 @@
 
       <p>
         <label for="product.auth">Auth code:</label><br>
-        <% h.textfield('product.auth') %>
+        <% h.text_area('product.auth', cols=80, rows=5) %>
       </p>
 
       <p>
         <label for="product.validate">Validate code:</label><br>
-        <% h.textfield('product.validate') %>
+        <% h.text_area('product.validate', cols=80, rows=5) %>
       </p>
 
       <h3><label for="product.ceilings">This Products Ceilings</label></h3>
       <p>
-        <select name="product.ceilings" multiple="multiple">
+        <select id="product.ceilings" name="product.ceilings" multiple="multiple">
 % for ceiling in c.ceilings:
             <option value="<% ceiling.id %>"><% ceiling.name %></option>
 % #endfor
