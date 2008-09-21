@@ -39,8 +39,9 @@ class Ceiling(object):
         return self.max_sold - self.qty_sold()
 
     def soldout(self):
-        return self.qty_invoiced() >= self.max_sold
-        #return self.qty_sold() >= self.max_sold
+        if self.max_sold != None:
+            return self.qty_invoiced() >= self.max_sold
+            #return self.qty_sold() >= self.max_sold
 
     def available(self):
         if self.soldout():
@@ -122,7 +123,7 @@ class Product(object):
     def qty_invoiced(self):
         qty = 0
         for ii in self.invoice_items:
-            if ii.invoice.void == False and ii.invoice.due_date >= datetime.datetime.now():
+            if not ii.invoice.void and not ii.invoice.overdue():
                 if self.category.name == 'Accomodation':
                     qty += 1
                 else:
@@ -208,6 +209,9 @@ class Invoice(object):
             return "Paid"
         else:
             return "Unpaid"
+
+    def overdue(self):
+        return self.due_date < datetime.datetime.now()
 
 class PaymentReceived(object):
     def __repr__(self):
