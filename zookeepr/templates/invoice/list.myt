@@ -20,15 +20,7 @@
     <td><a href="/profile/<% i.person.id %>"><% i.person.firstname |h%> <%
     i.person.lastname |h%></a></td>
     <td align="right"><% "$%.2f" % (i.total()/100.0) %></td>
-    <td>
-%  if i.paid():
-      <b>paid</b>
-%  elif i.void:
-      <b>VOID</b>
-%  else:
-      &nbsp;
-%  #endif
-    </td>
+    <td><% i.status() %></td>
     <td>
 %  if i.good_payments:
 %    for p in i.good_payments:
