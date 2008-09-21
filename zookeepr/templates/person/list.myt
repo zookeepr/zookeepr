@@ -9,6 +9,7 @@
     <th>Last Name</th>
     <th>Phone</th>
     <th>Mobile</th>
+    <th>Created</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
@@ -23,6 +24,7 @@
     <td><% p.lastname |h %></td>
     <td><% p.phone |h %></td>
     <td><% p.mobile |h %></td>
+    <td><% p.creation_timestamp |h %></td>
 
 %   for action in ['roles', 'view', 'edit']:
     <td><% h.link_to(action, url=h.url(action=action, id=p.id)) %></td>

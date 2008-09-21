@@ -30,7 +30,11 @@ class AdminController(SecureController):
           ('/db_content', '''Edit HTML pages that are stored in the database. [Content]'''),
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
           ('/person', '''List of people signed up to the webpage (with option to view/change their zookeepr roles) [Accounts]'''),
-          ('/product', '''Manage all of zookeeprs products. [Inventory]'''),
+          ('/registration', '''Manage registrations. [Registrations]'''),
+          ('/invoice', '''Invoice Management. [Registrations]'''),
+          ('/product', '''Manage all of zookeeprs products. [Registrations]'''),
+          ('/ceiling', '''Manage all of zookeeprs ceilings. [Registrations]'''),
+          ('/voucher', '''Manage Voucher Codes. [Registrations]'''),
 
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
@@ -130,12 +134,6 @@ class AdminController(SecureController):
         select title, filename from attachment, proposal where proposal.id=proposal_id;
 
         ''')
-    def person_creation(self):
-        """ When did people create their accounts? [Accounts] """
-        return sql_response("""select person.id, firstname || ' ' ||
-        lastname as name, creation_timestamp as created from person
-        order by person.id;
-        """)
     def auth_users(self):
         """ List of users that are authorised for some role [Accounts] """
         return sql_response("""select role.name as role, firstname || ' '
