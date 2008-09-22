@@ -37,8 +37,8 @@ lca_info = {
 lca_rego = {
 # Date Early Bird ends
   'miniconfs' : (
-              ('Monday',('Debian', 'Education', 'Embedded', 'Fedora', 'Multimedia', 'Security', 'Virtualisation', 'Wireless')),
-              ('Tuesday',('Distro Summit', 'Gaming', 'Gentoo', 'GNOME.conf.au', 'Kernel', 'LinuxChix', 'MySQL', 'SysAdmin'))
+              ('Monday',('Open Source databases', 'The Linux Kernel', 'Virtualisation and Management', 'LinuxChix', 'Multimedia', 'The Business of Open Source Software - for developers')),
+              ('Tuesday',('Open Source databases', 'System Administration', 'MythTV', 'Multimedia', 'Gaming', 'LinuxChix', 'Free as in Freedom', 'Mobile devices'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
@@ -58,7 +58,8 @@ lca_rego = {
                "narrowly", "manually", "automatically", "audibly",
                "brilliantly", "independently", "definitively",
                "provably", "improbably", "distortingly",
-               "confusingly", "decidedly", "historically"],
+               "confusingly", "decidedly", "historically",
+               "shiny", "troublesome"],
         'adjectives' : ["invalid", "valid",
                "referenced", "dereferenced", "unreferenced",
                "illegal", "legal",
@@ -73,7 +74,7 @@ lca_rego = {
                "fungible", "non-fungible",
                "untyped", "variable",
                "mutable", "immutable",
-               "sizable", "miniscule",
+               "sizable", "minuscule",
                "perverse", "immovable",
                "compressed", "uncompressed",
                "surreal", "allegorical",
@@ -84,7 +85,8 @@ lca_rego = {
                "conversion", "implementation", "design", "analysis",
                "neophyte", "expert", "bundle", "package",
                "abstraction", "theorem", "display", "distro",
-               "restriction", "device", "function", "reference"],
+               "restriction", "device", "function", "reference",
+               "alien"]
     }
 }
 

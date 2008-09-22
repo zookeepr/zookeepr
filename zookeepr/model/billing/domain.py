@@ -39,8 +39,9 @@ class Ceiling(object):
         return self.max_sold - self.qty_sold()
 
     def soldout(self):
-        return self.qty_invoiced() >= self.max_sold
-        #return self.qty_sold() >= self.max_sold
+        if self.max_sold != None:
+            return self.qty_invoiced() >= self.max_sold
+            #return self.qty_sold() >= self.max_sold
 
     def available(self):
         if self.soldout():
@@ -122,7 +123,7 @@ class Product(object):
     def qty_invoiced(self):
         qty = 0
         for ii in self.invoice_items:
-            if ii.invoice.void == False and ii.invoice.due_date >= datetime.datetime.now():
+            if not ii.invoice.void and not ii.invoice.overdue():
                 if self.category.name == 'Accomodation':
                     qty += 1
                 else:
@@ -209,6 +210,9 @@ class Invoice(object):
         else:
             return "Unpaid"
 
+    def overdue(self):
+        return self.due_date < datetime.datetime.now()
+
 class PaymentReceived(object):
     def __repr__(self):
         return '<PaymentReceived id=%r invoice_id=%r payment_id=%r amount=%r status=%r>' % (self.id, self.InvoiceID, self.PaymentID, self.Amount, self.Status)
@@ -258,17 +262,18 @@ class Payment(object):
         return '<Payment id=%r>' % (self.id)
 
 
-class VoucherCode(object):
+class Voucher(object):
     def __repr__(self):
-        return '<VoucherCode id=%r code=%r percentage=%r comment=%r>' % (self.id, self.code, self.percentage, self.comment)
+        return '<Voucher id=%r code=%r comment=%r leader_id=%r>' % (self.id, self.code, self.comment, self.leader_id)
 
-    def __init__(self,
-                 code=None,
-                 percentage=None,
-                 comment=None,
-                 ):
+    def __init__(self, code=None, comment=None):
         self.code = code
-        self.percentage = percentage
         self.comment = comment
 
 
+class VoucherProduct(object):
+    def __repr__(self):
+        return '' % ()
+    def __init__(self, qty=None, percentage=None):
+        self.qty = qty
+        self.percentage = percentage

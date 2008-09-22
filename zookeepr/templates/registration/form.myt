@@ -120,9 +120,30 @@
         <fieldset id="<% h.computer_title(category.name) %>">
           <h2><% category.name.title() %></h2>
           <p class="note"><% category.description %></p>
-%       if category.display == 'radio':
+# Manual category display goes here:
+%       if category.name == 'Shirt':
+#%           # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
+#%           # Number of items in the row must be the same for each row
+%           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
+%           i = j = 0
+          <p>All shirts are $20 each and made in Tasmania. More details on shirt sizes can be found on the information page.</p>
+          <table>
+            <tr><th>&nbsp;</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
+            <tr><td><% fields[0][0] %></td>
 %           for product in products:
-          <p><label><input type="radio" name="products.category_<% category.id %>" value="<% product.id %>" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
+%               print i,j
+%               if j == len(fields[i][1]):
+%                   i += 1
+%                   j = 0
+            </tr><tr><td><% fields[i][0] %></td>
+%               #endif
+            <td><% h.text_field('products.product_' + str(product.id) + '_qty', size=2) %></td>
+%               j += 1
+%           #endfor
+          </tr></table>
+%       elif category.display == 'radio':
+%           for product in products:
+          <p><label><% h.radio_button('products.category_' + str(category.id), product.id) %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endfor
 %       elif category.display == 'select':
           <p class="entries">
@@ -135,11 +156,11 @@
           </p>
 %       elif category.display == 'checkbox':
 %           for product in products:
-          <p><label><input type="checkbox" name="products.product_<% product.id %>" value="1" /> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
+          <p><label><% h.check_box('products.product_' + str(product.id)) %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endfor
 %       elif category.display == 'qty':
 %           for product in products:
-          <p><% product.description %> x <input type="text" name="products.product_<% product.id %>_qty" size="2" /> x <% h.number_to_currency(product.cost/100.0) %></p>
+          <p><% product.description %> <% h.text_field('products.product_' + str(product.id) + '_qty', size=2) %> x <% h.number_to_currency(product.cost/100.0) %></p>
 %           #endfor
 %       #endif
 %       if category.name == 'Accomodation':
@@ -284,7 +305,7 @@
             <p class="label"><label for="registration.silly_description">Description:</label></p>
             <script src="/silly.js"></script>
             <blockquote><p id='silly_description'><% defaults['registration.silly_description'] %></p></blockquote>
-#            <p><input type="button" value="New Description" onclick="silly_description()"></p>
+#            <p><% h.button_to_function('New Description', function='silly_description()') %></p>
             <% h.hidden_field('registration.silly_description') %>
             <% h.hidden_field('registration.silly_description_checksum') %>
             <p class="note">This is a randomly chosen description for your name badge</p>
