@@ -34,7 +34,7 @@
 %   session['sign_in_redirect'] = '/registration/status'
 %   session.save()
 
-    <p><% h.link_to('Go directly to the registration form', h.url(action='new')) %> otherwise.</p>
+    <p><b><% h.link_to('Go directly to the registration form', h.url(action='new')) %> otherwise.</b></p>
 
 % elif c.signed_in_person and c.signed_in_person.registration == None:
     <p><b>Not registered.</b>

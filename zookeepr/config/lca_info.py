@@ -19,7 +19,7 @@ lca_info = {
   'event_url' : 'http://www.linux.conf.au/',
   'event_tax_number' : 'ABN 56 987 117 479',
 # 'event_tax_number' : 'NZ GST #90-792-369',
-  'event_postal_address' : 'GPO Box 4788, Sydney NSW 2001, Australia',
+  'event_postal_address' : '25 Wellinton St North Hobart TAS 7000, Australia',
   'event_fax_number' : '+61 3 9235 5454',
   'date' : datetime(2009, 1, 19, 9, 0, 00),
 
