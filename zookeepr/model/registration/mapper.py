@@ -2,9 +2,9 @@ from sqlalchemy.orm import mapper, relation, backref
 from sqlalchemy.sql import join, and_, select, func, outerjoin
 
 from tables import *
-from zookeepr.model.billing.tables import product, voucher_code
+from zookeepr.model.billing.tables import voucher
 from domain import *
-from zookeepr.model.billing.domain import Product, VoucherCode
+from zookeepr.model.billing.domain import Product, Voucher
 from zookeepr.model.core import Person
 
 mapper(Registration, registration,
@@ -14,10 +14,10 @@ mapper(Registration, registration,
                                                lazy=True,
                                                uselist=False),
                               ),
-            'voucher': relation(VoucherCode,
+            'voucher': relation(Voucher,
                                 uselist=False,
-                                primaryjoin=registration.c.voucher_code==voucher_code.c.code,
-                                foreign_keys=voucher_code.c.code,
+                                primaryjoin=registration.c.voucher_code==voucher.c.code,
+                                foreign_keys=voucher.c.code,
                                )
             }
       )

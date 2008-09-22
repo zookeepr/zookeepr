@@ -5,7 +5,7 @@ from zookeepr.lib.auth import SecureController, AuthRole
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Modify, View
 from zookeepr.lib.validators import BaseSchema, BoundedInt
-from zookeepr.model import Product, ProductCategory
+from zookeepr.model import Product, ProductCategory, Ceiling
 
 class ProductCategoryValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -45,7 +45,7 @@ class ProductController(SecureController, View, Modify):
     redirect_map = dict(new=dict(action='index'))
 
     def __before__(self, **kwargs):
+        c.product_categories = self.dbsession.query(ProductCategory).all()
+        c.ceilings = self.dbsession.query(Ceiling).all()
         if hasattr(super(ProductController, self), '__before__'):
             super(ProductController, self).__before__(**kwargs)
-
-        c.product_categories = self.dbsession.query(ProductCategory).all()

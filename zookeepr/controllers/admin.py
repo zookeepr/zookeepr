@@ -31,7 +31,7 @@ class AdminController(SecureController):
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
           ('/person', '''List of people signed up to the webpage (with option to view/change their zookeepr roles) [Accounts]'''),
           ('/product', '''Manage all of zookeeprs products. [Inventory]'''),
-          ('/voucher_code', '''Manage vouchers to give to delegates. [Inventory]'''),
+          ('/voucher', '''Manage vouchers to give to delegates. [Inventory]'''),
           ('/ceilings', '''Manage ceilings and available inventory. [Inventory]'''),
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
           ('/invoice', '''View assigned invoices and their status. [Registrations]'''),
