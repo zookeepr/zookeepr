@@ -131,7 +131,6 @@
             <tr><th>&nbsp;</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td><% fields[0][0] %></td>
 %           for product in products:
-%               print i,j
 %               if j == len(fields[i][1]):
 %                   i += 1
 %                   j = 0

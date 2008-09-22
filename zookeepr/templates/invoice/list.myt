@@ -1,7 +1,8 @@
     <table>
       <tr>
-        <th>invoice</th>
         <th>rego</th>
+        <th>invoice</th>
+        <th>created</th>
         <th>person</th>
         <th>amount</th>
         <th>status</th>
@@ -9,15 +10,14 @@
       </tr>
 % for i in c.invoice_collection:
       <tr class="<% oddeven() %>">
-        <td><% h.link_to(i.id, h.url(action='view', id=i.id)) %></td>
-        <td>
 %   if i.person.registration:
-%   r = i.person.registration
-          <% h.link_to(r.id, h.url(controller='registration', action='view', id=r.id)) %>
-          <% r.creation_timestamp |h %>
+%       r = i.person.registration
+          <td><% h.link_to('id: ' + str(r.id), h.url(controller='registration', action='view', id=r.id)) %></td>
 %   else:
-          -
+          <td>-</td>
 %   #endif
+        <td><% h.link_to('id: ' + str(i.id), h.url(action='view', id=i.id)) %></td>
+        <td><% i.creation_timestamp |h %></td>
         </td>
         <td><% h.link_to(m.apply_escapes(i.person.firstname + ' ' + i.person.lastname, 'h'), h.url(controller='person', action='view', id=i.person.id)) %></td>
         <td align="right"><% "$%.2f" % (i.total()/100.0) %></td>
