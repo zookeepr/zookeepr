@@ -83,7 +83,7 @@
       <p>
         <% h.lca_info['event_postal_address'] %><br>
         <% h.lca_info['event_tax_number'] %><br>
-        <% h.lca_info['event_fax_number'] %><br>
+        Fax: <% h.lca_info['event_fax_number'] %><br>
       </p>
     </div>
 % if c.printable:

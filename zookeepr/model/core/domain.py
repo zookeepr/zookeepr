@@ -97,9 +97,9 @@ class Person(object):
 
     def valid_invoice(self):
         for invoice in self.invoices:
-            if invoice.void == False:
-                return True
-        return False
+            if not invoice.void and not invoice.manual:
+                return invoice
+        return None
 
     def paid(self):
         status = False
