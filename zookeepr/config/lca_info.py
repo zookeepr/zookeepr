@@ -58,7 +58,8 @@ lca_rego = {
                "narrowly", "manually", "automatically", "audibly",
                "brilliantly", "independently", "definitively",
                "provably", "improbably", "distortingly",
-               "confusingly", "decidedly", "historically"],
+               "confusingly", "decidedly", "historically",
+               "shiny", "troublesome"],
         'adjectives' : ["invalid", "valid",
                "referenced", "dereferenced", "unreferenced",
                "illegal", "legal",
@@ -73,7 +74,7 @@ lca_rego = {
                "fungible", "non-fungible",
                "untyped", "variable",
                "mutable", "immutable",
-               "sizable", "miniscule",
+               "sizable", "minuscule",
                "perverse", "immovable",
                "compressed", "uncompressed",
                "surreal", "allegorical",
@@ -84,7 +85,8 @@ lca_rego = {
                "conversion", "implementation", "design", "analysis",
                "neophyte", "expert", "bundle", "package",
                "abstraction", "theorem", "display", "distro",
-               "restriction", "device", "function", "reference"],
+               "restriction", "device", "function", "reference",
+               "alien"]
     }
 }
 
