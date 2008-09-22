@@ -127,7 +127,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
     def _able_to_edit(self):
         for invoice in c.signed_in_person.invoices:
-            if invoice.void == False:
+            if not invoice.void:
                 if invoice.paid() and invoice.total() != 0:
                     return False, "Sorry, you've already paid"
         return True, "You can edit"
@@ -315,6 +315,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
         invoice = model.Invoice()
         invoice.person = registration.person
+        invoice.manual = False
 
         # Create Invoice
         for rproduct in registration.products:
@@ -380,7 +381,7 @@ class RegistrationController(SecureController, Update, List, Read):
         # complicated check to see whether invoices are already in the system
         new_invoice = invoice
         for old_invoice in registration.person.invoices:
-            if old_invoice != new_invoice and old_invoice.void == False:
+            if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
                 if self.invoices_identical(old_invoice, new_invoice):
                     for ii in new_invoice.items:
                         self.dbsession.expunge(ii)
@@ -402,7 +403,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 invoice.void = True
 
         invoice.last_modification_timestamp = datetime.datetime.now()
-        if invoice.void == True:
+        if invoice.void:
             self.dbsession.expunge(invoice)
             return render_response("registration/product_unavailable.myt", product=rproduct.product)
 
