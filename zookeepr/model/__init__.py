@@ -103,7 +103,7 @@ def populate_data():
     try:
         # Products
         model.billing.tables.product.insert().execute(
-            dict(category_id='1', active=True, description="Student Ticket", cost="16000", auth=None, validate=None),
+            dict(category_id='1', active=True, description="Concession/Student Ticket", cost="16000", auth=None, validate=None),
             dict(category_id='1', active=True, description="Earlybird Hobbiest Ticket", cost="29000", auth=None, validate=None),
             dict(category_id='1', active=True, description="Hobbiest Ticket", cost="36500", auth=None, validate=None),
             dict(category_id='1', active=True, description="Earlybird Professional Ticket", cost="63500", auth=None, validate=None),
@@ -130,7 +130,7 @@ def populate_data():
             dict(category_id='3', active=True, description="Dinner Tickets", cost="8000", auth=None, validate=None),
             dict(category_id='4', active=True, description="I will organise my own", cost="0", auth=None, validate=None),
             dict(category_id='4', active=True, description="Wrest Point (Follow this link to book)", cost="0", auth=None, validate=None),
-            dict(category_id='4', active=True, description="University Accommodation (price per night)", cost="8000", auth=None, validate=None),
+            dict(category_id='4', active=True, description="University Accommodation - Includes Breakfast! (price per night)", cost="6000", auth=None, validate=None),
             dict(category_id='5', active=True, description="Adult", cost="20000", auth=None, validate="PPEmail(adult_field='product_29_qty',email_field='partner_email')"),
             dict(category_id='5', active=True, description="Child (0-3 years old)", cost="20000", auth=None, validate="PPChildrenAdult(current_field='product_30_qty',adult_field='product_29_qty')"),
             dict(category_id='5', active=True, description="Child (4-6 years old)", cost="20000", auth=None, validate="PPChildrenAdult(current_field='product_31_qty',adult_field='product_29_qty')"),

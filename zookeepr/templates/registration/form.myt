@@ -163,7 +163,7 @@
 %           #endfor
 %       #endif
 %       if category.name == 'Accomodation':
-
+          <p>Please see <a href="/register/accommodation">the accomodation page</a> for prices and details, including how to book your Wrest Point room at LCA09 rates.</p>
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">

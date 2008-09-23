@@ -37,8 +37,8 @@ lca_info = {
 lca_rego = {
 # Date Early Bird ends
   'miniconfs' : (
-              ('Monday',('Open Source databases', 'The Linux Kernel', 'Virtualisation and Management', 'LinuxChix', 'Multimedia', 'The Business of Open Source Software - for developers')),
-              ('Tuesday',('Open Source databases', 'System Administration', 'MythTV', 'Multimedia', 'Gaming', 'LinuxChix', 'Free as in Freedom', 'Mobile devices'))
+              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'Virtualisation', 'MythTV', 'Gaming', 'Free as in Freedom', 'Mobile devices')),
+              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
@@ -102,8 +102,8 @@ lca_menu = [
   ('About', '/about/the_event_history', 'about'),
   ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
   ('Programme/Participate', '/programme/about_programme', 'programme'),
-  #('Register', '/register', 'register'), # -- Stage 2
-  #('Wiki', '/wiki', 'wiki'),
+  ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
+  ('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
 ]
@@ -111,8 +111,8 @@ lca_menu = [
 lca_submenus = {
   'about': ['The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'],
   'sponsors': ['Become a Sponsor'],
-  'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
-  #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
-  #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
+  #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
+  'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
+  'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
   'media': ['News','In the press']
 }
