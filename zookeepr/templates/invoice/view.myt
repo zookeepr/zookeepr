@@ -67,6 +67,14 @@
         <td style="text-align: right"><strong><% h.number_to_currency(c.invoice.total()/100.0/11) %></strong></td>
       </tr>
     </table>
+    
+% if not c.invoice.void and c.invoice.paid():
+        <p class="pay_button">Invoice has been paid.</p>
+% elif c.invoice.bad_payments:
+        <p class="pay_button">Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a></p>
+% elif not c.invoice.void and not c.invoice.paid():
+        <p class="pay_button"><% h.link_to('Pay this invoice', url = h.url(action='pay')) %></p>
+% #endif    
     <p>Further information on your registration is available at: <% h.link_to('http://' + h.host_name() + h.url(controller='registration', action='status')(), h.url(controller='registration', action='status')) %></p>
 
     <p>
@@ -83,7 +91,7 @@
       <p>
         <% h.lca_info['event_postal_address'] %><br>
         <% h.lca_info['event_tax_number'] %><br>
-        <% h.lca_info['event_fax_number'] %><br>
+        Fax: <% h.lca_info['event_fax_number'] %><br>
       </p>
     </div>
 % if c.printable:

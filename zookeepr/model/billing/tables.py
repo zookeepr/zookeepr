@@ -5,6 +5,7 @@ from zookeepr.model import metadata
 invoice = Table('invoice', metadata,
                 Column('id', Integer, primary_key=True),
                 Column('person_id', Integer, ForeignKey('person.id'), nullable=False),
+                Column('manual', Boolean, default=True, nullable=False),
                 Column('void', Boolean, nullable=False),
                 Column('issue_date', DateTime, default=func.current_timestamp(), nullable=False),
                 Column('due_date', DateTime, default=func.current_timestamp(), nullable=False),

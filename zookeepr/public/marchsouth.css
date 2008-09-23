@@ -611,3 +611,13 @@
 		padding-left: 5px;
 	}
 
+
+   .pay_button
+   {
+      padding: 1em;
+		margin-left: 60px;
+		margin-right: 40px;
+      border: 1px solid #ccc;
+      background: url(images/fieldset_bg.png);
+      width: 250px;
+   }

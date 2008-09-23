@@ -34,7 +34,7 @@
 %   session['sign_in_redirect'] = '/registration/status'
 %   session.save()
 
-    <p><% h.link_to('Go directly to the registration form', h.url(action='new')) %> otherwise.</p>
+    <p><b><% h.link_to('Go directly to the registration form', h.url(action='new')) %> otherwise.</b></p>
 
 % elif c.signed_in_person and c.signed_in_person.registration == None:
     <p><b>Not registered.</b>
@@ -58,7 +58,7 @@
 %       else:
 %           if c.signed_in_person.valid_invoice():
 %               if c.signed_in_person.paid():
-    <p><% h.link_to('View Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
+    <p><% h.link_to('View Invoice', h.url(controller='invoice', action='view', id=c.signed_in_person.valid_invoice().id)) %></p>
 %               else:
     <p><% h.link_to('Pay Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
 %               #endif
@@ -75,7 +75,11 @@
     <% h.link_to('Change areas of interest and ability', h.url(action='volunteer', id=c.signed_in_person.registration.id)) %><br>
 %   #endif
     <% h.link_to('Edit details', h.url(action='edit', id=c.signed_in_person.registration.id)) %><br>
-    <% h.link_to('View invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %><br>
+%   if c.signed_in_person.valid_invoice() and c.signed_in_person.valid_invoice().paid():
+    <% h.link_to('View invoice', h.url(controller='invoice', action='view', id=c.signed_in_person.valid_invoice().id)) %><br>
+%   else:
+    <% h.link_to('Pay invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %><br>
+%   #endif
     <% h.link_to('View details', h.url(action='view', id=c.signed_in_person.registration.id)) %><br>
     <table>
       <tr>
