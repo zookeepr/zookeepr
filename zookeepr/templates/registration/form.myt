@@ -126,7 +126,7 @@
 #%           # Number of items in the row must be the same for each row
 %           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
 %           i = j = 0
-          <p>All shirts are $20 each and made in Tasmania. More details on shirt sizes can be found on the information page.</p>
+          <p>All shirts are $20 each and made in Tasmania. More details on shirt sizes can be found on the <a href="/register">information page</a>.</p>
           <table>
             <tr><th>&nbsp;</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td><% fields[0][0] %></td>
