@@ -68,16 +68,16 @@ class VoucherController(SecureController, Read, Create, List):
             if category.name in ['Ticket', 'Accomodation']:
                 if category.display == 'radio':
                     # min/max can't be calculated on this form. You should only have 1 selected.
-                    ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, not_empty=True))
-                    ProductSchema.add_field('category_' + str(category.id) + '_percentage', BoundedInt(min=0, max=100))
+                    ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, if_missing=None))
+                    ProductSchema.add_field('category_' + str(category.id) + '_percentage', BoundedInt(min=0, max=100, if_empty=0))
                 elif category.display == 'checkbox':
                     for product in category.products:
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', BoundedInt(min=0, max=100))
+                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', BoundedInt(min=0, max=100, if_empty=0))
                 elif category.display in ('select', 'qty'):
                     for product in category.products:
                         ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt(min=0))
-                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', BoundedInt(min=0, max=100))
+                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', BoundedInt(min=0, max=100, if_empty=0))
         self.schemas['new'].add_field('products', ProductSchema)
 
     def new(self):
@@ -106,12 +106,13 @@ class VoucherController(SecureController, Read, Create, List):
                     for category in c.product_categories:
                         if category.name in ['Ticket', 'Accomodation']:
                             if category.display == 'radio':
-                                vproduct = model.VoucherProduct()
-                                vproduct.product = self.dbsession.query(model.Product).get(results['products']['category_' + str(category.id)])
-                                vproduct.qty = 1
-                                vproduct.percentage = results['products']['category_' + str(category.id) + '_percentage']
-                                self.dbsession.save(vproduct)
-                                voucher.products.append(vproduct)
+                                if results['products']['category_' + str(category.id)]:
+                                    vproduct = model.VoucherProduct()
+                                    vproduct.product = self.dbsession.query(model.Product).get(results['products']['category_' + str(category.id)])
+                                    vproduct.qty = 1
+                                    vproduct.percentage = results['products']['category_' + str(category.id) + '_percentage']
+                                    self.dbsession.save(vproduct)
+                                    voucher.products.append(vproduct)
                             elif category.display == 'checkbox':
                                 for product in category.products:
                                     if results['products']['product_' + str(product.id)]:
