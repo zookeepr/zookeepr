@@ -82,7 +82,7 @@ mapper(Voucher, voucher,
                                        foreign_keys=voucher.c.code,
                                     ),
             'leader': relation(Person,
-                               backref=backref('voucher_codes', cascade="all, delete-orphan"),
+                               backref=backref('vouchers', cascade="all, delete-orphan"),
                               ),
             },
       )
