@@ -61,7 +61,7 @@ class RegisterSchema(BaseSchema):
     distrotext = validators.String()
     silly_description = validators.String()
     silly_description_checksum = validators.String(strip=True)
-    voucher_code = validators.String()
+    voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()
     opendaydrag = validators.Int()
