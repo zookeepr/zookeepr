@@ -91,7 +91,7 @@ mapper(VoucherProduct, voucher_product,
        properties = {
             'voucher': relation(Voucher, lazy=True,
                                 backref=backref('products', lazy=False), cascade="all, delete-orphan"),
-            'product': relation(Product, lazy=True,
-                                cascade="all, delete-orphan")
+            'product': relation(Product, lazy=True, backref=backref(
+                                'vouchers', cascade="all, delete-orphan"))
             },
       )
