@@ -90,10 +90,10 @@ def populate_data():
         # Product Categories
         model.billing.tables.product_category.insert().execute(
             dict(name='Ticket', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
-            dict(name='Shirt', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=10),
+            dict(name='Shirt', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=100),
             dict(name='Dinner Ticket', description='How many people will be attending the dinner (make sure you include yourself)? One (1) free ticket is included with professional registration but you are still required to accept this in the field below.', display='qty', min_qty=0, max_qty=5),
             dict(name='Accomodation', description='Where would you like to stay during the conference?', display='select', min_qty=0, max_qty=10),
-            dict(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=10),
+            dict(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=50),
             )
 
     except SQLError, inst:
@@ -171,11 +171,11 @@ def populate_data():
     try:
         # Product Ceilings
         model.billing.tables.ceiling.insert().execute(
-            dict(name='all-conference', max_sold=None),
-            dict(name='conference', max_sold=1000),
-            dict(name='earlybird', max_sold=400),
-            dict(name='non-earlybird', max_sold=None),
-            dict(name='uniaccom', max_sold=240),
+            dict(name='all-conference', max_sold=None, available_from=None, available_until=None),
+            dict(name='conference', max_sold=750, available_from=None, available_until=None),
+            dict(name='earlybird', max_sold=200, available_from=None, available_until="2008-10-28 23:59:59"),
+            dict(name='non-earlybird', max_sold=None, available_from="2008-10-29 00:00:00", available_until=None),
+            dict(name='uniaccom', max_sold=240, available_from=None, available_until=None),
             )
 
     except SQLError, inst:
