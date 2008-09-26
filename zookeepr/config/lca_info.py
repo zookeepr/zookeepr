@@ -19,11 +19,12 @@ lca_info = {
   'event_url' : 'http://www.linux.conf.au/',
   'event_tax_number' : 'ABN 56 987 117 479',
 # 'event_tax_number' : 'NZ GST #90-792-369',
-  'event_postal_address' : '25 Wellinton St North Hobart TAS 7000, Australia',
-  'event_fax_number' : '+61 3 9235 5454',
+  'event_postal_address' : '25 Wellington St North Hobart TAS 7000, Australia',
+  'event_fax_number' : '+61 3 6234 1262',
+  'event_phone_number': '+61 432 996 932',
   'date' : datetime(2009, 1, 19, 9, 0, 00),
 
-  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 17th of November (unless earlybird tickets sell out earlier).',
+  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
   'cfp_status' : 'closed',
@@ -35,7 +36,6 @@ lca_info = {
 }
 
 lca_rego = {
-# Date Early Bird ends
   'miniconfs' : (
               ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'Virtualisation', 'MythTV', 'Gaming', 'Free as in Freedom', 'Mobile devices')),
               ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices'))
