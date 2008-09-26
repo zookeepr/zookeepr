@@ -405,6 +405,7 @@ class RegistrationController(SecureController, Update, List, Read):
         invoice.last_modification_timestamp = datetime.datetime.now()
         if invoice.void:
             self.dbsession.expunge(invoice)
+            self.dbsession.save_or_update(invoice)
             return render_response("registration/product_unavailable.myt", product=rproduct.product)
 
         self.dbsession.save_or_update(invoice)

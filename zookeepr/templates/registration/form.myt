@@ -183,9 +183,9 @@
             </select>
           </p>
 %       elif category.name == 'Partners Programme':
-          <p class="label"><label for="registration.partner_email">Your partner's email address:</label></p>
+          <p class="label"><span class="mandatory">^</span><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries"><% h.textfield('products.partner_email', size=50) %></p>
-          <p class="note">If your partner will be participating in the programme, please enter their email address here so that our Partners Programme manager can contact them.</p>
+          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
 %       #endif
         </fieldset>
 %   #endif
@@ -217,7 +217,7 @@
 % for day, miniconfs in h.lca_rego['miniconfs']:
                 <td>
 %   for miniconf in miniconfs:
-%       label = 'registration.miniconf.%s' % miniconf.replace(' ', '_').replace('.', '_')
+%       label = 'registration.miniconf.%s%s' % (day,miniconf.replace(' ', '_').replace('.', '_'))
                   <% h.check_box(label) %>
                   <label for="<% label %>"><% miniconf %></label>
                   <br>
@@ -227,7 +227,7 @@
               </tr>
             </table>
 
-            <p class="note">Please check the <% h.link_to('mini-confs', url="/programme/mini-confs") %> page for details on each event. You can choose to attend multiple mini-confs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
+            <p class="note">Please check the <% h.link_to('miniconfs', url="/programme/miniconfs") %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
 
             <p class="label"><label for="registration.opendaydrag">How many people are you bringing to Open Day?</label></p>
             <p class="entries"><% h.textfield('registration.opendaydrag', size=10) %></p>

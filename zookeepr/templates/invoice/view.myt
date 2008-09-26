@@ -91,6 +91,7 @@
       <p>
         <% h.lca_info['event_postal_address'] %><br>
         <% h.lca_info['event_tax_number'] %><br>
+        Phone: <% h.lca_info['event_phone_number'] %><br>
         Fax: <% h.lca_info['event_fax_number'] %><br>
       </p>
     </div>
