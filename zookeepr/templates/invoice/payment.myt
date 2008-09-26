@@ -53,7 +53,7 @@ payment.
 <tr><td valign="middle">
 <img alt="[SecurePay logo]" width="200" height="79"
 style="margin-right: 0.5em"
-src="http://<% h.host_name() %>:5000/images/securepay200white.gif"
+src="http://<% h.host_name() %>/images/securepay200white.gif"
 /></td>
 <td valign="middle"><p>Direct One Payment Solutions kindly provided by
 SecurePay Australia</p></td>
