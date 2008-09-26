@@ -20,13 +20,12 @@ class EditRoleSchema(BaseSchema):
 class RoleController(SecureController, View, Modify):
     schemas = {"new" : NewRoleSchema(),
                "edit" : EditRoleSchema()}
-    permissions = {"new": [],
-                   "view": [],
-                   "edit": [],
-                   "delete": [],
-                   "index": [],
+    permissions = {"new": [AuthRole('organiser')],
+                   "view": [AuthRole('organiser')],
+                   "edit": [AuthRole('organiser')],
+                   "delete": [AuthRole('organiser')],
+                   "index": [AuthRole('organiser')],
                    }
 
     model = Role
     individual = 'role'
-    #conditions = dict(order_by='name')

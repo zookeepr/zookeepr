@@ -5,6 +5,8 @@
 % if len(c.role_collection) > 0:
 <tr>
 <th>Name</th>
+<th></th>
+<th></th>
 </tr>
 % #endif
 
