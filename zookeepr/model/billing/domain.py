@@ -186,7 +186,7 @@ class Invoice(object):
         if self.issue_date is None:
             self.issue_date = datetime.datetime.now()
         if self.due_date is None:
-            self.due_date = datetime.datetime.now() + datetime.timedelta(14, 0, 0)
+            self.due_date = datetime.datetime.now()
 
     def __repr__(self):
         return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)
