@@ -1,11 +1,9 @@
 % if c.printable:
-<?xml version="1.0"?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang="en-us">
 <head>
 <title>Tax Invoice/Statement - linux.conf.au 2008</title>
-<link rel="icon" type="image/png" href="/favicon.png" />
-<meta http-equiv="content-type" content="text/html; charset=utf-8" />
+<link rel="icon" type="image/png" href="/images/favicon.ico">
 </head>
 <body>
 % else:
@@ -43,12 +41,12 @@
     <p>This invoice has been issued as a result of an application to attend <% h.event_name() %>.</p>
 
     <table style="width: 100%">
-      <tr>
+      <thead><tr>
         <th>Description</th>
         <th>Qty</th>
         <th>Cost</th>
         <th>Total (Inc. GST)</th>
-      </tr>
+      </tr></thead>
 % for item in c.invoice.items:
       <tr class="<% h.cycle('even', 'odd') %>">
         <td><% item.description %></td>
@@ -57,13 +55,12 @@
         <td style="text-align:right"><% h.number_to_currency(item.total()/100.0) %></td>
       </tr>
 % #endfor
-      <tr></tr>
       <tr>
-        <td style="text-align: right" colspan="3">Total</td>
+        <td style="text-align: right" colspan="3"><strong>Total</strong></td>
         <td style="text-align: right"><strong><% h.number_to_currency(c.invoice.total()/100.0) %></strong></td>
       </tr>
       <tr>
-        <td style="text-align: right" colspan="3">GST Included</td>
+        <td style="text-align: right" colspan="3"><strong>GST Included</strong></td>
         <td style="text-align: right"><strong><% h.number_to_currency(c.invoice.total()/100.0/11) %></strong></td>
       </tr>
     </table>
@@ -113,15 +110,14 @@
 % elif not c.invoice.void and not c.invoice.paid():
         <li><% h.link_to('Pay this invoice', url = h.url(action='pay')) %></li>
         <li>
-          <% h.link_to('Regenerate invoice', url = h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %></li>
-          <p><small>Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</small></p>
-%   if 'invoice_message' in h.lca_info:
-          <p><small><strong>Please Note:</strong> <% h.lca_info['invoice_message'] %></small></p>
-%   #endif
-          </p>
+          <% h.link_to('Regenerate invoice', url = h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>
+          <br><span style="font-size: small;">Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</span>
         </li>
 % #endif
       </ul>
+%   if 'invoice_message' in h.lca_info:
+          <p><small><strong>Please Note:</strong> <% h.lca_info['invoice_message'] %></small></p>
+%   #endif
     </div>
 </%method>
 

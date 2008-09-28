@@ -64,7 +64,7 @@ class RegisterSchema(BaseSchema):
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    opendaydrag = validators.Int()
+    opendaydrag = BoundedInt(min=0,max=200)
     checkin = BoundedInt(min=0)
     checkout = BoundedInt(min=0)
     lasignup = validators.Bool()
@@ -132,8 +132,9 @@ class RegistrationController(SecureController, Update, List, Read):
                     return False, "Sorry, you've already paid"
         return True, "You can edit"
 
-    def _product_available(self, product):
-        if not product.available():
+    def _product_available(self, product, stock=True):
+        # bool stock: care about if the product is in stock (ie sold out?)
+        if not product.available(stock):
             return False
         if product.auth is not None:
             exec("auth = " + product.auth)
@@ -156,7 +157,7 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if self._product_available:
+                    if self._product_available(product):
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
                         product_fields.append('product_' + str(product.id))
                         if product.validate is not None:
@@ -167,7 +168,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if self._product_available:
+                    if self._product_available(product):
                         ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
                         product_fields.append('product_' + str(product.id) + '_qty')
                     if product.validate is not None:

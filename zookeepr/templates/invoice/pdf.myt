@@ -1,5 +1,6 @@
 % date_format = "<date><day>%d</day><month>%b</month><year>%Y</year></date>"
 <invoice>
+  <logo>/home/josh/LCA09/website/registrations/zookeepr/templates/invoice/tuz.png</logo>
   <number><% c.invoice.id %></number>
   <issued><% c.invoice.issue_date.strftime(date_format) %></issued>
   <due><% c.invoice.due_date.strftime(date_format) %></due>
@@ -28,18 +29,15 @@
   <lastname><% c.invoice.person.lastname | h %></lastname>
   <email><% c.invoice.person.email_address | h %></email>
 
-% if c.invoice.person.registration and c.invoice.person.company:
-%   rego = c.invoice.person.registration
-  <company><% rego.person.company | h %></company>
+  <company><% c.invoice.person.company | h %></company>
   <address>
-    <address1><% rego.person.address1 | h %></address1>
-    <address2><% rego.person.address2 | h %></address2>
-    <city><% rego.person.city | h %></city>
-    <country><% rego.person.country | h %></country>
-    <postcode><% rego.person.postcode | h %></postcode>
-    <state><% rego.person.state | h %></state>
+    <address1><% c.invoice.person.address1 | h %></address1>
+    <address2><% c.invoice.person.address2 | h %></address2>
+    <city><% c.invoice.person.city | h %></city>
+    <country><% c.invoice.person.country | h %></country>
+    <postcode><% c.invoice.person.postcode | h %></postcode>
+    <state><% c.invoice.person.state | h %></state>
   </address>
-% # endif
 
   <event><% h.event_name() %></event>
   <contact><% h.lca_info['contact_email'] %></contact>
