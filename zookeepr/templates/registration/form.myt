@@ -109,8 +109,12 @@
         </fieldset>
 % for category in c.product_categories:
 %   all_products = category.available_products(c.signed_in_person, stock=False)
-%   products = all_products
-
+%   products = []
+%   for product in all_products:
+%       if c.product_available(product, stock=False):
+%           products.append(product)
+%       #endif
+%   #endfor
 %   if len(products) > 0:
 
         <fieldset id="<% h.computer_title(category.name) %>">
@@ -122,9 +126,9 @@
 #%           # Number of items in the row must be the same for each row
 %           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
 %           i = j = 0
-          <p>All shirts are $20 each and made in Tasmania. More details on shirt sizes can be found on the <a href="/register">information page</a>.</p>
+          <p>All shirts are $20 each and made in Tasmania. More details and measurements on shirt sizes can be found on the <a href="/register">information page</a>.</p>
           <table>
-            <tr><th>&nbsp;</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
+            <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td><% fields[0][0] %></td>
 %           for product in products:
 %               if j == len(fields[i][1]):
@@ -138,24 +142,40 @@
           </tr></table>
 %       elif category.display == 'radio':
 %           for product in products:
-          <p><label><% h.radio_button('products.category_' + str(category.id), product.id) %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
+%               soldout = ''
+%               if not product.available():
+%                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+%               #endif
+          <p><label><% h.radio_button('products.category_' + str(category.id), product.id) %><% soldout %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endfor
 %       elif category.display == 'select':
           <p class="entries">
             <select name="products.category_<% category.id %>">
               <option value=""> - </option>
 %           for product in products:
-              <option value="<% product.id %>"> <% product.description %> - <% h.number_to_currency(product.cost/100.0) %></option>
+%               soldout = ''
+%               if not product.available():
+%                   soldout = ' SOLD OUT '
+%               #endif
+              <option value="<% product.id %>"> <% soldout %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></option>
 %           #endfor
             </select>
           </p>
 %       elif category.display == 'checkbox':
 %           for product in products:
-          <p><label><% h.check_box('products.product_' + str(product.id)) %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
+%               soldout = ''
+%               if not product.available():
+%                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+%               #endif
+          <p><label><% h.check_box('products.product_' + str(product.id)) %><% soldout %><% product.description %> - <% h.number_to_currency(product.cost/100.0) %></label></p>
 %           #endfor
 %       elif category.display == 'qty':
 %           for product in products:
-          <p><% product.description %> <% h.text_field('products.product_' + str(product.id) + '_qty', size=2) %> x <% h.number_to_currency(product.cost/100.0) %></p>
+%               soldout = ''
+%               if not product.available():
+%                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+%               #endif
+          <p><% soldout %><% product.description %> <% h.text_field('products.product_' + str(product.id) + '_qty', size=2) %> x <% h.number_to_currency(product.cost/100.0) %></p>
 %           #endfor
 %       #endif
 %       if category.name == 'Accomodation':

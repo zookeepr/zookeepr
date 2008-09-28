@@ -205,6 +205,8 @@ class ProductInCategory(validators.FancyValidator):
         for product in self.category.products:
             if product.id == int(value) and product.available():
                 return
+            elif product.id == int(value) and product.available(stock=False):
+                raise Invalid("The selected product, " + product.description + ", has unfortunately sold out.", value, state)
         raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
 
 class PPEmail(validators.FancyValidator):

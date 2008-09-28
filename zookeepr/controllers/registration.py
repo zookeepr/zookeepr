@@ -157,7 +157,7 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if self._product_available:
+                    if self._product_available(product):
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
                         product_fields.append('product_' + str(product.id))
                         if product.validate is not None:
@@ -168,7 +168,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if self._product_available:
+                    if self._product_available(product):
                         ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
                         product_fields.append('product_' + str(product.id) + '_qty')
                     if product.validate is not None:
