@@ -626,3 +626,68 @@
 	{
 		background: white;
 	}
+
+	.programme_time_slot
+	{
+		border-right: #afafff 1px dotted;
+	}
+
+	.schedule_menu
+	{
+		padding: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		list-style-type: none;
+		text-align: center;
+		width:791px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+	.schedule_menu li
+	{
+		margin: 0;
+		padding: 105px 0 0 0;
+		float: left;
+		width: 113px;
+		height: 91px;
+		font-family:"Arial",sans-serif;
+	}
+
+	.schedule li a
+	{
+	}
+
+	.week_link
+	{
+		background-image: url(/images/schedule/week_back.png);
+	}
+
+	.monday_link
+	{
+		background-image: url(/images/schedule/monday_back.png);
+	}
+
+	.tuesday_link
+	{
+		background-image: url(/images/schedule/tuesday_back.png);
+	}
+
+	.wednesday_link
+	{
+		background-image: url(/images/schedule/wednesday_back.png);
+	}
+
+	.thursday_link
+	{
+		background-image: url(/images/schedule/thursday_back.png);
+	}
+
+	.friday_link
+	{
+		background-image: url(/images/schedule/friday_back.png);
+	}
+
+	.saturday_link
+	{
+		background-image: url(/images/schedule/saturday_back.png);
+	}
