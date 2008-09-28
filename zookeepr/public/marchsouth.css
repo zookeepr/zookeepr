@@ -611,3 +611,18 @@
 		padding-left: 5px;
 	}
 
+	.talk_title
+	{
+		padding-left:0;
+		padding-right:0;
+	}
+
+	.programme_room_header
+	{
+		border-bottom: none;
+	}
+
+	.empty_cell
+	{
+		background: white;
+	}

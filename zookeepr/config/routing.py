@@ -47,6 +47,10 @@ def make_map():
     m.connect('/programme/submit_a_presentation', controller='proposal', action='submit')
     m.connect('/programme/submit_a_miniconf', controller='proposal', action='submit_mini')
 
+    # schedule routes
+    m.connect('/programme/schedule/:day', controller='schedule', action='index', day='all')
+    m.connect('/programme/schedule/view_talk/:id', controller='schedule', action='view_talk', id=None)
+
     # Verify stuff from commsecure
 
     m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
@@ -68,7 +72,6 @@ def make_map():
 
     # admin controller
     m.connect('/admin/:action', controller='admin')
-    m.connect('/programme/mini-confs/recorded', controller='admin', action='recorded_miniconf_talks')
 
     # OpenDay
     #m.connect('openday', '/OpenDay', controller='openday', action='new')

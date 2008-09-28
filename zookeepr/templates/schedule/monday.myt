@@ -1,115 +1,79 @@
 <table id="wed-programme" style="" summary="Programme" cellpadding="" cellspacing="">
   <thead>
     <tr>
-      <th id="wed-programme_td0_0" align="left" valign="top"><br /></th>
-
-      <th id="wed-programme_td0_1" align="center" valign="top"><b>Main<br /></b></th>
-
-      <th id="wed-programme_td0_2" align="center" valign="top"><b>Theatre A<br /></b></th>
-
-      <th id="wed-programme_td0_3" align="center" valign="top"><b>Theatre B<br /></b></th>
-
-      <th id="wed-programme_td0_4" align="center" valign="top"><b>Theatre C<br /></b></th>
-
-      <th id="wed-programme_td0_5" align="center" valign="top"><b>Theatre D<br /></b></th>
+      <th class="programme_room" align="left" valign="top"><p>Room</p></th>
+      <th class="programme_room" align="center" valign="top"><p>SB1</p></th>
+      <th class="programme_room" align="center" valign="top"><p>ALT</p></th>
+      <th class="programme_room" align="center" valign="top"><p>SB2</p></th>
+      <th class="programme_room" align="center" valign="top"><p>SSBIG</p></th>
+      <th class="programme_room" align="center" valign="top"><p>SSSMALL</p></th>
     </tr>
   </thead>
 
   <tbody>
     <tr class="even">
-      <th align="center" valign="center">Keynote<br />
-      9:00am<br /></th>
-
-      <td id="wed-programme_td1_0" colspan="5" style="padding-top: 15px; padding-bottom: 15px;" align="center" valign="top">
-        <% talk_link.myt 101 %>
-       </td>
-
+      <th class="programme_slot" align="center" valign="top"><p>9:00 - 9:25</p></th>
+      <td id="programme_intro" colspan="5" align="center" valign="top">
+        <p>Introduction and Housekeeping</p>
+      </td>
     </tr>
-
-    <tr class="break">
-      <th align="center" valign="middle">Break<br />
-      10:10am<br /></th>
-
-      <td colspan="5" align="center" valign="middle">Morning Tea</td>
-    </tr>
-
-    <tr class="odd">
-      <th id="wed-programme_td2_0" align="center" valign="top">Tutorial 1<br />
-      (Sessions 1&nbsp;&amp;&nbsp;2)<br />
-      10:30am<br /></th>
-
-      <td id="wed-programme_td2_1" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td2_2" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td2_3" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td2_4" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td2_5" align="center" valign="top"><% talk_link.myt 101 %></td>
-    </tr>
-
-    <tr class="break">
-      <th align="center" valign="middle">Break<br />
-      12:20pm<br /></th>
-
-      <td colspan="5" align="center" valign="middle">Lunch</td>
-    </tr>
-
     <tr class="even">
-
-      <th id="wed-programme_td3_0" align="center" valign="top">Session 3<br />
-      1:30pm<br /></th>
-
-      <td id="wed-programme_td3_1" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td3_2" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td3_3" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td3_4" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td3_5" align="center" valign="top"><% talk_link.myt 101 %></td>
-
+      <th class="programme_slot" align="center" valign="top"><p>9:25 - 10:15</p></th>
+      <td class="programme_intro" colspan="5" align="center" valign="top">
+        <p>Keynote 1 - Tom Limoncelli</p>
+      </td>
     </tr>
-
     <tr class="odd">
-      <th id="wed-programme_td4_0" align="center" valign="top">Session 4<br />
-      2:30pm<br /></th>
-
-      <td id="wed-programme_td4_1" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td4_2" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td4_3" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td4_4" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td4_5" align="center" valign="top"><% talk_link.myt 101 %></td>
-
+      <th class="programme_slot" align="center" valign="middle"><p>10:15 - 10:35</p></th>
+      <td class="morning_tea" colspan="5" align="center" valign="middle">Morning Tea</td>
     </tr>
-
-    <tr class="break">
-      <th align="center" valign="middle">Break<br />
-      3:20pm<br /></th>
-
-      <td colspan="5" align="center" valign="middle">Afternoon Tea</td>
+    <tr class="odd">
+      <th class="programme_slot" align="center" valign="top"><p>10:35-11:25</p></th>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
     </tr>
-
-    <tr class="even">
-      <th id="wed-programme_td5_0" align="center" valign="top">Session 5<br />
-      3:40pm<br /></th>
-
-      <td id="wed-programme_td5_1" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td5_2" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td5_3" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td5_4" align="center" valign="top"><% talk_link.myt 101 %></td>
-
-      <td id="wed-programme_td5_5" align="center" valign="top"><% talk_link.myt 101 %></td>
-
+    <tr class="odd">
+      <th class="programme_slot" align="center" valign="top"><p>11:35-12:25</p></th>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+    </tr>
+    <tr class="odd">
+      <th class="programme_slot" align="center" valign="middle"><p>12:25 - 13:45</p></th>
+      <td class="morning_tea" colspan="5" align="center" valign="middle">Lunch</td>
+    </tr>
+    <tr class="odd">
+      <th class="programme_slot" align="center" valign="top"><p>13:45 - 15:30</p></th>
+      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+    </tr>
+    <tr class="odd">
+      <th class="programme_slot" align="center" valign="middle"><p>15:30 - 15:50</p></th>
+      <td class="morning_tea" colspan="5" align="center" valign="middle">Afternoon Tea</td>
+    </tr>
+    <tr class="odd">
+      <th class="programme_slot" align="center" valign="top"><p>15:50 - 16:40</p></th>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+    </tr>
+    <tr class="odd">
+      <th class="programme_slot" align="center" valign="top"><p>16:50 - 17:40</p></th>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=101 &></td>
     </tr>
   </tbody>
 </table>

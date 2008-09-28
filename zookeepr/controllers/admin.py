@@ -227,7 +227,7 @@ FROM proposal
     LEFT JOIN stream ON (review.stream_id=stream.id)
 WHERE review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
 GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
-ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
 """)
 
     def countdown(self):
