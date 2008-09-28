@@ -132,8 +132,9 @@ class RegistrationController(SecureController, Update, List, Read):
                     return False, "Sorry, you've already paid"
         return True, "You can edit"
 
-    def _product_available(self, product):
-        if not product.available():
+    def _product_available(self, product, stock=True):
+        # bool stock: care about if the product is in stock (ie sold out?)
+        if not product.available(stock):
             return False
         if product.auth is not None:
             exec("auth = " + product.auth)
