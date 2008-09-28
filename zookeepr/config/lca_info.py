@@ -101,7 +101,7 @@ lca_menu = [
   ('Home', '/home', 'home'),
   ('About', '/about/the_event_history', 'about'),
   ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
-  ('Programme/Participate', '/programme/about_programme', 'programme'),
+  ('Programme', '/programme/about_programme', 'programme'),
   ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
   ('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
