@@ -1,11 +1,11 @@
 <ul class = 'schedule_menu'>
-    <li class = 'week_link'><a href = "">Entire Week</a></li>
-    <li class = 'monday_link'><a href = "">Monday</a></li>
-    <li class = 'tuesday_link'><a href = "">Tuesday</a></li>
-    <li class = 'wednesday_link'><a href = "">Wednesday</a></li>
-    <li class = 'thursday_link'><a href = "">Thursday</a></li>
-    <li class = 'friday_link'><a href = "">Friday</a></li>
-    <li class = 'saturday_link'><a href = "">Saturday</a></li>
+    <li class = 'week_link'><a href="/programme/schedule/all">Entire Week</a></li>
+    <li class = 'monday_link'><a href="/programme/schedule/monday">Monday</a></li>
+    <li class = 'tuesday_link'><a href="/programme/schedule/tuesday">Tuesday</a></li>
+    <li class = 'wednesday_link'><a href="/programme/schedule/wednesday">Wednesday</a></li>
+    <li class = 'thursday_link'><a href="/programme/schedule/thursday">Thursday</a></li>
+    <li class = 'friday_link'><a href="/programme/schedule/friday">Friday</a></li>
+    <li class = 'saturday_link'><a href="/programme/schedule/saturday">Saturday</a></li>
 </ul>
 <div style="clear: both;"></div>
 % if c.day.lower() == 'all':

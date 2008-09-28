@@ -28,7 +28,11 @@ class ScheduleController(BaseController):
             c.day = request.GET['day']
         except:
             c.day = 'all'
-        c.talk = self._get_talk(id)
+        try:
+            c.talk = self.dbsession.query(Proposal).filter_by(id=id,accepted=True).one()
+        except:
+            abort(404)
+
         return render_response('schedule/view_talk.myt')
 
     def index(self, day):

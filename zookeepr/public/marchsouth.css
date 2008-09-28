@@ -627,9 +627,15 @@
 		background: white;
 	}
 
-	.programme_time_slot
+	.programme_time_slot, .programme_slot
 	{
 		border-right: #afafff 1px dotted;
+	}
+
+	.programme_keynote
+	{
+		font-weight: bold;
+		font-style: oblique;
 	}
 
 	.schedule_menu
@@ -639,13 +645,13 @@
 		margin-bottom: 0;
 		list-style-type: none;
 		text-align: center;
-		width:791px;
+		width:819px;
 		margin-left: auto;
 		margin-right: auto;
 	}
 	.schedule_menu li
 	{
-		margin: 0;
+		margin: 0 2px;
 		padding: 105px 0 0 0;
 		float: left;
 		width: 113px;
