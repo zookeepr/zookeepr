@@ -64,7 +64,7 @@ class RegisterSchema(BaseSchema):
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    opendaydrag = validators.Int()
+    opendaydrag = BoundedInt(min=0,max=200)
     checkin = BoundedInt(min=0)
     checkout = BoundedInt(min=0)
     lasignup = validators.Bool()

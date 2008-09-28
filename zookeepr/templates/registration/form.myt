@@ -126,7 +126,7 @@
 #%           # Number of items in the row must be the same for each row
 %           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
 %           i = j = 0
-          <p>All shirts are $20 each and made in Tasmania. More details and measurements on shirt sizes can be found on the <a href="/register">information page</a>.</p>
+          <p>All shirts are $20 each and made in Tasmania. More details and measurements on shirt sizes can be found on the <% h.link_to('registration information', url='/register/', popup=True) %>.</p>
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td><% fields[0][0] %></td>
@@ -179,7 +179,7 @@
 %           #endfor
 %       #endif
 %       if category.name == 'Accomodation':
-          <p>Please see <a href="/register/accommodation">the accomodation page</a> for prices and details, including how to book your Wrest Point room at LCA09 rates.</p>
+          <p>Please see <% h.link_to('the accomodation page', url='/register/accommodation', popup=True) %> for prices and details, including how to book your Wrest Point room at LCA09 rates.</p>
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">
@@ -243,13 +243,12 @@
               </tr>
             </table>
 
-            <p class="note">Please check the <% h.link_to('miniconfs', url="/programme/miniconfs") %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
+            <p class="note">Please check the <% h.link_to('miniconfs', url="/programme/miniconfs", popup=True) %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
 
             <p class="label"><label for="registration.opendaydrag">How many people are you bringing to Open Day?</label></p>
             <p class="entries"><% h.textfield('registration.opendaydrag', size=10) %></p>
             <p class="note">
-              <!-- <% h.link_to("Open Day", url="/programme/open-day", popup=True) %> -->
-              Open Day
+              <% h.link_to("Open Day", url="/programme/schedule/saturday", popup=True) %>
               is open to friends and family, and is targeted to a non-technical
               audience.  If you want to show off FOSS culture to some people, you can
               give us an idea of how many people to expect.
