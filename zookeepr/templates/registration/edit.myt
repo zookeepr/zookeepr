@@ -31,10 +31,10 @@ errors
 #FIXME: Partner program
 if not defaults:
     defaults = {}
-    for k in ['shell', 'editor', 'distro', 'nick', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'lasignup', 'silly_description', 'voucher_code', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
+    for k in ['shell', 'editor', 'distro', 'nick', 'keyid', 'planetfeed', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'lasignup', 'silly_description', 'voucher_code', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
         v = getattr(c.registration, k)
         if v is not None:
-            if k in ('shell', 'editor', 'distro') and v not in h.lca_rego[k + 's']:
+            if k in ('shell', 'editor', 'distro') and v not in h.lca_rego[k + 's'] and v != '':
                 defaults['registration.' + k] = 'other'
                 defaults['registration.' + k + 'text'] = getattr(c.registration, k)
             elif k == 'silly_description':
@@ -59,6 +59,11 @@ if not defaults:
             defaults['person.' + k] = getattr(c.registration.person, k)
 
     # FIXME: UGH durty hack
+    if c.registration.over18:
+        defaults['registration.over18'] = 1
+    else:
+        defaults['registration.over18'] = 0
+
     if c.registration.lasignup:
         defaults['registration.lasignup'] = 1
     else:

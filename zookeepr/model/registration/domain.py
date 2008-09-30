@@ -2,6 +2,7 @@ import datetime
 
 class Registration(object):
     def __init__(self,
+                 over18=None,
                  nick=None,
                  shell=None,
                  editor=None,
@@ -9,6 +10,8 @@ class Registration(object):
                  distro=None,
                  distrotext=None,
                  silly_description=None,
+                 keyid=None,
+                 planetfeed=None,
                  voucher_code=None,
                  diet=None,
                  special=None,
@@ -26,11 +29,14 @@ class Registration(object):
                  prevlca=None,
                  miniconf=None,
                  ):
+        self.over18 = over18
         self.nick = nick
         self.shell = shell
         self.editor = editor
         self.distro = distro
         self.silly_description = silly_description
+        self.keyid = keyid
+        self.planetfeed = planetfeed
         self.voucher_code = voucher_code
         self.diet = diet
         self.special = special

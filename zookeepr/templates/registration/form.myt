@@ -211,6 +211,9 @@
         <fieldset>
           <h2>Further Information</h2>
 
+          <p class="entries"><% h.check_box('registration.over18') %><label for="registration.over18">Are you over 18?</label></p>
+          <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
+
           <p class="label"><label for="registration.voucher_code">Voucher Code</label></p>
           <p class="entries"><% h.textfield('registration.voucher_code', size=15) %></p>
           <p class="note">If you have been provided with a voucher code enter it here.</p>
@@ -255,6 +258,19 @@
               give us an idea of how many people to expect.
             </p>
 
+            <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
+            <p class="entries">
+% for (year, desc) in h.lca_rego['past_confs']:
+%   label = 'registration.prevlca.%s' % year
+                <% h.check_box(label) %>
+                <label for="<% label %>"><% desc %></label>
+                <br>
+% #endfor
+            </p>
+          </fieldset>
+
+          <fieldset>
+            <h2>Optional</h2>
             <p class="label"><label for="registration.shell">Your favourite shell:</label></p>
             <p class="entries">
               <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
@@ -307,15 +323,13 @@
             <p class="entries"><% h.textfield('registration.nick', size=30) %></p>
             <p class="note">Your IRC nick or other handle you go by.</p>
 
-            <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
-            <p class="entries">
-% for (year, desc) in h.lca_rego['past_confs']:
-%   label = 'registration.prevlca.%s' % year
-                <br>
-                <% h.check_box(label) %>
-                <label for="<% label %>"><% desc %></label>
-% #endfor
-            </p>
+            <p class="label"><label for="registration.keyid">GnuPG/PGP Keyid:</label></p>
+            <p class="entries"><% h.textfield('registration.keyid', size=10) %></p>
+            <p class="note">If you have a GnuPG or PGP key that is stored on a public key server and would like to participate in the Conference Key Signing, please enter your keyid (e.g. A3D48B3C) here. More information about the key signing will be made available closer to the conference.</p>
+
+            <p class="label"><label for="registration.planetfeed">Planet Feed:</label></p>
+            <p class="entries"><% h.textfield('registration.planetfeed') %></p>
+            <p class="note">If you have a Blog and would like it included in the conference planet, please specify an <em>LCA specific feed</em> to be included.</p>
 
             <p class="label"><label for="registration.silly_description">Description:</label></p>
             <script src="/silly.js"></script>
@@ -324,7 +338,7 @@
             <% h.hidden_field('registration.silly_description') %>
             <% h.hidden_field('registration.silly_description_checksum') %>
             <p class="note">This is a randomly chosen description for your name badge</p>
-          </fieldset>
+
 
           <fieldset>
             <h2>Subscriptions</h2>
