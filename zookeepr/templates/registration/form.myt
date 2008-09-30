@@ -1,4 +1,5 @@
         <fieldset id="person">
+          <legend>&nbsp;</legend>
           <h2>About yourself</h2>
 
 % if not c.signed_in_person:

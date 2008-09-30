@@ -223,6 +223,20 @@ class PPEmail(validators.FancyValidator):
             raise Invalid("You must supply a valid email address for the partners programme.", value, state)
         return
 
+class ProDinner(validators.FancyValidator):
+    # If they select a professional ticket, force the dinner ticket
+    # takes dinner_field, ticket_category and ticket_id list
+    
+    def validate_python(self, value, state):
+        try:
+            ticket = int(value[self.ticket_category])
+        except:
+            #they haven't gotten a ticket yet
+            return
+        if len(value[self.dinner_field]) == 0 and ticket in self.ticket_id:
+            raise Invalid("Please fill out how many dinner tickets you would like, or 0 for none. (Note, your first ticket is free).", value, state)
+        return
+
 class PPChildrenAdult(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes current_field, adult_field
