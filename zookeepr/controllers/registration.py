@@ -52,6 +52,7 @@ class ExistingPersonSchema(BaseSchema):
     country = validators.String(not_empty=True)
 
 class RegisterSchema(BaseSchema):
+    over18 = validators.Bool()
     nick = validators.String()
     shell = validators.String()
     shelltext = validators.String()
@@ -61,6 +62,8 @@ class RegisterSchema(BaseSchema):
     distrotext = validators.String()
     silly_description = validators.String()
     silly_description_checksum = validators.String(strip=True)
+    keyid = validators.String()
+    planetfeed = validators.String()
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()

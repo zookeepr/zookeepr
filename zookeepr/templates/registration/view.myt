@@ -70,6 +70,11 @@
 
         <h2>Further Information</h2>
 
+        <p><% h.yesno(c.registration.over18) %> Are you over 18?</p>
+
+        <p class="label">Voucher Code:</p>
+        <p><% c.registration.voucher_code | h %></p>
+
         <p class="label">Dietary requirements:</p>
         <p><% c.registration.diet | h %></p>
 
@@ -103,6 +108,16 @@
           <p><% c.registration.opendaydrag %></p>
           <p class="note">Open Day is open to friends and family, and is targeted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.</p>
 
+          <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
+          <p class="entries">
+% for (year, desc) in h.lca_rego['past_confs']:
+            <br>
+            <% h.yesno(year in (c.registration.prevlca or [])) %>
+            <% desc %>
+% #endfor
+          </p>
+
+          <h2>Optional</h2>
           <p class="label">Your favourite shell:</p>
           <p><% c.registration.shell | h %>
 
@@ -116,18 +131,16 @@
           <p><% c.registration.nick | h %>
           <p class="note">Your IRC nick or other handle you go by.</p>
 
-          <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
-          <p class="entries">
-% for (year, desc) in h.lca_rego['past_confs']:
-            <br>
-            <% h.yesno(year in (c.registration.prevlca or [])) %>
-            <% desc %>
-% #endfor
-          </p>
+          <p class="label">GnuPG/PGP Keyid:</p>
+          <p><% c.registration.keyid | h %>
+
+          <p class="label">Planet Feed:</p>
+          <p><% c.registration.planetfeed %></p>
 
           <p class="label"><label for="registration.silly_description">Description:</label></p>
           <blockquote><p><% c.registration.silly_description | h %></p></blockquote>
           <p class="note">This is a randomly chosen description for your name badge</p>
+
 
           <h2>Subscriptions</h2>
 
