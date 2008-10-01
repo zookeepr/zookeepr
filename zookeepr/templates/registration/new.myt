@@ -35,10 +35,11 @@
 <& form.myt, defaults=defaults, errors=errors &>
 
         <p class="submit"><% h.submitbutton("Register me!") %></p>
-        <span class="fielddesc"><p>If you encounter any problems signing up please email <% h.contact_email() %>.</p></span>
+        <p><span class="fielddesc">If you encounter any problems signing up please email <% h.contact_email() %>.</span></p>
 
       <% h.end_form() %>
       </&>
+      </div>
 
 <%args>
 defaults

@@ -24,7 +24,7 @@ departure dates, if you're not local.</p>
 </td></tr>
 <tr class="<% oddeven() %>">
 <td colspan="2">
-<p class="entries">Phone: <% h.textfield('phone', size=40, value=c.registration.phone or c.registration.person.phone) %></p>
+<p class="entries">Phone: <% h.textfield('phone', size=40, value=c.registration.person.mobile or c.registration.person.phone) %></p>
 <p class="note">Your phone number, preferrably a mobile (cell) phone you'll
 have with you during the conference.</p>
 </td></tr>

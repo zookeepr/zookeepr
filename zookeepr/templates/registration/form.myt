@@ -58,6 +58,7 @@
         </fieldset>
 
         <fieldset id="personal">
+          <legend>&nbsp;</legend>
           <h2>Personal Information</h2>
 
           <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
@@ -119,6 +120,7 @@
 %   if len(products) > 0:
 
         <fieldset id="<% h.computer_title(category.name) %>">
+          <legend>&nbsp;</legend>
           <h2><% category.name.title() %></h2>
           <p class="note"><% category.description %></p>
 # Manual category display goes here:
@@ -209,6 +211,7 @@
 % #endfor
 
         <fieldset>
+          <legend>&nbsp;</legend>
           <h2>Further Information</h2>
 
           <p class="entries"><% h.check_box('registration.over18') %><label for="registration.over18">Are you over 18?</label></p>
@@ -219,11 +222,20 @@
           <p class="note">If you have been provided with a voucher code enter it here.</p>
 
           <p class="label"><label for="registration.diet">Dietary requirements:</label></p>
-          <p class="entries"><% h.textfield('registration.diet', size=100) %></p>
+          <p class="entries"><% h.textfield('registration.diet', size=70) %></p>
 
           <p class="label"><label for="registration.special">Other special requirements</label></p>
-          <p class="entries"><% h.textfield('registration.special', size=100) %></p>
+          <p class="entries"><% h.textfield('registration.special', size=70) %></p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
+
+            <p class="label"><label for="registration.opendaydrag">How many people are you bringing to Open Day?</label></p>
+            <p class="entries"><% h.textfield('registration.opendaydrag', size=10) %></p>
+            <p class="note">
+              <% h.link_to("Open Day", url="/programme/schedule/saturday", popup=True) %>
+              is open to friends and family, and is targeted to a non-technical
+              audience.  If you want to show off FOSS culture to some people, you can
+              give us an idea of how many people to expect.
+            </p>
 
           <p class="label"><label for="registration.miniconfs">Preferred mini-confs:</label></p>
           <p class="entries">
@@ -249,15 +261,6 @@
 
             <p class="note">Please check the <% h.link_to('miniconfs', url="/programme/miniconfs", popup=True) %> page for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
 
-            <p class="label"><label for="registration.opendaydrag">How many people are you bringing to Open Day?</label></p>
-            <p class="entries"><% h.textfield('registration.opendaydrag', size=10) %></p>
-            <p class="note">
-              <% h.link_to("Open Day", url="/programme/schedule/saturday", popup=True) %>
-              is open to friends and family, and is targeted to a non-technical
-              audience.  If you want to show off FOSS culture to some people, you can
-              give us an idea of how many people to expect.
-            </p>
-
             <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
             <p class="entries">
 % for (year, desc) in h.lca_rego['past_confs']:
@@ -270,6 +273,7 @@
           </fieldset>
 
           <fieldset>
+            <legend>&nbsp;</legend>
             <h2>Optional</h2>
             <p class="label"><label for="registration.shell">Your favourite shell:</label></p>
             <p class="entries">
@@ -332,15 +336,16 @@
             <p class="note">If you have a Blog and would like it included in the conference planet, please specify an <em>LCA specific feed</em> to be included.</p>
 
             <p class="label"><label for="registration.silly_description">Description:</label></p>
-            <script src="/silly.js"></script>
+            <script src="/silly.js" type="text/javascript"></script>
             <blockquote><p id='silly_description'><% defaults['registration.silly_description'] %></p></blockquote>
 #            <p><% h.button_to_function('New Description', function='silly_description()') %></p>
             <% h.hidden_field('registration.silly_description') %>
             <% h.hidden_field('registration.silly_description_checksum') %>
             <p class="note">This is a randomly chosen description for your name badge</p>
 
-
+          </fieldset>
           <fieldset>
+            <legend>&nbsp;</legend>
             <h2>Subscriptions</h2>
 
             <p class="entries">
@@ -361,6 +366,7 @@
 
 % if is_speaker:
           <fieldset>
+            <legend>&nbsp;</legend>
             <h2>Speaker recording consent and release</h2>
             <p>As a service to Linux Australia members and to other interested Linux users,
             Linux Australia would like to make your presentation available to the public.
