@@ -611,13 +611,100 @@
 		padding-left: 5px;
 	}
 
-
-   .pay_button
-   {
-      padding: 1em;
+	.pay_button
+	{
+		padding: 1em;
 		margin-left: 60px;
 		margin-right: 40px;
-      border: 1px solid #ccc;
-      background: url(images/fieldset_bg.png);
-      width: 250px;
-   }
+		border: 1px solid #ccc;
+		background: url(images/fieldset_bg.png);
+		width: 250px;
+	}
+
+	.talk_title
+	{
+		padding-left:0;
+		padding-right:0;
+	}
+
+	.programme_room_header
+	{
+		border-bottom: none;
+	}
+
+	.empty_cell
+	{
+		background: white;
+	}
+
+	.programme_time_slot, .programme_slot
+	{
+		border-right: #afafff 1px dotted;
+	}
+
+	.programme_keynote
+	{
+		font-weight: bold;
+		font-style: oblique;
+	}
+
+	.schedule_menu
+	{
+		padding: 0;
+		margin-top: 0;
+		margin-bottom: 0;
+		list-style-type: none;
+		text-align: center;
+		width:819px;
+		margin-left: auto;
+		margin-right: auto;
+	}
+
+	.schedule_menu li
+	{
+		margin: 0 2px;
+		padding: 105px 0 0 0;
+		float: left;
+		width: 113px;
+		height: 91px;
+		font-family:"Arial",sans-serif;
+	}
+
+	.schedule li a
+	{
+	}
+
+	.week_link
+	{
+		background-image: url(/images/schedule/week_back.png);
+	}
+
+	.monday_link
+	{
+		background-image: url(/images/schedule/monday_back.png);
+	}
+
+	.tuesday_link
+	{
+		background-image: url(/images/schedule/tuesday_back.png);
+	}
+
+	.wednesday_link
+	{
+		background-image: url(/images/schedule/wednesday_back.png);
+	}
+
+	.thursday_link
+	{
+		background-image: url(/images/schedule/thursday_back.png);
+	}
+
+	.friday_link
+	{
+		background-image: url(/images/schedule/friday_back.png);
+	}
+
+	.saturday_link
+	{
+		background-image: url(/images/schedule/saturday_back.png);
+	}
