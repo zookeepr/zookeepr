@@ -18,10 +18,10 @@
     <& friday.myt &>
     <& saturday.myt &>
 % elif c.day.lower() == 'monday':
-    <h2>Schedule for Monday</h2>
+    <h2>Miniconfs for Monday</h2>
     <& monday.myt &>
 % elif c.day.lower() == 'tuesday':
-    <h2>Schedule for Tuesday</h2>
+    <h2>Miniconfs for Tuesday</h2>
     <& tuesday.myt &>
 % elif c.day.lower() == 'wednesday':
     <h2>Schedule for Wednesday</h2>
