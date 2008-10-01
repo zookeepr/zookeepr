@@ -16,6 +16,25 @@ class ScheduleController(BaseController):
                  'friday':    date(2009,1,23),
                  'saturday':  date(2009,1,24)}
 
+    def __before__(self, **kwargs):
+        c.get_talk = self._get_talk
+
+    def _get_talk(self, talk_id):
+        """ Return a proposal object """
+        return self.dbsession.query(Proposal).filter_by(id=talk_id).first()
+
+    def view_talk(self, id):
+        try:
+            c.day = request.GET['day']
+        except:
+            c.day = 'all'
+        try:
+            c.talk = self.dbsession.query(Proposal).filter_by(id=id,accepted=True).one()
+        except:
+            abort(404)
+
+        return render_response('schedule/view_talk.myt')
+
     def index(self, day):
         c.day = day.lower()
         c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
@@ -35,4 +54,4 @@ class ScheduleController(BaseController):
                     if c.programme[talk_day][talk.building].has_key(talk.theatre) is not True:
                         c.programme[talk_day][talk.building][talk.theatre] = []
                     c.programme[talk_day][talk.building][talk.theatre].append(talk)
-        return render_response('schedule/table.myt')
+        return render_response('schedule/list.myt')

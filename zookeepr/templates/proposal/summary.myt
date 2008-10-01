@@ -55,6 +55,7 @@ function toggleDiv(id,flagit) {
 <ul>
 <li><a href="/admin/proposals_by_strong_rank">List of proposals by number of certain score / number of reviewers</a></li>
 <li><a href="/admin/proposals_by_max_rank">List of proposals by max score, min score then average</a></li>
+<li><a href="/admin/proposals_by_stream">List of proposals by stream and score</a></li>
 </ul>
 </div>
 
