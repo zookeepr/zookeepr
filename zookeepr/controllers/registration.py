@@ -14,6 +14,8 @@ from zookeepr.controllers.person import PersonSchema
 from zookeepr.model.billing import ProductCategory, Product, Voucher
 from zookeepr.model.registration import Registration
 
+from zookeepr.config.lca_info import lca_info
+
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         rego = None
@@ -202,6 +204,10 @@ class RegistrationController(SecureController, Update, List, Read):
         able, response = self._able_to_register()
         if not able:
             return render_response("registration/error.myt", error=response)
+        
+        if lca_info['conference_status'] is not 'open':
+            redirect_to('/registration/status')
+            return
         errors = {}
         defaults = dict(request.POST)
 
