@@ -27,13 +27,7 @@ and follow the instructions to finalise your payment.
 % #endif
 
 
-Your registration details are:
- Dietary requirements:
-    <% c.registration.diet %>
-
- Other requirements:
-    <% c.registration.special %>
-
+Your personal details are:
   Address: <% c.registration.person.address1 %>
            <% c.registration.person.address2 %>
            <% c.registration.person.city %>
@@ -41,13 +35,8 @@ Your registration details are:
            <% c.registration.person.country %>
     Phone: <% c.registration.person.phone %>
   Company: <% c.registration.person.company %>
- IRC Nick: <% c.registration.nick %>
 
-    Shell: <% c.registration.shell %>
-   Editor: <% c.registration.editor %>
-   Distro: <% c.registration.distro %>
-
-If you want to change your details, please log into the website.
+If you wish to change your details, please log into the website.
 
 Thanks again, and have a great day!
 

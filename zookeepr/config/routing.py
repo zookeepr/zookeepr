@@ -51,15 +51,11 @@ def make_map():
     m.connect('/programme/schedule/:day', controller='schedule', action='index', day='all')
     m.connect('/programme/schedule/view_talk/:id', controller='schedule', action='view_talk', id=None)
 
-    # Verify stuff from commsecure
-
-    m.connect('/invoice/verify', controller='invoice', action='verify', id=None)
-
     # Invoice Reminder
     m.connect('/invoice/pdf/:id', controller='invoice', action='pdf', id=None)
-    m.connect('/invoice/remind', controller='invoice', action='remind', id=None)
-    m.connect('/registration/remind', controller='registration', action='remind', id=None)
-    m.connect('/registration/status', controller='registration', action='status', id=None)
+    #m.connect('/invoice/remind', controller='invoice', action='remind', id=None)
+    #m.connect('/registration/remind', controller='registration', action='remind', id=None)
+    m.connect('/register/status', controller='registration', action='status', id=None)
     m.connect('/registration/silly_description', controller='registration', action='silly_description', id=None)
     m.connect('/registration/volunteer', controller='registration', action='volunteer_redirect', id=None)
     m.connect('/registration/professional', controller='registration', action='professional', id=None)

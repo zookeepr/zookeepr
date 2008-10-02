@@ -125,7 +125,8 @@ class Product(object):
     def qty_invoiced(self):
         qty = 0
         for ii in self.invoice_items:
-            if not ii.invoice.void and not ii.invoice.overdue():
+            # also count sold items as invoiced since they are valid
+            if not ii.invoice.void and (ii.invoice.paid() or not ii.invoice.overdue()):
                 if self.category.name == 'Accomodation':
                     qty += 1
                 else:
