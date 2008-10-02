@@ -93,7 +93,7 @@
 % for day, miniconfs in h.lca_rego['miniconfs']:
               <td>
 %   for miniconf in miniconfs:
-%       l = '%s' % miniconf.replace(' ', '_').replace('.', '_')
+%       l = '%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_'))
                 <% h.yesno(l in (c.registration.miniconf or [])) %>
                 <% miniconf %>
                 <br>

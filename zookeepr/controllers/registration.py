@@ -95,6 +95,15 @@ class UpdateRegistrationSchema(BaseSchema):
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [variabledecode.NestedVariables]
 
+class ProductUnavailable(Exception):
+    """Exception when a product isn't available
+    Attributes:
+        product -- the product that wasn't available
+    """
+
+    def __init__(self, product):
+        self.product = product
+
 class RegistrationController(SecureController, Update, List, Read):
     individual = 'registration'
     model = model.Registration
@@ -350,19 +359,85 @@ class RegistrationController(SecureController, Update, List, Read):
     def pay(self, id, quiet=0):
         registration = self.obj
 
+        # Checks all existing invoices and invalidates them if a product is not available
+        self.check_invoices(registration.person.invoices)
+
+        try:
+            invoice = self.create_invoice(registration)
+        except ProductUnavailable, inst:
+            if quiet: return
+            return render_response("registration/product_unavailable.myt", product=inst.product)
+
+        if c.registration.voucher:
+            self.apply_voucher(invoice, c.registration.voucher)
+
+        # complicated check to see whether invoice is already in the system
+        new_invoice = invoice
+        for old_invoice in registration.person.invoices:
+            if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
+                if self.invoices_identical(old_invoice, new_invoice):
+                    for ii in new_invoice.items:
+                        self.dbsession.expunge(ii)
+                    self.dbsession.expunge(new_invoice)
+                    invoice = old_invoice
+                else:
+                    if old_invoice.due_date < new_invoice.due_date:
+                        new_invoice.due_date = old_invoice.due_date
+                    ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
+                    self.dbsession.save(ii2)
+                    old_invoice.items.append(ii2)
+                    old_invoice.void = True
+
+        invoice.last_modification_timestamp = datetime.datetime.now()
+        self.dbsession.save_or_update(invoice)
+        self.dbsession.flush()
+
+        if quiet: return
+        redirect_to(controller='invoice', action='view', id=invoice.id)
+
+    def check_invoices(self, invoices):
+        for invoice in invoices:
+            if not invoice.void and not invoice.paid():
+                for ii in invoice.items:
+                    if ii.product and not self._product_available(ii.product):
+                        ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
+                        self.dbsession.save(ii2)
+                        invoice.items.append(ii2)
+                        invoice.void = True
+
+    def invoices_identical(self, invoice1, invoice2):
+        if invoice1.total() == invoice2.total():
+            if len(invoice1.items) == len(invoice2.items):
+                matched_products = 0
+                for invoice1_item in invoice1.items:
+                    for invoice2_item in invoice2.items:
+                        if invoice1_item.product == invoice2_item.product and invoice1_item.description == invoice2_item.description and invoice1_item.qty == invoice2_item.qty and invoice1_item.cost == invoice2_item.cost:
+                            matched_products += 1
+                if len(invoice1.items) == matched_products:
+                    return True
+        return False
+
+    def create_invoice(self, registration):
+        # Create Invoice
         invoice = model.Invoice()
         invoice.person = registration.person
         invoice.manual = False
 
-        # Create Invoice
+        # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
-            ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
-            ii.product = rproduct.product
-            product_expires = rproduct.product.available_until() 
-            if product_expires != None and product_expires < invoice.due_date:
-                invoice.due_date = product_expires
-            self.dbsession.save(ii)
-            invoice.items.append(ii)
+            if self._product_available(rproduct.product):
+                ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
+                ii.product = rproduct.product
+                product_expires = rproduct.product.available_until()
+                if product_expires != None and product_expires < invoice.due_date:
+                    invoice.due_date = product_expires
+                self.dbsession.save(ii)
+                invoice.items.append(ii)
+            else:
+                for ii in invoice.items:
+                    self.dbsession.expunge(ii)
+                self.dbsession.expunge(invoice)
+                raise ProductUnavailable(rproduct.product)
 
         # Check for included products
         for ii in invoice.items:
@@ -390,75 +465,27 @@ class RegistrationController(SecureController, Update, List, Read):
                         self.dbsession.save(discount_item)
                         invoice.items.append(discount_item)
 
+        return invoice
+
+    def apply_voucher(self, invoice, voucher):
         # Voucher code calculation
-        if c.registration.voucher:
-            voucher = c.registration.voucher
-            for vproduct in voucher.products:
-                for ii in invoice.items:
-                    # if we have a category match
-                    if ii.product.category == vproduct.product.category:
-                        # The qty we will give
-                        if ii.qty < vproduct.qty:
-                            qty = ii.qty
-                        else:
-                            qty = vproduct.qty
+        for vproduct in voucher.products:
+            for ii in invoice.items:
+                # if we have a category match
+                if ii.product.category == vproduct.product.category:
+                    # The qty we will give
+                    if ii.qty < vproduct.qty:
+                        qty = ii.qty
+                    else:
+                        qty = vproduct.qty
 
-                        # the discount we will give
-                        max_discount = vproduct.product.cost * vproduct.percentage / 100
-                        if ii.product.cost >= max_discount:
-                            discount = max_discount
-                        else:
-                            discount = ii.product.cost
-                        discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
-                        self.dbsession.save(discount_item)
-                        invoice.items.append(discount_item)
-                        break
-
-
-        # complicated check to see whether invoices are already in the system
-        new_invoice = invoice
-        for old_invoice in registration.person.invoices:
-            if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
-                if self.invoices_identical(old_invoice, new_invoice):
-                    for ii in new_invoice.items:
-                        self.dbsession.expunge(ii)
-                    self.dbsession.expunge(new_invoice)
-                    invoice = old_invoice
-                else:
-                    if old_invoice.due_date < new_invoice.due_date:
-                        new_invoice.due_date = old_invoice.due_date
-                    ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
-                    self.dbsession.save(ii2)
-                    old_invoice.items.append(ii2)
-                    old_invoice.void = True
-
-        for ii in invoice.items:
-            if ii.product and not self._product_available(ii.product):
-                ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
-                self.dbsession.save(ii2)
-                invoice.items.append(ii2)
-                invoice.void = True
-
-        invoice.last_modification_timestamp = datetime.datetime.now()
-        if invoice.void:
-            self.dbsession.expunge(invoice)
-            self.dbsession.save_or_update(invoice)
-            return render_response("registration/product_unavailable.myt", product=rproduct.product)
-
-        self.dbsession.save_or_update(invoice)
-        self.dbsession.flush()
-
-        if quiet: return
-        redirect_to(controller='invoice', action='view', id=invoice.id)
-
-    def invoices_identical(self, invoice1, invoice2):
-        if invoice1.total() == invoice2.total():
-            if len(invoice1.items) == len(invoice2.items):
-                matched_products = 0
-                for invoice1_item in invoice1.items:
-                    for invoice2_item in invoice2.items:
-                        if invoice1_item.product == invoice2_item.product and invoice1_item.description == invoice2_item.description and invoice1_item.qty == invoice2_item.qty and invoice1_item.cost == invoice2_item.cost:
-                            matched_products += 1
-                if len(invoice1.items) == matched_products:
-                    return True
-        return False
+                    # the discount we will give
+                    max_discount = vproduct.product.cost * vproduct.percentage / 100
+                    if ii.product.cost >= max_discount:
+                        discount = max_discount
+                    else:
+                        discount = ii.product.cost
+                    discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
+                    self.dbsession.save(discount_item)
+                    invoice.items.append(discount_item)
+                    break

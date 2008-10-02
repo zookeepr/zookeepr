@@ -104,10 +104,11 @@ class Person(object):
     def paid(self):
         status = False
         for invoice in self.invoices:
-            if not invoice.void and not invoice.paid():
-                return False
-            else:
-                status = True
+            if not invoice.void:
+                if invoice.paid():
+                    status = True
+                else:
+                    return False
         return status
 
     def __repr__(self):

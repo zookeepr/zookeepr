@@ -58,14 +58,14 @@
 featured = []
 count = 0
 limit = 4
-for d in c.db_content_news:
+for d in c.db_content_news_all:
     if (h.featured_image(d.title) is not False) and (count < limit):
         featured.append(d)
         count += 1
 </%init>
 
 <%method big_promotion>
-%for d in c.db_content_news:
+%for d in c.db_content_news_all:
 %    directory = h.featured_image(d.title, big = True)
 %    if directory is not False:
 			<div class = 'news_banner'>
@@ -84,7 +84,7 @@ for d in c.db_content_news:
 </%method>
 
 <%method extra_head>
-%for d in c.db_content_news:
+%for d in c.db_content_news_all:
 %    directory = h.featured_image(d.title, big = True)
 %    if directory is not False:
 <style type="text/css">
