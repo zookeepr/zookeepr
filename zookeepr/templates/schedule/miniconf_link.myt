@@ -9,12 +9,13 @@
 %    speakers = '%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1])
 % #endif
 % miniconf_url = h.url(controller='schedule', action='view_miniconf', id=miniconf.id)
-% teaser = h.make_teaser(h.truncate(miniconf.abstract, length=500))
+% teaser = h.make_teaser(h.truncate(miniconf.abstract, length=400))
 % readmore = ''
-% if teaser[1]:
+% if teaser[1] or len(miniconf.abstract) > 400:
 %   readmore = ' ' + h.link_to('read more', url=miniconf_url)
 % #endif
 
+<a name="<% h.computer_title(miniconf.title) %>"></a>
 <h3><% h.link_to(h.esc(miniconf.title), url=miniconf_url) %></h3>
 <blockquote>
 <p><% h.line_break(h.esc(teaser[0])) %><% readmore %></p>
