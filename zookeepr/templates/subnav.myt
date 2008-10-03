@@ -19,6 +19,8 @@ submenus = h.lca_submenus
 
 # The current URL can be accessed as h.url()()
 url = h.url()()
+# Hack for schedule url
+if url.startswith('/schedule'): url = '/programme' + url
 where = ''
 map = h.lca_menu
 
