@@ -23,6 +23,18 @@ class ScheduleController(BaseController):
         """ Return a proposal object """
         return self.dbsession.query(Proposal).filter_by(id=talk_id).first()
 
+    def view_miniconf(self, id):
+        try:
+            c.day = request.GET['day']
+        except:
+            c.day = 'all'
+        try:
+            c.talk = self.dbsession.query(Proposal).filter_by(id=id,accepted=True).one()
+        except:
+            abort(404)
+
+        return render_response('schedule/view_miniconf.myt')
+
     def view_talk(self, id):
         try:
             c.day = request.GET['day']
