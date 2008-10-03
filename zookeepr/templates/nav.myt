@@ -12,7 +12,8 @@
 <%init>
 # The current URL can be accessed as h.url()()
 url = h.url()()
-
+# Hack for schedule url
+if url.startswith('/schedule'): url = '/programme' + url
 mm = h.lca_menu
 
 where = ''
