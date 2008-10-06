@@ -204,9 +204,9 @@ class RegistrationController(SecureController, Update, List, Read):
         able, response = self._able_to_register()
         if not able:
             return render_response("registration/error.myt", error=response)
-        
+
         if lca_info['conference_status'] is not 'open':
-            redirect_to('/registration/status')
+            redirect_to(h.link_for(action='status'))
             return
         errors = {}
         defaults = dict(request.POST)
@@ -236,7 +236,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.pay(c.registration.id, quiet=1)
 
                 if c.signed_in_person:
-                    redirect_to('/registration/status')
+                    redirect_to(h.url_for(action='status'))
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                                defaults=defaults, errors=errors)
@@ -260,9 +260,8 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.obj = c.registration
                 self.pay(c.registration.id, quiet=1)
 
-                redirect_to('/registration/status')
-        return render_response("registration/edit.myt",
-                               defaults=defaults, errors=errors)
+                redirect_to(h.url_for(action='status'))
+        return render_response("registration/edit.myt", defaults=defaults, errors=errors)
 
     def save_details(self, result):
         # Store Registration details
