@@ -9,7 +9,7 @@ Thank you for your registration!
 <p>
 An email has been sent to you at <em><% c.person.email_address | h %></em> with details of your registration. 
 % if 'signed_in_person_id' in session:
-To complete the registration process (generate and pay your invoice) please go to the <% h.link_to('registration status page', url=h.url(action='status') %>.
+To complete the registration process (generate and pay your invoice) please go to the <% h.link_to('registration status page', url=h.url(action='status')) %>.
 % else:
 To complete the registration process (allowing you to log in again to modify your details and pay your invoice) please follow the instructions in that message.
 % #endif
