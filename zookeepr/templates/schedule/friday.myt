@@ -7,8 +7,8 @@
       <th class="programme_room" align="center" valign="top">Stanley Burbury 1</th>
       <th class="programme_room" align="center" valign="top">Arts Lecture Theatre</th>
       <th class="programme_room" align="center" valign="top">Stanley Burbury 2</th>
-      <th class="programme_room" align="center" valign="top">Stanley Burbury 1</th>
-      <th class="programme_room" align="center" valign="top">Stanley Burbury 2</th>
+      <th class="programme_room" align="center" valign="top">Social Science 1</th>
+      <th class="programme_room" align="center" valign="top">Social Science 2</th>
     </tr>
   </thead>
 
