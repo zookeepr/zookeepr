@@ -15,8 +15,8 @@
 % #endif
 
 % if not 'signed_in_person_id' in session:
-      <p>If you already have an account (through a submitting a proposal, or other interaction with this site), then please <a href="/person/signin">sign in</a>.</p>
-      <p>If you can't log in, you can try <% h.link_to('recovering your password', url=h.url(controller='person', action='forgotten_password', id=None)) %>.</p>
+      <p>If you already have an account (through a submitting a proposal, or other interaction with this site), then please <% h.link_to('sign in', url=h.url(controller='person', action='signin')) %>.</p>
+      <p>If you can't log in, you can try <% h.link_to('recovering your password', url=h.url(controller='person', action='forgotten_password')) %>.</p>
 % #endif
 
 % if errors:

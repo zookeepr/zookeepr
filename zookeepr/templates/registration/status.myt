@@ -42,7 +42,7 @@
     <p><% h.link_to('Sign in', h.url(controller='person', action='signin')) %> if you already have an account
     (you've already registered, submitted a proposal or similar).  If you can't log in, you can try
     <% h.link_to('recovering your password', h.url(controller='person', action='forgotten_password')) %>.</p>
-%   session['sign_in_redirect'] = '/registration/status'
+%   session['sign_in_redirect'] = h.url_for(action='status')
 %   session.save()
 
     <p><b><% h.link_to('Go directly to the registration form', h.url(action='new')) %> otherwise.</b></p>
@@ -128,7 +128,7 @@
     invoice <% c.signed_in_person.invoices[0].id %>.</p>
 
     <h3>Other option</h3>
-    <a href="/registration/<% c.signed_in_person.registration.id %>">View registration details</a><br>
+    <% h.link_to('View registration details', url=h.url(action='view', id=c.signed_in_person.registration.id)) %><br>
 
 % else:
     <p>Interesting!</p>

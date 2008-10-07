@@ -3,8 +3,6 @@
 <p>Unfortunately, registration is now closed.</p>
 
 <p>If you have a voucher code, please
-<a href="/registration/<% c.signed_in_person.registration.id %>/edit"
->edit your registration details</a> and enter it.</p>
+<% h.link_to('edit your registration details', url=h.url(action='edit', id=c.signed_in_person.registration.id)) %> and enter it.</p>
 
-<p>You can also go to the <a href="/registration/status">registration
-status page</a>.</p>
+<p>You can also go to the <% h.link_to('registration status page', url=h.url(action='status')) %>.</p>
