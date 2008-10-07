@@ -52,7 +52,7 @@
     <p>If two or more people are presenting together, this information should for the primary speaker; mention the other speakers in the Abstract, eg. "(with Bob Vaxhacker and Eve Duo)".</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="name">Speaker name:</label></p>
-    <p class="entries"><% h.textfield('name', value=c.person.firstname + " " + c.person.lastname, size=70,disabled=True) %></p>
+    <p class="entries"><% h.textfield('name', value=c.signed_in_person.firstname + " " + c.signed_in_person.lastname, size=70,disabled=True) %></p>
     <p class="note">(Can't be changed here.)</p>
 
     <p class="label"><span class="mandatory">*</span><label for="person.mobile">Speaker mobile phone:</label></p>
