@@ -1,6 +1,6 @@
         <h2>Your registration details</h2>
         <p>Here are the registration details we have for you.</p>
-        <p><a href="/registration/status">Registration status</a></p>
+        <p><% h.link_to('Registration status', url=h.url(action='status')) %></p>
 
         <h2>About yourself</h2>
 
