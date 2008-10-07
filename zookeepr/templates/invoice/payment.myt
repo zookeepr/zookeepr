@@ -42,7 +42,7 @@ payment.
 <input type="hidden" name="reply_link_url"
   value="http://<% h.host_name() %>/payment/new?invoice_id=&amp;payment_amount=&amp;bank_reference=&amp;payment_number=">
 <input type="hidden" name="return_link_url"
-  value="http://<% h.host_name() %>/registration/status">
+  value="http://<% h.host_name() %>/register/status">
 <input type="hidden" name="return_link_text"
   value="Return to the linux.conf.au website">
 </p>
