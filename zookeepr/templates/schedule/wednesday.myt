@@ -20,8 +20,8 @@
       </td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">9:25&nbsp;-&nbsp;10:15</th>
-      <td class="programme_keynote" colspan="5" align="center" valign="top">
+      <th class="programme_slot" align="center" valign="middle">9:25&nbsp;-&nbsp;10:15</th>
+      <td class="programme_keynote" colspan="5" align="center" valign="middle">
         Keynote 1 - Tom Limoncelli
       </td>
     </tr>
@@ -50,7 +50,7 @@
       <td class="morning_tea" colspan="5" align="center" valign="middle">Lunch</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">13:45&nbsp;-&nbsp;15:30</th>
+      <th class="programme_slot" align="center" valign="top">Tutorial<br>13:45&nbsp;-&nbsp;15:30</th>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=40 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=43 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=164 &></td>

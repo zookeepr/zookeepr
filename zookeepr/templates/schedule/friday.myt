@@ -20,8 +20,8 @@
       </td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">9:25&nbsp;-&nbsp;10:15</th>
-      <td class="programme_keynote" colspan="5" align="center" valign="top">
+      <th class="programme_slot" align="center" valign="middle">9:25&nbsp;-&nbsp;10:15</th>
+      <td class="programme_keynote" colspan="5" align="center" valign="middle">
         Keynote 3 - Simon Phipps
       </td>
     </tr>
@@ -79,7 +79,7 @@
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">17:00&nbsp;-&nbsp;17:50</th>
-      <td class="morning_tea" colspan="5" align="center" valign="middle"><b>Conference Close/Lightning Talks/BOFs</b></td>
+      <td class="programme_keynote" colspan="5" align="center" valign="middle">Conference Close/Lightning Talks/BOFs</td>
     </tr>
   </tbody>
 </table>
