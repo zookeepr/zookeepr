@@ -206,7 +206,7 @@ class RegistrationController(SecureController, Update, List, Read):
             return render_response("registration/error.myt", error=response)
 
         if lca_info['conference_status'] is not 'open':
-            redirect_to(h.link_for(action='status'))
+            redirect_to(h.url_for(action='status'))
             return
         errors = {}
         defaults = dict(request.POST)
