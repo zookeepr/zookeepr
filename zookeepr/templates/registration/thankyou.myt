@@ -23,7 +23,7 @@ If you do not receive this message in a reasonable timeframe, please contact us 
 <p>
 Return to
 % if 'signed_in_person_id' in session:
-the <% h.link_to('registration status page', url=h.url(action='status') %> or
+the <% h.link_to('registration status page', url=h.url(action='status')) %> or
 % #endif
 the <% h.link_to('main page', url=h.url('home')) %>.
 </p>
