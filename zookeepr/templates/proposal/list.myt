@@ -34,7 +34,7 @@
 %     #endif
     <td>
 %     for p in s.people:
-      <% h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %>
+      <% h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address or p.id, url=h.url(controller='person', action='view', id=p.id)) %><br>
 %     #endfor
     </td>
     <td>
