@@ -37,6 +37,8 @@
     <& friday.myt &>
 % #endif
 
+<p class="note"><i>Schedule is subject to change without notice.</i></p>
+
 
 <%method title>
 Schedule - <& PARENT:title &>

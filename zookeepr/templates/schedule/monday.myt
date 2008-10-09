@@ -1,5 +1,5 @@
 % day = 'monday'
-% miniconfs = [8, 157, 9, 132, 49, 116, 121, 26]
+% miniconfs = [8, 157, 9, 49, 83, 116, 121, 26]
 % contents = ''
 % for mid in miniconfs:
 %   miniconf = c.get_talk(mid)
