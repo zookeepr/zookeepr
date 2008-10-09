@@ -22,6 +22,9 @@
 </table>
 <p>(<% rows |h %> rows)</p>
 
+<br>
+<p><% h.link_to("Back to admin list", h.url(controller='admin')) %></p>
+
 <%init>
 def oddeven():
   while 1:

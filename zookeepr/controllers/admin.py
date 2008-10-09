@@ -87,6 +87,64 @@ class AdminController(SecureController):
             c.text = render('admin/table.myt', fragment=True)
         return render_response('admin/text.myt')
 
+    def activate_talks(self):
+        """
+        Set the talks to accepted as per the list in the admin controller. [Schedule]
+        """
+        # {theatre: [id's]}
+        miniconfs = {'Unknown': (8,32,157,83,108,49,132,9,26,116,121,201)}
+        tutorials = {'Stanley Burbury 1': (40,143),
+                     'Arts Lecture Theatre': (43,181),
+                     'Stanley Burbury 2': (164,151),
+                     'Social Science 1': (112,5),
+                     'Social Science 2': (198,89)}
+        presentations = {'Stanley Burbury 1': (205,11,225,219,48,87,90,156,175,203,189,126),
+                     'Arts Lecture Theatre': (218,173,22,84,131,45,56,13,91,178,106,171,30),
+                     'Stanley Burbury 2': (136,125,78,99,209,122,29,179,210,64,79,124,105),
+                     'Social Science 1': (77,148,208,52,66,187,93,139,158,176,166,76,172),
+                     'Social Science 2': (149,123,211,192,96,161,160,119,152,46,145,72,217)}
+        
+        sql_execute("UPDATE proposal SET accepted = FALSE, theatre = NULL") # set all talks to unaccepted to start
+        
+        for collection in (miniconfs, tutorials, presentations):
+            for (room, ids) in collection.iteritems():
+                sql_execute("UPDATE proposal SET theatre = '%s', accepted = TRUE WHERE id IN %s" % (room, str(ids)))
+        c.text = "<p>Updated successfully</p>"
+        return render_response("admin/text.myt")
+
+    def rej_papers_abstracts(self):
+        """ Rejected papers, with abstracts (for the miniconf organisers)
+        [miniconf] """
+        return sql_response("""
+SELECT
+    proposal.id, 
+    proposal.title, 
+    proposal_type.name AS "proposal type",
+    proposal.project,
+    proposal.url as project_url,
+    proposal.abstract,
+    person.firstname || ' ' || person.lastname as name,
+    person.email_address,
+    person.url as homepage,
+    person.bio,
+    person.experience,
+    stream.name AS stream,
+    MAX(review.score),
+    MIN(review.score),
+    AVG(review.score)
+FROM proposal 
+    LEFT JOIN review ON (proposal.id=review.proposal_id)
+    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+    LEFT JOIN stream ON (review.stream_id=stream.id)
+    LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
+    LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+WHERE
+    review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
+    AND proposal.proposal_type_id != 2
+GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
+ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+        """)
+
     def collect_garbage(self):
         """
         Invoke the garbage collector. [ZK]
@@ -258,6 +316,11 @@ def csv_response(sql):
     res.headers['Content-Disposition']='attachment; filename="table.csv"'
     return res
 
+def sql_execute(sql):
+    import zookeepr.model
+    res = zookeepr.model.metadata.bind.execute(sql)
+    return res
+
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
     of results from the given SQL statement.
@@ -271,7 +334,7 @@ def sql_response(sql):
     if request.GET.has_key('csv'):
         return csv_response(sql)
     import zookeepr.model
-    res = zookeepr.model.metadata.bind.execute(sql);
+    res = zookeepr.model.metadata.bind.execute(sql)
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql

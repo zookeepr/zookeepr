@@ -18,39 +18,7 @@
             WHERE pr.code > 0;
         """)
         
-        
-
-    def rej_papers(self):
-        """ Rejected papers, without abstracts (for the miniconf
-        organisers) [CFP,miniconf] """
-        return sql_response("""
-          select distinct miniconf, proposal.id as p,
-            firstname || ' ' || lastname as name,
-            title, project,
-            proposal.url, email_address as email, person.url as homepage
-          from proposal, person, person_proposal_map, review
-          where person_id = person.id and review.proposal_id = proposal.id
-            and person_proposal_map.proposal_id = proposal.id
-            and account_id = account.id and account_id = person.id 
-            and proposal_type_id = 1 and accepted is null
-          order by miniconf, proposal.id
-        """)
-    def rej_papers_abstracts(self):
-        """ Rejected papers, with abstracts (for the miniconf organisers)
-        [CFP,miniconf] """
-        return sql_response("""
-          select distinct miniconf, proposal.id as p,
-            firstname || ' ' || lastname as name,
-            title, project,
-            abstract,
-            proposal.url, email_address as email, person.url as homepage
-          from proposal, person, person_proposal_map, review
-          where person_id = person.id and review.proposal_id = proposal.id
-            and person_proposal_map.proposal_id = proposal.id
-            and account_id = person.id 
-            and proposal_type_id = 1 and accepted is null
-          order by miniconf, proposal.id
-        """)
+       
     def acc_papers(self):
         """ Accepted papers (for miniconf organisers)
         [CFP,miniconf,speaker,AV]"""
