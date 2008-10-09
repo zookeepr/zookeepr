@@ -61,7 +61,7 @@
       <th class="programme_slot" align="center" valign="top">14:45&nbsp;-&nbsp;15:35</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=189 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=171 &></td>
-      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=124 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=33 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=76 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=72 &></td>
     </tr>

@@ -98,9 +98,9 @@ class AdminController(SecureController):
                      'Stanley Burbury 2': (164,151),
                      'Social Science 1': (112,5),
                      'Social Science 2': (198,89)}
-        presentations = {'Stanley Burbury 1': (205,11,225,219,48,87,90,156,175,203,189,126),
+        presentations = {'Stanley Burbury 1': (51,205,11,225,219,48,87,90,156,175,203,189,126),
                      'Arts Lecture Theatre': (218,173,22,84,131,45,56,13,91,178,106,171,30),
-                     'Stanley Burbury 2': (136,125,78,99,209,122,29,179,210,64,79,124,105),
+                     'Stanley Burbury 2': (136,12,78,99,209,122,29,179,210,64,79,33,105),
                      'Social Science 1': (77,148,208,52,66,187,93,139,158,176,166,76,172),
                      'Social Science 2': (149,123,211,192,96,161,160,119,152,46,145,72,217)}
         
@@ -114,7 +114,7 @@ class AdminController(SecureController):
 
     def rej_papers_abstracts(self):
         """ Rejected papers, with abstracts (for the miniconf organisers)
-        [miniconf] """
+        [Schedule] """
         return sql_response("""
 SELECT
     proposal.id, 

@@ -31,7 +31,7 @@
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">10:35&nbsp;-&nbsp;11:25</th>
-      <td class="presentation" align="center" valign="top">&nbsp;</td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=51 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=218 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=136 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=77 &></td>
@@ -41,7 +41,7 @@
       <th class="programme_slot" align="center" valign="top">11:35&nbsp;-&nbsp;12:25</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=205 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=173 &></td>
-      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=125 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=12 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=148 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=123 &></td>
     </tr>
