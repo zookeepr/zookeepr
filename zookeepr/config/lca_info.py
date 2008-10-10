@@ -37,6 +37,22 @@ lca_info = {
 }
 
 lca_rego = {
+  'volunteer_areas': (
+            {'name': 'Administration'},
+            {'name': 'Rego Desk'},
+            {'name': 'AV'},
+            {'name': 'Network Helper', 'description': 'short term'},
+            {'name': 'Partners Program Helper', 'description': 'short term'},
+            {'name': 'Exec Offsider'},
+            {'name': 'Runner'},
+            {'name': 'Speaker Liason Helper'},
+            {'name': 'Venue Helper', 'description': 'helping with setting up break times, managing venues and introducing speakers, etc'},
+            {'name': 'Usher'},
+            {'name': 'Driver', 'description': 'Have driver\'s licence, will travel'},
+            {'name': 'Car', 'description': 'Have car, will travel'},
+            {'name': 'Week Before', 'description': 'Available during the week before the conference (21-26 Jan)'},
+            {'name': 'Week After', 'description': 'Available during the week after the conference (3-8 Feb)'},
+        ), 
   'miniconfs' : (
               ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'Virtualisation', 'MythTV', 'Gaming', 'Free as in Freedom', 'Mobile devices')),
               ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices'))

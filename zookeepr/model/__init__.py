@@ -78,8 +78,6 @@ def populate_data():
             dict(name='organiser'),
             dict(name='miniconf'),
             dict(name='team'),
-            dict(name='tentative_volunteer'),
-            dict(name='volunteer'),
             )
 
     except SQLError, inst:
@@ -111,7 +109,7 @@ def populate_data():
             dict(category_id='1', active=True, description="Fairy Penguin Sponsorship", cost="150000", auth=None, validate=None),
             dict(category_id='1', active=True, description="Speaker Ticket", cost="0", auth="AuthFunc('is_speaker').authorise(self)", validate=None),
             dict(category_id='1', active=True, description="Miniconf Organiser Ticket", cost="0", auth="AuthFunc('is_speaker').authorise(self)", validate=None),
-            dict(category_id='1', active=True, description="Volunteer Ticket", cost="0", auth="AuthRole('tentative_volunteer').authorise(self)", validate=None),
+            dict(category_id='1', active=True, description="Volunteer Ticket", cost="0", auth="AuthFunc('is_volunteer').authorise(self)", validate=None),
             dict(category_id='2', active=True, description="Men's Small Shirt", cost="2000", auth=None, validate=None),
             dict(category_id='2', active=True, description="Men's Medium Shirt", cost="2000", auth=None, validate=None),
             dict(category_id='2', active=True, description="Men's Large Shirt", cost="2000", auth=None, validate=None),

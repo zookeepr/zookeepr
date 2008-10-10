@@ -66,6 +66,9 @@ class Person(object):
     def is_speaker(self):
         return reduce(lambda a, b: a or b.accepted, self.proposals, False)
 
+    def is_volunteer(self):
+        return self.volunteer.accepted
+
     def _set_creation_timestamp(self, value):
         if value is None:
             self._creation_timestamp = datetime.datetime.now()
