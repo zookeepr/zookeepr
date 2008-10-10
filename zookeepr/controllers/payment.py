@@ -23,7 +23,7 @@ class PaymentController(BaseController, Create, View):
             c.signed_in_person = self.dbsession.get(model.Person, session['signed_in_person_id'])
 
             if c.signed_in_person != c.payment.payment_sent.invoice.person:
-                redirect_to('/person/signin')
+                redirect_to(controller='person', action='signin')
 
         c.person = c.payment.payment_sent.invoice.person
 
@@ -42,7 +42,7 @@ class PaymentController(BaseController, Create, View):
             fields['HTTP_X_FORWARDED_FOR'] = request.environ['HTTP_X_FORWARDED_FOR']
 
         pd = {}
-        
+
         # these are used to match up direct one fields with the legacy fields in the db from commsecure
         for a,b in [('invoice_id', 'InvoiceID'),
                     ('payment_amount', 'Amount'),

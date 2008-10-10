@@ -135,7 +135,7 @@ class VoucherController(SecureController, Read, Create, List):
 
                 self.dbsession.flush()
 
-                return redirect_to('/voucher')
+                return redirect_to(controller='voucher', action='index')
 
         return render_response("voucher/new.myt", defaults=defaults, errors=errors)
 

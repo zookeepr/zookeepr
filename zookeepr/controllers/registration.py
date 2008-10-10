@@ -117,7 +117,6 @@ class RegistrationController(SecureController, Update, List, Read):
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'index': [AuthRole('organiser')],
-                   'volunteer': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'status': True,
                    'silly_description': True
                }
