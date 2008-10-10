@@ -64,26 +64,22 @@
 %   if not c.signed_in_person.paid():
     <h3>Next step</h3>
 
-%       if False and not c.signed_in_person.registration.volunteer:
-    <p><% h.link_to('Select areas of interest and ability', h.url(action='volunteer', id=c.signed_in_person.registration.id)) %></p>
-%       else:
-%           if c.signed_in_person.valid_invoice():
-%               if c.signed_in_person.paid():
+%       if c.signed_in_person.valid_invoice():
+%           if c.signed_in_person.paid():
     <p><% h.link_to('View Invoice', h.url(controller='invoice', action='view', id=c.signed_in_person.valid_invoice().id)) %></p>
-%               else:
-    <p><% h.link_to('Pay Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
-%               #endif
 %           else:
-    <p><% h.link_to('Generate Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
+    <p><% h.link_to('Pay Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
 %           #endif
+%       else:
+    <p><% h.link_to('Generate Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
 %       #endif
 %   #endif
 
     <h3>Other options</h3>
 
     <p>
-%   if False and c.signed_in_person.registration.type=='Volunteer':
-    <% h.link_to('Change areas of interest and ability', h.url(action='volunteer', id=c.signed_in_person.registration.id)) %><br>
+%   if c.signed_in_person.volunteer and c.signed_in_person.volunteer.accepted:
+    <% h.link_to('Change volunteer areas of interest', h.url(controller='volunteer', action='edit', id=c.signed_in_person.volunteer.id)) %><br>
 %   #endif
     <% h.link_to('Edit details', h.url(action='edit', id=c.signed_in_person.registration.id)) %><br>
 %   if c.signed_in_person.valid_invoice() and c.signed_in_person.valid_invoice().paid():
