@@ -108,7 +108,7 @@ def populate_data():
             dict(category_id='1', active=True, description="Professional Ticket", cost="78500", auth=None, validate=None),
             dict(category_id='1', active=True, description="Fairy Penguin Sponsorship", cost="150000", auth=None, validate=None),
             dict(category_id='1', active=True, description="Speaker Ticket", cost="0", auth="AuthFunc('is_speaker').authorise(self)", validate=None),
-            dict(category_id='1', active=True, description="Miniconf Organiser Ticket", cost="0", auth="AuthFunc('is_speaker').authorise(self)", validate=None),
+            dict(category_id='1', active=True, description="Miniconf Organiser Ticket", cost="0", auth="AuthFunc('is_miniconf_org').authorise(self)", validate=None),
             dict(category_id='1', active=True, description="Volunteer Ticket", cost="0", auth="AuthFunc('is_volunteer').authorise(self)", validate=None),
             dict(category_id='2', active=True, description="Men's Small Shirt", cost="2000", auth=None, validate=None),
             dict(category_id='2', active=True, description="Men's Medium Shirt", cost="2000", auth=None, validate=None),
