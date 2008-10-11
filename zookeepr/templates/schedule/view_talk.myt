@@ -4,7 +4,7 @@
 <div id="proposal">
 <div class="abstract">
 <blockquote>
-<p><% h.line_break(h.esc(c.talk.abstract)) %></p>
+<p><% h.line_break(h.url_to_link(h.esc(c.talk.abstract))) %></p>
 </blockquote>
 </div>
 
@@ -13,7 +13,7 @@
 <div class="bio">
 <blockquote><p>
 %   if person.bio:
-<% h.line_break(h.esc(person.bio)) %>
+<% h.line_break(h.url_to_link(h.esc(person.bio))) %>
 %   else:
 [none provided]
 %   #endif

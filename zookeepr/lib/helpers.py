@@ -332,3 +332,8 @@ def ticket_percentage_text(percent, earlybird = False):
             return "%d%% earlybird sold." % percent 
         else:
             return "%d%% tickets sold." % percent
+
+link_re = re.compile(r'\[url\=((http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})([^ \t\n]+))\](.*)\[\/url\]')
+def url_to_link(body):
+    """ Converts [url=http://example.com]site[/url] into <a href="http://www.example.com">site</a>> """
+    return link_re.sub(r'<a href="\1" title="\1">\6</a>', body)
