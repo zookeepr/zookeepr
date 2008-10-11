@@ -2,7 +2,5 @@
 
 <% h.form(h.url(action='new')) %>
 <& form.myt &>
-<% h.submitbutton("New") %>
+<p><% h.submitbutton("New") %> - <% h.link_to('Back', url=h.url(action='index')) %></p>
 <% h.end_form() %>
-
-<% h.link_to('Back', url=h.url(action='index')) %>

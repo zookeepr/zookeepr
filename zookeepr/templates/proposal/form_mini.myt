@@ -11,11 +11,11 @@
     <p class="entries"><% h.textfield('proposal.title', size=70) %></p>
     <p class="note">The name of your miniconf.</p>
 
-    <p class="label"><span class="mandatory">*</span><label for="proposal.abstract">Mini-conf summary:</label></p>
+    <p class="label"><span class="mandatory">*</span><label for="proposal.abstract">miniconf summary:</label></p>
     <p class="entries"><% h.textarea('proposal.abstract', size="70x10") %></p>
     <p class="note">Please indicate any special needs your miniconf will have (e.g. facilities required), preferred duration (1 day / 2 days) and anticipated number of attendees, if possible.</p>
 
-    <p class="label"><label for="proposal.url">Miniconf URL:</label></p>
+    <p class="label"><label for="proposal.url">miniconf URL:</label></p>
     <p class="entries"><% h.textfield('proposal.url', size=70) %></p>
     <p class="note">If your miniconf has a webpage, specify the URL here so the committee can find out more about your proposal.</p>
 
@@ -25,7 +25,7 @@
 
     <h2>About yourself</h2>
 
-    <p><em>Note: These are common for all your proposals, both mini-confs and presentations.</em></p>
+    <p><em>Note: These are common for all your proposals, both miniconfs and presentations.</em></p>
 
 % if c.signed_in_person:
 %     c.person = c.signed_in_person
@@ -52,7 +52,7 @@
 
     <p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
     <p class="entries"><% h.textarea('person.experience', size="70x6") %></p>
-    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your mini-confs and presentations.</p>
+    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your miniconfs and presentations.</p>
 
     <p>&nbsp;</p>
     <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
