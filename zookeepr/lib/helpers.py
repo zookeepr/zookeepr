@@ -246,6 +246,12 @@ def make_teaser(body):
     else:
         return body, False
 
+def remove_teaser_break(body):
+    if teaser_re.search(body):
+        return teaser_re.sub('', body)
+    else:
+        return body
+
 _news_id = -1
 def news_id():
     global _news_id

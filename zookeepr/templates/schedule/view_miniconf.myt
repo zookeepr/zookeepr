@@ -8,7 +8,7 @@
 
 <div class="abstract">
 <blockquote>
-<p><% h.line_break(h.url_to_link(h.esc(c.talk.abstract))) %></p>
+<p><% h.line_break(h.url_to_link(h.esc(h.remove_teaser_break(c.talk.abstract)))) %></p>
 </blockquote>
 </div>
 </div>
