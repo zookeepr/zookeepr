@@ -483,7 +483,7 @@
 		position: absolute;
 		left: 5%;
 		height: 115px;
-		padding-left: 15%;
+		padding-left: 5%;
 		background-image: url(images/news_banner_left.png);
 		background-repeat: no-repeat;
 	}
@@ -493,7 +493,7 @@
 		position: absolute;
 		right: 5%;
 		height: 115px;
-		padding-right: 15%;
+		padding-right: 5%;
 		background-image: url(images/news_banner_right.png);
 		background-repeat: no-repeat;
 		background-position: top right;
