@@ -131,7 +131,7 @@ def populate_data():
             dict(category_id='4', active=True, description="Wrest Point (Visit Accomodation page)", cost="0", auth=None, validate=None),
             dict(category_id='4', active=True, description="University Accommodation - Includes Breakfast! (price per night)", cost="6000", auth=None, validate=None),
             dict(category_id='5', active=True, description="Adult", cost="20000", auth=None, validate="PPEmail(adult_field='product_30_qty',email_field='partner_email')"),
-            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_31_qty',adult_field='product_30_qty')"),
+            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_31_qty',adult_field='product_30_qty')"),
             dict(category_id='5', active=True, description="Child (4-6 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_32_qty',adult_field='product_30_qty')"),
             dict(category_id='5', active=True, description="Child (7-9 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_33_qty',adult_field='product_30_qty')"),
             dict(category_id='5', active=True, description="Child (10-12 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_34_qty',adult_field='product_30_qty')"),
