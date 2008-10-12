@@ -70,7 +70,9 @@ class Person(object):
         return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False)
 
     def is_volunteer(self):
-        return self.volunteer.accepted
+        if self.volunteer:
+            return self.volunteer.accepted
+        return False
 
     def _set_creation_timestamp(self, value):
         if value is None:
