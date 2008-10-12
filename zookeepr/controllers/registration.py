@@ -197,6 +197,9 @@ class RegistrationController(SecureController, Update, List, Read):
     def is_speaker(self):
         return c.signed_in_person.is_speaker()
 
+    def is_volunteer(self):
+        return c.signed_in_person.is_volunteer()
+
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
 
@@ -206,7 +209,7 @@ class RegistrationController(SecureController, Update, List, Read):
             return render_response("registration/error.myt", error=response)
 
         if lca_info['conference_status'] is not 'open':
-            redirect_to(h.url_for(action='status'))
+            redirect_to(action='status')
             return
         errors = {}
         defaults = dict(request.POST)
@@ -236,7 +239,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.pay(c.registration.id, quiet=1)
 
                 if c.signed_in_person:
-                    redirect_to(h.url_for(action='status'))
+                    redirect_to(action='status')
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                                defaults=defaults, errors=errors)
@@ -260,7 +263,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.obj = c.registration
                 self.pay(c.registration.id, quiet=1)
 
-                redirect_to(h.url_for(action='status'))
+                redirect_to(action='status')
         return render_response("registration/edit.myt", defaults=defaults, errors=errors)
 
     def save_details(self, result):
@@ -321,38 +324,6 @@ class RegistrationController(SecureController, Update, List, Read):
             setattr(c.person, k, result['person'][k])
 
         self.dbsession.save_or_update(c.person)
-
-    def volunteer(self):
-        c.message = '''<p>Please indicate your areas of interest and ability.</p>'''
-        if request.POST:
-            a = []
-            for k, v in request.POST.iteritems():
-                if k=='commit':
-                    continue
-                if k=='other':
-                    if v!='':
-                        a.append(v)
-                elif k=='phone':
-                    setattr(self.obj, 'phone', v)
-                elif v=='1':
-                    a.append(k)
-                else:
-                    a.append('ERROR: %s=%s' % (k, v))
-            if a:
-                a = '; '.join(a)
-                c.message = '''<p><b>Thank you for indicating your areas of
-                interest and ability.</b></p>'''
-            else:
-                a = None
-                c.message = '''<p><b>Areas of interest and ability
-                reset.</b> If you are a volunteer, please indicate your
-                areas of interest and ability.</p>'''
-
-            setattr(self.obj, 'volunteer', a)
-            self.dbsession.save_or_update(self.obj)
-            self.dbsession.flush()
-
-        return render_response('registration/volunteer.myt')
 
     def status(self):
         return render_response("registration/status.myt")
