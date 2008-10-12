@@ -44,7 +44,6 @@ lca_rego = {
             {'name': 'Network Helper', 'description': 'Assist in setting up and running the network (Short Term).'},
             {'name': 'Partners Programme Helper', 'description': 'Help out with the daily activities on the partners programme.'},
             {'name': 'Runner', 'description': 'Move items around, help conference organisers, find things and do general jobs given to you.'},
-            {'name': 'Speaker Liason Helper', 'description': 'Help inform the speakers of where they'},
             {'name': 'Venue Helper', 'description': 'Help with setting up break times, tables and chairs and other miscellaneous things.'},
             {'name': 'Usher', 'description': 'Introduce speakers and manage rooms, keeping them to a schedule.'},
             {'name': 'Driver', 'description': 'Have driver\'s licence, will travel to help pick up items and shuttle VIP\'s.'},
