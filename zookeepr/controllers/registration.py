@@ -117,7 +117,6 @@ class RegistrationController(SecureController, Update, List, Read):
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'index': [AuthRole('organiser')],
-                   'volunteer': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'status': True,
                    'silly_description': True
                }
@@ -338,48 +337,59 @@ class RegistrationController(SecureController, Update, List, Read):
         # Checks all existing invoices and invalidates them if a product is not available
         self.check_invoices(registration.person.invoices)
 
-        try:
-            invoice = self.create_invoice(registration)
-        except ProductUnavailable, inst:
+        # If we have a manual invoice, don't try and re-generate invoices
+        if not self.manual_invoice(registration.person.invoices):
+
+            try:
+                invoice = self.create_invoice(registration)
+            except ProductUnavailable, inst:
+                if quiet: return
+                return render_response("registration/product_unavailable.myt", product=inst.product)
+
+            if c.registration.voucher:
+                self.apply_voucher(invoice, c.registration.voucher)
+
+            # complicated check to see whether invoice is already in the system
+            new_invoice = invoice
+            for old_invoice in registration.person.invoices:
+                if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
+                    if self.invoices_identical(old_invoice, new_invoice):
+                        for ii in new_invoice.items:
+                            self.dbsession.expunge(ii)
+                        self.dbsession.expunge(new_invoice)
+                        invoice = old_invoice
+                    else:
+                        if old_invoice.due_date < new_invoice.due_date:
+                            new_invoice.due_date = old_invoice.due_date
+                        ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
+                        self.dbsession.save(ii2)
+                        old_invoice.items.append(ii2)
+                        old_invoice.void = True
+
+            invoice.last_modification_timestamp = datetime.datetime.now()
+            self.dbsession.save_or_update(invoice)
+            self.dbsession.flush()
+
             if quiet: return
-            return render_response("registration/product_unavailable.myt", product=inst.product)
-
-        if c.registration.voucher:
-            self.apply_voucher(invoice, c.registration.voucher)
-
-        # complicated check to see whether invoice is already in the system
-        new_invoice = invoice
-        for old_invoice in registration.person.invoices:
-            if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
-                if self.invoices_identical(old_invoice, new_invoice):
-                    for ii in new_invoice.items:
-                        self.dbsession.expunge(ii)
-                    self.dbsession.expunge(new_invoice)
-                    invoice = old_invoice
-                else:
-                    if old_invoice.due_date < new_invoice.due_date:
-                        new_invoice.due_date = old_invoice.due_date
-                    ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
-                    self.dbsession.save(ii2)
-                    old_invoice.items.append(ii2)
-                    old_invoice.void = True
-
-        invoice.last_modification_timestamp = datetime.datetime.now()
-        self.dbsession.save_or_update(invoice)
-        self.dbsession.flush()
-
-        if quiet: return
-        redirect_to(controller='invoice', action='view', id=invoice.id)
+            redirect_to(controller='invoice', action='view', id=invoice.id)
+        else:
+            redirect_to(action='status')
 
     def check_invoices(self, invoices):
         for invoice in invoices:
-            if not invoice.void and not invoice.paid():
+            if not invoice.void and not invoice.manual and not invoice.paid():
                 for ii in invoice.items:
                     if ii.product and not self._product_available(ii.product):
                         ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
                         self.dbsession.save(ii2)
                         invoice.items.append(ii2)
                         invoice.void = True
+
+    def manual_invoice(self, invoices):
+        for invoice in invoices:
+            if not invoice.void and invoice.manual:
+                return True
+        return False
 
     def invoices_identical(self, invoice1, invoice2):
         if invoice1.total() == invoice2.total():

@@ -158,7 +158,7 @@ class PersonController(SecureController, Read, Update, List):
                     # return to the registration status
                     # (while registrations are open)
                     if lca_info['conference_status'] == 'open':
-                        redirect_to('/register/status')
+                        redirect_to(controller='registration', action='status')
 
                     # return home
                     redirect_to('home')

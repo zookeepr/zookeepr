@@ -212,7 +212,7 @@ class ProductInCategory(validators.FancyValidator):
 class PPEmail(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes adult_field, email_field
-    
+
     def validate_python(self, value, state):
         try:
             adult_field = int(value[self.adult_field])
@@ -226,7 +226,7 @@ class PPEmail(validators.FancyValidator):
 class ProDinner(validators.FancyValidator):
     # If they select a professional ticket, force the dinner ticket
     # takes dinner_field, ticket_category and ticket_id list
-    
+
     def validate_python(self, value, state):
         try:
             ticket = int(value[self.ticket_category])
@@ -234,13 +234,13 @@ class ProDinner(validators.FancyValidator):
             #they haven't gotten a ticket yet
             return
         if len(value[self.dinner_field]) == 0 and ticket in self.ticket_id:
-            raise Invalid("Please fill out how many dinner tickets you would like, or 0 for none. (Note, your first ticket is free).", value, state)
+            raise Invalid("The ticket you have chosen includes one free dinner ticket, however you haven't enterered anything into the Dinner tickets box. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself.", value, state)
         return
 
 class PPChildrenAdult(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes current_field, adult_field
-    
+
     def validate_python(self, value, state):
         try:
             current_field = int(value[self.current_field])
