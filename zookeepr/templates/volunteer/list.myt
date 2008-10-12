@@ -38,14 +38,3 @@
     </table>
 % #endif
 
-
-<%python>
-#if c.volunteer_pages.current.previous:
-#    m.write(h.link_to('Previous page', url=h.url(page=c.volunteer_pages.current.previous)) + '  ')
-#if c.volunteer_pages.current.next:
-#    m.write(h.link_to('Next page', url=h.url(page=c.volunteer_pages.current.next)))
-
-if c.can_edit:
-    m.write('    <p>' + h.link_to('New volunteer', url=h.url(action='new')) + '</p>')
-</%python>
- 
