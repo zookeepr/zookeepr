@@ -191,6 +191,9 @@ class RegistrationController(SecureController, Update, List, Read):
     def is_speaker(self):
         return c.signed_in_person.is_speaker()
 
+    def is_miniconf_org(self):
+        return c.signed_in_person.is_miniconf_org()
+
     def is_volunteer(self):
         return c.signed_in_person.is_volunteer()
 
