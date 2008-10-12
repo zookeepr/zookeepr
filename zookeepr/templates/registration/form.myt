@@ -129,7 +129,7 @@
 #%           # Number of items in the row must be the same for each row
 %           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
 %           i = j = 0
-          <p>All shirts are $20 each and made in Tasmania. More details and measurements on shirt sizes can be found on the <% h.link_to('registration information', url='/register/', popup=True) %>.</p>
+          <p>All shirts are $20 each and made in Tasmania. More details and measurements on shirt sizes can be found on the <% h.link_to('registration information', url='/register/shirts', popup=True) %>.</p>
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td><% fields[0][0] %></td>
