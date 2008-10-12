@@ -70,7 +70,7 @@ class Person(object):
         return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False)
 
     def is_volunteer(self):
-        if self.volunteer:
+        if self.volunteer and self.volunteer.accepted is not None:
             return self.volunteer.accepted
         return False
 
