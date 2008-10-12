@@ -69,7 +69,9 @@
     <h3>Next step</h3>
 
 %       if c.signed_in_person.valid_invoice():
-%           if c.signed_in_person.paid():
+%           if c.manual_invoice(c.signed_in_person.invoices):
+    <p>Please see the invoices listed below</p>
+%           elif c.signed_in_person.paid():
     <p><% h.link_to('View Invoice', h.url(controller='invoice', action='view', id=c.signed_in_person.valid_invoice().id)) %></p>
 %           else:
     <p><% h.link_to('Pay Invoice', h.url(action='pay', id=c.signed_in_person.registration.id)) %></p>
