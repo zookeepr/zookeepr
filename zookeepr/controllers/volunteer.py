@@ -57,6 +57,13 @@ class VolunteerController(SecureController, View, Modify):
     def _new_presave(self):
         self.obj.person = c.signed_in_person
 
+    def edit(self, id):
+        if self.obj.accepted is not None:
+            return render_response('volunteer/already.myt')
+        # This method is mostly implemented by crud
+        if hasattr(super(VolunteerController, self), 'edit'):
+            return super(VolunteerController, self).edit(id)
+
     def accept(self, id):
         self.obj.accepted = True
         self.dbsession.update(self.obj)
