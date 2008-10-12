@@ -131,14 +131,8 @@ class RegistrationController(SecureController, Update, List, Read):
         self._generate_product_schema()
         #c.products = self.dbsession.query(Product).all()
         c.product_available = self._product_available
-        c.able_to_register = self._able_to_register
         c.able_to_edit = self._able_to_edit
         c.manual_invoice = self.manual_invoice
-
-    def _able_to_register(self):
-        if c.signed_in_person and c.signed_in_person.registration:
-            return False, "Thanks for your keenness, but you've already registered!"
-        return True, "You can register"
 
     def _able_to_edit(self):
         for invoice in c.signed_in_person.invoices:
@@ -204,9 +198,8 @@ class RegistrationController(SecureController, Update, List, Read):
         return c.signed_in_person == c.registration.person
 
     def new(self, id):
-        able, response = self._able_to_register()
-        if not able:
-            return render_response("registration/error.myt", error=response)
+        if c.signed_in_person and c.signed_in_person.registration:
+            redirect_to(action='edit', id=c.signed_in_person.registration.id)
 
         if lca_info['conference_status'] is not 'open':
             redirect_to(action='status')
