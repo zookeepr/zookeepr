@@ -35,6 +35,7 @@ class AdminController(SecureController):
           ('/ceiling', '''Manage ceilings and available inventory. [Inventory]'''),
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
           ('/invoice', '''View assigned invoices and their status. [Registrations]'''),
+          ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
 
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),

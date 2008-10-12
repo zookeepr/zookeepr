@@ -24,7 +24,7 @@
 
 <p>
 View <% h.link_to('invoice details', url=h.url(action='view')) %> or <%
-h.link_to('registration status', url='/registration/status') %> before
+h.link_to('registration status', url=h.url(controller='registration', action='status')) %> before
 payment.
 </p>
 <p>
