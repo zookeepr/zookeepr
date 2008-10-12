@@ -71,7 +71,7 @@ class RegoNote(object):
         return '<RegoNote note=%r>' % (self.note)
 
 class Volunteer(object):
-    def __init__(self, areas=None, other=None, accepted=False):
+    def __init__(self, areas=None, other=None, accepted=None):
         self.areas = areas
         self.other = other
         self.accepted = accepted

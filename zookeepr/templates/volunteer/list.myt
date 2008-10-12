@@ -7,8 +7,7 @@
         <th>Registration</th>
         <th>Name</th>
         <th>Phone Number</th>
-        <th>Accepted</th>
-        <th>&nbsp;</th>
+        <th>Status</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
       </tr>
@@ -22,16 +21,23 @@
 %       #endif
         <td><% h.link_to(m.apply_escapes(volunteer.person.firstname + ' ' + volunteer.person.lastname, 'h'), h.url(controller='person', action='view', id=volunteer.person.id)) %></td>
         <td><% volunteer.person.mobile or volunteer.person.phone | h %></td>
-        <td><% h.yesno(volunteer.accepted) %></td>
-%       if volunteer.accepted:
-        <td><% h.link_to('reject', url=h.url(action='reject', id=volunteer.id)) %></td>
+%       if volunteer.accepted is None:
+        <td>Pending</td>
+%       elif volunteer.accepted == True:
+        <td>Accepted</td>
 %       else:
-        <td><% h.link_to('accept', url=h.url(action='accept', id=volunteer.id)) %></td>
+        <td>Rejected</td>
 %       #endif
+        <td>
+%       if volunteer.accepted is None or not volunteer.accepted:
+          <% h.link_to('accept', url=h.url(action='accept', id=volunteer.id)) %>
+%       #endif
+%       if volunteer.accepted is None or volunteer.accepted:
+          <% h.link_to('reject', url=h.url(action='reject', id=volunteer.id)) %>
+%       #endif
+        </td>
 %       if c.can_edit:
-%           for action in ['edit', 'delete']:
-        <td><% h.link_to(action, url=h.url(action=action, id=volunteer.id)) %></td>
-%           #endfor
+        <td><% h.link_to('edit', url=h.url(action='edit', id=volunteer.id)) %></td>
 %       #endif
       </tr>
 %   #endfor

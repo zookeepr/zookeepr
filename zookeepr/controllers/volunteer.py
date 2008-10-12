@@ -25,7 +25,6 @@ class VolunteerController(SecureController, View, Modify):
     permissions = {"view": [AuthRole('organiser'), AuthFunc('is_same_person')],
                    "index": [AuthTrue()],
                    "edit": [AuthRole('organiser'), AuthFunc('is_same_person')],
-                   "delete": [AuthRole('organiser'), AuthFunc('is_same_person')],
                    "new": [AuthTrue()],
                    "accept": [AuthRole('organiser')],
                    "reject": [AuthRole('organiser')],

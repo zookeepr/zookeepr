@@ -133,6 +133,7 @@ class RegistrationController(SecureController, Update, List, Read):
         c.product_available = self._product_available
         c.able_to_register = self._able_to_register
         c.able_to_edit = self._able_to_edit
+        c.manual_invoice = self.manual_invoice
 
     def _able_to_register(self):
         if c.signed_in_person and c.signed_in_person.registration:
