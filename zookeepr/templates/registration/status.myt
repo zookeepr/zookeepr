@@ -50,7 +50,7 @@
 % elif c.signed_in_person and c.signed_in_person.registration == None:
     <p><b>Not registered.</b>
 
-<& volunteer.myt &>
+    <& volunteer.myt &>
 
     <h3>Next step</h3>
 
