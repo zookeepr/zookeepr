@@ -129,7 +129,7 @@
 #%           # Number of items in the row must be the same for each row
 %           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
 %           i = j = 0
-          <p>All shirts are $20 each and made in Tasmania. More details and measurements on shirt sizes can be found on the <% h.link_to('registration information', url='/register/shirts', popup=True) %>.</p>
+          <p>S,M,L,XL shirts are $20 each, larger shirts are $22. All shirts are produced and made in Tasmania. More details and measurements on shirt sizes can be found on the <% h.link_to('registration information', url='/register/shirts', popup=True) %>.</p>
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td><% fields[0][0] %></td>
@@ -205,6 +205,7 @@
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries"><% h.textfield('products.partner_email', size=50) %></p>
           <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
+          <p class="note">A partners programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
 %       #endif
         </fieldset>
 %   #endif
