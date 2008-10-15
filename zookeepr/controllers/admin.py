@@ -36,6 +36,7 @@ class AdminController(SecureController):
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
           ('/invoice', '''View assigned invoices and their status. [Registrations]'''),
           ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
+          ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
 
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
@@ -142,6 +143,7 @@ FROM proposal
 WHERE
     review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
     AND proposal.proposal_type_id != 2
+    AND proposal.accepted = False
 GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
 ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
         """)
