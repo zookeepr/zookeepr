@@ -80,6 +80,7 @@ for d in c.db_content_news_all:
 					<img src = '<% directory %>/2.png' alt="<% d.title %>" title="<% d.title %>">
 				</a>
 			</div>
+%        break
 %    #endif
 %#endfor
 </%method>
