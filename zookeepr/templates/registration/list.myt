@@ -49,7 +49,7 @@
 %   if registration.special:
             <% '<b>Special Needs:</b> %s<br><br>' % (registration.special) %>
 %   #endif
-        <% h.link_to("Add New Note", h.url(controller='rego_note', action='new', id=registration.id)) %>
+        <% h.link_to("Add New Note", h.url(controller='rego_note', action='new', rego_id=registration.id)) %>
         </td>
       </tr>
 % #endfor

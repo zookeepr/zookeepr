@@ -44,6 +44,6 @@ class RegoNoteController(SecureController, Create, List, Read, Update, Delete):
                    'delete': [AuthRole('organiser')]
                    }
 
-    def new(self, id=None):
+    def new(self, rego_id=None):
         if hasattr(super(RegoNoteController, self), 'new'):
             return super(RegoNoteController, self).new()
