@@ -1,5 +1,6 @@
 from datetime import datetime
 import os, random, re, urllib
+from zookeepr.lib import helpers as h
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
@@ -314,11 +315,11 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
         speaker_list.sort()
 
         for (sortkey, p) in speaker_list:
-            registration_link = 'Not Registered'
+            registration_link = ''
             if p.registration:
-                registration_link = '<a href="/registration/%d">View Registration</a>' % (p.registration.id)
+                registration_link = '<a href="/registration/%d">Details</a>, ' % (p.registration.id)
             res = [
-      '<a href="/person/%d">%s %s</a> (%s, <a href="mailto:%s">email</a>)'
+      '<a href="/person/%d">%s %s</a> (%s<a href="mailto:%s">email</a>)'
                   % (p.id, p.firstname, p.lastname, registration_link, p.email_address)
             ]
 
@@ -346,7 +347,11 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
               else:
                 res.append(' and '.join(cons))
 
-              res.append('; '.join([n.note for n in p.registration.notes]))
+              res.append('; '.join([h.line_break(n.note) for n in p.registration.notes]))
+              if p.registration.diet:
+                  res[-1] += '<br><b>Diet:</b> %s' % (p.registration.diet)
+              if p.registration.special:
+                  res[-1] += '<br><b>Special Needs:</b> %s' % (p.registration.special)
             else:
               res+=['Not Registered', '', '']
             #res.append(`dir(p.registration)`)
