@@ -27,6 +27,9 @@
 %   elif registration.person.is_volunteer() == True:
 %       role.append('Volunteer')
 %   #endif
+%   for auth_role in registration.person.roles:
+%       role.append(auth_role.name)
+%   #endfor
         <% '<i>' + '</i>, <i>'.join(role) + '</i>' %>
         </td>
         <td>
