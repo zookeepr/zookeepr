@@ -5,7 +5,7 @@
         <th>Name</th>
         <th>Email</th>
         <th>Over 18</th>
-        <th>Speaker</th>
+        <th>Role</th>
         <th>Products</th>
         <th>Voucher</th>
         <th>Notes</th>
@@ -16,7 +16,19 @@
         <td><% h.link_to(m.apply_escapes(registration.person.firstname + ' ' + registration.person.lastname, 'h'), h.url(controller='person', action='view', id=registration.person.id)) %></td>
         <td><% registration.person.email_address | h %></td>
         <td><% h.yesno(registration.over18) %></td>
-        <td><% h.yesno(registration.person.is_speaker()) %></td>
+        <td>
+%   role = []
+%   if registration.person.is_speaker():
+%       role.append('Speaker')
+%   if registration.person.is_miniconf_org():
+%       role.append('miniconf Organiser')
+%   if registration.person.is_volunteer() == None:
+%       role.append('Volunteer pending')
+%   elif registration.person.is_volunteer() == True:
+%       role.append('Volunteer')
+%   #endif
+        <% '<i>' + '</i>, <i>'.join(role) + '</i>' %>
+        </td>
         <td>
 %   for rproduct in registration.products:
           <% rproduct.qty %> x <% rproduct.product.description %><br>
