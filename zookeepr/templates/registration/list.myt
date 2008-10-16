@@ -8,6 +8,7 @@
         <th>Speaker</th>
         <th>Products</th>
         <th>Voucher</th>
+        <th>Notes</th>
       </tr>
 % for registration in c.registration_collection:
       <tr>
@@ -27,6 +28,16 @@
           <% vproduct.qty %> x <% vproduct.product.description %> @ <% h.number_to_percentage(vproduct.percentage) %> Discount<br>
 %       #endfor
 %   #endif
+        </td>
+        <td>
+            <% '<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in registration.notes]) + '<br><br>' %>
+%   if registration.diet:
+            <% '<b>Diet:</b> %s<br><br>' % (registration.diet) %>
+%   #endif
+%   if registration.special:
+            <% '<b>Special Needs:</b> %s<br><br>' % (registration.special) %>
+%   #endif
+        <% h.link_to("Add New Note", h.url(controller='rego_note', action='new', id=registration.id)) %>
         </td>
       </tr>
 % #endfor

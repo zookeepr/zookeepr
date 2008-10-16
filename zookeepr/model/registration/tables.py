@@ -43,7 +43,8 @@ rego_note = Table('rego_note', metadata,
                   Column('rego_id', Integer, ForeignKey('registration.id')),
                   Column('note', Text),
                   Column('by_id', Integer, ForeignKey('person.id'), nullable=False),
-                  Column('entered', DateTime, default=func.current_timestamp()),
+                  Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
+                  Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
                  )
 
 volunteer = Table('volunteer', metadata,

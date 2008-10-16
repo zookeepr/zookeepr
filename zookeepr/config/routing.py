@@ -92,6 +92,8 @@ def make_map():
     #m.connect('/wiki', controller='wiki', action='view', url='/wiki')
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
+    # route rego_notes with ID's
+    m.connect('rego_note/new/:id', controller='rego_note', action='new', id=None)
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule

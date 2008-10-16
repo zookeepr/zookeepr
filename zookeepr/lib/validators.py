@@ -6,7 +6,7 @@ from formencode import Invalid, validators, schema
 
 import helpers as h
 
-from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType, Product
+from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType, Product, Registration
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -179,6 +179,26 @@ class EmailAddress(validators.FancyValidator):
 
     def _to_python(self, value, state):
         return value.strip()
+
+class ExistingRegistrationValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        registration = state.query(Registration).filter_by(id=value).first()
+        if registration is None:
+            raise Invalid("Unknown registration ID.", value, state)
+        else:
+            return registration
+    def _from_python(self, value, state):
+        return value.id
+
+class ExistingPersonValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        person = state.query(Person).filter_by(id=value).first()
+        if person is None:
+            raise Invalid("Unknown person ID.", value, state)
+        else:
+            return person
+    def _from_python(self, value, state):
+        return value.id
 
 # TODO: have link to signin field
 class NotExistingPersonValidator(validators.FancyValidator):

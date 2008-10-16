@@ -37,6 +37,7 @@ class AdminController(SecureController):
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
           ('/invoice', '''View assigned invoices and their status. [Registrations]'''),
           ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
+          ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
 
            #('/accommodation', ''' [accom] '''),
@@ -347,11 +348,11 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
               else:
                 res.append(' and '.join(cons))
 
-              res.append('; '.join([h.line_break(n.note) for n in p.registration.notes]))
+              res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
               if p.registration.diet:
-                  res[-1] += '<br><b>Diet:</b> %s' % (p.registration.diet)
+                  res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
               if p.registration.special:
-                  res[-1] += '<br><b>Special Needs:</b> %s' % (p.registration.special)
+                  res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
             else:
               res+=['Not Registered', '', '']
             #res.append(`dir(p.registration)`)
