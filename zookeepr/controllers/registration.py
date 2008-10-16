@@ -77,7 +77,7 @@ class RegisterSchema(BaseSchema):
     delegatesignup = validators.Bool()
     speaker_record = validators.Bool()
     speaker_video_release = validators.Bool()
-    speaker_side_release = validators.Bool()
+    speaker_slides_release = validators.Bool()
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
