@@ -301,6 +301,64 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
                                                timeleft.seconds / (3600*24.)))
         res.headers['Refresh'] = 3600
         return res
+        
+    def registered_speakers(self):
+        """ Listing of speakers and various stuff about them [Speakers] """
+        c.data = []
+        c.noescape = True
+        cons_list = ('speaker_record', 'speaker_video_release', 'speaker_slides_release')
+        speaker_list = []
+        for p in self.dbsession.query(Person).all():
+            if not p.is_speaker(): continue
+            speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
+        speaker_list.sort()
+
+        for (sortkey, p) in speaker_list:
+            registration_link = 'Not Registered'
+            if p.registration:
+                registration_link = '<a href="/registration/%d">View Registration</a>' % (p.registration.id)
+            res = [
+      '<a href="/person/%d">%s %s</a> (%s, <a href="mailto:%s">email</a>)'
+                  % (p.id, p.firstname, p.lastname, registration_link, p.email_address)
+            ]
+
+            talks = [talk for talk in p.proposals if talk.accepted]
+            res.append('; '.join([
+                '<a href="/programme/schedule/view_talk/%d">%s</a>'
+                                % (t.id, h.truncate(t.title)) for t in talks]))
+            if p.registration:
+              if p.invoices:
+                if p.valid_invoice().paid():
+                  res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
+                           p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                else:
+                  res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
+                           p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+              else:
+                res.append('No Invoice')
+
+              cons = [con.replace('_', ' ') for con in cons_list
+                                           if getattr(p.registration, con)] 
+              if len(cons)==3:
+                res.append('Release All')
+              elif len(cons)==0:
+                res.append('None')
+              else:
+                res.append(' and '.join(cons))
+
+              res.append('; '.join([n.note for n in p.registration.notes]))
+            else:
+              res+=['Not Registered', '', '']
+            #res.append(`dir(p.registration)`)
+            c.data.append(res)
+
+        # sort by rego status (while that's important)
+        def my_cmp(a,b):
+            return cmp('OK' in a[4], 'OK' in b[4])
+        c.data.sort(my_cmp)
+
+        c.columns = ('Name', 'Talk(s)', 'Status', 'Concent', 'Notes')
+        return render_response('admin/table.myt')
 
 def csv_response(sql):
     import zookeepr.model
