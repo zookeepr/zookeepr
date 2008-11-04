@@ -331,12 +331,15 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
                                 % (t.id, h.truncate(t.title)) for t in talks]))
             if p.registration:
               if p.invoices:
-                if p.valid_invoice().paid():
-                  res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
-                           p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                if p.valid_invoice() is None:
+                    res.append('Invalid Invoice')
                 else:
-                  res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
-                           p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                    if p.valid_invoice().paid():
+                      res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
+                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                    else:
+                      res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
+                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
               else:
                 res.append('No Invoice')
 
