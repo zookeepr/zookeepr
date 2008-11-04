@@ -52,8 +52,8 @@ lca_rego = {
             {'name': 'Week After', 'description': 'Available during the week after the conference (25-30 Jan).'},
         ), 
   'miniconfs' : (
-              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'Virtualisation', 'MythTV', 'Gaming', 'Free as in Freedom', 'Mobile devices')),
-              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices'))
+              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices')),
+              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Virtualisation', 'Gaming', 'Free as in Freedom', 'Mobile devices'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],

@@ -96,6 +96,7 @@ class AdminController(SecureController):
         Set the talks to accepted as per the list in the admin controller. [Schedule]
         """
         # {theatre: [id's]}
+        keynotes = {'Stanley Burbury': (227)}
         miniconfs = {'Unknown': (8,32,157,83,108,49,132,9,26,116,121,201)}
         tutorials = {'Stanley Burbury 1': (40,143),
                      'Arts Lecture Theatre': (43,181),
@@ -110,7 +111,7 @@ class AdminController(SecureController):
         
         sql_execute("UPDATE proposal SET accepted = FALSE, theatre = NULL") # set all talks to unaccepted to start
         
-        for collection in (miniconfs, tutorials, presentations):
+        for collection in (keynotes, miniconfs, tutorials, presentations):
             for (room, ids) in collection.iteritems():
                 sql_execute("UPDATE proposal SET theatre = '%s', accepted = TRUE WHERE id IN %s" % (room, str(ids)))
         c.text = "<p>Updated successfully</p>"
@@ -369,7 +370,7 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
     def reconcile(self):
         """ Reconcilliation between D1 and ZK; for now, compare the D1 data
         that have been placed in the fixed location in the filesystem and
-        work from there... [Invetory] """
+        work from there... [Registrations] """
         import csv
         d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
         d1_cols = d1_data.next()
