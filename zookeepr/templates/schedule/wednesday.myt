@@ -62,7 +62,7 @@
       <td class="morning_tea" colspan="5" align="center" valign="middle">Afternoon Tea</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">16:50&nbsp;-&nbsp;17:40</th>
+      <th class="programme_slot" align="center" valign="top">15:50&nbsp;-&nbsp;16:40</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=11 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=22 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=78 &></td>
@@ -70,7 +70,7 @@
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=211 &></td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">15:50&nbsp;-&nbsp;16:40</th>
+      <th class="programme_slot" align="center" valign="top">16:50&nbsp;-&nbsp;17:40</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=225 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=84 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=99 &></td>
