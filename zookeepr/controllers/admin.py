@@ -107,12 +107,14 @@ class AdminController(SecureController):
                      'Arts Lecture Theatre': (218,173,22,84,131,45,56,13,91,178,106,171,30),
                      'Stanley Burbury 2': (136,12,78,99,209,122,29,179,210,64,79,33,105),
                      'Social Science 1': (77,148,208,52,66,187,93,139,158,176,166,76,172),
-                     'Social Science 2': (149,123,211,192,96,161,160,119,152,46,145,72,217)}
+                     'Social Science 2': (149,123,211,192,67,161,160,119,152,46,145,72,217)}
         
         sql_execute("UPDATE proposal SET accepted = FALSE, theatre = NULL") # set all talks to unaccepted to start
         
         for collection in (keynotes, miniconfs, tutorials, presentations):
             for (room, ids) in collection.iteritems():
+                if type(ids) is int:
+                    ids = '(' + str(ids) + ')'
                 sql_execute("UPDATE proposal SET theatre = '%s', accepted = TRUE WHERE id IN %s" % (room, str(ids)))
         c.text = "<p>Updated successfully</p>"
         return render_response("admin/text.myt")

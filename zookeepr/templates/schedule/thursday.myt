@@ -35,7 +35,7 @@
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=131 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=209 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=66 &></td>
-      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=96 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=67 &></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">11:35&nbsp;-&nbsp;12:25</th>
