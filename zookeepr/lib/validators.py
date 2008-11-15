@@ -210,11 +210,17 @@ class NotExistingPersonValidator(validators.FancyValidator):
 class ProductMinMax(validators.FancyValidator):
     def validate_python(self, value, state):
         total = 0
+        negative_products = False
         for field in self.product_fields:
             try:
-                total += int(value[field])
+                if int(value[field]) < 0:
+                    negative_products = True
+                else:
+                    total += int(value[field])
             except:
                 pass
+        #if negative_products:
+        #    raise Invalid("You can not have negative products. Please correct your " + self.category_name, value, state)
         if total < self.min_qty:
             raise Invalid("You must have at least " + str(self.min_qty) + ' ' + self.category_name, value, state)
         if total > self.max_qty:
