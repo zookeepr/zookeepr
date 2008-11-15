@@ -81,7 +81,7 @@ class RegisterSchema(BaseSchema):
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
-    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
