@@ -709,3 +709,26 @@
 	{
 		background-image: url(/images/schedule/saturday_back.png);
 	}
+	
+	.sponsor_heading
+	{
+		background: #5850A5;
+	}
+	
+	.sponsor_heading H2
+	{
+		color: #fff;
+	}
+	
+	.sponsor_image
+	{
+		text-align: center;
+		vertical-align: middle;
+	}
+	
+	.sponsors_footer
+	{
+		clear: both;
+		padding: 40px;
+		text-align: center;
+	}

@@ -115,7 +115,7 @@ file_paths = {
 lca_menu = [
   ('Home', '/home', 'home'),
   ('About', '/about/the_event_history', 'about'),
-  ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
+  ('Sponsors', '/sponsors/sponsors', 'sponsors'),
   ('Programme', '/programme/about_programme', 'programme'),
   ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
   ('Wiki', '/wiki', 'wiki'),
@@ -125,7 +125,7 @@ lca_menu = [
 
 lca_submenus = {
   'about': ['The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'],
-  'sponsors': ['Become a Sponsor'],
+  'sponsors': ['Sponsors', 'Become a Sponsor'],
   #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
   'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
   'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
