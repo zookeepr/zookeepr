@@ -219,8 +219,8 @@ class ProductMinMax(validators.FancyValidator):
                     total += int(value[field])
             except:
                 pass
-        #if negative_products:
-        #    raise Invalid("You can not have negative products. Please correct your " + self.category_name, value, state)
+        if negative_products:
+            raise Invalid("You can not have negative products. Please correct your " + self.category_name, value, state)
         if total < self.min_qty:
             raise Invalid("You must have at least " + str(self.min_qty) + ' ' + self.category_name, value, state)
         if total > self.max_qty:
