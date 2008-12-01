@@ -68,7 +68,7 @@ class AdminController(SecureController):
         funcs = [('<a href="%s">%s</a>'%(fn,fn), desc)
                                                    for (fn, desc) in funcs]
         sect = {}
-        pat = re.compile(r'\[([a-zA-Z,]+)\]')
+        pat = re.compile(r'\[([\ a-zA-Z,]+)\]')
         for (page, desc) in funcs:
             m = pat.search(desc)
             if m:
@@ -428,6 +428,56 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
 
         return render_response('admin/table.myt')
 
+    def linux_australia_signup(self):
+        """ People who ticked "I want to sign up for (free) Linux Australia
+        membership!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up for (free) Linux
+        Australia membership!" (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        for r in self.dbsession.query(Registration).all():
+            if not r.lasignup:
+                continue
+            p = r.person
+            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+        c.text += "</textarea></p>"
+
+        return render_response('admin/text.myt')
+
+    def lca_announce_signup(self):
+        """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up to the low traffic conference 
+        announcement mailing list!" (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        for r in self.dbsession.query(Registration).all():
+            if not r.announcesignup:
+                continue
+            p = r.person
+            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+        c.text += "</textarea></p>"
+
+        return render_response('admin/text.myt')
+
+    def lca_chat_signup(self):
+        """ People who ticked "I want to sign up to the conference attendees mailing list!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up to the conference attendees mailing list!" (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        for r in self.dbsession.query(Registration).all():
+            if not r.delegatesignup:
+                continue
+            p = r.person
+            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+        c.text += "</textarea></p>"
+
+        return render_response('admin/text.myt')
 
 def csv_response(sql):
     import zookeepr.model
