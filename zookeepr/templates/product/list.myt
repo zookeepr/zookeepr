@@ -3,18 +3,19 @@
     <table>
 %   for category in c.product_categories:
       <tr>
-        <td colspan="8" align="center"><h3><% category.name %></h3></td>
+        <td colspan="9" align="center"><h3><% category.name %></h3></td>
       </tr>
-      <tr>
+      <thead><tr>
         <th>Description</th>
         <th>Active</th>
         <th>Available</th>
         <th>Cost</th>
-        <th>Invoiced</th>
+        <th>Invoiced (inc. overdue)</th>
+        <th>Valid Invoices</th>
         <th>Sold</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
-      </tr>
+      </tr></thead>
 %       if len(category.products) > 0:
 %           for product in category.products:
       <tr>
@@ -22,6 +23,7 @@
         <td><% h.yesno(product.active) %></td>
         <td><% h.yesno(product.available()) %></td>
         <td><% h.number_to_currency(product.cost/100.0) | h %></td>
+        <td><% product.qty_invoiced(date = False) %></td>
         <td><% product.qty_invoiced() %></td>
         <td><% product.qty_sold() %></td>
 %               if c.can_edit:

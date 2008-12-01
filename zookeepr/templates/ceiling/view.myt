@@ -27,7 +27,8 @@
         <th>Category</th>
         <th>Active</th>
         <th>Cost</th>
-        <th>Invoiced</th>
+        <th>Invoiced (inc. overdue)</th>
+        <th>Valid Invoices</th>
         <th>Sold</th>
       </tr></thead>
 % for product in c.ceiling.products:
@@ -36,6 +37,7 @@
         <td><% product.category.name | h %></td>
         <td><% h.yesno(product.active) %></td>
         <td><% h.number_to_currency(product.cost/100.0) %></td>
+        <td><% product.qty_invoiced(date=False) | h %></td>
         <td><% product.qty_invoiced() | h %></td>
         <td><% product.qty_sold() | h %></td>
       </tr>
