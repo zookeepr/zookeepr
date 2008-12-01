@@ -19,17 +19,17 @@
     <p><b>Currently Available:</b> <% h.yesno(c.ceiling.available()) %> <br></p>
     <p><b>Invoiced:</b> <% c.ceiling.qty_invoiced() | h %><br></p>
     <p><b>Sold:</b> <% c.ceiling.qty_sold() | h %><br></p>
-% if len(c.ceiling.products) > 0:
+
     <h3>Products in this Ceiling</h3>
     <table>
-      <tr>
+      <thead><tr>
         <th>Description</th>
         <th>Category</th>
         <th>Active</th>
         <th>Cost</th>
         <th>Invoiced</th>
         <th>Sold</th>
-      </tr>
+      </tr></thead>
 % for product in c.ceiling.products:
       <tr>
         <td><% h.link_to(product.description, url=h.url(controller='product', action='view', id=product.id)) %></td>
@@ -41,6 +41,79 @@
       </tr>
 % #endfor
     </table>
+    
+    <h3>Sales in this Ceiling</h3>
+    <table>
+      <thead><tr>
+        <th>Invoice</th>
+        <th>Person</th>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Status</th>
+      </tr></thead>
+% for product in c.ceiling.products:
+%   for invoice_item in product.invoice_items:
+%        if invoice_item.invoice.paid():
+      <tr>
+        <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
+        <td><% h.link_to(invoice_item.invoice.person.firstname + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
+        <td><% invoice_item.description %></td>
+        <td><% invoice_item.qty %></td>
+        <td><% invoice_item.invoice.status() %></td>
+      </tr>
+%        #endif
+%   #endfor
+% #endfor
+    </table>
+
+    <h3>Invoices in this Ceiling</h3>
+    <table>
+      <thead><tr>
+        <th>Invoice</th>
+        <th>Person</th>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Status</th>
+      </tr></thead>
+% for product in c.ceiling.products:
+%   for invoice_item in product.invoice_items:
+%        if not invoice_item.invoice.void and not invoice_item.invoice.paid():
+      <tr>
+        <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
+        <td><% h.link_to(invoice_item.invoice.person.firstname + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
+        <td><% invoice_item.description %></td>
+        <td><% invoice_item.qty %></td>
+        <td><% invoice_item.invoice.status() %></td>
+      </tr>
+%        #endif
+%   #endfor
+% #endfor
+    </table>
+
+    <h3>Invalid Invoices in this Ceiling</h3>
+    <table>
+      <thead><tr>
+        <th>Invoice</th>
+        <th>Person</th>
+        <th>Product</th>
+        <th>Qty</th>
+        <th>Status</th>
+      </tr></thead>
+% for product in c.ceiling.products:
+%   for invoice_item in product.invoice_items:
+%        if not invoice_item.invoice.paid() and invoice_item.invoice.void:
+      <tr>
+        <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
+        <td><% h.link_to(invoice_item.invoice.person.firstname + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
+        <td><% invoice_item.description %></td>
+        <td><% invoice_item.qty %></td>
+        <td><% invoice_item.invoice.status() %></td>
+      </tr>
+%        #endif
+%   #endfor
+% #endfor
+    </table>
+
     <p>
 % if c.can_edit:
     <% h.link_to('Edit', url=h.url(action='edit',id=c.ceiling.id)) %> |
