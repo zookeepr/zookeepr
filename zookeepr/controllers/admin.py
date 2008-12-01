@@ -437,12 +437,15 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
         the conference).</p><p>Copy and paste the following into mailman</p>
         <p><textarea cols="100" rows="25">"""
 
+        count = 0
         for r in self.dbsession.query(Registration).all():
             if not r.lasignup:
                 continue
             p = r.person
             c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            count += 1
         c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
 
         return render_response('admin/text.myt')
 
@@ -454,12 +457,15 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
         the conference).</p><p>Copy and paste the following into mailman</p>
         <p><textarea cols="100" rows="25">"""
 
+        count = 0
         for r in self.dbsession.query(Registration).all():
             if not r.announcesignup:
                 continue
             p = r.person
             c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            count += 1
         c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
 
         return render_response('admin/text.myt')
 
@@ -470,12 +476,15 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
         the conference).</p><p>Copy and paste the following into mailman</p>
         <p><textarea cols="100" rows="25">"""
 
+        count = 0
         for r in self.dbsession.query(Registration).all():
             if not r.delegatesignup:
                 continue
             p = r.person
             c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            count += 1
         c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
 
         return render_response('admin/text.myt')
 
