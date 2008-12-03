@@ -7,6 +7,11 @@
     <p><b>Auth code:</b> <% c.product.auth | h %><br></p>
     <p><b>Validate code:</b> <% c.product.validate | h %><br></p>
 
+    <h3>Product Totals</h3>
+    <p><b>Invoiced (inc. overdue):</b> <% c.product.qty_invoiced(date = False) %></p>
+    <p><b>Invoiced:</b> <% c.product.qty_invoiced() %></p>
+    <p><b>Sold:</b> <% c.product.qty_sold() %></p>
+    <p><b>Total:</b> <% h.number_to_currency((c.product.qty_sold() * c.product.cost)/100) %></p>
 
     <h3>Included Products</h3>
     <table>
@@ -66,7 +71,7 @@
 %    if invoice_item.invoice.paid():
       <tr>
         <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
-        <td><% h.link_to(invoice_item.invoice.person.firstname + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
+        <td><% h.link_to(invoice_item.invoice.person.firstname + ' ' + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
         <td><% invoice_item.qty %></td>
         <td><% invoice_item.invoice.status() %></td>
       </tr>
@@ -86,7 +91,7 @@
 %    if not invoice_item.invoice.void and not invoice_item.invoice.paid():
       <tr>
         <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
-        <td><% h.link_to(invoice_item.invoice.person.firstname + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
+        <td><% h.link_to(invoice_item.invoice.person.firstname + ' ' + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
         <td><% invoice_item.qty %></td>
         <td><% invoice_item.invoice.status() %></td>
       </tr>
@@ -106,7 +111,7 @@
 %    if not invoice_item.invoice.paid() and invoice_item.invoice.void:
       <tr>
         <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
-        <td><% h.link_to(invoice_item.invoice.person.firstname + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
+        <td><% h.link_to(invoice_item.invoice.person.firstname + ' ' + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
         <td><% invoice_item.qty %></td>
         <td><% invoice_item.invoice.status() %></td>
       </tr>
