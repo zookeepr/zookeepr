@@ -488,6 +488,22 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
 
         return render_response('admin/text.myt')
 
+    def accom_wp_registers(self):
+        """ People who selected "Wrest Point" as their accommodation option. (Includes un-paid invoices!) [Accommodation] """
+        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
+                    LEFT JOIN invoice ON (invoice.person_id = person.id)
+                    LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
+                    WHERE invoice_item.product_id = 28 AND invoice.void = FALSE"""
+        return sql_response(query)
+
+    def accom_uni_registers(self):
+        """ People who selected any form as university accommodation. (Includes un-paid invoices!) [Accommodation] """
+        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
+                    LEFT JOIN invoice ON (invoice.person_id = person.id)
+                    LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
+                    WHERE invoice_item.product_id IN (29,38,39,40,41,42) AND invoice.void = FALSE"""
+        return sql_response(query)
+
 def csv_response(sql):
     import zookeepr.model
     res = zookeepr.model.metadata.bind.execute(sql);
