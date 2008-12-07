@@ -7,8 +7,8 @@
       <th class="programme_room" align="center" valign="top">Stanley Burbury 1</th>
       <th class="programme_room" align="center" valign="top">Arts Lecture Theatre</th>
       <th class="programme_room" align="center" valign="top">Stanley Burbury 2</th>
-      <th class="programme_room" align="center" valign="top">Stanley Burbury 1</th>
-      <th class="programme_room" align="center" valign="top">Stanley Burbury 2</th>
+      <th class="programme_room" align="center" valign="top">Social Science 1</th>
+      <th class="programme_room" align="center" valign="top">Social Science 2</th>
     </tr>
   </thead>
 
@@ -20,8 +20,8 @@
       </td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">9:25&nbsp;-&nbsp;10:15</th>
-      <td class="programme_keynote" colspan="5" align="center" valign="top">
+      <th class="programme_slot" align="center" valign="middle">9:25&nbsp;-&nbsp;10:15</th>
+      <td class="programme_keynote" colspan="5" align="center" valign="middle">
         Keynote 3 - Simon Phipps
       </td>
     </tr>
@@ -61,7 +61,7 @@
       <th class="programme_slot" align="center" valign="top">14:45&nbsp;-&nbsp;15:35</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=189 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=171 &></td>
-      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=124 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=33 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=76 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=72 &></td>
     </tr>
@@ -79,7 +79,7 @@
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">17:00&nbsp;-&nbsp;17:50</th>
-      <td class="morning_tea" colspan="5" align="center" valign="middle"><b>Conference Close/Lightning Talks/BOFs</b></td>
+      <td class="programme_keynote" colspan="5" align="center" valign="middle">Conference Close/Lightning Talks/BOFs</td>
     </tr>
   </tbody>
 </table>

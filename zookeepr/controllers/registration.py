@@ -77,11 +77,11 @@ class RegisterSchema(BaseSchema):
     delegatesignup = validators.Bool()
     speaker_record = validators.Bool()
     speaker_video_release = validators.Bool()
-    speaker_side_release = validators.Bool()
+    speaker_slides_release = validators.Bool()
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
-    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -117,7 +117,6 @@ class RegistrationController(SecureController, Update, List, Read):
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'index': [AuthRole('organiser')],
-                   'volunteer': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'status': True,
                    'silly_description': True
                }
@@ -132,13 +131,8 @@ class RegistrationController(SecureController, Update, List, Read):
         self._generate_product_schema()
         #c.products = self.dbsession.query(Product).all()
         c.product_available = self._product_available
-        c.able_to_register = self._able_to_register
         c.able_to_edit = self._able_to_edit
-
-    def _able_to_register(self):
-        if c.signed_in_person and c.signed_in_person.registration:
-            return False, "Thanks for your keenness, but you've already registered!"
-        return True, "You can register"
+        c.manual_invoice = self.manual_invoice
 
     def _able_to_edit(self):
         for invoice in c.signed_in_person.invoices:
@@ -197,16 +191,21 @@ class RegistrationController(SecureController, Update, List, Read):
     def is_speaker(self):
         return c.signed_in_person.is_speaker()
 
+    def is_miniconf_org(self):
+        return c.signed_in_person.is_miniconf_org()
+
+    def is_volunteer(self):
+        return c.signed_in_person.is_volunteer()
+
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
 
     def new(self, id):
-        able, response = self._able_to_register()
-        if not able:
-            return render_response("registration/error.myt", error=response)
-        
+        if c.signed_in_person and c.signed_in_person.registration:
+            redirect_to(action='edit', id=c.signed_in_person.registration.id)
+
         if lca_info['conference_status'] is not 'open':
-            redirect_to('/registration/status')
+            redirect_to(action='status')
             return
         errors = {}
         defaults = dict(request.POST)
@@ -236,7 +235,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.pay(c.registration.id, quiet=1)
 
                 if c.signed_in_person:
-                    redirect_to('/registration/status')
+                    redirect_to(action='status')
                 return render_response('registration/thankyou.myt')
         return render_response("registration/new.myt",
                                defaults=defaults, errors=errors)
@@ -260,9 +259,8 @@ class RegistrationController(SecureController, Update, List, Read):
                 self.obj = c.registration
                 self.pay(c.registration.id, quiet=1)
 
-                redirect_to('/registration/status')
-        return render_response("registration/edit.myt",
-                               defaults=defaults, errors=errors)
+                redirect_to(action='status')
+        return render_response("registration/edit.myt", defaults=defaults, errors=errors)
 
     def save_details(self, result):
         # Store Registration details
@@ -323,38 +321,6 @@ class RegistrationController(SecureController, Update, List, Read):
 
         self.dbsession.save_or_update(c.person)
 
-    def volunteer(self):
-        c.message = '''<p>Please indicate your areas of interest and ability.</p>'''
-        if request.POST:
-            a = []
-            for k, v in request.POST.iteritems():
-                if k=='commit':
-                    continue
-                if k=='other':
-                    if v!='':
-                        a.append(v)
-                elif k=='phone':
-                    setattr(self.obj, 'phone', v)
-                elif v=='1':
-                    a.append(k)
-                else:
-                    a.append('ERROR: %s=%s' % (k, v))
-            if a:
-                a = '; '.join(a)
-                c.message = '''<p><b>Thank you for indicating your areas of
-                interest and ability.</b></p>'''
-            else:
-                a = None
-                c.message = '''<p><b>Areas of interest and ability
-                reset.</b> If you are a volunteer, please indicate your
-                areas of interest and ability.</p>'''
-
-            setattr(self.obj, 'volunteer', a)
-            self.dbsession.save_or_update(self.obj)
-            self.dbsession.flush()
-
-        return render_response('registration/volunteer.myt')
-
     def status(self):
         return render_response("registration/status.myt")
 
@@ -368,48 +334,59 @@ class RegistrationController(SecureController, Update, List, Read):
         # Checks all existing invoices and invalidates them if a product is not available
         self.check_invoices(registration.person.invoices)
 
-        try:
-            invoice = self.create_invoice(registration)
-        except ProductUnavailable, inst:
+        # If we have a manual invoice, don't try and re-generate invoices
+        if not self.manual_invoice(registration.person.invoices):
+
+            try:
+                invoice = self.create_invoice(registration)
+            except ProductUnavailable, inst:
+                if quiet: return
+                return render_response("registration/product_unavailable.myt", product=inst.product)
+
+            if c.registration.voucher:
+                self.apply_voucher(invoice, c.registration.voucher)
+
+            # complicated check to see whether invoice is already in the system
+            new_invoice = invoice
+            for old_invoice in registration.person.invoices:
+                if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
+                    if self.invoices_identical(old_invoice, new_invoice):
+                        for ii in new_invoice.items:
+                            self.dbsession.expunge(ii)
+                        self.dbsession.expunge(new_invoice)
+                        invoice = old_invoice
+                    else:
+                        if old_invoice.due_date < new_invoice.due_date:
+                            new_invoice.due_date = old_invoice.due_date
+                        ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
+                        self.dbsession.save(ii2)
+                        old_invoice.items.append(ii2)
+                        old_invoice.void = True
+
+            invoice.last_modification_timestamp = datetime.datetime.now()
+            self.dbsession.save_or_update(invoice)
+            self.dbsession.flush()
+
             if quiet: return
-            return render_response("registration/product_unavailable.myt", product=inst.product)
-
-        if c.registration.voucher:
-            self.apply_voucher(invoice, c.registration.voucher)
-
-        # complicated check to see whether invoice is already in the system
-        new_invoice = invoice
-        for old_invoice in registration.person.invoices:
-            if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
-                if self.invoices_identical(old_invoice, new_invoice):
-                    for ii in new_invoice.items:
-                        self.dbsession.expunge(ii)
-                    self.dbsession.expunge(new_invoice)
-                    invoice = old_invoice
-                else:
-                    if old_invoice.due_date < new_invoice.due_date:
-                        new_invoice.due_date = old_invoice.due_date
-                    ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
-                    self.dbsession.save(ii2)
-                    old_invoice.items.append(ii2)
-                    old_invoice.void = True
-
-        invoice.last_modification_timestamp = datetime.datetime.now()
-        self.dbsession.save_or_update(invoice)
-        self.dbsession.flush()
-
-        if quiet: return
-        redirect_to(controller='invoice', action='view', id=invoice.id)
+            redirect_to(controller='invoice', action='view', id=invoice.id)
+        else:
+            redirect_to(action='status')
 
     def check_invoices(self, invoices):
         for invoice in invoices:
-            if not invoice.void and not invoice.paid():
+            if not invoice.void and not invoice.manual and not invoice.paid():
                 for ii in invoice.items:
                     if ii.product and not self._product_available(ii.product):
                         ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
                         self.dbsession.save(ii2)
                         invoice.items.append(ii2)
                         invoice.void = True
+
+    def manual_invoice(self, invoices):
+        for invoice in invoices:
+            if not invoice.void and invoice.manual:
+                return True
+        return False
 
     def invoices_identical(self, invoice1, invoice2):
         if invoice1.total() == invoice2.total():

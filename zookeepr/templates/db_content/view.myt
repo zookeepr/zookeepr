@@ -31,3 +31,32 @@ if h3.__len__() > 0:
     menu += '</ul></div>'
 
 </%init>
+
+<%method big_promotion>
+%directory = h.featured_image(c.db_content.title, big = True)
+%if directory is not False:
+			<div class = 'news_banner'>
+				<div class = 'news_banner_left'>
+					<a href = '/media/news/<% c.db_content.id %>'><img src = '<% directory %>/1.png' alt="<% c.db_content.title %>" title="<% c.db_content.title %>"></a>
+				</div>
+				<div class = 'news_banner_right'>
+					<a href = '/media/news/<% c.db_content.id %>'><img src = '<% directory %>/3.png' alt="<% c.db_content.title %>" title="<% c.db_content.title %>"></a>
+				</div>
+				<a href = '/media/news/<% c.db_content.id %>'>
+					<img src = '<% directory %>/2.png' alt="<% c.db_content.title %>" title="<% c.db_content.title %>">
+				</a>
+			</div>
+%#endif
+</%method>
+
+<%method extra_head>
+%directory = h.featured_image(c.db_content.title, big = True)
+%if directory is not False:
+<style type="text/css">
+.content
+{
+    background-image: url(/images/content_bg_tall.png);
+}
+</style>
+%#endif
+</%method>

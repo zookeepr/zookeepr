@@ -7,9 +7,10 @@
     }
 
     function silly_description() {
-        path = "/registration/silly_description";
+        timestamp = new Date()
+        path = "/registration/silly_description?timestamp=" + timestamp.getTime();
         xmlHttp = XMLHTTPObject();
-        xmlHttp.open("POST", path, false);
+        xmlHttp.open("GET", path, false);
         xmlHttp.send(null);
         response = xmlHttp.responseText;
         response_array = response.split(',');

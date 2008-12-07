@@ -1,1 +1,1 @@
-from domain import Registration, RegistrationProduct, RegoNote
+from domain import Registration, RegistrationProduct, RegoNote, Volunteer

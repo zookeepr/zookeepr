@@ -64,7 +64,15 @@ class Person(object):
         return self.password_hash == md5.new(value).hexdigest()
 
     def is_speaker(self):
-        return reduce(lambda a, b: a or b.accepted, self.proposals, False)
+        return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False)
+
+    def is_miniconf_org(self):
+        return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False)
+
+    def is_volunteer(self):
+        if self.volunteer and self.volunteer.accepted is not None:
+            return self.volunteer.accepted
+        return False
 
     def _set_creation_timestamp(self, value):
         if value is None:

@@ -18,39 +18,7 @@
             WHERE pr.code > 0;
         """)
         
-        
-
-    def rej_papers(self):
-        """ Rejected papers, without abstracts (for the miniconf
-        organisers) [CFP,miniconf] """
-        return sql_response("""
-          select distinct miniconf, proposal.id as p,
-            firstname || ' ' || lastname as name,
-            title, project,
-            proposal.url, email_address as email, person.url as homepage
-          from proposal, person, person_proposal_map, review
-          where person_id = person.id and review.proposal_id = proposal.id
-            and person_proposal_map.proposal_id = proposal.id
-            and account_id = account.id and account_id = person.id 
-            and proposal_type_id = 1 and accepted is null
-          order by miniconf, proposal.id
-        """)
-    def rej_papers_abstracts(self):
-        """ Rejected papers, with abstracts (for the miniconf organisers)
-        [CFP,miniconf] """
-        return sql_response("""
-          select distinct miniconf, proposal.id as p,
-            firstname || ' ' || lastname as name,
-            title, project,
-            abstract,
-            proposal.url, email_address as email, person.url as homepage
-          from proposal, person, person_proposal_map, review
-          where person_id = person.id and review.proposal_id = proposal.id
-            and person_proposal_map.proposal_id = proposal.id
-            and account_id = person.id 
-            and proposal_type_id = 1 and accepted is null
-          order by miniconf, proposal.id
-        """)
+       
     def acc_papers(self):
         """ Accepted papers (for miniconf organisers)
         [CFP,miniconf,speaker,AV]"""
@@ -314,83 +282,7 @@
         '''
         return render_response('admin/table.myt')
 
-    def speakers(self):
-        """ Listing of speakers and various stuff about them [speaker] """
-        c.data = []
-        c.noescape = True
-        cons_list = ('speaker_record', 'speaker_video_release',
-                                                  'speaker_slides_release')
-        speaker_list = []
-        for p in self.dbsession.query(Person).all():
-            if not p.is_speaker(): continue
-            speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
-        speaker_list.sort()
 
-        for (sortkey, p) in speaker_list:
-            res = [
-      '%s %s (<a href="/profile/%d">%d</a>, <a href="mailto:%s">email</a>)'
-                  % (p.firstname, p.lastname, p.id, p.id, p.email_address)
-            ]
-            if p.bio:
-              res.append(len(p.bio))
-            else:
-              res.append('-')
-            talks = [talk for talk in p.proposals if talk.accepted]
-            res.append('; '.join([
-                '<a href="/programme/detail?TalkID=%d">%s</a>'
-                                % (t.id, h.truncate(t.title)) for t in talks]))
-            res.append('; '.join([t.assistance.name.replace(' assistance', '')
-                                                              for t in talks]))
-            if p.registration:
-              if p.invoices:
-                if p.invoices[0].paid():
-                  res.append('OK')
-                else:
-                  res.append('<a href="/invoice/%d">owes $%.2f</a>'%(
-                           p.invoices[0].id, p.invoices[0].total()/100.0) )
-              else:
-                res.append('no invoice')
-
-              res[-1] += ' (<a href="/registration/%d">%d</a>)' % (
-                                     p.registration.id, p.registration.id )
-
-              cons = [con.replace('_', ' ') for con in cons_list
-                                           if getattr(p.registration, con)] 
-              if len(cons)==3:
-                res.append('all')
-              elif len(cons)==0:
-                res.append('-')
-              else:
-                res.append(' and '.join(cons))
-
-              if p.registration.accommodation:
-                acc = p.registration.accommodation.name
-                if p.registration.accommodation.option:
-                  acc += ' (%s)' % p.registration.accommodation.option
-                acc += ' [%d&#8211;%d]' % (p.registration.checkin,
-                                                   p.registration.checkout)
-                res.append(acc)
-              else:
-                res.append('-')
-              res.append('; '.join([n.note for n in p.registration.notes]))
-            else:
-              res+=['no rego', '', 'no rego', '']
-            #res.append(`dir(p.registration)`)
-            c.data.append(res)
-
-        # sort by rego status (while that's important)
-        def my_cmp(a,b):
-            return cmp('OK' in a[4], 'OK' in b[4])
-        c.data.sort(my_cmp)
-
-        c.columns = ('name', 'bio', 'talk', 'assist',
-                     'rego', 'c', 'accom', 'rego notes')
-        c.text = '''
-          Fields:
-            bio = length of bio (characters);
-            c = consent for recording/video/slides
-        '''
-        return render_response('admin/table.myt')
     def special_requirements(self):
         """ Special requirements and diets [rego,events] """
         c.data = []
@@ -791,61 +683,6 @@
 
         c.columns = 'rego', 'person', 'name', 'code', '%', 'paid'
         c.noescape = True
-        return render_response('admin/table.myt')
-    def reconcile(self):
-        """ Reconcilliation between D1 and ZK; for now, compare the D1 data
-        that have been placed in the fixed location in the filesystem and
-        work from there... [rego] """
-        import csv
-        d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
-        d1_cols = d1_data.next()
-        d1_cols = [s.strip() for s in d1_cols]
-
-        all = {}
-
-        t_offs = d1_cols.index('payment_id')
-        amt_offs = d1_cols.index('payment_amount')
-        d1 = {}
-        for row in d1_data:
-          t = row[t_offs]
-          amt = row[amt_offs]
-          if amt[-3]=='.':
-            # remove the decimal point
-            amt = amt[:-3] + amt[-2:]
-          row.append(amt)
-          all[t] = 1
-          if d1.has_key(t):
-            d1[t].append(row)
-          else:
-            d1[t] = [row]
-
-        zk = {}
-        for p in self.dbsession.query(PaymentReceived).all():
-          t = p.TransID
-          all[t] = 1
-          if zk.has_key(t):
-            zk[t].append(p)
-          else:
-            zk[t] = [p]
-          
-        zk_fields =  ('InvoiceID', 'TransID', 'Amount', 'AuthNum',
-                                'Status', 'result', 'HTTP_X_FORWARDED_FOR')
-
-        all = all.keys()
-        all.sort()
-        c.data = []
-        for t in all:
-          zk_t = zk.get(t, []); d1_t = d1.get(t, [])
-          if len(zk_t)==1 and len(d1_t)==1:
-            if str(zk_t[0].Amount) == d1_t[0][-1]:
-              continue
-          c.data.append((
-            '; '.join([', '.join([str(getattr(z, f)) for f in zk_fields])
-                                                              for z in zk_t]),
-            t,
-            '; '.join([', '.join(d) for d in d1_t])
-          ))
-
         return render_response('admin/table.myt')
 
     def bulk_checkin(self):

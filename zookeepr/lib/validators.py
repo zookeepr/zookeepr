@@ -6,7 +6,7 @@ from formencode import Invalid, validators, schema
 
 import helpers as h
 
-from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType, Product
+from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType, Product, Registration
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -180,6 +180,26 @@ class EmailAddress(validators.FancyValidator):
     def _to_python(self, value, state):
         return value.strip()
 
+class ExistingRegistrationValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        registration = state.query(Registration).filter_by(id=value).first()
+        if registration is None:
+            raise Invalid("Unknown registration ID.", value, state)
+        else:
+            return registration
+    def _from_python(self, value, state):
+        return value.id
+
+class ExistingPersonValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        person = state.query(Person).filter_by(id=value).first()
+        if person is None:
+            raise Invalid("Unknown person ID.", value, state)
+        else:
+            return person
+    def _from_python(self, value, state):
+        return value.id
+
 # TODO: have link to signin field
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -190,15 +210,34 @@ class NotExistingPersonValidator(validators.FancyValidator):
 class ProductMinMax(validators.FancyValidator):
     def validate_python(self, value, state):
         total = 0
+        negative_products = False
         for field in self.product_fields:
             try:
-                total += int(value[field])
+                if int(value[field]) < 0:
+                    negative_products = True
+                else:
+                    total += int(value[field])
             except:
                 pass
+        if negative_products:
+            raise Invalid("You can not have negative products. Please correct your " + self.category_name, value, state)
         if total < self.min_qty:
             raise Invalid("You must have at least " + str(self.min_qty) + ' ' + self.category_name, value, state)
         if total > self.max_qty:
             raise Invalid("You can not order more than " + str(self.max_qty) + ' ' + self.category_name, value, state)
+
+class CheckAccomDates(validators.FancyValidator):
+    def __init__(self, *args, **kw):
+        validators.FancyValidator.__init__(self, *args, **kw)
+        if not hasattr(self, 'checkin') or self.checkin==None:
+            self.checkin = 'checkin' # Smallest number that fits in postgres
+        if not hasattr(self, 'checkout') or self.checkout==None:
+            self.checkout = 'checkout' # Largest number that fits in postgres
+
+    def validate_python(self, value, state):
+        if value[self.checkin] >= value[self.checkout]:
+            raise Invalid("Your checkin date must be before your check out.", value, state)
+        return
 
 class ProductInCategory(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -212,7 +251,7 @@ class ProductInCategory(validators.FancyValidator):
 class PPEmail(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes adult_field, email_field
-    
+
     def validate_python(self, value, state):
         try:
             adult_field = int(value[self.adult_field])
@@ -226,7 +265,7 @@ class PPEmail(validators.FancyValidator):
 class ProDinner(validators.FancyValidator):
     # If they select a professional ticket, force the dinner ticket
     # takes dinner_field, ticket_category and ticket_id list
-    
+
     def validate_python(self, value, state):
         try:
             ticket = int(value[self.ticket_category])
@@ -234,13 +273,13 @@ class ProDinner(validators.FancyValidator):
             #they haven't gotten a ticket yet
             return
         if len(value[self.dinner_field]) == 0 and ticket in self.ticket_id:
-            raise Invalid("Please fill out how many dinner tickets you would like, or 0 for none. (Note, your first ticket is free).", value, state)
+            raise Invalid("The ticket you have chosen includes one free dinner ticket, however you haven't enterered anything into the Dinner tickets box. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself.", value, state)
         return
 
 class PPChildrenAdult(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes current_field, adult_field
-    
+
     def validate_python(self, value, state):
         try:
             current_field = int(value[self.current_field])

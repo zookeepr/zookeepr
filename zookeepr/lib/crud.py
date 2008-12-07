@@ -71,6 +71,8 @@ class Create(CRUDBase):
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[model_name][k])
 
+                self._new_presave()
+
                 self.dbsession.save(self.obj)
                 self.dbsession.flush()
 
@@ -82,6 +84,15 @@ class Create(CRUDBase):
 
         return render_response('%s/new.myt' % self.individual,
                                defaults=defaults, errors=errors)
+
+    def _new_presave(self):
+        """Overridable method for hooking before a save of the dbsession.
+
+        CRUD controllers can replace this method with one that performs
+        useful work before the dbsession has been saved with data from a
+        successful form post.
+        """
+        pass
 
     def _new_postflush(self):
         """Overridable method for hooking after a flush of the dbsession.
@@ -191,6 +202,8 @@ class Update(RUDBase):
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[self.individual][k])
 
+                self._edit_preupdate()
+
                 self.dbsession.update(self.obj)
                 self.dbsession.flush()
 
@@ -202,6 +215,15 @@ class Update(RUDBase):
 
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
+
+    def _edit_preupdate(self):
+        """Overridable method for hooking before an update of the dbsession.
+
+        CRUD controllers can replace this method with one that performs
+        useful work before the dbsession has been updated with data from a
+        successful form post.
+        """
+        pass
 
     def _edit_postflush(self):
         """Overridable method for hooking after a flush of the dbsession.

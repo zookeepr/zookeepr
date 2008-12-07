@@ -9,13 +9,8 @@ from zookeepr.model.core import Person
 
 mapper(Registration, registration,
        properties = {
-            'person': relation(Person,
-                               backref=backref('registration', cascade="all, delete-orphan",
-                                               lazy=True,
-                                               uselist=False),
-                              ),
-            'voucher': relation(Voucher,
-                                uselist=False,
+            'person': relation(Person, backref=backref('registration', cascade="all, delete-orphan", lazy=True, uselist=False)),
+            'voucher': relation(Voucher, uselist=False,
                                 primaryjoin=registration.c.voucher_code==voucher.c.code,
                                 foreign_keys=voucher.c.code,
                                )
@@ -30,12 +25,14 @@ mapper(RegistrationProduct, registration_product,
       )
 
 mapper(RegoNote, rego_note,
-  properties = {
-    'rego': relation(Registration,
-                     backref=backref('notes', cascade="all, delete-orphan",
-                                       lazy=True)),
-    'by': relation(Person,
-                   backref=backref('notes_made', cascade="all, delete-orphan",
-                                       lazy=True)),
-  }
-)
+       properties = {
+            'rego': relation(Registration, backref=backref('notes', cascade="all, delete-orphan", lazy=True)),
+            'by': relation(Person, backref=backref('notes_made', cascade="all, delete-orphan", lazy=True)),
+            }
+      )
+
+mapper(Volunteer, volunteer,
+       properties = {
+            'person': relation(Person, backref=backref('volunteer', cascade="all, delete-orphan", lazy=True, uselist=False)),
+            }
+      )

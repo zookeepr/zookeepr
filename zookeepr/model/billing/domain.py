@@ -17,10 +17,11 @@ class Ceiling(object):
             qty += p.qty_sold()
         return qty
 
-    def qty_invoiced(self):
+    def qty_invoiced(self, date=True):
+        # date: bool? only count items that are not overdue
         qty = 0
         for p in self.products:
-            qty += p.qty_invoiced()
+            qty += p.qty_invoiced(date)
         return qty
 
     def percent_sold(self):
@@ -122,11 +123,12 @@ class Product(object):
                     qty += ii.qty
         return qty
 
-    def qty_invoiced(self):
+    def qty_invoiced(self, date=True):
+        # date: bool? only count items that are not overdue
         qty = 0
         for ii in self.invoice_items:
             # also count sold items as invoiced since they are valid
-            if not ii.invoice.void and (ii.invoice.paid() or not ii.invoice.overdue()):
+            if not ii.invoice.void and ((ii.invoice.paid() or not ii.invoice.overdue() or not date)):
                 if self.category.name == 'Accomodation':
                     qty += 1
                 else:

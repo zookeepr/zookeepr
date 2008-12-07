@@ -29,7 +29,7 @@ lca_info = {
 # Possible statuses not_open|open|closed
   'cfp_status' : 'closed',
   'cfmini_status' : 'closed',
-  'paper_editing' : 'closed',
+  'paper_editing' : 'open',
   'conference_status': 'open',
 # Wether we are collecting miniconfs or papers.
   'mini_conf_email' : 'miniconfs@marchsouth.org',
@@ -37,9 +37,23 @@ lca_info = {
 }
 
 lca_rego = {
+  'volunteer_areas': (
+            {'name': 'Administration', 'description': 'Take care and help out on any administration tasks.'},
+            {'name': 'Registration Desk', 'description': 'Sign people into the conference and help with general enquires.'},
+            {'name': 'Audio+Video', 'description': 'Help out with filming and/or encoding various talks and presentations.'},
+            {'name': 'Network Helper', 'description': 'Assist in setting up and running the network.'},
+            {'name': 'Partners Programme Helper', 'description': 'Help out with the daily activities on the partners programme.'},
+            {'name': 'Runner', 'description': 'Move items around, help conference organisers, find things and do general jobs given to you.'},
+            {'name': 'Venue Helper', 'description': 'Help with setting up break times, tables and chairs and other miscellaneous things.'},
+            {'name': 'Usher', 'description': 'Introduce speakers and manage rooms, keeping them to a schedule.'},
+            {'name': 'Driver', 'description': 'Have driver\'s licence, will travel to help pick up items and shuttle VIP\'s.'},
+            {'name': 'Car', 'description': 'Have car and can be a driver.'},
+            {'name': 'Week Before', 'description': 'Available during the week before the conference (12-18 Jan).'},
+            {'name': 'Week After', 'description': 'Available during the week after the conference (25-30 Jan).'},
+        ), 
   'miniconfs' : (
-              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'Virtualisation', 'MythTV', 'Gaming', 'Free as in Freedom', 'Mobile devices')),
-              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices'))
+              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices')),
+              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Virtualisation', 'Gaming', 'Free as in Freedom', 'Mobile devices'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
@@ -101,7 +115,7 @@ file_paths = {
 lca_menu = [
   ('Home', '/home', 'home'),
   ('About', '/about/the_event_history', 'about'),
-  ('Sponsors', '/sponsors/become_a_sponsor', 'sponsors'),
+  ('Sponsors', '/sponsors/sponsors', 'sponsors'),
   ('Programme', '/programme/about_programme', 'programme'),
   ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
   ('Wiki', '/wiki', 'wiki'),
@@ -111,7 +125,7 @@ lca_menu = [
 
 lca_submenus = {
   'about': ['The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'],
-  'sponsors': ['Become a Sponsor'],
+  'sponsors': ['Sponsors', 'Become a Sponsor', 'Google Diversity Programme'],
   #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
   'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
   'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2

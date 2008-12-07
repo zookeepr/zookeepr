@@ -8,7 +8,8 @@
     <th>Available From</th>
     <th>Available Until</th>
     <th>Available</th>
-    <th>Invoiced</th>
+    <th>Invoiced (inc. overdue)</th>
+    <th>Valid Invoices</th>
     <th>Sold</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
@@ -28,6 +29,7 @@
     <td></td>
 %       #endif
     <td><% h.yesno(ceiling.available()) %></td>
+    <td><% ceiling.qty_invoiced(date=False) %></td>
     <td><% ceiling.qty_invoiced() %></td>
     <td><% ceiling.qty_sold() %></td>
 %       if c.can_edit:

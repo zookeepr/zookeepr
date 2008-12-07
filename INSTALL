@@ -9,7 +9,8 @@ being an LTS release we felt that this would be a good platform to deploy on.
 ====== Dependencies ======
 
 aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
-    python-setuptools python-dnspython python-cheetah python-psycopg2 miscfiles
+    python-setuptools python-dnspython python-cheetah python-psycopg2 miscfiles \
+    pwgen
 
 ====== PDF generation ======
 

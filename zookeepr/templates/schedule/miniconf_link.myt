@@ -15,12 +15,13 @@
 %   readmore = ' ' + h.link_to('read more', url=miniconf_url)
 % #endif
 
-<a name="<% h.computer_title(miniconf.title) %>"></a>
+<a name="<% day %>_<% h.computer_title(miniconf.title) %>"></a>
 <h3><% h.link_to(h.esc(miniconf.title), url=miniconf_url) %></h3>
 <blockquote>
-<p><% h.line_break(h.esc(teaser[0])) %><% readmore %></p>
+<p><% h.line_break(h.url_to_link(h.esc(teaser[0]))) %><% readmore %></p>
 </blockquote>
 
 <%args>
+day
 miniconf_id
 </%args>

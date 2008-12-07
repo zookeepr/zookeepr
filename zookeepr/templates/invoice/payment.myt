@@ -24,7 +24,7 @@
 
 <p>
 View <% h.link_to('invoice details', url=h.url(action='view')) %> or <%
-h.link_to('registration status', url='/registration/status') %> before
+h.link_to('registration status', url=h.url(controller='registration', action='status')) %> before
 payment.
 </p>
 <p>
@@ -42,7 +42,7 @@ payment.
 <input type="hidden" name="reply_link_url"
   value="http://<% h.host_name() %>/payment/new?invoice_id=&amp;payment_amount=&amp;bank_reference=&amp;payment_number=">
 <input type="hidden" name="return_link_url"
-  value="http://<% h.host_name() %>/registration/status">
+  value="http://<% h.host_name() %>/register/status">
 <input type="hidden" name="return_link_text"
   value="Return to the linux.conf.au website">
 </p>

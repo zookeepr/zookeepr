@@ -26,6 +26,9 @@
 </table>
 <p>(<% rows |h%> rows)</p>
 
+<br>
+<p><% h.link_to("Back to admin list", h.url(controller='admin')) %></p>
+
 % if h.debug():
     <br><p class="note">
     <% c.sql %>

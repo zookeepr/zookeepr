@@ -1,8 +1,9 @@
-% miniconfs = [8, 157, 9, 132, 49, 116, 121, 26]
+% day = 'monday'
+% miniconfs = [8, 157, 9, 49, 83, 116, 201, 26]
 % contents = ''
 % for mid in miniconfs:
 %   miniconf = c.get_talk(mid)
-%   contents += '<li><a href="#' + h.computer_title(miniconf.title) + '">' + miniconf.title + '</li>'
+%   contents += '<li><a href="#' + day + '_' + h.computer_title(miniconf.title) + '">' + miniconf.title + '</li>'
 % #endfor
 
 <div class="contents">
@@ -13,5 +14,5 @@
 </div>
 
 % for mid in miniconfs:
-<& miniconf_link.myt, miniconf_id=mid &>
+<& miniconf_link.myt, day=day, miniconf_id=mid &>
 % #endfor

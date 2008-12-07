@@ -83,15 +83,21 @@ def make_map():
     m.connect('/openday', controller='not_found', action='page')
     m.connect('/openDay', controller='not_found', action='page')
 
+    #HACK: Alias' for db_content pages. Due to the news route the menu will display the wrong thing. These are only here incase somebody mis-links.
     #HACK: this is because of an incorrect link in the press release
     m.connect('/become_a_sponsor', controller='db_content', action='view', id=8)
     m.connect('/review/help', controller='db_content', action='view', id=25)
+    m.connect('/sponsors/google_diversity_programme', controller='db_content', action='view', id=66)
+    m.connect('/sponsors', controller='db_content', action='view', id=61)
+    m.connect('/register', controller='db_content', action='view', id=45)
 
     # special case the wiki controller so that it's not gobbled by the
     # usual :controller rules...
     #m.connect('/wiki', controller='wiki', action='view', url='/wiki')
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
+    # route rego_notes with ID's
+    m.connect('registration/:rego_id/new_note', controller='rego_note', action='new', rego_id=None)
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule

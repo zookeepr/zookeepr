@@ -1,5 +1,6 @@
 from datetime import datetime
 import os, random, re, urllib
+from zookeepr.lib import helpers as h
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
@@ -35,6 +36,9 @@ class AdminController(SecureController):
           ('/ceiling', '''Manage ceilings and available inventory. [Inventory]'''),
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
           ('/invoice', '''View assigned invoices and their status. [Registrations]'''),
+          ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
+          ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
+          ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
 
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
@@ -64,7 +68,7 @@ class AdminController(SecureController):
         funcs = [('<a href="%s">%s</a>'%(fn,fn), desc)
                                                    for (fn, desc) in funcs]
         sect = {}
-        pat = re.compile(r'\[([a-zA-Z,]+)\]')
+        pat = re.compile(r'\[([\ a-zA-Z,]+)\]')
         for (page, desc) in funcs:
             m = pat.search(desc)
             if m:
@@ -86,6 +90,68 @@ class AdminController(SecureController):
             c.data = sect[s]
             c.text = render('admin/table.myt', fragment=True)
         return render_response('admin/text.myt')
+
+    def activate_talks(self):
+        """
+        Set the talks to accepted as per the list in the admin controller. [Schedule]
+        """
+        # {theatre: [id's]}
+        keynotes = {'Stanley Burbury': (227)}
+        miniconfs = {'Unknown': (8,32,157,83,108,49,132,9,26,116,121,201)}
+        tutorials = {'Stanley Burbury 1': (40,143),
+                     'Arts Lecture Theatre': (43,181),
+                     'Stanley Burbury 2': (164,151),
+                     'Social Science 1': (112,5),
+                     'Social Science 2': (198,89)}
+        presentations = {'Stanley Burbury 1': (51,205,11,225,219,48,87,90,156,175,203,189,126),
+                     'Arts Lecture Theatre': (218,173,22,84,131,45,56,13,91,178,106,171,30),
+                     'Stanley Burbury 2': (136,12,78,99,209,122,29,179,210,64,79,33,105),
+                     'Social Science 1': (77,148,208,52,66,187,93,139,158,176,166,76,172),
+                     'Social Science 2': (149,123,211,192,67,161,160,119,152,46,145,72,217)}
+        
+        sql_execute("UPDATE proposal SET accepted = FALSE, theatre = NULL") # set all talks to unaccepted to start
+        
+        for collection in (keynotes, miniconfs, tutorials, presentations):
+            for (room, ids) in collection.iteritems():
+                if type(ids) is int:
+                    ids = '(' + str(ids) + ')'
+                sql_execute("UPDATE proposal SET theatre = '%s', accepted = TRUE WHERE id IN %s" % (room, str(ids)))
+        c.text = "<p>Updated successfully</p>"
+        return render_response("admin/text.myt")
+
+    def rej_papers_abstracts(self):
+        """ Rejected papers, with abstracts (for the miniconf organisers)
+        [Schedule] """
+        return sql_response("""
+SELECT
+    proposal.id, 
+    proposal.title, 
+    proposal_type.name AS "proposal type",
+    proposal.project,
+    proposal.url as project_url,
+    proposal.abstract,
+    person.firstname || ' ' || person.lastname as name,
+    person.email_address,
+    person.url as homepage,
+    person.bio,
+    person.experience,
+    stream.name AS stream,
+    MAX(review.score),
+    MIN(review.score),
+    AVG(review.score)
+FROM proposal 
+    LEFT JOIN review ON (proposal.id=review.proposal_id)
+    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+    LEFT JOIN stream ON (review.stream_id=stream.id)
+    LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
+    LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+WHERE
+    review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
+    AND proposal.proposal_type_id != 2
+    AND proposal.accepted = False
+GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
+ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+        """)
 
     def collect_garbage(self):
         """
@@ -240,6 +306,187 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
                                                timeleft.seconds / (3600*24.)))
         res.headers['Refresh'] = 3600
         return res
+        
+    def registered_speakers(self):
+        """ Listing of speakers and various stuff about them [Speakers] """
+        c.data = []
+        c.noescape = True
+        cons_list = ('speaker_record', 'speaker_video_release', 'speaker_slides_release')
+        speaker_list = []
+        for p in self.dbsession.query(Person).all():
+            if not p.is_speaker(): continue
+            speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
+        speaker_list.sort()
+
+        for (sortkey, p) in speaker_list:
+            registration_link = ''
+            if p.registration:
+                registration_link = '<a href="/registration/%d">Details</a>, ' % (p.registration.id)
+            res = [
+      '<a href="/person/%d">%s %s</a> (%s<a href="mailto:%s">email</a>)'
+                  % (p.id, p.firstname, p.lastname, registration_link, p.email_address)
+            ]
+
+            talks = [talk for talk in p.proposals if talk.accepted]
+            res.append('; '.join([
+                '<a href="/programme/schedule/view_talk/%d">%s</a>'
+                                % (t.id, h.truncate(t.title)) for t in talks]))
+            if p.registration:
+              if p.invoices:
+                if p.valid_invoice() is None:
+                    res.append('Invalid Invoice')
+                else:
+                    if p.valid_invoice().paid():
+                      res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
+                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                    else:
+                      res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
+                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+              else:
+                res.append('No Invoice')
+
+              cons = [con.replace('_', ' ') for con in cons_list
+                                           if getattr(p.registration, con)] 
+              if len(cons)==3:
+                res.append('Release All')
+              elif len(cons)==0:
+                res.append('None')
+              else:
+                res.append(' and '.join(cons))
+
+              res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
+              if p.registration.diet:
+                  res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
+              if p.registration.special:
+                  res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
+            else:
+              res+=['Not Registered', '', '']
+            #res.append(`dir(p.registration)`)
+            c.data.append(res)
+
+        # sort by rego status (while that's important)
+        def my_cmp(a,b):
+            return cmp('OK' in a[4], 'OK' in b[4])
+        c.data.sort(my_cmp)
+
+        c.columns = ('Name', 'Talk(s)', 'Status', 'Concent', 'Notes')
+        return render_response('admin/table.myt')
+
+    def reconcile(self):
+        """ Reconcilliation between D1 and ZK; for now, compare the D1 data
+        that have been placed in the fixed location in the filesystem and
+        work from there... [Registrations] """
+        import csv
+        d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
+        d1_cols = d1_data.next()
+        d1_cols = [s.strip() for s in d1_cols]
+
+        all = {}
+
+        t_offs = d1_cols.index('payment_id')
+        amt_offs = d1_cols.index('payment_amount')
+        d1 = {}
+        for row in d1_data:
+          t = row[t_offs]
+          amt = row[amt_offs]
+          if amt[-3]=='.':
+            # remove the decimal point
+            amt = amt[:-3] + amt[-2:]
+          row.append(amt)
+          all[t] = 1
+          if d1.has_key(t):
+            d1[t].append(row)
+          else:
+            d1[t] = [row]
+
+        zk = {}
+        for p in self.dbsession.query(PaymentReceived).all():
+          t = p.TransID
+          all[t] = 1
+          if zk.has_key(t):
+            zk[t].append(p)
+          else:
+            zk[t] = [p]
+          
+        zk_fields =  ('InvoiceID', 'TransID', 'Amount', 'AuthNum',
+                                'Status', 'result', 'HTTP_X_FORWARDED_FOR')
+
+        all = all.keys()
+        all.sort()
+        c.data = []
+        for t in all:
+          zk_t = zk.get(t, []); d1_t = d1.get(t, [])
+          if len(zk_t)==1 and len(d1_t)==1:
+            if str(zk_t[0].Amount) == d1_t[0][-1]:
+              continue
+          c.data.append((
+            '; '.join([', '.join([str(getattr(z, f)) for f in zk_fields])
+                                                              for z in zk_t]),
+            t,
+            '; '.join([', '.join(d) for d in d1_t])
+          ))
+
+        return render_response('admin/table.myt')
+
+    def linux_australia_signup(self):
+        """ People who ticked "I want to sign up for (free) Linux Australia
+        membership!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up for (free) Linux
+        Australia membership!" (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        for r in self.dbsession.query(Registration).all():
+            if not r.lasignup:
+                continue
+            p = r.person
+            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render_response('admin/text.myt')
+
+    def lca_announce_signup(self):
+        """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up to the low traffic conference 
+        announcement mailing list!" (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        for r in self.dbsession.query(Registration).all():
+            if not r.announcesignup:
+                continue
+            p = r.person
+            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render_response('admin/text.myt')
+
+    def lca_chat_signup(self):
+        """ People who ticked "I want to sign up to the conference attendees mailing list!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up to the conference attendees mailing list!" (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        for r in self.dbsession.query(Registration).all():
+            if not r.delegatesignup:
+                continue
+            p = r.person
+            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render_response('admin/text.myt')
 
 def csv_response(sql):
     import zookeepr.model
@@ -258,6 +505,11 @@ def csv_response(sql):
     res.headers['Content-Disposition']='attachment; filename="table.csv"'
     return res
 
+def sql_execute(sql):
+    import zookeepr.model
+    res = zookeepr.model.metadata.bind.execute(sql)
+    return res
+
 def sql_response(sql):
     """ This function bypasses all the MVC stuff and just puts up a table
     of results from the given SQL statement.
@@ -271,7 +523,7 @@ def sql_response(sql):
     if request.GET.has_key('csv'):
         return csv_response(sql)
     import zookeepr.model
-    res = zookeepr.model.metadata.bind.execute(sql);
+    res = zookeepr.model.metadata.bind.execute(sql)
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql

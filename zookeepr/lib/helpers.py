@@ -246,6 +246,12 @@ def make_teaser(body):
     else:
         return body, False
 
+def remove_teaser_break(body):
+    if teaser_re.search(body):
+        return teaser_re.sub('', body)
+    else:
+        return body
+
 _news_id = -1
 def news_id():
     global _news_id
@@ -271,19 +277,19 @@ def computer_title(title):
 
 def featured_image(title, big = False):
     """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left
-    If the image is prefixed with _big_ it becomes the main header feature """
+    If big == True then find a directory """
 
     fileprefix = file_paths['news_fileprefix']
     htmlprefix = file_paths['news_htmlprefix']
 
     if big:
-        # look for _big_ feature
+        # look for folder feature
         if os.path.isdir(fileprefix + "/" + computer_title(title)):
             return htmlprefix + "/" + computer_title(title) + "/"
         else:
             return False
     else:
-        # look for normal
+        # look for image
         if os.path.isfile(fileprefix + "/" + computer_title(title) + ".png"):
             return htmlprefix + "/" + computer_title(title) + ".png"
         else:
@@ -332,3 +338,8 @@ def ticket_percentage_text(percent, earlybird = False):
             return "%d%% earlybird sold." % percent 
         else:
             return "%d%% tickets sold." % percent
+
+link_re = re.compile(r'\[url\=((http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})([^ \t\n]+))\](.*)\[\/url\]')
+def url_to_link(body):
+    """ Converts [url=http://example.com]site[/url] into <a href="http://www.example.com">site</a>> """
+    return link_re.sub(r'<a href="\1" title="\1">\6</a>', body)

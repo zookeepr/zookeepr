@@ -11,6 +11,7 @@
 
 
 		<div class = 'home_news'>
+			<a href="/register/prices_ticket_types"><img src="/content_images/register.png" alt="Register now" title="Register Now" style="margin-top: -40px; margin-right: -60px;"></a>
 			<h3 class = 'news_item_list_heading'><a href = '/media/news'>News updates</a><a href="/media/news/rss"><img class = 'feedicon' src = '/images/feedicon_16.png' alt="Subscribe to feed" title="Subscribe to feed"></a></h3>
 			<ul class = 'news_item_list'>
 % for d in c.db_content_news:
@@ -79,6 +80,7 @@ for d in c.db_content_news_all:
 					<img src = '<% directory %>/2.png' alt="<% d.title %>" title="<% d.title %>">
 				</a>
 			</div>
+%        break
 %    #endif
 %#endfor
 </%method>

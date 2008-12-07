@@ -15,7 +15,6 @@ class Registration(object):
                  voucher_code=None,
                  diet=None,
                  special=None,
-                 volunteer=None,
                  opendaydrag=None,
                  partner_email=None,
                  checkin=None,
@@ -40,7 +39,6 @@ class Registration(object):
         self.voucher_code = voucher_code
         self.diet = diet
         self.special = special
-        self.volunteer = volunteer
         self.opendaydrag = opendaydrag
         self.partner_email = partner_email
         self.checkin = checkin
@@ -72,3 +70,11 @@ class RegoNote(object):
     def __repr__(self):
         return '<RegoNote note=%r>' % (self.note)
 
+class Volunteer(object):
+    def __init__(self, areas=None, other=None, accepted=None):
+        self.areas = areas
+        self.other = other
+        self.accepted = accepted
+
+    def __repr__(self):
+        return '<Volunteer id=%r person_id=%r>' % (self.id, self.person_id)

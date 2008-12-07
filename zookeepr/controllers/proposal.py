@@ -263,10 +263,10 @@ class ProposalController(SecureController, View, Update):
             else:
                 result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
 
-            if errors:
-                if asbool(request.environ['paste.config']['global_conf'].get('debug')):
-                    warnings.warn("edit: form validation failed: %s" % errors)
-            else:
+            #if errors:
+            #    if asbool(request.environ['paste.config']['global_conf'].get('debug')):
+            #        warnings.warn("edit: form validation failed: %s" % errors)
+            if not errors:
                 # update the object with the posted data
                 for k in result[self.individual]:
                     setattr(self.obj, k, result[self.individual][k])

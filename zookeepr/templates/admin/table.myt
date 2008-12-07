@@ -20,7 +20,11 @@
   </tr>
 % # endfor
 </table>
+<br>
+% if not h.url()().endswith('admin'):
 <p>(<% rows |h %> rows)</p>
+<p><% h.link_to("Back to admin list", h.url(controller='admin')) %></p>
+% #endif
 
 <%init>
 def oddeven():

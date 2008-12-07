@@ -21,16 +21,6 @@ class NotExistingVoucherValidator(validators.FancyValidator):
         if voucher is not None:
             raise Invalid("Code already exists!", value, state)
 
-class ExistingPersonValidator(validators.FancyValidator):
-    def _to_python(self, value, state):
-        leader = state.query(model.Person).filter_by(id=value).first()
-        if leader is None:
-            raise Invalid("Unknown person ID for leader!", value, state)
-        else:
-            return leader
-    def _from_python(self, value, state):
-        return valud.id
-
 class VoucherSchema(BaseSchema):
     count = BoundedInt(min=1, max=100)
     leader = ExistingPersonValidator(not_empty=True)
@@ -135,7 +125,7 @@ class VoucherController(SecureController, Read, Create, List):
 
                 self.dbsession.flush()
 
-                return redirect_to('/voucher')
+                return redirect_to(controller='voucher', action='index')
 
         return render_response("voucher/new.myt", defaults=defaults, errors=errors)
 
