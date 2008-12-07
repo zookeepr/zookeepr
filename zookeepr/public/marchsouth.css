@@ -364,6 +364,8 @@
 		padding-top: 20px;
 		text-align: center;
 		clear: both;
+		vertical-align: middle;
+		padding-right: 90px;
 	}
 	
 	a img
