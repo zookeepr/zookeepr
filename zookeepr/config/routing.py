@@ -90,6 +90,7 @@ def make_map():
     m.connect('/sponsors/google_diversity_programme', controller='db_content', action='view', id=66)
     m.connect('/sponsors', controller='db_content', action='view', id=61)
     m.connect('/register', controller='db_content', action='view', id=45)
+    m.connect('/programme', controller='db_content', action='view', id=3)
 
     # special case the wiki controller so that it's not gobbled by the
     # usual :controller rules...
