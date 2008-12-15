@@ -309,6 +309,9 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
         
     def registered_speakers(self):
         """ Listing of speakers and various stuff about them [Speakers] """
+        """ HACK: This code should be in the registration controller """
+        import re
+        shirt_totals = {}
         c.data = []
         c.noescape = True
         cons_list = ('speaker_record', 'speaker_video_release', 'speaker_slides_release')
@@ -342,8 +345,19 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
                     else:
                       res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
                                p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                    
+                    shirt = ''
+                    for item in p.valid_invoice().items:
+                        if ((item.description.lower().find('shirt') is not -1) and (item.description.lower().find('discount') is -1)):
+                            shirt += item.description + ', '
+                            if shirt_totals.has_key(item.description):
+                                shirt_totals[item.description] += 1
+                            else:
+                                shirt_totals[item.description] = 1
+                    res.append(shirt)
               else:
                 res.append('No Invoice')
+                res.append('-')
 
               cons = [con.replace('_', ' ') for con in cons_list
                                            if getattr(p.registration, con)] 
@@ -360,7 +374,7 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
               if p.registration.special:
                   res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
             else:
-              res+=['Not Registered', '', '']
+              res+=['Not Registered', '', '', '']
             #res.append(`dir(p.registration)`)
             c.data.append(res)
 
@@ -369,7 +383,11 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
             return cmp('OK' in a[4], 'OK' in b[4])
         c.data.sort(my_cmp)
 
-        c.columns = ('Name', 'Talk(s)', 'Status', 'Concent', 'Notes')
+        c.columns = ('Name', 'Talk(s)', 'Status', 'Shirts', 'Concent', 'Notes')
+        c.text = "<p>Shirt Totals:"
+        for key, value in shirt_totals.items():
+            c.text += "<br>" + str(key) + ": " + str(value)
+        c.text += "</p>"
         return render_response('admin/table.myt')
 
     def reconcile(self):
