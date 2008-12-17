@@ -452,20 +452,18 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
 
         c.text = """<p>People who ticked "I want to sign up for (free) Linux
         Australia membership!" (whether or not they then went on to pay for
-        the conference).</p><p>Copy and paste the following into mailman</p>
-        <p><textarea cols="100" rows="25">"""
+        the conference).</p>"""
+        
+        query = """SELECT person.firstname, person.lastname, 
+                    person.address1, person.address2, person.city, person.state, person.postcode, person.country,
+                    person.phone, person.mobile, person.company,
+                    registration.creation_timestamp
+                   FROM person
+                   LEFT JOIN registration ON (person.id = registration.person_id)
+                   WHERE registration.lasignup = True
+                """
 
-        count = 0
-        for r in self.dbsession.query(Registration).all():
-            if not r.lasignup:
-                continue
-            p = r.person
-            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
-            count += 1
-        c.text += "</textarea></p>"
-        c.text += "<p>Total addresses: " + str(count) + "</p>"
-
-        return render_response('admin/text.myt')
+        return sql_response(query)
 
     def lca_announce_signup(self):
         """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
