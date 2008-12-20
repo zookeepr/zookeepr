@@ -472,3 +472,63 @@ class RegistrationController(SecureController, Update, List, Read):
                     self.dbsession.save(discount_item)
                     invoice.items.append(discount_item)
                     break
+                    
+    def index(self):
+        per_page = 20
+        from zookeepr.model.core import tables as core_tables
+        from zookeepr.model.registration import tables as registration_tables
+        from zookeepr.model.proposal import tables as proposal_tables
+        from webhelpers.pagination import paginate
+        model_name = self.individual
+        
+        filter = dict(request.GET)
+        filter['role'] = []
+        for key,value in request.GET.items():
+            if key == 'role': filter['role'].append(value)
+        
+        """
+        registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+        if filter.has_key('role'):
+            role_name = filter['role']
+            if role_name == 'speaker':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.proposals.any(accepted='1'))
+            elif role_name == 'miniconf':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.proposals.any(accepted='1'))
+            elif role_name == 'volunteer':
+                pass
+            elif role_name != 'all':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.roles.any(name=role_name))
+        """
+
+        registration_list_full = self.dbsession.query(self.model).order_by(self.model.c.id).all()
+
+        registration_list = []
+
+        for registration in registration_list_full:
+            if 'speaker' in filter['role']:
+                if registration.person.is_speaker() is True:
+                    registration_list.append(registration)
+            if 'miniconf' in filter['role']:
+                if registration.person.is_miniconf_org() is True:
+                    registration_list.append(registration)
+            if 'volunteer' in filter['role']:
+                if registration.person.is_volunteer() is True:
+                    registration_list.append(registration)
+            if len(set(filter['role']) & set([role.name for role in registration.person.roles])) > 0:
+                registration_list.append(registration)
+
+        if filter.has_key('per_page'):
+            try:
+                per_page = int(filter['per_page'])
+            except:
+                pass
+                
+        setattr(c, 'per_page', per_page)
+        pages, collection = paginate(registration_list, per_page = per_page)
+        setattr(c, self.individual + '_pages', pages)
+        setattr(c, self.individual + '_collection', collection)
+        setattr(c, self.individual + '_request', filter)
+        
+        setattr(c, 'roles', self.dbsession.query(model.Role).all())
+        
+        return render_response('%s/list.myt' % model_name)
