@@ -468,7 +468,7 @@
 		background-color: transparent;
 	}
 	
-	h1 a, h2 a, h3 a, h4 a, th a, dt a
+	h1 a, h2 a, h3 a, h4 a, dt a
 	{
 		color: #5850a5;	
 	}
@@ -734,4 +734,15 @@
 		clear: both;
 		padding-bottom: 40px;
 		text-align: center;
+	}
+	
+	th a
+	{
+		color: #fff;
+		font-style: none;
+	}
+	
+	.presentation, .tutorial
+	{
+		border-right: 1px dotted #AFAFFF;
 	}
