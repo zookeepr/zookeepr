@@ -1,7 +1,7 @@
-<table id="wed-programme" style="" summary="Programme" cellpadding="" cellspacing="">
+<table id="thur-programme" style="" summary="Programme" cellpadding="" cellspacing="">
   <thead>
     <tr>        <th class="programme_time_slot" align="center" valign="middle" rowspan="2">Time slot</th>
-        <th colspan=5 align = "center" class ="programme_room_header">Room Code</th>
+        <th colspan="5" align = "center" class ="programme_room_header">Room Code</th>
     </tr>
     <tr>
       <th class="programme_room" align="center" valign="top">Stanley Burbury 1</th>
@@ -14,23 +14,23 @@
 
   <tbody>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">9:00&nbsp;-&nbsp;9:25</th>
+      <th class="programme_slot" align="center" valign="top">9:00&nbsp;-&nbsp;9:30</th>
       <td id="programme_intro" colspan="5" align="center" valign="top">
         <b>Introduction and Housekeeping</b>
       </td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">9:25&nbsp;-&nbsp;10:15</th>
+      <th class="programme_slot" align="center" valign="middle">9:30&nbsp;-&nbsp;10:20</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
         Keynote 2 - Angela Beesley
       </td>
     </tr>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">10:15&nbsp;-&nbsp;10:35</th>
+      <th class="programme_slot" align="center" valign="middle">10:20&nbsp;-&nbsp;10:40</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Morning Tea</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">10:35&nbsp;-&nbsp;11:25</th>
+      <th class="programme_slot" align="center" valign="top">10:40&nbsp;-&nbsp;11:30</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=219 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=131 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=209 &></td>
@@ -38,7 +38,7 @@
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=67 &></td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">11:35&nbsp;-&nbsp;12:25</th>
+      <th class="programme_slot" align="center" valign="top">11:40&nbsp;-&nbsp;12:30</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=48 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=45 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=122 &></td>
@@ -46,11 +46,11 @@
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=161 &></td>
     </tr>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">12:25&nbsp;-&nbsp;13:45</th>
+      <th class="programme_slot" align="center" valign="middle">12:30&nbsp;-&nbsp;13:50</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Lunch</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">Tutorial<br>13:45&nbsp;-&nbsp;15:30</th>
+      <th class="programme_slot" align="center" valign="top">Tutorial<br>13:50&nbsp;-&nbsp;15:40</th>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=143 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=181 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=151 &></td>
@@ -58,19 +58,19 @@
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=89 &></td>
     </tr>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">15:30&nbsp;-&nbsp;15:50</th>
+      <th class="programme_slot" align="center" valign="middle">15:40&nbsp;-&nbsp;16:00</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Afternoon Tea</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">15:50&nbsp;-&nbsp;16:40</th>
+      <th class="programme_slot" align="center" valign="top">16:00&nbsp;-&nbsp;16:50</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=87 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=56 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=29 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=93 &></td>
-      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=160 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=92 &></td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">16:50&nbsp;-&nbsp;17:40</th>
+      <th class="programme_slot" align="center" valign="top">17:00&nbsp;-&nbsp;17:50</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=90 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=13 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=179 &></td>
