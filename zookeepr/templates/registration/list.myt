@@ -15,6 +15,44 @@ function display_toggle(box)
 </script>
 
     <h2>Registration List</h2>
+    <form method="GET" action="/registration">
+    <p style="vertical-align: top;">Filters: <select name="role" multiple="multiple" size="9">
+        <option value="all">--All--</option>
+% selected = ''
+% if "speaker" in c.registration_request['role']:
+%    selected = ' selected="selected"'
+% #endif
+        <option value="speaker"<% selected %>>Speaker</option>
+% selected = ''
+% if "miniconf" in c.registration_request['role']:
+%    selected = ' selected="selected"'
+% #endif
+        <option value="miniconf"<% selected %>>Miniconf Organiser</option>
+% selected = ''
+% if "volunteer" in c.registration_request['role']:
+%    selected = ' selected="selected"'
+% #endif
+        <option value="volunteer"<% selected %>>Volunteer</option>
+% for role in c.roles:
+%   selected = ''
+%   if role.name in c.registration_request['role']:
+%       selected = ' selected="selected"'
+%   #endif
+        <option value="<% role.name %>"<% selected %>><% role.name %></option>
+% #endfor
+    </select>
+    Status: <select name="status">
+        <option value="Unpaid">Unpaid</option>
+        <option value="Paid">Paid</option>
+    </select>
+    <input name="per_page" value="<% c.per_page %>" size="3" /> Per Page
+    <label for="diet"><input type="checkbox" name="diet" id="diet" value="true" /> Diet</label>
+    <label for="special_needs"><input type="checkbox" name="special_needs" id="special_needs" value="true" /> Special Needs</label>
+    <label for="notes"><input type="checkbox" name="notes" id="notes" value="true" /> Notes</label>
+    <input type="submit" value="Update" />
+    </p>
+    </form>
+        
     <table> 
       <thead><tr>
         <th>Rego</th>
@@ -83,3 +121,11 @@ function display_toggle(box)
       </tr>
 % #endfor
     </table>
+<p>
+<%python>
+if c.registration_pages.current.next:
+    m.write(h.link_to('<span style="float: right;">Next page</span>', url=h.url(page=c.registration_pages.current.next)))
+if c.registration_pages.current.previous:
+    m.write(h.link_to('Previous page', url=h.url(page=c.registration_pages.current.previous)) + '  ')
+</%python>
+</p>
