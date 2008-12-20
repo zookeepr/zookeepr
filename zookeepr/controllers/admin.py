@@ -107,7 +107,7 @@ class AdminController(SecureController):
                      'Arts Lecture Theatre': (218,173,22,84,131,45,56,13,91,178,106,171,30),
                      'Stanley Burbury 2': (136,12,78,99,209,122,29,179,210,64,79,33,105),
                      'Social Science 1': (77,148,208,52,66,187,93,139,158,176,166,76,172),
-                     'Social Science 2': (149,123,211,192,67,161,160,119,152,46,145,72,217)}
+                     'Social Science 2': (149,123,211,192,67,161,92,119,152,46,145,72,217)}
         
         sql_execute("UPDATE proposal SET accepted = FALSE, theatre = NULL") # set all talks to unaccepted to start
         
@@ -123,34 +123,34 @@ class AdminController(SecureController):
         """ Rejected papers, with abstracts (for the miniconf organisers)
         [Schedule] """
         return sql_response("""
-SELECT
-    proposal.id, 
-    proposal.title, 
-    proposal_type.name AS "proposal type",
-    proposal.project,
-    proposal.url as project_url,
-    proposal.abstract,
-    person.firstname || ' ' || person.lastname as name,
-    person.email_address,
-    person.url as homepage,
-    person.bio,
-    person.experience,
-    stream.name AS stream,
-    MAX(review.score),
-    MIN(review.score),
-    AVG(review.score)
-FROM proposal 
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-    LEFT JOIN stream ON (review.stream_id=stream.id)
-    LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
-    LEFT JOIN person ON (person_proposal_map.person_id = person.id)
-WHERE
-    review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
-    AND proposal.proposal_type_id != 2
-    AND proposal.accepted = False
-GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
-ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+            SELECT
+                proposal.id, 
+                proposal.title, 
+                proposal_type.name AS "proposal type",
+                proposal.project,
+                proposal.url as project_url,
+                proposal.abstract,
+                person.firstname || ' ' || person.lastname as name,
+                person.email_address,
+                person.url as homepage,
+                person.bio,
+                person.experience,
+                stream.name AS stream,
+                MAX(review.score),
+                MIN(review.score),
+                AVG(review.score)
+            FROM proposal 
+                LEFT JOIN review ON (proposal.id=review.proposal_id)
+                LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                LEFT JOIN stream ON (review.stream_id=stream.id)
+                LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
+                LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+            WHERE
+                review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
+                AND proposal.proposal_type_id != 2
+                AND proposal.accepted = False
+            GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
+            ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
         """)
 
     def collect_garbage(self):
@@ -227,77 +227,77 @@ ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DES
     def proposals_by_strong_rank(self):
         """ List of proposals ordered by number of certain score / total number of reviewers [CFP] """
         query = """
-SELECT
-    proposal.id,
-    proposal.title,
-    proposal_type.name AS "proposal type",
-    review.score,
-    COUNT(review.id) AS "#reviewers at this score",
-    (
-        SELECT COUNT(review2.id)
-            FROM review as review2
-            WHERE review2.proposal_id = proposal.id
-    ) AS "#total reviewers",
-    CAST(
-        CAST(
-            COUNT(review.id) AS float(8)
-        ) / CAST(
-            (SELECT COUNT(review2.id)
-                FROM review as review2
-                WHERE review2.proposal_id = proposal.id
-            ) AS float(8)
-        ) AS float(8)
-    ) AS "#reviewers at this score / #total reviews %%"
-FROM proposal
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-WHERE
-    (
-        SELECT COUNT(review2.id)
-            FROM review as review2
-            WHERE review2.proposal_id = proposal.id
-    ) != 0
-GROUP BY proposal.id, proposal.title, review.score, proposal_type.name
-ORDER BY proposal_type.name ASC, review.score DESC, "#reviewers at this score / #total reviews %%" DESC, proposal.id ASC"""
+                SELECT
+                    proposal.id,
+                    proposal.title,
+                    proposal_type.name AS "proposal type",
+                    review.score,
+                    COUNT(review.id) AS "#reviewers at this score",
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM review as review2
+                            WHERE review2.proposal_id = proposal.id
+                    ) AS "#total reviewers",
+                    CAST(
+                        CAST(
+                            COUNT(review.id) AS float(8)
+                        ) / CAST(
+                            (SELECT COUNT(review2.id)
+                                FROM review as review2
+                                WHERE review2.proposal_id = proposal.id
+                            ) AS float(8)
+                        ) AS float(8)
+                    ) AS "#reviewers at this score / #total reviews %%"
+                FROM proposal
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                WHERE
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM review as review2
+                            WHERE review2.proposal_id = proposal.id
+                    ) != 0
+                GROUP BY proposal.id, proposal.title, review.score, proposal_type.name
+                ORDER BY proposal_type.name ASC, review.score DESC, "#reviewers at this score / #total reviews %%" DESC, proposal.id ASC"""
 
         return sql_response(query)
 
     def proposals_by_max_rank(self):
         """ List of all the proposals ordered max score, min score then average [CFP] """
         return sql_response("""
-SELECT
-    proposal.id,
-    proposal.title,
-    proposal_type.name AS "proposal type",
-    MAX(review.score),
-    MIN(review.score),
-    AVG(review.score)
-FROM proposal
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-GROUP BY proposal.id, proposal.title, proposal_type.name
-ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
-""")
+                SELECT
+                    proposal.id,
+                    proposal.title,
+                    proposal_type.name AS "proposal type",
+                    MAX(review.score),
+                    MIN(review.score),
+                    AVG(review.score)
+                FROM proposal
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                GROUP BY proposal.id, proposal.title, proposal_type.name
+                ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+                """)
 
     def proposals_by_stream(self):
         """ List of all the proposals ordered by stream, max score, min score then average [CFP] """
         return sql_response("""
-SELECT
-    proposal.id, 
-    proposal.title, 
-    proposal_type.name AS "proposal type",
-    stream.name AS stream,
-    MAX(review.score),
-    MIN(review.score),
-    AVG(review.score)
-FROM proposal 
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-    LEFT JOIN stream ON (review.stream_id=stream.id)
-WHERE review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
-GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
-ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
-""")
+                SELECT
+                    proposal.id, 
+                    proposal.title, 
+                    proposal_type.name AS "proposal type",
+                    stream.name AS stream,
+                    MAX(review.score),
+                    MIN(review.score),
+                    AVG(review.score)
+                FROM proposal 
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                    LEFT JOIN stream ON (review.stream_id=stream.id)
+                WHERE review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
+                GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
+                ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+                """)
 
     def countdown(self):
         """ How many days until conference opens """
@@ -518,6 +518,17 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
                     LEFT JOIN invoice ON (invoice.person_id = person.id)
                     LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
                     WHERE invoice_item.product_id IN (29,38,39,40,41,42) AND invoice.void = FALSE"""
+        return sql_response(query)
+        
+    def talks(self):
+        """ List of talks for use in programme printing [Schedule] """
+        query = """SELECT proposal.title, proposal.abstract, person.firstname || ' ' || person.lastname as speaker, person.bio
+                    FROM proposal
+                    LEFT JOIN person_proposal_map ON (person_proposal_map.proposal_id = proposal.id)
+                    LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+                    WHERE proposal.accepted = True  
+                    ORDER BY proposal.title      
+        """
         return sql_response(query)
 
 def csv_response(sql):
