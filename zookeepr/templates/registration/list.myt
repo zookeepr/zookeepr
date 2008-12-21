@@ -16,8 +16,32 @@ function display_toggle(box)
 
     <h2>Registration List</h2>
     <form method="GET" action="/registration">
-    <p style="vertical-align: top;">Filters: <select name="role" multiple="multiple" size="9">
-        <option value="all">--All--</option>
+    <p style="float: right;">Products (inclusive):<br><select name="product" multiple="multiple" size="14">
+% selected = ''
+% if "all" in c.registration_request['product']:
+%    c.registration_request['product'] = []
+%    selected = ' selected="selected"'
+% #endif
+          <option value="all"<% selected %>>--Any--</option>
+% for category in c.product_categories:
+          <optgroup label="<% category.name %>">
+%   for product in category.products:
+%       if product.id in [int(id) for id in c.registration_request['product']]:
+            <option value="<% product.id %>" selected="selected"><% product.description %></option>
+%       else:
+            <option value="<% product.id %>"><% product.description %></option>
+%       #endif
+%   #endfor
+          </optgroup></p>
+% #endfor
+        </select>
+    <p style="vertical-align: top;">Role:<br >
+    <select name="role" multiple="multiple" size="9">
+% selected = ''
+% if "all" in c.registration_request['role']:
+%    selected = ' selected="selected"'
+% #endif
+        <option value="all"<% selected %>>--Any--</option>
 % selected = ''
 % if "speaker" in c.registration_request['role']:
 %    selected = ' selected="selected"'
@@ -41,15 +65,52 @@ function display_toggle(box)
         <option value="<% role.name %>"<% selected %>><% role.name %></option>
 % #endfor
     </select>
-    Status: <select name="status">
-        <option value="Unpaid">Unpaid</option>
-        <option value="Paid">Paid</option>
+        
+    <br />Status: <select name="status">
+        <option value="all">--Any--</option>
+% selected = ''
+% if "status" in c.registration_request and c.registration_request['status'] == 'unpaid':
+%    selected = ' selected="selected"'
+% #endif
+        <option value="unpaid"<% selected %>>Unpaid</option>
+% selected = ''
+% if "status" in c.registration_request and c.registration_request['status'] == 'paid':
+%    selected = ' selected="selected"'
+% #endif
+        <option value="paid"<% selected %>>Paid</option>
     </select>
-    <input name="per_page" value="<% c.per_page %>" size="3" /> Per Page
-    <label for="diet"><input type="checkbox" name="diet" id="diet" value="true" /> Diet</label>
-    <label for="special_needs"><input type="checkbox" name="special_needs" id="special_needs" value="true" /> Special Needs</label>
-    <label for="notes"><input type="checkbox" name="notes" id="notes" value="true" /> Notes</label>
-    <input type="submit" value="Update" />
+    <br><input name="per_page" value="<% c.per_page %>" size="3" /> Per Page
+% selected = ''
+% if "diet" in c.registration_request and c.registration_request['diet'] == 'true':
+%    selected = ' checked="checked"'
+% #endif
+    <br><label for="diet"><input type="checkbox" name="diet" id="diet" value="true"<% selected %> /> Has Diet</label>
+% selected = ''
+% if "special_needs" in c.registration_request and c.registration_request['special_needs'] == 'true':
+%    selected = ' checked="checked"'
+% #endif
+    <label for="special_needs"><input type="checkbox" name="special_needs" id="special_needs" value="true"<% selected %> /> Has Special Needs</label>
+% selected = ''
+% if "notes" in c.registration_request and c.registration_request['notes'] == 'true':
+%    selected = ' checked="checked"'
+% #endif
+    <br><label for="notes"><input type="checkbox" name="notes" id="notes" value="true"<% selected %> /> Has Notes</label>
+% selected = ''
+% if "under18" in c.registration_request and c.registration_request['under18'] == 'true':
+%    selected = ' checked="checked"'
+% #endif
+    <label for="under18"><input type="checkbox" name="under18" id="under18" value="true"<% selected %> /> Is Under 18</label>
+% selected = ''
+% if "voucher" in c.registration_request and c.registration_request['voucher'] == 'true':
+%    selected = ' checked="checked"'
+% #endif
+    <br><label for="voucher"><input type="checkbox" name="voucher" id="voucher" value="true"<% selected %> /> Used Voucher</label>
+% selected = ''
+% if "manual_invoice" in c.registration_request and c.registration_request['manual_invoice'] == 'true':
+%    selected = ' checked="checked"'
+% #endif
+    <label for="manual_invoice"><input type="checkbox" name="manual_invoice" id="manual_invoice" value="true"<% selected %> /> Has Manual Invoice</label>
+    <br><input type="submit" value="Update" />
     </p>
     </form>
         
@@ -62,7 +123,9 @@ function display_toggle(box)
         <th>Invoices</th>
         <th>Notes</th>
       </tr></thead>
+% count = 0
 % for registration in c.registration_collection:
+%   count += 1
       <tr>
         <td><% h.link_to('id: ' + str(registration.id), url=h.url(action='view', id=registration.id)) %></td>
         <td><% h.link_to(m.apply_escapes(registration.person.firstname + ' ' + registration.person.lastname, 'h'), h.url(controller='person', action='view', id=registration.person.id)) %></td>
@@ -123,9 +186,20 @@ function display_toggle(box)
     </table>
 <p>
 <%python>
+attribs = "?page=" + str(c.registration_pages.current.next)
+for item, value in c.registration_request.iteritems():
+    if type(value) == list:
+        for option in value:
+            attribs += "&" + item + "=" + option
+    elif item != 'page':
+        attribs += "&" + item + "=" + value
 if c.registration_pages.current.next:
-    m.write(h.link_to('<span style="float: right;">Next page</span>', url=h.url(page=c.registration_pages.current.next)))
+    m.write(h.link_to('<span style="float: right;">Next page</span>', url=attribs))
 if c.registration_pages.current.previous:
     m.write(h.link_to('Previous page', url=h.url(page=c.registration_pages.current.previous)) + '  ')
 </%python>
 </p>
+% start = c.registration_pages.current_page * c.registration_pages.items_per_page
+% inc = 1
+% if count == 0: inc = 0
+<p style="float: right;">Displaying <% start + inc %>-<% start + count %> of <% c.registration_pages.item_count %>.</p>
