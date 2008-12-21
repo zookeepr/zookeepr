@@ -475,9 +475,9 @@ class RegistrationController(SecureController, Update, List, Read):
                     
     def index(self):
         per_page = 20
-        from zookeepr.model.core import tables as core_tables
-        from zookeepr.model.registration import tables as registration_tables
-        from zookeepr.model.proposal import tables as proposal_tables
+        #from zookeepr.model.core import tables as core_tables
+        #from zookeepr.model.registration import tables as registration_tables
+        #from zookeepr.model.proposal import tables as proposal_tables
         from webhelpers.pagination import paginate
         model_name = self.individual
         
@@ -485,7 +485,10 @@ class RegistrationController(SecureController, Update, List, Read):
         filter['role'] = []
         for key,value in request.GET.items():
             if key == 'role': filter['role'].append(value)
-        
+        filter['product'] = []
+        for key,value in request.GET.items():
+            if key == 'product': filter['product'].append(value)
+
         """
         registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
         if filter.has_key('role'):
@@ -500,29 +503,50 @@ class RegistrationController(SecureController, Update, List, Read):
                 registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.roles.any(name=role_name))
         """
 
-        registration_list_full = self.dbsession.query(self.model).order_by(self.model.c.id).all()
+        if (len(filter) in [2,3,4] and filter.has_key('per_page') and (len(filter['role']) == 0 or 'all' in filter['role']) and filter['status'] == 'all' and (len(filter['product']) == 0 or 'all' in filter['product'])) or len(filter) < 2:
+            # no actual filters to apply besides per_page, so we can get paginate to do the query
+            registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+        else:
+            import copy
+            registration_list_full = self.dbsession.query(self.model).order_by(self.model.c.id).all()
+            registration_list = copy.copy(registration_list_full)
 
-        registration_list = []
-
-        for registration in registration_list_full:
-            if 'speaker' in filter['role']:
-                if registration.person.is_speaker() is True:
-                    registration_list.append(registration)
-            if 'miniconf' in filter['role']:
-                if registration.person.is_miniconf_org() is True:
-                    registration_list.append(registration)
-            if 'volunteer' in filter['role']:
-                if registration.person.is_volunteer() is True:
-                    registration_list.append(registration)
-            if len(set(filter['role']) & set([role.name for role in registration.person.roles])) > 0:
-                registration_list.append(registration)
+            for registration in registration_list_full:
+                if 'speaker' in filter['role'] and registration.person.is_speaker() is not True:
+                    registration_list.remove(registration)
+                elif 'miniconf' in filter['role'] and registration.person.is_miniconf_org() is not True:
+                    registration_list.remove(registration)
+                elif 'volunteer' in filter['role'] and registration.person.is_volunteer() is not True:
+                    registration_list.remove(registration)
+                elif (len(filter['role']) - len(set(filter['role']) & set(['all', 'speaker', 'miniconf', 'volunteer']))) != 0 and len(set(filter['role']) & set([role.name for role in registration.person.roles])) == 0:
+                    registration_list.remove(registration)
+                elif filter.has_key('status') and filter['status'] == 'paid' and not registration.person.paid():
+                    registration_list.remove(registration)
+                elif filter.has_key('status') and filter['status'] == 'unpaid' and registration.person.paid():
+                    registration_list.remove(registration)
+                elif filter.has_key('diet') and filter['diet'] == 'true' and (registration.diet == '' or registration.diet.lower() in ('n/a', 'none', 'nill', 'nil', 'no')):
+                    registration_list.remove(registration)
+                elif filter.has_key('special_needs') and filter['special_needs'] == 'true' and (registration.special == '' or registration.special.lower() in ('n/a', 'none', 'nill', 'nil', 'no')):
+                    registration_list.remove(registration)
+                elif filter.has_key('notes') and filter['notes'] == 'true' and len(registration.notes) == 0:
+                    registration_list.remove(registration)
+                elif filter.has_key('under18') and filter['under18'] == 'true' and registration.over18:
+                    registration_list.remove(registration)
+                elif filter.has_key('voucher') and filter['voucher'] == 'true' and not registration.voucher:
+                    registration_list.remove(registration)
+                elif filter.has_key('manual_invoice') and filter['manual_invoice'] == 'true' and not (True in [invoice.manual for invoice in registration.person.invoices]):
+                    registration_list.remove(registration)
+                elif len(filter['product']) > 0 and 'all' not in filter['product']:
+                    # has to be done last as it is an OR not an AND
+                    if len(set([int(id) for id in filter['product']]) & set([x for subL in [[item.product_id for item in invoice.items] for invoice in registration.person.invoices] for x in subL])) == 0:
+                       registration_list.remove(registration)
 
         if filter.has_key('per_page'):
             try:
                 per_page = int(filter['per_page'])
             except:
                 pass
-                
+
         setattr(c, 'per_page', per_page)
         pages, collection = paginate(registration_list, per_page = per_page)
         setattr(c, self.individual + '_pages', pages)
@@ -530,5 +554,6 @@ class RegistrationController(SecureController, Update, List, Read):
         setattr(c, self.individual + '_request', filter)
         
         setattr(c, 'roles', self.dbsession.query(model.Role).all())
-        
+        setattr(c, 'product_categories', self.dbsession.query(model.ProductCategory).all())
+
         return render_response('%s/list.myt' % model_name)
