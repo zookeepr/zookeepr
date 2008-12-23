@@ -541,6 +541,9 @@ class RegistrationController(SecureController, Update, List, Read):
                     if len(set([int(id) for id in filter['product']]) & set([x for subL in [[item.product_id for item in invoice.items] for invoice in registration.person.invoices] for x in subL])) == 0:
                        registration_list.remove(registration)
 
+        if filter.has_key('export') and filter['export'] == 'true':
+            return self._export_list(registration_list)
+
         if filter.has_key('per_page'):
             try:
                 per_page = int(filter['per_page'])
@@ -557,3 +560,38 @@ class RegistrationController(SecureController, Update, List, Read):
         setattr(c, 'product_categories', self.dbsession.query(model.ProductCategory).all())
 
         return render_response('%s/list.myt' % model_name)
+
+    def _export_list(self, registration_list):
+        columns = ['Rego', 'Name', 'Email', 'Products', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
+        if type(registration_list) is not list:
+            registration_list = registration_list.all()
+        
+        data = []
+        for registration in registration_list:
+            products = []
+            for invoice in registration.person.invoices:
+                if invoice.paid() and not invoice.void:
+                    for item in invoice.items:
+                        products.append(item.description)
+        
+            data.append([registration.id,
+                         registration.person.firstname + " " + registration.person.lastname,
+                         registration.person.email_address,
+                         ", ".join(products),
+                         registration.person.is_speaker(),
+                         registration.person.is_miniconf_org(),
+                         registration.person.is_volunteer(),
+                         ", ".join([role.name for role in registration.person.roles]),
+                         registration.diet,
+                         registration.special,
+                       ])
+        
+        import csv, StringIO
+        f = StringIO.StringIO()
+        w = csv.writer(f)
+        w.writerow(columns)
+        w.writerows(data)
+        res = Response(f.getvalue())
+        res.headers['Content-type']='text/plain; charset=utf-8'
+        res.headers['Content-Disposition']='attachment; filename="table.csv"'
+        return res

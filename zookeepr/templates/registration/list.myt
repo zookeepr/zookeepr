@@ -1,3 +1,13 @@
+<%python>
+attribs = "?page=" + str(c.registration_pages.current.next)
+for item, value in c.registration_request.iteritems():
+    if type(value) == list:
+        for option in value:
+            attribs += "&" + item + "=" + option
+    elif item != 'page':
+        attribs += "&" + item + "=" + value
+</%python>
+
 <script type="text/javascript">
 function display_toggle(box)
 {
@@ -110,11 +120,14 @@ function display_toggle(box)
 %    selected = ' checked="checked"'
 % #endif
     <label for="manual_invoice"><input type="checkbox" name="manual_invoice" id="manual_invoice" value="true"<% selected %> /> Has Manual Invoice</label>
-    <br><input type="submit" value="Update" />
+    <br>
+    <input type="submit" value="Update" />
     </p>
     </form>
-        
-    <table> 
+    
+    <p style="float: right;"><% h.link_to('Export as CSV', url=attribs + "&export=true") %></p>
+    
+    <table style="clear: both;"> 
       <thead><tr>
         <th>Rego</th>
         <th>Name</th>
@@ -186,13 +199,6 @@ function display_toggle(box)
     </table>
 <p>
 <%python>
-attribs = "?page=" + str(c.registration_pages.current.next)
-for item, value in c.registration_request.iteritems():
-    if type(value) == list:
-        for option in value:
-            attribs += "&" + item + "=" + option
-    elif item != 'page':
-        attribs += "&" + item + "=" + value
 if c.registration_pages.current.next:
     m.write(h.link_to('<span style="float: right;">Next page</span>', url=attribs))
 if c.registration_pages.current.previous:
