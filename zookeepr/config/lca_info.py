@@ -31,9 +31,10 @@ lca_info = {
   'cfmini_status' : 'closed',
   'paper_editing' : 'open',
   'conference_status': 'open',
-# Wether we are collecting miniconfs or papers.
+
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 
+  'proposal_update_email': 'joshua.hesketh@marchsouth.org', # recieve notifications when proposals are changed. Leave blank for none.
 }
 
 lca_rego = {
