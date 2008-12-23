@@ -143,7 +143,7 @@
 %               if not product.available():
 %                   shirt_soldout = '<span class="mandatory">^</span>'; field_disabled = True
 %               #endif
-            <td><% shirt_soldout %><% h.text_field('products.product_' + str(product.id) + '_qty', size=2) %></td>
+            <td><% shirt_soldout %><% h.text_field('products.product_' + str(product.id) + '_qty', size=2, disabled=field_disabled) %></td>
 %               j += 1
 %           #endfor
           </tr></table>
