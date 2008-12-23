@@ -178,7 +178,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 product_fields = []
                 for product in category.products:
                     #if self._product_available(product):
-                    ProductSchema.add_field('product_' + str(product.id) + '_qty', ProductQty(product=product))
+                    ProductSchema.add_field('product_' + str(product.id) + '_qty', ProductQty(product=product, if_missing=None))
                     product_fields.append('product_' + str(product.id) + '_qty')
                     if product.validate is not None:
                         exec("validator = " + product.validate)

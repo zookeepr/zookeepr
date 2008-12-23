@@ -267,7 +267,7 @@ class ProductQty(validators.Int):
             raise Invalid('Too large (maximum %d)'%self.max, value, state)
         if value<self.min:
             raise Invalid('Too small (minimum %d)'%self.min, value, state)
-        if not self.product.available():
+        if not self.product.available() and int(value) != 0:
             raise Invalid("The selected product, " + self.product.description + ", has unfortunately sold out.", value, state)
         return
 
