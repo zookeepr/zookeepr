@@ -562,7 +562,7 @@ class RegistrationController(SecureController, Update, List, Read):
         return render_response('%s/list.myt' % model_name)
 
     def _export_list(self, registration_list):
-        columns = ['Rego', 'Name', 'Email', 'Valid Invoices', 'Products', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
+        columns = ['Rego', 'Name', 'Email', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
         
@@ -574,13 +574,16 @@ class RegistrationController(SecureController, Update, List, Read):
                 if invoice.paid() and not invoice.void:
                     invoices.append(str(invoice.id))
                     for item in invoice.items:
-                        products.append(item.description)
+                        products.append(str(item.qty) + "x" + item.description)
         
             data.append([registration.id,
                          registration.person.firstname + " " + registration.person.lastname,
                          registration.person.email_address,
                          ", ".join(invoices),
                          ", ".join(products),
+                         registration.checkin,
+                         registration.checkout,
+                         (registration.checkout - registration.checkin),
                          registration.person.is_speaker(),
                          registration.person.is_miniconf_org(),
                          registration.person.is_volunteer(),
