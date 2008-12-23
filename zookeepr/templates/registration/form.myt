@@ -122,14 +122,14 @@
         <fieldset id="<% h.computer_title(category.name) %>">
           <legend>&nbsp;</legend>
           <h2><% category.name.title() %></h2>
-          <p class="note"><% category.description %><br><span style="text-size: small;"><span class="mandatory">^</span>Sold out</span></p>
+          <p class="note"><% category.description %></p>
 # Manual category display goes here:
 %       if category.name == 'Shirt':
 #%           # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
 #%           # Number of items in the row must be the same for each row
 %           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
 %           i = j = 0
-          <p>S,M,L,XL shirts are $20 each, larger shirts are $22. More details and measurements on shirt sizes can be found on the <% h.link_to('registration information', url='/register/shirts', popup=True) %>.</p>
+          <p>S,M,L,XL shirts are $20 each, larger shirts are $22. More details and measurements on shirt sizes can be found on the <% h.link_to('registration information', url='/register/shirts', popup=True) %>.<br><span class="mandatory">^</span>Sold out</p>
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td><% fields[0][0] %></td>
@@ -143,7 +143,7 @@
 %               if not product.available():
 %                   shirt_soldout = '<span class="mandatory">^</span>'; field_disabled = True
 %               #endif
-            <td><% shirt_soldout %><% h.text_field('products.product_' + str(product.id) + '_qty', size=2, disabled=field_disabled) %></td>
+            <td><% shirt_soldout %><% h.text_field('products.product_' + str(product.id) + '_qty', size=2) %></td>
 %               j += 1
 %           #endfor
           </tr></table>

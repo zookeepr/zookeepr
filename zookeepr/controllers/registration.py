@@ -166,20 +166,20 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if self._product_available(product):
-                        ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                        product_fields.append('product_' + str(product.id))
-                        if product.validate is not None:
-                            exec("validator = " + product.validate)
-                            ProductSchema.add_pre_validator(validator)
+                    #if self._product_available(product):
+                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
+                    product_fields.append('product_' + str(product.id))
+                    if product.validate is not None:
+                        exec("validator = " + product.validate)
+                        ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             elif category.display == 'qty':
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if self._product_available(product):
-                        ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
-                        product_fields.append('product_' + str(product.id) + '_qty')
+                    #if self._product_available(product):
+                    ProductSchema.add_field('product_' + str(product.id) + '_qty', ProductQty(product=product))
+                    product_fields.append('product_' + str(product.id) + '_qty')
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
