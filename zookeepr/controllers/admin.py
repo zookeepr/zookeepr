@@ -4,7 +4,7 @@ from zookeepr.lib import helpers as h
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration, Person, Invoice, PaymentReceived
+from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product
 from zookeepr.model.registration import RegoNote
 from zookeepr.config.lca_info import lca_info
 
@@ -530,6 +530,24 @@ class AdminController(SecureController):
                     ORDER BY proposal.title      
         """
         return sql_response(query)
+
+    def partners_programme(self):
+        """ List of partners programme contacts [Partners Programme] """
+        partners_list = self.dbsession.query(Product).filter(Product.description.like('Partners Programme%')).all()
+        c.text = "*Checkin and checkout dates aren't an accurate source."
+        c.columns = ['Partner Type', 'Registration Name', 'Registration e-mail', 'Partners e-mail', 'Checkin*', 'Checkout*']
+        c.data = []
+        for item in partners_list:
+            for invoice_item in item.invoice_items:
+                if invoice_item.invoice.paid() and not invoice_item.invoice.void:
+                    c.data.append([item.description, 
+                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
+                                   invoice_item.invoice.person.email_address, 
+                                   invoice_item.invoice.person.registration.partner_email, 
+                                   invoice_item.invoice.person.registration.checkin,
+                                   invoice_item.invoice.person.registration.checkout
+                                 ])
+        return render_response('admin/table.myt')
 
 def csv_response(sql):
     import zookeepr.model
