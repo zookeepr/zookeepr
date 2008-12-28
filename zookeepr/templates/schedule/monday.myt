@@ -19,8 +19,8 @@
       <td id="programme_intro" colspan="5" align="center" valign="middle">
         <b>Individual Introduction and Housekeeping</b>
       </td>
-      <td class="presentation" align="center" valign="top" rowspan="2">
-        <i>9:00 - 9:05</i> <b>Introduction and Housekeeping</b><br><br>
+      <td class="presentation" align="center" valign="top" rowspan="2" style="border-left: 1px dotted #AFAFFF;">
+        <i>9:00 - 9:05</i><br><br><b>Introduction and Housekeeping</b><br><br>
         <i>9:05 - 9:30</i> <& miniconf_talk_link.myt, miniconf="DevBiz", title="Open Hardware business models", speaker="David Rowe" &>
         <i>9:30 - 10:20</i> <& miniconf_talk_link.myt, miniconf="DevBiz", title="Open Source and your business and development models", speaker="Arjen Lentz" &>
       </td>
@@ -32,7 +32,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Kernel", title="Is Parallel Programming Hard, And, If So, Why?", speaker="Paul McKenney " &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="Providing Active Directory services from Linux, using Samba4", speaker="Andrew Bartlett" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="MythTV", title="MythNetTV", speaker="Michael Still" &></td>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxChix", title="Starting Your Free Software Adventure", speaker="Mary Gardiner" &></td>
+      <td class="presentation" align="center" valign="top" style="border-right: none;"><& miniconf_talk_link.myt, miniconf="LinuxChix", title="Starting Your Free Software Adventure", speaker="Mary Gardiner" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="MobileDevices", title="A Linux multimedia platform for mobile processors", speaker="Conrad Parker" &></td>
     </tr>
     <tr class="even">
