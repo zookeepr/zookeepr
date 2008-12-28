@@ -154,7 +154,7 @@ def populate_data():
             dict(product_id='6', include_category_id='2', include_qty='1'),
             dict(product_id='7', include_category_id='2', include_qty='1'),
             dict(product_id='8', include_category_id='2', include_qty='1'),
-            dict(product_id='9', include_category_id='2', include_qty='1'),
+            dict(product_id='9', include_category_id='2', include_qty='2'),
             # Include 1 Dinner for Professional+miniconf and 2 for Speaker registrations
             dict(product_id='4', include_category_id='3', include_qty='1'), # pro EB
             dict(product_id='5', include_category_id='3', include_qty='1'), # pro
