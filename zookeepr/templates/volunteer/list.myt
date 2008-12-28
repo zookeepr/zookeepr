@@ -44,7 +44,7 @@
 %       if c.can_edit:
         <td><% h.link_to('edit', url=h.url(action='edit', id=volunteer.id)) %></td>
 %       #endif
-        <td><% volunteer.other %></td>
+        <td><% h.line_break(volunteer.other) %></td>
       </tr>
 %   #endfor
     </table>
