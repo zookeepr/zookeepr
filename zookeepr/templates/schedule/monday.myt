@@ -16,14 +16,15 @@
   <tbody>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">9:00&nbsp;-&nbsp;9:30</th>
-      <td id="programme_intro" colspan="6" align="center" valign="middle">
+      <td id="programme_intro" colspan="5" align="center" valign="middle">
         <b>Individual Introduction and Housekeeping</b>
       </td>
       <td class="presentation" align="center" valign="top" rowspan="2">
-        <i>9:00 - 9:05</i> <b>Introduction and Housekeeping</b>
+        <i>9:00 - 9:05</i> <b>Introduction and Housekeeping</b><br><br>
         <i>9:05 - 9:30</i> <& miniconf_talk_link.myt, miniconf="DevBiz", title="Open Hardware business models", speaker="David Rowe" &>
         <i>9:30 - 10:20</i> <& miniconf_talk_link.myt, miniconf="DevBiz", title="Open Source and your business and development models", speaker="Arjen Lentz" &>
       </td>
+      <td>&nbsp;</td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:30&nbsp;-&nbsp;10:20</th>
