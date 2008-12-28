@@ -12,6 +12,7 @@
           <th>Status</th>
           <th>&nbsp;</th>
           <th>&nbsp;</th>
+          <th>Other</th>
         </tr>
       </thead>
 %   for volunteer in c.volunteer_collection:
@@ -43,6 +44,7 @@
 %       if c.can_edit:
         <td><% h.link_to('edit', url=h.url(action='edit', id=volunteer.id)) %></td>
 %       #endif
+        <td><% volunteer.other %></td>
       </tr>
 %   #endfor
     </table>
