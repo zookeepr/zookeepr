@@ -57,9 +57,6 @@ def make_map():
     #m.connect('/registration/remind', controller='registration', action='remind', id=None)
     m.connect('/register/status', controller='registration', action='status', id=None)
     m.connect('/registration/silly_description', controller='registration', action='silly_description', id=None)
-    m.connect('/registration/volunteer', controller='registration', action='volunteer_redirect', id=None)
-    m.connect('/registration/professional', controller='registration', action='professional', id=None)
-    m.connect('/registration/list_miniconf_orgs', controller='registration', action='list_miniconf_orgs', id=None)
 
     # account confirmation named route
     m.connect('acct_confirm', '/person/confirm/:confirm_hash', controller='person', action='confirm')
@@ -98,7 +95,7 @@ def make_map():
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
     # route rego_notes with ID's
-    m.connect('registration/:rego_id/new_note', controller='rego_note', action='new', rego_id=None)
+    m.connect('registration/:rego_id/new_note', controller='rego_note', action='new', id=None)
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
