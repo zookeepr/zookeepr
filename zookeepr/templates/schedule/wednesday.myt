@@ -22,7 +22,7 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:30&nbsp;-&nbsp;10:20</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
-        Keynote 1 - Tom Limoncelli
+        Keynote 1 - Tom Limoncelli<br><span style="font-weight: normal;">Stanley Burbury</span>
       </td>
     </tr>
     <tr class="even">
