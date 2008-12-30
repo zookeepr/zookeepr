@@ -15,7 +15,8 @@ class AdminController(SecureController):
       'ALL': [AuthRole('organiser')],
       'proposals_by_strong_rank': [AuthRole('reviewer')],
       'proposals_by_max_rank': [AuthRole('reviewer')],
-      'proposals_by_stream': [AuthRole('reviewer')]
+      'proposals_by_stream': [AuthRole('reviewer')],
+      'planet_lca': [AuthRole('planetfeed')]
     }
     def index(self):
         res = dir(self)
@@ -95,27 +96,79 @@ class AdminController(SecureController):
         """
         Set the talks to accepted as per the list in the admin controller. [Schedule]
         """
-        # {theatre: [id's]}
-        keynotes = {'Stanley Burbury': (227)}
-        miniconfs = {'Unknown': (8,32,157,83,108,49,132,9,26,116,121,201)}
-        tutorials = {'Stanley Burbury 1': (40,143),
-                     'Arts Lecture Theatre': (43,181),
-                     'Stanley Burbury 2': (164,151),
-                     'Social Science 1': (112,5),
-                     'Social Science 2': (198,89)}
-        presentations = {'Stanley Burbury 1': (51,205,11,225,219,48,87,90,156,175,203,189,126),
-                     'Arts Lecture Theatre': (218,173,22,84,131,45,56,13,91,178,106,171,30),
-                     'Stanley Burbury 2': (136,12,78,99,209,122,29,179,210,64,79,33,105),
-                     'Social Science 1': (77,148,208,52,66,187,93,139,158,176,166,76,172),
-                     'Social Science 2': (149,123,211,192,67,161,92,119,152,46,145,72,217)}
+        # {theatre: day: [id's]}
+        keynotes = {'Stanley Burbury': {
+                              'Wednesday':  (227),
+                              #'Thursday':   (),
+                              #'Friday':     ()
+                           }
+                         }
+        miniconfs = {'Unknown': {
+                              'Monday':  (8  , 157, 9  , 49 , 83 , 26 , 201),
+                              'Tuesday': (32 , 108, 132, 116, 121) #doesn't include 2 dayers
+                           }
+                         }
+        tutorials = {'Stanley Burbury 1': {
+                              'Wednesday': (40),
+                              'Thursday':  (143)
+                           },
+                           'Arts Lecture Theatre': {
+                              'Wednesday': (43),
+                              'Thursday':  (181)
+                           },
+                           'Stanley Burbury 2': {
+                              'Wednesday': (164),
+                              'Thursday':  (151)
+                           },
+                           'Social Science 1': {
+                              'Wednesday': (112),
+                              'Thursday':  (5)
+                           },
+                           'Social Science 2': {
+                              'Wednesday': (198),
+                              'Thursday':  (89)
+                           }
+                         }
+        presentations = {'Stanley Burbury 1': {
+                              'Wednesday': (51 , 205, 11 , 225),
+                              'Thursday':  (219, 48 , 87 , 90),
+                              'Friday':    (156, 175, 203, 189, 126)
+                           },
+                           'Arts Lecture Theatre': {
+                              'Wednesday': (218, 173, 22 , 84 ),
+                              'Thursday':  (131, 45 , 56 , 13 ),
+                              'Friday':    (91 , 178, 106, 171, 30 )
+                           },
+                           'Stanley Burbury 2': {
+                              'Wednesday': (136, 12 , 78 , 99 ),
+                              'Thursday':  (209, 122, 29 , 179),
+                              'Friday':    (210, 64 , 79 , 33 , 105)
+                           },
+                           'Social Science 1': {
+                              'Wednesday': (77 , 148, 208, 52 ),
+                              'Thursday':  (66 , 187, 93 , 139),
+                              'Friday':    (158, 176, 166, 76 , 172)
+                           },
+                           'Social Science 2': {
+                              'Wednesday': (149, 123, 211, 192),
+                              'Thursday':  (67 , 161, 92 , 119),
+                              'Friday':    (152, 46 , 145, 72 , 217)
+                           }
+                         }
         
-        sql_execute("UPDATE proposal SET accepted = FALSE, theatre = NULL") # set all talks to unaccepted to start
+        sql_execute("UPDATE proposal SET theatre = NULL, scheduled = NULL, accepted = FALSE") # set all talks to unaccepted to start
         
+        timestamp = {'Monday':    '2009-01-19',
+                     'Tuesday':   '2009-01-20',
+                     'Wednesday': '2009-01-21',
+                     'Thursday':  '2009-01-22',
+                     'Friday':    '2009-01-23'}
         for collection in (keynotes, miniconfs, tutorials, presentations):
-            for (room, ids) in collection.iteritems():
-                if type(ids) is int:
-                    ids = '(' + str(ids) + ')'
-                sql_execute("UPDATE proposal SET theatre = '%s', accepted = TRUE WHERE id IN %s" % (room, str(ids)))
+            for (room, days) in collection.iteritems():
+                for (day, ids) in days.iteritems():
+                    if type(ids) is int:
+                        ids = '(' + str(ids) + ')' # fix for single tuple
+                    sql_execute("UPDATE proposal SET theatre = '%s', scheduled = '%s', accepted = TRUE WHERE id IN %s" % (room, timestamp[day], str(ids)))
         c.text = "<p>Updated successfully</p>"
         return render_response("admin/text.myt")
 
@@ -523,13 +576,13 @@ class AdminController(SecureController):
     def talks(self):
         """ List of talks for use in programme printing [Schedule] """
         c.text = "Talks with multiple speakers will appear twice."
-        query = """SELECT proposal_type.name AS type, proposal.title, proposal.abstract, person.firstname || ' ' || person.lastname as speaker, person.bio
+        query = """SELECT proposal_type.name AS type, proposal.scheduled, proposal.title, proposal.abstract, person.firstname || ' ' || person.lastname as speaker, person.bio
                     FROM proposal
                     LEFT JOIN person_proposal_map ON (person_proposal_map.proposal_id = proposal.id)
                     LEFT JOIN person ON (person_proposal_map.person_id = person.id)
                     LEFT JOIN proposal_type ON (proposal_type.id = proposal.proposal_type_id)
                     WHERE proposal.accepted = True  
-                    ORDER BY proposal_type.name, proposal.title      
+                    ORDER BY proposal_type.name, proposal.scheduled, proposal.title      
         """
         return sql_response(query)
 
@@ -550,6 +603,22 @@ class AdminController(SecureController):
                                    invoice_item.invoice.person.registration.checkout
                                  ])
         return render_response('admin/table.myt')
+        
+    def planet_lca(self):
+        """ List of blog RSS feeds, planet compatible. [Mailing Lists] """
+        c.text = """<p>List of RSS feeds for LCA planet.</p>
+        <p><textarea cols="100" rows="25">"""
+        
+        count = 0
+        for r in self.dbsession.query(Registration).filter(Registration.planetfeed != '').all():
+            p = r.person
+            c.text += "[" + r.planetfeed + "] name = " + p.firstname + " " + p.lastname + "\n"
+            count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render_response('admin/text.myt')
+
 
 def csv_response(sql):
     import zookeepr.model
