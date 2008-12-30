@@ -16,7 +16,7 @@ class AdminController(SecureController):
       'proposals_by_strong_rank': [AuthRole('reviewer')],
       'proposals_by_max_rank': [AuthRole('reviewer')],
       'proposals_by_stream': [AuthRole('reviewer')],
-      'planet_lca': [AuthRole('planetfeed')]
+      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')]
     }
     def index(self):
         res = dir(self)
