@@ -83,3 +83,8 @@
     </tr>
   </tbody>
 </table>
+
+<h3>Conference Closing Celebrations</h3>
+<p>All good things come to an end, but why not celebrate anyway! Friday night's entertainment will consist of a friendly informal get together to reminisce about all the fun we had. :)</p>
+
+<p><i><a href="programme/offical_social_events">All social events.</a></i></p>

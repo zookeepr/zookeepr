@@ -79,3 +79,9 @@
     </tr>
   </tbody>
 </table>
+
+<h3>PDNS</h3>
+
+<p>The Professional Delegates Networking Session is a great opportunity to rub shoulders with others working within the Free and Open Source business sphere.  This year sees an informal gathering in a summer garden environment, the perfect place to mingle and spruik your latest achievements.</p>
+
+<p><i><a href="programme/offical_social_events">All social events.</a></i></p>
