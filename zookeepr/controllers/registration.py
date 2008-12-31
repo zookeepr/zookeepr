@@ -562,7 +562,7 @@ class RegistrationController(SecureController, Update, List, Read):
         return render_response('%s/list.myt' % model_name)
 
     def _export_list(self, registration_list):
-        columns = ['Rego', 'Name', 'Email', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
+        columns = ['Rego', 'Name', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
         
@@ -579,6 +579,9 @@ class RegistrationController(SecureController, Update, List, Read):
             data.append([registration.id,
                          registration.person.firstname + " " + registration.person.lastname,
                          registration.person.email_address,
+                         registration.person.company,
+                         registration.person.state,
+                         registration.person.country,
                          ", ".join(invoices),
                          ", ".join(products),
                          registration.checkin,
