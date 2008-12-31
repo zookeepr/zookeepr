@@ -84,4 +84,4 @@
 
 <p>This year, linux.conf.au brings a touch of class to the Annual Penguin Dinner.  A full three course banquet awaits, with lots of choice from the best food Tasmania has to offer at Hobart's Wrest Point Convention Centre in Sandy Bay.</p>
 
-<p><i><a href="programme/offical_social_events">All social events.</a></i></p>
+<p><i><a href="/programme/official_social_events">All social events.</a></i></p>

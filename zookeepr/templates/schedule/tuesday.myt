@@ -136,4 +136,4 @@
 
 <p>An invitation is extended to our speakers and the mini-conf organisers to attend our Speakers Dinner, to be held at an undisclosed location on Tuesday night.  An evening to socialise and enjoy a quiet meal in beautiful surroundings, the dinner promises to be a unique and memorable occasion.</p>
 
-<p><i><a href="programme/offical_social_events">All social events.</a></i></p>
+<p><i><a href="/programme/official_social_events">All social events.</a></i></p>
