@@ -619,6 +619,21 @@ class AdminController(SecureController):
 
         return render_response('admin/text.myt')
 
+    def nonregistered(self):
+        """ List of people with accounts on the website but who haven't started the registration process for the conference [Accounts] """
+        
+        sql = """SELECT registration.person_id FROM registration"""
+        
+        import zookeepr.model
+        res = zookeepr.model.metadata.bind.execute(sql)
+        data = res.fetchall()
+        registration_ids = ", ".join([str(row[0]) for row in data])
+                
+        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address
+                    FROM person
+                    WHERE person.id NOT IN(%s)
+        """ % (registration_ids)
+        return sql_response(query)
 
 def csv_response(sql):
     import zookeepr.model
