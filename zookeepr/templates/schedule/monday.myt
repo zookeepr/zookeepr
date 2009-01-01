@@ -82,7 +82,7 @@
       </td>
       <td class="presentation" align="center" valign="top" rowspan="2">
         <i>13:50 - 14:20</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="Ubuntu Mobile", speaker="David Mandala" &>
-        <i>14:30 - 15:00</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="Rob Bradford", speaker="Poky Linux" &>
+        <i>14:30 - 15:00</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="Poky Linux", speaker="Rob Bradford" &>
         <i>15:10 - 15:40</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="Mobile Experience with Linux - Android Internals & Prototype", speaker="Geun Sik Lim" &>
       </td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="DevBiz", title="Marketing Open Source Projects", speaker="Joe \"Zonker\" Brockmeier" &></td>
@@ -97,7 +97,7 @@
       </td>
       <td class="presentation" align="center" valign="top">
         <i>14:50 - 15:15</i> <& miniconf_talk_link.myt, miniconf="MythTV", title="MythTV development from '04 to now", speaker="Nigel Pearson" &>
-        <i>15:15 - 15:40</i> <& miniconf_talk_link.myt, miniconf="MythTV", title="Lightening Talks", speaker="" &>
+        <i>15:15 - 15:40</i> <& miniconf_talk_link.myt, miniconf="MythTV", title="Lightning Talks", speaker="" &>
       </td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxChix", title="Workshop: How to evangelise IT for girls", speaker="Donna Benjamin <i>and</i> Pia Waugh" &></td>
 
@@ -111,7 +111,7 @@
       <th class="programme_slot" align="center" valign="top">16:00&nbsp;-&nbsp;16:50</th>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="Lightning Talks", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Kernel", title="Lightning Talks", speaker="" &></td>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="Rails Deployment In The Enterprise - Transmitting A Litle Experience", speaker="Robert Postill" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="Rails Deployment In The Enterprise - Transmitting A Little Experience", speaker="Robert Postill" &></td>
       <td class="presentation" align="center" valign="top" rowspan="2">
         <i>16:00 - 16:25</i> <& miniconf_talk_link.myt, miniconf="MythTV", title="Presence Awareness", speaker="Jonathan Oxer" &>
         <i>16:25 - 17:50</i> <& miniconf_talk_link.myt, miniconf="MythTV", title="Panel", speaker="" &>

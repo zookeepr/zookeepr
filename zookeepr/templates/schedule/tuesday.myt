@@ -39,7 +39,7 @@
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">10:40&nbsp;-&nbsp;11:30</th>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="Paying It Forward - Harnessing the MySQL Contributory Resources", speaker="Colin Charles" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="SQL is dead", speaker="Monty Taylor" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="FBAC-LSM", speaker="Z. Cliffe Schreuders" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="System administration consequences of the endgame of IPv4 and deployment of IPv6	", speaker="Glen Turner" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="Dirac", speaker="Anuradha Suraparaju" &></td>
@@ -52,7 +52,7 @@
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">11:40&nbsp;-&nbsp;12:30</th>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="DRBD - Database agnostic synchronous replication for everyone!", speaker="Monty Taylor" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="Paying It Forward - Harnessing the MySQL Contributory Resources", speaker="Colin Charles" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="LAPP/SELinux", speaker="KaiGai Kohei" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="Google and IPv6", speaker="Angus Lees" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="OMS", speaker="Gerard Fernando" &></td>
@@ -72,7 +72,7 @@
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">13:50&nbsp;-&nbsp;14:40</th>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="MySQL Server Coding & Patching for Dummies", speaker="Arjen Lentz" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="DRBD - Database agnostic synchronous replication for everyone!", speaker="Monty Taylor" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="TOMOYO Linux", speaker="Kentaro Takeda" &></td>
       <td class="presentation" align="center" valign="top">
         <i>13:50 - 14:15</i> <& miniconf_talk_link.myt, miniconf="Sysadmin", title="Database backed DNS systems", speaker="Devdas Bhagat" &>
@@ -88,7 +88,7 @@
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">14:50&nbsp;-&nbsp;15:40</th>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="Lightning Talks", speaker="" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="MySQL Server Coding & Patching for Dummies", speaker="Arjen Lentz" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="SE Linux in Lenny", speaker="Russel Coker" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="Lightning Talks", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="PiTiVi", speaker="Edward Hervey" &></td>
@@ -121,7 +121,7 @@
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">17:00&nbsp;-&nbsp;17:50</th>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="", speaker="" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Database", title="Lightning Talks", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="The Great Debate - Panel on security futures ", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="BOF", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="Canola2", speaker="Artur de Souza" &></td>
