@@ -55,7 +55,11 @@
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=43 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=164 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=112 &></td>
-      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=198 &></td>
+      <td class="presentation" align="center" valign="top">
+        <b>Presentations</b><br>
+        <i>13:50 - 14:40</i> <& talk_link.myt, talk_id=70 &>
+        <i>14:50 - 15:40</i> <br><i>TBA</i>
+      </td>
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:40&nbsp;-&nbsp;16:00</th>

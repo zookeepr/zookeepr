@@ -125,7 +125,7 @@ class AdminController(SecureController):
                               'Thursday':  (5)
                            },
                            'Social Science 2': {
-                              'Wednesday': (198),
+                              'Wednesday': (70),
                               'Thursday':  (89)
                            }
                          }
