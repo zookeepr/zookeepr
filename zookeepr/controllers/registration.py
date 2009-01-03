@@ -538,7 +538,11 @@ class RegistrationController(SecureController, Update, List, Read):
                     registration_list.remove(registration)
                 elif len(filter['product']) > 0 and 'all' not in filter['product']:
                     # has to be done last as it is an OR not an AND
-                    if len(set([int(id) for id in filter['product']]) & set([x for subL in [[item.product_id for item in invoice.items] for invoice in registration.person.invoices] for x in subL])) == 0:
+                    valid_invoices = []
+                    for invoice in registration.person.invoices:
+                        if not invoice.void:
+                            valid_invoices.append(invoice)
+                    if len(set([int(id) for id in filter['product']]) & set([x for subL in [[item.product_id for item in invoice.items] for invoice in valid_invoices] for x in subL])) == 0:
                        registration_list.remove(registration)
 
         if filter.has_key('export') and filter['export'] == 'true':
