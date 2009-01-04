@@ -26,7 +26,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="AppArmor", speaker="John Johansen" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="747s on Treadmills: Experiences scaling uptime and management", speaker="Matt Moor" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="Foundations of Open Media Software workshop summary", speaker="Silvia Pfeiffer and FOMS participants" &></td>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="Nested KVM", speaker="J&#1255;rg R&#1255;del" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="Creating a High Availability Environment for Xen Virtual Machines: Part 1", speaker="Sander van Vugt" &></td>
       <td class="presentation" align="center" valign="top">
         <i>9:30 - 9:55</i> <& miniconf_talk_link.myt, miniconf="Gaming", title="The Linux Gooey", speaker="Andrew Doull" &>
         <i>9:55 - 10:20</i> <& miniconf_talk_link.myt, miniconf="Gaming", title="Platinum Arts Sandbox", speaker="Mike" &>
@@ -43,7 +43,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="FBAC-LSM", speaker="Z. Cliffe Schreuders" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="System administration consequences of the endgame of IPv4 and deployment of IPv6	", speaker="Glen Turner" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="Dirac", speaker="Anuradha Suraparaju" &></td>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="Creating a High Availability Environment for Xen Virtual Machines", speaker="Sander van Vugt" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="Creating a High Availability Environment for Xen Virtual Machines: Part 2", speaker="Sander van Vugt" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Gaming", title="VR Application Development in Linux ", speaker="Ioanna Ioannou" &></td>
       <td class="presentation" align="center" valign="top">
         <i>10:40 - 11:10</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="Future directions for Copyright Law", speaker="Laura Simes" &>
@@ -125,7 +125,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxSecurity", title="The Great Debate - Panel on security futures ", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Sysadmin", title="BOF", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="Canola2", speaker="Artur de Souza" &></td>
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="", speaker="" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="Lightning Talks", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Gaming", title="Playing FOSS games with discussion", speaker="" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Freedom", title="Close + Freedom Bingo", speaker="" &></td>
     </tr>
