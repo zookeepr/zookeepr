@@ -636,14 +636,14 @@ class AdminController(SecureController):
         return sql_response(query)
 
     def keysigning_participants_list(self):
-        """ Generate a list of all current key id's [Registrations] """
+        """ Generate a list of all current key id's [Keysigning] """
         from pylons import response
         response.headers['Content-type'] = 'text/plain'
         for keyid in self.keysigning_participants():
             response.content.append(keyid + "\n")
 
     def keysigning_single(self):
-        """ Generate an A4 page of key fingerprints given a keyid [Registrations] """
+        """ Generate an A4 page of key fingerprints given a keyid [Keysigning] """
         if request.POST:
             from pylons import response
             response.headers['Content-type'] = 'text/plain'
@@ -652,7 +652,7 @@ class AdminController(SecureController):
             return render_response('admin/keysigning_single.myt')
 
     def keysigning_conferece(self):
-        """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Registrations] """
+        """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Keysigning] """
 
     def keysigning_participants(self):
         registration_list = self.dbsession.query(Registration).filter(Registration.keyid != None).filter(Registration.keyid != '').all()
