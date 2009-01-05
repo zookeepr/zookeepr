@@ -635,6 +635,47 @@ class AdminController(SecureController):
         """ % (registration_ids)
         return sql_response(query)
 
+    def keysigning_participants_list(self):
+        """ Generate a list of all current key id's [Registrations] """
+        from pylons import response
+        response.headers['Content-type'] = 'text/plain'
+        for keyid in self.keysigning_participants():
+            response.content.append(keyid + "\n")
+
+    def keysigning_single(self):
+        """ Generate an A4 page of key fingerprints given a keyid [Registrations] """
+        if request.POST:
+            from pylons import response
+            response.headers['Content-type'] = 'text/plain'
+            response.content = keysigning_pdf(request.POST['keyid'])
+        else:
+            return render_response('admin/keysigning_single.myt')
+
+    def keysigning_conferece(self):
+        """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Registrations] """
+
+    def keysigning_participants(self):
+        registration_list = self.dbsession.query(Registration).filter(Registration.keyid != None).filter(Registration.keyid != '').all()
+        key_list = list()
+        for registration in registration_list:
+            if registration.person.paid():
+                key_list.append(registration.keyid)
+        return key_list
+
+def keysigning_pdf(keyid):
+    maxlength = 80
+    import subprocess
+    os.system(' '.join(['gpg', '--recv-keys', keyid]))
+    fingerprint = subprocess.Popen(['gpg', '--fingerprint', keyid], stdout=subprocess.PIPE).communicate()[0]
+    for i in range(1,80):
+        fingerprint += "-"
+    fingerprint += "\n"
+    fingerprint_length = len(fingerprint.splitlines())
+    output = list()
+    while (len(output) + 1) * fingerprint_length <= maxlength:
+        output.append(fingerprint)
+    return output
+
 def csv_response(sql):
     import zookeepr.model
     res = zookeepr.model.metadata.bind.execute(sql);
