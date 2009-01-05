@@ -16,7 +16,10 @@ class AdminController(SecureController):
       'proposals_by_strong_rank': [AuthRole('reviewer')],
       'proposals_by_max_rank': [AuthRole('reviewer')],
       'proposals_by_stream': [AuthRole('reviewer')],
-      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')]
+      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')],
+      'keysigning_conferece': [AuthRole('organiser'), AuthRole('keysigning')],
+      'keysigning_single': [AuthRole('organiser'), AuthRole('keysigning')],
+      'keysigning_participants_list': [AuthRole('organiser'), AuthRole('keysigning')]
     }
     def index(self):
         res = dir(self)
