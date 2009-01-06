@@ -122,6 +122,7 @@ lca_menu = [
   ('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
+  ('Planet', 'http://planet.penguinsvisiting.org.nz', 'planet'),
 ]
 
 lca_submenus = {
