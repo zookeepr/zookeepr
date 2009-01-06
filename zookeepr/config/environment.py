@@ -3,6 +3,8 @@ import os
 
 import pylons.config
 import webhelpers
+import webhelpers.html.tools
+import webhelpers.rails
 
 from pylons import config
 
@@ -41,8 +43,8 @@ def load_environment(global_conf, app_conf):
     # Add webhelpers' auto_link and simple_format methods to myghty's
     # escaping functions, for great justice.
     # http://www.myghty.org/docs/filtering.myt#filtering_escaping_custom
-    myghty['escapes'] = {'l': webhelpers.auto_link,
-                         's': webhelpers.simple_format
+    myghty['escapes'] = {'l': webhelpers.html.tools.auto_link,
+                         's': webhelpers.rails.simple_format
                          }
     
     # Add your own Myghty config options here, note that all config options will override
