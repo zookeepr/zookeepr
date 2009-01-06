@@ -8,6 +8,7 @@
     <p><b>Validate code:</b> <% c.product.validate | h %><br></p>
 
     <h3>Product Totals</h3>
+    <p><b>Note:</b> Totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
     <p><b>Invoiced (inc. overdue):</b> <% c.product.qty_invoiced(date = False) %></p>
     <p><b>Invoiced:</b> <% c.product.qty_invoiced() %></p>
     <p><b>Sold:</b> <% c.product.qty_sold() %></p>

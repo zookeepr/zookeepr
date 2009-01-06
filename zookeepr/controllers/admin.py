@@ -4,7 +4,7 @@ from zookeepr.lib import helpers as h
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration, Person, Invoice, PaymentReceived
+from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product
 from zookeepr.model.registration import RegoNote
 from zookeepr.config.lca_info import lca_info
 
@@ -15,7 +15,11 @@ class AdminController(SecureController):
       'ALL': [AuthRole('organiser')],
       'proposals_by_strong_rank': [AuthRole('reviewer')],
       'proposals_by_max_rank': [AuthRole('reviewer')],
-      'proposals_by_stream': [AuthRole('reviewer')]
+      'proposals_by_stream': [AuthRole('reviewer')],
+      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')],
+      'keysigning_conferece': [AuthRole('organiser'), AuthRole('keysigning')],
+      'keysigning_single': [AuthRole('organiser'), AuthRole('keysigning')],
+      'keysigning_participants_list': [AuthRole('organiser'), AuthRole('keysigning')]
     }
     def index(self):
         res = dir(self)
@@ -95,27 +99,79 @@ class AdminController(SecureController):
         """
         Set the talks to accepted as per the list in the admin controller. [Schedule]
         """
-        # {theatre: [id's]}
-        keynotes = {'Stanley Burbury': (227)}
-        miniconfs = {'Unknown': (8,32,157,83,108,49,132,9,26,116,121,201)}
-        tutorials = {'Stanley Burbury 1': (40,143),
-                     'Arts Lecture Theatre': (43,181),
-                     'Stanley Burbury 2': (164,151),
-                     'Social Science 1': (112,5),
-                     'Social Science 2': (198,89)}
-        presentations = {'Stanley Burbury 1': (51,205,11,225,219,48,87,90,156,175,203,189,126),
-                     'Arts Lecture Theatre': (218,173,22,84,131,45,56,13,91,178,106,171,30),
-                     'Stanley Burbury 2': (136,12,78,99,209,122,29,179,210,64,79,33,105),
-                     'Social Science 1': (77,148,208,52,66,187,93,139,158,176,166,76,172),
-                     'Social Science 2': (149,123,211,192,67,161,160,119,152,46,145,72,217)}
+        # {theatre: day: [id's]}
+        keynotes = {'Stanley Burbury': {
+                              'Wednesday':  (227),
+                              #'Thursday':   (),
+                              #'Friday':     ()
+                           }
+                         }
+        miniconfs = {'Unknown': {
+                              'Monday':  (8  , 157, 9  , 49 , 83 , 26 , 201),
+                              'Tuesday': (32 , 108, 132, 116, 121) #doesn't include 2 dayers
+                           }
+                         }
+        tutorials = {'Stanley Burbury 1': {
+                              'Wednesday': (40),
+                              'Thursday':  (143)
+                           },
+                           'Arts Lecture Theatre': {
+                              'Wednesday': (43),
+                              'Thursday':  (181)
+                           },
+                           'Stanley Burbury 2': {
+                              'Wednesday': (164),
+                              'Thursday':  (151)
+                           },
+                           'Social Science 1': {
+                              'Wednesday': (112),
+                              'Thursday':  (5)
+                           },
+                           'Social Science 2': {
+                              'Wednesday': (70),
+                              'Thursday':  (89)
+                           }
+                         }
+        presentations = {'Stanley Burbury 1': {
+                              'Wednesday': (51 , 205, 11 , 225),
+                              'Thursday':  (219, 48 , 87 , 90),
+                              'Friday':    (156, 175, 203, 189, 126)
+                           },
+                           'Arts Lecture Theatre': {
+                              'Wednesday': (218, 173, 22 , 84 ),
+                              'Thursday':  (131, 45 , 56 , 13 ),
+                              'Friday':    (91 , 178, 106, 171, 30 )
+                           },
+                           'Stanley Burbury 2': {
+                              'Wednesday': (136, 12 , 78 , 99 ),
+                              'Thursday':  (209, 122, 29 , 179),
+                              'Friday':    (210, 64 , 79 , 33 , 105)
+                           },
+                           'Social Science 1': {
+                              'Wednesday': (77 , 148, 208, 52 ),
+                              'Thursday':  (66 , 187, 93 , 139),
+                              'Friday':    (158, 176, 166, 76 , 172)
+                           },
+                           'Social Science 2': {
+                              'Wednesday': (149, 123, 211, 192),
+                              'Thursday':  (67 , 161, 92 , 119),
+                              'Friday':    (152, 46 , 145, 72 , 217)
+                           }
+                         }
         
-        sql_execute("UPDATE proposal SET accepted = FALSE, theatre = NULL") # set all talks to unaccepted to start
+        sql_execute("UPDATE proposal SET theatre = NULL, scheduled = NULL, accepted = FALSE") # set all talks to unaccepted to start
         
+        timestamp = {'Monday':    '2009-01-19',
+                     'Tuesday':   '2009-01-20',
+                     'Wednesday': '2009-01-21',
+                     'Thursday':  '2009-01-22',
+                     'Friday':    '2009-01-23'}
         for collection in (keynotes, miniconfs, tutorials, presentations):
-            for (room, ids) in collection.iteritems():
-                if type(ids) is int:
-                    ids = '(' + str(ids) + ')'
-                sql_execute("UPDATE proposal SET theatre = '%s', accepted = TRUE WHERE id IN %s" % (room, str(ids)))
+            for (room, days) in collection.iteritems():
+                for (day, ids) in days.iteritems():
+                    if type(ids) is int:
+                        ids = '(' + str(ids) + ')' # fix for single tuple
+                    sql_execute("UPDATE proposal SET theatre = '%s', scheduled = '%s', accepted = TRUE WHERE id IN %s" % (room, timestamp[day], str(ids)))
         c.text = "<p>Updated successfully</p>"
         return render_response("admin/text.myt")
 
@@ -123,34 +179,34 @@ class AdminController(SecureController):
         """ Rejected papers, with abstracts (for the miniconf organisers)
         [Schedule] """
         return sql_response("""
-SELECT
-    proposal.id, 
-    proposal.title, 
-    proposal_type.name AS "proposal type",
-    proposal.project,
-    proposal.url as project_url,
-    proposal.abstract,
-    person.firstname || ' ' || person.lastname as name,
-    person.email_address,
-    person.url as homepage,
-    person.bio,
-    person.experience,
-    stream.name AS stream,
-    MAX(review.score),
-    MIN(review.score),
-    AVG(review.score)
-FROM proposal 
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-    LEFT JOIN stream ON (review.stream_id=stream.id)
-    LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
-    LEFT JOIN person ON (person_proposal_map.person_id = person.id)
-WHERE
-    review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
-    AND proposal.proposal_type_id != 2
-    AND proposal.accepted = False
-GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
-ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+            SELECT
+                proposal.id, 
+                proposal.title, 
+                proposal_type.name AS "proposal type",
+                proposal.project,
+                proposal.url as project_url,
+                proposal.abstract,
+                person.firstname || ' ' || person.lastname as name,
+                person.email_address,
+                person.url as homepage,
+                person.bio,
+                person.experience,
+                stream.name AS stream,
+                MAX(review.score),
+                MIN(review.score),
+                AVG(review.score)
+            FROM proposal 
+                LEFT JOIN review ON (proposal.id=review.proposal_id)
+                LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                LEFT JOIN stream ON (review.stream_id=stream.id)
+                LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
+                LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+            WHERE
+                review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
+                AND proposal.proposal_type_id != 2
+                AND proposal.accepted = False
+            GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
+            ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
         """)
 
     def collect_garbage(self):
@@ -227,77 +283,77 @@ ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DES
     def proposals_by_strong_rank(self):
         """ List of proposals ordered by number of certain score / total number of reviewers [CFP] """
         query = """
-SELECT
-    proposal.id,
-    proposal.title,
-    proposal_type.name AS "proposal type",
-    review.score,
-    COUNT(review.id) AS "#reviewers at this score",
-    (
-        SELECT COUNT(review2.id)
-            FROM review as review2
-            WHERE review2.proposal_id = proposal.id
-    ) AS "#total reviewers",
-    CAST(
-        CAST(
-            COUNT(review.id) AS float(8)
-        ) / CAST(
-            (SELECT COUNT(review2.id)
-                FROM review as review2
-                WHERE review2.proposal_id = proposal.id
-            ) AS float(8)
-        ) AS float(8)
-    ) AS "#reviewers at this score / #total reviews %%"
-FROM proposal
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-WHERE
-    (
-        SELECT COUNT(review2.id)
-            FROM review as review2
-            WHERE review2.proposal_id = proposal.id
-    ) != 0
-GROUP BY proposal.id, proposal.title, review.score, proposal_type.name
-ORDER BY proposal_type.name ASC, review.score DESC, "#reviewers at this score / #total reviews %%" DESC, proposal.id ASC"""
+                SELECT
+                    proposal.id,
+                    proposal.title,
+                    proposal_type.name AS "proposal type",
+                    review.score,
+                    COUNT(review.id) AS "#reviewers at this score",
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM review as review2
+                            WHERE review2.proposal_id = proposal.id
+                    ) AS "#total reviewers",
+                    CAST(
+                        CAST(
+                            COUNT(review.id) AS float(8)
+                        ) / CAST(
+                            (SELECT COUNT(review2.id)
+                                FROM review as review2
+                                WHERE review2.proposal_id = proposal.id
+                            ) AS float(8)
+                        ) AS float(8)
+                    ) AS "#reviewers at this score / #total reviews %%"
+                FROM proposal
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                WHERE
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM review as review2
+                            WHERE review2.proposal_id = proposal.id
+                    ) != 0
+                GROUP BY proposal.id, proposal.title, review.score, proposal_type.name
+                ORDER BY proposal_type.name ASC, review.score DESC, "#reviewers at this score / #total reviews %%" DESC, proposal.id ASC"""
 
         return sql_response(query)
 
     def proposals_by_max_rank(self):
         """ List of all the proposals ordered max score, min score then average [CFP] """
         return sql_response("""
-SELECT
-    proposal.id,
-    proposal.title,
-    proposal_type.name AS "proposal type",
-    MAX(review.score),
-    MIN(review.score),
-    AVG(review.score)
-FROM proposal
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-GROUP BY proposal.id, proposal.title, proposal_type.name
-ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
-""")
+                SELECT
+                    proposal.id,
+                    proposal.title,
+                    proposal_type.name AS "proposal type",
+                    MAX(review.score),
+                    MIN(review.score),
+                    AVG(review.score)
+                FROM proposal
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                GROUP BY proposal.id, proposal.title, proposal_type.name
+                ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+                """)
 
     def proposals_by_stream(self):
         """ List of all the proposals ordered by stream, max score, min score then average [CFP] """
         return sql_response("""
-SELECT
-    proposal.id, 
-    proposal.title, 
-    proposal_type.name AS "proposal type",
-    stream.name AS stream,
-    MAX(review.score),
-    MIN(review.score),
-    AVG(review.score)
-FROM proposal 
-    LEFT JOIN review ON (proposal.id=review.proposal_id)
-    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-    LEFT JOIN stream ON (review.stream_id=stream.id)
-WHERE review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
-GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
-ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
-""")
+                SELECT
+                    proposal.id, 
+                    proposal.title, 
+                    proposal_type.name AS "proposal type",
+                    stream.name AS stream,
+                    MAX(review.score),
+                    MIN(review.score),
+                    AVG(review.score)
+                FROM proposal 
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                    LEFT JOIN stream ON (review.stream_id=stream.id)
+                WHERE review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
+                GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
+                ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+                """)
 
     def countdown(self):
         """ How many days until conference opens """
@@ -309,6 +365,9 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
         
     def registered_speakers(self):
         """ Listing of speakers and various stuff about them [Speakers] """
+        """ HACK: This code should be in the registration controller """
+        import re
+        shirt_totals = {}
         c.data = []
         c.noescape = True
         cons_list = ('speaker_record', 'speaker_video_release', 'speaker_slides_release')
@@ -342,8 +401,19 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
                     else:
                       res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
                                p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                    
+                    shirt = ''
+                    for item in p.valid_invoice().items:
+                        if ((item.description.lower().find('shirt') is not -1) and (item.description.lower().find('discount') is -1)):
+                            shirt += item.description + ', '
+                            if shirt_totals.has_key(item.description):
+                                shirt_totals[item.description] += 1
+                            else:
+                                shirt_totals[item.description] = 1
+                    res.append(shirt)
               else:
                 res.append('No Invoice')
+                res.append('-')
 
               cons = [con.replace('_', ' ') for con in cons_list
                                            if getattr(p.registration, con)] 
@@ -360,7 +430,7 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
               if p.registration.special:
                   res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
             else:
-              res+=['Not Registered', '', '']
+              res+=['Not Registered', '', '', '']
             #res.append(`dir(p.registration)`)
             c.data.append(res)
 
@@ -369,7 +439,11 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
             return cmp('OK' in a[4], 'OK' in b[4])
         c.data.sort(my_cmp)
 
-        c.columns = ('Name', 'Talk(s)', 'Status', 'Concent', 'Notes')
+        c.columns = ('Name', 'Talk(s)', 'Status', 'Shirts', 'Concent', 'Notes')
+        c.text = "<p>Shirt Totals:"
+        for key, value in shirt_totals.items():
+            c.text += "<br>" + str(key) + ": " + str(value)
+        c.text += "</p>"
         return render_response('admin/table.myt')
 
     def reconcile(self):
@@ -434,20 +508,18 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
 
         c.text = """<p>People who ticked "I want to sign up for (free) Linux
         Australia membership!" (whether or not they then went on to pay for
-        the conference).</p><p>Copy and paste the following into mailman</p>
-        <p><textarea cols="100" rows="25">"""
+        the conference).</p>"""
+        
+        query = """SELECT person.firstname, person.lastname, 
+                    person.address1, person.address2, person.city, person.state, person.postcode, person.country,
+                    person.phone, person.mobile, person.company,
+                    registration.creation_timestamp
+                   FROM person
+                   LEFT JOIN registration ON (person.id = registration.person_id)
+                   WHERE registration.lasignup = True
+                """
 
-        count = 0
-        for r in self.dbsession.query(Registration).all():
-            if not r.lasignup:
-                continue
-            p = r.person
-            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
-            count += 1
-        c.text += "</textarea></p>"
-        c.text += "<p>Total addresses: " + str(count) + "</p>"
-
-        return render_response('admin/text.myt')
+        return sql_response(query)
 
     def lca_announce_signup(self):
         """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
@@ -487,6 +559,125 @@ ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, prop
         c.text += "<p>Total addresses: " + str(count) + "</p>"
 
         return render_response('admin/text.myt')
+
+    def accom_wp_registers(self):
+        """ People who selected "Wrest Point" as their accommodation option. (Includes un-paid invoices!) [Accommodation] """
+        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
+                    LEFT JOIN invoice ON (invoice.person_id = person.id)
+                    LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
+                    WHERE invoice_item.product_id = 28 AND invoice.void = FALSE"""
+        return sql_response(query)
+
+    def accom_uni_registers(self):
+        """ People who selected any form as university accommodation. (Includes un-paid invoices!) [Accommodation] """
+        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
+                    LEFT JOIN invoice ON (invoice.person_id = person.id)
+                    LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
+                    WHERE invoice_item.product_id IN (29,38,39,40,41,42) AND invoice.void = FALSE"""
+        return sql_response(query)
+        
+    def talks(self):
+        """ List of talks for use in programme printing [Schedule] """
+        c.text = "Talks with multiple speakers will appear twice."
+        query = """SELECT proposal_type.name AS type, proposal.scheduled, proposal.title, proposal.abstract, person.firstname || ' ' || person.lastname as speaker, person.bio
+                    FROM proposal
+                    LEFT JOIN person_proposal_map ON (person_proposal_map.proposal_id = proposal.id)
+                    LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+                    LEFT JOIN proposal_type ON (proposal_type.id = proposal.proposal_type_id)
+                    WHERE proposal.accepted = True  
+                    ORDER BY proposal_type.name, proposal.scheduled, proposal.title      
+        """
+        return sql_response(query)
+
+    def partners_programme(self):
+        """ List of partners programme contacts [Partners Programme] """
+        partners_list = self.dbsession.query(Product).filter(Product.description.like('Partners Programme%')).all()
+        c.text = "*Checkin and checkout dates aren't an accurate source."
+        c.columns = ['Partner Type', 'Registration Name', 'Registration e-mail', 'Partners e-mail', 'Checkin*', 'Checkout*']
+        c.data = []
+        for item in partners_list:
+            for invoice_item in item.invoice_items:
+                if invoice_item.invoice.paid() and not invoice_item.invoice.void:
+                    c.data.append([item.description, 
+                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
+                                   invoice_item.invoice.person.email_address, 
+                                   invoice_item.invoice.person.registration.partner_email, 
+                                   invoice_item.invoice.person.registration.checkin,
+                                   invoice_item.invoice.person.registration.checkout
+                                 ])
+        return render_response('admin/table.myt')
+        
+    def planet_lca(self):
+        """ List of blog RSS feeds, planet compatible. [Mailing Lists] """
+        c.text = """<p>List of RSS feeds for LCA planet.</p>
+        <p><textarea cols="100" rows="25">"""
+        
+        count = 0
+        for r in self.dbsession.query(Registration).filter(Registration.planetfeed != '').all():
+            p = r.person
+            c.text += "[" + r.planetfeed + "] name = " + p.firstname + " " + p.lastname + "\n"
+            count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render_response('admin/text.myt')
+
+    def nonregistered(self):
+        """ List of people with accounts on the website but who haven't started the registration process for the conference [Accounts] """
+        
+        sql = """SELECT registration.person_id FROM registration"""
+        
+        import zookeepr.model
+        res = zookeepr.model.metadata.bind.execute(sql)
+        data = res.fetchall()
+        registration_ids = ", ".join([str(row[0]) for row in data])
+                
+        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address
+                    FROM person
+                    WHERE person.id NOT IN(%s)
+        """ % (registration_ids)
+        return sql_response(query)
+
+    def keysigning_participants_list(self):
+        """ Generate a list of all current key id's [Keysigning] """
+        from pylons import response
+        response.headers['Content-type'] = 'text/plain'
+        for keyid in self.keysigning_participants():
+            response.content.append(keyid + "\n")
+
+    def keysigning_single(self):
+        """ Generate an A4 page of key fingerprints given a keyid [Keysigning] """
+        if request.POST:
+            from pylons import response
+            response.headers['Content-type'] = 'text/plain'
+            response.content = keysigning_pdf(request.POST['keyid'])
+        else:
+            return render_response('admin/keysigning_single.myt')
+
+    def keysigning_conferece(self):
+        """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Keysigning] """
+
+    def keysigning_participants(self):
+        registration_list = self.dbsession.query(Registration).filter(Registration.keyid != None).filter(Registration.keyid != '').all()
+        key_list = list()
+        for registration in registration_list:
+            if registration.person.paid():
+                key_list.append(registration.keyid)
+        return key_list
+
+def keysigning_pdf(keyid):
+    maxlength = 80
+    import subprocess
+    os.system(' '.join(['gpg', '--recv-keys', keyid]))
+    fingerprint = subprocess.Popen(['gpg', '--fingerprint', keyid], stdout=subprocess.PIPE).communicate()[0]
+    for i in range(1,80):
+        fingerprint += "-"
+    fingerprint += "\n"
+    fingerprint_length = len(fingerprint.splitlines())
+    output = list()
+    while (len(output) + 1) * fingerprint_length <= maxlength:
+        output.append(fingerprint)
+    return output
 
 def csv_response(sql):
     import zookeepr.model

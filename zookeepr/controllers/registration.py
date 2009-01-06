@@ -166,20 +166,20 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if self._product_available(product):
-                        ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                        product_fields.append('product_' + str(product.id))
-                        if product.validate is not None:
-                            exec("validator = " + product.validate)
-                            ProductSchema.add_pre_validator(validator)
+                    #if self._product_available(product):
+                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
+                    product_fields.append('product_' + str(product.id))
+                    if product.validate is not None:
+                        exec("validator = " + product.validate)
+                        ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             elif category.display == 'qty':
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if self._product_available(product):
-                        ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
-                        product_fields.append('product_' + str(product.id) + '_qty')
+                    #if self._product_available(product):
+                    ProductSchema.add_field('product_' + str(product.id) + '_qty', ProductQty(product=product, if_missing=None))
+                    product_fields.append('product_' + str(product.id) + '_qty')
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
@@ -472,3 +472,139 @@ class RegistrationController(SecureController, Update, List, Read):
                     self.dbsession.save(discount_item)
                     invoice.items.append(discount_item)
                     break
+                    
+    def index(self):
+        per_page = 20
+        #from zookeepr.model.core import tables as core_tables
+        #from zookeepr.model.registration import tables as registration_tables
+        #from zookeepr.model.proposal import tables as proposal_tables
+        from webhelpers.pagination import paginate
+        model_name = self.individual
+        
+        filter = dict(request.GET)
+        filter['role'] = []
+        for key,value in request.GET.items():
+            if key == 'role': filter['role'].append(value)
+        filter['product'] = []
+        for key,value in request.GET.items():
+            if key == 'product': filter['product'].append(value)
+
+        """
+        registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+        if filter.has_key('role'):
+            role_name = filter['role']
+            if role_name == 'speaker':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.proposals.any(accepted='1'))
+            elif role_name == 'miniconf':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.proposals.any(accepted='1'))
+            elif role_name == 'volunteer':
+                pass
+            elif role_name != 'all':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.roles.any(name=role_name))
+        """
+
+        if (len(filter) in [2,3,4] and filter.has_key('per_page') and (len(filter['role']) == 0 or 'all' in filter['role']) and filter['status'] == 'all' and (len(filter['product']) == 0 or 'all' in filter['product'])) or len(filter) < 2:
+            # no actual filters to apply besides per_page, so we can get paginate to do the query
+            registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+        else:
+            import copy
+            registration_list_full = self.dbsession.query(self.model).order_by(self.model.c.id).all()
+            registration_list = copy.copy(registration_list_full)
+
+            for registration in registration_list_full:
+                if 'speaker' in filter['role'] and registration.person.is_speaker() is not True:
+                    registration_list.remove(registration)
+                elif 'miniconf' in filter['role'] and registration.person.is_miniconf_org() is not True:
+                    registration_list.remove(registration)
+                elif 'volunteer' in filter['role'] and registration.person.is_volunteer() is not True:
+                    registration_list.remove(registration)
+                elif (len(filter['role']) - len(set(filter['role']) & set(['all', 'speaker', 'miniconf', 'volunteer']))) != 0 and len(set(filter['role']) & set([role.name for role in registration.person.roles])) == 0:
+                    registration_list.remove(registration)
+                elif filter.has_key('status') and filter['status'] == 'paid' and not registration.person.paid():
+                    registration_list.remove(registration)
+                elif filter.has_key('status') and filter['status'] == 'unpaid' and registration.person.paid():
+                    registration_list.remove(registration)
+                elif filter.has_key('diet') and filter['diet'] == 'true' and (registration.diet == '' or registration.diet.lower() in ('n/a', 'none', 'nill', 'nil', 'no')):
+                    registration_list.remove(registration)
+                elif filter.has_key('special_needs') and filter['special_needs'] == 'true' and (registration.special == '' or registration.special.lower() in ('n/a', 'none', 'nill', 'nil', 'no')):
+                    registration_list.remove(registration)
+                elif filter.has_key('notes') and filter['notes'] == 'true' and len(registration.notes) == 0:
+                    registration_list.remove(registration)
+                elif filter.has_key('under18') and filter['under18'] == 'true' and registration.over18:
+                    registration_list.remove(registration)
+                elif filter.has_key('voucher') and filter['voucher'] == 'true' and not registration.voucher:
+                    registration_list.remove(registration)
+                elif filter.has_key('manual_invoice') and filter['manual_invoice'] == 'true' and not (True in [invoice.manual for invoice in registration.person.invoices]):
+                    registration_list.remove(registration)
+                elif len(filter['product']) > 0 and 'all' not in filter['product']:
+                    # has to be done last as it is an OR not an AND
+                    valid_invoices = []
+                    for invoice in registration.person.invoices:
+                        if not invoice.void:
+                            valid_invoices.append(invoice)
+                    if len(set([int(id) for id in filter['product']]) & set([x for subL in [[item.product_id for item in invoice.items] for invoice in valid_invoices] for x in subL])) == 0:
+                       registration_list.remove(registration)
+
+        if filter.has_key('export') and filter['export'] == 'true':
+            return self._export_list(registration_list)
+
+        if filter.has_key('per_page'):
+            try:
+                per_page = int(filter['per_page'])
+            except:
+                pass
+
+        setattr(c, 'per_page', per_page)
+        pages, collection = paginate(registration_list, per_page = per_page)
+        setattr(c, self.individual + '_pages', pages)
+        setattr(c, self.individual + '_collection', collection)
+        setattr(c, self.individual + '_request', filter)
+        
+        setattr(c, 'roles', self.dbsession.query(model.Role).all())
+        setattr(c, 'product_categories', self.dbsession.query(model.ProductCategory).all())
+
+        return render_response('%s/list.myt' % model_name)
+
+    def _export_list(self, registration_list):
+        columns = ['Rego', 'Name', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
+        if type(registration_list) is not list:
+            registration_list = registration_list.all()
+        
+        data = []
+        for registration in registration_list:
+            products = []
+            invoices = []
+            for invoice in registration.person.invoices:
+                if invoice.paid() and not invoice.void:
+                    invoices.append(str(invoice.id))
+                    for item in invoice.items:
+                        products.append(str(item.qty) + "x" + item.description)
+        
+            data.append([registration.id,
+                         registration.person.firstname + " " + registration.person.lastname,
+                         registration.person.email_address,
+                         registration.person.company,
+                         registration.person.state,
+                         registration.person.country,
+                         ", ".join(invoices),
+                         ", ".join(products),
+                         registration.checkin,
+                         registration.checkout,
+                         (registration.checkout - registration.checkin),
+                         registration.person.is_speaker(),
+                         registration.person.is_miniconf_org(),
+                         registration.person.is_volunteer(),
+                         ", ".join([role.name for role in registration.person.roles]),
+                         registration.diet,
+                         registration.special,
+                       ])
+        
+        import csv, StringIO
+        f = StringIO.StringIO()
+        w = csv.writer(f)
+        w.writerow(columns)
+        w.writerows(data)
+        res = Response(f.getvalue())
+        res.headers['Content-type']='text/plain; charset=utf-8'
+        res.headers['Content-Disposition']='attachment; filename="table.csv"'
+        return res

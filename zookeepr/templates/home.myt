@@ -38,7 +38,7 @@
 
 			<h3 class = 'news_page_text_heading'>When</h3>
 			<p class = 'news_page_text'>
-				linux.conf.au opens on Wednesday January 21st 2009 and runs through Wednesday, Thursday and Friday.  The event finishes with a spectacle of colour and activity with the Open Day on Saturday January 24 2009.  Miniconfs will be held as usual on Monday 19th and Tuesday 20th.
+				linux.conf.au runs for a whole week starting on Monday January 19th going through til the 24th. The main programme starts on Wednesday January 21st 2009 and runs through Wednesday, Thursday and Friday.  The event finishes with a spectacle of colour and activity with the Open Day on Saturday January 24 2009.  Miniconfs will be held as usual on Monday 19th and Tuesday 20th.
 			</p>
 			<h3 class = 'news_page_text_heading'>Where</h3>
 			<p class = 'news_page_text'>

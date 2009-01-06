@@ -19,8 +19,10 @@
 </&>
 
 <p>
-<% h.link_to('Forgotten your password?', url=h.url(controller='person', action='forgotten_password')) %>
+<% h.link_to('Forgotten your password?', url=h.url(controller='person', action='forgotten_password')) %><br />
+E-mail addresses are case-sensitive. If you have lost your log in details, please contact <% h.webmaster_email() %>.
 </p>
+
 
 <p>Note: this login is for the 2009 linux.conf.au website; we have not
 carried over any earlier linux.conf.au login information, so you will need

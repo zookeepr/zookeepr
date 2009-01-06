@@ -248,6 +248,29 @@ class ProductInCategory(validators.FancyValidator):
                 raise Invalid("The selected product, " + product.description + ", has unfortunately sold out.", value, state)
         raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
 
+class ProductCheckbox(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if int(value) == 1 and not self.product.available():
+            raise Invalid("The selected product, " + self.product.description + ", has unfortunately sold out.", value, state)
+        return
+
+class ProductQty(validators.Int):
+    def __init__(self, *args, **kw):
+        validators.Int.__init__(self, *args, **kw)
+        if not hasattr(self, 'min') or self.min==None:
+            self.min = 0
+        if not hasattr(self, 'max') or self.max==None:
+            self.max = +2147483647 # Largest number that fits in postgres
+
+    def validate_python(self, value, state):
+        if value>self.max:
+            raise Invalid('Too large (maximum %d)'%self.max, value, state)
+        if value<self.min:
+            raise Invalid('Too small (minimum %d)'%self.min, value, state)
+        if not self.product.available() and int(value) != 0:
+            raise Invalid("The selected product, " + self.product.description + ", has unfortunately sold out.", value, state)
+        return
+
 class PPEmail(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes adult_field, email_field

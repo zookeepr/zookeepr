@@ -12,6 +12,7 @@ from zookeepr.controllers.person import PersonSchema
 import random
 
 from zookeepr.config.lca_info import lca_info
+from zookeepr.lib.helpers import url
 
 class NewPersonSchema(PersonSchema):
     experience = validators.String(not_empty=True)
@@ -285,6 +286,12 @@ class ProposalController(SecureController, View, Update):
 
         # call the template
         return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
+
+    def _edit_postflush(self):
+        if lca_info['proposal_update_email'] != '':
+            body = "Subject: LCA Proposal Updated\n\nid: %d\nTitle: %s\nURL: %s" % (self.obj.id, self.obj.title, "http://" + h.host_name() + h.url_for(action="view"))
+            email(lca_info['proposal_update_email'],
+                body)
 
     def review_index(self):
         c.person = c.signed_in_person

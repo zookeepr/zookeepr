@@ -31,9 +31,10 @@ lca_info = {
   'cfmini_status' : 'closed',
   'paper_editing' : 'open',
   'conference_status': 'open',
-# Wether we are collecting miniconfs or papers.
+
   'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
 
+  'proposal_update_email': 'puck@penguinsvisiting.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
 }
 
 lca_rego = {
@@ -52,8 +53,8 @@ lca_rego = {
             {'name': 'Week After', 'description': 'Available during the week after the conference (a-c Jan).'},
         ), 
   'miniconfs' : (
-              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices')),
-              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Virtualisation', 'Gaming', 'Free as in Freedom', 'Mobile devices'))
+              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Mobile devices', 'Business of Software development')),
+              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Virtualisation', 'Gaming', 'Free as in Freedom'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],

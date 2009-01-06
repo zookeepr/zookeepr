@@ -17,7 +17,7 @@
 % #endfor
       <tr class="<% oddeven() %>">
         <td colspan="2">
-          <p class="entries">Other: <% c.volunteer.other %></p>
+          <p class="entries">Other: <% h.line_break(c.volunteer.other) %></p>
           <p class="note">Any other areas of interest or useful skills. Arrival and departure dates, if you're not local.</p>
         </td>
       </tr>

@@ -21,10 +21,10 @@
     <h2>Friday</h2>
     <& friday.myt &>
 % elif c.day == 'monday':
-    <h2>Miniconfs for Monday</h2>
+    <h2>Miniconf Schedule for Monday</h2>
     <& monday.myt &>
 % elif c.day == 'tuesday':
-    <h2>Miniconfs for Tuesday</h2>
+    <h2>Miniconf Schedule for Tuesday</h2>
     <& tuesday.myt &>
 % elif c.day == 'wednesday':
     <h2>Schedule for Wednesday</h2>

@@ -1,4 +1,4 @@
-<% c.text %>
+<p><% c.text %></p>
 <table>
 <tr>
 % for header in c.columns:
