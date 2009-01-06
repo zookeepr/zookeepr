@@ -10,21 +10,21 @@ lca_info = {
   'commsecure_secret' : 'zing',
 
 # Contact email for the committee
-  'contact_email' : 'joshua.hesketh@marchsouth.org',
+  'contact_email' : 'contact@penguinsivisiting.org.nz',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',
   'event_parent_url' : 'http://www.linux.org.au/',
-  'event_name' : 'linux.conf.au 2009',
+  'event_name' : 'linux.conf.au 2010',
   'event_url' : 'http://www.linux.conf.au/',
   'event_tax_number' : 'ABN 56 987 117 479',
 # 'event_tax_number' : 'NZ GST #90-792-369',
   'event_postal_address' : '25 Wellington St North Hobart TAS 7000, Australia',
   'event_fax_number' : '+61 3 6234 1262',
   'event_phone_number': '+61 432 996 932',
-  'date' : datetime(2009, 1, 19, 9, 0, 00),
+  'date' : datetime(2010, 1, 17, 9, 0, 00),
 
-  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
+  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the xxth of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
   'cfp_status' : 'closed',
@@ -32,7 +32,7 @@ lca_info = {
   'paper_editing' : 'open',
   'conference_status': 'open',
 # Wether we are collecting miniconfs or papers.
-  'mini_conf_email' : 'miniconfs@marchsouth.org',
+  'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
 
 }
 
@@ -48,8 +48,8 @@ lca_rego = {
             {'name': 'Usher', 'description': 'Introduce speakers and manage rooms, keeping them to a schedule.'},
             {'name': 'Driver', 'description': 'Have driver\'s licence, will travel to help pick up items and shuttle VIP\'s.'},
             {'name': 'Car', 'description': 'Have car and can be a driver.'},
-            {'name': 'Week Before', 'description': 'Available during the week before the conference (12-18 Jan).'},
-            {'name': 'Week After', 'description': 'Available during the week after the conference (25-30 Jan).'},
+            {'name': 'Week Before', 'description': 'Available during the week before the conference (x-y Jan).'},
+            {'name': 'Week After', 'description': 'Available during the week after the conference (a-c Jan).'},
         ), 
   'miniconfs' : (
               ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices')),
@@ -58,7 +58,7 @@ lca_rego = {
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
   'distros' : ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu'],
-  'past_confs' : [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)'), ('08', '2008 (Melbourne)')],
+  'past_confs' : [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)'), ('08', '2008 (Melbourne)'), ('09', '2009 (Hobart)')],
 
   'silly_description' : {
         'starts' : ["a", "a", "a", "one", "no"], # bias toward "a"
