@@ -56,7 +56,7 @@
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=164 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=112 &></td>
       <td class="presentation" align="center" valign="top">
-        <i>Presentations 13:50 - 14:40</i> <& talk_link.myt, talk_id=70 &>
+        <i>Presentation 13:50 - 14:40</i> <& talk_link.myt, talk_id=70 &>
         <i>14:50 - 15:40</i> <& talk_link.myt, talk_id=5, extra=" - Part I (Preparation)" &>
       </td>
     </tr>
