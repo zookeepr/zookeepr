@@ -58,7 +58,7 @@
       <td class="presentation" align="center" valign="top">
         <b>Presentations</b><br>
         <i>13:50 - 14:40</i> <& talk_link.myt, talk_id=70 &>
-        <i>14:50 - 15:40</i> <br><i>TBA</i>
+        <i>14:50 - 15:40</i> <& talk_link.myt, talk_id=5, extra=" - Part I (Preparation)" &>
       </td>
     </tr>
     <tr class="even">

@@ -54,7 +54,7 @@
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=143 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=181 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=151 &></td>
-      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=5 &></td>
+      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=5, extra=" - Part II" &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=89 &></td>
     </tr>
     <tr class="even">
