@@ -1,5 +1,4 @@
-<h2>linux.conf.au 2009 News<a href="/media/news/rss"><img class = 'feedicon' src = '/images/feedicon_16.png' alt="Subscribe to feed" title="Subscribe to feed"></a></h2>
-
+<h1>linux.conf.au 2010 News<a href="/media/news/rss"></h1>
 
 % for d in c.db_content_collection:
 <h2><% h.link_to(d.title, url='/media/news/' + str(d.id)) %></h2>
