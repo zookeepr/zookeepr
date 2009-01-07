@@ -205,7 +205,7 @@ h6 {
 }
 .yellowbox .more a {
 	color: #094c89;
-	font-weight: bold;
+	font-size: smaller;
 	font-style: italic;
 }
 .yellowbox h1 {
@@ -219,7 +219,6 @@ h6 {
 	margin: 0 0 7px 0 !important;
 	padding: 0 0 0 15px;
 	list-style: none;
-	font-size: 0.9em;
 	font-weight: bold;
 	background: url(images/bullet.gif) no-repeat left 4px;
 }
