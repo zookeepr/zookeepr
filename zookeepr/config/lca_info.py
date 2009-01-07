@@ -27,10 +27,10 @@ lca_info = {
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the xxth of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'closed',
-  'cfmini_status' : 'closed',
-  'paper_editing' : 'open',
-  'conference_status': 'open',
+  'cfp_status' : 'not_open',
+  'cfmini_status' : 'not_open',
+  'paper_editing' : 'not_open',
+  'conference_status': 'not_open',
 
   'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
 
@@ -107,18 +107,18 @@ lca_rego = {
 }
 
 file_paths = {
-  'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
+  'public_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public',
   'public_html': '',
-  'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
+  'news_fileprefix': '/home/zookeepr/zookeepr/lca10/zookeepr/public/featured',
   'news_htmlprefix': '/featured'
 }
 
 lca_menu = [
   ('Home', '/home', 'home'),
-  ('About', '/about/the_event_history', 'about'),
+  ('About', '/about/event', 'about'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
   ('Programme', '/programme/about_programme', 'programme'),
-  ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
+  # ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
   ('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
@@ -126,10 +126,11 @@ lca_menu = [
 ]
 
 lca_submenus = {
-  'about': ['The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'],
-  'sponsors': ['Sponsors', 'Become a Sponsor', 'Google Diversity Programme'],
+  'about': ['The Event', 'History', 'Wellington', 'Venue', 'Linux/Open Source'],
+  'sponsors': ['Sponsors', 'Become a Sponsor'],
+  'programme': ['About Programme', 'Presenter FAQ'], # stage 0
   #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
-  'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
+  #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
   'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
   'media': ['News','In the press']
 }
