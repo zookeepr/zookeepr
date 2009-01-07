@@ -277,11 +277,14 @@ h6 {
         .sponsor_heading
         {
                 background: #5850A5;
+		font-size: 1.6em;
+		bottom-margin: 5px;
         }
         
         .sponsor_heading H2
         {
                 color: #fff;
+		padding: 5px 0px 5px 10px;
         }
         
         .sponsor_image
