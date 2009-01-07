@@ -1,6 +1,10 @@
-      <ul class="main_menu">
+      <ul id="primarynav">
 % for (t, u, c) in mm:
-        <li><a href="<% u %>" <% cls(c) %>><% t %></a></li>
+%	if c == 'selected':
+          <li><% t %></li>
+%        else:
+          <li <% cls(c) %>><a href="<% u %>"><% t %></a></li>
+%        #endif
 % #endfor
 % if 'signed_in_person_id' in session:
         <li><a href="<% h.url(controller='person', action='signout', id=None)() %>" <% cls('login') %>>Sign out</a></li>
@@ -28,7 +32,7 @@ for (u, w) in map:
 
 def cls(part):
   if part==where:
-    return 'class="now"'
+    return 'class="selected"'
   else:
     return 'class=""'
 </%init>
