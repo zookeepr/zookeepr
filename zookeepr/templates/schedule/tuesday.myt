@@ -47,7 +47,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Gaming", title="VR Application Development in Linux ", speaker="Ioanna Ioannou" &></td>
       <td class="presentation" align="center" valign="top">
         <i>10:40 - 11:10</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="Future directions for Copyright Law", speaker="Laura Simes" &>
-        <i>11:10 - 11:30</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="OpenAustralia - Everyday democracy for everybody in Australia", speaker="Katherine Szuminska <i>and</i> Matthew Landauer" &>
+        <i>11:10 - 11:30</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="OpenAustralia - Everyday democracy for everybody in Australia", speaker="Matthew Landauer" &>
       </td>
     </tr>
     <tr class="odd">
@@ -62,7 +62,7 @@
         <i>12:05 - 12:30</i> <& miniconf_talk_link.myt, miniconf="Gaming", title="FOSS games and the law", speaker="Nic Suzor" &>
       </td>
       <td class="presentation" align="center" valign="top">
-        <i>11:40 - 12:05</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="Gratis & libre [academia related]", speaker="Liam Wyatt" &>
+        <i>11:40 - 12:05</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="Gratis & libre", speaker="Liam Wyatt" &>
         <i>12:05 - 12:30</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="Freedom Fighting - how do we convince the powers that be to relax their grip?", speaker="Jessica Coates" &>
       </td>
     </tr>
@@ -83,7 +83,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Gaming", title="FOSS game development panel", speaker="" &></td>
       <td class="presentation" align="center" valign="top">
         <i>13:50 - 14:15</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="It's all fun and games until someone wants to sue you: Reporting in the age of citizen journalism", speaker="Sarah Stokely" &>
-        <i>14:15 - 14:40</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="A Review of Australian GeoData and Providers", speaker="Simon Greener" &>
+        <i>14:15 - 14:40</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="We are the translators!", speaker="Jeff Waugh" &>
       </td>
     </tr>
     <tr class="odd">
@@ -94,10 +94,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Multimedia", title="PiTiVi", speaker="Edward Hervey" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="VESPER (Virtual Embraced Space ProbER) -- Can SystemTap bridge host and guests?", speaker="Sungho Kim" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Gaming", title="FOSS game playing panel", speaker="" &></td>
-      <td class="presentation" align="center" valign="top">
-        <i>14:50 - 15:20</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="Freedom in Focus: CC Photography and Cultural Change", speaker="Rachel Cobcroft" &>
-        <i>15:20 - 15:40</i> <& miniconf_talk_link.myt, miniconf="Freedom", title="We are the translators!", speaker="Jeff Waugh" &>
-      </td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Freedom", title="A Review of Australian GeoData and Providers", speaker="Simon Greener" &></td>
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:40&nbsp;-&nbsp;16:00</th>
