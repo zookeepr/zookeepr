@@ -569,12 +569,20 @@ class AdminController(SecureController):
         return sql_response(query)
 
     def accom_uni_registers(self):
-        """ People who selected any form as university accommodation. (Includes un-paid invoices!) [Accommodation] """
-        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
-                    LEFT JOIN invoice ON (invoice.person_id = person.id)
-                    LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
-                    WHERE invoice_item.product_id IN (29,38,39,40,41,42) AND invoice.void = FALSE"""
-        return sql_response(query)
+        """ People who selected any form as university accommodation. (Paid only) [Accommodation] """
+        uni_list = self.dbsession.query(Product).filter(Product.description.like('University Accommodation %')).all()
+        c.columns = ['Room Type', 'Name', 'e-mail', 'Checkin', 'Checkout']
+        c.data = []
+        for item in uni_list:
+            for invoice_item in item.invoice_items:
+                if invoice_item.invoice.paid() and not invoice_item.invoice.void:
+                    c.data.append([item.description, 
+                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
+                                   invoice_item.invoice.person.email_address, 
+                                   invoice_item.invoice.person.registration.checkin,
+                                   invoice_item.invoice.person.registration.checkout
+                                 ])
+        return render_response('admin/table.myt')
         
     def talks(self):
         """ List of talks for use in programme printing [Schedule] """
