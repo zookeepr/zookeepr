@@ -34,6 +34,8 @@ You need to follow these steps for PDF generation to work:
    * mkdir -p $PYTHONPATH
    * python setup.py develop  --prefix `pwd` --no-deps
 
+ - Add this (zookeepr) directory to the PYTHONPATH so that sitecustomize.py is accessible.
+
  - Make a config file as follows: "paster make-config zookeepr config.ini"
 
  - Tweak config.ini file as appropriate 
