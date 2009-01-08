@@ -64,7 +64,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="MythTV", title="MythTV Internals", speaker="Nigel Pearson" &></td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxChix", title="Panel on Geek Parenting", speaker="panellists TBC" &></td>
 
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="DevBiz", title="Collaborating Successfully with Large Corporations", speaker="Bdale Garbee" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="DevBiz", title="Open Source Business 101 for Hackers", speaker="Ross Turk" &></td>
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">12:30&nbsp;-&nbsp;13:50</th>
@@ -101,7 +101,7 @@
       </td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="LinuxChix", title="Workshop: How to evangelise IT for girls", speaker="Donna Benjamin <i>and</i> Pia Waugh" &></td>
 
-      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="DevBiz", title="Open Source Business 101 for Hackers", speaker="Ross Turk" &></td>
+      <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="DevBiz", title="Collaborating Successfully with Large Corporations", speaker="Bdale Garbee" &></td>
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:40&nbsp;-&nbsp;16:00</th>
