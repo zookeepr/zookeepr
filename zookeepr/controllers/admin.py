@@ -362,7 +362,7 @@ class AdminController(SecureController):
                                                timeleft.seconds / (3600*24.)))
         res.headers['Refresh'] = 3600
         return res
-        
+
     def registered_speakers(self):
         """ Listing of speakers and various stuff about them [Speakers] """
         """ HACK: This code should be in the registration controller """
@@ -583,7 +583,38 @@ class AdminController(SecureController):
                                    invoice_item.invoice.person.registration.checkout
                                  ])
         return render_response('admin/table.myt')
+
+    def speakers_partners(self):
+        """ Listing of speakers and their partner details [Speakers] """
+        c.columns = ['Speaker', 'e-mail', 'Partner Programme', 'Penguin Dinner']
+        c.data = []
         
+        total_partners = 0
+        total_dinner = 0
+        speakers_count = 0
+        for person in self.dbsession.query(Person).all():
+            partners = []
+            dinner_tickets = 0
+            if person.is_speaker():
+                for invoice in person.invoices:
+                    for item in invoice.items:
+                        if item.description.startswith("Partners Programme"):
+                            partners.append(item.description + " x" + str(item.qty))
+                            total_partners += item.qty
+                        if item.description.startswith("Dinner"):
+                            dinner_tickets += item.qty
+                            total_dinner += item.qty
+                c.data.append([person.firstname + " " + person.lastname,
+                               person.email_address,
+                               ", ".join(partners),
+                               str(dinner_tickets)])
+                speakers_count += 1
+        c.data.append(['TOTALS:', str(speakers_count) + ' speakers', str(total_partners) + ' partners', str(total_dinner) + ' dinner tickets'])
+        return render_response('admin/table.myt')
+                            
+                
+                
+
     def talks(self):
         """ List of talks for use in programme printing [Schedule] """
         c.text = "Talks with multiple speakers will appear twice."
