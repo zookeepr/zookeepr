@@ -1,4 +1,4 @@
-<h1>linux.conf.au 2010 News<a href="/media/news/rss"></h1>
+<h1>Linux.conf.au 2010 News</h1>
 
 % for d in c.db_content_collection:
 <h2><% h.link_to(d.title, url='/media/news/' + str(d.id)) %></h2>
