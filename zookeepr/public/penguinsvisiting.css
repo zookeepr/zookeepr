@@ -685,17 +685,20 @@ h6 {
        ul
         {
                 margin-left: 20px;
+                padding-bottom: 5px;
         }
         
         ol
         {
                 margin-left: 20px;
+                padding-bottom: 5px;
         }
 
         ul li, ol li
         {
                 margin: 0;
                 padding: 0;
+                padding-bottom: 5px;
         }
         
         ul li
