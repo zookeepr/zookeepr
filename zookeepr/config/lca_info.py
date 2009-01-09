@@ -114,11 +114,12 @@ file_paths = {
 }
 
 lca_menu = [
-  ('Home', '/home', 'home'),
+  #('Home', '/home', 'home'),
   ('About', '/about/event', 'about'),
+  ('Wellington', '/wellington/about', 'wellington'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
-  ('Programme', '/programme/about_programme', 'programme'),
-  # ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
+  ('Programme', '/programme/about', 'programme'),
+  ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
   ('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
@@ -126,11 +127,12 @@ lca_menu = [
 ]
 
 lca_submenus = {
-  'about': ['The Event', 'History', 'Wellington', 'Venue', 'Linux/Open Source'],
-  'sponsors': ['Sponsors', 'Become a Sponsor'],
-  'programme': ['About Programme', 'Presenter FAQ'], # stage 0
+  'about': ['Event', 'Venue', 'History', 'New Zealand', 'Linux/Open Source'],
+  'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
+  'sponsors': ['Sponsors', 'Why Sponsor'],
+  'programme': ['About'], # stage 0
   #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
   #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
-  'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
+  #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
   'media': ['News','In the press']
 }
