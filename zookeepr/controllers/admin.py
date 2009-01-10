@@ -4,7 +4,7 @@ from zookeepr.lib import helpers as h
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product
+from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
 from zookeepr.model.registration import RegoNote
 from zookeepr.config.lca_info import lca_info
 
@@ -611,9 +611,6 @@ class AdminController(SecureController):
                 speakers_count += 1
         c.data.append(['TOTALS:', str(speakers_count) + ' speakers', str(total_partners) + ' partners', str(total_dinner) + ' dinner tickets'])
         return render_response('admin/table.myt')
-                            
-                
-                
 
     def talks(self):
         """ List of talks for use in programme printing [Schedule] """
@@ -627,6 +624,19 @@ class AdminController(SecureController):
                     ORDER BY proposal_type.name, proposal.scheduled, proposal.title      
         """
         return sql_response(query)
+
+    def zookeepr_sales(self):
+        """ List of products and qty sold. [Inventory] """
+        item_list = self.dbsession.query(InvoiceItem).all()
+        total = 0
+        c.columns = ['Item', 'Price', 'Qty', 'Amount']
+        c.data = []
+        for item in item_list:
+            if item.invoice.paid() and not item.invoice.void:
+                c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
+                total += item.total()
+        c.data.append(['','','Total:', h.number_to_currency(total/100)])
+        return render_response('admin/table.myt')
 
     def partners_programme(self):
         """ List of partners programme contacts [Partners Programme] """
