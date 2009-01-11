@@ -17,6 +17,7 @@ from zookeepr.model.registration import Registration
 from zookeepr.config.lca_info import lca_info
 
 import re
+from zookeepr.lib import helpers as h
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -625,7 +626,7 @@ class RegistrationController(SecureController, Update, List, Read):
         files = []
         while c.index < len(c.data):
             while c.index + 4 > len(c.data):
-                c.data.append({'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': False, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''})
+                c.data.append(self._registration_badge_data(False))
             res = render('%s/badges_svg.myt' % self.individual, fragment=True)
             (svg_fd, svg) = tempfile.mkstemp('.svg')
             svg_f = os.fdopen(svg_fd, 'w')
@@ -646,7 +647,7 @@ class RegistrationController(SecureController, Update, List, Read):
         return res
 
     def _registration_badge_data(self, registration):
-        if registration.person.paid():
+        if registration and registration.person.paid():
             dinner_tickets = 0
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.void:
@@ -654,7 +655,6 @@ class RegistrationController(SecureController, Update, List, Read):
                         if item.description.startswith('Dinner Ticket'):
                             dinner_tickets += item.qty
             region = 'world'
-            print registration.person.state, registration.person.country
             if registration.person.country.strip().lower() == 'australia' and registration.person.state.strip().lower() in ['tas', 'tasmania']:
                 region = 'tasmania'
             elif registration.person.country.strip().lower() == 'australia':
@@ -676,8 +676,8 @@ class RegistrationController(SecureController, Update, List, Read):
                      'silly': self._sanitise_badge_field(registration.silly_description)
             }
             return data
-        return
+        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': False, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
-        return disallowed_chars.sub(' ', field.strip())
+        return disallowed_chars.sub(' ', h.esc(field.strip()))
