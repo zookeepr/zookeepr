@@ -65,16 +65,18 @@ h1 {
 
 h2 {
     color: #094c89;
+    color: #bd921e;
     font-size: 1.2em;
     font-weight: bold;
 	margin: 15px 0 0 0;
 }
 
 h3 {
-	color: #899f99;
-	font-size: 1em;
+    color: #bd921e;
+	font-size: 1.1em;
     font-weight: bold;
 	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 h4 {
@@ -308,7 +310,6 @@ h6 {
                 border: 2px solid #d5e0ff;
                 border-spacing: 0 1px;
                 background-color: #5850a5;
-                font-size: 0.75em;
 		margin-bottom: 10px;
         }
         

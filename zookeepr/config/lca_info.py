@@ -117,7 +117,8 @@ lca_menu = [
   #('Home', '/home', 'home'),
   ('About', '/about/linux.conf.au', 'about'),
   ('Wellington', '/wellington/about', 'wellington'),
-  ('Sponsors', '/sponsors/sponsors', 'sponsors'),
+  ('Sponsors', '/sponsors/why_sponsor', 'sponsors'),
+  #('Sponsors', '/sponsors/sponsors', 'sponsors'),
   ('Programme', '/programme/about', 'programme'),
   #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
   #('Wiki', '/wiki', 'wiki'),
@@ -129,7 +130,8 @@ lca_menu = [
 lca_submenus = {
   'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'History', 'New Zealand', 'Linux/Open Source'],
   'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
-  'sponsors': ['Sponsors', 'Why Sponsor'],
+  'sponsors': ['Why Sponsor'],
+  #'sponsors': ['Sponsors', 'Why Sponsor'],
   'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
   #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
   #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
