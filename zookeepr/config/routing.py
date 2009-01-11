@@ -57,6 +57,7 @@ def make_map():
     #m.connect('/registration/remind', controller='registration', action='remind', id=None)
     m.connect('/register/status', controller='registration', action='status', id=None)
     m.connect('/registration/silly_description', controller='registration', action='silly_description', id=None)
+    m.connect('/registration/output_badges', controller='registration', action='output_badges', id=None)
 
     # account confirmation named route
     m.connect('acct_confirm', '/person/confirm/:confirm_hash', controller='person', action='confirm')

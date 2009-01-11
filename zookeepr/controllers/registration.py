@@ -16,6 +16,8 @@ from zookeepr.model.registration import Registration
 
 from zookeepr.config.lca_info import lca_info
 
+import re
+
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         rego = None
@@ -117,6 +119,7 @@ class RegistrationController(SecureController, Update, List, Read):
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'index': [AuthRole('organiser')],
+                   'output_badges': [AuthRole('organiser')],
                    'status': True,
                    'silly_description': True
                }
@@ -608,3 +611,73 @@ class RegistrationController(SecureController, Update, List, Read):
         res.headers['Content-type']='text/plain; charset=utf-8'
         res.headers['Content-Disposition']='attachment; filename="table.csv"'
         return res
+        
+    def output_badges(self):
+        registration_list = self.dbsession.query(self.model).all()
+        data = []
+        for registration in registration_list:
+            data.append(self._registration_badge_data(registration))
+ 
+        setattr(c, 'data', data)
+
+        import os, tempfile
+        c.index = 0
+        files = []
+        while c.index < len(c.data):
+            while c.index + 4 > len(c.data):
+                c.data.append({'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': False, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''})
+            res = render('%s/badges_svg.myt' % self.individual, fragment=True)
+            (svg_fd, svg) = tempfile.mkstemp('.svg')
+            svg_f = os.fdopen(svg_fd, 'w')
+            svg_f.write(res)
+            svg_f.close()
+            files.append(svg)
+            c.index += 4
+
+        (tar_fd, tar) = tempfile.mkstemp('.tar')
+        os.close(tar_fd)
+        os.system('tar -cvf %s %s' % (tar, " ".join(files)))
+
+        tar_f = file(tar)
+        res = Response(tar_f.read())
+        tar_f.close()
+        res.headers['Content-type']='application/octet-stream'
+        res.headers['Content-Disposition']=( 'attachment; filename=badges.tar' )
+        return res
+
+    def _registration_badge_data(self, registration):
+        if registration.person.paid():
+            dinner_tickets = 0
+            for invoice in registration.person.invoices:
+                if invoice.paid() and not invoice.void:
+                    for item in invoice.items:
+                        if item.description.startswith('Dinner Ticket'):
+                            dinner_tickets += item.qty
+            region = 'world'
+            print registration.person.state, registration.person.country
+            if registration.person.country.strip().lower() == 'australia' and registration.person.state.strip().lower() in ['tas', 'tasmania']:
+                region = 'tasmania'
+            elif registration.person.country.strip().lower() == 'australia':
+                region = 'australia'
+            elif registration.person.country.strip().lower() in ['new zealand', 'nz']:
+                region = 'new_zealand'
+            data = { 'ticket': '',
+                     'name': self._sanitise_badge_field(registration.person.firstname + " " + registration.person.lastname),
+                     'nickname': self._sanitise_badge_field(registration.nick),
+                     'company': self._sanitise_badge_field(registration.person.company),
+                     'favourites': self._sanitise_badge_field(registration.shell) + ", " + self._sanitise_badge_field(registration.editor) + ", " + self._sanitise_badge_field(registration.distro),
+                     'gpg': self._sanitise_badge_field(registration.keyid),
+                     'region': region,
+                     'dinner_tickets': dinner_tickets,
+                     'over18': registration.over18,
+                     'ghost': 'ghost' in [role.name for role in registration.person.roles],
+                     'papers': 'reviewer' in [role.name for role in registration.person.roles],
+                     'artist': 'artist' in [role.name for role in registration.person.roles],
+                     'silly': self._sanitise_badge_field(registration.silly_description)
+            }
+            return data
+        return
+
+    def _sanitise_badge_field(self, field):
+        disallowed_chars = re.compile(r'(\n|\r\n|\t)')
+        return disallowed_chars.sub(' ', field.strip())
