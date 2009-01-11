@@ -676,7 +676,7 @@ class RegistrationController(SecureController, Update, List, Read):
                      'silly': self._sanitise_badge_field(registration.silly_description)
             }
             return data
-        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': False, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
+        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': True, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
