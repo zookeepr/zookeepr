@@ -161,11 +161,11 @@ class AdminController(SecureController):
         
         sql_execute("UPDATE proposal SET theatre = NULL, scheduled = NULL, accepted = FALSE") # set all talks to unaccepted to start
         
-        timestamp = {'Monday':    '2009-01-19',
-                     'Tuesday':   '2009-01-20',
-                     'Wednesday': '2009-01-21',
-                     'Thursday':  '2009-01-22',
-                     'Friday':    '2009-01-23'}
+        timestamp = {'Monday':    '2010-01-20',
+                     'Tuesday':   '2010-01-21',
+                     'Wednesday': '2010-01-22',
+                     'Thursday':  '2010-01-23',
+                     'Friday':    '2010-01-24'}
         for collection in (keynotes, miniconfs, tutorials, presentations):
             for (room, days) in collection.iteritems():
                 for (day, ids) in days.iteritems():
