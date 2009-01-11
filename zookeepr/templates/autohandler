@@ -5,7 +5,7 @@
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
-  <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA09 News">
+  <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
@@ -44,12 +44,14 @@
     <!-- end content -->
 
 
+<%doc>
 % if not h.url()().endswith('/sponsors/sponsors') and not h.url()().endswith('/media/news/61'):
-        <div class='sponsors_footer'>
-      <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
-      <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>
-        </div>
+         <div class='sponsors_footer'>
+       <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
+       <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>
+         </div>
 % #endif
+</%doc>
     </div>
     <div id = "push"></div>
   </div>
