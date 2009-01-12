@@ -693,6 +693,7 @@ class RegistrationController(SecureController, Update, List, Read):
     def _registration_badge_data(self, registration, stamp = False):
         if registration:
             dinner_tickets = 0
+            ticket = ''
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.void:
                     for item in invoice.items:
