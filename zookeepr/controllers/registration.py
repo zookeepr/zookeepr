@@ -120,7 +120,7 @@ class RegistrationController(SecureController, Update, List, Read):
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'index': [AuthRole('organiser')],
-                   'output_badges': [AuthRole('organiser')],
+                   'generate_badges': [AuthRole('organiser')],
                    'status': True,
                    'silly_description': True
                }
@@ -613,47 +613,113 @@ class RegistrationController(SecureController, Update, List, Read):
         res.headers['Content-Disposition']='attachment; filename="table.csv"'
         return res
         
-    def output_badges(self):
-        registration_list = self.dbsession.query(self.model).all()
+    def generate_badges(self):
+        defaults = dict(request.POST)
+        stamp = False
+        if defaults.has_key('stamp') and defaults['stamp']:
+            stamp = defaults['stamp']
+        c.text = ''
         data = []
-        for registration in registration_list:
-            data.append(self._registration_badge_data(registration))
- 
-        setattr(c, 'data', data)
+        if request.method == 'POST' and defaults:
+            if defaults['reg_id'] != '':
+                reg_id_list = defaults['reg_id'].split("\n")
+                registration_list = self.dbsession.query(self.model).filter(model.Registration.id.in_(reg_id_list)).all()
+                if len(registration_list) != len(reg_id_list):
+                    c.text = 'Registration ID not found. Please check the <a href="/registration">registration list</a>.'
+                    return render_response('%s/generate_badges.myt' % self.individual)
+                else:
+                    for registration in registration_list:
+                        data.append(self._registration_badge_data(registration, stamp))
+            else:
+                registration_list = self.dbsession.query(self.model).all()
+                for registration in registration_list:
+                    append = False
+                    if registration.person.paid():
+                        if defaults['type'] == 'all':
+                            append = True
+                        else:
+                            for invoice in registration.person.invoices:
+                                if invoice.paid() and not invoice.void:
+                                    for item in invoice.items:
+                                        if defaults['type'] == 'concession' and item.description.startswith('Concession'):
+                                            append = True
+                                        elif defaults['type'] == 'hobby' and item.description.find('Hobbyist') > -1:
+                                            append = True
+                                        elif defaults['type'] == 'professional' and (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                                            append = True
+                                        elif defaults['type'] == 'press' and item.description.startswith('Press'):
+                                            append = True
+                                        elif defaults['type'] == 'organiser' and item.description.startswith('Organiser'):
+                                            append = True
+                                        elif defaults['type'] == 'monday_tuesday' and item.description.find('Monday + Tuesday') > -1:
+                                            append = True
+                            if defaults['type'] == 'speaker' and registration.person.is_speaker():
+                                append = True
+                            elif defaults['type'] == 'mc_organiser' and registration.person.is_miniconf_org():
+                                append = True
+                            elif defaults['type'] == 'volunteer' and registration.person.is_volunteer():
+                                append = True
+                        if append:
+                            data.append(self._registration_badge_data(registration, stamp))
+     
+            setattr(c, 'data', data)
 
-        import os, tempfile
-        c.index = 0
-        files = []
-        while c.index < len(c.data):
-            while c.index + 4 > len(c.data):
-                c.data.append(self._registration_badge_data(False))
-            res = render('%s/badges_svg.myt' % self.individual, fragment=True)
-            (svg_fd, svg) = tempfile.mkstemp('.svg')
-            svg_f = os.fdopen(svg_fd, 'w')
-            svg_f.write(res)
-            svg_f.close()
-            files.append(svg)
-            c.index += 4
+            import os, tempfile
+            c.index = 0
+            files = []
+            while c.index < len(c.data):
+                while c.index + 4 > len(c.data):
+                    c.data.append(self._registration_badge_data(False))
+                res = render('%s/badges_svg.myt' % self.individual, fragment=True)
+                (svg_fd, svg) = tempfile.mkstemp('.svg')
+                svg_f = os.fdopen(svg_fd, 'w')
+                svg_f.write(res)
+                svg_f.close()
+                files.append(svg)
+                c.index += 4
 
-        (tar_fd, tar) = tempfile.mkstemp('.tar')
-        os.close(tar_fd)
-        os.system('tar -cvf %s %s' % (tar, " ".join(files)))
+            (tar_fd, tar) = tempfile.mkstemp('.tar')
+            os.close(tar_fd)
+            os.system('tar -cvf %s %s' % (tar, " ".join(files)))
 
-        tar_f = file(tar)
-        res = Response(tar_f.read())
-        tar_f.close()
-        res.headers['Content-type']='application/octet-stream'
-        res.headers['Content-Disposition']=( 'attachment; filename=badges.tar' )
-        return res
+            tar_f = file(tar)
+            res = Response(tar_f.read())
+            tar_f.close()
+            res.headers['Content-type'] = 'application/octet-stream'
+            res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar' )
+            return res
+        return render_response('%s/generate_badges.myt' % self.individual)
 
-    def _registration_badge_data(self, registration):
-        if registration and registration.person.paid():
+    def _registration_badge_data(self, registration, stamp = False):
+        if registration:
             dinner_tickets = 0
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.void:
                     for item in invoice.items:
                         if item.description.startswith('Dinner Ticket'):
                             dinner_tickets += item.qty
+                        elif item.description.startswith('Concession'):
+                            ticket = 'Concession'
+                        elif item.description.find('Hobbyist') > -1:
+                            ticket = 'Hobbyist'
+                        elif (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                            ticket = 'Professional'
+                        elif item.description.startswith('Press'):
+                            ticket = 'Press'
+                        elif item.description.startswith('Organiser'):
+                            ticket = 'Organiser'
+                        elif item.description.find('Monday + Tuesday') > -1:
+                            ticket = 'miniconfs Only'
+            if registration.person.is_speaker():
+                ticket = 'Speaker'
+            elif registration.person.is_miniconf_org():
+                ticket = 'miniconf Organiser'
+            elif registration.person.is_volunteer():
+                ticket = 'Volunteer'
+
+            if not stamp:
+                ticket = ''
+
             region = 'world'
             if registration.person.country.strip().lower() == 'australia' and registration.person.state.strip().lower() in ['tas', 'tasmania']:
                 region = 'tasmania'
@@ -661,11 +727,20 @@ class RegistrationController(SecureController, Update, List, Read):
                 region = 'australia'
             elif registration.person.country.strip().lower() in ['new zealand', 'nz']:
                 region = 'new_zealand'
-            data = { 'ticket': '',
+
+            favourites = []
+            if registration.shell != '':
+                favourites.append(self._sanitise_badge_field(registration.shell))
+            if registration.editor != '':
+                favourites.append(self._sanitise_badge_field(registration.editor))
+            if registration.distro != '':
+                favourites.append(self._sanitise_badge_field(registration.distro))
+
+            data = { 'ticket': ticket,
                      'name': self._sanitise_badge_field(registration.person.firstname + " " + registration.person.lastname),
                      'nickname': self._sanitise_badge_field(registration.nick),
                      'company': self._sanitise_badge_field(registration.person.company),
-                     'favourites': self._sanitise_badge_field(registration.shell) + ", " + self._sanitise_badge_field(registration.editor) + ", " + self._sanitise_badge_field(registration.distro),
+                     'favourites': ", ".join(favourites),
                      'gpg': self._sanitise_badge_field(registration.keyid),
                      'region': region,
                      'dinner_tickets': dinner_tickets,

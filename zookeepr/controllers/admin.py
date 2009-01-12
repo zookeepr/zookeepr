@@ -43,7 +43,7 @@ class AdminController(SecureController):
           ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
           ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
-          ('/registration/output_badges', '''Output all of the badges for printing. Add /registration_id to output individual badge. [Registrations]'''),
+          ('/registration/generate_badges', '''Generate one or many Badges. [Registrations]'''),
           
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
