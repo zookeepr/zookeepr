@@ -28,7 +28,7 @@ body {
 	height: auto !important;
 	height: 100%;
 	width: 984px;
-	margin: 0 auto -75px auto;
+	margin: 0 auto -80px auto;
 	background: #FFF url(images/header.jpg) no-repeat top left;
 }
 
@@ -208,7 +208,7 @@ h6 {
 }
 .yellowbox .more a {
 	color: #094c89;
-	font-size: smaller;
+	font-size: 1em;
 	font-style: italic;
 }
 .yellowbox h1 {
@@ -224,6 +224,9 @@ h6 {
 	list-style: none;
 	font-weight: bold;
 	background: url(images/bullet.gif) no-repeat left 4px;
+}
+.yellowbox ul li a.selected {
+       color: #6e6c6c !important;
 }
 .yellowbox .date {
 	font-size: .8em;
@@ -263,7 +266,7 @@ h6 {
 #footer, #push {
 	clear:left;
 	width: 100%;
-	height:75px;
+	height:80px;
 	line-height:20px;
 	font-size: 0.8em;
 	text-align: center;
@@ -303,39 +306,30 @@ h6 {
                 text-align: center;
         }
 
-        table
-        {
-                margin-left: 40px;
-                margin-right: 40px;
-                border: 2px solid #d5e0ff;
-                border-spacing: 0 1px;
-                background-color: #5850a5;
-		margin-bottom: 10px;
-        }
-        
-        td
-        {
-                border-bottom: 2px solid #dfdfff;
-                padding: 0.5em 1em 0.5em 1em;
-                background-color: #ffffff;
-        }
-        
-        thead th
-        {
-                border-bottom: 1px solid #afafff;
-                padding: 0 1em 0 1em;
-                color: #ffffff;
-                background-color: inherit;
-        }
-        
-        tbody th
-        {
-                text-align: center;
-                background-color: #ffffff;
-                padding: 0 1em 0 1em;
-                border-bottom: 2px solid #dfdfff;
-                vertical-align: middle;
-        }
+table {
+       background-color: #FFF;
+       border-top: 2px solid #d7e7f0;
+       border-spacing: 0;
+       margin:10px auto 15px 15px;
+}
+td {
+       background-color:#FFFFFF;
+       border-bottom:2px solid #d7e7f0;
+       padding:0.5em 1em;
+}
+
+pre {
+    line-height: 1.6em;
+       margin: 15px;
+       font-size: 1.2em;
+       white-space: normal;
+}
+
+tt {
+       font-size: 1.2em;
+       display: block;
+       margin: 0 15px 15px 15px;
+}
         
         table .empty
         {

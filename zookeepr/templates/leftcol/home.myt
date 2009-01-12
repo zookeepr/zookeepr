@@ -10,6 +10,8 @@
 			<p class = 'more'><a href = '/media/news'>More news...</a></p>
 
                                  </div>
+		</div>
+		<div class = 'yellowbox'>
 				<div class="boxheader">
 			<h1>News Elsewhere</h1>
 			<ul>
