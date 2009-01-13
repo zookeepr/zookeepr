@@ -22,7 +22,7 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:30&nbsp;-&nbsp;10:20</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
-        Keynote 2 - Angela Beesley<br><span style="font-weight: normal;">Stanley Burbury</span>
+        <a href="/programme/keynotes#AngelaBeesley">Keynote 2 - Angela Beesley</a><br><span style="font-weight: normal;">Stanley Burbury</span>
       </td>
     </tr>
     <tr class="even">
