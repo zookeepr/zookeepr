@@ -17,7 +17,7 @@ class AdminController(SecureController):
       'proposals_by_max_rank': [AuthRole('reviewer')],
       'proposals_by_stream': [AuthRole('reviewer')],
       'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')],
-      'keysigning_conferece': [AuthRole('organiser'), AuthRole('keysigning')],
+      'keysigning_conference': [AuthRole('organiser'), AuthRole('keysigning')],
       'keysigning_single': [AuthRole('organiser'), AuthRole('keysigning')],
       'keysigning_participants_list': [AuthRole('organiser'), AuthRole('keysigning')]
     }
@@ -698,14 +698,31 @@ class AdminController(SecureController):
     def keysigning_single(self):
         """ Generate an A4 page of key fingerprints given a keyid [Keysigning] """
         if request.POST:
+            keyid = request.POST['keyid']
             from pylons import response
-            response.headers['Content-type'] = 'text/plain'
-            response.content = keysigning_pdf(request.POST['keyid'])
+            response.headers['Content-type'] = 'application/octet-stream'
+            response.headers['Content-Disposition'] = ('attachment; filename=%s.pdf' %  keyid)
+            pdf = keysigning_pdf(keyid)
+            pdf_f = file(pdf)
+            response.content = pdf_f.read()
+            pdf_f.close()
         else:
             return render_response('admin/keysigning_single.myt')
 
-    def keysigning_conferece(self):
+    def keysigning_conference(self):
         """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Keysigning] """
+        import os, tempfile
+        (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
+        input_pdf = list()
+        for keyid in self.keysigning_participants():
+            input_pdf.append(keysigning_pdf(keyid))
+        os.system('gs -dNOPAUSE -sDEVICE=pdfwrite -sOUTPUTFILE=' + pdf + ' -dBATCH ' + ' '.join(input_pdf))
+        from pylons import response
+        response.headers['Content-type'] = 'application/octet-stream'
+        response.headers['Content-Disposition'] = ('attachment; filename=conference.pdf')
+        pdf_f = file(pdf)
+        response.content = pdf_f.read()
+        pdf_f.close()
 
     def keysigning_participants(self):
         registration_list = self.dbsession.query(Registration).filter(Registration.keyid != None).filter(Registration.keyid != '').all()
@@ -716,18 +733,22 @@ class AdminController(SecureController):
         return key_list
 
 def keysigning_pdf(keyid):
-    maxlength = 80
-    import subprocess
-    os.system(' '.join(['gpg', '--recv-keys', keyid]))
+    import os, tempfile, subprocess
+    max_length = 66
+    (txt_fd, txt) = tempfile.mkstemp('.txt')
+    (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
+    os.system('gpg --recv-keys ' + keyid)
     fingerprint = subprocess.Popen(['gpg', '--fingerprint', keyid], stdout=subprocess.PIPE).communicate()[0]
-    for i in range(1,80):
-        fingerprint += "-"
-    fingerprint += "\n"
     fingerprint_length = len(fingerprint.splitlines())
-    output = list()
-    while (len(output) + 1) * fingerprint_length <= maxlength:
-        output.append(fingerprint)
-    return output
+    if fingerprint_length > 0:
+        fingerprint_num = max_length / int(fingerprint_length)
+    else:
+        fingerprint_num = 0
+    for i in range(0,fingerprint_num):
+        os.system('gpg --fingerprint %s >> %s' % (keyid, txt))
+    os.system('mpage -1 -W `wc -L < %s` %s | ps2pdf - %s' % (txt, txt, pdf))
+
+    return pdf
 
 def csv_response(sql):
     import zookeepr.model
