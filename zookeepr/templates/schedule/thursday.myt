@@ -33,7 +33,7 @@
       <th class="programme_slot" align="center" valign="top">10:40&nbsp;-&nbsp;11:30</th>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=219 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=131 &></td>
-      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=209 &></td>
+      <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=228 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=66 &></td>
       <td class="presentation" align="center" valign="top"><& talk_link.myt, talk_id=67 &></td>
     </tr>
@@ -55,7 +55,10 @@
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=181 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=151 &></td>
       <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=5, extra=" - Part II" &></td>
-      <td class="tutorial" align="center" valign="top"><& talk_link.myt, talk_id=89 &></td>
+      <td class="presentation" align="center" valign="top">
+        <i>Presentation 13:50 - 14:40</i> <& talk_link.myt, talk_id=80 &>
+        <i>14:50 - 15:40</i> <& talk_link.myt, talk_id=117 &>
+      </td>
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:40&nbsp;-&nbsp;16:00</th>

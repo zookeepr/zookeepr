@@ -130,7 +130,7 @@ class AdminController(SecureController):
                            },
                            'Social Science 2': {
                               'Wednesday': (70),
-                              'Thursday':  (89)
+                              #'Thursday':  ()
                            }
                          }
         presentations = {'Stanley Burbury 1': {
@@ -145,7 +145,7 @@ class AdminController(SecureController):
                            },
                            'Stanley Burbury 2': {
                               'Wednesday': (136, 12 , 78 , 99 ),
-                              'Thursday':  (209, 122, 29 , 179),
+                              'Thursday':  (228, 122, 29 , 179),
                               'Friday':    (210, 64 , 79 , 33 , 105)
                            },
                            'Social Science 1': {
@@ -155,7 +155,7 @@ class AdminController(SecureController):
                            },
                            'Social Science 2': {
                               'Wednesday': (149, 123, 211, 192),
-                              'Thursday':  (67 , 161, 92 , 119),
+                              'Thursday':  (67 , 161, 80, 117, 92 , 119),
                               'Friday':    (152, 46 , 145, 72 , 217)
                            }
                          }
