@@ -635,7 +635,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 registration_list = self.dbsession.query(self.model).all()
                 for registration in registration_list:
                     append = False
-                    if registration.person.paid():
+                    if registration.person.paid() and not registration.person.badge_printed:
                         if defaults['type'] == 'all':
                             append = True
                         else:
