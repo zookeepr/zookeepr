@@ -725,7 +725,7 @@ class AdminController(SecureController):
         pdf_f.close()
 
     def keysigning_participants(self):
-        registration_list = self.dbsession.query(Registration).filter(Registration.keyid != None).filter(Registration.keyid != '').all()
+        registration_list = self.dbsession.query(Registration).join('person').filter(Registration.keyid != None).filter(Registration.keyid != '').order_by(Person.lastname).all()
         key_list = list()
         for registration in registration_list:
             if registration.person.paid():
