@@ -738,27 +738,33 @@ class AdminController(SecureController):
         checkedin = zookeepr.model.metadata.bind.execute("SELECT person_id FROM checkins WHERE conference IS NOT NULL");
         checkedin_list = checkedin.fetchall()
         registration_list = self.dbsession.query(Registration).all()
-        c.columns = ['ID', 'Name', 'Type', 'Shirts', 'Dinner Tickets']
+        c.columns = ['ID', 'Name', 'Type', 'Shirts', 'Dinner Tickets', 'Partners Programme']
         c.data = []
         for registration in registration_list:
             if (registration.person.id not in [id[0] for id in checkedin_list]) and registration.person.paid():
                 shirts = []
                 dinner_tickets = 0
                 ticket_types = []
+                partners_programme = []
                 for invoice in registration.person.invoices:
                     if invoice.paid() and not invoice.void:
                         for item in invoice.items:
-                            if item.description.lower().find("shirt") > -1 and not item.description.lower().startswith("discount"):
+                            if item.description.lower().startswith("discount"):
+                                pass
+                            elif item.description.lower().find("shirt") > -1:
                                 shirts.append(item.description + " x" + str(item.qty))
-                            elif item.description.lower().startswith("dinner") and not item.description.lower().startswith("discount"):
+                            elif item.description.lower().startswith("dinner"):
                                 dinner_tickets += item.qty
-                            if item.description.lower().endswith("ticket") or item.description.lower().startswith("press pass"):
+                            elif item.description.lower().startswith("partners"):
+                                partners_programme.append(item.description + " x" + str(item.qty))
+                            elif item.description.lower().endswith("ticket") or item.description.lower().startswith("press pass"):
                                 ticket_types.append(item.description + " x" + str(item.qty))
                 c.data.append([registration.person.id,
                                registration.person.firstname + " " + registration.person.lastname,
                                ", ".join(ticket_types),
                                ", ".join(shirts),
-                               dinner_tickets])
+                               dinner_tickets,
+                               ", ".join(partners_programme)])
 
         return render_response('admin/table.myt')
         
