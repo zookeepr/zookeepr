@@ -804,6 +804,8 @@ def keysigning_pdf(keyid):
     for i in range(0,fingerprint_num):
         os.system('gpg --fingerprint %s >> %s' % (keyid, txt))
     os.system('mpage -1 -W `wc -L < %s` %s | ps2pdf - %s' % (txt, txt, pdf))
+    os.close(pdf_fd);
+    os.close(txt_fd);
 
     return pdf
 
