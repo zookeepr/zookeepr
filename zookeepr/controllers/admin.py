@@ -794,7 +794,7 @@ def keysigning_pdf(keyid):
     max_length = 66
     (txt_fd, txt) = tempfile.mkstemp('.txt')
     (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
-    os.system('gpg --recv-keys ' + keyid)
+    os.system('gpg --recv-keys --keyserver keys.keysigning.org ' + keyid)
     fingerprint = subprocess.Popen(['gpg', '--fingerprint', keyid], stdout=subprocess.PIPE).communicate()[0]
     fingerprint_length = len(fingerprint.splitlines())
     if fingerprint_length > 0:
