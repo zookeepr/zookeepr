@@ -733,7 +733,7 @@ class AdminController(SecureController):
         return key_list
         
     def rego_desk_list(self):
-        """ List of people who have not checked in (see checkins table). [Registration] """
+        """ List of people who have not checked in (see checkins table). [Registrations] """
         import zookeepr.model
         checkedin = zookeepr.model.metadata.bind.execute("SELECT person_id FROM checkins WHERE conference IS NOT NULL");
         checkedin_list = checkedin.fetchall()
