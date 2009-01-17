@@ -750,7 +750,7 @@ class AdminController(SecureController):
                         for item in invoice.items:
                             if item.description.lower().find("shirt") > -1 and not item.description.lower().startswith("discount"):
                                 shirts.append(item.description + " x" + str(item.qty))
-                            elif item.description.lower().startswith("dinner"):
+                            elif item.description.lower().startswith("dinner") and not item.description.lower().startswith("discount"):
                                 dinner_tickets += item.qty
                             if item.description.lower().endswith("ticket") or item.description.lower().startswith("press pass"):
                                 ticket_types.append(item.description + " x" + str(item.qty))
@@ -760,14 +760,27 @@ class AdminController(SecureController):
                                ", ".join(shirts),
                                dinner_tickets])
 
+        return render_response('admin/table.myt')
+        
+    def miniconf_preferences(self):
+        """ Preferred miniconfs [Schedule] """
+        registration_list = self.dbsession.query(Registration).all()
+        c.columns = ['miniconf', 'People']
+        c.data = []
+        miniconfs = {}
+        for registration in registration_list:
+            if registration.person.paid():
+                if type(registration.miniconf) == list:
+                    for miniconf in registration.miniconf:
+                        if miniconfs.has_key(miniconf):
+                            miniconfs[miniconf] += 1
+                        else:
+                            miniconfs[miniconf] = 1
+        for (miniconf, value) in miniconfs.iteritems():
+            c.data.append([miniconf, value])
 
         return render_response('admin/table.myt')
         
-        for item in item_list:
-            if item.invoice.paid() and not item.invoice.void:
-                c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
-                total += item.total()
-        c.data.append(['','','Total:', h.number_to_currency(total/100)])
 
 
 def keysigning_pdf(keyid):
