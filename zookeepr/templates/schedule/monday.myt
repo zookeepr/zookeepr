@@ -122,8 +122,8 @@
         <i>16.55 - 17.25</i> <& miniconf_talk_link.myt, miniconf="LinuxChix", title="Lightning talks", speaker="" &>
       </td>
       <td class="presentation" align="center" valign="top" rowspan="2">
-        <i>16:00 - 16:30</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="Educational Software on Mobile Devices", speaker="Knut Yrvin" &>
-        <i>16:40 - 17:10</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="WebKit for electronic ink displays", speaker="Marco Barasione" &>
+        <i>16:00 - 16:30</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="Intelligent CPU Power Management using the Performance Monitoring Unit and some Brains", speaker="David Snowdon <i>and</i> Etienne Le Sueur" &>
+        <i>16:40 - 17:10</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="WebKit for electronic ink displays", speaker="Marco Barisione" &>
         <i>17:20 - 17:50</i> <& miniconf_talk_link.myt, miniconf="MobileDevices", title="Graphics for Mobile Devices", speaker="Carsten \"Raster\" Haitzler" &>
       </td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="DevBiz", title="Running an open source training business", speaker="Jacinta Richardson" &></td>

@@ -731,6 +731,44 @@ class AdminController(SecureController):
             if registration.person.paid():
                 key_list.append(registration.keyid)
         return key_list
+        
+    def rego_desk_list(self):
+        """ List of people who have not checked in (see checkins table). [Registration] """
+        import zookeepr.model
+        checkedin = zookeepr.model.metadata.bind.execute("SELECT person_id FROM checkins WHERE conference IS NOT NULL");
+        checkedin_list = checkedin.fetchall()
+        registration_list = self.dbsession.query(Registration).all()
+        c.columns = ['ID', 'Name', 'Type', 'Shirts', 'Dinner Tickets']
+        c.data = []
+        for registration in registration_list:
+            if (registration.person.id not in [id[0] for id in checkedin_list]) and registration.person.paid():
+                shirts = []
+                dinner_tickets = 0
+                ticket_types = []
+                for invoice in registration.person.invoices:
+                    if invoice.paid() and not invoice.void:
+                        for item in invoice.items:
+                            if item.description.lower().find("shirt") > -1 and not item.description.lower().startswith("discount"):
+                                shirts.append(item.description + " x" + str(item.qty))
+                            elif item.description.lower().startswith("dinner"):
+                                dinner_tickets += item.qty
+                            if item.description.lower().endswith("ticket") or item.description.lower().startswith("press pass"):
+                                ticket_types.append(item.description + " x" + str(item.qty))
+                c.data.append([registration.person.id,
+                               registration.person.firstname + " " + registration.person.lastname,
+                               ", ".join(ticket_types),
+                               ", ".join(shirts),
+                               dinner_tickets])
+
+
+        return render_response('admin/table.myt')
+        
+        for item in item_list:
+            if item.invoice.paid() and not item.invoice.void:
+                c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
+                total += item.total()
+        c.data.append(['','','Total:', h.number_to_currency(total/100)])
+
 
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
