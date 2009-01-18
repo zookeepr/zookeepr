@@ -29,7 +29,7 @@
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Virtualization", title="Creating a High Availability Environment for Xen Virtual Machines: Part 1", speaker="Sander van Vugt" &></td>
       <td class="presentation" align="center" valign="top">
         <i>9:30 - 9:55</i> <& miniconf_talk_link.myt, miniconf="Gaming", title="The Linux Gooey", speaker="Andrew Doull" &>
-        <i>9:55 - 10:20</i> <& miniconf_talk_link.myt, miniconf="Gaming", title="Platinum Arts Sandbox", speaker="Mike" &>
+        <i>9:55 - 10:20</i> <& miniconf_talk_link.myt, miniconf="Gaming", title="Platinum Arts Sandbox", speaker="Mike Tomaino" &>
       </td>
       <td class="presentation" align="center" valign="top"><& miniconf_talk_link.myt, miniconf="Freedom", title="Beyond Open Source", speaker="Arthur Sale" &></td>
     </tr>
