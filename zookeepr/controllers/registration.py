@@ -644,7 +644,7 @@ class RegistrationController(SecureController, Update, List, Read):
                                     for item in invoice.items:
                                         if defaults['type'] == 'concession' and item.description.startswith('Concession'):
                                             append = True
-                                        elif defaults['type'] == 'hobby' and item.description.find('Hobbyist') > -1:
+                                        elif defaults['type'] == 'hobby' and (item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1):
                                             append = True
                                         elif defaults['type'] == 'professional' and (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
                                             append = True
