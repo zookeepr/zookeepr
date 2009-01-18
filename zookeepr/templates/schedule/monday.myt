@@ -7,8 +7,8 @@
       <th class="programme_room" align="center" valign="top"><a href="/schedule/157/view_miniconf?day=monday" title="Linux Kernel">Linux Kernel</a><br><small>Arts Lecture Theatre</small></th>
       <th class="programme_room" align="center" valign="top"><a href="/schedule/9/view_miniconf?day=monday" title="Systems Administration Miniconf">Systems Administration Miniconf</a><br><small>Stanley Burbury 2</small></th>
       <th class="programme_room" align="center" valign="top"><a href="/schedule/49/view_miniconf?day=monday" title="MythTV">MythTV</a><br><small>Social Science 1</small></th>
-      <th class="programme_room" align="center" valign="top"><a href="/schedule/83/view_miniconf?day=monday" title="Linuxchix Miniconf">Linuxchix Miniconf</a><br><small>Social Science 2</small></th>
-      <th class="programme_room" align="center" valign="top"><a href="/schedule/26/view_miniconf?day=monday" title="Mobile Devices Miniconf">Mobile Devices Miniconf</a><br><small>Arts Tutorial Room</small></th>
+      <th class="programme_room" align="center" valign="top"><a href="/schedule/83/view_miniconf?day=monday" title="Linuxchix Miniconf">Linuxchix Miniconf</a><br><small>Arts Tutorial Room</small></th>
+      <th class="programme_room" align="center" valign="top"><a href="/schedule/26/view_miniconf?day=monday" title="Mobile Devices Miniconf">Mobile Devices Miniconf</a><br><small>Social Science 2</small></th>
       <th class="programme_room" align="center" valign="top"><a href="/schedule/201/view_miniconf?day=monday" title="The Business of Open Source">The Business of Open Source</a><br><small>Multiroom</small></th>
     </tr>
   </thead>
