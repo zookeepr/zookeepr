@@ -704,7 +704,7 @@ class RegistrationController(SecureController, Update, List, Read):
                             dinner_tickets += item.qty
                         elif item.description.startswith('Concession'):
                             ticket = 'Concession'
-                        elif item.description.find('Hobbyist') > -1:
+                        elif item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1:
                             ticket = 'Hobbyist'
                         elif (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
                             ticket = 'Professional'
