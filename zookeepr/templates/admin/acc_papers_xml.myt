@@ -23,9 +23,12 @@
       <code><% t.code %></code>
       <time>
         <date><% t.scheduled.strftime('%Y-%m-%d') |h%></date>
-        <dow><% t.scheduled.strftime('%a') |h%></dow>
-        <start><% t.scheduled.strftime('%H:%M') |h%></start>
-        <end><% t.finished.strftime('%H:%M') |h%></end>
+%#        <dow><% t.scheduled.strftime('%a') |h%></dow>
+%#        <start><% t.scheduled.strftime('%H:%M') |h%></start>
+%#        <end><% t.finished.strftime('%H:%M') |h%></end>
+        <dow></dow>
+        <start></start>
+        <end></end>
       </time>
       <venue>
         <building><% t.building |h%></building>
