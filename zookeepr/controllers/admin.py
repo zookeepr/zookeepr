@@ -787,7 +787,14 @@ class AdminController(SecureController):
 
         return render_response('admin/table.myt')
         
+    def acc_papers_xml(self):
+        """ An XML file with titles and speakers of accepted talks, for use
+        in AV splash screens [AV] """
+        c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
 
+        res = Response(render('admin/acc_papers_xml.myt', fragment=True))
+        res.headers['Content-type']='text/plain; charset=utf-8'
+        return res
 
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
