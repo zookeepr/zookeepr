@@ -23,7 +23,7 @@
       <code><% t.code %></code>
       <time>
         <date><% t.scheduled.strftime('%Y-%m-%d') |h%></date>
-        <dow></dow>
+        <dow></dow> <!-- FIXME: Probably want to add times back into here if you have them. 09 Did not store time information to save hassle -->
         <start></start>
         <end></end>
       </time>

@@ -1,10 +1,10 @@
 <ul class = 'schedule_menu'>
-    <li class = 'week_link'><a href="/programme/schedule/all">Entire Week</a></li>
-    <li class = 'monday_link'><a href="/programme/schedule/monday">Monday</a></li>
-    <li class = 'tuesday_link'><a href="/programme/schedule/tuesday">Tuesday</a></li>
-    <li class = 'wednesday_link'><a href="/programme/schedule/wednesday">Wednesday</a></li>
-    <li class = 'thursday_link'><a href="/programme/schedule/thursday">Thursday</a></li>
-    <li class = 'friday_link'><a href="/programme/schedule/friday">Friday</a></li>
+    <li class = 'week_link'><a href="/programme/schedule/all.html">Entire Week</a></li>
+    <li class = 'monday_link'><a href="/programme/schedule/monday.html">Monday</a></li>
+    <li class = 'tuesday_link'><a href="/programme/schedule/tuesday.html">Tuesday</a></li>
+    <li class = 'wednesday_link'><a href="/programme/schedule/wednesday.html">Wednesday</a></li>
+    <li class = 'thursday_link'><a href="/programme/schedule/thursday.html">Thursday</a></li>
+    <li class = 'friday_link'><a href="/programme/schedule/friday.html">Friday</a></li>
     <li class = 'saturday_link'><a href="/programme/open_day">Saturday</a></li>
 </ul>
 <div style="clear: both;"></div>
