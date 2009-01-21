@@ -27,7 +27,7 @@ def make_map():
     m.connect('/db_content/upload', controller='db_content', action='upload', id=None)
 
     # Schedule
-    m.connect('/schedule/:day', controller='schedule', day='Monday')
+    m.connect('/schedule/:day', controller='schedule', day=None)
 
     # Review
     m.connect('/proposal/review_index', controller='proposal', action='review_index', id=None)
@@ -48,7 +48,7 @@ def make_map():
     m.connect('/programme/submit_a_miniconf', controller='proposal', action='submit_mini')
 
     # schedule routes
-    m.connect('/programme/schedule/:day', controller='schedule', action='index', day='Monday')
+    m.connect('/programme/schedule/:day', controller='schedule', action='index', day=None)
     m.connect('/programme/schedule/view_talk/:id', controller='schedule', action='view_talk', id=None)
 
     # Invoice Reminder
