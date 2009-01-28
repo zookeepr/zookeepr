@@ -1,4 +1,4 @@
-<h1>Linux.conf.au in the press</h1>
+<h1>linux.conf.au in the press</h1>
 
 
 % for d in c.db_content_collection:
