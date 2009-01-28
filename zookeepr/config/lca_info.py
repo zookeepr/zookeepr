@@ -116,7 +116,7 @@ file_paths = {
 lca_menu = [
   #('Home', '/home', 'home'),
   ('About', '/about/linux.conf.au', 'about'),
-  ('Wellington', '/wellington/about', 'wellington'),
+  ('Wellington', '/wellington/about_wellington', 'wellington'),
   ('Sponsors', '/sponsors/why_sponsor', 'sponsors'),
   #('Sponsors', '/sponsors/sponsors', 'sponsors'),
   ('Programme', '/programme/about', 'programme'),
@@ -129,7 +129,7 @@ lca_menu = [
 
 lca_submenus = {
   'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'History', 'New Zealand', 'Linux/Open Source'],
-  'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
+  'wellington': ['About Wellington', 'Sightseeing', 'Pre and Post' ],
   'sponsors': ['Why Sponsor'],
   #'sponsors': ['Sponsors', 'Why Sponsor'],
   'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
