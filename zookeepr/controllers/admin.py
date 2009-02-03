@@ -6,7 +6,7 @@ from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
 from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
 from zookeepr.model.registration import RegoNote
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, lca_rego
 
 class AdminController(SecureController):
     """ Miscellaneous admin tasks. """
@@ -769,24 +769,48 @@ class AdminController(SecureController):
         return render_response('admin/table.myt')
         
     def miniconf_preferences(self):
-        """ Preferred miniconfs [Schedule] """
+        """ Preferred miniconfs. All people - including unpaid [Stats] """
         registration_list = self.dbsession.query(Registration).all()
         c.columns = ['miniconf', 'People']
         c.data = []
         miniconfs = {}
         for registration in registration_list:
-            if registration.person.paid():
-                if type(registration.miniconf) == list:
-                    for miniconf in registration.miniconf:
-                        if miniconfs.has_key(miniconf):
-                            miniconfs[miniconf] += 1
-                        else:
-                            miniconfs[miniconf] = 1
+            if type(registration.miniconf) == list:
+                for miniconf in registration.miniconf:
+                    if miniconfs.has_key(miniconf):
+                        miniconfs[miniconf] += 1
+                    else:
+                        miniconfs[miniconf] = 1
         for (miniconf, value) in miniconfs.iteritems():
             c.data.append([miniconf, value])
 
         return render_response('admin/table.myt')
+
+    def previous_years_stats(self):
+        """ Details on how many people have come to previous years of LCA. All people - including unpaid [Stats] """
+        registration_list = self.dbsession.query(Registration).all()
+        c.columns = ['year', 'People']
+        c.data = []
+        years = {}
+        veterans = []
+        veterans_lca = []
+        for registration in registration_list:
+            if type(registration.prevlca) == list:
+                for year in registration.prevlca:
+                    if years.has_key(year):
+                        years[year] += 1
+                    else:
+                        years[year] = 1
+                if len(registration.prevlca) == len(lca_rego['past_confs']):
+                    veterans.append(registration.person.firstname + " " + registration.person.lastname)
+                elif len(registration.prevlca) == (len(lca_rego['past_confs']) - 1):
+                    veterans_lca.append(registration.person.firstname + " " + registration.person.lastname)
+        for (year, value) in years.iteritems():
+            c.data.append([year, value])
         
+        c.text = "Veterans: " + ", ".join(veterans) + "<br><br>Veterans of LCA (excluding CALU): " + ", ".join(veterans_lca)
+        return render_response('admin/table.myt')
+
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
         in AV splash screens [AV] """
