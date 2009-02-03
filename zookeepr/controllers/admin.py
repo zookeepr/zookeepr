@@ -769,7 +769,7 @@ class AdminController(SecureController):
         return render_response('admin/table.myt')
         
     def miniconf_preferences(self):
-        """ Preferred miniconfs. All people - including unpaid [Stats] """
+        """ Preferred miniconfs. All people - including unpaid [Statistics] """
         registration_list = self.dbsession.query(Registration).all()
         c.columns = ['miniconf', 'People']
         c.data = []
@@ -787,7 +787,7 @@ class AdminController(SecureController):
         return render_response('admin/table.myt')
 
     def previous_years_stats(self):
-        """ Details on how many people have come to previous years of LCA. All people - including unpaid [Stats] """
+        """ Details on how many people have come to previous years of LCA. All people - including unpaid [Statistics] """
         registration_list = self.dbsession.query(Registration).all()
         c.columns = ['year', 'People']
         c.data = []
@@ -819,6 +819,93 @@ class AdminController(SecureController):
         res = Response(render('admin/acc_papers_xml.myt', fragment=True))
         res.headers['Content-type']='text/plain; charset=utf-8'
         return res
+
+    def people_by_country(self):
+        """ Registered and paid people by country [Statistics] """
+        data = {}
+        for registration in self.dbsession.query(Registration).all():
+            if registration.person.paid():
+                country = registration.person.country.capitalize()
+                data[country] = data.get(country, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return render_response('admin/table.myt')
+     
+    def people_by_state(self):
+        """ Registered and paid people by state - Australia Only [Statistics] """
+        data = {}
+        for registration in self.dbsession.query(Registration).all():
+            if registration.person.paid() and registration.person.country == "Australia":
+                state = registration.person.state.capitalize()
+                data[state] = data.get(state, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return render_response('admin/table.myt')
+     
+    def favourite_distro(self):
+        """ Statistics on favourite distros. All people - including unpaid [Statistics] """
+        data = {}
+        for registration in self.dbsession.query(Registration).all():
+            distro = registration.distro.capitalize()
+            data[distro] = data.get(distro, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return render_response('admin/table.myt')
+            
+    def favourite_editor(self):
+        """ Statistics on favourite editors. All people - including unpaid [Statistics] """
+        data = {}
+        for registration in self.dbsession.query(Registration).all():
+            editor = registration.editor.capitalize()
+            data[editor] = data.get(editor, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return render_response('admin/table.myt')
+        
+    def favourite_shell(self):
+        """ Statistics on favourite shells. All people - including unpaid [Statistics] """
+        data = {}
+        for registration in self.dbsession.query(Registration).all():
+            shell = registration.shell.capitalize()
+            data[shell] = data.get(shell, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return render_response('admin/table.myt')            
 
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
