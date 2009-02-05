@@ -32,7 +32,7 @@
 		<div class = 'home_content' >
 			<h3 class='news_page_text_heading'>Congratulations to Wellington for 2010!</h3>
 			<p class='news_page_text'>
-				<a href="http://www.penguinsvisiting.org.nz/"><img src="/images/lca2010.png" style="float: left; padding: 1em;" alt=""></a>
+				<a href="http://www.penguinsvisiting.org.nz/"><img src="/content_images/lca2010.png" style="float: left; padding: 1em;" alt=""></a>
 				In January 2010, linux.conf.au will be visiting Wellington, New Zealand, home of the little blue penguin or Korora as they are called in Maori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?
 			</p>
 			<p class='news_page_text'>
