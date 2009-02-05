@@ -905,7 +905,7 @@ class AdminController(SecureController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')            
+        return render_response('admin/table.myt')
 
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
