@@ -784,6 +784,14 @@ class AdminController(SecureController):
         for (miniconf, value) in miniconfs.iteritems():
             c.data.append([miniconf, value])
 
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+
         return render_response('admin/table.myt')
 
     def previous_years_stats(self):
@@ -807,8 +815,15 @@ class AdminController(SecureController):
                     veterans_lca.append(registration.person.firstname + " " + registration.person.lastname)
         for (year, value) in years.iteritems():
             c.data.append([year, value])
-        
-        c.text = "Veterans: " + ", ".join(veterans) + "<br><br>Veterans of LCA (excluding CALU): " + ", ".join(veterans_lca)
+
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s"><br />
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        c.text += "Veterans: " + ", ".join(veterans) + "<br><br>Veterans of LCA (excluding CALU): " + ", ".join(veterans_lca)
         return render_response('admin/table.myt')
 
     def acc_papers_xml(self):
