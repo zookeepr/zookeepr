@@ -624,18 +624,10 @@ class AdminController(SecureController):
 
     def nonregistered(self):
         """ List of people with accounts on the website but who haven't started the registration process for the conference [Accounts] """
-        
-        sql = """SELECT registration.person_id FROM registration"""
-        
-        import zookeepr.model
-        res = zookeepr.model.metadata.bind.execute(sql)
-        data = res.fetchall()
-        registration_ids = ", ".join([str(row[0]) for row in data])
-                
         query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address
                     FROM person
-                    WHERE person.id NOT IN(%s)
-        """ % (registration_ids)
+                   WHERE person.id NOT IN (SELECT registration.person_id FROM registration)
+        """
         return sql_response(query)
 
     def keysigning_participants_list(self):
