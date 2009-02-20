@@ -10,7 +10,7 @@ lca_info = {
   'commsecure_secret' : 'zing',
 
 # Contact email for the committee
-  'contact_email' : 'contact@penguinsivisiting.org.nz',
+  'contact_email' : 'contact@penguinsvisiting.org.nz',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',
