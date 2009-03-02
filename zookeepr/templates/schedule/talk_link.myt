@@ -9,7 +9,16 @@
 %    speakers = '%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1])
 % #endif
 
-<p class="talk_title"><% h.link_to(h.esc(talk.title), url=h.url(controller='schedule', action='view_talk', id=talk.id)) %><% extra %> <i>by</i> <span class="by_speaker"><% speakers %></span></p>
+% resources = ''
+% slides_videos = []
+% if c.slide_list.has_key(str(talk_id)):
+%   slides_videos.append('<a href="' + c.download_path + '/' + c.slide_list[str(talk_id)] + '">Slides</a>')
+% #endif
+% if len(slides_videos) > 0:
+%   resources = '<br>[' + (",".join(slides_videos)) + ']'
+% #endif
+
+<p class="talk_title"><% h.link_to(h.esc(talk.title), url=h.url(controller='schedule', action='view_talk', id=talk.id)) %><% extra %> <i>by</i> <span class="by_speaker"><% speakers %></span><span style="text-align: center; font-size: smaller; font-style: oblique;"><% resources %></span></p>
 
 <%args>
 talk_id, extra=''

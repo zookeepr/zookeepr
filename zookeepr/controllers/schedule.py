@@ -4,8 +4,10 @@ from zookeepr import model
 from zookeepr.model import Proposal
 from zookeepr.lib.base import *
 
+from zookeepr.config.lca_info import file_paths
 from datetime import date, datetime
 from zookeepr.lib.sort import odict
+import os
 
 
 class ScheduleController(BaseController):
@@ -56,6 +58,19 @@ class ScheduleController(BaseController):
                 c.day = 'monday'
         else:
             c.day = day.lower()
+
+        # get list of slides as dict
+        c.slide_list = {}
+        if file_paths.has_key('slides_path') and file_paths['slides_path'] != '':
+            directory = file_paths['slides_path']
+            c.download_path = file_paths['slides_html']
+            files = {}
+            for filename in os.listdir(directory):
+                if os.path.isfile(directory + "/" + filename):
+                    files[filename.rsplit('.')[0]] = filename
+
+            c.slide_list = files
+            c.download_path = file_paths['slides_html']
 
         c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
         if c.day in self.day_dates:

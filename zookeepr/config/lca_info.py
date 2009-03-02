@@ -110,7 +110,9 @@ file_paths = {
   'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
   'public_html': '',
   'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
-  'news_htmlprefix': '/featured'
+  'news_htmlprefix': '/featured',
+  'slides_path': '/home/josh/LCA09/website/registrations/zookeepr/public/slides',
+  'slides_html': '/slides'
 }
 
 lca_menu = [
