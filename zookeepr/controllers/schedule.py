@@ -71,6 +71,12 @@ class ScheduleController(BaseController):
 
             c.slide_list = files
             c.download_path = file_paths['slides_html']
+        
+        c.ogg_list = {}
+        c.ogg_path = 'http://mirror.linux.org.au/2009/ogg'
+        
+        c.speex_list = {}
+        c.speex_path = 'http://mirror.linux.org.au/2009/speex'
 
         c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
         if c.day in self.day_dates:
