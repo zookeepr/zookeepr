@@ -71,9 +71,12 @@ class ScheduleController(BaseController):
 
             c.slide_list = files
             c.download_path = file_paths['slides_html']
-        
+
         c.ogg_list = {}
-        c.ogg_path = 'http://mirror.linux.org.au/2009/ogg'
+        if file_paths.has_key('ogg_path') and file_paths['ogg_path'] != '':
+            c.ogg_path = file_paths['ogg_path']
+            files = {}
+            
         
         c.speex_list = {}
         c.speex_path = 'http://mirror.linux.org.au/2009/speex'

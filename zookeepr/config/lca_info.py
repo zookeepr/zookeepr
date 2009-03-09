@@ -112,7 +112,11 @@ file_paths = {
   'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
   'news_htmlprefix': '/featured',
   'slides_path': '/home/josh/LCA09/website/registrations/zookeepr/public/slides',
-  'slides_html': '/slides'
+  'slides_html': '/slides',
+  'ogg_path': 'http://mirror.linux.org.au/lca09/videos/ogg',
+  'ogg_file_list': '/home/josh/LCA09/website/registrations/zookeepr/config/data.txt',
+  'speex_path': 'http://mirror.linux.org.au/lca09/videos/speex',
+  'speex_file_list': '/home/josh/LCA09/website/registrations/zookeepr/config/data.txt'
 }
 
 lca_menu = [
