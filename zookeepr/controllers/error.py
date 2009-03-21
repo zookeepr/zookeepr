@@ -36,7 +36,7 @@ class ErrorController(BaseController):
 
     def style(self, id):
        """Serve Pylons' stock stylesheets"""
-        return self._serve_file('/'.join(['media/style', id]))
+       return self._serve_file('/'.join(['media/style', id]))
 
     def _serve_file(self, path):
         """Call Paste's FileApp (a WSGI application) to serve the file
