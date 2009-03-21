@@ -42,6 +42,7 @@ To allow the generation of key fingerprint pages you will need to install the fo
    * python setup.py develop  --prefix `pwd` --no-deps
 
  - Add this (zookeepr) directory to the PYTHONPATH so that sitecustomize.py is accessible.
+   * export PYTHONPATH=$PYTHONPATH:`pwd`
 
  - Make a config file as follows: "paster make-config zookeepr config.ini"
 
