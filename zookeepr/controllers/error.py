@@ -1,40 +1,46 @@
-import os.path
-from paste import fileapp
-from pylons.middleware import media_path, error_document_template
-from zookeepr.lib.base import *
+import cgi
 
-class ErrorController(WSGIController):
-    """
-    Class to generate error documents as and when they are required. This behaviour of this
-    class can be altered by changing the parameters to the ErrorDocuments middleware in 
-    your config/middleware.py file.
+from paste.urlparser import PkgResourcesParser
+from pylons import request
+from pylons.controllers.util import forward
+from pylons.middleware import error_document_template
+from webhelpers.html.builder import literal
+
+from zookeepr.lib.base import BaseController
+
+class ErrorController(BaseController):
+
+    """Generates error documents as and when they are required.
+
+    The ErrorDocuments middleware forwards to ErrorController when error
+    related status codes are returned from the application.
+
+    This behaviour can be altered by changing the parameters to the
+    ErrorDocuments middleware in your config/middleware.py file.
+
     """
 
     def document(self):
-        """
-        Change this method to change how error documents are displayed
-        """
-        if (request.params['code'] == "403" or request.params['code'] == "404") and request.environ['paste.config']['global_conf'].get('debug') == 'false':
-            return render_response('error/404.myt')
-        elif request.environ['paste.config']['global_conf'].get('debug') == 'false':
-            try:
-                return render_response('error/%s.myt'%request.params['code'])
-            except:
-                return render_response('error/default.myt')
-
-        page = error_document_template % {
-            'prefix': request.environ.get('SCRIPT_NAME', ''),
-            'code': request.params.get('code', ''),
-            'message': request.params.get('message', ''),
-        }
-        return Response(page)
+        """Render the error document"""
+        resp = request.environ.get('pylons.original_response')
+        content = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
+        page = error_document_template % \ 
+            dict(prefix=request.environ.get('SCRIPT_NAME', ''),
+                 code=cgi.escape(request.GET.get('code', str(resp.status_int))),
+                 message=content)
+        return page
 
     def img(self, id):
-        return self._serve_file(os.path.join(media_path, 'img', id))
+        """Serve Pylons' stock images"""
+        return self._serve_file('/'.join(['media/img', id]))
 
     def style(self, id):
-        return self._serve_file(os.path.join(media_path, 'style', id))
+       """Serve Pylons' stock stylesheets"""
+        return self._serve_file('/'.join(['media/style', id]))
 
     def _serve_file(self, path):
-        fapp = fileapp.FileApp(path)
-        return fapp(request.environ, self.start_response)
+        """Call Paste's FileApp (a WSGI application) to serve the file
+        at the specified path
+        """
+        request.environ['PATH_INFO'] = '/%s' % path
+        return forward(PkgResourcesParser('pylons', 'pylons'))
