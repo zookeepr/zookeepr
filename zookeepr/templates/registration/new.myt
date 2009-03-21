@@ -1,6 +1,6 @@
     <h2>Register for the conference</h2>
     <div id="registration">
-% if c.ceilings['conference'].available(): 
+% if not 'conference' in c.ceilings or c.ceilings['conference'].available(): 
       <p>Welcome to the conference registration. Please fill in the form as best you can.</p>
 % else:
       <p class="error-message"><i>Registration is closed.</i></p>

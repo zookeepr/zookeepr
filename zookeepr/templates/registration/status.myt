@@ -22,7 +22,7 @@
 """
 </%python>
 
-% if h.lca_info['conference_status'] == 'not_open':
+% if 'conference' not in c.ceilings or h.lca_info['conference_status'] == 'not_open':
     <h2>Registrations are not open</h2>
     <p>Registrations are not yet open. Please come back soon!</p>
 % elif h.lca_info['conference_status'] == 'closed':
