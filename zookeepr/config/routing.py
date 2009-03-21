@@ -21,7 +21,7 @@ def make_map():
     # CUSTOM ROUTES HERE
 
     # the top level controller is named home
-    map.connect('home', '', controller='home')
+    map.connect('home', '/', controller='home')
 
     map.connect('/media/news',         controller='db_content', action='list_news', id=None)
     map.connect('/media/news/rss',     controller='db_content', action='rss_news', id=None)
