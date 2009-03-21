@@ -24,7 +24,7 @@ class ErrorController(BaseController):
         """Render the error document"""
         resp = request.environ.get('pylons.original_response')
         content = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
-        page = error_document_template % \ 
+        page = error_document_template % \
             dict(prefix=request.environ.get('SCRIPT_NAME', ''),
                  code=cgi.escape(request.GET.get('code', str(resp.status_int))),
                  message=content)
