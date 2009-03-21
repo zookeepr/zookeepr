@@ -20,11 +20,7 @@ class TestRegistrationController(CRUDControllerTest):
                                       editortext='editortext1',
                                       distrotext='distrotext1',
                                       silly_description='foo',
-                                      type='Professional',
                                       voucher_code='voucher_code1',
-                                      teesize='M_M',
-                                      extra_tee_count=1,
-                                      extra_tee_sizes='M_M',
                                       diet='diet1',
                                       special='special1',
                                       opendaydrag=1,
@@ -33,8 +29,6 @@ class TestRegistrationController(CRUDControllerTest):
                                       kids_4_6=1,
                                       kids_7_9=1,
                                       kids_10=1,
-                                      checkin=14,
-                                      checkout=20,
                                       lasignup=True,
                                       announcesignup=True,
                                       delegatesignup=False,
@@ -103,12 +97,6 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         print f.fields.keys()
         self.failIf('person.firstname' in f.fields.keys(), "form asking for person details of signed in person")
         sample_data = dict(address1='a1',
-            type='Professional',
-            teesize='M_M',
-            extra_tee_count=1,
-            extra_tee_sizes='M_M',
-            checkin=14,
-            checkout=20,
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -156,9 +144,7 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
         aoid = ao.id
 
         accom = self.dbsession.query(model.Accommodation).get(ao.id)
-        rego = model.Registration(type='Professional',
-                                  checkin=14,
-                                  checkout=20,
+        rego = model.Registration(
                                   dinner=1,
                                   partner_email='foo',
                                   kids_0_3=9,
@@ -184,7 +170,6 @@ class TestSignedInRegistrationController(SignedInCRUDControllerTest):
 
         print "registration.lasignup:", resp.form.fields['registration.lasignup'][0].value
         self.assertEqual('1', resp.form.fields['registration.lasignup'][0].value)
-        self.assertEqual('14', resp.form.fields['registration.checkin'][0].value)
         self.assertEqual('1', resp.form.fields['registration.dinner'][0].value)
         self.assertEqual('1', resp.form.fields['registration.miniconf.Debian'][0].value)
         self.assertEqual('1', resp.form.fields['registration.miniconf.OpenOffice.org'][0].value)
@@ -213,13 +198,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
         resp = self.app.get('/registration/new')
         f = resp.form
         sample_data = dict(
-            type='Professional',
-            teesize='M_long_M',
-            extra_tee_count=1,
-            extra_tee_sizes='M_long_M',
             nick='testguy',
-            checkin=28,
-            checkout=1,
             )
         for k in sample_data.keys():
             f['registration.' + k] = sample_data[k]
@@ -235,7 +214,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
 
         resp = f.submit()
 
-        resp.mustcontain('This account already exists.  Please try signing in first.')
+        resp.mustcontain('A person with this email already exists.  Please try signing in first.')
 
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))

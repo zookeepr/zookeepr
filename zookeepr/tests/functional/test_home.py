@@ -4,7 +4,7 @@ class TestHomeController(ControllerTest):
     def test_index(self):
         response = self.app.get(url_for(controller='home'))
 
-    def test_index_logged_in(self):
+    def test_index_logged_in_regos_open(self):
         p = model.Person(email_address='testguy@example.org',
                    password='test',
                    firstname='Testguy',
@@ -36,7 +36,7 @@ class TestHomeController(ControllerTest):
                          resp.session['signed_in_person_id'])
         resp = resp.follow()
         print resp.request.url
-        self.assertEqual('/', resp.request.url)
+        self.assertEqual('/register/status', resp.request.url)
         resp.mustcontain("Sign out")
 
         self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
