@@ -1,7 +1,11 @@
+<%!
+    title = 'linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart'
+%>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en-us">
 <head>
-  <title><& SELF:title &></title>
+  <title>${self.attr.title}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css">
@@ -9,7 +13,7 @@
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
-  <& SELF:extra_head &>
+  ${self.extra_head()}
 </head>
 
 <body>
@@ -21,22 +25,22 @@
       <a href="/"><img src = '/images/marchsouth.png' alt = 'march south together'></a>
     </div>
     <div class = 'menu'>
-      <& SELF:big_promotion &>
-<& nav.myt &>
-<& subnav.myt &>
+      ${self.big_promotion()}
+<%include file="nav.mako" />
+<%include file="subnav.mako" />
     </div>
     <!-- start content -->
-<& content-body.myt &>
+${next.body()}
     <!-- end content -->
 
   </div>
 
-% if not h.url()().endswith('/sponsors/sponsors') and not h.url()().endswith('/media/news/61'):
+% if not h.url.current().endswith('/sponsors/sponsors') and not h.url.current().endswith('/media/news/61'):
     <p class='sponsors_footer'>
       <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
       <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>
     </p>
-% #endif
+% endif
 
   <div class = 'footer'>
     <div class = 'photos'>
@@ -51,8 +55,3 @@
   </div>
 </body>
 </html>
-<%method extra_head>
-</%method>
-<%method big_promotion>
-</%method>
-<%method title>linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart</%method>

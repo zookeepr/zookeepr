@@ -6,15 +6,25 @@ available to Controllers. This module is available to templates as 'h'.
 # Import helpers as desired, or define your own, ie:
 #from webhelpers.html.tags import checkbox, password
 
+from webhelpers.html import escape, HTML, literal, url_escape
+from webhelpers.html.tags import *
+
+from pylons import url
+
+
+import os.path, random, array
+
+
+from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
+
+#from routes import url
 
 # FIXME Commenting all this out till after we port to new pylons
 #from routes import request_config
 #from webhelpers import *
 #import urllib
 #from glob import glob
-#import os.path, random, array
 #import gzip, re
-#from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
 #
 #def counter(*args, **kwargs):
 #    """Return the next cardinal in a sequence.
@@ -286,28 +296,31 @@ available to Controllers. This module is available to templates as 'h'.
 #    title = computer_re.sub('', title)
 #    return title
 #
-#def featured_image(title, big = False):
-#    """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left
-#    If big == True then find a directory """
-#
-#    fileprefix = file_paths['news_fileprefix']
-#    htmlprefix = file_paths['news_htmlprefix']
-#
-#    if big:
-#        # look for folder feature
-#        if os.path.isdir(fileprefix + "/" + computer_title(title)):
-#            return htmlprefix + "/" + computer_title(title) + "/"
-#        else:
-#            return False
-#    else:
-#        # look for image
-#        if os.path.isfile(fileprefix + "/" + computer_title(title) + ".png"):
-#            return htmlprefix + "/" + computer_title(title) + ".png"
-#        else:
-#            return False
-#
-#    return False
-#
+def featured_image(title, big = False):
+    """
+    Returns img src If an image exists in /public/featured/ with the same
+    computer-friendly title as a news item it becomes featured down the left If
+    big == True then find a directory
+    """
+
+    fileprefix = file_paths['news_fileprefix']
+    htmlprefix = file_paths['news_htmlprefix']
+
+    if big:
+        # look for folder feature
+        if os.path.isdir(fileprefix + "/" + computer_title(title)):
+            return htmlprefix + "/" + computer_title(title) + "/"
+        else:
+            return False
+    else:
+        # look for image
+        if os.path.isfile(fileprefix + "/" + computer_title(title) + ".png"):
+            return htmlprefix + "/" + computer_title(title) + ".png"
+        else:
+            return False
+
+    return False
+
 #domain_re = re.compile('^(http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})')
 #def domain_only(url):
 #    """ Truncates a url to the domain only. For use with "in the press" """

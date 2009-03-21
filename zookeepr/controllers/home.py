@@ -1,6 +1,15 @@
-from zookeepr.lib.base import *
-from zookeepr.lib.auth import SecureController
-from zookeepr.model import Person, DBContent, DBContentType
+import logging
+
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+
+from zookeepr.lib.base import BaseController, render
+
+log = logging.getLogger(__name__)
+
+#from zookeepr.lib.base import *
+#from zookeepr.lib.auth import SecureController
+#from zookeepr.model import Person, DBContent, DBContentType
 
 class HomeController(BaseController):
 
@@ -18,18 +27,19 @@ class HomeController(BaseController):
         __before__ code from SecureController here.
         """
 
-        if 'signed_in_person_id' in session:
-            c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
-
-        news = self.dbsession.query(DBContentType).filter_by(name='News').first()
-        if news:
-            setattr(c, 'db_content_news', self.dbsession.query(DBContent).filter_by(type_id=news.id).order_by(DBContent.c.creation_timestamp.desc()).limit(4).all())
-            setattr(c, 'db_content_news_all', self.dbsession.query(DBContent).filter_by(type_id=news.id).order_by(DBContent.c.creation_timestamp.desc()).all())
-
-        press = self.dbsession.query(DBContentType).filter_by(name='In the press').first()
-        if press:
-            setattr(c, 'db_content_press', self.dbsession.query(DBContent).filter_by(type_id=press.id).order_by(DBContent.c.creation_timestamp.desc()).limit(3).all())
-
-        resp = render_response('home.myt')
-
-        return resp
+#        if 'signed_in_person_id' in session:
+#            c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
+#
+#        news = self.dbsession.query(DBContentType).filter_by(name='News').first()
+#        if news:
+#            setattr(c, 'db_content_news', self.dbsession.query(DBContent).filter_by(type_id=news.id).order_by(DBContent.c.creation_timestamp.desc()).limit(4).all())
+#            setattr(c, 'db_content_news_all', self.dbsession.query(DBContent).filter_by(type_id=news.id).order_by(DBContent.c.creation_timestamp.desc()).all())
+#
+#        press = self.dbsession.query(DBContentType).filter_by(name='In the press').first()
+#        if press:
+#            setattr(c, 'db_content_press', self.dbsession.query(DBContent).filter_by(type_id=press.id).order_by(DBContent.c.creation_timestamp.desc()).limit(3).all())
+#
+#        resp = render_response('home.myt')
+        return render('/home.mako')
+#
+#        return resp
