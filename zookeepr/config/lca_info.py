@@ -10,7 +10,7 @@ lca_info = {
   'commsecure_secret' : 'zing',
 
 # Contact email for the committee
-  'contact_email' : 'joshua.hesketh@marchsouth.org',
+  'contact_email' : 'fmarier@gmail.com',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',
@@ -27,14 +27,14 @@ lca_info = {
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'closed',
-  'cfmini_status' : 'closed',
+  'cfp_status' : 'open',
+  'cfmini_status' : 'open',
   'paper_editing' : 'open',
   'conference_status': 'open',
 
-  'mini_conf_email' : 'miniconfs@marchsouth.org',
+  'mini_conf_email' : 'fmarier@gmail.com',
 
-  'proposal_update_email': 'joshua.hesketh@marchsouth.org', # recieve notifications when proposals are changed. Leave blank for none.
+  'proposal_update_email': '', # recieve notifications when proposals are changed. Leave blank for none.
 }
 
 lca_rego = {
@@ -107,9 +107,9 @@ lca_rego = {
 }
 
 file_paths = {
-  'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
+  'public_path': '/home/francois/devel/zookeepr/db_content/zookeepr/public',
   'public_html': '',
-  'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
+  'news_fileprefix': '/home/francois/devel/zookeepr/db_content/zookeepr/public/featured',
   'news_htmlprefix': '/featured'
 }
 
