@@ -214,7 +214,7 @@ class TestNotSignedInRegistrationController(ControllerTest):
 
         resp = f.submit()
 
-        resp.mustcontain('This account already exists.  Please try signing in first.')
+        resp.mustcontain('A person with this email already exists.  Please try signing in first.')
 
         # clean up
         self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
