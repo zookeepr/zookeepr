@@ -61,9 +61,9 @@ def make_map():
 
     # account confirmation named route
     m.connect('acct_confirm', '/person/confirm/:confirm_hash', controller='person', action='confirm')
-    m.connect('/person/signin', controller='person', action='signin', id=None)
-    m.connect('/person/signout', controller='person', action='signout', id=None)
-    m.connect('/person/forgotten_password', controller='person', action='forgotten_password', id=None)
+    m.connect('/person/signin', controller='person', action='signin')
+    m.connect('/person/signout', controller='person', action='signout')
+    m.connect('/person/forgotten_password', controller='person', action='forgotten_password')
     m.connect('/person/reset_password/:url_hash', controller='person', action='reset_password')
 
     # admin controller
