@@ -9,8 +9,8 @@
 %    speakers = '%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1])
 % #endif
 
-<p class="talk_title"><% h.link_to(h.esc(talk.title), url=h.url(controller='schedule', action='view_talk', id=talk.id)) %> <i>by</i> <span class="by_speaker"><% speakers %></span></p>
+<p class="talk_title"><% h.link_to(h.esc(talk.title), url=h.url(controller='schedule', action='view_talk', id=talk.id)) %><% extra %> <i>by</i> <span class="by_speaker"><% speakers %></span></p>
 
 <%args>
-talk_id
+talk_id, extra=''
 </%args>

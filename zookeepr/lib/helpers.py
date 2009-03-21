@@ -274,6 +274,12 @@ def computer_title(title):
     title = title.lower()
     return title
 
+def wiki_link(title):
+    """ Turn a string into a wiki friendly tag """
+    parts = title.split(' ')
+    title = ''.join([part.title() for part in parts])
+    title = computer_re.sub('', title)
+    return title
 
 def featured_image(title, big = False):
     """ Returns img src If an image exists in /public/featured/ with the same computer-friendly title as a news item it becomes featured down the left

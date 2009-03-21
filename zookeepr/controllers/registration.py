@@ -16,6 +16,9 @@ from zookeepr.model.registration import Registration
 
 from zookeepr.config.lca_info import lca_info
 
+import re
+from zookeepr.lib import helpers as h
+
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         rego = None
@@ -117,6 +120,7 @@ class RegistrationController(SecureController, Update, List, Read):
                    'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
                    'index': [AuthRole('organiser')],
+                   'generate_badges': [AuthRole('organiser')],
                    'status': True,
                    'silly_description': True
                }
@@ -166,20 +170,20 @@ class RegistrationController(SecureController, Update, List, Read):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    if self._product_available(product):
-                        ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                        product_fields.append('product_' + str(product.id))
-                        if product.validate is not None:
-                            exec("validator = " + product.validate)
-                            ProductSchema.add_pre_validator(validator)
+                    #if self._product_available(product):
+                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
+                    product_fields.append('product_' + str(product.id))
+                    if product.validate is not None:
+                        exec("validator = " + product.validate)
+                        ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
             elif category.display == 'qty':
                 # qty
                 product_fields = []
                 for product in category.products:
-                    if self._product_available(product):
-                        ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt())
-                        product_fields.append('product_' + str(product.id) + '_qty')
+                    #if self._product_available(product):
+                    ProductSchema.add_field('product_' + str(product.id) + '_qty', ProductQty(product=product, if_missing=None))
+                    product_fields.append('product_' + str(product.id) + '_qty')
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
@@ -472,3 +476,287 @@ class RegistrationController(SecureController, Update, List, Read):
                     self.dbsession.save(discount_item)
                     invoice.items.append(discount_item)
                     break
+                    
+    def index(self):
+        per_page = 20
+        #from zookeepr.model.core import tables as core_tables
+        #from zookeepr.model.registration import tables as registration_tables
+        #from zookeepr.model.proposal import tables as proposal_tables
+        from webhelpers.pagination import paginate
+        model_name = self.individual
+        
+        filter = dict(request.GET)
+        filter['role'] = []
+        for key,value in request.GET.items():
+            if key == 'role': filter['role'].append(value)
+        filter['product'] = []
+        for key,value in request.GET.items():
+            if key == 'product': filter['product'].append(value)
+
+        """
+        registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+        if filter.has_key('role'):
+            role_name = filter['role']
+            if role_name == 'speaker':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.proposals.any(accepted='1'))
+            elif role_name == 'miniconf':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.proposals.any(accepted='1'))
+            elif role_name == 'volunteer':
+                pass
+            elif role_name != 'all':
+                registration_list = registration_list.select_from(registration_tables.registration.join(core_tables.person)).filter(model.Person.roles.any(name=role_name))
+        """
+
+        if (len(filter) in [2,3,4] and filter.has_key('per_page') and (len(filter['role']) == 0 or 'all' in filter['role']) and filter['status'] == 'all' and (len(filter['product']) == 0 or 'all' in filter['product'])) or len(filter) < 2:
+            # no actual filters to apply besides per_page, so we can get paginate to do the query
+            registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+        else:
+            import copy
+            registration_list_full = self.dbsession.query(self.model).order_by(self.model.c.id).all()
+            registration_list = copy.copy(registration_list_full)
+
+            for registration in registration_list_full:
+                if 'speaker' in filter['role'] and registration.person.is_speaker() is not True:
+                    registration_list.remove(registration)
+                elif 'miniconf' in filter['role'] and registration.person.is_miniconf_org() is not True:
+                    registration_list.remove(registration)
+                elif 'volunteer' in filter['role'] and registration.person.is_volunteer() is not True:
+                    registration_list.remove(registration)
+                elif (len(filter['role']) - len(set(filter['role']) & set(['all', 'speaker', 'miniconf', 'volunteer']))) != 0 and len(set(filter['role']) & set([role.name for role in registration.person.roles])) == 0:
+                    registration_list.remove(registration)
+                elif filter.has_key('status') and filter['status'] == 'paid' and not registration.person.paid():
+                    registration_list.remove(registration)
+                elif filter.has_key('status') and filter['status'] == 'unpaid' and registration.person.paid():
+                    registration_list.remove(registration)
+                elif filter.has_key('diet') and filter['diet'] == 'true' and (registration.diet == '' or registration.diet.lower() in ('n/a', 'none', 'nill', 'nil', 'no')):
+                    registration_list.remove(registration)
+                elif filter.has_key('special_needs') and filter['special_needs'] == 'true' and (registration.special == '' or registration.special.lower() in ('n/a', 'none', 'nill', 'nil', 'no')):
+                    registration_list.remove(registration)
+                elif filter.has_key('notes') and filter['notes'] == 'true' and len(registration.notes) == 0:
+                    registration_list.remove(registration)
+                elif filter.has_key('under18') and filter['under18'] == 'true' and registration.over18:
+                    registration_list.remove(registration)
+                elif filter.has_key('voucher') and filter['voucher'] == 'true' and not registration.voucher:
+                    registration_list.remove(registration)
+                elif filter.has_key('manual_invoice') and filter['manual_invoice'] == 'true' and not (True in [invoice.manual for invoice in registration.person.invoices]):
+                    registration_list.remove(registration)
+                elif len(filter['product']) > 0 and 'all' not in filter['product']:
+                    # has to be done last as it is an OR not an AND
+                    valid_invoices = []
+                    for invoice in registration.person.invoices:
+                        if not invoice.void:
+                            valid_invoices.append(invoice)
+                    if len(set([int(id) for id in filter['product']]) & set([x for subL in [[item.product_id for item in invoice.items] for invoice in valid_invoices] for x in subL])) == 0:
+                       registration_list.remove(registration)
+
+        if filter.has_key('export') and filter['export'] == 'true':
+            return self._export_list(registration_list)
+
+        if filter.has_key('per_page'):
+            try:
+                per_page = int(filter['per_page'])
+            except:
+                pass
+
+        setattr(c, 'per_page', per_page)
+        pages, collection = paginate(registration_list, per_page = per_page)
+        setattr(c, self.individual + '_pages', pages)
+        setattr(c, self.individual + '_collection', collection)
+        setattr(c, self.individual + '_request', filter)
+        
+        setattr(c, 'roles', self.dbsession.query(model.Role).all())
+        setattr(c, 'product_categories', self.dbsession.query(model.ProductCategory).all())
+
+        return render_response('%s/list.myt' % model_name)
+
+    def _export_list(self, registration_list):
+        columns = ['Rego', 'Name', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
+        if type(registration_list) is not list:
+            registration_list = registration_list.all()
+        
+        data = []
+        for registration in registration_list:
+            products = []
+            invoices = []
+            for invoice in registration.person.invoices:
+                if invoice.paid() and not invoice.void:
+                    invoices.append(str(invoice.id))
+                    for item in invoice.items:
+                        products.append(str(item.qty) + "x" + item.description)
+        
+            data.append([registration.id,
+                         registration.person.firstname + " " + registration.person.lastname,
+                         registration.person.email_address,
+                         registration.person.company,
+                         registration.person.state,
+                         registration.person.country,
+                         ", ".join(invoices),
+                         ", ".join(products),
+                         registration.checkin,
+                         registration.checkout,
+                         (registration.checkout - registration.checkin),
+                         registration.person.is_speaker(),
+                         registration.person.is_miniconf_org(),
+                         registration.person.is_volunteer(),
+                         ", ".join([role.name for role in registration.person.roles]),
+                         registration.diet,
+                         registration.special,
+                       ])
+        
+        import csv, StringIO
+        f = StringIO.StringIO()
+        w = csv.writer(f)
+        w.writerow(columns)
+        w.writerows(data)
+        res = Response(f.getvalue())
+        res.headers['Content-type']='text/plain; charset=utf-8'
+        res.headers['Content-Disposition']='attachment; filename="table.csv"'
+        return res
+        
+    def generate_badges(self):
+        defaults = dict(request.POST)
+        stamp = False
+        if defaults.has_key('stamp') and defaults['stamp']:
+            stamp = defaults['stamp']
+        c.text = ''
+        data = []
+        if request.method == 'POST' and defaults:
+            if defaults['reg_id'] != '':
+                reg_id_list = defaults['reg_id'].split("\n")
+                registration_list = self.dbsession.query(self.model).filter(model.Registration.id.in_(reg_id_list)).all()
+                if len(registration_list) != len(reg_id_list):
+                    c.text = 'Registration ID not found. Please check the <a href="/registration">registration list</a>.'
+                    return render_response('%s/generate_badges.myt' % self.individual)
+                else:
+                    for registration in registration_list:
+                        data.append(self._registration_badge_data(registration, stamp))
+                        registration.person.badge_printed = True
+            else:
+                registration_list = self.dbsession.query(self.model).all()
+                for registration in registration_list:
+                    append = False
+                    if registration.person.paid() and not registration.person.badge_printed:
+                        if defaults['type'] == 'all':
+                            append = True
+                        else:
+                            for invoice in registration.person.invoices:
+                                if invoice.paid() and not invoice.void:
+                                    for item in invoice.items:
+                                        if defaults['type'] == 'concession' and item.description.startswith('Concession'):
+                                            append = True
+                                        elif defaults['type'] == 'hobby' and (item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1):
+                                            append = True
+                                        elif defaults['type'] == 'professional' and (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                                            append = True
+                                        elif defaults['type'] == 'press' and item.description.startswith('Press'):
+                                            append = True
+                                        elif defaults['type'] == 'organiser' and item.description.startswith('Organiser'):
+                                            append = True
+                                        elif defaults['type'] == 'monday_tuesday' and item.description.find('Monday + Tuesday') > -1:
+                                            append = True
+                            if defaults['type'] == 'speaker' and registration.person.is_speaker():
+                                append = True
+                            elif defaults['type'] == 'mc_organiser' and registration.person.is_miniconf_org():
+                                append = True
+                            elif defaults['type'] == 'volunteer' and registration.person.is_volunteer():
+                                append = True
+                        if append:
+                            data.append(self._registration_badge_data(registration, stamp))
+                            registration.person.badge_printed = True
+
+            self.dbsession.flush() # save badge printed data
+            setattr(c, 'data', data)
+
+            import os, tempfile
+            c.index = 0
+            files = []
+            while c.index < len(c.data):
+                while c.index + 4 > len(c.data):
+                    c.data.append(self._registration_badge_data(False))
+                res = render('%s/badges_svg.myt' % self.individual, fragment=True)
+                (svg_fd, svg) = tempfile.mkstemp('.svg')
+                svg_f = os.fdopen(svg_fd, 'w')
+                svg_f.write(res)
+                svg_f.close()
+                files.append(svg)
+                c.index += 4
+
+            (tar_fd, tar) = tempfile.mkstemp('.tar')
+            os.close(tar_fd)
+            os.system('tar -cvf %s %s' % (tar, " ".join(files)))
+
+            tar_f = file(tar)
+            res = Response(tar_f.read())
+            tar_f.close()
+            res.headers['Content-type'] = 'application/octet-stream'
+            res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar' )
+            return res
+        return render_response('%s/generate_badges.myt' % self.individual)
+
+    def _registration_badge_data(self, registration, stamp = False):
+        if registration:
+            dinner_tickets = 0
+            ticket = ''
+            for invoice in registration.person.invoices:
+                if invoice.paid() and not invoice.void:
+                    for item in invoice.items:
+                        if item.description.startswith('Dinner Ticket'):
+                            dinner_tickets += item.qty
+                        elif item.description.startswith('Concession'):
+                            ticket = 'Concession'
+                        elif item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1:
+                            ticket = 'Hobbyist'
+                        elif (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                            ticket = 'Professional'
+                        elif item.description.startswith('Press'):
+                            ticket = 'Press'
+                        elif item.description.startswith('Organiser'):
+                            ticket = 'Organiser'
+                        elif item.description.find('Monday + Tuesday') > -1:
+                            ticket = 'miniconfs Only'
+            if registration.person.is_speaker():
+                ticket = 'Speaker'
+            elif registration.person.is_miniconf_org():
+                ticket = 'miniconf Organiser'
+            elif registration.person.is_volunteer():
+                ticket = 'Volunteer'
+
+            if not stamp:
+                ticket = ''
+
+            region = 'world'
+            if registration.person.country.strip().lower() == 'australia' and registration.person.state.strip().lower() in ['tas', 'tasmania']:
+                region = 'tasmania'
+            elif registration.person.country.strip().lower() == 'australia':
+                region = 'australia'
+            elif registration.person.country.strip().lower() in ['new zealand', 'nz']:
+                region = 'new_zealand'
+
+            favourites = []
+            if registration.shell != '':
+                favourites.append(self._sanitise_badge_field(registration.shell))
+            if registration.editor != '':
+                favourites.append(self._sanitise_badge_field(registration.editor))
+            if registration.distro != '':
+                favourites.append(self._sanitise_badge_field(registration.distro))
+
+            data = { 'ticket': ticket,
+                     'name': self._sanitise_badge_field(registration.person.firstname + " " + registration.person.lastname),
+                     'nickname': self._sanitise_badge_field(registration.nick),
+                     'company': self._sanitise_badge_field(registration.person.company),
+                     'favourites': ", ".join(favourites),
+                     'gpg': self._sanitise_badge_field(registration.keyid),
+                     'region': region,
+                     'dinner_tickets': dinner_tickets,
+                     'over18': registration.over18,
+                     'ghost': 'ghost' in [role.name for role in registration.person.roles],
+                     'papers': 'reviewer' in [role.name for role in registration.person.roles],
+                     'artist': 'artist' in [role.name for role in registration.person.roles],
+                     'silly': self._sanitise_badge_field(registration.silly_description)
+            }
+            return data
+        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': True, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
+
+    def _sanitise_badge_field(self, field):
+        disallowed_chars = re.compile(r'(\n|\r\n|\t)')
+        return disallowed_chars.sub(' ', h.esc(field.strip()))

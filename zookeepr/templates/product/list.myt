@@ -1,4 +1,5 @@
     <h2>List products</h2>
+    <p><b>Note:</b> Totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
 % if len(c.product_categories) > 0:
     <table>
 %   grand_total = 0

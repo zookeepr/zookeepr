@@ -48,11 +48,19 @@ class ScheduleController(BaseController):
         return render_response('schedule/view_talk.myt')
 
     def index(self, day):
-        c.day = day.lower()
+        if day == None:
+            for weekday in self.day_dates:
+                if self.day_dates[weekday] == datetime.today().date():
+                    c.day = weekday
+            if c.day == None:
+                c.day = 'monday'
+        else:
+            c.day = day.lower()
+
         c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
-        if day.lower() in self.day_dates:
+        if c.day in self.day_dates:
             # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
-            c.talks = c.talks.filter(Proposal.scheduled >= self.day_dates[day.lower()] and Proposal.scheduled < self.day_dates[day.lower()].replace(day=self.day_dates[day.lower()].day+1))
+            c.talks = c.talks.filter(Proposal.scheduled >= self.day_dates[c.day] and Proposal.scheduled < self.day_dates[c.day].replace(day=self.day_dates[c.day].day+1))
         c.programme = odict()
         c.talks.order_by((Proposal.scheduled.asc(), Proposal.finished.desc())).all()
         for talk in c.talks:

@@ -11,7 +11,6 @@
 
 
 		<div class = 'home_news'>
-			<a href="/register/prices_ticket_types"><img src="/content_images/register.png" alt="Register now" title="Register Now" style="margin-top: -40px; margin-right: -60px;"></a>
 			<h3 class = 'news_item_list_heading'><a href = '/media/news'>News updates</a><a href="/media/news/rss"><img class = 'feedicon' src = '/images/feedicon_16.png' alt="Subscribe to feed" title="Subscribe to feed"></a></h3>
 			<ul class = 'news_item_list'>
 % for d in c.db_content_news:
@@ -31,6 +30,15 @@
 
 
 		<div class = 'home_content' >
+			<h3 class='news_page_text_heading'>Congratulations to Wellington for 2010!</h3>
+			<p class='news_page_text'>
+				<a href="http://www.penguinsvisiting.org.nz/"><img src="/content_images/lca2010.png" style="float: left; padding: 1em;" alt=""></a>
+				In January 2010, linux.conf.au will be visiting Wellington, New Zealand, home of the little blue penguin or Korora as they are called in Maori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?
+			</p>
+			<p class='news_page_text'>
+				Visit: <a href="http://www.penguinsvisiting.org.nz/">http://www.penguinsvisiting.org.nz/</a>
+			</p>
+			<div style="clear: left;"></div>
 			<h3 class = 'news_page_text_heading'>Welcome!</h3>
 			<p class = 'news_page_text'>
 				linux.conf.au is marching south to Hobart, Tasmania for its 10th anniversary in 2009!  It is widely regarded as one of the world's best technical conferences, and this year it will be held in one of the most unique locations, for the first time.
@@ -38,7 +46,7 @@
 
 			<h3 class = 'news_page_text_heading'>When</h3>
 			<p class = 'news_page_text'>
-				linux.conf.au opens on Wednesday January 21st 2009 and runs through Wednesday, Thursday and Friday.  The event finishes with a spectacle of colour and activity with the Open Day on Saturday January 24 2009.  Miniconfs will be held as usual on Monday 19th and Tuesday 20th.
+				linux.conf.au runs for a whole week starting on Monday January 19th going through til the 24th. The main programme starts on Wednesday January 21st 2009 and runs through Wednesday, Thursday and Friday.  The event finishes with a spectacle of colour and activity with the Open Day on Saturday January 24 2009.  Miniconfs will be held as usual on Monday 19th and Tuesday 20th.
 			</p>
 			<h3 class = 'news_page_text_heading'>Where</h3>
 			<p class = 'news_page_text'>

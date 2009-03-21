@@ -31,9 +31,10 @@ lca_info = {
   'cfmini_status' : 'closed',
   'paper_editing' : 'open',
   'conference_status': 'open',
-# Wether we are collecting miniconfs or papers.
+
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 
+  'proposal_update_email': 'joshua.hesketh@marchsouth.org', # recieve notifications when proposals are changed. Leave blank for none.
 }
 
 lca_rego = {
@@ -52,8 +53,8 @@ lca_rego = {
             {'name': 'Week After', 'description': 'Available during the week after the conference (25-30 Jan).'},
         ), 
   'miniconfs' : (
-              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Gaming', 'Business of Software development', 'Mobile devices')),
-              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Virtualisation', 'Gaming', 'Free as in Freedom', 'Mobile devices'))
+              ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Mobile devices', 'Business of Software development')),
+              ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Virtualisation', 'Gaming', 'Free as in Freedom'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
@@ -127,7 +128,7 @@ lca_submenus = {
   'about': ['The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'],
   'sponsors': ['Sponsors', 'Become a Sponsor', 'Google Diversity Programme'],
   #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
-  'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
+  'programme': ['About Programme', 'Keynotes', 'miniconfs', 'Schedule','Official social events','Open day','Batteries Not Included'], # stage 2
   'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
-  'media': ['News','In the press']
+  'media': ['News','In the press', 'Planet']
 }

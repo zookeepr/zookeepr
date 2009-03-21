@@ -21,6 +21,7 @@
     <p><b>Sold:</b> <% c.ceiling.qty_sold() | h %><br></p>
 
     <h3>Products in this Ceiling</h3>
+    <p><b>Note:</b> Totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
     <table>
       <thead><tr>
         <th>Description</th>

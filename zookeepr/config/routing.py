@@ -27,7 +27,7 @@ def make_map():
     m.connect('/db_content/upload', controller='db_content', action='upload', id=None)
 
     # Schedule
-    m.connect('/schedule/:day', controller='schedule', day='Wednesday')
+    m.connect('/schedule/:day', controller='schedule', day=None)
 
     # Review
     m.connect('/proposal/review_index', controller='proposal', action='review_index', id=None)
@@ -48,7 +48,7 @@ def make_map():
     m.connect('/programme/submit_a_miniconf', controller='proposal', action='submit_mini')
 
     # schedule routes
-    m.connect('/programme/schedule/:day', controller='schedule', action='index', day='Wednesday')
+    m.connect('/programme/schedule/:day', controller='schedule', action='index', day=None)
     m.connect('/programme/schedule/view_talk/:id', controller='schedule', action='view_talk', id=None)
 
     # Invoice Reminder
@@ -57,9 +57,7 @@ def make_map():
     #m.connect('/registration/remind', controller='registration', action='remind', id=None)
     m.connect('/register/status', controller='registration', action='status', id=None)
     m.connect('/registration/silly_description', controller='registration', action='silly_description', id=None)
-    m.connect('/registration/volunteer', controller='registration', action='volunteer_redirect', id=None)
-    m.connect('/registration/professional', controller='registration', action='professional', id=None)
-    m.connect('/registration/list_miniconf_orgs', controller='registration', action='list_miniconf_orgs', id=None)
+    m.connect('/registration/generate_badges', controller='registration', action='generate_badges', id=None)
 
     # account confirmation named route
     m.connect('acct_confirm', '/person/confirm/:confirm_hash', controller='person', action='confirm')
@@ -90,6 +88,7 @@ def make_map():
     m.connect('/sponsors/google_diversity_programme', controller='db_content', action='view', id=66)
     m.connect('/sponsors', controller='db_content', action='view', id=61)
     m.connect('/register', controller='db_content', action='view', id=45)
+    m.connect('/programme', controller='db_content', action='view', id=3)
 
     # special case the wiki controller so that it's not gobbled by the
     # usual :controller rules...
@@ -97,7 +96,7 @@ def make_map():
     #m.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
 
     # route rego_notes with ID's
-    m.connect('registration/:rego_id/new_note', controller='rego_note', action='new', rego_id=None)
+    m.connect('registration/:rego_id/new_note', controller='rego_note', action='new', id=None)
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule

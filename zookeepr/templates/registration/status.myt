@@ -1,3 +1,5 @@
+<%python>
+"""
     <div class="notice-box">
 % if h.lca_info['conference_status'] == 'not_open':
       <b>Registrations</b> are <i>not</i> open<br><br>
@@ -17,6 +19,8 @@
 % #endif
       <b><%c.timeleft %></b>
     </div>
+"""
+</%python>
 
 % if h.lca_info['conference_status'] == 'not_open':
     <h2>Registrations are not open</h2>

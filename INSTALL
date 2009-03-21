@@ -27,12 +27,21 @@ You need to follow these steps for PDF generation to work:
  - Set permissions:
     sudo chmod +x /usr/local/bin/saxon
 
+====== Keysigning code ======
+
+To allow the generation of key fingerprint pages you will need to install the following packages:
+ * gnupg
+ * mpage
+ * ghostscript
+
 ====== Installing and setting up Zookeepr ======
 
  - To run as a user
    * export PYTHONPATH=`pwd`/lib/python2.5/site-packages
    * mkdir -p $PYTHONPATH
    * python setup.py develop  --prefix `pwd` --no-deps
+
+ - Add this (zookeepr) directory to the PYTHONPATH so that sitecustomize.py is accessible.
 
  - Make a config file as follows: "paster make-config zookeepr config.ini"
 
