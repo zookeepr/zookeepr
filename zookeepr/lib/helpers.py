@@ -8,7 +8,10 @@ available to Controllers. This module is available to templates as 'h'.
 
 from webhelpers.html import escape, HTML, literal, url_escape
 from webhelpers.html.tags import *
+from webhelpers.html.secure_form import secure_form
 
+
+# TODO Not 100% sure this is the right way to get url
 from pylons import url
 
 

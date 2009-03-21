@@ -30,7 +30,7 @@
 <%include file="subnav.mako" />
     </div>
     <!-- start content -->
-${next.body()}
+    ${next.body()}
     <!-- end content -->
 
   </div>
