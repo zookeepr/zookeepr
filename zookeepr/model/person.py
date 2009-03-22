@@ -1,54 +1,59 @@
+"""The application's model objects"""
+import sqlalchemy as sa
+
+from meta import Base
+
 import datetime
 import md5
 import random
 
-class Person(object):
+class Person(Base):
     """Stores both account login details and personal information.
     """
-    def __init__(self,
-                 handle=None,
-                 email_address=None,
-                 password=None,
-                 firstname=None,
-                 lastname=None,
-                 address1=None,
-                 address2=None,
-                 city=None,
-                 state=None,
-                 postcode=None,
-                 country=None,
-                 company=None,
-                 phone=None,
-                 mobile=None,
-                 experience=None,
-                 bio=None,
-                 badge_printed=False,
-                 creation_timestamp=None,
-                 activated=None
-                 ):
-        # account information
-        self.email_address = email_address
-        self.password = password
-        self.activated = activated or False
-        self.creation_timestamp = creation_timestamp or datetime.datetime.now()
+    __tablename__ = 'person'
 
-        self.handle = handle
-        self.firstname = firstname
-        self.lastname = lastname
-        self.address1 = address1
-        self.address2 = address2
-        self.city = city
-        self.state = state
-        self.postcode = postcode
-        self.country = country
-        self.company = company
-        self.phone = phone
-        self.mobile = mobile
+    id = sa.Column(sa.types.Integer, primary_key=True)
 
-        self.experience = experience
-        self.bio = bio
+    email_address = sa.Column(sa.types.Text, nullable=False, unique=True)
+    password_hash = sa.Column(sa.types.Text)
 
-        self.badge_printed = badge_printed
+    # creation timestamp of the registration
+    creation_timestamp = sa.Column(sa.types.DateTime, nullable=False)
+    url_hash = sa.Column(sa.types.String(32), nullable=False, index=True)
+
+
+    # flag that the account has been activated by the user
+    # (responded to their confirmation email)
+    activated = sa.Column(sa.types.Boolean, nullable=False, default=False)
+
+    # other personal details
+    # the lengths of the fields are chosen arbitrarily
+    firstname = sa.Column(sa.types.Text)
+    lastname = sa.Column(sa.types.Text)
+    address1 = sa.Column(sa.types.Text)
+    address2 = sa.Column(sa.types.Text)
+    city = sa.Column(sa.types.Text)
+    state = sa.Column(sa.types.Text)
+    postcode = sa.Column(sa.types.Text)
+    country = sa.Column(sa.types.Text)
+    company = sa.Column(sa.types.Text)
+    phone = sa.Column(sa.types.Text)
+    mobile = sa.Column(sa.types.Text)
+
+    url = sa.Column(sa.types.Text)
+
+    # Proposal bits
+    experience = sa.Column(sa.types.Text)
+    bio = sa.Column(sa.types.Text)
+
+    badge_printed = sa.Column(sa.types.Boolean, default='False')
+
+    def __init__(self, **kwargs):
+        super(Person, self).__init__(**kwargs)
+
+        if not 'creation_timestamp' in kwargs:
+            self.creation_timestamp = datetime.datetime.now()
+
         # url_hash should never be modifiable by the caller directly
         self._update_url_hash()
 
@@ -103,7 +108,7 @@ class Person(object):
         magic = "%s&%s&%s" % (self.email_address,
                               self.creation_timestamp,
                               nonce)
-        self.url_hash = md5.new(magic).hexdigest()
+        self._url_hash = md5.new(magic).hexdigest()
 
     def valid_invoice(self):
         for invoice in self.invoices:

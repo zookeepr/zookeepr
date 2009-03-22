@@ -1,77 +1,95 @@
-import datetime
+import logging
 
-from formencode import validators, Invalid
-from formencode.schema import Schema
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+from pylons.decorators import validate
+
+from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
-import sqlalchemy
 
-from zookeepr.lib.auth import PersonAuthenticator, retcode
-from zookeepr.lib.base import *
-from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator
-from zookeepr.model import Person, PasswordResetConfirmation
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema # FIXME, NotExistingPersonValidator
 
-from zookeepr.lib.base import *
-from zookeepr.lib.crud import Read, Update, List
-from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue
-from zookeepr import model
-from zookeepr.model.core.domain import Role
-from zookeepr.model.core.tables import person_role_map
-from sqlalchemy import and_
-from zookeepr.config.lca_info import lca_info
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+from zookeepr.model.person import Person #, PasswordResetConfirmation
+
+log = logging.getLogger(__name__)
+
+
+
+#import datetime
+#
+#from formencode.schema import Schema
+#import sqlalchemy
+#
+#from zookeepr.lib.auth import PersonAuthenticator, retcode
+#from zookeepr.lib.base import *
+#from zookeepr.model import Person, PasswordResetConfirmation
+#
+#from zookeepr.lib.base import *
+#from zookeepr.lib.crud import Read, Update, List
+#from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue
+#from zookeepr import model
+#from zookeepr.model.core.domain import Role
+#from zookeepr.model.core.tables import person_role_map
+#from sqlalchemy import and_
+#from zookeepr.config.lca_info import lca_info
 
 # TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
 # TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
 # TODO : Proper email validation? I thought it existed but it doesn't seem like it. Should be easy to add in, just too late to mess with this year - Josh H 05/09/08
 
-class AuthenticationValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        l = PersonAuthenticator()
-        r = l.authenticate(value['email_address'], value['password'])
-        if r == retcode.SUCCESS:
-            pass
-        elif r == retcode.FAILURE:
-            raise Invalid("""Your sign-in details are incorrect; try the
-                'Forgotten your password' link below or sign up for a new
-                person.""", value, state)
-        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
-            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
-        elif r == retcode.INACTIVE:
-            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
-        else:
-            raise RuntimeError, "Unhandled authentication return code: '%r'" % r
+#class AuthenticationValidator(validators.FancyValidator):
+#    def validate_python(self, value, state):
+#        l = PersonAuthenticator()
+#        r = l.authenticate(value['email_address'], value['password'])
+#        if r == retcode.SUCCESS:
+#            pass
+#        elif r == retcode.FAILURE:
+#            raise Invalid("""Your sign-in details are incorrect; try the
+#                'Forgotten your password' link below or sign up for a new
+#                person.""", value, state)
+#        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
+#            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
+#        elif r == retcode.INACTIVE:
+#            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
+#        else:
+#            raise RuntimeError, "Unhandled authentication return code: '%r'" % r
 
 
-class ExistingPersonValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        persons = state.query(Person).filter_by(email_address=value['email_address']).first()
-        if persons == None:
-            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email'], value, state)
+#class ExistingPersonValidator(validators.FancyValidator):
+#    def validate_python(self, value, state):
+#        persons = state.query(Person).filter_by(email_address=value['email_address']).first()
+#        if persons == None:
+#            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email'], value, state)
 
 
-class LoginValidator(BaseSchema):
-    email_address = validators.String(not_empty=True)
-    password = validators.String(not_empty=True)
-
-    chained_validators = [AuthenticationValidator()]
-
-
-class ForgottenPasswordSchema(BaseSchema):
-    email_address = validators.String(not_empty=True)
-    chained_validators = [ExistingPersonValidator()]
+#class LoginValidator(BaseSchema):
+#    email_address = validators.String(not_empty=True)
+#    password = validators.String(not_empty=True)
+#
+#    chained_validators = [AuthenticationValidator()]
 
 
-class PasswordResetSchema(BaseSchema):
-    password = validators.String(not_empty=True)
-    password_confirm = validators.String(not_empty=True)
+#class ForgottenPasswordSchema(BaseSchema):
+#    email_address = validators.String(not_empty=True)
+#    chained_validators = [ExistingPersonValidator()]
 
-    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+
+#class PasswordResetSchema(BaseSchema):
+#    password = validators.String(not_empty=True)
+#    password_confirm = validators.String(not_empty=True)
+#
+#    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 class PersonSchema(BaseSchema):
+
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
     company = validators.String()
-    email_address = validators.String(not_empty=True)
+    email_address = validators.Email(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     phone = validators.String()
@@ -83,55 +101,56 @@ class PersonSchema(BaseSchema):
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    # FIXME chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 class NewPersonSchema(BaseSchema):
     person = PersonSchema()
     pre_validators = [NestedVariables]
 
-class _UpdatePersonSchema(BaseSchema):
-    # Redefine the schema to remove email and password validation
-    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
-    firstname = validators.String(not_empty=True)
-    lastname = validators.String(not_empty=True)
-    company = validators.String()
-    phone = validators.String()
-    mobile = validators.String()
-    address1 = validators.String(not_empty=True)
-    address2 = validators.String()
-    city = validators.String(not_empty=True)
-    state = validators.String()
-    postcode = validators.String(not_empty=True)
-    country = validators.String(not_empty=True)
+#class _UpdatePersonSchema(BaseSchema):
+#    # Redefine the schema to remove email and password validation
+#    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
+#    firstname = validators.String(not_empty=True)
+#    lastname = validators.String(not_empty=True)
+#    company = validators.String()
+#    phone = validators.String()
+#    mobile = validators.String()
+#    address1 = validators.String(not_empty=True)
+#    address2 = validators.String()
+#    city = validators.String(not_empty=True)
+#    state = validators.String()
+#    postcode = validators.String(not_empty=True)
+#    country = validators.String(not_empty=True)
+#
+#    pre_validators = []
+#    chained_validators = []
 
-    pre_validators = []
-    chained_validators = []
+#class UpdatePersonSchema(BaseSchema):
+#    # Redefine the schema to remove email and password validation
+#    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
+#    person = _UpdatePersonSchema()
+#    pre_validators = [NestedVariables]
 
-class UpdatePersonSchema(BaseSchema):
-    # Redefine the schema to remove email and password validation
-    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
-    person = _UpdatePersonSchema()
-    pre_validators = [NestedVariables]
+class PersonController(BaseController): #SecureController, Read, Update, List):
+#    model = model.Person
+#    individual = 'person'
 
-class PersonController(SecureController, Read, Update, List):
-    model = model.Person
-    individual = 'person'
+#    schemas = {'new': NewPersonSchema(),
+#               'edit': UpdatePersonSchema()
+#              }
 
-    schemas = {'new': NewPersonSchema(),
-               'edit': UpdatePersonSchema()
-              }
-
-    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser'), AuthRole('reviewer')],
-                   'roles': [AuthRole('organiser')],
-                   'index': [AuthRole('organiser')],
-                   'signin': True,
-                   'signout': [AuthTrue()],
-                   'new': True,
-                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
-                   'forgotten_password': True,
-                   'reset_password': True,
-                   'confirm': True
-                   }
+#    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser'), AuthRole('reviewer')],
+#                   'roles': [AuthRole('organiser')],
+#                   'index': [AuthRole('organiser')],
+#                   'signin': True,
+#                   'signout': [AuthTrue()],
+#                   'new': True,
+#                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
+#                   'forgotten_password': True,
+#                   'reset_password': True,
+#                   'confirm': True
+#                   }
 
     def signin(self):
         defaults = dict(request.POST)
@@ -319,36 +338,43 @@ class PersonController(SecureController, Read, Update, List):
         return render_response('person/edit.myt',
                                defaults=defaults, errors=errors)
 
+
     def new(self):
-        """Create a new person.
+        """Create a new person form.
 
         Non-CFP persons get created through this interface.
 
         See ``cfp.py`` for more person creation code.
         """
         if c.signed_in_person:
-            return render_response('person/already_loggedin.myt')
+            return render('/person/already_loggedin.mako')
 
-        defaults = dict(request.POST)
-        errors = {}
+        defaults = {
+            'person.country': 'AUSTRALIA'
+        }
+        form = render('/person/new.mako')
+        return htmlfill.render(form, defaults)
 
-        if defaults:
-            result, errors = NewPersonSchema().validate(defaults, self.dbsession)
+    @validate(schema=NewPersonSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    def new_submit(self):
+        """Create a new person submit.
 
-            if not errors:
-                c.person = Person()
-                # update the objects with the validated form data
-                for k in result['person']:
-                    setattr(c.person, k, result['person'][k])
-                self.dbsession.save(c.person)
-                self.dbsession.flush()
+        Non-CFP persons get created through this interface.
 
-                email(c.person.email_address,
-                    render('person/new_person_email.myt', fragment=True))
-                return render_response('person/thankyou.myt')
+        See ``cfp.py`` for more person creation code.
+        """
 
-        return render_response('person/new.myt',
-                               defaults=defaults, errors=errors)
+        # Remove fields not in class
+        results = self.form_result['person']
+        del results['password_confirm']
+        c.person = Person(**results)
+        meta.Session.add(c.person)
+        meta.Session.commit()
+
+        email(c.person.email_address, render('/person/new_person_email.mako'))
+
+        return render('/person/thankyou.mako')
+
 
 
     def index(self):

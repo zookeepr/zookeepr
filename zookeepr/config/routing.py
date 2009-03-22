@@ -102,17 +102,18 @@ def make_map():
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
-    map.connect('{controller}/new', action='new', id=None)
-    map.connect('{controller}', action='index', id=None)
+    map.connect('/{controller}/new', action='new')
+    map.connect('/{controller}/new_submit', action='new_submit')
+    map.connect('/{controller}', action='index')
 
     # default action when not specified is 'view'
-    map.connect('{controller}/{id}', action='view')
+    map.connect('/{controller}/{id}', action='view')
     # default url scheme
-    map.connect('{controller}/{id}/{action}')
+    map.connect('/{controller}/{id}/{action}')
 
     # map.connect('*url', controller='wiki', action='view')
-    map.connect('*url', controller='db_content', action='page', id=None)
+    #FIXME map.connect('*url', controller='db_content', action='page', id=None)
     #map.connect('/db_content/view', controller='db_content', action='view', id=None)
-    map.connect('*url', controller='not_found', action='page')
+    #FIXME map.connect('*url', controller='not_found', action='page')
 
     return map

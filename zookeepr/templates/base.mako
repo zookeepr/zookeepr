@@ -2,6 +2,13 @@
     title = 'linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart'
 %>
 
+<%def name="extra_head()">
+## Defined in children
+</%def>
+<%def name="big_promotion()">
+## Defined in children
+</%def>
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en-us">
 <head>
@@ -35,7 +42,7 @@
 
   </div>
 
-% if not h.url.current().endswith('/sponsors/sponsors') and not h.url.current().endswith('/media/news/61'):
+% if not h.url_for().endswith('/sponsors/sponsors') and not h.url_for().endswith('/media/news/61'):
     <p class='sponsors_footer'>
       <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
       <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>

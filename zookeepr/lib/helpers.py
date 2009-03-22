@@ -9,10 +9,13 @@ available to Controllers. This module is available to templates as 'h'.
 from webhelpers.html import escape, HTML, literal, url_escape
 from webhelpers.html.tags import *
 from webhelpers.html.secure_form import secure_form
+import webhelpers.constants
 
 
-# TODO Not 100% sure this is the right way to get url
-from pylons import url
+from routes import request_config
+from routes.util import url_for
+
+from pylons import config
 
 
 import os.path, random, array
@@ -23,7 +26,6 @@ from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus,
 #from routes import url
 
 # FIXME Commenting all this out till after we port to new pylons
-#from routes import request_config
 #from webhelpers import *
 #import urllib
 #from glob import glob
@@ -99,26 +101,6 @@ from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus,
 #    temp = size.split("x")
 #    return '<textarea name="%s" id="%s" cols="%s" rows="%s"></textarea>' % (name, name, temp[0], temp[1])
 #
-#def textfield(name, size=40, value=None, disabled=False):
-#    enabled = ''
-#    if disabled:
-#        enabled = ' disabled="disabled"'
-#    if value is None:
-#        return '<input type="text" name="%s" id="%s" size="%s"%s>' % (name, name, size, enabled)
-#    else:
-#        return '<input type="text" name="%s" id="%s" size="%s" value="%s"%s>' % (name, name, size, value, enabled)
-#
-#def hiddenfield(name, value=None, size=40, disabled=False):
-#    enabled = ''
-#    if disabled:
-#        enabled = ' disabled="disabled"'
-#    if value is None:
-#        return '<input type="hidden" name="%s" id="%s" size="%s"%s>' % (name, name, size, enabled)
-#    else:
-#        return '<input type="hidden" name="%s" id="%s" size="%s" value="%s"%s>' % (name, name, size, value, enabled)
-#
-#def passwordfield(name, size=40):
-#    return '<input type="password" name="%s" id="%s" size="%s">' % (name, name, size)
 #
 #def submitbutton(value, name="Commit"):
 #    return '<input  name="%s" type="submit" value="%s">' % (name, value)
@@ -133,32 +115,33 @@ from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus,
 #    if text==None:
 #      text = '<tt>'+email+'</tt>'
 #    return '<a href="mailto:'+email+'">'+text+'</a>'
-#
-#def contact_email(text=None):
-#    """ E-mail link for the conference contact.
-#
-#    Renders a link to the committee; optionally takes a text, which will be
-#    the text of the anchor (defaults to the e-mail address).
-#    """
-#    email = lca_info['contact_email']
-#    if text == None:
-#        text = '<tt>'+email+'</tt>'
-#    return '<a href="mailto:'+email+'">'+text+'</a>'
-#
-#def host_name():
-#    """ Name of the site (hostname)
-#
-#    Returns the fqdn for the website.
-#    """
-#    return request_config().environ['paste.config']['app_conf']['host_name']
-#
-#def event_name():
-#    """ Name of the event
-#
-#    Returns the name of the event we're running (yay).
-#    """
-#    return lca_info['event_name']
-#
+
+def contact_email(text=None):
+    """ E-mail link for the conference contact.
+
+    Renders a link to the committee; optionally takes a text, which will be
+    the text of the anchor (defaults to the e-mail address).
+    """
+    email = lca_info['contact_email']
+    if text == None:
+        text = email
+
+    return link_to(text, 'mailto:' + email)
+
+def host_name():
+    """ Name of the site (hostname)
+
+    Returns the fqdn for the website.
+    """
+    return config['app_conf']['host_name']
+
+def event_name():
+    """ Name of the event
+
+    Returns the name of the event we're running (yay).
+    """
+    return lca_info['event_name']
+
 #def get_temperature():
 #    """ Fetch temperature from the BOM website.
 #
@@ -233,23 +216,20 @@ from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus,
 #    else:
 #        return "%dth of January" % d
 #
-#def countries():
-#    """ list of countries, as retrieved from the miscfiles package
-#        (stripping of all diacritical marks)
-#    """
-#    res = []
-#    import unicodedata as ud
-#    for line in gzip.open('/usr/share/misc/countries.gz').readlines():
-#        if line[0]=='#' or line=='\n':
-#            continue
-#        cc = line.split(':')[3].decode('utf8')
-#        s = ''
-#        for ch in cc:
-#            s += ud.normalize('NFD', ch)[0]
-#        res.append(s)
-#    res.sort()
-#    return res
-#
+def countries():
+    """ list of countries
+    """
+
+    # FIXME we should probably store the country codes rather than the country names
+    # http://pylonshq.com/docs/en/0.9.7/thirdparty/webhelpers/constants/
+    lines = webhelpers.constants.country_codes()
+    res = []
+    for line in lines:
+        country = line[1]
+        res.append(country)
+    res.sort()
+    return res
+
 #def debug():
 #    if request_config().environ['paste.config']['global_conf']['debug'] == "true":
 #        return True

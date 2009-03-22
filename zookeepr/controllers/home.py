@@ -38,8 +38,5 @@ class HomeController(BaseController):
 #        press = self.dbsession.query(DBContentType).filter_by(name='In the press').first()
 #        if press:
 #            setattr(c, 'db_content_press', self.dbsession.query(DBContent).filter_by(type_id=press.id).order_by(DBContent.c.creation_timestamp.desc()).limit(3).all())
-#
-#        resp = render_response('home.myt')
+
         return render('/home.mako')
-#
-#        return resp

@@ -99,5 +99,3 @@ if not defaults:
             defaults['registration.prevlca.' + p] = 1
 
 </%init>
-<%method extra_head>
-</%method>

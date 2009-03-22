@@ -78,6 +78,3 @@ if not defaults:
 Register - <& PARENT:title &>
 </%method>
 
-<%method extra_head>
-  
-</%method>
