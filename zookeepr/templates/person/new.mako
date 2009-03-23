@@ -13,7 +13,7 @@ ${ h.link_to('recover your password', url=h.url_for(action='forgotten_password')
 
 <p><b>To register for the conference, ${ h.link_to('go directly to the registration form', url=h.url_for(controller='registration', action='new')) }, don't bother with this one.</b></p>
 
-${ h.form(h.url_for(action='new_submit'), method='post') }
+${ h.form(h.url_for(), method='post') }
 
 <%include file="form.mako" />
 

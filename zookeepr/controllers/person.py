@@ -3,6 +3,7 @@ import logging
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort, redirect_to
 from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
@@ -339,6 +340,7 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
                                defaults=defaults, errors=errors)
 
 
+    @dispatch_on(POST="_new") 
     def new(self):
         """Create a new person form.
 
@@ -356,12 +358,8 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
         return htmlfill.render(form, defaults)
 
     @validate(schema=NewPersonSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
-    def new_submit(self):
+    def _new(self):
         """Create a new person submit.
-
-        Non-CFP persons get created through this interface.
-
-        See ``cfp.py`` for more person creation code.
         """
 
         # Remove fields not in class
