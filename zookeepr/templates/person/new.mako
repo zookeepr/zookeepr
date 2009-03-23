@@ -19,6 +19,6 @@ ${ h.form(h.url_for(), method='post') }
 
 <p class="submit">${ h.submit("submit", "Create a new account",) }</p>
 
-</form>
+${ h.end_form() }
 
 

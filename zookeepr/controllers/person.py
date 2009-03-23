@@ -42,22 +42,22 @@ log = logging.getLogger(__name__)
 # TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
 # TODO : Proper email validation? I thought it existed but it doesn't seem like it. Should be easy to add in, just too late to mess with this year - Josh H 05/09/08
 
-#class AuthenticationValidator(validators.FancyValidator):
-#    def validate_python(self, value, state):
-#        l = PersonAuthenticator()
-#        r = l.authenticate(value['email_address'], value['password'])
-#        if r == retcode.SUCCESS:
-#            pass
-#        elif r == retcode.FAILURE:
-#            raise Invalid("""Your sign-in details are incorrect; try the
-#                'Forgotten your password' link below or sign up for a new
-#                person.""", value, state)
-#        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
-#            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
-#        elif r == retcode.INACTIVE:
-#            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
-#        else:
-#            raise RuntimeError, "Unhandled authentication return code: '%r'" % r
+class AuthenticationValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        l = PersonAuthenticator()
+        r = l.authenticate(value['email_address'], value['password'])
+        if r == retcode.SUCCESS:
+            pass
+        elif r == retcode.FAILURE:
+            raise Invalid("""Your sign-in details are incorrect; try the
+                'Forgotten your password' link below or sign up for a new
+                person.""", value, state)
+        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
+            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
+        elif r == retcode.INACTIVE:
+            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
+        else:
+            raise RuntimeError, "Unhandled authentication return code: '%r'" % r
 
 
 #class ExistingPersonValidator(validators.FancyValidator):
@@ -67,11 +67,11 @@ log = logging.getLogger(__name__)
 #            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email'], value, state)
 
 
-#class LoginValidator(BaseSchema):
-#    email_address = validators.String(not_empty=True)
-#    password = validators.String(not_empty=True)
-#
-#    chained_validators = [AuthenticationValidator()]
+class LoginValidator(BaseSchema):
+    email_address = validators.Email(not_empty=True)
+    password = validators.String(not_empty=True)
+
+    chained_validators = [AuthenticationValidator()]
 
 
 #class ForgottenPasswordSchema(BaseSchema):
@@ -153,15 +153,27 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 #                   'confirm': True
 #                   }
 
+
+    @authorize(ValidAuthKitUser())
+    def test(self):
+        return "You are authenticated!"
+
+    @dispatch_on(POST="_signin") 
     def signin(self):
-        defaults = dict(request.POST)
-        errors = {}
 
-        if defaults:
-            result, errors = LoginValidator().validate(defaults, self.dbsession)
+        # Save the URL we came from for auth, might not be needed if we move to authkit
+        if 'url' in request.GET:
+            session['sign_in_redirect'] = '/' + request.GET['url']
+            session.save()
 
-            if not errors:
-                # do the authorisation here or in validator?
+        if c.signed_in_person:
+            return render('person/already_loggedin.mako')
+
+        return render('person/signin.mako')
+
+    @validate(schema=LoginValidator(), form='new', post_only=False, on_get=True, variable_decode=True)
+    def _signin(self):
+# do the authorisation here or in validator?
                 # get person
                 # check auth
                 # set session cookies
@@ -183,20 +195,23 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
                     # return home
                     redirect_to('home')
 
-        if c.signed_in_person:
-            return render_response('person/already_loggedin.myt')
-        else:
-            return render_response('person/signin.myt', defaults=defaults, errors=errors)
+    def signout_confirm(self):
+        """ Confirm user wants to sign out
+        """
+        return render('/person/signout.mako')
+
 
     def signout(self):
-        defaults = dict(request.POST)
-        if defaults:
-            # delete and invalidate the session
-            session.delete()
-            session.invalidate()
-            # return home
-            redirect_to('home')
-        return render_response('person/signout.myt', defaults=None, errors={})
+        """ Sign the user out
+            Authikit actually does the work after this finished
+        """
+        # FIXME DO we delete the session? Authkit has it's own
+        # delete and invalidate the session
+        #session.delete()
+        #session.invalidate()
+
+        # return home
+        redirect_to('home')
 
     def confirm(self, confirm_hash):
         """Confirm a registration with the given ID.

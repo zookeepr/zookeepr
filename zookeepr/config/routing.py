@@ -65,6 +65,7 @@ def make_map():
     map.connect('acct_confirm', '/person/confirm/{confirm_hash}', controller='person', action='confirm')
     map.connect('/person/signin',                    controller='person', action='signin')
     map.connect('/person/signout',                   controller='person', action='signout')
+    map.connect('/person/signout_confirm',           controller='person', action='signout_confirm')
     map.connect('/person/forgotten_password',        controller='person', action='forgotten_password')
     map.connect('/person/reset_password/{url_hash}', controller='person', action='reset_password')
 

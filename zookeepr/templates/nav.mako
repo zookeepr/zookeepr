@@ -29,7 +29,7 @@
         <li><a href="${u}" ${cls(c)}>${t}</a></li>
 % endfor
 % if 'signed_in_person_id' in session:
-        <li><a href="${h.url_for(controller='person', action='signout')}" ${ cls('login') }>Sign out</a></li>
+        <li><a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') }>Sign out</a></li>
 % else:
         <li><a href="${h.url_for(controller='person', action='signin')}" ${ cls('login') }>Sign in</a></li>
 % endif

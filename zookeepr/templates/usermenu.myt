@@ -17,17 +17,17 @@ signed in
 </li>
 
 <li>
-<% h.link_to('sign out', url=h.url(controller='person', action='signout', id=None)) %>
+<% h.link_to('sign out', url=h.url(controller='person', action='signout_confirm')) %>
 </li>
 
 % else:
 
 <li>
-<% h.link_to('sign in', url=h.url(controller='person', action='signin', id=None)) %>
+<% h.link_to('sign in', url=h.url(controller='person', action='signin')) %>
 </li>
 
 <li>
-<% h.link_to('new user?', url=h.url(controller='person', action='new', id=None)) %>
+<% h.link_to('new user?', url=h.url(controller='person', action='new')) %>
 </li>
 
 % #endif
