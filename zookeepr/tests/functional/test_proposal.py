@@ -51,16 +51,28 @@ class TestProposal(SignedInCRUDControllerTest):
         model.proposal.tables.proposal_type.insert().execute(
             dict(id=3, name='Miniconf'),
             )
-        model.proposal.tables.assistance_type.insert().execute(
+        model.proposal.tables.accommodation_assistance_type.insert().execute(
             dict(id=1, name='Need Assisatance'),
             )
-        model.proposal.tables.assistance_type.insert().execute(
+        model.proposal.tables.accommodation_assistance_type.insert().execute(
             dict(id=2, name='Don\'t Need Assistance'),
             )
-        model.proposal.tables.assistance_type.insert().execute(
+        model.proposal.tables.accommodation_assistance_type.insert().execute(
             dict(id=3, name='Don\'t Need Assistance maybe'),
             )
-        model.proposal.tables.assistance_type.insert().execute(
+        model.proposal.tables.accommodation_assistance_type.insert().execute(
+            dict(id=4, name='Don\'t Need Assistance employer'),
+            )
+        model.proposal.tables.travel_assistance_type.insert().execute(
+            dict(id=1, name='Need Assisatance'),
+            )
+        model.proposal.tables.travel_assistance_type.insert().execute(
+            dict(id=2, name='Don\'t Need Assistance'),
+            )
+        model.proposal.tables.travel_assistance_type.insert().execute(
+            dict(id=3, name='Don\'t Need Assistance maybe'),
+            )
+        model.proposal.tables.travel_assistance_type.insert().execute(
             dict(id=4, name='Don\'t Need Assistance employer'),
             )
 

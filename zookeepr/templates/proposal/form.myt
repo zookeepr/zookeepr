@@ -36,14 +36,27 @@
 % else:
     <p class="entries"><% h.link_to('Add an attachment', url=h.url(action='attach')) %> <% h.hidden_field('attachment', size=60) %><span class="note">You can attach multiple files by following this link.</span></p>
 % #
-    <p class="label"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></p>
+    <p class="label"><label>Travel &amp; Accommodation Assistance:</label></p>
+    <p class="note" style="margin-top: 0em">linux.conf.au has some funds available to provide travel and accommodation for selected speakers, both from the local region and internationally.</p>
+
+    <p class="note" style="margin-top: 0em">Please note:
+    <ul><li>we have a limited travel budget and requesting travel assistance <b>affects your chances of acceptance</b>.</li>
+    <li/><b>free admission</b> to the full conference is awarded to all presenters.</li></ul></p>
+
+    <p class="label"><span class="mandatory">*</span><label>Travel assistance:</label></p>
     <p class="entries">
 % for ta in c.tatypes:
-    <label><% h.radio('proposal.assistance', ta.id) %>
+    <label><% h.radio('proposal.travel_assistance', ta.id) %>
     <% ta.name |h %></label><br>
 % #endfor
     </p>
-    <p class="note" style="margin-top: 0em">Travel assistance is available to speakers who qualify. If you think you need it, please let us know. Please put any additional details into the "Personal experience" field, below.</p>
+    <p class="label"><span class="mandatory">*</span><label>Accommodation assistance:</label></p>
+    <p class="entries">
+% for aa in c.aatypes:
+    <label><% h.radio('proposal.accommodation_assistance', aa.id) %>
+    <% aa.name |h %></label><br>
+% #endfor
+    </p>
 
     <h2>About yourself</h2>
 

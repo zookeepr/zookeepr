@@ -3,7 +3,8 @@
 %        continue
 %    # endif
 <div><% h.hiddenfield('proposal.type', st.id) %>
-<% h.hiddenfield('proposal.assistance', 0) %></div>
+<% h.hiddenfield('proposal.accommodation_assistance', 0) %></div>
+<% h.hiddenfield('proposal.travel_assistance', 0) %></div>
 
 % #endfor
 

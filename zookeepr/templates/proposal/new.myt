@@ -34,7 +34,8 @@ errors
 if not defaults:
     defaults = {
         'proposal.type': 1,
-        'proposal.assistance': 4,
+        'proposal.accommodation_assistance': 0,
+        'proposal.travel_assistance': 0,
     }
     if c.signed_in_person:
         c.person = c.signed_in_person
