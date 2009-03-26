@@ -3,6 +3,9 @@ import sqlalchemy as sa
 
 from meta import Base
 
+from zookeepr.model.role import Role
+from zookeepr.model.person_role_map import person_role_map
+
 import datetime
 import md5
 import random
@@ -47,6 +50,11 @@ class Person(Base):
     bio = sa.Column(sa.types.Text)
 
     badge_printed = sa.Column(sa.types.Boolean, default='False')
+
+    # relations
+    roles = sa.orm.relation(Role, secondary=person_role_map, backref='people', order_by=Role.name)
+    # FIXME invoice = sa.orm.relation(Invoice)
+
 
     def __init__(self, **kwargs):
         super(Person, self).__init__(**kwargs)
@@ -129,13 +137,11 @@ class Person(Base):
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 
+    def find_by_email(self, email):
+        return sa.meta.Session.query(Person).filter_by(email=email.lower()).first()
 
-class Role(object):
-    def __init__(self, name=None):
-        self.name = name
-
-    def __repr__(self):
-        return '<Role id="%s" name="%s">' % (self.id, self.name)
+    def find_all(self):
+        return sa.meta.Session.query(Person).order_by(Person.id)
 
 
 class PasswordResetConfirmation(object):

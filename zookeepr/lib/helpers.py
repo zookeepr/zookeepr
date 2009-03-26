@@ -105,16 +105,16 @@ from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus,
 #def submitbutton(value, name="Commit"):
 #    return '<input  name="%s" type="submit" value="%s">' % (name, value)
 #
-#def webmaster_email(text=None):
-#    """ E-mail link for the conference contact.
-#
-#    Renders a link to the committee; optionally takes a text, which will be
-#    the text of the anchor (defaults to the e-mail address).
-#    """
-#    email = request_config().environ['paste.config']['app_conf']['webmaster_email']
-#    if text==None:
-#      text = '<tt>'+email+'</tt>'
-#    return '<a href="mailto:'+email+'">'+text+'</a>'
+def webmaster_email(text=None):
+    """ E-mail link for the conference contact.
+
+    Renders a link to the committee; optionally takes a text, which will be
+    the text of the anchor (defaults to the e-mail address).
+    """
+    email = lca_info['webmaster_email']
+    if text == None:
+      text = email
+    return link_to(text, 'mailto:' + email)
 
 def contact_email(text=None):
     """ E-mail link for the conference contact.

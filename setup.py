@@ -15,6 +15,7 @@ setup(
     install_requires=[
         "Pylons>=0.9.7",
         "SQLAlchemy>=0.5",
+        "AuthKit>=0.4.0",
         # FormEncode used to do form input validation
         "FormEncode>=0.6",
         # DNS for email address validation

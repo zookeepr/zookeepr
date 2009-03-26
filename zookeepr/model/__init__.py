@@ -16,6 +16,8 @@ def init_model(engine):
     meta.engine = engine
 
 import person
+import role
+import person_role_map
 
 ## Non-reflected tables may be defined and mapped at module level
 #foo_table = sa.Table("Foo", meta.metadata,

@@ -1,214 +1,176 @@
+# Zookeepr driver for AuthKit
+#
+# This module allows us to use the authkit infrastructure but using the Zookeepr models to do so
+#  * We don't support groups
+#  * We don't support the creation methods as zookeepr does that already
+#
+# Based on
+# SQLAlchemy 0.5 Driver for AuthKit
+# Based on the SQLAlchemy 0.4.4 driver but using session.add() instead of 
+# session.save()
+
+# This file assumes the following in the model used in Pylons 0.9.7
+
+from paste.util.import_string import eval_import
+from authkit.users import *
+
+import sqlalchemy as sa
+from sqlalchemy.orm import *
+
+from zookeepr.model import meta
+
+from zookeepr.model.person import Person
+from zookeepr.model.role import Role
+
 import md5
 
-from sqlalchemy.orm import create_session
-
-from zookeepr.lib.base import *
-from zookeepr.model import Person, Role
-
-class retcode:
-    """Enumerations of authentication return codes"""
-    # daily wtf eat your heart out
-    SUCCESS = True
-    FAILURE = False
-    TRY_AGAIN = 3
-    INACTIVE = 4
-
-class PersonAuthenticator(object):
-    """Look up the Person in the data store"""
-
-    def authenticate(self, username, password):
-        dbsession = create_session()
-
-        person = dbsession.query(Person).filter_by(email_address=username).first()
-
-        if person is None:
-            return retcode.FAILURE
-
-        password_hash = md5.new(password).hexdigest()
-
-        if not person.activated:
-            result = retcode.INACTIVE
-        elif password_hash == person.password_hash:
-            result = retcode.SUCCESS
-        else:
-            result = retcode.FAILURE
-
-        dbsession.close()
-
-        return result
+from pylons.templating import render_mako as render
+from pylons import tmpl_context as c
 
 
-# class AuthenticateValidator(formencode.FancyValidator):
-#     def _to_python(self, value, state):
-#         if state.authenticate(value['email_address'], value['password']):
-#             return value
-#         else:
-#             raise formencode.Invalid('Incorrect password', value, state)
+def render_signin(environ):
+    c.auth_failed = False
 
-# class ExistingEmailAddress(formencode.FancyValidator):
-#     def _to_python(self, value, state):
-#         auth = state.auth
-#         if not value:
-#             raise formencode.Invalid('Please enter a value',
-#                                      value, state)
-#         elif not auth.user_exists(value):
-#             raise formencode.Invalid('No such user', value, state)
-#         return value
+    if environ['CONTENT_TYPE'] == 'application/x-www-form-urlencoded':
+        c.auth_failed = True
 
-# class SignIn(formencode.Schema):
-#     go = formencode.validators.String()
-#     email_address = ExistingEmailAddress()
-#     password = formencode.validators.String(not_empty=True)
-#     chained_validators = [
-#         AuthenticateValidator()
-#         ]
+    return render('/person/signin.mako')
 
-# class UserModelAuthStore(object):
-#     def __init__(self):
-#         self.status = {}
 
-#     def user_exists(self, value):
-#         session = create_session()
-#         ps = session.query(Person).select_by(email_address=value)
-#         result = len(ps) > 0
-#         return result
+def encrypt(password, secret):
+    return md5.new(password).hexdigest()
 
-#     def sign_in(self, username):
-#         self.status[username] = ()
-
-#     def sign_out(self, username):
-#         if self.status.has_key(username):
-#             del self.status[username]
-
-#     def authorise(self, email_address, role=None, signed_in=None):
-#         if signed_in is not None:
-#             is_signed_in = False
-#             if self.status.has_key(email_address):
-#                 is_signed_in = True
-
-#             return signed_in and is_signed_in
-
-#         return True
-
-class SecureController(BaseController):
-    """Restrict controller access to people who are logged in.
-
-    Controllers that require someone to be logged in can inherit
-    from this class instead of `BaseController`.
-
-    In the permissions list, the special name 'ALL' sets the default
-    (normally no access).
-
-    Normally, users will be redirected to log in if they aren't already.
-    If the permissions list for the action is just True, the action is
-    permitted without login ("anonymous action").
-
-    Example:
-      permissions = { 'view': [AuthRole('reviewer'), AuthRole('organiser')],
-                      'submit': True,
-                      'ALL': [AuthRole('organiser)] }
-
-    As a bonus, they will have access to `c.person` which is a
-    `model.Person` object that will identify the user who is currently
-    logged in. Anonymous actions then may or may not have a c.person.
-
+class UsersFromZookeepr(): #authkit.users.Users):
     """
+    Database Version
+    """
+    def __init__(self, model, encrypt=None):
+        if encrypt is None:
+            def encrypt(password):
+                return password
+        self.encrypt = encrypt
 
-    def logged_in(self):
-        # check that the user is logged in.
-        # We can tell if someone is logged in by the presence
-        # of the 'signed_in_person_id' field in the browser session.
-        return 'signed_in_person_id' in session
-
-    def __before__(self, **kwargs):
-        # Call the parent __before__ method to ensure the common pre-call code
-        # is run
-        if hasattr(super(SecureController, self), '__before__'):
-            super(SecureController, self).__before__(**kwargs)
-
-        if self.logged_in():
-            # Retrieve the Person object from the object store
-            # and attach it to the magic 'c' global.
-            c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
-
-            # Setup some roles for mghty to utilise
-            roles = self.dbsession.query(Role).all()
-            for role in roles:
-                r = AuthRole(role.name)
-                if r.authorise(self):
-                    setattr(c, 'is_%s_role' % role.name, True)
-
-
-        elif not hasattr(self, 'permissions'):
-            abort(403, "no permissions configured controller... denied")
-        elif self.permissions.get(kwargs['action'],False)==True:
-            # No-one's logged in, but this action is OK with that.
-            return
+        if isinstance(model, (str, unicode)):
+            model = eval_import(model)
+        if hasattr(model, 'authkit_initialized'):
+            raise AuthKitError(
+                'The AuthKit database model has already been setup'
+            )
         else:
-            # No-one's logged in, so send them to the signin page.
+            model.authkit_initialized = True
 
-            # If we were being nice and WSGIy, we'd raise a 403 or 401 error
-            # (depending) and let a security middleware layer take care
-            # of the redirect.  Save that for a rainy day...
-            session['sign_in_redirect'] = h.current_url()
-            session.save()
-            redirect_to(controller='person',
-                        action='signin',
-                        id=None)
+    # Existence Methods
+    def user_exists(self, username):
+        """
+        Returns ``True`` if a user exists with the given username, ``False`` 
+        otherwise. Usernames are case insensitive.
+        """
 
-        if self.check_permissions(kwargs['action']):
-            return
-        else:
-            abort(403, "LCA goes oh no!")
+        person = meta.Session.query(Person).filter_by(email_address=username.lower()).first()
 
-    def check_permissions(self, action):
-        if not hasattr(self, 'permissions'):
-             # no access by default
-            return False
-
-        if action in self.permissions.keys():
-            perms = self.permissions[action]
-        elif 'ALL' in self.permissions.keys():
-            perms = self.permissions['ALL']
-        else:
-            # no access by default
-            return False
-
-        if perms==True:
-            # anonymous action
+        if person is not None:
             return True
-
-        results = map(lambda x: x.authorise(self), perms)
-        return reduce(lambda x, y: x or y, results, False)
-
-class AuthFunc(object):
-    def __init__(self, callable):
-        self.callable = callable
-
-    def authorise(self, cls):
-        if not c.signed_in_person:
-            return False
-        result = getattr(cls, self.callable)()
-        if result is None:
-            # None is bad.  Return True or False
-            raise RuntimeError, "AuthFunc didn't get a result from %r!  Make sure you return a boolean!" % self.callable
-        return result
-
-class AuthTrue(object):
-    def authorise(self, cls):
-        return True
-
-class AuthFalse(object):
-    def authorise(self, cls):
         return False
 
-class AuthRole(object):
-    def __init__(self, role_name):
-        self.role_name = role_name
+    def role_exists(self, role):
+        """
+        Returns ``True`` if the role exists, ``False`` otherwise. Roles are
+        case insensitive.
+        """
+        role = meta.Session.query(Role).filter_by(name=role).first()
 
-    def authorise(self, cls):
-        if not c.signed_in_person:
-            return False
-        role = cls.dbsession.query(Role).filter_by(name=self.role_name).first()
-        retval = role in c.signed_in_person.roles
-        return retval
+        if role is not None:
+            return True
+        return False
+
+    # List Methods
+    def list_roles(self):
+        """
+        Returns a lowercase list of all roll names ordered alphabetically
+        """
+        return [r.name for r in self.meta.Session.query(Role).order_by(Role.name)]
+
+
+    def list_users(self):
+        """
+        Returns a lowecase list of all usernames ordered alphabetically
+        """
+        return [r.email_address for r in meta.Session.query(Person).order_by(Person.email_address)]
+
+    # User Methods
+    def user(self, username):
+        """
+        Returns a dictionary in the following format:
+
+        .. code-block :: Python
+        
+            {
+                'username': username,
+                'group':    group,
+                'password': password,
+                'roles':    [role1,role2,role3... etc]
+            }
+
+        The role names are ordered alphabetically
+        Raises an exception if the user doesn't exist.
+        """    
+        if not self.user_exists(username.lower()):
+            raise AuthKitNoSuchUserError("No such user %r"%username.lower())
+        user = meta.Session.query(Person).filter_by(email_address=username.lower()).first()
+        roles = [r.name for r in user.roles]
+        roles.sort()
+        return {
+            'username': user.email_address,
+            'group':    None,
+            'password': user.password,
+            'roles':    roles
+        }
+
+    def user_roles(self, username):
+        """
+        Returns a list of all the role names for the given username ordered 
+        alphabetically. Raises an exception if the username doesn't exist.
+        """
+        if not self.user_exists(username.lower()):
+            raise AuthKitNoSuchUserError("No such user %r"%username.lower())
+        roles = [r.name for r in meta.Session.query(Person).filter_by(email_address=username.lower()).first().roles]
+        roles.sort()
+        return roles
+
+    def user_password(self, username):
+        """
+        Returns the password associated with the user or ``None`` if no
+        password exists. Raises an exception is the user doesn't exist.
+        """
+        if not self.user_exists(username.lower()):
+            raise AuthKitNoSuchUserError("No such user %r"%username.lower())
+        return meta.Session.query(Person).filter_by(email_address=username.lower()).first().password_hash
+
+    def user_has_role(self, username, role):
+        """
+        Returns ``True`` if the user has the role specified, ``False`` 
+        otherwise. Raises an exception if the user doesn't exist.
+        """
+        if not self.user_exists(username.lower()):
+            raise AuthKitNoSuchUserError("No such user %r"%username.lower())
+        if not self.role_exists(role.lower()):
+            raise AuthKitNoSuchRoleError("No such role %r"%role.lower())
+        for role_ in meta.Session.query(Person).filter_by(email_address=username.lower()).first().roles:
+            if role_.name == role.lower():
+                return True
+        return False
+
+    def user_has_password(self, username, password):
+        """
+        Returns ``True`` if the user has the password specified, ``False`` 
+        otherwise. Passwords are case sensitive. Raises an exception if the
+        user doesn't exist.
+        """
+        if not self.user_exists(username.lower()):
+            raise AuthKitNoSuchUserError("No such user %r"%username.lower())
+        user = meta.Session.query(Person).filter_by(email_address=username.lower()).first()
+        if user.password_hash == self.encrypt(password):
+            return True
+        return False
+
+

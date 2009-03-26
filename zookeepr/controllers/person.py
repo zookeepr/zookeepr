@@ -11,10 +11,15 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema # FIXME, NotExistingPersonValidator
 
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
 from zookeepr.model.person import Person #, PasswordResetConfirmation
+
+from zookeepr.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
@@ -36,7 +41,6 @@ log = logging.getLogger(__name__)
 #from zookeepr.model.core.domain import Role
 #from zookeepr.model.core.tables import person_role_map
 #from sqlalchemy import and_
-#from zookeepr.config.lca_info import lca_info
 
 # TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
 # TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
@@ -155,45 +159,12 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
 
     @authorize(ValidAuthKitUser())
-    def test(self):
-        return "You are authenticated!"
-
-    @dispatch_on(POST="_signin") 
     def signin(self):
+        # Signin is handled by authkit so we just need to redirect stright to home
+        if lca_info['conference_status'] == 'open':
+            redirect_to(controller='registration', action='status')
 
-        # Save the URL we came from for auth, might not be needed if we move to authkit
-        if 'url' in request.GET:
-            session['sign_in_redirect'] = '/' + request.GET['url']
-            session.save()
-
-        if c.signed_in_person:
-            return render('person/already_loggedin.mako')
-
-        return render('person/signin.mako')
-
-    @validate(schema=LoginValidator(), form='new', post_only=False, on_get=True, variable_decode=True)
-    def _signin(self):
-# do the authorisation here or in validator?
-                # get person
-                # check auth
-                # set session cookies
-                person = self.dbsession.query(Person).filter_by(email_address=result['email_address']).one()
-                if person:
-                    # at least one Person matches, save it
-                    session['signed_in_person_id'] = person.id
-                    session.save()
-
-                    # Redirect to original URL if it exists
-                    if 'sign_in_redirect' in session:
-                        redirect_to(str(session['sign_in_redirect']))
-
-                    # return to the registration status
-                    # (while registrations are open)
-                    if lca_info['conference_status'] == 'open':
-                        redirect_to(controller='registration', action='status')
-
-                    # return home
-                    redirect_to('home')
+        redirect_to('home')
 
     def signout_confirm(self):
         """ Confirm user wants to sign out

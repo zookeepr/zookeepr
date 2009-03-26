@@ -57,9 +57,9 @@ def make_map():
     map.connect('/invoice/pdf/{id}',               controller='invoice', action='pdf', id=None)
     #map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
     #map.connect('/registration/remind',            controller='registration', action='remind', id=None)
-    map.connect('/register/status',                controller='registration', action='status', id=None)
-    map.connect('/registration/silly_description', controller='registration', action='silly_description', id=None)
-    map.connect('/registration/generate_badges',   controller='registration', action='generate_badges', id=None)
+    map.connect('/register/status',                controller='registration', action='status')
+    map.connect('/registration/silly_description', controller='registration', action='silly_description')
+    map.connect('/registration/generate_badges',   controller='registration', action='generate_badges')
 
     # account confirmation named route
     map.connect('acct_confirm', '/person/confirm/{confirm_hash}', controller='person', action='confirm')

@@ -10,6 +10,7 @@ from pylons.wsgiapp import PylonsApp
 from routes.middleware import RoutesMiddleware
 
 from paste.pony import PonyMiddleware
+import authkit.authenticate
 
 from zookeepr.config.environment import load_environment
 
@@ -53,11 +54,14 @@ def  make_app(global_conf, full_stack=True, static_files=True, **app_conf):
     # Ponies!
     app = PonyMiddleware(app)
 
+
     # CUSTOM MIDDLEWARE END
 
     if asbool(full_stack):
         # Handle Python exceptions
         app = ErrorHandler(app, global_conf, **config['pylons.errorware'])
+
+        app = authkit.authenticate.middleware(app, app_conf)
 
         # Display error documents for 401, 403, 404 status codes (and
         # 500 when debug is disabled)

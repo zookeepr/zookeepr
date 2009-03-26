@@ -11,6 +11,7 @@ lca_info = {
 
 # Contact email for the committee
   'contact_email' : 'joshua.hesketh@marchsouth.org',
+  'webmaster_email' : 'joshua.hesketh@marchsouth.org',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',
@@ -30,7 +31,7 @@ lca_info = {
   'cfp_status' : 'closed',
   'cfmini_status' : 'closed',
   'paper_editing' : 'open',
-  'conference_status': 'open',
+  'conference_status': 'not_open',
 
   'mini_conf_email' : 'miniconfs@marchsouth.org',
 

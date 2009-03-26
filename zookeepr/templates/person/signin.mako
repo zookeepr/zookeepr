@@ -1,23 +1,28 @@
+<%inherit file="/base.mako" />
+
 <h2 class="pop">Sign in</h2>
 
-<p>Don't have an account? ${ h.link_to('Sign up', url=h.url(controller='person', action='new')) } now!</p>
+<p>Don't have an account? ${ h.link_to('Sign up', url=h.url_for(controller='person', action='new')) } now!</p>
 
+% if c.auth_failed:
+    <span class="error-message">Authentication failed</span>
+% endif
 ${ h.form(h.url_for()) }
 
-    <p class="label"><label for="email_address">Email address:</label></p>
-    <p class="entries">${ h.textfield('email_address', size=40) }</p>
+    <p class="label"><label for="username">Email address:</label></p>
+    <p class="entries">${ h.text('username', size=40) }</p>
 
     <p class="label"><label for="password">Password:</label></p>
-    <p class="entries">${ h.password_field('password') }</p>
+    <p class="entries">${ h.password('password') }</p>
 
-    <p class="submit">${ h.submitbutton('Sign in') }</p>
+    <p class="submit">${ h.submit('Sign in', 'Sign in') }</p>
 
 ${ h.end_form() }
 
 
 <p>
-${ h.link_to('Forgotten your password?', url=h.url(controller='person', action='forgotten_password')) }<br />
-E-mail addresses are case-sensitive. If you have lost your log in details, please contact ${ h.webmaster_email() }.
+${ h.link_to('Forgotten your password?', url=h.url_for(controller='person', action='forgotten_password')) }<br />
+If you have lost your log in details, please contact ${ h.webmaster_email() }.
 </p>
 
 
