@@ -9,3 +9,5 @@ person_role_map = sa.Table('person_role_map', metadata,
 )
 
 
+def setup(meta):
+    pass

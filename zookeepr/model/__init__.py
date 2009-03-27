@@ -4,6 +4,11 @@ from sqlalchemy import orm
 
 from zookeepr.model import meta
 
+import person
+import role
+import person_role_map
+
+
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
     ## Reflected tables must be defined and mapped here
@@ -15,9 +20,16 @@ def init_model(engine):
     meta.Session.configure(bind=engine)
     meta.engine = engine
 
-import person
-import role
-import person_role_map
+
+def setup(meta):
+    """Setup any data in the tables"""
+
+    role.setup(meta)
+    person_role_map.setup(meta)
+    person.setup(meta)
+
+    meta.Session.commit()
+
 
 ## Non-reflected tables may be defined and mapped at module level
 #foo_table = sa.Table("Foo", meta.metadata,
@@ -40,7 +52,7 @@ import person_role_map
 
 
 # FIXME update after pylons upgrade
-#from core import Person, Role, PasswordResetConfirmation
+#from core import PasswordResetConfirmation
 #from proposal import Proposal, ProposalType, Attachment, Review, AssistanceType
 #from schedule import Stream, Talk
 #from registration import *
@@ -113,18 +125,6 @@ import person_role_map
 #        print inst
 #        pass
 #
-#    try:
-#        # Roles
-#        model.core.tables.role.insert().execute(
-#            dict(name='reviewer'),
-#            dict(name='organiser'),
-#            dict(name='miniconf'),
-#            dict(name='team'),
-#            )
-#
-#    except SQLError, inst:
-#        print inst
-#        pass
 #
 #    try:
 #        # Product Categories

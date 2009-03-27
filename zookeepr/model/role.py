@@ -25,3 +25,12 @@ class Role(Base):
     def __repr__(self):
         return '<Role id="%s" name="%s">' % (self.id, self.name)
 
+def setup(meta):
+    meta.Session.add_all(
+        [
+            Role(name='organiser'),
+            Role(name='team'),
+            Role(name='reviewer'),
+            Role(name='miniconf'),
+        ]
+    )

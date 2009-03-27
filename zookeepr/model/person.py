@@ -10,6 +10,20 @@ import datetime
 import md5
 import random
 
+def setup(meta):
+    person = Person(
+        email_address="admin@zookeepr.org",
+        activated=True,
+        firstname="Admin",
+        lastname="User"
+    )
+    person.password = 'password'
+
+    role = meta.Session.query(Role).filter_by(name='organiser').first()
+    person.roles.append(role)
+
+    meta.Session.add(person)
+
 class Person(Base):
     """Stores both account login details and personal information.
     """
