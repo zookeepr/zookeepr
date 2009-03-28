@@ -16,6 +16,7 @@ from routes import request_config
 from routes.util import url_for
 
 from pylons import config
+from pylons import request
 
 
 import os.path, random, array
@@ -351,3 +352,7 @@ def featured_image(title, big = False):
 #def url_to_link(body):
 #    """ Converts [url=http://example.com]site[/url] into <a href="http://www.example.com">site</a>> """
 #    return link_re.sub(r'<a href="\1" title="\1">\6</a>', body)
+
+def signed_in():
+    print request.environ.get("REMOTE_USER")
+    return request.environ.get("REMOTE_USER")

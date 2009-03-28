@@ -43,7 +43,9 @@ def encrypt(password, secret):
 
 # Role shortcuts to save db work
 has_organiser_role = HasAuthKitRole('organiser')
-
+has_reviewer_role = HasAuthKitRole('reviewer')
+has_planetfeed_role = HasAuthKitRole('planetfeed')
+has_keysigning_role = HasAuthKitRole('keysigning')
 
 class UsersFromZookeepr(): #authkit.users.Users):
     """

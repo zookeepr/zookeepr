@@ -35,18 +35,11 @@ import re
 class AdminController(BaseController):
     """ Miscellaneous admin tasks. """
 
-#    permissions = {
-#      'ALL': [AuthRole('organiser')],
-#      'proposals_by_strong_rank': [AuthRole('reviewer')],
-#      'proposals_by_max_rank': [AuthRole('reviewer')],
-#      'proposals_by_stream': [AuthRole('reviewer')],
-#      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')],
-#      'keysigning_conference': [AuthRole('organiser'), AuthRole('keysigning')],
-#      'keysigning_single': [AuthRole('organiser'), AuthRole('keysigning')],
-#      'keysigning_participants_list': [AuthRole('organiser'), AuthRole('keysigning')]
-#    }
-
     @authorize(h.auth.has_organiser_role)
+    def __before__(self, action, **params):
+        """ By default all actions are only viewable by organisers """
+        pass
+
     def index(self):
         res = dir(self)
         exceptions = ['check_permissions', 'dbsession',
@@ -309,6 +302,7 @@ class AdminController(BaseController):
           ORDER BY proposal.title ASC;
         """)
 
+    @authorize(h.auth.has_reviewer_role)
     def proposals_by_strong_rank(self):
         """ List of proposals ordered by number of certain score / total number of reviewers [CFP] """
         query = """
@@ -347,6 +341,7 @@ class AdminController(BaseController):
 
         return sql_response(query)
 
+    @authorize(h.auth.has_reviewer_role)
     def proposals_by_max_rank(self):
         """ List of all the proposals ordered max score, min score then average [CFP] """
         return sql_response("""
@@ -364,6 +359,7 @@ class AdminController(BaseController):
                 ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
                 """)
 
+    @authorize(h.auth.has_reviewer_role)
     def proposals_by_stream(self):
         """ List of all the proposals ordered by stream, max score, min score then average [CFP] """
         return sql_response("""
@@ -685,6 +681,7 @@ class AdminController(BaseController):
                                  ])
         return render_response('admin/table.myt')
         
+    @authorize(h.auth.has_planetfeed_role)
     def planet_lca(self):
         """ List of blog RSS feeds, planet compatible. [Mailing Lists] """
         c.text = """<p>List of RSS feeds for LCA planet.</p>
@@ -716,6 +713,7 @@ class AdminController(BaseController):
         """ % (registration_ids)
         return sql_response(query)
 
+    @authorize(h.auth.has_keysigning_role)
     def keysigning_participants_list(self):
         """ Generate a list of all current key id's [Keysigning] """
         from pylons import response
@@ -723,6 +721,7 @@ class AdminController(BaseController):
         for keyid in self.keysigning_participants():
             response.content.append(keyid + "\n")
 
+    @authorize(h.auth.has_keysigning_role)
     def keysigning_single(self):
         """ Generate an A4 page of key fingerprints given a keyid [Keysigning] """
         if request.POST:
@@ -737,6 +736,7 @@ class AdminController(BaseController):
         else:
             return render_response('admin/keysigning_single.myt')
 
+    @authorize(h.auth.has_keysigning_role)
     def keysigning_conference(self):
         """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Keysigning] """
         import os, tempfile
