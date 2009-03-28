@@ -20,6 +20,7 @@ from pylons import config
 
 import os.path, random, array
 
+from zookeepr.lib import auth
 
 from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
 

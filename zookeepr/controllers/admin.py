@@ -1,26 +1,52 @@
-from datetime import datetime
-import os, random, re, urllib
-from zookeepr.lib import helpers as h
-from zookeepr.lib.base import *
-from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
-from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
-from zookeepr.model.registration import RegoNote
-from zookeepr.config.lca_info import lca_info, lca_rego
+import logging
 
-class AdminController(SecureController):
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+import zookeepr.lib.helpers as h
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.model import meta
+
+from zookeepr.config.lca_info import lca_info
+
+log = logging.getLogger(__name__)
+
+import re
+
+
+
+#from datetime import datetime
+#import os, random, re, urllib
+#from zookeepr.controllers.proposal import Proposal
+#from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
+#from zookeepr.model.registration import RegoNote
+#from zookeepr.config.lca_info import lca_info, lca_rego
+
+class AdminController(BaseController):
     """ Miscellaneous admin tasks. """
 
-    permissions = {
-      'ALL': [AuthRole('organiser')],
-      'proposals_by_strong_rank': [AuthRole('reviewer')],
-      'proposals_by_max_rank': [AuthRole('reviewer')],
-      'proposals_by_stream': [AuthRole('reviewer')],
-      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')],
-      'keysigning_conference': [AuthRole('organiser'), AuthRole('keysigning')],
-      'keysigning_single': [AuthRole('organiser'), AuthRole('keysigning')],
-      'keysigning_participants_list': [AuthRole('organiser'), AuthRole('keysigning')]
-    }
+#    permissions = {
+#      'ALL': [AuthRole('organiser')],
+#      'proposals_by_strong_rank': [AuthRole('reviewer')],
+#      'proposals_by_max_rank': [AuthRole('reviewer')],
+#      'proposals_by_stream': [AuthRole('reviewer')],
+#      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')],
+#      'keysigning_conference': [AuthRole('organiser'), AuthRole('keysigning')],
+#      'keysigning_single': [AuthRole('organiser'), AuthRole('keysigning')],
+#      'keysigning_participants_list': [AuthRole('organiser'), AuthRole('keysigning')]
+#    }
+
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         res = dir(self)
         exceptions = ['check_permissions', 'dbsession',
@@ -44,17 +70,14 @@ class AdminController(SecureController):
           ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
           ('/registration/generate_badges', '''Generate one or many Badges. [Registrations]'''),
-          
-           #('/accommodation', ''' [accom] '''),
-           #('/voucher_code', ''' Voucher codes [rego] '''),
-           #('/invoice/remind', ''' '''),
-           #('/openday', ''' '''),
-           #('/registration', ''' Summary of registrations, including summary
-          #of accommodation [rego,accom] '''),
-           #('/invoice', ''' List of invoices (that is, registrations). This
-          #is probably the best place to check whether a given person has or
-          #hasn't registered and/or paid. [rego] '''),
-           #('/pony', ''' OMG! Ponies!!! [ZK]'''),
+
+          #('/accommodation', ''' [accom] '''),
+          #('/voucher_code', ''' Voucher codes [rego] '''),
+          #('/invoice/remind', ''' '''),
+          #('/openday', ''' '''),
+          #('/registration', ''' Summary of registrations, including summary of accommodation [rego,accom] '''),
+          #('/invoice', ''' List of invoices (that is, registrations). This is probably the best place to check whether a given person has or hasn't registered and/or paid. [rego] '''),
+          ('/pony', ''' OMG! Ponies!!! [ZK]'''),
 
           ('/review/help', ''' Information on how to get started reviewing [CFP] '''),
           ('/proposal/review_index', ''' To see what you need to reveiw [CFP] '''),
@@ -82,19 +105,24 @@ class AdminController(SecureController):
                     sect[s] = sect.get(s, []) + [(page, desc)]
             else:
                 sect['Other'] = sect.get('Other', []) + [(page, desc)]
-        c.text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
+        text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
         c.noescape = True
 
         sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
-        c.text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
+        text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
                                                   for s_lower, s in sects])
-        c.text += '\t\t\t</ul>\n\t\t\t</div>'
+        print text
+        text += '\t\t\t</ul>\n\t\t\t</div>'
+        sect_text = ""
         for s_lower, s in sects:
-            c.text += '<a name="%s"></a>' % s
+            c.text = '<a name="%s"></a>' % s
             c.text += '<h2>%s</h2>' % s
             c.data = sect[s]
-            c.text = render('admin/table.myt', fragment=True)
-        return render_response('admin/text.myt')
+            sect_text += render('admin/table.mako')
+
+        c.text = text
+        c.sect_text = sect_text
+        return render('admin/text.mako')
 
     def activate_talks(self):
         """

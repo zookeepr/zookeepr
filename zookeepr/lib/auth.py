@@ -27,6 +27,7 @@ import md5
 from pylons.templating import render_mako as render
 from pylons import tmpl_context as c
 
+from authkit.permissions import HasAuthKitRole
 
 def render_signin(environ):
     c.auth_failed = False
@@ -39,6 +40,10 @@ def render_signin(environ):
 
 def encrypt(password, secret):
     return md5.new(password).hexdigest()
+
+# Role shortcuts to save db work
+has_organiser_role = HasAuthKitRole('organiser')
+
 
 class UsersFromZookeepr(): #authkit.users.Users):
     """
