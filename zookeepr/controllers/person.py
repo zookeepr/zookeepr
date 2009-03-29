@@ -10,6 +10,7 @@ from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema # FIXME, NotExistingPersonValidator
+import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
@@ -17,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model.person import Person #, PasswordResetConfirmation
+from zookeepr.model import Person #, PasswordResetConfirmation
 
 from zookeepr.config.lca_info import lca_info
 
@@ -44,24 +45,6 @@ log = logging.getLogger(__name__)
 
 # TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
 # TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
-# TODO : Proper email validation? I thought it existed but it doesn't seem like it. Should be easy to add in, just too late to mess with this year - Josh H 05/09/08
-
-class AuthenticationValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        l = PersonAuthenticator()
-        r = l.authenticate(value['email_address'], value['password'])
-        if r == retcode.SUCCESS:
-            pass
-        elif r == retcode.FAILURE:
-            raise Invalid("""Your sign-in details are incorrect; try the
-                'Forgotten your password' link below or sign up for a new
-                person.""", value, state)
-        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
-            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
-        elif r == retcode.INACTIVE:
-            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
-        else:
-            raise RuntimeError, "Unhandled authentication return code: '%r'" % r
 
 
 #class ExistingPersonValidator(validators.FancyValidator):
@@ -69,13 +52,6 @@ class AuthenticationValidator(validators.FancyValidator):
 #        persons = state.query(Person).filter_by(email_address=value['email_address']).first()
 #        if persons == None:
 #            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email'], value, state)
-
-
-class LoginValidator(BaseSchema):
-    email_address = validators.Email(not_empty=True)
-    password = validators.String(not_empty=True)
-
-    chained_validators = [AuthenticationValidator()]
 
 
 #class ForgottenPasswordSchema(BaseSchema):
@@ -158,7 +134,7 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 #                   }
 
 
-    @authorize(ValidAuthKitUser())
+    @authorize(h.auth.is_valid_user)
     def signin(self):
         # Signin is handled by authkit so we just need to redirect stright to home
         if lca_info['conference_status'] == 'open':

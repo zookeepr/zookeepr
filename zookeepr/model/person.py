@@ -79,9 +79,12 @@ class Person(Base):
         # url_hash should never be modifiable by the caller directly
         self._update_url_hash()
 
+    def gen_password(self, value):
+        return md5.new(value).hexdigest()
+
     def _set_password(self, value):
         if value is not None:
-            self.password_hash = md5.new(value).hexdigest()
+            self.password_hash = self.gen_password(value)
 
     def _get_password(self):
         return self.password_hash
@@ -90,7 +93,7 @@ class Person(Base):
 
     def check_password(self, value):
         """Check the given password is equal to the stored one"""
-        return self.password_hash == md5.new(value).hexdigest()
+        return self.password_hash == self.gen_password(value)
 
     def is_speaker(self):
         return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False)
@@ -130,7 +133,7 @@ class Person(Base):
         magic = "%s&%s&%s" % (self.email_address,
                               self.creation_timestamp,
                               nonce)
-        self._url_hash = md5.new(magic).hexdigest()
+        self._url_hash = self.gen_password(magic)
 
     def valid_invoice(self):
         for invoice in self.invoices:
@@ -169,7 +172,7 @@ class PasswordResetConfirmation(object):
         magic = "%s&%s&%s" % (self.email_address,
             self.timestamp,
             nonce)
-        self.url_hash = md5.new(magic).hexdigest()
+        self.url_hash = self.gen_password(magic)
 
     def __repr__(self):
         return '<PasswordResetConfirmation email_address=%r timestamp=%r>' % (self.email_address, self.timestamp)

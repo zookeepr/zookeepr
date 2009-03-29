@@ -8,6 +8,8 @@ import person
 import role
 import person_role_map
 
+from person import Person
+from role import Role
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""

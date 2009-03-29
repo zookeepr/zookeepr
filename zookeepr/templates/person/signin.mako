@@ -3,11 +3,12 @@
 <h2 class="pop">Sign in</h2>
 
 <p>Don't have an account? ${ h.link_to('Sign up', url=h.url_for(controller='person', action='new')) } now!</p>
-
-% if c.auth_failed:
-    <span class="error-message">Authentication failed</span>
+% if c.auth_failure == 'NO_USER' or c.auth_failure == 'BAD_PASSWORD':
+    <span class="error-message">Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person.</span>
+% elif c.auth_failure == 'NOT_ACTIVATED':
+    <span class="error-message"> You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.</span>
 % endif
-${ h.form(h.url_for()) }
+${ h.form('FORM_ACTION') }
 
     <p class="label"><label for="username">Email address:</label></p>
     <p class="entries">${ h.text('username', size=40) }</p>
