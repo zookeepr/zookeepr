@@ -3,6 +3,8 @@ import sqlalchemy as sa
 
 from meta import Base
 
+from zookeepr.lib.meta import Session
+
 class Role(Base):
     """Stores the roles used for authorisation
     """
@@ -16,11 +18,13 @@ class Role(Base):
     def __init__(self, **kwargs):
         super(Role, self).__init__(**kwargs)
 
+    @classmethod
     def find_by_name(self, name):
-        return sa.meta.Session.query(Role).filter_by(name=name).first()
+        return Session.query(Role).filter_by(name=name).first()
 
+    @classmethod
     def find_all(self):
-        return sa.meta.Session.query(Role).order_by(Role.name)
+        return Session.query(Role).order_by(Role.name)
 
     def __repr__(self):
         return '<Role id="%s" name="%s">' % (self.id, self.name)

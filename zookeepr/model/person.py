@@ -6,6 +6,8 @@ from meta import Base
 from zookeepr.model.role import Role
 from zookeepr.model.person_role_map import person_role_map
 
+from zookeepr.model.meta import Session
+
 import datetime
 import md5
 import random
@@ -19,7 +21,7 @@ def setup(meta):
     )
     person.password = 'password'
 
-    role = meta.Session.query(Role).filter_by(name='organiser').first()
+    role = Role.find_by_name('organiser')
     person.roles.append(role)
 
     meta.Session.add(person)
@@ -71,10 +73,12 @@ class Person(Base):
 
 
     def __init__(self, **kwargs):
+        # remove the args that should never be set via creation
         super(Person, self).__init__(**kwargs)
 
-        if not 'creation_timestamp' in kwargs:
-            self.creation_timestamp = datetime.datetime.now()
+        self.creation_timestamp = datetime.datetime.now()
+        self.activated = False
+        self.badge_printed = False
 
         # url_hash should never be modifiable by the caller directly
         self._update_url_hash()
@@ -118,11 +122,6 @@ class Person(Base):
 
     creation_timestamp = property(_get_creation_timestamp, _set_creation_timestamp)
 
-    def _get_url_hash(self):
-        return self._url_hash
-
-    url_hash = property(_get_url_hash)
-
     def _update_url_hash(self):
         """Update the stored URL hash for this person.
 
@@ -133,7 +132,7 @@ class Person(Base):
         magic = "%s&%s&%s" % (self.email_address,
                               self.creation_timestamp,
                               nonce)
-        self._url_hash = self.gen_password(magic)
+        self.url_hash = self.gen_password(magic)
 
     def valid_invoice(self):
         for invoice in self.invoices:
@@ -154,12 +153,17 @@ class Person(Base):
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 
-    def find_by_email(self, email):
-        return sa.meta.Session.query(Person).filter_by(email=email.lower()).first()
+    @classmethod
+    def find_by_email(cls, email):
+        return Session.query(Person).filter_by(email=email.lower()).first()
 
-    def find_all(self):
-        return sa.meta.Session.query(Person).order_by(Person.id)
+    @classmethod
+    def find_all(cls):
+        return Session.query(Person).order_by(Person.id)
 
+    @classmethod
+    def find_by_url_hash(cls, url_hash):
+        return Session.query(Person).filter_by(url_hash=url_hash).first()
 
 class PasswordResetConfirmation(object):
     def __init__(self, email_address=None):

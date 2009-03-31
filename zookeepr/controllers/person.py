@@ -130,7 +130,6 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 #                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
 #                   'forgotten_password': True,
 #                   'reset_password': True,
-#                   'confirm': True
 #                   }
 
 
@@ -167,17 +166,20 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
         they regsitered, and a nonce.
 
         """
-        r = self.dbsession.query(Person).filter_by(url_hash=confirm_hash).first()
+        #person = meta.Session.query(Person).filter_by(url_hash=confirm_hash).first()
+        person = Person.find_by_url_hash(confirm_hash)
 
-        if r is None:
+        if person is None:
             abort(404)
 
-        r.activated = True
+        if person.activated:
+            return render('person/already_confirmed.mako')
 
-        self.dbsession.update(r)
-        self.dbsession.flush()
+        person.activated = True
 
-        return render_response('person/confirmed.myt')
+        meta.Session.commit()
+
+        return render('person/confirmed.mako')
 
     def forgotten_password(self):
         """Action to let the user request a password change.

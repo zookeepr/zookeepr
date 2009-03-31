@@ -78,7 +78,7 @@ def valid_password(environ, username, password):
     doesn't exist or the password is incorrect.
     """
 
-    person = meta.Session.query(Person).filter_by(email_address=username.lower()).first()
+    person = Person.find_by_email(username)
 
     if person is None:
         environ['auth_failure'] = 'NO_USER'
@@ -108,7 +108,7 @@ class ValidZookeeprUser(UserIn):
         if not environ.get('REMOTE_USER'):
             raise NotAuthenticatedError('Not Authenticated')
 
-        person = meta.Session.query(Person).filter_by(email_address=environ['REMOTE_USER'].lower()).first()
+        person = Person.find_by_email(environ['REMOTE_USER'])
         if Person is None:
             environ['auth_failure'] = 'NO_USER'
             raise NotAuthorizedError(
@@ -161,7 +161,7 @@ class HasZookeeprRole(HasAuthKitRole):
         case insensitive.
         """
 
-        person = meta.Session.query(Person).filter_by(email_address=username.lower()).first()
+        person = Person.find_by_email(username)
 
         if person is not None:
             return True
@@ -172,7 +172,7 @@ class HasZookeeprRole(HasAuthKitRole):
         Returns ``True`` if the role exists, ``False`` otherwise. Roles are
         case insensitive.
         """
-        role = meta.Session.query(Role).filter_by(name=role).first()
+        role = Role.find_by_name(role)
 
         if role is not None:
             return True
@@ -187,7 +187,8 @@ class HasZookeeprRole(HasAuthKitRole):
             raise AuthKitNoSuchUserError("No such user %r"%username.lower())
         if not self.role_exists(role.lower()):
             raise AuthKitNoSuchRoleError("No such role %r"%role.lower())
-        for role_ in meta.Session.query(Person).filter_by(email_address=username.lower()).first().roles:
+        person = Person.find_by_email(username)
+        for role_ in person.roles:
             if role_.name == role.lower():
                 return True
         return False

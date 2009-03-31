@@ -1,9 +1,10 @@
+<%inherit file="/base.mako" />
 <h2>
-Thanks for confirming your account!
+Your account has already been confirmed.
 </h2>
 
 <p>
-You can now <% h.link_to('sign in', url=h.url(controller='person', action='signin', id=None)) %> to your account.
+Please ${ h.link_to('sign in', url=h.url_for(controller='person', action='signin')) } to your account.
 </p>
 
 <p>
