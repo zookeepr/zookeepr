@@ -4,22 +4,6 @@
 #  * We don't support groups
 #  * We don't support the creation methods as zookeepr does that already
 #
-# Based on
-# SQLAlchemy 0.5 Driver for AuthKit
-# Based on the SQLAlchemy 0.4.4 driver but using session.add() instead of 
-# session.save()
-
-# This file assumes the following in the model used in Pylons 0.9.7
-
-#from authkit.users import *
-
-#import sqlalchemy as sa
-#from sqlalchemy.orm import *
-#
-#
-#from zookeepr.model.person import Person
-#from zookeepr.model.role import Role
-#
 
 
 import logging
@@ -34,7 +18,7 @@ from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import meta
 from zookeepr.model import Person, Role
 
-from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError
+from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError
 
 import md5
 
@@ -140,6 +124,7 @@ class HasZookeeprRole(HasAuthKitRole):
                     if self.error:
                         raise self.error
                     else:
+                        environ['auth_failure'] = 'NO_ROLE'
                         raise NotAuthorizedError(
                             "User doesn't have the role %s"%role.lower()
                         )
@@ -151,6 +136,7 @@ class HasZookeeprRole(HasAuthKitRole):
             if self.error:
                 raise self.error
             else:
+                environ['auth_failure'] = 'NO_ROLE'
                 raise NotAuthorizedError(
                     "User doesn't have any of the specified roles"
                 )

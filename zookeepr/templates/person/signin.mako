@@ -6,7 +6,9 @@
 % if c.auth_failure == 'NO_USER' or c.auth_failure == 'BAD_PASSWORD':
     <span class="error-message">Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person.</span>
 % elif c.auth_failure == 'NOT_ACTIVATED':
-    <span class="error-message"> You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.</span>
+    <span class="error-message">You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.</span>
+% elif c.auth_failure == 'NO_ROLE':
+    <span class="error-message">You don't have the appropriate permissions to access this resource. Please login as a different user.</span>
 % endif
 ${ h.form('FORM_ACTION') }
 

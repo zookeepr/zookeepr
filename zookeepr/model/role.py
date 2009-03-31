@@ -3,7 +3,7 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zookeepr.lib.meta import Session
+from zookeepr.model.meta import Session
 
 class Role(Base):
     """Stores the roles used for authorisation

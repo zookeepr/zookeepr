@@ -155,7 +155,7 @@ class Person(Base):
 
     @classmethod
     def find_by_email(cls, email):
-        return Session.query(Person).filter_by(email=email.lower()).first()
+        return Session.query(Person).filter_by(email_address=email.lower()).first()
 
     @classmethod
     def find_all(cls):
