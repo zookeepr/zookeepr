@@ -18,7 +18,10 @@ from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import meta
 from zookeepr.model import Person, Role
 
-from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError
+from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
+from authkit.authorize import PermissionSetupError, middleware
+from authkit.authorize.pylons_adaptors import authorized
+
 
 import md5
 
@@ -179,6 +182,68 @@ class HasZookeeprRole(HasAuthKitRole):
                 return True
         return False
 
+class IsSameZookeeprUser(UserIn):
+    """
+    Checks that the signed in user is one of the users specified when setting up
+    the user management API.
+    """
+    def __init__(self, id):
+        self.id = int(id)
+
+    def check(self, app, environ, start_response):
+
+        if not environ.get('REMOTE_USER'):
+            raise NotAuthenticatedError('Not Authenticated')
+
+        person = Person.find_by_email(environ['REMOTE_USER'])
+        if Person is None:
+            environ['auth_failure'] = 'NO_USER'
+            raise NotAuthorizedError(
+                'You are not one of the users allowed to access this resource.'
+            )
+
+        if self.id != person.id:
+            environ['auth_failure'] = 'NO_ROLE'
+            raise NotAuthorizedError(
+                "User doesn't have any of the specified roles"
+            )
+
+        return app(environ, start_response)
+
+
+class Or(Permission):
+    """
+    Checks all the permission objects listed as keyword arguments in turn.
+    Permissions are checked from left to right. The error raised by the ``Or``
+    permission is the error raised by the first permission check to fail.
+    """
+
+    def __init__(self, *permissions):
+        if len(permissions) < 2:
+            raise PermissionSetupError('Expected at least 2 permissions objects')
+        permissions = list(permissions)
+        self.permissions = permissions
+
+    def check(self, app, environ, start_response):
+        for permission in self.permissions:
+            try:
+                permission.check(app, environ, start_response)
+                return app(environ, start_response)
+            except NotAuthorizedError:
+                pass
+
+
+        raise NotAuthorizedError(
+                'You are not one of the users allowed to access this resource.'
+        )
+
+def no_role():
+    request.environ['auth_failure'] = 'NO_ROLE'
+    raise NotAuthorizedError(
+            "User doesn't have any of the specified roles"
+            )
+
+
 
 # Role shortcuts to save db work
 has_organiser_role = HasZookeeprRole('organiser')
@@ -186,5 +251,6 @@ has_reviewer_role = HasZookeeprRole('reviewer')
 has_planetfeed_role = HasZookeeprRole('planetfeed')
 has_keysigning_role = HasZookeeprRole('keysigning')
 is_valid_user = ValidZookeeprUser()
+is_same_zookeepr_user = IsSameZookeeprUser
 
 

@@ -114,9 +114,6 @@ class NewPersonSchema(BaseSchema):
 #    pre_validators = [NestedVariables]
 
 class PersonController(BaseController): #SecureController, Read, Update, List):
-#    model = model.Person
-#    individual = 'person'
-
 #    schemas = {'new': NewPersonSchema(),
 #               'edit': UpdatePersonSchema()
 #              }
@@ -124,7 +121,6 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 #    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser'), AuthRole('reviewer')],
 #                   'roles': [AuthRole('organiser')],
 #                   'index': [AuthRole('organiser')],
-#                   'signin': True,
 #                   'signout': [AuthTrue()],
 #                   'new': True,
 #                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
@@ -136,6 +132,7 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
     @authorize(h.auth.is_valid_user)
     def signin(self):
         # Signin is handled by authkit so we just need to redirect stright to home
+        print request.environ
         if lca_info['conference_status'] == 'open':
             redirect_to(controller='registration', action='status')
 
@@ -166,7 +163,6 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
         they regsitered, and a nonce.
 
         """
-        #person = meta.Session.query(Person).filter_by(url_hash=confirm_hash).first()
         person = Person.find_by_url_hash(confirm_hash)
 
         if person is None:
@@ -349,26 +345,18 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
         return super(PersonController, self).index()
 
-    def _can_edit(self):
-        try:
-            permission = (self.obj.id == session['signed_in_person_id']) or AuthRole('organiser')
-        except AttributeError:
-            #FIXME: ugly work around for when an individual person object isn't loaded.
-            # This method is meant to be used to display the "edit" link when an organiser or the owner views a person's profile.
-            # However, the index method in the CRUD middleware also uses the _can_edit definition so we have this ugly workaround.
-            permission = False
-        return permission
 
-    def view(self):
-        c.registration_status = request.environ['paste.config']['app_conf'].get('registration_status')
-        if self.logged_in():
-            roles = self.dbsession.query(Role).all()
-            for role in roles:
-                r = AuthRole(role.name)
-                if r.authorise(self):
-                    setattr(c, 'is_%s_role' % role.name, True)
+    @authorize(h.auth.is_valid_user)
+    def view(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_reviewer_role, h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
-        return super(PersonController, self).view()
+        c.registration_status = h.config['app_conf'].get('registration_status')
+        c.person = Person.find_by_id(id)
+
+        return render('person/view.mako')
 
     def roles(self):
         """ Lists and changes the person's roles. """

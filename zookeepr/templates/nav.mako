@@ -28,8 +28,8 @@
 % for (t, u, c) in mm:
         <li><a href="${u}" ${cls(c)}>${t}</a></li>
 % endfor
-% if h.signed_in():
-        <li><a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') }>Sign out</a> (${h.signed_in()})</li>
+% if h.signed_in_person():
+        <li><a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') }>Sign out</a> (${h.signed_in_person().email_address})</li>
 % else:
         <li><a href="${h.url_for(controller='person', action='signin')}" ${ cls('login') }>Sign in</a></li>
 % endif

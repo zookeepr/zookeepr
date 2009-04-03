@@ -158,6 +158,10 @@ class Person(Base):
         return Session.query(Person).filter_by(email_address=email.lower()).first()
 
     @classmethod
+    def find_by_id(cls, id):
+        return Session.query(Person).filter_by(id=id).first()
+
+    @classmethod
     def find_all(cls):
         return Session.query(Person).order_by(Person.id)
 

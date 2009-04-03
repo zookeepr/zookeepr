@@ -23,6 +23,8 @@ import os.path, random, array
 
 from zookeepr.lib import auth
 
+from zookeepr.model import Person
+
 from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
 
 #from routes import url
@@ -353,6 +355,10 @@ def featured_image(title, big = False):
 #    """ Converts [url=http://example.com]site[/url] into <a href="http://www.example.com">site</a>> """
 #    return link_re.sub(r'<a href="\1" title="\1">\6</a>', body)
 
-def signed_in():
-    print request.environ.get("REMOTE_USER")
-    return request.environ.get("REMOTE_USER")
+def signed_in_person():
+    email_address = request.environ.get("REMOTE_USER")
+    if email_address is None:
+        return None
+
+    person = Person.find_by_email(email_address)
+    return person
