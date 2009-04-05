@@ -1,5 +1,10 @@
 import formencode
-from formencode import validators #Invalid, schema
+from formencode import validators, Invalid #, schema
+
+from zookeepr.model import Person
+
+from zookeepr.config.lca_info import lca_info
+
 
 
 class BaseSchema(formencode.Schema):
@@ -196,22 +201,20 @@ class BaseSchema(formencode.Schema):
 #    def _from_python(self, value, state):
 #        return value.id
 #
-#class ExistingPersonValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        person = state.query(Person).filter_by(id=value).first()
-#        if person is None:
-#            raise Invalid("Unknown person ID.", value, state)
-#        else:
-#            return person
-#    def _from_python(self, value, state):
-#        return value.id
+class ExistingPersonValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        print value
+        person = Person.find_by_email(value['email_address'])
+        if person is None:
+            msg = 'Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email']
+            raise Invalid(msg, value, state, error_dict={'email_address': msg})
 
-# TODO: have link to signin field
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        person = state.query(Person).filter_by(email_address=value['email_address']).first()
+        person = Person.find_by_email(value['email_address'])
         if person is not None:
-            raise Invalid("A person with this email already exists.  Please try signing in first.", value, state)
+            msg = "A person with this email already exists. Please try signing in first."
+            raise Invalid(msg, value, state, error_dict={'email_address': msg})
 
 #class ProductMinMax(validators.FancyValidator):
 #    def validate_python(self, value, state):

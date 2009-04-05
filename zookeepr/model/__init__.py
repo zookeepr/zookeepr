@@ -7,9 +7,11 @@ from zookeepr.model import meta
 import person
 import role
 import person_role_map
+import password_reset_confirmation
 
 from person import Person
 from role import Role
+from password_reset_confirmation import PasswordResetConfirmation
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""

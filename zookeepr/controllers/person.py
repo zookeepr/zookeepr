@@ -9,7 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema # FIXME, NotExistingPersonValidator
+from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -18,52 +18,27 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model import Person #, PasswordResetConfirmation
+from zookeepr.model import Person, PasswordResetConfirmation
 
 from zookeepr.config.lca_info import lca_info
+
+import datetime
 
 log = logging.getLogger(__name__)
 
 
 
-#import datetime
-#
-#from formencode.schema import Schema
-#import sqlalchemy
-#
-#from zookeepr.lib.auth import PersonAuthenticator, retcode
-#from zookeepr.lib.base import *
-#from zookeepr.model import Person, PasswordResetConfirmation
-#
-#from zookeepr.lib.base import *
-#from zookeepr.lib.crud import Read, Update, List
-#from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue
-#from zookeepr import model
-#from zookeepr.model.core.domain import Role
-#from zookeepr.model.core.tables import person_role_map
-#from sqlalchemy import and_
+class ForgottenPasswordSchema(BaseSchema):
+    email_address = validators.Email(not_empty=True)
 
-# TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
-# TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
+    chained_validators = [ExistingPersonValidator()]
 
 
-#class ExistingPersonValidator(validators.FancyValidator):
-#    def validate_python(self, value, state):
-#        persons = state.query(Person).filter_by(email_address=value['email_address']).first()
-#        if persons == None:
-#            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email'], value, state)
+class PasswordResetSchema(BaseSchema):
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
 
-
-#class ForgottenPasswordSchema(BaseSchema):
-#    email_address = validators.String(not_empty=True)
-#    chained_validators = [ExistingPersonValidator()]
-
-
-#class PasswordResetSchema(BaseSchema):
-#    password = validators.String(not_empty=True)
-#    password_confirm = validators.String(not_empty=True)
-#
-#    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 class PersonSchema(BaseSchema):
 
@@ -82,12 +57,12 @@ class PersonSchema(BaseSchema):
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
 
-    # FIXME chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
-    chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 class NewPersonSchema(BaseSchema):
-    person = PersonSchema()
     pre_validators = [NestedVariables]
+
+    person = PersonSchema()
 
 #class _UpdatePersonSchema(BaseSchema):
 #    # Redefine the schema to remove email and password validation
@@ -118,21 +93,18 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 #               'edit': UpdatePersonSchema()
 #              }
 
-#    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser'), AuthRole('reviewer')],
+#    permissions = {
 #                   'roles': [AuthRole('organiser')],
 #                   'index': [AuthRole('organiser')],
 #                   'signout': [AuthTrue()],
 #                   'new': True,
 #                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
-#                   'forgotten_password': True,
-#                   'reset_password': True,
 #                   }
 
 
     @authorize(h.auth.is_valid_user)
     def signin(self):
         # Signin is handled by authkit so we just need to redirect stright to home
-        print request.environ
         if lca_info['conference_status'] == 'open':
             redirect_to(controller='registration', action='status')
 
@@ -148,10 +120,6 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
         """ Sign the user out
             Authikit actually does the work after this finished
         """
-        # FIXME DO we delete the session? Authkit has it's own
-        # delete and invalidate the session
-        #session.delete()
-        #session.invalidate()
 
         # return home
         redirect_to('home')
@@ -177,7 +145,12 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
         return render('person/confirmed.mako')
 
+    @dispatch_on(POST="_forgotten_password") 
     def forgotten_password(self):
+        return render('/person/forgotten_password.mako')
+
+    @validate(schema=ForgottenPasswordSchema(), form='forgotten_password', post_only=False, on_get=True)
+    def _forgotten_password(self):
         """Action to let the user request a password change.
 
         GET returns a form for emailing them the password change
@@ -192,29 +165,30 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
         The second half of the password change operation happens in
         the ``confirm`` action.
         """
-        defaults = dict(request.POST)
-        errors = {}
+        # Check if there is already a password recovery in progress
+        reset = PasswordResetConfirmation.find_by_email(self.form_result['email_address'])
+        if reset is not None:
+            return render('person/in_progress.mako')
 
-        if defaults:
-            result, errors = ForgottenPasswordSchema().validate(defaults, self.dbsession)
+        # Ok kick one off
+        c.conf_rec = PasswordResetConfirmation(email_address=self.form_result['email_address'])
+        meta.Session.add(c.conf_rec)
+        meta.Session.commit()
 
-            if not errors:
-                c.conf_rec = PasswordResetConfirmation(result['email_address'])
-                self.dbsession.save(c.conf_rec)
-                try:
-                    self.dbsession.flush()
-                except sqlalchemy.exceptions.SQLError, e:
-                    self.dbsession.clear()
-                    # FIXME exposes sqlalchemy!
-                    return render_response('person/in_progress.myt')
+        email(c.conf_rec.email_address, render('person/confirmation_email.mako'))
 
-                email(c.conf_rec.email_address,
-                    render('person/confirmation_email.myt', fragment=True))
-                return render_response('person/password_confirmation_sent.myt')
-        return render_response('person/forgotten_password.myt', defaults=defaults, errors=errors)
+        return render('person/password_confirmation_sent.mako')
 
-
+    @dispatch_on(POST="_reset_password") 
     def reset_password(self, url_hash):
+        c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
+        if c.conf_rec is None:
+            abort(404)
+
+        return render('person/reset.mako')
+
+    @validate(schema=PasswordResetSchema(), form='reset_password', post_only=False, on_get=True)
+    def _reset_password(self, url_hash):
         """Confirm a password change request, and let the user change
         their password.
 
@@ -238,45 +212,32 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
         If the record doesn't exist, throw an error, delete the
         confirmation record.
         """
-        crecs = self.dbsession.query(PasswordResetConfirmation).filter_by(url_hash=url_hash).all()
-        if len(crecs) == 0:
+        c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
+        if c.conf_rec is None:
             abort(404)
 
-        c.conf_rec = crecs[0]
-
         now = datetime.datetime.now(c.conf_rec.timestamp.tzinfo)
-        delta = now - c.conf_rec.timestamp
-        if delta > datetime.timedelta(24, 0, 0):
+        if delta > datetime.timedelta(0, 24, 0):
             # this confirmation record has expired
-            self.dbsession.delete(c.conf_rec)
-            self.dbsession.flush()
-            return render_response('person/expired.myt')
+            meta.Session.delete(c.conf_rec)
+            meta.Session.commit()
+            return render('person/expired.mako')
 
-        # now process the form
-        defaults = dict(request.POST)
-        errors = {}
+        person = Person.find_by_email(c.conf_rec.email_address)
+        if person is None:
+            raise RuntimeError, "Person doesn't exist %s" % c.conf_rec.email_address
 
-        if defaults:
-            result, errors = PasswordResetSchema().validate(defaults, self.dbsession)
+        # set the password
+        person.password = self.form_result['password']
+        # also make sure the person is activated
+        person.activated = True
 
-            if not errors:
-                persons = self.dbsession.query(Person).filter_by(email_address=c.conf_rec.email_address).all()
-                if len(persons) == 0:
-                    raise RuntimeError, "Person doesn't exist %s" % c.conf_rec.email_address
+        # delete the conf rec
+        meta.Session.delete(c.conf_rec)
+        meta.Session.commit()
 
-                # set the password
-                persons[0].password = result['password']
-                # also make sure the person is activated
-                persons[0].activated = True
+        return render('person/success.mako')
 
-                # delete the conf rec
-                self.dbsession.delete(c.conf_rec)
-                self.dbsession.flush()
-
-                return render_response('person/success.myt')
-
-        # FIXME: test the process above
-        return render_response('person/reset.myt', defaults=defaults, errors=errors)
 
     def edit(self):
         """UPDATE PERSON"""

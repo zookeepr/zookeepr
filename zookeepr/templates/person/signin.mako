@@ -24,7 +24,7 @@ ${ h.end_form() }
 
 
 <p>
-${ h.link_to('Forgotten your password?', url=h.url_for(controller='person', action='forgotten_password')) }<br />
+${ h.link_to('Forgotten your password?', url=h.url_for(controller='person', action='forgotten_password', id=None)) }<br />
 If you have lost your log in details, please contact ${ h.webmaster_email() }.
 </p>
 
