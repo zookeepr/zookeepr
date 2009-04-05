@@ -94,8 +94,6 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 #              }
 
 #    permissions = {
-#                   'roles': [AuthRole('organiser')],
-#                   'index': [AuthRole('organiser')],
 #                   'signout': [AuthTrue()],
 #                   'new': True,
 #                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
@@ -296,16 +294,10 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
 
 
+    @authorize(h.auth.has_organiser_role)
     def index(self):
-        r = AuthRole('organiser')
-        if self.logged_in():
-            if not r.authorise(self):
-                redirect_to(action='view', id=session['signed_in_person_id'])
-        else:
-            abort(403)
-
-        return super(PersonController, self).index()
-
+        c.person_collection = Person.find_all()
+        return render('/person/list.mako')
 
     @authorize(h.auth.is_valid_user)
     def view(self, id):
@@ -319,7 +311,8 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
         return render('person/view.mako')
 
-    def roles(self):
+    @authorize(h.auth.has_organiser_role)
+    def roles(self, id):
         """ Lists and changes the person's roles. """
 
         td = '<td valign="middle">'
@@ -369,5 +362,3 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
         return render_response('person/roles.myt')
 
-    def is_same_id(self, *args):
-        return self.obj.id == session['signed_in_person_id']

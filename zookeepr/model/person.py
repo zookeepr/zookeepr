@@ -20,6 +20,7 @@ def setup(meta):
         lastname="User"
     )
     person.password = 'password'
+    person.activated = True
 
     role = Role.find_by_name('organiser')
     person.roles.append(role)
@@ -37,7 +38,7 @@ class Person(Base):
     password_hash = sa.Column(sa.types.Text)
 
     # creation timestamp of the registration
-    creation_timestamp = sa.Column(sa.types.DateTime, nullable=False)
+    _creation_timestamp = sa.Column(sa.types.DateTime, nullable=False)
     url_hash = sa.Column(sa.types.String(32), nullable=False, index=True)
 
 
@@ -163,7 +164,7 @@ class Person(Base):
 
     @classmethod
     def find_all(cls):
-        return Session.query(Person).order_by(Person.id)
+        return Session.query(Person).order_by(Person.id).all()
 
     @classmethod
     def find_by_url_hash(cls, url_hash):
