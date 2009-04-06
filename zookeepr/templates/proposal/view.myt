@@ -142,9 +142,14 @@ at
 % #endfor
 </div>
 
-% if c.proposal.assistance:
+% if c.proposal.accommodation_assistance:
 <p>
-<em>Travel assistance:</em> <% c.proposal.assistance.name %></p>
+<em>Accommodation assistance:</em> <% c.proposal.accommodation_assistance.name %></p>
+% # endif
+
+% if c.proposal.travel_assistance:
+<p>
+<em>Travel assistance:</em> <% c.proposal.travel_assistance.name %></p>
 % # endif
 
 <hr>

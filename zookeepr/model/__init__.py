@@ -1,5 +1,5 @@
 from core import Person, Role, PasswordResetConfirmation
-from proposal import Proposal, ProposalType, Attachment, Review, AssistanceType
+from proposal import Proposal, ProposalType, Attachment, Review, AccommodationAssistanceType, TravelAssistanceType
 from schedule import Stream, Talk
 from registration import *
 from openday import Openday
@@ -49,12 +49,21 @@ def populate_data():
         pass
 
     try:
-        # Assistance
-        model.proposal.tables.assistance_type.insert().execute(
-            dict(name='Can\'t attend without full assistance'),
-            dict(name='Can\'t attend without partial assistance'),
-            dict(name='May need assistance'),
-            dict(name='Don\'t need assistance'),
+        # Accommodation Assistance
+        model.proposal.tables.accommodation_assistance_type.insert().execute(
+            dict(name='I do not require accomodation assistance.'),
+            dict(name='I request that linux.conf.au provide student-style single room accommodation for the length of the conference.'),
+            )
+
+    except SQLError, inst:
+        print inst
+        pass
+
+    try:
+        # Travel Assistance
+        model.proposal.tables.travel_assistance_type.insert().execute(
+            dict(name='I do not require travel assistance.'),
+            dict(name='I request that linux.conf.au book and pay for air travel.'),
             )
 
     except SQLError, inst:

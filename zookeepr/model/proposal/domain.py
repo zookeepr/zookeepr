@@ -6,17 +6,22 @@ class ProposalType(object):
         self.name = name
 
 ## Assistance Types
-class AssistanceType(object):
+class AccommodationAssistanceType(object):
+    def __init__(self, name=None):
+        self.name = name
+
+class TravelAssistanceType(object):
     def __init__(self, name=None):
         self.name = name
 
 ## Proposals
 class Proposal(object):
-    def __init__(self, id=None, title=None, type=None, assistance=None, abstract=None, url=None, attachment=None, code=None, scheduled=None, finished=None, theatre=None, building=None):
+    def __init__(self, id=None, title=None, type=None, accommodation_assistance=None, travel_assistance=None, abstract=None, url=None, attachment=None, code=None, scheduled=None, finished=None, theatre=None, building=None):
         self.id = id
         self.title = title
         self.type = type
-        self.assistance = assistance
+        self.accommodation_assistance = accommodation_assistance
+        self.travel_assistance = travel_assistance
         self.abstract = abstract
         self.url = url
         self.attachment = attachment

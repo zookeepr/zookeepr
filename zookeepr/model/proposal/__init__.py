@@ -1,1 +1,1 @@
-from domain import Proposal, AssistanceType, ProposalType, Attachment, Review
+from domain import Proposal, AccommodationAssistanceType, TravelAssistanceType, ProposalType, Attachment, Review
