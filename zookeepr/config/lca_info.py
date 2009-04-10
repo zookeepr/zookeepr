@@ -33,7 +33,7 @@ lca_info = {
   'conference_status': 'not_open',
 
   'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
-  'speaker_email' : 'miniconfs@penguinsvisiting.org.nz',
+  'speaker_email' : 'speakers@penguinsvisiting.org.nz',
 
   'proposal_update_email': 'puck@penguinsvisiting.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
 }

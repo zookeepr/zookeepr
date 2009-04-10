@@ -9,7 +9,7 @@ If you have any queries about your proposed <% c.proposal.type.name.lower() %>, 
 <% h.lca_info['speaker_email'] %>
 
 title: <% c.proposal.title %>
-target audience: <% c.proposal.audience %>
+target audience: <% c.proposal.audience.name %>
 url: <% c.proposal.url %>
 attachments: <% len(c.proposal.attachments) %>
 summary: <% c.proposal.abstract %>

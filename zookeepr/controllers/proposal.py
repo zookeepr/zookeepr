@@ -290,10 +290,10 @@ class ProposalController(SecureController, View, Update):
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
                 if c.proposal.type.name == 'Miniconf':
                     email(c.person.email_address,
-                        render('person/thankyou_mini_email.myt', fragment=True))
+                        render('proposal/thankyou_mini_email.myt', fragment=True))
                 else:
                     email(c.person.email_address,
-                        render('person/thankyou_email.myt', fragment=True))
+                        render('proposal/thankyou_email.myt', fragment=True))
                 return render_response('proposal/edit_thankyou.myt')
 
         # call the template
@@ -422,7 +422,7 @@ class ProposalController(SecureController, View, Update):
                         c.proposal.attachments.append(c.attachment)
 
                     email(c.person.email_address,
-                        render('person/thankyou_email.myt', fragment=True))
+                        render('proposal/thankyou_email.myt', fragment=True))
                     return render_response('proposal/thankyou.myt')
 
         return render_response("proposal/new.myt",
@@ -479,7 +479,7 @@ class ProposalController(SecureController, View, Update):
                         c.proposal.attachments.append(c.attachment)
 
                     email(c.person.email_address,
-                        render('person/thankyou_mini_email.myt', fragment=True))
+                        render('proposal/thankyou_mini_email.myt', fragment=True))
                     return render_response('proposal/thankyou_mini.myt')
 
             return render_response("proposal/new_mini.myt",
