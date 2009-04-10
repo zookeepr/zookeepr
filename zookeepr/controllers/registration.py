@@ -342,7 +342,7 @@ class RegistrationController(SecureController, Update, List, Read):
         if not self.manual_invoice(registration.person.invoices):
 
             try:
-                invoice = self.create_invoice(registration)
+                invoice = self._create_invoice(registration)
             except ProductUnavailable, inst:
                 if quiet: return
                 return render_response("registration/product_unavailable.myt", product=inst.product)
@@ -404,7 +404,7 @@ class RegistrationController(SecureController, Update, List, Read):
                     return True
         return False
 
-    def create_invoice(self, registration):
+    def _create_invoice(self, registration):
         # Create Invoice
         invoice = model.Invoice()
         invoice.person = registration.person
