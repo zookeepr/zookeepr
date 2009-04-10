@@ -12,6 +12,12 @@ aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
     python-setuptools python-dnspython python-cheetah python-psycopg2 miscfiles \
     pwgen python-myghty
 
+For Ubuntu Hardy add from Jaunty:
+javascript-common 5
+libjs-prototype 1.6.0.3-1
+python-webhelpers 0.6.4-1
+wwwconfig-common 0.2.1
+
 ====== PDF generation ======
 
 You need to follow these steps for PDF generation to work:
