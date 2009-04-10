@@ -110,8 +110,8 @@ file_paths = {
   'public_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public',
   'public_html': '',
   'news_fileprefix': '/home/zookeepr/zookeepr/lca10/zookeepr/public/featured',
-  'news_htmlprefix': '/featured'
-  # Points towards where 
+  'news_htmlprefix': '/featured',
+  # Points towards where the slides and other recordings are stored
   'slides_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public/slides',
   'slides_html': '/slides',
   'ogg_path': 'http://mirror.linux.org.au/lca10/videos/ogg',
