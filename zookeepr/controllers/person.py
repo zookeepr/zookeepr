@@ -41,6 +41,7 @@ class PasswordResetSchema(BaseSchema):
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
 class PersonSchema(BaseSchema):
+    allow_extra_fields = False
 
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
@@ -64,42 +65,26 @@ class NewPersonSchema(BaseSchema):
 
     person = PersonSchema()
 
-#class _UpdatePersonSchema(BaseSchema):
-#    # Redefine the schema to remove email and password validation
-#    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
-#    firstname = validators.String(not_empty=True)
-#    lastname = validators.String(not_empty=True)
-#    company = validators.String()
-#    phone = validators.String()
-#    mobile = validators.String()
-#    address1 = validators.String(not_empty=True)
-#    address2 = validators.String()
-#    city = validators.String(not_empty=True)
-#    state = validators.String()
-#    postcode = validators.String(not_empty=True)
-#    country = validators.String(not_empty=True)
-#
-#    pre_validators = []
-#    chained_validators = []
+class _UpdatePersonSchema(BaseSchema):
+    allow_extra_fields = False
 
-#class UpdatePersonSchema(BaseSchema):
-#    # Redefine the schema to remove email and password validation
-#    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
-#    person = _UpdatePersonSchema()
-#    pre_validators = [NestedVariables]
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
+    company = validators.String()
+    phone = validators.String()
+    mobile = validators.String()
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
 
-class PersonController(BaseController): #SecureController, Read, Update, List):
-#    schemas = {'new': NewPersonSchema(),
-#               'edit': UpdatePersonSchema()
-#              }
+class UpdatePersonSchema(BaseSchema):
+    person = _UpdatePersonSchema()
+    pre_validators = [NestedVariables]
 
-#    permissions = {
-#                   'signout': [AuthTrue()],
-#                   'new': True,
-#                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
-#                   }
-
-
+class PersonController(BaseController):
     @authorize(h.auth.is_valid_user)
     def signin(self):
         # Signin is handled by authkit so we just need to redirect stright to home
@@ -236,27 +221,37 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
         return render('person/success.mako')
 
+    @authorize(h.auth.is_valid_user)
+    @dispatch_on(POST="_edit") 
+    def edit(self, id):
+        c.form = 'edit'
+        c.person = Person.find_by_id(id)
+        if c.person is None:
+            abort(404, "No such object")
 
-    def edit(self):
+        defaults = c.person
+        form = render('/person/edit.mako')
+        return htmlfill.render(form, defaults)
+
+
+    @authorize(h.auth.is_valid_user)
+    @validate(schema=UpdatePersonSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
+    def _edit(self, id):
         """UPDATE PERSON"""
-        defaults = dict(request.POST)
-        errors = {}
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
-        if defaults:
-            result, errors = UpdatePersonSchema().validate(defaults, self.dbsession)
+        c.person = Person.find_by_id(id)
+        if c.person is None:
+            abort(404, "No such object")
 
-            if not errors:
-                # update the objects with the validated form data
-                for k in result['person']:
-                    setattr(self.obj, k, result['person'][k])
-                self.dbsession.update(self.obj)
-                self.dbsession.flush()
+        # update the objects with the validated form data
+        meta.Session.commit()
 
-                default_redirect = dict(action='view', id=self.identifier(self.obj))
-                self.redirect_to('edit', default_redirect)
-
-        return render_response('person/edit.myt',
-                               defaults=defaults, errors=errors)
+        default_redirect = dict(action='view', id=id)
+        redirect_to(action='view', id=id)
 
 
     @dispatch_on(POST="_new") 
@@ -308,6 +303,8 @@ class PersonController(BaseController): #SecureController, Read, Update, List):
 
         c.registration_status = h.config['app_conf'].get('registration_status')
         c.person = Person.find_by_id(id)
+        if c.person is None:
+            abort(404, "No such object")
 
         return render('person/view.mako')
 

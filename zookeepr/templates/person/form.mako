@@ -30,7 +30,6 @@
 <label for="person.mobile">Mobile/Cell number</label></p>
 <p class="entries">${ h.text('person.mobile') }</p>
 
-
 <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
 <p class="entries">
 ${ h.text('person.address1', size=40) }
