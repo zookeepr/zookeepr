@@ -3,7 +3,7 @@ To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address 
 
 Dear <% c.person.firstname %>,
 
-Thankyou for proposing a miniconf for <% h.lca_info['event_name'] %>
+Thankyou for proposing a <% c.proposal.type.name.lower() %> for <% h.lca_info['event_name'] %>
 
 If you have any queries about your proposed <% c.proposal.type.name.lower() %>, please email
 <% h.lca_info['speaker_email'] %>
