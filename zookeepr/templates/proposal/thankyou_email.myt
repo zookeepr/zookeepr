@@ -5,6 +5,9 @@ Dear <% c.person.firstname %>,
 
 Thankyou for proposing a miniconf for <% h.lca_info['event_name'] %>
 
+If you have any queries about your proposed <% c.proposal.type.name.lower() %>, please email
+<% h.lca_info['speaker_email'] %>
+
 title: <% c.proposal.title %>
 target audience: <% c.proposal.audience %>
 url: <% c.proposal.url %>
