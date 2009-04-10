@@ -10,7 +10,19 @@ being an LTS release we felt that this would be a good platform to deploy on.
 
 aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
     python-setuptools python-dnspython python-cheetah python-psycopg2 miscfiles \
-    pwgen
+    pwgen python-myghty
+
+For Ubuntu Hardy add from Jaunty:
+
+  javascript-common 5
+  libjs-prototype 1.6.0.3-1
+  python-webhelpers 0.6.4-1
+  wwwconfig-common 0.2.1
+
+For Debian Lenny, you must downgrade these packages:
+
+  python-pylons down to 0.9.6.1-1
+  python-beaker down to 0.8-1
 
 ====== PDF generation ======
 

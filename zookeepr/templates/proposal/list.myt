@@ -12,6 +12,7 @@
     <th>Title</th>
     <th>Proposal Type</th>
     <th>Abstract</th>
+    <th>Target Audience</th>
     <th>Project URL</th>
     <th>Submitter(s)</th>
     <th>Status</th>
@@ -22,6 +23,7 @@
     <td><% h.link_to("%s" % (h.util.html_escape(s.title)), url=h.url(action='view', id=s.id)) %></td>
     <td><% s.type.name %></td>
     <td><% h.truncate(h.util.html_escape(s.abstract)) %></td>
+    <td><% s.audience.name %></td>
 %     if s.url:
 # FIXME: I reckon this should go into the helpers logic
 %       if '://' in s.url:

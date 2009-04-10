@@ -5,8 +5,8 @@ from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, A
 from zookeepr.lib.base import *
 from zookeepr.lib.mail import *
 from zookeepr.lib.crud import Update, View
-from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, PersonValidator, FileUploadValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
-from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AccommodationAssistanceType, TravelAssistanceType, Role, Person
+from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, TargetAudienceValidator, PersonValidator, FileUploadValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
+from zookeepr.model import Proposal, ProposalType, TargetAudience, Stream, Review, Attachment, AccommodationAssistanceType, TravelAssistanceType, Role, Person
 from zookeepr.controllers.person import PersonSchema
 
 import random
@@ -30,6 +30,7 @@ class ProposalSchema(schema.Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
+    audience = TargetAudienceValidator()
     accommodation_assistance = AccommodationAssistanceTypeValidator()
     travel_assistance = TravelAssistanceTypeValidator()
     project = validators.String()
@@ -40,6 +41,7 @@ class MiniProposalSchema(BaseSchema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
+    audience = TargetAudienceValidator()
     url = validators.String()
 
 class NewProposalSchema(BaseSchema):
@@ -122,6 +124,7 @@ class ProposalController(SecureController, View, Update):
         super(ProposalController, self).__before__(**kwargs)
 
         c.proposal_types = self.dbsession.query(ProposalType).all()
+        c.target_audiences = self.dbsession.query(TargetAudience).all()
         c.accommodation_assistance_types = self.dbsession.query(AccommodationAssistanceType).all()
         c.travel_assistance_types = self.dbsession.query(TravelAssistanceType).all()
 
