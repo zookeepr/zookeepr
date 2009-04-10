@@ -27,6 +27,8 @@ from zookeepr.model import Person
 
 from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
 
+from sqlalchemy.orm.util import object_mapper
+
 #from routes import url
 
 # FIXME Commenting all this out till after we port to new pylons
@@ -362,3 +364,12 @@ def signed_in_person():
 
     person = Person.find_by_email(email_address)
     return person
+
+def object_to_defaults(object, prefix):
+    defaults = {}
+
+    for key in object_mapper(object).columns.keys():
+        defaults[prefix + "." + key] = getattr(object, key)
+
+    return defaults
+

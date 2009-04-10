@@ -229,7 +229,8 @@ class PersonController(BaseController):
         if c.person is None:
             abort(404, "No such object")
 
-        defaults = c.person
+        defaults = h.object_to_defaults(c.person, 'person')
+
         form = render('/person/edit.mako')
         return htmlfill.render(form, defaults)
 
@@ -246,6 +247,9 @@ class PersonController(BaseController):
         c.person = Person.find_by_id(id)
         if c.person is None:
             abort(404, "No such object")
+
+        for key in self.form_result['person']:
+            setattr(c.person, key, self.form_result['person'][key])
 
         # update the objects with the validated form data
         meta.Session.commit()
@@ -286,8 +290,6 @@ class PersonController(BaseController):
         email(c.person.email_address, render('/person/new_person_email.mako'))
 
         return render('/person/thankyou.mako')
-
-
 
     @authorize(h.auth.has_organiser_role)
     def index(self):
