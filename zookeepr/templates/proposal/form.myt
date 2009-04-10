@@ -17,6 +17,14 @@
     <p class="entries"><% h.textarea('proposal.abstract', size="70x10") %></p>
     <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the presentation is accepted, but it should reasonably reflect what you will be presenting, and in any case it will appear as-is on the website in the draft programme. Up to about 500 words.</p>
 
+    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
+    <p class="entries">
+% for at in c.target_audiences:
+    <label><% h.radio('proposal.audience', at.id) %>
+    <% at.name |h %></label><br>
+% #endfor
+    </p>
+
     <p class="label"><span class="publishable">&#8224;</span><label for="proposal.project">Project:</label></p>
     <p class="entries"><% h.textfield('proposal.project', size=70) %></p>
     <p class="note">The name of the project you will be talking about.</p>

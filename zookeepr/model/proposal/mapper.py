@@ -2,11 +2,12 @@ from sqlalchemy.orm import mapper, relation
 
 from zookeepr.model.core import Person
 from zookeepr.model.schedule import Stream
-from tables import accommodation_assistance_type, travel_assistance_type, proposal, proposal_type, person_proposal_map, attachment, review
-from domain import AccommodationAssistanceType, TravelAssistanceType, Proposal, ProposalType, Attachment, Review
+from tables import accommodation_assistance_type, travel_assistance_type, proposal, proposal_type, target_audience, person_proposal_map, attachment, review
+from domain import AccommodationAssistanceType, TravelAssistanceType, Proposal, ProposalType, TargetAudience, Attachment, Review
 
 # Map the ProposalType object onto the submision_type table
 mapper(ProposalType, proposal_type)
+mapper(TargetAudience, target_audience)
 
 mapper(AccommodationAssistanceType, accommodation_assistance_type)
 mapper(TravelAssistanceType, travel_assistance_type)
@@ -18,6 +19,7 @@ mapper(Attachment, attachment)
 mapper(Proposal, proposal,
     properties = {
         'type': relation(ProposalType),
+        'audience': relation(TargetAudience),
         'accommodation_assistance': relation(AccommodationAssistanceType),
         'travel_assistance': relation(TravelAssistanceType),
         'people': relation(Person, secondary=person_proposal_map,

@@ -6,7 +6,7 @@ from formencode import Invalid, validators, schema
 
 import helpers as h
 
-from zookeepr.model import Person, ProposalType, Stream, AccommodationAssistanceType, TravelAssistanceType, DBContentType, Product, Registration
+from zookeepr.model import Person, ProposalType, TargetAudience, Stream, AccommodationAssistanceType, TravelAssistanceType, DBContentType, Product, Registration
 
 class DictSet(validators.Set):
     def _from_python(self, value):
@@ -85,6 +85,10 @@ class DbContentTypeValidator(validators.FancyValidator):
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return state.query(ProposalType).get(value)
+
+class TargetAudienceValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return state.query(TargetAudience).get(value)
 
 class AccommodationAssistanceTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):

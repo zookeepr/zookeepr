@@ -10,6 +10,12 @@ class AccommodationAssistanceType(object):
     def __init__(self, name=None):
         self.name = name
 
+## Target Audiences
+class TargetAudience(object):
+    def __init__(self, name=None):
+        self.name = name
+
+
 class TravelAssistanceType(object):
     def __init__(self, name=None):
         self.name = name

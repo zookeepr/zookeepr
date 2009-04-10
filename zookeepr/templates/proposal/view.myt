@@ -31,6 +31,14 @@ at
 </blockquote>
 </div>
 
+% if c.proposal.audience.name:
+<p class="url">
+<em>Target Audience:</em>
+<% c.proposal.audience.name %>
+</p>
+% #endif
+
+
 % if c.proposal.project:
 <p class="url">
 <em>Project:</em>

@@ -18,6 +18,14 @@ accommodation_assistance_type = Table('accommodation_assistance_type', metadata,
                                nullable=False),
                         )
 
+# types of audiences: typically 'paper', 'miniconf', etc
+target_audience = Table('target_audience', metadata,
+                        Column('id', Integer, primary_key=True),
+                        Column('name', String(40),
+                               unique=True,
+                               nullable=False),
+                        )
+
 travel_assistance_type = Table('travel_assistance_type', metadata,
                         Column('id', Integer, primary_key=True),
                         Column('name', String(200),
@@ -37,6 +45,10 @@ proposal = Table('proposal', metadata,
                    # type, enumerated in the proposal_type table
                    Column('proposal_type_id', Integer,
                           ForeignKey('proposal_type.id')),
+
+                   # type, enumerated in the target_audience table
+                   Column('target_audience_id', Integer,
+                          ForeignKey('target_audience.id')),
 
                    # type, enumerated in the accommodation_assistance_type table
                    Column('accommodation_assistance_type_id', Integer,
