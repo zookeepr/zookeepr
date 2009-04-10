@@ -32,7 +32,7 @@
   </div>
 
 % if not h.url()().endswith('/sponsors/sponsors') and not h.url()().endswith('/media/news/61'):
-    <p class='sponsors_footer'>
+    <p class='supporters_footer'>
       <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
       <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>
     </p>

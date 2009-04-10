@@ -23,6 +23,7 @@
       <th class="programme_slot" align="center" valign="middle">9:30&nbsp;-&nbsp;10:20</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
         <a href="/programme/keynotes#ThomasALimoncelli">Keynote 1 - Thomas A. Limoncelli</a><br><span style="font-weight: normal;">Stanley Burbury</span>
+        <span style="text-align: center; font-size: smaller; font-style: oblique;"><br>[<a href="/slides/thomas_limoncelli.pdf">Slides</a>]</span>
       </td>
     </tr>
     <tr class="even">
