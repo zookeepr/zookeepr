@@ -5,6 +5,8 @@ All names available in this module will be available under the Pylons h object.
 """
 from routes import request_config
 from webhelpers import *
+from webhelpers.rails.urls import *
+from webhelpers.rails import *
 import urllib
 from glob import glob
 import os.path, random, array

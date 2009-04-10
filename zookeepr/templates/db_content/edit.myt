@@ -1,3 +1,4 @@
+## -- coding: utf-8 --
 <h2>Edit page</h2>
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
 <% h.form(h.url(), multipart=True) %>

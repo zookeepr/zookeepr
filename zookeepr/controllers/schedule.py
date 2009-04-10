@@ -11,12 +11,12 @@ import os
 
 
 class ScheduleController(BaseController):
-    day_dates = {'monday':    date(2009,1,19),
-                 'tuesday':   date(2009,1,20),
-                 'wednesday': date(2009,1,21),
-                 'thursday':  date(2009,1,22),
-                 'friday':    date(2009,1,23),
-                 'saturday':  date(2009,1,24)}
+    day_dates = {'monday':    date(2010,1,18),
+                 'tuesday':   date(2010,1,19),
+                 'wednesday': date(2010,1,20),
+                 'thursday':  date(2010,1,21),
+                 'friday':    date(2010,1,22),
+                 'saturday':  date(2010,1,23)}
 
     def __before__(self, **kwargs):
         c.get_talk = self._get_talk

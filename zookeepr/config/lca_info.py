@@ -10,31 +10,31 @@ lca_info = {
   'commsecure_secret' : 'zing',
 
 # Contact email for the committee
-  'contact_email' : 'joshua.hesketh@marchsouth.org',
+  'contact_email' : 'contact@penguinsvisiting.org.nz',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',
   'event_parent_url' : 'http://www.linux.org.au/',
-  'event_name' : 'linux.conf.au 2009',
+  'event_name' : 'linux.conf.au 2010',
   'event_url' : 'http://www.linux.conf.au/',
   'event_tax_number' : 'ABN 56 987 117 479',
 # 'event_tax_number' : 'NZ GST #90-792-369',
   'event_postal_address' : '25 Wellington St North Hobart TAS 7000, Australia',
   'event_fax_number' : '+61 3 6234 1262',
   'event_phone_number': '+61 432 996 932',
-  'date' : datetime(2009, 1, 19, 9, 0, 00),
+  'date' : datetime(2010, 1, 17, 9, 0, 00),
 
-  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
+  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the xxth of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'closed',
-  'cfmini_status' : 'closed',
-  'paper_editing' : 'open',
-  'conference_status': 'open',
+  'cfp_status' : 'not_open',
+  'cfmini_status' : 'not_open',
+  'paper_editing' : 'not_open',
+  'conference_status': 'not_open',
 
-  'mini_conf_email' : 'miniconfs@marchsouth.org',
+  'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
 
-  'proposal_update_email': 'joshua.hesketh@marchsouth.org', # recieve notifications when proposals are changed. Leave blank for none.
+  'proposal_update_email': 'puck@penguinsvisiting.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
 }
 
 lca_rego = {
@@ -49,8 +49,8 @@ lca_rego = {
             {'name': 'Usher', 'description': 'Introduce speakers and manage rooms, keeping them to a schedule.'},
             {'name': 'Driver', 'description': 'Have driver\'s licence, will travel to help pick up items and shuttle VIP\'s.'},
             {'name': 'Car', 'description': 'Have car and can be a driver.'},
-            {'name': 'Week Before', 'description': 'Available during the week before the conference (12-18 Jan).'},
-            {'name': 'Week After', 'description': 'Available during the week after the conference (25-30 Jan).'},
+            {'name': 'Week Before', 'description': 'Available during the week before the conference (x-y Jan).'},
+            {'name': 'Week After', 'description': 'Available during the week after the conference (a-c Jan).'},
         ), 
   'miniconfs' : (
               ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Mobile devices', 'Business of Software development')),
@@ -59,7 +59,7 @@ lca_rego = {
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
   'distros' : ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu'],
-  'past_confs' : [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)'), ('08', '2008 (Melbourne)')],
+  'past_confs' : [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)'), ('08', '2008 (Melbourne)'), ('09', '2009 (Hobart)')],
 
   'silly_description' : {
         'starts' : ["a", "a", "a", "one", "no"], # bias toward "a"
@@ -107,34 +107,41 @@ lca_rego = {
 }
 
 file_paths = {
-  'public_path': '/home/josh/LCA09/website/db_content/zookeepr/public',
+  'public_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public',
   'public_html': '',
-  'news_fileprefix': '/home/josh/LCA09/website/db_content/zookeepr/public/featured',
-  'news_htmlprefix': '/featured',
-  'slides_path': '/home/josh/LCA09/website/registrations/zookeepr/public/slides',
+  'news_fileprefix': '/home/zookeepr/zookeepr/lca10/zookeepr/public/featured',
+  'news_htmlprefix': '/featured'
+  # Points towards where 
+  'slides_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public/slides',
   'slides_html': '/slides',
-  'ogg_path': 'http://mirror.linux.org.au/lca09/videos/ogg',
-  'ogg_file_list': '/home/josh/LCA09/website/registrations/zookeepr/config/data.txt',
-  'speex_path': 'http://mirror.linux.org.au/lca09/videos/speex',
-  'speex_file_list': '/home/josh/LCA09/website/registrations/zookeepr/config/data.txt'
+  'ogg_path': 'http://mirror.linux.org.au/lca10/videos/ogg',
+  'ogg_file_list': '/home/zookeepr/zookeepr/lca10/zookeepr/config/data.txt',
+  'speex_path': 'http://mirror.linux.org.au/lca10/videos/speex',
+  'speex_file_list': '/home/zookeepr/zookeepr/lca10/zookeepr/config/data.txt',
 }
 
 lca_menu = [
-  ('Home', '/home', 'home'),
-  ('About', '/about/the_event_history', 'about'),
-  ('Sponsors', '/sponsors/sponsors', 'sponsors'),
-  ('Programme', '/programme/about_programme', 'programme'),
-  ('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
-  ('Wiki', '/wiki', 'wiki'),
+  #('Home', '/home', 'home'),
+  ('About', '/about/linux.conf.au', 'about'),
+  ('Wellington', '/wellington/about_wellington', 'wellington'),
+  ('Sponsors', '/sponsors/why_sponsor', 'sponsors'),
+  #('Sponsors', '/sponsors/sponsors', 'sponsors'),
+  ('Programme', '/programme/about', 'programme'),
+  #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
+  #('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
+  ('Planet', 'http://planet.penguinsvisiting.org.nz', 'planet'),
 ]
 
 lca_submenus = {
-  'about': ['The event/history', 'Tasmania/Hobart', 'Venue', 'Linux/Open Source'],
-  'sponsors': ['Sponsors', 'Become a Sponsor', 'Google Diversity Programme'],
+  'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'History', 'New Zealand', 'Linux/Open Source'],
+  'wellington': ['About Wellington', 'Sightseeing', 'Pre and Post' ],
+  'sponsors': ['Why Sponsor'],
+  #'sponsors': ['Sponsors', 'Why Sponsor'],
+  'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
   #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
-  'programme': ['About Programme', 'Keynotes', 'miniconfs', 'Schedule','Official social events','Open day','Batteries Not Included'], # stage 2
-  'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
-  'media': ['News','In the press', 'Planet']
+  #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
+  #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
+  'media': ['News','In the press']
 }

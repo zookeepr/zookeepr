@@ -55,7 +55,9 @@ if not defaults and c.proposal:
     }
     if c.proposal.type:
         defaults['proposal.type'] = c.proposal.type.id
-    if c.proposal.assistance:
-        defaults['proposal.assistance'] = c.proposal.assistance.id
+    if c.proposal.accommodation_assistance:
+        defaults['proposal.accommodation_assistance'] = c.proposal.accommodation_assistance.id
+    if c.proposal.travel_assistance:
+        defaults['proposal.travel_assistance'] = c.proposal.travel_assistance.id
 
 </%init>

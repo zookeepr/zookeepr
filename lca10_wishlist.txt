@@ -1,0 +1,7 @@
+db_content:
+- new, save, <hit back> shouldn't create a new page
+- if admin, put edit page on all db_content pages
+- mark page as not published - means only admins can view it.
+- publish on a set date (i.e, for press releases), thye only appear on the specified date, and that
+  appears as the submitted date.
+
