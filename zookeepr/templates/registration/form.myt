@@ -192,7 +192,7 @@
             <select name="registration.checkin">
 %           dates = [(d, 1) for d in range(18,26)]
 %           for (day, month) in dates:
-              <option value="<% day %>"><% datetime.datetime(2009, month, day).strftime('%A, %e %b') %></option>
+              <option value="<% day %>"><% datetime.datetime(2010, month, day).strftime('%A, %e %b') %></option>
 %           #endfor
             </select>
           </p>
@@ -201,7 +201,7 @@
           <p class="entries">
             <select name="registration.checkout">
 %           for day, month in dates[1:]:
-              <option value="<% day %>" ><% datetime.datetime(2009, month, day).strftime('%A, %e %b') %></option>
+              <option value="<% day %>" ><% datetime.datetime(2010, month, day).strftime('%A, %e %b') %></option>
 %           #endfor
             </select>
           </p>

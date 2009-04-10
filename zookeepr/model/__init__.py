@@ -1,5 +1,5 @@
 from core import Person, Role, PasswordResetConfirmation
-from proposal import Proposal, ProposalType, Attachment, Review, AssistanceType
+from proposal import Proposal, ProposalType, TargetAudience, Attachment, Review, AccommodationAssistanceType, TravelAssistanceType
 from schedule import Stream, Talk
 from registration import *
 from openday import Openday
@@ -49,12 +49,34 @@ def populate_data():
         pass
 
     try:
-        # Assistance
-        model.proposal.tables.assistance_type.insert().execute(
-            dict(name='Can\'t attend without full assistance'),
-            dict(name='Can\'t attend without partial assistance'),
-            dict(name='May need assistance'),
-            dict(name='Don\'t need assistance'),
+        # Audiences
+        model.proposal.tables.target_audience.insert().execute(
+            dict(name='Community'),
+            dict(name='User'),
+            dict(name='Developer'),
+            dict(name='Business'),
+            )
+
+    except SQLError, inst:
+        print inst
+        pass
+
+    try:
+        # Accommodation Assistance
+        model.proposal.tables.accommodation_assistance_type.insert().execute(
+            dict(name='I do not require accomodation assistance.'),
+            dict(name='I request that linux.conf.au provide student-style single room accommodation for the length of the conference.'),
+            )
+
+    except SQLError, inst:
+        print inst
+        pass
+
+    try:
+        # Travel Assistance
+        model.proposal.tables.travel_assistance_type.insert().execute(
+            dict(name='I do not require travel assistance.'),
+            dict(name='I request that linux.conf.au book and pay for air travel.'),
             )
 
     except SQLError, inst:
@@ -174,8 +196,8 @@ def populate_data():
         model.billing.tables.ceiling.insert().execute(
             dict(name='all-conference', max_sold=None, available_from=None, available_until=None),
             dict(name='conference', max_sold=750, available_from=None, available_until=None),
-            dict(name='earlybird', max_sold=200, available_from=None, available_until="2008-10-28 23:59:59"),
-            dict(name='non-earlybird', max_sold=None, available_from="2008-10-29 00:00:00", available_until=None),
+            dict(name='earlybird', max_sold=200, available_from=None, available_until="2009-10-28 23:59:59"),
+            dict(name='non-earlybird', max_sold=None, available_from="2009-10-29 00:00:00", available_until=None),
             dict(name='uniaccom', max_sold=240, available_from=None, available_until=None),
             )
 

@@ -5,8 +5,8 @@ from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, A
 from zookeepr.lib.base import *
 from zookeepr.lib.mail import *
 from zookeepr.lib.crud import Update, View
-from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, PersonValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
-from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role, Person
+from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, TargetAudienceValidator, PersonValidator, FileUploadValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
+from zookeepr.model import Proposal, ProposalType, TargetAudience, Stream, Review, Attachment, AccommodationAssistanceType, TravelAssistanceType, Role, Person
 from zookeepr.controllers.person import PersonSchema
 
 import random
@@ -30,7 +30,9 @@ class ProposalSchema(schema.Schema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
-    assistance = AssistanceTypeValidator()
+    audience = TargetAudienceValidator()
+    accommodation_assistance = AccommodationAssistanceTypeValidator()
+    travel_assistance = TravelAssistanceTypeValidator()
     project = validators.String()
     url = validators.String()
     abstract_video_url = validators.String()
@@ -39,6 +41,7 @@ class MiniProposalSchema(BaseSchema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
+    audience = TargetAudienceValidator()
     url = validators.String()
 
 class NewProposalSchema(BaseSchema):
@@ -121,7 +124,9 @@ class ProposalController(SecureController, View, Update):
         super(ProposalController, self).__before__(**kwargs)
 
         c.proposal_types = self.dbsession.query(ProposalType).all()
-        c.assistance_types = self.dbsession.query(AssistanceType).all()
+        c.target_audiences = self.dbsession.query(TargetAudience).all()
+        c.accommodation_assistance_types = self.dbsession.query(AccommodationAssistanceType).all()
+        c.travel_assistance_types = self.dbsession.query(TravelAssistanceType).all()
 
     def new(self, id):
         return self.submit()
@@ -253,7 +258,8 @@ class ProposalController(SecureController, View, Update):
             if c.signed_in_person == person:
                 c.person = person
         c.cfptypes = self.dbsession.query(ProposalType).all()
-        c.tatypes = self.dbsession.query(AssistanceType).all()
+        c.aatypes = self.dbsession.query(AccommodationAssistanceType).all()
+        c.tatypes = self.dbsession.query(TravelAssistanceType).all()
 
         errors = {}
         defaults = dict(request.POST)
@@ -282,6 +288,12 @@ class ProposalController(SecureController, View, Update):
                 self._edit_postflush()
 
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
+                if c.proposal.type.name == 'Miniconf':
+                    email(c.person.email_address,
+                        render('proposal/thankyou_mini_email.myt', fragment=True))
+                else:
+                    email(c.person.email_address,
+                        render('proposal/thankyou_email.myt', fragment=True))
                 return render_response('proposal/edit_thankyou.myt')
 
         # call the template
@@ -303,7 +315,8 @@ class ProposalController(SecureController, View, Update):
         #else:
         #    c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()
 
-        c.assistance_types = self.dbsession.query(AssistanceType).all()
+        c.accommodation_assistance_types = self.dbsession.query(AccommodationAssistanceType).all()
+        c.travel_assistance_types = self.dbsession.query(TravelAssistanceType).all()
 
         c.num_proposals = 0
         reviewer_role = self.dbsession.query(Role).filter(Role.c.name == 'reviewer').all()
@@ -312,24 +325,31 @@ class ProposalController(SecureController, View, Update):
             stuff = self.dbsession.query(Proposal).filter(Proposal.c.proposal_type_id==pt.id).all()
             c.num_proposals += len(stuff)
             setattr(c, '%s_collection' % pt.name, stuff)
-        for at in c.assistance_types:
-            stuff = self.dbsession.query(Proposal).filter(Proposal.c.assistance_type_id==at.id).all()
-            setattr(c, '%s_collection' % at.name, stuff)
+        for aat in c.accommodation_assistance_types:
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.accommodation_assistance_type_id==aat.id).all()
+            setattr(c, '%s_collection' % aat.name, stuff)
+        for tat in c.travel_assistance_types:
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.travel_assistance_type_id==tat.id).all()
+            setattr(c, '%s_collection' % tat.name, stuff)
 
 
         return render_response('proposal/list_review.myt')
 
     def summary(self):
         c.proposal_types = self.dbsession.query(ProposalType).all()
-        c.assistance_types = self.dbsession.query(AssistanceType).all()
+        c.accommodation_assistance_types = self.dbsession.query(AccommodationAssistanceType).all()
+        c.travel_assistance_types = self.dbsession.query(TravelAssistanceType).all()
 
         for pt in c.proposal_types:
             stuff = self.dbsession.query(Proposal).filter(Proposal.c.proposal_type_id==pt.id).all()
             stuff.sort(self.score_sort)
             setattr(c, '%s_collection' % pt.name, stuff)
-        for at in c.assistance_types:
-            stuff = self.dbsession.query(Proposal).filter(Proposal.c.assistance_type_id==at.id).all()
-            setattr(c, '%s_collection' % at.name, stuff)
+        for aat in c.accommodation_assistance_types:
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.accommodation_assistance_type_id==aat.id).all()
+            setattr(c, '%s_collection' % aat.name, stuff)
+        for at in c.travel_assistance_types:
+            stuff = self.dbsession.query(Proposal).filter(Proposal.c.travel_assistance_type_id==tat.id).all()
+            setattr(c, '%s_collection' % tat.name, stuff)
 
         return render_response('proposal/summary.myt')
 
@@ -362,7 +382,8 @@ class ProposalController(SecureController, View, Update):
            return render_response("proposal/not_open.myt")
         else:
             c.cfptypes = self.dbsession.query(ProposalType).all()
-            c.tatypes = self.dbsession.query(AssistanceType).all()
+            c.aatypes = self.dbsession.query(AccommodationAssistanceType).all()
+            c.tatypes = self.dbsession.query(TravelAssistanceType).all()
 
             errors = {}
             defaults = dict(request.POST)
@@ -400,6 +421,8 @@ class ProposalController(SecureController, View, Update):
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
 
+                    email(c.person.email_address,
+                        render('proposal/thankyou_email.myt', fragment=True))
                     return render_response('proposal/thankyou.myt')
 
         return render_response("proposal/new.myt",
@@ -413,7 +436,8 @@ class ProposalController(SecureController, View, Update):
             return render_response("proposal/not_open_mini.myt")
         else:
             c.cfptypes = self.dbsession.query(ProposalType).all()
-            c.tatypes = self.dbsession.query(AssistanceType).all()
+            c.aatypes = self.dbsession.query(AccommodationAssistanceType).all()
+            c.tatypes = self.dbsession.query(TravelAssistanceType).all()
 
             errors = {}
             defaults = dict(request.POST)
@@ -454,6 +478,8 @@ class ProposalController(SecureController, View, Update):
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
 
+                    email(c.person.email_address,
+                        render('proposal/thankyou_mini_email.myt', fragment=True))
                     return render_response('proposal/thankyou_mini.myt')
 
             return render_response("proposal/new_mini.myt",

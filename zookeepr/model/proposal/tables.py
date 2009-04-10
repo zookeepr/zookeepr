@@ -11,13 +11,27 @@ proposal_type = Table('proposal_type', metadata,
                         )
 
 # types of assistance:
-assistance_type = Table('assistance_type', metadata,
+accommodation_assistance_type = Table('accommodation_assistance_type', metadata,
+                        Column('id', Integer, primary_key=True),
+                        Column('name', String(200),
+                               unique=True,
+                               nullable=False),
+                        )
+
+# types of audiences: typically 'paper', 'miniconf', etc
+target_audience = Table('target_audience', metadata,
                         Column('id', Integer, primary_key=True),
                         Column('name', String(40),
                                unique=True,
                                nullable=False),
                         )
 
+travel_assistance_type = Table('travel_assistance_type', metadata,
+                        Column('id', Integer, primary_key=True),
+                        Column('name', String(200),
+                               unique=True,
+                               nullable=False),
+                        )
 
 # proposals to the conference
 proposal = Table('proposal', metadata,
@@ -32,9 +46,17 @@ proposal = Table('proposal', metadata,
                    Column('proposal_type_id', Integer,
                           ForeignKey('proposal_type.id')),
 
-                   # type, enumerated in the assistance_type table
-                   Column('assistance_type_id', Integer,
-                          ForeignKey('assistance_type.id')),
+                   # type, enumerated in the target_audience table
+                   Column('target_audience_id', Integer,
+                          ForeignKey('target_audience.id')),
+
+                   # type, enumerated in the accommodation_assistance_type table
+                   Column('accommodation_assistance_type_id', Integer,
+                          ForeignKey('accommodation_assistance_type.id')),
+
+                   # type, enumerated in the travel_assistance_type table
+                   Column('travel_assistance_type_id', Integer,
+                          ForeignKey('travel_assistance_type.id')),
 
                    # name and url of the project
                    Column('project', Text),

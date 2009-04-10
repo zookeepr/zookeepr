@@ -172,8 +172,8 @@ class PersonController(SecureController, Read, Update, List):
         defaults = dict(request.POST)
         if defaults:
             # delete and invalidate the session
-            session.delete()
             session.invalidate()
+            session.delete()
             # return home
             redirect_to('home')
         return render_response('person/signout.myt', defaults=None, errors={})

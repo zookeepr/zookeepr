@@ -28,6 +28,6 @@ c.form = 'new'
 
 if not defaults:
     defaults = {
-        'person.country': 'Australia',
+        'person.country': 'New Zealand',
     }
 </%init>

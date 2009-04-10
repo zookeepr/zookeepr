@@ -17,6 +17,14 @@
     <p class="entries"><% h.textarea('proposal.abstract', size="70x10") %></p>
     <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the presentation is accepted, but it should reasonably reflect what you will be presenting, and in any case it will appear as-is on the website in the draft programme. Up to about 500 words.</p>
 
+    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
+    <p class="entries">
+% for at in c.target_audiences:
+    <label><% h.radio('proposal.audience', at.id) %>
+    <% at.name |h %></label><br>
+% #endfor
+    </p>
+
     <p class="label"><span class="publishable">&#8224;</span><label for="proposal.project">Project:</label></p>
     <p class="entries"><% h.textfield('proposal.project', size=70) %></p>
     <p class="note">The name of the project you will be talking about.</p>
@@ -36,14 +44,27 @@
 % else:
     <p class="entries"><% h.link_to('Add an attachment', url=h.url(action='attach')) %> <% h.hidden_field('attachment', size=60) %><span class="note">You can attach multiple files by following this link.</span></p>
 % #
-    <p class="label"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></p>
+    <p class="label"><label>Travel &amp; Accommodation Assistance:</label></p>
+    <p class="note" style="margin-top: 0em">linux.conf.au has some funds available to provide travel and accommodation for selected speakers, both from the local region and internationally.</p>
+
+    <p class="note" style="margin-top: 0em">Please note:
+    <ul><li>we have a limited travel budget and requesting travel assistance <b>affects your chances of acceptance</b>.</li>
+    <li/><b>free admission</b> to the full conference is awarded to all presenters.</li></ul></p>
+
+    <p class="label"><span class="mandatory">*</span><label>Travel assistance:</label></p>
     <p class="entries">
 % for ta in c.tatypes:
-    <label><% h.radio('proposal.assistance', ta.id) %>
+    <label><% h.radio('proposal.travel_assistance', ta.id) %>
     <% ta.name |h %></label><br>
 % #endfor
     </p>
-    <p class="note" style="margin-top: 0em">Travel assistance is available to speakers who qualify. If you think you need it, please let us know. Please put any additional details into the "Personal experience" field, below.</p>
+    <p class="label"><span class="mandatory">*</span><label>Accommodation assistance:</label></p>
+    <p class="entries">
+% for aa in c.aatypes:
+    <label><% h.radio('proposal.accommodation_assistance', aa.id) %>
+    <% aa.name |h %></label><br>
+% #endfor
+    </p>
 
     <h2>About yourself</h2>
 

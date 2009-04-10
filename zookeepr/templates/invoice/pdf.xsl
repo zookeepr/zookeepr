@@ -19,7 +19,7 @@
    id="svg2"
    sodipodi:version="0.32"
    inkscape:version="0.46"
-   sodipodi:docname="LCA2009-invoice-template4.svg"
+   sodipodi:docname="LCA2010-invoice-template4.svg"
    inkscape:output_extension="org.inkscape.output.svg.inkscape"
    sodipodi:docbase="C:\Documents and Settings\KELLY DALY\Desktop">
   <sodipodi:namedview
@@ -381,7 +381,7 @@ AElFTkSuQmCC
          id="flowPara3272"
          style="font-size:14px;font-style:italic;font-family:DejaVu Sans">This invoice has been issued as a result of </flowPara><flowPara
          style="font-size:14px;font-style:italic;font-family:DejaVu Sans"
-         id="flowPara3325">an application to attend linux.conf.au 2009</flowPara><flowPara
+         id="flowPara3325">an application to attend linux.conf.au 2010</flowPara><flowPara
          id="flowPara3274"
          style="font-size:14px;font-family:DejaVu Sans" /><flowPara
          id="flowPara3276"

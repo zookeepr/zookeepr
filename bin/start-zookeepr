@@ -1,0 +1,9 @@
+#!/bin/bash
+
+#cd $HOME/zookeepr/lca10
+cd $(dirname $0)/..
+
+# Let sitecustomise.py override the default.
+export PYTHONPATH=$(pwd):$PYTHONPATH
+
+paster2.5 serve --reload -v config.ini
