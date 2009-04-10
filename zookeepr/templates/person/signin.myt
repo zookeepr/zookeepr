@@ -24,7 +24,7 @@ E-mail addresses are case-sensitive. If you have lost your log in details, pleas
 </p>
 
 
-<p>Note: this login is for the 2009 linux.conf.au website; we have not
+<p>Note: this login is for the 2010 linux.conf.au website; we have not
 carried over any earlier linux.conf.au login information, so you will need
 to register anew.</p>
 

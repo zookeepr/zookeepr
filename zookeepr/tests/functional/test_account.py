@@ -151,7 +151,7 @@ class TestPersonController(ControllerTest):
 
     def test_person_password_routing(self):
         self.assertEqual(dict(controller='person',
-                              action='forgotten_password', id=None),
+                              action='forgotten_password'),
                          self.map.match('/person/forgotten_password'))
 
     def test_person_password_url_for(self):

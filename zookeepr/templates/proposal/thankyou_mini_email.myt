@@ -1,9 +1,9 @@
-Subject: Confirmation of your miniconf proposal for linux.conf.au 2009
+Subject: Confirmation of your miniconf proposal for linux.conf.au 2010
 To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address %>>
 
 Dear <% c.person.firstname %>,
 
-Thankyou for proposing a miniconf for linux.conf.au 2009
+Thankyou for proposing a miniconf for linux.conf.au 2100
 
 title: <% c.proposal.title %>
 url: <% c.proposal.url %>

@@ -183,8 +183,8 @@ def populate_data():
         model.billing.tables.ceiling.insert().execute(
             dict(name='all-conference', max_sold=None, available_from=None, available_until=None),
             dict(name='conference', max_sold=750, available_from=None, available_until=None),
-            dict(name='earlybird', max_sold=200, available_from=None, available_until="2008-10-28 23:59:59"),
-            dict(name='non-earlybird', max_sold=None, available_from="2008-10-29 00:00:00", available_until=None),
+            dict(name='earlybird', max_sold=200, available_from=None, available_until="2009-10-28 23:59:59"),
+            dict(name='non-earlybird', max_sold=None, available_from="2009-10-29 00:00:00", available_until=None),
             dict(name='uniaccom', max_sold=240, available_from=None, available_until=None),
             )
 
