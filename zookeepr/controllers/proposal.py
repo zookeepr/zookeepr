@@ -160,36 +160,34 @@ class ProposalController(SecureController, View, Update):
           #ORDER BY
           #        RANDOM()
 
-        collection = self.dbsession.query(model.Proposal).from_statement("""
+        next = self.dbsession.query(model.Proposal).from_statement("""
               SELECT
                   p.id
               FROM
-                      proposal AS p
+                  (SELECT id
+                   FROM proposal
+                   WHERE id <> %d
+                     AND proposal_type_id = %d
+                   EXCEPT
+                       SELECT proposal_id AS id
+                       FROM review
+                       WHERE review.reviewer_id <> %d) AS p
               LEFT JOIN
                       review AS r
                               ON(p.id=r.proposal_id)
               GROUP BY
                       p.id
-              HAVING COUNT(r.proposal_id) < (
-                      (SELECT COUNT(id) FROM review) /
-                      (SELECT COUNT(id) FROM proposal) + 1)
-              ORDER BY
-                      RANDOM()
-              LIMIT 10
-        """)
-        #print collection
-        for proposal in collection:
-            #print proposal.id
-            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
-                c.next_review_id = proposal.id
-                c.reviewed_everything = False
-                break
-            else:
-                # looks like you've reviewed everything!
-                c.next_review_id = id
-                c.reviewed_everything = True
-
-
+              ORDER BY COUNT(r.reviewer_id), RANDOM()
+              LIMIT 1
+        """ % (c.proposal.id, c.proposal.type.id, c.signed_in_person.id))
+        next = next.first()
+        if next is not None:
+            c.next_review_id = next.id
+            c.reviewed_everything = False
+        else:
+            # looks like you've reviewed everything!
+            c.next_review_id = None
+            c.reviewed_everything = True
 
         if defaults:
             result, errors = NewReviewSchema().validate(defaults, self.dbsession)
@@ -209,7 +207,7 @@ class ProposalController(SecureController, View, Update):
                 if c.next_review_id:
                     return redirect_to(action='review', id=c.next_review_id)
 
-                return redirect_to(action='index')
+                return redirect_to('/proposal/review_index')
 
         c.streams = self.dbsession.query(Stream).all()
 
