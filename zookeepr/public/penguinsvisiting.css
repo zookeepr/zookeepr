@@ -716,3 +716,7 @@ tt {
                 padding-left: 0;
         }
 
+p.warningbox {
+	background-color: #FFCC00;
+	padding: 15px 15px 15px 15px;
+}
