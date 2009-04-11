@@ -6,10 +6,35 @@ import sha
 from zookeepr.lib.base import *
 from zookeepr.lib.auth import *
 from zookeepr.lib.crud import *
+from zookeepr.lib.validators import *
+from formencode import validators, variabledecode, ForEach
 
 from zookeepr.config.lca_info import lca_info
 
-class InvoiceController(SecureController, Read, List):
+from zookeepr.model.billing import ProductCategory, Product, Voucher
+
+#TODO: Fix validation on new pylons merge
+
+class InvoiceItemValidator(BaseSchema):
+    product = ProductValidator()
+    qty = BoundedInt(min=1)
+    cost = BoundedInt(min=1)
+    description = validators.String(not_empty=False)
+    
+    chained_validators = [InvoiceItemProductDescription()]
+        
+class InvoiceSchema(BaseSchema):
+    person = ExistingPersonValidator(not_empty=True)
+    due_date = validators.DateConverter(month_style='dd/mm/yy')
+    items = ForEach(InvoiceItemValidator())
+
+    item_count = validators.Int()
+
+class NewInvoiceSchema(BaseSchema):
+    invoice = InvoiceSchema()
+    pre_validators = [variabledecode.NestedVariables]
+
+class InvoiceController(SecureController, Read, List, Create):
     model = model.Invoice
     individual = 'invoice'
     permissions = {'view': [AuthFunc('is_payee'), AuthRole('organiser')],
@@ -18,7 +43,11 @@ class InvoiceController(SecureController, Read, List):
                    'remind': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'pdf': [AuthFunc('is_payee'), AuthRole('organiser')],
+                   'new': True
                    }
+
+    schemas = {'new': NewInvoiceSchema()
+            }
 
     def is_payee(self):
         return c.signed_in_person == self.obj.person
@@ -113,3 +142,45 @@ class InvoiceController(SecureController, Read, List):
         res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
                                                            % c.invoice.id )
         return res
+        
+    def new(self):
+        errors = {}
+        defaults = dict(request.POST)
+        c.product_categories = self.dbsession.query(ProductCategory).all()
+
+        c.item_count = 1
+        if request.method == 'POST' and defaults:
+            result, errors = self.schemas['new'].validate(defaults, self.dbsession)
+            c.item_count = int(defaults['invoice.item_count'])
+            if not errors:
+                values = result['invoice']
+                items = values['items']
+                del(values['items'], values['item_count'])
+                values['items'] = []
+
+                for i in items:
+                    item = model.InvoiceItem()
+                    if i['description'] != "":
+                        item.description = i['description']
+                    else:
+                        item.product = i['product']
+                        item.description = i['product'].description
+                    item.cost = i['cost']
+                    item.qty = i['qty']
+                    values['items'].append(item)
+                
+                invoice = model.Invoice()
+                for k in values:
+                    setattr(invoice, k, values[k])
+                invoice.manual = True
+                invoice.void = False
+               
+                self.dbsession.save(invoice)
+                self.dbsession.flush()
+                
+                return redirect_to(controller='invoice', action='view', id=invoice.id)
+
+        return render_response("invoice/new.myt",
+                               defaults=defaults, errors=errors)
+                               
+                               
