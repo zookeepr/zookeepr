@@ -412,7 +412,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
         # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
-            if self._product_available(rproduct.product):Product " + ii.product.description + " is no longer available
+            if self._product_available(rproduct.product):
                 ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until()
@@ -635,7 +635,7 @@ class RegistrationController(SecureController, Update, List, Read):
                 registration_list = self.dbsession.query(self.model).all()
                 for registration in registration_list:
                     append = False
-                    if registration.person.paid() and not registration.person.badge_printed:
+                    if registration.person.has_paid_ticket() and not registration.person.badge_printed:
                         if defaults['type'] == 'all':
                             append = True
                         else:

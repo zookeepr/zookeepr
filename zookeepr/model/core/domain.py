@@ -111,6 +111,14 @@ class Person(object):
                 return invoice
         return None
 
+    def has_paid_ticket(self):
+        for invoice in self.invoices:
+            if invoice.paid() and not invoice.is_void():
+                for item in invoice.items:
+                    if item.product is not None and item.product.category.name == 'Ticket':
+                        return True
+        return False
+
     def paid(self):
         status = False
         for invoice in self.invoices:
