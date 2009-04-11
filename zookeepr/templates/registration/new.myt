@@ -53,8 +53,6 @@ if not defaults:
 
     defaults = {'person.country': 'Australia',
         'registration.checkout': '24',
-        'registration.lasignup': '1',
-        'registration.announcesignup': '1',
         'registration.dinner': '0',
         'registration.speaker_record': '1',
         'registration.speaker_video_release': '1',
