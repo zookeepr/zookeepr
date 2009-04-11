@@ -327,7 +327,7 @@ class ProposalController(SecureController, View, Update):
         for aat in c.accommodation_assistance_types:
             stuff = self.dbsession.query(Proposal).filter(Proposal.c.accommodation_assistance_type_id==aat.id).all()
             setattr(c, '%s_collection' % aat.name, stuff)
-        for at in c.travel_assistance_types:
+        for tat in c.travel_assistance_types:
             stuff = self.dbsession.query(Proposal).filter(Proposal.c.travel_assistance_type_id==tat.id).all()
             setattr(c, '%s_collection' % tat.name, stuff)
 
