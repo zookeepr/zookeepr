@@ -18,7 +18,7 @@ from zookeepr.model.billing import ProductCategory, Product, Voucher
 class InvoiceItemValidator(BaseSchema):
     product = ProductValidator()
     qty = BoundedInt(min=1)
-    cost = BoundedInt(min=1)
+    cost = BoundedInt()
     description = validators.String(not_empty=False)
     
     chained_validators = [InvoiceItemProductDescription()]

@@ -192,7 +192,12 @@ class ExistingRegistrationValidator(validators.FancyValidator):
 
 class ExistingPersonValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        person = state.query(Person).filter_by(id=value).first()
+        try:
+            pid = int(value)
+        except:
+            raise Invalid("Please enter a person ID.", value, state)
+    
+        person = state.query(Person).filter_by(id=pid).first()
         if person is None:
             raise Invalid("Unknown person ID.", value, state)
         else:
