@@ -3,6 +3,8 @@ import sqlalchemy as sa
 
 from meta import Base
 
+from pylons.controllers.util import abort
+
 from role import Role
 from person_role_map import person_role_map
 
@@ -165,18 +167,26 @@ class Person(Base):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 
     @classmethod
-    def find_by_email(cls, email):
-        return Session.query(Person).filter_by(email_address=email.lower()).first()
+    def find_by_email(cls, email, abort_404 = True):
+        result = Session.query(Person).filter_by(email_address=email.lower()).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
 
     @classmethod
-    def find_by_id(cls, id):
-        return Session.query(Person).filter_by(id=id).first()
-
+    def find_by_id(cls, id, abort_404 = True):
+        result = Session.query(Person).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
+        
     @classmethod
     def find_all(cls):
         return Session.query(Person).order_by(Person.id).all()
 
     @classmethod
-    def find_by_url_hash(cls, url_hash):
-        return Session.query(Person).filter_by(url_hash=url_hash).first()
-
+    def find_by_url_hash(cls, url_hash, abort_404 = True):
+        result = Session.query(Person).filter_by(url_hash=url_hash).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result

@@ -1,7 +1,7 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, ProposalType, Stream, AccommodationAssistanceType, TravelAssistanceType
+from zookeepr.model import Person, ProposalType, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType
 
 from zookeepr.config.lca_info import lca_info
 
@@ -11,7 +11,6 @@ import cgi
 class BaseSchema(formencode.Schema):
     allow_extra_fields = True
     filter_extra_fields = True
-
 
 #import re
 #
@@ -59,10 +58,11 @@ class BaseSchema(formencode.Schema):
 #    def _to_python(self, value, state):
 #        return Person.get(value)
 #
-#class DbContentTypeValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        return state.query(DBContentType).get(value)
-#
+
+class DbContentTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return DbContentType.find_by_id(value)
+
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return ProposalType.find_by_id(value)

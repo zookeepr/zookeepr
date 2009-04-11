@@ -1,7 +1,7 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
+from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -164,8 +164,6 @@ class ProposalController(BaseController):
     def review(self, id):
         c.streams = Stream.find_all()
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         return render('proposal/review.mako')
 
@@ -175,8 +173,6 @@ class ProposalController(BaseController):
         """Review a proposal.
         """
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
 
         # Move to model
@@ -249,8 +245,6 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         person_results = self.form_result['attachment']
         attachment = Attachment(**person_results)
@@ -272,8 +266,6 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         return render('proposal/view.mako')
 
@@ -286,8 +278,6 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         c.person = c.proposal.people[0]
         for person in c.proposal.people:
@@ -320,10 +310,7 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
-
-
+     
         for key in self.form_result['person']:
             setattr(c.person, key, self.form_result['person'][key])
 
