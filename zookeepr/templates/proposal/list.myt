@@ -40,14 +40,14 @@
 %     #endfor
     </td>
     <td>
-%     if s.accepted == None:
+%     if s.status.name == 'Pending':
         <p><i>Undergoing review</i></p>
 %     elif s.accepted:
         <p>Accepted</p>
 %     else:
 %       declined = True
         <p>Declined<sup>[1]</sup></p>
-%     #endif    
+%     #endif
     </td>
     <td><% h.link_to("edit", url=h.url(controller='proposal', action='edit', id=s.id)) %></td>
   </tr>
