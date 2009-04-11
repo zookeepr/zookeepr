@@ -252,7 +252,7 @@ class PersonController(BaseController): #Read, Update, List
         See ``cfp.py`` for more person creation code.
         """
         if h.signed_in_person():
-            h.flash('You're already logged in')
+            h.flash("You're already logged in")
             redirect_to('home')
 
         defaults = {
