@@ -70,7 +70,7 @@ class ProductCategory(object):
         self.min_qty = min_qty
         self.max_qty = max_qty
 
-    def __reprt__(self):
+    def __repr__(self):
         return '<ProductCategory id=%r name=%r description=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.display, self.min_qty, self.max_qty)
 
     def available_products(self, person, stock=True):
@@ -101,74 +101,6 @@ class ProductInclude(object):
 
     def __repr__(self):
         return '<ProductInclude product_id=%r include_product_id=%r include_qty=%r>' % (self.product_id, self.include_product_id, self.include_qty)
-
-class Product(object):
-    def __init__(self, active=False, description=None, cost=None, auth=None, validate=None):
-        self.active = active
-        self.description = description
-        self.cost = cost
-        self.auth = auth
-        self.validate = validate
-
-    def __repr__(self):
-        return '<Product id=%r active=%r description=%r cost=%r auth=%r validate%r>' % (self.id, self.active, self.description, self.cost, self.auth, self.validate)
-
-    def qty_sold(self):
-        qty = 0
-        for ii in self.invoice_items:
-            if not ii.invoice.void and ii.invoice.paid():
-                if self.category.name == 'Accomodation':
-                    qty += 1
-                else:
-                    qty += ii.qty
-        return qty
-
-    def qty_invoiced(self, date=True):
-        # date: bool? only count items that are not overdue
-        qty = 0
-        for ii in self.invoice_items:
-            # also count sold items as invoiced since they are valid
-            if not ii.invoice.void and ((ii.invoice.paid() or not ii.invoice.overdue() or not date)):
-                if self.category.name == 'Accomodation':
-                    qty += 1
-                else:
-                    qty += ii.qty
-        return qty
-
-    def remaining(self):
-        max_ceiling = None
-        for c in self.ceilings:
-            if c.remaining() > max_ceiling:
-                max_ceiling = c.remaining
-        return max_ceiling
-
-    def available(self, stock=True):
-    # bool stock: care about if the product is in stock (ie sold out?)
-        if self.active:
-           for c in self.ceilings:
-                if not c.available(stock):
-                    return False
-           return True
-        else:
-            return False
-
-    def can_i_sell(self, person, qty):
-        if not self.available():
-            return False
-        if not self.category.can_i_sell(person, qty):
-            return False
-        for c in self.ceiling:
-            if not c.can_i_sell(qty):
-                return False
-        return True
-
-    def available_until(self):
-        until = []
-        for ceiling in self.ceilings:
-            if ceiling.available_until != None:
-                until.append(ceiling.available_until)
-        if len(until) > 0:
-            return max(until)
 
 class InvoiceItem(object):
     def __init__(self, description=None, qty=None, cost=None):
