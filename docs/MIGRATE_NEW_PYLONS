@@ -24,7 +24,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-#from zookeepr.model import # Add moels here
+#from zookeepr.model import # Add models here
 
 from zookeepr.config.lca_info import lca_info
 
@@ -44,7 +44,7 @@ change it to
   eg view, edit and index
   If these actions don't exist in the controller then use the examples from controllers/person.py
   and paste them in. (No hidden code!!)
-  Remove the comment once done
+  Remove the comment besides the class name once done
 
 * Remove the lines like
 
@@ -140,7 +140,7 @@ instead you should use
 
         See ``cfp.py`` for more person creation code.
         """
-        if c.signed_in_person:
+        if h.signed_in_person():
             return render('/person/already_loggedin.mako')
 
         defaults = { 
@@ -199,8 +199,15 @@ methods like view ect which take an id should be def view(self, id): not def vie
 
     %s/textfield/text
 
-    
+    <& form.myt &>  ->  <%include file="form.mako" />
 
+    If you see something like this, get rid of it:
+
+      <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+
+    (and its matching </&>)
+
+    If you see a <%args>...</%args> with only defaults and errors, it can go away
 
 
 
