@@ -62,7 +62,7 @@ if not defaults:
         'registration.distro': '',
         'registration.silly_description': desc,
         'registration.silly_description_checksum': descChecksum,
-        'registration.signup.la': 1,
+        'registration.signup.linuxaustralia': 1,
         'registration.signup.announce': 1,
     }
     if c.signed_in_person:
