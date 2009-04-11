@@ -87,7 +87,7 @@
       </tr></thead>
 % for product in c.ceiling.products:
 %   for invoice_item in product.invoice_items:
-%        if not invoice_item.invoice.void and not invoice_item.invoice.paid():
+%        if not invoice_item.invoice.is_void() and not invoice_item.invoice.paid():
       <tr>
         <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
         <td><% h.link_to(invoice_item.invoice.person.firstname + ' ' + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>
@@ -111,7 +111,7 @@
       </tr></thead>
 % for product in c.ceiling.products:
 %   for invoice_item in product.invoice_items:
-%        if not invoice_item.invoice.paid() and invoice_item.invoice.void:
+%        if not invoice_item.invoice.paid() and invoice_item.invoice.is_void():
       <tr>
         <td><% h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url(controller='invoice', action='view', id=invoice_item.invoice.id)) %></td>
         <td><% h.link_to(invoice_item.invoice.person.firstname + ' ' + invoice_item.invoice.person.lastname, h.url(controller='person', action='view', id=invoice_item.invoice.person.id)) %></td>

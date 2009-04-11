@@ -1,3 +1,4 @@
+    <p><% h.link_to('Create new (manual) Invoice', h.url(action='add')) %></p>
     <table>
       <tr>
         <th>rego</th>
@@ -6,6 +7,7 @@
         <th>person</th>
         <th>amount</th>
         <th>status</th>
+        <th>manual</th>
         <th>payment(s)</th>
       </tr>
 % for i in c.invoice_collection:
@@ -21,7 +23,15 @@
         </td>
         <td><% h.link_to(m.apply_escapes(i.person.firstname + ' ' + i.person.lastname, 'h'), h.url(controller='person', action='view', id=i.person.id)) %></td>
         <td align="right"><% "$%.2f" % (i.total()/100.0) %></td>
-        <td><% i.status() %></td>
+        <td><% i.status() %>
+%   if i.status() == 'Unpaid':
+            <span style="font-size: smaller;">(<% h.link_to('Void', h.url(action="void", id=i.id)) %>)</span>
+%   #endif
+%   if i.status() == 'Invalid':
+            <span style="font-size: smaller;">(<% h.link_to('Unvoid', h.url(action="unvoid", id=i.id)) %>)</span>
+%   #endif        
+        </td>
+        <td><% h.yesno(i.manual) %></td>
         <td>
 %   if i.good_payments:
 %       for p in i.good_payments:

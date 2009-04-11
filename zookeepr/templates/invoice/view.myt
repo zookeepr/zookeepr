@@ -12,6 +12,12 @@
 
     <h1>Tax Invoice/Statement</h1>
 
+% if c.invoice.is_void():
+%   invalid = " invoice_invalid"
+% else:
+%   invalid = ""
+% #endif
+<div class="invoice<% invalid %>">
     <div style="text-align:center">
       <h2>Linux Australia Incorporated</h2>
       <p>ABN 56 987 117 479</p>
@@ -65,11 +71,11 @@
       </tr>
     </table>
     
-% if not c.invoice.void and c.invoice.paid():
+% if not c.invoice.is_void() and c.invoice.paid():
         <p class="pay_button">Invoice has been paid.</p>
 % elif c.invoice.bad_payments:
         <p class="pay_button">Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a></p>
-% elif not c.invoice.void and not c.invoice.paid():
+% elif not c.invoice.is_void() and not c.invoice.paid():
         <p class="pay_button"><% h.link_to('Pay this invoice', url = h.url(action='pay')) %></p>
 % #endif    
     <p>Further information on your registration is available at: <% h.link_to('http://' + h.host_name() + h.url(controller='registration', action='status')(), h.url(controller='registration', action='status')) %></p>
@@ -92,6 +98,7 @@
         Fax: <% h.lca_info['event_fax_number'] %><br>
       </p>
     </div>
+</div>
 % if c.printable:
   </body>
 </html>
@@ -103,11 +110,11 @@
         <li><% h.link_to('Registration status', url=h.url(controller='registration', action='status')) %></li>
         <li><% h.link_to('Printable version', url=h.url(action='printable')) %></li>
         <li><% h.link_to('PDF version', url=h.url(action='pdf')) %></li>
-% if not c.invoice.void and c.invoice.paid():
+% if not c.invoice.is_void() and c.invoice.paid():
         <li>Invoice has been paid.</li>
 % elif c.invoice.bad_payments:
         <li>Invalid payments have been applied to this invoice, please email <% h.contact_email('the organising committee') %></a></li>
-% elif not c.invoice.void and not c.invoice.paid():
+% elif not c.invoice.is_void() and not c.invoice.paid():
         <li><% h.link_to('Pay this invoice', url = h.url(action='pay')) %></li>
         <li>
           <% h.link_to('Regenerate invoice', url = h.url(controller='registration', action='pay', id=c.invoice.person.registration.id)) %>

@@ -746,3 +746,8 @@
 	{
 		border-right: 1px dotted #AFAFFF;
 	}
+	
+	.invoice_invalid
+	{
+		background: url('invalid.png');
+	}
