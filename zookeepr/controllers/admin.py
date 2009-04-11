@@ -45,7 +45,7 @@ class AdminController(SecureController):
           ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
           ('/registration/generate_badges', '''Generate one or many Badges. [Registrations]'''),
-          
+
            #('/accommodation', ''' [accom] '''),
            #('/voucher_code', ''' Voucher codes [rego] '''),
            #('/invoice/remind', ''' '''),
@@ -161,9 +161,9 @@ class AdminController(SecureController):
                               'Friday':    (152, 46 , 145, 72 , 217)
                            }
                          }
-        
+
         sql_execute("UPDATE proposal SET theatre = NULL, scheduled = NULL, accepted = FALSE") # set all talks to unaccepted to start
-        
+
         timestamp = {'Monday':    '2010-01-20',
                      'Tuesday':   '2010-01-21',
                      'Wednesday': '2010-01-22',
@@ -404,7 +404,7 @@ class AdminController(SecureController):
                     else:
                       res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
                                p.valid_invoice().id, p.valid_invoice().total()/100.0) )
-                    
+
                     shirt = ''
                     for item in p.valid_invoice().items:
                         if ((item.description.lower().find('shirt') is not -1) and (item.description.lower().find('discount') is -1)):
@@ -487,7 +487,7 @@ class AdminController(SecureController):
             zk[t].append(p)
           else:
             zk[t] = [p]
-          
+
         zk_fields =  ('InvoiceID', 'TransID', 'Amount', 'AuthNum',
                                 'Status', 'result', 'HTTP_X_FORWARDED_FOR')
 
@@ -515,17 +515,56 @@ class AdminController(SecureController):
         c.text = """<p>People who ticked "I want to sign up for (free) Linux
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
-        
+
         query = """SELECT person.firstname, person.lastname, 
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
                    FROM person
                    LEFT JOIN registration ON (person.id = registration.person_id)
-                   WHERE registration.lasignup = True
+                   WHERE registration.signup LIKE '%linuxaustralia%'
                 """
 
         return sql_response(query)
+
+    def nzoss_signup(self):
+        """ People who ticked "I want to sign up for New Zealand Open Source Society
+        membership!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up for (free) Linux
+        Australia membership!" (whether or not they then went on to pay for
+        the conference).</p>"""
+
+        query = """SELECT person.firstname, person.lastname, 
+                    person.address1, person.address2, person.city, person.state, person.postcode, person.country,
+                    person.phone, person.mobile, person.company,
+                    registration.creation_timestamp
+                   FROM person
+                   LEFT JOIN registration ON (person.id = registration.person_id)
+                   WHERE registration.signup LIKE '%nzoss%'
+                """
+
+        return sql_response(query)
+
+    def internetnz_signup(self):
+        """ People who ticked "I want to sign up for Internet NZ
+        membership!" [Mailing Lists] """
+
+        c.text = """<p>People who ticked "I want to sign up for (free) Linux
+        Australia membership!" (whether or not they then went on to pay for
+        the conference).</p>"""
+
+        query = """SELECT person.firstname, person.lastname, 
+                    person.address1, person.address2, person.city, person.state, person.postcode, person.country,
+                    person.phone, person.mobile, person.company,
+                    registration.creation_timestamp
+                   FROM person
+                   LEFT JOIN registration ON (person.id = registration.person_id)
+                   WHERE registration.signup LIKE '%internetnz%'
+                """
+
+        return sql_response(query)
+
 
     def lca_announce_signup(self):
         """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
@@ -536,9 +575,7 @@ class AdminController(SecureController):
         <p><textarea cols="100" rows="25">"""
 
         count = 0
-        for r in self.dbsession.query(Registration).all():
-            if not r.announcesignup:
-                continue
+        for r in self.dbsession.query(Registration).filter(Registration.signup.like("%announce%")).all():
             p = r.person
             c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
             count += 1
@@ -555,9 +592,7 @@ class AdminController(SecureController):
         <p><textarea cols="100" rows="25">"""
 
         count = 0
-        for r in self.dbsession.query(Registration).all():
-            if not r.delegatesignup:
-                continue
+        for r in self.dbsession.query(Registration).filter(Registration.signup.like('%chat%')).all():
             p = r.person
             c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
             count += 1
@@ -594,7 +629,7 @@ class AdminController(SecureController):
         """ Listing of speakers and their partner details [Speakers] """
         c.columns = ['Speaker', 'e-mail', 'Partner Programme', 'Penguin Dinner']
         c.data = []
-        
+
         total_partners = 0
         total_dinner = 0
         speakers_count = 0
@@ -626,8 +661,8 @@ class AdminController(SecureController):
                     LEFT JOIN person_proposal_map ON (person_proposal_map.proposal_id = proposal.id)
                     LEFT JOIN person ON (person_proposal_map.person_id = person.id)
                     LEFT JOIN proposal_type ON (proposal_type.id = proposal.proposal_type_id)
-                    WHERE proposal.accepted = True  
-                    ORDER BY proposal_type.name, proposal.scheduled, proposal.title      
+                    WHERE proposal.accepted = True
+                    ORDER BY proposal_type.name, proposal.scheduled, proposal.title
         """
         return sql_response(query)
 
@@ -661,12 +696,12 @@ class AdminController(SecureController):
                                    invoice_item.invoice.person.registration.checkout
                                  ])
         return render_response('admin/table.myt')
-        
+
     def planet_lca(self):
         """ List of blog RSS feeds, planet compatible. [Mailing Lists] """
         c.text = """<p>List of RSS feeds for LCA planet.</p>
         <p><textarea cols="100" rows="25">"""
-        
+
         count = 0
         for r in self.dbsession.query(Registration).filter(Registration.planetfeed != '').all():
             p = r.person
@@ -725,10 +760,10 @@ class AdminController(SecureController):
         registration_list = self.dbsession.query(Registration).join('person').filter(Registration.keyid != None).filter(Registration.keyid != '').order_by(Person.lastname).all()
         key_list = list()
         for registration in registration_list:
-            if registration.person.paid():
+            if registration.person.has_paid_ticket():
                 key_list.append(registration.keyid)
         return key_list
-        
+
     def rego_desk_list(self):
         """ List of people who have not checked in (see checkins table). [Registrations] """
         import zookeepr.model
@@ -738,7 +773,7 @@ class AdminController(SecureController):
         c.columns = ['ID', 'Name', 'Type', 'Shirts', 'Dinner Tickets', 'Partners Programme']
         c.data = []
         for registration in registration_list:
-            if (registration.person.id not in [id[0] for id in checkedin_list]) and registration.person.paid():
+            if (registration.person.id not in [id[0] for id in checkedin_list]) and registration.person.has_paid_ticket():
                 shirts = []
                 dinner_tickets = 0
                 ticket_types = []
@@ -764,7 +799,7 @@ class AdminController(SecureController):
                                ", ".join(partners_programme)])
 
         return render_response('admin/table.myt')
-        
+
     def miniconf_preferences(self):
         """ Preferred miniconfs. All people - including unpaid [Statistics] """
         registration_list = self.dbsession.query(Registration).all()
@@ -836,7 +871,7 @@ class AdminController(SecureController):
         """ Registered and paid people by country [Statistics] """
         data = {}
         for registration in self.dbsession.query(Registration).all():
-            if registration.person.paid():
+            if registration.person.has_paid_ticket():
                 country = registration.person.country.capitalize()
                 data[country] = data.get(country, 0) + 1
         c.data = data.items()
@@ -849,12 +884,12 @@ class AdminController(SecureController):
             '|'.join([label for (label, count) in c.data]),
         )
         return render_response('admin/table.myt')
-     
+
     def people_by_state(self):
         """ Registered and paid people by state - Australia Only [Statistics] """
         data = {}
         for registration in self.dbsession.query(Registration).all():
-            if registration.person.paid() and registration.person.country == "Australia":
+            if registration.person.has_paid_ticket() and registration.person.country == "Australia":
                 state = registration.person.state.capitalize()
                 data[state] = data.get(state, 0) + 1
         c.data = data.items()
@@ -867,7 +902,7 @@ class AdminController(SecureController):
             '|'.join([label for (label, count) in c.data]),
         )
         return render_response('admin/table.myt')
-     
+
     def favourite_distro(self):
         """ Statistics on favourite distros. All people - including unpaid [Statistics] """
         data = {}
@@ -884,7 +919,7 @@ class AdminController(SecureController):
             '|'.join([label for (label, count) in c.data]),
         )
         return render_response('admin/table.myt')
-            
+
     def favourite_editor(self):
         """ Statistics on favourite editors. All people - including unpaid [Statistics] """
         data = {}
@@ -901,7 +936,7 @@ class AdminController(SecureController):
             '|'.join([label for (label, count) in c.data]),
         )
         return render_response('admin/table.myt')
-        
+
     def favourite_shell(self):
         """ Statistics on favourite shells. All people - including unpaid [Statistics] """
         data = {}
