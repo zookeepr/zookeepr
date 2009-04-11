@@ -43,7 +43,9 @@ class InvoiceController(SecureController, Read, List, Create):
                    'remind': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'pdf': [AuthFunc('is_payee'), AuthRole('organiser')],
-                   'new': [AuthRole('organiser')]
+                   'new': [AuthRole('organiser')],
+                   'void': [AuthRole('organiser')],
+                   'unvoid': [AuthRole('organiser')],
                    }
 
     schemas = {'new': NewInvoiceSchema()
@@ -62,7 +64,7 @@ class InvoiceController(SecureController, Read, List, Create):
             if c.invoice.paid() or c.invoice.bad_payments:
                 return render_response('invoice/already.myt')
 
-        if c.invoice.void:
+        if c.invoice.is_void():
             return render_response('invoice/invalid.myt')
         if c.invoice.overdue():
             for ii in c.invoice.items:
@@ -148,7 +150,16 @@ class InvoiceController(SecureController, Read, List, Create):
 
 		# We should really remove the pdf file, shouldn't we.
         return res
-        
+
+    def void(self, id):
+        c.invoice.void = "Administration Change"
+        return redirect_to(controller='invoice', action='view', id=c.invoice.id)
+
+    def unvoid(self, id):
+        c.invoice.void = None
+        c.invoice.manual = True
+        return redirect_to(controller='invoice', action='view', id=c.invoice.id)
+
     def new(self):
         errors = {}
         defaults = dict(request.POST)
@@ -179,7 +190,7 @@ class InvoiceController(SecureController, Read, List, Create):
                 for k in values:
                     setattr(invoice, k, values[k])
                 invoice.manual = True
-                invoice.void = False
+                invoice.void = None
                
                 self.dbsession.save(invoice)
                 self.dbsession.flush()

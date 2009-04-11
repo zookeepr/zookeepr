@@ -567,7 +567,7 @@ class AdminController(SecureController):
         query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
                     LEFT JOIN invoice ON (invoice.person_id = person.id)
                     LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
-                    WHERE invoice_item.product_id = 28 AND invoice.void = FALSE"""
+                    WHERE invoice_item.product_id = 28 AND invoice.void = NULL"""
         return sql_response(query)
 
     def accom_uni_registers(self):
@@ -577,7 +577,7 @@ class AdminController(SecureController):
         c.data = []
         for item in uni_list:
             for invoice_item in item.invoice_items:
-                if invoice_item.invoice.paid() and not invoice_item.invoice.void:
+                if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
                     c.data.append([item.description, 
                                    invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
                                    invoice_item.invoice.person.email_address, 
@@ -634,7 +634,7 @@ class AdminController(SecureController):
         c.columns = ['Item', 'Price', 'Qty', 'Amount']
         c.data = []
         for item in item_list:
-            if item.invoice.paid() and not item.invoice.void:
+            if item.invoice.paid() and not item.invoice.is_void():
                 c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
                 total += item.total()
         c.data.append(['','','Total:', h.number_to_currency(total/100)])
@@ -648,7 +648,7 @@ class AdminController(SecureController):
         c.data = []
         for item in partners_list:
             for invoice_item in item.invoice_items:
-                if invoice_item.invoice.paid() and not invoice_item.invoice.void:
+                if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
                     c.data.append([item.description, 
                                    invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
                                    invoice_item.invoice.person.email_address, 
@@ -740,7 +740,7 @@ class AdminController(SecureController):
                 ticket_types = []
                 partners_programme = []
                 for invoice in registration.person.invoices:
-                    if invoice.paid() and not invoice.void:
+                    if invoice.paid() and not invoice.is_void():
                         for item in invoice.items:
                             if item.description.lower().startswith("discount"):
                                 pass

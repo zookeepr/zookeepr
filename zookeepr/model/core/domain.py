@@ -109,14 +109,14 @@ class Person(object):
 
     def valid_invoice(self):
         for invoice in self.invoices:
-            if not invoice.void and not invoice.manual:
+            if not invoice.is_void() and not invoice.manual:
                 return invoice
         return None
 
     def paid(self):
         status = False
         for invoice in self.invoices:
-            if not invoice.void:
+            if not invoice.is_void():
                 if invoice.paid():
                     status = True
                 else:
