@@ -373,7 +373,7 @@ class AdminController(SecureController):
         shirt_totals = {}
         c.data = []
         c.noescape = True
-        cons_list = ('speaker_record', 'speaker_video_release', 'speaker_slides_release')
+        cons_list = ('video_release', 'slides_release')
         speaker_list = []
         for p in self.dbsession.query(Person).all():
             if not p.is_speaker(): continue
@@ -418,14 +418,17 @@ class AdminController(SecureController):
                 res.append('No Invoice')
                 res.append('-')
 
-              cons = [con.replace('_', ' ') for con in cons_list
-                                           if getattr(p.registration, con)] 
-              if len(cons)==3:
-                res.append('Release All')
-              elif len(cons)==0:
-                res.append('None')
-              else:
-                res.append(' and '.join(cons))
+              consents = []
+              for t in talks:
+                  cons = [con.replace('_', ' ') for con in cons_list
+                                               if getattr(p.registration, con)] 
+                  if len(cons)==lend(cons_list):
+                    consents.append('Release All')
+                  elif len(cons)==0:
+                    consents.append('None')
+                  else:
+                    consents.append(' and '.join(cons))
+              res.append(';'.join(consents))
 
               res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
               if p.registration.diet:

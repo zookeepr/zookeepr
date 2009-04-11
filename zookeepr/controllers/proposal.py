@@ -36,6 +36,8 @@ class ProposalSchema(schema.Schema):
     project = validators.String()
     url = validators.String()
     abstract_video_url = validators.String()
+    video_release = validators.Bool()
+    slides_release = validators.Bool()
 
 class MiniProposalSchema(BaseSchema):
     title = validators.String(not_empty=True)

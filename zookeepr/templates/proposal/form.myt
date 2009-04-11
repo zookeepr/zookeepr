@@ -96,6 +96,18 @@
     <p class="entries"><% h.textarea('person.experience', size="70x6") %></p>
     <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your mini-confs and presentations.</p>
 
+    <p class="entries">
+      <% h.check_box('proposal.video_release') %>
+      <label for="proposal.video_release">I allow Linux Australia to
+      release my video under the Creative Commons ShareAlike License</label>
+    </p>
+
+    <p class="entries">
+      <% h.check_box('proposal.slides_release') %>
+      <label for="proposal.slides_release">I allow Linux Australia to share my slides</label>
+    </p>
+
+
     <p>&nbsp;</p>
     <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
     <p class="note"><span class="publishable">&#8224;</span> - Will be published (if your presentation is accepted)</p>

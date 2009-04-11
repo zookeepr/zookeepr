@@ -157,14 +157,4 @@
           This involves video­taping your talk, and offering the video/audio and slides
           (for download, or on CD­ROM).</p>
 
-          <p><% h.yesno(c.registration.speaker_record) %> I allow Linux Australia to record my presentation</p>
-
-          <p><% h.yesno(c.registration.speaker_video_release) %> I allow Linux Australia to release my video under the Creative Commons ShareAlike License</p>
-
-          <p><% h.yesno(c.registration.speaker_slides_release) %> I allow Linux Australia to share my slides</p>
-
-          <p>If you have allowed Linux Australia to publish your slides, there will
-          be an upload mechanism closer to the conference. We will publish them under
-          the Creative Commons Attribution License unless you have an equivalent
-          preference that you let us know.</p>
 % #endif
