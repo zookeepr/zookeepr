@@ -354,18 +354,28 @@
             <h2>Subscriptions</h2>
 
             <p class="entries">
-              <% h.check_box('registration.lasignup') %>
-              <label for="registration.lasignup">I want to sign up for (free) Linux Australia membership!</label>
+              <% h.check_box('registration.signup.la') %>
+              <label for="registration.signup.la">I want to sign up for (free) Linux Australia membership!</label> <a href="http://www.linux.org.au/">Read More</a>
             </p>
 
             <p class="entries">
-              <% h.check_box('registration.announcesignup') %>
-              <label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
+              <% h.check_box('registration.signup.nzoss') %>
+              <label for="registration.signup.nzoss">I want to sign up for membership with the New Zealand Open Source Society.</label> <a href="http://nzoss.org.nz/nzoss/about">Read More</a>
             </p>
 
             <p class="entries">
-              <% h.check_box('registration.delegatesignup') %>
-              <label for="registration.delegatesignup">I want to sign up to the conference attendees mailing list!</label>
+              <% h.check_box('registration.signup.internetnz') %>
+              <label for="registration.signup.internetnz">I want to sign up for membership with Internet NZ.</label> <a href="http://www.internetnz.org.nz/membership">Read More</a>
+            </p>
+
+            <p class="entries">
+              <% h.check_box('registration.signup.announce') %>
+              <label for="registration.signup.announce">I want to sign up to the low traffic conference announcement mailing list!</label>
+            </p>
+
+            <p class="entries">
+              <% h.check_box('registration.signup.chat') %>
+              <label for="registration.signup.chat">I want to sign up to the conference attendees mailing list!</label>
             </p>
           </fieldset>
 

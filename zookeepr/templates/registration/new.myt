@@ -62,6 +62,8 @@ if not defaults:
         'registration.distro': '',
         'registration.silly_description': desc,
         'registration.silly_description_checksum': descChecksum,
+        'registration.signup.la': 1,
+        'registration.signup.announce': 1,
     }
     if c.signed_in_person:
         for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:

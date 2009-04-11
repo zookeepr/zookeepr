@@ -84,6 +84,9 @@ if not defaults:
     if c.registration.prevlca:
         for p in c.registration.prevlca:
             defaults['registration.prevlca.' + p] = 1
+    if c.registration.signup:
+        for s in c.registration.signup:
+            defaults['registration.signup.' + s] = 1
 
 </%init>
 <%method extra_head>
