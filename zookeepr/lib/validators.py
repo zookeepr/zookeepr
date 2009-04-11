@@ -9,7 +9,8 @@ import cgi
 
 
 class BaseSchema(formencode.Schema):
-    allow_extra_fields = False
+    allow_extra_fields = True
+    filter_extra_fields = True
 
 #import re
 #

@@ -1,2 +1,2 @@
 <p><label for="role.name">Name:</label><br>
-<% h.textfield('role.name') %></p>
+${ h.text('role.name') }</p>

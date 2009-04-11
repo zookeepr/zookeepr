@@ -1,31 +1,115 @@
-from formencode import validators, compound, variabledecode
-from formencode.schema import Schema
+import logging
 
-from zookeepr.lib.auth import SecureController, AuthRole
-from zookeepr.lib.crud import View, Modify
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
 from zookeepr.model import Role
+
+from zookeepr.config.lca_info import lca_info
+
+log = logging.getLogger(__name__)
 
 class RoleSchema(BaseSchema):
     name = validators.PlainText()
 
 class NewRoleSchema(BaseSchema):
     role = RoleSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
 class EditRoleSchema(BaseSchema):
     role = RoleSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class RoleController(SecureController, View, Modify):
-    schemas = {"new" : NewRoleSchema(),
-               "edit" : EditRoleSchema()}
-    permissions = {"new": [AuthRole('organiser')],
-                   "view": [AuthRole('organiser')],
-                   "edit": [AuthRole('organiser')],
-                   "delete": [AuthRole('organiser')],
-                   "index": [AuthRole('organiser')],
-                   }
+class RoleController(BaseController): # Delete
+    @authorize(h.auth.has_organiser_role)
+    def __before__(self, **kwargs):
+        pass
 
-    model = Role
-    individual = 'role'
+    @dispatch_on(POST="_edit") 
+    def edit(self, id):
+        c.form = 'edit'
+        c.role = Role.find_by_id(id)
+        if c.role is None:
+            abort(404, "No such object")
+
+        defaults = h.object_to_defaults(c.role, 'role')
+
+        form = render('/role/edit.mako')
+        return htmlfill.render(form, defaults)
+
+
+    @validate(schema=EditRoleSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
+    def _edit(self, id):
+        c.role = Role.find_by_id(id)
+        if c.role is None:
+            abort(404, "No such object")
+
+        for key in self.form_result['role']:
+            setattr(c.role, key, self.form_result['role'][key])
+
+        # update the objects with the validated form data
+        meta.Session.commit()
+
+        redirect_to(action='view', id=id)
+
+
+    @dispatch_on(POST="_new") 
+    def new(self):
+        """Create a new role form. """
+        return render('/role/new.mako')
+
+    @validate(schema=NewRoleSchema(), form='new', post_only=False, on_get=True)
+    def _new(self):
+        """Create a new role submit.  """
+        results = self.form_result['role']
+        c.role = Role(**results)
+        meta.Session.add(c.role)
+        meta.Session.commit()
+
+        redirect_to('/role')
+
+    def index(self):
+        c.role_collection = Role.find_all()
+        return render('/role/list.mako')
+
+    def view(self, id):
+        c.registration_status = h.config['app_conf'].get('registration_status')
+        c.role = Role.find_by_id(id)
+        if c.role is None:
+            abort(404, "No such object")
+
+        return render('role/view.mako')
+
+    @dispatch_on(POST="_delete") 
+    def delete(self, id):
+        """Delete the proposal type
+
+        GET will return a form asking for approval.
+
+        POST requests will delete the item.
+        """
+        c.role = Role.find_by_id(id)
+        return render('role/confirm_delete.mako')
+
+    @validate(schema=None, form='delete', post_only=False, on_get=True, variable_decode=True)
+    def _delete(self, id):
+        c.role = Role.find_by_id(id)
+        meta.Session.delete(c.role)
+        meta.Session.commit()
+
+        redirect_to('index')

@@ -23,8 +23,12 @@ class Role(Base):
         return Session.query(Role).filter_by(name=name).first()
 
     @classmethod
+    def find_by_id(self, id):
+        return Session.query(Role).filter_by(id=id).first()
+
+    @classmethod
     def find_all(self):
-        return Session.query(Role).order_by(Role.name)
+        return Session.query(Role).order_by(Role.name).all()
 
     def __repr__(self):
         return '<Role id="%s" name="%s">' % (self.id, self.name)
