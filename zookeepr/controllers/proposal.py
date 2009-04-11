@@ -1,116 +1,125 @@
-from formencode import validators, compound, schema, variabledecode, Invalid
-from paste.deploy.converters import asbool
+import logging
 
-from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
-from zookeepr.lib.base import *
-from zookeepr.lib.mail import *
-from zookeepr.lib.crud import Update, View
-from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, PersonValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
-from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role, Person
-from zookeepr.controllers.person import PersonSchema
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
 
-import random
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+#from zookeepr.model import # Add moels here
 
 from zookeepr.config.lca_info import lca_info
-from zookeepr.lib.helpers import url
 
-class NewPersonSchema(PersonSchema):
-    experience = validators.String(not_empty=True)
-    bio = validators.String(not_empty=True)
-    url = validators.String()
-    mobile = validators.String(not_empty=True)
-
-class ExistingPersonSchema(schema.Schema):
-    experience = validators.String(not_empty=True)
-    bio = validators.String(not_empty=True)
-    url = validators.String()
-    mobile = validators.String(not_empty=True)
-
-class ProposalSchema(schema.Schema):
-    title = validators.String(not_empty=True)
-    abstract = validators.String(not_empty=True)
-    type = ProposalTypeValidator()
-    assistance = AssistanceTypeValidator()
-    project = validators.String()
-    url = validators.String()
-    abstract_video_url = validators.String()
-
-class MiniProposalSchema(BaseSchema):
-    title = validators.String(not_empty=True)
-    abstract = validators.String(not_empty=True)
-    type = ProposalTypeValidator()
-    url = validators.String()
-
-class NewProposalSchema(BaseSchema):
-    person = NewPersonSchema()
-    proposal = ProposalSchema()
-    attachment = FileUploadValidator()
-    pre_validators = [variabledecode.NestedVariables]
-
-class ExistingProposalSchema(BaseSchema):
-    person = ExistingPersonSchema()
-    proposal = ProposalSchema()
-    attachment = FileUploadValidator()
-    pre_validators = [variabledecode.NestedVariables]
-
-class NewMiniProposalSchema(BaseSchema):
-    person = NewPersonSchema()
-    proposal = MiniProposalSchema()
-    attachment = FileUploadValidator()
-    pre_validators = [variabledecode.NestedVariables]
-
-class ExistingMiniProposalSchema(BaseSchema):
-    person = ExistingPersonSchema()
-    proposal = MiniProposalSchema()
-    attachment = FileUploadValidator()
-    pre_validators = [variabledecode.NestedVariables]
-
-class NotYetReviewedValidator(validators.FancyValidator):
-    """Make sure the reviewer hasn't yet reviewed this proposal"""
-
-    messages = {
-        "already": "You've already reviewed this proposal, try editing the existing review."
-        }
-
-    def validate_python(self, value, state):
-        review = state.query(Review).filter_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id).first()
-        if review is not None:
-            raise Invalid(self.message('already', None),
-                          value, state)
+log = logging.getLogger(__name__)
 
 
-class NewReviewSchema(BaseSchema):
-    review = ReviewSchema()
-    pre_validators = [variabledecode.NestedVariables]
-    chained_validators = [NotYetReviewedValidator()]
-
-class NewAttachmentSchema(BaseSchema):
-    attachment = FileUploadValidator(not_empty=True)
-    pre_validators = [variabledecode.NestedVariables]
-
-class ProposalController(SecureController, View, Update):
-    model = Proposal
-    individual = 'proposal'
-
-    schemas = {"new" : NewProposalSchema(),
-               "edit" : ExistingProposalSchema(),
-               "mini_new" : NewMiniProposalSchema(),
-               "mini_edit" : ExistingMiniProposalSchema()}
-
-    permissions = {"new": [AuthTrue()],
-                   "edit": [AuthFunc('is_submitter'), AuthRole('organiser')],
-                   "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
-                                                        AuthRole('organiser')],
-                   "summary": [AuthRole('reviewer')],
-                   "delete": [AuthFunc('is_submitter')],
-                   "review": [AuthRole('reviewer')],
-                   "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
-                   "review_index": [AuthRole('reviewer')],
-                   "talk": True,
-                   "index": [AuthTrue()],
-                   "submit": [AuthTrue()],
-                   "submit_mini": [AuthTrue()],
-                   }
+#from formencode import validators, compound, schema, variabledecode, Invalid
+#from paste.deploy.converters import asbool
+#
+#from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
+#from zookeepr.lib.base import *
+#from zookeepr.lib.mail import *
+#from zookeepr.lib.crud import Update, View
+#from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, PersonValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
+#from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role, Person
+#from zookeepr.controllers.person import PersonSchema
+#
+#import random
+#
+#from zookeepr.config.lca_info import lca_info
+#from zookeepr.lib.helpers import url
+#
+#class NewPersonSchema(PersonSchema):
+#    experience = validators.String(not_empty=True)
+#    bio = validators.String(not_empty=True)
+#    url = validators.String()
+#    mobile = validators.String(not_empty=True)
+#
+#class ExistingPersonSchema(schema.Schema):
+#    experience = validators.String(not_empty=True)
+#    bio = validators.String(not_empty=True)
+#    url = validators.String()
+#    mobile = validators.String(not_empty=True)
+#
+#class ProposalSchema(schema.Schema):
+#    title = validators.String(not_empty=True)
+#    abstract = validators.String(not_empty=True)
+#    type = ProposalTypeValidator()
+#    assistance = AssistanceTypeValidator()
+#    project = validators.String()
+#    url = validators.String()
+#    abstract_video_url = validators.String()
+#
+#class MiniProposalSchema(BaseSchema):
+#    title = validators.String(not_empty=True)
+#    abstract = validators.String(not_empty=True)
+#    type = ProposalTypeValidator()
+#    url = validators.String()
+#
+#class NewProposalSchema(BaseSchema):
+#    person = NewPersonSchema()
+#    proposal = ProposalSchema()
+#    attachment = FileUploadValidator()
+#    pre_validators = [variabledecode.NestedVariables]
+#
+#class ExistingProposalSchema(BaseSchema):
+#    person = ExistingPersonSchema()
+#    proposal = ProposalSchema()
+#    attachment = FileUploadValidator()
+#    pre_validators = [variabledecode.NestedVariables]
+#
+#class NewMiniProposalSchema(BaseSchema):
+#    person = NewPersonSchema()
+#    proposal = MiniProposalSchema()
+#    attachment = FileUploadValidator()
+#    pre_validators = [variabledecode.NestedVariables]
+#
+#class ExistingMiniProposalSchema(BaseSchema):
+#    person = ExistingPersonSchema()
+#    proposal = MiniProposalSchema()
+#    attachment = FileUploadValidator()
+#    pre_validators = [variabledecode.NestedVariables]
+#
+#class NotYetReviewedValidator(validators.FancyValidator):
+#    """Make sure the reviewer hasn't yet reviewed this proposal"""
+#
+#    messages = {
+#        "already": "You've already reviewed this proposal, try editing the existing review."
+#        }
+#
+#    def validate_python(self, value, state):
+#        review = state.query(Review).filter_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id).first()
+#        if review is not None:
+#            raise Invalid(self.message('already', None),
+#                          value, state)
+#
+#
+#class NewReviewSchema(BaseSchema):
+#    review = ReviewSchema()
+#    pre_validators = [variabledecode.NestedVariables]
+#    chained_validators = [NotYetReviewedValidator()]
+#
+#class NewAttachmentSchema(BaseSchema):
+#    attachment = FileUploadValidator(not_empty=True)
+#    pre_validators = [variabledecode.NestedVariables]
+#
+class ProposalController(BaseController):
+    #schemas = {"new" : NewProposalSchema(),
+    #           "edit" : ExistingProposalSchema(),
+    #           "mini_new" : NewMiniProposalSchema(),
+    #           "mini_edit" : ExistingMiniProposalSchema()}
 
     def __init__(self, *args):
         c.cfp_status = lca_info['cfp_status']
@@ -118,17 +127,22 @@ class ProposalController(SecureController, View, Update):
         c.paper_editing = lca_info['paper_editing']
 
     def __before__(self, **kwargs):
-        super(ProposalController, self).__before__(**kwargs)
+        c.proposal_types = ProposalType.find_all()
+        c.assistance_types = AssistanceType.find_all()
 
-        c.proposal_types = self.dbsession.query(ProposalType).all()
-        c.assistance_types = self.dbsession.query(AssistanceType).all()
+    @dispatch_on(POST="_new")
+    def new(self):
+        if c.cfp_status == 'closed':
+           return render("proposal/closed.mako")
+        elif c.cfp_status == 'not_open':
+           return render("proposal/not_open.mako")
 
-    def new(self, id):
-        return self.submit()
+        c.cfptypes = self.dbsession.query(ProposalType).all()
+        c.tatypes = self.dbsession.query(AssistanceType).all()
 
-    def is_submitter(self):
-        return c.signed_in_person in self.obj.people
+        return render("proposal/new.myt")
 
+    @authorize(h.auth.has_reviewer_role)
     def review(self, id):
         """Review a proposal.
         """
@@ -211,9 +225,15 @@ class ProposalController(SecureController, View, Update):
         return render_response('proposal/review.myt', defaults=defaults, errors=errors)
 
 
+    @authorize(h.auth.is_valid_user)
     def attach(self, id):
         """Attach a file to the proposal.
         """
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
         c.proposal = self.dbsession.query(Proposal).get(id)
         defaults = dict(request.POST)
         errors = {}
@@ -233,7 +253,13 @@ class ProposalController(SecureController, View, Update):
 
         return render_response('proposal/attach.myt', defaults=defaults, errors=errors)
 
-    def view(self):
+    @authorize(h.auth.is_valid_user)
+    def view(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
         # save the current proposal id so we can refer to it later when we need to
         # bounce back here from other controllers
         # crazy shit with RUDBase means id is on self.obj
@@ -248,6 +274,11 @@ class ProposalController(SecureController, View, Update):
             return redirect_to('/programme')
 
     def edit(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
         c.person = c.proposal.people[0]
         for person in c.proposal.people:
             if c.signed_in_person == person:
@@ -293,6 +324,7 @@ class ProposalController(SecureController, View, Update):
             email(lca_info['proposal_update_email'],
                 body)
 
+    @authorize(h.auth.has_reviewer_role)
     def review_index(self):
         c.person = c.signed_in_person
         # hack for bug#34, don't show miniconfs to reviewers
@@ -319,6 +351,7 @@ class ProposalController(SecureController, View, Update):
 
         return render_response('proposal/list_review.myt')
 
+    @authorize(h.auth.has_reviewer_role)
     def summary(self):
         c.proposal_types = self.dbsession.query(ProposalType).all()
         c.assistance_types = self.dbsession.query(AssistanceType).all()
@@ -356,14 +389,6 @@ class ProposalController(SecureController, View, Update):
 
     def submit(self):
         # if call for papers has closed:
-        if c.cfp_status == 'closed':
-           return render_response("proposal/closed.myt")
-        elif c.cfp_status == 'not_open':
-           return render_response("proposal/not_open.myt")
-        else:
-            c.cfptypes = self.dbsession.query(ProposalType).all()
-            c.tatypes = self.dbsession.query(AssistanceType).all()
-
             errors = {}
             defaults = dict(request.POST)
 
@@ -402,8 +427,6 @@ class ProposalController(SecureController, View, Update):
 
                     return render_response('proposal/thankyou.myt')
 
-        return render_response("proposal/new.myt",
-                               defaults=defaults, errors=errors)
 
     def submit_mini(self):
         # call for miniconfs has closed

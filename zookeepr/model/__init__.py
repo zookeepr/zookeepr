@@ -8,10 +8,15 @@ import person
 import role
 import person_role_map
 import password_reset_confirmation
+import proposal
+import proposal_type
 
 from person import Person
 from role import Role
 from password_reset_confirmation import PasswordResetConfirmation
+
+from proposal_type import ProposalType
+from proposal import Proposal
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
@@ -31,6 +36,9 @@ def setup(meta):
     role.setup(meta)
     person_role_map.setup(meta)
     person.setup(meta)
+
+    proposal.setup(meta)
+    proposal_type.setup(meta)
 
     meta.Session.commit()
 
@@ -93,31 +101,6 @@ def setup(meta):
 #def populate_data():
 #    from sqlalchemy.exceptions import SQLError
 #    from zookeepr import model
-#
-#    try:
-#        # Proposals
-#        model.proposal.tables.proposal_type.insert().execute(
-#            dict(name='Presentation'),
-#            dict(name='Miniconf'),
-#            dict(name='Tutorial'),
-#            )
-#
-#    except SQLError, inst:
-#        print inst
-#        pass
-#
-#    try:
-#        # Assistance
-#        model.proposal.tables.assistance_type.insert().execute(
-#            dict(name='Can\'t attend without full assistance'),
-#            dict(name='Can\'t attend without partial assistance'),
-#            dict(name='May need assistance'),
-#            dict(name='Don\'t need assistance'),
-#            )
-#
-#    except SQLError, inst:
-#        print inst
-#        pass
 #
 #    try:
 #        # Stream
