@@ -16,11 +16,11 @@
             </tr>
         </thead>
 
-%for i in range(0,c.item_count):
+%for i in range(0,c.item_count+1):
         <tr>
             <td>
                 <div>
-                    <select name="invoice.items-<% i %>.product"><option value="0">--Select--</option>
+                    <select name="invoice.items-<% i %>.product" id="invoice.items-<% i %>.product"><option value="0">--Select--</option>
 %   for category in c.product_categories:
                         <optgroup label="<% category.name %>">
 %       for product in category.products:
@@ -33,14 +33,14 @@
                 </div>
             </td>
             <td><input type="text" name="invoice.items-<% i %>.qty" size="3"/></td>
-            <td><input type="text" name="invoice.items-<% i %>.cost" size="6"/></td>
+            <td><input type="text" name="invoice.items-<% i %>.cost" id="invoice.items-<% i %>.cost" size="6" onchange="return update_total();" /></td>
         </tr>
 %#endfor
 
         <tfoot>
             <tr>
                 <td><a href="#" onclick="return add_product_item('products');">Add</a> / <a href="#" onclick="return remove_product_item('products');">Remove</a></td>
-                <td style="text-align: right;"><a href="#" onclick="return update_total('total');" style="font-size: smaller;">(update)</a> Total: </td>
+                <td style="text-align: right;"><a href="#" onclick="return update_total();" style="font-size: smaller;">(update)</a> Total: </td>
                 <td>$<span id="total">0.00</span></td>
             </tr>
         </tfoot>
@@ -67,11 +67,12 @@ function add_product_item(table)
     product_table = document.getElementById(table);
     last_row = product_table.rows.length;
     
-    i = last_row - 1;
-    row = product_table.insertRow(i);
+    i = last_row - 2;
+    row = product_table.insertRow(i+1);
    
     new_product = document.createElement('select');
-    new_product.setAttribute('name', 'invoice.items-' + i + '.product');
+    new_product.setAttribute('name', 'invoice.items-' + i + '.product'); new_product.setAttribute('id', 'invoice.items-' + i + '.product');
+    new_product.setAttribute('onchange', 'return update_cost("' + i + '");');
         product = document.createElement('option');
         product.setAttribute('value', '0');
         product.appendChild(document.createTextNode("--Select--"));
@@ -100,8 +101,9 @@ function add_product_item(table)
     
     new_cost = document.createElement('input');
     new_cost.setAttribute('type', 'text');
-    new_cost.setAttribute('name', 'invoice.items-' + i + '.cost');
+    new_cost.setAttribute('name', 'invoice.items-' + i + '.cost'); new_cost.setAttribute('id', 'invoice.items-' + i + '.cost');
     new_cost.setAttribute('size', '6');
+    new_cost.setAttribute('onchange', 'return update_total();');
    
     new_item = document.createElement('div');
     new_item.appendChild(new_product);
@@ -118,6 +120,20 @@ function add_product_item(table)
     return false;
 }
 
+function update_cost(i)
+{
+    product_field = document.getElementById('invoice.items-' + i + '.product');
+    cost = document.getElementById('invoice.items-' + i + '.cost');
+    product_cost_array = new Array();
+%for category in c.product_categories:
+%   for product in category.products:
+    product_cost_array[<% product.id %>] = <% product.cost %>;
+%   #endfor
+%#endfor
+
+    cost.value = product_cost_array[product_field.value];
+}
+
 function remove_product_item(table)
 {
     product_table = document.getElementById(table);
@@ -132,11 +148,18 @@ function remove_product_item(table)
     return false;
 }
 
-function update_total(total_span)
+function update_total()
 {
-    total = document.getElementById(total_span);
-    total.innerHTML = "coming soon...";
+    total = document.getElementById("total");
+    amount = 0;
     
+    for (i = 0; i <= document.getElementById('invoice.item_count').value; i++ )
+    {
+        amount += parseInt(document.getElementById('invoice.items-' + i + '.cost').value);
+    }
+
+    total.innerHTML = amount;
+
     return false;
 }
 </script>
