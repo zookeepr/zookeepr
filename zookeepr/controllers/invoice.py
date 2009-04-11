@@ -43,7 +43,7 @@ class InvoiceController(SecureController, Read, List, Create):
                    'remind': [AuthRole('organiser')],
                    'index': [AuthRole('organiser')],
                    'pdf': [AuthFunc('is_payee'), AuthRole('organiser')],
-                   'new': True
+                   'new': [AuthRole('organiser')]
                    }
 
     schemas = {'new': NewInvoiceSchema()

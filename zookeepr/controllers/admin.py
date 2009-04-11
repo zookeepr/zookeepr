@@ -39,7 +39,8 @@ class AdminController(SecureController):
           ('/voucher', '''Manage vouchers to give to delegates. [Inventory]'''),
           ('/ceiling', '''Manage ceilings and available inventory. [Inventory]'''),
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
-          ('/invoice', '''View assigned invoices and their status. [Registrations]'''),
+          ('/invoice', '''View assigned invoices and their status. [Invoicing]'''),
+          ('/invoice/new', '''Create manual invoice for a person. [Invoicing]'''),
           ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
           ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
@@ -450,7 +451,7 @@ class AdminController(SecureController):
     def reconcile(self):
         """ Reconcilliation between D1 and ZK; for now, compare the D1 data
         that have been placed in the fixed location in the filesystem and
-        work from there... [Registrations] """
+        work from there... [Invoicing] """
         import csv
         d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
         d1_cols = d1_data.next()
