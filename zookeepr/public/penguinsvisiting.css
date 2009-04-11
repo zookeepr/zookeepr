@@ -720,3 +720,7 @@ p.warningbox {
 	background-color: #FFCC00;
 	padding: 15px 15px 15px 15px;
 }
+
+.invoice_invalid {
+	background: url(invalid.png);
+}
