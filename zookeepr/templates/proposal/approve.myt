@@ -1,5 +1,11 @@
 <h2>Approve/disapprove talks</h2>
 
+<div class="contents"><h3>Review Pages</h3>
+<ul>
+<& reviewer_sidebar.myt &>
+</ul>
+</div>
+
 <% h.form(h.url()) %>
 <table>
   <tr>
