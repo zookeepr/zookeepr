@@ -1,5 +1,6 @@
-Subject: Confirmation of your miniconf proposal for <% h.lca_info['event_name'] %>
+From: <% h.lca_info['event_name'] %> <<% h.lca_info['contact_email'] %>>
 To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address %>>
+Subject: Confirmation of your miniconf proposal for <% h.lca_info['event_name'] %>
 
 Dear <% c.person.firstname %>,
 
