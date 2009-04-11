@@ -148,7 +148,7 @@ class InvoiceController(SecureController, Read, List, Create):
         defaults = dict(request.POST)
         c.product_categories = self.dbsession.query(ProductCategory).all()
 
-        c.item_count = 1
+        c.item_count = 0
         if request.method == 'POST' and defaults:
             result, errors = self.schemas['new'].validate(defaults, self.dbsession)
             c.item_count = int(defaults['invoice.item_count'])

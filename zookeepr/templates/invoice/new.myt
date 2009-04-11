@@ -1,7 +1,7 @@
     <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
     <% h.form(h.url()) %>
     <h2>Create Manual Invoice</h2>
-    <input type="hidden" value="1" id="invoice.item_count" name="invoice.item_count" />
+    <input type="hidden" value="<% c.item_count %>" id="invoice.item_count" name="invoice.item_count" />
 
     <p>Person ID: <% h.textfield('invoice.person') %></p>
     <p>Due Date: <% h.textfield('invoice.due_date') %> <span style="font-size: smaller;">(DD/MM/YYYY). Setting this in the future reserves products.</span></p>
@@ -20,7 +20,7 @@
         <tr>
             <td>
                 <div>
-                    <select name="invoice.items-<% i %>.product" id="invoice.items-<% i %>.product"><option value="0">--Select--</option>
+                    <select name="invoice.items-<% i %>.product" id="invoice.items-<% i %>.product" onchange="return update_cost('<% i %>');"><option value="0">--Select--</option>
 %   for category in c.product_categories:
                         <optgroup label="<% category.name %>">
 %       for product in category.products:
@@ -32,8 +32,8 @@
                     <br />---> OR <input type="text" name="invoice.items-<% i %>.description" size="55"/>
                 </div>
             </td>
-            <td><input type="text" name="invoice.items-<% i %>.qty" size="3"/></td>
-            <td><input type="text" name="invoice.items-<% i %>.cost" id="invoice.items-<% i %>.cost" size="6" onchange="return update_total();" /></td>
+            <td><input type="text" name="invoice.items-<% i %>.qty" id="invoice.items-<% i %>.qty" size="3" onchange="return update_total();" value="1" /></td>
+            <td><input type="text" name="invoice.items-<% i %>.cost" id="invoice.items-<% i %>.cost" size="6" onchange="return update_total();" value="0" /></td>
         </tr>
 %#endfor
 
@@ -96,14 +96,17 @@ function add_product_item(table)
 
     new_qty = document.createElement('input');
     new_qty.setAttribute('type', 'text');
-    new_qty.setAttribute('name', 'invoice.items-' + i + '.qty');
+    new_qty.setAttribute('name', 'invoice.items-' + i + '.qty');    new_qty.setAttribute('id', 'invoice.items-' + i + '.qty');
     new_qty.setAttribute('size', '3');
-    
+    new_qty.setAttribute('onchange', 'return update_total();');
+    new_qty.setAttribute('value', '1');
+
     new_cost = document.createElement('input');
     new_cost.setAttribute('type', 'text');
-    new_cost.setAttribute('name', 'invoice.items-' + i + '.cost'); new_cost.setAttribute('id', 'invoice.items-' + i + '.cost');
+    new_cost.setAttribute('name', 'invoice.items-' + i + '.cost');  new_cost.setAttribute('id', 'invoice.items-' + i + '.cost');
     new_cost.setAttribute('size', '6');
     new_cost.setAttribute('onchange', 'return update_total();');
+    new_cost.setAttribute('value', '0');
    
     new_item = document.createElement('div');
     new_item.appendChild(new_product);
@@ -132,6 +135,7 @@ function update_cost(i)
 %#endfor
 
     cost.value = product_cost_array[product_field.value];
+    return update_total();
 }
 
 function remove_product_item(table)
@@ -140,12 +144,13 @@ function remove_product_item(table)
     last_row = product_table.rows.length;
 
     i = last_row - 1;
-    if (last_row > 2)
+    if (last_row > 3)
     {
         product_table.deleteRow(i - 1);
+        document.getElementById('invoice.item_count').value = i - 3;
     }
     
-    return false;
+    return update_total();
 }
 
 function update_total()
@@ -155,7 +160,7 @@ function update_total()
     
     for (i = 0; i <= document.getElementById('invoice.item_count').value; i++ )
     {
-        amount += parseInt(document.getElementById('invoice.items-' + i + '.cost').value);
+        amount += parseInt(document.getElementById('invoice.items-' + i + '.cost').value) * parseInt(document.getElementById('invoice.items-' + i + '.qty').value);
     }
 
     total.innerHTML = amount;
