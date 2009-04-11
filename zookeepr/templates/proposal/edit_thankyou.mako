@@ -1,3 +1,5 @@
+<%inherit file="/base.mako" />
+
 <h2>Call for Presentations</h2>
 
 <h3>Thank You</h3>
@@ -8,5 +10,5 @@ Thank you for updating your presentation submission.
 
 <p>
 <a href="/programme/edit_submission">Update another proposal</a> or
-return to the <a href="<% h.url_for("home") %>">main page</a>.
+return to the <a href="${ h.url_for("home") }">main page</a>.
 </p>

@@ -8,7 +8,9 @@ from zookeepr.model.meta import Session
 from proposal_type import ProposalType
 from assistance_type import AssistanceType
 from person import Person
-#from person_proposal_map import person_proposal_map
+from person_proposal_map import person_proposal_map
+from attachment import Attachment
+from review import Review
 
 def setup(meta):
     pass
@@ -26,12 +28,10 @@ class Proposal(Base):
     abstract = sa.Column(sa.types.Text)
 
     # type, enumerated in the proposal_type table
-    #proposal_type_id = sa.Column(sa.types.Integer
-    #       ForeignKey('proposal_type.id'))
+    proposal_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_type.id'))
 
     # type, enumerated in the assistance_type table
-    #sa.Column('assistance_type_id', Integer
-    #       ForeignKey('assistance_type.id'))
+    assistance_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('assistance_type.id'))
 
     # name and url of the project
     project = sa.Column(sa.types.Text)
@@ -61,9 +61,9 @@ class Proposal(Base):
     type = sa.orm.relation(ProposalType)
     assistance = sa.orm.relation(AssistanceType)
     # FIXME
-    #people = sa.orm.relation(Person, secondary=person_proposal_map, backref='proposals')
-    #attachements = sa.orm.relation(Attachement, lazy=True, cascade='all, delete-orphan')
-    #reviews = sa.orm.relation(Review, backref='proposal', cascade='all, delete-orphan')
+    people = sa.orm.relation(Person, secondary=person_proposal_map, backref='proposals')
+    attachments = sa.orm.relation(Attachment, lazy=True, cascade='all, delete-orphan')
+    reviews = sa.orm.relation(Review, backref='proposal', cascade='all, delete-orphan')
 
 
     def __init__(self, **kwargs):
@@ -93,3 +93,10 @@ class Proposal(Base):
     def find_all(cls):
         return Session.query(Proposal).order_by(Proposal.id).all()
 
+    @classmethod
+    def find_all_by_assistance_type_id(cls, id):
+        return Session.query(Proposal).filter_by(assistance_type_id=id).all()
+
+    @classmethod
+    def find_all_by_proposal_type_id(cls, id):
+        return Session.query(Proposal).filter_by(proposal_type_id=id).all()

@@ -167,6 +167,9 @@ instead you should use
 
 Basically look at how person works and ask John for more info
 
+every Schema should have
+    allow_extra_fields = False
+
 
 Work through controller by controller doing the following
 
@@ -190,6 +193,11 @@ methods like view ect which take an id should be def view(self, id): not def vie
 
     s/method/def
 
+    url -> url_for
+
+    #endif -> endif
+
+    %s/textfield/text
 
     
 
