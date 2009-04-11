@@ -1,4 +1,5 @@
     <p><% h.link_to('Create new (manual) Invoice', h.url(action='add')) %></p>
+    <p style="font-size: smaller;">Unvoiding invoices marks them as manual.</p>
     <table>
       <tr>
         <th>rego</th>
@@ -24,7 +25,7 @@
         <td><% h.link_to(m.apply_escapes(i.person.firstname + ' ' + i.person.lastname, 'h'), h.url(controller='person', action='view', id=i.person.id)) %></td>
         <td align="right"><% "$%.2f" % (i.total()/100.0) %></td>
         <td><% i.status() %>
-%   if i.status() == 'Unpaid':
+%   if i.status() == 'Unpaid' or i.total() == 0:
             <span style="font-size: smaller;">(<% h.link_to('Void', h.url(action="void", id=i.id)) %>)</span>
 %   #endif
 %   if i.status() == 'Invalid':
