@@ -1,7 +1,7 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
+from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model import Proposal, ProposalType, AssistanceType, Attachment, Stream, Review, Role
+from zookeepr.model import Proposal, ProposalType, AssistanceType, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType
 
 from zookeepr.lib.validators import ReviewSchema
 
@@ -49,18 +49,24 @@ class ProposalSchema(BaseSchema):
     title = validators.String(not_empty=True)
     abstract = validators.String(not_empty=True)
     type = ProposalTypeValidator()
-    assistance = AssistanceTypeValidator()
+    audience = TargetAudienceValidator()
+    accommodation_assistance = AccommodationAssistanceTypeValidator()
+    travel_assistance = TravelAssistanceTypeValidator()
     project = validators.String()
     url = validators.String()
     abstract_video_url = validators.String()
+    video_release = validators.Bool()
+    slides_release = validators.Bool()
 
 #class MiniProposalSchema(BaseSchema):
 #    allow_extra_fields = False
 #    title = validators.String(not_empty=True)
 #    abstract = validators.String(not_empty=True)
 #    type = ProposalTypeValidator()
+#    audience = TargetAudienceValidator()
 #    url = validators.String()
 #
+
 class NewProposalSchema(BaseSchema):
     person = NewPersonSchema()
     proposal = ProposalSchema()
@@ -96,8 +102,6 @@ class NewAttachmentSchema(BaseSchema):
     pre_validators = [NestedVariables]
 
 class ProposalController(BaseController):
-    #           "mini_new" : NewMiniProposalSchema(),
-    #           "mini_edit" : ExistingMiniProposalSchema()}
 
     def __init__(self, *args):
         c.cfp_status = lca_info['cfp_status']
@@ -107,6 +111,10 @@ class ProposalController(BaseController):
     def __before__(self, **kwargs):
         c.proposal_types = ProposalType.find_all()
         c.assistance_types = AssistanceType.find_all()
+        c.target_audiences = TargetAudience.find_all()
+        c.accommodation_assistance_types = AccommodationAssistanceType.find_all()
+        c.travel_assistance_types = TravelAssistanceType.find_all()
+
 
     @dispatch_on(POST="_new")
     def new(self):
@@ -127,6 +135,7 @@ class ProposalController(BaseController):
         attachment_results = self.form_result['attachment']
 
         c.proposal = Proposal(**proposal_results)
+        c.proposal.status = ProposalStatus.find_by_name('Pending')
         meta.Session.add(c.proposal)
 
         if not h.signed_in_person():
@@ -146,6 +155,7 @@ class ProposalController(BaseController):
             meta.Session.add(c.attachment)
 
         meta.Session.commit()
+        email(c.person.email_address, render('proposal/thankyou_email.mako'))
 
         return render('proposal/thankyou.mako')
 
@@ -154,8 +164,6 @@ class ProposalController(BaseController):
     def review(self, id):
         c.streams = Stream.find_all()
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         return render('proposal/review.mako')
 
@@ -165,37 +173,37 @@ class ProposalController(BaseController):
         """Review a proposal.
         """
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
 
         # Move to model
-        collection = meta.Session.query(Proposal).from_statement("""
+        next = meta.Session.query(Proposal).from_statement("""
               SELECT
                   p.id
               FROM
-                      proposal AS p
+                  (SELECT id
+                   FROM proposal
+                   WHERE id <> %d
+                     AND proposal_type_id = %d
+                   EXCEPT
+                       SELECT proposal_id AS id
+                       FROM review
+                       WHERE review.reviewer_id <> %d) AS p
               LEFT JOIN
                       review AS r
                               ON(p.id=r.proposal_id)
               GROUP BY
                       p.id
-              HAVING COUNT(r.proposal_id) < (
-                      (SELECT COUNT(id) FROM review) /
-                      (SELECT COUNT(id) FROM proposal) + 1)
-              ORDER BY
-                      RANDOM()
-              LIMIT 10
-        """)
-        for proposal in collection:
-            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
-                c.next_review_id = proposal.id
-                c.reviewed_everything = False
-                break
-            else:
-                # looks like you've reviewed everything!
-                c.next_review_id = id
-                c.reviewed_everything = True
+              ORDER BY COUNT(r.reviewer_id), RANDOM()
+              LIMIT 1
+        """ % (c.proposal.id, c.proposal.type.id, c.signed_in_person.id))
+        next = next.first()
+        if next is not None:
+            c.next_review_id = next.id
+            c.reviewed_everything = False
+        else:
+            # looks like you've reviewed everything!
+            c.next_review_id = None
+            c.reviewed_everything = True
 
         person = h.signed_in_person()
         if person in [ review.reviewer for review in proposal.reviews]:
@@ -217,7 +225,7 @@ class ProposalController(BaseController):
 
         h.flash("No more papers to review")
 
-        return redirect_to(action='index')
+        return redirect_to('/proposal/review_index')
 
 
 
@@ -237,8 +245,6 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         person_results = self.form_result['attachment']
         attachment = Attachment(**person_results)
@@ -260,8 +266,6 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         return render('proposal/view.mako')
 
@@ -274,8 +278,6 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
 
         c.person = c.proposal.people[0]
         for person in c.proposal.people:
@@ -287,8 +289,12 @@ class ProposalController(BaseController):
         # This is horrible, don't know a better way to do it
         if c.proposal.type:
             defaults['proposal.type'] = defaults['proposal.proposal_type_id']
-        if c.proposal.assistance:
-            defaults['proposal.assistance'] = defaults['proposal.assistance_type_id']
+        if c.proposal.travel_assistance:
+            defaults['proposal.travel_assistance'] = defaults['proposal.travel_assistance_type_id']
+        if c.proposal.travel_assistance:
+            defaults['proposal.accommodation_assistance'] = defaults['proposal.accommodation_assistance_type_id']
+        if c.proposal.travel_assistance:
+            defaults['proposal.accommodation_assistance'] = defaults['proposal.accommodation_assistance_type_id']
 
 
         form = render('/proposal/edit.mako')
@@ -304,10 +310,7 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-        if c.proposal is None:
-            abort(404, "No such object")
-
-
+     
         for key in self.form_result['person']:
             setattr(c.person, key, self.form_result['person'][key])
 
@@ -325,7 +328,6 @@ class ProposalController(BaseController):
     @authorize(h.auth.has_reviewer_role)
     def review_index(self):
         c.person = h.signed_in_person()
-
         c.num_proposals = 0
         reviewer_role = Role.find_by_name('reviewer')
         c.num_reviewers = len(reviewer_role.people)
@@ -333,9 +335,12 @@ class ProposalController(BaseController):
             stuff = Proposal.find_all_by_proposal_type_id(pt.id)
             c.num_proposals += len(stuff)
             setattr(c, '%s_collection' % pt.name, stuff)
-        for at in c.assistance_types:
-            stuff = Proposal.find_all_by_assistance_type_id(at.id)
-            setattr(c, '%s_collection' % at.name, stuff)
+        for aat in c.accommodation_assistance_types:
+            stuff = Proposal.find_by_accommodation_assistance_type_id(aat.id)
+            setattr(c, '%s_collection' % aat.name, stuff)
+        for tat in c.travel_assistance_types:
+            stuff = Proposal.find_by_travel_assistance_type_id(tat.id)
+            setattr(c, '%s_collection' % tat.name, stuff)
 
         return render('proposal/list_review.mako')
 
@@ -345,9 +350,12 @@ class ProposalController(BaseController):
             stuff = Proposal.find_all_by_proposal_type_id(pt.id)
             stuff.sort(self._score_sort)
             setattr(c, '%s_collection' % pt.name, stuff)
-        for at in c.assistance_types:
-            stuff = Proposal.find_all_by_assistance_type_id(at.id)
-            setattr(c, '%s_collection' % at.name, stuff)
+        for aat in c.accommodation_assistance_types:
+            stuff = Proposal.find_by_accommodation_assistance_type_id(aat.id)
+            setattr(c, '%s_collection' % aat.name, stuff)
+        for tat in c.travel_assistance_types:
+            stuff = Proposal.find_by_travel_assistance_type_id(tat.id)
+            setattr(c, '%s_collection' % tat.name, stuff)
 
         return render('proposal/summary.mako')
 
@@ -428,3 +436,23 @@ class ProposalController(BaseController):
 #
 #                    return render_response('proposal/thankyou_mini.myt')
 
+    @authorize([h.auth.has_reviewer_role, h.auth.has_organiser_role])
+    def approve(self):
+        defaults = dict(request.POST)
+
+        c.highlight = set()
+
+        if request.method == 'POST' and defaults:
+            for proposal, status in defaults.items():
+                if proposal == 'Commit' or status=='-':
+                    continue
+                assert proposal.startswith('talk.')
+                proposal = int(proposal[5:])
+                c.highlight.add(proposal)
+                proposal = Proposal.find_by_id(proposal)
+                status = ProposalStatus.find_by_name(status)
+                proposal.status = status
+
+        c.proposals = self.dbsession.query(Proposal).all()
+        c.statuses = self.dbsession.query(ProposalStatus).all()
+        return render("proposal/approve.mako")

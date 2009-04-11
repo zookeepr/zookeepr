@@ -9,7 +9,7 @@
 # <input type="hidden" name="<% k %>" value="<% fields[k] %>">
 # % # end for
 
-<input type="hidden" name="linux.conf.au - Marchsouth 2009"
+<input type="hidden" name="linux.conf.au - Follow the signs 2010"
   VALUE="<% "%.2f" % (fields['Amount']/100.0) %>">
 
 

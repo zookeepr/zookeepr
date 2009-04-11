@@ -14,18 +14,23 @@ import person_proposal_map
 import attachment
 import review
 import stream
+import accommodation_assistance_type
+import travel_assistance_type
+import db_content
 
 from person import Person
 from role import Role
 from password_reset_confirmation import PasswordResetConfirmation
 
 from proposal_type import ProposalType
-from assistance_type import AssistanceType
+from accommodation_assistance_type import AccommodationAssistanceType
+from travel_assistance_type import TravelAssistanceType
 from proposal import Proposal
 from attachment import Attachment
 from review import Review
 from stream import Stream
 
+from db_content import DbContentType, DbContent
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
@@ -47,6 +52,8 @@ def setup(meta):
     attachment.setup(meta)
     review.setup(meta)
     stream.setup(meta)
+
+    db_content.setup(meta)
 
     meta.Session.commit()
 
@@ -128,8 +135,8 @@ def setup(meta):
 #        # Products
 #        model.billing.tables.product.insert().execute(
 #            dict(category_id='1', active=True, description="Concession/Student Ticket", cost="16000", auth=None, validate=None),
-#            dict(category_id='1', active=True, description="Earlybird Hobbiest Ticket", cost="29000", auth=None, validate=None),
-#            dict(category_id='1', active=True, description="Hobbiest Ticket", cost="36500", auth=None, validate=None),
+#            dict(category_id='1', active=True, description="Earlybird Hobbyist Ticket", cost="29000", auth=None, validate=None)
+#            dict(category_id='1', active=True, description="Hobbyist Ticket", cost="36500", auth=None, validate=None),
 #            dict(category_id='1', active=True, description="Earlybird Professional Ticket", cost="63500", auth=None, validate=None),
 #            dict(category_id='1', active=True, description="Professional Ticket", cost="78500", auth=None, validate=None),
 #            dict(category_id='1', active=True, description="Fairy Penguin Sponsorship", cost="150000", auth=None, validate=None),
@@ -200,8 +207,8 @@ def setup(meta):
 #        model.billing.tables.ceiling.insert().execute(
 #            dict(name='all-conference', max_sold=None, available_from=None, available_until=None),
 #            dict(name='conference', max_sold=750, available_from=None, available_until=None),
-#            dict(name='earlybird', max_sold=200, available_from=None, available_until="2008-10-28 23:59:59"),
-#            dict(name='non-earlybird', max_sold=None, available_from="2008-10-29 00:00:00", available_until=None),
+#            dict(name='earlybird', max_sold=200, available_from=None, available_until="2009-10-28 23:59:59"),
+#            dict(name='non-earlybird', max_sold=None, available_from="2009-10-29 00:00:00", available_until=None),
 #            dict(name='uniaccom', max_sold=240, available_from=None, available_until=None),
 #            )
 #
@@ -215,11 +222,11 @@ def setup(meta):
 #            # Student
 #            dict(product_id='1', ceiling_id='1'),   # all-conference
 #            dict(product_id='1', ceiling_id='2'),   # conference
-#            # Earlybird Hobbiest
+#            # Earlybird Hobbyist
 #            dict(product_id='2', ceiling_id='1'),   # all-conference
 #            dict(product_id='2', ceiling_id='2'),   # conference
 #            dict(product_id='2', ceiling_id='3'),   # earlybird
-#            # Hobbiest
+#            # Hobbyist
 #            dict(product_id='3', ceiling_id='1'),   # all-conference
 #            dict(product_id='3', ceiling_id='2'),   # conference
 #            dict(product_id='3', ceiling_id='4'),   # non-earlybird

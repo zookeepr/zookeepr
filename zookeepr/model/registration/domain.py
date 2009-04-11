@@ -20,9 +20,6 @@ class Registration(object):
                  checkin=None,
                  checkout=None,
                  lasignup=None,
-                 speaker_record=None,
-                 speaker_video_release=None,
-                 speaker_slides_release=None,
                  announcesignup=None,
                  delegatesignup=None,
                  prevlca=None,
@@ -44,9 +41,6 @@ class Registration(object):
         self.checkin = checkin
         self.checkout = checkout
         self.lasignup = lasignup
-        self.speaker_record = speaker_record
-        self.speaker_video_release = speaker_video_release
-        self.speaker_slides_release = speaker_slides_release
         self.announcesignup = announcesignup
         self.delegatesignup = delegatesignup
         self.prevlca = prevlca

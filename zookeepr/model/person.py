@@ -3,6 +3,8 @@ import sqlalchemy as sa
 
 from meta import Base
 
+from pylons.controllers.util import abort
+
 from role import Role
 from person_role_map import person_role_map
 
@@ -101,10 +103,12 @@ class Person(Base):
         return self.password_hash == self.gen_password(value)
 
     def is_speaker(self):
-        return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False)
+        return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False) or False
+        # note: the "or False" at the end converts a None into a False
 
     def is_miniconf_org(self):
-        return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False)
+        return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False) or False
+        # note: the "or False" at the end converts a None into a False
 
     def is_volunteer(self):
         if self.volunteer and self.volunteer.accepted is not None:
@@ -137,14 +141,22 @@ class Person(Base):
 
     def valid_invoice(self):
         for invoice in self.invoices:
-            if not invoice.void and not invoice.manual:
+            if not invoice.is_void() and not invoice.manual:
                 return invoice
         return None
+
+    def has_paid_ticket(self):
+        for invoice in self.invoices:
+            if invoice.paid() and not invoice.is_void():
+                for item in invoice.items:
+                    if item.product is not None and item.product.category.name == 'Ticket':
+                        return True
+        return False
 
     def paid(self):
         status = False
         for invoice in self.invoices:
-            if not invoice.void:
+            if not invoice.is_void():
                 if invoice.paid():
                     status = True
                 else:
@@ -155,18 +167,26 @@ class Person(Base):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 
     @classmethod
-    def find_by_email(cls, email):
-        return Session.query(Person).filter_by(email_address=email.lower()).first()
+    def find_by_email(cls, email, abort_404 = True):
+        result = Session.query(Person).filter_by(email_address=email.lower()).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
 
     @classmethod
-    def find_by_id(cls, id):
-        return Session.query(Person).filter_by(id=id).first()
-
+    def find_by_id(cls, id, abort_404 = True):
+        result = Session.query(Person).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
+        
     @classmethod
     def find_all(cls):
         return Session.query(Person).order_by(Person.id).all()
 
     @classmethod
-    def find_by_url_hash(cls, url_hash):
-        return Session.query(Person).filter_by(url_hash=url_hash).first()
-
+    def find_by_url_hash(cls, url_hash, abort_404 = True):
+        result = Session.query(Person).filter_by(url_hash=url_hash).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result

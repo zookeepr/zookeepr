@@ -37,15 +37,11 @@ ${ h.form(h.url_for()) }
 % if not c.reviewed_everything:
 <ul><li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li></ul>
 % else:
-<ul><li><em>Skip!</em> - You have reviewed everything!</li></ul>
+<ul><li><em>Can't skip - you have reviewed all the other ${c.proposal.type.name }s!</em></li></ul>
 % endif
 <div class="contents"><h3>Review Pages</h3>
 <ul>
-<li><a href="/review/help">How to review</a></li>
-<li>${ h.link_to('Review proposals', url=h.url_for(controller='proposal', action='review_index')) }</li>
-<li>${ h.link_to('Your reviews', url=h.url_for(controller='review', action='index')) }</li>
-<li>${ h.link_to('Summary of proposals', url=h.url_for(controller='proposal', action='summary')) }</li>
-<li>${ h.link_to('Reviewer summary', url=h.url_for(controller='review', action='summary')) }</li>
+<%include file="reviewer_sidebar.mako" />
 </ul>
 </div>
 <%include file="view_base.mako" />

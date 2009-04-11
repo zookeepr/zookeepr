@@ -33,6 +33,14 @@ ${ c.proposal.type.name }
 </blockquote>
 </div>
 
+% if c.proposal.audience.name:
+<p class="url">
+<em>Target Audience:</em>
+${ c.proposal.audience.name }
+</p>
+% #endif
+
+
 % if c.proposal.project:
 <p class="url">
 <em>Project:</em>
@@ -144,11 +152,39 @@ ${ h.link_to('Add an attachment', url=h.url_for(action='attach')) }
 % endif
 </div>
 
-% if c.proposal.assistance:
+% if c.proposal.accommodation_assistance:
 <p>
-<em>Travel assistance:</em> ${ c.proposal.assistance.name }</p>
+    <em>Accommodation assistance:</em> ${ c.proposal.accommodation_assistance.name }</p>
 % endif
 
+% if c.proposal.travel_assistance:
+<p>
+    <em>Travel assistance:</em> ${ c.proposal.travel_assistance.name }</p>
+% endif
+
+
+<p><em>Consents:</em><blockquote>
+<p>I allow linux.conf.au to record my talk.</p>
+
+<p>${ allow(c.proposal.video_release) } Linux Australia to release my
+video under the Creative Commons ShareAlike License</p>
+
+<p>${ allow(c.proposal.slides_release) } Linux Australia to share my
+slides</p>
+
+
+% if c.proposal.video_release or c.proposal.slides_release:
+<p>Please make sure that you are allowed to do this, if there is any doubt
+(for instance, consider whether you're revealing your employer's
+information or using other people's copyrighted materials.)</p>
+% endif
+
+% if not c.proposal.video_release or not c.proposal.slides_release:
+<p>Please consider allowing us to share both the video of your talk and your
+slides, so that the community can gain the maximum benefit from your
+talk!</p>
+% endif
+</blockquote>
 <hr>
 </div>
 
@@ -211,4 +247,13 @@ ${ h.line_break(r.comment) }
 <%def name="title()">
 ${ h.truncate(c.proposal.title) } - ${ c.proposal.type.name } proposal - ${ caller.title() }
 </%def>
+<%def name="allow(b)">
+<%
+    if b:
+        return 'I allow'
+    else:
+        return 'I DO NOT allow'
+%>
+</%def>
+
 

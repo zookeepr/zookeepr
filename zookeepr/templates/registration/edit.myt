@@ -31,7 +31,7 @@ errors
 #FIXME: Partner program
 if not defaults:
     defaults = {}
-    for k in ['shell', 'editor', 'distro', 'nick', 'keyid', 'planetfeed', 'prevlca', 'diet', 'special', 'miniconf', 'opendaydrag', 'checkin', 'checkout', 'lasignup', 'silly_description', 'voucher_code', 'announcesignup', 'delegatesignup', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
+    for k in ['shell', 'editor', 'distro', 'nick', 'keyid', 'planetfeed', 'prevlca', 'diet', 'special', 'miniconf', 'checkin', 'checkout', 'signup', 'silly_description', 'voucher_code']:
         v = getattr(c.registration, k)
         if v is not None:
             if k in ('shell', 'editor', 'distro') and v not in h.lca_rego[k + 's'] and v != '':
@@ -64,32 +64,6 @@ if not defaults:
     else:
         defaults['registration.over18'] = 0
 
-    if c.registration.lasignup:
-        defaults['registration.lasignup'] = 1
-    else:
-        defaults['registration.lasignup'] = 0
-    if c.registration.announcesignup:
-        defaults['registration.announcesignup'] = 1
-    else:
-        defaults['registration.announcesignup'] = 0
-    if c.registration.delegatesignup:
-        defaults['registration.delegatesignup'] = 1
-    else:
-        defaults['registration.delegatesignup'] = 0
-
-    if c.registration.speaker_record:
-        defaults['registration.speaker_record'] = 1
-    else:
-        defaults['registration.speaker_record'] = 0
-    if c.registration.speaker_video_release:
-        defaults['registration.speaker_video_release'] = 1
-    else:
-        defaults['registration.speaker_video_release'] = 0
-    if c.registration.speaker_slides_release:
-        defaults['registration.speaker_slides_release'] = 1
-    else:
-        defaults['registration.speaker_slides_release'] = 0
-
 
     if c.registration.miniconf:
         for mc in c.registration.miniconf:
@@ -97,5 +71,8 @@ if not defaults:
     if c.registration.prevlca:
         for p in c.registration.prevlca:
             defaults['registration.prevlca.' + p] = 1
+    if c.registration.signup:
+        for s in c.registration.signup:
+            defaults['registration.signup.' + s] = 1
 
 </%init>
