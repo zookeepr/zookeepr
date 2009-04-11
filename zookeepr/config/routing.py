@@ -29,10 +29,10 @@ def make_map():
     map.connect('/media/in_the_press', controller='db_content', action='list_press')
 
     # DB content
-    # map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
-    # map.connect('/db_content/delete_file',   controller='db_content', action='delete_file', id=None)
-    # map.connect('/db_content/delete_folder', controller='db_content', action='delete_folder', id=None)
-    # map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
+    map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
+    map.connect('/db_content/delete_file',   controller='db_content', action='delete_file', id=None)
+    map.connect('/db_content/delete_folder', controller='db_content', action='delete_folder', id=None)
+    map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
 
     # Schedule
     map.connect('/schedule/{day}', controller='schedule', day=None)

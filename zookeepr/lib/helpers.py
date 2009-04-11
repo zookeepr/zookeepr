@@ -329,10 +329,10 @@ def featured_image(title, big = False):
 #    else:
 #        return url
 #
-#def extension(name):
-#    """ Return the extension of a file name"""
-#    return name.split('.')[-1]
-#
+def extension(name):
+    """ Return the extension of a file name"""
+    return name.split('.')[-1]
+
 #def silly_description():
 #    adverb = random.choice(lca_rego['silly_description']['adverbs'])
 #    adjective = random.choice(lca_rego['silly_description']['adjectives'])

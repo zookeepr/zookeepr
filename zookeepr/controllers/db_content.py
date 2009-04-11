@@ -24,6 +24,8 @@ from zookeepr.config.lca_info import lca_info
 from not_found import NotFoundController
 
 from webhelpers.pagination import paginate
+from zookeepr.config.lca_info import file_paths
+import os
 
 log = logging.getLogger(__name__)
 
@@ -148,8 +150,9 @@ class DbContentController(BaseController): #Delete
         fp = open(directory + request.POST['myfile'].filename,'wb')
         fp.write(file_data)
         fp.close()
-
-        return render('%s/file_uploaded.myt' % self.individual)
+        
+        h.flash("File Uploaded.")        
+        redirect_to(action="list_files", folder=c.current_folder)
 
     def delete_folder(self):
         try:
@@ -165,9 +168,11 @@ class DbContentController(BaseController): #Delete
             try:
                 os.rmdir(directory + c.folder)
             except OSError:
-                return render('%s/folder_full.myt' % self.individual)
-            return render('%s/folder_deleted.myt' % self.individual)
-        return render('%s/delete_folder.myt' % self.individual)
+                h.flash("Can not delete. The folder contains items.")
+                redirect_to(action="list_files", folder=c.current_folder)
+            h.flash("Folder deleted.")
+            redirect_to(action="list_files", folder=c.current_folder)
+        return render('/db_content/delete_folder.mako')
 
     def delete_file(self):
         try:
@@ -181,8 +186,9 @@ class DbContentController(BaseController): #Delete
         defaults = dict(request.POST)
         if defaults:
             os.remove(directory + c.file)
-            return render('%s/file_deleted.myt' % self.individual)
-        return render('%s/delete_file.myt' % self.individual)
+            h.flash("File Removed")
+            redirect_to(action="list_files", folder=c.current_folder)
+        return render('/db_content/delete_file.mako')
 
     def list_files(self):
         # Taken from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/170242
@@ -213,7 +219,10 @@ class DbContentController(BaseController): #Delete
                 if request.POST['folder'] is not None:
                     os.mkdir(directory + request.POST['folder'])
             except KeyError:
-                pass
+                h.flash("Error creating folder. Check file permissions.")
+            else:
+                h.flash("Folder Created")
+            
 
         files = []
         folders = []
@@ -227,4 +236,4 @@ class DbContentController(BaseController): #Delete
         c.folder_list = caseinsensitive_sort(folders)
         c.current_path = current_path
         c.download_path = download_path
-        return render('%s/list_files.myt' % self.individual)
+        return render('/db_content/list_files.mako')
