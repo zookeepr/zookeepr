@@ -436,6 +436,8 @@ class ProposalController(SecureController, View, Update):
                     for k in result['proposal']:
                         setattr(c.proposal, k, result['proposal'][k])
 
+                    c.proposal.status = self.dbsession.query(ProposalStatus).filter_by(name='Pending').one()
+
                     if not c.signed_in_person:
                         c.person = model.Person()
                         for k in result['person']:
