@@ -24,7 +24,11 @@
 #NZ GST #90-792-369
     </div>
     <p><strong>Invoice Number:</strong> <% c.invoice.id %></p>
-    <p><strong>Invoice Status:</strong> <% c.invoice.status() %></p>
+    <p><strong>Invoice Status:</strong> <% c.invoice.status() %>
+% if c.invoice.is_void():
+<span style="font-size: 22px; color: #F00"> - <% c.invoice.void %></span>
+% #endif    
+    </p>
     <p><strong>Issue Date:</strong> <% c.invoice.issue_date.strftime("%d %b %Y") %></p>
     <p><strong>Due Date:</strong> <% c.invoice.due_date.strftime("%d %b %Y") %></p>
 % if c.invoice.paid():
