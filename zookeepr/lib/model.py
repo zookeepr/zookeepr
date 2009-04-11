@@ -12,4 +12,4 @@ class CommaList(types.TypeDecorator):
         """ convert from database to zookeepr representation """
         if value is None:
             return None
-        return value.split(',')
+        return str(value).split(',')
