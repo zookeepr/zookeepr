@@ -66,10 +66,12 @@ class Person(object):
         return self.password_hash == md5.new(value).hexdigest()
 
     def is_speaker(self):
-        return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False)
+        return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False) or False
+        # note: the "or False" at the end converts a None into a False
 
     def is_miniconf_org(self):
-        return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False)
+        return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False) or False
+        # note: the "or False" at the end converts a None into a False
 
     def is_volunteer(self):
         if self.volunteer and self.volunteer.accepted is not None:
