@@ -140,7 +140,7 @@
 
           <h2>Subscriptions</h2>
 
-          <p><% h.yesno('la' in c.registration.signup) %> I want to sign up for (free) Linux Australia membership!</p>
+          <p><% h.yesno('linuxaustralia' in c.registration.signup) %> I want to sign up for (free) Linux Australia membership!</p>
 
           <p><% h.yesno('nzoss' in c.registration.signup) %> I want to sign up for membership with the New Zealand Open Source Society.</p>
 

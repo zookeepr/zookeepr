@@ -7,6 +7,8 @@ class CommaList(types.TypeDecorator):
         """ convert from zookeepr to database representation """
         if value is None:
             return None
+        if type(value) in (str, unicode):
+            return value
         return ','.join(value)
     def convert_result_value(self, value, engine):
         """ convert from database to zookeepr representation """

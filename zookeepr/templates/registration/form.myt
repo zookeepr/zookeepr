@@ -354,8 +354,8 @@
             <h2>Subscriptions</h2>
 
             <p class="entries">
-              <% h.check_box('registration.signup.la') %>
-              <label for="registration.signup.la">I want to sign up for (free) Linux Australia membership!</label> <a href="http://www.linux.org.au/">Read More</a>
+              <% h.check_box('registration.signup.linuxaustralia') %>
+              <label for="registration.signup.linuxaustralia">I want to sign up for (free) Linux Australia membership!</label> <a href="http://www.linux.org.au/">Read More</a>
             </p>
 
             <p class="entries">
