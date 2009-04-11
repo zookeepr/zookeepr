@@ -200,7 +200,12 @@ class ExistingRegistrationValidator(validators.FancyValidator):
 
 class ExistingPersonValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        person = state.query(Person).filter_by(id=value).first()
+        try:
+            pid = int(value)
+        except:
+            raise Invalid("Please enter a person ID.", value, state)
+    
+        person = state.query(Person).filter_by(id=pid).first()
         if person is None:
             raise Invalid("Unknown person ID.", value, state)
         else:
@@ -325,4 +330,10 @@ class PPChildrenAdult(validators.FancyValidator):
         # this if shouldn't actually be entered
         if current_field > 0 and adult_field < 1:
             raise Invalid("Any children in the partners programme must be accompanied by an adult.", value, state)
+        return
+
+class InvoiceItemProductDescription(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if (value['product'] is None and value['description'] == "") or (value['product'] is not None and value['description'] != ""):
+            raise Invalid("You must select a product OR enter a description, not both", value, state, error_dict={'description': 'Please fill in one'})
         return

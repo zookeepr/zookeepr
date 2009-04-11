@@ -354,18 +354,28 @@
             <h2>Subscriptions</h2>
 
             <p class="entries">
-              <% h.check_box('registration.lasignup') %>
-              <label for="registration.lasignup">I want to sign up for (free) Linux Australia membership!</label>
+              <% h.check_box('registration.signup.linuxaustralia') %>
+              <label for="registration.signup.linuxaustralia">I want to sign up for (free) Linux Australia membership!</label> <a href="http://www.linux.org.au/">Read More</a>
             </p>
 
             <p class="entries">
-              <% h.check_box('registration.announcesignup') %>
-              <label for="registration.announcesignup">I want to sign up to the low traffic conference announcement mailing list!</label>
+              <% h.check_box('registration.signup.nzoss') %>
+              <label for="registration.signup.nzoss">I want to sign up for membership with the New Zealand Open Source Society.</label> <a href="http://nzoss.org.nz/nzoss/about">Read More</a>
             </p>
 
             <p class="entries">
-              <% h.check_box('registration.delegatesignup') %>
-              <label for="registration.delegatesignup">I want to sign up to the conference attendees mailing list!</label>
+              <% h.check_box('registration.signup.internetnz') %>
+              <label for="registration.signup.internetnz">I want to sign up for membership with Internet NZ.</label> <a href="http://www.internetnz.org.nz/membership">Read More</a>
+            </p>
+
+            <p class="entries">
+              <% h.check_box('registration.signup.announce') %>
+              <label for="registration.signup.announce">I want to sign up to the low traffic conference announcement mailing list!</label>
+            </p>
+
+            <p class="entries">
+              <% h.check_box('registration.signup.chat') %>
+              <label for="registration.signup.chat">I want to sign up to the conference attendees mailing list!</label>
             </p>
           </fieldset>
 
@@ -377,22 +387,6 @@
             Linux Australia would like to make your presentation available to the public.
             This involves video­taping your talk, and offering the video/audio and slides
             (for download, or on CD­ROM).</p>
-
-            <p class="entries">
-              <% h.check_box('registration.speaker_record') %>
-              <label for="registration.speaker_record">I allow Linux Australia to record my presentation</label>
-            </p>
-
-            <p class="entries">
-              <% h.check_box('registration.speaker_video_release') %>
-              <label for="registration.speaker_video_release">I allow Linux Australia to
-              release my video under the Creative Commons ShareAlike License</label>
-            </p>
-
-            <p class="entries">
-              <% h.check_box('registration.speaker_slides_release') %>
-              <label for="registration.speaker_slides_release">I allow Linux Australia to share my slides</label>
-            </p>
 
             <p>If you have allowed Linux Australia to publish your slides, there will
             be an upload mechanism closer to the conference. We will publish them under

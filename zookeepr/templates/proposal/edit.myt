@@ -48,6 +48,8 @@ if not defaults and c.proposal:
         'proposal.project': c.proposal.project,
         'proposal.url': c.proposal.url,
         'proposal.abstract_video_url': c.proposal.abstract_video_url,
+        'proposal.video_release': c.proposal.video_release,
+        'proposal.slides_release': c.proposal.slides_release,
         'person.mobile': c.person.mobile,
         'person.url': c.person.url,
         'person.experience': c.person.experience,
@@ -59,5 +61,15 @@ if not defaults and c.proposal:
         defaults['proposal.accommodation_assistance'] = c.proposal.accommodation_assistance.id
     if c.proposal.travel_assistance:
         defaults['proposal.travel_assistance'] = c.proposal.travel_assistance.id
+
+    if c.proposal.video_release:
+        defaults['proposal.video_release'] = 1
+    else:
+        defaults['proposal.video_release'] = 0
+    if c.proposal.slides_release:
+        defaults['proposal.slides_release'] = 1
+    else:
+        defaults['proposal.slides_release'] = 0
+
 
 </%init>

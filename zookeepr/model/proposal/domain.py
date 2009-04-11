@@ -15,6 +15,9 @@ class TargetAudience(object):
     def __init__(self, name=None):
         self.name = name
 
+class ProposalStatus(object):
+    def __init__(self, name=None):
+        self.name = name
 
 class TravelAssistanceType(object):
     def __init__(self, name=None):
@@ -22,7 +25,7 @@ class TravelAssistanceType(object):
 
 ## Proposals
 class Proposal(object):
-    def __init__(self, id=None, title=None, type=None, accommodation_assistance=None, travel_assistance=None, abstract=None, url=None, attachment=None, code=None, scheduled=None, finished=None, theatre=None, building=None):
+    def __init__(self, id=None, title=None, type=None, accommodation_assistance=None, travel_assistance=None, abstract=None, url=None, attachment=None, code=None, scheduled=None, finished=None, theatre=None, building=None, video_release=None, slides_release=None):
         self.id = id
         self.title = title
         self.type = type
@@ -36,10 +39,15 @@ class Proposal(object):
         self.finished = finished
         self.theatre = theatre
         self.building = building
+        self.video_release = video_release
+        self.slides_release = slides_release
 
     def __repr__(self):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)
 
+    def _get_accepted(self):
+        return self.status.name == 'Accepted'
+    accepted = property(_get_accepted)
 
 class Attachment(object):
     def __init__(self, filename=None, content_type=None, creation_timestamp=None, content=None):

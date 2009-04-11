@@ -36,6 +36,8 @@ if not defaults:
         'proposal.type': 1,
         'proposal.accommodation_assistance': 0,
         'proposal.travel_assistance': 0,
+        'proposal.video_release': '1',
+        'proposal.slides_release': '1',
     }
     if c.signed_in_person:
         c.person = c.signed_in_person

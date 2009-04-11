@@ -104,10 +104,6 @@
           </table>
           <p class="note">Please check the <% h.link_to('mini-confs', url="/programme/mini-confs") %> page for details on each event. You can choose to attend multiple mini-confs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
 
-          <p class="label">How many people are you bringing to Open Day?</p>
-          <p><% c.registration.opendaydrag %></p>
-          <p class="note">Open Day is open to friends and family, and is targeted to a non-technical audience.  If you want to show off FOSS culture to some people, you can give us an idea of how many people to expect.</p>
-
           <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
           <p class="entries">
 % for (year, desc) in h.lca_rego['past_confs']:
@@ -144,11 +140,15 @@
 
           <h2>Subscriptions</h2>
 
-          <p><% h.yesno(c.registration.lasignup) %> I want to sign up for (free) Linux Australia membership!</p>
+          <p><% h.yesno('linuxaustralia' in c.registration.signup) %> I want to sign up for (free) Linux Australia membership!</p>
 
-          <p><% h.yesno(c.registration.announcesignup) %> I want to sign up to the low traffic conference announcement mailing list!</p>
+          <p><% h.yesno('nzoss' in c.registration.signup) %> I want to sign up for membership with the New Zealand Open Source Society.</p>
 
-          <p><% h.yesno(c.registration.delegatesignup) %> I want to sign up to the conference attendees mailing list!</p>
+          <p><% h.yesno('internetnz' in c.registration.signup) %> I want to sign up for membership with the Internet NZ.</p>
+
+          <p><% h.yesno('announce' in c.registration.signup) %> I want to sign up to the low traffic conference announcement mailing list!</p>
+
+          <p><% h.yesno('chat' in c.registration.signup) %> I want to sign up to the conference attendees mailing list!</p>
 
 % if c.registration.person.is_speaker():
           <h2>Speaker recording consent and release</h2>
@@ -157,14 +157,4 @@
           This involves video­taping your talk, and offering the video/audio and slides
           (for download, or on CD­ROM).</p>
 
-          <p><% h.yesno(c.registration.speaker_record) %> I allow Linux Australia to record my presentation</p>
-
-          <p><% h.yesno(c.registration.speaker_video_release) %> I allow Linux Australia to release my video under the Creative Commons ShareAlike License</p>
-
-          <p><% h.yesno(c.registration.speaker_slides_release) %> I allow Linux Australia to share my slides</p>
-
-          <p>If you have allowed Linux Australia to publish your slides, there will
-          be an upload mechanism closer to the conference. We will publish them under
-          the Creative Commons Attribution License unless you have an equivalent
-          preference that you let us know.</p>
 % #endif

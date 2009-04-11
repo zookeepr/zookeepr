@@ -3,11 +3,7 @@
 
 <div class="contents"><h3>Review Pages</h3>
 <ul>
-<li><a href="/review/help">How to review</a></li>
-<li><% h.link_to('Review proposals', url=h.url(controller='proposal', action='review_index')) %></li>
-<li><% h.link_to('Your reviews', url=h.url(controller='review', action='index')) %></li>
-<li><% h.link_to('Summary of proposals', url=h.url(controller='proposal', action='summary')) %></li>
-<li><% h.link_to('Reviewer summary', url=h.url(controller='review', action='summary')) %></li>
+<& reviewer_sidebar.myt &>
 </ul>
 </div>
 
@@ -36,7 +32,6 @@
 
 <h2><% pt.name %>s (<% len(collection) %>)</h2>
 
-<p>Proposal cannot be reviewed again untill all proposals have been reviewed at least <% min_reviews +1 %> times;</p>
 <table class="list">
 
 <tr>

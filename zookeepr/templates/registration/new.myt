@@ -53,17 +53,14 @@ if not defaults:
 
     defaults = {'person.country': 'Australia',
         'registration.checkout': '24',
-        'registration.lasignup': '1',
-        'registration.announcesignup': '1',
         'registration.dinner': '0',
-        'registration.speaker_record': '1',
-        'registration.speaker_video_release': '1',
-        'registration.speaker_slides_release': '1',
         'registration.shell': '',
         'registration.editor': '',
         'registration.distro': '',
         'registration.silly_description': desc,
         'registration.silly_description_checksum': descChecksum,
+        'registration.signup.linuxaustralia': 1,
+        'registration.signup.announce': 1,
     }
     if c.signed_in_person:
         for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:

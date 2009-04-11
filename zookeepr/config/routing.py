@@ -32,6 +32,7 @@ def make_map():
     # Review
     m.connect('/proposal/review_index', controller='proposal', action='review_index', id=None)
     m.connect('/proposal/summary', controller='proposal', action='summary', id=None)
+    m.connect('/proposal/approve', controller='proposal', action='approve', id=None)
     m.connect('/review/summary', controller='review', action='summary', id=None)
 
 

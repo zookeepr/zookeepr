@@ -116,7 +116,7 @@ class Product(object):
     def qty_sold(self):
         qty = 0
         for ii in self.invoice_items:
-            if not ii.invoice.void and ii.invoice.paid():
+            if not ii.invoice.is_void() and ii.invoice.paid():
                 if self.category.name == 'Accomodation':
                     qty += 1
                 else:
@@ -128,7 +128,7 @@ class Product(object):
         qty = 0
         for ii in self.invoice_items:
             # also count sold items as invoiced since they are valid
-            if not ii.invoice.void and ((ii.invoice.paid() or not ii.invoice.overdue() or not date)):
+            if not ii.invoice.is_void() and ((ii.invoice.paid() or not ii.invoice.overdue() or not date)):
                 if self.category.name == 'Accomodation':
                     qty += 1
                 else:
@@ -197,6 +197,9 @@ class Invoice(object):
     def __repr__(self):
         return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)
 
+    def is_void(self):
+        return (self.void is not None)
+
     def total(self):
         """Return the total value of this invoice"""
         t = 0
@@ -209,7 +212,7 @@ class Invoice(object):
         return bool(self.good_payments or self.total()==0)
 
     def status(self):
-        if self.void == True:
+        if self.is_void() == True:
             return "Invalid"
         elif self.paid():
             return "Paid"

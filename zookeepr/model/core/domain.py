@@ -66,10 +66,12 @@ class Person(object):
         return self.password_hash == md5.new(value).hexdigest()
 
     def is_speaker(self):
-        return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False)
+        return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False) or False
+        # note: the "or False" at the end converts a None into a False
 
     def is_miniconf_org(self):
-        return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False)
+        return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False) or False
+        # note: the "or False" at the end converts a None into a False
 
     def is_volunteer(self):
         if self.volunteer and self.volunteer.accepted is not None:
@@ -107,14 +109,22 @@ class Person(object):
 
     def valid_invoice(self):
         for invoice in self.invoices:
-            if not invoice.void and not invoice.manual:
+            if not invoice.is_void() and not invoice.manual:
                 return invoice
         return None
+
+    def has_paid_ticket(self):
+        for invoice in self.invoices:
+            if invoice.paid() and not invoice.is_void():
+                for item in invoice.items:
+                    if item.product is not None and item.product.category.name == 'Ticket':
+                        return True
+        return False
 
     def paid(self):
         status = False
         for invoice in self.invoices:
-            if not invoice.void:
+            if not invoice.is_void():
                 if invoice.paid():
                     status = True
                 else:

@@ -26,6 +26,14 @@ target_audience = Table('target_audience', metadata,
                                nullable=False),
                         )
 
+# proposal status: 'accepted', 'rejected', 'pending', 'withdrawn', 'backup'
+proposal_status = Table('proposal_status', metadata,
+                        Column('id', Integer, primary_key=True),
+                        Column('name', String(40),
+                               unique=True,
+                               nullable=False),
+                       )
+
 travel_assistance_type = Table('travel_assistance_type', metadata,
                         Column('id', Integer, primary_key=True),
                         Column('name', String(200),
@@ -46,9 +54,13 @@ proposal = Table('proposal', metadata,
                    Column('proposal_type_id', Integer,
                           ForeignKey('proposal_type.id')),
 
-                   # type, enumerated in the target_audience table
+                   # audience, enumerated in the target_audience table
                    Column('target_audience_id', Integer,
                           ForeignKey('target_audience.id')),
+
+                   # status, enumerated in the proposal_status table
+                   Column('status_id', Integer,
+                          ForeignKey('proposal_status.id'), nullable=False),
 
                    # type, enumerated in the accommodation_assistance_type table
                    Column('accommodation_assistance_type_id', Integer,
@@ -65,14 +77,14 @@ proposal = Table('proposal', metadata,
                    # url to a short video
                    Column('abstract_video_url', Text),
 
-                   # Is it accepted?
-                   Column('accepted', Boolean),
-
                    Column('code', Integer),
                    Column('scheduled', DateTime),
                    Column('finished', DateTime),
                    Column('theatre', Text),
                    Column('building', Text),
+
+                   Column('video_release', Boolean),
+                   Column('slides_release', Boolean),
 
                    Column('recorded_ogg', Text),
                    Column('recorded_spx', Text),

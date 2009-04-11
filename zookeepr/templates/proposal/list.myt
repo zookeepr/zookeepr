@@ -1,7 +1,20 @@
 <h2>My Proposals</h2>
 
 %if c.person.proposals.__len__() > 0:
-%  declined = False
+%  footnotes = []
+
+%  fn_declined = "Your proposal has been passed onto miniconf organisers "
+%  fn_declined+= "for possible inclusion in their programmes. "
+%  fn_declined+= "They <i>may</i> contact you."
+
+%  fn_consent = "Please make sure that you are allowed to do this, if there "
+%  fn_consent+= "is any doubt (for instance, consider whether you're "
+%  fn_consent+= "revealing your employer's information or using other "
+%  fn_consent+= "people's copyrighted materials.)"
+
+%  fn_share = "Please consider allowing us to share both the video of "
+%  fn_share+= "your talk and your slides, so that the community can "
+%  fn_share+= "gain the maximum benefit from your talk!"
 
 %  if c.paper_editing == 'closed':
 <p>Proposal editing has been disabled while the review committee assess your proposals. Editing will be available later for updating details on your accepted presentations.</p>
@@ -15,6 +28,7 @@
     <th>Target Audience</th>
     <th>Project URL</th>
     <th>Submitter(s)</th>
+    <th>Consent</th>
     <th>Status</th>
     <th>&nbsp;</th>
   </tr>
@@ -40,31 +54,60 @@
 %     #endfor
     </td>
     <td>
-%     if s.accepted == None:
+%     cons = []; fns = []
+%     if s.video_release:
+%         cons.append('video')
+%     #endif
+%     if s.slides_release:
+%         cons.append('slides')
+%     #endif
+%     if not cons:
+%         cons.append('no')
+%     #endif
+%     if s.video_release or s.slides_release:
+%         fns.append(fn_mark(fn_consent))
+%     #endif
+%     if not s.video_release or not s.slides_release:
+%         fns.append(fn_mark(fn_share))
+%     #endif
+%     if fns:
+%        fns.sort()
+%        fns = '<sup>[' + ','.join(fns) + ']</sup>'
+%     else:
+%        fns = ''
+%     #endif
+      <% ' and '.join(cons) %> release<% fns %>
+    </td>
+    <td>
+%     if s.status.name == 'Pending':
         <p><i>Undergoing review</i></p>
 %     elif s.accepted:
         <p>Accepted</p>
+%     elif s.status.name == 'Withdrawn':
+        <p>Withdrawn</p>
 %     else:
-%       declined = True
-        <p>Declined<sup>[1]</sup></p>
-%     #endif    
+        <p>Declined<sup>[<% fn_mark(fn_declined) %>]</sup></p>
+%     #endif
     </td>
     <td><% h.link_to("edit", url=h.url(controller='proposal', action='edit', id=s.id)) %></td>
   </tr>
 % #endfor
 </table>
 
-%   if declined:
-<p>[1] Your proposal has been passed onto miniconf organisors for possible inclusion in their programmes. They <i>may</i> contact you.</p>
-%   #endif
+%   for fnmark, fn in enumerate(footnotes):
+<p>[<% fnmark+1 %>] <% fn %></p>
+%   #endfor
 
 %else:
     <p>You haven't submitted any proposals. To propose a miniconf, presentation or tutorial, please use the links above.</p>
 %#endif
 
-<%python>
-</%python>
- 
+<%init>
+def fn_mark(text):
+    if text not in footnotes:
+        footnotes.append(text)
+    return '%d' % (footnotes.index(text)+1)
+</%init>
 
 <%method title>
 Proposals - <& PARENT:title &>
