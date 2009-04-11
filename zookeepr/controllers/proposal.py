@@ -142,24 +142,6 @@ class ProposalController(SecureController, View, Update):
         defaults = dict(request.POST)
         errors = {}
 
-        # Next ID for skipping
-          #SELECT
-          #    p.id, count(r.id)
-          #FROM
-          #        proposal AS p
-          #LEFT JOIN
-          #        review AS r
-          #                ON(p.id=r.proposal_id)
-          #WHERE
-          #        p.proposal_type_id IN(1,3)
-          #GROUP BY
-          #        p.id
-          #HAVING COUNT(r.proposal_id) < (
-          #        (SELECT COUNT(id) FROM review) /
-          #        (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
-          #ORDER BY
-          #        RANDOM()
-
         next = self.dbsession.query(model.Proposal).from_statement("""
               SELECT
                   p.id
