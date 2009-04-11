@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model import Person, PasswordResetConfirmation
+from zookeepr.model import Person, PasswordResetConfirmation, Role
 
 from zookeepr.config.lca_info import lca_info
 
@@ -84,10 +84,17 @@ class UpdatePersonSchema(BaseSchema):
     person = _UpdatePersonSchema()
     pre_validators = [NestedVariables]
 
-class PersonController(BaseController):
+class RoleSchema(BaseSchema):
+    role = validators.String(not_empty=True)
+    action = validators.OneOf(['Grant', 'Revoke'])
+
+class PersonController(BaseController): #Read, Update, List
     @authorize(h.auth.is_valid_user)
     def signin(self):
         # Signin is handled by authkit so we just need to redirect stright to home
+
+        h.flash('You have signed in')
+
         if lca_info['conference_status'] == 'open':
             redirect_to(controller='registration', action='status')
 
@@ -105,6 +112,7 @@ class PersonController(BaseController):
         """
 
         # return home
+        h.flash('You have signed out')
         redirect_to('home')
 
     def confirm(self, confirm_hash):
@@ -310,54 +318,39 @@ class PersonController(BaseController):
 
         return render('person/view.mako')
 
+    @dispatch_on(POST="_roles") 
     @authorize(h.auth.has_organiser_role)
     def roles(self, id):
+
+        c.person = Person.find_by_id(id)
+        if c.person is None:
+            abort(404, "No such object")
+        c.roles = Role.find_all()
+        return render('person/roles.mako')
+
+
+    @authorize(h.auth.has_organiser_role)
+    @validate(schema=RoleSchema, form='roles', post_only=False, on_get=True)
+    def _roles(self, id):
         """ Lists and changes the person's roles. """
 
-        td = '<td valign="middle">'
-        res = ''
-        res += '<p><b>'+self.obj.firstname+' '+self.obj.lastname+'</b></p><br>'
-        data = dict(request.POST)
-        if data:
-          role = int(data['role'])
-          act = data['Commit']
-          if act not in ['Grant', 'Revoke']: raise "foo!"
-          r = self.dbsession.query(Role).filter_by(id=role).one()
-          res += '<p>' + act + ' ' + r.name + '.'
-          if act=='Revoke':
-            person_role_map.delete(and_(
-              person_role_map.c.person_id == self.obj.id,
-              person_role_map.c.role_id == role)).execute()
-          if act=='Grant':
-            person_role_map.insert().execute(person_id = self.obj.id,
-                                                            role_id = role)
+        c.person = Person.find_by_id(id)
+        if c.person is None:
+            abort(404, "No such object")
+        c.roles = Role.find_all()
 
+        role = self.form_result['role']
+        action = self.form_result['action']
 
-        res += '<table>'
-        for r in self.dbsession.query(Role).all():
-          res += '<tr>'
-          # can't use AuthRole here, because it may be out of date
-          has = len(person_role_map.select(whereclause =
-            and_(person_role_map.c.person_id == self.obj.id,
-              person_role_map.c.role_id == r.id)).execute().fetchall())
+        role = Role.find_by_name(name=role)
 
-          if has>1:
-            # this can happen if two people Grant at once, or one person
-            # does a Grant and reloads/reposts.
-            res += td + 'is %d times' % has
-            has = 1
-          else:
-            res += td+('is not', 'is')[has]
-          res += td+r.name
+        if action == 'Revoke':
+            c.person.roles.remove(role)
+        elif action == 'Grant':
+            c.person.roles.append(role)
 
-          res += td+h.form(h.url())
-          res += h.hidden_field('role', r.id)
-          res += h.submitbutton(('Grant', 'Revoke')[has])
-          res += h.end_form()
+        meta.Session.commit()
 
-        res += '</table>'
+        h.flash(action + ' ' + role.name)
 
-        c.res = res
-
-        return render_response('person/roles.myt')
-
+        return render('person/roles.mako')

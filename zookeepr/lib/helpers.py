@@ -15,9 +15,7 @@ import webhelpers.constants
 from routes import request_config
 from routes.util import url_for
 
-from pylons import config
-from pylons import request
-
+from pylons import config, request, session
 
 import os.path, random, array
 
@@ -28,6 +26,7 @@ from zookeepr.model import Person
 from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
 
 from sqlalchemy.orm.util import object_mapper
+
 
 #from routes import url
 
@@ -372,4 +371,8 @@ def object_to_defaults(object, prefix):
         defaults[prefix + "." + key] = getattr(object, key)
 
     return defaults
+
+def flash(msg):
+    session['flash'] = msg
+    session.save()
 
