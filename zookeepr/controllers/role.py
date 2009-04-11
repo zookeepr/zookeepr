@@ -1,7 +1,7 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
+from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -44,9 +44,7 @@ class RoleController(BaseController): # Delete
     def edit(self, id):
         c.form = 'edit'
         c.role = Role.find_by_id(id)
-        if c.role is None:
-            abort(404, "No such object")
-
+        
         defaults = h.object_to_defaults(c.role, 'role')
 
         form = render('/role/edit.mako')
@@ -56,8 +54,6 @@ class RoleController(BaseController): # Delete
     @validate(schema=EditRoleSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
     def _edit(self, id):
         c.role = Role.find_by_id(id)
-        if c.role is None:
-            abort(404, "No such object")
 
         for key in self.form_result['role']:
             setattr(c.role, key, self.form_result['role'][key])
@@ -90,8 +86,6 @@ class RoleController(BaseController): # Delete
     def view(self, id):
         c.registration_status = h.config['app_conf'].get('registration_status')
         c.role = Role.find_by_id(id)
-        if c.role is None:
-            abort(404, "No such object")
 
         return render('role/view.mako')
 

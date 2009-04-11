@@ -291,42 +291,28 @@ def countries():
 #    else:
 #        return False
 #
-#teaser_re = re.compile(r'(\<\!\-\-break\-\-\>)')
-#def make_teaser(body):
-#    if teaser_re.search(body):
-#        parts = teaser_re.split(body)
-#        return parts[0], True
-#    else:
-#        return body, False
-#
-#def remove_teaser_break(body):
-#    if teaser_re.search(body):
-#        return teaser_re.sub('', body)
-#    else:
-#        return body
-#
-#_news_id = -1
-#def news_id():
-#    global _news_id
-#    if _news_id == -1:
-#        from sqlalchemy.orm import create_session
-#        from zookeepr.model import DBContentType
-#        _news_id = create_session().query(DBContentType).filter_by(name='News').first().id
-#    return _news_id
-#
-#def is_news(article_id):
-#    if news_id() == article_id:
-#        return True
-#    return False
-#
-#computer_re = re.compile(r'([^A-Za-z0-9\_\-])')
-#def computer_title(title):
-#    """ Turn a string into a computer friendly tag """
-#    title = title.replace(' ', '_')
-#    title = computer_re.sub('', title)
-#    title = title.lower()
-#    return title
-#
+teaser_re = re.compile(r'(\<\!\-\-break\-\-\>)')
+def make_teaser(body):
+    if teaser_re.search(body):
+        parts = teaser_re.split(body)
+        return parts[0], True
+    else:
+        return body, False
+
+def remove_teaser_break(body):
+    if teaser_re.search(body):
+        return teaser_re.sub('', body)
+    else:
+        return body
+
+computer_re = re.compile(r'([^A-Za-z0-9\_\-])')
+def computer_title(title):
+    """ Turn a string into a computer friendly tag """
+    title = title.replace(' ', '_')
+    title = computer_re.sub('', title)
+    title = title.lower()
+    return title
+
 #def wiki_link(title):
 #    """ Turn a string into a wiki friendly tag """
 #    parts = title.split(' ')

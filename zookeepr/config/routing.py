@@ -23,16 +23,16 @@ def make_map():
     # the top level controller is named home
     map.connect('home', '/', controller='home')
 
-    map.connect('/media/news',         controller='db_content', action='list_news', id=None)
-    map.connect('/media/news/rss',     controller='db_content', action='rss_news', id=None)
+    map.connect('/media/news',         controller='db_content', action='list_news')
+    map.connect('/media/news/rss',     controller='db_content', action='rss_news')
     map.connect('/media/news/{id}',    controller='db_content', action='view')
-    map.connect('/media/in_the_press', controller='db_content', action='list_press', id=None)
+    map.connect('/media/in_the_press', controller='db_content', action='list_press')
 
     # DB content
-    map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
-    map.connect('/db_content/delete_file',   controller='db_content', action='delete_file', id=None)
-    map.connect('/db_content/delete_folder', controller='db_content', action='delete_folder', id=None)
-    map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
+    # map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
+    # map.connect('/db_content/delete_file',   controller='db_content', action='delete_file', id=None)
+    # map.connect('/db_content/delete_folder', controller='db_content', action='delete_folder', id=None)
+    # map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
 
     # Schedule
     map.connect('/schedule/{day}', controller='schedule', day=None)
@@ -77,20 +77,6 @@ def make_map():
     map.connect('/openday', controller='not_found', action='page')
     map.connect('/openDay', controller='not_found', action='page')
 
-    #HACK: Alias' for db_content pages. Due to the news route the menu will display the wrong thing. These are only here incase somebody mis-links.
-    #HACK: this is because of an incorrect link in the press release
-    map.connect('/become_a_sponsor', controller='db_content', action='view', id=8)
-    map.connect('/review/help', controller='db_content', action='view', id=25)
-    map.connect('/sponsors/google_diversity_programme', controller='db_content', action='view', id=66)
-    map.connect('/sponsors', controller='db_content', action='view', id=61)
-    map.connect('/register', controller='db_content', action='view', id=45)
-    map.connect('/programme', controller='db_content', action='view', id=3)
-
-    # special case the wiki controller so that it's not gobbled by the
-    # usual {controller} rules...
-    #map.connect('/wiki', controller='wiki', action='view', url='/wiki')
-    #map.connect('/wiki/*sfx', controller='wiki', action='view_wiki')
-
     # route rego_notes with ID's
     map.connect('registration/{rego_id}/new_note', controller='rego_note', action='new', id=None)
 
@@ -106,8 +92,8 @@ def make_map():
     map.connect('/{controller}/{id}/{action}')
 
     # map.connect('*url', controller='wiki', action='view')
-    #FIXME map.connect('*url', controller='db_content', action='page', id=None)
+    map.connect('*url', controller='db_content', action='page', id=None)
     #map.connect('/db_content/view', controller='db_content', action='view', id=None)
-    #FIXME map.connect('*url', controller='not_found', action='page')
+    map.connect('*url', controller='not_found', action='view')
 
     return map

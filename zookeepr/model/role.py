@@ -2,7 +2,7 @@
 import sqlalchemy as sa
 
 from meta import Base
-
+from pylons.controllers.util import abort
 from zookeepr.model.meta import Session
 
 class Role(Base):
@@ -19,13 +19,19 @@ class Role(Base):
         super(Role, self).__init__(**kwargs)
 
     @classmethod
-    def find_by_name(self, name):
-        return Session.query(Role).filter_by(name=name).first()
-
+    def find_by_name(self, name, abort_404 = True):
+        result = Session.query(Role).filter_by(name=name).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
+        
     @classmethod
-    def find_by_id(self, id):
-        return Session.query(Role).filter_by(id=id).first()
-
+    def find_by_id(self, id, abort_404 = True):
+        result = Session.query(Role).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
+        
     @classmethod
     def find_all(self):
         return Session.query(Role).order_by(Role.name).all()

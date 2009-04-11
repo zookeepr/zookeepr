@@ -1,7 +1,7 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, AssistanceType, ProposalType, Stream
+from zookeepr.model import Person, AssistanceType, ProposalType, Stream, DbContentType
 
 from zookeepr.config.lca_info import lca_info
 
@@ -58,10 +58,11 @@ class BaseSchema(formencode.Schema):
 #    def _to_python(self, value, state):
 #        return Person.get(value)
 #
-#class DbContentTypeValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        return state.query(DBContentType).get(value)
-#
+
+class DbContentTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return DbContentType.find_by_id(value)
+
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return ProposalType.find_by_id(value)

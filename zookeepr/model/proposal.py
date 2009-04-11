@@ -3,6 +3,8 @@ import sqlalchemy as sa
 
 from meta import Base
 
+from pylons.controllers.util import abort
+
 from zookeepr.model.meta import Session
 
 from proposal_type import ProposalType
@@ -86,17 +88,26 @@ class Proposal(Base):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)
 
     @classmethod
-    def find_by_id(cls, id):
-        return Session.query(Proposal).filter_by(id=id).first()
-
+    def find_by_id(cls, id, abort_404 = True):
+        result = Session.query(Proposal).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
+        
     @classmethod
     def find_all(cls):
         return Session.query(Proposal).order_by(Proposal.id).all()
 
     @classmethod
-    def find_all_by_assistance_type_id(cls, id):
-        return Session.query(Proposal).filter_by(assistance_type_id=id).all()
-
+    def find_all_by_assistance_type_id(cls, id, abort_404 = True):
+        result = Session.query(Proposal).filter_by(assistance_type_id=id).all()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
+        
     @classmethod
-    def find_all_by_proposal_type_id(cls, id):
-        return Session.query(Proposal).filter_by(proposal_type_id=id).all()
+    def find_all_by_proposal_type_id(cls, id, abort_404 = True):
+        result = Session.query(Proposal).filter_by(proposal_type_id=id).all()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result

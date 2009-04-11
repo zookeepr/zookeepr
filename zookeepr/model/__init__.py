@@ -14,6 +14,7 @@ import person_proposal_map
 import attachment
 import review
 import stream
+import db_content
 
 from person import Person
 from role import Role
@@ -26,6 +27,7 @@ from attachment import Attachment
 from review import Review
 from stream import Stream
 
+from db_content import DbContentType, DbContent
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
@@ -47,6 +49,8 @@ def setup(meta):
     attachment.setup(meta)
     review.setup(meta)
     stream.setup(meta)
+    
+    db_content.setup(meta)
 
     meta.Session.commit()
 

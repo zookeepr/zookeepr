@@ -12,5 +12,5 @@ class NotFoundController(BaseController):
         The default is just to abort the request with a 404 File not found
         status message.
         """
-        return render_response('not_found.myt')
+        return render('/error/404.mako')
 

@@ -1,7 +1,7 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
+from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -102,9 +102,6 @@ class PersonController(BaseController): #Read, Update, List
         """
         person = Person.find_by_url_hash(confirm_hash)
 
-        if person is None:
-            abort(404)
-
         if person.activated:
             return render('person/already_confirmed.mako')
 
@@ -151,8 +148,6 @@ class PersonController(BaseController): #Read, Update, List
     @dispatch_on(POST="_reset_password") 
     def reset_password(self, url_hash):
         c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
-        if c.conf_rec is None:
-            abort(404)
 
         return render('person/reset.mako')
 
@@ -182,8 +177,6 @@ class PersonController(BaseController): #Read, Update, List
         confirmation record.
         """
         c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
-        if c.conf_rec is None:
-            abort(404)
 
         now = datetime.datetime.now(c.conf_rec.timestamp.tzinfo)
         if delta > datetime.timedelta(0, 24, 0):
@@ -212,8 +205,6 @@ class PersonController(BaseController): #Read, Update, List
     def edit(self, id):
         c.form = 'edit'
         c.person = Person.find_by_id(id)
-        if c.person is None:
-            abort(404, "No such object")
 
         defaults = h.object_to_defaults(c.person, 'person')
 
@@ -231,8 +222,6 @@ class PersonController(BaseController): #Read, Update, List
             h.auth.no_role()
 
         c.person = Person.find_by_id(id)
-        if c.person is None:
-            abort(404, "No such object")
 
         for key in self.form_result['person']:
             setattr(c.person, key, self.form_result['person'][key])
@@ -291,8 +280,6 @@ class PersonController(BaseController): #Read, Update, List
 
         c.registration_status = h.config['app_conf'].get('registration_status')
         c.person = Person.find_by_id(id)
-        if c.person is None:
-            abort(404, "No such object")
 
         return render('person/view.mako')
 
@@ -301,8 +288,6 @@ class PersonController(BaseController): #Read, Update, List
     def roles(self, id):
 
         c.person = Person.find_by_id(id)
-        if c.person is None:
-            abort(404, "No such object")
         c.roles = Role.find_all()
         return render('person/roles.mako')
 
@@ -313,8 +298,6 @@ class PersonController(BaseController): #Read, Update, List
         """ Lists and changes the person's roles. """
 
         c.person = Person.find_by_id(id)
-        if c.person is None:
-            abort(404, "No such object")
         c.roles = Role.find_all()
 
         role = self.form_result['role']
