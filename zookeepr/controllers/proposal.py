@@ -6,7 +6,7 @@ from zookeepr.lib.base import *
 from zookeepr.lib.mail import *
 from zookeepr.lib.crud import Update, View
 from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, TargetAudienceValidator, PersonValidator, FileUploadValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
-from zookeepr.model import Proposal, ProposalType, TargetAudience, Stream, Review, Attachment, AccommodationAssistanceType, TravelAssistanceType, Role, Person
+from zookeepr.model import Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, Review, Attachment, AccommodationAssistanceType, TravelAssistanceType, Role, Person
 from zookeepr.controllers.person import PersonSchema
 
 import random
@@ -381,6 +381,7 @@ class ProposalController(SecureController, View, Update):
                     for k in result['proposal']:
                         setattr(c.proposal, k, result['proposal'][k])
 
+                    c.proposal.status = self.dbsession.query(ProposalStatus).filter_by(name='Pending').one()
                     if not c.signed_in_person:
                         c.person = model.Person()
                         for k in result['person']:

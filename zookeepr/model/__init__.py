@@ -1,5 +1,5 @@
 from core import Person, Role, PasswordResetConfirmation
-from proposal import Proposal, ProposalType, TargetAudience, Attachment, Review, AccommodationAssistanceType, TravelAssistanceType
+from proposal import Proposal, ProposalType, TargetAudience, ProposalStatus, Attachment, Review, AccommodationAssistanceType, TravelAssistanceType
 from schedule import Stream, Talk
 from registration import *
 from openday import Openday
@@ -55,6 +55,20 @@ def populate_data():
             dict(name='User'),
             dict(name='Developer'),
             dict(name='Business'),
+            )
+
+    except SQLError, inst:
+        print inst
+        pass
+
+    try:
+        # Proposal statuses
+        model.proposal.tables.proposal_status.insert().execute(
+            dict(name='Accepted'),
+            dict(name='Rejected'),
+            dict(name='Pending'),
+            dict(name='Withdrawn'),
+            dict(name='Backup'),
             )
 
     except SQLError, inst:

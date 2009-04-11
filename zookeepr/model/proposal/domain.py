@@ -15,6 +15,9 @@ class TargetAudience(object):
     def __init__(self, name=None):
         self.name = name
 
+class ProposalStatus(object):
+    def __init__(self, name=None):
+        self.name = name
 
 class TravelAssistanceType(object):
     def __init__(self, name=None):
@@ -40,6 +43,9 @@ class Proposal(object):
     def __repr__(self):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)
 
+    def _get_accepted(self):
+        return self.status.name == 'Accepted'
+    accepted = property(_get_accepted)
 
 class Attachment(object):
     def __init__(self, filename=None, content_type=None, creation_timestamp=None, content=None):

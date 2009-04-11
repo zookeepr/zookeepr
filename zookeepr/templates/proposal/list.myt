@@ -40,7 +40,7 @@
 %     #endfor
     </td>
     <td>
-%     if s.accepted == None:
+%     if s.status.name == 'Pending':
         <p><i>Undergoing review</i></p>
 %     elif s.accepted:
         <p>Accepted</p>
