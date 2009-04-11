@@ -101,7 +101,7 @@ class InvoiceController(SecureController, Read, List):
 
         os.close(svg_fd); os.close(pdf_fd)
 
-        os.system('saxon %s %s > %s' % (xml, xsl, svg))
+        os.system('xsltproc -o %s %s %s' % (svg, xml, xsl))
         os.system('inkscape -z -f %s -A %s' % (svg, pdf))
 
         pdf_f = file(pdf)
