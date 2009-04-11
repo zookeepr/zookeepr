@@ -757,7 +757,7 @@ class AdminController(SecureController):
         registration_list = self.dbsession.query(Registration).join('person').filter(Registration.keyid != None).filter(Registration.keyid != '').order_by(Person.lastname).all()
         key_list = list()
         for registration in registration_list:
-            if registration.person.paid():
+            if registration.person.has_paid_ticket():
                 key_list.append(registration.keyid)
         return key_list
 
@@ -770,7 +770,7 @@ class AdminController(SecureController):
         c.columns = ['ID', 'Name', 'Type', 'Shirts', 'Dinner Tickets', 'Partners Programme']
         c.data = []
         for registration in registration_list:
-            if (registration.person.id not in [id[0] for id in checkedin_list]) and registration.person.paid():
+            if (registration.person.id not in [id[0] for id in checkedin_list]) and registration.person.has_paid_ticket():
                 shirts = []
                 dinner_tickets = 0
                 ticket_types = []
@@ -868,7 +868,7 @@ class AdminController(SecureController):
         """ Registered and paid people by country [Statistics] """
         data = {}
         for registration in self.dbsession.query(Registration).all():
-            if registration.person.paid():
+            if registration.person.has_paid_ticket():
                 country = registration.person.country.capitalize()
                 data[country] = data.get(country, 0) + 1
         c.data = data.items()
@@ -886,7 +886,7 @@ class AdminController(SecureController):
         """ Registered and paid people by state - Australia Only [Statistics] """
         data = {}
         for registration in self.dbsession.query(Registration).all():
-            if registration.person.paid() and registration.person.country == "Australia":
+            if registration.person.has_paid_ticket() and registration.person.country == "Australia":
                 state = registration.person.state.capitalize()
                 data[state] = data.get(state, 0) + 1
         c.data = data.items()
