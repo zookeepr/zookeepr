@@ -84,24 +84,28 @@ class InvoiceController(SecureController, Read, List):
         return render_response('invoice/remind.myt')
 
     def pdf(self, id):
-        import os, tempfile
+        import os, tempfile, libxml2, libxslt
 
-        res = render('%s/pdf.myt' % self.individual, fragment=True)
+        xml_s = render('%s/pdf.myt' % self.individual, fragment=True)
 
-        xsl = request.environ['paste.config']['global_conf']['here']
-        xsl += '/zookeepr/templates/invoice/pdf.xsl'
+        xsl_f = request.environ['paste.config']['global_conf']['here'] + '/zookeepr/templates/invoice/pdf.xsl'
+		xsl_s = libxml2.parseFile(xsl_f) 
+        xsl = libxslt.parseStylesheetDoc(xsl_s) 
 
-        (xml_fd, xml) = tempfile.mkstemp('.xml')
+        xml = libxml2.parseDoc(xml_s) 
+        svg_s = xsl.applyStylesheet(xml, None) 
+
         (svg_fd, svg) = tempfile.mkstemp('.svg')
-        (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
+        xsl.saveResultToFilename(svg, svg_s, 0) 
 
-        xml_f = os.fdopen(xml_fd, 'w')
-        xml_f.write(res)
-        xml_f.close()
+        xsl.freeStylesheet() 
+        xml.freeDoc() 
+        svg_s.freeDoc() 
+
+        (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
 
         os.close(svg_fd); os.close(pdf_fd)
 
-        os.system('saxon %s %s > %s' % (xml, xsl, svg))
         os.system('inkscape -z -f %s -A %s' % (svg, pdf))
 
         pdf_f = file(pdf)
@@ -112,4 +116,6 @@ class InvoiceController(SecureController, Read, List):
         #res.headers['Content-type']='text/plain; charset=utf-8'
         res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
                                                            % c.invoice.id )
+
+		# We should really remove the pdf file, shouldn't we.
         return res

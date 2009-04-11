@@ -11,6 +11,8 @@ lca_info = {
 
 # Contact email for the committee
   'contact_email' : 'fmarier@gmail.com',
+# All email sent by ZK will Bcc here:
+  'bcc_email' : 'fmarier@gmail.com',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',
@@ -33,6 +35,7 @@ lca_info = {
   'conference_status': 'open',
 
   'mini_conf_email' : 'fmarier@gmail.com',
+  'speaker_email' : 'fmarier@gmail.com',
 
   'proposal_update_email': '', # recieve notifications when proposals are changed. Leave blank for none.
 }

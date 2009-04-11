@@ -7,7 +7,8 @@
 % if not c.reviewed_everything:
 <ul><li><% h.link_to('Skip!', url=h.url(controller='proposal', action='review', id=c.next_review_id)) %></li></ul>
 % else:
-<ul><li><em>Skip!</em> - You have reviewed everything!</li></ul>
+<ul><li><em>Can't skip - you have reviewed all the other <%
+c.proposal.type.name %>s!</em></li></ul>
 % #endif
 <div class="contents"><h3>Review Pages</h3>
 <ul>

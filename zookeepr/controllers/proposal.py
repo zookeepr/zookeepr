@@ -142,54 +142,34 @@ class ProposalController(SecureController, View, Update):
         defaults = dict(request.POST)
         errors = {}
 
-        # Next ID for skipping
-          #SELECT
-          #    p.id, count(r.id)
-          #FROM
-          #        proposal AS p
-          #LEFT JOIN
-          #        review AS r
-          #                ON(p.id=r.proposal_id)
-          #WHERE
-          #        p.proposal_type_id IN(1,3)
-          #GROUP BY
-          #        p.id
-          #HAVING COUNT(r.proposal_id) < (
-          #        (SELECT COUNT(id) FROM review) /
-          #        (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
-          #ORDER BY
-          #        RANDOM()
-
-        collection = self.dbsession.query(model.Proposal).from_statement("""
+        next = self.dbsession.query(model.Proposal).from_statement("""
               SELECT
                   p.id
               FROM
-                      proposal AS p
+                  (SELECT id
+                   FROM proposal
+                   WHERE id <> %d
+                     AND proposal_type_id = %d
+                   EXCEPT
+                       SELECT proposal_id AS id
+                       FROM review
+                       WHERE review.reviewer_id <> %d) AS p
               LEFT JOIN
                       review AS r
                               ON(p.id=r.proposal_id)
               GROUP BY
                       p.id
-              HAVING COUNT(r.proposal_id) < (
-                      (SELECT COUNT(id) FROM review) /
-                      (SELECT COUNT(id) FROM proposal) + 1)
-              ORDER BY
-                      RANDOM()
-              LIMIT 10
-        """)
-        #print collection
-        for proposal in collection:
-            #print proposal.id
-            if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
-                c.next_review_id = proposal.id
-                c.reviewed_everything = False
-                break
-            else:
-                # looks like you've reviewed everything!
-                c.next_review_id = id
-                c.reviewed_everything = True
-
-
+              ORDER BY COUNT(r.reviewer_id), RANDOM()
+              LIMIT 1
+        """ % (c.proposal.id, c.proposal.type.id, c.signed_in_person.id))
+        next = next.first()
+        if next is not None:
+            c.next_review_id = next.id
+            c.reviewed_everything = False
+        else:
+            # looks like you've reviewed everything!
+            c.next_review_id = None
+            c.reviewed_everything = True
 
         if defaults:
             result, errors = NewReviewSchema().validate(defaults, self.dbsession)
@@ -209,7 +189,7 @@ class ProposalController(SecureController, View, Update):
                 if c.next_review_id:
                     return redirect_to(action='review', id=c.next_review_id)
 
-                return redirect_to(action='index')
+                return redirect_to('/proposal/review_index')
 
         c.streams = self.dbsession.query(Stream).all()
 
@@ -288,6 +268,12 @@ class ProposalController(SecureController, View, Update):
                 self._edit_postflush()
 
                 default_redirect = dict(action='view', id=self.identifier(self.obj))
+                if c.proposal.type.name == 'Miniconf':
+                    email(c.person.email_address,
+                        render('proposal/thankyou_mini_email.myt', fragment=True))
+                else:
+                    email(c.person.email_address,
+                        render('proposal/thankyou_email.myt', fragment=True))
                 return render_response('proposal/edit_thankyou.myt')
 
         # call the template
@@ -415,6 +401,8 @@ class ProposalController(SecureController, View, Update):
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
 
+                    email(c.person.email_address,
+                        render('proposal/thankyou_email.myt', fragment=True))
                     return render_response('proposal/thankyou.myt')
 
         return render_response("proposal/new.myt",
@@ -470,6 +458,8 @@ class ProposalController(SecureController, View, Update):
                             setattr(c.attachment, k, result['attachment'][k])
                         c.proposal.attachments.append(c.attachment)
 
+                    email(c.person.email_address,
+                        render('proposal/thankyou_mini_email.myt', fragment=True))
                     return render_response('proposal/thankyou_mini.myt')
 
             return render_response("proposal/new_mini.myt",

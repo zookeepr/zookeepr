@@ -36,7 +36,6 @@
 
 <h2><% pt.name %>s (<% len(collection) %>)</h2>
 
-<p>Proposal cannot be reviewed again untill all proposals have been reviewed at least <% min_reviews +1 %> times;</p>
 <table class="list">
 
 <tr>
