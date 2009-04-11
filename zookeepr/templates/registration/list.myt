@@ -167,7 +167,7 @@ function display_toggle(box)
 %       #endif
         <small><a href="#" onclick="return display_toggle('products_<% rinvoice.id %>')">+</a></small>
 %       display = "display: none;"
-%       if rinvoice.void is not True: display=""
+%       if rinvoice.is_void() is not True: display=""
         <div id="products_<% rinvoice.id %>" style="<% display %> background: #ddd;">
 %       for rproduct in rinvoice.items:
           <% rproduct.qty %><small> x <% rproduct.description %></small><br>
