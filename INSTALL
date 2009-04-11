@@ -9,8 +9,8 @@ being an LTS release we felt that this would be a good platform to deploy on.
 ====== Dependencies ======
 
 aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
-    python-setuptools python-dnspython python-cheetah python-psycopg2 miscfiles \
-    pwgen python-myghty
+    python-lxml python-setuptools python-dnspython python-cheetah python-psycopg2 \
+    miscfiles pwgen python-myghty
 
 For Ubuntu Hardy add from Jaunty:
 
@@ -29,15 +29,7 @@ For Debian Lenny, you must downgrade these packages:
 You need to follow these steps for PDF generation to work:
 
  - Install Deps:
-    aptitude install inkscape xsltproc
-
- - In /usr/local/bin create a file called saxon with the following contents
-    sudo nano /usr/local/bin/saxon
- - Paste:
-    #!/bin/sh
-    java -classpath /usr/share/java/saxon.jar com.icl.saxon.StyleSheet "$@"
- - Set permissions:
-    sudo chmod +x /usr/local/bin/saxon
+    aptitude install inkscape
 
 ====== Keysigning code ======
 
