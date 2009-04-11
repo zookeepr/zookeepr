@@ -46,8 +46,6 @@ class NewPersonSchema(BaseSchema):
     person = PersonSchema()
 
 class _UpdatePersonSchema(BaseSchema):
-    allow_extra_fields = False
-
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
     company = validators.String()
@@ -242,7 +240,6 @@ class PersonController(BaseController): #Read, Update, List
         # update the objects with the validated form data
         meta.Session.commit()
 
-        default_redirect = dict(action='view', id=id)
         redirect_to(action='view', id=id)
 
 
@@ -254,8 +251,9 @@ class PersonController(BaseController): #Read, Update, List
 
         See ``cfp.py`` for more person creation code.
         """
-        if c.signed_in_person:
-            return render('/person/already_loggedin.mako')
+        if h.signed_in_person():
+            h.flash('You're already logged in')
+            redirect_to('home')
 
         defaults = {
             'person.country': 'AUSTRALIA'
