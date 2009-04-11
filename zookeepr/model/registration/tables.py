@@ -1,6 +1,7 @@
 from sqlalchemy import *
 
 from zookeepr.model import metadata
+from zookeepr.lib.model import CommaList
 
 registration_product = Table('registration_product', metadata,
                              Column('registration_id', Integer, ForeignKey('registration.id'), primary_key=True),
@@ -47,7 +48,7 @@ rego_note = Table('rego_note', metadata,
 volunteer = Table('volunteer', metadata,
                   Column('id', Integer, primary_key=True),
                   Column('person_id', Integer, ForeignKey('person.id'), unique=True, nullable=False),
-                  Column('areas', CSVSet, nullable=False),
+                  Column('areas', CommaList, nullable=False),
                   Column('other', Text, nullable=False),
                   Column('accepted', Boolean),
                   Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
