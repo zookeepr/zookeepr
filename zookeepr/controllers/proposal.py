@@ -105,6 +105,7 @@ class ProposalController(SecureController, View, Update):
                    "view": [AuthFunc('is_submitter'), AuthRole('reviewer'),
                                                         AuthRole('organiser')],
                    "summary": [AuthRole('reviewer')],
+                   "approve": [AuthRole('organiser'), AuthRole('reviewer')],
                    "delete": [AuthFunc('is_submitter')],
                    "review": [AuthRole('reviewer')],
                    "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
@@ -467,3 +468,25 @@ class ProposalController(SecureController, View, Update):
 
             return render_response("proposal/new_mini.myt",
                                    defaults=defaults, errors=errors)
+    def approve(self):
+        errors = {}
+        defaults = dict(request.POST)
+
+        c.highlight = set()
+
+        if request.method == 'POST' and defaults:
+            for proposal, status in defaults.items():
+                if proposal == 'Commit' or status=='-':
+                    continue
+                assert proposal.startswith('talk.')
+                proposal = int(proposal[5:])
+                c.highlight.add(proposal)
+                proposal = self.dbsession.query(Proposal).get(proposal)
+                status = self.dbsession.query(ProposalStatus).filter_by(
+                                                         name=status).one()
+                proposal.status = status
+
+        c.proposals = self.dbsession.query(Proposal).all()
+        c.statuses = self.dbsession.query(ProposalStatus).all()
+        return render_response("proposal/approve.myt",
+                               defaults=defaults, errors=errors)

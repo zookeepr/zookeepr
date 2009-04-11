@@ -44,6 +44,8 @@
         <p><i>Undergoing review</i></p>
 %     elif s.accepted:
         <p>Accepted</p>
+%     elif s.status.name == 'Withdrawn':
+        <p>Withdrawn</p>
 %     else:
 %       declined = True
         <p>Declined<sup>[1]</sup></p>
