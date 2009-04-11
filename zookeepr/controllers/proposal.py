@@ -9,7 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema
+from zookeepr.lib.validators import BaseSchema, FileUploadValidator, PersonSchema, AssistanceTypeValidator, ProposalTypeValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -18,68 +18,61 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-#from zookeepr.model import # Add moels here
+from zookeepr.model import Proposal, ProposalType, AssistanceType, Attachment, Stream, Review, Role
+
+from zookeepr.lib.validators import ReviewSchema
 
 from zookeepr.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
 
-#from formencode import validators, compound, schema, variabledecode, Invalid
-#from paste.deploy.converters import asbool
-#
-#from zookeepr.lib.auth import SecureController, AuthFunc, AuthTrue, AuthFalse, AuthRole
-#from zookeepr.lib.base import *
-#from zookeepr.lib.mail import *
-#from zookeepr.lib.crud import Update, View
-#from zookeepr.lib.validators import BaseSchema, ProposalTypeValidator, PersonValidator, FileUploadValidator, AssistanceTypeValidator, EmailAddress, NotExistingPersonValidator, StreamValidator, ReviewSchema
-#from zookeepr.model import Proposal, ProposalType, Stream, Review, Attachment, AssistanceType, Role, Person
-#from zookeepr.controllers.person import PersonSchema
-#
-#import random
-#
-#from zookeepr.config.lca_info import lca_info
-#from zookeepr.lib.helpers import url
-#
-#class NewPersonSchema(PersonSchema):
-#    experience = validators.String(not_empty=True)
-#    bio = validators.String(not_empty=True)
-#    url = validators.String()
-#    mobile = validators.String(not_empty=True)
-#
-#class ExistingPersonSchema(schema.Schema):
-#    experience = validators.String(not_empty=True)
-#    bio = validators.String(not_empty=True)
-#    url = validators.String()
-#    mobile = validators.String(not_empty=True)
-#
-#class ProposalSchema(schema.Schema):
-#    title = validators.String(not_empty=True)
-#    abstract = validators.String(not_empty=True)
-#    type = ProposalTypeValidator()
-#    assistance = AssistanceTypeValidator()
-#    project = validators.String()
-#    url = validators.String()
-#    abstract_video_url = validators.String()
-#
+class NewPersonSchema(BaseSchema):
+    allow_extra_fields = False
+
+    experience = validators.String(not_empty=True)
+    bio = validators.String(not_empty=True)
+    url = validators.String()
+    mobile = validators.String(not_empty=True)
+
+class ExistingPersonSchema(BaseSchema):
+    allow_extra_fields = False
+
+    experience = validators.String(not_empty=True)
+    bio = validators.String(not_empty=True)
+    url = validators.String()
+    mobile = validators.String(not_empty=True)
+
+class ProposalSchema(BaseSchema):
+    allow_extra_fields = False
+
+    title = validators.String(not_empty=True)
+    abstract = validators.String(not_empty=True)
+    type = ProposalTypeValidator()
+    assistance = AssistanceTypeValidator()
+    project = validators.String()
+    url = validators.String()
+    abstract_video_url = validators.String()
+
 #class MiniProposalSchema(BaseSchema):
+#    allow_extra_fields = False
 #    title = validators.String(not_empty=True)
 #    abstract = validators.String(not_empty=True)
 #    type = ProposalTypeValidator()
 #    url = validators.String()
 #
-#class NewProposalSchema(BaseSchema):
-#    person = NewPersonSchema()
-#    proposal = ProposalSchema()
-#    attachment = FileUploadValidator()
-#    pre_validators = [variabledecode.NestedVariables]
-#
-#class ExistingProposalSchema(BaseSchema):
-#    person = ExistingPersonSchema()
-#    proposal = ProposalSchema()
-#    attachment = FileUploadValidator()
-#    pre_validators = [variabledecode.NestedVariables]
-#
+class NewProposalSchema(BaseSchema):
+    person = NewPersonSchema()
+    proposal = ProposalSchema()
+    attachment = FileUploadValidator()
+    pre_validators = [NestedVariables]
+
+class ExistingProposalSchema(BaseSchema):
+    person = ExistingPersonSchema()
+    proposal = ProposalSchema()
+    attachment = FileUploadValidator()
+    pre_validators = [NestedVariables]
+
 #class NewMiniProposalSchema(BaseSchema):
 #    person = NewPersonSchema()
 #    proposal = MiniProposalSchema()
@@ -92,32 +85,17 @@ log = logging.getLogger(__name__)
 #    attachment = FileUploadValidator()
 #    pre_validators = [variabledecode.NestedVariables]
 #
-#class NotYetReviewedValidator(validators.FancyValidator):
-#    """Make sure the reviewer hasn't yet reviewed this proposal"""
-#
-#    messages = {
-#        "already": "You've already reviewed this proposal, try editing the existing review."
-#        }
-#
-#    def validate_python(self, value, state):
-#        review = state.query(Review).filter_by(reviewer_id=c.signed_in_person.id, proposal_id=c.proposal.id).first()
-#        if review is not None:
-#            raise Invalid(self.message('already', None),
-#                          value, state)
-#
-#
-#class NewReviewSchema(BaseSchema):
-#    review = ReviewSchema()
-#    pre_validators = [variabledecode.NestedVariables]
-#    chained_validators = [NotYetReviewedValidator()]
-#
-#class NewAttachmentSchema(BaseSchema):
-#    attachment = FileUploadValidator(not_empty=True)
-#    pre_validators = [variabledecode.NestedVariables]
-#
+
+class NewReviewSchema(BaseSchema):
+    pre_validators = [NestedVariables]
+
+    review = ReviewSchema()
+
+class NewAttachmentSchema(BaseSchema):
+    attachment = FileUploadValidator(not_empty=True)
+    pre_validators = [NestedVariables]
+
 class ProposalController(BaseController):
-    #schemas = {"new" : NewProposalSchema(),
-    #           "edit" : ExistingProposalSchema(),
     #           "mini_new" : NewMiniProposalSchema(),
     #           "mini_edit" : ExistingMiniProposalSchema()}
 
@@ -137,39 +115,62 @@ class ProposalController(BaseController):
         elif c.cfp_status == 'not_open':
            return render("proposal/not_open.mako")
 
-        c.cfptypes = self.dbsession.query(ProposalType).all()
-        c.tatypes = self.dbsession.query(AssistanceType).all()
+        c.person = h.signed_in_person()
 
-        return render("proposal/new.myt")
+        return render("proposal/new.mako")
 
+    @validate(schema=NewProposalSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    def _new(self):
+
+        person_results = self.form_result['person']
+        proposal_results = self.form_result['proposal']
+        attachment_results = self.form_result['attachment']
+
+        c.proposal = Proposal(**proposal_results)
+        meta.Session.add(c.proposal)
+
+        if not h.signed_in_person():
+            c.person = model.Person(**person_results)
+            meta.Session.add(c.person)
+            email(c.person.email_address, render('/person/new_person_email.mako'))
+        else:
+            c.person = h.signed_in_person()
+            for key in person_results:
+                setattr(c.person, key, self.form_result['person'][key])
+
+        c.person.proposals.append(c.proposal)
+
+        if attachment_results is not None:
+            c.attachment = Attachment(**attachment_results)
+            c.proposal.attachments.append(c.attachment)
+            meta.Session.add(c.attachment)
+
+        meta.Session.commit()
+
+        return render('proposal/thankyou.mako')
+
+    @dispatch_on(POST="_review")
     @authorize(h.auth.has_reviewer_role)
     def review(self, id):
+        c.streams = Stream.find_all()
+        c.proposal = Proposal.find_by_id(id)
+        if c.proposal is None:
+            abort(404, "No such object")
+
+        return render('proposal/review.mako')
+
+    @validate(schema=NewReviewSchema(), form='review', post_only=False, on_get=True, variable_decode=True)
+    @authorize(h.auth.has_reviewer_role)
+    def _review(self, id):
         """Review a proposal.
         """
-        c.proposal = self.dbsession.query(model.Proposal).get(id)
+        c.proposal = Proposal.find_by_id(id)
+        if c.proposal is None:
+            abort(404, "No such object")
 
-        defaults = dict(request.POST)
-        errors = {}
 
-        # Next ID for skipping
-          #SELECT
-          #    p.id, count(r.id)
-          #FROM
-          #        proposal AS p
-          #LEFT JOIN
-          #        review AS r
-          #                ON(p.id=r.proposal_id)
-          #WHERE
-          #        p.proposal_type_id IN(1,3)
-          #GROUP BY
-          #        p.id
-          #HAVING COUNT(r.proposal_id) < (
-          #        (SELECT COUNT(id) FROM review) /
-          #        (SELECT COUNT(id) FROM proposal WHERE proposal_type_id IN(1,3)) + 1)
-          #ORDER BY
-          #        RANDOM()
-
-        collection = self.dbsession.query(model.Proposal).from_statement("""
+        # Move to model
+        collection = meta.Session.query(Proposal).from_statement("""
               SELECT
                   p.id
               FROM
@@ -186,9 +187,7 @@ class ProposalController(BaseController):
                       RANDOM()
               LIMIT 10
         """)
-        #print collection
         for proposal in collection:
-            #print proposal.id
             if not [ r for r in proposal.reviews if r.reviewer == c.signed_in_person ] and proposal.id != id:
                 c.next_review_id = proposal.id
                 c.reviewed_everything = False
@@ -198,35 +197,38 @@ class ProposalController(BaseController):
                 c.next_review_id = id
                 c.reviewed_everything = True
 
+        person = h.signed_in_person()
+        if person in [ review.reviewer for review in proposal.reviews]:
+            h.flash('Already reviewed')
+            return redirect_to(action='review', id=c.next_review_id)
 
+        results = self.form_result['review']
+        review = Review(**results)
 
-        if defaults:
-            result, errors = NewReviewSchema().validate(defaults, self.dbsession)
+        meta.Session.add(review)
+        c.proposal.reviews.append(review)
 
-            if not errors:
-                review = Review()
-                for k in result['review']:
-                    setattr(review, k, result['review'][k])
+        review.reviewer = person
 
-                self.dbsession.save(review)
+        meta.Session.commit()
 
-                review.reviewer = c.signed_in_person
-                c.proposal.reviews.append(review)
+        if c.next_review_id:
+            return redirect_to(action='review', id=c.next_review_id)
 
-                self.dbsession.flush()
+        h.flash("No more papers to review")
 
-                if c.next_review_id:
-                    return redirect_to(action='review', id=c.next_review_id)
+        return redirect_to(action='index')
 
-                return redirect_to(action='index')
-
-        c.streams = self.dbsession.query(Stream).all()
-
-        return render_response('proposal/review.myt', defaults=defaults, errors=errors)
 
 
     @authorize(h.auth.is_valid_user)
+    @dispatch_on(POST="_attach")
     def attach(self, id):
+        return render('proposal/attach.mako')
+
+
+    @validate(schema=NewAttachmentSchema(), form='attach', post_only=False, on_get=True)
+    def _attach(self, id):
         """Attach a file to the proposal.
         """
         # We need to recheck auth in here so we can pass in the id
@@ -234,24 +236,21 @@ class ProposalController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
-        c.proposal = self.dbsession.query(Proposal).get(id)
-        defaults = dict(request.POST)
-        errors = {}
+        c.proposal = Proposal.find_by_id(id)
+        if c.proposal is None:
+            abort(404, "No such object")
 
-        if defaults:
-            result, errors = NewAttachmentSchema().validate(defaults, self.dbsession)
+        person_results = self.form_result['attachment']
+        attachment = Attachment(**person_results)
 
-            if not errors:
-                attachment = Attachment()
-                for k in result['attachment']:
-                    setattr(attachment, k, result['attachment'][k])
-                c.proposal.attachments.append(attachment)
+        c.proposal.attachments.append(attachment)
 
-                self.dbsession.flush()
+        meta.Session.commit()
 
-                return redirect_to(action='view', id=id)
+        h.flash("File was attached")
 
-        return render_response('proposal/attach.myt', defaults=defaults, errors=errors)
+        return redirect_to(action='view', id=id)
+
 
     @authorize(h.auth.is_valid_user)
     def view(self, id):
@@ -260,116 +259,102 @@ class ProposalController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
-        # save the current proposal id so we can refer to it later when we need to
-        # bounce back here from other controllers
-        # crazy shit with RUDBase means id is on self.obj
-        session['proposal_id'] = self.obj.id
-        session.save()
-        return super(ProposalController, self).view()
+        c.proposal = Proposal.find_by_id(id)
+        if c.proposal is None:
+            abort(404, "No such object")
 
-    def talk(self, id):
-        if c.proposal.accepted:
-            return render_response('proposal/talk.myt')
-        else:
-            return redirect_to('/programme')
+        return render('proposal/view.mako')
 
+    @dispatch_on(POST="_new")
+    @authorize(h.auth.is_valid_user)
     def edit(self, id):
         # We need to recheck auth in here so we can pass in the id
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
+        c.proposal = Proposal.find_by_id(id)
+        if c.proposal is None:
+            abort(404, "No such object")
+
         c.person = c.proposal.people[0]
         for person in c.proposal.people:
-            if c.signed_in_person == person:
+            if h.signed_in_person() == person:
                 c.person = person
-        c.cfptypes = self.dbsession.query(ProposalType).all()
-        c.tatypes = self.dbsession.query(AssistanceType).all()
 
-        errors = {}
-        defaults = dict(request.POST)
+        defaults = h.object_to_defaults(c.proposal, 'proposal')
+        defaults.update(h.object_to_defaults(c.person, 'person'))
+        # This is horrible, don't know a better way to do it
+        if c.proposal.type:
+            defaults['proposal.type'] = defaults['proposal.proposal_type_id']
+        if c.proposal.assistance:
+            defaults['proposal.assistance'] = defaults['proposal.assistance_type_id']
 
-        if defaults:
-            if c.proposal.type.name == 'Miniconf':
-                result, errors = self.schemas['mini_edit'].validate(defaults, self.dbsession)
-            else:
-                result, errors = self.schemas['edit'].validate(defaults, self.dbsession)
 
-            #if errors:
-            #    if asbool(request.environ['paste.config']['global_conf'].get('debug')):
-            #        warnings.warn("edit: form validation failed: %s" % errors)
-            if not errors:
-                # update the object with the posted data
-                for k in result[self.individual]:
-                    setattr(self.obj, k, result[self.individual][k])
+        form = render('/proposal/edit.mako')
+        return htmlfill.render(form, defaults)
 
-                for k in result['person']:
-                    setattr(c.person, k, result['person'][k])
 
-                self.dbsession.update(self.obj)
-                self.dbsession.flush()
+    @validate(schema=ExistingProposalSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
+    @authorize(h.auth.is_valid_user)
+    def _edit(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
-                # call postflush hook
-                self._edit_postflush()
+        c.proposal = Proposal.find_by_id(id)
+        if c.proposal is None:
+            abort(404, "No such object")
 
-                default_redirect = dict(action='view', id=self.identifier(self.obj))
-                return render_response('proposal/edit_thankyou.myt')
 
-        # call the template
-        return render_response('%s/edit.myt' % self.individual, defaults=defaults, errors=errors)
+        for key in self.form_result['person']:
+            setattr(c.person, key, self.form_result['person'][key])
 
-    def _edit_postflush(self):
+        for key in self.form_result['proposal']:
+            setattr(c.person, key, self.form_result['proposal'][key])
+
+        meta.Session.commit()
+
         if lca_info['proposal_update_email'] != '':
-            body = "Subject: LCA Proposal Updated\n\nid: %d\nTitle: %s\nURL: %s" % (self.obj.id, self.obj.title, "http://" + h.host_name() + h.url_for(action="view"))
-            email(lca_info['proposal_update_email'],
-                body)
+            body = "Subject: LCA Proposal Updated\n\nid: %d\nTitle: %s\nURL: %s" % (c.proposal.id, c.proposal.title, "http://" + h.host_name() + h.url_for(action="view"))
+            email(lca_info['proposal_update_email'], body)
+
+        return render('proposal/edit_thankyou.mako')
 
     @authorize(h.auth.has_reviewer_role)
     def review_index(self):
-        c.person = c.signed_in_person
-        # hack for bug#34, don't show miniconfs to reviewers
-        # Jiri: unless they're also organisers...
-        # Josh: 09's reviewers are helping pick the miniconfs
-        #if 'organiser' in [r.name for r in c.signed_in_person.roles]:
-        c.proposal_types = self.dbsession.query(ProposalType).all()
-        #else:
-        #    c.proposal_types = self.dbsession.query(ProposalType).filter(ProposalType.c.name <> 'Miniconf').all()
-
-        c.assistance_types = self.dbsession.query(AssistanceType).all()
+        c.person = h.signed_in_person()
 
         c.num_proposals = 0
-        reviewer_role = self.dbsession.query(Role).filter(Role.c.name == 'reviewer').all()
-        c.num_reviewers = len(reviewer_role[0].people)
+        reviewer_role = Role.find_by_name('reviewer')
+        c.num_reviewers = len(reviewer_role.people)
         for pt in c.proposal_types:
-            stuff = self.dbsession.query(Proposal).filter(Proposal.c.proposal_type_id==pt.id).all()
+            stuff = Proposal.find_all_by_proposal_type_id(pt.id)
             c.num_proposals += len(stuff)
             setattr(c, '%s_collection' % pt.name, stuff)
         for at in c.assistance_types:
-            stuff = self.dbsession.query(Proposal).filter(Proposal.c.assistance_type_id==at.id).all()
+            stuff = Proposal.find_all_by_assistance_type_id(at.id)
             setattr(c, '%s_collection' % at.name, stuff)
 
-
-        return render_response('proposal/list_review.myt')
+        return render('proposal/list_review.mako')
 
     @authorize(h.auth.has_reviewer_role)
     def summary(self):
-        c.proposal_types = self.dbsession.query(ProposalType).all()
-        c.assistance_types = self.dbsession.query(AssistanceType).all()
-
         for pt in c.proposal_types:
-            stuff = self.dbsession.query(Proposal).filter(Proposal.c.proposal_type_id==pt.id).all()
-            stuff.sort(self.score_sort)
+            stuff = Proposal.find_all_by_proposal_type_id(pt.id)
+            stuff.sort(self._score_sort)
             setattr(c, '%s_collection' % pt.name, stuff)
         for at in c.assistance_types:
-            stuff = self.dbsession.query(Proposal).filter(Proposal.c.assistance_type_id==at.id).all()
+            stuff = Proposal.find_all_by_assistance_type_id(at.id)
             setattr(c, '%s_collection' % at.name, stuff)
 
-        return render_response('proposal/summary.myt')
+        return render('proposal/summary.mako')
 
-    def score_sort(self, proposal1, proposal2):
-        return cmp(self.review_avg_score(proposal2), self.review_avg_score(proposal1))
+    def _score_sort(self, proposal1, proposal2):
+        return cmp(self._review_avg_score(proposal2), self._review_avg_score(proposal1))
 
-    def review_avg_score(self,proposal):
+    def _review_avg_score(self,proposal):
         total_score = 0
         num_reviewers = 0
         for review in proposal.reviews:
@@ -380,104 +365,66 @@ class ProposalController(BaseController):
             return 0
         return total_score*1.0/num_reviewers
 
+    @authorize(h.auth.is_valid_user)
     def index(self):
-        if self.logged_in():
-            c.person = c.signed_in_person
-            return super(ProposalController, self).index()
-        else:
-            abort(403)
+        c.person = h.signed_in_person()
+        return render('/proposal/list.mako')
 
-    def submit(self):
-        # if call for papers has closed:
-            errors = {}
-            defaults = dict(request.POST)
+# FIXME move to its own controller
+#    @dispatch_on(POST="_new")
+#    def submit_mini(self):
+#        # call for miniconfs has closed
+#        if c.cfmini_status == 'closed':
+#            return render("proposal/closed_mini.mako")
+#        elif c.cfmini_status == 'not_open':
+#            return render("proposal/not_open_mini.mako")
+#
+#        return render("proposal/new_mini.mako")
+#
+#    @validate(schema=NewProposalSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+#    def _submit_mini(self):
+#        else:
+#            c.cfptypes = self.dbsession.query(ProposalType).all()
+#            c.tatypes = self.dbsession.query(AssistanceType).all()
+#
+#            errors = {}
+#            defaults = dict(request.POST)
+#
+#            if request.method == 'POST' and defaults:
+#                if c.signed_in_person:
+#                    schema = self.schemas['mini_edit']
+#                else:
+#                    schema = self.schemas['mini_new']
+#
+#                result, errors = schema().validate(defaults, self.dbsession)
+#                if not errors:
+#                    c.proposal = Proposal()
+#                    # update the objects with the validated form data
+#                    for k in result['proposal']:
+#                        setattr(c.proposal, k, result['proposal'][k])
+#
+#                    if not c.signed_in_person:
+#                        c.person = model.Person()
+#                        for k in result['person']:
+#                            setattr(c.person, k, result['person'][k])
+#                        self.dbsession.save(c.person)
+#                        email(c.person.email_address,
+#                            render('person/new_person_email.myt', fragment=True))
+#                    else:
+#                        c.person = c.signed_in_person
+#                        for k in result['person']:
+#                            setattr(c.person, k, result['person'][k])
+#
+#                    c.person.proposals.append(c.proposal)
+#
+#                    for k in result['person']:
+#                        setattr(c.person, k, result['person'][k])
+#
+#                    if result['attachment'] is not None:
+#                        c.attachment = Attachment()
+#                        for k in result['attachment']:
+#                            setattr(c.attachment, k, result['attachment'][k])
+#                        c.proposal.attachments.append(c.attachment)
+#
+#                    return render_response('proposal/thankyou_mini.myt')
 
-            if request.method == 'POST' and defaults:
-                if c.signed_in_person:
-                    schema = self.schemas['edit']
-                else:
-                    schema = self.schemas['new']
-
-                result, errors = schema().validate(defaults, self.dbsession)
-                if not errors:
-                    c.proposal = Proposal()
-                    # update the objects with the validated form data
-                    for k in result['proposal']:
-                        setattr(c.proposal, k, result['proposal'][k])
-
-                    if not c.signed_in_person:
-                        c.person = model.Person()
-                        for k in result['person']:
-                            setattr(c.person, k, result['person'][k])
-                        self.dbsession.save(c.person)
-                        email(c.person.email_address,
-                            render('person/new_person_email.myt', fragment=True))
-                    else:
-                        c.person = c.signed_in_person
-                        for k in result['person']:
-                            setattr(c.person, k, result['person'][k])
-
-                    c.person.proposals.append(c.proposal)
-
-                    if result['attachment'] is not None:
-                        c.attachment = Attachment()
-                        for k in result['attachment']:
-                            setattr(c.attachment, k, result['attachment'][k])
-                        c.proposal.attachments.append(c.attachment)
-
-                    return render_response('proposal/thankyou.myt')
-
-
-    def submit_mini(self):
-        # call for miniconfs has closed
-        if c.cfmini_status == 'closed':
-            return render_response("proposal/closed_mini.myt")
-        elif c.cfmini_status == 'not_open':
-            return render_response("proposal/not_open_mini.myt")
-        else:
-            c.cfptypes = self.dbsession.query(ProposalType).all()
-            c.tatypes = self.dbsession.query(AssistanceType).all()
-
-            errors = {}
-            defaults = dict(request.POST)
-
-            if request.method == 'POST' and defaults:
-                if c.signed_in_person:
-                    schema = self.schemas['mini_edit']
-                else:
-                    schema = self.schemas['mini_new']
-
-                result, errors = schema().validate(defaults, self.dbsession)
-                if not errors:
-                    c.proposal = Proposal()
-                    # update the objects with the validated form data
-                    for k in result['proposal']:
-                        setattr(c.proposal, k, result['proposal'][k])
-
-                    if not c.signed_in_person:
-                        c.person = model.Person()
-                        for k in result['person']:
-                            setattr(c.person, k, result['person'][k])
-                        self.dbsession.save(c.person)
-                        email(c.person.email_address,
-                            render('person/new_person_email.myt', fragment=True))
-                    else:
-                        c.person = c.signed_in_person
-                        for k in result['person']:
-                            setattr(c.person, k, result['person'][k])
-
-                    c.person.proposals.append(c.proposal)
-
-                    for k in result['person']:
-                        setattr(c.person, k, result['person'][k])
-
-                    if result['attachment'] is not None:
-                        c.attachment = Attachment()
-                        for k in result['attachment']:
-                            setattr(c.attachment, k, result['attachment'][k])
-                        c.proposal.attachments.append(c.attachment)
-
-                    return render_response('proposal/thankyou_mini.myt')
-
-            return render_response("proposal/new_mini.myt",
-                                   defaults=defaults, errors=errors)

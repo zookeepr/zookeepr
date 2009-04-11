@@ -16,7 +16,7 @@ from formencode import validators, htmlfill, Invalid
 from zookeepr.lib.validators import BaseSchema
 
 from zookeepr.model import meta
-from zookeepr.model import Person, Role
+from zookeepr.model import Person, Role, Proposal
 
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
 from authkit.authorize import PermissionSetupError, middleware

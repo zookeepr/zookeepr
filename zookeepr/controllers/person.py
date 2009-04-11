@@ -9,7 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator
+from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -39,26 +39,6 @@ class PasswordResetSchema(BaseSchema):
     password_confirm = validators.String(not_empty=True)
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
-
-class PersonSchema(BaseSchema):
-    allow_extra_fields = False
-
-    firstname = validators.String(not_empty=True)
-    lastname = validators.String(not_empty=True)
-    company = validators.String()
-    email_address = validators.Email(not_empty=True)
-    password = validators.String(not_empty=True)
-    password_confirm = validators.String(not_empty=True)
-    phone = validators.String()
-    mobile = validators.String()
-    address1 = validators.String(not_empty=True)
-    address2 = validators.String()
-    city = validators.String(not_empty=True)
-    state = validators.String()
-    postcode = validators.String(not_empty=True)
-    country = validators.String(not_empty=True)
-
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
 
 class NewPersonSchema(BaseSchema):
     pre_validators = [NestedVariables]

@@ -1,6 +1,7 @@
-<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-<h2>Propose a talk or tutorial</h2>
-<p>Please read the <a href="<% h.url_for("/programme/presenter_faq") %>">Presenter FAQ</a> before submitting a proposal.</p>
+<%inherit file="/base" />
+
+<h2>Propose a Mini-conf</h2>
+<p>Please read the miniconf organiser section in the <a href="<% h.url_for("/programme/presenter_faq") %>">Presenter FAQ</a> before submitting a proposal.</p>
 
 % if len(errors)>0:
 <p class="error-message">Not submitted, sorry &mdash; there was a problem.
@@ -13,14 +14,14 @@
 % #endif
 
 <% h.form(h.url(), multipart=True) %>
-<& form.myt &>
+<& form_mini.myt &>
 
-  <p class="submit"><% h.submitbutton('Submit!') %></p>
+<p class="submit"><% h.submitbutton('Submit!') %></p>
 <% h.end_form() %>
 </&>
 
 <%method title>
-Call for Presentations - <& PARENT:title &>
+Call for Mini-confs - <& PARENT:title &>
 </%method>
 
 <%args>
@@ -32,13 +33,15 @@ errors
 # Working around a bug in formencode, we need to set the defaults to the c.proposal
 # values
 if not defaults:
-    defaults = {
-        'proposal.type': 1,
-        'proposal.assistance': 4,
-    }
     if c.signed_in_person:
         c.person = c.signed_in_person
-        defaults['person.mobile'] = c.person.mobile
-        defaults['person.experience'] = c.person.experience
-        defaults['person.bio'] = c.person.bio
+        defaults = {
+            'person.mobile': c.person.mobile,
+            'person.experience': c.person.experience,
+            'person.bio': c.person.bio
+        }
+    else:
+        defaults = {
+            'person.country': 'Australia',
+        }
 </%init>

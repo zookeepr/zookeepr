@@ -3,8 +3,8 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zookeepr.model.role import Role
-from zookeepr.model.person_role_map import person_role_map
+from role import Role
+from person_role_map import person_role_map
 
 from zookeepr.model.meta import Session
 

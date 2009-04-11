@@ -10,22 +10,25 @@ import person_role_map
 import password_reset_confirmation
 import proposal
 import proposal_type
+import person_proposal_map
+import attachment
+import review
+import stream
 
 from person import Person
 from role import Role
 from password_reset_confirmation import PasswordResetConfirmation
 
 from proposal_type import ProposalType
+from assistance_type import AssistanceType
 from proposal import Proposal
+from attachment import Attachment
+from review import Review
+from stream import Stream
+
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
-    ## Reflected tables must be defined and mapped here
-    #global reflected_table
-    #reflected_table = sa.Table("Reflected", meta.metadata, autoload=True,
-    #                           autoload_with=engine)
-    #orm.mapper(Reflected, reflected_table)
-    #   
     meta.Session.configure(bind=engine)
     meta.engine = engine
 
@@ -39,6 +42,11 @@ def setup(meta):
 
     proposal.setup(meta)
     proposal_type.setup(meta)
+    assistance_type.setup(meta)
+    person_proposal_map.setup(meta)
+    attachment.setup(meta)
+    review.setup(meta)
+    stream.setup(meta)
 
     meta.Session.commit()
 
@@ -101,17 +109,6 @@ def setup(meta):
 #def populate_data():
 #    from sqlalchemy.exceptions import SQLError
 #    from zookeepr import model
-#
-#    try:
-#        # Stream
-#        model.schedule.tables.stream.insert().execute(
-#            dict(name='Free Love and Open Sensual Stimulation'),
-#            )
-#
-#    except SQLError, inst:
-#        print inst
-#        pass
-#
 #
 #    try:
 #        # Product Categories

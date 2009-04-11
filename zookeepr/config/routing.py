@@ -42,13 +42,6 @@ def make_map():
     map.connect('/proposal/summary',      controller='proposal', action='summary')
     map.connect('/review/summary',        controller='review', action='summary')
 
-    # The CFP named routes
-    map.connect('/programme/edit_submission',           controller='proposal', action='index')
-    map.connect('/programme/edit_submission/{id}',      controller='proposal', action='view')
-    map.connect('/programme/edit_submission/{id}/edit', controller='proposal', action='edit')
-    map.connect('/programme/submit_a_presentation',     controller='proposal', action='submit')
-    map.connect('/programme/submit_a_miniconf',         controller='proposal', action='submit_mini')
-
     # schedule routes
     map.connect('/programme/schedule/{day}',           controller='schedule', action='index', day=None)
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
