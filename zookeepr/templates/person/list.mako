@@ -21,7 +21,7 @@
 % for p in c.person_collection:
   <tr>
     <td>${ h.link_to(p.id, url=h.url_for(action='view', id=p.id)) }</td>
-    <td>${ p.email_address |h }</td>
+    <td><a href="mailto:${ p.email_address |h }">${ p.email_address |h }</a></td>
     <td>${ p.firstname |h }</td>
     <td>${ p.lastname |h }</td>
     <td>${ p.phone |h }</td>

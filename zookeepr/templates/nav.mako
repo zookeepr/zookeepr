@@ -1,3 +1,4 @@
+<<<<<<< TREE
 <%
     # The current URL can be accessed as h.url()()
     url = h.url_for()
@@ -18,15 +19,20 @@
 
     def cls(part):
         if part == where:
-            return 'class="now"'
+            return 'class="selected"'
         else:
             return 'class=""'
 %>
 
 
-      <ul class="main_menu">
+      <ul id="primarynav">
 % for (t, u, c) in mm:
-        <li><a href="${u}" ${cls(c)}>${t}</a></li>
+%   if c == 'selected':
+          <li><% t %></li>
+%   else:
+          <li <% cls(c) %>><a href="<% u %>"><% t %></a></li>
+%   endif
+
 % endfor
 % if h.signed_in_person():
         <li><a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') }>Sign out</a> (${h.signed_in_person().email_address})</li>

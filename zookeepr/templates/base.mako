@@ -1,13 +1,13 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%!
-    title = 'linux.conf.au 2009 | 19 - 24 Jan | Marchsouth to Hobart'
+    title = 'linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!'
 %>
 
 <%def name="extra_head()">
-## Defined in children
+    ## Defined in children
 </%def>
 <%def name="big_promotion()">
-## Defined in children
+    ## Defined in children
 </%def>
 
 <html lang="en-us">
@@ -15,60 +15,58 @@
   <title>${self.attr.title}</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
-  <link rel="stylesheet" media="screen" href="/marchsouth.css" type="text/css">
-  <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA09 News">
+  <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
+  <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
   ${self.extra_head()}
 </head>
 
-<body>
-  <div class = 'content'>
-    <div class = 'banner'>
-      <a href="/"><img src = '/images/mountain.png' alt = 'Mount Wellington' class = 'mountain'></a>
-      <a href="/"><img src = '/images/tuz.png' alt = 'mascot' class = 'mascot'></a>
-      <a href="/"><img src = '/images/lca.png' alt = 'linux.conf.au' class = 'lca'></a>
-      <a href="/"><img src = '/images/marchsouth.png' alt = 'march south together'></a>
-    </div>
-    <div class = 'menu'>
-      ${self.big_promotion()}
-<%include file="nav.mako" />
-<%include file="subnav.mako" />
-    </div>
-    % if session.has_key('flash'):
-    <div id="flash">${session.get('flash')| h}</div>
-    <%
-        del session['flash']
-        session.save()
-    %>
-
-    % endif
-
-
     <!-- start content -->
-    ${next.body()}
+    <div id="wrapper">
+      <div id="leftcol">
+
+% if h.url_for() == '/':
+    <%include file="/leftcol/home.mako" />
+% else:
+    <%include file="/leftcol/default.mako" />
+% endif
+      </div>
+      <div id="content">
+${next.body()}
+      </div>
     <!-- end content -->
 
+
+##% if not h.url()().endswith('/sponsors/sponsors') and not h.url()().endswith('/media/news/61'):
+##         <div class='sponsors_footer'>
+##       <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
+##       <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>
+##         </div>
+##% #endif
+    </div>
+    <div id = "push"></div>
   </div>
 
-% if not h.url_for().endswith('/sponsors/sponsors') and not h.url_for().endswith('/media/news/61'):
-    <p class='sponsors_footer'>
-      <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
-      <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>
-    </p>
-% endif
 
-  <div class = 'footer'>
-    <div class = 'photos'>
-      <img src = '/images/photo1.png' alt = 'Tasmania'>
-      <img src = '/images/photo2.png' alt = 'Tasmania'>
-      <img src = '/images/photo3.png' alt = 'Tasmania'>
-      <img src = '/images/photo4.png' alt = 'Tasmania'>
-      <img src = '/images/photo5.png' alt = 'Tasmania'>
-    </div>
-    <div class = 'copyright'>&copy; 2008-2009 <a href = 'http://www.linux.org.au'>Linux Australia</a> and LCA09 | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">HTML 4.01 Strict</a>
+  <div id = 'footer'>
+    <div class = 'copyright'>
+  &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2010</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a>
     </div>
   </div>
+
+<script type="text/javascript">
+    var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+    document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+
+<script type="text/javascript">
+    try {
+        var pageTracker = _gat._getTracker("UA-8037859-1");
+        pageTracker._trackPageview();
+    } catch(err) {}
+</script>
+
 </body>
 </html>

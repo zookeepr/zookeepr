@@ -75,12 +75,7 @@ class RegisterSchema(BaseSchema):
     opendaydrag = BoundedInt(min=0,max=200)
     checkin = BoundedInt(min=0)
     checkout = BoundedInt(min=0)
-    lasignup = validators.Bool()
-    announcesignup = validators.Bool()
-    delegatesignup = validators.Bool()
-    speaker_record = validators.Bool()
-    speaker_video_release = validators.Bool()
-    speaker_slides_release = validators.Bool()
+    signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
@@ -140,7 +135,7 @@ class RegistrationController(SecureController, Update, List, Read):
 
     def _able_to_edit(self):
         for invoice in c.signed_in_person.invoices:
-            if not invoice.void:
+            if not invoice.is_void():
                 if invoice.paid() and invoice.total() != 0:
                     return False, "Sorry, you've already paid"
         return True, "You can edit"
@@ -342,7 +337,7 @@ class RegistrationController(SecureController, Update, List, Read):
         if not self.manual_invoice(registration.person.invoices):
 
             try:
-                invoice = self.create_invoice(registration)
+                invoice = self._create_invoice(registration)
             except ProductUnavailable, inst:
                 if quiet: return
                 return render_response("registration/product_unavailable.myt", product=inst.product)
@@ -353,7 +348,7 @@ class RegistrationController(SecureController, Update, List, Read):
             # complicated check to see whether invoice is already in the system
             new_invoice = invoice
             for old_invoice in registration.person.invoices:
-                if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.void:
+                if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.is_void():
                     if self.invoices_identical(old_invoice, new_invoice):
                         for ii in new_invoice.items:
                             self.dbsession.expunge(ii)
@@ -362,10 +357,10 @@ class RegistrationController(SecureController, Update, List, Read):
                     else:
                         if old_invoice.due_date < new_invoice.due_date:
                             new_invoice.due_date = old_invoice.due_date
-                        ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
-                        self.dbsession.save(ii2)
-                        old_invoice.items.append(ii2)
-                        old_invoice.void = True
+                        #ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
+                        #self.dbsession.save(ii2)
+                        #old_invoice.items.append(ii2)
+                        old_invoice.void = "Registration Change"
 
             invoice.last_modification_timestamp = datetime.datetime.now()
             self.dbsession.save_or_update(invoice)
@@ -378,17 +373,17 @@ class RegistrationController(SecureController, Update, List, Read):
 
     def check_invoices(self, invoices):
         for invoice in invoices:
-            if not invoice.void and not invoice.manual and not invoice.paid():
+            if not invoice.is_void() and not invoice.manual and not invoice.paid():
                 for ii in invoice.items:
                     if ii.product and not self._product_available(ii.product):
-                        ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
-                        self.dbsession.save(ii2)
-                        invoice.items.append(ii2)
-                        invoice.void = True
+                        #ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
+                        #self.dbsession.save(ii2)
+                        #invoice.items.append(ii2)
+                        invoice.void = "Product " + ii.product.description + " is no longer available"
 
     def manual_invoice(self, invoices):
         for invoice in invoices:
-            if not invoice.void and invoice.manual:
+            if not invoice.is_void() and invoice.manual:
                 return True
         return False
 
@@ -404,7 +399,7 @@ class RegistrationController(SecureController, Update, List, Read):
                     return True
         return False
 
-    def create_invoice(self, registration):
+    def _create_invoice(self, registration):
         # Create Invoice
         invoice = model.Invoice()
         invoice.person = registration.person
@@ -544,7 +539,7 @@ class RegistrationController(SecureController, Update, List, Read):
                     # has to be done last as it is an OR not an AND
                     valid_invoices = []
                     for invoice in registration.person.invoices:
-                        if not invoice.void:
+                        if not invoice.is_void():
                             valid_invoices.append(invoice)
                     if len(set([int(id) for id in filter['product']]) & set([x for subL in [[item.product_id for item in invoice.items] for invoice in valid_invoices] for x in subL])) == 0:
                        registration_list.remove(registration)
@@ -579,7 +574,7 @@ class RegistrationController(SecureController, Update, List, Read):
             products = []
             invoices = []
             for invoice in registration.person.invoices:
-                if invoice.paid() and not invoice.void:
+                if invoice.paid() and not invoice.is_void():
                     invoices.append(str(invoice.id))
                     for item in invoice.items:
                         products.append(str(item.qty) + "x" + item.description)
@@ -635,12 +630,12 @@ class RegistrationController(SecureController, Update, List, Read):
                 registration_list = self.dbsession.query(self.model).all()
                 for registration in registration_list:
                     append = False
-                    if registration.person.paid() and not registration.person.badge_printed:
+                    if registration.person.has_paid_ticket() and not registration.person.badge_printed:
                         if defaults['type'] == 'all':
                             append = True
                         else:
                             for invoice in registration.person.invoices:
-                                if invoice.paid() and not invoice.void:
+                                if invoice.paid() and not invoice.is_void():
                                     for item in invoice.items:
                                         if defaults['type'] == 'concession' and item.description.startswith('Concession'):
                                             append = True
@@ -698,7 +693,7 @@ class RegistrationController(SecureController, Update, List, Read):
             dinner_tickets = 0
             ticket = ''
             for invoice in registration.person.invoices:
-                if invoice.paid() and not invoice.void:
+                if invoice.paid() and not invoice.is_void():
                     for item in invoice.items:
                         if item.description.startswith('Dinner Ticket'):
                             dinner_tickets += item.qty

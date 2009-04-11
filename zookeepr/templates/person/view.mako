@@ -33,7 +33,7 @@
     </tr>
 % endif
     <tr>
-        <td><p><b>Address:</b></p></td>
+        <td valign="top"><p><b>Address:</b></p></td>
         <td><p>${ c.person.address1 |h }<br>
 % if c.person.address2:
                 ${ c.person.address2 |h }<br>

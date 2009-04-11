@@ -46,13 +46,8 @@ function toggleDiv(id,flagit) {
 
 <div class="contents"><h3>Review Pages</h3>
 <ul>
-<li><a href="/review/help">How to review</a></li>
-<li>${ h.link_to('Review proposals', url=h.url_for(controller='proposal', action='review_index')) }</li>
-<li>${ h.link_to('Your reviews', url=h.url_for(controller='review', action='index')) }</li>
-<li>${ h.link_to('Summary of proposals', url=h.url_for(controller='proposal', action='summary')) }</li>
-<li>${ h.link_to('Reviewer summary', url=h.url_for(controller='review', action='summary')) }</li>
-</ul>
-<ul>
+<%include file="reviewer_sidebar.mako" />
+
 <li><a href="/admin/proposals_by_strong_rank">List of proposals by number of certain score / number of reviewers</a></li>
 <li><a href="/admin/proposals_by_max_rank">List of proposals by max score, min score then average</a></li>
 <li><a href="/admin/proposals_by_stream">List of proposals by stream and score</a></li>

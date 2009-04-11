@@ -1,3 +1,10 @@
+## -- coding: utf-8 --
+% if 'signed_in_person_id' in session:
+%   if 'organiser' in [r.name for r in c.signed_in_person.roles]:
+      <a href="/db_content/<% c.db_content.id %>/edit">Edit me</a>
+%   #endif
+% #endif
+
 <% menu %>
 <h2><% c.db_content.title %></h2>
 

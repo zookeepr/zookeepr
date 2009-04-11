@@ -40,6 +40,7 @@ def make_map():
     # Review
     map.connect('/proposal/review_index', controller='proposal', action='review_index')
     map.connect('/proposal/summary',      controller='proposal', action='summary')
+    map.connect('/proposal/approve', controller='proposal', action='approve')
     map.connect('/review/summary',        controller='review', action='summary')
 
     # schedule routes

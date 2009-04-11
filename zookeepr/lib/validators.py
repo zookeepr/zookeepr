@@ -1,7 +1,7 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, AssistanceType, ProposalType, Stream
+from zookeepr.model import Person, ProposalType, Stream, AccommodationAssistanceType, TravelAssistanceType
 
 from zookeepr.config.lca_info import lca_info
 
@@ -67,9 +67,17 @@ class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return ProposalType.find_by_id(value)
 
-class AssistanceTypeValidator(validators.FancyValidator):
+class TargetAudienceValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return AssistanceType.find_by_id(value)
+        return TargetAudience.find_by_id(value)
+
+class AccommodationAssistanceTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return AccommodationAssistanceType.find_by_id(value)
+
+class TravelAssistanceTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return TravelAssistanceType.find_by_id(value)
 
 class FileUploadValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -319,3 +327,10 @@ class PersonSchema(BaseSchema):
 #        if current_field > 0 and adult_field < 1:
 #            raise Invalid("Any children in the partners programme must be accompanied by an adult.", value, state)
 #        return
+
+class InvoiceItemProductDescription(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if (value['product'] is None and value['description'] == "") or (value['product'] is not None and value['description'] != ""):
+            raise Invalid("You must select a product OR enter a description, not both", value, state, error_dict={'description': 'Please fill in one'})
+        return
+

@@ -359,7 +359,7 @@
 		color: #cfcfff;
 	}
 	
-	.sponsors
+	.supporters
 	{
 		padding-top: 20px;
 		text-align: center;
@@ -729,7 +729,7 @@
 		vertical-align: middle;
 	}
 	
-	.sponsors_footer
+	.supporters_footer
 	{
 		clear: both;
 		padding-bottom: 40px;
@@ -746,7 +746,6 @@
 	{
 		border-right: 1px dotted #AFAFFF;
 	}
-
     #flash {
         background: #ffc;
         padding: 5px;
@@ -754,3 +753,8 @@
         margin-bottom: 20px;
     }
     #flash p { margin: 0px; padding: 0px; }
+	
+	.invoice_invalid
+	{
+		background: url('invalid.png');
+	}

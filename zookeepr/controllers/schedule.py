@@ -4,17 +4,19 @@ from zookeepr import model
 from zookeepr.model import Proposal
 from zookeepr.lib.base import *
 
+from zookeepr.config.lca_info import file_paths
 from datetime import date, datetime
 from zookeepr.lib.sort import odict
+import os
 
 
 class ScheduleController(BaseController):
-    day_dates = {'monday':    date(2009,1,19),
-                 'tuesday':   date(2009,1,20),
-                 'wednesday': date(2009,1,21),
-                 'thursday':  date(2009,1,22),
-                 'friday':    date(2009,1,23),
-                 'saturday':  date(2009,1,24)}
+    day_dates = {'monday':    date(2010,1,18),
+                 'tuesday':   date(2010,1,19),
+                 'wednesday': date(2010,1,20),
+                 'thursday':  date(2010,1,21),
+                 'friday':    date(2010,1,22),
+                 'saturday':  date(2010,1,23)}
 
     def __before__(self, **kwargs):
         c.get_talk = self._get_talk
@@ -56,6 +58,28 @@ class ScheduleController(BaseController):
                 c.day = 'monday'
         else:
             c.day = day.lower()
+
+        # get list of slides as dict
+        c.slide_list = {}
+        if file_paths.has_key('slides_path') and file_paths['slides_path'] != '':
+            directory = file_paths['slides_path']
+            c.download_path = file_paths['slides_html']
+            files = {}
+            for filename in os.listdir(directory):
+                if os.path.isfile(directory + "/" + filename):
+                    files[filename.rsplit('.')[0]] = filename
+
+            c.slide_list = files
+            c.download_path = file_paths['slides_html']
+
+        c.ogg_list = {}
+        if file_paths.has_key('ogg_path') and file_paths['ogg_path'] != '':
+            c.ogg_path = file_paths['ogg_path']
+            files = {}
+            
+        
+        c.speex_list = {}
+        c.speex_path = 'http://mirror.linux.org.au/2009/speex'
 
         c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
         if c.day in self.day_dates:

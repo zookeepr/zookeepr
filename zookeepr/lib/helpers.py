@@ -33,15 +33,6 @@ from sqlalchemy.orm.util import object_mapper
 import itertools, re
 
 
-#from routes import url
-
-# FIXME Commenting all this out till after we port to new pylons
-#from webhelpers import *
-#import urllib
-#from glob import glob
-#import gzip, re
-#
-
 def iterdict(items):
     return dict(items=items, iter=itertools.cycle(items))
 
@@ -154,23 +145,7 @@ def cycle(*args, **kargs):
 #    """
 #    del request_config().environ['railshelpers.counters'][name]
 #
-#def radio(name, value, label=None):
-#    id_str = "%s.%s" % (name, value)
-#    i = '<input type="radio" name="%s" id="%s" value="%s">' % (name, id_str, value)
-#    if label is None:
-#        lab = ''
-#    else:
-#        lab = '<label for="%s">%s</label>' % (id_str, label)
-#    return i + lab
-#
-#def textarea(name, size):
-#    temp = size.split("x")
-#    return '<textarea name="%s" id="%s" cols="%s" rows="%s"></textarea>' % (name, name, temp[0], temp[1])
-#
-#
-#def submitbutton(value, name="Commit"):
-#    return '<input  name="%s" type="submit" value="%s">' % (name, value)
-#
+
 def webmaster_email(text=None):
     """ E-mail link for the conference contact.
 
