@@ -76,9 +76,6 @@ class RegisterSchema(BaseSchema):
     checkin = BoundedInt(min=0)
     checkout = BoundedInt(min=0)
     signup = DictSet(if_missing=None)
-    speaker_record = validators.Bool()
-    speaker_video_release = validators.Bool()
-    speaker_slides_release = validators.Bool()
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 

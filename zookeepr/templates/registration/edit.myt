@@ -31,7 +31,7 @@ errors
 #FIXME: Partner program
 if not defaults:
     defaults = {}
-    for k in ['shell', 'editor', 'distro', 'nick', 'keyid', 'planetfeed', 'prevlca', 'diet', 'special', 'miniconf', 'checkin', 'checkout', 'signup', 'silly_description', 'voucher_code', 'speaker_record', 'speaker_video_release', 'speaker_slides_release']:
+    for k in ['shell', 'editor', 'distro', 'nick', 'keyid', 'planetfeed', 'prevlca', 'diet', 'special', 'miniconf', 'checkin', 'checkout', 'signup', 'silly_description', 'voucher_code']:
         v = getattr(c.registration, k)
         if v is not None:
             if k in ('shell', 'editor', 'distro') and v not in h.lca_rego[k + 's'] and v != '':
@@ -63,19 +63,6 @@ if not defaults:
         defaults['registration.over18'] = 1
     else:
         defaults['registration.over18'] = 0
-
-    if c.registration.speaker_record:
-        defaults['registration.speaker_record'] = 1
-    else:
-        defaults['registration.speaker_record'] = 0
-    if c.registration.speaker_video_release:
-        defaults['registration.speaker_video_release'] = 1
-    else:
-        defaults['registration.speaker_video_release'] = 0
-    if c.registration.speaker_slides_release:
-        defaults['registration.speaker_slides_release'] = 1
-    else:
-        defaults['registration.speaker_slides_release'] = 0
 
 
     if c.registration.miniconf:

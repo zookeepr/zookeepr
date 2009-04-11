@@ -20,6 +20,36 @@ accom assistance: <% c.travel_assistance %>
 Note: requesting assistance, especially travel assistance, may affect
 whether or not your <% c.proposal.type.name.lower() %> is accepted.
 
+Your talk may be recorded by the conference.
+% if c.proposal.video_release and c.proposal.slides_release:
+You consent to linux.conf.au releasing both the video of your talk and your
+slides, if you supply them to us, under the Creative Commons ShareAlike
+License.
+% else:
+%   if c.proposal.video_release:
+You consent to linux.conf.au releasing the video of your talk under the
+Creative Commons ShareAlike License.
+%   else:
+You DO NOT consent to linux.conf.au releasing the video of your talk.
+%   #endif
+%   if c.proposal.slides_release:
+You consent to linux.conf.au releasing your slides, if you supply them to
+us, under the Creative Commons ShareAlike License.
+%   else:
+You DO NOT consent to linux.conf.au releasing your slides.
+%   #endif
+% #endif
+% if c.proposal.video_release or c.proposal.slides_release:
+
+Please make sure that you are allowed to do this, if there is any doubt
+(for instance, consider whether you're revealing your employer's
+information or using other people's copyrighted materials.)
+% #endif
+% if not c.proposal.video_release or not c.proposal.slides_release:
+
+Please consider allowing us to share both the video of your talk and your
+slides, so that the community can gain the maximum benefit from your talk!
+% #endif
 
 <%doc>
 This template is used to generate the email that is sent to people

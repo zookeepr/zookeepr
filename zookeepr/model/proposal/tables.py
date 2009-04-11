@@ -83,6 +83,9 @@ proposal = Table('proposal', metadata,
                    Column('theatre', Text),
                    Column('building', Text),
 
+                   Column('video_release', Boolean),
+                   Column('slides_release', Boolean),
+
                    Column('recorded_ogg', Text),
                    Column('recorded_spx', Text),
                    Column('wiki_name', Text),
