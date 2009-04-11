@@ -124,8 +124,8 @@ def populate_data():
         # Products
         model.billing.tables.product.insert().execute(
             dict(category_id='1', active=True, description="Concession/Student Ticket", cost="16000", auth=None, validate=None),
-            dict(category_id='1', active=True, description="Earlybird Hobbiest Ticket", cost="29000", auth=None, validate=None),
-            dict(category_id='1', active=True, description="Hobbiest Ticket", cost="36500", auth=None, validate=None),
+            dict(category_id='1', active=True, description="Earlybird Hobbyist Ticket", cost="29000", auth=None, validate=None),
+            dict(category_id='1', active=True, description="Hobbyist Ticket", cost="36500", auth=None, validate=None),
             dict(category_id='1', active=True, description="Earlybird Professional Ticket", cost="63500", auth=None, validate=None),
             dict(category_id='1', active=True, description="Professional Ticket", cost="78500", auth=None, validate=None),
             dict(category_id='1', active=True, description="Fairy Penguin Sponsorship", cost="150000", auth=None, validate=None),
@@ -211,11 +211,11 @@ def populate_data():
             # Student
             dict(product_id='1', ceiling_id='1'),   # all-conference
             dict(product_id='1', ceiling_id='2'),   # conference
-            # Earlybird Hobbiest
+            # Earlybird Hobbyist
             dict(product_id='2', ceiling_id='1'),   # all-conference
             dict(product_id='2', ceiling_id='2'),   # conference
             dict(product_id='2', ceiling_id='3'),   # earlybird
-            # Hobbiest
+            # Hobbyist
             dict(product_id='3', ceiling_id='1'),   # all-conference
             dict(product_id='3', ceiling_id='2'),   # conference
             dict(product_id='3', ceiling_id='4'),   # non-earlybird
