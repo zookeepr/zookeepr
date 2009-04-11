@@ -184,7 +184,7 @@ class InvoiceItem(object):
         return (self.cost or 0) * self.qty
 
 class Invoice(object):
-    def __init__(self, void=False, issue_date=None, due_date=None):
+    def __init__(self, void=None, issue_date=None, due_date=None):
         self.void = void
         self.issue_date = issue_date
         self.due_date = due_date
