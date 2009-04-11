@@ -70,9 +70,9 @@ def reset_counter(name='default'):
     """
     del request_config().environ['railshelpers.counters'][name]
 
-def radio(name, value, label=None):
+def radio(name, value, label=None, onclick=""):
     id_str = "%s.%s" % (name, value)
-    i = '<input type="radio" name="%s" id="%s" value="%s">' % (name, id_str, value)
+    i = '<input type="radio" name="%s" id="%s" value="%s" onclick="%s">' % (name, id_str, value, onclick)
     if label is None:
         lab = ''
     else:
