@@ -1,0 +1,206 @@
+== Start with the controller
+
+* In the controller comment out everything (including the Schema's) except for the actual contoller
+
+* Paste the following into the top
+
+import logging
+
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+#from zookeepr.model import # Add moels here
+
+from zookeepr.config.lca_info import lca_info
+
+log = logging.getLogger(__name__)
+
+* The controler definition will look something like this
+
+    class ProposalController(SecureController, View, Update):
+
+change it to
+
+    class ProposalController(BaseController): #, View, Update:
+
+    Notice the commented out View and Update
+
+* Go into lib/crud and look for the main actions defined in View and Update classes
+  eg view, edit and index
+  If these actions don't exist in the controller then use the examples from controllers/person.py
+  and paste them in. (No hidden code!!)
+  Remove the comment once done
+
+* Remove the lines like
+
+     model = Proposal
+     individual = 'proposal'
+
+* Find the permissions dictionary
+    * Remove any entry with AuthTrue() or True
+    * AuthFunc is special and is handled below
+    * For the others if you had say "review": [AuthRole('reviewer')]
+        then straight above the action method add
+
+           @authorize(h.auth.has_reviewer_role)
+
+* For permissions with an AuthFunc like
+
+        "attach": [AuthFunc('is_submitter'), AuthRole('organiser')],
+
+   above the controller add
+
+        @authorize(h.auth.is_valid_user)
+
+   as the first thing in the controller add
+
+            # We need to recheck auth in here so we can pass in the id
+            if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+                # Raise a no_auth error
+                h.auth.no_role()
+
+   then in lib/auth.py have a look at 
+        is_same_zookeepr_submitter and IsSameZookeeprSubmitter
+    and duplicate their functionality if you have a different AuthFunc requirement that hasn't been implemented yet
+
+* The before controller should not call Super, this is usually only the case for controllers that used to inherit SecureController
+
+* Comment out the schema = dictionary
+
+* You should not ever use stuff like 
+
+    self.dbsession.query(ProposalType).all()
+
+instead you should use
+    ProposalType.find_all()
+
+    and put the method into the model
+
+== Actions
+
+* Start with new method
+
+    You'll notice that previously all the methods would perform validation and then check if it worked ie a whole mess of ifs and defaults and errors and other crap
+
+    Instead we split into two methods. So say previously we had
+
+     def new(self):
+         """Create a new person.
+ 
+         Non-CFP persons get created through this interface.
+ 
+         See ``cfp.py`` for more person creation code.
+         """
+         if c.signed_in_person:
+             return render_response('person/already_loggedin.myt')
+ 
+         defaults = dict(request.POST)
+         errors = {}
+ 
+         if defaults:
+             result, errors = NewPersonSchema().validate(defaults, self.dbsession)
+ 
+             if not errors:
+                 c.person = Person()
+                 # update the objects with the validated form data
+                 for k in result['person']:
+                     setattr(c.person, k, result['person'][k])
+                 self.dbsession.save(c.person)
+                 self.dbsession.flush()
+ 
+                 email(c.person.email_address,
+                     render('person/new_person_email.myt', fragment=True))
+                 return render_response('person/thankyou.myt')
+ 
+         return render_response('person/new.myt',
+                                defaults=defaults, errors=errors)
+
+
+    This will become
+
+    def new(self):
+        """Create a new person form.
+
+        Non-CFP persons get created through this interface.
+
+        See ``cfp.py`` for more person creation code.
+        """
+        if c.signed_in_person:
+            return render('/person/already_loggedin.mako')
+
+        defaults = { 
+            'person.country': 'AUSTRALIA'
+        }
+        form = render('/person/new.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=NewPersonSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    def _new(self):
+        """Create a new person submit.
+        """
+
+        # Remove fields not in class
+        results = self.form_result['person']
+        del results['password_confirm']
+        c.person = Person(**results)
+        meta.Session.add(c.person)
+        meta.Session.commit()
+
+        email(c.person.email_address, render('/person/new_person_email.mako'))
+
+        return render('/person/thankyou.mako')
+
+Basically look at how person works and ask John for more info
+
+
+Work through controller by controller doing the following
+
+    * Fix controller action methods
+    * Update the schema
+    * Migrate template from myt to mako
+
+
+Also there is a bug where actions like new have an id for some crazy reason and the route has id=None. Remove this crap
+
+methods like view ect which take an id should be def view(self, id): not def view(self)
+
+== Updating template
+
+    bzr mv blah.myt blah.mako
+    s/<%/${/g
+    s/%>/}/g
+
+    To the top <%inherit file="/base.mako" />
+    if this should have the layout around it
+
+    s/method/def
+
+
+    
+
+
+
+
+
+== Models.
+
+    * Just look at what model/person.py and you should see how you can create a model file for each table all in the one place
+
+'<,'>s/sa.Column('\([^']*\)', \([^)]*\))/\1 = sa.Column(sa.Types.\2)
+
+Column('title', Text) turns into title = sa.Column(sa.Types.Text)

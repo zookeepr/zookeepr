@@ -2,13 +2,6 @@ from sqlalchemy import *
 
 from zookeepr.model import metadata
 
-# types of proposals: typically 'paper', 'miniconf', etc
-proposal_type = Table('proposal_type', metadata,
-                        Column('id', Integer, primary_key=True),
-                        Column('name', String(40),
-                               unique=True,
-                               nullable=False),
-                        )
 
 # types of assistance:
 assistance_type = Table('assistance_type', metadata,
@@ -20,48 +13,6 @@ assistance_type = Table('assistance_type', metadata,
 
 
 # proposals to the conference
-proposal = Table('proposal', metadata,
-                   Column('id', Integer, primary_key=True),
-
-                   # title of proposal
-                   Column('title', Text),
-                   # abstract or description
-                   Column('abstract', Text),
-
-                   # type, enumerated in the proposal_type table
-                   Column('proposal_type_id', Integer,
-                          ForeignKey('proposal_type.id')),
-
-                   # type, enumerated in the assistance_type table
-                   Column('assistance_type_id', Integer,
-                          ForeignKey('assistance_type.id')),
-
-                   # name and url of the project
-                   Column('project', Text),
-                   Column('url', Text),
-
-                   # url to a short video
-                   Column('abstract_video_url', Text),
-
-                   # Is it accepted?
-                   Column('accepted', Boolean),
-
-                   Column('code', Integer),
-                   Column('scheduled', DateTime),
-                   Column('finished', DateTime),
-                   Column('theatre', Text),
-                   Column('building', Text),
-
-                   Column('recorded_ogg', Text),
-                   Column('recorded_spx', Text),
-                   Column('wiki_name', Text),
-                   Column('slides_link', Text),
-
-                   Column('creation_timestamp', DateTime,
-                        nullable=False,
-                        default=func.current_timestamp()),
-                   Column('last_modification_timestamp', DateTime,
-                        nullable=False,
                         default=func.current_timestamp(),
                         onupdate=func.current_timestamp()),
                         # onupdate should really use
