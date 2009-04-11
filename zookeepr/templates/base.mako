@@ -36,6 +36,16 @@
 <%include file="nav.mako" />
 <%include file="subnav.mako" />
     </div>
+    % if session.has_key('flash'):
+    <div id="flash">${session.get('flash')| h}</div>
+    <%
+        del session['flash']
+        session.save()
+    %>
+
+    % endif
+
+
     <!-- start content -->
     ${next.body()}
     <!-- end content -->

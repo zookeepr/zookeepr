@@ -104,7 +104,6 @@ class AdminController(BaseController):
         sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
         text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
                                                   for s_lower, s in sects])
-        print text
         text += '\t\t\t</ul>\n\t\t\t</div>'
         sect_text = ""
         for s_lower, s in sects:

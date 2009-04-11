@@ -9,15 +9,16 @@ available to Controllers. This module is available to templates as 'h'.
 from webhelpers.html import escape, HTML, literal, url_escape
 from webhelpers.html.tags import *
 from webhelpers.html.secure_form import secure_form
+from webhelpers.text import *
 import webhelpers.constants
+
+import webhelpers.util as util
 
 
 from routes import request_config
 from routes.util import url_for
 
-from pylons import config
-from pylons import request
-
+from pylons import config, request, session
 
 import os.path, random, array
 
@@ -27,6 +28,11 @@ from zookeepr.model import Person
 
 from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
 
+from sqlalchemy.orm.util import object_mapper
+
+import itertools, re
+
+
 #from routes import url
 
 # FIXME Commenting all this out till after we port to new pylons
@@ -35,6 +41,62 @@ from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus,
 #from glob import glob
 #import gzip, re
 #
+
+def iterdict(items):
+    return dict(items=items, iter=itertools.cycle(items))
+
+def cycle(*args, **kargs):
+    """
+    Return the next cycle of the given list.
+
+    Everytime ``cycle`` is called, the value returned will be the next.
+    item in the list passed to it. This list is reset on every request,.
+    but can also be reset by calling ``reset_cycle()``.
+
+    You may specify the list as either arguments, or as a single list.
+    argument.
+
+    This can be used to alternate classes for table rows::
+
+        # In Myghty...
+        % for item in items:
+        <tr class="<% cycle("even", "odd") %>">
+            ... use item ...
+        </tr>
+        % #endfor
+
+    You can use named cycles to prevent clashes in nested loops. You'll
+    have to reset the inner cycle, manually::
+
+        % for item in items:
+        <tr class="<% cycle("even", "odd", name="row_class") %>
+            <td>
+        %     for value in item.values:
+                <span style="color:'<% cycle("red", "green", "blue",
+                                             name="colors") %>'">
+                            item
+                </span>
+        %     #endfor
+            <% reset_cycle("colors") %>
+            </td>
+        </tr>
+        % #endfor
+    """
+    if len(args) > 1:
+        items = args
+    else:
+        items = args[0]
+    name = kargs.get('name', 'default')
+    cycles = request_config().environ.setdefault('railshelpers.cycles', {})
+
+    cycle = cycles.setdefault(name, iterdict(items))
+
+    if cycles[name].get('items') != items:
+        cycle = cycles[name] = iterdict(items)
+    return cycle['iter'].next()
+
+
+
 #def counter(*args, **kwargs):
 #    """Return the next cardinal in a sequence.
 #
@@ -174,23 +236,12 @@ def event_name():
 #    except IndexError:
 #        return "no images found"
 #
-#esc_re = re.compile(r'([<>&])')
-#def esc(s):
-#    """ HTML-escape the argument"""
-#    def esc_m(m):
-#      return {'>': '&gt;', '<': '&lt;', '&': '&amp;'}[m.group(1)]
-#    if s is None:
-#      return ''
-#    try:
-#      return esc_re.sub(esc_m, s)
-#    except:
-#      return esc_re.sub(esc_m, `s`)
-#
-#break_re = re.compile(r'(\n|\r\n)')
-#def line_break(s):
-#    """ Turn line breaks into <br>'s """
-#    return break_re.sub('<br>', s)
-#
+
+break_re = re.compile(r'(\n|\r\n)')
+def line_break(s):
+    """ Turn line breaks into <br>'s """
+    return break_re.sub('<br />', s)
+
 #def yesno(bool):
 #    """ Display a read-only checkbox for the value provided """
 #    if bool:
@@ -362,3 +413,17 @@ def signed_in_person():
 
     person = Person.find_by_email(email_address)
     return person
+
+def object_to_defaults(object, prefix):
+    defaults = {}
+
+    for key in object_mapper(object).columns.keys():
+        defaults[prefix + "." + key] = getattr(object, key)
+
+    return defaults
+
+def flash(msg):
+    session['flash'] = msg
+    session.save()
+
+

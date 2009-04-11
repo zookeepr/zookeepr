@@ -30,7 +30,6 @@
 <label for="person.mobile">Mobile/Cell number</label></p>
 <p class="entries">${ h.text('person.mobile') }</p>
 
-
 <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
 <p class="entries">
 ${ h.text('person.address1', size=40) }
@@ -49,5 +48,5 @@ ${ h.text('person.address2', size=40) }
 
 <p class="label"><span class="mandatory">*</span><label for="person.country">Country:</label></p>
 <p class="entries">
-${ h.select('person.country', '', h.countries()) }
+${ h.select('person.country', None, h.countries()) }
 </p>

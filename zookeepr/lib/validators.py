@@ -1,48 +1,18 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person
+from zookeepr.model import Person, AssistanceType, ProposalType, Stream
 
 from zookeepr.config.lca_info import lca_info
 
+import cgi
 
 
 class BaseSchema(formencode.Schema):
     allow_extra_fields = True
     filter_extra_fields = True
 
-#    def validate(self, input, state=None):
-#        try:
-#            result = self.to_python(input, state)
-#            return result, {}
-#        except Invalid, e:
-#            errors = e.unpack_errors()
-#            # e.unpack_errors() doesn't necessarily return a nice dictionary
-#            # for formfill to use, so re-mangle it
-#            good_errors = {}
-#            try:
-#                for key in errors.keys():
-#                    try:
-#                        for subkey in errors[key].keys():
-#                            good_errors[key + "." + subkey] = errors[key][subkey]
-#                    except AttributeError:
-#                        good_errors[key] = errors[key]
-#            except AttributeError:
-#                good_errors['x'] = errors
-#
-#            return {}, good_errors
-#
-##    def to_python(self, value_dict, state):
-##        print value_dict
-##        for key, value in value_dict.iteritems():
-##            #if isinstance(value, str):
-##                value_dict[key] = h.esc(value)
-##        #print value_dict
-##        return super(BaseSchema, self).to_python(value_dict, state)
-#
-#
 
-#import cgi
 #import re
 #
 #import dns.resolver
@@ -93,46 +63,45 @@ class BaseSchema(formencode.Schema):
 #    def _to_python(self, value, state):
 #        return state.query(DBContentType).get(value)
 #
-#class ProposalTypeValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        return state.query(ProposalType).get(value)
-#
-#class AssistanceTypeValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        return state.query(AssistanceType).get(value)
-#
-#class FileUploadValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        if isinstance(value, cgi.FieldStorage):
-#            filename = value.filename
-#            content = value.value
-#        elif isinstance(value, str):
-#            filename = None
-#            content = value
-#        if content.__len__() > 3000000: #This is not the right place to validate it, but at least it is validated...
-#            raise Invalid('Files must not be bigger than 2MB', value, state)
-#        return dict(filename=filename,
-#                    content=content)
-#
-#
-#class StreamValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        return state.query(Stream).get(value)
-#
+class ProposalTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return ProposalType.find_by_id(value)
+
+class AssistanceTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return AssistanceType.find_by_id(value)
+
+class FileUploadValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        if isinstance(value, cgi.FieldStorage):
+            filename = value.filename
+            content = value.value
+        elif isinstance(value, str):
+            filename = None
+            content = value
+        if len(content) > 3000000: #This is not the right place to validate it, but at least it is validated...
+            raise Invalid('Files must not be bigger than 2MB', value, state)
+        return dict(filename=filename, content=content)
+
+
+class StreamValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Stream.find_by_id(value)
+
 #class ProductValidator(validators.FancyValidator):
 #    def _to_python(self, value, state):
 #        return state.query(Product).get(value)
 #
 #    def _from_python(self, value, state):
 #        return value.id
-#
-#class ReviewSchema(schema.Schema):
-#    score = BoundedInt()
-#    stream = StreamValidator()
-#    miniconf = validators.String()
-#    comment = validators.String()
-#
-#
+
+class ReviewSchema(BaseSchema):
+    score = validators.OneOf(["-2", "-1", "+1", "+2"])
+    stream = StreamValidator()
+    miniconf = validators.String()
+    comment = validators.String()
+
+
 #class EmailAddress(validators.FancyValidator):
 #    """Validator for email addresses.
 #
@@ -201,6 +170,7 @@ class BaseSchema(formencode.Schema):
 #    def _from_python(self, value, state):
 #        return value.id
 #
+
 class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         print value
@@ -215,6 +185,28 @@ class NotExistingPersonValidator(validators.FancyValidator):
         if person is not None:
             msg = "A person with this email already exists. Please try signing in first."
             raise Invalid(msg, value, state, error_dict={'email_address': msg})
+
+class PersonSchema(BaseSchema):
+    allow_extra_fields = False
+
+    firstname = validators.String(not_empty=True)
+    lastname = validators.String(not_empty=True)
+    company = validators.String()
+    email_address = validators.Email(not_empty=True)
+    password = validators.String(not_empty=True)
+    password_confirm = validators.String(not_empty=True)
+    phone = validators.String()
+    mobile = validators.String()
+    address1 = validators.String(not_empty=True)
+    address2 = validators.String()
+    city = validators.String(not_empty=True)
+    state = validators.String()
+    postcode = validators.String(not_empty=True)
+    country = validators.String(not_empty=True)
+
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+
+
 
 #class ProductMinMax(validators.FancyValidator):
 #    def validate_python(self, value, state):

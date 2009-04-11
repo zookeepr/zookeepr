@@ -16,7 +16,7 @@ from formencode import validators, htmlfill, Invalid
 from zookeepr.lib.validators import BaseSchema
 
 from zookeepr.model import meta
-from zookeepr.model import Person, Role
+from zookeepr.model import Person, Role, Proposal
 
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
 from authkit.authorize import PermissionSetupError, middleware
@@ -196,7 +196,7 @@ class IsSameZookeeprUser(UserIn):
             raise NotAuthenticatedError('Not Authenticated')
 
         person = Person.find_by_email(environ['REMOTE_USER'])
-        if Person is None:
+        if person is None:
             environ['auth_failure'] = 'NO_USER'
             raise NotAuthorizedError(
                 'You are not one of the users allowed to access this resource.'
@@ -209,6 +209,41 @@ class IsSameZookeeprUser(UserIn):
             )
 
         return app(environ, start_response)
+
+class IsSameZookeeprSubmitter(UserIn):
+    """
+    Checks that the signed in user is one of the users specified when setting up
+    the user management API.
+    """
+    def __init__(self, proposal_id):
+        self.proposal_id = int(proposal_id)
+
+    def check(self, app, environ, start_response):
+
+        if not environ.get('REMOTE_USER'):
+            raise NotAuthenticatedError('Not Authenticated')
+
+        person = Person.find_by_email(environ['REMOTE_USER'])
+        if person is None:
+            environ['auth_failure'] = 'NO_USER'
+            raise NotAuthorizedError(
+                'You are not one of the users allowed to access this resource.'
+            )
+
+        proposal = Proposal.find_by_id(self.proposal_id)
+        if proposal is None:
+            raise NotAuthorizedError(
+                "Proposal doesn't exist"
+            )
+
+        if person not in proposal.people:
+            environ['auth_failure'] = 'NO_ROLE'
+            raise NotAuthorizedError(
+                "User doesn't have any of the specified roles"
+            )
+
+        return app(environ, start_response)
+
 
 
 class Or(Permission):
@@ -252,5 +287,6 @@ has_planetfeed_role = HasZookeeprRole('planetfeed')
 has_keysigning_role = HasZookeeprRole('keysigning')
 is_valid_user = ValidZookeeprUser()
 is_same_zookeepr_user = IsSameZookeeprUser
+is_same_zookeepr_submitter = IsSameZookeeprSubmitter
 
 
