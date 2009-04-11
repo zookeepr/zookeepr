@@ -62,6 +62,7 @@ class AdminController(SecureController):
           ('/review', ''' To see what you have reviewed [CFP]'''),
           ('/proposal/summary', ''' Summary of the reviewed papers [CFP] '''),
           ('/review/summary', ''' List of reviewers and scores [CFP] '''),
+          ('/proposal/approve', ''' Change proposal status for papers [CFP] '''),
 
           #('/registration/list_miniconf_orgs', ''' list of miniconf
           #organisers (as the registration code knows them, for miniconf
