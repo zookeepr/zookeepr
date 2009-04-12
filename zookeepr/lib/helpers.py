@@ -416,4 +416,4 @@ def flash(msg, category="information"):
 def zk_root():
     """ Helper function to return the root directory of zookeepr,
     this allows completely relevant URL's """
-    asssdf
+    pass #TODO
