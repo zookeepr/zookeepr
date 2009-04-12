@@ -33,7 +33,7 @@ lca_info = {
   'cfp_status' : 'not_open',
   'cfmini_status' : 'not_open',
   'paper_editing' : 'not_open',
-  'conference_status': 'open',
+  'conference_status': 'not_open',
 
   'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
   'speaker_email' : 'speakers@penguinsvisiting.org.nz',
