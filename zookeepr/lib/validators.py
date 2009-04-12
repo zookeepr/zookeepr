@@ -59,6 +59,10 @@ class BaseSchema(formencode.Schema):
 #        return Person.get(value)
 #
 
+class PersonValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Person.find_by_id(int(value))
+
 class DbContentTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return DbContentType.find_by_id(value)

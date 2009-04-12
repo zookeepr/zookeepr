@@ -79,6 +79,7 @@
     <p>If two or more people are presenting together, this information should for the primary speaker; mention the other speakers in the Abstract, eg. "(with Bob Vaxhacker and Eve Duo)".</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="name">Speaker name:</label></p>
+    ${ h.hidden('person_to_edit', value=c.person.id) }
     <p class="entries">${ h.text('name', value=c.person.firstname + " " + c.person.lastname, size=70,disabled=True) }</p>
     <p class="note">(Can't be changed here.)</p>
 

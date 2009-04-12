@@ -9,7 +9,7 @@ from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, ProposalValidator, FileUploadValidator, PersonSchema, ProposalTypeValidator, TargetAudienceValidator, ProposalStatusValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator
+from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalValidator, FileUploadValidator, PersonSchema, ProposalTypeValidator, TargetAudienceValidator, ProposalStatusValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model import Proposal, ProposalType, ProposalStatus, TargetAudience, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType
+from zookeepr.model import Proposal, ProposalType, ProposalStatus, TargetAudience, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType, Person
 
 from zookeepr.lib.validators import ReviewSchema
 
@@ -78,6 +78,7 @@ class ExistingProposalSchema(BaseSchema):
     proposal = ProposalSchema()
     attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
+    person_to_edit = PersonValidator()
 
 #class NewMiniProposalSchema(BaseSchema):
 #    person = NewPersonSchema()
@@ -166,7 +167,9 @@ class ProposalController(BaseController):
         meta.Session.commit()
         email(c.person.email_address, render('proposal/thankyou_email.mako'))
 
-        return render('proposal/thankyou.mako')
+        h.flash("Proposal %s submitted!"%p_edit)
+
+        return redirect_to(controller='proposal', action="index", id=None)
 
     @dispatch_on(POST="_review")
     @authorize(h.auth.has_reviewer_role)
@@ -278,7 +281,7 @@ class ProposalController(BaseController):
 
         return render('proposal/view.mako')
 
-    @dispatch_on(POST="_new")
+    @dispatch_on(POST="_edit")
     @authorize(h.auth.is_valid_user)
     def edit(self, id):
         # We need to recheck auth in here so we can pass in the id
@@ -323,12 +326,17 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         c.proposal = Proposal.find_by_id(id)
-     
-        for key in self.form_result['person']:
-            setattr(c.person, key, self.form_result['person'][key])
-
         for key in self.form_result['proposal']:
             setattr(c.proposal, key, self.form_result['proposal'][key])
+
+        c.person = self.form_result['person_to_edit']
+        if (c.person.id == h.signed_in_person().id or
+                             h.auth.authorized(h.auth.has_organiser_role)):
+            for key in self.form_result['person']:
+                setattr(c.person, key, self.form_result['person'][key])
+            p_edit = "and author"
+        else:
+            p_edit = "(but not author)"
 
         meta.Session.commit()
 
@@ -336,7 +344,9 @@ class ProposalController(BaseController):
             body = "Subject: LCA Proposal Updated\n\nid: %d\nTitle: %s\nURL: %s" % (c.proposal.id, c.proposal.title, "http://" + h.host_name() + h.url_for(action="view"))
             email(lca_info['proposal_update_email'], body)
 
-        return render('proposal/edit_thankyou.mako')
+        h.flash("Proposal %s edited!"%p_edit)
+
+        return redirect_to('/proposal')
 
     @authorize(h.auth.has_reviewer_role)
     def review_index(self):
