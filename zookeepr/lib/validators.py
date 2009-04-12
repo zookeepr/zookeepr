@@ -124,6 +124,13 @@ class StreamValidator(validators.FancyValidator):
 #    def _from_python(self, value, state):
 #        return value.id
 
+class ProductCategoryValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return state.query(model.ProductCategory).get(value)
+
+    def _from_python(self, value):
+        return value.id
+
 class ReviewSchema(BaseSchema):
     score = validators.OneOf(["-2", "-1", "+1", "+2"])
     stream = StreamValidator()
