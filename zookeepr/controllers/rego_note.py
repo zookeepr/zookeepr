@@ -50,7 +50,7 @@ class RegoNoteController(BaseController):
         form = render('/rego_note/new.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=NewNoteSchema(), form='new')
+    @validate(schema=NewNoteSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['rego_note']
 

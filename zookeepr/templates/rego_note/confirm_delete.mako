@@ -6,5 +6,7 @@ Are you sure you want to delete this note?<br/>
 ${ h.submit('submit', 'Yes, delete') }
 </p>
 
+<%include file="view_fragment.mako" />
+
 ${ h.end_form() }
 
