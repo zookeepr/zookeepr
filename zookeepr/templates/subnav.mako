@@ -29,7 +29,6 @@
 
 %>
 
-
 % if submenus.has_key(where):
       <ul class="sub_menu">
 %   for sub in submenus[where]:
@@ -39,9 +38,9 @@
      link = link.replace(' ', '_')
 %>
 %     if current(link):
-        <li><a href="<%link%>" class="now"><% sub %></a></li>
+        <li><a href="${link}" class="now">${ sub }</a></li>
 %     else:
-        <li><a href="<%link%>"><% sub %></a></li>
+        <li><a href="${link}">${ sub }</a></li>
 %     endif
 %   endfor
       </ul>

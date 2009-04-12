@@ -38,7 +38,7 @@
 
   <div id = "container">
     <div id = "logo">
-      <a href="/"><img src="/images/logo.jpg" border="0" alt="linux.conf.au" /></a>
+      <a href="/"><img src="/images/logo.jpg" style="border: 0;" alt="linux.conf.au" /></a>
     </div>
     <div id = 'main_menu'>
       ${self.big_promotion()}
