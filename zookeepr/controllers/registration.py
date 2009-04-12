@@ -23,7 +23,8 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-#from zookeepr.model import # Add models here
+from zookeepr.model import Registration, Role
+from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
 
 from zookeepr.config.lca_info import lca_info
 
@@ -33,8 +34,6 @@ log = logging.getLogger(__name__)
 
 # import datetime
 # import warnings
-
-from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -506,7 +505,6 @@ class RegistrationController(BaseController): # Update, List, Read
         #from zookeepr.model.registration import tables as registration_tables
         #from zookeepr.model.proposal import tables as proposal_tables
         from webhelpers.pagination import paginate
-        model_name = self.individual
         
         filter = dict(request.GET)
         filter['role'] = []
@@ -535,7 +533,7 @@ class RegistrationController(BaseController): # Update, List, Read
             registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
         else:
             import copy
-            registration_list_full = self.dbsession.query(self.model).order_by(self.model.c.id).all()
+            registration_list_full = Registration.find_all()
             registration_list = copy.copy(registration_list_full)
 
             for registration in registration_list_full:
@@ -583,14 +581,14 @@ class RegistrationController(BaseController): # Update, List, Read
 
         setattr(c, 'per_page', per_page)
         pages, collection = paginate(registration_list, per_page = per_page)
-        setattr(c, self.individual + '_pages', pages)
-        setattr(c, self.individual + '_collection', collection)
-        setattr(c, self.individual + '_request', filter)
+        setattr(c, 'registration_pages', pages)
+        setattr(c, 'registration_collection', collection)
+        setattr(c, 'registration_request', filter)
         
-        setattr(c, 'roles', self.dbsession.query(model.Role).all())
-        setattr(c, 'product_categories', self.dbsession.query(model.ProductCategory).all())
+        setattr(c, 'roles', Role.find_all())
+        setattr(c, 'product_categories', ProductCategory.find_all())
 
-        return render_response('%s/list.myt' % model_name)
+        return render('/registration/list.mako')
 
     def _export_list(self, registration_list):
         columns = ['Rego', 'Name', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']

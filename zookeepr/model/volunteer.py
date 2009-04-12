@@ -33,7 +33,7 @@ class Volunteer(Base):
         if result is None and abort_404:
             abort(404, "No such object")
         return result
-        
+
     @classmethod
     def find_all(cls):
         return Session.query(Volunteer).order_by(Volunteer.id).all()

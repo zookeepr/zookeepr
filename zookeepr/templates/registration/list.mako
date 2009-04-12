@@ -73,10 +73,11 @@ if "volunteer" in c.registration_request['role']:
 %>
         <option value="volunteer"${ selected }>Volunteer</option>
 % for role in c.roles:
-%   selected = ''
-%   if role.name in c.registration_request['role']:
-%       selected = ' selected="selected"'
-%   endif
+<%
+   selected = ''
+   if role.name in c.registration_request['role']:
+       selected = ' selected="selected"'
+%>
         <option value="${ role.name }"${ selected }>${ role.name }</option>
 % endfor
     </select>

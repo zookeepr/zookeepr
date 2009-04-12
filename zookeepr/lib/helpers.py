@@ -387,17 +387,27 @@ def object_to_defaults(object, prefix):
             defaults['.'.join((prefix,key))] = value
 
     return defaults
+    
+def check_flash():
+    # If the session data isn't of the particular format python has trouble.
+    # So we check that it is a dict.
+    if session.has_key('flash'):
+        if type(session['flash']) != dict:
+            del session['flash']
+            session.save()
 
 def get_flashes():
-    # it is save to delete now
+    check_flash()
     if not session.has_key('flash'):
         return None
     messages = session['flash']
+    # it is save to delete now
     del(session['flash'])
     session.save()
     return messages
 
 def flash(msg, category="information"):
+    check_flash()
     if not session.has_key('flash'):
         session['flash'] = {}
     if not session['flash'].has_key(category):

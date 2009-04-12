@@ -38,7 +38,7 @@ class Registration(Base):
         nullable=False, default=sa.func.current_timestamp(),
         onupdate=sa.func.current_timestamp())
 
-    person = sa.orm.relation(Person, backref=sa.orm.backref('registration', cascade="all, delete-orphan", lazy=True, uselist=False)),
+    person = sa.orm.relation(Person, backref=sa.orm.backref('registration', cascade="all, delete-orphan", lazy=True, uselist=False))
     voucher = sa.orm.relation(Voucher, uselist=False,
                                 primaryjoin='Registration.voucher_code==Voucher.code',
                                 foreign_keys=Voucher.code,
@@ -51,3 +51,6 @@ class Registration(Base):
     def __repr__(self):
         return '<Registration id=%r person_id=%r>' % (self.id, self.person_id)
 
+    @classmethod
+    def find_all(cls):
+        return Session.query(Registration).order_by(Registration.id).all()

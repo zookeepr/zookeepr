@@ -6,6 +6,7 @@ from meta import Base
 from pylons.controllers.util import abort
 
 from person import Person
+from product import Product
 
 from zookeepr.model.meta import Session
 
@@ -18,12 +19,9 @@ class Voucher(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
     code = sa.Column(sa.types.Text, nullable=False, unique=True)
     comment = sa.Column(sa.types.Text, nullable=False)
-    leader_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'),
-                                                           nullable=False)
-    creation_timestamp = sa.Column(sa.types.DateTime, nullable=False,
-                                       default=sa.func.current_timestamp())
-    last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False,
-    default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
+    leader_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), nullable=False)
+    creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
+    last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     leader = sa.orm.relation(Person, backref=sa.orm.backref('vouchers', cascade="all, delete-orphan"))
 
@@ -37,3 +35,27 @@ class Voucher(Base):
     @classmethod
     def find_all(cls):
         return Session.query(Voucher).order_by(Voucher.id).all()
+
+class VoucherProduct(Base):
+    # table definitions
+    __tablename__ = 'voucher_product'
+
+    voucher_id = sa.Column(sa.Integer, sa.ForeignKey('voucher.id'), primary_key=True)
+    product_id = sa.Column(sa.Integer, sa.ForeignKey('product.id'), primary_key=True)
+    qty = sa.Column(sa.Integer, nullable=False)
+    percentage = sa.Column(sa.Integer, nullable=False)
+
+    # relations
+    voucher = sa.orm.relation(Voucher, lazy=True, backref=sa.orm.backref('products', lazy=False), cascade="all, delete-orphan")
+    product = sa.orm.relation(Product, lazy=True, backref=sa.orm.backref('vouchers', cascade="all, delete-orphan"))
+
+    def __init__(self, **kwargs):
+        # remove the args that should never be set via creation
+        super(Voucher, self).__init__(**kwargs)
+
+    def __repr__(self):
+        return '<VoucherProduct>'
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(VoucherProduct).order_by(VoucherProduct.id).all()

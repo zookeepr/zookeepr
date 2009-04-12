@@ -19,15 +19,12 @@ import travel_assistance_type
 import db_content
 import volunteer
 import voucher
-import voucher_product
 import invoice
 import invoice_item
 import payment
 import ceiling
 import product
-import product_category
 import product_ceiling_map
-import product_include
 
 
 from person import Person
@@ -45,9 +42,7 @@ from review import Review
 from stream import Stream
 #from volunteer import Volunteer
 
-from product_category import ProductCategory
-from product_include import ProductInclude
-from product import Product
+from product import Product, ProductCategory, ProductInclude
 from ceiling import Ceiling
 
 from invoice import Invoice
@@ -56,8 +51,7 @@ from payment import Payment
 
 from registration import Registration
 
-from voucher import Voucher
-from voucher_product import VoucherProduct
+from voucher import Voucher, VoucherProduct
 
 from db_content import DbContentType, DbContent
 
