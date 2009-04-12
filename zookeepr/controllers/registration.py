@@ -1,23 +1,35 @@
-import datetime
-import warnings
+import logging
 
-from formencode import validators, compound, variabledecode, schema
-from formencode.schema import Schema
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
 
-from zookeepr.lib.auth import *
-from zookeepr.lib.base import *
-from zookeepr.lib.crud import *
-from zookeepr.lib.mail import *
-from zookeepr.lib.validators import *
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
 
-from zookeepr.controllers.person import PersonSchema
-from zookeepr.model import ProductCategory, Product, Voucher
-from zookeepr.model import Registration
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema, DictSet
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+#from zookeepr.model import # Add models here
 
 from zookeepr.config.lca_info import lca_info
 
-import re
-from zookeepr.lib import helpers as h
+from zookeepr.controllers.person import PersonSchema
+
+log = logging.getLogger(__name__)
+
+# import datetime
+# import warnings
+
+from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -79,56 +91,41 @@ class RegisterSchema(BaseSchema):
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
-    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
+    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
     registration = RegisterSchema()
 
     chained_validators = [NotExistingRegistrationValidator()]
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
 class UpdateRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
     registration = RegisterSchema()
 
     chained_validators = [NotExistingRegistrationValidator()]
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class ProductUnavailable(Exception):
-    """Exception when a product isn't available
-    Attributes:
-        product -- the product that wasn't available
-    """
+# class ProductUnavailable(Exception):
+#     """Exception when a product isn't available
+#     Attributes:
+#         product -- the product that wasn't available
+#     """
 
-    def __init__(self, product):
-        self.product = product
+#     def __init__(self, product):
+#         self.product = product
 
-class RegistrationController(SecureController, Update, List, Read):
-    individual = 'registration'
-    model = model.Registration
-    schemas = {'new': NewRegistrationSchema(),
-               'edit': UpdateRegistrationSchema()
-            }
-    permissions = {'new': True,
-                   'edit': [AuthRole('organiser'), AuthFunc('is_same_person')],
-                   'view': [AuthRole('organiser'), AuthFunc('is_same_person')],
-                   'pay': [AuthRole('organiser'), AuthFunc('is_same_person')],
-                   'index': [AuthRole('organiser')],
-                   'generate_badges': [AuthRole('organiser')],
-                   'status': True,
-                   'silly_description': True
-               }
+class RegistrationController(BaseController): # Update, List, Read
 
     def __before__(self, **kwargs):
-        super(RegistrationController, self).__before__(**kwargs)
-        c.product_categories = self.dbsession.query(ProductCategory).all()
+        c.product_categories = ProductCategory.find_all()
         c.ceilings = {}
-        for ceiling in self.dbsession.query(model.Ceiling).all():
+        for ceiling in Ceiling.find_all():
             c.ceilings[ceiling.name] = ceiling
 
         self._generate_product_schema()
-        #c.products = self.dbsession.query(Product).all()
+        c.products = Product.find_all()
         c.product_available = self._product_available
         c.able_to_edit = self._able_to_edit
         c.manual_invoice = self.manual_invoice
@@ -239,7 +236,11 @@ class RegistrationController(SecureController, Update, List, Read):
         return render_response("registration/new.myt",
                                defaults=defaults, errors=errors)
 
+    @authorize(h.auth.is_valid_user)
     def edit(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
         able, response = self._able_to_edit()
         if not able:
             return render_response("registration/error.myt", error=response)
@@ -327,7 +328,11 @@ class RegistrationController(SecureController, Update, List, Read):
         desc, descChecksum = h.silly_description()
         return descChecksum + ',' + desc
 
+    @authorize(h.auth.is_valid_user)
     def pay(self, id, quiet=0):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
         registration = self.obj
 
         # Checks all existing invoices and invalidates them if a product is not available
@@ -472,6 +477,7 @@ class RegistrationController(SecureController, Update, List, Read):
                     invoice.items.append(discount_item)
                     break
                     
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         per_page = 20
         #from zookeepr.model.core import tables as core_tables
@@ -608,6 +614,7 @@ class RegistrationController(SecureController, Update, List, Read):
         res.headers['Content-Disposition']='attachment; filename="table.csv"'
         return res
         
+    @authorize(h.auth.has_organiser_role)
     def generate_badges(self):
         defaults = dict(request.POST)
         stamp = False
@@ -755,3 +762,10 @@ class RegistrationController(SecureController, Update, List, Read):
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
         return disallowed_chars.sub(' ', h.esc(field.strip()))
+
+    @authorize(h.auth.is_valid_user)
+    def view(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
+            # Raise a no_auth error
+            h.auth.no_role()

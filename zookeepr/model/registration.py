@@ -40,9 +40,9 @@ class Registration(Base):
 
     person = sa.orm.relation(Person, backref=sa.orm.backref('registration', cascade="all, delete-orphan", lazy=True, uselist=False)),
     voucher = sa.orm.relation(Voucher, uselist=False,
-                                primaryjoin='registration.voucher_code==voucher.code',
+                                primaryjoin='Registration.voucher_code==Voucher.code',
                                 foreign_keys=Voucher.code,
-                                backref = 'registration',
+                                #backref = 'registration',
                                )
 
     def __init__(self, **kwargs):

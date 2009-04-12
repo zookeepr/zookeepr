@@ -256,14 +256,6 @@ class PersonSchema(BaseSchema):
 #        if total > self.max_qty:
 #            raise Invalid("You can not order more than " + str(self.max_qty) + ' ' + self.category_name, value, state)
 #
-#class CheckAccomDates(validators.FancyValidator):
-#    def __init__(self, *args, **kw):
-#        validators.FancyValidator.__init__(self, *args, **kw)
-#        if not hasattr(self, 'checkin') or self.checkin==None:
-#            self.checkin = 'checkin' # Smallest number that fits in postgres
-#        if not hasattr(self, 'checkout') or self.checkout==None:
-#            self.checkout = 'checkout' # Largest number that fits in postgres
-#
 #    def validate_python(self, value, state):
 #        if value[self.checkin] >= value[self.checkout]:
 #            raise Invalid("Your checkin date must be before your check out.", value, state)

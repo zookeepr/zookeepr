@@ -88,3 +88,6 @@ class Ceiling(Base):
     def __repr__(self):
         return '<Ceiling id=%r name=%r max_sold=%r available_from=%r, available_until=%r' % (self.id, self.name, self.max_sold, self.available_from, self.available_until)
 
+    @classmethod
+    def find_all(cls):
+        return Session.query(Ceiling).order_by(Ceiling.id).all()
