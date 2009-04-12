@@ -17,6 +17,7 @@ ${ teaser |n}
 %   endif
 %endfor
 
+% if c.result == True:
 <p>
 % if c.db_content_pages.current.next:
     <span style="float: right;">${ h.link_to('Next page', url=h.url_for(page=c.db_content_pages.current.next)) }</span>
@@ -25,6 +26,7 @@ ${ teaser |n}
     <span>${ h.link_to('Previous page', url=h.url_for(page=c.db_content_pages.current.previous)) + '  ' }</span>
 % endif
 </p>
+% endif
 
 <%def name="title()">
 News -

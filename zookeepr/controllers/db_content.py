@@ -23,7 +23,7 @@ from zookeepr.model import DbContent, DbContentType
 from zookeepr.config.lca_info import lca_info
 from not_found import NotFoundController
 
-from webhelpers.pagination import paginate
+from webhelpers import paginate
 from zookeepr.config.lca_info import file_paths
 import os
 
@@ -125,19 +125,23 @@ class DbContentController(BaseController):
         redirect_to('index')
 
     def list_news(self):
-        pages, collection = paginate([], per_page = 20) # fill the variables with nothing to start with
         if c.db_content_types:
-            pages, collection = paginate(DbContent.find_all_by_type("News"), per_page = 20)
-        c.db_content_pages = pages
-        c.db_content_collection = collection
+            pages, collection = paginate.Page(DbContent.find_all_by_type("News"), per_page = 20)
+            c.db_content_pages = pages
+            c.db_content_collection = collection
+            c.result = True
+        else:
+            c.result = False
         return render('/db_content/list_news.mako')
 
     def list_press(self):
-        pages, collection = paginate([], per_page = 20) # fill the variables with nothing to start with
         if c.db_content_types:
-            pages, collection = paginate(DbContent.find_all_by_type("In the press"), per_page = 20)
-        c.db_content_pages = pages
-        c.db_content_collection = collection
+            pages, collection = paginate.Page(DbContent.find_all_by_type("In the press"), per_page = 20)
+            c.db_content_pages = pages
+            c.db_content_collection = collection
+            c.result = True
+        else:
+            c.result = False
         return render('/db_content/list_press.mako')
 
     def rss_news(self):
