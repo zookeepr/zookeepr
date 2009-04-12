@@ -28,7 +28,7 @@ class InvoiceSchema(BaseSchema):
     due_date = validators.DateConverter(month_style='dd/mm/yy')
     items = ForEach(InvoiceItemValidator())
 
-    item_count = validators.Int()
+    item_count = validators.Int(min=0) # no max, doesn't hit database
 
 class NewInvoiceSchema(BaseSchema):
     invoice = InvoiceSchema()

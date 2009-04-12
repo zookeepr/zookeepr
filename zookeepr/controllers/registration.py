@@ -11,8 +11,8 @@ from zookeepr.lib.mail import *
 from zookeepr.lib.validators import *
 
 from zookeepr.controllers.person import PersonSchema
-from zookeepr.model.billing import ProductCategory, Product, Voucher
-from zookeepr.model.registration import Registration
+from zookeepr.model import ProductCategory, Product, Voucher
+from zookeepr.model import Registration
 
 from zookeepr.config.lca_info import lca_info
 
@@ -72,9 +72,9 @@ class RegisterSchema(BaseSchema):
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    opendaydrag = BoundedInt(min=0,max=200)
-    checkin = BoundedInt(min=0)
-    checkout = BoundedInt(min=0)
+    opendaydrag = validators.Int(min=0,max=200)
+    checkin = validators.Int(min=0, max=31)
+    checkout = validators.Int(min=0, max=31)
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)

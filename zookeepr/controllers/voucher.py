@@ -69,7 +69,7 @@ class VoucherController(BaseController): # Read, Create, List
                         ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
                 elif category.display in ('select', 'qty'):
                     for product in category.products:
-                        ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0))
+                        ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0, max=100, if_empty=0))
                         ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
 
     @dispatch_on(POST="_new")

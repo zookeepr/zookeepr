@@ -54,6 +54,8 @@ from invoice import Invoice
 from invoice_item import InvoiceItem
 from payment import Payment
 
+from registration import Registration
+
 from voucher import Voucher
 from voucher_product import VoucherProduct
 
