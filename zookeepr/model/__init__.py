@@ -47,7 +47,8 @@ def setup(meta):
 
     proposal.setup(meta)
     proposal_type.setup(meta)
-    assistance_type.setup(meta)
+    accommodation_assistance_type.setup(meta)
+    travel_assistance_type.setup(meta)
     person_proposal_map.setup(meta)
     attachment.setup(meta)
     review.setup(meta)

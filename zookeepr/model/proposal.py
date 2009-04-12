@@ -8,7 +8,6 @@ from pylons.controllers.util import abort
 from zookeepr.model.meta import Session
 
 from proposal_type import ProposalType
-from assistance_type import AssistanceType
 from person import Person
 from person_proposal_map import person_proposal_map
 from attachment import Attachment
