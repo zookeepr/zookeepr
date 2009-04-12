@@ -300,10 +300,14 @@ class ProposalController(BaseController):
             defaults['proposal.type'] = defaults['proposal.proposal_type_id']
         if c.proposal.travel_assistance:
             defaults['proposal.travel_assistance'] = defaults['proposal.travel_assistance_type_id']
-        if c.proposal.travel_assistance:
+        if c.proposal.accommodation_assistance:
             defaults['proposal.accommodation_assistance'] = defaults['proposal.accommodation_assistance_type_id']
-        if c.proposal.travel_assistance:
-            defaults['proposal.accommodation_assistance'] = defaults['proposal.accommodation_assistance_type_id']
+        if c.proposal.audience:
+            defaults['proposal.audience'] = defaults['proposal.target_audience_id']
+        if c.proposal.video_release:
+            defaults['proposal.video_release'] = 1
+        if c.proposal.slides_release:
+            defaults['proposal.slides_release'] = 1
 
 
         form = render('/proposal/edit.mako')
@@ -324,7 +328,7 @@ class ProposalController(BaseController):
             setattr(c.person, key, self.form_result['person'][key])
 
         for key in self.form_result['proposal']:
-            setattr(c.person, key, self.form_result['proposal'][key])
+            setattr(c.proposal, key, self.form_result['proposal'][key])
 
         meta.Session.commit()
 

@@ -38,7 +38,7 @@ ${ c.proposal.type.name }
 <em>Target Audience:</em>
 ${ c.proposal.audience.name }
 </p>
-% #endif
+% endif
 
 
 % if c.proposal.project:

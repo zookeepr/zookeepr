@@ -9,5 +9,7 @@ Thank you for your presentation submission.
 </p>
 
 <p>
-<a href="/programme/submit_a_presentation">Submit another presentation</a>, <a href="/programme/edit_submission">edit your submissions</a> or return to the <a href="${ h.url_for("home") }">main page</a>.
+<a href="${ h.url_for(action="new", id=None) }">Submit another presentation</a>,
+<a href="${ h.url_for(action="index", id=None) }">edit your submissions</a> or
+return to the <a href="${ h.url_for("home") }">main page</a>.
 </p>
