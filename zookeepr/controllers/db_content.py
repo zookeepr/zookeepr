@@ -70,14 +70,12 @@ class DbContentController(BaseController):
 
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
-        if c.db_content is None:
-            abort(404, "No such page")
         return render('/db_content/view.mako')
 
     def page(self):
         url = h.url_for()
         if url[0]=='/': url=url[1:]
-        c.db_content = DbContent.find_by_url(url)
+        c.db_content = DbContent.find_by_url(url, abort_404=False)
         if c.db_content is not None:
             return self.view(c.db_content.id)
         return NotFoundController().view()
