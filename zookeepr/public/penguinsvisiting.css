@@ -11,7 +11,7 @@ html {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	overflow-y: scroll;
+	/*overflow-y: scroll; */
 }
 
 body {
@@ -185,7 +185,7 @@ h6 {
 }
 * html #leftcol {
 	margin-left: 20px;
-	* margin-left: 12px;
+	margin-left: 12px;
 }
 
 .yellowbox {
@@ -287,7 +287,7 @@ h6 {
         {
                 background: #5850A5;
 		font-size: 1.6em;
-		bottom-margin: 5px;
+		margin-bottom: 5px;
         }
         
         .sponsor_heading H2

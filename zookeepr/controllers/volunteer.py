@@ -118,6 +118,7 @@ class VolunteerController(BaseController):
         volunteer = Volunteer.find_by_id(id)
         volunteer.accepted = True
         meta.Session.commit()
+        h.flash('Status Updated')
         redirect_to(action='index')
 
     @authorize(h.auth.has_organiser_role)
@@ -125,6 +126,7 @@ class VolunteerController(BaseController):
         volunteer = Volunteer.find_by_id(id)
         volunteer.accepted = None
         meta.Session.commit()
+        h.flash('Status Updated')
         redirect_to(action='index')
 
     @authorize(h.auth.has_organiser_role)
@@ -132,4 +134,5 @@ class VolunteerController(BaseController):
         volunteer = Volunteer.find_by_id(id)
         volunteer.accepted = False
         meta.Session.commit()
+        h.flash('Status Updated')
         redirect_to(action='index')
