@@ -5,6 +5,10 @@ from meta import Base
 
 from zookeepr.model.meta import Session
 
+def setup(meta):
+    meta.Session.add_all(
+    )
+
 class Product(Base):
     """Stores the products used for registration
     """
@@ -92,7 +96,3 @@ class Product(Base):
 
     def __repr__(self):
         return '<Product id=%r active=%r description=%r cost=%r auth=%r validate%r>' % (self.id, self.active, self.description, self.cost, self.auth, self.validate)
-
-def setup(meta):
-    meta.Session.add_all(
-    )

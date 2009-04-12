@@ -5,6 +5,9 @@ from meta import Base
 
 from zookeepr.model.meta import Session
 
+def setup(meta):
+    pass
+
 class ProductCategory(Base):
     """Stores the products used for registration
     """
@@ -55,7 +58,3 @@ class ProductCategory(Base):
 
     def __repr__(self):
         return '<ProductCategory id=%r name=%r description=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.display, self.min_qty, self.max_qty)
-
-def setup(meta):
-    meta.Session.add_all(
-    )
