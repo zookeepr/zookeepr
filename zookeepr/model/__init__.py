@@ -17,6 +17,7 @@ import stream
 import accommodation_assistance_type
 import travel_assistance_type
 import db_content
+import voucher
 
 from person import Person
 from role import Role
@@ -52,6 +53,7 @@ def setup(meta):
     attachment.setup(meta)
     review.setup(meta)
     stream.setup(meta)
+    voucher.setup(meta)
 
     db_content.setup(meta)
 

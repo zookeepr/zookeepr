@@ -1,15 +1,28 @@
+<%inherit file="/base.mako" />
+
+<%
+
+admin = 'organiser' in [r.name for r in c.signed_in_person.roles]
+
+if admin:
+  vouchers = c.voucher_collection
+else:
+  vouchers = c.signed_in_person.vouchers
+
+%>
+
     <h2>Voucher Codes</h2>
 
 % if admin:
     <p>This table lists all the voucher codes.</p>
-%   actionlink = h.link_to('Add another', url=h.url(controller='voucher', action='new'))
+%   actionlink = h.link_to('Add another', url=h.url_for(controller='voucher', action='new'))
 % else:
     <p>This table lists the voucher codes for your group.</p>
 %   actionlink = ''
 %   if not vouchers:
     <p>(Note: you do not appear to be a group leader, so the table is blank.)</p>
-%   #endif
-% #endif
+%   endif
+% endif
 
     <table>
       <tr>
@@ -17,7 +30,7 @@
         <th>Products</th>
 % if admin:
         <th>Leader</th>
-% #endif
+% endif
         <th>Comment</th>
         <th>Used By</th>
       </tr>
@@ -29,19 +42,19 @@
 %   if voucher.products:
 %       for vproduct in voucher.products:
          <% vproduct.percentage %>% discount off <% vproduct.qty %> x <% vproduct.product.description %><br>
-%       #endfor
-%   #endif
+%       endfor
+%   endif
         </td>
 %   if admin:
         <td>
 %       if voucher.leader:
-          <% voucher.leader.firstname |h%> <% voucher.leader.lastname |h%>
-          &lt;<% voucher.leader.email_address |h%>&gt;
+          ${ voucher.leader.firstname |h} ${ voucher.leader.lastname |h}
+          &lt;${ voucher.leader.email_address |h}&gt;
 %       else:
           (no leader)
-%       #endif
+%       endif
         </td>
-%   #endif
+%   endif
         <td><% voucher.comment |h%></td>
 %   if voucher.registration:
         <td><% voucher.registration.person.firstname %> <% voucher.registration.person.lastname %>
@@ -52,22 +65,12 @@
         </td>
 %   else:
         <td><strong>Hasn't been used</strong></td>
-%   #endif
+%   endif
       </tr>
-% #endfor
+% endfor
 
     </table>
 
     <br>
     <p><% actionlink %></p>
 
-<%init>
-
-admin = 'organiser' in [r.name for r in c.signed_in_person.roles]
-
-if admin:
-  vouchers = c.voucher_collection
-else:
-  vouchers = c.signed_in_person.vouchers
-
-</%init>
