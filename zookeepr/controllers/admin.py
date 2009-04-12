@@ -280,7 +280,7 @@ class AdminController(BaseController):
     def person_creation(self):
         """ When did people create their accounts? [Accounts] """
         return sql_response("""select person.id, firstname || ' ' ||
-        lastname as name, creation_timestamp as created from person
+        lastname as name, _creation_timestamp as created from person
         order by person.id;
         """)
     def auth_users(self):
@@ -382,10 +382,9 @@ class AdminController(BaseController):
     def countdown(self):
         """ How many days until conference opens """
         timeleft = lca_info['date'] - datetime.now()
-        res = Response ("%.1f days" % (timeleft.days +
-                                               timeleft.seconds / (3600*24.)))
-        res.headers['Refresh'] = 3600
-        return res
+        c.text = "%.1f days" % (timeleft.days +
+                                               timeleft.seconds / (3600*24.))
+        return render('/admin/text.mako')
 
     def registered_speakers(self):
         """ Listing of speakers and various stuff about them [Speakers] """
@@ -1033,12 +1032,11 @@ def sql_response(sql):
     """
     if request.GET.has_key('csv'):
         return csv_response(sql)
-    import zookeepr.model
-    res = zookeepr.model.metadata.bind.execute(sql)
+    res = meta.Session.execute(sql)
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql
-    return render_response('admin/sqltable.myt')
+    return render('admin/sqltable.mako')
 
 def sql_data(sql):
     """ This function bypasses all the MVC stuff and just gives you a

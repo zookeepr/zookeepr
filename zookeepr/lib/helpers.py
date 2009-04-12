@@ -260,12 +260,12 @@ def countries():
     res.sort()
     return res
 
-#def debug():
-#    if request_config().environ['paste.config']['global_conf']['debug'] == "true":
-#        return True
-#    else:
-#        return False
-#
+def debug():
+    if request_config().environ['paste.config']['global_conf']['debug'] == "true":
+        return True
+    else:
+        return False
+
 teaser_re = re.compile(r'(\<\!\-\-break\-\-\>)')
 def make_teaser(body):
     if teaser_re.search(body):
