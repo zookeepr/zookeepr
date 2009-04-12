@@ -716,6 +716,30 @@ tt {
                 padding-left: 0;
         }
 
+#flash
+{
+    width:100%
+}
+
+#flash .message
+{
+    padding-top: 1em;
+    padding-left: 50px;
+    border: 1px solid #ccc;
+    margin: 1em;
+    background: #fffaaa url('/images/icons/emblem-note.png') no-repeat 10px 50%;
+}
+
+#flash .message-error
+{
+    background: #ff9999 url('/images/icons/emblem-personal.png') no-repeat 10px 50%;
+}
+
+.message_degrade
+{
+    background: #fff;
+}
+
 p.warningbox {
 	background-color: #FFCC00;
 	padding: 15px 15px 15px 15px;

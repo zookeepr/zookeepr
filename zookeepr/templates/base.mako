@@ -17,9 +17,22 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
+  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>          
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
+  <script type="text/javascript">
+     $(document).ready(function() {
+       $("#flash > div").hide().fadeIn(2500);
+       $("#flash > div").fadeTo(2000, 0.3);
+       $("#flash > div").hover(function() {
+         $(this).fadeTo(500, 1);
+       },function(){
+         $(this).fadeTo(500, 0.3);
+       });
+
+     });
+  </script>
   ${self.extra_head()}
 </head>
 
@@ -44,7 +57,22 @@
       </div>
       <div id="content">
     <div id="flash">
-${ h.session.get('flash') }
+<% messages = h.get_flashes() %>
+%if messages:
+%   for (category, msgs) in messages.iteritems():
+        <div class="message message-${ h.computer_title(category) }">
+%       if len(msgs) is 1:
+            <p>${ msgs[0] }</p>
+%       else:
+            <ul>
+%          for msg in msgs:
+                <li>${ msg }</li>
+%          endfor
+            </ul>
+%       endif
+        </div>
+%   endfor
+%endif
     </div>
 ${next.body()}
       </div>
