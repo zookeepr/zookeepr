@@ -28,6 +28,9 @@ class RegoNote(Base):
     by = sa.orm.relation(Person, backref=sa.orm.backref('notes_made', cascade="all, delete-orphan", lazy=True))
     rego = sa.orm.relation(Registration, backref=sa.orm.backref('notes', cascade="all, delete-orphan", lazy=True))
 
+    def __init__(self, **kwargs):
+        super(RegoNote, self).__init__(**kwargs)
+
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(RegoNote).filter_by(id=id).first()

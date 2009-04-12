@@ -148,8 +148,18 @@ class ExistingRegistrationValidator(validators.FancyValidator):
         return value.id
 
 class ExistingPersonValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        person = Person.find_by_id(int(value), abort_404=False)
+        if person is None:
+            raise Invalid("Unknown person ID.", value, state)
+        else:
+            return person
+    def _from_python(self, value, state):
+        return value.id
+
+class ExistingPersonValidator_by_email(validators.FancyValidator):
     def validate_python(self, value, state):
-        person = Person.find_by_id(int(value))
+        person = Person.find_by_email(value)
         if person is None:
             msg = 'Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email']
             raise Invalid(msg, value, state, error_dict={'email_address': msg})
