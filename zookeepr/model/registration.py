@@ -38,7 +38,7 @@ class Registration(Base):
         nullable=False, default=sa.func.current_timestamp(),
         onupdate=sa.func.current_timestamp())
 
-    person = sa.orm.relation(Person, backref=sa.orm.backref('registration', cascade="all, delete-orphan", lazy=True, uselist=False)),
+    person = sa.orm.relation(Person, backref=sa.orm.backref('registration', cascade="all, delete-orphan", lazy=True, uselist=False))
     voucher = sa.orm.relation(Voucher, uselist=False,
                                 primaryjoin='Registration.voucher_code==Voucher.code',
                                 foreign_keys=Voucher.code,
