@@ -6,7 +6,7 @@
 %endif
 
 % for d in c.db_content_collection:
-<h2><% h.link_to(d.title, url='/media/news/' + str(d.id)) %></h2>
+<h2>${ h.link_to(d.title, url=h.url_for(action="view", id=d.id)) }</h2>
 <p class="submitted">
 Submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
 </p>
@@ -17,6 +17,7 @@ ${ teaser |n}
 %   endif
 %endfor
 
+% if c.result == True:
 <p>
 % if c.db_content_pages.current.next:
     <span style="float: right;">${ h.link_to('Next page', url=h.url_for(page=c.db_content_pages.current.next)) }</span>
@@ -25,6 +26,7 @@ ${ teaser |n}
     <span>${ h.link_to('Previous page', url=h.url_for(page=c.db_content_pages.current.previous)) + '  ' }</span>
 % endif
 </p>
+% endif
 
 <%def name="title()">
 News -
