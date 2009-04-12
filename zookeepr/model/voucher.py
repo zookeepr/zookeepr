@@ -46,7 +46,7 @@ class VoucherProduct(Base):
     percentage = sa.Column(sa.Integer, nullable=False)
 
     # relations
-    voucher = sa.orm.relation(Voucher, lazy=True, backref=sa.orm.backref('products', lazy=False), cascade="all, delete-orphan")
+    voucher = sa.orm.relation(Voucher, lazy=True, backref=sa.orm.backref('products', cascade="all, delete-orphan"))
     product = sa.orm.relation(Product, lazy=True, backref=sa.orm.backref('vouchers', cascade="all, delete-orphan"))
 
     def __init__(self, **kwargs):
