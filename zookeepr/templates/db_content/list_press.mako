@@ -1,6 +1,10 @@
 <%inherit file="/base.mako" />
 <h2>${ h.lca_info['event_name'] } in the press</h2>
 
+%if len(c.db_content_collection) is 0:
+<p>Sorry, there are currently no recorded items in the press.</p>
+%endif
+
 %for d in c.db_content_collection:
 <h3>${ h.link_to(d.title, url=d.url) }</h3>
 <p class="submitted">

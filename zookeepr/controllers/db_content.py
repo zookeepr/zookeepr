@@ -121,17 +121,21 @@ class DbContentController(BaseController):
         redirect_to('index')
 
     def list_news(self):
-        pages, collection = paginate(DbContent.find_all_by_type("News"), per_page = 20)
+        pages, collection = paginate([], per_page = 20) # fill the variables with nothing to start with
+        if c.db_content_types:
+            pages, collection = paginate(DbContent.find_all_by_type("News"), per_page = 20)
         c.db_content_pages = pages
         c.db_content_collection = collection
         return render('/db_content/list_news.mako')
 
     def list_press(self):
-        pages, collection = paginate(DbContent.find_all_by_type("In the press"), per_page = 20)
+        pages, collection = paginate([], per_page = 20) # fill the variables with nothing to start with
+        if c.db_content_types:
+            pages, collection = paginate(DbContent.find_all_by_type("In the press"), per_page = 20)
         c.db_content_pages = pages
         c.db_content_collection = collection
         return render('/db_content/list_press.mako')
-        
+
     def rss_news(self):
         news_id = DbContentType.find_by_name("News").id
         c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id).order_by(DbContent.creation_timestamp.desc()).limit(20).all()

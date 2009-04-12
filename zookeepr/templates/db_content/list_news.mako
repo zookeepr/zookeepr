@@ -1,5 +1,9 @@
 <%inherit file="/base.mako" />
-<h1>linux.conf.au 2010 News</h1>
+<h1>${ h.lca_info['event_name'] } News</h1>
+
+%if len(c.db_content_collection) is 0:
+<p>Sorry, there are currently no news posts.</p>
+%endif
 
 % for d in c.db_content_collection:
 <h2><% h.link_to(d.title, url='/media/news/' + str(d.id)) %></h2>
