@@ -31,6 +31,9 @@ from attachment import Attachment
 from review import Review
 from stream import Stream
 
+from product import Product
+from product_category import ProductCategory
+
 from db_content import DbContentType, DbContent
 
 def init_model(engine):

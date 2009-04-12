@@ -13,7 +13,7 @@ class Product(Base):
 
     id = sa.Column(sa.types.Integer, primary_key=True)
 
-    category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id), nullable=False)
+    category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id'), nullable=False)
 
     active = sa.Column(sa.types.Boolean, nullable=False)
 
