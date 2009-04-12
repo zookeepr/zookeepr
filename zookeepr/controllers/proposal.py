@@ -307,11 +307,6 @@ class ProposalController(BaseController):
             defaults['proposal.accommodation_assistance'] = defaults['proposal.accommodation_assistance_type_id']
         if c.proposal.audience:
             defaults['proposal.audience'] = defaults['proposal.target_audience_id']
-        if c.proposal.video_release:
-            defaults['proposal.video_release'] = 1
-        if c.proposal.slides_release:
-            defaults['proposal.slides_release'] = 1
-
 
         form = render('/proposal/edit.mako')
         return htmlfill.render(form, defaults)

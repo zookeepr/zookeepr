@@ -376,7 +376,15 @@ def object_to_defaults(object, prefix):
     defaults = {}
 
     for key in object_mapper(object).columns.keys():
-        defaults[prefix + "." + key] = getattr(object, key)
+        value = getattr(object, key)
+        if type(value) == list:
+            for code in value:
+                defaults['.'.join((prefix,key,code))] = 1
+            defaults['.'.join((prefix,key))] = ','.join(value)
+        elif value == True:
+            defaults['.'.join((prefix,key))] = 1
+        else:
+            defaults['.'.join((prefix,key))] = value
 
     return defaults
 
