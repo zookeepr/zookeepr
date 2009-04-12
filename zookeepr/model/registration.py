@@ -46,7 +46,7 @@ class Registration(Base):
                                )
 
     def __init__(self, **kwargs):
-        super(Role, self).__init__(**kwargs)
+        super(Registration, self).__init__(**kwargs)
 
     def __repr__(self):
         return '<Registration id=%r person_id=%r>' % (self.id, self.person_id)
