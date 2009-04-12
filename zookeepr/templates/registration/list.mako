@@ -110,10 +110,11 @@ if "special_needs" in c.registration_request and c.registration_request['special
    selected = ' checked="checked"'
 %>
     <label for="special_needs"><input type="checkbox" name="special_needs" id="special_needs" value="true"${ selected } /> Has Special Needs</label>
-% selected = ''
-% if "notes" in c.registration_request and c.registration_request['notes'] == 'true':
-%    selected = ' checked="checked"'
-% #endif
+<%
+selected = '' 
+if "notes" in c.registration_request and c.registration_request['notes'] == 'true':
+    selected = ' checked="checked"'
+%>
     <br><label for="notes"><input type="checkbox" name="notes" id="notes" value="true"${ selected } /> Has Notes</label>
 <%
 selected = ''
