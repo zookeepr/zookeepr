@@ -167,7 +167,7 @@ class ProposalController(BaseController):
         meta.Session.commit()
         email(c.person.email_address, render('proposal/thankyou_email.mako'))
 
-        h.flash("Proposal %s submitted!"%p_edit)
+        h.flash("Proposal submitted!")
 
         return redirect_to(controller='proposal', action="index", id=None)
 
