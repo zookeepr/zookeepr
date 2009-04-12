@@ -26,9 +26,9 @@
        $("#flash > div").hide().fadeIn(2500);
        $("#flash > div").fadeTo(2000, 0.3);
        $("#flash > div").hover(function() {
-         $(this).fadeTo(500, 1);
+         $(this).fadeTo(250, 1);
        },function(){
-         $(this).fadeTo(500, 0.3);
+         $(this).fadeTo(250, 0.3);
        });
 
      });
