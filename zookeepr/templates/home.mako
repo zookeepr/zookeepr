@@ -25,7 +25,7 @@ for d in c.db_content_news_all:
 
 <%def name="big_promotion()">
 % for d in c.db_content_news_all:
-     ${ directory = h.featured_image(d.title, big = True) }
+     <% directory = h.featured_image(d.title, big = True) %>
 %    if directory is not False:
 			<div class = 'news_banner'>
 				<div class = 'news_banner_left'>

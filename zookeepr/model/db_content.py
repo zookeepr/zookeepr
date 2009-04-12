@@ -33,13 +33,19 @@ class DbContentType(Base):
         return '<DbContentType id="%s" name="%s">' % (self.id, self.name)
 
     @classmethod
-    def find_by_name(cls, name):
-        return Session.query(DbContentType).filter_by(name=name).first()
+    def find_by_name(cls, name, abort_404 = True):
+        result = Session.query(DbContentType).filter_by(name=name).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
 
     @classmethod
-    def find_by_id(cls, id):
-        return Session.query(DbContentType).filter_by(id=id).first()
-
+    def find_by_id(cls, id, abort_404 = True):
+        result = Session.query(DbContentType).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such object")
+        return result
+        
     @classmethod
     def find_all(cls):
         return Session.query(DbContentType).order_by(DbContentType.id).all()
@@ -103,9 +109,9 @@ class DbContent(Base):
         return result
 
     @classmethod
-    def find_all_by_type(cls, type, abort = True):
-        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type).id).order_by(DbContent.creation_timestamp.desc()).all()
-        if result is None and abort:
+    def find_all_by_type(cls, type, abort_404 = True):
+        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type, abort_404 = abort_404).id).order_by(DbContent.creation_timestamp.desc()).all()
+        if result is None and abort_404:
             abort(404, "No such object")
         return result
     

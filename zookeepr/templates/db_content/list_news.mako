@@ -6,7 +6,7 @@
 %endif
 
 % for d in c.db_content_collection:
-<h2><% h.link_to(d.title, url='/media/news/' + str(d.id)) %></h2>
+<h2>${ h.link_to(d.title, url=h.url_for(action="view", id=d.id)) }</h2>
 <p class="submitted">
 Submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
 </p>
