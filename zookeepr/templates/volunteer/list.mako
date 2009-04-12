@@ -32,10 +32,13 @@
         <td>Rejected</td>
 %       endif
         <td>
-%       if volunteer.accepted is None or not volunteer.accepted:
+%       if volunteer.accepted != True:
           ${ h.link_to('accept', url=h.url_for(action='accept', id=volunteer.id)) }
 %       endif
-%       if volunteer.accepted is None or volunteer.accepted:
+%       if volunteer.accepted is not None:
+          ${ h.link_to('pending', url=h.url_for(action='pending', id=volunteer.id)) }
+%       endif
+%       if volunteer.accepted != False:
           ${ h.link_to('reject', url=h.url_for(action='reject', id=volunteer.id)) }
 %       endif
         </td>

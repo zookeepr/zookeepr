@@ -174,7 +174,7 @@ class DbContentController(BaseController):
             try:
                 os.rmdir(directory + c.folder)
             except OSError:
-                h.flash("Can not delete. The folder contains items.")
+                h.flash("Can not delete. The folder contains items.", 'error')
                 redirect_to(action="list_files", folder=c.current_folder)
             h.flash("Folder deleted.")
             redirect_to(action="list_files", folder=c.current_folder)
@@ -227,7 +227,7 @@ class DbContentController(BaseController):
                 if request.POST['folder'] is not None:
                     os.mkdir(directory + request.POST['folder'])
             except KeyError:
-                h.flash("Error creating folder. Check file permissions.")
+                h.flash("Error creating folder. Check file permissions.", 'error')
             else:
                 h.flash("Folder Created")
             

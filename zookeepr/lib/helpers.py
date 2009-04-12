@@ -388,8 +388,20 @@ def object_to_defaults(object, prefix):
 
     return defaults
 
-def flash(msg):
-    session['flash'] = msg
+def get_flashes():
+    # it is save to delete now
+    if not session.has_key('flash'):
+        return None
+    messages = session['flash']
+    del(session['flash'])
     session.save()
+    return messages
 
+def flash(msg, category="information"):
+    if not session.has_key('flash'):
+        session['flash'] = {}
+    if not session['flash'].has_key(category):
+        session['flash'][category] = []
+    session['flash'][category].append(msg)
+    session.save()
 

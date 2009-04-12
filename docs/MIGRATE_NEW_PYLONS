@@ -191,9 +191,9 @@ methods like view ect which take an id should be def view(self, id): not def vie
     To the top <%inherit file="/base.mako" />
     if this should have the layout around it
 
-    s/method/def
+    <%method title>...</%method>  ->  <%def name="title()">...</%def>
 
-    url -> url_for
+    url(...) -> url_for(...)
 
     #endif -> endif
 
@@ -203,6 +203,8 @@ methods like view ect which take an id should be def view(self, id): not def vie
     %s/check_box/checkbox
 
     <& form.myt &>  ->  <%include file="form.mako" />
+
+    <& PARENT:title &>  ->  ${ caller.title() }
 
     If you see something like this, get rid of it:
 
@@ -214,7 +216,7 @@ methods like view ect which take an id should be def view(self, id): not def vie
 
     h.submitbutton("New")  ->  h.submit("submit", "New")
 
-    h.textarea('volunteer.other', size='40x4')  ->  h.textarea('volunteer.other', cols="40", rows="4")
+    h.text_area('volunteer.other', size='40x4')  ->  h.textarea('volunteer.other', cols="40", rows="4")
 
 
 == Models.

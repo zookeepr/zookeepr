@@ -26,16 +26,16 @@
       <ul id="primarynav">
 % for (t, u, c) in mm:
 %   if c == 'selected':
-          <li><% t %></li>
+          <li>${ t |n }</li>
 %   else:
-          <li <% cls(c) %>><a href="<% u %>"><% t %></a></li>
+          <li ${ cls(c) |n}><a href="${ u }">${ t }</a></li>
 %   endif
 
 % endfor
 % if h.signed_in_person():
-        <li><a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') }>Sign out</a> (${h.signed_in_person().email_address})</li>
+        <li><a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') |n}>Sign out</a> (${h.signed_in_person().email_address})</li>
 % else:
-        <li><a href="${h.url_for(controller='person', action='signin')}" ${ cls('login') }>Sign in</a></li>
+        <li><a href="${h.url_for(controller='person', action='signin')}" ${ cls('login') |n}>Sign in</a></li>
 % endif
       </ul>
 

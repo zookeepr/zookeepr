@@ -13,7 +13,7 @@ for d in c.db_content_news_all:
 ## -- coding: utf-8 --
 		<!-- <img src = '/images/heightfix.png' class = 'heightfix' alt = ''> -->
 
-		<img src="images/banner.gif" border="0" alt="Follow the signs!" /><br /><br />
+		<img src="images/banner.gif" style="border: 0" alt="Follow the signs!" /><br /><br />
 		<h1>linux.conf.au 2010 in Wellington, New Zealand!</h1>
 
 		<p>linux.conf.au is one of the world's best conferences for free and open source software!</p>
