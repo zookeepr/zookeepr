@@ -5,7 +5,6 @@ from meta import Base
 
 from pylons.controllers.util import abort
 
-from registration import Registration
 from person import Person
 
 from zookeepr.model.meta import Session
@@ -26,10 +25,6 @@ class Voucher(Base):
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False,
     default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
-    #registration = sa.orm.relation(Registration, uselist=False,
-    #                                primaryjoin=registration.c.voucher_code==voucher.c.code,
-    #                                foreign_keys=voucher.c.code,
-    #                                )
     leader = sa.orm.relation(Person, backref=sa.orm.backref('vouchers', cascade="all, delete-orphan"))
 
     def __init__(self, **kwargs):
