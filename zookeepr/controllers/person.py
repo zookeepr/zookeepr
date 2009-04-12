@@ -203,6 +203,10 @@ class PersonController(BaseController): #Read, Update, List
     @authorize(h.auth.is_valid_user)
     @dispatch_on(POST="_edit") 
     def edit(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
         c.form = 'edit'
         c.person = Person.find_by_id(id)
 

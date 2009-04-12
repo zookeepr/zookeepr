@@ -224,3 +224,5 @@ methods like view ect which take an id should be def view(self, id): not def vie
 '<,'>s/sa.Column('\([^']*\)', \([^)]*\))/\1 = sa.Column(sa.Types.\2)
 
 Column('title', Text) turns into title = sa.Column(sa.Types.Text)
+
+"backref=backref(...)" turns into "backref=sa.orm.backref(...)"
