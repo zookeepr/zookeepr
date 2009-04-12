@@ -101,7 +101,7 @@ class Person(Base):
     def check_password(self, value):
         """Check the given password is equal to the stored one"""
         return self.password_hash == self.gen_password(value)
-
+    
     def is_speaker(self):
         return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False) or False
         # note: the "or False" at the end converts a None into a False
@@ -155,6 +155,7 @@ class Person(Base):
 
     def paid(self):
         status = False
+        return False # FIXME: remove this line once invoices are migrated
         for invoice in self.invoices:
             if not invoice.is_void():
                 if invoice.paid():

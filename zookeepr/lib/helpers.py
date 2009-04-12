@@ -217,13 +217,13 @@ def line_break(s):
     """ Turn line breaks into <br>'s """
     return break_re.sub('<br />', s)
 
-#def yesno(bool):
-#    """ Display a read-only checkbox for the value provided """
-#    if bool:
-#        return '&#9745;'
-#    else:
-#        return '&#9744;'
-#
+def yesno(bool):
+    """ Display a read-only checkbox for the value provided """
+    if bool:
+        return '&#9745;'
+    else:
+        return '&#9744;'
+
 #def num(x):
 #    """ Display a number or none if a number wasn't entered """
 #    if x==None:

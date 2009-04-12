@@ -17,6 +17,7 @@ import stream
 import accommodation_assistance_type
 import travel_assistance_type
 import db_content
+import volunteer
 import voucher
 import voucher_product
 
@@ -33,6 +34,7 @@ from proposal import Proposal
 from attachment import Attachment
 from review import Review
 from stream import Stream
+#from volunteer import Volunteer
 
 from product import Product
 from product_category import ProductCategory
@@ -65,6 +67,7 @@ def setup(meta):
     voucher.setup(meta)
 
     db_content.setup(meta)
+    volunteer.setup(meta)
 
     meta.Session.commit()
 
