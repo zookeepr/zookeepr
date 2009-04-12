@@ -86,8 +86,6 @@ def cycle(*args, **kargs):
         cycle = cycles[name] = iterdict(items)
     return cycle['iter'].next()
 
-
-
 #def counter(*args, **kwargs):
 #    """Return the next cardinal in a sequence.
 #
