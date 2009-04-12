@@ -28,8 +28,8 @@ if not defaults:
 % endif
 
 % if not 'signed_in_person_id' in session:
-      <p>If you already have an account (through a submitting a proposal, or other interaction with this site), then please ${ h.link_to('sign in', url=h.url(controller='person', action='signin')) }.</p>
-      <p>If you can't log in, you can try ${ h.link_to('recovering your password', url=h.url(controller='person', action='forgotten_password')) }.</p>
+      <p>If you already have an account (through a submitting a proposal, or other interaction with this site), then please ${ h.link_to('sign in', url=h.url_for(controller='person', action='signin')) }.</p>
+      <p>If you can't log in, you can try ${ h.link_to('recovering your password', url=h.url_for(controller='person', action='forgotten_password')) }.</p>
 % endif
 
 % if errors:
@@ -42,7 +42,7 @@ if not defaults:
       with your registration form, highlighted in red below. Please correct and re-submit.</p>
 % endif
 
-      ${ h.form(h.url()) }
+      ${ h.form(h.url_for()) }
 
 <%include file="form.mako" />
 

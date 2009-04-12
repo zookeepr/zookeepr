@@ -9,7 +9,12 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, DictSet
+from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
+from zookeepr.lib.validators import ProductQty, ProductMinMax
+
+# validators used from the database
+from zookeepr.lib.validators import ProDinner, PPEmail, PPChildrenAdult
+
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -116,6 +121,9 @@ class UpdateRegistrationSchema(BaseSchema):
 #     def __init__(self, product):
 #         self.product = product
 
+new_schema = NewRegistrationSchema()
+edit_schema = UpdateRegistrationSchema()
+
 class RegistrationController(BaseController): # Update, List, Read
 
     def __before__(self, **kwargs):
@@ -150,7 +158,7 @@ class RegistrationController(BaseController): # Update, List, Read
     def _generate_product_schema(self):
         class ProductSchema(BaseSchema):
             pass
-        ProductSchema.add_field('partner_email', EmailAddress()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+        ProductSchema.add_field('partner_email', validators.Email()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
         for category in c.product_categories:
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
@@ -181,8 +189,8 @@ class RegistrationController(BaseController): # Update, List, Read
                         ProductSchema.add_pre_validator(validator)
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
                 # FIXME: I have spent far too long to try and get this working. Technically this should be a chained validator, not a pre validator but no matter what I do I can't get it to work (read heaps of docs etc etc). The result of being a pre-validator is that if there is an error the pre validator doesn't pick up (like an unfilled field) that the normal validation would pick up it isn't highlighted until the pre-validator doesn't find any errors. For example if you dont' select any shirts and have "asdf" in one of the dinner ticket fields you should see two errors: 1. you have no shirts and 2. tickets need to be integers. Once you select a shirt and resubmit the other error will show up. So it's a usability issue and doesn't make the form less secure, but damn this one is annoying!
-        self.schemas['new'].add_field('products', ProductSchema)
-        self.schemas['edit'].add_field('products', ProductSchema)
+        new_schema.add_field('products', ProductSchema)
+        edit_schema.add_field('products', ProductSchema)
 
     def is_speaker(self):
         return c.signed_in_person.is_speaker()
@@ -196,47 +204,61 @@ class RegistrationController(BaseController): # Update, List, Read
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
 
-    def new(self, id):
+    @dispatch_on(POST="_new")
+    def new(self):
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='edit', id=c.signed_in_person.registration.id)
 
         if lca_info['conference_status'] is not 'open':
             redirect_to(action='status')
             return
-        errors = {}
-        defaults = dict(request.POST)
+        form = render("/registration/new.mako")
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=new_schema, form='new', post_only=False,
+        on_get=True, variable_decode=True)
+    def _new(self):
+        if c.signed_in_person and c.signed_in_person.registration:
+            redirect_to(action='_edit', id=c.signed_in_person.registration.id)
+
+        if lca_info['conference_status'] is not 'open':
+            redirect_to(action='status')
+            return
 
         if c.signed_in_person:
-            current_schema = self.schemas['edit']
+            current_schema = edit_schema
         else:
-            current_schema = self.schemas['new']
+            current_schema = new_schema
 
-        if request.method == 'POST' and defaults:
-            result, errors = current_schema.validate(defaults, self.dbsession)
-            if not errors:
-                # A blank registration
-                c.registration = model.Registration()
-                self.save_details(result)
+        # A blank registration
+        c.registration = model.Registration()
+        self.save_details(result)
 
-                # Create person<->registration relationship
-                c.registration.person = c.person
-                self.dbsession.flush()
+        # Create person<->registration relationship
+        c.registration.person = c.person
+        self.dbsession.flush()
 
-                email(
-                    c.person.email_address,
-                    render('registration/response.myt',
-                        id=c.person.url_hash, fragment=True))
+        email(
+            c.person.email_address,
+            render('registration/response.myt',
+                id=c.person.url_hash, fragment=True))
 
-                self.obj = c.registration
-                self.pay(c.registration.id, quiet=1)
+        self.obj = c.registration
+        self.pay(c.registration.id, quiet=1)
 
-                if c.signed_in_person:
-                    redirect_to(action='status')
-                return render_response('registration/thankyou.myt')
-        return render_response("registration/new.myt",
-                               defaults=defaults, errors=errors)
+        h.flash("Thank you for your registration!")
+        if c.signed_in_person:
+            h.flash("""To complete the registration process, please pay
+                                                          your invoice.""")
+            redirect_to(action='status')
+        else:
+            h.flash("""An e-mail has been sent to you with a confirmation
+                code. Once it arrives, please follow the link to activate
+                your registration and pay your invoice.""")
+            redirect_to('/')
 
     @authorize(h.auth.is_valid_user)
+    @validate(edit_schema)
     def edit(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
@@ -322,7 +344,7 @@ class RegistrationController(BaseController): # Update, List, Read
         self.dbsession.save_or_update(c.person)
 
     def status(self):
-        return render_response("registration/status.myt")
+        return render("/registration/status.mako")
 
     def silly_description(self):
         desc, descChecksum = h.silly_description()

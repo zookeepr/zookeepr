@@ -19,7 +19,7 @@ import datetime
 % elif c.signed_in_person:
           <p>${ c.signed_in_person.firstname | h }</p>
 % else:
-          <p class="entries">${ h.textfield('person.firstname', size=40) }</p>
+          <p class="entries">${ h.text('person.firstname', size=40) }</p>
 % endif
 
           <p class="label">
@@ -33,7 +33,7 @@ import datetime
 % elif c.signed_in_person:
           <p>${ c.signed_in_person.lastname | h }</p>
 % else:
-          <p class="entries">${ h.textfield('person.lastname', size=40) }</p>
+          <p class="entries">${ h.text('person.lastname', size=40) }</p>
 % endif
 
           <p class="label">
@@ -47,16 +47,16 @@ import datetime
 % elif c.signed_in_person:
           <p>${ c.signed_in_person.email_address | h }</p>
 % else:
-          <p class="entries">${ h.textfield('person.email_address', size=40) }</p>
+          <p class="entries">${ h.text('person.email_address', size=40) }</p>
 % endif
           <p class="note">Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.</p>
 % if not c.signed_in_person:
 
           <p class="label"><span class="mandatory">*</span><label for="person.password">Choose a password:</label></p>
-          <p class="entries">${ h.password_field("person.password", size=40) }</p>
+          <p class="entries">${ h.password("person.password", size=40) }</p>
 
           <p class="label"><span class="mandatory">*</span><label for="person.password_confirm">Confirm your password:</label></p>
-          <p class="entries">${ h.password_field("person.password_confirm", size=40) }</p>
+          <p class="entries">${ h.password("person.password_confirm", size=40) }</p>
 % endif
         </fieldset>
 
@@ -68,37 +68,38 @@ import datetime
 
           <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
           <p class="entries">
-            ${ h.textfield('person.address1', size=40) }
+            ${ h.text('person.address1', size=40) }
             <br>
-            ${ h.textfield('person.address2', size=40) }
+            ${ h.text('person.address2', size=40) }
           </p>
 
           <p class="label"><span class="mandatory">*</span><label for="person.city">City/Suburb:</label></p>
-          <p class="entries">${ h.textfield('person.city', size=40) }</p>
+          <p class="entries">${ h.text('person.city', size=40) }</p>
 
           <p class="label"><label for="person.state">State/Province:</label></p>
-          <p class="entries">${ h.textfield('person.state', size=40) }</p>
+          <p class="entries">${ h.text('person.state', size=40) }</p>
 
           <p class="label"><span class="mandatory">*</span><label for="person.country">Country:</label></p>
           <p class="entries">
             <select name="person.country">
 % for country in h.countries():
-              <option value="<%country}">${ country }</option>
+              <option value="${country}">${ country }</option>
 % endfor
             </select>
           </p>
 
           <p class="label"><span class="mandatory">*</span><label for="person.postcode">Postcode/ZIP:</label></p>
-          <p class="entries">${ h.textfield('person.postcode', size=40) }</p>
+          <p class="entries">${ h.text('person.postcode', size=40) }</p>
 
-% if 'signed_in_person_id' in session:
-%   is_speaker = c.signed_in_person.is_speaker()
-% else:
-%   is_speaker = False
-% endif
+<%
+if 'signed_in_person_id' in session:
+  is_speaker = c.signed_in_person.is_speaker()
+else:
+  is_speaker = False
+%>
 
           <p class="label"><label for="person.mobile">Phone number:</label></p>
-          <p class="entries">${ h.textfield('person.phone') }</p>
+          <p class="entries">${ h.text('person.phone') }</p>
 
           <p class="label">
 % if is_speaker:
@@ -106,20 +107,20 @@ import datetime
 % endif
             <label for="person.mobile">Mobile/Cell number:</label>
           </p>
-          <p class="entries">${ h.textfield('person.mobile') }</p>
+          <p class="entries">${ h.text('person.mobile') }</p>
 
           <p class="label"><label for="person.company">Company:</label></p>
-          <p class="entries">${ h.textfield('person.company', size=60) }</p>
+          <p class="entries">${ h.text('person.company', size=60) }</p>
 
         </fieldset>
 % for category in c.product_categories:
-%   all_products = category.available_products(c.signed_in_person, stock=False)
-%   products = []
-%   for product in all_products:
-%       if c.product_available(product, stock=False):
-%           products.append(product)
-%       endif
-%   endfor
+<%
+  all_products = category.available_products(c.signed_in_person, stock=False)
+  products = []
+  for product in all_products:
+      if c.product_available(product, stock=False):
+          products.append(product)
+%>
 %   if len(products) > 0:
 
         <fieldset id="${ h.computer_title(category.name) }">
@@ -128,18 +129,22 @@ import datetime
           <p class="note">${ category.description }</p>
 # Manual category display goes here:
 %       if category.name == 'Shirt':
-#%           # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
-#%           # Number of items in the row must be the same for each row
-%           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
-%           i = j = 0
+<%
+#           # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
+#           # Number of items in the row must be the same for each row
+           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
+           i = j = 0
+%>
           <p>S,M,L,XL shirts are $20 each, larger shirts are $22. More details and measurements on shirt sizes can be found on the ${ h.link_to('registration information', url='/register/shirts', popup=True) }.</p>
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td>${ fields[0][0] }</td>
 %           for product in products:
 %               if j == len(fields[i][1]):
-%                   i += 1
-%                   j = 0
+<%
+                   i += 1
+                   j = 0
+%>
             </tr><tr><td>${ fields[i][0] }</td>
 %               endif
 %               if not product.available():
@@ -147,15 +152,16 @@ import datetime
 %               else:
             <td>${ h.text_field('products.product_' + str(product.id) + '_qty', size=2) }</td>
 %               endif
-%               j += 1
+             <% j += 1 %>
 %           endfor
           </tr></table><p><span class="mandatory">^</span>Sold out</p>
 %       elif category.display == 'radio':
 %           for product in products:
-%               soldout = ''
-%               if not product.available():
-%                   soldout = ' <span class="mandatory">SOLD OUT</span> '
-%               endif
+<%
+               soldout = ''
+               if not product.available():
+                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+%>
           <p><label>${ h.radio_button('products.category_' + str(category.id), product.id) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'select':
@@ -163,28 +169,32 @@ import datetime
             <select name="products.category_${ category.id }">
               <option value=""> - </option>
 %           for product in products:
-%               soldout = ''
-%               if not product.available():
-%                   soldout = ' SOLD OUT '
-%               endif
+<%
+               soldout = ''
+               if not product.available():
+                   soldout = ' SOLD OUT '
+               endif
+%>
               <option value="${ product.id }"> ${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</option>
 %           endfor
             </select>
           </p>
 %       elif category.display == 'checkbox':
 %           for product in products:
-%               soldout = ''
-%               if not product.available():
-%                   soldout = ' <span class="mandatory">SOLD OUT</span> '
-%               endif
+<%
+               soldout = ''
+               if not product.available():
+                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+%>
           <p><label>${ h.check_box('products.product_' + str(product.id)) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
-%               soldout = ''
-%               if not product.available():
-%                   soldout = ' <span class="mandatory">SOLD OUT</span> '
-%               endif
+<%
+               soldout = ''
+               if not product.available():
+                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+%>
           <p>${ soldout }${ product.description } ${ h.text_field('products.product_' + str(product.id) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
 %           endfor
 %       endif
@@ -193,7 +203,7 @@ import datetime
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">
-%           dates = [(d, 1) for d in range(18,26)]
+         <% dates = [(d, 1) for d in range(18,26)] %>
 %           for (day, month) in dates:
               <option value="${ day }">${ datetime.datetime(2010, month, day).strftime('%A, %e %b') }</option>
 %           endfor
@@ -210,7 +220,7 @@ import datetime
           </p>
 %       elif category.name == 'Partners Programme':
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_email">Your partner's email address:</label></p>
-          <p class="entries">${ h.textfield('products.partner_email', size=50) }</p>
+          <p class="entries">${ h.text('products.partner_email', size=50) }</p>
           <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
           <p class="note">A partners programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
 %       endif
@@ -226,18 +236,18 @@ import datetime
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 
           <p class="label"><label for="registration.voucher_code">Voucher Code</label></p>
-          <p class="entries">${ h.textfield('registration.voucher_code', size=15) }</p>
+          <p class="entries">${ h.text('registration.voucher_code', size=15) }</p>
           <p class="note">If you have been provided with a voucher code enter it here.</p>
 
           <p class="label"><label for="registration.diet">Dietary requirements:</label></p>
-          <p class="entries">${ h.textfield('registration.diet', size=70) }</p>
+          <p class="entries">${ h.text('registration.diet', size=70) }</p>
 
           <p class="label"><label for="registration.special">Other special requirements</label></p>
-          <p class="entries">${ h.textfield('registration.special', size=70) }</p>
+          <p class="entries">${ h.text('registration.special', size=70) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
 
             <p class="label"><label for="registration.opendaydrag">How many people are you bringing to Open Day?</label></p>
-            <p class="entries">${ h.textfield('registration.opendaydrag', size=10) }</p>
+            <p class="entries">${ h.text('registration.opendaydrag', size=10) }</p>
             <p class="note">
               ${ h.link_to("Open Day", url="/programme/schedule/saturday", popup=True) }
               is open to friends and family, and is targeted to a non-technical
@@ -257,7 +267,7 @@ import datetime
 % for day, miniconfs in h.lca_rego['miniconfs']:
                 <td>
 %   for miniconf in miniconfs:
-%       label = 'registration.miniconf.%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_'))
+        <% label = 'registration.miniconf.%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_')) %>
                   ${ h.check_box(label) }
                   <label for="${ label }">${ miniconf }</label>
                   <br>
@@ -272,7 +282,7 @@ import datetime
             <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
             <p class="entries">
 % for (year, desc) in h.lca_rego['past_confs']:
-%   label = 'registration.prevlca.%s' % year
+   <% label = 'registration.prevlca.%s' % year %>
                 ${ h.check_box(label) }
                 <label for="${ label }">${ desc }</label>
                 <br>
@@ -288,14 +298,14 @@ import datetime
               <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
                 <option value="">(please select)</option>
 % for s in h.lca_rego['shells']:
-                <option value="<%s}">${ s }</option>
+                <option value="${s}">${ s }</option>
 % endfor
                 <option value="other">other:</option>
               </select>
 % if defaults['registration.shell'] in h.lca_rego['shells'] or defaults['registration.shell'] == '':
-              <span id="shell_other" style="display: none">${ h.textfield('registration.shelltext') }</span>
+              <span id="shell_other" style="display: none">${ h.text('registration.shelltext') }</span>
 % else:
-              <span id="shell_other" style="display: inline">${ h.textfield('registration.shelltext') }</span>
+              <span id="shell_other" style="display: inline">${ h.text('registration.shelltext') }</span>
 % endif
             </p>
 
@@ -309,9 +319,9 @@ import datetime
                 <option value="other">other:</option>
               </select>
 % if defaults['registration.editor'] in h.lca_rego['editors'] or defaults['registration.editor'] == '':
-              <span id="editor_other" style="display: none">${ h.textfield('registration.editortext') }</span>
+              <span id="editor_other" style="display: none">${ h.text('registration.editortext') }</span>
 % else:
-              <span id="editor_other" style="display: inline">${ h.textfield('registration.editortext') }</span>
+              <span id="editor_other" style="display: inline">${ h.text('registration.editortext') }</span>
 % endif
             </p>
 
@@ -325,22 +335,22 @@ import datetime
                 <option value="other">other:</option>
               </select>
 % if defaults['registration.distro'] in h.lca_rego['distros'] or defaults['registration.distro'] == '':
-              <span id="distro_other" style="display: none">${ h.textfield('registration.distrotext') }</span>
+              <span id="distro_other" style="display: none">${ h.text('registration.distrotext') }</span>
 % else:
-              <span id="distro_other" style="display: inline">${ h.textfield('registration.distrotext') }</span>
+              <span id="distro_other" style="display: inline">${ h.text('registration.distrotext') }</span>
 % endif
             </p>
 
             <p class="label"><label for="registration.nick">Superhero name:</label></p>
-            <p class="entries">${ h.textfield('registration.nick', size=30) }</p>
+            <p class="entries">${ h.text('registration.nick', size=30) }</p>
             <p class="note">Your IRC nick or other handle you go by.</p>
 
             <p class="label"><label for="registration.keyid">GnuPG/PGP Keyid:</label></p>
-            <p class="entries">${ h.textfield('registration.keyid', size=10) }</p>
+            <p class="entries">${ h.text('registration.keyid', size=10) }</p>
             <p class="note">If you have a GnuPG or PGP key that is stored on a public key server and would like to participate in the Conference Key Signing, please enter your keyid (e.g. A3D48B3C) here. More information about the key signing will be made available closer to the conference.</p>
 
             <p class="label"><label for="registration.planetfeed">Planet Feed:</label></p>
-            <p class="entries">${ h.textfield('registration.planetfeed') }</p>
+            <p class="entries">${ h.text('registration.planetfeed') }</p>
             <p class="note">If you have a Blog and would like it included in the conference planet, please specify an <em>LCA specific feed</em> to be included.</p>
 
             <p class="label"><label for="registration.silly_description">Description:</label></p>
@@ -377,8 +387,8 @@ import datetime
             </p>
 
             <p class="entries">
-              ${ h.check_box('registration.signup.chat') }
-              <label for="registration.signup.chat">I want to sign up to the conference attendees mailing list!</label>
+              ${ h.check_box('registration.signup.chat') } 
+              <label for="registration.signup.chat" >I want to sign up to the conference attendees mailing list!</label>
             </p>
           </fieldset>
 
@@ -388,8 +398,8 @@ import datetime
             <h2>Speaker recording consent and release</h2>
             <p>As a service to Linux Australia members and to other interested Linux users,
             Linux Australia would like to make your presentation available to the public.
-            This involves video­taping your talk, and offering the video/audio and slides
-            (for download, or on CD­ROM).</p>
+            This involves videoÂ­taping your talk, and offering the video/audio and slides
+            (for download, or on CDÂ­ROM).</p>
 
             <p>If you have allowed Linux Australia to publish your slides, there will
             be an upload mechanism closer to the conference. We will publish them under

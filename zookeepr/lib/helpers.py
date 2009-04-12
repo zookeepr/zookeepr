@@ -330,21 +330,21 @@ def extension(name):
     """ Return the extension of a file name"""
     return name.split('.')[-1]
 
-#def silly_description():
-#    adverb = random.choice(lca_rego['silly_description']['adverbs'])
-#    adjective = random.choice(lca_rego['silly_description']['adjectives'])
-#    noun = random.choice(lca_rego['silly_description']['nouns'])
-#    start = random.choice(lca_rego['silly_description']['starts'])
-#    if start == 'a' and adverb[0] in ['a', 'e', 'i', 'o', 'u']:
-#        start = 'an'
-#    desc = '%s %s %s %s' % (start, adverb, adjective, noun)
-#    descChecksum = silly_description_checksum(desc)
-#    return desc, descChecksum
-#
-#def silly_description_checksum(desc):
-#    import hashlib
-#    return hashlib.sha1(desc).hexdigest()
-#
+def silly_description():
+    adverb = random.choice(lca_rego['silly_description']['adverbs'])
+    adjective = random.choice(lca_rego['silly_description']['adjectives'])
+    noun = random.choice(lca_rego['silly_description']['nouns'])
+    start = random.choice(lca_rego['silly_description']['starts'])
+    if start == 'a' and adverb[0] in ['a', 'e', 'i', 'o', 'u']:
+        start = 'an'
+    desc = '%s %s %s %s' % (start, adverb, adjective, noun)
+    descChecksum = silly_description_checksum(desc)
+    return desc, descChecksum
+
+def silly_description_checksum(desc):
+    import hashlib
+    return hashlib.sha1(desc).hexdigest()
+
 #def ticket_percentage_text(percent, earlybird = False):
 #    if percent == 100:
 #        return 'All tickets gone.'
