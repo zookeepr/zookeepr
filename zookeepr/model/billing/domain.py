@@ -70,31 +70,6 @@ class ProductCategory(object):
         self.min_qty = min_qty
         self.max_qty = max_qty
 
-    def __repr__(self):
-        return '<ProductCategory id=%r name=%r description=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.display, self.min_qty, self.max_qty)
-
-    def available_products(self, person, stock=True):
-        # bool stock: care about if the product is in stock (ie sold out?)
-        products = []
-        for product in self.products:
-            if product.available(stock):
-                products.append(product)
-        return products
-
-    def qty_person_sold(self, person):
-        qty = 0
-        for i in person.invoices:
-            for ii in i.invoice_items:
-                if ii.product.category == self:
-                    qty += ii.qty
-        return qty
-
-    def can_i_sell(self, person, qty):
-        if self.qty_person_sold(person) + qty <= self.max_qty:
-            return True
-        else:
-            return False
-
 class ProductInclude(object):
     def __init__(self, include_qty=None):
         self.include_qty = include_qty

@@ -24,30 +24,11 @@ invoice_item = Table('invoice_item', metadata,
                      Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
                     )
 
-product = Table('product', metadata,
-                Column('id', Integer, primary_key=True),
-                Column('category_id', Integer, ForeignKey('product_category.id'), nullable=True),
-                Column('active', Boolean, nullable=False),
-                Column('description', Text, nullable=False, unique=True),
-                Column('cost', Integer, nullable=False),
-                Column('auth', Text, nullable=True),
-                Column('validate', Text, nullable=True),
-               )
-
 product_include = Table('product_include', metadata,
                         Column('product_id', Integer, ForeignKey('product.id'), primary_key=True),
                         Column('include_category_id', Integer, ForeignKey('product_category.id'), primary_key=True),
                         Column('include_qty', Integer, nullable=False),
                        )
-
-product_category = Table('product_category', metadata,
-                         Column('id', Integer, primary_key=True),
-                         Column('name', Text, nullable=False, unique=True),
-                         Column('description', Text, nullable=False),
-                         Column('display', Text, nullable=False),
-                         Column('min_qty', Integer, nullable=False),
-                         Column('max_qty', Integer, nullable=False),
-                        )
 
 product_ceiling_map = Table('product_ceiling_map', metadata,
                             Column('product_id', Integer, ForeignKey('product.id'), primary_key=True, nullable=False),
