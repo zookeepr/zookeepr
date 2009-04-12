@@ -13,9 +13,3 @@ mapper(RegoNote, rego_note,
             'by': relation(Person, backref=backref('notes_made', cascade="all, delete-orphan", lazy=True)),
             }
       )
-
-mapper(Volunteer, volunteer,
-       properties = {
-            'person': relation(Person, backref=backref('volunteer', cascade="all, delete-orphan", lazy=True, uselist=False)),
-            }
-      )

@@ -12,6 +12,15 @@ class BaseSchema(formencode.Schema):
     allow_extra_fields = True
     filter_extra_fields = True
 
+class DictSet(validators.Set):
+    def _from_python(self, value):
+        value = super(DictSet, self)._from_python(value, state)
+        return dict(zip(value, [1]*len(value)))
+
+    def _to_python(self, value, state):
+        value = value.keys()
+        return super(DictSet, self)._to_python(value, state)
+
 #import re
 #
 #import dns.resolver
