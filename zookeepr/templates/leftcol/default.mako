@@ -38,9 +38,9 @@ def current(link):
      link = link.replace(' ', '_')
 %>
 %     if current(link):
-        <li><a href="<%link%>" class="selected"><% sub %></a></li>
+        <li><a href="${ link }" class="selected">${ sub }</a></li>
 %     else:
-        <li><a href="<%link%>"><% sub %></a></li>
+        <li><a href="${ link }">${ sub }</a></li>
 %     endif
 %   endfor
       </ul>
