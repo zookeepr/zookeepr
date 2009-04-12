@@ -504,7 +504,7 @@ class RegistrationController(BaseController): # Update, List, Read
         #from zookeepr.model.core import tables as core_tables
         #from zookeepr.model.registration import tables as registration_tables
         #from zookeepr.model.proposal import tables as proposal_tables
-        from webhelpers import paginate
+        from webhelpers import paginate #Upgrade to new paginate
         
         filter = dict(request.GET)
         filter['role'] = []
