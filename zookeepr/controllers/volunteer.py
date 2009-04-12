@@ -97,7 +97,6 @@ class VolunteerController(BaseController):
             return render('volunteer/already.mako')
 
         defaults = h.object_to_defaults(c.volunteer, 'volunteer')
-        # FIXME: go through all checkbox values and set the default so that checkbox are not cleared
 
         form = render('volunteer/edit.mako')
         return htmlfill.render(form, defaults)
