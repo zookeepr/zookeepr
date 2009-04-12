@@ -121,6 +121,13 @@ class VolunteerController(BaseController):
         redirect_to(action='index')
 
     @authorize(h.auth.has_organiser_role)
+    def pending(self, id):
+        volunteer = Volunteer.find_by_id(id)
+        volunteer.accepted = None
+        meta.Session.commit()
+        redirect_to(action='index')
+
+    @authorize(h.auth.has_organiser_role)
     def reject(self, id):
         volunteer = Volunteer.find_by_id(id)
         volunteer.accepted = False
