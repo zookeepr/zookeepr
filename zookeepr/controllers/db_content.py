@@ -60,6 +60,8 @@ class DbContentController(BaseController):
             h.flash("Configuration Error: Please make sure at least one content type exists.", 'error')
         if DbContentType.find_by_name("News") is None:
             h.flash("Configuration Error: Please make sure the 'News' content type exists for full functionality.", 'error')
+        if DbContentType.find_by_name("In the press") is None:
+            h.flash("Configuration Error: Please make sure the 'In the press' content type exists for full functionality.", 'error')
         return render('/db_content/new.mako')
 
     @validate(schema=NewDbContentSchema(), form='new')
