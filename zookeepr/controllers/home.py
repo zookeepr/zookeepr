@@ -14,16 +14,6 @@ log = logging.getLogger(__name__)
 class HomeController(BaseController):
 
     def index(self):
-        h.flash("Woo, this is pretty")
-        h.flash("Woo, this is pretty", 'cat2')
-        h.flash("Woo, this is prettyasdf asdf asdf asdf lkasdhf kjlashdflkj hasdlf", 'cat3')
-        h.flash("Woo, this is pretadsty", 'cat4')
-        h.flash("Woo, this is pretty")
-        h.flash("Woo, this is pretadsty", 'error')
-        h.flash("Woo, this is pasretty")
-        h.flash("Woo, this is asdfpretadsty", 'error')
-        h.flash("Woo, this is pretty")
-        
         """The home page of the website.
 
         If the user has not signed in, then they are presented with the
