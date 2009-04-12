@@ -4,6 +4,8 @@ from zookeepr import model
 from zookeepr.model import Proposal
 from zookeepr.lib.base import *
 
+from pylons import request, response, session, tmpl_context as c
+
 from zookeepr.config.lca_info import file_paths
 from datetime import date, datetime
 from zookeepr.lib.sort import odict
@@ -23,7 +25,7 @@ class ScheduleController(BaseController):
 
     def _get_talk(self, talk_id):
         """ Return a proposal object """
-        return self.dbsession.query(Proposal).filter_by(id=talk_id).first()
+        return Proposal.find_by_id(id=talk_id)
 
     def view_miniconf(self, id):
         try:
@@ -31,11 +33,11 @@ class ScheduleController(BaseController):
         except:
             c.day = 'all'
         try:
-            c.talk = self.dbsession.query(Proposal).filter_by(id=id,accepted=True).one()
+            c.talk = meta.Session.query(Proposal).filter_by(id=id,accepted=True).one()
         except:
             abort(404)
 
-        return render_response('schedule/view_miniconf.myt')
+        return render('/schedule/view_miniconf.myt')
 
     def view_talk(self, id):
         try:
@@ -43,11 +45,11 @@ class ScheduleController(BaseController):
         except:
             c.day = 'all'
         try:
-            c.talk = self.dbsession.query(Proposal).filter_by(id=id,accepted=True).one()
+            c.talk = meta.Session.query(Proposal).filter_by(id=id,accepted=True).one()
         except:
             abort(404)
 
-        return render_response('schedule/view_talk.myt')
+        return render('schedule/view_talk.myt')
 
     def index(self, day):
         if day == None:
@@ -81,7 +83,7 @@ class ScheduleController(BaseController):
         c.speex_list = {}
         c.speex_path = 'http://mirror.linux.org.au/2009/speex'
 
-        c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
+        c.talks = meta.Session.query(Proposal).filter_by(accepted=True)
         if c.day in self.day_dates:
             # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
             c.talks = c.talks.filter(Proposal.scheduled >= self.day_dates[c.day] and Proposal.scheduled < self.day_dates[c.day].replace(day=self.day_dates[c.day].day+1))

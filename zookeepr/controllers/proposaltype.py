@@ -17,6 +17,8 @@ class EditProposalTypeSchema(BaseSchema):
     proposaltype = ProposalTypeSchema()
     pre_validators = [variabledecode.NestedVariables]
 
+#TODO : Needs to be ported/made/done
+
 class ProposaltypeController(SecureController, View, Modify):
     schemas = {"new" : NewProposalTypeSchema(),
                "edit" : EditProposalTypeSchema()}
