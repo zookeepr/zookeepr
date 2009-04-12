@@ -176,20 +176,3 @@ class PaymentReceived(object):
 class Payment(object):
     def __repr__(self):
         return '<Payment id=%r>' % (self.id)
-
-
-class Voucher(object):
-    def __repr__(self):
-        return '<Voucher id=%r code=%r comment=%r leader_id=%r>' % (self.id, self.code, self.comment, self.leader_id)
-
-    def __init__(self, code=None, comment=None):
-        self.code = code
-        self.comment = comment
-
-
-class VoucherProduct(object):
-    def __repr__(self):
-        return '' % ()
-    def __init__(self, qty=None, percentage=None):
-        self.qty = qty
-        self.percentage = percentage

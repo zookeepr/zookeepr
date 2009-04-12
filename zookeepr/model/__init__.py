@@ -18,6 +18,7 @@ import accommodation_assistance_type
 import travel_assistance_type
 import db_content
 import voucher
+import voucher_product
 
 from person import Person
 from role import Role
@@ -34,6 +35,7 @@ from stream import Stream
 from product import Product
 from product_category import ProductCategory
 from voucher import Voucher
+from voucher_product import VoucherProduct
 
 from db_content import DbContentType, DbContent
 

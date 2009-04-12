@@ -6,6 +6,7 @@ from meta import Base
 from pylons.controllers.util import abort
 
 from role import Role
+from person import Person
 from person_role_map import person_role_map
 
 from zookeepr.model.meta import Session
@@ -26,12 +27,14 @@ class Voucher(Base):
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False,
     default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
+    leader = sa.orm.relation(Person)
+
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
         super(Voucher, self).__init__(**kwargs)
 
     def __repr__(self):
-        return '<Voucher id="%r" code="%s">' % (self.id, self.code)
+        return '<Voucher id=%r code=%r comment=%r leader_id=%r>' % (self.id, self.code, self.comment, self.leader_id)
 
     @classmethod
     def find_all(cls):

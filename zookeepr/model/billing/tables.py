@@ -123,10 +123,3 @@ payment_received = Table('payment_received', metadata,
                                 default=func.current_timestamp(),
                                 onupdate=func.current_timestamp()),
                         )
-
-voucher_product = Table('voucher_product', metadata,
-                        Column('voucher_id', Integer, ForeignKey('voucher.id'), primary_key=True),
-                        Column('product_id', Integer, ForeignKey('product.id'), primary_key=True),
-                        Column('qty', Integer, nullable=False),
-                        Column('percentage', Integer, nullable=False),
-                       )
