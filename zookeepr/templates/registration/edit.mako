@@ -1,3 +1,5 @@
+<%inherit file="/base.mako" />
+
     <h1>Edit registration</h1>
 
     <div id="registration">
@@ -7,28 +9,19 @@
 %   if len(errors)==1:
       is one problem
 %   else:
-      are <% `len(errors)` |h %> problems
-%   #endif
+      are ${ `len(errors)` |h } problems
+%   endif
       with your registration form, highlighted in red below. Please correct and re-submit.</p>
-% #endif
+% endif
 
-<&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
+${ h.form(h.url()) }
+<%include file="form.mako" />
 
-      <% h.form(h.url()) %>
-<& form.myt, defaults=defaults, errors=errors &>
-        <p class="submit"><% h.submitbutton('Update') %></p>
-      <% h.end_form() %>
+        <p class="submit">${ h.submit('update','Update') }</p>
+      ${ h.end_form() }
 
-</&>
     </div>
-<%args>
-defaults
-errors
-</%args>
 <%init>
-# working around a bug in formencode, we need to set the defaults to
-# the values in c.registration
-#FIXME: Partner program
 if not defaults:
     defaults = {}
     for k in ['shell', 'editor', 'distro', 'nick', 'keyid', 'planetfeed', 'prevlca', 'diet', 'special', 'miniconf', 'checkin', 'checkout', 'signup', 'silly_description', 'voucher_code']:
