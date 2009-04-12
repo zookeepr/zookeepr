@@ -272,9 +272,6 @@ class PersonController(BaseController): #Read, Update, List
 
     @authorize(h.auth.has_organiser_role)
     def index(self):
-        h.flash("TEST", 'error')
-        h.flash("TES2T")
-        h.flash("TES4T")
         c.person_collection = Person.find_all()
         return render('/person/list.mako')
 
