@@ -5,6 +5,10 @@ from meta import Base
 
 from zookeepr.model.meta import Session
 
+from ceiling import Ceiling
+from product_ceiling_map import product_ceiling_map
+from product_category import ProductCategory
+
 def setup(meta):
     meta.Session.add_all(
     )
@@ -12,23 +16,20 @@ def setup(meta):
 class Product(Base):
     """Stores the products used for registration
     """
+    # table
     __tablename__ = 'product'
 
-
     id = sa.Column(sa.types.Integer, primary_key=True)
-
     category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id'), nullable=False)
-
     active = sa.Column(sa.types.Boolean, nullable=False)
-
     description = sa.Column(sa.types.Text, nullable=False, unique=True)
-
     cost = sa.Column(sa.types.Integer, nullable=False)
-
     auth = sa.Column(sa.types.Text, nullable=True)
-
     validate = sa.Column(sa.types.Text, nullable=True)
 
+    # relations
+    ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
+    category = sa.orm.relation(ProductCategory, lazy=True, backref='products')
 
     def __init__(self, **kwargs):
         super(Product, self).__init__(**kwargs)

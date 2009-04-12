@@ -20,6 +20,15 @@ import db_content
 import volunteer
 import voucher
 import voucher_product
+import invoice
+import invoice_item
+import payment
+import ceiling
+import product
+import product_category
+import product_ceiling_map
+import product_include
+
 
 from person import Person
 from role import Role
@@ -36,8 +45,15 @@ from review import Review
 from stream import Stream
 #from volunteer import Volunteer
 
-from product import Product
 from product_category import ProductCategory
+from product_include import ProductInclude
+from product import Product
+from ceiling import Ceiling
+
+from invoice import Invoice
+from invoice_item import InvoiceItem
+from payment import Payment
+
 from voucher import Voucher
 from voucher_product import VoucherProduct
 

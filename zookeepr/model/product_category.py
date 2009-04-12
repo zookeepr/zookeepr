@@ -9,23 +9,16 @@ def setup(meta):
     pass
 
 class ProductCategory(Base):
-    """Stores the products used for registration
+    """Stores the product categories used for registration
     """
     __tablename__ = 'product_category'
 
-
     id = sa.Column(sa.types.Integer, primary_key=True)
-
     name = sa.Column(sa.types.Text, nullable=False, unique=True)
-
     description = sa.Column(sa.types.Text, nullable=False)
-
     display = sa.Column(sa.types.Text, nullable=False)
-
     min_qty = sa.Column(sa.types.Integer, nullable=True)
-
     max_qty = sa.Column(sa.types.Integer, nullable=True)
-
 
     def __init__(self, **kwargs):
         super(ProductCategory, self).__init__(**kwargs)
