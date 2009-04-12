@@ -394,6 +394,7 @@ def get_flashes():
         return None
     messages = session['flash']
     del(session['flash'])
+    session.save()
     return messages
 
 def flash(msg, category="information"):
