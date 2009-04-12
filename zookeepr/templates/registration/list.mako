@@ -152,42 +152,44 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
       </tr></thead>
 <% count = 0 %>
 % for registration in c.registration_collection:
-%   count += 1
+    <% count += 1 %>
       <tr>
-        <td>${ h.link_to('id: ' + str(registration.id), url=h.url(action='view', id=registration.id)) }</td>
-        <td>${ h.link_to(m.apply_escapes(registration.person.firstname + ' ' + registration.person.lastname, 'h'), h.url(controller='person', action='view', id=registration.person.id)) }</td>
+        <td>${ h.link_to('id: ' + str(registration.id), url=h.url_for(action='view', id=registration.id)) }</td>
+        <td>${ h.link_to(h.util.html_escape(registration.person.firstname + ' ' + registration.person.lastname), h.url_for(controller='person', action='view', id=registration.person.id)) }</td>
         <td>${ registration.person.email_address | h }</td>
         <td>
-%   role = []
-%   if registration.person.is_speaker():
-%       role.append('Speaker')
-%   if registration.person.is_miniconf_org():
-%       role.append('miniconf Organiser')
-%   if registration.person.is_volunteer() == None:
-%       role.append('Volunteer pending')
-%   elif registration.person.is_volunteer() == True:
-%       role.append('Volunteer')
-%   #endif
-%   for auth_role in registration.person.roles:
-%       role.append(auth_role.name)
-%   #endfor
+<%
+   role = []
+   if registration.person.is_speaker():
+       role.append('Speaker')
+   if registration.person.is_miniconf_org():
+       role.append('miniconf Organiser')
+   if registration.person.is_volunteer() == None:
+       role.append('Volunteer pending')
+   elif registration.person.is_volunteer() == True:
+       role.append('Volunteer')
+   for auth_role in registration.person.roles:
+       role.append(auth_role.name)
+%>
         ${ '<i>' + '</i>, <i>'.join(role) + '</i>' }
         </td>
         <td>
 %   for rinvoice in registration.person.invoices:
-        ${ h.link_to(rinvoice.id, h.url(controller='invoice', action='view', id=rinvoice.id)) } - <small>${ rinvoice.status() }</small>
+        ${ h.link_to(rinvoice.id, h.url_for(controller='invoice', action='view', id=rinvoice.id)) } - <small>${ rinvoice.status() }</small>
 %       if rinvoice.manual is True:
             <i>(manual)</i>
-%       #endif
+%       endif
         <small><a href="#" onclick="return display_toggle('products_${ rinvoice.id }')">+</a></small>
-%       display = "display: none;"
-%       if rinvoice.is_void() is not True: display=""
+<%
+       display = "display: none;"
+       if rinvoice.is_void() is not True: display=""
+%>
         <div id="products_${ rinvoice.id }" style="${ display } background: #ddd;">
 %       for rproduct in rinvoice.items:
           ${ rproduct.qty }<small> x ${ rproduct.description }</small><br>
-%       #endfor
+%       endfor
         </div>
-%   #endfor
+%   endfor
 %   if registration.voucher:
         <i>Voucher Used:</i>
 %       for vproduct in registration.voucher.products:
@@ -199,14 +201,14 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 %   if not registration.over18:
         <b>Under 18</b> ${ h.yesno(not registration.over18) }<br><br>
 %   endif
-            ${ '<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in registration.notes]) + '<br><br>' }
+            ${ 'FIXME' or '<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in registration.notes]) + '<br><br>' }
 %   if registration.diet:
             ${ '<b>Diet:</b> %s<br><br>' % (registration.diet) }
 %   endif
 %   if registration.special:
             ${ '<b>Special Needs:</b> %s<br><br>' % (registration.special) }
 %   endif
-        ${ h.link_to("Add New Note", h.url(controller='rego_note', action='new', rego_id=registration.id)) }
+        ${ h.link_to("Add New Note", h.url_for(controller='rego_note', action='new', rego_id=registration.id)) }
         </td>
       </tr>
 % endfor
