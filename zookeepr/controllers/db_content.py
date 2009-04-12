@@ -43,8 +43,8 @@ class UpdateDbContentSchema(BaseSchema):
     db_content = DbContentSchema()
     pre_validators = [NestedVariables]
 
-#TODO: add auth
-class DbContentController(BaseController): #Delete
+
+class DbContentController(BaseController):
     def __before__(self, **kwargs):
         c.db_content_types = DbContentType.find_all()
 
@@ -66,7 +66,7 @@ class DbContentController(BaseController): #Delete
         meta.Session.commit()
 
         h.flash("New Page Created.")
-        redirect_to(action='view', id=c.db_content.id) #TODO: set to view
+        redirect_to(action='view', id=c.db_content.id)
 
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
