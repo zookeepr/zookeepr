@@ -1,6 +1,4 @@
-<<<<<<< TREE
 <%
-    # The current URL can be accessed as h.url()()
     url = h.url_for()
     # Hack for schedule url
     if url.startswith('/schedule'):

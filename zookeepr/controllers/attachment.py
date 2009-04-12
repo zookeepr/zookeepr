@@ -1,35 +1,31 @@
-from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue, AuthFunc
+from zookeepr.lib.auth import BaseController, AuthRole, AuthTrue, AuthFunc
 from zookeepr.lib.base import *
 from zookeepr.lib.crud import Delete
 from zookeepr.model import Attachment, Proposal
 
-class AttachmentController(SecureController, Delete):
-    model = Attachment
-    individual = 'attachment'
-
-    permissions = {
-      'view': True,
-      'delete': [AuthFunc('is_submitter'), AuthRole('organiser')]
-    }
-
+class AttachmentController(BaseController):
+    @authorize(h.auth.is_valid_user)
+    @dispatch_on(POST="_delete")
     def delete(self, id):
-        if request.method == 'POST' and self.obj is not None:
-            self.dbsession.delete(self.obj)
-            self.dbsession.flush()
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+        return render_response('/attachment/confirm_delete.mako')
 
-            proposal = self.dbsession.query(model.Proposal).get(self.obj.proposal_id)
-            redirect = dict(controller='proposal', action='view', id=session.get('proposal_id', proposal.id))
-            self.redirect_to('delete', redirect)
+    @authorize(h.auth.is_valid_user)
+    def _delete(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
-        # call the template
-        return render_response('%s/confirm_delete.myt' % self.individual)
+        c.attachment = Attachment.find_by_id(id)
+        proposal_id = c.attachment.proposal.id
+        meta.Session.delete(c.attachment)
+        meta.Session.commit()
 
-    def is_submitter(self):
-        proposal = self.dbsession.query(model.Proposal).get(self.obj.proposal_id)
-        if c.signed_in_person in proposal.people:
-            return True
-        else:
-            return False
+        h.flash("Attachment Deleted")
+        redirect_to(controller='proposal', action='view', id=proposal_id)
 
     def view(self, id):
         att = self.dbsession.query(model.Attachment).get(id)

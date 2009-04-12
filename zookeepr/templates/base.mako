@@ -23,6 +23,15 @@
   ${self.extra_head()}
 </head>
 
+  <div id = "container">
+    <div id = "logo">
+      <a href="/"><img src="/images/logo.jpg" border="0" alt="linux.conf.au" /></a>
+    </div>
+    <div id = 'main_menu'>
+      ${self.big_promotion()}
+      <%include file="/nav.mako" />
+    </div>
+    
     <!-- start content -->
     <div id="wrapper">
       <div id="leftcol">
@@ -34,6 +43,9 @@
 % endif
       </div>
       <div id="content">
+    <div id="flash">
+${ h.session.get('flash') }
+    </div>
 ${next.body()}
       </div>
     <!-- end content -->
