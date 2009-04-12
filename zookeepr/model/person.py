@@ -11,7 +11,7 @@ from person_role_map import person_role_map
 from zookeepr.model.meta import Session
 
 import datetime
-import md5
+import hashlib
 import random
 
 def setup(meta):
@@ -87,7 +87,9 @@ class Person(Base):
         self._update_url_hash()
 
     def gen_password(self, value):
-        return md5.new(value).hexdigest()
+		m = hashlib.md5()
+		m.update(value)
+        return m.hexdigest()
 
     def _set_password(self, value):
         if value is not None:

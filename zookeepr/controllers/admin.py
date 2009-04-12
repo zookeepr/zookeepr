@@ -273,6 +273,9 @@ class AdminController(BaseController):
         c.text = "Total: %d" % total
         return render_response('admin/table.myt')
 
+    def tuz(self):
+      return render("admin/tuz.mako")
+
     def list_attachments(self):
         """ List of attachments [CFP] """
         return sql_response('''

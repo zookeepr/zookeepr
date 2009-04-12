@@ -11,7 +11,6 @@ from stream import Stream
 from zookeepr.model.meta import Session
 
 import datetime
-import md5
 import random
 
 def setup(meta):
