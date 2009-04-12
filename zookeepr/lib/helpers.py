@@ -413,3 +413,7 @@ def flash(msg, category="information"):
     session['flash'][category].append(msg)
     session.save()
 
+def zk_root():
+    """ Helper function to return the root directory of zookeepr,
+    this allows completely relevant URL's """
+    asssdf
