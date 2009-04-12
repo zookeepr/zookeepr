@@ -41,6 +41,8 @@ class Invoice(Base):
 
     def paid(self):
         """Return whether the invoice is paid (or zero-balance) """
+        print "FIXME!"
+        return True
         return bool(self.good_payments or self.total()==0)
 
     def status(self):
