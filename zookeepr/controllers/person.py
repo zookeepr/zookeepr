@@ -249,7 +249,7 @@ class PersonController(BaseController): #Read, Update, List
             redirect_to('home')
 
         defaults = {
-            'person.country': 'AUSTRALIA'
+            'person.country': 'NEW ZEALAND'
         }
         form = render('/person/new.mako')
         return htmlfill.render(form, defaults)
