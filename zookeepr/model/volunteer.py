@@ -4,6 +4,8 @@ from meta import Base
 
 from zookeepr.model.meta import Session
 
+from zookeepr.lib.model import CommaList
+
 from person import Person
 
 #from zookeepr.lib.model import CommaList
@@ -18,7 +20,7 @@ class Volunteer(Base):
 
     id = sa.Column(sa.types.Integer, primary_key=True)
     person_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), unique=True, nullable=False)
-    areas = sa.Column(sa.types.PickleType, nullable=False) # TODO: use CommaList here
+    areas = sa.Column(CommaList, nullable=False) # TODO: use CommaList here
     other = sa.Column(sa.types.Text, nullable=False)
     accepted = sa.Column(sa.types.Boolean)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
