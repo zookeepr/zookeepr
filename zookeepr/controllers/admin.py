@@ -68,7 +68,6 @@ class AdminController(BaseController):
           #('/accommodation', ''' [accom] '''),
           #('/voucher_code', ''' Voucher codes [rego] '''),
           #('/invoice/remind', ''' '''),
-          #('/openday', ''' '''),
           #('/registration', ''' Summary of registrations, including summary of accommodation [rego,accom] '''),
           #('/invoice', ''' List of invoices (that is, registrations). This is probably the best place to check whether a given person has or hasn't registered and/or paid. [rego] '''),
           ('/pony', ''' OMG! Ponies!!! [ZK]'''),
