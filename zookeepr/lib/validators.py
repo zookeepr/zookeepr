@@ -1,7 +1,7 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType
+from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType, Registration
 
 from zookeepr.config.lca_info import lca_info
 
@@ -137,21 +137,19 @@ class ReviewSchema(BaseSchema):
     miniconf = validators.String()
     comment = validators.String()
 
-#class ExistingRegistrationValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        registration = state.query(Registration).filter_by(id=value).first()
-#        if registration is None:
-#            raise Invalid("Unknown registration ID.", value, state)
-#        else:
-#            return registration
-#    def _from_python(self, value, state):
-#        return value.id
-#
+class ExistingRegistrationValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        registration = Registration.find_by_id(int(value), abort_404=False)
+        if registration is None:
+            raise Invalid("Unknown registration ID.", value, state)
+        else:
+            return registration
+    def _from_python(self, value, state):
+        return value.id
 
 class ExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        print value
-        person = Person.find_by_email(value['email_address'])
+        person = Person.find_by_id(int(value))
         if person is None:
             msg = 'Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email']
             raise Invalid(msg, value, state, error_dict={'email_address': msg})

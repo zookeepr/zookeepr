@@ -52,5 +52,12 @@ class Registration(Base):
         return '<Registration id=%r person_id=%r>' % (self.id, self.person_id)
 
     @classmethod
+    def find_by_id(cls, id, abort_404 = True):
+        result = Session.query(Registration).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such Registration object")
+        return result
+        
+    @classmethod
     def find_all(cls):
         return Session.query(Registration).order_by(Registration.id).all()
