@@ -7,18 +7,168 @@ from pylons.controllers.util import abort
 
 from zookeepr.model.meta import Session
 
-from proposal_type import ProposalType
 from person import Person
 from person_proposal_map import person_proposal_map
 from attachment import Attachment
 from review import Review
-from accommodation_assistance_type import AccommodationAssistanceType
-from travel_assistance_type import TravelAssistanceType
-from proposal_status import ProposalStatus
-from target_audience import TargetAudience
 
 def setup(meta):
-    pass
+    meta.Session.add_all(
+        [
+            ProposalStatus(name='Accepted'),
+            ProposalStatus(name='Rejected'),
+            ProposalStatus(name='Pending'),
+            ProposalStatus(name='Withdrawn'),
+            ProposalStatus(name='Backup'),
+        ]
+    )
+    meta.Session.add_all(
+        [
+            ProposalType(name='Presentation'),
+            ProposalType(name='Miniconf'),
+            ProposalType(name='Tutorial'),
+        ]
+    )
+    meta.Session.add_all(
+        [
+            TravelAssistanceType(name='I do not require travel assistance.'),
+            TravelAssistanceType(name='I request that linux.conf.au book and pay for air travel.'),
+        ]
+    )
+    meta.Session.add_all(
+        [
+            TargetAudience(name='Community'),
+            TargetAudience(name='User'),
+            TargetAudience(name='Developer'),
+            TargetAudience(name='Business'),
+        ]
+    )
+    meta.Session.add_all(
+        [
+            AccommodationAssistanceType(name='I do not require accomodation assistance.'),
+            AccommodationAssistanceType(name='I request that linux.conf.au provide student-style single room accommodation for the length of the conference.'),
+        ]
+    )
+
+class ProposalStatus(Base):
+    """Stores both account login details and personal information.
+    """
+    __tablename__ = 'proposal_status'
+
+    id = sa.Column(sa.types.Integer, primary_key=True)
+
+    # title of proposal
+    name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+
+    def __init__(self, **kwargs):
+        # remove the args that should never be set via creation
+        super(ProposalStatus, self).__init__(**kwargs)
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(ProposalStatus).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_name(cls, name):
+        return Session.query(ProposalStatus).filter_by(name=name).first()
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(ProposalStatus).order_by(ProposalStatus.name).all()
+
+class ProposalType(Base):
+    """Stores both account login details and personal information.
+    """
+    __tablename__ = 'proposal_type'
+
+    id = sa.Column(sa.types.Integer, primary_key=True)
+
+    # title of proposal
+    name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+
+    def __init__(self, **kwargs):
+        # remove the args that should never be set via creation
+        super(ProposalType, self).__init__(**kwargs)
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(ProposalType).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_name(cls, name):
+        return Session.query(ProposalType).filter_by(name=name).first()
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(ProposalType).order_by(ProposalType.name).all()
+
+class TravelAssistanceType(Base):
+    __tablename__ = 'travel_assistance_type'
+
+    id = sa.Column(sa.types.Integer, primary_key=True)
+    name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+
+    def __init__(self, **kwargs):
+        # remove the args that should never be set via creation
+        super(TravelAssistanceType, self).__init__(**kwargs)
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(TravelAssistanceType).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_name(cls, name):
+        return Session.query(TravelAssistanceType).filter_by(name=name).first()
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(TravelAssistanceType).order_by(TravelAssistanceType.name).all()
+
+class TargetAudience(Base):
+    __tablename__ = 'target_audience'
+
+    id = sa.Column(sa.types.Integer, primary_key=True)
+    name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+
+    def __init__(self, **kwargs):
+        # remove the args that should never be set via creation
+        super(TargetAudience, self).__init__(**kwargs)
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(TargetAudience).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_name(cls, name):
+        return Session.query(TargetAudience).filter_by(name=name).first()
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(TargetAudience).order_by(TargetAudience.name).all()
+
+class AccommodationAssistanceType(Base):
+    __tablename__ = 'accommodation_assistance_type'
+
+    id = sa.Column(sa.types.Integer, primary_key=True)
+
+    # title of proposal
+    name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+
+    def __init__(self, **kwargs):
+        # remove the args that should never be set via creation
+        super(AccommodationAssistanceType, self).__init__(**kwargs)
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(AccommodationAssistanceType).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_name(cls, name):
+        return Session.query(AccommodationAssistanceType).filter_by(name=name).first()
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(AccommodationAssistanceType).order_by(AccommodationAssistanceType.name).all()
 
 class Proposal(Base):
     """Stores both account login details and personal information.
@@ -104,7 +254,7 @@ class Proposal(Base):
         if result is None and abort_404:
             abort(404, "No such object")
         return result
-        
+
     @classmethod
     def find_all(cls):
         return Session.query(Proposal).order_by(Proposal.id).all()
@@ -129,3 +279,5 @@ class Proposal(Base):
         if result is None and abort_404:
             abort(404, "No such object")
         return result
+
+

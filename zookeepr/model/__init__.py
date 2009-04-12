@@ -9,13 +9,9 @@ import role
 import person_role_map
 import password_reset_confirmation
 import proposal
-import proposal_type
 import person_proposal_map
 import attachment
 import review
-import stream
-import accommodation_assistance_type
-import travel_assistance_type
 import db_content
 import volunteer
 import voucher
@@ -31,15 +27,9 @@ from person import Person
 from role import Role
 from password_reset_confirmation import PasswordResetConfirmation
 
-from proposal_type import ProposalType
-from proposal_status import ProposalStatus
-from accommodation_assistance_type import AccommodationAssistanceType
-from travel_assistance_type import TravelAssistanceType
-from target_audience import TargetAudience
-from proposal import Proposal
+from proposal import Proposal, ProposalStatus, ProposalType, TravelAssistanceType, AccommodationAssistanceType, TargetAudience
 from attachment import Attachment
-from review import Review
-from stream import Stream
+from review import Review, Stream
 #from volunteer import Volunteer
 
 from product import Product, ProductCategory, ProductInclude
@@ -69,13 +59,9 @@ def setup(meta):
     person.setup(meta)
 
     proposal.setup(meta)
-    proposal_type.setup(meta)
-    accommodation_assistance_type.setup(meta)
-    travel_assistance_type.setup(meta)
     person_proposal_map.setup(meta)
     attachment.setup(meta)
     review.setup(meta)
-    stream.setup(meta)
     voucher.setup(meta)
 
     db_content.setup(meta)
