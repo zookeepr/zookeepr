@@ -457,16 +457,14 @@ class ProposalController(BaseController):
     @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
     def _approve(self):
         c.highlight = set()
-        for proposal, status in request.post.items():
-            if proposal == 'Commit' or status=='-':
-                continue
-            assert proposal.startswith('talk.')
-            proposal = int(proposal[5:])
-            c.highlight.add(proposal)
-            proposal = Proposal.find_by_id(proposal)
-            status = ProposalStatus.find_by_name(status)
-            proposal.status = status
+        talks = self.form_result['talk']
+        statuses = self.form_result['status']
+        for talk, status in zip(talks, statuses):
+            if status is not None:
+                c.highlight.add(talk.id)
+                talk.status = status
+        meta.Session.commit()
 
-        c.proposals = self.dbsession.query(Proposal).all()
-        c.statuses = self.dbsession.query(ProposalStatus).all()
+        c.proposals = Proposal.find_all()
+        c.statuses = ProposalStatus.find_all()
         return render("proposal/approve.mako")

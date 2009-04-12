@@ -95,7 +95,7 @@
 </table>
 
 %   for fnmark, fn in enumerate(footnotes):
-<p>[${ fnmark+1 }] ${ fn }</p>
+<p>[${ fnmark+1 }] ${ fn |n}</p>
 %   endfor
 
 %else:

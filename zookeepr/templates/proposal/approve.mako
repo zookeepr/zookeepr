@@ -37,8 +37,8 @@ ${ h.form(h.url_for()) }
 %     endif
     </td>
     <td>
-      <select name="talk-${ s.id }">
-              <option value="${ s.id }" SELECTED> - </option>
+      <select name="status-${ s.id }">
+              <option value="" SELECTED> - </option>
 %     for status in c.statuses:
 %         if status != s.status:
               <option value="${ status.id }">${ status.name }</option>
