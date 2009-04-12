@@ -1,10 +1,11 @@
 <%inherit file="/base.mako" />
 
-${ h.form(h.url(), multipart=True) }
+${ h.form(h.url_for(), multipart=True) }
 <%include file="form.mako" />
 ${ h.submit('Add!', 'Add!') }
-${ h.end_form() %> }
+${ h.end_form() }
 
-<%method title>
-Voucher Code - <& PARENT:title &>
-</%method>
+<%def name="title()" >
+Voucher Code - ${ caller.title() }
+</%def>
+

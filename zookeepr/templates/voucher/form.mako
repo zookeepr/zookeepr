@@ -14,7 +14,7 @@
           allowed to see who's using them, as per the
           ${ h.link_to('profile list', url=h.url_for(controller='person',
           action='index')) }. If nobody, use your own ID: ${
-          c.signed_in_person.id }</p>
+          h.signed_in_person().id }</p>
 
           <p class="label"><label for="voucher.code">Code prefix:</label></p>
           <p class="entries">${ h.text('voucher.code', size=40) }</p>
@@ -34,35 +34,36 @@
               <th></th>
 %       else:
               <th>Qty</th>
-%       #endif
+%       endif
               <th>% Discount</th>
             </tr>
 %       for product in category.products:
             <tr>
-              <td><label for="products.product_<% product.id %>"><% product.description %></label></td>
+              <td><label for="products.product_${ product.id }">${ product.description }</label></td>
 %           if category.display == 'radio':
-              <td><% h.radio_button('products.category_' + str(category.id), product.id) %>
+              <td>${ h.radio_button('products.category_' + str(category.id), product.id) }
 # Add other display options here later, not adding select because we want accom to include a qty
 %           else:
-              <td><% h.textfield('products.product_' + str(product.id) + '_qty', size=3) %></td>
-%           #endif
+              <td>${ h.text('products.product_' + str(product.id) + '_qty', size=3) }</td>
+%           endif
 %           if category.display == 'radio' and category.products[0] == product:
               <td rowspan="<% len(category.products) %>"><% h.textfield('products.category_' + str(category.id) + '_percentage', size=3) %></td>
-%           elif category.display == 'radio': pass
+%           elif category.display == 'radio':
+              <!-- pass -->
 %           else:
-              <td><% h.textfield('products.product_' + str(product.id) + '_percentage', size=3) %></td>
-%           #endif
+              <td>${ h.text('products.product_' + str(product.id) + '_percentage', size=3) }</td>
+%           endif
             </tr>
-%       #endif
-%   #endfor
-% #endfor
+%       endfor
+%   endif
+% endfor
           </table>
           </p>
           <p class="note">Discount percent is Between 0 and 100</p>
 
 
           <p class="label"><span class="mandatory">*</span><label for="voucher.comment">Comment:</label></p>
-          <p class="entries"><% h.textfield('voucher.comment', size=60) %></p>
+          <p class="entries">${ h.text('voucher.comment', size=60) }</p>
           <p class="note">Why are they getting a voucher? <b>This will appear on the invoices</b> as the item description for the negative amount - phrase accordingly...</p>
         </fieldset>
       </div>

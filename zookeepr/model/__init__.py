@@ -33,6 +33,7 @@ from stream import Stream
 
 from product import Product
 from product_category import ProductCategory
+from voucher import Voucher
 
 from db_content import DbContentType, DbContent
 

@@ -28,11 +28,11 @@ class Voucher(Base):
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
-        super(Proposal, self).__init__(**kwargs)
+        super(Voucher, self).__init__(**kwargs)
 
     def __repr__(self):
         return '<Voucher id="%r" code="%s">' % (self.id, self.code)
 
     @classmethod
     def find_all(cls):
-        return Session.query(Proposal).order_by(Proposal.id).all()
+        return Session.query(Voucher).order_by(Voucher.id).all()

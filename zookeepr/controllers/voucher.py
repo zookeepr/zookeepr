@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model import ProductCategory
+from zookeepr.model import Voucher, ProductCategory
 
 from zookeepr.config.lca_info import lca_info
 
@@ -48,29 +48,29 @@ class NewVoucherSchema(BaseSchema):
     voucher = VoucherSchema()
     pre_validators = [NestedVariables]
 
+class ProductSchema(BaseSchema):
+    pass
+
 class VoucherController(BaseController): # Read, Create, List
     def __before__(self, **kwargs):
         c.dbsession = meta.Session # for the use of list.myt
         c.product_categories = ProductCategory.find_all()
 
     def _generate_product_schema(self):
-        class ProductSchema(BaseSchema):
-            pass
         for category in c.product_categories:
             if category.name in ['Ticket', 'Accomodation']:
                 if category.display == 'radio':
                     # min/max can't be calculated on this form. You should only have 1 selected.
                     ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, if_missing=None))
-                    ProductSchema.add_field('category_' + str(category.id) + '_percentage', BoundedInt(min=0, max=100, if_empty=0))
+                    ProductSchema.add_field('category_' + str(category.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
                 elif category.display == 'checkbox':
                     for product in category.products:
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', BoundedInt(min=0, max=100, if_empty=0))
+                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
                 elif category.display in ('select', 'qty'):
                     for product in category.products:
-                        ProductSchema.add_field('product_' + str(product.id) + '_qty', BoundedInt(min=0))
-                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', BoundedInt(min=0, max=100, if_empty=0))
-        self.schemas['new'].add_field('products', ProductSchema)
+                        ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0))
+                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
 
     @dispatch_on(POST="_new")
     @authorize(h.auth.has_organiser_role)
@@ -83,12 +83,13 @@ class VoucherController(BaseController): # Read, Create, List
             'voucher.percentage': '100',
             'voucher.type': 'Professional',
         }
-        return render_response("voucher/new.myt", defaults=defaults, errors=errors)
+        form = render("voucher/new.mako")
+        return htmlfill.render(form, defaults)
 
     @validate(schema=NewVoucherSchema(), form='new', post_only=False, on_get=True)
     @authorize(h.auth.has_organiser_role)
     def _new(self):
-        values = results['voucher']
+        values = self.form_result['voucher']
         for i in xrange(values['count']):
             voucher = model.Voucher()
             for k in values:
@@ -96,7 +97,7 @@ class VoucherController(BaseController): # Read, Create, List
             if voucher.code !='':
               voucher.code += '-'
             voucher.code += generate_code()
-            self.dbsession.save(voucher)
+            meta.session.add(voucher)
 
             for category in c.product_categories:
                 if category.name in ['Ticket', 'Accomodation']:
@@ -106,7 +107,7 @@ class VoucherController(BaseController): # Read, Create, List
                             vproduct.product = self.dbsession.query(model.Product).get(results['products']['category_' + str(category.id)])
                             vproduct.qty = 1
                             vproduct.percentage = results['products']['category_' + str(category.id) + '_percentage']
-                            self.dbsession.save(vproduct)
+                            meta.Session.add(vproduct)
                             voucher.products.append(vproduct)
                     elif category.display == 'checkbox':
                         for product in category.products:
@@ -115,7 +116,7 @@ class VoucherController(BaseController): # Read, Create, List
                                 vproduct.product = product
                                 vproduct.qty = 1
                                 vproduct.percentage = results['products']['product_' + str(product.id) + '_percentage']
-                                self.dbsession.save(vproduct)
+                                meta.Session.add(vproduct)
                                 voucher.products.append(vproduct)
 
                     else:
@@ -125,13 +126,14 @@ class VoucherController(BaseController): # Read, Create, List
                                 vproduct.product = product
                                 vproduct.qty = results['products']['product_' + str(product.id) + '_qty']
                                 vproduct.percentage = results['products']['product_' + str(product.id) + '_percentage']
-                                self.dbsession.save(vproduct)
+                                meta.Session.add(vproduct)
                                 voucher.products.append(vproduct)
 
-        self.dbsession.flush()
+        meta.session.commit()
 
         return redirect_to(controller='voucher', action='index')
 
+    @authorize(h.auth.is_valid_user)
     def index(self):
         c.voucher_collection = Voucher.find_all()
         return render('/voucher/list.mako')

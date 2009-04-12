@@ -2,7 +2,7 @@
 
 <%
 
-admin = 'organiser' in [r.name for r in c.signed_in_person.roles]
+admin = 'organiser' in [r.name for r in h.signed_in_person().roles]
 
 if admin:
   vouchers = c.voucher_collection
@@ -15,10 +15,8 @@ else:
 
 % if admin:
     <p>This table lists all the voucher codes.</p>
-%   actionlink = h.link_to('Add another', url=h.url_for(controller='voucher', action='new'))
 % else:
     <p>This table lists the voucher codes for your group.</p>
-%   actionlink = ''
 %   if not vouchers:
     <p>(Note: you do not appear to be a group leader, so the table is blank.)</p>
 %   endif
@@ -60,7 +58,7 @@ else:
         <td><% voucher.registration.person.firstname %> <% voucher.registration.person.lastname %>
 %          if voucher.registration.person.company:
            <% "(" + voucher.registration.person.company + ")"%>
-%          # endif
+%          endif
            &lt;<% voucher.registration.person.email_address %>&gt;
         </td>
 %   else:
@@ -71,6 +69,9 @@ else:
 
     </table>
 
+% if admin:
     <br>
-    <p><% actionlink %></p>
+    <p>${ h.link_to('Add another', url=h.url_for(controller='voucher',
+    action='new')) }</p>
+% endif
 
