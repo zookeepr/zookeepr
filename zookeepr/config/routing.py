@@ -66,18 +66,6 @@ def make_map():
     # admin controller
     map.connect('/admin/{action}', controller='admin')
 
-    # OpenDay
-    #map.connect('openday', '/OpenDay', controller='openday', action='new')
-    #map.connect('/Openday', controller='openday', action='new')
-    #map.connect('/openday', controller='openday', action='new')
-    #map.connect('/openDay', controller='openday', action='new')
-
-    #HACK: links from 08 keep on going to /openday and currently the controller is broken... Simply send a 404
-    map.connect('openday', '/OpenDay', controller='not_found', action='page')
-    map.connect('/Openday', controller='not_found', action='page')
-    map.connect('/openday', controller='not_found', action='page')
-    map.connect('/openDay', controller='not_found', action='page')
-
     # route rego_notes with ID's
     map.connect('registration/{rego_id}/new_note', controller='rego_note', action='new', id=None)
 

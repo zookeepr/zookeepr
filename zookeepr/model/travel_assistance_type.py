@@ -14,8 +14,6 @@ def setup(meta):
     )
 
 class TravelAssistanceType(Base):
-    """Stores both account login details and personal information.
-    """
     __tablename__ = 'travel_assistance_type'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
