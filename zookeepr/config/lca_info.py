@@ -13,6 +13,7 @@ lca_info = {
   'contact_email' : 'contact@penguinsvisiting.org.nz',
 # All email sent by ZK will Bcc here:
   'bcc_email' : 'bcc_archive@penguinsvisiting.org.nz',
+  'webmaster_email': 'webmaster@penguinsvisiting.org.nz',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',

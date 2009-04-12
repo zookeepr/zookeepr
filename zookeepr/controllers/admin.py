@@ -17,7 +17,7 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta
 
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, lca_rego
 
 log = logging.getLogger(__name__)
 
@@ -25,12 +25,11 @@ import re
 
 
 
-#from datetime import datetime
-#import os, random, re, urllib
+from datetime import datetime
+import os, random, re, urllib
 #from zookeepr.controllers.proposal import Proposal
 #from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
 #from zookeepr.model.registration import RegoNote
-#from zookeepr.config.lca_info import lca_info, lca_rego
 
 class AdminController(BaseController):
     """ Miscellaneous admin tasks. """
@@ -195,7 +194,7 @@ class AdminController(BaseController):
                         ids = '(' + str(ids) + ')' # fix for single tuple
                     sql_execute("UPDATE proposal SET theatre = '%s', scheduled = '%s', accepted = TRUE WHERE id IN %s" % (room, timestamp[day], str(ids)))
         c.text = "<p>Updated successfully</p>"
-        return render_response("admin/text.myt")
+        return render("admin/text.mako")
 
     def rej_papers_abstracts(self):
         """ Rejected papers, with abstracts (for the miniconf organisers)
