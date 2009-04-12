@@ -1,18 +1,18 @@
     <h2>Edit product</h2>
 <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-    <% h.form(h.url(id=c.product.id)) %>
+    ${ h.form(h.url(id=c.product.id)) }
 <& form.myt &>
-<p><% h.submitbutton('Update') %> <% h.link_to('back', url=h.url(action='index', id=None)) %></p>
-<% h.end_form() %>
+<p>${ h.submitbutton('Update') } ${ h.link_to('back', url=h.url(action='index', id=None)) }</p>
+${ h.end_form() }
 
 </&>
 
-<%args>
+${args>
 defaults
 errors
 </%args>
 
-<%init>
+${init>
 if not defaults and c.product:
     defaults = {
         'product.category': c.product.category.id,
