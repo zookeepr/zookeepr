@@ -5,11 +5,11 @@ from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
-from formencode import validators, htmlfill
+from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, FileUploadValidator, PersonSchema, AssistanceTypeValidator, ProposalTypeValidator
+from zookeepr.lib.validators import BaseSchema, ProposalValidator, FileUploadValidator, PersonSchema, ProposalTypeValidator, TargetAudienceValidator, ProposalStatusValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model import Proposal, ProposalType, AssistanceType, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType
+from zookeepr.model import Proposal, ProposalType, ProposalStatus, TargetAudience, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType
 
 from zookeepr.lib.validators import ReviewSchema
 
@@ -101,6 +101,10 @@ class NewAttachmentSchema(BaseSchema):
     attachment = FileUploadValidator(not_empty=True)
     pre_validators = [NestedVariables]
 
+class ApproveSchema(BaseSchema):
+    talk = ForEach(ProposalValidator())
+    status = ForEach(ProposalStatusValidator())
+
 class ProposalController(BaseController):
 
     def __init__(self, *args):
@@ -110,7 +114,6 @@ class ProposalController(BaseController):
 
     def __before__(self, **kwargs):
         c.proposal_types = ProposalType.find_all()
-        c.assistance_types = AssistanceType.find_all()
         c.target_audiences = TargetAudience.find_all()
         c.accommodation_assistance_types = AccommodationAssistanceType.find_all()
         c.travel_assistance_types = TravelAssistanceType.find_all()
@@ -125,7 +128,13 @@ class ProposalController(BaseController):
 
         c.person = h.signed_in_person()
 
-        return render("proposal/new.mako")
+        defaults = {
+            'proposal.type': 1,
+            'proposal.video_release': 1,
+            'proposal.slides_release': 1,
+        }
+        form = render("proposal/new.mako")
+        return htmlfill.render(form, defaults)
 
     @validate(schema=NewProposalSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
     def _new(self):
@@ -336,10 +345,10 @@ class ProposalController(BaseController):
             c.num_proposals += len(stuff)
             setattr(c, '%s_collection' % pt.name, stuff)
         for aat in c.accommodation_assistance_types:
-            stuff = Proposal.find_by_accommodation_assistance_type_id(aat.id)
+            stuff = Proposal.find_all_by_accommodation_assistance_type_id(aat.id)
             setattr(c, '%s_collection' % aat.name, stuff)
         for tat in c.travel_assistance_types:
-            stuff = Proposal.find_by_travel_assistance_type_id(tat.id)
+            stuff = Proposal.find_all_by_travel_assistance_type_id(tat.id)
             setattr(c, '%s_collection' % tat.name, stuff)
 
         return render('proposal/list_review.mako')
@@ -351,10 +360,10 @@ class ProposalController(BaseController):
             stuff.sort(self._score_sort)
             setattr(c, '%s_collection' % pt.name, stuff)
         for aat in c.accommodation_assistance_types:
-            stuff = Proposal.find_by_accommodation_assistance_type_id(aat.id)
+            stuff = Proposal.find_all_by_accommodation_assistance_type_id(aat.id)
             setattr(c, '%s_collection' % aat.name, stuff)
         for tat in c.travel_assistance_types:
-            stuff = Proposal.find_by_travel_assistance_type_id(tat.id)
+            stuff = Proposal.find_all_by_travel_assistance_type_id(tat.id)
             setattr(c, '%s_collection' % tat.name, stuff)
 
         return render('proposal/summary.mako')
@@ -436,22 +445,27 @@ class ProposalController(BaseController):
 #
 #                    return render_response('proposal/thankyou_mini.myt')
 
-    @authorize([h.auth.has_reviewer_role, h.auth.has_organiser_role])
+    @dispatch_on(POST="_approve")
+    @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
     def approve(self):
-        defaults = dict(request.POST)
-
         c.highlight = set()
+        c.proposals = Proposal.find_all()
+        c.statuses = ProposalStatus.find_all()
+        return render("proposal/approve.mako")
 
-        if request.method == 'POST' and defaults:
-            for proposal, status in defaults.items():
-                if proposal == 'Commit' or status=='-':
-                    continue
-                assert proposal.startswith('talk.')
-                proposal = int(proposal[5:])
-                c.highlight.add(proposal)
-                proposal = Proposal.find_by_id(proposal)
-                status = ProposalStatus.find_by_name(status)
-                proposal.status = status
+    @validate(schema=ApproveSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
+    def _approve(self):
+        c.highlight = set()
+        for proposal, status in request.post.items():
+            if proposal == 'Commit' or status=='-':
+                continue
+            assert proposal.startswith('talk.')
+            proposal = int(proposal[5:])
+            c.highlight.add(proposal)
+            proposal = Proposal.find_by_id(proposal)
+            status = ProposalStatus.find_by_name(status)
+            proposal.status = status
 
         c.proposals = self.dbsession.query(Proposal).all()
         c.statuses = self.dbsession.query(ProposalStatus).all()

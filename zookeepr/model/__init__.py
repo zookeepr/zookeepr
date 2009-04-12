@@ -25,8 +25,10 @@ from role import Role
 from password_reset_confirmation import PasswordResetConfirmation
 
 from proposal_type import ProposalType
+from proposal_status import ProposalStatus
 from accommodation_assistance_type import AccommodationAssistanceType
 from travel_assistance_type import TravelAssistanceType
+from target_audience import TargetAudience
 from proposal import Proposal
 from attachment import Attachment
 from review import Review

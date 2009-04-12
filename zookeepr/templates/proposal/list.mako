@@ -76,7 +76,7 @@
      else:
         fns = ''
 %>
-    ${ ' and '.join(cons) } release${ fns }
+    ${ ' and '.join(cons) } release${ fns |n}
     </td>
     <td>
 %     if s.status.name == 'Pending':
@@ -96,7 +96,7 @@
 
 %   for fnmark, fn in enumerate(footnotes):
 <p>[${ fnmark+1 }] ${ fn }</p>
-%   #endfor
+%   endfor
 
 %else:
     <p>You haven't submitted any proposals. To propose a miniconf, presentation or tutorial, please use the links above.</p>

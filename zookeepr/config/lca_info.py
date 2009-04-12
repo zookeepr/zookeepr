@@ -30,7 +30,7 @@ lca_info = {
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'not_open',
+  'cfp_status' : 'open',
   'cfmini_status' : 'not_open',
   'paper_editing' : 'not_open',
   'conference_status': 'not_open',

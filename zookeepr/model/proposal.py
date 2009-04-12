@@ -80,7 +80,6 @@ class Proposal(Base):
         # remove the args that should never be set via creation
         super(Proposal, self).__init__(**kwargs)
 
-        self.accepted = False
         self.code = None
         self.scheduled = None
         self.finished = None
@@ -112,7 +111,7 @@ class Proposal(Base):
 
     @classmethod
     def find_all_by_accommodation_assistance_type_id(cls, id, abort_404 = True):
-        result = Session.query(Proposal).filter_by(travel_accommodation_type_id=id).all()
+        result = Session.query(Proposal).filter_by(accommodation_assistance_type_id=id).all()
         if result is None and abort_404:
             abort(404, "No such object")
         return result

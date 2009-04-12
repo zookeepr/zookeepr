@@ -1,7 +1,7 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, ProposalType, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType
+from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType
 
 from zookeepr.config.lca_info import lca_info
 
@@ -63,6 +63,10 @@ class DbContentTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return DbContentType.find_by_id(value)
 
+class ProposalValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Proposal.find_by_id(int(value))
+
 class ProposalTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return ProposalType.find_by_id(value)
@@ -78,6 +82,10 @@ class AccommodationAssistanceTypeValidator(validators.FancyValidator):
 class TravelAssistanceTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return TravelAssistanceType.find_by_id(value)
+
+class ProposalStatusValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return ProposalStatus.find_by_id(int(value))
 
 class FileUploadValidator(validators.FancyValidator):
     def _to_python(self, value, state):

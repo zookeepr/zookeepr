@@ -55,7 +55,8 @@
     <p class="entries">
 <% onclick = "document.getElementById('travelwarning').style.display = 'none';" %>
 % for ta in c.travel_assistance_types:
-    <label><% h.radio('proposal.travel_assistance', ta.id, None, onclick) %>
+    <label>${ h.radio('proposal.travel_assistance', ta.id, None,
+    onclick=onclick) }
     ${ ta.name |h }</label><br>
     <% onclick = "document.getElementById('travelwarning').style.display = '';" %>
 % endfor
@@ -65,8 +66,8 @@
 
     <p class="label"><span class="mandatory">*</span><label>Accommodation assistance:</label></p>
     <p class="entries">
-% for aa in c.accommodation_assistance_types::
-    <label><% h.radio('proposal.accommodation_assistance', aa.id) %>
+% for aa in c.accommodation_assistance_types:
+    <label>${ h.radio('proposal.accommodation_assistance', aa.id) }
     ${ aa.name |h }</label><br>
 % endfor
     </p>
@@ -99,13 +100,13 @@
     <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your mini-confs and presentations.</p>
 
     <p class="entries">
-      ${ h.check_box('proposal.video_release') }
+      ${ h.checkbox('proposal.video_release') }
       <label for="proposal.video_release">I allow Linux Australia to
       release my video under the Creative Commons ShareAlike License</label>
     </p>
 
     <p class="entries">
-      ${ h.check_box('proposal.slides_release') }
+      ${ h.checkbox('proposal.slides_release') }
       <label for="proposal.slides_release">I allow Linux Australia to share my slides</label>
     </p>
 
