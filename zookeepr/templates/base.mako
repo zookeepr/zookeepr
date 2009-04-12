@@ -31,6 +31,7 @@
       ${self.big_promotion()}
       <%include file="/nav.mako" />
     </div>
+    
     <!-- start content -->
     <div id="wrapper">
       <div id="leftcol">
@@ -42,6 +43,9 @@
 % endif
       </div>
       <div id="content">
+    <div id="flash">
+${ h.session.get('flash') }
+    </div>
 ${next.body()}
       </div>
     <!-- end content -->
