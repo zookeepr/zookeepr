@@ -17,11 +17,11 @@ ${ d.url |h}, submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
 
 % if c.result == True:
 <p>
-% if c.db_content_pages.current.next:
-    <span style="float: right;">${ h.link_to('Next page', url=h.url_for(page=c.db_content_pages.current.next)) }</span>
+% if c.db_content_pages.next_page:
+    <span style="float: right;">${ h.link_to('Next page', url=h.url_for(page=c.db_content_pages.next_page)) }</span>
 % endif
-% if c.db_content_pages.current.previous:
-    <span>${ h.link_to('Previous page', url=h.url_for(page=c.db_content_pages.current.previous)) + '  ' }</span>
+% if c.db_content_pages.previous_page:
+    <span>${ h.link_to('Previous page', url=h.url_for(page=c.db_content_pages.previous_page)) + '  ' }</span>
 % endif
 </p>
 % endif

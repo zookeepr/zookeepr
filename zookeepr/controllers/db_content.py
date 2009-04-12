@@ -126,9 +126,13 @@ class DbContentController(BaseController):
 
     def list_news(self):
         if c.db_content_types:
-            pages, collection = paginate.Page(DbContent.find_all_by_type("News"), per_page = 20)
-            c.db_content_pages = pages
-            c.db_content_collection = collection
+            page = 1
+            if request.GET.has_key('page'):
+                page = request.GET['page']
+            pagination = paginate.Page(DbContent.find_all_by_type("News"), page = page, items_per_page = 10)
+
+            c.db_content_pages = pagination
+            c.db_content_collection = pagination.items
             c.result = True
         else:
             c.result = False
@@ -136,9 +140,13 @@ class DbContentController(BaseController):
 
     def list_press(self):
         if c.db_content_types:
-            pages, collection = paginate.Page(DbContent.find_all_by_type("In the press"), per_page = 20)
-            c.db_content_pages = pages
-            c.db_content_collection = collection
+            page = 1
+            if request.GET.has_key('page'):
+                page = request.GET['page']
+            pagination = paginate.Page(DbContent.find_all_by_type("In the press"), page = page, items_per_page = 10)
+
+            c.db_content_pages = pagination
+            c.db_content_collection = pagination.items
             c.result = True
         else:
             c.result = False
