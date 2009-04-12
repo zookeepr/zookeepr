@@ -56,6 +56,10 @@ class DbContentController(BaseController):
     @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new") 
     def new(self):
+        if len(c.db_content_types) is 0:
+            h.flash("Configuration Error: Please make sure at least one content type exists.", 'error')
+        if DbContentType.find_by_name("News") is None:
+            h.flash("Configuration Error: Please make sure the 'News' content type exists for full functionality.", 'error')
         return render('/db_content/new.mako')
 
     @validate(schema=NewDbContentSchema(), form='new')
@@ -137,8 +141,10 @@ class DbContentController(BaseController):
         return render('/db_content/list_press.mako')
 
     def rss_news(self):
-        news_id = DbContentType.find_by_name("News").id
-        c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id).order_by(DbContent.creation_timestamp.desc()).limit(20).all()
+        news_id = DbContentType.find_by_name("News")
+        c.db_content_collection = []
+        if news_id is not None: 
+            c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id).order_by(DbContent.creation_timestamp.desc()).limit(20).all()
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
         return render('/db_content/rss_news.mako')
 

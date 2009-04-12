@@ -23,8 +23,8 @@
   <![endif]-->
   <script type="text/javascript">
      $(document).ready(function() {
-       $("#flash > div").hide().fadeIn(2500);
-       $("#flash > div").fadeTo(2000, 0.3);
+       $("#flash > div").hide().fadeIn(3500);
+       $("#flash > div").fadeTo(3000, 0.3);
        $("#flash > div").hover(function() {
          $(this).fadeTo(250, 1);
        },function(){
