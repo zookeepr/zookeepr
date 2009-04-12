@@ -1,3 +1,4 @@
+<%inherit file="/base.mako" />
 <%
 def oddeven():
   while 1:
