@@ -43,15 +43,17 @@ class UpdateDbContentSchema(BaseSchema):
     db_content = DbContentSchema()
     pre_validators = [NestedVariables]
 
-#TODO: add auth
-class DbContentController(BaseController): #Delete
+
+class DbContentController(BaseController):
     def __before__(self, **kwargs):
         c.db_content_types = DbContentType.find_all()
 
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         c.db_content_collection = DbContent.find_all()
         return render('/db_content/list.mako')
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new") 
     def new(self):
         return render('/db_content/new.mako')
@@ -64,7 +66,7 @@ class DbContentController(BaseController): #Delete
         meta.Session.commit()
 
         h.flash("New Page Created.")
-        redirect_to(action='view', id=c.db_content.id) #TODO: set to view
+        redirect_to(action='view', id=c.db_content.id)
 
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
@@ -80,6 +82,7 @@ class DbContentController(BaseController): #Delete
             return self.view(c.db_content.id)
         return NotFoundController().view()
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_edit") 
     def edit(self, id):
         c.db_content = DbContent.find_by_id(id)
@@ -104,6 +107,7 @@ class DbContentController(BaseController): #Delete
         h.flash("Page updated.")
         redirect_to(action='view', id=id)
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_delete") 
     def delete(self, id):
         c.db_content = DbContent.find_by_id(id)
@@ -136,6 +140,7 @@ class DbContentController(BaseController): #Delete
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
         return render('/db_content/rss_news.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def upload(self):
         directory = file_paths['public_path']
         try:
@@ -154,6 +159,7 @@ class DbContentController(BaseController): #Delete
         h.flash("File Uploaded.")        
         redirect_to(action="list_files", folder=c.current_folder)
 
+    @authorize(h.auth.has_organiser_role)
     def delete_folder(self):
         try:
             if request.GET['folder'] is not None:
@@ -174,6 +180,7 @@ class DbContentController(BaseController): #Delete
             redirect_to(action="list_files", folder=c.current_folder)
         return render('/db_content/delete_folder.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def delete_file(self):
         try:
             if request.GET['file'] is not None:
@@ -190,6 +197,7 @@ class DbContentController(BaseController): #Delete
             redirect_to(action="list_files", folder=c.current_folder)
         return render('/db_content/delete_file.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def list_files(self):
         # Taken from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/170242
         def caseinsensitive_sort(stringList):

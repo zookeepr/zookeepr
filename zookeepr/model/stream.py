@@ -15,9 +15,7 @@ def setup(meta):
 class Stream(Base):
     __tablename__ = 'stream'
 
-
     id = sa.Column(sa.types.Integer, primary_key=True)
-
     name = sa.Column(sa.types.Text, unique=True, nullable=False)
 
     def __init__(self, **kwargs):

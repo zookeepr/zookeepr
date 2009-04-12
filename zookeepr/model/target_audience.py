@@ -16,13 +16,9 @@ def setup(meta):
     )
 
 class TargetAudience(Base):
-    """Stores both account login details and personal information.
-    """
     __tablename__ = 'target_audience'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
-
-    # title of proposal
     name = sa.Column(sa.types.String(40), unique=True, nullable=False)
 
     def __init__(self, **kwargs):

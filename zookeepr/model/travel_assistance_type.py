@@ -17,8 +17,6 @@ class TravelAssistanceType(Base):
     __tablename__ = 'travel_assistance_type'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
-
-    # title of proposal
     name = sa.Column(sa.types.String(40), unique=True, nullable=False)
 
     def __init__(self, **kwargs):

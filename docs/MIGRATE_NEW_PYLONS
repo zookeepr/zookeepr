@@ -199,6 +199,9 @@ methods like view ect which take an id should be def view(self, id): not def vie
 
     %s/textfield/text
 
+    %s/text_area/textarea
+    %s/check_box/checkbox
+
     <& form.myt &>  ->  <%include file="form.mako" />
 
     If you see something like this, get rid of it:
@@ -209,7 +212,9 @@ methods like view ect which take an id should be def view(self, id): not def vie
 
     If you see a <%args>...</%args> with only defaults and errors, it can go away
 
+    h.submitbutton("New")  ->  h.submit("submit", "New")
 
+    h.textarea('volunteer.other', size='40x4')  ->  h.textarea('volunteer.other', cols="40", rows="4")
 
 
 == Models.
