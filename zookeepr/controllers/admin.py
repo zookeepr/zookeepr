@@ -2,6 +2,7 @@ from datetime import datetime
 import os, random, re, urllib
 from zookeepr.lib import helpers as h
 from zookeepr.lib.base import *
+from zookeepr.lib.mail import *
 from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
 from zookeepr.controllers.proposal import Proposal
 from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
@@ -953,6 +954,48 @@ class AdminController(SecureController):
             '|'.join([label for (label, count) in c.data]),
         )
         return render_response('admin/table.myt')
+
+    def email_registration_reminder(self):
+        """ Send all attendees a confirmation email of their registration details. [Registrations]"""
+        c.text = 'Emailed the following attendees:'
+        c.columns = ['Full name', 'Email address']
+        c.data = []
+
+        for p in self.dbsession.query(Person).all():
+            # Make sure the person has paid
+            if not p.paid():
+                continue
+
+            # Don't send a reminder if one has been sent already
+            if p.registration.reminder_timestamp is not None:
+                continue
+
+            c.speaker = p.is_speaker()
+            c.firstname = p.firstname
+            c.fullname = p.firstname + ' ' + p.lastname
+            c.company = p.company
+            c.phone = p.phone
+            c.mobile = p.mobile
+            c.email = p.email_address
+            c.address = p.address1
+            if len(p.address2) > 0:
+                c.address += + '\n            ' + p.address2
+            c.address += '\n            ' + p.city
+            if len(p.state) > 0:
+                c.address += ', ' + p.state
+            if len(p.postcode) > 0:
+                c.address += ' ' + p.postcode
+            c.address += '\n            ' + p.country
+
+            msg = render('registration/email_reminder.myt', fragment=True)
+            email(c.email, msg)
+            # keep track of the time this person was reminded
+            p.registration.reminder_timestamp = datetime.now()
+            c.data.append([c.fullname, c.email])
+
+        self.dbsession.flush()
+        c.text = render_response('admin/table.myt', fragment=True)
+        return render_response('admin/text.myt')
 
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess

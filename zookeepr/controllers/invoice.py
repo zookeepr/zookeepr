@@ -120,7 +120,7 @@ class InvoiceController(SecureController, Read, List, Create):
         xml_s = render('%s/pdf.myt' % self.individual, fragment=True)
 
         xsl_f = request.environ['paste.config']['global_conf']['here'] + '/zookeepr/templates/invoice/pdf.xsl'
-		xsl_s = libxml2.parseFile(xsl_f) 
+        xsl_s = libxml2.parseFile(xsl_f) 
         xsl = libxslt.parseStylesheetDoc(xsl_s) 
 
         xml = libxml2.parseDoc(xml_s) 
@@ -148,7 +148,7 @@ class InvoiceController(SecureController, Read, List, Create):
         res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
                                                            % c.invoice.id )
 
-		# We should really remove the pdf file, shouldn't we.
+        # We should really remove the pdf file, shouldn't we.
         return res
 
     def void(self, id):

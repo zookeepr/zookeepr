@@ -31,6 +31,7 @@ registration = Table('registration', metadata,
                      Column('signup', CommaList),
                      Column('creation_timestamp', DateTime, nullable=False, default=func.current_timestamp()),
                      Column('last_modification_timestamp', DateTime, nullable=False, default=func.current_timestamp(), onupdate=func.current_timestamp()),
+                     Column('reminder_timestamp', DateTime, nullable=True, default=None),
                     )
 
 rego_note = Table('rego_note', metadata,

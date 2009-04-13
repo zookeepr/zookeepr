@@ -1,27 +1,30 @@
 From: <% h.lca_info['event_name'] %> <<% h.lca_info['contact_email'] %>>
 To: <% c.person.firstname %> <% c.person.lastname %> <<% c.person.email_address %>>
-Subject: Confirmation of your miniconf proposal for <% h.lca_info['event_name'] %>
+Subject: Confirmation of your <% c.proposal.type.name.lower() %> proposal for <% h.lca_info['event_name'] %>
 
 Dear <% c.person.firstname %>,
 
-Thankyou for proposing a <% c.proposal.type.name.lower() %> for <% h.lca_info['event_name'] %>
+Thank you for proposing a <% c.proposal.type.name.lower() %> for <% h.lca_info['event_name'] %>
 
-If you have any queries about your proposed <% c.proposal.type.name.lower() %>, please email
-<% h.lca_info['speaker_email'] %>
+Please make sure that these details are correct. If you need to change
+anything, log into your account at:
 
-title: <% c.proposal.title %>
-target audience: <% c.proposal.audience.name %>
-url: <% c.proposal.url %>
-attachments: <% len(c.proposal.attachments) %>
-summary: <% c.proposal.abstract %>
+  <% h.lca_info['event_url'] %>
 
-travel assistance: <% c.travel_assistance %>
-accom assistance: <% c.travel_assistance %>
+  Title:           <% c.proposal.title %>
+  Target Audience: <% c.proposal.audience.name %>
+  URL:             <% c.proposal.url %>
+  Attachments:     <% len(c.proposal.attachments) %>
+  Summary:         <% c.proposal.abstract %>
 
-Note: requesting assistance, especially travel assistance, may affect
-whether or not your <% c.proposal.type.name.lower() %> is accepted.
+  Travel Assistance:        <% c.travel_assistance %>
+  Accommodation Assistance: <% c.travel_assistance %>
 
-Your talk may be recorded by the conference.
+Note that requesting assistance, especially travel assistance, may
+affect whether or not your <% c.proposal.type.name.lower() %> is
+accepted.
+
+Your presentation may be recorded by the conference.
 % if c.proposal.video_release and c.proposal.slides_release:
 You consent to linux.conf.au releasing both the video of your talk and your
 slides, if you supply them to us, under the Creative Commons ShareAlike
@@ -42,15 +45,16 @@ You DO NOT consent to linux.conf.au releasing your slides.
 % #endif
 % if c.proposal.video_release or c.proposal.slides_release:
 
-Please make sure that you are allowed to do this, if there is any doubt
-(for instance, consider whether you're revealing your employer's
-information or using other people's copyrighted materials.)
-% #endif
-% if not c.proposal.video_release or not c.proposal.slides_release:
+Please make sure that you are allowed to do this and have your
+employer's permission if necessary.
 
-Please consider allowing us to share both the video of your talk and your
-slides, so that the community can gain the maximum benefit from your talk!
 % #endif
+
+If you have any problems, feel free to email <% h.lca_info['contact_email'] %>.
+
+Regards,
+
+The <% h.lca_info['event_name'] %> team
 
 <%doc>
 This template is used to generate the email that is sent to people
