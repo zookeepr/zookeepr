@@ -9,8 +9,8 @@ being an LTS release we felt that this would be a good platform to deploy on.
 ====== Dependencies ======
 
 aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
-    python-lxml python-setuptools python-dnspython python-cheetah python-psycopg2 \
-    miscfiles pwgen python-myghty
+    python-libxml2 python-xsltproc python-setuptools python-dnspython python-cheetah \
+    python-psycopg2 miscfiles pwgen python-myghty
 
 For Ubuntu Hardy add from Jaunty:
 

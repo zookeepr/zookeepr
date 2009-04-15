@@ -271,6 +271,9 @@ class AdminController(BaseController):
         c.text = "Total: %d" % total
         return render_response('admin/table.myt')
 
+    def tuz(self):
+      return render("admin/tuz.mako")
+
     @authorize(h.auth.has_organiser_role)
     def list_attachments(self):
         """ List of attachments [CFP] """
