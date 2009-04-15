@@ -1,7 +1,7 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType, Registration, Product, ProductCategory
+from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType, Registration, Product, ProductCategory, Ceiling
 
 from zookeepr.config.lca_info import lca_info
 
@@ -109,6 +109,15 @@ class ProductValidator(validators.FancyValidator):
     def _from_python(self, value, state):
         return value.id
 
+class CeilingValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Ceiling.find_by_id(value)
+
+    def _from_python(self, value, state):
+        return value.id
+
+
+
 class ProductCategoryValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return ProductCategory.find_by_id(value)
@@ -151,13 +160,13 @@ class ExistingPersonValidator_by_email(validators.FancyValidator):
 
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        person = Person.find_by_email(value['email_address'])
+        person = Person.find_by_email(value['email_address'], abort_404=False)
         if person is not None:
             msg = "A person with this email already exists. Please try signing in first."
             raise Invalid(msg, value, state, error_dict={'email_address': msg})
 
 class PersonSchema(BaseSchema):
-    allow_extra_fields = False
+    #allow_extra_fields = False
 
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)

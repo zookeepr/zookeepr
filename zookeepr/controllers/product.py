@@ -5,11 +5,11 @@ from pylons.controllers.util import abort, redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
-from formencode import validators, htmlfill
+from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, ProductCategoryValidator
+from zookeepr.lib.validators import BaseSchema, ProductCategoryValidator, CeilingValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -30,6 +30,7 @@ class ProductSchema(BaseSchema):
     cost = validators.Int(min=0, max=20000000)
     auth = validators.String(if_empty=None)
     validate = validators.String(if_empty=None)
+    ceilings = ForEach(CeilingValidator())
 
 class NewProductSchema(BaseSchema):
     product = ProductSchema()
