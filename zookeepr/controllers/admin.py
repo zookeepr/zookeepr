@@ -285,7 +285,7 @@ class AdminController(BaseController):
     def person_creation(self):
         """ When did people create their accounts? [Accounts] """
         return sql_response("""select person.id, firstname || ' ' ||
-        lastname as name, _creation_timestamp as created from person
+        lastname as name, creation_timestamp as created from person
         order by person.id;
         """)
     @authorize(h.auth.has_organiser_role)

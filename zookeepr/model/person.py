@@ -40,7 +40,7 @@ class Person(Base):
     password_hash = sa.Column(sa.types.Text)
 
     # creation timestamp of the registration
-    _creation_timestamp = sa.Column(sa.types.DateTime, nullable=False)
+    creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     url_hash = sa.Column(sa.types.String(32), nullable=False, index=True)
 
 
@@ -72,8 +72,6 @@ class Person(Base):
 
     # relations
     roles = sa.orm.relation(Role, secondary=person_role_map, backref='people', order_by=Role.name)
-    # FIXME invoice = sa.orm.relation(Invoice)
-
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
@@ -116,18 +114,6 @@ class Person(Base):
         if self.volunteer and self.volunteer.accepted is not None:
             return self.volunteer.accepted
         return False
-
-    def _set_creation_timestamp(self, value):
-        if value is None:
-            self._creation_timestamp = datetime.datetime.now()
-        else:
-            self._creation_timestamp = value
-        self._update_url_hash()
-
-    def _get_creation_timestamp(self):
-        return self._creation_timestamp
-
-    creation_timestamp = property(_get_creation_timestamp, _set_creation_timestamp)
 
     def _update_url_hash(self):
         """Update the stored URL hash for this person.
@@ -182,7 +168,7 @@ class Person(Base):
         if result is None and abort_404:
             abort(404, "No such object")
         return result
-        
+
     @classmethod
     def find_all(cls):
         return Session.query(Person).order_by(Person.id).all()
