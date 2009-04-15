@@ -58,7 +58,7 @@
 % elif h.signed_in_person() and h.signed_in_person().registration == None:
     <p><b>Not registered.</b>
 
-    <%include file="volunteer.mako" />
+<%include file="volunteer.mako" />
 
     <h3>Next step</h3>
 
@@ -71,7 +71,7 @@
     <p><b>Tentatively registered.</b></p>
 %   endif
 
-<& volunteer.myt &>
+<%include file="volunteer.mako" />
 
 %   if not h.signed_in_person().paid():
     <h3>Next step</h3>
