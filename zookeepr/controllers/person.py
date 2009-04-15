@@ -309,13 +309,15 @@ class PersonController(BaseController): #Read, Update, List
 
         role = Role.find_by_name(name=role)
 
-        if action == 'Revoke':
+        if action == 'Revoke' and role in c.person.roles:
             c.person.roles.remove(role)
-        elif action == 'Grant':
+            h.flash('Role ' + role.name + ' Revoked')
+        elif action == 'Grant' and role not in c.person.roles:
             c.person.roles.append(role)
+            h.flash('Role ' + role.name + 'Granted')
+        else:
+            h.flash("Nothing to do")
 
         meta.Session.commit()
-
-        h.flash(action + ' ' + role.name)
 
         return render('person/roles.mako')
