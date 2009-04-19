@@ -1,10 +1,11 @@
-    <&| @zookeepr.lib.form:fill, defaults=defaults, errors=errors &>
-    <% h.form(h.url()) %>
-    <h2>Create Manual Invoice</h2>
-    <input type="hidden" value="<% c.item_count %>" id="invoice.item_count" name="invoice.item_count" />
+<%inherit file="/base.mako" />
 
-    <p>Person ID: <% h.textfield('invoice.person') %></p>
-    <p>Due Date: <% h.textfield('invoice.due_date') %> <span style="font-size: smaller;">(DD/MM/YYYY). Setting this in the future reserves products.</span></p>
+    ${ h.form(h.url_for()) }
+    <h2>Create Manual Invoice</h2>
+    <input type="hidden" value="${ c.item_count }" id="invoice.item_count" name="invoice.item_count" />
+
+    <p>Person ID: ${ h.text('invoice.person') }</p>
+    <p>Due Date: ${ h.text('invoice.due_date') } <span style="font-size: smaller;">(DD/MM/YYYY). Setting this in the future reserves products.</span></p>
 
     <p>Invoice Items:</p>
     <table id="products">
@@ -20,22 +21,22 @@
         <tr>
             <td>
                 <div>
-                    <select name="invoice.items-<% i %>.product" id="invoice.items-<% i %>.product" onchange="return update_cost('<% i %>');"><option value="0">--Select--</option>
+                    <select name="invoice.items-${ i }.product" id="invoice.items-${ i }.product" onchange="return update_cost('${ i }');"><option value="0">--Select--</option>
 %   for category in c.product_categories:
-                        <optgroup label="<% category.name %>">
+                        <optgroup label="${ category.name }">
 %       for product in category.products:
-                            <option value="<% product.id %>"><% product.description %></option>
-%       #endfor
+                            <option value="${ product.id }">${ product.description }</option>
+%       endfor
                         </optgroup>
-%       #endfor
+%       endfor
                     </select>
-                    <br />---> OR <input type="text" name="invoice.items-<% i %>.description" size="55"/>
+                    <br />---> OR <input type="text" name="invoice.items-${ i }.description" size="55"/>
                 </div>
             </td>
-            <td><input type="text" name="invoice.items-<% i %>.qty" id="invoice.items-<% i %>.qty" size="3" onchange="return update_total();" value="1" /></td>
-            <td><input type="text" name="invoice.items-<% i %>.cost" id="invoice.items-<% i %>.cost" size="6" onchange="return update_total();" value="0" /></td>
+            <td><input type="text" name="invoice.items-${ i }.qty" id="invoice.items-${ i }.qty" size="3" onchange="return update_total();" value="1" /></td>
+            <td><input type="text" name="invoice.items-${ i }.cost" id="invoice.items-${ i }.cost" size="6" onchange="return update_total();" value="0" /></td>
         </tr>
-%#endfor
+%endfor
 
         <tfoot>
             <tr>
@@ -45,22 +46,14 @@
             </tr>
         </tfoot>
     </table>
-    <p><% h.submitbutton('Save') %></p>
-    <% h.end_form() %>
-    </&>
-<%args>
-defaults
-errors
-</%args>
+    <p>${ h.submit('submit', 'Save') }</p>
+    ${ h.end_form() }
 
-<%init>
-</%init>
+<%def name="title()">
+Create Invoice - ${ caller.title() }
+</%def>
 
-<%method title>
-Create Invoice - <& PARENT:title &>
-</%method>
-
-<%method extra_head>
+<%def name="extra_head()">
 <script type="text/javascript">
 function add_product_item(table)
 {
@@ -79,15 +72,15 @@ function add_product_item(table)
     new_product.appendChild(product);
 %for category in c.product_categories:
         cat = document.createElement('optgroup');
-        cat.setAttribute('label', '<% category.name %>');
+        cat.setAttribute('label', '${ category.name }');
 %   for product in category.products:
             product = document.createElement('option');
-            product.setAttribute('value', '<% product.id %>');
-            product.appendChild(document.createTextNode("<% product.description %>"));
+            product.setAttribute('value', '${ product.id }');
+            product.appendChild(document.createTextNode("${ product.description }"));
             cat.appendChild(product);
-%   #endfor
+%   endfor
         new_product.appendChild(cat);
-%#endfor
+%endfor
 
     new_description = document.createElement('input');
     new_description.setAttribute('type', 'text');
@@ -130,9 +123,9 @@ function update_cost(i)
     product_cost_array = new Array();
 %for category in c.product_categories:
 %   for product in category.products:
-    product_cost_array[<% product.id %>] = <% product.cost %>;
-%   #endfor
-%#endfor
+    product_cost_array[${ product.id }] = ${ product.cost };
+%   endfor
+%endfor
 
     cost.value = product_cost_array[product_field.value];
     return update_total();
@@ -168,4 +161,4 @@ function update_total()
     return false;
 }
 </script>
-</%method>
+</%def>

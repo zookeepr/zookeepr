@@ -7,6 +7,8 @@ from pylons.controllers.util import abort
 from person import Person
 from invoice_item import InvoiceItem
 
+from zookeepr.model.meta import Session
+
 class Invoice(Base):
     """Stores both account login details and personal information.
     """
@@ -41,7 +43,7 @@ class Invoice(Base):
 
     def paid(self):
         """Return whether the invoice is paid (or zero-balance) """
-        print "FIXME!"
+        print "FIXME!" # TODO: should really do this!
         return True
         return bool(self.good_payments or self.total()==0)
 
@@ -58,3 +60,15 @@ class Invoice(Base):
 
     def __repr__(self):
         return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(Invoice).order_by(Invoice.id).all()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(Invoice).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_person(cls, person_id):
+        return Session.query(Invoice).filter_by(person_id=person_id).first()

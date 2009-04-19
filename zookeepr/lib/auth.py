@@ -16,7 +16,7 @@ from formencode import validators, htmlfill, Invalid
 from zookeepr.lib.validators import BaseSchema
 
 from zookeepr.model import meta
-from zookeepr.model import Person, Role, Proposal
+from zookeepr.model import Person, Role, Proposal, Invoice
 
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
 from authkit.authorize import PermissionSetupError, middleware
@@ -244,6 +244,39 @@ class IsSameZookeeprSubmitter(UserIn):
 
         return app(environ, start_response)
 
+class IsSameZookeeprAttendee(UserIn):
+    """
+    Checks that the signed in user is the user for which the given invoice
+    is for.
+    """
+    def __init__(self, invoice_id):
+        self.invoice_id = int(invoice_id)
+
+    def check(self, app, environ, start_response):
+
+        if not environ.get('REMOTE_USER'):
+            raise NotAuthenticatedError('Not Authenticated')
+
+        person = Person.find_by_email(environ['REMOTE_USER'])
+        if person is None:
+            environ['auth_failure'] = 'NO_USER'
+            raise NotAuthorizedError(
+                'You are not one of the users allowed to access this resource.'
+            )
+
+        invoice = Invoice.find_by_id(self.invoice_id)
+        if invoice is None:
+            raise NotAuthorizedError(
+                "Invoice doesn't exist"
+            )
+
+        if person.id <> invoice.person_id:
+            environ['auth_failure'] = 'NO_ROLE'
+            raise NotAuthorizedError(
+                "Invoice is not for this user"
+            )
+
+        return app(environ, start_response)
 
 
 class Or(Permission):
@@ -288,5 +321,4 @@ has_keysigning_role = HasZookeeprRole('keysigning')
 is_valid_user = ValidZookeeprUser()
 is_same_zookeepr_user = IsSameZookeeprUser
 is_same_zookeepr_submitter = IsSameZookeeprSubmitter
-
-
+is_same_zookeepr_attendee = IsSameZookeeprAttendee
