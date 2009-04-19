@@ -14,7 +14,6 @@ import webhelpers.constants
 
 import webhelpers.util as util
 
-
 from routes import request_config
 from routes.util import url_for
 
@@ -417,3 +416,7 @@ def zk_root():
     """ Helper function to return the root directory of zookeepr,
     this allows completely relevant URL's """
     pass #TODO
+
+def number_to_currency(number, unit='$', precision=2):
+    # TODO: use commas to separator thousands
+    return unit + "%#.*f" % (precision, number)

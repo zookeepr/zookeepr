@@ -30,15 +30,6 @@ class DictSet(validators.Set):
 #
 #from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType, Product, Registration
 #
-#class DictSet(validators.Set):
-#    def _from_python(self, value):
-#        value = super(DictSet, self)._from_python(value, state)
-#        return dict(zip(value, [1]*len(value)))
-#
-#    def _to_python(self, value, state):
-#        value = value.keys()
-#        return super(DictSet, self)._to_python(value, state)
-#
 #class BoundedInt(validators.Int):
 #    """ Validator for integers, with bounds.
 #
@@ -60,12 +51,6 @@ class DictSet(validators.Set):
 #            raise Invalid('Too large (maximum %d)'%self.max, value, state)
 #        if value<self.min:
 #            raise Invalid('Too small (minimum %d)'%self.min, value, state)
-#
-
-#
-#class PersonValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        return Person.get(value)
 #
 
 class PersonValidator(validators.FancyValidator):
@@ -117,12 +102,12 @@ class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return Stream.find_by_id(value)
 
-#class ProductValidator(validators.FancyValidator):
-#    def _to_python(self, value, state):
-#        return state.query(Product).get(value)
-#
-#    def _from_python(self, value, state):
-#        return value.id
+class ProductValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return state.query(Product).get(value)
+
+    def _from_python(self, value, state):
+        return value.id
 
 class ProductCategoryValidator(validators.FancyValidator):
     def _to_python(self, value, state):

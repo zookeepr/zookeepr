@@ -29,11 +29,12 @@ class Ceiling(Base):
     available_from = sa.Column(sa.types.DateTime, nullable=True)
     available_until = sa.Column(sa.types.DateTime, nullable=True)
 
-    def __init__(self, name=None, max_sold=None, available_from=None, available_until=None):
+    def __init__(self, name=None, max_sold=None, available_from=None, available_until=None, products=None):
         self.name = name
         self.max_sold = max_sold
         self.available_from = available_from
         self.available_until = available_until
+        self.products = products
 
     def qty_sold(self):
         qty = 0
@@ -91,3 +92,11 @@ class Ceiling(Base):
     @classmethod
     def find_all(cls):
         return Session.query(Ceiling).order_by(Ceiling.id).all()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(Ceiling).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_name(cls, name):
+        return Session.query(Ceiling).filter_by(name=name).first()
