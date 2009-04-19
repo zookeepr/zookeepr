@@ -57,7 +57,7 @@ class CeilingController(BaseController):
     def new(self):
         return render('/ceiling/new.mako')
 
-    @validate(schema=NewCeilingSchema(), form='new', post_only=False)
+    @validate(schema=NewCeilingSchema(), form='new', post_only=True)
     def _new(self):
         results = self.form_result['ceiling']
 
@@ -77,7 +77,7 @@ class CeilingController(BaseController):
         c.ceiling_collection = Ceiling.find_all()
         return render('/ceiling/list.mako')
 
-    @dispatch_on(POST="_edit") 
+    @dispatch_on(POST="_edit")
     def edit(self, id):
         c.ceiling = Ceiling.find_by_id(id)
 
@@ -94,7 +94,7 @@ class CeilingController(BaseController):
         form = render('/ceiling/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=EditCeilingSchema(), form='edit')
+    @validate(schema=EditCeilingSchema(), form='edit', post_only=True)
     def _edit(self, id):
         ceiling = Ceiling.find_by_id(id)
 
@@ -108,7 +108,7 @@ class CeilingController(BaseController):
 
     @dispatch_on(POST="_delete") 
     def delete(self, id):
-        """Delete the proposal type
+        """Delete the ceiling
 
         GET will return a form asking for approval.
 
