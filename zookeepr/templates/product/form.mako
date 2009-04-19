@@ -1,33 +1,33 @@
       <p><label for="product.description">Description:</label><br>
-      ${ h.textfield('product.description') }</p>
+      ${ h.text('product.description') }</p>
 
       <p>
         <label for="product.category">Category</label>
         <select id="product.category" name="product.category">
 % for category in c.product_categories:
           <option value="${category.id}">${ category.name }</option>
-% #endfor
+% endfor
         </select>
       </p>
 
       <p>
         <label for="product.active">Active:</label>
-        ${ h.check_box('product.active') }
+        ${ h.checkbox('product.active') }
       </p>
 
       <p>
         <label for="product.cost">Cost (in cents. ie $100 = 10000):</label><br>
-        ${ h.textfield('product.cost', size='10') }
+        ${ h.text('product.cost', size='10') }
       </p>
 
       <p>
         <label for="product.auth">Auth code:</label><br>
-        ${ h.text_area('product.auth', cols=80, rows=5) }
+        ${ h.textarea('product.auth', cols=80, rows=5) }
       </p>
 
       <p>
         <label for="product.validate">Validate code:</label><br>
-        ${ h.text_area('product.validate', cols=80, rows=5) }
+        ${ h.textarea('product.validate', cols=80, rows=5) }
       </p>
 
       <h3><label for="product.ceilings">This Products Ceilings</label></h3>
@@ -35,6 +35,6 @@
         <select id="product.ceilings" name="product.ceilings" multiple="multiple">
 % for ceiling in c.ceilings:
             <option value="${ ceiling.id }">${ ceiling.name }</option>
-% #endfor
+% endfor
         </select>
       </p>

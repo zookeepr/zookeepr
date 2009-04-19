@@ -1,7 +1,7 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType, Registration
+from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType, Registration, Product, ProductCategory
 
 from zookeepr.config.lca_info import lca_info
 
@@ -104,14 +104,14 @@ class StreamValidator(validators.FancyValidator):
 
 class ProductValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return state.query(Product).get(value)
+        return Product.find_by_id(value)
 
     def _from_python(self, value, state):
         return value.id
 
 class ProductCategoryValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return state.query(model.ProductCategory).get(value)
+        return ProductCategory.find_by_id(value)
 
     def _from_python(self, value):
         return value.id

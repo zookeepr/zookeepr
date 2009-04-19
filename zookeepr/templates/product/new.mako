@@ -1,7 +1,9 @@
+<%inherit file="/base.mako" />
+
 <h2>New product</h2>
 
-${ h.form(h.url(action='new')) }
-<& form.myt &>
-<p>${ h.submitbutton("New") }
-${ h.link_to('Back', url=h.url(action='index')) }</p>
+${ h.form(h.url_for(action='new')) }
+<%include file="form.mako" />
+<p>${ h.submit('submit', "New") }
+${ h.link_to('Back', url=h.url_for(action='index')) }</p>
 ${ h.end_form() }

@@ -31,6 +31,10 @@ class ProductCategory(Base):
     def find_all(self):
         return Session.query(ProductCategory).order_by(ProductCategory.name).all()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(ProductCategory).filter_by(id=id).first()
+
     def available_products(self, person, stock=True):
         # bool stock: care about if the product is in stock (ie sold out?)
         products = []
@@ -80,6 +84,10 @@ class Product(Base):
     @classmethod
     def find_all(self):
         return Session.query(Product).order_by(Product.cost).all()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(Product).filter_by(id=id).first()
 
     def qty_sold(self):
         qty = 0
