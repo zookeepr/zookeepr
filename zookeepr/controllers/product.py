@@ -77,7 +77,7 @@ class ProductController(BaseController):
 
         defaults = h.object_to_defaults(c.product, 'product')
 
-        defaults['product.products'] = []
+        defaults['product.ceilings'] = []
         for ceiling in c.product.ceilings:
             defaults['product.ceilings'].append(ceiling.id)
 
