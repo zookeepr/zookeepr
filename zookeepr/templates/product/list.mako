@@ -25,8 +25,8 @@
 %               cat_total += (product.qty_sold() * product.cost)
       <tr>
         <td>${ h.link_to(product.description, url=h.url(action='view', id=product.id)) }</td>
-        <td>${ h.yesno(product.active) }</td>
-        <td>${ h.yesno(product.available()) }</td>
+        <td>${ h.yesno(product.active) |n }</td>
+        <td>${ h.yesno(product.available()) |n }</td>
         <td>${ h.number_to_currency(product.cost/100.0) | h }</td>
         <td>${ product.qty_invoiced(date = False) }</td>
         <td>${ product.qty_invoiced() }</td>

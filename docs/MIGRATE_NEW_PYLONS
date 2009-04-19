@@ -218,6 +218,15 @@ methods like view ect which take an id should be def view(self, id): not def vie
 
     h.text_area('volunteer.other', size='40x4')  ->  h.textarea('volunteer.other', cols="40", rows="4")
 
+    % ceiling_total = 0    (or any other assignment/code)  ->  <% ceiling_total = 0 %>
+
+    If you see something like:
+
+      ${ h.yesno(ceiling.available()) }
+
+    make sure to add a "|n" so that the UTF-8 checkbox isn't escaped:
+
+      ${ h.yesno(ceiling.available()) | n }
 
 == Models.
 

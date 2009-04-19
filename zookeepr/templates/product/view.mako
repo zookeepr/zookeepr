@@ -2,7 +2,7 @@
 
     <p><b>Description:</b> ${ c.product.description | h }<br></p>
     <p><b>Category:</b> ${ c.product.category.name }<br></p>
-    <p><b>Active:</b> ${ h.yesno(c.product.active) }<br></p>
+    <p><b>Active:</b> ${ h.yesno(c.product.active) |n }<br></p>
     <p><b>Cost:</b> ${ h.number_to_currency(c.product.cost/100.0) | h }<br></p>
     <p><b>Auth code:</b> ${ c.product.auth | h }<br></p>
     <p><b>Validate code:</b> ${ c.product.validate | h }<br></p>
@@ -53,7 +53,7 @@
 %    else:
         <td></td>
 %    #endif
-        <td>${ h.yesno(ceiling.available()) }</td>
+        <td>${ h.yesno(ceiling.available()) |n }</td>
         <td>${ ceiling.qty_invoiced() }</td>
         <td>${ ceiling.qty_sold() }</td>
       </tr>
