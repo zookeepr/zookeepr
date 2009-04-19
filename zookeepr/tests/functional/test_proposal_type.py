@@ -3,8 +3,8 @@
 
 # class TestProposalType(CRUDControllerTest):
 #     model = ProposalType
-#     name = 'proposaltype'
-#     url = '/proposaltype'
+#     name = 'proposal_type'
+#     url = '/proposal_type'
 #     samples = [dict(name='Paper'),
 #                dict(name='BOF')]
 
@@ -34,7 +34,7 @@
 #         st.save()
 #         st.flush()
 #         # try to view the proposal, we're not a site-admin
-#         resp = self.app.get(url_for(controller='proposaltype',
+#         resp = self.app.get(url_for(controller='proposal_type',
 #                                     action='view',
 #                                     id=st.id),
 #                             status=403)
