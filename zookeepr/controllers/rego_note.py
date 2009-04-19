@@ -50,7 +50,7 @@ class RegoNoteController(BaseController):
         form = render('/rego_note/new.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=NewNoteSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=NewNoteSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['rego_note']
 
@@ -69,7 +69,7 @@ class RegoNoteController(BaseController):
         c.rego_note_collection = RegoNote.find_all()
         return render('rego_note/list.mako')
 
-    @dispatch_on(POST="_edit") 
+    @dispatch_on(POST="_edit")
     def edit(self, id):
         c.rego_note = RegoNote.find_by_id(id)
 
@@ -78,7 +78,7 @@ class RegoNoteController(BaseController):
         form = render('rego_note/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=UpdateNoteSchema(), form='edit')
+    @validate(schema=UpdateNoteSchema(), form='edit', post_only=True)
     def _edit(self, id):
         rego_note = RegoNote.find_by_id(id)
 
@@ -92,7 +92,7 @@ class RegoNoteController(BaseController):
 
     @dispatch_on(POST="_delete") 
     def delete(self, id):
-        """Delete the proposal type
+        """Delete the rego note
 
         GET will return a form asking for approval.
 
@@ -101,7 +101,7 @@ class RegoNoteController(BaseController):
         c.rego_note = RegoNote.find_by_id(id)
         return render('rego_note/confirm_delete.mako')
 
-    @validate(schema=None, form='delete', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.rego_note = RegoNote.find_by_id(id)
         meta.Session.delete(c.rego_note)
