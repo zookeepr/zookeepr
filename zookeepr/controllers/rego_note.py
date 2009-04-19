@@ -107,4 +107,5 @@ class RegoNoteController(BaseController):
         meta.Session.delete(c.rego_note)
         meta.Session.commit()
 
+        h.flash("Rego note has been deleted.")
         redirect_to('index')

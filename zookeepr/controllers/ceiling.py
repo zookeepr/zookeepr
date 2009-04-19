@@ -123,4 +123,5 @@ class CeilingController(BaseController):
         meta.Session.delete(c.ceiling)
         meta.Session.commit()
 
+        h.flash("Ceiling has been deleted.")
         redirect_to('index')
