@@ -87,8 +87,8 @@ class Person(Base):
         self._update_url_hash()
 
     def gen_password(self, value):
-		m = hashlib.md5()
-		m.update(value)
+        m = hashlib.md5()
+        m.update(value)
         return m.hexdigest()
 
     def _set_password(self, value):

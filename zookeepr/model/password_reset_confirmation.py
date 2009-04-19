@@ -34,8 +34,8 @@ class PasswordResetConfirmation(Base):
     def _update_url_hash(self):
         nonce = random.randrange(0, 2**30)
         magic = "%s&%s&%s" % (self.email_address, self.timestamp, nonce)
-		m = hashlib.md5()
-		m.update(magic)
+        m = hashlib.md5()
+        m.update(magic)
         self.url_hash = m.hexdigest()
 
     def __repr__(self):
