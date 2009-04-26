@@ -15,7 +15,7 @@
     <p class="note" style="margin-top: 0em">The type of your presentation. If in doubt, choose "Presentation".</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="proposal.abstract">Abstract:</label></p>
-    <p class="entries">${ h.textarea('proposal.abstract', size="70x10") }</p>
+    <p class="entries">${ h.textarea('proposal.abstract', cols=70, rows=10) }</p>
     <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the presentation is accepted, but it should reasonably reflect what you will be presenting, and in any case it will appear as-is on the website in the draft programme. Up to about 500 words.</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
@@ -45,7 +45,7 @@
 % else:
     <p class="entries">${ h.link_to('Add an attachment', url=h.url_for(action='attach')) } ${ h.hidden('attachment', size=60) }<span class="note">You can attach multiple files by following this link.</span></p>
 % endif
-    <p class="label"><span class="mandatory">*</span><label>Travel &amp; Accommodation Assistance:</label></p>
+
     <p class="label"><label>Travel &amp; Accommodation Assistance:</label></p>
     <p class="note" style="margin-top: 0em">linux.conf.au has some funds available to provide travel and accommodation for selected speakers, both from the local region and internationally.</p>
 

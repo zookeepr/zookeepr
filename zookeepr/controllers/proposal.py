@@ -26,7 +26,6 @@ from zookeepr.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
-
 class NewPersonSchema(BaseSchema):
     allow_extra_fields = False
 
@@ -58,15 +57,6 @@ class ProposalSchema(BaseSchema):
     video_release = validators.Bool()
     slides_release = validators.Bool()
 
-#class MiniProposalSchema(BaseSchema):
-#    allow_extra_fields = False
-#    title = validators.String(not_empty=True)
-#    abstract = validators.String(not_empty=True)
-#    type = ProposalTypeValidator()
-#    audience = TargetAudienceValidator()
-#    url = validators.String()
-#
-
 class NewProposalSchema(BaseSchema):
     person = NewPersonSchema()
     proposal = ProposalSchema()
@@ -79,19 +69,6 @@ class ExistingProposalSchema(BaseSchema):
     attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
     person_to_edit = PersonValidator()
-
-#class NewMiniProposalSchema(BaseSchema):
-#    person = NewPersonSchema()
-#    proposal = MiniProposalSchema()
-#    attachment = FileUploadValidator()
-#    pre_validators = [variabledecode.NestedVariables]
-#
-#class ExistingMiniProposalSchema(BaseSchema):
-#    person = ExistingPersonSchema()
-#    proposal = MiniProposalSchema()
-#    attachment = FileUploadValidator()
-#    pre_validators = [variabledecode.NestedVariables]
-#
 
 class NewReviewSchema(BaseSchema):
     pre_validators = [NestedVariables]
@@ -113,12 +90,12 @@ class ProposalController(BaseController):
         c.cfmini_status = lca_info['cfmini_status']
         c.paper_editing = lca_info['paper_editing']
 
+    @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
         c.proposal_types = ProposalType.find_all()
         c.target_audiences = TargetAudience.find_all()
         c.accommodation_assistance_types = AccommodationAssistanceType.find_all()
         c.travel_assistance_types = TravelAssistanceType.find_all()
-
 
     @dispatch_on(POST="_new")
     def new(self):
@@ -127,13 +104,17 @@ class ProposalController(BaseController):
         elif c.cfp_status == 'not_open':
            return render("proposal/not_open.mako")
 
-        c.person = h.signed_in_person()
-
         defaults = {
             'proposal.type': 1,
             'proposal.video_release': 1,
             'proposal.slides_release': 1,
         }
+
+        c.person = h.signed_in_person()
+        defaults['person.mobile'] = c.person.mobile
+        defaults['person.experience'] = c.person.experience
+        defaults['person.bio'] = c.person.bio
+
         form = render("proposal/new.mako")
         return htmlfill.render(form, defaults)
 
@@ -168,7 +149,6 @@ class ProposalController(BaseController):
         email(c.person.email_address, render('proposal/thankyou_email.mako'))
 
         h.flash("Proposal submitted!")
-
         return redirect_to(controller='proposal', action="index", id=None)
 
     @dispatch_on(POST="_review")
@@ -240,8 +220,6 @@ class ProposalController(BaseController):
         return redirect_to('/proposal/review_index')
 
 
-
-    @authorize(h.auth.is_valid_user)
     @dispatch_on(POST="_attach")
     def attach(self, id):
         return render('proposal/attach.mako')
@@ -269,8 +247,6 @@ class ProposalController(BaseController):
 
         return redirect_to(action='view', id=id)
 
-
-    @authorize(h.auth.is_valid_user)
     def view(self, id):
         # We need to recheck auth in here so we can pass in the id
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
@@ -282,7 +258,6 @@ class ProposalController(BaseController):
         return render('proposal/view.mako')
 
     @dispatch_on(POST="_edit")
-    @authorize(h.auth.is_valid_user)
     def edit(self, id):
         # We need to recheck auth in here so we can pass in the id
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
@@ -308,12 +283,12 @@ class ProposalController(BaseController):
         if c.proposal.audience:
             defaults['proposal.audience'] = defaults['proposal.target_audience_id']
 
+        c.miniconf = (c.proposal.type.name == 'Miniconf')
         form = render('/proposal/edit.mako')
         return htmlfill.render(form, defaults)
 
 
-    @validate(schema=ExistingProposalSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
-    @authorize(h.auth.is_valid_user)
+    @validate(schema=ExistingProposalSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         # We need to recheck auth in here so we can pass in the id
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
@@ -340,7 +315,6 @@ class ProposalController(BaseController):
             email(lca_info['proposal_update_email'], body)
 
         h.flash("Proposal %s edited!"%p_edit)
-
         return redirect_to('/proposal')
 
     @authorize(h.auth.has_reviewer_role)
@@ -391,68 +365,9 @@ class ProposalController(BaseController):
             return 0
         return total_score*1.0/num_reviewers
 
-    @authorize(h.auth.is_valid_user)
     def index(self):
         c.person = h.signed_in_person()
         return render('/proposal/list.mako')
-
-# FIXME move to its own controller
-#    @dispatch_on(POST="_new")
-#    def submit_mini(self):
-#        # call for miniconfs has closed
-#        if c.cfmini_status == 'closed':
-#            return render("proposal/closed_mini.mako")
-#        elif c.cfmini_status == 'not_open':
-#            return render("proposal/not_open_mini.mako")
-#
-#        return render("proposal/new_mini.mako")
-#
-#    @validate(schema=NewProposalSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
-#    def _submit_mini(self):
-#        else:
-#            c.cfptypes = self.dbsession.query(ProposalType).all()
-#            c.tatypes = self.dbsession.query(AssistanceType).all()
-#
-#            errors = {}
-#            defaults = dict(request.POST)
-#
-#            if request.method == 'POST' and defaults:
-#                if c.signed_in_person:
-#                    schema = self.schemas['mini_edit']
-#                else:
-#                    schema = self.schemas['mini_new']
-#
-#                result, errors = schema().validate(defaults, self.dbsession)
-#                if not errors:
-#                    c.proposal = Proposal()
-#                    # update the objects with the validated form data
-#                    for k in result['proposal']:
-#                        setattr(c.proposal, k, result['proposal'][k])
-#
-#                    if not c.signed_in_person:
-#                        c.person = model.Person()
-#                        for k in result['person']:
-#                            setattr(c.person, k, result['person'][k])
-#                        self.dbsession.save(c.person)
-#                        email(c.person.email_address,
-#                            render('person/new_person_email.myt', fragment=True))
-#                    else:
-#                        c.person = c.signed_in_person
-#                        for k in result['person']:
-#                            setattr(c.person, k, result['person'][k])
-#
-#                    c.person.proposals.append(c.proposal)
-#
-#                    for k in result['person']:
-#                        setattr(c.person, k, result['person'][k])
-#
-#                    if result['attachment'] is not None:
-#                        c.attachment = Attachment()
-#                        for k in result['attachment']:
-#                            setattr(c.attachment, k, result['attachment'][k])
-#                        c.proposal.attachments.append(c.attachment)
-#
-#                    return render_response('proposal/thankyou_mini.myt')
 
     @dispatch_on(POST="_approve")
     @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))

@@ -52,7 +52,5 @@ Please consider allowing us to share both the video of your talk and your
 slides, so that the community can gain the maximum benefit from your talk!
 % endif
 
-<%doc>
-This template is used to generate the email that is sent to people
-submitting talks and tutorials for the conference.
-</%doc>
+The ${ h.event_name() } team
+http://${ h.host_name() }/contact

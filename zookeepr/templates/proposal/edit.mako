@@ -8,7 +8,7 @@
 % else:
 
 ${ h.form(h.url_for()) }
-%   if c.proposal.type.name == 'Miniconf':
+%   if c.miniconf:
         <%include file="form_mini.mako" />
 %   else:
         <%include file="form.mako" />
