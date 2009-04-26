@@ -17,7 +17,7 @@
     <th>&nbsp;</th>
   </tr>
 %   for ceiling in c.ceiling_collection:
-  <tr>
+  <tr class="${ h.cycle('even', 'odd')}">
     <td>${ h.link_to(ceiling.name, url=h.url_for(action='view', id=ceiling.id)) }</td>
     <td>${ ceiling.max_sold }</td>
 %       if ceiling.available_from:

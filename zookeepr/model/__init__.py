@@ -31,7 +31,8 @@ from proposal import Proposal, ProposalStatus, ProposalType, TravelAssistanceTyp
 from attachment import Attachment
 from review import Review, Stream
 
-from product import Product, ProductCategory, ProductInclude
+from product import Product, ProductInclude
+from product_category import ProductCategory
 from ceiling import Ceiling
 
 from invoice import Invoice

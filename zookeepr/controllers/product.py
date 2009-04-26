@@ -17,7 +17,8 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta
 from zookeepr.model.ceiling import Ceiling
-from zookeepr.model.product import Product, ProductCategory
+from zookeepr.model.product import Product
+from zookeepr.model.product_category import ProductCategory
 
 from zookeepr.config.lca_info import lca_info
 
