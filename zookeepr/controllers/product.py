@@ -77,6 +77,7 @@ class ProductController(BaseController):
         c.product = Product.find_by_id(id)
 
         defaults = h.object_to_defaults(c.product, 'product')
+        defaults['product.category'] = c.product.category.id
 
         defaults['product.ceilings'] = []
         for ceiling in c.product.ceilings:
