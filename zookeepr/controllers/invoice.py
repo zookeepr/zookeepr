@@ -22,7 +22,7 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.lib.mail import email
 
-from zookeepr.model import meta, Invoice, InvoiceItem, Registration
+from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory
 from zookeepr.model.payment import PaymentOptions
 
 from zookeepr.config.lca_info import lca_info
@@ -73,8 +73,8 @@ class InvoiceController(BaseController):
             else:
                 item.product = i['product']
                 item.description = i['product'].description
-                item.cost = i['cost']
-                item.qty = i['qty']
+            item.cost = i['cost']
+            item.qty = i['qty']
             results['items'].append(item)
                 
         c.invoice = Invoice(**results)
