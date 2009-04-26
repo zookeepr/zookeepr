@@ -54,7 +54,7 @@
 %           #endif
 %       #endfor
 %   #endfor
-%   if category.name == 'Accomodation':
+%   if category.name == 'Accommodation':
 
         <p class="label">Check in on:</p>
         <p><% h.date(c.registration.checkin) %></p>

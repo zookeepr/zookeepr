@@ -134,7 +134,7 @@ def setup(meta):
 #            dict(name='Ticket', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
 #            dict(name='Shirt', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=100),
 #            dict(name='Dinner Ticket', description='Please indicate how many penguin dinner tickets you wish to purchase. You should include yourself in this number, even if you buy a professional registration.', display='qty', min_qty=0, max_qty=5),
-#            dict(name='Accomodation', description='Where would you like to stay during the conference?', display='select', min_qty=0, max_qty=10),
+#            dict(name='Accommodation', description='Where would you like to stay during the conference?', display='select', min_qty=0, max_qty=10),
 #            dict(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=50),
 #            )
 #
@@ -172,7 +172,7 @@ def setup(meta):
 #            dict(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2200", auth=None, validate=None),
 #            dict(category_id='3', active=True, description="Dinner Tickets", cost="8000", auth=None, validate="ProDinner(dinner_field='product_26_qty',ticket_category='category_1',ticket_id=[5,4])"),
 #            dict(category_id='4', active=True, description="I will organise my own", cost="0", auth=None, validate=None),
-#            dict(category_id='4', active=True, description="Wrest Point (Visit Accomodation page)", cost="0", auth=None, validate=None),
+#            dict(category_id='4', active=True, description="Wrest Point (Visit Accommodation page)", cost="0", auth=None, validate=None),
 #            dict(category_id='4', active=True, description="University Accommodation - Includes Breakfast! (price per night)", cost="6000", auth=None, validate=None),
 #            dict(category_id='5', active=True, description="Adult", cost="20000", auth=None, validate="PPEmail(adult_field='product_30_qty',email_field='partner_email')"),
 #            dict(category_id='5', active=True, description="Child (0-3 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_31_qty',adult_field='product_30_qty')"),
@@ -258,7 +258,7 @@ def setup(meta):
 #            dict(product_id='8', ceiling_id='1'),   # all-conference
 #            # Volunteer
 #            dict(product_id='9', ceiling_id='1'),   # all-conference
-#            # University Accomodation
+#            # University Accommodation
 #            dict(product_id='29', ceiling_id='5'),  # uniaccom
 #            )
 #    except SQLError, inst:

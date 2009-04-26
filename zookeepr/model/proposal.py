@@ -45,7 +45,7 @@ def setup(meta):
     )
     meta.Session.add_all(
         [
-            AccommodationAssistanceType(name='I do not require accomodation assistance.'),
+            AccommodationAssistanceType(name='I do not require accommodation assistance.'),
             AccommodationAssistanceType(name='I request that linux.conf.au provide student-style single room accommodation for the length of the conference.'),
         ]
     )

@@ -198,8 +198,8 @@ else:
           <p>${ soldout }${ product.description } ${ h.text_field('products.product_' + str(product.id) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
 %           endfor
 %       endif
-%       if category.name == 'Accomodation':
-          <p>Please see ${ h.link_to('the accomodation page', url='/register/accommodation', popup=True) } for prices and details, including how to book your Wrest Point room at LCA09 rates.</p>
+%       if category.name == 'Accommodation':
+          <p>Please see ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) } for prices and details, including how to book your Wrest Point room at LCA09 rates.</p>
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">

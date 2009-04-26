@@ -306,7 +306,7 @@ class RegistrationController(BaseController): # Update, List, Read
                 if product != None:
                     rego_product = model.RegistrationProduct()
                     rego_product.product = product
-                    if product.category.name == 'Accomodation':
+                    if product.category.name == 'Accommodation':
                         rego_product.qty = c.registration.checkout - c.registration.checkin
                     else:
                         rego_product.qty = 1

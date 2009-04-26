@@ -93,7 +93,7 @@ class Product(Base):
         qty = 0
         for ii in self.invoice_items:
             if not ii.invoice.void and ii.invoice.paid():
-                if self.category.name == 'Accomodation':
+                if self.category.name == 'Accommodation':
                     qty += 1
                 else:
                     qty += ii.qty
@@ -105,7 +105,7 @@ class Product(Base):
         for ii in self.invoice_items:
             # also count sold items as invoiced since they are valid
             if not ii.invoice.void and ((ii.invoice.paid() or not ii.invoice.overdue() or not date)):
-                if self.category.name == 'Accomodation':
+                if self.category.name == 'Accommodation':
                     qty += 1
                 else:
                     qty += ii.qty
