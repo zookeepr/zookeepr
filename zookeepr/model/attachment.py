@@ -36,18 +36,12 @@ class Attachment(Base):
         return '<Attachment id=%r filename="%s">' % (self.id, self.filename)
 
     @classmethod
-    def find_by_filename(cls, filename, abort_404 = True):
-        result = Session.query(Attachment).filter_by(filename=filename).first()
-        if result is None and abort_404:
-            abort(404, "No such object")
-        return result
+    def find_by_filename(cls, filename):
+        return Session.query(Attachment).filter_by(filename=filename).first()
 
     @classmethod
-    def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(Attachment).filter_by(id=id).first()
-        if result is None and abort_404:
-            abort(404, "No such object")
-        return result
+    def find_by_id(cls, id):
+        return Session.query(Attachment).filter_by(id=id).first()
 
     @classmethod
     def find_all(cls):
