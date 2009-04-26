@@ -6,43 +6,43 @@
   onSubmit="return disableForm(this);" >
 <p>
 # % for k in fields.keys():
-# <input type="hidden" name="<% k %>" value="<% fields[k] %>">
-# % # end for
+# <input type="hidden" name="${ k }" value="${ fields[k] }">
+# % endfor
 
 <input type="hidden" name="linux.conf.au - Follow the signs 2010"
-  VALUE="<% "%.2f" % (fields['Amount']/100.0) %>">
+  VALUE="${ "%.2f" % (fields['Amount']/100.0) }">
 
 
 <strong>Invoice #:</strong>
-<% fields['InvoiceID'] %>
+${ fields['InvoiceID'] }
 </p>
 
 <p>
 <strong>Amount:</strong>
-<% h.number_to_currency(fields['Amount']/100.0) %>
+${ h.number_to_currency(fields['Amount']/100.0) }
 </p>
 
 <p>
-View <% h.link_to('invoice details', url=h.url(action='view')) %> or <%
-h.link_to('registration status', url=h.url(controller='registration', action='status')) %> before
+View ${ h.link_to('invoice details', url=h.url_for(action='view')) } or ${
+h.link_to('registration status', url=h.url_for(controller='registration', action='status')) } before
 payment.
 </p>
 <p>
 <input type="hidden" name="receipt_address"
-  value="<% c.invoice.person.email_address |h %>">
+  value="${ c.invoice.person.email_address |h }">
 
-<input type="hidden" name="invoice_id" value="<% fields['InvoiceID'] %>">
+<input type="hidden" name="invoice_id" value="${ fields['InvoiceID'] }">
 <input type="hidden" name="hidden_fields" value="invoice_id">
 <input type="hidden" name="information_fields" value="invoice_id">
 
 <input type="hidden" name="payment_reference"
-  value="i-<% fields['InvoiceID'] %> p-<% c.invoice.person.id %>">
+  value="i-${ fields['InvoiceID'] } p-${ c.invoice.person.id }">
 
 <INPUT TYPE="HIDDEN" NAME="vendor_name" VALUE="linux">
 <input type="hidden" name="reply_link_url"
-  value="http://<% h.host_name() %>/payment/new?invoice_id=&amp;payment_amount=&amp;bank_reference=&amp;payment_number=">
+  value="http://${ h.host_name() }/payment/new?invoice_id=&amp;payment_amount=&amp;bank_reference=&amp;payment_number=">
 <input type="hidden" name="return_link_url"
-  value="http://<% h.host_name() %>/register/status">
+  value="http://${ h.host_name() }/register/status">
 <input type="hidden" name="return_link_text"
   value="Return to the linux.conf.au website">
 </p>
@@ -60,7 +60,3 @@ SecurePay Australia</p></td>
 </tr>
 
 </table>
-
-<%args>
-fields
-</%args>

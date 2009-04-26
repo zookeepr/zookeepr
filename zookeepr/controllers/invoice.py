@@ -93,6 +93,9 @@ class InvoiceController(BaseController):
 
         c.printable = False
         c.invoice = Invoice.find_by_id(id)
+        # TODO: remove these once payment works
+        c.invoice.good_payments = False
+        c.invoice.bad_payments = False
         return render('/invoice/view.mako')
 
     def printable(self, id):
@@ -130,7 +133,7 @@ class InvoiceController(BaseController):
         return render('/invoice/remind.mako')
 
     def pay(self, id):
-        return "TODO: pay"
+        return "TODO: pay (needs payment controller)"
         """Pay an invoice.
 
         This method bounces the user off to the commsecure website.
@@ -139,12 +142,27 @@ class InvoiceController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
+        c.invoice = Invoice.find_by_id(id)
+
         #return render('/registration/really_closed.mako')
         if c.invoice.person.invoices:
             if c.invoice.paid() or c.invoice.bad_payments:
+                c.status = []
+                if c.invoice.total()==0:
+                  c.status.append('zero balance')
+                if c.invoice.good_payments:
+                  c.status.append('paid')
+                  if len(c.invoice.good_payments)>1:
+                    c.status[-1] += ' (%d times)' % len(c.invoice.good_payments)
+                if c.invoice.bad_payments:
+                  c.status.append('tried to pay')
+                  if len(c.invoice.bad_payments)>1:
+                    c.status[-1] += ' (%d times)' % len(c.invoice.bad_payments)
+                c.status = ' and '.join(c.status)
                 return render('/invoice/already.mako')
 
         if c.invoice.is_void():
+            c.signed_in_person = h.signed_in_person()
             return render('/invoice/invalid.mako')
         if c.invoice.overdue():
             for ii in c.invoice.items:
@@ -192,6 +210,7 @@ class InvoiceController(BaseController):
         import os, tempfile, libxml2, libxslt
 
         c.invoice = Invoice.find_by_id(id)
+        # TODO: remove these once payment works
         c.invoice.good_payments = False
         c.invoice.bad_payments = False
         xml_s = render('/invoice/pdf.mako')
@@ -230,13 +249,17 @@ class InvoiceController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def void(self, id):
-        return "TODO: void"
+        c.invoice = Invoice.find_by_id(id)
         c.invoice.void = "Administration Change"
+        meta.Session.commit()
+        h.flash("Invoice was voided.")
         return redirect_to(action='view', id=c.invoice.id)
 
     @authorize(h.auth.has_organiser_role)    
     def unvoid(self, id):
-        return "TODO: unvoid"
+        c.invoice = Invoice.find_by_id(id)
         c.invoice.void = None
         c.invoice.manual = True
+        meta.Session.commit()
+        h.flash("Invoice was un-voided.")
         return redirect_to(action='view', id=c.invoice.id)
