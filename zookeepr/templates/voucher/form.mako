@@ -24,9 +24,9 @@
           <p class="entries">
           <table>
 % for category in c.product_categories:
-%   if category.name in ['Ticket', 'Accomodation']:
+%   if category.name in ['Ticket', 'Accommodation']:
             <tr>
-              <td colspan="3" align="center"><h3><% category.name |h %></h3></td>
+              <td colspan="3" align="center"><h3>${ category.name |h }</h3></td>
             </tr>
             <tr>
               <th>Product</th>
@@ -47,7 +47,7 @@
               <td>${ h.text('products.product_' + str(product.id) + '_qty', size=3) }</td>
 %           endif
 %           if category.display == 'radio' and category.products[0] == product:
-              <td rowspan="<% len(category.products) %>"><% h.textfield('products.category_' + str(category.id) + '_percentage', size=3) %></td>
+              <td rowspan="${ len(category.products) }">${ h.text('products.category_' + str(category.id) + '_percentage', size=3) }</td>
 %           elif category.display == 'radio':
               <!-- pass -->
 %           else:

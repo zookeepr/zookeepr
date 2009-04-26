@@ -36,6 +36,14 @@ class Voucher(Base):
     def find_all(cls):
         return Session.query(Voucher).order_by(Voucher.id).all()
 
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(Voucher).filter_by(id=id).first()
+
+    @classmethod
+    def find_by_code(cls, code):
+        return Session.query(Voucher).filter_by(code=code).first()
+
 class VoucherProduct(Base):
     # table definitions
     __tablename__ = 'voucher_product'
