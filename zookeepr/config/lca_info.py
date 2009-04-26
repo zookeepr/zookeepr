@@ -19,6 +19,7 @@ lca_info = {
   'event_parent_organisation' : 'Linux Australia, Incorporated',
   'event_parent_url' : 'http://www.linux.org.au/',
   'event_name' : 'linux.conf.au 2010',
+  'event_shortname' : 'lca2010',
   'event_url' : 'http://www.linux.conf.au/',
   'event_tax_number' : 'ABN 56 987 117 479',
 # 'event_tax_number' : 'NZ GST #90-792-369',
@@ -111,6 +112,7 @@ lca_rego = {
 }
 
 file_paths = {
+  'zk_root' : '/home/zookeepr/zookeepr/lca10',
   'public_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public',
   'public_html': '',
   'news_fileprefix': '/home/zookeepr/zookeepr/lca10/zookeepr/public/featured',

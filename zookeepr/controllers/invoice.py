@@ -6,7 +6,7 @@ import sha
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import redirect_to
+from pylons.controllers.util import redirect_to, Response
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -25,7 +25,7 @@ from zookeepr.lib.mail import email
 from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory
 from zookeepr.model.payment import PaymentOptions
 
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, file_paths
 
 log = logging.getLogger(__name__)
 
@@ -185,16 +185,18 @@ class InvoiceController(BaseController):
         return res
 
     def pdf(self, id):
-        return "TODO: pdf"
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
         import os, tempfile, libxml2, libxslt
 
-        xml_s = render('/%s/pdf.mako' % self.individual, fragment=True)
+        c.invoice = Invoice.find_by_id(id)
+        c.invoice.good_payments = False
+        c.invoice.bad_payments = False
+        xml_s = render('/invoice/pdf.mako')
 
-        xsl_f = request.environ['paste.config']['global_conf']['here'] + '/zookeepr/templates/invoice/pdf.xsl'
+        xsl_f = file_paths['zk_root'] + '/zookeepr/templates/invoice/pdf.xsl'
         xsl_s = libxml2.parseFile(xsl_f) 
         xsl = libxslt.parseStylesheetDoc(xsl_s) 
 
@@ -220,8 +222,8 @@ class InvoiceController(BaseController):
         #res.headers['Content-type']='application/pdf'
         res.headers['Content-type']='application/octet-stream'
         #res.headers['Content-type']='text/plain; charset=utf-8'
-        res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
-                                                           % c.invoice.id )
+        filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'
+        res.headers['Content-Disposition']=( 'attachment; filename=%s' % filename )
 
         # We should really remove the pdf file, shouldn't we.
         return res
