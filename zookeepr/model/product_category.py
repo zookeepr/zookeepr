@@ -17,7 +17,14 @@ class ProductCategory(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
     name = sa.Column(sa.types.Text, nullable=False, unique=True)
     description = sa.Column(sa.types.Text, nullable=False)
-    display = sa.Column(sa.types.Text, nullable=False)
+    
+    # display is used to determine the type of field to collect input with (see templates/registration/form.mako)
+    # display is also used to validate the output (see controllers/registration.py)
+    # available types so far: radio, select, checkbox, qty
+    # The first three are self explanatory and act as the HTML counterpart
+    # qty is an interger validated text box
+    display = sa.Column(sa.types.Text, nullable=False) 
+    
     min_qty = sa.Column(sa.types.Integer, nullable=True)
     max_qty = sa.Column(sa.types.Integer, nullable=True)
 
