@@ -51,7 +51,7 @@ class RoleController(BaseController): # Delete
         return htmlfill.render(form, defaults)
 
 
-    @validate(schema=EditRoleSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=EditRoleSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         c.role = Role.find_by_id(id)
 
@@ -69,7 +69,7 @@ class RoleController(BaseController): # Delete
         """Create a new role form. """
         return render('/role/new.mako')
 
-    @validate(schema=NewRoleSchema(), form='new', post_only=False, on_get=True)
+    @validate(schema=NewRoleSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         """Create a new role submit.  """
         results = self.form_result['role']
@@ -100,7 +100,7 @@ class RoleController(BaseController): # Delete
         c.role = Role.find_by_id(id)
         return render('role/confirm_delete.mako')
 
-    @validate(schema=None, form='delete', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.role = Role.find_by_id(id)
         meta.Session.delete(c.role)

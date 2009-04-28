@@ -59,7 +59,7 @@ class InvoiceController(BaseController):
         c.item_count = 0;
         return render("/invoice/new.mako")
 
-    @validate(schema=NewInvoiceSchema(), form='new', post_only=True)
+    @validate(schema=NewInvoiceSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['invoice']
         del(results['item_count'])

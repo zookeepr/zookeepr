@@ -25,9 +25,7 @@ from zookeepr.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class VolunteerSchema(BaseSchema):
-    areas = DictSet()
-    # TODO: test with not_empty=True and have the error be reported
-    # next to the field instead of at the top of the file
+    areas = DictSet(not_empty=True)
     other = validators.String()
 
 class NewVolunteerSchema(BaseSchema):
@@ -49,7 +47,7 @@ class VolunteerController(BaseController):
 
         return render('/volunteer/new.mako')
 
-    @validate(schema=NewVolunteerSchema(), form='new')
+    @validate(schema=NewVolunteerSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['volunteer']
 
@@ -101,7 +99,7 @@ class VolunteerController(BaseController):
         form = render('volunteer/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=EditVolunteerSchema(), form='edit')
+    @validate(schema=EditVolunteerSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         volunteer = Volunteer.find_by_id(id)
 

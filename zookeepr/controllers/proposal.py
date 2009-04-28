@@ -118,7 +118,7 @@ class ProposalController(BaseController):
         form = render("proposal/new.mako")
         return htmlfill.render(form, defaults)
 
-    @validate(schema=NewProposalSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=NewProposalSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
 
         person_results = self.form_result['person']
@@ -159,7 +159,7 @@ class ProposalController(BaseController):
 
         return render('proposal/review.mako')
 
-    @validate(schema=NewReviewSchema(), form='review', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=NewReviewSchema(), form='review', post_only=True, on_get=True, variable_decode=True)
     @authorize(h.auth.has_reviewer_role)
     def _review(self, id):
         """Review a proposal.
@@ -225,7 +225,7 @@ class ProposalController(BaseController):
         return render('proposal/attach.mako')
 
 
-    @validate(schema=NewAttachmentSchema(), form='attach', post_only=False, on_get=True)
+    @validate(schema=NewAttachmentSchema(), form='attach', post_only=True, on_get=True, variable_decode=True)
     def _attach(self, id):
         """Attach a file to the proposal.
         """
@@ -377,7 +377,7 @@ class ProposalController(BaseController):
         c.statuses = ProposalStatus.find_all()
         return render("proposal/approve.mako")
 
-    @validate(schema=ApproveSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=ApproveSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
     def _approve(self):
         c.highlight = set()

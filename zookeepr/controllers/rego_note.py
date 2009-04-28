@@ -78,7 +78,7 @@ class RegoNoteController(BaseController):
         form = render('rego_note/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=UpdateNoteSchema(), form='edit', post_only=True)
+    @validate(schema=UpdateNoteSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         rego_note = RegoNote.find_by_id(id)
 

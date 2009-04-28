@@ -57,7 +57,7 @@ class CeilingController(BaseController):
     def new(self):
         return render('/ceiling/new.mako')
 
-    @validate(schema=NewCeilingSchema(), form='new', post_only=True)
+    @validate(schema=NewCeilingSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['ceiling']
 
@@ -94,7 +94,7 @@ class CeilingController(BaseController):
         form = render('/ceiling/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=EditCeilingSchema(), form='edit', post_only=True)
+    @validate(schema=EditCeilingSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         ceiling = Ceiling.find_by_id(id)
 

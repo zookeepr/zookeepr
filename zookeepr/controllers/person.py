@@ -115,7 +115,7 @@ class PersonController(BaseController): #Read, Update, List
     def forgotten_password(self):
         return render('/person/forgotten_password.mako')
 
-    @validate(schema=ForgottenPasswordSchema(), form='forgotten_password', post_only=False, on_get=True)
+    @validate(schema=ForgottenPasswordSchema(), form='forgotten_password', post_only=True, on_get=True, variable_decode=True)
     def _forgotten_password(self):
         """Action to let the user request a password change.
 
@@ -151,7 +151,7 @@ class PersonController(BaseController): #Read, Update, List
 
         return render('person/reset.mako')
 
-    @validate(schema=PasswordResetSchema(), form='reset_password', post_only=False, on_get=True)
+    @validate(schema=PasswordResetSchema(), form='reset_password', post_only=True, on_get=True, variable_decode=True)
     def _reset_password(self, url_hash):
         """Confirm a password change request, and let the user change
         their password.
@@ -217,7 +217,7 @@ class PersonController(BaseController): #Read, Update, List
 
 
     @authorize(h.auth.is_valid_user)
-    @validate(schema=UpdatePersonSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=UpdatePersonSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         """UPDATE PERSON"""
         # We need to recheck auth in here so we can pass in the id
@@ -254,7 +254,7 @@ class PersonController(BaseController): #Read, Update, List
         form = render('/person/new.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=NewPersonSchema(), form='new', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=NewPersonSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         """Create a new person submit.
         """
@@ -297,7 +297,7 @@ class PersonController(BaseController): #Read, Update, List
 
 
     @authorize(h.auth.has_organiser_role)
-    @validate(schema=RoleSchema, form='roles', post_only=False, on_get=True)
+    @validate(schema=RoleSchema, form='roles', post_only=True, on_get=True, variable_decode=True)
     def _roles(self, id):
         """ Lists and changes the person's roles. """
 

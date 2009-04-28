@@ -214,8 +214,7 @@ class RegistrationController(BaseController): # Update, List, Read
         form = render("/registration/new.mako")
         return htmlfill.render(form, defaults)
 
-    @validate(schema=new_schema, form='new', post_only=False,
-        on_get=True, variable_decode=True)
+    @validate(schema=new_schema, form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='_edit', id=c.signed_in_person.registration.id)

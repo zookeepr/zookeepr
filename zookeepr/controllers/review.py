@@ -49,7 +49,7 @@ class ReviewController(BaseController):
         form = render('/review/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=EditReviewSchema(), form='edit', post_only=False, on_get=True, variable_decode=True)
+    @validate(schema=EditReviewSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         c.review = Review.find_by_id(id)
         self._is_reviewer()

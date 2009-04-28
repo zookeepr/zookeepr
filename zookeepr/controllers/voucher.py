@@ -85,7 +85,7 @@ class VoucherController(BaseController):
         form = render("/voucher/new.mako")
         return htmlfill.render(form, defaults)
 
-    @validate(schema=NewVoucherSchema(), form='new', post_only=True)
+    @validate(schema=NewVoucherSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     @authorize(h.auth.has_organiser_role)
     def _new(self):
         results = self.form_result['voucher']

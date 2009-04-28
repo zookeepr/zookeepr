@@ -52,7 +52,7 @@ class ProductController(BaseController):
     def new(self):
         return render('/product/new.mako')
 
-    @validate(schema=NewProductSchema(), form='new', post_only=True)
+    @validate(schema=NewProductSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['product']
 
@@ -87,7 +87,7 @@ class ProductController(BaseController):
         form = render('/product/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=EditProductSchema(), form='edit')
+    @validate(schema=EditProductSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         product = Product.find_by_id(id)
 

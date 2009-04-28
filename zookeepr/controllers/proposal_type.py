@@ -71,7 +71,7 @@ class ProposalTypeController(BaseController):
         form = render('/proposal_type/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=EditProposalTypeSchema(), form='edit', post_only=True)
+    @validate(schema=EditProposalTypeSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         proposal_type = ProposalType.find_by_id(id)
 

@@ -40,7 +40,7 @@ class AttachmentController(BaseController):
             h.auth.no_role()
         return render_response('/attachment/confirm_delete.mako')
 
-    @validate(schema=None, form='delete', post_only=True)
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.attachment = Attachment.find_by_id(id)
         author_id = c.attachment.proposal.person.id

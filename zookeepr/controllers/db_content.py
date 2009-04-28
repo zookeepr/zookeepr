@@ -64,7 +64,7 @@ class DbContentController(BaseController):
             h.flash("Configuration Error: Please make sure the 'In the press' content type exists for full functionality.", 'error')
         return render('/db_content/new.mako')
 
-    @validate(schema=NewDbContentSchema(), form='new')
+    @validate(schema=NewDbContentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['db_content']
         c.db_content = DbContent(**results)
@@ -99,7 +99,7 @@ class DbContentController(BaseController):
         form = render('/db_content/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=UpdateDbContentSchema(), form='edit')
+    @validate(schema=UpdateDbContentSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         c.db_content = DbContent.find_by_id(id)
 
@@ -112,12 +112,12 @@ class DbContentController(BaseController):
         redirect_to(action='view', id=id)
 
     @authorize(h.auth.has_organiser_role)
-    @dispatch_on(POST="_delete") 
+    @dispatch_on(POST="_delete")
     def delete(self, id):
         c.db_content = DbContent.find_by_id(id)
         return render('/db_content/confirm_delete.mako')
 
-    @validate(schema=None, form='delete')
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.db_content = DbContent.find_by_id(id)
         meta.Session.delete(c.db_content)
