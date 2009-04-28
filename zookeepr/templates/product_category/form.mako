@@ -1,14 +1,24 @@
-        <p><label for="product_category.name">Name:</label>
-        ${ h.text('product_category.name') }</p>
+        <p class="label"><span class="mandatory">*</span><label for="product_category.name">Name:</label></p>
+        <p class="entries">${ h.text('product_category.name') }</p>
 
-        <p><label for="product_category.description">Description:</label>
-        ${ h.text('product_category.description') }</p>
+        <p class="label"><span class="mandatory">*</span><label for="product_category.description">Description:</label></p>
+        <p class="entries">${ h.text('product_category.description') }</p>
 
-        <p><label for="product_category.display">Display:</label>
-        ${ h.text('product_category.display') }</p>
+        <p class="label"><span class="mandatory">*</span><label for="product_category.display">Display as:</label></p>
+        <p class="entries">
+        ${ h.radio('product_category.display', 'radio', label="Radio button (single selection)") }
+        <br />
+        ${ h.radio('product_category.display', 'select', label="Drop down menu (single selection)") }
+        <br />
+        ${ h.radio('product_category.display', 'checkbox', label="Checkbox (multiple selection)") }
+        <br />
+        ${ h.radio('product_category.display', 'qty', label="Quantity (integer)") }
+        </p>
 
-        <p><label for="product_category.min_qty">Min. Quantity:</label>
-        ${ h.text('product_category.min_qty') }</p>
+        <p class="label"><label for="product_category.min_qty">Min. Quantity:</label></p>
+        <p class="entries">${ h.text('product_category.min_qty') }</p>
 
-        <p><label for="product_category.max_qty">Max. Quantity:</label>
-        ${ h.text('product_category.max_qty') }</p>
+        <p class="label"><label for="product_category.max_qty">Max. Quantity:</label></p>
+        <p class="entries">${ h.text('product_category.max_qty') }</p>
+
+        <p class="note"><span class="mandatory">*</span> - Mandatory field</p>

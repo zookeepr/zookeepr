@@ -57,7 +57,7 @@ class ProductCategoryController(BaseController):
     def new(self):
         return render('/product_category/new.mako')
 
-    @validate(schema=NewProductCategorySchema(), form='new', post_only=True)
+    @validate(schema=NewProductCategorySchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['product_category']
 
@@ -86,7 +86,7 @@ class ProductCategoryController(BaseController):
         form = render('/product_category/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @validate(schema=EditProductCategorySchema(), form='edit', post_only=True)
+    @validate(schema=EditProductCategorySchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         product_category = ProductCategory.find_by_id(id)
 
