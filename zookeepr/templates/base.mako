@@ -92,7 +92,7 @@ ${next.body()}
 
   <div id="sponsors">
     <p>Thanks to our Emperor Penguin Sponsors:</p>
-    <p><img src="/sponsors/InternetNZ.png" alt="InternetNZ" title="Internet NZ: keeping Internet open and uncaptureable" /></p>
+    <p><a href="http://www.internetnz.org.nz"><img src="/sponsors/InternetNZ.png" alt="InternetNZ" title="Internet NZ works to keep the Internet open and uncaptureable, protecting and promoting the Internet for New Zealand." /></a></p>
   </div>
 
   <div id = 'footer'>
