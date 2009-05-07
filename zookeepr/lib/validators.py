@@ -188,6 +188,13 @@ class PersonSchema(BaseSchema):
 
 
 class ProductMinMax(validators.FancyValidator):
+    """ Check the Category min/max requirements are met.
+        self.product_fields is a [list] of products (generally category.products)
+        self.min_qty is the minimum total (generally category.min)
+        self.max_qty is the maximum total (generally category.max)
+        
+        See zookeepr.registration.RegistrationController._generate_product_schema for examples        
+    """
     def validate_python(self, value, state):
         total = 0
         negative_products = False
@@ -212,6 +219,7 @@ class ProductMinMax(validators.FancyValidator):
         return
 
 class ProductInCategory(validators.FancyValidator):
+    """ Check to see if product is available """
     def validate_python(self, value, state):
         for product in self.category.products:
             if product.id == int(value) and product.available():

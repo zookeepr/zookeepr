@@ -155,9 +155,23 @@ class RegistrationController(BaseController): # Update, List, Read
         return True
 
     def _generate_product_schema(self):
+        # Since the form is arbitrarily defined by what product types there are, the validation
+        #   (aka schema) also needs to be dynamic.
+        # Thus, this function generates a dynamic schema to validate a given set of products.
+        # 
         class ProductSchema(BaseSchema):
+            # This schema is used to validate the products submitted by the form.
+            # It is populated below
+            # EG:
+            #   ProductSchema.add_field('count', validators.Int(min=1, max=100))
+            # is the same as doing this inline:
+            #   count = validators.Int(min=1, max=100)
+            
+            # 2009-05-07 Josh H: Not sure why, but there is a reason this class is declaired within this method and not earlier on like in the voucher controller. Or maybe I just did this poorly...
             pass
         ProductSchema.add_field('partner_email', validators.Email()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+        
+        # Go through each category and each product and add generic validation
         for category in c.product_categories:
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
