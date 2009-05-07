@@ -90,6 +90,11 @@ ${next.body()}
   </div>
 
 
+  <div id="sponsors">
+    <p>Thanks to our Emperor Penguin Sponsors:</p>
+    <p><img src="/sponsors/InternetNZ.png" alt="InternetNZ" title="Internet NZ: keeping Internet open and uncaptureable" /></p>
+  </div>
+
   <div id = 'footer'>
     <div class = 'copyright'>
   &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2010</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a>
