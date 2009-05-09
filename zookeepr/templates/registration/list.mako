@@ -171,7 +171,7 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
    for auth_role in registration.person.roles:
        role.append(auth_role.name)
 %>
-        ${ '<i>' + '</i>, <i>'.join(role) + '</i>' }
+        ${ '<i>' + '</i>, <i>'.join(role) + '</i>' |n}
         </td>
         <td>
 %   for rinvoice in registration.person.invoices:
