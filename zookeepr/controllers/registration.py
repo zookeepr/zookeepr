@@ -593,9 +593,9 @@ class RegistrationController(BaseController): # Update, List, Read
                 pass
 
         setattr(c, 'per_page', per_page)
-        pages, collection = paginate(registration_list, per_page = per_page)
-        setattr(c, 'registration_pages', pages)
-        setattr(c, 'registration_collection', collection)
+        pagination =  paginate.Page(registration_list, per_page = per_page)
+        setattr(c, 'registration_pages', pagination)
+        setattr(c, 'registration_collection', pagination.items)
         setattr(c, 'registration_request', filter)
         
         setattr(c, 'roles', Role.find_all())

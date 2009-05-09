@@ -1,5 +1,5 @@
 <%
-attribs = "?page=" + str(c.registration_pages.current.next)
+attribs = "?page=" + str(c.registration_pages.next_page)
 for item, value in c.registration_request.iteritems():
     if type(value) == list:
         for option in value:
@@ -215,16 +215,12 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
     </table>
 <p>
 <%
-if c.registration_pages.current.next:
+if c.registration_pages.next_page:
     m.write(h.link_to('<span style="float: right;">Next page</span>', url=attribs))
-if c.registration_pages.current.previous:
+if c.registration_pages.previous_page:
     m.write(h.link_to('Previous page', url=h.url(page=c.registration_pages.current.previous)) + '  ')
 %>
 </p>
-<%
-start = c.registration_pages.current_page * c.registration_pages.items_per_page
-inc = 1
-if count == 0:
-    inc = 0
-%>
-<p style="float: right;">Displaying ${ start + inc }-${ start + count } of ${ c.registration_pages.item_count }.</p>
+<p style="float: right;">Displaying ${ c.registration_pages.first_item
+}&#8211;${ c.registration_pages.last_item} of ${
+c.registration_pages.item_count }.</p>
