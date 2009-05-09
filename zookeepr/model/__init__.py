@@ -40,6 +40,7 @@ from invoice_item import InvoiceItem
 from payment import Payment
 
 from registration import Registration
+from registration_product import RegistrationProduct
 
 from voucher import Voucher, VoucherProduct
 

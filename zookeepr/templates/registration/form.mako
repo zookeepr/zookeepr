@@ -148,9 +148,9 @@ else:
             </tr><tr><td>${ fields[i][0] }</td>
 %               endif
 %               if not product.available():
-            <td><span class="mandatory">^</span>${ h.text_field('none', size=2, disabled=True) }${ h.hidden_field('products.product_' + str(product.id) + '_qty') }</td>
+            <td><span class="mandatory">^</span>${ h.text('none', size=2, disabled=True) }${ h.hidden_field('products.product_' + str(product.id) + '_qty') }</td>
 %               else:
-            <td>${ h.text_field('products.product_' + str(product.id) + '_qty', size=2) }</td>
+            <td>${ h.text('products.product_' + str(product.id) + '_qty', size=2) }</td>
 %               endif
              <% j += 1 %>
 %           endfor
@@ -162,7 +162,7 @@ else:
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-          <p><label>${ h.radio_button('products.category_' + str(category.id), product.id) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+          <p><label>${ h.radio('products.category_' + str(category.id), product.id) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'select':
           <p class="entries">
@@ -186,7 +186,7 @@ else:
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-          <p><label>${ h.check_box('products.product_' + str(product.id)) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+          <p><label>${ h.checkbox('products.product_' + str(product.id)) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
@@ -195,7 +195,7 @@ else:
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-          <p>${ soldout }${ product.description } ${ h.text_field('products.product_' + str(product.id) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
+          <p>${ soldout }${ product.description } ${ h.text('products.product_' + str(product.id) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
 %           endfor
 %       endif
 %       if category.name == 'Accommodation':
@@ -232,7 +232,7 @@ else:
           <legend>&nbsp;</legend>
           <h2>Further Information</h2>
 
-          <p class="entries">${ h.check_box('registration.over18') }<label for="registration.over18">Are you over 18?</label></p>
+          <p class="entries">${ h.checkbox('registration.over18') }<label for="registration.over18">Are you over 18?</label></p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 
           <p class="label"><label for="registration.voucher_code">Voucher Code</label></p>
@@ -268,7 +268,7 @@ else:
                 <td>
 %   for miniconf in miniconfs:
         <% label = 'registration.miniconf.%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_')) %>
-                  ${ h.check_box(label) }
+                  ${ h.checkbox(label) }
                   <label for="${ label }">${ miniconf }</label>
                   <br>
 %   endfor
@@ -283,7 +283,7 @@ else:
             <p class="entries">
 % for (year, desc) in h.lca_rego['past_confs']:
    <% label = 'registration.prevlca.%s' % year %>
-                ${ h.check_box(label) }
+                ${ h.checkbox(label) }
                 <label for="${ label }">${ desc }</label>
                 <br>
 % endfor
@@ -302,7 +302,7 @@ else:
 % endfor
                 <option value="other">other:</option>
               </select>
-% if defaults['registration.shell'] in h.lca_rego['shells'] or defaults['registration.shell'] == '':
+% if not registration or registration.shell in h.lca_rego['shells'] or registration.shell == '':
               <span id="shell_other" style="display: none">${ h.text('registration.shelltext') }</span>
 % else:
               <span id="shell_other" style="display: inline">${ h.text('registration.shelltext') }</span>
@@ -318,7 +318,7 @@ else:
 % endfor
                 <option value="other">other:</option>
               </select>
-% if defaults['registration.editor'] in h.lca_rego['editors'] or defaults['registration.editor'] == '':
+% if not registration or registration.editor in h.lca_rego['editors'] or registration.editor == '':
               <span id="editor_other" style="display: none">${ h.text('registration.editortext') }</span>
 % else:
               <span id="editor_other" style="display: inline">${ h.text('registration.editortext') }</span>
@@ -334,7 +334,7 @@ else:
 % endfor
                 <option value="other">other:</option>
               </select>
-% if defaults['registration.distro'] in h.lca_rego['distros'] or defaults['registration.distro'] == '':
+% if not registration or registration.distro in h.lca_rego['distros'] or registration.distro == '':
               <span id="distro_other" style="display: none">${ h.text('registration.distrotext') }</span>
 % else:
               <span id="distro_other" style="display: inline">${ h.text('registration.distrotext') }</span>
@@ -355,10 +355,14 @@ else:
 
             <p class="label"><label for="registration.silly_description">Description:</label></p>
             <script src="/silly.js" type="text/javascript"></script>
-            <blockquote><p id='silly_description'>${ defaults['registration.silly_description'] }</p></blockquote>
+% if registration:
+            <blockquote><p id='silly_description'>${ registration.silly_description }</p></blockquote>
+% endif
+<%
 #            <p>${ h.button_to_function('New Description', function='silly_description()') }</p>
-            ${ h.hidden_field('registration.silly_description') }
-            ${ h.hidden_field('registration.silly_description_checksum') }
+%>
+            ${ h.hidden('registration.silly_description') }
+            ${ h.hidden('registration.silly_description_checksum') }
             <p class="note">This is a randomly chosen description for your name badge</p>
 
           </fieldset>
@@ -367,27 +371,27 @@ else:
             <h2>Subscriptions</h2>
 
             <p class="entries">
-              ${ h.check_box('registration.signup.linuxaustralia') }
+              ${ h.checkbox('registration.signup.linuxaustralia') }
               <label for="registration.signup.linuxaustralia">I want to sign up for (free) Linux Australia membership!</label> <a href="http://www.linux.org.au/">Read More</a>
             </p>
 
             <p class="entries">
-              ${ h.check_box('registration.signup.nzoss') }
+              ${ h.checkbox('registration.signup.nzoss') }
               <label for="registration.signup.nzoss">I want to sign up for membership with the New Zealand Open Source Society.</label> <a href="http://nzoss.org.nz/nzoss/about">Read More</a>
             </p>
 
             <p class="entries">
-              ${ h.check_box('registration.signup.internetnz') }
+              ${ h.checkbox('registration.signup.internetnz') }
               <label for="registration.signup.internetnz">I want to sign up for membership with Internet NZ.</label> <a href="http://www.internetnz.org.nz/membership">Read More</a>
             </p>
 
             <p class="entries">
-              ${ h.check_box('registration.signup.announce') }
+              ${ h.checkbox('registration.signup.announce') }
               <label for="registration.signup.announce">I want to sign up to the low traffic conference announcement mailing list!</label>
             </p>
 
             <p class="entries">
-              ${ h.check_box('registration.signup.chat') } 
+              ${ h.checkbox('registration.signup.chat') } 
               <label for="registration.signup.chat" >I want to sign up to the conference attendees mailing list!</label>
             </p>
           </fieldset>

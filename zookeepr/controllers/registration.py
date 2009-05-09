@@ -25,6 +25,7 @@ from zookeepr.lib.mail import email
 from zookeepr.model import meta
 from zookeepr.model import Registration, Role
 from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
+from zookeepr.model import Invoice
 
 from zookeepr.config.lca_info import lca_info
 
@@ -32,7 +33,7 @@ from zookeepr.controllers.person import PersonSchema
 
 log = logging.getLogger(__name__)
 
-# import datetime
+import datetime
 # import warnings
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
@@ -111,14 +112,14 @@ class UpdateRegistrationSchema(BaseSchema):
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [NestedVariables]
 
-# class ProductUnavailable(Exception):
-#     """Exception when a product isn't available
-#     Attributes:
-#         product -- the product that wasn't available
-#     """
+class ProductUnavailable(Exception):
+    """Exception when a product isn't available
+    Attributes:
+        product -- the product that wasn't available
+    """
 
-#     def __init__(self, product):
-#         self.product = product
+    def __init__(self, product):
+        self.product = product
 
 new_schema = NewRegistrationSchema()
 edit_schema = UpdateRegistrationSchema()
@@ -138,7 +139,7 @@ class RegistrationController(BaseController): # Update, List, Read
         c.manual_invoice = self.manual_invoice
 
     def _able_to_edit(self):
-        for invoice in c.signed_in_person.invoices:
+        for invoice in h.signed_in_person().invoices:
             if not invoice.is_void():
                 if invoice.paid() and invoice.total() != 0:
                     return False, "Sorry, you've already paid"
@@ -248,14 +249,13 @@ class RegistrationController(BaseController): # Update, List, Read
 
         # Create person<->registration relationship
         c.registration.person = c.person
-        self.dbsession.flush()
+        meta.Session.commit()
 
         email(
             c.person.email_address,
             render('registration/response.myt',
                 id=c.person.url_hash, fragment=True))
 
-        self.obj = c.registration
         self.pay(c.registration.id, quiet=1)
 
         h.flash("Thank you for your registration!")
@@ -270,31 +270,35 @@ class RegistrationController(BaseController): # Update, List, Read
             redirect_to('/')
 
     @authorize(h.auth.is_valid_user)
-    @validate(edit_schema)
+    @dispatch_on(POST="_edit")
     def edit(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
         able, response = self._able_to_edit()
         if not able:
-            return render_response("registration/error.myt", error=response)
-        errors = {}
-        defaults = dict(request.POST)
+            return render_response("registration/error.mako", error=response)
+        c.registration = Registration.find_by_id(id)
+        defaults = h.object_to_defaults(c.registration, 'registration')
 
-        current_schema = self.schemas['edit']
+        form = render('/registration/edit.mako')
+        return htmlfill.render(form, defaults)
 
-        if request.method == 'POST' and defaults:
-            result, errors = current_schema.validate(defaults, self.dbsession)
-            if not errors:
-                self.save_details(result)
+    @authorize(h.auth.is_valid_user)
+    @validate(edit_schema)
+    def _edit(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
-                self.dbsession.flush()
+        c.registration = Registration.find_by_id(id)
+        for key in self.form_result['registration']:
+            setattr(c.registration, key, self.form_result['registration'][key])
 
-                self.obj = c.registration
-                self.pay(c.registration.id, quiet=1)
+        self.pay(c.registration.id, quiet=1)
 
-                redirect_to(action='status')
-        return render_response("registration/edit.myt", defaults=defaults, errors=errors)
+        redirect_to(action='status')
 
     def save_details(self, result):
         # Store Registration details
@@ -367,7 +371,7 @@ class RegistrationController(BaseController): # Update, List, Read
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
-        registration = self.obj
+        registration = Registration.find_by_id(id)
 
         # Checks all existing invoices and invalidates them if a product is not available
         self.check_invoices(registration.person.invoices)
@@ -381,8 +385,8 @@ class RegistrationController(BaseController): # Update, List, Read
                 if quiet: return
                 return render_response("registration/product_unavailable.myt", product=inst.product)
 
-            if c.registration.voucher:
-                self.apply_voucher(invoice, c.registration.voucher)
+            if registration.voucher:
+                self.apply_voucher(invoice, registration.voucher)
 
             # complicated check to see whether invoice is already in the system
             new_invoice = invoice
@@ -402,8 +406,8 @@ class RegistrationController(BaseController): # Update, List, Read
                         old_invoice.void = "Registration Change"
 
             invoice.last_modification_timestamp = datetime.datetime.now()
-            self.dbsession.save_or_update(invoice)
-            self.dbsession.flush()
+            meta.Session.save_or_update(invoice)
+            meta.Session.commit()
 
             if quiet: return
             redirect_to(controller='invoice', action='view', id=invoice.id)
@@ -440,9 +444,10 @@ class RegistrationController(BaseController): # Update, List, Read
 
     def _create_invoice(self, registration):
         # Create Invoice
-        invoice = model.Invoice()
+        invoice = Invoice()
         invoice.person = registration.person
         invoice.manual = False
+        invoice.void = False
 
         # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
