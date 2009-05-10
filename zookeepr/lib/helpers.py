@@ -282,13 +282,13 @@ def computer_title(title):
     title = title.lower()
     return title
 
-#def wiki_link(title):
-#    """ Turn a string into a wiki friendly tag """
-#    parts = title.split(' ')
-#    title = ''.join([part.title() for part in parts])
-#    title = computer_re.sub('', title)
-#    return title
-#
+def wiki_link(title):
+    """ Turn a string into a wiki friendly tag """
+    parts = title.split(' ')
+    title = ''.join([part.title() for part in parts])
+    title = computer_re.sub('', title)
+    return title
+
 def featured_image(title, big = False):
     """
     Returns img src If an image exists in /public/featured/ with the same
@@ -355,11 +355,11 @@ def silly_description_checksum(desc):
 #            return "%d%% earlybird sold." % percent 
 #        else:
 #            return "%d%% tickets sold." % percent
-#
-#link_re = re.compile(r'\[url\=((http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})([^ \t\n]+))\](.*)\[\/url\]')
-#def url_to_link(body):
-#    """ Converts [url=http://example.com]site[/url] into <a href="http://www.example.com">site</a>> """
-#    return link_re.sub(r'<a href="\1" title="\1">\6</a>', body)
+
+link_re = re.compile(r'\[url\=((http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})([^ \t\n]+))\](.*)\[\/url\]')
+def url_to_link(body):
+    """ Converts [url=http://example.com]site[/url] into <a href="http://www.example.com">site</a>> """
+    return link_re.sub(r'<a href="\1" title="\1">\6</a>', body)
 
 def signed_in_person():
     email_address = request.environ.get("REMOTE_USER")

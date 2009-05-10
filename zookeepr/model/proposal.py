@@ -280,4 +280,20 @@ class Proposal(Base):
             abort(404, "No such object")
         return result
 
+    @classmethod
+    def find_all_accepted(cls):
+        #status = ProposalStatus.find_by_name('Accepted')
+        #result = Session.query(Proposal).filter_by(status_id=status.id)
 
+        # Optimisation: assume that ProposalStatus of ID=1 is Accepted
+        result = Session.query(Proposal).filter_by(status_id=1)
+        return result
+
+    @classmethod
+    def find_accepted_by_id(cls, id):
+        #status = ProposalStatus.find_by_name('Accepted')
+        #result = Session.query(Proposal).filter_by(id=id,status_id=status.id)
+
+        # Optimisation: assume that ProposalStatus of ID=1 is Accepted
+        result = Session.query(Proposal).filter_by(id=id,status_id=1).one()
+        return result
