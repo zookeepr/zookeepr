@@ -198,6 +198,7 @@ methods like view ect which take an id should be def view(self, id): not def vie
     #endif -> endif
 
     %s/textfield/text
+    %s/hiddenfield/hidden
 
     %s/text_area/textarea
     %s/check_box/checkbox

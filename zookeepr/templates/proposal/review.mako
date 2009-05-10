@@ -1,5 +1,5 @@
 <%
-# warning: this list must match the one in ../review/form.myt
+# warning: this list must match the one in ../review/form.mako
 miniconfs = (
   '(none)',
   'Debian',
@@ -95,7 +95,7 @@ ${ h.select('review.miniconf', None, [ (mc, mc) for mc in miniconfs] ) }
 </p>
 </div>
 % else:
-${ h.hiddenfield('review.miniconf') }
+${ h.hidden('review.miniconf') }
 % endif
 
 <p class="label"><b>Comments</b> (optional, readable by other reviewers, will not be shown to the submitter)

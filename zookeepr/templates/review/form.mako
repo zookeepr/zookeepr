@@ -1,5 +1,5 @@
 <%
-# warning: this list must match the one in ../proposal/review.myt
+# warning: this list must match the one in ../proposal/review.mako
 miniconfs = (
   '(none)',
   'Debian',
