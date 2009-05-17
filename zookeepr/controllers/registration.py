@@ -30,6 +30,7 @@ from zookeepr.model import Invoice
 from zookeepr.config.lca_info import lca_info
 
 from zookeepr.controllers.person import PersonSchema
+#from zookeepr.controllers.registration import PaymentOptions
 
 log = logging.getLogger(__name__)
 
@@ -253,7 +254,7 @@ class RegistrationController(BaseController): # Update, List, Read
 
         email(
             c.person.email_address,
-            render('registration/response.myt',
+            render('registration/response.mako',
                 id=c.person.url_hash, fragment=True))
 
         self.pay(c.registration.id, quiet=1)
@@ -277,7 +278,7 @@ class RegistrationController(BaseController): # Update, List, Read
             h.auth.no_role()
         able, response = self._able_to_edit()
         if not able:
-            return render_response("registration/error.mako", error=response)
+            return render("registration/error.mako", error=response)
         c.registration = Registration.find_by_id(id)
         defaults = h.object_to_defaults(c.registration, 'registration')
 
@@ -383,7 +384,7 @@ class RegistrationController(BaseController): # Update, List, Read
                 invoice = self._create_invoice(registration)
             except ProductUnavailable, inst:
                 if quiet: return
-                return render_response("registration/product_unavailable.myt", product=inst.product)
+                return render("registration/product_unavailable.mako", product=inst.product)
 
             if registration.voucher:
                 self.apply_voucher(invoice, registration.voucher)
@@ -666,7 +667,7 @@ class RegistrationController(BaseController): # Update, List, Read
                 registration_list = self.dbsession.query(self.model).filter(model.Registration.id.in_(reg_id_list)).all()
                 if len(registration_list) != len(reg_id_list):
                     c.text = 'Registration ID not found. Please check the <a href="/registration">registration list</a>.'
-                    return render_response('%s/generate_badges.myt' % self.individual)
+                    return render('%s/generate_badges.mako' % self.individual)
                 else:
                     for registration in registration_list:
                         data.append(self._registration_badge_data(registration, stamp))
@@ -713,7 +714,7 @@ class RegistrationController(BaseController): # Update, List, Read
             while c.index < len(c.data):
                 while c.index + 4 > len(c.data):
                     c.data.append(self._registration_badge_data(False))
-                res = render('%s/badges_svg.myt' % self.individual, fragment=True)
+                res = render('%s/badges_svg.mako' % self.individual, fragment=True)
                 (svg_fd, svg) = tempfile.mkstemp('.svg')
                 svg_f = os.fdopen(svg_fd, 'w')
                 svg_f.write(res)
@@ -731,7 +732,7 @@ class RegistrationController(BaseController): # Update, List, Read
             res.headers['Content-type'] = 'application/octet-stream'
             res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar' )
             return res
-        return render_response('%s/generate_badges.myt' % self.individual)
+        return render('%s/generate_badges.mako' % self.individual)
 
     def _registration_badge_data(self, registration, stamp = False):
         if registration:

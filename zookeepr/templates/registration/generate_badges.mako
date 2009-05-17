@@ -1,6 +1,8 @@
-<p><% c.text %></p>
+<%inherit file="/base.mako" />
 
-<% h.form(h.url()) %>
+<p>${ c.text }</p>
+
+${ h.form(h.url_for()) }
 <p>Type:<br />
 <select id="type" name="type">
     <option value="all">All</option>
@@ -20,5 +22,5 @@
 
 <p><label for="stamp">Include Stamp? <input type="checkbox" value="1" id="stamp" name="stamp" /></label> (recommended for All)</p>
 
-<p class="submit"><% h.submitbutton('Generate') %></p>
-<% h.end_form() %>
+<p class="submit">${ h.submit('submit', 'Generate') }</p>
+${ h.end_form() }

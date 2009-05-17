@@ -1,3 +1,5 @@
+<%inherit file="/base.mako" />
+
 <h2>Registration closed</h2>
 
 <p>Unfortunately, registration is now completely closed, as it is less than

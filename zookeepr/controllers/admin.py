@@ -23,13 +23,24 @@ log = logging.getLogger(__name__)
 
 import re
 
-
-
 from datetime import datetime
 import os, random, re, urllib
 #from zookeepr.controllers.proposal import Proposal
 #from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
 #from zookeepr.model.registration import RegoNote
+
+now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+# Used by the acc_papers_xml template
+def release_yesno(b):
+    if b==False:
+        return 'no'
+    elif b==True:
+        return 'yes'
+    elif b is None:
+        return 'unknown'
+    else:
+        return "(can't happen)"
 
 class AdminController(BaseController):
     """ Miscellaneous admin tasks. """
@@ -269,7 +280,7 @@ class AdminController(BaseController):
         c.data.sort(reverse=True)
         c.columns = 'count', '%', 'type'
         c.text = "Total: %d" % total
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def tuz(self):
       return render("admin/tuz.mako")
@@ -534,7 +545,7 @@ class AdminController(BaseController):
             '; '.join([', '.join(d) for d in d1_t])
           ))
 
-        return render_response('/admin/table.mako')
+        return render('/admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def linux_australia_signup(self):
@@ -613,7 +624,7 @@ class AdminController(BaseController):
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
 
-        return render_response('admin/text.myt')
+        return render('admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
     def lca_chat_signup(self):
@@ -631,7 +642,7 @@ class AdminController(BaseController):
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
 
-        return render_response('admin/text.myt')
+        return render('admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
     def accom_wp_registers(self):
@@ -657,7 +668,7 @@ class AdminController(BaseController):
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def speakers_partners(self):
@@ -686,7 +697,7 @@ class AdminController(BaseController):
                                str(dinner_tickets)])
                 speakers_count += 1
         c.data.append(['TOTALS:', str(speakers_count) + ' speakers', str(total_partners) + ' partners', str(total_dinner) + ' dinner tickets'])
-        return render_response('/admin/table.mako')
+        return render('/admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def talks(self):
@@ -714,7 +725,7 @@ class AdminController(BaseController):
                 c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
                 total += item.total()
         c.data.append(['','','Total:', h.number_to_currency(total/100)])
-        return render_response('/admin/table.mako')
+        return render('/admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def partners_programme(self):
@@ -733,7 +744,7 @@ class AdminController(BaseController):
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
-        return render_response('/admin/table.mako')
+        return render('/admin/table.mako')
 
     @authorize(h.auth.has_planetfeed_role)
     def planet_lca(self):
@@ -749,7 +760,7 @@ class AdminController(BaseController):
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
 
-        return render_response('admin/text.myt')
+        return render('admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
     def nonregistered(self):
@@ -844,7 +855,7 @@ class AdminController(BaseController):
                                dinner_tickets,
                                ", ".join(partners_programme)])
 
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def miniconf_preferences(self):
@@ -871,7 +882,7 @@ class AdminController(BaseController):
             '|'.join([label for (label, count) in c.data]),
         )
 
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def previous_years_stats(self):
@@ -904,7 +915,7 @@ class AdminController(BaseController):
             '|'.join([label for (label, count) in c.data]),
         )
         c.text += "Veterans: " + ", ".join(veterans) + "<br><br>Veterans of LCA (excluding CALU): " + ", ".join(veterans_lca)
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def acc_papers_xml(self):
@@ -912,7 +923,7 @@ class AdminController(BaseController):
         in AV splash screens [AV] """
         c.talks = meta.Session.query(Proposal).filter_by(accepted=True).all()
 
-        res = Response(render('admin/acc_papers_xml.myt', fragment=True))
+        res = Response(render('admin/acc_papers_xml.mako', fragment=True))
         res.headers['Content-type']='text/plain; charset=utf-8'
         return res
         
@@ -933,7 +944,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def people_by_state(self):
@@ -952,7 +963,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def favourite_distro(self):
@@ -970,7 +981,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def favourite_editor(self):
@@ -988,7 +999,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     @authorize(h.auth.has_organiser_role)
     def favourite_shell(self):
@@ -1006,7 +1017,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess

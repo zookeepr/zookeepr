@@ -830,9 +830,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath21308"><% c.data[c.index]['ticket'] %></textPath></text>
+             id="textPath21308">${ c.data[c.index]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index]['artist']:
       <g
          inkscape:label="#g14965"
@@ -859,7 +859,7 @@
            id="path14973"
            sodipodi:nodetypes="css" />
       </g>
-% #endif
+% endif
 % if c.data[c.index]['papers']:
       <g
          inkscape:label="#g14901"
@@ -996,7 +996,7 @@
              style="fill:none;fill-rule:evenodd;stroke:#959595;stroke-width:0.99921262;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         </g>
       </g>
-% #endif
+% endif
 % if not c.data[c.index]['over18']:
       <g
          inkscape:label="#g14975"
@@ -1144,14 +1144,14 @@
              x="8.4885378"
              y="47.997272">&lt;18</tspan></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index]['ghost']:
       <path
          inkscape:label="#path14899"
          id="icn_ghosts1"
          d="M 555.49008,357.44985 C 552.0245,357.47576 548.12398,359.79798 545.79939,365.97898 C 543.18277,372.93647 542.74992,377.3952 541.08673,382.07483 C 539.46613,386.63495 534.38292,392.42926 534.38292,392.42926 L 533.35414,393.59083 L 534.88074,393.32531 C 534.99153,393.30469 535.0719,393.18656 535.17944,393.15939 C 535.98843,392.95497 536.73009,392.49162 537.46939,391.99783 C 537.51217,392.31137 537.63738,392.6097 537.50256,392.99343 C 537.29129,393.59448 536.8969,394.26839 536.50694,394.98468 L 535.8432,396.17942 L 537.13752,395.74798 C 537.87329,395.50478 538.67393,394.90199 539.4938,394.12182 C 540.03871,393.60326 540.4637,392.94361 540.92079,392.32969 C 541.10832,392.88037 541.33843,393.40016 541.21949,394.22137 C 541.05052,395.38884 540.57322,396.66074 539.9916,397.60649 L 539.46063,398.50254 L 540.48942,398.43615 C 541.6234,398.35066 542.75778,397.55589 543.80815,396.57767 C 544.5926,395.84712 545.15341,394.99075 545.69979,394.155 C 545.93353,394.8843 546.01812,395.70655 545.86572,396.54448 C 545.65936,397.67976 545.15105,398.74879 544.87011,399.1331 L 543.97409,400.36102 L 545.43435,399.92958 C 546.52928,399.62704 548.79626,398.33636 550.77747,395.74798 C 551.7098,397.86534 550.27328,400.32379 549.91462,401.02478 L 549.08494,402.65095 L 550.67787,401.72169 C 553.75207,399.91012 556.28748,396.2342 558.27778,392.36287 C 560.26808,388.49158 561.66188,384.41285 562.35988,381.77615 C 562.67758,380.57549 563.02978,379.30187 563.35548,378.02596 C 563.12418,378.12801 562.88168,378.23379 562.62528,378.1919 C 562.37098,378.15034 562.21108,377.75883 561.43058,377.62772 C 560.66748,377.49954 560.57008,377.8012 560.23588,377.72729 C 559.56348,377.5786 559.64748,377.18664 558.64288,376.9308 C 557.67198,376.68356 557.61958,376.98825 557.01658,376.73168 C 556.64058,376.57165 556.57428,376.06459 556.08748,375.86881 C 555.60658,375.67541 555.22928,375.8579 555.02538,375.70286 C 554.50668,375.30832 554.23662,374.90065 554.2953,374.5413 C 554.35586,374.17091 554.73878,373.88879 555.39058,373.67845 C 555.73888,373.566 555.98498,373.76974 556.71798,373.74481 C 557.45138,373.71988 557.60598,373.328 558.14498,373.31338 C 558.55308,373.30225 558.76848,373.63083 559.57208,373.64525 C 560.39378,373.66002 560.33098,373.34027 560.79998,373.37975 C 561.17698,373.41143 561.30678,373.83731 562.09428,373.94393 C 562.86428,374.04821 562.81428,373.63946 563.25588,373.71162 C 563.59878,373.76765 563.89158,374.00129 564.18518,374.20942 C 564.74768,371.23091 564.99418,368.32433 564.28468,365.91261 C 563.65088,363.75802 562.79028,361.86529 561.59648,360.40351 C 560.40278,358.94174 558.84088,357.92403 556.95028,357.58259 C 556.47918,357.49751 555.98508,357.44615 555.49008,357.44985 z M 557.81318,363.92135 C 558.50928,363.92135 559.07428,365.22974 559.07428,366.84185 C 559.07428,368.45394 558.50928,369.76233 557.81318,369.76233 C 557.11698,369.76232 556.55208,368.45395 556.55208,366.84185 C 556.55208,365.22973 557.11698,363.92135 557.81318,363.92135 z M 562.42618,364.81743 C 562.97578,364.81741 563.42178,366.05146 563.42178,367.57198 C 563.42178,369.09248 562.97578,370.32653 562.42618,370.32653 C 561.87658,370.32649 561.43058,369.09248 561.43058,367.57198 C 561.43058,366.05145 561.87658,364.81743 562.42618,364.81743 z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-% #endif
+% endif
 % if c.data[c.index]['region'] == 'australia':
       <g
          inkscape:label="#g4066"
@@ -1239,7 +1239,7 @@
           </g>
         </g>
       </g>
-% #endif
+% endif
       <flowRoot
          transform="translate(338.69404,46.005052)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -1252,7 +1252,7 @@
              height="58"
              width="205"
              id="rect11305" /></flowRegion><flowPara
-           id="flowPara11307"><% c.data[c.index]['silly'] %></flowPara></flowRoot>      <text
+           id="flowPara11307">${ c.data[c.index]['silly'] }</flowPara></flowRoot>      <text
          id="text11337"
          y="326.76871"
          x="375.87781"
@@ -1261,7 +1261,7 @@
            y="326.76871"
            x="375.87781"
            id="tspan11339"
-           sodipodi:role="line"><% c.data[c.index]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index]['name'] }</tspan></text>
       <path
          transform="matrix(-0.5533223,-0.5317909,0.5317909,-0.5533223,481.44977,579.86678)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -1292,7 +1292,7 @@
            y="346.01596"
            x="377.99915"
            id="tspan11357"
-           sodipodi:role="line"><% c.data[c.index]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index]['nickname'] }</tspan></text>
       <path
          transform="matrix(0.5533223,0.5317909,-0.5317909,0.5533223,512.83594,-0.8342476)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -1323,7 +1323,7 @@
            y="-252.26382"
            x="-619.18335"
            id="tspan11277"
-           sodipodi:role="line"><% c.data[c.index]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index]['name'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -1335,7 +1335,7 @@
            y="-233.01657"
            x="-617.06201"
            id="tspan11295"
-           sodipodi:role="line"><% c.data[c.index]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index]['nickname'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -1347,7 +1347,7 @@
            y="-127.98105"
            x="-617.06201"
            id="tspan11299"
-           sodipodi:role="line"><% c.data[c.index]['gpg'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index]['gpg'] }</tspan></text>
       <flowRoot
          transform="matrix(-1,0,0,-1,658.96046,667.58208)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -1360,7 +1360,7 @@
              height="34.5"
              width="221"
              id="rect11321" /></flowRegion><flowPara
-           id="flowPara11323"><% c.data[c.index]['company'] %></flowPara></flowRoot>      <flowRoot
+           id="flowPara11323">${ c.data[c.index]['company'] }</flowPara></flowRoot>      <flowRoot
          transform="matrix(-1,0,0,-1,658.96046,627.45488)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
          id="flowRoot11391"
@@ -1372,7 +1372,7 @@
              height="34.5"
              width="221"
              id="rect11395" /></flowRegion><flowPara
-           id="flowPara11397"><% c.data[c.index]['favourites'] %></flowPara></flowRoot>
+           id="flowPara11397">${ c.data[c.index]['favourites'] }</flowPara></flowRoot>
 % if c.data[c.index]['dinner_tickets'] > 0:
          <g
          inkscape:label="#g18747"
@@ -1435,8 +1435,8 @@
    id="path18737" />
 </g>      </g>
 % else:
-%   c.data[c.index]['dinner_tickets'] = ''
-% #endif
+<%   c.data[c.index]['dinner_tickets'] = '' %>
+% endif
       <text
          id="text14893"
          y="393.06702"
@@ -1446,7 +1446,7 @@
            y="393.06702"
            x="474.90244"
            id="tspan14895"
-           sodipodi:role="line"><% c.data[c.index]['dinner_tickets'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index]['dinner_tickets'] }</tspan></text>
 % if c.data[c.index]['ticket'] != '':
       <g
          transform="translate(-820.74768,96.710464)"
@@ -1586,9 +1586,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath21028"><% c.data[c.index]['ticket'] %></textPath></text>
+             id="textPath21028">${ c.data[c.index]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index + 1]['artist']:
       <g
          inkscape:label="#g14965"
@@ -1615,7 +1615,7 @@
            id="path22210"
            sodipodi:nodetypes="css" />
       </g>
-% #endif
+% endif
 % if c.data[c.index + 1]['papers']:
       <g
          inkscape:label="#g14901"
@@ -1752,14 +1752,14 @@
              style="fill:none;fill-rule:evenodd;stroke:#959595;stroke-width:0.99921262;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         </g>
       </g>
-% #endif
+% endif
 % if c.data[c.index + 1]['ghost']:
       <path
          inkscape:label="#path14899"
          id="icn_ghosts2"
          d="M 874.38773,357.44985 C 870.92215,357.47576 867.02163,359.79798 864.69704,365.97898 C 862.08042,372.93647 861.64757,377.3952 859.98438,382.07483 C 858.36378,386.63495 853.28057,392.42926 853.28057,392.42926 L 852.25179,393.59083 L 853.77839,393.32531 C 853.88918,393.30469 853.96955,393.18656 854.07709,393.15939 C 854.88608,392.95497 855.62774,392.49162 856.36704,391.99783 C 856.40982,392.31137 856.53503,392.6097 856.40021,392.99343 C 856.18894,393.59448 855.79455,394.26839 855.40459,394.98468 L 854.74085,396.17942 L 856.03517,395.74798 C 856.77094,395.50478 857.57158,394.90199 858.39145,394.12182 C 858.93636,393.60326 859.36135,392.94361 859.81844,392.32969 C 860.00597,392.88037 860.23608,393.40016 860.11714,394.22137 C 859.94817,395.38884 859.47087,396.66074 858.88925,397.60649 L 858.35828,398.50254 L 859.38707,398.43615 C 860.52105,398.35066 861.65543,397.55589 862.7058,396.57767 C 863.49025,395.84712 864.05106,394.99075 864.59744,394.155 C 864.83118,394.8843 864.91577,395.70655 864.76337,396.54448 C 864.55701,397.67976 864.0487,398.74879 863.76776,399.1331 L 862.87174,400.36102 L 864.332,399.92958 C 865.42693,399.62704 867.69391,398.33636 869.67512,395.74798 C 870.60745,397.86534 869.17093,400.32379 868.81227,401.02478 L 867.98259,402.65095 L 869.57552,401.72169 C 872.64972,399.91012 875.18513,396.2342 877.17543,392.36287 C 879.16573,388.49158 880.55953,384.41285 881.25753,381.77615 C 881.57523,380.57549 881.92743,379.30187 882.25313,378.02596 C 882.02183,378.12801 881.77933,378.23379 881.52293,378.1919 C 881.26863,378.15034 881.10873,377.75883 880.32823,377.62772 C 879.56513,377.49954 879.46773,377.8012 879.13353,377.72729 C 878.46113,377.5786 878.54513,377.18664 877.54053,376.9308 C 876.56963,376.68356 876.51723,376.98825 875.91423,376.73168 C 875.53823,376.57165 875.47193,376.06459 874.98513,375.86881 C 874.50423,375.67541 874.12693,375.8579 873.92303,375.70286 C 873.40433,375.30832 873.13427,374.90065 873.19295,374.5413 C 873.25351,374.17091 873.63643,373.88879 874.28823,373.67845 C 874.63653,373.566 874.88263,373.76974 875.61563,373.74481 C 876.34903,373.71988 876.50363,373.328 877.04263,373.31338 C 877.45073,373.30225 877.66613,373.63083 878.46973,373.64525 C 879.29143,373.66002 879.22863,373.34027 879.69763,373.37975 C 880.07463,373.41143 880.20443,373.83731 880.99193,373.94393 C 881.76193,374.04821 881.71193,373.63946 882.15353,373.71162 C 882.49643,373.76765 882.78923,374.00129 883.08283,374.20942 C 883.64533,371.23091 883.89183,368.32433 883.18233,365.91261 C 882.54853,363.75802 881.68793,361.86529 880.49413,360.40351 C 879.30043,358.94174 877.73853,357.92403 875.84793,357.58259 C 875.37683,357.49751 874.88273,357.44615 874.38773,357.44985 z M 876.71083,363.92135 C 877.40693,363.92135 877.97193,365.22974 877.97193,366.84185 C 877.97193,368.45394 877.40693,369.76233 876.71083,369.76233 C 876.01463,369.76232 875.44973,368.45395 875.44973,366.84185 C 875.44973,365.22973 876.01463,363.92135 876.71083,363.92135 z M 881.32383,364.81743 C 881.87343,364.81741 882.31943,366.05146 882.31943,367.57198 C 882.31943,369.09248 881.87343,370.32653 881.32383,370.32653 C 880.77423,370.32649 880.32823,369.09248 880.32823,367.57198 C 880.32823,366.05145 880.77423,364.81743 881.32383,364.81743 z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-% #endif
+% endif
 % if not c.data[c.index + 1]['over18']:
       <g
          inkscape:label="#g14975"
@@ -1907,7 +1907,7 @@
              x="8.4885378"
              y="47.997272">&lt;18</tspan></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index + 1]['region'] == 'australia':
       <g
          inkscape:label="#g4066"
@@ -1995,7 +1995,7 @@
              style="fill:#000000;fill-opacity:1;stroke:none" />
         </g>
       </g>
-% #endif
+% endif
       <flowRoot
          transform="translate(657.59169,46.005052)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -2008,7 +2008,7 @@
              height="58"
              width="205"
              id="rect22312" /></flowRegion><flowPara
-           id="flowPara22314"><% c.data[c.index + 1]['silly'] %></flowPara></flowRoot>      <text
+           id="flowPara22314">${ c.data[c.index + 1]['silly'] }</flowPara></flowRoot>      <text
          id="text22318"
          y="326.76871"
          x="694.77545"
@@ -2017,7 +2017,7 @@
            y="326.76871"
            x="694.77545"
            id="tspan22320"
-           sodipodi:role="line"><% c.data[c.index + 1]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 1]['name'] }</tspan></text>
       <path
          transform="matrix(-0.5533223,-0.5317909,0.5317909,-0.5533223,800.34742,579.86678)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -2048,7 +2048,7 @@
            y="346.01596"
            x="696.89679"
            id="tspan22328"
-           sodipodi:role="line"><% c.data[c.index + 1]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 1]['nickname'] }</tspan></text>
       <path
          transform="matrix(0.5533223,0.5317909,-0.5317909,0.5533223,831.73359,-0.8342476)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -2208,9 +2208,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath22516"><% c.data[c.index + 1]['ticket'] %></textPath></text>
+             id="textPath22516">${ c.data[c.index + 1]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
       <text
          transform="scale(-1,-1)"
          id="text22558"
@@ -2221,7 +2221,7 @@
            y="-252.26382"
            x="-938.08099"
            id="tspan22560"
-           sodipodi:role="line"><% c.data[c.index + 1]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 1]['name'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -2233,7 +2233,7 @@
            y="-233.01657"
            x="-935.95966"
            id="tspan22564"
-           sodipodi:role="line"><% c.data[c.index + 1]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 1]['nickname'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -2245,7 +2245,7 @@
            y="-127.98105"
            x="-935.95966"
            id="tspan22568"
-           sodipodi:role="line"><% c.data[c.index + 1]['gpg'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 1]['gpg'] }</tspan></text>
       <flowRoot
          transform="matrix(-1,0,0,-1,977.85811,667.58208)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -2258,7 +2258,7 @@
              height="34.5"
              width="221"
              id="rect22574" /></flowRegion><flowPara
-           id="flowPara22576"><% c.data[c.index + 1]['company'] %></flowPara></flowRoot>      <flowRoot
+           id="flowPara22576">${ c.data[c.index + 1]['company'] }</flowPara></flowRoot>      <flowRoot
          transform="matrix(-1,0,0,-1,977.85811,627.45488)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
          id="flowRoot22578"
@@ -2270,7 +2270,7 @@
              height="34.5"
              width="221"
              id="rect22582" /></flowRegion><flowPara
-           id="flowPara22584"><% c.data[c.index + 1]['favourites'] %></flowPara></flowRoot>
+           id="flowPara22584">${ c.data[c.index + 1]['favourites'] }</flowPara></flowRoot>
 % if c.data[c.index + 1]['dinner_tickets'] > 0:
                  <g
          inkscape:label="#g18747"
@@ -2333,8 +2333,8 @@
    id="path22608" />
 </g>      </g>
 % else:
-%   c.data[c.index + 1]['dinner_tickets'] = ''
-% #endif
+<%   c.data[c.index + 1]['dinner_tickets'] = '' %>
+% endif
       <text
          id="text22610"
          y="393.06702"
@@ -2344,7 +2344,7 @@
            y="393.06702"
            x="793.80011"
            id="tspan22612"
-           sodipodi:role="line"><% c.data[c.index + 1]['dinner_tickets'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 1]['dinner_tickets'] }</tspan></text>
 % if c.data[c.index + 1]['ticket'] != '':
       <g
          transform="translate(-501.85003,96.710464)"
@@ -2484,9 +2484,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath22740"><% c.data[c.index + 1]['ticket'] %></textPath></text>
+             id="textPath22740">${ c.data[c.index + 1]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index + 2]['artist']:
       <g
          inkscape:label="#g14965"
@@ -2513,7 +2513,7 @@
            id="path22828"
            sodipodi:nodetypes="css" />
       </g>
-% #endif
+% endif
 % if c.data[c.index + 2]['papers']:
       <g
          inkscape:label="#g14901"
@@ -2650,7 +2650,7 @@
              style="fill:none;fill-rule:evenodd;stroke:#959595;stroke-width:0.99921262;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         </g>
       </g>
-% #endif
+% endif
 % if not c.data[c.index + 2]['over18']:
       <g
          inkscape:label="#g14975"
@@ -2798,14 +2798,14 @@
              x="8.4885378"
              y="47.997272">&lt;18</tspan></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index + 2]['ghost']:
       <path
          inkscape:label="#path14899"
          id="icn_ghosts3"
          d="M 555.49008,711.78053 C 552.0245,711.80644 548.12398,714.12866 545.79939,720.30966 C 543.18277,727.26715 542.74992,731.72588 541.08673,736.40551 C 539.46613,740.96563 534.38292,746.75994 534.38292,746.75994 L 533.35414,747.92151 L 534.88074,747.65599 C 534.99153,747.63537 535.0719,747.51724 535.17944,747.49007 C 535.98843,747.28565 536.73009,746.8223 537.46939,746.32851 C 537.51217,746.64205 537.63738,746.94038 537.50256,747.32411 C 537.29129,747.92516 536.8969,748.59907 536.50694,749.31536 L 535.8432,750.5101 L 537.13752,750.07866 C 537.87329,749.83546 538.67393,749.23267 539.4938,748.4525 C 540.03871,747.93394 540.4637,747.27429 540.92079,746.66037 C 541.10832,747.21105 541.33843,747.73084 541.21949,748.55205 C 541.05052,749.71952 540.57322,750.99142 539.9916,751.93717 L 539.46063,752.83322 L 540.48942,752.76683 C 541.6234,752.68134 542.75778,751.88657 543.80815,750.90835 C 544.5926,750.1778 545.15341,749.32143 545.69979,748.48568 C 545.93353,749.21498 546.01812,750.03723 545.86572,750.87516 C 545.65936,752.01044 545.15105,753.07947 544.87011,753.46378 L 543.97409,754.6917 L 545.43435,754.26026 C 546.52928,753.95772 548.79626,752.66704 550.77747,750.07866 C 551.7098,752.19602 550.27328,754.65447 549.91462,755.35546 L 549.08494,756.98163 L 550.67787,756.05237 C 553.75207,754.2408 556.28748,750.56488 558.27778,746.69355 C 560.26808,742.82226 561.66188,738.74353 562.35988,736.10683 C 562.67758,734.90617 563.02978,733.63255 563.35548,732.35664 C 563.12418,732.45869 562.88168,732.56447 562.62528,732.52258 C 562.37098,732.48102 562.21108,732.08951 561.43058,731.9584 C 560.66748,731.83022 560.57008,732.13188 560.23588,732.05797 C 559.56348,731.90928 559.64748,731.51732 558.64288,731.26148 C 557.67198,731.01424 557.61958,731.31893 557.01658,731.06236 C 556.64058,730.90233 556.57428,730.39527 556.08748,730.19949 C 555.60658,730.00609 555.22928,730.18858 555.02538,730.03354 C 554.50668,729.639 554.23662,729.23133 554.2953,728.87198 C 554.35586,728.50159 554.73878,728.21947 555.39058,728.00913 C 555.73888,727.89668 555.98498,728.10042 556.71798,728.07549 C 557.45138,728.05056 557.60598,727.65868 558.14498,727.64406 C 558.55308,727.63293 558.76848,727.96151 559.57208,727.97593 C 560.39378,727.9907 560.33098,727.67095 560.79998,727.71043 C 561.17698,727.74211 561.30678,728.16799 562.09428,728.27461 C 562.86428,728.37889 562.81428,727.97014 563.25588,728.0423 C 563.59878,728.09833 563.89158,728.33197 564.18518,728.5401 C 564.74768,725.56159 564.99418,722.65501 564.28468,720.24329 C 563.65088,718.0887 562.79028,716.19597 561.59648,714.73419 C 560.40278,713.27242 558.84088,712.25471 556.95028,711.91327 C 556.47918,711.82819 555.98508,711.77683 555.49008,711.78053 z M 557.81318,718.25203 C 558.50928,718.25203 559.07428,719.56042 559.07428,721.17253 C 559.07428,722.78462 558.50928,724.09301 557.81318,724.09301 C 557.11698,724.093 556.55208,722.78463 556.55208,721.17253 C 556.55208,719.56041 557.11698,718.25203 557.81318,718.25203 z M 562.42618,719.14811 C 562.97578,719.14809 563.42178,720.38214 563.42178,721.90266 C 563.42178,723.42316 562.97578,724.65721 562.42618,724.65721 C 561.87658,724.65717 561.43058,723.42316 561.43058,721.90266 C 561.43058,720.38213 561.87658,719.14811 562.42618,719.14811 z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-% #endif
+% endif
 % if c.data[c.index + 2]['region'] == 'australia':
       <g
          inkscape:label="#g4066"
@@ -2893,7 +2893,7 @@
           </g>
         </g>
       </g>
-% #endif
+% endif
       <flowRoot
          transform="translate(338.69404,400.33573)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -2906,7 +2906,7 @@
              height="58"
              width="205"
              id="rect22930" /></flowRegion><flowPara
-           id="flowPara22932"><% c.data[c.index + 2]['silly'] %></flowPara></flowRoot>      <text
+           id="flowPara22932">${ c.data[c.index + 2]['silly'] }</flowPara></flowRoot>      <text
          id="text22936"
          y="681.09937"
          x="375.87781"
@@ -2915,7 +2915,7 @@
            y="681.09937"
            x="375.87781"
            id="tspan22938"
-           sodipodi:role="line"><% c.data[c.index + 2]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 2]['name'] }</tspan></text>
       <path
          transform="matrix(-0.5533223,-0.5317909,0.5317909,-0.5533223,481.44977,934.19746)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -2946,7 +2946,7 @@
            y="700.34662"
            x="377.99915"
            id="tspan22946"
-           sodipodi:role="line"><% c.data[c.index + 2]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 2]['nickname'] }</tspan></text>
       <path
          transform="matrix(0.5533223,0.5317909,-0.5317909,0.5533223,512.83594,353.49643)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -3106,9 +3106,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath23134"><% c.data[c.index + 2]['ticket'] %></textPath></text>
+             id="textPath23134">${ c.data[c.index + 2]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
       <text
          transform="scale(-1,-1)"
          id="text23176"
@@ -3119,7 +3119,7 @@
            y="-606.59448"
            x="-619.18335"
            id="tspan23178"
-           sodipodi:role="line"><% c.data[c.index + 2]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 2]['name'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -3131,7 +3131,7 @@
            y="-587.34723"
            x="-617.06201"
            id="tspan23182"
-           sodipodi:role="line"><% c.data[c.index + 2]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 2]['nickname'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -3143,7 +3143,7 @@
            y="-482.31174"
            x="-617.06201"
            id="tspan23186"
-           sodipodi:role="line"><% c.data[c.index + 2]['gpg'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 2]['gpg'] }</tspan></text>
       <flowRoot
          transform="matrix(-1,0,0,-1,658.96046,1021.9128)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -3156,7 +3156,7 @@
              height="34.5"
              width="221"
              id="rect23192" /></flowRegion><flowPara
-           id="flowPara23194"><% c.data[c.index + 2]['company'] %></flowPara></flowRoot>      <flowRoot
+           id="flowPara23194">${ c.data[c.index + 2]['company'] }</flowPara></flowRoot>      <flowRoot
          transform="matrix(-1,0,0,-1,658.96046,981.78556)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
          id="flowRoot23196"
@@ -3168,7 +3168,7 @@
              height="34.5"
              width="221"
              id="rect23200" /></flowRegion><flowPara
-           id="flowPara23202"><% c.data[c.index + 2]['favourites'] %></flowPara></flowRoot> 
+           id="flowPara23202">${ c.data[c.index + 2]['favourites'] }</flowPara></flowRoot> 
 % if c.data[c.index + 2]['dinner_tickets'] > 0:
                 <g
          inkscape:label="#g18747"
@@ -3231,8 +3231,8 @@
    id="path23226" />
 </g>      </g>
 % else:
-%   c.data[c.index + 2]['dinner_tickets'] = ''
-% #endif
+<%   c.data[c.index + 2]['dinner_tickets'] = '' %>
+% endif
       <text
          id="text23228"
          y="747.39771"
@@ -3242,7 +3242,7 @@
            y="747.39771"
            x="474.90244"
            id="tspan23230"
-           sodipodi:role="line"><% c.data[c.index + 2]['dinner_tickets'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 2]['dinner_tickets'] }</tspan></text>
 % if c.data[c.index + 2]['ticket'] != '':
       <g
          transform="translate(-820.74768,451.04114)"
@@ -3382,9 +3382,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath23358"><% c.data[c.index + 2]['ticket'] %></textPath></text>
+             id="textPath23358">${ c.data[c.index + 2]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index + 3]['artist']:
       <g
          inkscape:label="#g14965"
@@ -3411,7 +3411,7 @@
            id="path23432"
            sodipodi:nodetypes="css" />
       </g>
-% #endif
+% endif
 % if c.data[c.index + 3]['papers']:
       <g
          inkscape:label="#g14901"
@@ -3548,7 +3548,7 @@
              style="fill:none;fill-rule:evenodd;stroke:#959595;stroke-width:0.99921262;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1" />
         </g>
       </g>
-% #endif
+% endif
 % if not c.data[c.index + 3]['over18']:
       <g
          inkscape:label="#g14975"
@@ -3696,14 +3696,14 @@
              x="8.4885378"
              y="47.997272">&lt;18</tspan></text>
       </g>
-% #endif
+% endif
 % if c.data[c.index + 3]['ghost']:
       <path
          inkscape:label="#path14899"
          id="icn_ghosts4"
          d="M 874.38773,711.78053 C 870.92215,711.80644 867.02163,714.12866 864.69704,720.30966 C 862.08042,727.26715 861.64757,731.72588 859.98438,736.40551 C 858.36378,740.96563 853.28057,746.75994 853.28057,746.75994 L 852.25179,747.92151 L 853.77839,747.65599 C 853.88918,747.63537 853.96955,747.51724 854.07709,747.49007 C 854.88608,747.28565 855.62774,746.8223 856.36704,746.32851 C 856.40982,746.64205 856.53503,746.94038 856.40021,747.32411 C 856.18894,747.92516 855.79455,748.59907 855.40459,749.31536 L 854.74085,750.5101 L 856.03517,750.07866 C 856.77094,749.83546 857.57158,749.23267 858.39145,748.4525 C 858.93636,747.93394 859.36135,747.27429 859.81844,746.66037 C 860.00597,747.21105 860.23608,747.73084 860.11714,748.55205 C 859.94817,749.71952 859.47087,750.99142 858.88925,751.93717 L 858.35828,752.83322 L 859.38707,752.76683 C 860.52105,752.68134 861.65543,751.88657 862.7058,750.90835 C 863.49025,750.1778 864.05106,749.32143 864.59744,748.48568 C 864.83118,749.21498 864.91577,750.03723 864.76337,750.87516 C 864.55701,752.01044 864.0487,753.07947 863.76776,753.46378 L 862.87174,754.6917 L 864.332,754.26026 C 865.42693,753.95772 867.69391,752.66704 869.67512,750.07866 C 870.60745,752.19602 869.17093,754.65447 868.81227,755.35546 L 867.98259,756.98163 L 869.57552,756.05237 C 872.64972,754.2408 875.18513,750.56488 877.17543,746.69355 C 879.16573,742.82226 880.55953,738.74353 881.25753,736.10683 C 881.57523,734.90617 881.92743,733.63255 882.25313,732.35664 C 882.02183,732.45869 881.77933,732.56447 881.52293,732.52258 C 881.26863,732.48102 881.10873,732.08951 880.32823,731.9584 C 879.56513,731.83022 879.46773,732.13188 879.13353,732.05797 C 878.46113,731.90928 878.54513,731.51732 877.54053,731.26148 C 876.56963,731.01424 876.51723,731.31893 875.91423,731.06236 C 875.53823,730.90233 875.47193,730.39527 874.98513,730.19949 C 874.50423,730.00609 874.12693,730.18858 873.92303,730.03354 C 873.40433,729.639 873.13427,729.23133 873.19295,728.87198 C 873.25351,728.50159 873.63643,728.21947 874.28823,728.00913 C 874.63653,727.89668 874.88263,728.10042 875.61563,728.07549 C 876.34903,728.05056 876.50363,727.65868 877.04263,727.64406 C 877.45073,727.63293 877.66613,727.96151 878.46973,727.97593 C 879.29143,727.9907 879.22863,727.67095 879.69763,727.71043 C 880.07463,727.74211 880.20443,728.16799 880.99193,728.27461 C 881.76193,728.37889 881.71193,727.97014 882.15353,728.0423 C 882.49643,728.09833 882.78923,728.33197 883.08283,728.5401 C 883.64533,725.56159 883.89183,722.65501 883.18233,720.24329 C 882.54853,718.0887 881.68793,716.19597 880.49413,714.73419 C 879.30043,713.27242 877.73853,712.25471 875.84793,711.91327 C 875.37683,711.82819 874.88273,711.77683 874.38773,711.78053 z M 876.71083,718.25203 C 877.40693,718.25203 877.97193,719.56042 877.97193,721.17253 C 877.97193,722.78462 877.40693,724.09301 876.71083,724.09301 C 876.01463,724.093 875.44973,722.78463 875.44973,721.17253 C 875.44973,719.56041 876.01463,718.25203 876.71083,718.25203 z M 881.32383,719.14811 C 881.87343,719.14809 882.31943,720.38214 882.31943,721.90266 C 882.31943,723.42316 881.87343,724.65721 881.32383,724.65721 C 880.77423,724.65717 880.32823,723.42316 880.32823,721.90266 C 880.32823,720.38213 880.77423,719.14811 881.32383,719.14811 z"
          style="fill:#000000;fill-opacity:1;fill-rule:evenodd;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
-% #endif
+% endif
 % if c.data[c.index + 3]['region'] == 'tasmania':
       <path
          inkscape:label="#path14897"
@@ -3791,7 +3791,7 @@
           </g>
         </g>
       </g>
-% #endif
+% endif
       <flowRoot
          transform="translate(657.59169,400.33573)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:100%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -3804,7 +3804,7 @@
              height="58"
              width="205"
              id="rect23534" /></flowRegion><flowPara
-           id="flowPara23536"><% c.data[c.index + 3]['silly'] %></flowPara></flowRoot>      <text
+           id="flowPara23536">${ c.data[c.index + 3]['silly'] }</flowPara></flowRoot>      <text
          id="text23540"
          y="681.09937"
          x="694.77545"
@@ -3813,7 +3813,7 @@
            y="681.09937"
            x="694.77545"
            id="tspan23542"
-           sodipodi:role="line"><% c.data[c.index + 3]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 3]['name'] }</tspan></text>
       <path
          transform="matrix(-0.5533223,-0.5317909,0.5317909,-0.5533223,800.34742,934.19746)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -3844,7 +3844,7 @@
            y="700.34662"
            x="696.89679"
            id="tspan23550"
-           sodipodi:role="line"><% c.data[c.index + 3]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 3]['nickname'] }</tspan></text>
       <path
          transform="matrix(0.5533223,0.5317909,-0.5317909,0.5533223,831.73359,353.49643)"
          d="M 145,334.06299 A 42.5,42.5 0 1 1 60,334.06299 A 42.5,42.5 0 1 1 145,334.06299 z"
@@ -4004,9 +4004,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath23738"><% c.data[c.index + 3]['ticket'] %></textPath></text>
+             id="textPath23738">${ c.data[c.index + 3]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
       <text
          transform="scale(-1,-1)"
          id="text23780"
@@ -4017,7 +4017,7 @@
            y="-606.59448"
            x="-938.08099"
            id="tspan23782"
-           sodipodi:role="line"><% c.data[c.index + 3]['name'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 3]['name'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -4029,7 +4029,7 @@
            y="-587.34723"
            x="-935.95966"
            id="tspan23786"
-           sodipodi:role="line"><% c.data[c.index + 3]['nickname'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 3]['nickname'] }</tspan></text>
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -4041,7 +4041,7 @@
            y="-482.31174"
            x="-935.95966"
            id="tspan23790"
-           sodipodi:role="line"><% c.data[c.index + 3]['gpg'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 3]['gpg'] }</tspan></text>
       <flowRoot
          transform="matrix(-1,0,0,-1,977.85811,1021.9128)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
@@ -4054,7 +4054,7 @@
              height="34.5"
              width="221"
              id="rect23796" /></flowRegion><flowPara
-           id="flowPara23798"><% c.data[c.index + 3]['company'] %></flowPara></flowRoot>      <flowRoot
+           id="flowPara23798">${ c.data[c.index + 3]['company'] }</flowPara></flowRoot>      <flowRoot
          transform="matrix(-1,0,0,-1,977.85811,981.78556)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"
          id="flowRoot23800"
@@ -4066,7 +4066,7 @@
              height="34.5"
              width="221"
              id="rect23804" /></flowRegion><flowPara
-           id="flowPara23806"><% c.data[c.index + 3]['favourites'] %></flowPara></flowRoot>
+           id="flowPara23806">${ c.data[c.index + 3]['favourites'] }</flowPara></flowRoot>
 
 % if c.data[c.index + 3]['dinner_tickets'] > 0:
                  <g
@@ -4130,8 +4130,8 @@
    id="path23830" />
 </g>      </g>
 % else:
-%   c.data[c.index + 3]['dinner_tickets'] = ''
-% #endif
+<%   c.data[c.index + 3]['dinner_tickets'] = '' %>
+% endif
       <text
          id="text23832"
          y="747.39771"
@@ -4141,7 +4141,7 @@
            y="747.39771"
            x="793.80011"
            id="tspan23834"
-           sodipodi:role="line"><% c.data[c.index + 3]['dinner_tickets'] %></tspan></text>
+           sodipodi:role="line">${ c.data[c.index + 3]['dinner_tickets'] }</tspan></text>
 % if c.data[c.index + 3]['ticket'] != '':
       <g
          transform="translate(-501.85003,451.04114)"
@@ -4281,9 +4281,9 @@
            transform="translate(1155.1785,-54.80386)"><textPath
              xlink:href="#path3660"
              startOffset="50%"
-             id="textPath23962"><% c.data[c.index + 3]['ticket'] %></textPath></text>
+             id="textPath23962">${ c.data[c.index + 3]['ticket'] }</textPath></text>
       </g>
-% #endif
+% endif
       <g
          transform="matrix(0.5,0,0,0.5,337.69403,126.43415)"
          id="g6448">
