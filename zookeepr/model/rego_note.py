@@ -8,6 +8,7 @@ from zookeepr.lib.model import CommaList
 
 from person import Person
 from registration import Registration
+from registration_product import RegistrationProduct
 
 def setup(meta):
     pass
