@@ -103,7 +103,7 @@
     <p class="entries">
       ${ h.checkbox('proposal.video_release') }
       <label for="proposal.video_release">I allow Linux Australia to
-      release my video under the Creative Commons ShareAlike License</label>
+      release my video under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons ShareAlike License</a></label>
     </p>
 
     <p class="entries">

@@ -167,7 +167,7 @@ ${ h.link_to('Add an attachment', url=h.url_for(action='attach')) }
 <p>I allow linux.conf.au to record my talk.</p>
 
 <p>${ allow(c.proposal.video_release) } Linux Australia to release my
-video under the Creative Commons ShareAlike License</p>
+video under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons ShareAlike License</a></p>
 
 <p>${ allow(c.proposal.slides_release) } Linux Australia to share my
 slides</p>
