@@ -2,9 +2,14 @@
 import sqlalchemy as sa
 
 from meta import Base
-from pylons.controllers.util import abort
+
 from zookeepr.model.meta import Session
-from zookeepr.model import Registration, Product
+
+from registration import Registration
+from product import Product
+
+def setup(meta):
+    pass
 
 class RegistrationProduct(Base):
     __tablename__ = 'registration_product_map'
@@ -15,6 +20,9 @@ class RegistrationProduct(Base):
 
     registration=sa.orm.relation(Registration, backref=sa.orm.backref('products', lazy=False, cascade='all, delete-orphan'), lazy=False)
     product=sa.orm.relation(Product, backref=sa.orm.backref('registrations', lazy=True, cascade='all, delete-orphan'), lazy=False)
+
+    def __init__(self, **kwargs):
+        super(RegistrationProduct, self).__init__(**kwargs)
 
     def __repr__(self):
         return '<RegistrationProduct registration_id=%r product_id=%r qty=%r>' % (self.registration_id, self.product_id, self.qty)
