@@ -1,3 +1,5 @@
+<%inherit file="/base.mako" />
+
 <%
 attribs = "?page=" + str(c.registration_pages.next_page)
 for item, value in c.registration_request.iteritems():
