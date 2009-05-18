@@ -21,38 +21,6 @@ class DictSet(validators.Set):
         value = value.keys()
         return super(DictSet, self)._to_python(value, state)
 
-#import re
-#
-#import dns.resolver
-#from formencode import Invalid, validators, schema
-#
-#import helpers as h
-#
-#from zookeepr.model import Person, ProposalType, Stream, AssistanceType, DBContentType, Product, Registration
-#
-#class BoundedInt(validators.Int):
-#    """ Validator for integers, with bounds.
-#
-#    Just like validators.Int, but with optional max and min arguments that
-#    give limits on the integers and default to the PostgreSQL range for the
-#    integer type (-2147483648 to +2147483647).
-#
-#    WTF did anyone ever code an Int validator *without* bounds?
-#    """
-#
-#    def __init__(self, *args, **kw):
-#        validators.Int.__init__(self, *args, **kw)
-#        if not hasattr(self, 'min') or self.min==None:
-#            self.min = -2147483648 # Smallest number that fits in postgres
-#        if not hasattr(self, 'max') or self.max==None:
-#            self.max = +2147483647 # Largest number that fits in postgres
-#    def validate_python(self, value, state):
-#        if value>self.max:
-#            raise Invalid('Too large (maximum %d)'%self.max, value, state)
-#        if value<self.min:
-#            raise Invalid('Too small (minimum %d)'%self.min, value, state)
-#
-
 class PersonValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return Person.find_by_id(int(value))
