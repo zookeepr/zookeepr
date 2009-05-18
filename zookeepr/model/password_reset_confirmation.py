@@ -43,7 +43,7 @@ class PasswordResetConfirmation(Base):
 
     @classmethod
     def find_by_email(cls, email):
-        return Session.query(PasswordResetConfirmation).filter_by(email_address=email.lower()).first()
+        return Session.query(PasswordResetConfirmation).filter_by(email_address=email.lower()).one()
 
     @classmethod
     def find_by_url_hash(cls, url_hash):

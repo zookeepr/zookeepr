@@ -35,7 +35,7 @@ class Role(Base):
 
     @classmethod
     def find_by_id(self, id, abort_404 = True):
-        result = Session.query(Role).filter_by(id=id).first()
+        result = Session.query(Role).filter_by(id=id).one()
         if result is None and abort_404:
             abort(404, "No such object")
         return result

@@ -38,7 +38,7 @@ class Voucher(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Voucher).filter_by(id=id).first()
+        return Session.query(Voucher).filter_by(id=id).one()
 
     @classmethod
     def find_by_code(cls, code):
@@ -59,7 +59,7 @@ class VoucherProduct(Base):
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
-        super(Voucher, self).__init__(**kwargs)
+        super(VoucherProduct, self).__init__(**kwargs)
 
     def __repr__(self):
         return '<VoucherProduct>'

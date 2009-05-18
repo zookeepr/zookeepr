@@ -27,9 +27,12 @@ class Volunteer(Base):
     # relations
     person = sa.orm.relation(Person, backref=sa.orm.backref('volunteer', cascade="all, delete-orphan", lazy=True, uselist=False))
 
+    def __init__(self, **kwargs):
+        super(Volunteer, self).__init__(**kwargs)
+
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(Volunteer).filter_by(id=id).first()
+        result = Session.query(Volunteer).filter_by(id=id).one()
         if result is None and abort_404:
             abort(404, "No such object")
         return result

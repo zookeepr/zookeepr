@@ -95,7 +95,7 @@ class Ceiling(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Ceiling).filter_by(id=id).first()
+        return Session.query(Ceiling).filter_by(id=id).one()
 
     @classmethod
     def find_by_name(cls, name):

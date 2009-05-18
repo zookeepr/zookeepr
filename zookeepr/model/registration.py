@@ -9,6 +9,9 @@ from zookeepr.lib.model import CommaList
 from person import Person
 from voucher import Voucher
 
+def setup(meta):
+    pass
+
 class Registration(Base):
     __tablename__ = 'registration'
 
@@ -53,7 +56,7 @@ class Registration(Base):
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(Registration).filter_by(id=id).first()
+        result = Session.query(Registration).filter_by(id=id).one()
         if result is None and abort_404:
             abort(404, "No such Registration object")
         return result

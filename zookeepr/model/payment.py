@@ -8,6 +8,9 @@ from invoice import Invoice
 
 from zookeepr.model.meta import Session
 
+def setup(meta):
+    pass
+
 class PaymentOptions():
     def is_earlybird(self, creation_timestamp):
         return True # TODO: Invoice::remind() needs this
@@ -26,5 +29,16 @@ class Payment(Base):
     # relation
     invoice = sa.orm.relation(Invoice, backref='payments')
 
+    def __init__(self, **kwargs):
+        super(Payment, self).__init__(**kwargs)
+
     def __repr__(self):
         return '<Payment id=%r>' % (self.id)
+
+    @classmethod
+    def find_all(cls):
+        return Session.query(Payment).order_by(Payment.id).all()
+
+    @classmethod
+    def find_by_id(cls, id):
+        return Session.query(Payment).filter_by(id=id).one()

@@ -37,7 +37,7 @@ class ProductCategory(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(ProductCategory).filter_by(id=id).first()
+        return Session.query(ProductCategory).filter_by(id=id).one()
 
     @classmethod
     def find_by_name(cls, name):

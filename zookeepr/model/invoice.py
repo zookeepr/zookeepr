@@ -9,6 +9,9 @@ from invoice_item import InvoiceItem
 
 from zookeepr.model.meta import Session
 
+def setup(meta):
+    pass
+
 class Invoice(Base):
     """Stores both account login details and personal information.
     """
@@ -67,7 +70,7 @@ class Invoice(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Invoice).filter_by(id=id).first()
+        return Session.query(Invoice).filter_by(id=id).one()
 
     @classmethod
     def find_by_person(cls, person_id):

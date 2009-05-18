@@ -40,7 +40,7 @@ class Product(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Product).filter_by(id=id).first()
+        return Session.query(Product).filter_by(id=id).one()
 
     def qty_sold(self):
         qty = 0

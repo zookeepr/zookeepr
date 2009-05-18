@@ -75,7 +75,7 @@ class Review(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Review).filter_by(id=id).first()
+        return Session.query(Review).filter_by(id=id).one()
 
     @classmethod
     def find_all(cls):
