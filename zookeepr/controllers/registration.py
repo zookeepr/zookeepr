@@ -221,12 +221,20 @@ class RegistrationController(BaseController): # Update, List, Read
 
     @dispatch_on(POST="_new")
     def new(self):
+        c.signed_in_person = h.signed_in_person()
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='edit', id=c.signed_in_person.registration.id)
 
         if lca_info['conference_status'] is not 'open':
             redirect_to(action='status')
-            return
+
+        defaults = {}
+        if c.signed_in_person:
+            for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
+                v = getattr(c.signed_in_person, k)
+                if v is not None:
+                    defaults['person.' + k] = getattr(c.signed_in_person, k)
+
         form = render("/registration/new.mako")
         return htmlfill.render(form, defaults)
 

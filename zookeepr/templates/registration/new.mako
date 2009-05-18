@@ -1,15 +1,6 @@
     <%inherit file="/base.mako" />
 
-<%
-if not defaults:
-    desc, descChecksum = h.silly_description()
-
-    if c.signed_in_person:
-        for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
-            v = getattr(c.signed_in_person, k)
-            if v is not None:
-                defaults['person.' + k] = getattr(c.signed_in_person, k)
-%>
+<% desc, descChecksum = h.silly_description() %>
 
     <h2>Register for the conference</h2>
     <div id="registration">
