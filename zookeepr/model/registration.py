@@ -56,7 +56,7 @@ class Registration(Base):
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(Registration).filter_by(id=id).one()
+        result = Session.query(Registration).filter_by(id=id).first()
         if result is None and abort_404:
             abort(404, "No such Registration object")
         return result

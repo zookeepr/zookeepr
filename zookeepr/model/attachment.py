@@ -41,7 +41,7 @@ class Attachment(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Attachment).filter_by(id=id).one()
+        return Session.query(Attachment).filter_by(id=id).first()
 
     @classmethod
     def find_all(cls):

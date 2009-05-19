@@ -41,4 +41,4 @@ class Payment(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Payment).filter_by(id=id).one()
+        return Session.query(Payment).filter_by(id=id).first()

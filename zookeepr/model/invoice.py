@@ -70,7 +70,7 @@ class Invoice(Base):
 
     @classmethod
     def find_by_id(cls, id):
-        return Session.query(Invoice).filter_by(id=id).one()
+        return Session.query(Invoice).filter_by(id=id).first()
 
     @classmethod
     def find_by_person(cls, person_id):

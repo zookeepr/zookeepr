@@ -40,7 +40,7 @@ class DbContentType(Base):
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(DbContentType).filter_by(id=id).one()
+        result = Session.query(DbContentType).filter_by(id=id).first()
         if result is None and abort_404:
             abort(404, "No such object")
         return result
@@ -88,14 +88,14 @@ class DbContent(Base):
         
     @classmethod
     def find_by_url(cls, url, abort_404 = True):
-        result = Session.query(DbContent).filter_by(url=url).one()
+        result = Session.query(DbContent).filter_by(url=url).first()
         if result is None and abort_404:
             abort(404, "No such object")
         return result
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(DbContent).filter_by(id=id).one()
+        result = Session.query(DbContent).filter_by(id=id).first()
         if result is None and abort_404:
             abort(404, "No such object")
         return result
