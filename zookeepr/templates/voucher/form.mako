@@ -41,8 +41,8 @@
             <tr>
               <td><label for="products.product_${ product.id }">${ product.description }</label></td>
 %           if category.display == 'radio':
-              <td>${ h.radio_button('products.category_' + str(category.id), product.id) }
-# Add other display options here later, not adding select because we want accom to include a qty
+              <td>${ h.radio('products.category_' + str(category.id), product.id) }
+## TODO: Add other display options here later, not adding select because we want accom to include a qty
 %           else:
               <td>${ h.text('products.product_' + str(product.id) + '_qty', size=3) }</td>
 %           endif

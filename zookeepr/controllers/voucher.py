@@ -9,7 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, ExistingPersonValidator
+from zookeepr.lib.validators import BaseSchema, ExistingPersonValidator, ProductInCategory
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -36,6 +36,16 @@ class NotExistingVoucherValidator(validators.FancyValidator):
         if voucher is not None:
             raise Invalid("Code already exists!", value, state)
 
+class ProductSchema(BaseSchema):
+    # This schema is used to validate the products submitted by the form.
+    # It is populated by _generate_product_schema through the inherited
+    #   add_field method.
+    # EG:
+    #   ProductSchema.add_field('count', validators.Int(min=1, max=100))
+    # is the same as doing this inline:
+    #   count = validators.Int(min=1, max=100)
+    pass
+
 class VoucherSchema(BaseSchema):
     count = validators.Int(min=1, max=100)
     leader = ExistingPersonValidator(not_empty=True)
@@ -46,17 +56,8 @@ class VoucherSchema(BaseSchema):
 
 class NewVoucherSchema(BaseSchema):
     voucher = VoucherSchema()
+    products = ProductSchema()
     pre_validators = [NestedVariables]
-
-class ProductSchema(BaseSchema):
-    # This schema is used to validate the products submitted by the form.
-    # It is populated by _generate_product_schema through the inherited
-    #   add_field method.
-    # EG:
-    #   ProductSchema.add_field('count', validators.Int(min=1, max=100))
-    # is the same as doing this inline:
-    #   count = validators.Int(min=1, max=100)
-    pass
 
 class VoucherController(BaseController):
     @authorize(h.auth.is_valid_user)
@@ -92,8 +93,6 @@ class VoucherController(BaseController):
 
         defaults = {
             'voucher.count': '1',
-            'voucher.percentage': '100',
-            'voucher.type': 'Professional',
         }
         form = render("/voucher/new.mako")
         return htmlfill.render(form, defaults)
@@ -112,7 +111,8 @@ class VoucherController(BaseController):
             c.voucher.code += generate_code()
             meta.Session.add(c.voucher) # save voucher to DB
 
-            c.product_categories = [] # TODO: remove this and fix the for loop!
+            results['products'] = self.form_result['products']
+
             for category in c.product_categories:
                 if category.name in ['Ticket', 'Accommodation']: # Only two categories need vouchers - hard coded yuck... In theory this isn't necessary
                     # depending on "display" type of product, handle the input appropriately

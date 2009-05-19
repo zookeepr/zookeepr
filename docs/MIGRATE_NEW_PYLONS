@@ -202,6 +202,7 @@ methods like view ect which take an id should be def view(self, id): not def vie
 
     %s/text_area/textarea
     %s/check_box/checkbox
+    %s/radio_button/radio
 
     <& form.myt &>  ->  <%include file="form.mako" />
 
