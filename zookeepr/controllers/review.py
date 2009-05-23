@@ -42,7 +42,7 @@ class ReviewController(BaseController):
         c.form = 'edit'
         c.review = Review.find_by_id(id)
         self._is_reviewer()
-        
+
         c.proposal = c.review.proposal
         defaults = h.object_to_defaults(c.review, 'review')
 

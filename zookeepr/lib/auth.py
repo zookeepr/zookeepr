@@ -169,7 +169,7 @@ class HasZookeeprRole(HasAuthKitRole):
 
     def user_has_role(self, username, role):
         """
-        Returns ``True`` if the user has the role specified, ``False`` 
+        Returns ``True`` if the user has the role specified, ``False``
         otherwise. Raises an exception if the user doesn't exist.
         """
         if not self.user_exists(username.lower()):

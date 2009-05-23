@@ -352,7 +352,7 @@ def silly_description_checksum(desc):
 #            return "Almost all tickets gone."
 #    else:
 #        if earlybird:
-#            return "%d%% earlybird sold." % percent 
+#            return "%d%% earlybird sold." % percent
 #        else:
 #            return "%d%% tickets sold." % percent
 
@@ -384,7 +384,7 @@ def object_to_defaults(object, prefix):
             defaults['.'.join((prefix,key))] = value
 
     return defaults
-    
+
 def check_flash():
     # If the session data isn't of the particular format python has trouble.
     # So we check that it is a dict.

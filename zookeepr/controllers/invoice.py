@@ -35,7 +35,7 @@ class InvoiceItemValidator(BaseSchema):
     cost = validators.Int(min=0, max=2000000)
     description = validators.String(not_empty=False)
     chained_validators = [InvoiceItemProductDescription()]
-        
+
 class InvoiceSchema(BaseSchema):
     person = ExistingPersonValidator(not_empty=True)
     due_date = validators.DateConverter(format='%d/%m/%y')
@@ -53,7 +53,7 @@ class InvoiceController(BaseController):
         pass
 
     @authorize(h.auth.has_organiser_role)
-    @dispatch_on(POST="_new") 
+    @dispatch_on(POST="_new")
     def new(self):
         c.product_categories = ProductCategory.find_all()
         c.item_count = 0;
@@ -76,7 +76,7 @@ class InvoiceController(BaseController):
             item.cost = i['cost']
             item.qty = i['qty']
             results['items'].append(item)
-                
+
         c.invoice = Invoice(**results)
         c.invoice.manual = True
         c.invoice.void = None
@@ -125,11 +125,11 @@ class InvoiceController(BaseController):
     def remind(self):
         c.invoice_collection = Invoice.find_all();
         c.payment_options = PaymentOptions();
-        
+
         # TODO: this is a temporary hack until registration is ported
         for i in c.invoice_collection:
             i.person.registration = Registration()
-        
+
         return render('/invoice/remind.mako')
 
     def pay(self, id):
@@ -216,18 +216,18 @@ class InvoiceController(BaseController):
         xml_s = render('/invoice/pdf.mako')
 
         xsl_f = file_paths['zk_root'] + '/zookeepr/templates/invoice/pdf.xsl'
-        xsl_s = libxml2.parseFile(xsl_f) 
-        xsl = libxslt.parseStylesheetDoc(xsl_s) 
+        xsl_s = libxml2.parseFile(xsl_f)
+        xsl = libxslt.parseStylesheetDoc(xsl_s)
 
-        xml = libxml2.parseDoc(xml_s) 
-        svg_s = xsl.applyStylesheet(xml, None) 
+        xml = libxml2.parseDoc(xml_s)
+        svg_s = xsl.applyStylesheet(xml, None)
 
         (svg_fd, svg) = tempfile.mkstemp('.svg')
-        xsl.saveResultToFilename(svg, svg_s, 0) 
+        xsl.saveResultToFilename(svg, svg_s, 0)
 
-        xsl.freeStylesheet() 
-        xml.freeDoc() 
-        svg_s.freeDoc() 
+        xsl.freeStylesheet()
+        xml.freeDoc()
+        svg_s.freeDoc()
 
         (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
 
@@ -255,7 +255,7 @@ class InvoiceController(BaseController):
         h.flash("Invoice was voided.")
         return redirect_to(action='view', id=c.invoice.id)
 
-    @authorize(h.auth.has_organiser_role)    
+    @authorize(h.auth.has_organiser_role)
     def unvoid(self, id):
         c.invoice = Invoice.find_by_id(id)
         c.invoice.void = None
