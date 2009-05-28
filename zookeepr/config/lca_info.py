@@ -56,6 +56,7 @@ lca_rego = {
             {'name': 'Car', 'description': 'Have car and can be a driver.'},
             {'name': 'Week Before', 'description': 'Available during the week before the conference (x-y Jan).'},
             {'name': 'Week After', 'description': 'Available during the week after the conference (a-c Jan).'},
+            {'name': 'Packout', 'description': 'Available to help pack-out of the venue on Saturday and Sunday.'},
         ),
   'miniconfs' : (
               ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Mobile devices', 'Business of Software development')),
