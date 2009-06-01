@@ -90,7 +90,6 @@ class RegistrationSchema(BaseSchema):
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    opendaydrag = validators.Int(min=0,max=200)
     checkin = validators.Int(min=0, max=31)
     checkout = validators.Int(min=0, max=31)
     signup = DictSet(if_missing=None)
@@ -335,7 +334,6 @@ class RegistrationController(BaseController):
 
         # Create person<->registration relationship
         c.registration.person = c.person
-        meta.Session.commit()
 
         # Always delete the current products
         c.registration.products = []
@@ -352,7 +350,6 @@ class RegistrationController(BaseController):
                         rego_product.qty = c.registration.checkout - c.registration.checkin
                     else:
                         rego_product.qty = 1
-                    meta.Session.commit()
                     c.registration.products.append(rego_product)
             elif category.display == 'checkbox':
                 for product in category.products:
@@ -361,7 +358,6 @@ class RegistrationController(BaseController):
                         rego_product.registration = c.registration
                         rego_product.product = product
                         rego_product.qty = 1
-                        meta.Session.commit()
                         c.registration.products.append(rego_product)
             elif category.display == 'qty':
                 for product in category.products:
@@ -370,7 +366,6 @@ class RegistrationController(BaseController):
                         rego_product.registration = c.registration
                         rego_product.product = product
                         rego_product.qty = result['products']['product_' + str(product.id) + '_qty']
-                        meta.Session.commit()
                         c.registration.products.append(rego_product)
 
         meta.Session.commit()
@@ -474,7 +469,6 @@ class RegistrationController(BaseController):
                 if product_expires != None and product_expires < invoice.due_date:
                     invoice.due_date = product_expires
                 invoice.items.append(ii)
-                meta.Session.commit()
             else:
                 for ii in invoice.items:
                     meta.Session.expunge(ii)
@@ -504,9 +498,9 @@ class RegistrationController(BaseController):
                     # of items on the invoice
                     if free_cost > 0:
                         discount_item = model.InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
-                        meta.Session.commit()
                         invoice.items.append(discount_item)
 
+        meta.Session.commit()
         return invoice
 
     def apply_voucher(self, invoice, voucher):
