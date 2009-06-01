@@ -3,6 +3,11 @@
 <head>
 <title>Tax Invoice/Statement - ${ h.lca_info['event_name'] }</title>
 <link rel="icon" type="image/png" href="/images/favicon.ico">
+<style type="text/css">
+ .invoice_invalid {
+	background: url('/invalid.png');
+}
+</style>
 </head>
 <body>
 
