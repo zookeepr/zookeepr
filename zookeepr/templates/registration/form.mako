@@ -240,10 +240,10 @@ else:
           <p class="note">If you have been provided with a voucher code enter it here.</p>
 
           <p class="label"><label for="registration.diet">Dietary requirements:</label></p>
-          <p class="entries">${ h.text('registration.diet', size=70) }</p>
+          <p class="entries">${ h.text('registration.diet', size=60) }</p>
 
           <p class="label"><label for="registration.special">Other special requirements</label></p>
-          <p class="entries">${ h.text('registration.special', size=70) }</p>
+          <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
 
             <p class="label"><label for="registration.opendaydrag">How many people are you bringing to Open Day?</label></p>
@@ -372,27 +372,27 @@ else:
 
             <p class="entries">
               ${ h.checkbox('registration.signup.linuxaustralia') }
-              <label for="registration.signup.linuxaustralia">I want to sign up for (free) Linux Australia membership!</label> <a href="http://www.linux.org.au/">Read More</a>
+              <label for="registrationsignuplinuxaustralia">Sign up for membership with Linux Australia</label> <a href="http://www.linux.org.au/">(read more)</a>
             </p>
 
             <p class="entries">
               ${ h.checkbox('registration.signup.nzoss') }
-              <label for="registration.signup.nzoss">I want to sign up for membership with the New Zealand Open Source Society.</label> <a href="http://nzoss.org.nz/nzoss/about">Read More</a>
+              <label for="registrationsignupnzoss">Sign up for membership with the New Zealand Open Source Society</label> <a href="http://nzoss.org.nz/nzoss/about">(read more)</a>
             </p>
 
             <p class="entries">
               ${ h.checkbox('registration.signup.internetnz') }
-              <label for="registration.signup.internetnz">I want to sign up for membership with Internet NZ.</label> <a href="http://www.internetnz.org.nz/membership">Read More</a>
+              <label for="registrationsignupinternetnz">Sign up for membership with Internet NZ</label> <a href="http://www.internetnz.org.nz/membership">(read more)</a>
             </p>
 
             <p class="entries">
               ${ h.checkbox('registration.signup.announce') }
-              <label for="registration.signup.announce">I want to sign up to the low traffic conference announcement mailing list!</label>
+              <label for="registrationsignupannounce">Sign up to the low traffic <b>conference announcement list</b></label>
             </p>
 
             <p class="entries">
               ${ h.checkbox('registration.signup.chat') } 
-              <label for="registration.signup.chat" >I want to sign up to the conference attendees mailing list!</label>
+              <label for="registrationsignupchat" >Sign up to the <b>conference attendees list</b></label>
             </p>
           </fieldset>
 
