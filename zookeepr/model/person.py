@@ -143,7 +143,6 @@ class Person(Base):
 
     def paid(self):
         status = False
-        return False # FIXME: remove this line once invoices are migrated
         for invoice in self.invoices:
             if not invoice.is_void():
                 if invoice.paid():
