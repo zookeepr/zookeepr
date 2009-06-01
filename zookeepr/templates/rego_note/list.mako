@@ -20,8 +20,8 @@
         <td>${ h.link_to(d.rego.person.firstname + ' ' + d.rego.person.lastname, h.url_for(controller='person', action='view', id=d.rego.person.id)) }, ${ h.link_to('View Registration', h.url_for(controller='registration', action='view', id=d.rego.id)) }</td>
         <td>${ h.line_break(d.note) }
         <td>${ h.link_to(d.by.firstname + ' ' + d.by.lastname, h.url_for(controller='person', action='view', id=d.by.id)) }</td>
-        <td>${ d.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") }</td>
-        <td>${ d.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") }</td>
+        <td>${ d.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}</td>
+        <td>${ d.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}</td>
         <td>${ h.link_to('X (delete)', url=h.url_for(controller='rego_note', action='delete', id=d.id)) }</td>
     </tr>
 % endfor

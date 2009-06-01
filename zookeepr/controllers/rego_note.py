@@ -47,6 +47,11 @@ class RegoNoteController(BaseController):
         defaults = {
             'rego_note.by': h.signed_in_person().id
         }
+        raw_params = request.params
+        if 'rego_id' in raw_params:
+            c.rego_id = int(raw_params['rego_id'])
+            defaults['rego_note.rego'] = c.rego_id
+
         form = render('/rego_note/new.mako')
         return htmlfill.render(form, defaults)
 
