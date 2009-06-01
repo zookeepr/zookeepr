@@ -69,8 +69,11 @@ class Invoice(Base):
         return Session.query(Invoice).order_by(Invoice.id).all()
 
     @classmethod
-    def find_by_id(cls, id):
-        return Session.query(Invoice).filter_by(id=id).first()
+    def find_by_id(cls, id, do_abort=False):
+        invoice = Session.query(Invoice).filter_by(id=id).first()
+        if do_abort and not invoice:
+            abort(404, 'Invalid invoice ID')
+        return invoice
 
     @classmethod
     def find_by_person(cls, person_id):

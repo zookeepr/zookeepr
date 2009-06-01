@@ -92,7 +92,7 @@ class InvoiceController(BaseController):
             h.auth.no_role()
 
         c.printable = False
-        c.invoice = Invoice.find_by_id(id)
+        c.invoice = Invoice.find_by_id(id, True)
         # TODO: remove these once payment works
         c.invoice.good_payments = False
         c.invoice.bad_payments = False
@@ -104,7 +104,7 @@ class InvoiceController(BaseController):
             h.auth.no_role()
 
         c.printable = True
-        c.invoice = Invoice.find_by_id(id)
+        c.invoice = Invoice.find_by_id(id, True)
         # TODO: remove these once payment works
         c.invoice.good_payments = False
         c.invoice.bad_payments = False
@@ -141,7 +141,7 @@ class InvoiceController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
-        c.invoice = Invoice.find_by_id(id)
+        c.invoice = Invoice.find_by_id(id, True)
 
         #return render('/registration/really_closed.mako')
         if c.invoice.person.invoices:
@@ -208,7 +208,8 @@ class InvoiceController(BaseController):
 
         import os, tempfile, libxml2, libxslt
 
-        c.invoice = Invoice.find_by_id(id)
+        c.invoice = Invoice.find_by_id(id, True)
+
         # TODO: remove these once payment works
         c.invoice.good_payments = False
         c.invoice.bad_payments = False
@@ -248,7 +249,7 @@ class InvoiceController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def void(self, id):
-        c.invoice = Invoice.find_by_id(id)
+        c.invoice = Invoice.find_by_id(id, True)
         c.invoice.void = "Administration Change"
         meta.Session.commit()
         h.flash("Invoice was voided.")
@@ -256,7 +257,7 @@ class InvoiceController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def unvoid(self, id):
-        c.invoice = Invoice.find_by_id(id)
+        c.invoice = Invoice.find_by_id(id, True)
         c.invoice.void = None
         c.invoice.manual = True
         meta.Session.commit()
