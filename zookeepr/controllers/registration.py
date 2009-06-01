@@ -5,7 +5,7 @@ from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
-from formencode import validators, htmlfill
+from formencode import validators, htmlfill, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
@@ -23,9 +23,9 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model import Registration, Role
+from zookeepr.model import Registration, Role, RegistrationProduct, Person
 from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
-from zookeepr.model import Invoice
+from zookeepr.model import Invoice, InvoiceItem
 
 from zookeepr.config.lca_info import lca_info
 
@@ -74,7 +74,7 @@ class ExistingPersonSchema(BaseSchema):
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
 
-class RegisterSchema(BaseSchema):
+class RegistrationSchema(BaseSchema):
     over18 = validators.Bool()
     nick = validators.String()
     shell = validators.String()
@@ -97,18 +97,19 @@ class RegisterSchema(BaseSchema):
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
-    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator()]
+    # TODO: fix these validators
+    #chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
-    registration = RegisterSchema()
+    registration = RegistrationSchema()
 
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [NestedVariables]
 
 class UpdateRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
-    registration = RegisterSchema()
+    registration = RegistrationSchema()
 
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [NestedVariables]
@@ -125,7 +126,7 @@ class ProductUnavailable(Exception):
 new_schema = NewRegistrationSchema()
 edit_schema = UpdateRegistrationSchema()
 
-class RegistrationController(BaseController): # Update, List, Read
+class RegistrationController(BaseController):
 
     def __before__(self, **kwargs):
         c.product_categories = ProductCategory.find_all()
@@ -138,6 +139,7 @@ class RegistrationController(BaseController): # Update, List, Read
         c.product_available = self._product_available
         c.able_to_edit = self._able_to_edit
         c.manual_invoice = self.manual_invoice
+        c.signed_in_person = h.signed_in_person()
 
     def _able_to_edit(self):
         for invoice in h.signed_in_person().invoices:
@@ -202,8 +204,9 @@ class RegistrationController(BaseController): # Update, List, Read
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
-                ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
-                # FIXME: I have spent far too long to try and get this working. Technically this should be a chained validator, not a pre validator but no matter what I do I can't get it to work (read heaps of docs etc etc). The result of being a pre-validator is that if there is an error the pre validator doesn't pick up (like an unfilled field) that the normal validation would pick up it isn't highlighted until the pre-validator doesn't find any errors. For example if you dont' select any shirts and have "asdf" in one of the dinner ticket fields you should see two errors: 1. you have no shirts and 2. tickets need to be integers. Once you select a shirt and resubmit the other error will show up. So it's a usability issue and doesn't make the form less secure, but damn this one is annoying!
+                # TODO: need to restore the next line!!!
+                #ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
+
         new_schema.add_field('products', ProductSchema)
         edit_schema.add_field('products', ProductSchema)
 
@@ -238,7 +241,7 @@ class RegistrationController(BaseController): # Update, List, Read
         form = render("/registration/new.mako")
         return htmlfill.render(form, defaults)
 
-    @validate(schema=new_schema, form='new', post_only=True, on_get=True, variable_decode=True)
+    @validate(schema=edit_schema, form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='_edit', id=c.signed_in_person.registration.id)
@@ -252,18 +255,15 @@ class RegistrationController(BaseController): # Update, List, Read
         else:
             current_schema = new_schema
 
-        # A blank registration
-        c.registration = model.Registration()
-        self.save_details(result)
+        result = self.form_result
 
-        # Create person<->registration relationship
-        c.registration.person = c.person
-        meta.Session.commit()
+        # A blank registration
+        c.registration = Registration()
+        self.save_details(result)
 
         email(
             c.person.email_address,
-            render('registration/response.mako',
-                id=c.person.url_hash, fragment=True))
+            render('registration/response.mako'))
 
         self.pay(c.registration.id, quiet=1)
 
@@ -286,15 +286,18 @@ class RegistrationController(BaseController): # Update, List, Read
             h.auth.no_role()
         able, response = self._able_to_edit()
         if not able:
-            return render("registration/error.mako", error=response)
+            c.error = response
+            return render("/registration/error.mako")
         c.registration = Registration.find_by_id(id)
-        defaults = h.object_to_defaults(c.registration, 'registration')
+        defaults = {}
+        defaults.update(h.object_to_defaults(c.registration, 'registration'))
+        defaults.update(h.object_to_defaults(c.registration.person, 'person'))
 
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
 
     @authorize(h.auth.is_valid_user)
-    @validate(edit_schema)
+    @validate(schema=edit_schema, form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         # We need to recheck auth in here so we can pass in the id
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
@@ -302,10 +305,8 @@ class RegistrationController(BaseController): # Update, List, Read
             h.auth.no_role()
 
         c.registration = Registration.find_by_id(id)
-        for key in self.form_result['registration']:
-            setattr(c.registration, key, self.form_result['registration'][key])
-
-        self.pay(c.registration.id, quiet=1)
+        result = self.form_result
+        self.save_details(result)
 
         redirect_to(action='status')
 
@@ -320,44 +321,10 @@ class RegistrationController(BaseController): # Update, List, Read
             else:
                 setattr(c.registration, k, result['registration'][k])
         setattr(c.registration, 'partner_email', result['products']['partner_email']) # hacky method to make validating sane
-        self.dbsession.save_or_update(c.registration)
-
-        # Always delete the current products
-        c.registration.products = []
-
-        # Store Product details
-        for category in c.product_categories:
-            if category.display in ('radio', 'select'):
-                product = self.dbsession.query(model.Product).get(result['products']['category_' + str(category.id)])
-                if product != None:
-                    rego_product = model.RegistrationProduct()
-                    rego_product.product = product
-                    if product.category.name == 'Accommodation':
-                        rego_product.qty = c.registration.checkout - c.registration.checkin
-                    else:
-                        rego_product.qty = 1
-                    self.dbsession.save(rego_product)
-                    c.registration.products.append(rego_product)
-            elif category.display == 'checkbox':
-                for product in category.products:
-                    if result['products']['product_' + str(product.id)] == True:
-                        rego_product = model.RegistrationProduct()
-                        rego_product.product = product
-                        rego_product.qty = 1
-                        self.dbsession.save(rego_product)
-                        c.registration.products.append(rego_product)
-            elif category.display == 'qty':
-                for product in category.products:
-                    if result['products']['product_' + str(product.id) + '_qty'] not in [0, None]:
-                        rego_product = model.RegistrationProduct()
-                        rego_product.product = product
-                        rego_product.qty = result['products']['product_' + str(product.id) + '_qty']
-                        self.dbsession.save(rego_product)
-                        c.registration.products.append(rego_product)
 
         # Check whether we're already signed in or not, and store person details
         if not c.signed_in_person:
-            c.person = model.Person()
+            c.person = Person()
         elif c.registration.person:
             c.person = c.registration.person
         else:
@@ -366,7 +333,47 @@ class RegistrationController(BaseController): # Update, List, Read
         for k in result['person']:
             setattr(c.person, k, result['person'][k])
 
-        self.dbsession.save_or_update(c.person)
+        # Create person<->registration relationship
+        c.registration.person = c.person
+        meta.Session.commit()
+
+        # Always delete the current products
+        c.registration.products = []
+
+        # Store Product details
+        for category in c.product_categories:
+            if category.display in ('radio', 'select'):
+                product = Product.find_by_id(result['products']['category_' + str(category.id)])
+                if product != None:
+                    rego_product = RegistrationProduct()
+                    rego_product.registration = c.registration
+                    rego_product.product = product
+                    if product.category.name == 'Accommodation':
+                        rego_product.qty = c.registration.checkout - c.registration.checkin
+                    else:
+                        rego_product.qty = 1
+                    meta.Session.commit()
+                    c.registration.products.append(rego_product)
+            elif category.display == 'checkbox':
+                for product in category.products:
+                    if result['products']['product_' + str(product.id)] == True:
+                        rego_product = RegistrationProduct()
+                        rego_product.registration = c.registration
+                        rego_product.product = product
+                        rego_product.qty = 1
+                        meta.Session.commit()
+                        c.registration.products.append(rego_product)
+            elif category.display == 'qty':
+                for product in category.products:
+                    if result['products']['product_' + str(product.id) + '_qty'] not in [0, None]:
+                        rego_product = RegistrationProduct()
+                        rego_product.registration = c.registration
+                        rego_product.product = product
+                        rego_product.qty = result['products']['product_' + str(product.id) + '_qty']
+                        meta.Session.commit()
+                        c.registration.products.append(rego_product)
+
+        meta.Session.commit()
 
     def status(self):
         return render("/registration/status.mako")
@@ -403,8 +410,8 @@ class RegistrationController(BaseController): # Update, List, Read
                 if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.is_void():
                     if self.invoices_identical(old_invoice, new_invoice):
                         for ii in new_invoice.items:
-                            self.dbsession.expunge(ii)
-                        self.dbsession.expunge(new_invoice)
+                            meta.Session.expunge(ii)
+                        meta.Session.expunge(new_invoice)
                         invoice = old_invoice
                     else:
                         if old_invoice.due_date < new_invoice.due_date:
@@ -415,7 +422,6 @@ class RegistrationController(BaseController): # Update, List, Read
                         old_invoice.void = "Registration Change"
 
             invoice.last_modification_timestamp = datetime.datetime.now()
-            meta.Session.save_or_update(invoice)
             meta.Session.commit()
 
             if quiet: return
@@ -461,17 +467,18 @@ class RegistrationController(BaseController): # Update, List, Read
         # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
             if self._product_available(rproduct.product):
-                ii = model.InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
+                ii = InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
+                ii.invoice = invoice
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until()
                 if product_expires != None and product_expires < invoice.due_date:
                     invoice.due_date = product_expires
-                self.dbsession.save(ii)
                 invoice.items.append(ii)
+                meta.Session.commit()
             else:
                 for ii in invoice.items:
-                    self.dbsession.expunge(ii)
-                self.dbsession.expunge(invoice)
+                    meta.Session.expunge(ii)
+                meta.Session.expunge(invoice)
                 raise ProductUnavailable(rproduct.product)
 
         # Check for included products
@@ -497,7 +504,7 @@ class RegistrationController(BaseController): # Update, List, Read
                     # of items on the invoice
                     if free_cost > 0:
                         discount_item = model.InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
-                        self.dbsession.save(discount_item)
+                        meta.Session.commit()
                         invoice.items.append(discount_item)
 
         return invoice
@@ -816,3 +823,6 @@ class RegistrationController(BaseController): # Update, List, Read
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
             # Raise a no_auth error
             h.auth.no_role()
+
+        c.registration = Registration.find_by_id(id)
+        return render('/registration/view.mako')

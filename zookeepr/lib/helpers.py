@@ -228,21 +228,21 @@ def yesno(bool):
 #    else:
 #        return x
 #
-#def date(d):
-#    """ Display a date in text format (currently limited to the month that is hardcoded) """
-#    if d==1:
-#        return "%dst of January" % d
-#    elif d==2:
-#        return "%dnd of January" % d
-#    elif d==3:
-#        return "%drd of January" % d
-#    elif d<15:
-#        return "%dth of January" % d
-#    elif d==31:
-#        return "%dst of January" % d
-#    else:
-#        return "%dth of January" % d
-#
+def date(d):
+    """ Display a date in text format (currently limited to the month that is hardcoded) """
+    if d==1:
+        return "%dst of January" % d
+    elif d==2:
+        return "%dnd of January" % d
+    elif d==3:
+        return "%drd of January" % d
+    elif d<15:
+        return "%dth of January" % d
+    elif d==31:
+        return "%dst of January" % d
+    else:
+        return "%dth of January" % d
+
 def countries():
     """ list of countries
     """

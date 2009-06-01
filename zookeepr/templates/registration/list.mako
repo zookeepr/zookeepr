@@ -176,7 +176,13 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
         ${ '<i>' + '</i>, <i>'.join(role) + '</i>' |n}
         </td>
         <td>
+<%  firstinvoice = True %>
 %   for rinvoice in registration.person.invoices:
+%       if firstinvoice:
+<%          firstinvoice = False %>
+%       else:
+            <br><br>
+%       endif
         ${ h.link_to(rinvoice.id, h.url_for(controller='invoice', action='view', id=rinvoice.id)) } - <small>${ rinvoice.status() }</small>
 %       if rinvoice.manual is True:
             <i>(manual)</i>
@@ -203,12 +209,14 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 %   if not registration.over18:
         <b>Under 18</b> ${ h.yesno(not registration.over18) | n }<br><br>
 %   endif
-            ${ 'FIXME' or '<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in registration.notes]) + '<br><br>' }
+% if registration.notes:
+            ${ '<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in registration.notes]) + '<br><br>' | n}
+% endif
 %   if registration.diet:
-            ${ '<b>Diet:</b> %s<br><br>' % (registration.diet) }
+            ${ '<b>Diet:</b> %s<br><br>' % (registration.diet) | n}
 %   endif
 %   if registration.special:
-            ${ '<b>Special Needs:</b> %s<br><br>' % (registration.special) }
+            ${ '<b>Special Needs:</b> %s<br><br>' % (registration.special) | n}
 %   endif
         ${ h.link_to("Add New Note", h.url_for(controller='rego_note', action='new', rego_id=registration.id)) }
         </td>

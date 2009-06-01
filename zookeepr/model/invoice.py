@@ -46,7 +46,7 @@ class Invoice(Base):
 
     def paid(self):
         """Return whether the invoice is paid (or zero-balance) """
-        print "FIXME!" # TODO: should really do this!
+        print "FIXME!" # TODO: remove this once payment works
         return True
         return bool(self.good_payments or self.total()==0)
 

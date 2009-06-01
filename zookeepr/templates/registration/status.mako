@@ -9,7 +9,7 @@
       <b>Registrations</b> are open<br><br>
 % else:
       <b>Registrations are closed</b><br><br>
-% #endif
+% endif
       <div class = "graph-bar" style = "width:${ h.number_to_percentage(c.ceilings['conference'].percent_invoiced(), precision=0) }">&nbsp;</div>
       <div class = "graph-bar-text">${ h.ticket_percentage_text(c.ceilings['conference'].percent_invoiced()) }</div><br>
 % if h.lca_info['conference_status'] == 'open' and c.ceilings['earlybird'].available() and c.ceilings['conference'].available():

@@ -105,6 +105,9 @@ class InvoiceController(BaseController):
 
         c.printable = True
         c.invoice = Invoice.find_by_id(id)
+        # TODO: remove these once payment works
+        c.invoice.good_payments = False
+        c.invoice.bad_payments = False
         return render('/invoice/view_printable.mako')
 
     def index(self):
@@ -125,10 +128,6 @@ class InvoiceController(BaseController):
     def remind(self):
         c.invoice_collection = Invoice.find_all();
         c.payment_options = PaymentOptions();
-
-        # TODO: this is a temporary hack until registration is ported
-        for i in c.invoice_collection:
-            i.person.registration = Registration()
 
         return render('/invoice/remind.mako')
 

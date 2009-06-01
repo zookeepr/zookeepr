@@ -127,7 +127,7 @@ else:
           <legend>&nbsp;</legend>
           <h2>${ category.name.title() }</h2>
           <p class="note">${ category.description }</p>
-# Manual category display goes here:
+## Manual category display goes here:
 %       if category.name == 'Shirt':
 <%
 #           # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
@@ -203,8 +203,8 @@ else:
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">
-         <% dates = [(d, 1) for d in range(18,26)] %>
-%           for (day, month) in dates:
+         <% dates = [(d, 1) for d in range(17,25)] %>
+%           for (day, month) in dates[:-1]:
               <option value="${ day }">${ datetime.datetime(2010, month, day).strftime('%A, %e %b') }</option>
 %           endfor
             </select>
@@ -213,7 +213,7 @@ else:
           <p class="label"><span class="mandatory">*</span><label for="registation.checkout">Check out on:</label></p>
           <p class="entries">
             <select name="registration.checkout">
-%           for day, month in dates[1:]:
+%           for (day, month) in dates[1:]:
               <option value="${ day }" >${ datetime.datetime(2010, month, day).strftime('%A, %e %b') }</option>
 %           endfor
             </select>
@@ -232,7 +232,7 @@ else:
           <legend>&nbsp;</legend>
           <h2>Further Information</h2>
 
-          <p class="entries">${ h.checkbox('registration.over18') }<label for="registration.over18">Are you over 18?</label></p>
+          <p class="entries">${ h.checkbox('registration.over18') }<label for="registrationover18">Are you over 18?</label></p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 
           <p class="label"><label for="registration.voucher_code">Voucher Code</label></p>
@@ -245,15 +245,6 @@ else:
           <p class="label"><label for="registration.special">Other special requirements</label></p>
           <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
-
-            <p class="label"><label for="registration.opendaydrag">How many people are you bringing to Open Day?</label></p>
-            <p class="entries">${ h.text('registration.opendaydrag', size=10) }</p>
-            <p class="note">
-              ${ h.link_to("Open Day", url="/programme/schedule/saturday", popup=True) }
-              is open to friends and family, and is targeted to a non-technical
-              audience.  If you want to show off FOSS culture to some people, you can
-              give us an idea of how many people to expect.
-            </p>
 
           <p class="label"><label for="registration.miniconfs">Preferred mini-confs:</label></p>
           <p class="entries">

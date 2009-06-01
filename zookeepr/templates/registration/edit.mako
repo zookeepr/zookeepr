@@ -16,7 +16,7 @@
 ${ h.form(h.url_for()) }
 <%include file="form.mako" />
 
-        <p class="submit">${ h.submit('update','Update') }</p>
+        <p class="submit">${ h.submit('submit','Update') } ${ h.link_to('back', url=h.url_for(action='status', id=None)) }</p>
       ${ h.end_form() }
 
     </div>
