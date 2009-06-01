@@ -457,7 +457,7 @@ class RegistrationController(BaseController):
         invoice = Invoice()
         invoice.person = registration.person
         invoice.manual = False
-        invoice.void = False
+        invoice.void = None
 
         # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
