@@ -291,6 +291,9 @@ class RegistrationController(BaseController):
         defaults = {}
         defaults.update(h.object_to_defaults(c.registration, 'registration'))
         defaults.update(h.object_to_defaults(c.registration.person, 'person'))
+        for rproduct in c.registration.products:
+            product = rproduct.product
+            defaults['products.category_' + str(product.category.id)] = product.id
 
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
