@@ -10,7 +10,7 @@ from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
-from zookeepr.lib.validators import ProductQty, ProductMinMax
+from zookeepr.lib.validators import ProductQty, ProductMinMax, CheckAccomDates
 
 # validators used from the database
 from zookeepr.lib.validators import ProDinner, PPEmail, PPChildrenAdult
@@ -47,7 +47,7 @@ class NotExistingRegistrationValidator(validators.FancyValidator):
 
 class DuplicateVoucherValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        voucher = state.query(Voucher).filter_by(code=value['voucher_code']).first()
+        voucher = Voucher.find_by_code(value['voucher_code'])
         if voucher != None:
             if voucher.registration:
                 if not 'signed_in_person_id' in session:
@@ -96,8 +96,7 @@ class RegistrationSchema(BaseSchema):
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
 
-    # TODO: fix these validators
-    #chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -203,8 +202,8 @@ class RegistrationController(BaseController):
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
-                # TODO: need to restore the next line!!!
-                #ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
+
+                ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
 
         new_schema.add_field('products', ProductSchema)
         edit_schema.add_field('products', ProductSchema)
@@ -241,6 +240,11 @@ class RegistrationController(BaseController):
         defaults['registration.signup.announce'] = 1
         defaults['registration.checkin'] = 17
         defaults['registration.checkout'] = 24
+
+        # Hacker-proof silly_description field
+        c.silly_description, checksum = h.silly_description()
+        defaults['registration.silly_description'] = c.silly_description
+        defaults['registration.silly_description_checksum'] = checksum
 
         form = render("/registration/new.mako")
         return htmlfill.render(form, defaults)
@@ -380,10 +384,6 @@ class RegistrationController(BaseController):
 
     def status(self):
         return render("/registration/status.mako")
-
-    def silly_description(self):
-        desc, descChecksum = h.silly_description()
-        return descChecksum + ',' + desc
 
     @authorize(h.auth.is_valid_user)
     def pay(self, id, quiet=0):

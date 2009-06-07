@@ -344,14 +344,8 @@ else:
             <p class="entries">${ h.text('registration.planetfeed') }</p>
             <p class="note">If you have a Blog and would like it included in the conference planet, please specify an <em>LCA specific feed</em> to be included.</p>
 
-            <p class="label"><label for="registration.silly_description">Description:</label></p>
-            <script src="/silly.js" type="text/javascript"></script>
-% if registration:
-            <blockquote><p id='silly_description'>${ registration.silly_description }</p></blockquote>
-% endif
-<%
-#            <p>${ h.button_to_function('New Description', function='silly_description()') }</p>
-%>
+            <p class="label"><label for="registration.silly_description">Description:</label>
+            <blockquote>${ c.silly_description }</blockquote></p>
             ${ h.hidden('registration.silly_description') }
             ${ h.hidden('registration.silly_description_checksum') }
             <p class="note">This is a randomly chosen description for your name badge</p>
