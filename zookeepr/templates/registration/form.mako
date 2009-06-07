@@ -130,8 +130,8 @@ else:
 ## Manual category display goes here:
 %       if category.name == 'Shirt':
 <%
-#           # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
-#           # Number of items in the row must be the same for each row
+##         # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
+##         # Number of items in the row must be the same for each row
            fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
            i = j = 0
 %>
