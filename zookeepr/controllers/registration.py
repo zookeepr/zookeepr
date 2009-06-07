@@ -237,6 +237,11 @@ class RegistrationController(BaseController):
                 if v is not None:
                     defaults['person.' + k] = getattr(c.signed_in_person, k)
 
+        defaults['registration.over18'] = 1
+        defaults['registration.signup.announce'] = 1
+        defaults['registration.checkin'] = 17
+        defaults['registration.checkout'] = 24
+
         form = render("/registration/new.mako")
         return htmlfill.render(form, defaults)
 
