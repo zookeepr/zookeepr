@@ -7,6 +7,13 @@ from zookeepr.model.meta import Session
 
 def setup(meta):
     meta.Session.add_all(
+        [
+            ProductCategory(name='Ticket', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
+            ProductCategory(name='Shirt', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=100),
+            ProductCategory(name='Dinner Ticket', description='Please indicate how many penguin dinner tickets you wish to purchase. You should include yourself in this number, even if you buy a professional registration.', display='qty', min_qty=0, max_qty=5),
+            ProductCategory(name='Accommodation', description='Where would you like to stay during the conference?', display='select', min_qty=0, max_qty=10),
+            ProductCategory(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=50),
+        ]
     )
 
 class ProductCategory(Base):

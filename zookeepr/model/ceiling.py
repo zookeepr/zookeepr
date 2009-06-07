@@ -15,7 +15,18 @@ import md5
 import random
 
 def setup(meta):
-    pass
+    earlybird_end = datetime.datetime(2010, 10, 28, 23, 59, 59);
+    nonearlybird_start = datetime.datetime(2010, 10, 29, 0, 0, 0,);
+
+    meta.Session.add_all(
+        [
+            Ceiling(name='all-conference', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='conference', max_sold=750, available_from=None, available_until=None),
+            Ceiling(name='earlybird', max_sold=200, available_from=None, available_until=earlybird_end),
+            Ceiling(name='non-earlybird', max_sold=None, available_from=nonearlybird_start, available_until=None),
+            Ceiling(name='uniaccom', max_sold=240, available_from=None, available_until=None),
+        ]
+    )
 
 class Ceiling(Base):
     """Stores the details of product ceilings which are used to control the sale of itmes with a limited stock
@@ -29,7 +40,7 @@ class Ceiling(Base):
     available_from = sa.Column(sa.types.DateTime, nullable=True)
     available_until = sa.Column(sa.types.DateTime, nullable=True)
 
-    def __init__(self, name=None, max_sold=None, available_from=None, available_until=None, products=None):
+    def __init__(self, name=None, max_sold=None, available_from=None, available_until=None, products=[]):
         self.name = name
         self.max_sold = max_sold
         self.available_from = available_from

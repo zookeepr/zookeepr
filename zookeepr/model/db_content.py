@@ -14,7 +14,13 @@ import datetime
 import random
 
 def setup(meta):
-    pass
+    meta.Session.add_all(
+        [
+            DbContentType(name='Page'),
+            DbContentType(name='News'),
+            DbContentType(name='In the press'),
+        ]
+    )
 
 class DbContentType(Base):
     """Stores both account login details and personal information.
