@@ -106,7 +106,7 @@ class TravelAssistanceType(Base):
     __tablename__ = 'travel_assistance_type'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
-    name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+    name = sa.Column(sa.types.String(60), unique=True, nullable=False)
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
@@ -152,7 +152,7 @@ class AccommodationAssistanceType(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
 
     # title of proposal
-    name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+    name = sa.Column(sa.types.String(120), unique=True, nullable=False)
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
