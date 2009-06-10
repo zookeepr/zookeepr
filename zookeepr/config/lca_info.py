@@ -27,6 +27,7 @@ lca_info = {
   'event_fax_number' : '+64 4 802 0422',
   'event_phone_number': '+64 4 802 0422',
   'date' : datetime(2010, 1, 17, 9, 0, 00),
+  'media_license' : 'Creative Commons ShareAlike License',
 
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
 
@@ -38,6 +39,12 @@ lca_info = {
 
   'mini_conf_email' : 'miniconfs@lca2010.org.nz',
   'speaker_email' : 'speakers@lca2010.org.nz',
+
+  'emails': {
+     'presentation' : 'speakers@lca2010.org.nz',
+     'tutorial'     : 'speakers@lca2010.org.nz',
+     'miniconf'     : 'miniconfs@lca2010.org.nz',
+  },
 
   'proposal_update_email': 'puck@lca2010.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
 }

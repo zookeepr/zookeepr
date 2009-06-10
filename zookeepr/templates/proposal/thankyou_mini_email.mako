@@ -1,17 +1,17 @@
-Subject: Confirmation of your miniconf proposal for ${ h.lca_info['event_name'] }
+Subject: Confirmation of your ${ c.proposal.type.name.lower() } proposal for ${ h.lca_info['event_name'] }
 To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
 
 Dear ${ c.person.firstname },
 
-Thankyou for proposing a miniconf for ${ h.lca_info['event_name'] }
+Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ h.lca_info['event_name'] }.
 
 If you have any queries about your proposed ${ c.proposal.type.name.lower() }, please email
-${ h.lca_info['mini_conf_email'] }
+${ h.lca_info['emails'][c.proposal.type.name.lower()] }
 
-title: ${ c.proposal.title }
-url: ${ c.proposal.url }
-attachments: ${ len(c.proposal.attachments) }
-summary: ${ c.proposal.abstract }
+Title:       ${ c.proposal.title }
+URL:         ${ c.proposal.url }
+Attachments: ${ len(c.proposal.attachments) }
+Summary:     ${ c.proposal.abstract }
 
 
 The ${ h.event_name() } team
