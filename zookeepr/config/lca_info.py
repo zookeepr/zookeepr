@@ -20,7 +20,7 @@ lca_info = {
   'event_parent_url' : 'http://www.linux.org.au/',
   'event_name' : 'linux.conf.au 2010',
   'event_shortname' : 'lca2010',
-  'event_url' : 'http://www.linux.conf.au/',
+  'event_url' : 'http://www.lca2010.org.nz/',
 #  'event_tax_number' : 'ABN 56 987 117 479',
  'event_tax_number' : 'NZ GST #90-792-369',
   'event_postal_address' : 'PO Box 11-682, Manners St, Wellington, NEW ZEALAND 6142',
