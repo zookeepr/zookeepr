@@ -14,7 +14,7 @@ if c.db_content and not h.url_for().endswith('edit'):
 % if menu != '':
   <div class="yellowbox">
     <div class="boxheader">
-      <h1>Contents</h1>o
+      <h1>Contents</h1>
       <ul>
 ${ menu | n}
       </ul>
