@@ -93,11 +93,11 @@
     <p class="note">Your homepage.</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="person.bio">Bio:</label></p>
-    <p class="entries">${ h.textarea('person.bio', size="70x6") }</p>
+    <p class="entries">${ h.textarea('person.bio', cols="70", rows="6") }</p>
     <p class="note">This will appear on the conference website and in the programme for your talks and tutorials. Please write in the third person, eg "Alice is a Mozilla hacker...", 150-200 words.</p>
 
     <p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
-    <p class="entries">${ h.textarea('person.experience', size="70x6") }</p>
+    <p class="entries">${ h.textarea('person.experience', cols="70", rows="6") }</p>
     <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your mini-confs and presentations.</p>
 
     <p class="entries">
