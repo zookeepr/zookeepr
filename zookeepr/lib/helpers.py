@@ -366,7 +366,7 @@ def signed_in_person():
     if email_address is None:
         return None
 
-    person = Person.find_by_email(email_address)
+    person = Person.find_by_email(email_address, True)
     return person
 
 def object_to_defaults(object, prefix):

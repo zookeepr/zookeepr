@@ -155,7 +155,7 @@ class Person(Base):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 
     @classmethod
-    def find_by_email(cls, email, abort_404 = True):
+    def find_by_email(cls, email, abort_404 = False):
         result = Session.query(Person).filter_by(email_address=email.lower()).first()
         if result is None and abort_404:
             abort(404, "No such object")

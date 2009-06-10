@@ -128,7 +128,7 @@ class ExistingPersonValidator_by_email(validators.FancyValidator):
 
 class NotExistingPersonValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        person = Person.find_by_email(value['email_address'], abort_404=False)
+        person = Person.find_by_email(value['email_address'])
         if person is not None:
             msg = "A person with this email already exists. Please try signing in first."
             raise Invalid(msg, value, state, error_dict={'email_address': msg})

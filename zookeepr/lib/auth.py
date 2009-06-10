@@ -177,6 +177,9 @@ class HasZookeeprRole(HasAuthKitRole):
         if not self.role_exists(role.lower()):
             raise AuthKitNoSuchRoleError("No such role %r"%role.lower())
         person = Person.find_by_email(username)
+        if person is None:
+            return False
+
         for role_ in person.roles:
             if role_.name == role.lower():
                 return True
