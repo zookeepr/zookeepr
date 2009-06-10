@@ -311,7 +311,7 @@ class ProposalController(BaseController):
         meta.Session.commit()
 
         if lca_info['proposal_update_email'] != '':
-            body = "Subject: LCA Proposal Updated\n\nid: %d\nTitle: %s\nURL: %s" % (c.proposal.id, c.proposal.title, "http://" + h.host_name() + h.url_for(action="view"))
+            body = "Subject: %s Proposal Updated\n\nID:    %d\nTitle: %s\nURL:   %s" % (h.lca_info['event_name'], c.proposal.id, c.proposal.title, "http://" + h.host_name() + h.url_for(action="view"))
             email(lca_info['proposal_update_email'], body)
 
         h.flash("Proposal %s edited!"%p_edit)
