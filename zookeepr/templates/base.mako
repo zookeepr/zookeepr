@@ -49,7 +49,13 @@
     <!-- start content -->
     <div id="wrapper">
       <div id="leftcol">
-## Admin links
+% if h.url_for() == '/':
+    <%include file="/leftcol/home.mako" />
+% else:
+    <%include file="/leftcol/default.mako" />
+% endif
+
+## Toolbox links
 % if h.auth.authorized(h.auth.has_organiser_role):
         <div class = 'yellowbox'>
           <div class="boxheader">
@@ -57,17 +63,11 @@
             <ul>
               <li>${ h.link_to('Admin', url=h.url_for(controller='admin')) }</li>
 %   if c.db_content and not h.url_for().endswith('edit'):
-             <li>${ h.link_to('Edit me', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
+             <li>${ h.link_to('Edit page', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
 %   endif
             </ul>
           </div>
        </div>
-% endif
-
-% if h.url_for() == '/':
-    <%include file="/leftcol/home.mako" />
-% else:
-    <%include file="/leftcol/default.mako" />
 % endif
       </div>
       <div id="content">
