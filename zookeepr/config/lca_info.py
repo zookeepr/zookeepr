@@ -10,10 +10,10 @@ lca_info = {
   'commsecure_secret' : 'zing',
 
 # Contact email for the committee
-  'contact_email' : 'contact@penguinsvisiting.org.nz',
+  'contact_email' : 'contact@lca2010.org.nz',
 # All email sent by ZK will Bcc here:
-  'bcc_email' : 'bcc_archive@penguinsvisiting.org.nz',
-  'webmaster_email': 'webmaster@penguinsvisiting.org.nz',
+  'bcc_email' : 'bcc_archive@lca2010.org.nz',
+  'webmaster_email': 'webmaster@lca2010.org.nz',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia, Incorporated',
@@ -36,10 +36,10 @@ lca_info = {
   'paper_editing' : 'not_open',
   'conference_status': 'not_open',
 
-  'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
-  'speaker_email' : 'speakers@penguinsvisiting.org.nz',
+  'mini_conf_email' : 'miniconfs@lca2010.org.nz',
+  'speaker_email' : 'speakers@lca2010.org.nz',
 
-  'proposal_update_email': 'puck@penguinsvisiting.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
+  'proposal_update_email': 'puck@lca2010.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
 }
 
 lca_rego = {
@@ -138,7 +138,7 @@ lca_menu = [
   #('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
-  ('Planet', 'http://planet.penguinsvisiting.org.nz', 'planet'),
+  ('Planet', 'http://planet.lca2010.org.nz', 'planet'),
 ]
 
 lca_submenus = {
