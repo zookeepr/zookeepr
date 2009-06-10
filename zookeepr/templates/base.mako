@@ -52,7 +52,7 @@
 ## Admin links
 % if h.auth.authorized(h.auth.has_organiser_role):
 <ul><li>${ h.link_to('Admin', url=h.url_for(controller='admin')) }</li>
-%   if c.db_content:
+%   if c.db_content and not h.url_for().endswith('edit'):
 <li>${ h.link_to('Edit me', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
 %   endif
 </ul>
