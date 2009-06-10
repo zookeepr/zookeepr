@@ -69,6 +69,10 @@
           </div>
        </div>
 % endif
+
+% if h.url_for() != '/':
+    <%include file="/leftcol/top_sponsors.mako" />
+% endif
       </div>
       <div id="content">
     <div id="flash">
