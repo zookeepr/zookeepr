@@ -32,10 +32,5 @@
 %   endif
 
 % endfor
-% if h.signed_in_person():
-        <li><a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') |n}>Sign out</a> (${h.signed_in_person().email_address})</li>
-% else:
-        <li><a href="${h.url_for(controller='person', action='signin')}" ${ cls('login') |n}>Sign in</a></li>
-% endif
       </ul>
 

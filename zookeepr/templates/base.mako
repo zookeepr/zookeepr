@@ -2,6 +2,30 @@
 <%!
     title = 'linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!'
 %>
+<%
+    url = h.url_for()
+    # Hack for schedule url
+    if url.startswith('/schedule'):
+        url = '/programme' + url
+    mm = h.lca_menu
+
+    where = ''
+    if url == '' or url == '/':
+        where = 'home'
+
+    map = [(u, d) for (t, u, d) in mm]
+
+    for (u, w) in map:
+        if url.startswith('/' + w):
+            where = w
+
+    def cls(part):
+        if part == where:
+            return 'class="selected"'
+        else:
+            return 'class=""'
+%>
+
 
 <%def name="extra_head()">
     ## Defined in children
@@ -56,19 +80,27 @@
 % endif
 
 ## Toolbox links
-% if h.auth.authorized(h.auth.has_organiser_role):
         <div class = 'yellowbox'>
           <div class="boxheader">
             <h1>Toolbox</h1>
             <ul>
+% if h.auth.authorized(h.auth.has_organiser_role):
               <li>${ h.link_to('Admin', url=h.url_for(controller='admin')) }</li>
 %   if c.db_content and not h.url_for().endswith('edit'):
              <li>${ h.link_to('Edit page', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
 %   endif
+% endif
+% if h.signed_in_person():
+             <li> <a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') |n}>Sign out</a></li>
+% else:
+             <li><a href="${h.url_for(controller='person', action='signin')}" ${ cls('login') |n}>Sign in</a></li>
+% endif
             </ul>
+% if h.signed_in_person():
+            <p class = 'more'>${h.signed_in_person().email_address}</p>
+% endif
           </div>
        </div>
-% endif
 
 % if h.url_for() != '/':
     <%include file="/leftcol/top_sponsors.mako" />
