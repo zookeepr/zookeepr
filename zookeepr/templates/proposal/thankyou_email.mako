@@ -24,17 +24,17 @@ whether or not your ${ c.proposal.type.name.lower() } is accepted.
 Your ${ c.proposal.type.name.lower() } may be recorded by the conference.
 % if c.proposal.video_release and c.proposal.slides_release:
 You consent to ${ h.lca_info["event_parent_organisation"] } releasing both the video of your ${ c.proposal.type.name.lower() } and your
-slides, if you supply them to us, under the ${ h.lca_info["media_license"] }.
+slides, if you supply them to us, under the ${ h.lca_info["media_license_name"] }.
 % else:
 %   if c.proposal.video_release:
 You consent to ${ h.lca_info["event_parent_organisation"] } releasing the video of your ${ c.proposal.type.name.lower() } under the
-${ h.lca_info["media_license"] }.
+${ h.lca_info["media_license_name"] }.
 %   else:
 You DO NOT consent to ${ h.lca_info["event_parent_organisation"] } releasing the video of your ${ c.proposal.type.name.lower() }.
 %   endif
 %   if c.proposal.slides_release:
 You consent to ${ h.lca_info["event_parent_organisation"] } releasing your slides, if you supply them to
-us, under the ${ h.lca_info["media_license"] }.
+us, under the ${ h.lca_info["media_license_name"] }.
 %   else:
 You DO NOT consent to ${ h.lca_info["event_parent_organisation"] } releasing your slides.
 %   endif

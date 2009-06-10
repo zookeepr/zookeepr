@@ -74,7 +74,7 @@
 
     <h2>About yourself</h2>
 
-    <p><em>Note: These are common for all your proposals, both mini-confs and presentations.</em></p>
+    <p><em>Note: These are common for all your proposals, both miniconfs and presentations.</em></p>
 
     <p>If two or more people are presenting together, this information should for the primary speaker; mention the other speakers in the Abstract, eg. "(with Bob Vaxhacker and Eve Duo)".</p>
 
@@ -98,17 +98,17 @@
 
     <p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
     <p class="entries">${ h.textarea('person.experience', cols="70", rows="6") }</p>
-    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your mini-confs and presentations.</p>
+    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your miniconfs and presentations.</p>
 
     <p class="entries">
       ${ h.checkbox('proposal.video_release') }
-      <label for="proposal.video_release">I allow Linux Australia to
-      release my video under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons ShareAlike License</a></label>
+      <label for="proposal.video_release">I allow ${ h.lca_info["event_parent_organisation"] } to
+      release my video under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></label>
     </p>
 
     <p class="entries">
       ${ h.checkbox('proposal.slides_release') }
-      <label for="proposal.slides_release">I allow Linux Australia to share my slides</label>
+      <label for="proposal.slides_release">I allow ${ h.lca_info["event_parent_organisation"] } to share my slides</label>
     </p>
 
 
