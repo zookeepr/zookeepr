@@ -48,6 +48,14 @@
     <!-- start content -->
     <div id="wrapper">
       <div id="leftcol">
+## Admin links
+% if h.auth.has_organiser_role:
+<ul><li>${ h.link_to('Admin', url=h.url_for(controller='admin')) }</li>
+%   if c.db_content:
+<li>${ h.link_to('Edit me', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
+%   endif
+</ul>
+% endif
 
 % if h.url_for() == '/':
     <%include file="/leftcol/home.mako" />
