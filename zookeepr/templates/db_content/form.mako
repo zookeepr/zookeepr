@@ -29,7 +29,7 @@ It is not mandatory supply a URL as content is still accessible via ID's. It is 
 <p class="label">
 <label for="db_content.body">Body:</label>
 </p><p class="entries">
-${ h.textarea('db_content.body', cols="70", rows="6") }
+${ h.textarea('db_content.body', cols="80", rows="40") }
 </p>
 <ul class="note"><li>The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate. Use &lt;h3&gt;'s to automatically create a "contents" section.</li>
 <li>For news articles you can place a &lt;!--break--&gt; statement to separate the entire body from the preview on the news page.</li>
