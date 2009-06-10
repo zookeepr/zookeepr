@@ -136,14 +136,14 @@ h6 {
 
 #main_menu #secondarynav {
 	clear: both;
-	text-align: center;
+	text-align: left;
 	margin-bottom: 10px;
+	margin-left: 100px;
 }
 #main_menu #secondarynav li {
 	list-style-type: none;
 	display: inline;
 	font-weight: bold;
-	font-size: 0.9em;
 	line-height: 25px;
 }
 #main_menu #secondarynav li a {

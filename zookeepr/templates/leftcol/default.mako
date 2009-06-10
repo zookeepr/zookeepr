@@ -1,48 +1,22 @@
 <%
-# Edit the list of submenus here :-)
-submenus = h.lca_submenus
-
-# The current URL can be accessed as h.url_for()()
-url = h.url_for()
-# Hack for schedule url
-if url.startswith('/schedule'): url = '/programme' + url
-where = ''
-map = h.lca_menu
-
-for (t, u, w) in map:
-  if url.startswith('/' + w):
-    where = w
-
-def cls(part):
-  if part==where:
-    return 'class="now"'
-  else:
-    return 'class=""'
-
-def current(link):
-  if url.startswith(link):
-    return True
-  else:
-    return False
-
+menu = ''
+if c.db_content and not h.url_for().endswith('edit'):
+  import re
+  findh3 = re.compile('(<h3>(.+?)</h3>)', re.IGNORECASE|re.DOTALL|re.MULTILINE)
+  h3 = findh3.findall(c.db_content.body)
+  if h3.__len__() > 0:
+    simple_title = ''
+    for match in h3:
+        simple_title = re.compile('([^a-zA-Z])').sub('', match[1])
+        menu += '<li><a href="#' + simple_title + '">' + match[1] + '</a></li>'
 %>
 
-% if submenus.has_key(where):
+% if menu != '':
   <div class="yellowbox">
     <div class="boxheader">
+      <h1>Contents</h1>o
       <ul>
-%   for sub in submenus[where]:
-<%
-     link = sub.replace('/', '_').lower()
-     link = '/'+where+'/'+link
-     link = link.replace(' ', '_')
-%>
-%     if current(link):
-        <li><a href="${ link }" class="selected">${ sub }</a></li>
-%     else:
-        <li><a href="${ link }">${ sub }</a></li>
-%     endif
-%   endfor
+${ menu | n}
       </ul>
     </div>
   </div>

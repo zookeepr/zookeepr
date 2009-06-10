@@ -43,6 +43,7 @@
     <div id = 'main_menu'>
       ${self.big_promotion()}
       <%include file="/nav.mako" />
+      <%include file="/subnav.mako" />
     </div>
     
     <!-- start content -->
