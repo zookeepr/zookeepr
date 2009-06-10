@@ -13,7 +13,6 @@ for d in c.db_content_news_all:
 ## -- coding: utf-8 --
 		<!-- <img src = '/images/heightfix.png' class = 'heightfix' alt = ''> -->
 
-		<img src="images/banner.gif" style="border: 0" alt="Follow the signs!" /><br /><br />
 		<h1>linux.conf.au 2010 in Wellington, New Zealand!</h1>
 
 		<p>linux.conf.au is one of the world's best conferences for free and open source software!</p>
@@ -28,16 +27,21 @@ for d in c.db_content_news_all:
      <% directory = h.featured_image(d.title, big = True) %>
 %    if directory is not False:
 			<div class = 'news_banner'>
+%      if h.os.path.isfile(directory + "/1.png"):
 				<div class = 'news_banner_left'>
 					<a href = '/media/news/${ d.id }'><img src = '${ directory }/1.png' alt="${ d.title }" title="${ d.title }"></a>
 				</div>
+%      endif
+%      if h.os.path.isfile(directory + "/3.png"):
 				<div class = 'news_banner_right'>
 					<a href = '/media/news/${ d.id }'><img src = '${ directory }/3.png' alt="${ d.title }" title="${ d.title }"></a>
 				</div>
+%      endif
 				<a href = '/media/news/${ d.id }'>
 					<img src = '${ directory }/2.png' alt="${ d.title }" title="${ d.title }">
 				</a>
 			</div>
+  <br /><br />
         <% break %>
 %    endif
 % endfor

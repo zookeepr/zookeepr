@@ -33,16 +33,21 @@ ${ c.db_content.title } -
 <% directory = h.featured_image(c.db_content.title, big = True) %>
 %if directory is not False:
 			<div class = 'news_banner'>
+%  if h.os.path.isfile(directory + "/3.png"):
 				<div class = 'news_banner_left'>
 					<a href = '/media/news/${ c.db_content.id }'><img src = '${ directory }/1.png' alt="${ c.db_content.title }" title="${ c.db_content.title }"></a>
 				</div>
+%  endif
+%  if h.os.path.isfile(directory + "/3.png"):
 				<div class = 'news_banner_right'>
 					<a href = '/media/news/${ c.db_content.id }'><img src = '${ directory }/3.png' alt="${ c.db_content.title }" title="${ c.db_content.title }"></a>
 				</div>
+%  endif
 				<a href = '/media/news/${ c.db_content.id }'>
 					<img src = '${ directory }/2.png' alt="${ c.db_content.title }" title="${ c.db_content.title }">
 				</a>
 			</div>
+  <br /><br />
 %endif
 </%def>
 

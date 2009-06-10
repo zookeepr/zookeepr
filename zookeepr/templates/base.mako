@@ -65,7 +65,6 @@
       <a href="/"><img src="/images/logo.jpg" style="border: 0;" alt="linux.conf.au" /></a>
     </div>
     <div id = 'main_menu'>
-      ${self.big_promotion()}
       <%include file="/nav.mako" />
       <%include file="/subnav.mako" />
     </div>
@@ -125,6 +124,7 @@
 %   endfor
 %endif
     </div>
+${self.big_promotion()}
 ${next.body()}
       </div>
     <!-- end content -->
