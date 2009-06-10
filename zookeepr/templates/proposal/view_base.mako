@@ -13,8 +13,8 @@ ${ p.firstname | h } ${ p.lastname | h }
 &lt;${ p.email_address | h }&gt;
 % endfor
 at
-${ c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") }
-(last updated at ${ c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") })
+${ c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />
+(last updated at ${ c.proposal.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n})
 </p>
 
 % if c.proposal.type.name:
@@ -76,7 +76,7 @@ ${ c.proposal.project | h }
 <h2>${ person.firstname | h} ${ person.lastname | h}</h2>
 %   if h.url_for().endswith('review') is True and ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <p class="submitted">
-${ person.firstname | h } ${ person.lastname | h } &lt;${ person.email_address }&gt;
+${ person.firstname | h } ${ person.lastname | h } &lt;${ person.email_address }&gt;<br \>
 ${ h.link_to('(view details)', url=h.url_for(controller='person', action='view', id=person.id)) }
 ${ h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) }
 ${ h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) }
