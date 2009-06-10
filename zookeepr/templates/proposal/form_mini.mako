@@ -15,11 +15,11 @@
 
     <p class="label"><span class="mandatory">*</span><label for="proposal.title">Title:</label></p>
     <p class="entries">${ h.text('proposal.title', size=70) }</p>
-    <p class="note">The name of your miniconf.</p>
+    <p class="note">The name of your Miniconf.</p>
 
-    <p class="label"><span class="mandatory">*</span><label for="proposal.abstract">miniconf summary:</label></p>
+    <p class="label"><span class="mandatory">*</span><label for="proposal.abstract">Miniconf summary:</label></p>
     <p class="entries">${ h.textarea('proposal.abstract', cols=70, rows=10) }</p>
-    <p class="note">Please indicate any special needs your miniconf will have (e.g. facilities required), preferred duration (1 day / 2 days) and anticipated number of attendees, if possible.</p>
+    <p class="note">Please indicate any special needs your miniconf will have (e.g. facilities required) and anticipated number of attendees, if possible.</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
     <p class="entries">
@@ -29,7 +29,7 @@
 % endfor
     </p>
 
-    <p class="label"><label for="proposal.url">miniconf URL:</label></p>
+    <p class="label"><label for="proposal.url">Miniconf URL:</label></p>
     <p class="entries">${ h.text('proposal.url', size=70) }</p>
     <p class="note">If your miniconf has a webpage, specify the URL here so the committee can find out more about your proposal.</p>
 
