@@ -73,6 +73,8 @@ class ReviewController(BaseController):
 
     def view(self, id):
         c.review = Review.find_by_id(id)
+        if c.review is None:
+            redirect_to(action='index')
 
         return render('review/view.mako')
 
