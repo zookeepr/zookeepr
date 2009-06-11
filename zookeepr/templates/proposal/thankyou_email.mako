@@ -15,8 +15,8 @@ URL:               ${ c.proposal.url }
 Attachments:       ${ len(c.proposal.attachments) }
 Summary:           ${ c.proposal.abstract }
 
-Travel assistance: ${ c.travel_assistance }
-Accom assistance:  ${ c.travel_assistance }
+Travel assistance: ${ c.proposal.travel_assistance.name }
+Accom assistance:  ${ c.proposal.accommodation_assistance.name }
 
 Note: requesting assistance, especially travel assistance, may affect
 whether or not your ${ c.proposal.type.name.lower() } is accepted.
