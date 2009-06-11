@@ -314,7 +314,7 @@ class PersonController(BaseController): #Read, Update, List
             h.flash('Role ' + role.name + ' Revoked')
         elif action == 'Grant' and role not in c.person.roles:
             c.person.roles.append(role)
-            h.flash('Role ' + role.name + 'Granted')
+            h.flash('Role ' + role.name + ' Granted')
         else:
             h.flash("Nothing to do")
 
