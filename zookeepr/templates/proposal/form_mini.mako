@@ -15,11 +15,11 @@
 
     <p class="label"><span class="mandatory">*</span><label for="proposal.title">Title:</label></p>
     <p class="entries">${ h.text('proposal.title', size=60) }</p>
-    <p class="note">The name of your Miniconf.</p>
+    <p class="note">The name of your miniconf.</p>
 
     <p class="label"><span class="mandatory">*</span><label for="proposal.abstract">Miniconf summary:</label></p>
     <p class="entries">${ h.textarea('proposal.abstract', cols=70, rows=10) }</p>
-    <p class="note">Please indicate any special needs your miniconf will have (e.g. facilities required) and anticipated number of attendees, if possible.</p>
+    <p class="note">Please indicate any special requirements your miniconf may have (e.g. facilities required) and anticipated number of attendees, if possible.</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
     <p class="entries">
@@ -39,28 +39,28 @@
 
     <h2>About yourself</h2>
 
-    <p><em>Note: These are common for all your proposals, both miniconfs and presentations.</em></p>
+    <p><em>Note: These are common for all your papers: miniconfs, presentations and tutorials.</em></p>
 
-    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="name">Organiser name:</label></p>
+    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="name">Organiser's name:</label></p>
     ${ h.hidden('person_to_edit', value=c.person.id) }
     <p class="entries">${ h.text('name', value=c.person.firstname + " " + c.person.lastname, size=60, disabled=True) }</p>
     <p class="note">(Can't be changed here.)</p>
 
-    <p class="label"><span class="mandatory">*</span><label for="person.mobile">Organiser mobile phone:</label></p>
+    <p class="label"><span class="mandatory">*</span><label for="person.mobile">Organiser's mobile phone number:</label></p>
     <p class="entries">${ h.text('person.mobile', size=60) }</p>
-    <p class="note">Your mobile phone.</p>
+    <p class="note">Your mobile phone number.</p>
 
-    <p class="label"><span class="publishable">&#8224;</span><label for="person.url">Organiser homepage:</label></p>
+    <p class="label"><span class="publishable">&#8224;</span><label for="person.url">Organiser's homepage:</label></p>
     <p class="entries">${ h.text('person.url', size=60) }</p>
     <p class="note">Your homepage.</p>
 
-    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="person.bio">Bio:</label></p>
+    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="person.bio">Biography:</label></p>
     <p class="entries">${ h.textarea('person.bio', cols=70, rows=6) }</p>
-    <p class="note">Please write in the third person, eg "Alice is a Mozilla hacker...", 150-200 words.</p>
+    <p class="note">Please write in the third person, eg "Alice is an Android hacker...", 150-200 words.</p>
 
     <p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
     <p class="entries">${ h.textarea('person.experience', cols=70, rows=6) }</p>
-    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your miniconfs and presentations.</p>
+    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your miniconf.</p>
 
     <p>&nbsp;</p>
     <p class="note"><span class="mandatory">*</span> - Mandatory field</p>

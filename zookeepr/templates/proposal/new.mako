@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 
-<h2>Propose a talk or tutorial</h2>
-<p>Please read the <a href="${ h.url_for("/programme/presenter_faq") }">Presenter FAQ</a> before submitting a proposal.</p>
+<h2>Propose a Presentation or Tutorial</h2>
+<p>Please read the <a href="${ h.url_for("/programme/presenter_faq") }">Presenter FAQ</a> before submitting a paper.</p>
 
 ${ h.form(h.url_for(), multipart=True) }
 <%include file="form.mako" />
@@ -10,5 +10,5 @@ ${ h.form(h.url_for(), multipart=True) }
 ${ h.end_form() }
 
 <%def name="title()" >
-Call for Presentations - ${ parent.title() }
+Submit a Presentation - ${ parent.title() }
 </%def>

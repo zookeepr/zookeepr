@@ -10,6 +10,6 @@ ${ h.form(h.url_for(), multipart=True) }
 ${ h.end_form() }
 
 <%def name="title()" >
-Call for Miniconfs - ${ parent.title() }
+Submit a Miniconf - ${ parent.title() }
 </%def>
 

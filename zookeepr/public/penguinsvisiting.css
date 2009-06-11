@@ -404,12 +404,14 @@ tt {
         {
                 color: #ff0000;
                 background: inherit;
+                margin-right: 5px;
         }
 
         .publishable
         {
                 color: #5850a5;
                 background: inherit;
+                margin-right: 5px;
         }
 
         .submitted
