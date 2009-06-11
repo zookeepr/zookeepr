@@ -82,6 +82,12 @@ class DbContent(Base):
             return True
         return False
 
+    def is_page(self):
+        news_id = DbContentType.find_by_name("Page").id
+        if news_id == self.type_id:
+            return True
+        return False
+
     def __repr__(self):
         return '<DbContent id="%s" title="%s" url="%s">' % (self.id, self.title, self.url)
 
