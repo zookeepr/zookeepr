@@ -1,6 +1,12 @@
+<%inherit file="/base.mako" />
+<%def name="heading()">
+  ${ c.proposal.title | h }
+</%def>
+
 <% c.signed_in_person = h.signed_in_person() %>
 
-<h2>${ c.proposal.title | h }</h2>
+<h2>${ self.heading() }</h2>
+
 
 <div id="proposal">
 
@@ -203,7 +209,22 @@ ${ h.link_to('Review this proposal', url=h.url_for(action='review')) }
 </li></ul>
 % endif
 
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+<% c.signed_in_person = h.signed_in_person() %>
+% if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
+<li>
+${ h.link_to('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }
+</li>
+% endif
 
+## Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
+% if h.url_for().endswith('review') is not True and h.url_for().endswith('edit') is not True and 'reviewer' in [x.name for x in c.signed_in_person.roles]:
+<li>
+${ h.link_to('Review this proposal', url=h.url_for(action='review')) }
+</li>
+% endif
+</%def>
 
 
 % if ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
@@ -243,9 +264,11 @@ ${ h.line_break(r.comment) }
 ##${ h.wiki_here() }
 ##</div>
 
+${ next.body() }
+
 
 <%def name="title()">
-${ h.truncate(c.proposal.title) } - ${ c.proposal.type.name } proposal - ${ caller.title() }
+${ h.truncate(c.proposal.title) } - ${ c.proposal.type.name } proposal - ${ parent.title() }
 </%def>
 <%def name="allow(b)">
 <%

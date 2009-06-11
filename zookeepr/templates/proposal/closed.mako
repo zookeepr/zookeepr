@@ -10,5 +10,5 @@ Return to the <a href="${ h.url_for("home") }">main page</a>.
 </p>
 
 <%def name="title()">
-Call for Presentations - closed - ${ caller.title() }
+Call for Presentations - closed - ${ parent.title() }
 </%def>

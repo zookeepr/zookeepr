@@ -1,3 +1,1 @@
-<%inherit file="/base.mako" />
-
-<%include file="view_base.mako" />
+<%inherit file="view_base.mako" />

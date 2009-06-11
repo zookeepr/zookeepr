@@ -1,14 +1,13 @@
 <%inherit file="/base.mako" />
+<%namespace file="../proposal/reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+  ${ self.sidebar.toolbox_extra() }
+</%def>
 
 <h1>Review update</h1>
 
 <p>You may modify your review with this form. The original proposal is below.</p>
-
-<div class="contents"><h3>Review Pages</h3>
-<ul>
-<%include file="../proposal/reviewer_sidebar.mako" />
-</ul>
-</div>
 
 <div id="review">
 ${ h.form(h.url_for()) }
@@ -18,6 +17,6 @@ ${ h.end_form() }
 </div>
 
 <%def name="title()" >
-Review of <% h.truncate(c.review.proposal.title) %> - ${ caller.title() }
+Review of <% h.truncate(c.review.proposal.title) %> - ${ parent.title() }
 </%def>
 

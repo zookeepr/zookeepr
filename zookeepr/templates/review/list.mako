@@ -1,12 +1,12 @@
 <%inherit file="/base.mako" />
+<%namespace file="../proposal/reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+  ${ self.sidebar.toolbox_extra() }
+</%def>
+
 
 <h2>Your reviews</h2>
-
-<div class="contents"><h3>Review Pages</h3>
-<ul>
-<%include file="../proposal/reviewer_sidebar.mako" />
-</ul>
-</div>
 
 <table>
 <tr>
@@ -53,6 +53,6 @@ ${ h.link_to("edit", url=h.url_for(controller='review', action='edit', id=r.id))
 </table>
 
 <%def name="title()" >
-Reviews - ${ caller.title() }
+Reviews - ${ parent.title() }
 </%def>
 

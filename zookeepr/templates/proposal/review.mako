@@ -1,3 +1,4 @@
+<%inherit file="view_base.mako" />
 <%
 # warning: this list must match the one in ../review/form.mako
 miniconfs = (
@@ -29,8 +30,9 @@ miniconfs = (
 )
 %>
 
-<%inherit file="/base.mako" />
-<h2>Proposal Review - #${ c.proposal.id }</h2>
+<%def name="heading()">
+  Proposal Review - #${ c.proposal.id } - ${ c.proposal.title | h }
+</%def>
 
 ${ h.form(h.url_for()) }
 
@@ -39,12 +41,15 @@ ${ h.form(h.url_for()) }
 % else:
 <ul><li><em>Can't skip - you have reviewed all the other ${c.proposal.type.name }s!</em></li></ul>
 % endif
-<div class="contents"><h3>Review Pages</h3>
-<ul>
-<%include file="reviewer_sidebar.mako" />
-</ul>
-</div>
-<%include file="view_base.mako" />
+
+<%namespace file="reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+% if not c.reviewed_everything:
+  <li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li>
+% endif
+  ${ self.sidebar.toolbox_extra() }
+</%def>
 
 <h3>Review</h3>
   <% reviewed_already = False %>
@@ -125,7 +130,7 @@ ${ h.link_to('Back to proposal list', url=h.url_for(controller='proposal', actio
 ${ h.end_form() }
 
 <%def name="title()">
-Reviewing proposal #${ c.proposal.id }, "${ h.truncate(c.proposal.title) }" - ${ caller.title() }
+Reviewing proposal #${ c.proposal.id } - ${ parent.title() }
 </%def>
 
 

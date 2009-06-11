@@ -1,12 +1,12 @@
 <%inherit file="/base.mako" />
+<%namespace file="reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+  ${ self.sidebar.toolbox_extra() }
+</%def>
+
 
 <h2>Approve/disapprove talks</h2>
-
-<div class="contents"><h3>Review Pages</h3>
-<ul>
-<%include file="reviewer_sidebar.mako" />
-</ul>
-</div>
 
 ${ h.form(h.url_for()) }
 <table>
@@ -55,5 +55,5 @@ ${ h.form(h.url_for()) }
 ${ h.end_form() }
 
 <%def name="title()" >
-Approve proposals - ${ caller.title() }
+Approve proposals - ${ parent.title() }
 </%def>

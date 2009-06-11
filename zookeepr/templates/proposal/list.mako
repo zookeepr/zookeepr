@@ -103,7 +103,7 @@
 %endif
 
 <%def name="title()">
-Proposals - ${ caller.title() }
+Proposals - ${ parent.title() }
 </%def>
 
 <%def name="fn_mark(text)">

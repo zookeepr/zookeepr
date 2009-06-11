@@ -10,5 +10,5 @@ The call for mini-confs is now closed!
 </p>
 
 <%def name="title()" >
-Call for Mini-confs - closed - ${ caller.title() }
+Call for Mini-confs - closed - ${ parent.title() }
 </%def>

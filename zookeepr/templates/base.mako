@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<%!
-    title = 'linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!'
-%>
+<%def name="title()">
+linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!
+</%def>
 <%
     url = h.url_for()
     # Hack for schedule url
@@ -33,10 +33,13 @@
 <%def name="big_promotion()">
     ## Defined in children
 </%def>
+<%def name="toolbox_extra()">
+    ## Defined in children
+</%def>
 
 <html lang="en-us">
 <head>
-  <title>${self.attr.title}</title>
+  <title>${ self.title() }</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
@@ -89,6 +92,7 @@
              <li>${ h.link_to('Edit page', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
 %   endif
 % endif
+${self.toolbox_extra()}
 % if h.signed_in_person():
              <li> <a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') |n}>Sign out</a></li>
 % else:

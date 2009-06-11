@@ -10,5 +10,5 @@ ${ h.form(h.url_for(), multipart=True) }
 ${ h.end_form() }
 
 <%def name="title()" >
-Call for Presentations - ${ caller.title() }
+Call for Presentations - ${ parent.title() }
 </%def>

@@ -1,12 +1,12 @@
 <%inherit file="/base.mako" />
+<%namespace file="reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+  ${ self.sidebar.toolbox_extra() }
+</%def>
+
 <% import random %>
 <h2>Proposal List</h2>
-
-<div class="contents"><h3>Review Pages</h3>
-<ul>
-<%include file="reviewer_sidebar.mako" />
-</ul>
-</div>
 
 % if c.num_reviewers <= 0:
    <% c.num_reviewers = 1 %>
@@ -83,5 +83,5 @@ ${ len(s.reviews) }
 % endfor proposal types
 
 <%def name="title()" >
-Proposals - ${ title.caller() }
+Proposals - ${ parent.title() }
 </%def>

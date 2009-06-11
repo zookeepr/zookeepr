@@ -1,12 +1,11 @@
 <%inherit file="/base.mako" />
+<%namespace file="../proposal/reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+  ${ self.sidebar.toolbox_extra() }
+</%def>
 
 <h1>Review ${ c.review.id }</h1>
-
-<div class="contents"><h3>Review Pages</h3>
-<ul>
-<%include file="../proposal/reviewer_sidebar.mako" />
-</ul>
-</div>
 
 <h2>#${ c.review.proposal.id } - "${ c.review.proposal.title }"</h2>
 

@@ -1,12 +1,11 @@
 <%inherit file="/base.mako" />
+<%namespace file="../proposal/reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+  ${ self.sidebar.toolbox_extra() }
+</%def>
 
 <h2>Reviews Summary</h2>
-
-<div class="contents"><h3>Review Pages</h3>
-<ul>
-<%include file="../proposal/reviewer_sidebar.mako" />
-</ul>
-</div>
 
 <%
 review_summary = {}
@@ -45,7 +44,7 @@ ${ review_summary[reviewer]['total_score']*1.0/review_summary[reviewer]['num_rev
 </table>
 
 <%def name="title()" >
-Review Summary - ${ caller.title() }
+Review Summary - ${ parent.title() }
 </%def>
 
 
