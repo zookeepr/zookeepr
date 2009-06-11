@@ -1,5 +1,5 @@
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="proposal.title">Title:</label></p>
-    <p class="entries">${ h.text('proposal.title', size=70) }</p>
+    <p class="entries">${ h.text('proposal.title', size=60) }</p>
     <p class="note">The name of your presentation.</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Type:</label></p>
@@ -27,20 +27,20 @@
     </p>
 
     <p class="label"><span class="publishable">&#8224;</span><label for="proposal.project">Project:</label></p>
-    <p class="entries">${ h.text('proposal.project', size=70) }</p>
+    <p class="entries">${ h.text('proposal.project', size=60) }</p>
     <p class="note">The name of the project you will be talking about.</p>
 
     <p class="label"><span class="publishable">&#8224;</span><label for="proposal.url">Project homepage:</label></p>
-    <p class="entries">${ h.text('proposal.url', size=70) }</p>
+    <p class="entries">${ h.text('proposal.url', size=60) }</p>
 
     <p class="note">If your project has a webpage, specify the URL here so the committee can find out more about your proposal.</p>
 
     <p class="label"><label for="proposal.abstract_video_url">Video abstract:</label></p>
-    <p class="entries">${ h.text('proposal.abstract_video_url', size=70) }</p>
+    <p class="entries">${ h.text('proposal.abstract_video_url', size=60) }</p>
     <p class="note">URL for a short "elevator pitch" (20s - 3min) video about your presentation, your project or yourself (eg: YouTube link).</p>
 % if h.url_for().endswith('edit') is not True:
     <p class="label"><label for="attachment">Attach file:</label></p>
-    <p class="entries">${ h.file('attachment', size=60) }</p>
+    <p class="entries">${ h.file('attachment', size=50) }</p>
     <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
 % else:
     <p class="entries">${ h.link_to('Add an attachment', url=h.url_for(action='attach')) } ${ h.hidden('attachment', size=60) }<span class="note">You can attach multiple files by following this link.</span></p>
@@ -80,16 +80,16 @@
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="name">Speaker name:</label></p>
     ${ h.hidden('person_to_edit', value=c.person.id) }
-    <p class="entries">${ h.text('name', value=c.person.firstname + " " + c.person.lastname, size=70,disabled=True) }</p>
+    <p class="entries">${ h.text('name', value=c.person.firstname + " " + c.person.lastname, size=60,disabled=True) }</p>
     <p class="note">(Can't be changed here.)</p>
 
     <p class="label"><span class="mandatory">*</span><label for="person.mobile">Speaker mobile phone:</label></p>
-    <p class="entries">${ h.text('person.mobile', size=70) }</p>
+    <p class="entries">${ h.text('person.mobile', size=60) }</p>
     <p class="note">Your mobile phone.</p>
 
 
     <p class="label"><span class="publishable">&#8224;</span><label for="person.url">Speaker homepage:</label></p>
-    <p class="entries">${ h.text('person.url', size=70) }</p>
+    <p class="entries">${ h.text('person.url', size=60) }</p>
     <p class="note">Your homepage.</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="person.bio">Bio:</label></p>
