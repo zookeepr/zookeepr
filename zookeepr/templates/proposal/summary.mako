@@ -109,7 +109,7 @@ ${ h.link_to(proposal.id, url=h.url_for(controller='proposal', action='review', 
 <div onMouseOver="toggleDiv('${ "proposal%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "proposal%s" % proposal.id | h}',0)">
 ${ h.link_to(proposal.title, url=h.url_for(controller='proposal', action='review', id=proposal.id)) }
 </div>
-<div id="${ "proposal%s" % proposal.id }" class="biodiv"><strong>Abstract:</strong><p>${ h.line_break(h.util.html_escape(proposal.abstract)) }</p></pre></div>
+<div id="${ "proposal%s" % proposal.id }" class="biodiv"><strong>Abstract:</strong><p>${ h.line_break(h.util.html_escape(proposal.abstract)) |n }</p></pre></div>
 </td>
 
 <td>

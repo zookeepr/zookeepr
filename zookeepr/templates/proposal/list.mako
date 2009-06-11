@@ -40,7 +40,7 @@
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ h.link_to("%s" % (h.util.html_escape(s.title)), url=h.url_for(action='view', id=s.id)) }</td>
     <td>${ s.type.name }</td>
-    <td>${ h.truncate(h.util.html_escape(s.abstract)) }</td>
+    <td>${ h.truncate(h.util.html_escape(s.abstract)) | n}</td>
     <td>${ s.audience.name }</td>
 %     if s.url:
 ## FIXME: I reckon this should go into the helpers logic

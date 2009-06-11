@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 <%def name="heading()">
-  ${ c.proposal.title | h }
+  ${ c.proposal.title }
 </%def>
 
 <% c.signed_in_person = h.signed_in_person() %>
@@ -15,8 +15,8 @@ Proposal for a
 ${ c.proposal.type.name } 
 submitted by
 % for p in c.proposal.people:
-${ p.firstname | h } ${ p.lastname | h }
-&lt;${ p.email_address | h }&gt;
+${ p.firstname } ${ p.lastname }
+&lt;${ p.email_address }&gt;
 % endfor
 at
 ${ c.proposal.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />
@@ -35,7 +35,7 @@ ${ c.proposal.type.name }
 <em>Abstract:</em>
 </p>
 <blockquote>
-<p>${ h.line_break(h.util.html_escape(c.proposal.abstract)) }</p>
+<p>${ h.line_break(h.util.html_escape(c.proposal.abstract)) | n}</p>
 </blockquote>
 </div>
 
@@ -95,7 +95,7 @@ ${ h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' %
 </p>
 <blockquote><p>
 %   if person.bio:
-${ h.line_break(h.util.html_escape(person.bio)) }
+${ h.line_break(h.util.html_escape(person.bio)) |n}
 %   else:
 [none provided]
 %   endif
@@ -108,7 +108,7 @@ ${ h.line_break(h.util.html_escape(person.bio)) }
 </p>
 <blockquote><p>
 %   if person.experience:
-${ h.line_break(h.util.html_escape(person.experience)) }
+${ h.line_break(h.util.html_escape(person.experience)) |n}
 %   else:
 [none provided]
 %   endif
