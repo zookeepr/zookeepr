@@ -30,6 +30,6 @@
 Profile -
 ${ c.person.firstname |h } ${ c.person.lastname |h } - 
 Roles
-${ caller.title() }
+${ parent.title() }
 </%def>
 

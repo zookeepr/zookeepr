@@ -10,5 +10,5 @@ ${ h.link_to('View Registration', h.url_for(controller='registration', action='v
 id=c.rego_note.id)) } | ${ h.link_to('Back', h.url_for(controller='rego_note', action='index')) }</p>
 
 <%def name="title()">
-View note - ${ caller.title() }
+View note - ${ parent.title() }
 </%def>

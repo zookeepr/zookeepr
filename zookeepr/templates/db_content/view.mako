@@ -26,7 +26,7 @@ ${ body |n}
 
 <%def name="title()">
 ${ c.db_content.title } -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>
 
 <%def name="big_promotion()">

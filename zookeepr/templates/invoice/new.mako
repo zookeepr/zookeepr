@@ -50,7 +50,7 @@
     ${ h.end_form() }
 
 <%def name="title()">
-Create Invoice - ${ caller.title() }
+Create Invoice - ${ parent.title() }
 </%def>
 
 <%def name="extra_head()">

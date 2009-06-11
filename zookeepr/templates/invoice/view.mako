@@ -24,5 +24,5 @@
 <%include file="view_fragment.mako" />
 
 <%def name="title()">
-Tax Invoice/Statement - ${ caller.title() }
+Tax Invoice/Statement - ${ parent.title() }
 </%def>

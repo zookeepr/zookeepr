@@ -44,5 +44,5 @@
       </div>
 
 <%def name="title()" >
-Register - ${ caller.title() }
+Register - ${ parent.title() }
 </%def>

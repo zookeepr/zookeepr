@@ -29,5 +29,5 @@
 <p>${ h.link_to('Add another', url=h.url_for(controller='rego_note', action='new')) }</p>
 
 <%def name="title()">
-List of DB pages - ${ caller.title() }
+List of DB pages - ${ parent.title() }
 </%def>

@@ -6,6 +6,6 @@ ${ h.submit('Add', 'Add') }
 ${ h.end_form() }
 
 <%def name="title()" >
-Voucher Code - ${ caller.title() }
+Voucher Code - ${ parent.title() }
 </%def>
 

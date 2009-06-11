@@ -53,5 +53,5 @@
 <%def name="title()">
 Profile -
 ${ c.person.firstname |h } ${ c.person.lastname |h } -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>

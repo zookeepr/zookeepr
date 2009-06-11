@@ -11,5 +11,5 @@ We admire your enthusiasm for requesting information, but this page simply does 
 
 <%def name="title()">
 Page not found! -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>

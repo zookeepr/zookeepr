@@ -7,5 +7,5 @@ ${ h.end_form() }
 
 <%def name="title()">
 Edit Page -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>

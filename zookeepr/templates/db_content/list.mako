@@ -38,5 +38,5 @@
 
 <%def name="title()">
 List of DB pages -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>

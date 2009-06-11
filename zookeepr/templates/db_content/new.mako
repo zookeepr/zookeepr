@@ -10,5 +10,5 @@ ${ h.end_form() }
 <%def name="title()">
 New Page -
 ${ c.person.firstname |h } ${ c.person.lastname |h } -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>

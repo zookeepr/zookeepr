@@ -48,5 +48,5 @@
 
 <%def name="title()">
 List of files -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>

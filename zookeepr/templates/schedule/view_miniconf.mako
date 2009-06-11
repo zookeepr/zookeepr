@@ -16,6 +16,6 @@
 </div>
 
 <%def name="title()">
-${ h.truncate(c.talk.title) } - ${ caller.title() }
+${ h.truncate(c.talk.title) } - ${ parent.title() }
 </%def>
 

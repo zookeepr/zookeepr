@@ -42,5 +42,5 @@
 <p class="note"><i>Schedule is subject to change without notice.</i></p>
 
 <%def name="title()">
-Schedule - ${ caller.title() }
+Schedule - ${ parent.title() }
 </%def>

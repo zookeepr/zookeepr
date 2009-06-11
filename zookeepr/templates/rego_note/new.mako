@@ -13,5 +13,5 @@ ${ h.link_to('Back', url=h.url_for(action='index')) }
 ${ h.end_form() }
 
 <%def name="title()">
-New note - ${ caller.title() }
+New note - ${ parent.title() }
 </%def>

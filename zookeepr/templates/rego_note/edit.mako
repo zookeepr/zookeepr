@@ -6,5 +6,5 @@ ${ h.form(h.url_for(), multipart=True) }
 ${ h.end_form() }
 
 <%def name="title()">
-Edit page - ${ caller.title() }
+Edit page - ${ parent.title() }
 </%def>

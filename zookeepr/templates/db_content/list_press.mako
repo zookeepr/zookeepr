@@ -28,5 +28,5 @@ ${ d.url |h}, submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
 
 <%def name="title()">
 In the press -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>

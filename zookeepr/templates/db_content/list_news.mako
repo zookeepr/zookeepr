@@ -30,5 +30,5 @@ ${ teaser |n}
 
 <%def name="title()">
 News -
- ${ caller.title() }
+ ${ parent.title() }
 </%def>
