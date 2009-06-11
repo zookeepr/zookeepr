@@ -30,6 +30,14 @@ miniconfs = (
 )
 %>
 
+<%def name="toolbox_extra()">
+  ${ parent.toolbox_extra() }
+% if not c.reviewed_everything:
+  <li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li>
+% endif
+</%def>
+
+
 <%def name="heading()">
   Proposal Review - #${ c.proposal.id } - ${ c.proposal.title | h }
 </%def>
@@ -41,15 +49,6 @@ ${ h.form(h.url_for()) }
 % else:
 <ul><li><em>Can't skip - you have reviewed all the other ${c.proposal.type.name }s!</em></li></ul>
 % endif
-
-<%namespace file="reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
-<%def name="toolbox_extra()">
-  ${ parent.toolbox_extra() }
-% if not c.reviewed_everything:
-  <li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li>
-% endif
-  ${ self.sidebar.toolbox_extra() }
-</%def>
 
 <h3>Review</h3>
   <% reviewed_already = False %>
