@@ -8,7 +8,5 @@ ${ h.end_form() }
 
 
 <%def name="title()">
-New Page -
-${ c.person.firstname |h } ${ c.person.lastname |h } -
- ${ parent.title() }
+New Page - ${ parent.title() }
 </%def>
