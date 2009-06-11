@@ -1,6 +1,6 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%def name="title()">
-linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!
+  ${ h.lca_info["event_byline"] }
 </%def>
 <%
     url = h.url_for()
