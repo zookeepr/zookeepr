@@ -187,13 +187,13 @@ ${ h.link_to('Add an attachment', url=h.url_for(action='attach')) }
 
 
 <p><em>Consents:</em><blockquote>
-<p>I allow linux.conf.au to record my talk.</p>
+<p>I allow ${ h.lca_info["event_name"] } to record my talk.</p>
 
-<p>${ allow(c.proposal.video_release) } Linux Australia to release my
-video under the <a href="http://creativecommons.org/licenses/by-sa/3.0/">Creative Commons ShareAlike License</a></p>
+<p>${ allow(c.proposal.video_release) } ${ h.lca_info["event_parent_organisation"] } to release any
+recordings of my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></p>
 
-<p>${ allow(c.proposal.slides_release) } Linux Australia to share my
-slides</p>
+<p>${ allow(c.proposal.slides_release) } I allow ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }
+</p>
 
 
 % if c.proposal.video_release or c.proposal.slides_release:
