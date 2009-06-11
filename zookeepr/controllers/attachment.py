@@ -48,7 +48,7 @@ class AttachmentController(BaseController):
 
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
-        attachment = Attachment.find_by_id(id)
+        c.attachment = Attachment.find_by_id(id)
         proposal = Proposal.find_by_id(c.attachment.proposal_id)
 
         if not h.auth.has_organiser_role:

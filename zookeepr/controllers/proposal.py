@@ -141,9 +141,9 @@ class ProposalController(BaseController):
         c.person.proposals.append(c.proposal)
 
         if attachment_results is not None:
-            c.attachment = Attachment(**attachment_results)
-            c.proposal.attachments.append(c.attachment)
-            meta.Session.add(c.attachment)
+            attachment = Attachment(**attachment_results)
+            c.proposal.attachments.append(attachment)
+            meta.Session.add(attachment)
 
         meta.Session.commit()
         email(c.person.email_address, render('proposal/thankyou_email.mako'))
@@ -236,8 +236,8 @@ class ProposalController(BaseController):
 
         c.proposal = Proposal.find_by_id(id)
 
-        person_results = self.form_result['attachment']
-        attachment = Attachment(**person_results)
+        attachment_results = self.form_result['attachment']
+        attachment = Attachment(**attachment_results)
 
         c.proposal.attachments.append(attachment)
 
