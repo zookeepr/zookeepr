@@ -16,7 +16,7 @@ lca_info = {
   'webmaster_email': 'webmaster@lca2010.org.nz',
 
 # Event information
-  'event_parent_organisation' : 'Linux Australia, Incorporated',
+  'event_parent_organisation' : 'Linux Australia',
   'event_parent_url' : 'http://www.linux.org.au/',
   'event_name' : 'linux.conf.au 2010',
   'event_shortname' : 'lca2010',
