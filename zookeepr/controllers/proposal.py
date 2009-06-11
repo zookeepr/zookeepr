@@ -157,7 +157,7 @@ class ProposalController(BaseController):
         c.streams = Stream.find_all()
         c.proposal = Proposal.find_by_id(id)
 
-        return render('proposal/review.mako')
+        return render('/proposal/review.mako')
 
     @validate(schema=NewReviewSchema(), form='review', post_only=True, on_get=True, variable_decode=True)
     @authorize(h.auth.has_reviewer_role)
@@ -165,7 +165,7 @@ class ProposalController(BaseController):
         """Review a proposal.
         """
         c.proposal = Proposal.find_by_id(id)
-
+        c.signed_in_person = h.signed_in_person()
 
         # Move to model
         next = meta.Session.query(Proposal).from_statement("""
@@ -197,8 +197,8 @@ class ProposalController(BaseController):
             c.next_review_id = None
             c.reviewed_everything = True
 
-        person = h.signed_in_person()
-        if person in [ review.reviewer for review in proposal.reviews]:
+        person = c.signed_in_person
+        if person in [ review.reviewer for review in c.proposal.reviews]:
             h.flash('Already reviewed')
             return redirect_to(action='review', id=c.next_review_id)
 
@@ -217,7 +217,7 @@ class ProposalController(BaseController):
 
         h.flash("No more papers to review")
 
-        return redirect_to('/proposal/review_index')
+        return redirect_to(action='review_index')
 
 
     @dispatch_on(POST="_attach")
