@@ -75,7 +75,7 @@ ${ h.hidden('review.miniconf') }
 
 <p><b>Comments</b> (optional, readable by other reviewers, will not be shown to the submitter)
 
-${ h.textarea('review.comment', size="80x10") }
+${ h.textarea('review.comment', cols=80, rows=10) }
 </p>
 
 </fieldset>
