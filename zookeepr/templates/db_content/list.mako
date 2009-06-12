@@ -6,6 +6,7 @@
         <th>ID/Edit</th>
         <th>Title</th>
         <th>Type</th>
+        <th>Pub</th>
         <th>URL</th>
         <th>Created</th>
         <th>Last updated</th>
@@ -21,6 +22,7 @@
         <td>${ d.title }</td>
 %   endif
         <td>${ d.type.name }</td>
+        <td>${ d.published }</td>
 %   if '://' in d.url:
         <td>${ h.link_to(d.url, url=d.url) }</td>
 %   elif d.url != '':

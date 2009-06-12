@@ -32,12 +32,12 @@ class HomeController(BaseController):
 
         news = DbContentType.find_by_name("News", abort_404 = False)
         if news:
-            c.db_content_news = meta.Session.query(DbContent).filter_by(type_id=news.id).order_by(DbContent.creation_timestamp.desc()).limit(4).all()
-            c.db_content_news_all = meta.Session.query(DbContent).filter_by(type_id=news.id).order_by(DbContent.creation_timestamp.desc()).all() #use all to find featured items
+            c.db_content_news = meta.Session.query(DbContent).filter_by(type_id=news.id,published='t').order_by(DbContent.creation_timestamp.desc()).limit(4).all()
+            c.db_content_news_all = meta.Session.query(DbContent).filter_by(type_id=news.id,published='t').order_by(DbContent.creation_timestamp.desc()).all() #use all to find featured items
 
         press = DbContentType.find_by_name("In the press", abort_404 = False)
         if press:
-            c.db_content_press = meta.Session.query(DbContent).filter_by(type_id=press.id).order_by(DbContent.creation_timestamp.desc()).limit(4).all()
+            c.db_content_press = meta.Session.query(DbContent).filter_by(type_id=press.id,published='t').order_by(DbContent.creation_timestamp.desc()).limit(4).all()
 
 
         return render('/home.mako')

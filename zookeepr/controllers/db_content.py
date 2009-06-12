@@ -34,6 +34,7 @@ class DbContentSchema(BaseSchema):
     type = DbContentTypeValidator()
     url = validators.String()
     body = validators.String()
+    published = validators.Bool()
 
 class NewDbContentSchema(BaseSchema):
     db_content = DbContentSchema()
@@ -76,6 +77,8 @@ class DbContentController(BaseController):
 
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
+        if c.db_content.published is False and not h.auth.has_organiser_role:
+            c.db_content = None
         return render('/db_content/view.mako')
 
     def page(self):
@@ -158,7 +161,7 @@ class DbContentController(BaseController):
         news_id = DbContentType.find_by_name("News")
         c.db_content_collection = []
         if news_id is not None: 
-            c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id.id).order_by(DbContent.creation_timestamp.desc()).limit(20).all()
+            c.db_content_collection = meta.Session.query(DbContent).filter_by(published='t',type_id=news_id.id,published='t').order_by(DbContent.creation_timestamp.desc()).limit(20).all()
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
         return render('/db_content/rss_news.mako')
 

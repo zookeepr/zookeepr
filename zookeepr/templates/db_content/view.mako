@@ -11,6 +11,10 @@ if h3.__len__() > 0:
         body = re.compile(match[0]).sub(r'<a name="' + simple_title + '"></a>\g<0>', body)
 %>
 
+% if h.auth.authorized(h.auth.has_organiser_role) and not c.db_content.published and not h.url_for().endswith('edit'):
+<large><em>NOT PUBLISHED!</em></large>
+% endif
+
 
 <h2>${ c.db_content.title }</h2>
 

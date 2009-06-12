@@ -56,7 +56,7 @@ class DbContentType(Base):
         return Session.query(DbContentType).order_by(DbContentType.id).all()
 
 class DbContent(Base):
-    """Stores both account login details and personal information.
+    """Stores page information as a baisc CMS.
     """
     __tablename__ = 'db_content'
 
@@ -65,6 +65,7 @@ class DbContent(Base):
     type_id = sa.Column(sa.types.Integer, sa.ForeignKey('db_content_type.id'))
     url = sa.Column(sa.types.Text)
     body = sa.Column(sa.types.Text)
+    published = sa.Column(sa.types.Boolean)
 
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
@@ -114,14 +115,14 @@ class DbContent(Base):
 
     @classmethod
     def find_all_by_type_id(cls, type_id, abort_404 = True):
-        result = Session.query(DbContent).filter_by(type_id=type_id).order_by(DbContent.creation_timestamp.desc()).all()
+        result = Session.query(DbContent).filter_by(type_id=type_id,published='t').order_by(DbContent.creation_timestamp.desc()).all()
         if result is None and abort_404:
             abort(404, "No such object")
         return result
 
     @classmethod
     def find_all_by_type(cls, type, abort_404 = True):
-        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type, abort_404 = abort_404).id).order_by(DbContent.creation_timestamp.desc()).all()
+        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type, abort_404 = abort_404).id,published='t').order_by(DbContent.creation_timestamp.desc()).all()
         if result is None and abort_404:
             abort(404, "No such object")
         return result

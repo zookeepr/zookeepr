@@ -17,6 +17,12 @@ ${ h.text('db_content.title', size=60) }
 % endfor
 </p>
 
+<p class="entries">
+${ h.checkbox('db_content.published') }
+<label for="db_content.published">Published</label>
+</p>
+<ul class="note"><li>Should this page be published?</li></ul>
+
 <p class="label">
 <label for="db_content.url">URL:</label>
 </p><p class="entries">
