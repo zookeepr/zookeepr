@@ -32,7 +32,7 @@ miniconfs = (
 
 <%def name="toolbox_extra()">
   ${ parent.toolbox_extra() }
-% if not c.reviewed_everything:
+% if c.next_review_id:
   <li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li>
 % endif
 </%def>
@@ -44,7 +44,7 @@ miniconfs = (
 
 ${ h.form(h.url_for()) }
 
-% if not c.reviewed_everything:
+% if c.next_review_id:
 <ul><li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li></ul>
 % else:
 <ul><li><em>Can't skip - you have reviewed all the other ${c.proposal.type.name }s!</em></li></ul>
@@ -121,7 +121,7 @@ ${ h.submit('submit', 'Submit review and jump to next proposal!') }
 % endif
 
 <p>
-% if not c.reviewed_everything:
+% if c.next_review_id:
 ${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) } - 
 % endif
 ${ h.link_to('Back to proposal list', url=h.url_for(controller='proposal', action='review_index')) }

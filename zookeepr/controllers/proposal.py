@@ -156,6 +156,8 @@ class ProposalController(BaseController):
     def review(self, id):
         c.streams = Stream.find_all()
         c.proposal = Proposal.find_by_id(id)
+        c.signed_in_person = h.signed_in_person()
+        c.next_review_id = Proposal.find_next_proposal(c.proposal.id, c.proposal.type.id, c.signed_in_person.id)
 
         return render('/proposal/review.mako')
 
@@ -166,36 +168,7 @@ class ProposalController(BaseController):
         """
         c.proposal = Proposal.find_by_id(id)
         c.signed_in_person = h.signed_in_person()
-
-        # Move to model
-        next = meta.Session.query(Proposal).from_statement("""
-              SELECT
-                  p.id
-              FROM
-                  (SELECT id
-                   FROM proposal
-                   WHERE id <> %d
-                     AND proposal_type_id = %d
-                   EXCEPT
-                       SELECT proposal_id AS id
-                       FROM review
-                       WHERE review.reviewer_id <> %d) AS p
-              LEFT JOIN
-                      review AS r
-                              ON(p.id=r.proposal_id)
-              GROUP BY
-                      p.id
-              ORDER BY COUNT(r.reviewer_id), RANDOM()
-              LIMIT 1
-        """ % (c.proposal.id, c.proposal.type.id, c.signed_in_person.id))
-        next = next.first()
-        if next is not None:
-            c.next_review_id = next.id
-            c.reviewed_everything = False
-        else:
-            # looks like you've reviewed everything!
-            c.next_review_id = None
-            c.reviewed_everything = True
+        c.next_review_id = Proposal.find_next_proposal(c.proposal.id, c.proposal.type.id, c.signed_in_person.id)
 
         person = c.signed_in_person
         if person in [ review.reviewer for review in c.proposal.reviews]:

@@ -297,3 +297,32 @@ class Proposal(Base):
         # Optimisation: assume that ProposalStatus of ID=1 is Accepted
         result = Session.query(Proposal).filter_by(id=id,status_id=1).one()
         return result
+
+    @classmethod
+    def find_next_proposal(cls, id, type_id, signed_in_person_id):
+        next = Session.query(Proposal).from_statement("""
+              SELECT
+                  p.id
+              FROM
+                  (SELECT id
+                   FROM proposal
+                   WHERE id <> %d
+                     AND proposal_type_id = %d
+                   EXCEPT
+                       SELECT proposal_id AS id
+                       FROM review
+                       WHERE review.reviewer_id <> %d) AS p
+              LEFT JOIN
+                      review AS r
+                              ON(p.id=r.proposal_id)
+              GROUP BY
+                      p.id
+              ORDER BY COUNT(r.reviewer_id), RANDOM()
+              LIMIT 1
+        """ % (id, type_id, signed_in_person_id))
+        next = next.first()
+        if next is not None:
+            return next.id
+        else:
+            # looks like you've reviewed everything!
+            return None
