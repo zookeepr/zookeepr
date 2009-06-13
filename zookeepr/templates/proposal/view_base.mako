@@ -192,7 +192,7 @@ ${ h.link_to('Add an attachment', url=h.url_for(action='attach')) }
 <p>${ allow(c.proposal.video_release) } ${ h.lca_info["event_parent_organisation"] } to release any
 recordings of my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></p>
 
-<p>${ allow(c.proposal.slides_release) } ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }
+<p>${ allow(c.proposal.slides_release) } ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a>
 </p>
 
 

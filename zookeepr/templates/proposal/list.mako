@@ -99,8 +99,12 @@
 %   endfor
 
 %else:
-    <p>You haven't submitted any proposals. To propose a miniconf, presentation or tutorial, please use the links above.</p>
+    <p>You haven't submitted any proposals.</p>
 %endif
+
+%  if c.paper_editing == 'open':
+<p>${ h.link_to('Submit a new proposal', url=h.url_for(controller='proposal', action='new')) }</p>
+%  endif
 
 <%def name="title()">
 Proposals - ${ parent.title() }
