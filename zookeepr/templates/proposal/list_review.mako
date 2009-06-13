@@ -6,6 +6,7 @@
 </%def>
 
 <% import random %>
+<% c.signed_in_person = h.signed_in_person() %>
 <h2>Proposal List</h2>
 
 % if c.num_reviewers <= 0:
