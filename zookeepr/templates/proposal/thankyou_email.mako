@@ -6,8 +6,8 @@ Dear ${ c.person.firstname },
 
 Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ h.lca_info['event_name'] }.
 
-If you have any queries about your proposed ${ c.proposal.type.name.lower() }, please email
-${ h.lca_info['emails'][c.proposal.type.name.lower()] }
+If you have any queries about your proposed ${ c.proposal.type.name.lower()},
+please email ${ h.lca_info['emails'][c.proposal.type.name.lower()] }
 
 Title:             ${ c.proposal.title }
 Target audience:   ${ c.proposal.audience.name }
@@ -17,24 +17,23 @@ Summary:           ${ c.proposal.abstract }
 
 Travel assistance: ${ c.proposal.travel_assistance.name }
 Accom assistance:  ${ c.proposal.accommodation_assistance.name }
+%if c.proposal.travel_assistance.id > 1 or c.proposal.accommodation_assistance.id > 1:
 
 Note: requesting assistance, especially travel assistance, may affect
 whether or not your ${ c.proposal.type.name.lower() } is accepted.
+%endif
 
 Your ${ c.proposal.type.name.lower() } may be recorded by the conference.
 % if c.proposal.video_release and c.proposal.slides_release:
-You consent to ${ h.lca_info["event_parent_organisation"] } releasing both the video of your ${ c.proposal.type.name.lower() } and your
-slides, if you supply them to us, under the ${ h.lca_info["media_license_name"] }.
+You consent to ${ h.lca_info["event_parent_organisation"] } releasing both the video of your ${ c.proposal.type.name.lower() } and your slides, if you supply them to us, under the ${ h.lca_info["media_license_name"] }.
 % else:
 %   if c.proposal.video_release:
-You consent to ${ h.lca_info["event_parent_organisation"] } releasing the video of your ${ c.proposal.type.name.lower() } under the
-${ h.lca_info["media_license_name"] }.
+You consent to ${ h.lca_info["event_parent_organisation"] } releasing the video of your ${ c.proposal.type.name.lower() } under the ${ h.lca_info["media_license_name"] }.
 %   else:
 You DO NOT consent to ${ h.lca_info["event_parent_organisation"] } releasing the video of your ${ c.proposal.type.name.lower() }.
 %   endif
 %   if c.proposal.slides_release:
-You consent to ${ h.lca_info["event_parent_organisation"] } releasing your slides, if you supply them to
-us, under the ${ h.lca_info["media_license_name"] }.
+You consent to ${ h.lca_info["event_parent_organisation"] } releasing your slides, if you supply them to us, under the ${ h.lca_info["media_license_name"] }.
 %   else:
 You DO NOT consent to ${ h.lca_info["event_parent_organisation"] } releasing your slides.
 %   endif
@@ -47,9 +46,15 @@ information or using other people's copyrighted materials.)
 % endif
 % if not c.proposal.video_release or not c.proposal.slides_release:
 
-Please consider allowing us to share both the video of your ${ c.proposal.type.name.lower() } and your
-slides, so that the community can gain the maximum benefit from your ${ c.proposal.type.name.lower() }!
+Please consider allowing us to share both the video of your
+${c.proposal.type.name.lower()} and your slides, so that the community can
+gain the maximum benefit from your ${c.proposal.type.name.lower()}!
 % endif
+
+Should you need to update the details of this proposal, please following
+this URL:
+
+  http://${ h.host_name() }/proposal
 
 The ${ h.event_name() } team
 http://${ h.host_name() }/contact

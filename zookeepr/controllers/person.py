@@ -31,9 +31,6 @@ log = logging.getLogger(__name__)
 class ForgottenPasswordSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)
 
-    chained_validators = [ExistingPersonValidator()]
-
-
 class PasswordResetSchema(BaseSchema):
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
@@ -131,17 +128,21 @@ class PersonController(BaseController): #Read, Update, List
         The second half of the password change operation happens in
         the ``confirm`` action.
         """
-        # Check if there is already a password recovery in progress
-        reset = PasswordResetConfirmation.find_by_email(self.form_result['email_address'])
-        if reset is not None:
-            return render('person/in_progress.mako')
+        c.email = self.form_result['email_address']
+        c.person = Person.find_by_email(c.email)
 
-        # Ok kick one off
-        c.conf_rec = PasswordResetConfirmation(email_address=self.form_result['email_address'])
-        meta.Session.add(c.conf_rec)
-        meta.Session.commit()
+        if c.person is not None:
+            # Check if there is already a password recovery in progress
+            reset = PasswordResetConfirmation.find_by_email(c.email)
+            if reset is not None:
+                return render('person/in_progress.mako')
 
-        email(c.conf_rec.email_address, render('person/confirmation_email.mako'))
+            # Ok kick one off
+            c.conf_rec = PasswordResetConfirmation(email_address=c.email)
+            meta.Session.add(c.conf_rec)
+            meta.Session.commit()
+
+        email(c.email, render('person/confirmation_email.mako'))
 
         return render('person/password_confirmation_sent.mako')
 
@@ -179,7 +180,8 @@ class PersonController(BaseController): #Read, Update, List
         c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
 
         now = datetime.datetime.now(c.conf_rec.timestamp.tzinfo)
-        if delta > datetime.timedelta(0, 24, 0):
+        delta = now - c.conf_rec.timestamp
+        if delta > datetime.timedelta(hours=24):
             # this confirmation record has expired
             meta.Session.delete(c.conf_rec)
             meta.Session.commit()
