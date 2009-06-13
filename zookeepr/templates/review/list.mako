@@ -11,7 +11,6 @@
 <table>
 <tr>
 <th>Proposal title</th>
-<th>Reviewer</th>
 <th>Score</th>
 <th>Stream</th>
 <th>Comment</th>
@@ -24,11 +23,6 @@
 
 <td>
 ${ h.link_to("%s - %s" % (r.proposal.id, r.proposal.title), url=h.url_for(controller='review', action='edit', id=r.id)) }
-</td>
-
-<td>
-${ r.reviewer.firstname }
-${ r.reviewer.lastname }
 </td>
 
 <td>
