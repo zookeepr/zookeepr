@@ -68,13 +68,13 @@ Your opinion on this proposal.
 <div id="q1">
 <p class="label"><span class="mandatory">*</span><b>What score do you give this proposal?</b></p>
 <p class="entries">
-${ h.radio('review.score', -2, label="-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") }
+${ h.radio('review.score', '-2', label="-2 (strong reject) I want this proposal to be rejected, and if asked to I will advocate for it to be rejected.") }
 <br>
-${ h.radio('review.score', -1, label="-1 (reject) I want this proposal to be rejected") }
+${ h.radio('review.score', '-1', label="-1 (reject) I want this proposal to be rejected") }
 <br>
-${ h.radio('review.score', +1, label="+1 (accept) I want this proposal to be accepted") }
+${ h.radio('review.score', '+1', label="+1 (accept) I want this proposal to be accepted") }
 <br>
-${ h.radio('review.score', +2, label="+2 (strong accept) I want this proposal to be accepted, and if asked to I will advocate for it to be accepted.") }
+${ h.radio('review.score', '+2', label="+2 (strong accept) I want this proposal to be accepted, and if asked to I will advocate for it to be accepted.") }
 </p>
 </div>
 
