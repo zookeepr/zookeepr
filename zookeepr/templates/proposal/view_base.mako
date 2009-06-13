@@ -187,7 +187,7 @@ ${ h.link_to('Add an attachment', url=h.url_for(action='attach')) }
 
 
 <p><em>Consents:</em><blockquote>
-<p>I allow ${ h.lca_info["event_name"] } to record my talk.</p>
+<p>I allow ${ h.lca_info["event_parent_organisation"] } to record my talk.</p>
 
 <p>${ allow(c.proposal.video_release) } ${ h.lca_info["event_parent_organisation"] } to release any
 recordings of my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></p>
