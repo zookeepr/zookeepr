@@ -37,7 +37,8 @@ ${ review_summary[reviewer]['num_reviews'] }
 </td>
 
 <td>
-${ review_summary[reviewer]['total_score']*1.0/review_summary[reviewer]['num_reviews'] }
+<% avg = review_summary[reviewer]['total_score']*1.0/review_summary[reviewer]['num_reviews'] %>
+${ "%#.*f" % (2, avg) }
 </td>
 
 % endfor
