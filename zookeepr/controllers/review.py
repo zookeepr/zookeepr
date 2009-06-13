@@ -46,6 +46,7 @@ class ReviewController(BaseController):
         c.proposal = c.review.proposal
         defaults = h.object_to_defaults(c.review, 'review')
 
+        c.signed_in_person = h.signed_in_person()
         form = render('/review/edit.mako')
         return htmlfill.render(form, defaults)
 

@@ -1,5 +1,6 @@
-Subject: Confirmation of your ${ c.proposal.type.name.lower() } proposal for ${ h.lca_info['event_name'] }
+From: ${ h.lca_info['event_name'] } <${ h.lca_info['contact_email'] }>
 To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
+Subject: Confirmation of your ${ c.proposal.type.name.lower() } proposal for ${ h.lca_info['event_name'] }
 
 Dear ${ c.person.firstname },
 
@@ -12,6 +13,11 @@ Title:       ${ c.proposal.title }
 URL:         ${ c.proposal.url }
 Attachments: ${ len(c.proposal.attachments) }
 Summary:     ${ c.proposal.abstract }
+
+Should you need to update the details of this proposal, please following
+this URL:
+
+  http://${ h.host_name() }/proposal
 
 
 The ${ h.event_name() } team
