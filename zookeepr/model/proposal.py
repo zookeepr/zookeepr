@@ -274,8 +274,13 @@ class Proposal(Base):
         return result
 
     @classmethod
-    def find_all_by_proposal_type_id(cls, id, abort_404 = True):
-        result = Session.query(Proposal).filter_by(proposal_type_id=id).all()
+    def find_all_by_proposal_type_id(cls, id, abort_404 = True, include_withdrawn=True):
+        result = Session.query(Proposal).filter_by(proposal_type_id=id)
+        if not include_withdrawn:
+            withdrawn = ProposalStatus.find_by_name('Withdrawn')
+            result = result.filter(Proposal.status_id != withdrawn.id)
+
+        result = result.all()
         if result is None and abort_404:
             abort(404, "No such object")
         return result
@@ -300,6 +305,7 @@ class Proposal(Base):
 
     @classmethod
     def find_next_proposal(cls, id, type_id, signed_in_person_id):
+        withdrawn = ProposalStatus.find_by_name('Withdrawn')
         next = Session.query(Proposal).from_statement("""
               SELECT
                   p.id
@@ -307,6 +313,7 @@ class Proposal(Base):
                   (SELECT id
                    FROM proposal
                    WHERE id <> %d
+                     AND status_id <> %d
                      AND proposal_type_id = %d
                    EXCEPT
                        SELECT proposal_id AS id
@@ -319,7 +326,7 @@ class Proposal(Base):
                       p.id
               ORDER BY COUNT(r.reviewer_id), RANDOM()
               LIMIT 1
-        """ % (id, type_id, signed_in_person_id))
+        """ % (id, withdrawn.id, type_id, signed_in_person_id))
         next = next.first()
         if next is not None:
             return next.id

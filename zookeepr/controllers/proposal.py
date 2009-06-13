@@ -297,7 +297,7 @@ class ProposalController(BaseController):
         reviewer_role = Role.find_by_name('reviewer')
         c.num_reviewers = len(reviewer_role.people)
         for pt in c.proposal_types:
-            stuff = Proposal.find_all_by_proposal_type_id(pt.id)
+            stuff = Proposal.find_all_by_proposal_type_id(pt.id, include_withdrawn=False)
             c.num_proposals += len(stuff)
             setattr(c, '%s_collection' % pt.name, stuff)
         for aat in c.accommodation_assistance_types:
@@ -350,7 +350,7 @@ class ProposalController(BaseController):
         c.statuses = ProposalStatus.find_all()
         return render("proposal/approve.mako")
 
-    @validate(schema=ApproveSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
+    @validate(schema=ApproveSchema(), form='approve', post_only=True, on_get=True, variable_decode=True)
     @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
     def _approve(self):
         c.highlight = set()
@@ -365,3 +365,34 @@ class ProposalController(BaseController):
         c.proposals = Proposal.find_all()
         c.statuses = ProposalStatus.find_all()
         return render("proposal/approve.mako")
+
+    @dispatch_on(POST="_withdraw")
+    def withdraw(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        c.proposal = Proposal.find_by_id(id)
+        return render("/proposal/withdraw.mako")
+
+    @validate(schema=ApproveSchema(), form='withdraw', post_only=True, on_get=True, variable_decode=True)
+    def _withdraw(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        c.proposal = Proposal.find_by_id(id)
+        status = ProposalStatus.find_by_name('Withdrawn')
+        c.proposal.status = status
+        meta.Session.commit()
+
+        c.person = h.signed_in_person()
+
+        # Make sure the organisers are notified of this
+        c.email_address = h.lca_info['speaker_email']
+        if c.proposal.type.name == 'Miniconf':
+            c.email_addres = email_address = h.lca_info['mini_conf_email']
+        email(c.email_address, render('/proposal/withdraw_email.mako'))
+
+        h.flash("Proposal withdrawn. The organisers have been notified.")
+        return redirect_to(controller='proposal', action="index", id=None)

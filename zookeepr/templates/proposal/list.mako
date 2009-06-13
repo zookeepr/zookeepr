@@ -29,9 +29,9 @@
     <th>Title</th>
     <th>Proposal Type</th>
     <th>Abstract</th>
-    <th>Target Audience</th>
+    <!--<th>Target Audience</th>-->
     <th>Project URL</th>
-    <th>Submitter(s)</th>
+    <!--<th>Submitter(s)</th>-->
     <th>Consent</th>
     <th>Status</th>
     <th>&nbsp;</th>
@@ -41,7 +41,7 @@
     <td>${ h.link_to("%s" % (h.util.html_escape(s.title)), url=h.url_for(action='view', id=s.id)) }</td>
     <td>${ s.type.name }</td>
     <td>${ h.truncate(h.util.html_escape(s.abstract)) | n}</td>
-    <td>${ s.audience.name }</td>
+    <!--<td>${ s.audience.name }</td>-->
 %     if s.url:
 ## FIXME: I reckon this should go into the helpers logic
 %       if '://' in s.url:
@@ -52,11 +52,11 @@
 %     else:
     <td>&nbsp;</td>
 %     endif
-    <td>
+    <!--<td>
 %     for p in s.people:
       ${ h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address or p.id, url=h.url_for(controller='person', action='view', id=p.id)) }<br>
 %     endfor
-    </td>
+    </td>-->
     <td>
 <%
      cons = []; fns = []
@@ -89,8 +89,15 @@
         <p>Declined<sup>[${ fn_mark(fn_declined) }]</sup></p>
 %     endif
     </td>
-    <td>${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }</td>
+    <td>
+%if s.status.name == 'Pending' or s.accepted:
+%  if c.paper_editing == 'open':
+  ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
+%  endif
+${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }
+    </td>
   </tr>
+%endif
 % endfor
 </table>
 
