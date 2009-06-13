@@ -20,7 +20,7 @@ if h3.__len__() > 0:
 
 % if c.db_content.is_news():
 <p class="submitted">
-Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") }
+Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n }
 </p>
 % endif
 
