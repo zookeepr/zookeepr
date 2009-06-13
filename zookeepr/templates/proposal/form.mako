@@ -108,7 +108,7 @@
 
     <p class="entries">
       ${ h.checkbox('proposal.slides_release') }
-      <label for="proposal.slides_release">I allow ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a><</label>
+      <label for="proposal.slides_release">I allow ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></label>
     </p>
 
 
