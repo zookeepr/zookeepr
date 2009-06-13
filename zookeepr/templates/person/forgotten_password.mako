@@ -1,6 +1,5 @@
 <%inherit file="/base.mako" />
 <form method="post" action="${ h.url_for() }" >
-    <fieldset>
         <h3>Forgotten password?</h3>
         <p>
             Enter your email address and an email will be sent to you allowing you to
@@ -11,6 +10,5 @@
             <p class="entries">${ h.text('email_address', size=60) }</p>
             <p class="submit">${ h.submit('submit', 'Set a new password') }</p>
         </div>
-    </fieldset>
 </form>
 

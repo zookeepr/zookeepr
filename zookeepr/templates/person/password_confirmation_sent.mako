@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 <p>
 To complete the password reset process please follow the instructions sent to your email address,
-<i>${ c.conf_rec.email_address }</i>.
+<i>${ c.email }</i>.
 </p>
 
 <p>

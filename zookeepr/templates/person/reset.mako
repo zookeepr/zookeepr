@@ -1,9 +1,8 @@
 <%inherit file="/base.mako" />
-<h2>reset password</h2>
+<h2>Reset Password</h2>
 
 ${ h.form(url=h.url_for()) }
 
-<fieldset>
 <p>
 Enter the new password for <em>${ c.conf_rec.email_address }</em> in the form below.
 </p>
@@ -14,7 +13,6 @@ Enter the new password for <em>${ c.conf_rec.email_address }</em> in the form be
 <p class="label"><label for="password_confirm">Re-enter password:</label></p>
 <p class="entries">${ h.password('password_confirm') }</p>
 </p>
-</fieldset>
 
 <p class="submit">${ h.submit('reset', "Reset Password") }</p>
 
