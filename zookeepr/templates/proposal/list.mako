@@ -102,9 +102,14 @@
     <p>You haven't submitted any proposals.</p>
 %endif
 
-%  if c.paper_editing == 'open':
-<p>${ h.link_to('Submit a new proposal', url=h.url_for(controller='proposal', action='new')) }</p>
+<p><ul>
+%  if c.cfp_status == 'open':
+<li>${ h.link_to('New paper proposal', url=h.url_for(controller='proposal', action='new')) }</li>
 %  endif
+%  if c.cfmini_status == 'open':
+<li>${ h.link_to('New miniconf proposal', url=h.url_for(controller='miniconf_proposal', action='new')) }</li>
+%  endif
+</ul></p>
 
 <%def name="title()">
 Proposals - ${ parent.title() }
