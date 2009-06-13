@@ -2,4 +2,7 @@
 
 cd $(dirname $0)/..
 
+# Let sitecustomise.py override the default.
+export PYTHONPATH=$(pwd):$PYTHONPATH
+
 paster serve --reload -v ${1:-development.ini}
