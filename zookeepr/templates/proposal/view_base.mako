@@ -192,14 +192,16 @@ ${ h.link_to('Add an attachment', url=h.url_for(action='attach')) }
 <p>${ allow(c.proposal.video_release) } ${ h.lca_info["event_parent_organisation"] } to release any
 recordings of my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></p>
 
-<p>${ allow(c.proposal.slides_release) } I allow ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }
+<p>${ allow(c.proposal.slides_release) } ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }
 </p>
 
 
 % if c.proposal.video_release or c.proposal.slides_release:
-<p>Please make sure that you are allowed to do this, if there is any doubt
-(for instance, consider whether you're revealing your employer's
-information or using other people's copyrighted materials.)</p>
+<p>I confirm that I have the authority to allow
+${ h.lca_info["event_parent_organisation"] } to release the above material.
+i.e., if your talk includes any information about your employer, or another
+persons copyrighted material, that person has given you authority to
+release this information.</p>
 % endif
 
 % if not c.proposal.video_release or not c.proposal.slides_release:
