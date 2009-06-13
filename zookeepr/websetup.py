@@ -1,33 +1,24 @@
-import os
+"""Setup the zookeepr application"""
+import logging
 
-from paste.deploy import appconfig
-from paste.script.copydir import copy_dir
+from zookeepr.config.environment import load_environment
+from zookeepr.model import meta
 
-def setup_config(command, filename, section, vars):
-    """Set up zookeepr database schema, filesystem requirements.
-    """
-    app_conf = appconfig('config:' + filename)
+import zookeepr.model
 
-    # Import late, otherwise if there's anything wrong in the model,
-    # the whole import will fail, and Paste will mistakenly think that
-    # websetup doesn't exist.
-    from zookeepr.model import create_all, populate_data
-    print "Creating schema"
-    create_all(app_conf)
-    print "Schema creation done"
+log = logging.getLogger(__name__)
 
-    print "Populating data"
-    populate_data()
-    print "Data population done"
+def setup_app(command, conf, vars):
+    """Place any commands to setup zookeepr here"""
+    load_environment(conf.global_conf, conf.local_conf)
 
-    def mkdir(dirname):
-        try:
-            os.mkdir(dirname)
-        except OSError, e:
-            # if directory not found, move up a dir
-            if e.errno == 2:
-                mkdir(os.path.dirname(dirname))
-                os.mkdir(dirname)
-            else:
-                raise e
+    # Create the tables if they don't already exist
+    log.info("Creating tables...")
+    meta.metadata.create_all(bind=meta.engine)
+
+    log.info("Populating tables...")
+    zookeepr.model.setup(meta)
+
+    log.info("Successfully set up.")
+
 

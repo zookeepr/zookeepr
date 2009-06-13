@@ -1,19 +1,31 @@
 import logging
-from formencode import validators, variabledecode
-from formencode.schema import Schema
-from zookeepr.lib.base import *
-from zookeepr.lib.auth import *
-from zookeepr.lib.crud import *
-from zookeepr.lib.validators import BaseSchema, BoundedInt, DbContentTypeValidator
-from zookeepr.lib.base import *
-from zookeepr.controllers import not_found
-from zookeepr.model.db_content import DBContentType
-from pylons import response
+
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema, DbContentTypeValidator
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+from zookeepr.model import DbContent, DbContentType
+
+from zookeepr.config.lca_info import lca_info
+from not_found import NotFoundController
+
+from webhelpers import paginate
 from zookeepr.config.lca_info import file_paths
 import os
-import cgi
-
-from webhelpers.pagination import paginate
 
 log = logging.getLogger(__name__)
 
@@ -22,71 +34,138 @@ class DbContentSchema(BaseSchema):
     type = DbContentTypeValidator()
     url = validators.String()
     body = validators.String()
+    published = validators.Bool()
 
-class NewContentSchema(BaseSchema):
+class NewDbContentSchema(BaseSchema):
     db_content = DbContentSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class UpdateContentSchema(BaseSchema):
+class UpdateDbContentSchema(BaseSchema):
     db_content = DbContentSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class DbContentController(SecureController, Create, List, Read, Update, Delete):
-    individual = 'db_content'
-    model = model.DBContent
-    schemas = {'new': NewContentSchema(),
-               'edit': UpdateContentSchema()
-              }
 
-    permissions = {'new': [AuthRole('organiser')],
-                   'index': [AuthRole('organiser')],
-                   'page': True,
-                   'view': True,
-                   'edit': [AuthRole('organiser')],
-                   'delete': [AuthRole('organiser')],
-                   'list_news': True,
-                   'list_press': True,
-                   'rss_news': True,
-                   'upload': [AuthRole('organiser')],
-                   'list_files': [AuthRole('organiser')],
-                   'delete_file': [AuthRole('organiser')],
-                   'delete_folder': [AuthRole('organiser')],
-                   }
-
+class DbContentController(BaseController):
     def __before__(self, **kwargs):
-        super(DbContentController, self).__before__(**kwargs)
-        c.db_content_types = self.dbsession.query(DBContentType).all()
+        c.db_content_types = DbContentType.find_all()
 
-    def view(self):
-        news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
-        c.is_news = False
-        if news_id == c.db_content.type_id:
-            c.is_news = True
-        return super(DbContentController, self).view()
+    @authorize(h.auth.has_organiser_role)
+    def index(self):
+        c.db_content_collection = DbContent.find_all()
+        return render('/db_content/list.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_new") 
+    def new(self):
+        if len(c.db_content_types) is 0:
+            h.flash("Configuration Error: Please make sure at least one content type exists.", 'error')
+        if DbContentType.find_by_name("News") is None:
+            h.flash("Configuration Error: Please make sure the 'News' content type exists for full functionality.", 'error')
+        if DbContentType.find_by_name("In the press") is None:
+            h.flash("Configuration Error: Please make sure the 'In the press' content type exists for full functionality.", 'error')
+        return render('/db_content/new.mako')
+
+    @validate(schema=NewDbContentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
+    def _new(self):
+        results = self.form_result['db_content']
+        c.db_content = DbContent(**results)
+        meta.Session.add(c.db_content)
+        meta.Session.commit()
+
+        h.flash("New Page Created.")
+        redirect_to(action='view', id=c.db_content.id)
+
+    def view(self, id):
+        c.db_content = DbContent.find_by_id(id)
+        if c.db_content.published is False and not h.auth.has_organiser_role:
+            c.db_content = None
+        return render('/db_content/view.mako')
 
     def page(self):
-        url = h.url()()
+        url = h.url_for()
         if url[0]=='/': url=url[1:]
-        c.db_content = self.dbsession.query(model.DBContent).filter_by(url=url).first()
+        c.db_content = DbContent.find_by_url(url, abort_404=False)
         if c.db_content is not None:
-            return self.view()
-        return not_found.NotFoundController().view()
+            return self.view(c.db_content.id)
+        return NotFoundController().view()
+
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_edit") 
+    def edit(self, id):
+        c.db_content = DbContent.find_by_id(id)
+
+        defaults = h.object_to_defaults(c.db_content, 'db_content')
+        # This is horrible, don't know a better way to do it
+        if c.db_content.type:
+            defaults['db_content.type'] = defaults['db_content.type_id']
+        
+        form = render('/db_content/edit.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=UpdateDbContentSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
+    def _edit(self, id):
+        c.db_content = DbContent.find_by_id(id)
+
+        for key in self.form_result['db_content']:
+            setattr(c.db_content, key, self.form_result['db_content'][key])
+
+        # update the objects with the validated form data
+        meta.Session.commit()
+        h.flash("Page updated.")
+        redirect_to(action='view', id=id)
+
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_delete")
+    def delete(self, id):
+        c.db_content = DbContent.find_by_id(id)
+        return render('/db_content/confirm_delete.mako')
+
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
+    def _delete(self, id):
+        c.db_content = DbContent.find_by_id(id)
+        meta.Session.delete(c.db_content)
+        meta.Session.commit()
+
+        h.flash("Content Deleted.")
+        redirect_to('index')
 
     def list_news(self):
-        news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
-        news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).all()
-        pages, collection = paginate(news_list, per_page = 20)
-        setattr(c, self.individual + '_pages', pages)
-        setattr(c, self.individual + '_collection', collection)
-        return render_response('%s/list_news.myt' % self.individual)
+        if c.db_content_types:
+            page = 1
+            if request.GET.has_key('page'):
+                page = request.GET['page']
+            pagination = paginate.Page(DbContent.find_all_by_type("News"), page = page, items_per_page = 10)
+
+            c.db_content_pages = pagination
+            c.db_content_collection = pagination.items
+            c.result = True
+        else:
+            c.result = False
+        return render('/db_content/list_news.mako')
+
+    def list_press(self):
+        if c.db_content_types:
+            page = 1
+            if request.GET.has_key('page'):
+                page = request.GET['page']
+            pagination = paginate.Page(DbContent.find_all_by_type("In the press"), page = page, items_per_page = 10)
+
+            c.db_content_pages = pagination
+            c.db_content_collection = pagination.items
+            c.result = True
+        else:
+            c.result = False
+        return render('/db_content/list_press.mako')
 
     def rss_news(self):
-        news_id = self.dbsession.query(model.DBContentType).filter_by(name='News').first().id
-        news_list = self.dbsession.query(self.model).filter_by(type_id=news_id).order_by(self.model.c.creation_timestamp.desc()).limit(20).all()
-        setattr(c, self.individual + '_collection', news_list)
+        news_id = DbContentType.find_by_name("News")
+        c.db_content_collection = []
+        if news_id is not None: 
+            c.db_content_collection = meta.Session.query(DbContent).filter_by(published='t',type_id=news_id.id,published='t').order_by(DbContent.creation_timestamp.desc()).limit(20).all()
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
-        return render_response('%s/rss_news.myt' % self.individual, fragment=True)
+        return render('/db_content/rss_news.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def upload(self):
         directory = file_paths['public_path']
         try:
@@ -101,9 +180,11 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         fp = open(directory + request.POST['myfile'].filename,'wb')
         fp.write(file_data)
         fp.close()
+        
+        h.flash("File Uploaded.")        
+        redirect_to(action="list_files", folder=c.current_folder)
 
-        return render('%s/file_uploaded.myt' % self.individual)
-
+    @authorize(h.auth.has_organiser_role)
     def delete_folder(self):
         try:
             if request.GET['folder'] is not None:
@@ -118,10 +199,13 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
             try:
                 os.rmdir(directory + c.folder)
             except OSError:
-                return render('%s/folder_full.myt' % self.individual)
-            return render('%s/folder_deleted.myt' % self.individual)
-        return render('%s/delete_folder.myt' % self.individual)
+                h.flash("Can not delete. The folder contains items.", 'error')
+                redirect_to(action="list_files", folder=c.current_folder)
+            h.flash("Folder deleted.")
+            redirect_to(action="list_files", folder=c.current_folder)
+        return render('/db_content/delete_folder.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def delete_file(self):
         try:
             if request.GET['file'] is not None:
@@ -134,9 +218,11 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         defaults = dict(request.POST)
         if defaults:
             os.remove(directory + c.file)
-            return render('%s/file_deleted.myt' % self.individual)
-        return render('%s/delete_file.myt' % self.individual)
+            h.flash("File Removed")
+            redirect_to(action="list_files", folder=c.current_folder)
+        return render('/db_content/delete_file.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def list_files(self):
         # Taken from http://aspn.activestate.com/ASPN/Cookbook/Python/Recipe/170242
         def caseinsensitive_sort(stringList):
@@ -166,7 +252,10 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
                 if request.POST['folder'] is not None:
                     os.mkdir(directory + request.POST['folder'])
             except KeyError:
-                pass
+                h.flash("Error creating folder. Check file permissions.", 'error')
+            else:
+                h.flash("Folder Created")
+            
 
         files = []
         folders = []
@@ -180,12 +269,4 @@ class DbContentController(SecureController, Create, List, Read, Update, Delete):
         c.folder_list = caseinsensitive_sort(folders)
         c.current_path = current_path
         c.download_path = download_path
-        return render('%s/list_files.myt' % self.individual)
-
-    def list_press(self):
-        press_id = self.dbsession.query(model.DBContentType).filter_by(name='In the press').first().id
-        press_list = self.dbsession.query(self.model).filter_by(type_id=press_id).order_by(self.model.c.creation_timestamp.desc()).all()
-        pages, collection = paginate(press_list, per_page = 20)
-        setattr(c, self.individual + '_pages', pages)
-        setattr(c, self.individual + '_collection', collection)
-        return render_response('%s/list_press.myt' % self.individual)
+        return render('/db_content/list_files.mako')

@@ -16,3 +16,4 @@ zookeepr/config.ini
 zookeepr/public/att-data
 .coverage
 ./lib
+zookeepr.egg-info

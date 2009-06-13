@@ -1,29 +1,28 @@
-from setuptools import setup, find_packages
+try:
+    from setuptools import setup, find_packages
+except ImportError:
+    from ez_setup import use_setuptools
+    use_setuptools()
+    from setuptools import setup, find_packages
 
 setup(
     name='zookeepr',
-    version="0.3.19",
-    #description="",
-    #author="",
-    #author_email="",
-    #url="",
+    version='0.4.0',
+    description='A conference management system',
+    author='Zookeep Core Team',
+    author_email='zookeepr-core@zookeepr.org',
+    url='http://zookeepr.org',
     install_requires=[
-        # our champion wsgi stack
-        "Pylons>=0.9.3",
-        # our champion ORM
-        "SQLAlchemy>=0.3.1",
-        # nose as test runner
-        "nose>=0.9.0",
+        "Pylons>=0.9.7",
+        "SQLAlchemy>=0.5",
+        "AuthKit>=0.4.0",
         # FormEncode used to do form input validation
         "FormEncode>=0.6",
-        # Explicit depends on PasteScript as we use it in setup-app
-        #"PasteScript>=1.0",
-        # URL auto_link fixes in 0.2.1
-        #"WebHelpers>=0.2.1",
         # DNS for email address validation
         "dnspython",
     ],
-    packages=find_packages(),
+    setup_requires=["PasteScript>=1.6.3"],
+    packages=find_packages(exclude=['ez_setup']),
     include_package_data=True,
     test_suite = 'nose.collector',
     package_data={'zookeepr': ['i18n/*/LC_MESSAGES/*.mo',
@@ -36,10 +35,17 @@ setup(
         'public/*.pdf',
         'public/sponsors/*.gif',
         ]},
+    #message_extractors={'zookeepr': [
+    #        ('**.py', 'python', None),
+    #        ('templates/**.mako', 'mako', {'input_encoding': 'utf-8'}),
+    #        ('public/**', 'ignore', None)]},
+    zip_safe=False,
+    paster_plugins=['PasteScript', 'Pylons'],
     entry_points="""
     [paste.app_factory]
-    main=zookeepr:make_app
+    main = zookeepr.config.middleware:make_app
+
     [paste.app_install]
-    main=paste.script.appinstall:Installer
+    main = pylons.util:PylonsInstaller
     """,
 )

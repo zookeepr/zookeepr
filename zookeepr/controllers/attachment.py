@@ -1,46 +1,90 @@
-from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue, AuthFunc
-from zookeepr.lib.base import *
-from zookeepr.lib.crud import Delete
+import logging
+
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill, ForEach, Invalid
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema, ProductValidator
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
 from zookeepr.model import Attachment, Proposal
 
-class AttachmentController(SecureController, Delete):
-    model = Attachment
-    individual = 'attachment'
+from zookeepr.config.lca_info import lca_info
 
-    permissions = {
-      'view': True,
-      'delete': [AuthFunc('is_submitter'), AuthRole('organiser')]
-    }
+log = logging.getLogger(__name__)
 
+class AttachmentController(BaseController):
+    @authorize(h.auth.is_valid_user)
+    def __before__(self, **kwargs):
+        pass
+
+    @dispatch_on(POST="_delete")
     def delete(self, id):
-        if request.method == 'POST' and self.obj is not None:
-            self.dbsession.delete(self.obj)
-            self.dbsession.flush()
+        c.attachment = Attachment.find_by_id(id)
+        c.proposal = Proposal.find_by_id(c.attachment.proposal_id)
+        
+        if not h.auth.has_organiser_role:
+            authorized = False
+            for person in c.proposal.people:
+                if h.auth.is_same_zookeepr_user(person.id):
+                    authorized = True
+                    break
+            if not authorized:
+                # Raise a no_auth error
+                h.auth.no_role()
 
-            proposal = self.dbsession.query(model.Proposal).get(self.obj.proposal_id)
-            redirect = dict(controller='proposal', action='view', id=session.get('proposal_id', proposal.id))
-            self.redirect_to('delete', redirect)
+        return render('/attachment/confirm_delete.mako')
 
-        # call the template
-        return render_response('%s/confirm_delete.myt' % self.individual)
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
+    def _delete(self, id):
+        c.attachment = Attachment.find_by_id(id)
+        proposal = Proposal.find_by_id(c.attachment.proposal_id)
 
-    def is_submitter(self):
-        proposal = self.dbsession.query(model.Proposal).get(self.obj.proposal_id)
-        if c.signed_in_person in proposal.people:
-            return True
-        else:
-            return False
+        if not h.auth.has_organiser_role:
+            authorized = False
+            for person in proposal.people:
+                if h.auth.is_same_zookeepr_user(person.id):
+                    authorized = True
+                    break
+            if not authorized:
+                # Raise a no_auth error
+                h.auth.no_role()
+
+        meta.Session.delete(c.attachment)
+        meta.Session.commit()
+
+        h.flash("Attachment Deleted")
+        redirect_to(controller='proposal', action='view', id=proposal.id)
 
     def view(self, id):
-        att = self.dbsession.query(model.Attachment).get(id)
+        attachment = Attachment.find_by_id(id)
+        proposal = Proposal.find_by_id(attachment.proposal_id)
 
-        response = Response(att.content)
-        response.headers['content-type'] = att.content_type
+        if not h.auth.has_organiser_role:
+            authorized = False
+            for person in proposal.people:
+                if h.auth.is_same_zookeepr_user(person.id):
+                    authorized = True
+                    break
+            if not authorized:
+                # Raise a no_auth error
+                h.auth.no_role()
+
+        response.headers['content-type'] = attachment.content_type
         response.headers.add('content-transfer-encoding', 'binary')
-        response.headers.add('content-length', len(att.content))
-        response.headers['content-disposition'] = 'attachment; filename="%s";' % att.filename
-
+        response.headers.add('content-length', len(attachment.content))
+        response.headers['content-disposition'] = 'attachment; filename="%s";' % attachment.filename
         response.headers.add('Pragma', 'cache')
         response.headers.add('Cache-Control', 'max-age=3600,public')
-
-        return response
+        return attachment.content

@@ -1,19 +1,26 @@
 import logging
-from formencode import validators, variabledecode
-from formencode.schema import Schema
-from zookeepr.lib.base import *
-from zookeepr.lib.auth import *
-from zookeepr.lib.crud import *
-from zookeepr.lib.validators import *
-from zookeepr.lib.base import *
-from zookeepr.controllers import not_found
-from zookeepr.model.db_content import DBContentType
-from pylons import response
-from zookeepr.config.lca_info import file_paths
-import os
-import cgi
 
-from webhelpers.pagination import paginate
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema, ExistingRegistrationValidator, ExistingPersonValidator
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+from zookeepr.model.rego_note import RegoNote
+
+from zookeepr.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
@@ -24,26 +31,86 @@ class RegoNoteSchema(BaseSchema):
 
 class NewNoteSchema(BaseSchema):
     rego_note = RegoNoteSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
 class UpdateNoteSchema(BaseSchema):
     rego_note = RegoNoteSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class RegoNoteController(SecureController, Create, List, Read, Update, Delete):
-    individual = 'rego_note'
-    model = model.RegoNote
-    schemas = {'new': NewNoteSchema(),
-               'edit': UpdateNoteSchema()
-              }
+class RegoNoteController(BaseController):
+    @authorize(h.auth.has_organiser_role)
+    def __before__(self, **kwargs):
+        pass
 
-    permissions = {'new': [AuthRole('organiser')],
-                   'index': [AuthRole('organiser')],
-                   'view': [AuthRole('organiser')],
-                   'edit': [AuthRole('organiser')],
-                   'delete': [AuthRole('organiser')]
-                   }
+    @dispatch_on(POST="_new") 
+    def new(self):
+        defaults = {
+            'rego_note.by': h.signed_in_person().id
+        }
+        raw_params = request.params
+        if 'rego_id' in raw_params:
+            c.rego_id = int(raw_params['rego_id'])
+            defaults['rego_note.rego'] = c.rego_id
 
-    def new(self, rego_id=None):
-        if hasattr(super(RegoNoteController, self), 'new'):
-            return super(RegoNoteController, self).new()
+        form = render('/rego_note/new.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=NewNoteSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
+    def _new(self):
+        results = self.form_result['rego_note']
+
+        c.rego_note = RegoNote(**results)
+        meta.Session.add(c.rego_note)
+        meta.Session.commit()
+
+        h.flash("Rego note created")
+        redirect_to(action='view', id=c.rego_note.id)
+
+    def view(self, id):
+        c.rego_note = RegoNote.find_by_id(id)
+        return render('rego_note/view.mako')
+
+    def index(self):
+        c.rego_note_collection = RegoNote.find_all()
+        return render('rego_note/list.mako')
+
+    @dispatch_on(POST="_edit")
+    def edit(self, id):
+        c.rego_note = RegoNote.find_by_id(id)
+
+        defaults = h.object_to_defaults(c.rego_note, 'rego_note')
+
+        form = render('rego_note/edit.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=UpdateNoteSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
+    def _edit(self, id):
+        rego_note = RegoNote.find_by_id(id)
+
+        for key in self.form_result['rego_note']:
+            setattr(rego_note, key, self.form_result['rego_note'][key])
+
+        # update the objects with the validated form data
+        meta.Session.commit()
+        h.flash("The note has been updated successfully.")
+        redirect_to(action='view', id=id)
+
+    @dispatch_on(POST="_delete") 
+    def delete(self, id):
+        """Delete the rego note
+
+        GET will return a form asking for approval.
+
+        POST requests will delete the item.
+        """
+        c.rego_note = RegoNote.find_by_id(id)
+        return render('rego_note/confirm_delete.mako')
+
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
+    def _delete(self, id):
+        c.rego_note = RegoNote.find_by_id(id)
+        meta.Session.delete(c.rego_note)
+        meta.Session.commit()
+
+        h.flash("Rego note has been deleted.")
+        redirect_to('index')

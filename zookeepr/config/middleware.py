@@ -1,77 +1,82 @@
-from paste import httpexceptions
+"""Pylons middleware initialization"""
+from beaker.middleware import CacheMiddleware, SessionMiddleware
 from paste.cascade import Cascade
-from paste.urlparser import StaticURLParser
 from paste.registry import RegistryManager
-from paste.deploy.config import ConfigMiddleware, PrefixMiddleware
+from paste.urlparser import StaticURLParser
+from paste.deploy.converters import asbool
+from pylons import config
+from pylons.middleware import ErrorHandler, StatusCodeRedirect
+from pylons.wsgiapp import PylonsApp
+from routes.middleware import RoutesMiddleware
 
 from paste.pony import PonyMiddleware
-
-from pylons.error import error_template
-from pylons.middleware import ErrorHandler, ErrorDocuments, StaticJavascripts, error_mapper
-import pylons.wsgiapp
-
-import zookeepr.lib.app_globals as app_globals
-import zookeepr.lib.helpers
+import authkit.authenticate
 
 from zookeepr.config.environment import load_environment
 
-def error_mapper_wrapper(code, message, environ, global_conf=None, **kw):
-    if code != 404:
-        return error_mapper(code, message, environ, global_conf, **kw)
 
-def make_app(global_conf, **app_conf):
-    """Create a WSGI application and return it
-    
-    global_conf is a dict representing the Paste configuration options, the
-    paste.deploy.converters should be used when parsing Paste config options
-    to ensure they're treated properly.
+def  make_app(global_conf, full_stack=True, static_files=True, **app_conf):
+    """Create a Pylons WSGI application and return it
+
+    ``global_conf``
+        The inherited configuration for this application. Normally from
+        the [DEFAULT] section of the Paste ini file.
+
+    ``full_stack``
+        Whether this application provides a full WSGI stack (by default,
+        meaning it handles its own exceptions and errors). Disable
+        full_stack when this application is "managed" by another WSGI
+        middleware.
+
+    ``static_files``
+        Whether this application serves its own static files; disable
+        when another web server is responsible for serving them.
+
+    ``app_conf``
+        The application's local configuration. Normally specified in
+        the [app:<name>] section of the Paste ini file (where <name>
+        defaults to main).
+
     """
-    
-    # Load our Pylons configuration defaults
-    from pylons import config 
+    # Configure the Pylons environment
     load_environment(global_conf, app_conf)
-    
-    # Load our default Pylons WSGI app and make g available
-    app = pylons.wsgiapp.PylonsApp(config,
-            #helpers=zookeepr.lib.helpers,
-            #g=app_globals.Globals
-            )
-    app = ConfigMiddleware(app, {'app_conf':app_conf,
-        'global_conf':global_conf})
-    
-    # YOUR MIDDLEWARE
-    # Put your own middleware here, so that any problems are caught by the error
-    # handling middleware underneath
+
+    # The Pylons WSGI app
+    app = PylonsApp()
+
+    # Routing/Session/Cache Middleware
+    app = RoutesMiddleware(app, config['routes.map'])
+    app = SessionMiddleware(app, config)
+    app = CacheMiddleware(app, config)
+
+    # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
 
     # Ponies!
     app = PonyMiddleware(app)
-    
-    # @@@ Change HTTPExceptions to HTTP responses @@@
-    app = httpexceptions.make_middleware(app, global_conf)
-    
-    # @@@ Error Handling @@@
-    app = ErrorHandler(app, global_conf, error_template=error_template,
-				       **pylons.config['pylons.errorware'])
-    
-    # @@@ Static Files in public directory @@@
-    static_app = StaticURLParser(pylons.config['pylons.paths']['static_files'])
 
-    # @@@ WebHelper's static javascript files @@@
-    javascripts_app = StaticJavascripts()
-    
-    # @@@ Cascade @@@ 
-    app = Cascade([static_app, javascripts_app, app])
-    
-    app = ErrorDocuments(app, global_conf, mapper=error_mapper, **app_conf)
 
-    # PrefixMiddleware fixes up the hostname when zookeepr is being proxied.
-    # This is important for constructing absolute filenames (as, for instance,
-    # PonyMiddleware does). However, it stuffs up things sometimes,
-    # especially on my test box, so make it configurable.
-    if not app_conf.has_key('prefixMW_disable'):
-      app = PrefixMiddleware(app)
-    
-    # @@@ Establish the Registry for this application @@@
+    # CUSTOM MIDDLEWARE END
+
+    if asbool(full_stack):
+        # Handle Python exceptions
+        app = ErrorHandler(app, global_conf, **config['pylons.errorware'])
+
+        app = authkit.authenticate.middleware(app, app_conf)
+
+        # Display error documents for 401, 403, 404 status codes (and
+        # 500 when debug is disabled)
+        if asbool(config['debug']):
+            app = StatusCodeRedirect(app)
+        else:
+            app = StatusCodeRedirect(app, [400, 401, 403, 404, 500])
+
+    # Establish the Registry for this application
     app = RegistryManager(app)
 
+    if asbool(static_files):
+        # Serve static files
+        static_app = StaticURLParser(config['pylons.paths']['static_files'])
+        app = Cascade([static_app, app])
+
     return app
+

@@ -1,13 +1,40 @@
-from zookeepr.lib.base import BaseController
-from zookeepr.lib.crud import View
-from zookeepr import model
-from zookeepr.model import Proposal
-from zookeepr.lib.base import *
+import logging
 
-from zookeepr.config.lca_info import file_paths
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import redirect_to, abort
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
 from datetime import date, datetime
+
+from zookeepr.lib.mail import email
 from zookeepr.lib.sort import odict
+
+from zookeepr.model import meta, Proposal
+
+from zookeepr.config.lca_info import lca_info, file_paths
+
 import os
+
+log = logging.getLogger(__name__)
+
+def get_directory_contents(directory):
+    files = {}
+    if os.path.isdir(directory):
+        for filename in os.listdir(directory):
+            if os.path.isfile(directory + "/" + filename):
+                files[filename.rsplit('.')[0]] = filename
+    return files
 
 
 class ScheduleController(BaseController):
@@ -23,7 +50,7 @@ class ScheduleController(BaseController):
 
     def _get_talk(self, talk_id):
         """ Return a proposal object """
-        return self.dbsession.query(Proposal).filter_by(id=talk_id).first()
+        return Proposal.find_by_id(id=talk_id, abort_404=False)
 
     def view_miniconf(self, id):
         try:
@@ -31,11 +58,13 @@ class ScheduleController(BaseController):
         except:
             c.day = 'all'
         try:
-            c.talk = self.dbsession.query(Proposal).filter_by(id=id,accepted=True).one()
+            c.talk = Proposal.find_accepted_by_id(id)
         except:
-            abort(404)
+            c.talk_id = id
+            c.webmaster_email = lca_info['webmaster_email']
+            return render('/schedule/invalid_talkid.mako')
 
-        return render_response('schedule/view_miniconf.myt')
+        return render('/schedule/view_miniconf.mako')
 
     def view_talk(self, id):
         try:
@@ -43,13 +72,15 @@ class ScheduleController(BaseController):
         except:
             c.day = 'all'
         try:
-            c.talk = self.dbsession.query(Proposal).filter_by(id=id,accepted=True).one()
+            c.talk = Proposal.find_accepted_by_id(id)
         except:
-            abort(404)
+            c.talk_id = id
+            c.webmaster_email = lca_info['webmaster_email']
+            return render('/schedule/invalid_talkid.mako')
 
-        return render_response('schedule/view_talk.myt')
+        return render('/schedule/view_talk.mako')
 
-    def index(self, day):
+    def index(self, day=None):
         if day == None:
             for weekday in self.day_dates:
                 if self.day_dates[weekday] == datetime.today().date():
@@ -62,31 +93,23 @@ class ScheduleController(BaseController):
         # get list of slides as dict
         c.slide_list = {}
         if file_paths.has_key('slides_path') and file_paths['slides_path'] != '':
-            directory = file_paths['slides_path']
-            c.download_path = file_paths['slides_html']
-            files = {}
-            for filename in os.listdir(directory):
-                if os.path.isfile(directory + "/" + filename):
-                    files[filename.rsplit('.')[0]] = filename
-
-            c.slide_list = files
+            c.slide_list = get_directory_contents(file_paths['slides_path'])
             c.download_path = file_paths['slides_html']
 
-        c.ogg_list = {}
+        c.ogg_list = {} # TODO: fill these in
         if file_paths.has_key('ogg_path') and file_paths['ogg_path'] != '':
             c.ogg_path = file_paths['ogg_path']
-            files = {}
-            
-        
-        c.speex_list = {}
-        c.speex_path = 'http://mirror.linux.org.au/2009/speex'
 
-        c.talks = self.dbsession.query(Proposal).filter_by(accepted=True)
+        c.speex_list = {} # TODO: fill these in
+        if file_paths.has_key('speex_path') and file_paths['speex_path'] != '':
+            c.speex_path =  file_paths['speex_path']
+        
+        c.talks = Proposal.find_all_accepted()
         if c.day in self.day_dates:
             # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
             c.talks = c.talks.filter(Proposal.scheduled >= self.day_dates[c.day] and Proposal.scheduled < self.day_dates[c.day].replace(day=self.day_dates[c.day].day+1))
         c.programme = odict()
-        c.talks.order_by((Proposal.scheduled.asc(), Proposal.finished.desc())).all()
+        c.talks.order_by(Proposal.scheduled.asc(), Proposal.finished.desc()).all()
         for talk in c.talks:
             if isinstance(talk.scheduled, date):
                 talk_day = talk.scheduled.strftime('%A')
@@ -98,4 +121,4 @@ class ScheduleController(BaseController):
                     if c.programme[talk_day][talk.building].has_key(talk.theatre) is not True:
                         c.programme[talk_day][talk.building][talk.theatre] = []
                     c.programme[talk_day][talk.building][talk.theatre].append(talk)
-        return render_response('schedule/list.myt')
+        return render('/schedule/list.mako')

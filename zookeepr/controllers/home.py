@@ -1,6 +1,15 @@
-from zookeepr.lib.base import *
-from zookeepr.lib.auth import SecureController
-from zookeepr.model import Person, DBContent, DBContentType
+import logging
+import zookeepr.lib.helpers as h
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+
+from zookeepr.model import meta
+from zookeepr.model.db_content import DbContent, DbContentType
+
+from zookeepr.lib.base import BaseController, render
+
+log = logging.getLogger(__name__)
+
 
 class HomeController(BaseController):
 
@@ -21,15 +30,14 @@ class HomeController(BaseController):
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
 
-        news = self.dbsession.query(DBContentType).filter_by(name='News').first()
+        news = DbContentType.find_by_name("News", abort_404 = False)
         if news:
-            setattr(c, 'db_content_news', self.dbsession.query(DBContent).filter_by(type_id=news.id).order_by(DBContent.c.creation_timestamp.desc()).limit(4).all())
-            setattr(c, 'db_content_news_all', self.dbsession.query(DBContent).filter_by(type_id=news.id).order_by(DBContent.c.creation_timestamp.desc()).all())
+            c.db_content_news = meta.Session.query(DbContent).filter_by(type_id=news.id,published='t').order_by(DbContent.creation_timestamp.desc()).limit(4).all()
+            c.db_content_news_all = meta.Session.query(DbContent).filter_by(type_id=news.id,published='t').order_by(DbContent.creation_timestamp.desc()).all() #use all to find featured items
 
-        press = self.dbsession.query(DBContentType).filter_by(name='In the press').first()
+        press = DbContentType.find_by_name("In the press", abort_404 = False)
         if press:
-            setattr(c, 'db_content_press', self.dbsession.query(DBContent).filter_by(type_id=press.id).order_by(DBContent.c.creation_timestamp.desc()).limit(3).all())
+            c.db_content_press = meta.Session.query(DbContent).filter_by(type_id=press.id,published='t').order_by(DbContent.creation_timestamp.desc()).limit(4).all()
 
-        resp = render_response('home.myt')
 
-        return resp
+        return render('/home.mako')

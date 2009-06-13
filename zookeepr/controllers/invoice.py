@@ -3,73 +3,170 @@ import datetime
 import hmac
 import sha
 
-from zookeepr.lib.base import *
-from zookeepr.lib.auth import *
-from zookeepr.lib.crud import *
-from zookeepr.lib.validators import *
-from formencode import validators, variabledecode, ForEach
+import logging
 
-from zookeepr.config.lca_info import lca_info
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import redirect_to, Response
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
 
-from zookeepr.model.billing import ProductCategory, Product, Voucher
+from formencode import validators, htmlfill, ForEach, Invalid
+from formencode.variabledecode import NestedVariables
 
-#TODO: Fix validation on new pylons merge
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema, ProductValidator, InvoiceItemProductDescription, ExistingPersonValidator
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory
+from zookeepr.model.payment import PaymentOptions
+
+from zookeepr.config.lca_info import lca_info, file_paths
+
+log = logging.getLogger(__name__)
 
 class InvoiceItemValidator(BaseSchema):
     product = ProductValidator()
-    qty = BoundedInt(min=1)
-    cost = BoundedInt()
+    qty = validators.Int(min=1)
+    cost = validators.Int(min=0, max=2000000)
     description = validators.String(not_empty=False)
-    
     chained_validators = [InvoiceItemProductDescription()]
-        
+
 class InvoiceSchema(BaseSchema):
     person = ExistingPersonValidator(not_empty=True)
-    due_date = validators.DateConverter(month_style='dd/mm/yy')
+    due_date = validators.DateConverter(format='%d/%m/%y')
     items = ForEach(InvoiceItemValidator())
 
-    item_count = validators.Int()
+    item_count = validators.Int(min=0) # no max, doesn't hit database
 
 class NewInvoiceSchema(BaseSchema):
     invoice = InvoiceSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class InvoiceController(SecureController, Read, List, Create):
-    model = model.Invoice
-    individual = 'invoice'
-    permissions = {'view': [AuthFunc('is_payee'), AuthRole('organiser')],
-                   'printable': [AuthFunc('is_payee'), AuthRole('organiser')],
-                   'pay': [AuthFunc('is_payee'), AuthRole('organiser')],
-                   'remind': [AuthRole('organiser')],
-                   'index': [AuthRole('organiser')],
-                   'pdf': [AuthFunc('is_payee'), AuthRole('organiser')],
-                   'new': [AuthRole('organiser')],
-                   'void': [AuthRole('organiser')],
-                   'unvoid': [AuthRole('organiser')],
-                   }
+class InvoiceController(BaseController):
+    @authorize(h.auth.is_valid_user)
+    def __before__(self, **kwargs):
+        pass
 
-    schemas = {'new': NewInvoiceSchema()
-            }
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_new")
+    def new(self):
+        c.product_categories = ProductCategory.find_all()
+        c.item_count = 0;
+        return render("/invoice/new.mako")
 
-    def is_payee(self):
-        return c.signed_in_person == self.obj.person
+    @validate(schema=NewInvoiceSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
+    def _new(self):
+        results = self.form_result['invoice']
+        del(results['item_count'])
+
+        items = results['items']
+        results['items'] = []
+        for i in items:
+            item = InvoiceItem()
+            if i['description'] != "":
+                item.description = i['description']
+            else:
+                item.product = i['product']
+                item.description = i['product'].description
+            item.cost = i['cost']
+            item.qty = i['qty']
+            results['items'].append(item)
+
+        c.invoice = Invoice(**results)
+        c.invoice.manual = True
+        c.invoice.void = None
+        meta.Session.add(c.invoice)
+        meta.Session.commit()
+
+        h.flash("Manual invoice created")
+        return redirect_to(action='view', id=c.invoice.id)
+
+    def view(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        c.printable = False
+        c.invoice = Invoice.find_by_id(id, True)
+        # TODO: remove these once payment works
+        c.invoice.good_payments = False
+        c.invoice.bad_payments = False
+        return render('/invoice/view.mako')
+
+    def printable(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        c.printable = True
+        c.invoice = Invoice.find_by_id(id, True)
+        # TODO: remove these once payment works
+        c.invoice.good_payments = False
+        c.invoice.bad_payments = False
+        return render('/invoice/view_printable.mako')
+
+    def index(self):
+        if h.auth.has_organiser_role:
+            c.can_edit = True
+            c.invoice_collection = Invoice.find_all()
+        else:
+            c.can_edit = False
+            c.invoice_collection = Invoice.find_by_person(h.signed_in_person().id)
+
+        # TODO: the payment stuff is not yet implemented
+        for i in c.invoice_collection:
+            i.good_payments = False
+            i.bad_payments = False
+        return render('/invoice/list.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def remind(self):
+        c.invoice_collection = Invoice.find_all();
+        c.payment_options = PaymentOptions();
+
+        return render('/invoice/remind.mako')
 
     def pay(self, id):
+        return "TODO: pay (needs payment controller)"
         """Pay an invoice.
 
         This method bounces the user off to the commsecure website.
         """
-        #return render_response('registration/really_closed.myt')
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        c.invoice = Invoice.find_by_id(id, True)
+
+        #return render('/registration/really_closed.mako')
         if c.invoice.person.invoices:
             if c.invoice.paid() or c.invoice.bad_payments:
-                return render_response('invoice/already.myt')
+                c.status = []
+                if c.invoice.total()==0:
+                  c.status.append('zero balance')
+                if c.invoice.good_payments:
+                  c.status.append('paid')
+                  if len(c.invoice.good_payments)>1:
+                    c.status[-1] += ' (%d times)' % len(c.invoice.good_payments)
+                if c.invoice.bad_payments:
+                  c.status.append('tried to pay')
+                  if len(c.invoice.bad_payments)>1:
+                    c.status[-1] += ' (%d times)' % len(c.invoice.bad_payments)
+                c.status = ' and '.join(c.status)
+                return render('/invoice/already.mako')
 
         if c.invoice.is_void():
-            return render_response('invoice/invalid.myt')
+            c.signed_in_person = h.signed_in_person()
+            return render('/invoice/invalid.mako')
         if c.invoice.overdue():
             for ii in c.invoice.items:
                 if ii.product and not ii.product.available():
-                    return render_response('invoice/expired.myt')
+                    return render('/invoice/expired.mako')
 
         # get our merchant id and secret
         merchant_id = lca_info['commsecure_merchantid']
@@ -100,38 +197,37 @@ class InvoiceController(SecureController, Read, List, Create):
         mac = hmac.new(secret, stringToMAC, sha).hexdigest()
         fields['MAC'] = mac
 
-        res=Response(render('invoice/payment.myt', fields=fields))
+        res=Response(render('/invoice/payment.mako', fields=fields))
         res.headers['Refresh']='300'
         return res
 
-    def printable(self):
-        c.printable = True
-        res = render('%s/view.myt' % self.individual, fragment=True)
-        return Response(res)
-
-    # FIXME There is probably a way to get this to use the List thingy from CRUD
-    def remind(self):
-        setattr(c, 'invoice_collection', self.dbsession.query(self.model).select(order_by=self.model.c.id))
-        return render_response('invoice/remind.myt')
-
     def pdf(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
         import os, tempfile, libxml2, libxslt
 
-        xml_s = render('%s/pdf.myt' % self.individual, fragment=True)
+        c.invoice = Invoice.find_by_id(id, True)
 
-        xsl_f = request.environ['paste.config']['global_conf']['here'] + '/zookeepr/templates/invoice/pdf.xsl'
-        xsl_s = libxml2.parseFile(xsl_f) 
-        xsl = libxslt.parseStylesheetDoc(xsl_s) 
+        # TODO: remove these once payment works
+        c.invoice.good_payments = False
+        c.invoice.bad_payments = False
+        xml_s = render('/invoice/pdf.mako')
 
-        xml = libxml2.parseDoc(xml_s) 
-        svg_s = xsl.applyStylesheet(xml, None) 
+        xsl_f = file_paths['zk_root'] + '/zookeepr/templates/invoice/pdf.xsl'
+        xsl_s = libxml2.parseFile(xsl_f)
+        xsl = libxslt.parseStylesheetDoc(xsl_s)
+
+        xml = libxml2.parseDoc(xml_s)
+        svg_s = xsl.applyStylesheet(xml, None)
 
         (svg_fd, svg) = tempfile.mkstemp('.svg')
-        xsl.saveResultToFilename(svg, svg_s, 0) 
+        xsl.saveResultToFilename(svg, svg_s, 0)
 
-        xsl.freeStylesheet() 
-        xml.freeDoc() 
-        svg_s.freeDoc() 
+        xsl.freeStylesheet()
+        xml.freeDoc()
+        svg_s.freeDoc()
 
         (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
 
@@ -145,59 +241,25 @@ class InvoiceController(SecureController, Read, List, Create):
         #res.headers['Content-type']='application/pdf'
         res.headers['Content-type']='application/octet-stream'
         #res.headers['Content-type']='text/plain; charset=utf-8'
-        res.headers['Content-Disposition']=( 'attachment; filename=%s.pdf'
-                                                           % c.invoice.id )
+        filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'
+        res.headers['Content-Disposition']=( 'attachment; filename=%s' % filename )
 
         # We should really remove the pdf file, shouldn't we.
         return res
 
+    @authorize(h.auth.has_organiser_role)
     def void(self, id):
+        c.invoice = Invoice.find_by_id(id, True)
         c.invoice.void = "Administration Change"
-        return redirect_to(controller='invoice', action='view', id=c.invoice.id)
+        meta.Session.commit()
+        h.flash("Invoice was voided.")
+        return redirect_to(action='view', id=c.invoice.id)
 
+    @authorize(h.auth.has_organiser_role)
     def unvoid(self, id):
+        c.invoice = Invoice.find_by_id(id, True)
         c.invoice.void = None
         c.invoice.manual = True
-        return redirect_to(controller='invoice', action='view', id=c.invoice.id)
-
-    def new(self):
-        errors = {}
-        defaults = dict(request.POST)
-        c.product_categories = self.dbsession.query(ProductCategory).all()
-
-        c.item_count = 0
-        if request.method == 'POST' and defaults:
-            result, errors = self.schemas['new'].validate(defaults, self.dbsession)
-            c.item_count = int(defaults['invoice.item_count'])
-            if not errors:
-                values = result['invoice']
-                items = values['items']
-                del(values['items'], values['item_count'])
-                values['items'] = []
-
-                for i in items:
-                    item = model.InvoiceItem()
-                    if i['description'] != "":
-                        item.description = i['description']
-                    else:
-                        item.product = i['product']
-                        item.description = i['product'].description
-                    item.cost = i['cost']
-                    item.qty = i['qty']
-                    values['items'].append(item)
-                
-                invoice = model.Invoice()
-                for k in values:
-                    setattr(invoice, k, values[k])
-                invoice.manual = True
-                invoice.void = None
-               
-                self.dbsession.save(invoice)
-                self.dbsession.flush()
-                
-                return redirect_to(controller='invoice', action='view', id=invoice.id)
-
-        return render_response("invoice/new.myt",
-                               defaults=defaults, errors=errors)
-                               
-                               
+        meta.Session.commit()
+        h.flash("Invoice was un-voided.")
+        return redirect_to(action='view', id=c.invoice.id)

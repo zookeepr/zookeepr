@@ -1,27 +1,51 @@
-from datetime import datetime
-import os, random, re, urllib
-from zookeepr.lib import helpers as h
-from zookeepr.lib.base import *
-from zookeepr.lib.mail import *
-from zookeepr.lib.auth import SecureController, AuthRole, AuthTrue
-from zookeepr.controllers.proposal import Proposal
-from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
-from zookeepr.model.registration import RegoNote
+import logging
+
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+import zookeepr.lib.helpers as h
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.model import meta
+
 from zookeepr.config.lca_info import lca_info, lca_rego
 
-class AdminController(SecureController):
+log = logging.getLogger(__name__)
+
+import re
+
+from datetime import datetime
+import os, random, re, urllib
+#from zookeepr.controllers.proposal import Proposal
+#from zookeepr.model import Registration, Person, Invoice, PaymentReceived, Product, InvoiceItem
+#from zookeepr.model.registration import RegoNote
+
+now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
+# Used by the acc_papers_xml template
+def release_yesno(b):
+    if b==False:
+        return 'no'
+    elif b==True:
+        return 'yes'
+    elif b is None:
+        return 'unknown'
+    else:
+        return "(can't happen)"
+
+class AdminController(BaseController):
     """ Miscellaneous admin tasks. """
 
-    permissions = {
-      'ALL': [AuthRole('organiser')],
-      'proposals_by_strong_rank': [AuthRole('reviewer')],
-      'proposals_by_max_rank': [AuthRole('reviewer')],
-      'proposals_by_stream': [AuthRole('reviewer')],
-      'planet_lca': [AuthRole('organiser'), AuthRole('planetfeed')],
-      'keysigning_conference': [AuthRole('organiser'), AuthRole('keysigning')],
-      'keysigning_single': [AuthRole('organiser'), AuthRole('keysigning')],
-      'keysigning_participants_list': [AuthRole('organiser'), AuthRole('keysigning')]
-    }
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         res = dir(self)
         exceptions = ['check_permissions', 'dbsession',
@@ -47,16 +71,12 @@ class AdminController(SecureController):
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
           ('/registration/generate_badges', '''Generate one or many Badges. [Registrations]'''),
 
-           #('/accommodation', ''' [accom] '''),
-           #('/voucher_code', ''' Voucher codes [rego] '''),
-           #('/invoice/remind', ''' '''),
-           #('/openday', ''' '''),
-           #('/registration', ''' Summary of registrations, including summary
-          #of accommodation [rego,accom] '''),
-           #('/invoice', ''' List of invoices (that is, registrations). This
-          #is probably the best place to check whether a given person has or
-          #hasn't registered and/or paid. [rego] '''),
-           #('/pony', ''' OMG! Ponies!!! [ZK]'''),
+          #('/accommodation', ''' [accom] '''),
+          #('/voucher_code', ''' Voucher codes [rego] '''),
+          #('/invoice/remind', ''' '''),
+          #('/registration', ''' Summary of registrations, including summary of accommodation [rego,accom] '''),
+          #('/invoice', ''' List of invoices (that is, registrations). This is probably the best place to check whether a given person has or hasn't registered and/or paid. [rego] '''),
+          ('/pony', ''' OMG! Ponies!!! [ZK]'''),
 
           ('/review/help', ''' Information on how to get started reviewing [CFP] '''),
           ('/proposal/review_index', ''' To see what you need to reveiw [CFP] '''),
@@ -85,20 +105,25 @@ class AdminController(SecureController):
                     sect[s] = sect.get(s, []) + [(page, desc)]
             else:
                 sect['Other'] = sect.get('Other', []) + [(page, desc)]
-        c.text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
+        text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
         c.noescape = True
 
         sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
-        c.text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
+        text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
                                                   for s_lower, s in sects])
-        c.text += '\t\t\t</ul>\n\t\t\t</div>'
+        text += '\t\t\t</ul>\n\t\t\t</div>'
+        sect_text = ""
         for s_lower, s in sects:
-            c.text += '<a name="%s"></a>' % s
+            c.text = '<a name="%s"></a>' % s
             c.text += '<h2>%s</h2>' % s
             c.data = sect[s]
-            c.text = render('admin/table.myt', fragment=True)
-        return render_response('admin/text.myt')
+            sect_text += render('admin/table.mako')
 
+        c.text = text
+        c.sect_text = sect_text
+        return render('admin/text.mako')
+
+    @authorize(h.auth.has_organiser_role)
     def activate_talks(self):
         """
         Set the talks to accepted as per the list in the admin controller. [Schedule]
@@ -177,8 +202,9 @@ class AdminController(SecureController):
                         ids = '(' + str(ids) + ')' # fix for single tuple
                     sql_execute("UPDATE proposal SET theatre = '%s', scheduled = '%s', accepted = TRUE WHERE id IN %s" % (room, timestamp[day], str(ids)))
         c.text = "<p>Updated successfully</p>"
-        return render_response("admin/text.myt")
+        return render("admin/text.mako")
 
+    @authorize(h.auth.has_organiser_role)
     def rej_papers_abstracts(self):
         """ Rejected papers, with abstracts (for the miniconf organisers)
         [Schedule] """
@@ -234,6 +260,8 @@ class AdminController(SecureController):
           garbage, uncollectable,
           after,
         ))
+        
+    @authorize(h.auth.has_organiser_role)
     def known_objects(self):
         """
         List known objects by type. (Invokes GC first.) [ZK]
@@ -252,20 +280,26 @@ class AdminController(SecureController):
         c.data.sort(reverse=True)
         c.columns = 'count', '%', 'type'
         c.text = "Total: %d" % total
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    def tuz(self):
+      return render("admin/tuz.mako")
+
+    @authorize(h.auth.has_organiser_role)
     def list_attachments(self):
         """ List of attachments [CFP] """
         return sql_response('''
         select title, filename from attachment, proposal where proposal.id=proposal_id;
 
         ''')
+    @authorize(h.auth.has_organiser_role)
     def person_creation(self):
         """ When did people create their accounts? [Accounts] """
         return sql_response("""select person.id, firstname || ' ' ||
         lastname as name, creation_timestamp as created from person
         order by person.id;
         """)
+    @authorize(h.auth.has_organiser_role)
     def auth_users(self):
         """ List of users that are authorised for some role [Accounts] """
         return sql_response("""select role.name as role, firstname || ' '
@@ -273,7 +307,7 @@ class AdminController(SecureController):
         from role, person, person_role_map
         where person.id=person_id and role.id=role_id
         order by role, lastname, firstname""")
-
+    @authorize(h.auth.has_organiser_role)
     def proposal_list(self):
         """ Large table of all the proposals, presenters and dates. [CFP] """
         return sql_response("""
@@ -284,6 +318,7 @@ class AdminController(SecureController):
           ORDER BY proposal.title ASC;
         """)
 
+    @authorize(h.auth.has_reviewer_role)
     def proposals_by_strong_rank(self):
         """ List of proposals ordered by number of certain score / total number of reviewers [CFP] """
         query = """
@@ -322,6 +357,7 @@ class AdminController(SecureController):
 
         return sql_response(query)
 
+    @authorize(h.auth.has_reviewer_role)
     def proposals_by_max_rank(self):
         """ List of all the proposals ordered max score, min score then average [CFP] """
         return sql_response("""
@@ -339,6 +375,7 @@ class AdminController(SecureController):
                 ORDER BY proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
                 """)
 
+    @authorize(h.auth.has_reviewer_role)
     def proposals_by_stream(self):
         """ List of all the proposals ordered by stream, max score, min score then average [CFP] """
         return sql_response("""
@@ -358,15 +395,15 @@ class AdminController(SecureController):
                 GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
                 ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
                 """)
-
+    @authorize(h.auth.has_organiser_role)
     def countdown(self):
         """ How many days until conference opens """
         timeleft = lca_info['date'] - datetime.now()
-        res = Response ("%.1f days" % (timeleft.days +
-                                               timeleft.seconds / (3600*24.)))
-        res.headers['Refresh'] = 3600
-        return res
-
+        c.text = "%.1f days" % (timeleft.days +
+                                               timeleft.seconds / (3600*24.))
+        return render('/admin/text.mako')
+        
+    @authorize(h.auth.has_organiser_role)
     def registered_speakers(self):
         """ Listing of speakers and various stuff about them [Speakers] """
         """ HACK: This code should be in the registration controller """
@@ -376,7 +413,7 @@ class AdminController(SecureController):
         c.noescape = True
         cons_list = ('video_release', 'slides_release')
         speaker_list = []
-        for p in self.dbsession.query(Person).all():
+        for p in meta.Session.query(Person).all():
             if not p.is_speaker(): continue
             speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
         speaker_list.sort()
@@ -451,8 +488,9 @@ class AdminController(SecureController):
         for key, value in shirt_totals.items():
             c.text += "<br>" + str(key) + ": " + str(value)
         c.text += "</p>"
-        return render_response('admin/table.myt')
+        return render('/admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def reconcile(self):
         """ Reconcilliation between D1 and ZK; for now, compare the D1 data
         that have been placed in the fixed location in the filesystem and
@@ -481,7 +519,7 @@ class AdminController(SecureController):
             d1[t] = [row]
 
         zk = {}
-        for p in self.dbsession.query(PaymentReceived).all():
+        for p in meta.Session.query(PaymentReceived).all():
           t = p.TransID
           all[t] = 1
           if zk.has_key(t):
@@ -507,8 +545,9 @@ class AdminController(SecureController):
             '; '.join([', '.join(d) for d in d1_t])
           ))
 
-        return render_response('admin/table.myt')
+        return render('/admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def linux_australia_signup(self):
         """ People who ticked "I want to sign up for (free) Linux Australia
         membership!" [Mailing Lists] """
@@ -528,6 +567,7 @@ class AdminController(SecureController):
 
         return sql_response(query)
 
+    @authorize(h.auth.has_organiser_role)
     def nzoss_signup(self):
         """ People who ticked "I want to sign up for New Zealand Open Source Society
         membership!" [Mailing Lists] """
@@ -547,6 +587,7 @@ class AdminController(SecureController):
 
         return sql_response(query)
 
+    @authorize(h.auth.has_organiser_role)
     def internetnz_signup(self):
         """ People who ticked "I want to sign up for Internet NZ
         membership!" [Mailing Lists] """
@@ -566,7 +607,7 @@ class AdminController(SecureController):
 
         return sql_response(query)
 
-
+    @authorize(h.auth.has_organiser_role)
     def lca_announce_signup(self):
         """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
 
@@ -576,15 +617,16 @@ class AdminController(SecureController):
         <p><textarea cols="100" rows="25">"""
 
         count = 0
-        for r in self.dbsession.query(Registration).filter(Registration.signup.like("%announce%")).all():
+        for r in meta.Session.query(Registration).filter(Registration.signup.like("%announce%")).all():
             p = r.person
             c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
             count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
 
-        return render_response('admin/text.myt')
+        return render('admin/text.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def lca_chat_signup(self):
         """ People who ticked "I want to sign up to the conference attendees mailing list!" [Mailing Lists] """
 
@@ -593,15 +635,16 @@ class AdminController(SecureController):
         <p><textarea cols="100" rows="25">"""
 
         count = 0
-        for r in self.dbsession.query(Registration).filter(Registration.signup.like('%chat%')).all():
+        for r in meta.Session.query(Registration).filter(Registration.signup.like('%chat%')).all():
             p = r.person
             c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
             count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
 
-        return render_response('admin/text.myt')
+        return render('admin/text.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def accom_wp_registers(self):
         """ People who selected "Wrest Point" as their accommodation option. (Includes un-paid invoices!) [Accommodation] """
         query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
@@ -610,9 +653,10 @@ class AdminController(SecureController):
                     WHERE invoice_item.product_id = 28 AND invoice.void = NULL"""
         return sql_response(query)
 
+    @authorize(h.auth.has_organiser_role)
     def accom_uni_registers(self):
         """ People who selected any form as university accommodation. (Paid only) [Accommodation] """
-        uni_list = self.dbsession.query(Product).filter(Product.description.like('University Accommodation %')).all()
+        uni_list = meta.Session.query(Product).filter(Product.description.like('University Accommodation %')).all()
         c.columns = ['Room Type', 'Name', 'e-mail', 'Checkin', 'Checkout']
         c.data = []
         for item in uni_list:
@@ -624,8 +668,9 @@ class AdminController(SecureController):
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def speakers_partners(self):
         """ Listing of speakers and their partner details [Speakers] """
         c.columns = ['Speaker', 'e-mail', 'Partner Programme', 'Penguin Dinner']
@@ -634,7 +679,7 @@ class AdminController(SecureController):
         total_partners = 0
         total_dinner = 0
         speakers_count = 0
-        for person in self.dbsession.query(Person).all():
+        for person in meta.Session.query(Person).all():
             partners = []
             dinner_tickets = 0
             if person.is_speaker():
@@ -652,8 +697,9 @@ class AdminController(SecureController):
                                str(dinner_tickets)])
                 speakers_count += 1
         c.data.append(['TOTALS:', str(speakers_count) + ' speakers', str(total_partners) + ' partners', str(total_dinner) + ' dinner tickets'])
-        return render_response('admin/table.myt')
+        return render('/admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def talks(self):
         """ List of talks for use in programme printing [Schedule] """
         c.text = "Talks with multiple speakers will appear twice."
@@ -667,9 +713,10 @@ class AdminController(SecureController):
         """
         return sql_response(query)
 
+    @authorize(h.auth.has_organiser_role)
     def zookeepr_sales(self):
         """ List of products and qty sold. [Inventory] """
-        item_list = self.dbsession.query(InvoiceItem).all()
+        item_list = meta.Session.query(InvoiceItem).all()
         total = 0
         c.columns = ['Item', 'Price', 'Qty', 'Amount']
         c.data = []
@@ -678,11 +725,12 @@ class AdminController(SecureController):
                 c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
                 total += item.total()
         c.data.append(['','','Total:', h.number_to_currency(total/100)])
-        return render_response('admin/table.myt')
+        return render('/admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def partners_programme(self):
         """ List of partners programme contacts [Partners Programme] """
-        partners_list = self.dbsession.query(Product).filter(Product.description.like('Partners Programme%')).all()
+        partners_list = meta.Session.query(Product).filter(Product.description.like('Partners Programme%')).all()
         c.text = "*Checkin and checkout dates aren't an accurate source."
         c.columns = ['Partner Type', 'Registration Name', 'Registration e-mail', 'Partners e-mail', 'Checkin*', 'Checkout*']
         c.data = []
@@ -696,23 +744,25 @@ class AdminController(SecureController):
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
-        return render_response('admin/table.myt')
+        return render('/admin/table.mako')
 
+    @authorize(h.auth.has_planetfeed_role)
     def planet_lca(self):
         """ List of blog RSS feeds, planet compatible. [Mailing Lists] """
         c.text = """<p>List of RSS feeds for LCA planet.</p>
         <p><textarea cols="100" rows="25">"""
 
         count = 0
-        for r in self.dbsession.query(Registration).filter(Registration.planetfeed != '').all():
+        for r in meta.Session.query(Registration).filter(Registration.planetfeed != '').all():
             p = r.person
             c.text += "[" + r.planetfeed + "] name = " + p.firstname + " " + p.lastname + "\n"
             count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
 
-        return render_response('admin/text.myt')
+        return render('admin/text.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def nonregistered(self):
         """ List of people with accounts on the website but who haven't started the registration process for the conference [Accounts] """
         query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address
@@ -721,13 +771,16 @@ class AdminController(SecureController):
         """
         return sql_response(query)
 
+    @authorize(h.auth.Or(h.auth.has_keysigning_role, h.auth.has_organiser_role))
     def keysigning_participants_list(self):
         """ Generate a list of all current key id's [Keysigning] """
         from pylons import response
         response.headers['Content-type'] = 'text/plain'
         for keyid in self.keysigning_participants():
             response.content.append(keyid + "\n")
+        return response
 
+    @authorize(h.auth.Or(h.auth.has_keysigning_role, h.auth.has_organiser_role))
     def keysigning_single(self):
         """ Generate an A4 page of key fingerprints given a keyid [Keysigning] """
         if request.POST:
@@ -740,8 +793,9 @@ class AdminController(SecureController):
             response.content = pdf_f.read()
             pdf_f.close()
         else:
-            return render_response('admin/keysigning_single.myt')
+            return render('/admin/keysigning_single.mako')
 
+    @authorize(h.auth.Or(h.auth.has_keysigning_role, h.auth.has_organiser_role))
     def keysigning_conference(self):
         """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Keysigning] """
         import os, tempfile
@@ -757,20 +811,22 @@ class AdminController(SecureController):
         response.content = pdf_f.read()
         pdf_f.close()
 
+    @authorize(h.auth.has_organiser_role)
     def keysigning_participants(self):
-        registration_list = self.dbsession.query(Registration).join('person').filter(Registration.keyid != None).filter(Registration.keyid != '').order_by(Person.lastname).all()
+        registration_list = meta.Session.query(Registration).join('person').filter(Registration.keyid != None).filter(Registration.keyid != '').order_by(Person.lastname).all()
         key_list = list()
         for registration in registration_list:
             if registration.person.has_paid_ticket():
                 key_list.append(registration.keyid)
         return key_list
 
+    @authorize(h.auth.has_organiser_role)
     def rego_desk_list(self):
         """ List of people who have not checked in (see checkins table). [Registrations] """
         import zookeepr.model
         checkedin = zookeepr.model.metadata.bind.execute("SELECT person_id FROM checkins WHERE conference IS NOT NULL");
         checkedin_list = checkedin.fetchall()
-        registration_list = self.dbsession.query(Registration).all()
+        registration_list = meta.Session.query(Registration).all()
         c.columns = ['ID', 'Name', 'Type', 'Shirts', 'Dinner Tickets', 'Partners Programme']
         c.data = []
         for registration in registration_list:
@@ -799,11 +855,12 @@ class AdminController(SecureController):
                                dinner_tickets,
                                ", ".join(partners_programme)])
 
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def miniconf_preferences(self):
         """ Preferred miniconfs. All people - including unpaid [Statistics] """
-        registration_list = self.dbsession.query(Registration).all()
+        registration_list = meta.Session.query(Registration).all()
         c.columns = ['miniconf', 'People']
         c.data = []
         miniconfs = {}
@@ -825,11 +882,12 @@ class AdminController(SecureController):
             '|'.join([label for (label, count) in c.data]),
         )
 
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def previous_years_stats(self):
         """ Details on how many people have come to previous years of LCA. All people - including unpaid [Statistics] """
-        registration_list = self.dbsession.query(Registration).all()
+        registration_list = meta.Session.query(Registration).all()
         c.columns = ['year', 'People']
         c.data = []
         years = {}
@@ -857,21 +915,23 @@ class AdminController(SecureController):
             '|'.join([label for (label, count) in c.data]),
         )
         c.text += "Veterans: " + ", ".join(veterans) + "<br><br>Veterans of LCA (excluding CALU): " + ", ".join(veterans_lca)
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
         in AV splash screens [AV] """
-        c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
+        c.talks = meta.Session.query(Proposal).filter_by(accepted=True).all()
 
-        res = Response(render('admin/acc_papers_xml.myt', fragment=True))
+        res = Response(render('admin/acc_papers_xml.mako', fragment=True))
         res.headers['Content-type']='text/plain; charset=utf-8'
         return res
-
+        
+    @authorize(h.auth.has_organiser_role)
     def people_by_country(self):
         """ Registered and paid people by country [Statistics] """
         data = {}
-        for registration in self.dbsession.query(Registration).all():
+        for registration in meta.Session.query(Registration).all():
             if registration.person.has_paid_ticket():
                 country = registration.person.country.capitalize()
                 data[country] = data.get(country, 0) + 1
@@ -884,12 +944,13 @@ class AdminController(SecureController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def people_by_state(self):
         """ Registered and paid people by state - Australia Only [Statistics] """
         data = {}
-        for registration in self.dbsession.query(Registration).all():
+        for registration in meta.Session.query(Registration).all():
             if registration.person.has_paid_ticket() and registration.person.country == "Australia":
                 state = registration.person.state.capitalize()
                 data[state] = data.get(state, 0) + 1
@@ -902,12 +963,13 @@ class AdminController(SecureController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def favourite_distro(self):
         """ Statistics on favourite distros. All people - including unpaid [Statistics] """
         data = {}
-        for registration in self.dbsession.query(Registration).all():
+        for registration in meta.Session.query(Registration).all():
             distro = registration.distro.capitalize()
             data[distro] = data.get(distro, 0) + 1
         c.data = data.items()
@@ -919,12 +981,13 @@ class AdminController(SecureController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def favourite_editor(self):
         """ Statistics on favourite editors. All people - including unpaid [Statistics] """
         data = {}
-        for registration in self.dbsession.query(Registration).all():
+        for registration in meta.Session.query(Registration).all():
             editor = registration.editor.capitalize()
             data[editor] = data.get(editor, 0) + 1
         c.data = data.items()
@@ -936,12 +999,13 @@ class AdminController(SecureController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def favourite_shell(self):
         """ Statistics on favourite shells. All people - including unpaid [Statistics] """
         data = {}
-        for registration in self.dbsession.query(Registration).all():
+        for registration in meta.Session.query(Registration).all():
             shell = registration.shell.capitalize()
             data[shell] = data.get(shell, 0) + 1
         c.data = data.items()
@@ -953,7 +1017,7 @@ class AdminController(SecureController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def email_registration_reminder(self):
         """ Send all attendees a confirmation email of their registration details. [Registrations]"""
@@ -1051,12 +1115,11 @@ def sql_response(sql):
     """
     if request.GET.has_key('csv'):
         return csv_response(sql)
-    import zookeepr.model
-    res = zookeepr.model.metadata.bind.execute(sql)
+    res = meta.Session.execute(sql)
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql
-    return render_response('admin/sqltable.myt')
+    return render('admin/sqltable.mako')
 
 def sql_data(sql):
     """ This function bypasses all the MVC stuff and just gives you a

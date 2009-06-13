@@ -67,7 +67,7 @@
                 c.data[i] = ('', )*4 + tuple(c.data[i])[4:]
         c.columns = ('theatre', 'start', 'id', 'title', 'speaker',
                                                      'record?', 'publish?')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def theatre_running_sheet(self):
         """ Accepted papers by theatre, with abstracts and bios [AV]"""
@@ -103,7 +103,7 @@
                 c.data[i] = ('', )*5 + tuple(c.data[i])[5:]
         c.columns = ('theatre', 'start', 'id', 'title', 'abstract',
                         'speaker', 'bio', 'record?', 'publish?', 'slides?')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def acc_papers_details(self):
         """ Accepted papers with bios and abstracts [CFP] """
@@ -164,7 +164,7 @@
                 res += ' &#8212; ' + ', '.join([auth.firstname + ' ' + auth.lastname for auth in proposal.people])
             return res
         c.talk = talk
-        return render_response('admin/draft_timetable.myt')
+        return render('admin/draft_timetable.mako')
 
     def t_shirts(self):
         """ T-shirts that have been ordered and paid for [rego] """
@@ -191,14 +191,14 @@
         c.columns = 'M/F', 'style', 'size', 'count'
         c.data = [s.split('_') + [cnt] for (s, cnt) in normal.items()]
         c.data.sort()
-        c.text = render('admin/table.myt', fragment=True)
+        c.text = render('admin/table.mako', fragment=True)
 
         c.text += '<h2>Organiser T-shirts</h2>'
         c.text += '''(Based on the 'organiser' role in zookeepr.)'''
         c.columns = 'M/F', 'style', 'size', 'count'
         c.data = [s.split('_') + [cnt] for (s, cnt) in organiser.items()]
         c.data.sort()
-        c.text = render('admin/table.myt', fragment=True)
+        c.text = render('admin/table.mako', fragment=True)
 
         c.text += '<br><h2>Extra T-shirts</h2>'
         c.text += '''(The "normal" column is for reference only; it's
@@ -206,7 +206,7 @@
         c.columns = 'rego', 'count', 'styles and sizes', 'e-mail', 'normal'
         c.data = extra
         c.data.sort()
-        c.text = render('admin/table.myt', fragment=True)
+        c.text = render('admin/table.mako', fragment=True)
 
         c.text += '<br><h2>Totals</h2>'
         c.columns = ('type', 'total')
@@ -216,7 +216,7 @@
           ('All', total_n + total_e),
           ('Organiser', total_o),
         ]
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def t_shirts_F_long_18(self):
         """ T-shirts that have been ordered and paid for in size F_long_18
@@ -236,7 +236,7 @@
         c.text = """<h2>F_long_18 T-shirts</h2> Note: <b>does not include
         extra</b> t-shirts."""
         c.data.sort()
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
 
     def unregistered_team(self):
@@ -250,7 +250,7 @@
                       p.firstname + ' ' + p.lastname,
                       p.email_address,
                     ))
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def speaker_emails(self):
         """ Listing of speakers for bulk-mailing [speaker] """
@@ -280,7 +280,7 @@
             List of speakers for open-day mail-out (and probably other
             purposes).
         '''
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
 
     def special_requirements(self):
@@ -311,7 +311,7 @@
         c.noescape = True
         c.text = 's = speaker; ED = extra dinners'
         c.columns = ('rego', 'name / email', 'rego type', 's', 'ED', 'diet', 'special reqs')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
     def payments_received(self):
         """ Payments received, as known by zookeepr [rego] """
         return sql_response("""
@@ -377,7 +377,7 @@
         activated; dc=voucher code (percentage).  """
         c.columns = ('rego', 'person', 'act?', 'type', 'dc', 'amount',
                                           'email', 'firstname', 'lastname',)
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def newcomers(self):
         """ People who have not ticked any of the "previously attended"
@@ -405,7 +405,7 @@
                                                            r.type + comment)
             for (last, first, id, r, p, comment) in c.data]
         c.columns = ('person', 'rego', 'name', 'email', 'type')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
     def partners_programme(self):
         """ Partners programme information [PP] """
 
@@ -450,7 +450,7 @@
         c.columns = ['email'] 
         c.columns += [re.sub('^.*?_', '', f).replace('_', '-') for f in fields]
         c.columns += ['rego email', 'comment'] 
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def accom_summary(self):
         """ Summary of accommodation. [accom] """
@@ -498,7 +498,7 @@
         many will be sleeping there that night. Note: skips days outside
         the conf on which there is no change. """
         c.columns = 'where', 'day', 'in', 'out', 'beds'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def accom_details(self):
         """ List of accommodation. [accom] """
@@ -536,7 +536,7 @@
 
         c.columns = ('where', 'first', 'last', 'email', 'phone', 'in',
                                                           'out', 'comment')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def acc_papers_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
@@ -544,7 +544,7 @@
         c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
         c.talks += self.dbsession.query(Proposal).filter_by(proposal_type_id=4).all()
 
-        res = Response(render('admin/acc_papers_xml.myt', fragment=True))
+        res = Response(render('admin/acc_papers_xml.mako', fragment=True))
         res.headers['Content-type']='text/plain; charset=utf-8'
         return res
     def paid_summary(self):
@@ -581,7 +581,7 @@
                                    for (desc, (qty, amt)) in total.items()]
         c.data.sort()
         c.text = "Summary of paid invoices."
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def linux_australia_signup(self):
         """ People who ticked "I want to sign up for (free) Linux Australia
@@ -600,7 +600,7 @@
               p.email_address,
             ))
         c.columns = 'first name', 'surname', 'email'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def miniconf_interest(self):
         """ What people ticked for the "interested in miniconf" question.
@@ -621,14 +621,14 @@
         for mc in count.keys():
             c.data += [(mc, count[mc], "%.1f%%"%(count[mc]*100.0/total))]
         c.data.sort()
-        c.text = render('admin/table.myt', fragment=True)
+        c.text = render('admin/table.mako', fragment=True)
 
         c.text += "How many people selected."
         c.data = []
         for l in lencount.keys():
             c.data += [(l, lencount[l], "%.1f%%"%(lencount[l]*100.0/total))]
         c.data.sort()
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def voucher_code_NKA(self):
         """ data useful for reconciling NKA voucher codes [rego] """
@@ -656,7 +656,7 @@
             or cmp(a, b))
         c.columns = 'rego',  'rego type', 'voucher code', 'leader', 'comment'
         c.noescape = True
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
     def voucher_code_details(self):
         """ Have voucher code users paid their accom and other extras?
         [rego] """
@@ -683,7 +683,7 @@
 
         c.columns = 'rego', 'person', 'name', 'code', '%', 'paid'
         c.noescape = True
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def bulk_checkin(self):
         """ bulk entry of rego_note info [rego] """
@@ -709,9 +709,9 @@
                   else:
                       c.data.append((id, 'ERROR: not found'))
             self.dbsession.flush()
-            return render_response('admin/table.myt')
+            return render('admin/table.mako')
         else:
-            return render_response('admin/bulk_checkin.myt')
+            return render('admin/bulk_checkin.mako')
     def rego_lookup(self):
         """ Look up a rego, based on any of the associated IDs, showing the
         details as would be required for rego desk. [rego] """
@@ -722,7 +722,7 @@
             post = False
         if not args or not args.has_key('id'):
             c.error = 'No ID given.'
-            return render_response('admin/rego_lookup.myt')
+            return render('admin/rego_lookup.mako')
         id = args['id']; c.id = id; raw_id = id
 
         try:
@@ -734,7 +734,7 @@
                 c.id_type = 'email'
                 c.p = p[0]
                 c.r = c.p.registration; c.i = c.p.invoices
-                return render_response('admin/rego_lookup.myt')
+                return render('admin/rego_lookup.mako')
 
             p = self.dbsession.query(Person).filter(
                                        Person.c.firstname.op('ilike')(id)).all()
@@ -752,13 +752,13 @@
             if len(p)==1:
                 c.p = p[0]
                 c.r = c.p.registration; c.i = c.p.invoices
-                return render_response('admin/rego_lookup.myt')
+                return render('admin/rego_lookup.mako')
             elif len(p)>1:
                 c.many = p
                 c.many.sort(lambda a, b:
                   cmp(a.lastname.lower(), b.lastname.lower()) or 
                   cmp(a.firstname.lower(), b.firstname.lower()))
-                return render_response('admin/rego_lookup.myt')
+                return render('admin/rego_lookup.mako')
         else:
             # conversion of id to an integer succeeded, look it up as ID
 
@@ -778,28 +778,28 @@
                 c.id_type = 'invoice'
                 c.p = i[0].person
                 c.r = c.p.registration; c.i = c.p.invoices
-                return render_response('admin/rego_lookup.myt')
+                return render('admin/rego_lookup.mako')
 
             r = self.dbsession.query(Registration).filter_by(id=id).all()
             if r:
                 c.id_type = 'rego'
                 c.r = r[0]
                 c.p = c.r.person; c.i = c.p.invoices
-                return render_response('admin/rego_lookup.myt')
+                return render('admin/rego_lookup.mako')
             
             p = self.dbsession.query(Person).filter_by(id=id).all()
             if p:
                 c.id_type = 'person'
                 c.p = p[0]
                 c.r = c.p.registration; c.i = c.p.invoices
-                return render_response('admin/rego_lookup.myt')
+                return render('admin/rego_lookup.mako')
 
             p = self.dbsession.query(Person).filter_by(TransID=id).all()
             if p:
                 c.id_type = 'transaction'
                 c.p = p[0]
                 c.r = c.p.registration; c.i = c.p.invoices
-                return render_response('admin/rego_lookup.myt')
+                return render('admin/rego_lookup.mako')
         
         phone_pat = '[ \t()/-]*'.join(raw_id)
         r = self.dbsession.query(Registration).filter(
@@ -808,14 +808,14 @@
             c.id_type = 'phone'
             c.r = r[0]
             c.p = c.r.person; c.i = c.p.invoices
-            return render_response('admin/rego_lookup.myt')
+            return render('admin/rego_lookup.mako')
         elif len(r)>1:
             c.id_type = 'phone'
             c.many = [rego.person for rego in r]
             c.many.sort(lambda a, b:
               cmp(a.lastname.lower(), b.lastname.lower()) or 
               cmp(a.firstname.lower(), b.firstname.lower()))
-            return render_response('admin/rego_lookup.myt')
+            return render('admin/rego_lookup.mako')
 
         r = self.dbsession.query(Registration).filter(
                                   Registration.c.phone.op('~')(phone_pat)).all()
@@ -823,17 +823,17 @@
             c.id_type = 'partial phone'
             c.r = r[0]
             c.p = c.r.person; c.i = c.p.invoices
-            return render_response('admin/rego_lookup.myt')
+            return render('admin/rego_lookup.mako')
         elif len(r)>1:
             c.id_type = 'partial phone'
             c.many = [rego.person for rego in r]
             c.many.sort(lambda a, b:
               cmp(a.lastname.lower(), b.lastname.lower()) or 
               cmp(a.firstname.lower(), b.firstname.lower()))
-            return render_response('admin/rego_lookup.myt')
+            return render('admin/rego_lookup.mako')
 
         c.error = 'Not found.'
-        return render_response('admin/rego_lookup.myt')
+        return render('admin/rego_lookup.mako')
 
     def rego_list(self):
         """ List of paid regos. [rego] """
@@ -843,7 +843,7 @@
         c.data.sort()
         c.data = [row[-1] for row in c.data]
         c.prn = request.GET.has_key('print')
-        return render_response('admin/rego_list.myt')
+        return render('admin/rego_list.mako')
 
     def dinner_diets(self):
         """ List of penguin dinner diet requirements. [events] """
@@ -870,7 +870,7 @@
                 for n in range(2, dinner+1):
                   c.data.append(('', '', '', n, ''))
         c.columns = 'name', 'email', 'phone', '', 'dietary requirements'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def dinner_list(self):
         """ List of penguin dinners. [events] """
@@ -897,7 +897,7 @@
                 for n in range(2, dinner+1):
                   c.data.append(('', '', '', n, ''))
         c.columns = 'name', 'email', 'phone', '', 'dietary requirements'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def PDNS_list(self):
         """ List of PDNS. [events] """
@@ -925,7 +925,7 @@
                   r.diet
                 ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def PDNS_diets(self):
         """ List of PDNS dietary requirements. [events] """
@@ -948,7 +948,7 @@
                   r.diet
                 ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def speaker_dinner_list(self):
         """ List of speaker dinner. [events,speaker] """
@@ -974,7 +974,7 @@
                   r.diet
                 ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def speaker_dinner_diets(self):
         """ List of speaker dinner dietary requirements. [events,speaker] """
@@ -996,7 +996,7 @@
                   r.diet
                 ))
         c.columns = 'name', 'email', 'phone', 'dietary requirements'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
 
     def volunteer_list(self):
@@ -1027,7 +1027,7 @@
                 r.volunteer
             ))
         c.columns = ('name', 'email', 'phone', 'type', 'T-shirt', 'areas of interest')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def by_country(self):
         """ Regos by country [stats] """
@@ -1044,7 +1044,7 @@
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
     def badge_data(self):
         """ Data for the badges [rego] """
         c.data = []
@@ -1183,7 +1183,7 @@
             return res
         else:
             c.text = '<a href="/admin/badge_data?csv">CSV</a>'
-            return render_response('admin/table.myt')
+            return render('admin/table.mako')
     def regos_nonspeaker_mailmerge(self):
         """ All [rego]s (except speaker) for the final reminder e-mail. """
         def addmonth(d):
@@ -1212,7 +1212,7 @@
             ))
         c.columns = ('id', 'firstname', 'lastname', 'email',
                                     'accom', 'checkin', 'checkout', 'diet')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def trinity(self):
         """ All people staying at Trinity. [accom] """
@@ -1227,7 +1227,7 @@
                     p.email_address,
                 ))
         c.columns = ('id', 'firstname', 'lastname', 'email')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def no_shows(self):
         """ People who didn't show up [rego] """
@@ -1248,7 +1248,7 @@
         c.columns = 'firstname', 'lastname', 'type', 'disc', 'notes'
         c.data.sort(lambda a, b: cmp(a[1].lower(), b[1].lower)
                                 or cmp(a[0].lower(), b[0].lower) or cmp(a, b))
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def rego_note_dump(self):
         """ A list of *all* rego notes in chronological order. [rego] """
@@ -1265,7 +1265,7 @@
             ))
         c.columns = ('id', 'date', 'about', 'text', 'by')
         c.noescape = True
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def rego_note_interesting(self):
         """ A list of rego notes other than just "Here!". [rego] """
@@ -1298,7 +1298,7 @@
             ))
         c.columns = ('id', 'date', 'about', 'text', 'by')
         c.noescape = True
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def rego_note_here(self):
         """ A list of rego notes other than just "Here!". [rego] """
@@ -1329,7 +1329,7 @@
             ))
         c.columns = ('id', 'date', 'about', 'text', 'by')
         c.noescape = True
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def rego_note_stats(self):
         """ Per-day stats of rego notes. [rego] """
@@ -1345,7 +1345,7 @@
         c.data = [[k, v1, v2, v1+v2] for (k, (v1, v2)) in stats.items()]
         c.data.sort()
         c.columns = ('day', 'Here!', 'other', 'total')
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def AV_ping(self):
         """ Update the list of links to talk recordings. [AV] """
@@ -1422,7 +1422,7 @@
         copy the links to your wikis and webpages with the appropriate
         talk titles and speaker names.</p>
         """
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def make_wiki_name(self):
         """ Make the wiki_name field out of proposal title. [AV] """
@@ -1456,7 +1456,7 @@
             c.data.append((
               p.firstname + ' ' + p.lastname,
             ))
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
     def slides_uploaded_wrongly(self):
         """ Slides that were uploaded but shouldn't have been. """
         return sql_response("""
@@ -1486,7 +1486,7 @@
                 f.write(a.content)
                 f.close()
                 c.data.append((t.id, a.filename, fname))
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def slides_ping(self):
         """ Update the list of links to slides. [AV] """
@@ -1550,7 +1550,7 @@
               ', '.join(release),
             ))
         c.columns = 'id', 'title', 'emails', 'firstnames', 'consents'
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
     def total_opendaydrag(self):
         """ Total of the open day drag entries. """
@@ -1558,7 +1558,7 @@
         for r in paid_regos(self):
             res += (r.opendaydrag or 0)
         c.data = [[res]]
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
     def olpc_lookup(self):
         """ look up people who got the OLPC laptop... """
         names = """
@@ -1583,7 +1583,7 @@
               c.data.append((line, '; '.join([p.email_address for p in pp])))
             else:
               c.data.append((line, 'Not found'))
-        return render_response('admin/table.myt')
+        return render('admin/table.mako')
 
 def paid_regos(self):
     for r in self.dbsession.query(Registration).all():

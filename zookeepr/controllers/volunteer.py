@@ -1,77 +1,136 @@
-from formencode import validators, compound, variabledecode, ForEach
-from formencode.schema import Schema
+import logging
 
-from zookeepr.lib.auth import *
-from zookeepr.lib.base import *
-from zookeepr.lib.crud import Modify, View
-from zookeepr.lib.validators import *
-from zookeepr.model import Person, Volunteer
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import abort, redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill
+from formencode.variabledecode import NestedVariables
+
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema, DictSet
+import zookeepr.lib.helpers as h
+
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+from zookeepr.model.volunteer import Volunteer
+
+from zookeepr.config.lca_info import lca_info
+
+log = logging.getLogger(__name__)
 
 class VolunteerSchema(BaseSchema):
-    areas = DictSet()
+    areas = DictSet(not_empty=True)
     other = validators.String()
 
 class NewVolunteerSchema(BaseSchema):
     volunteer = VolunteerSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
 class EditVolunteerSchema(BaseSchema):
     volunteer = VolunteerSchema()
-    pre_validators = [variabledecode.NestedVariables]
+    pre_validators = [NestedVariables]
 
-class VolunteerController(SecureController, View, Modify):
-    schemas = {"new" : NewVolunteerSchema(),
-               "edit" : EditVolunteerSchema()}
-    permissions = {"view": [AuthRole('organiser'), AuthFunc('is_same_person')],
-                   "index": [AuthTrue()],
-                   "edit": [AuthRole('organiser'), AuthFunc('is_same_person')],
-                   "new": [AuthTrue()],
-                   "accept": [AuthRole('organiser')],
-                   "reject": [AuthRole('organiser')],
-                   }
+class VolunteerController(BaseController):
 
-    model = Volunteer
-    individual = 'volunteer'
+    @dispatch_on(POST="_new") 
+    @authorize(h.auth.is_valid_user)
+    def new(self):
+        # A person can only volunteer once
+        if h.signed_in_person() and h.signed_in_person().volunteer:
+            return redirect_to(action='edit', id=h.signed_in_person().volunteer.id)
 
-    def is_same_person(self):
-        return c.signed_in_person == c.volunteer.person
+        return render('/volunteer/new.mako')
+
+    @validate(schema=NewVolunteerSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
+    def _new(self):
+        results = self.form_result['volunteer']
+
+        c.volunteer = Volunteer(**results)
+        c.volunteer.person = h.signed_in_person()
+        meta.Session.add(c.volunteer)
+        meta.Session.commit()
+
+        h.flash("Volunteer application submitted. Thank you for your interest.")
+        redirect_to(action='view', id=c.volunteer.id)
+
+    @authorize(h.auth.is_valid_user)
+    def view(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        c.can_edit = h.auth.is_same_zookeepr_user(id)
+
+        c.volunteer = Volunteer.find_by_id(id)
+        if c.volunteer is None:
+            abort(404, "No such object")
+
+        return render('volunteer/view.mako')
 
     def index(self):
         # Check access and redirect
-        if not AuthRole('organiser').authorise(self):
+        if not h.auth.has_organiser_role:
             redirect_to(action='new')
 
-        # This method is mostly implemented by crud
-        if hasattr(super(VolunteerController, self), 'index'):
-            return super(VolunteerController, self).index()
+        c.volunteer_collection = Volunteer.find_all()
+        return render('volunteer/list.mako')
 
-    def new(self):
-        # A person can only volunteer once
-        if c.signed_in_person and c.signed_in_person.volunteer:
-            return redirect_to(action='edit', id=c.signed_in_person.volunteer.id)
-
-        # This method is mostly implemented by crud
-        if hasattr(super(VolunteerController, self), 'new'):
-            return super(VolunteerController, self).new()
-
-    def _new_presave(self):
-        self.obj.person = c.signed_in_person
-
+    @dispatch_on(POST="_edit") 
+    @authorize(h.auth.is_valid_user)
     def edit(self, id):
-        if self.obj.accepted is not None:
-            return render_response('volunteer/already.myt')
-        # This method is mostly implemented by crud
-        if hasattr(super(VolunteerController, self), 'edit'):
-            return super(VolunteerController, self).edit(id)
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
+        c.volunteer = Volunteer.find_by_id(id)
+        if c.volunteer.accepted is not None:
+            return render('volunteer/already.mako')
+
+        defaults = h.object_to_defaults(c.volunteer, 'volunteer')
+
+        form = render('volunteer/edit.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=EditVolunteerSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
+    def _edit(self, id):
+        volunteer = Volunteer.find_by_id(id)
+
+        for key in self.form_result['volunteer']:
+            setattr(volunteer, key, self.form_result['volunteer'][key])
+
+        # update the objects with the validated form data
+        meta.Session.commit()
+        h.flash("Your details were updated successfully.")
+        redirect_to(action='view', id=id)
+
+    @authorize(h.auth.has_organiser_role)
     def accept(self, id):
-        self.obj.accepted = True
-        self.dbsession.update(self.obj)
-        self.dbsession.flush()
+        volunteer = Volunteer.find_by_id(id)
+        volunteer.accepted = True
+        meta.Session.commit()
+        h.flash('Status Updated')
         redirect_to(action='index')
 
+    @authorize(h.auth.has_organiser_role)
+    def pending(self, id):
+        volunteer = Volunteer.find_by_id(id)
+        volunteer.accepted = None
+        meta.Session.commit()
+        h.flash('Status Updated')
+        redirect_to(action='index')
+
+    @authorize(h.auth.has_organiser_role)
     def reject(self, id):
-        self.obj.accepted = False
-        self.dbsession.update(self.obj)
-        self.dbsession.flush()
+        volunteer = Volunteer.find_by_id(id)
+        volunteer.accepted = False
+        meta.Session.commit()
+        h.flash('Status Updated')
         redirect_to(action='index')

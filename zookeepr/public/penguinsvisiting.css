@@ -11,7 +11,7 @@ html {
 	height: 100%;
 	margin: 0;
 	padding: 0;
-	overflow-y: scroll;
+	/*overflow-y: scroll; */
 }
 
 body {
@@ -118,7 +118,7 @@ h6 {
 	font-size: 1.1em;
 	height: 28px;
 	line-height: 20px;
-	padding: 5px 14px;
+	padding: 5px 11px;
 	background: url(images/nav_divider.gif) no-repeat top left;
 }
 #main_menu #primarynav li a {
@@ -136,14 +136,14 @@ h6 {
 
 #main_menu #secondarynav {
 	clear: both;
-	text-align: center;
+	text-align: left;
 	margin-bottom: 10px;
+	margin-left: 100px;
 }
 #main_menu #secondarynav li {
 	list-style-type: none;
 	display: inline;
 	font-weight: bold;
-	font-size: 0.9em;
 	line-height: 25px;
 }
 #main_menu #secondarynav li a {
@@ -185,7 +185,7 @@ h6 {
 }
 * html #leftcol {
 	margin-left: 20px;
-	* margin-left: 12px;
+	margin-left: 12px;
 }
 
 .yellowbox {
@@ -263,7 +263,7 @@ h6 {
 
 
 
-#footer, #push {
+#footer, #push, #sponsors {
 	clear:left;
 	width: 100%;
 	height:80px;
@@ -287,7 +287,7 @@ h6 {
         {
                 background: #5850A5;
 		font-size: 1.6em;
-		bottom-margin: 5px;
+		margin-bottom: 5px;
         }
         
         .sponsor_heading H2
@@ -404,12 +404,14 @@ tt {
         {
                 color: #ff0000;
                 background: inherit;
+                margin-right: 5px;
         }
 
         .publishable
         {
                 color: #5850a5;
                 background: inherit;
+                margin-right: 5px;
         }
 
         .submitted
@@ -421,10 +423,6 @@ tt {
 
         blockquote 
         {
-                background-color:#D3DEFF;
-                background-image:url(images/blockquote_bg.png);
-                background-position:center top;
-                background-repeat:repeat-x;
                 border:2px solid #D5E0FF;
                 color:#505050;
                 display:block;
@@ -433,16 +431,6 @@ tt {
                 padding:10px 20px 10px 20px;
                 text-align:justify;
                 width:50%;
-        }
-
-        blockquote:before
-        {
-                margin-left: -50px;
-                width: 60px;
-                height: 40px;
-                display: block;
-                content: url(images/quote.png);
-                margin-bottom: -40px;
         }
 
         blockquote p
@@ -501,44 +489,6 @@ tt {
                 font-size: small;
                 color: #888;
                 margin: 0;
-        }
-
-        blockquote 
-        {
-                background-color:#D3DEFF;
-                background-image:url(images/blockquote_bg.png);
-                background-position:center top;
-                background-repeat:repeat-x;
-                border:2px solid #D5E0FF;
-                color:#505050;
-                display:block;
-                font-style:italic;
-                margin:20px 80px 0pt;
-                padding:10px 20px 10px 20px;
-                text-align:justify;
-                width:50%;
-        }
-
-        blockquote:before
-        {
-                margin-left: -50px;
-                width: 60px;
-                height: 40px;
-                display: block;
-                content: url(images/quote.png);
-                margin-bottom: -40px;
-        }
-
-        blockquote p
-        {
-                background-color: transparent;
-                padding: 0 0 10px 0;
-                margin: 0;
-        }
-        
-        blockquote h1, blockquote h2, blockquote h3, blockquote h4, blockquote th, blockquote dt
-        {
-                background-color: transparent;
         }
 
         .external
@@ -715,6 +665,30 @@ tt {
         {
                 padding-left: 0;
         }
+
+#flash
+{
+    width:100%
+}
+
+#flash .message
+{
+    padding-top: 1em;
+    padding-left: 50px;
+    border: 1px solid #ccc;
+    margin: 1em;
+    background: #fffaaa url('/images/icons/emblem-note.png') no-repeat 10px 50%;
+}
+
+#flash .message-error
+{
+    background: #ff9999 url('/images/icons/emblem-personal.png') no-repeat 10px 50%;
+}
+
+.message_degrade
+{
+    background: #fff;
+}
 
 p.warningbox {
 	background-color: #FFCC00;

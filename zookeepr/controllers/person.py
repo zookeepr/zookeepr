@@ -1,63 +1,36 @@
-import datetime
+import logging
 
-from formencode import validators, Invalid
-from formencode.schema import Schema
+from pylons import request, response, session, tmpl_context as c
+from pylons.controllers.util import redirect_to
+from pylons.decorators import validate
+from pylons.decorators.rest import dispatch_on
+
+from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
-import sqlalchemy
 
-from zookeepr.lib.auth import PersonAuthenticator, retcode
-from zookeepr.lib.base import *
-from zookeepr.lib.mail import *
-from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator
-from zookeepr.model import Person, PasswordResetConfirmation
+from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema
+import zookeepr.lib.helpers as h
 
-from zookeepr.lib.base import *
-from zookeepr.lib.crud import Read, Update, List
-from zookeepr.lib.auth import SecureController, AuthRole, AuthFunc, AuthTrue
-from zookeepr import model
-from zookeepr.model.core.domain import Role
-from zookeepr.model.core.tables import person_role_map
-from sqlalchemy import and_
+from authkit.authorize.pylons_adaptors import authorize
+from authkit.permissions import ValidAuthKitUser
+
+from zookeepr.lib.mail import email
+
+from zookeepr.model import meta
+from zookeepr.model import Person, PasswordResetConfirmation, Role
+
 from zookeepr.config.lca_info import lca_info
 
-# TODO : formencode.Invalid support HTML for email markup... - Josh H 07/06/08
-# TODO : Validate not_empty nicer... needs to co-exist better with actual validators and also place a message up the top - Josh H 07/06/08
-# TODO : Proper email validation? I thought it existed but it doesn't seem like it. Should be easy to add in, just too late to mess with this year - Josh H 05/09/08
+import datetime
 
-class AuthenticationValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        l = PersonAuthenticator()
-        r = l.authenticate(value['email_address'], value['password'])
-        if r == retcode.SUCCESS:
-            pass
-        elif r == retcode.FAILURE:
-            raise Invalid("""Your sign-in details are incorrect; try the
-                'Forgotten your password' link below or sign up for a new
-                person.""", value, state)
-        elif r == retcode.TRY_AGAIN: # I don't think this occurs - Josh H 06/06/08
-            raise Invalid('A problem occurred during sign in; please try again later or contact <a href="mailto:' + lca_info['contact_email'] + '">' + lca_info['contact_email'] + '</a>.', value, state)
-        elif r == retcode.INACTIVE:
-            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
-        else:
-            raise RuntimeError, "Unhandled authentication return code: '%r'" % r
+log = logging.getLogger(__name__)
 
-
-class ExistingPersonValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        persons = state.query(Person).filter_by(email_address=value['email_address']).first()
-        if persons == None:
-            raise Invalid('Your supplied e-mail does not exist in our database. Please try again or if you continue to have problems, contact %s.' % lca_info['contact_email'], value, state)
-
-
-class LoginValidator(BaseSchema):
-    email_address = validators.String(not_empty=True)
-    password = validators.String(not_empty=True)
-
-    chained_validators = [AuthenticationValidator()]
 
 
 class ForgottenPasswordSchema(BaseSchema):
-    email_address = validators.String(not_empty=True)
+    email_address = validators.Email(not_empty=True)
+
     chained_validators = [ExistingPersonValidator()]
 
 
@@ -67,31 +40,12 @@ class PasswordResetSchema(BaseSchema):
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
-class PersonSchema(BaseSchema):
-    firstname = validators.String(not_empty=True)
-    lastname = validators.String(not_empty=True)
-    company = validators.String()
-    email_address = validators.String(not_empty=True)
-    password = validators.String(not_empty=True)
-    password_confirm = validators.String(not_empty=True)
-    phone = validators.String()
-    mobile = validators.String()
-    address1 = validators.String(not_empty=True)
-    address2 = validators.String()
-    city = validators.String(not_empty=True)
-    state = validators.String()
-    postcode = validators.String(not_empty=True)
-    country = validators.String(not_empty=True)
-
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
-
 class NewPersonSchema(BaseSchema):
-    person = PersonSchema()
     pre_validators = [NestedVariables]
 
+    person = PersonSchema()
+
 class _UpdatePersonSchema(BaseSchema):
-    # Redefine the schema to remove email and password validation
-    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
     company = validators.String()
@@ -104,79 +58,40 @@ class _UpdatePersonSchema(BaseSchema):
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
 
-    pre_validators = []
-    chained_validators = []
-
 class UpdatePersonSchema(BaseSchema):
-    # Redefine the schema to remove email and password validation
-    # FIXME: We can't change the Schema's drastically at this point. This edit schema needs a review
     person = _UpdatePersonSchema()
     pre_validators = [NestedVariables]
 
-class PersonController(SecureController, Read, Update, List):
-    model = model.Person
-    individual = 'person'
+class RoleSchema(BaseSchema):
+    role = validators.String(not_empty=True)
+    action = validators.OneOf(['Grant', 'Revoke'])
 
-    schemas = {'new': NewPersonSchema(),
-               'edit': UpdatePersonSchema()
-              }
-
-    permissions = {'view': [AuthFunc('is_same_id'), AuthRole('organiser'), AuthRole('reviewer')],
-                   'roles': [AuthRole('organiser')],
-                   'index': [AuthRole('organiser')],
-                   'signin': True,
-                   'signout': [AuthTrue()],
-                   'new': True,
-                   'edit': [AuthFunc('is_same_id'),AuthRole('organiser')],
-                   'forgotten_password': True,
-                   'reset_password': True,
-                   'confirm': True
-                   }
-
+class PersonController(BaseController): #Read, Update, List
+    @authorize(h.auth.is_valid_user)
     def signin(self):
-        defaults = dict(request.POST)
-        errors = {}
+        # Signin is handled by authkit so we just need to redirect stright to home
 
-        if defaults:
-            result, errors = LoginValidator().validate(defaults, self.dbsession)
+        h.flash('You have signed in')
 
-            if not errors:
-                # do the authorisation here or in validator?
-                # get person
-                # check auth
-                # set session cookies
-                person = self.dbsession.query(Person).filter_by(email_address=result['email_address']).one()
-                if person:
-                    # at least one Person matches, save it
-                    session['signed_in_person_id'] = person.id
-                    session.save()
+        if lca_info['conference_status'] == 'open':
+            redirect_to(controller='registration', action='status')
 
-                    # Redirect to original URL if it exists
-                    if 'sign_in_redirect' in session:
-                        redirect_to(str(session['sign_in_redirect']))
+        redirect_to('home')
 
-                    # return to the registration status
-                    # (while registrations are open)
-                    if lca_info['conference_status'] == 'open':
-                        redirect_to(controller='registration', action='status')
+    def signout_confirm(self):
+        """ Confirm user wants to sign out
+        """
+        return render('/person/signout.mako')
 
-                    # return home
-                    redirect_to('home')
-
-        if c.signed_in_person:
-            return render_response('person/already_loggedin.myt')
-        else:
-            return render_response('person/signin.myt', defaults=defaults, errors=errors)
 
     def signout(self):
-        defaults = dict(request.POST)
-        if defaults:
-            # delete and invalidate the session
-            session.invalidate()
-            session.delete()
-            # return home
-            redirect_to('home')
-        return render_response('person/signout.myt', defaults=None, errors={})
+        """ Sign the user out
+            Authikit actually does the work after this finished
+        """
+
+        # return home
+        h.flash('You have signed out')
+        redirect_to('home')
 
     def confirm(self, confirm_hash):
         """Confirm a registration with the given ID.
@@ -185,19 +100,23 @@ class PersonController(SecureController, Read, Update, List):
         they regsitered, and a nonce.
 
         """
-        r = self.dbsession.query(Person).filter_by(url_hash=confirm_hash).first()
+        person = Person.find_by_url_hash(confirm_hash)
 
-        if r is None:
-            abort(404)
+        if person.activated:
+            return render('person/already_confirmed.mako')
 
-        r.activated = True
+        person.activated = True
 
-        self.dbsession.update(r)
-        self.dbsession.flush()
+        meta.Session.commit()
 
-        return render_response('person/confirmed.myt')
+        return render('person/confirmed.mako')
 
+    @dispatch_on(POST="_forgotten_password") 
     def forgotten_password(self):
+        return render('/person/forgotten_password.mako')
+
+    @validate(schema=ForgottenPasswordSchema(), form='forgotten_password', post_only=True, on_get=True, variable_decode=True)
+    def _forgotten_password(self):
         """Action to let the user request a password change.
 
         GET returns a form for emailing them the password change
@@ -212,29 +131,28 @@ class PersonController(SecureController, Read, Update, List):
         The second half of the password change operation happens in
         the ``confirm`` action.
         """
-        defaults = dict(request.POST)
-        errors = {}
+        # Check if there is already a password recovery in progress
+        reset = PasswordResetConfirmation.find_by_email(self.form_result['email_address'])
+        if reset is not None:
+            return render('person/in_progress.mako')
 
-        if defaults:
-            result, errors = ForgottenPasswordSchema().validate(defaults, self.dbsession)
+        # Ok kick one off
+        c.conf_rec = PasswordResetConfirmation(email_address=self.form_result['email_address'])
+        meta.Session.add(c.conf_rec)
+        meta.Session.commit()
 
-            if not errors:
-                c.conf_rec = PasswordResetConfirmation(result['email_address'])
-                self.dbsession.save(c.conf_rec)
-                try:
-                    self.dbsession.flush()
-                except sqlalchemy.exceptions.SQLError, e:
-                    self.dbsession.clear()
-                    # FIXME exposes sqlalchemy!
-                    return render_response('person/in_progress.myt')
+        email(c.conf_rec.email_address, render('person/confirmation_email.mako'))
 
-                email(c.conf_rec.email_address,
-                    render('person/confirmation_email.myt', fragment=True))
-                return render_response('person/password_confirmation_sent.myt')
-        return render_response('person/forgotten_password.myt', defaults=defaults, errors=errors)
+        return render('person/password_confirmation_sent.mako')
 
-
+    @dispatch_on(POST="_reset_password") 
     def reset_password(self, url_hash):
+        c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
+
+        return render('person/reset.mako')
+
+    @validate(schema=PasswordResetSchema(), form='reset_password', post_only=True, on_get=True, variable_decode=True)
+    def _reset_password(self, url_hash):
         """Confirm a password change request, and let the user change
         their password.
 
@@ -258,179 +176,148 @@ class PersonController(SecureController, Read, Update, List):
         If the record doesn't exist, throw an error, delete the
         confirmation record.
         """
-        crecs = self.dbsession.query(PasswordResetConfirmation).filter_by(url_hash=url_hash).all()
-        if len(crecs) == 0:
-            abort(404)
-
-        c.conf_rec = crecs[0]
+        c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
 
         now = datetime.datetime.now(c.conf_rec.timestamp.tzinfo)
-        delta = now - c.conf_rec.timestamp
-        if delta > datetime.timedelta(24, 0, 0):
+        if delta > datetime.timedelta(0, 24, 0):
             # this confirmation record has expired
-            self.dbsession.delete(c.conf_rec)
-            self.dbsession.flush()
-            return render_response('person/expired.myt')
+            meta.Session.delete(c.conf_rec)
+            meta.Session.commit()
+            return render('person/expired.mako')
 
-        # now process the form
-        defaults = dict(request.POST)
-        errors = {}
+        person = Person.find_by_email(c.conf_rec.email_address)
+        if person is None:
+            raise RuntimeError, "Person doesn't exist %s" % c.conf_rec.email_address
 
-        if defaults:
-            result, errors = PasswordResetSchema().validate(defaults, self.dbsession)
+        # set the password
+        person.password = self.form_result['password']
+        # also make sure the person is activated
+        person.activated = True
 
-            if not errors:
-                persons = self.dbsession.query(Person).filter_by(email_address=c.conf_rec.email_address).all()
-                if len(persons) == 0:
-                    raise RuntimeError, "Person doesn't exist %s" % c.conf_rec.email_address
+        # delete the conf rec
+        meta.Session.delete(c.conf_rec)
+        meta.Session.commit()
 
-                # set the password
-                persons[0].password = result['password']
-                # also make sure the person is activated
-                persons[0].activated = True
+        return render('person/success.mako')
 
-                # delete the conf rec
-                self.dbsession.delete(c.conf_rec)
-                self.dbsession.flush()
+    @authorize(h.auth.is_valid_user)
+    @dispatch_on(POST="_edit") 
+    def edit(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+        c.form = 'edit'
+        c.person = Person.find_by_id(id)
 
-                return render_response('person/success.myt')
+        defaults = h.object_to_defaults(c.person, 'person')
 
-        # FIXME: test the process above
-        return render_response('person/reset.myt', defaults=defaults, errors=errors)
+        form = render('/person/edit.mako')
+        return htmlfill.render(form, defaults)
 
-    def edit(self):
+
+    @authorize(h.auth.is_valid_user)
+    @validate(schema=UpdatePersonSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
+    def _edit(self, id):
         """UPDATE PERSON"""
-        defaults = dict(request.POST)
-        errors = {}
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
-        if defaults:
-            result, errors = UpdatePersonSchema().validate(defaults, self.dbsession)
+        c.person = Person.find_by_id(id)
 
-            if not errors:
-                # update the objects with the validated form data
-                for k in result['person']:
-                    setattr(self.obj, k, result['person'][k])
-                self.dbsession.update(self.obj)
-                self.dbsession.flush()
+        for key in self.form_result['person']:
+            setattr(c.person, key, self.form_result['person'][key])
 
-                default_redirect = dict(action='view', id=self.identifier(self.obj))
-                self.redirect_to('edit', default_redirect)
+        # update the objects with the validated form data
+        meta.Session.commit()
 
-        return render_response('person/edit.myt',
-                               defaults=defaults, errors=errors)
+        redirect_to(action='view', id=id)
 
+
+    @dispatch_on(POST="_new") 
     def new(self):
-        """Create a new person.
+        """Create a new person form.
 
         Non-CFP persons get created through this interface.
 
         See ``cfp.py`` for more person creation code.
         """
-        if c.signed_in_person:
-            return render_response('person/already_loggedin.myt')
+        if h.signed_in_person():
+            h.flash("You're already logged in")
+            redirect_to('home')
 
-        defaults = dict(request.POST)
-        errors = {}
+        defaults = {
+            'person.country': 'NEW ZEALAND'
+        }
+        form = render('/person/new.mako')
+        return htmlfill.render(form, defaults)
 
-        if defaults:
-            result, errors = NewPersonSchema().validate(defaults, self.dbsession)
+    @validate(schema=NewPersonSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
+    def _new(self):
+        """Create a new person submit.
+        """
 
-            if not errors:
-                c.person = Person()
-                # update the objects with the validated form data
-                for k in result['person']:
-                    setattr(c.person, k, result['person'][k])
-                self.dbsession.save(c.person)
-                self.dbsession.flush()
+        # Remove fields not in class
+        results = self.form_result['person']
+        del results['password_confirm']
+        c.person = Person(**results)
+        meta.Session.add(c.person)
+        meta.Session.commit()
 
-                email(c.person.email_address,
-                    render('person/new_person_email.myt', fragment=True))
-                return render_response('person/thankyou.myt')
+        email(c.person.email_address, render('/person/new_person_email.mako'))
 
-        return render_response('person/new.myt',
-                               defaults=defaults, errors=errors)
+        return render('/person/thankyou.mako')
 
-
+    @authorize(h.auth.has_organiser_role)
     def index(self):
-        r = AuthRole('organiser')
-        if self.logged_in():
-            if not r.authorise(self):
-                redirect_to(action='view', id=session['signed_in_person_id'])
-        else:
-            abort(403)
+        c.person_collection = Person.find_all()
+        return render('/person/list.mako')
 
-        return super(PersonController, self).index()
+    @authorize(h.auth.is_valid_user)
+    def view(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_reviewer_role, h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
-    def _can_edit(self):
-        try:
-            permission = (self.obj.id == session['signed_in_person_id']) or AuthRole('organiser')
-        except AttributeError:
-            #FIXME: ugly work around for when an individual person object isn't loaded.
-            # This method is meant to be used to display the "edit" link when an organiser or the owner views a person's profile.
-            # However, the index method in the CRUD middleware also uses the _can_edit definition so we have this ugly workaround.
-            permission = False
-        return permission
+        c.registration_status = h.config['app_conf'].get('registration_status')
+        c.person = Person.find_by_id(id)
 
-    def view(self):
-        c.registration_status = request.environ['paste.config']['app_conf'].get('registration_status')
-        if self.logged_in():
-            roles = self.dbsession.query(Role).all()
-            for role in roles:
-                r = AuthRole(role.name)
-                if r.authorise(self):
-                    setattr(c, 'is_%s_role' % role.name, True)
+        return render('person/view.mako')
 
-        return super(PersonController, self).view()
+    @dispatch_on(POST="_roles") 
+    @authorize(h.auth.has_organiser_role)
+    def roles(self, id):
 
-    def roles(self):
+        c.person = Person.find_by_id(id)
+        c.roles = Role.find_all()
+        return render('person/roles.mako')
+
+
+    @authorize(h.auth.has_organiser_role)
+    @validate(schema=RoleSchema, form='roles', post_only=True, on_get=True, variable_decode=True)
+    def _roles(self, id):
         """ Lists and changes the person's roles. """
 
-        td = '<td valign="middle">'
-        res = ''
-        res += '<p><b>'+self.obj.firstname+' '+self.obj.lastname+'</b></p><br>'
-        data = dict(request.POST)
-        if data:
-          role = int(data['role'])
-          act = data['Commit']
-          if act not in ['Grant', 'Revoke']: raise "foo!"
-          r = self.dbsession.query(Role).filter_by(id=role).one()
-          res += '<p>' + act + ' ' + r.name + '.'
-          if act=='Revoke':
-            person_role_map.delete(and_(
-              person_role_map.c.person_id == self.obj.id,
-              person_role_map.c.role_id == role)).execute()
-          if act=='Grant':
-            person_role_map.insert().execute(person_id = self.obj.id,
-                                                            role_id = role)
+        c.person = Person.find_by_id(id)
+        c.roles = Role.find_all()
 
+        role = self.form_result['role']
+        action = self.form_result['action']
 
-        res += '<table>'
-        for r in self.dbsession.query(Role).all():
-          res += '<tr>'
-          # can't use AuthRole here, because it may be out of date
-          has = len(person_role_map.select(whereclause =
-            and_(person_role_map.c.person_id == self.obj.id,
-              person_role_map.c.role_id == r.id)).execute().fetchall())
+        role = Role.find_by_name(name=role)
 
-          if has>1:
-            # this can happen if two people Grant at once, or one person
-            # does a Grant and reloads/reposts.
-            res += td + 'is %d times' % has
-            has = 1
-          else:
-            res += td+('is not', 'is')[has]
-          res += td+r.name
+        if action == 'Revoke' and role in c.person.roles:
+            c.person.roles.remove(role)
+            h.flash('Role ' + role.name + ' Revoked')
+        elif action == 'Grant' and role not in c.person.roles:
+            c.person.roles.append(role)
+            h.flash('Role ' + role.name + ' Granted')
+        else:
+            h.flash("Nothing to do")
 
-          res += td+h.form(h.url())
-          res += h.hidden_field('role', r.id)
-          res += h.submitbutton(('Grant', 'Revoke')[has])
-          res += h.end_form()
+        meta.Session.commit()
 
-        res += '</table>'
-
-        c.res = res
-
-        return render_response('person/roles.myt')
-
-    def is_same_id(self, *args):
-        return self.obj.id == session['signed_in_person_id']
+        return render('person/roles.mako')

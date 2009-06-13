@@ -10,23 +10,28 @@ lca_info = {
   'commsecure_secret' : 'zing',
 
 # Contact email for the committee
-  'contact_email' : 'contact@penguinsvisiting.org.nz',
+  'contact_email' : 'contact@lca2010.org.nz',
 # All email sent by ZK will Bcc here:
-  'bcc_email' : 'bcc_archive@penguinsvisiting.org.nz',
+  'bcc_email' : 'bcc_archive@lca2010.org.nz',
+  'webmaster_email': 'webmaster@lca2010.org.nz',
 
 # Event information
-  'event_parent_organisation' : 'Linux Australia, Incorporated',
+  'event_parent_organisation' : 'Linux Australia',
   'event_parent_url' : 'http://www.linux.org.au/',
   'event_name' : 'linux.conf.au 2010',
-  'event_url' : 'http://www.linux.conf.au/',
-  'event_tax_number' : 'ABN 56 987 117 479',
-# 'event_tax_number' : 'NZ GST #90-792-369',
-  'event_postal_address' : '25 Wellington St North Hobart TAS 7000, Australia',
-  'event_fax_number' : '+61 3 6234 1262',
-  'event_phone_number': '+61 432 996 932',
+  'event_shortname' : 'lca2010',
+  'event_url' : 'http://www.lca2010.org.nz/',
+#  'event_tax_number' : 'ABN 56 987 117 479',
+ 'event_tax_number' : 'NZ GST #90-792-369',
+  'event_postal_address' : 'PO Box 11-682, Manners St, Wellington, NEW ZEALAND 6142',
+  'event_fax_number' : '+64 4 802 0422',
+  'event_phone_number': '+64 4 802 0422',
+  'event_byline': 'linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!',
   'date' : datetime(2010, 1, 17, 9, 0, 00),
+  'media_license_name' : 'Creative Commons ShareAlike License',
+  'media_license_url'  : 'http://creativecommons.org/licenses/by-sa/3.0/',
 
-  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the xxth of October (unless earlybird tickets sell out earlier).',
+  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
   'cfp_status' : 'not_open',
@@ -34,10 +39,16 @@ lca_info = {
   'paper_editing' : 'not_open',
   'conference_status': 'not_open',
 
-  'mini_conf_email' : 'miniconfs@penguinsvisiting.org.nz',
-  'speaker_email' : 'speakers@penguinsvisiting.org.nz',
+  'mini_conf_email' : 'miniconfs@lca2010.org.nz',
+  'speaker_email' : 'speakers@lca2010.org.nz',
 
-  'proposal_update_email': 'puck@penguinsvisiting.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
+  'emails': {
+     'presentation' : 'speakers@lca2010.org.nz',
+     'tutorial'     : 'speakers@lca2010.org.nz',
+     'miniconf'     : 'miniconfs@lca2010.org.nz',
+  },
+
+  'proposal_update_email': 'puck@lca2010.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
 }
 
 lca_rego = {
@@ -54,14 +65,15 @@ lca_rego = {
             {'name': 'Car', 'description': 'Have car and can be a driver.'},
             {'name': 'Week Before', 'description': 'Available during the week before the conference (x-y Jan).'},
             {'name': 'Week After', 'description': 'Available during the week after the conference (a-c Jan).'},
-        ), 
+            {'name': 'Packout', 'description': 'Available to help pack-out of the venue on Saturday and Sunday.'},
+        ),
   'miniconfs' : (
               ('Monday',('Open Source Database', 'Kernel', 'Sysadmin', 'MythTV', 'Linuxchix', 'Mobile devices', 'Business of Software development')),
               ('Tuesday',('Open Source Database', 'Linux Security', 'Sysadmin', 'Multimedia', 'Virtualisation', 'Gaming', 'Free as in Freedom'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
-  'editors' : ['bluefish', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
-  'distros' : ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'Gentoo', 'L4', 'Mandriva', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu'],
+  'editors' : ['bluefish', 'eclipse', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
+  'distros' : ['CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'FreeDOS', 'Gentoo', 'L4', 'Mandriva', 'Minix', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSUSE', 'Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu'],
   'past_confs' : [('99', '1999 (CALU, Melbourne)'), ('01', '2001 (Sydney)'), ('02', '2002 (Brisbane)'), ('03', '2003 (Perth)'), ('04', '2004 (Adelaide)'), ('05', '2005 (Canberra)'), ('06', '2006 (Dunedin)'), ('07', '2007 (Sydney)'), ('08', '2008 (Melbourne)'), ('09', '2009 (Hobart)')],
 
   'silly_description' : {
@@ -110,6 +122,7 @@ lca_rego = {
 }
 
 file_paths = {
+  'zk_root' : '/home/zookeepr/zookeepr/lca10',
   'public_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public',
   'public_html': '',
   'news_fileprefix': '/home/zookeepr/zookeepr/lca10/zookeepr/public/featured',
@@ -129,12 +142,12 @@ lca_menu = [
   ('Wellington', '/wellington/about_wellington', 'wellington'),
   ('Sponsors', '/sponsors/why_sponsor', 'sponsors'),
   #('Sponsors', '/sponsors/sponsors', 'sponsors'),
-  ('Programme', '/programme/about', 'programme'),
+  ('Programme', '/programme/about_programme', 'programme'),
   #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
   #('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
-  ('Planet', 'http://planet.penguinsvisiting.org.nz', 'planet'),
+  ('Planet', 'http://planet.lca2010.org.nz', 'planet'),
 ]
 
 lca_submenus = {
@@ -148,3 +161,4 @@ lca_submenus = {
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
   'media': ['News','In the press']
 }
+

@@ -1,0 +1,3 @@
+include zookeepr/config/deployment.ini_tmpl
+recursive-include zookeepr/public *
+recursive-include zookeepr/templates *
