@@ -56,5 +56,6 @@ this URL:
 
   http://${ h.host_name() }/proposal
 
+
 The ${ h.event_name() } team
 http://${ h.host_name() }/contact
