@@ -136,10 +136,10 @@ file_paths = {
 lca_menu = [
   #('Home', '/home', 'home'),
   ('About', '/about/linux.conf.au', 'about'),
-  ('Wellington', '/wellington/about_wellington', 'wellington'),
+  ('Wellington', '/wellington/about', 'wellington'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
-  ('Programme', '/programme/about_programme', 'programme'),
-  #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 2
+  ('Programme', '/programme/about', 'programme'),
+  #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 4
   #('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
@@ -152,9 +152,10 @@ lca_submenus = {
   'sponsors': ['Why Sponsor'],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
-  #'programme': ['About', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
-  #'programme': ['About', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
-  #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
+  #'programme': ['About', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
+  #'programme': ['About', 'Miniconf Info', 'Paper Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
+  #'programme': ['About', 'Miniconfs','Schedule','Official social events','Open day'], # stage 3
+  #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
   'media': ['News','In the press']
 }
 
