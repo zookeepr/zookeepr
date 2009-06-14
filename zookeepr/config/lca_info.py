@@ -149,12 +149,12 @@ lca_menu = [
 
 lca_submenus = {
   'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'History', 'New Zealand', 'Linux/Open Source'],
-  'wellington': ['About Wellington', 'Sightseeing', 'Pre and Post' ],
+  'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
   'sponsors': ['Why Sponsor'],
   #'sponsors': ['Sponsors', 'Why Sponsor'],
   'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
-  #'programme': ['About Programme', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
-  #'programme': ['About Programme', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
+  #'programme': ['About', 'Submit a miniconf', 'Submit a Presentation', 'Edit Submission', 'Presenter FAQ'], # stage 1
+  #'programme': ['About', 'miniconfs','Schedule','Official social events','Open day'], # stage 2
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 2
   'media': ['News','In the press']
 }
