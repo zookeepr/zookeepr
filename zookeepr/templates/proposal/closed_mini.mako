@@ -2,7 +2,7 @@
 <h2>Closed!</h2>
 
 <p>
-The call for mini-confs is now closed!
+The call for miniconfs is now closed!
 </p>
 
 <p>
@@ -10,5 +10,5 @@ The call for mini-confs is now closed!
 </p>
 
 <%def name="title()" >
-Call for Mini-confs - closed - ${ parent.title() }
+Call for Miniconfs - closed - ${ parent.title() }
 </%def>
