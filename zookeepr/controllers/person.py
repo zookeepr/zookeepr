@@ -250,8 +250,12 @@ class PersonController(BaseController): #Read, Update, List
             h.flash("You're already logged in")
             redirect_to('home')
 
+        c.conference_open = False
+        if lca_info['conference_status'] == 'open':
+            c.conference_open = True
+
         defaults = {
-            'person.country': 'NEW ZEALAND'
+            'person.country': 'NEW ZEALAND',
         }
         form = render('/person/new.mako')
         return htmlfill.render(form, defaults)
