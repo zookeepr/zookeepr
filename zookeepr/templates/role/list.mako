@@ -14,6 +14,7 @@
 
 % for st in c.role_collection:
 <tr>
+<tr class="${ h.cycle('odd', 'even') }">
         <td>${ h.link_to(st.name, url=h.url_for(action='view', id=st.id)) }</td>
 %       for action in ['edit', 'delete']:
         <td>${ h.link_to(action, url=h.url_for(action=action, id=st.id)) }</td>

@@ -19,7 +19,7 @@
 % endif
 
 % for p in c.person_collection:
-  <tr>
+  <tr class="${ h.cycle('odd', 'even') }">
     <td>${ h.link_to(p.id, url=h.url_for(action='view', id=p.id)) }</td>
     <td><a href="mailto:${ p.email_address |h }">${ p.email_address |h }</a></td>
     <td>${ p.firstname |h }</td>
