@@ -1,4 +1,4 @@
-
+<%inherit file="/base.mako" />
 <%
     rows = 0
 %>
