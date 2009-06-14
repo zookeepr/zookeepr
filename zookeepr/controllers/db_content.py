@@ -24,6 +24,8 @@ from zookeepr.config.lca_info import lca_info
 from not_found import NotFoundController
 
 from webhelpers import paginate
+from pylons.controllers.util import abort
+
 from zookeepr.config.lca_info import file_paths
 import os
 
@@ -75,16 +77,22 @@ class DbContentController(BaseController):
         h.flash("New Page Created.")
         redirect_to(action='view', id=c.db_content.id)
 
+    # Return the page, if the page is not published, and we're not an
+    # organiser, suppress the page.
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
-        if c.db_content.published is False and not h.auth.has_organiser_role:
-            c.db_content = None
+        if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
+           c.db_content = None
+           return NotFoundController().view()
         return render('/db_content/view.mako')
 
     def page(self):
         url = h.url_for()
         if url[0]=='/': url=url[1:]
         c.db_content = DbContent.find_by_url(url, abort_404=False)
+        if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
+           c.db_content = None
+           return NotFoundController().view()
         if c.db_content is not None:
             return self.view(c.db_content.id)
         return NotFoundController().view()
