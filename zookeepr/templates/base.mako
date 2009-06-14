@@ -97,6 +97,12 @@
 ${self.toolbox_extra()}
 % if h.signed_in_person():
              <li><em>${ h.signed_in_person().firstname }</em></li>
+% if h.lca_info["cfp_status"] == 'open':
+             <li>${ h.link_to('Submit a paper', url=h.url_for(controller='proposal', action='new', id=None)) }</li>
+% endif
+% if h.lca_info["cfmini_status"] == 'open':
+             <li>${ h.link_to('Submit a miniconf', url=h.url_for(controller='miniconf_proposal', action='new', id=None)) }</li>
+% endif
 %   if len(h.signed_in_person().proposals) > 0:
              <li>${ h.link_to('My proposals', url=h.url_for(controller='proposal')) }</li>
 %   endif
