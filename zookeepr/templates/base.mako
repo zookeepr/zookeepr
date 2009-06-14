@@ -109,7 +109,7 @@ ${self.toolbox_extra()}
              <li>${ h.link_to('My profile', url=h.url_for(controller='person', action='view', id=h.signed_in_person().id)) }</li>
              <li> <a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') |n}>Sign out</a></li>
 % else:
-             <li><a href="${h.url_for(controller='person', action='signin')}" ${ cls('login') |n}>Sign in</a></li>
+             <li><a href="https://${ h.host_name() }/person/signin" ${ cls('login') |n}>Sign in</a></li>
 % endif
             </ul>
 % if h.signed_in_person():
