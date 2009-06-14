@@ -18,6 +18,11 @@
     <p class="entries">${ h.textarea('proposal.abstract', cols=70, rows=10) }</p>
     <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the paper is accepted, but it should reasonably reflect what you will be presenting, and in any case it will appear as-is on the website in the draft programme. Up to about 500 words.</p>
 
+    <p class="label"><label for="proposal.technical_requirements">Non-standard technical requirements:</label></p>
+    <p class="entries">${ h.textarea('proposal.technical_requirements', cols=70, rows=3) }</p>
+    <p class="note">If you require <b>Internet access</b>, a <b>static IP address</b>, special A/V equipment or will be demonstrating <b>security-related techniques</b> on the conference network, please list them here.</p>
+
+
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
     <p class="entries">
 % for at in c.target_audiences:
@@ -49,7 +54,7 @@
     <p class="label"><label>Travel &amp; Accommodation Assistance:</label></p>
     <p class="note" style="margin-top: 0em">linux.conf.au has some funds available to provide travel and accommodation for selected speakers, both from the local region and internationally.</p>
 
-    <p class="note" style="margin-top: 0em">Please note that <b>free admission</b> to the full conference is awarded to all primary speaker.</p>
+    <p class="note" style="margin-top: 0em">Please note that <b>free admission</b> to the full conference is awarded to all primary speakers.</p>
 
     <p class="label"><span class="mandatory">*</span><label>Travel assistance:</label></p>
     <p class="entries">

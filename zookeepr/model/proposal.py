@@ -181,6 +181,7 @@ class Proposal(Base):
     title = sa.Column(sa.types.Text)
     # abstract or description
     abstract = sa.Column(sa.types.Text)
+    technical_requirements = sa.Column(sa.types.Text)
 
     # type, enumerated in the proposal_type table
     proposal_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_type.id'))

@@ -29,6 +29,17 @@ ${ c.proposal.type.name }
 </blockquote>
 </div>
 
+% if c.proposal.technical_requirements:
+<div class="technical_requirements">
+<p>
+<em>Technical Requirements:</em>
+</p>
+<blockquote>
+<p>${ h.line_break(h.util.html_escape(c.proposal.technical_requirements)) | n}</p>
+</blockquote>
+</div>
+% endif
+
 % if c.proposal.audience.name:
 <p class="url">
 <em>Target Audience:</em>
