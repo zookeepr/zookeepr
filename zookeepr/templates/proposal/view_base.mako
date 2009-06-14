@@ -68,7 +68,7 @@ ${ r.stream.name | h }
 </td>
 
 <td style="vertical-align: top;">
-${ h.line_break(r.comment) }
+${ h.line_break(h.util.html_escape(r.comment)) | n}
 </td>
 
 </tr>
