@@ -39,9 +39,6 @@ lca_info = {
   'paper_editing' : 'not_open',
   'conference_status': 'not_open',
 
-  'mini_conf_email' : 'miniconfs@lca2010.org.nz',
-  'speaker_email' : 'speakers@lca2010.org.nz',
-
   'emails': {
      'presentation' : 'speakers@lca2010.org.nz',
      'tutorial'     : 'speakers@lca2010.org.nz',
