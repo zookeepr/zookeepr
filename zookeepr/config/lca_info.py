@@ -119,18 +119,18 @@ lca_rego = {
 }
 
 file_paths = {
-  'zk_root' : '/home/zookeepr/zookeepr/lca10',
-  'public_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public',
+  'zk_root' : '/home/zookeepr/zookeepr/lca2010',
+  'public_path': '/home/zookeepr/zookeepr/lca2010/zookeepr/public',
   'public_html': '',
-  'news_fileprefix': '/home/zookeepr/zookeepr/lca10/zookeepr/public/featured',
+  'news_fileprefix': '/home/zookeepr/zookeepr/lca2010/zookeepr/public/featured',
   'news_htmlprefix': '/featured',
   # Points towards where the slides and other recordings are stored
-  'slides_path': '/home/zookeepr/zookeepr/lca10/zookeepr/public/slides',
+  'slides_path': '/home/zookeepr/zookeepr/lca2010/zookeepr/public/slides',
   'slides_html': '/slides',
   'ogg_path': 'http://mirror.linux.org.au/lca10/videos/ogg',
-  'ogg_file_list': '/home/zookeepr/zookeepr/lca10/zookeepr/config/data.txt',
+  'ogg_file_list': '/home/zookeepr/zookeepr/lca2010/zookeepr/config/data.txt',
   'speex_path': 'http://mirror.linux.org.au/lca10/videos/speex',
-  'speex_file_list': '/home/zookeepr/zookeepr/lca10/zookeepr/config/data.txt',
+  'speex_file_list': '/home/zookeepr/zookeepr/lca2010/zookeepr/config/data.txt',
 }
 
 lca_menu = [
