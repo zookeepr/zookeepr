@@ -2,7 +2,7 @@
 <h1>Delete Content</h1>
 
 ${ h.form(h.url_for()) }
-<p> Are you sure you want to delete the "${ c.db_content.title }" role (number
+<p> Are you sure you want to delete the "${ c.db_content.title }" page (number
 ${c.db_content.id})?</p>
 <p>${ h.hidden('delete', 'ok') }
 ${ h.submit('Delete', 'Delete') }
