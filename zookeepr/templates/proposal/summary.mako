@@ -65,7 +65,6 @@ function toggleDiv(id,flagit) {
 <li>Mouse over stream for Stream Stats
 </ul>
 
-<div style="clear: both;"></div>
 
 % for pt in c.proposal_types:
     <% collection = getattr(c, '%s_collection' % pt.name) %>
@@ -145,7 +144,7 @@ ${ person.lastname },
 <div onMouseOver="toggleDiv('${ "score%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "score%s" % proposal.id | h}',0)">
 ${ avg_score |h }
 </div>
-<div id="${ "score%s" % proposal.id | h}" class="commentdiv">${ scores }</div>
+<div id="${ "score%s" % proposal.id | h}" class="commentdiv">${ scores | n}</div>
 
 </td>
 
@@ -183,7 +182,7 @@ ${ h.link_to(review.reviewer.firstname + " " + review.reviewer.lastname, url=h.u
 <div onMouseOver="toggleDiv('${ "stream%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "stream%s" % proposal.id | h}',0)">
 ${ stream } (${ stream_score })
 </div>
-<div id="${ "stream%s" % proposal.id | h}" class="biodiv">${ stream_stats }</div>
+<div id="${ "stream%s" % proposal.id | h}" class="biodiv">${ stream_stats | n}</div>
 </td>
 
 </tr>
