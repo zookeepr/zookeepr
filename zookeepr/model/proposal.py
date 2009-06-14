@@ -274,6 +274,7 @@ class Proposal(Base):
             abort(404, "No such object")
         return result
 
+    # TODO: add an optional filter for removing the signed in user's proposals
     @classmethod
     def find_all_by_proposal_type_id(cls, id, abort_404 = True, include_withdrawn=True):
         result = Session.query(Proposal).filter_by(proposal_type_id=id)
@@ -304,6 +305,7 @@ class Proposal(Base):
         result = Session.query(Proposal).filter_by(id=id,status_id=1).one()
         return result
 
+    # TODO: add an optional filter for removing the signed in user's proposals
     @classmethod
     def find_next_proposal(cls, id, type_id, signed_in_person_id):
         withdrawn = ProposalStatus.find_by_name('Withdrawn')

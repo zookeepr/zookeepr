@@ -159,6 +159,14 @@ class ProposalController(BaseController):
         c.streams = Stream.find_all()
         c.proposal = Proposal.find_by_id(id)
         c.signed_in_person = h.signed_in_person()
+
+        # TODO: currently not enough (see TODOs in model/proposal.py)
+        #if not h.auth.authorized(h.auth.has_organiser_role):
+        #    # You can't review your own proposal
+        #    for person in c.proposal.people:
+        #        if person.id == c.signed_in_person.id:
+        #            h.auth.no_role()
+
         c.next_review_id = Proposal.find_next_proposal(c.proposal.id, c.proposal.type.id, c.signed_in_person.id)
 
         return render('/proposal/review.mako')
@@ -171,6 +179,13 @@ class ProposalController(BaseController):
         c.proposal = Proposal.find_by_id(id)
         c.signed_in_person = h.signed_in_person()
         c.next_review_id = Proposal.find_next_proposal(c.proposal.id, c.proposal.type.id, c.signed_in_person.id)
+
+        # TODO: currently not enough (see TODOs in model/proposal.py)
+        #if not h.auth.authorized(h.auth.has_organiser_role):
+        #    # You can't review your own proposal
+        #    for person in c.proposal.people:
+        #        if person.id == c.signed_in_person.id:
+        #            h.auth.no_role()
 
         person = c.signed_in_person
         if person in [ review.reviewer for review in c.proposal.reviews]:
@@ -314,7 +329,7 @@ class ProposalController(BaseController):
     @authorize(h.auth.has_reviewer_role)
     def summary(self):
         for pt in c.proposal_types:
-            stuff = Proposal.find_all_by_proposal_type_id(pt.id)
+            stuff = Proposal.find_all_by_proposal_type_id(pt.id, include_withdrawn=False)
             stuff.sort(self._score_sort)
             setattr(c, '%s_collection' % pt.name, stuff)
         for aat in c.accommodation_assistance_types:

@@ -74,6 +74,14 @@ class ReviewController(BaseController):
 
     def view(self, id):
         c.review = Review.find_by_id(id)
+
+        # TODO: currently not enough (see TODOs in model/proposal.py)
+        #if not h.auth.authorized(h.auth.has_organiser_role):
+        #    # You can't review your own proposal
+        #    for person in c.review.proposal.people:
+        #        if person.id == h.signed_in_person().id:
+        #            h.auth.no_role()
+
         if c.review is None:
             redirect_to(action='index')
 
