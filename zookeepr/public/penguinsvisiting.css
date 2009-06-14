@@ -231,6 +231,9 @@ h6 {
 .yellowbox ul li a.selected {
        color: #6e6c6c !important;
 }
+.yellowbox ul.indent {
+    margin-left: 10px !important;
+}
 .yellowbox .date {
 	font-size: .8em;
 	color: #6d6d6d;

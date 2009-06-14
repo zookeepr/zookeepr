@@ -2,12 +2,6 @@
 <%namespace file="reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
 <%def name="toolbox_extra()">
   ${ parent.toolbox_extra() }
-  <li>List of proposals by:</li>
-  <ul>
-    <li><a href="/admin/proposals_by_strong_rank">number of certain score / number of reviewers</a></li>
-    <li><a href="/admin/proposals_by_max_rank">max score, min score then average</a></li>
-    <li><a href="/admin/proposals_by_stream">stream and score</a></li>
-  </ul>
   ${ self.sidebar.toolbox_extra() }
 </%def>
 
