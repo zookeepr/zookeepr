@@ -1,3 +1,4 @@
+<%page args="editing" />
 % for st in c.proposal_types:
 %    if st.name != 'Miniconf':
 <%        continue %>
@@ -34,9 +35,13 @@
     <p class="entries">${ h.text('proposal.url', size=60) }</p>
     <p class="note">If your miniconf has a webpage, specify the URL here so the committee can find out more about your proposal.</p>
 
+% if not editing:
     <p class="label"><label for="attachment">Attach file:</label></p>
     <p class="entries">${ h.file('attachment', size=50) }</p>
     <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this proposal.</p>
+% else:
+    <p class="entries">${ h.link_to('Add an attachment', url=h.url_for(action='attach')) } ${ h.hidden('attachment', size=60) }<span class="note">You can attach multiple files by following this link.</span></p>
+% endif
 
     <h2>About yourself</h2>
 

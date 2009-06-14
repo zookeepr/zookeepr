@@ -9,9 +9,9 @@
 
 ${ h.form(h.url_for()) }
 %   if c.miniconf:
-        <%include file="form_mini.mako" />
+        <%include file="form_mini.mako" args="editing=True" />
 %   else:
-        <%include file="form.mako" />
+        <%include file="form.mako" args="editing=True" />
 %   endif
 
 <p class="submit">

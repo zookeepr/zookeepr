@@ -1,3 +1,4 @@
+<%page args="editing" />
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="proposal.title">Title:</label></p>
     <p class="entries">${ h.text('proposal.title', size=60) }</p>
     <p class="note">The name of your paper.</p>
@@ -43,7 +44,7 @@
     <p class="label"><label for="proposal.abstract_video_url">Video abstract:</label></p>
     <p class="entries">${ h.text('proposal.abstract_video_url', size=60) }</p>
     <p class="note">URL for a short "elevator pitch" (20s - 3min) video about your paper, your project or yourself (eg: YouTube link).</p>
-% if h.url_for().endswith('edit') is not True:
+% if not editing:
     <p class="label"><label for="attachment">Attach file:</label></p>
     <p class="entries">${ h.file('attachment', size=50) }</p>
     <p class="note">Any additional information, image, etc. You can attach and delete more files later by editing this submission.</p>
