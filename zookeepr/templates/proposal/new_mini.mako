@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Propose a Miniconf</h2>
+<h2>Submit a Miniconf</h2>
 <p>Please read the Miniconf organiser section in the <a href="${ h.url_for("/programme/presenter_faq") }">Presenter FAQ</a> before submitting a proposal.</p>
 
 ${ h.form(h.url_for(), multipart=True) }
