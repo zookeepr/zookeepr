@@ -90,11 +90,11 @@ class DbContentController(BaseController):
         url = h.url_for()
         if url[0]=='/': url=url[1:]
         c.db_content = DbContent.find_by_url(url, abort_404=False)
-        if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
-           c.db_content = None
-           return NotFoundController().view()
         if c.db_content is not None:
-            return self.view(c.db_content.id)
+           if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
+              c.db_content = None
+              return NotFoundController().view()
+           return self.view(c.db_content.id)
         return NotFoundController().view()
 
     @authorize(h.auth.has_organiser_role)
