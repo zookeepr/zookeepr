@@ -34,10 +34,10 @@ class AttachmentController(BaseController):
         c.attachment = Attachment.find_by_id(id)
         c.proposal = Proposal.find_by_id(c.attachment.proposal_id)
         
-        if not h.auth.has_organiser_role:
+        if not h.auth.authorized(h.auth.has_organiser_role):
             authorized = False
             for person in c.proposal.people:
-                if h.auth.is_same_zookeepr_user(person.id):
+                if person.id == h.signed_in_person().id:
                     authorized = True
                     break
             if not authorized:
@@ -51,10 +51,10 @@ class AttachmentController(BaseController):
         c.attachment = Attachment.find_by_id(id)
         proposal = Proposal.find_by_id(c.attachment.proposal_id)
 
-        if not h.auth.has_organiser_role:
+        if not h.auth.authorized(h.auth.has_organiser_role):
             authorized = False
             for person in proposal.people:
-                if h.auth.is_same_zookeepr_user(person.id):
+                if person.id == h.signed_in_person().id:
                     authorized = True
                     break
             if not authorized:
@@ -71,7 +71,7 @@ class AttachmentController(BaseController):
         attachment = Attachment.find_by_id(id)
         proposal = Proposal.find_by_id(attachment.proposal_id)
 
-        if not h.auth.has_organiser_role:
+        if not h.auth.authorized(h.auth.has_organiser_role):
             authorized = False
             for person in proposal.people:
                 if h.auth.is_same_zookeepr_user(person.id):

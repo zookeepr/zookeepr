@@ -58,7 +58,7 @@ class FileUploadValidator(validators.FancyValidator):
         if isinstance(value, cgi.FieldStorage):
             filename = value.filename
             content = value.value
-        elif isinstance(value, str):
+        elif isinstance(value, unicode) or isinstance(value, str):
             filename = None
             content = value
         if len(content) > 3000000: #This is not the right place to validate it, but at least it is validated...
