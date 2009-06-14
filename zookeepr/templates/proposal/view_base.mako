@@ -29,9 +29,11 @@
 
 
 % if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
+%     if c.paper_editing == 'open':
 <ul><li>
 ${ h.link_to('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }
 </li></ul>
+%     endif
 % endif
 
 
