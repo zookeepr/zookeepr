@@ -15,7 +15,7 @@ from zookeepr.lib.validators import BaseSchema
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.model import meta, Person
+from zookeepr.model import meta, Person, Product
 
 from zookeepr.config.lca_info import lca_info, lca_rego
 
@@ -117,7 +117,7 @@ class AdminController(BaseController):
             c.text = '<a name="%s"></a>' % s
             c.text += '<h2>%s</h2>' % s
             c.data = sect[s]
-            sect_text += render('admin/table.mako')
+            sect_text += render('admin/table_fragment.mako')
 
         c.text = text
         c.sect_text = sect_text

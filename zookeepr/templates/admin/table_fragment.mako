@@ -1,4 +1,3 @@
-<%inherit file="/base.mako" />
 <%
     rows = 0
 %>
@@ -25,8 +24,5 @@
 % endfor
 </table>
 <br>
-<p>(${ rows |h } rows)</p>
-<p>${ h.link_to("Back to admin list", h.url_for(controller='admin')) }</p>
-
 
 
