@@ -110,6 +110,9 @@ h6 {
 	margin: 100px 7px 0 0;
 	float: right;
 }
+#main_menu #primarynav ul {
+	float: right;
+}
 #main_menu #primarynav li {
 	list-style-type: none;
 	display: block;
