@@ -4,6 +4,7 @@
 %    endif
 <div>
 <input type="hidden" name="proposal.type" value="${ st.id }" />
+<input type="hidden" name="proposal.technical_requirements" value="" />
 <input type="hidden" name="proposal.accommodation_assistance" value="1" />
 <input type="hidden" name="proposal.travel_assistance" value="1" />
 <input type="hidden" name="proposal.video_release" value="0" />
