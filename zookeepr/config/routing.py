@@ -37,6 +37,10 @@ def make_map():
     # Schedule
     map.connect('/schedule/{day}', controller='schedule', day=None)
 
+    # Proposal submission
+    map.connect('/programme/submit_a_miniconf', controller='miniconf_proposal', action='new')
+    map.connect('/programme/submit_a_paper',    controller='proposal', action='new')
+
     # Review
     map.connect('/proposal/review_index', controller='proposal', action='review_index')
     map.connect('/proposal/summary',      controller='proposal', action='summary')
