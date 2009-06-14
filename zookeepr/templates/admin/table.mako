@@ -12,8 +12,7 @@
 </tr>
 
 % for row in c.data:
-  <tr class="${ rows % 2 == 0 and "odd" or "even" }">
-    <% rows += 1 %>
+  <tr class="${ h.cycle('even', 'odd') }">
 %   for item in row:
 %     if c.noescape:
         <td class="list">${ item | n}</td>
