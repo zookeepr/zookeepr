@@ -1,4 +1,5 @@
 <%def name="toolbox_extra()">
+  <li><em>Reviewer</em></li>
   <li><a href="/review/help">How to review</a></li>
   <li>${ h.link_to('Review proposals', url=h.url_for(controller='proposal', action='review_index')) }</li>
   <li>${ h.link_to('Your reviews', url=h.url_for(controller='review', action='index')) }</li>
