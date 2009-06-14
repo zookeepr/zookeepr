@@ -75,11 +75,13 @@ class PersonController(BaseController): #Read, Update, List
 
         redirect_to('home')
 
-    def signout_confirm(self):
+    def signout_confirm(self, id=None):
         """ Confirm user wants to sign out
         """
-        return render('/person/signout.mako')
+        if id is not None:
+            redirect_to(action='signout_confirm', id=None)
 
+        return render('/person/signout.mako')
 
     def signout(self):
         """ Sign the user out
