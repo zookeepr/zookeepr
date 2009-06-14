@@ -105,17 +105,18 @@ class ProposalController(BaseController):
         elif c.cfp_status == 'not_open':
            return render("proposal/not_open.mako")
 
+        c.person = h.signed_in_person()
+
         defaults = {
             'proposal.type': 1,
             'proposal.video_release': 1,
             'proposal.slides_release': 1,
+            'proposal.travel_assistance' : 1,
+            'proposal.accommodation_assistance' : 1,
+            'person.mobile': c.person.mobile,
+            'person.experience': c.person.experience,
+            'person.bio': c.person.bio,
         }
-
-        c.person = h.signed_in_person()
-        defaults['person.mobile'] = c.person.mobile
-        defaults['person.experience'] = c.person.experience
-        defaults['person.bio'] = c.person.bio
-
         form = render("proposal/new.mako")
         return htmlfill.render(form, defaults)
 
