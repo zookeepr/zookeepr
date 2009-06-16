@@ -688,7 +688,12 @@ tt {
 
 #flash .message-error
 {
-    background: #ff9999 url('/images/icons/emblem-personal.png') no-repeat 10px 50%;
+    background: #ff9999 url('/images/icons/dialog-error.png') no-repeat 10px 50%;
+}
+
+#flash .message-warning
+{
+    background: #ffcc88 url('/images/icons/dialog-warning.png') no-repeat 10px 50%;
 }
 
 .message_degrade
