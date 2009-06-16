@@ -90,7 +90,7 @@
               <li><em>Organiser</em></li>
               <li>${ h.link_to('Admin', url=h.url_for(controller='admin')) }</li>
               <li>${ h.link_to('New page', url=h.url_for(controller='db_content', action='new')) }</li>
-%   if c.db_content and not h.url_for().endswith('edit'):
+%   if c.db_content and not h.url_for().endswith('/edit'):
              <li>${ h.link_to('Edit page', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
 %   endif
 % endif
