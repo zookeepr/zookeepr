@@ -84,6 +84,8 @@ class DbContentController(BaseController):
         if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
            c.db_content = None
            return NotFoundController().view()
+        elif not c.db_content.published:
+           h.flash("This content is marked as unpublished and is only viewable by organisers.", 'Warning')
         return render('/db_content/view.mako')
 
     def page(self):
