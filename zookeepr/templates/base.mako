@@ -56,7 +56,7 @@
 % else:
     <%include file="/leftcol/contents.mako" />
 % endif
-<%include file="/leftcol/toolbox.mako" args="toolbox_extra=self.toolbox_extra()" />
+<%include file="/leftcol/toolbox.mako" args="toolbox_extra=self.toolbox_extra" />
 % if h.url_for() != '/':
     <%include file="/leftcol/top_sponsors.mako" />
 % endif
