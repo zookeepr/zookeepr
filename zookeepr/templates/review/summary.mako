@@ -1,5 +1,5 @@
 <%inherit file="/base.mako" />
-<%namespace file="../proposal/reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<%namespace file="/leftcol/reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
 <%def name="toolbox_extra()">
   ${ parent.toolbox_extra() }
   ${ self.sidebar.toolbox_extra() }

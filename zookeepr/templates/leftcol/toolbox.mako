@@ -1,3 +1,4 @@
+<%page args="toolbox_extra"/>
 <%
     url = h.url_for()
     # Hack for schedule url
@@ -35,7 +36,7 @@
              <li>${ h.link_to('Edit page', url=h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }</li>
 %   endif
 % endif
-##${self.toolbox_extra()}
+${ toolbox_extra }
 % if h.signed_in_person():
              <li><em>${ h.signed_in_person().firstname }</em></li>
 %   if h.lca_info["cfp_status"] == 'open':
