@@ -321,6 +321,9 @@ table {
        border-spacing: 0;
        margin:10px auto 15px 15px;
 }
+th {
+       padding:0.5em 1em;
+}
 td {
        background-color:#FFFFFF;
        border-bottom:2px solid #d7e7f0;
