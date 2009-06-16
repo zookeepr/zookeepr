@@ -709,3 +709,7 @@ p.warningbox {
 .invoice_invalid {
 	background: url(invalid.png);
 }
+
+fieldset {
+    padding: 1em;
+}
