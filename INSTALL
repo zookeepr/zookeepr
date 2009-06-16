@@ -63,7 +63,8 @@ To allow the generation of key fingerprint pages you will need to install the fo
 paster serve --reload -v config.ini
 
 ====== Administering Zookeepr ======
- - First create a new user by going to /person/new
- - Then add that user to the organiser role by inserting the corresponding user and role into person_role_map
-   This is usually person_id 1 and role_id 2 by default
- - You can then find most of the administration tools in /admin
+ - A default admin account exists with the following credentials:
+   email:    admin@zookeepr.org
+   password: password
+ - By visiting http://127.0.0.1:5000/admin you will be prompted to log in and redirected to the administration hub.
+ - Be sure to update/delete this user before deploying!
