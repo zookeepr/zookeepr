@@ -8,6 +8,8 @@ being an LTS release we felt that this would be a good platform to deploy on.
 
 ====== Dependencies ======
 
+// Fixme: I think with pylons 0.7 as we are using the go-pylons script we don't need all these deps...
+
 aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
     python-libxml2 python-xsltproc python-setuptools python-dnspython python-cheetah \
     python-psycopg2 miscfiles pwgen python-myghty
@@ -29,26 +31,27 @@ For Debian Lenny, you must downgrade these packages:
 You need to follow these steps for PDF generation to work:
 
  - Install Deps:
-    aptitude install inkscape
+     * aptitude install inkscape
 
 ====== Keysigning code ======
 
 To allow the generation of key fingerprint pages you will need to install the following packages:
- * gnupg
- * mpage
- * ghostscript
+ * aptitude install gnupg mpage ghostscript
 
 ====== Installing and setting up Zookeepr ======
 
- - To run as a user
-   * export PYTHONPATH=`pwd`/lib/python2.6/site-packages
-   * mkdir -p $PYTHONPATH
-   * python setup.py develop  --prefix `pwd` --no-deps
+ - Install latest pylons in a development directory:
+     * mkdir pylons && cd pylons
+     * wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
+     * python go-pylons.py ./
+     * alias pylons="source `pwd`/bin/activate"
+ 
+ - Change directories into zookeepr (Where this INSTALL file is):
+    * pylons
+    * python setup.py develop
 
- - Add this (zookeepr) directory to the PYTHONPATH so that sitecustomize.py is accessible.
-   * export PYTHONPATH=$PYTHONPATH:`pwd`
-
- - Make a config file as follows: "paster make-config zookeepr config.ini"
+ - Make a config file as follows (you may skip this step and use the supplied development.ini):
+     paster make-config zookeepr config.ini
 
  - Tweak config.ini file as appropriate 
      - Set up dburi to something appropriate (possibly sqlite:/// or a postgre setup).
