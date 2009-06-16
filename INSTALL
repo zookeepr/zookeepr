@@ -41,7 +41,7 @@ To allow the generation of key fingerprint pages you will need to install the fo
 ====== Installing and setting up Zookeepr ======
 
  - To run as a user
-   * export PYTHONPATH=`pwd`/lib/python2.5/site-packages
+   * export PYTHONPATH=`pwd`/lib/python2.6/site-packages
    * mkdir -p $PYTHONPATH
    * python setup.py develop  --prefix `pwd` --no-deps
 
