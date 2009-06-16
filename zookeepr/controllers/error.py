@@ -6,7 +6,7 @@ from pylons.controllers.util import forward
 from pylons.middleware import error_document_template
 from webhelpers.html.builder import literal
 
-from zookeepr.lib.base import BaseController
+from zookeepr.lib.base import BaseController, render
 
 class ErrorController(BaseController):
 
@@ -23,13 +23,16 @@ class ErrorController(BaseController):
     def document(self):
         """Render the error document"""
         resp = request.environ.get('pylons.original_response')
-        content = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
-        page = error_document_template % \
-            dict(prefix=request.environ.get('SCRIPT_NAME', ''),
-                 code=cgi.escape(request.GET.get('code', str(resp.status_int))),
-                 message=content)
-        return page
-
+        try:
+            return render('/error/%s.mako'%resp.status_int)
+        except:
+            content = literal(resp.body) or cgi.escape(request.GET.get('message', ''))
+            page = error_document_template % \
+                dict(prefix=request.environ.get('SCRIPT_NAME', ''),
+                     code=cgi.escape(request.GET.get('code', str(resp.status_int))),
+                     message=content)
+            return page
+    
     def img(self, id):
         """Serve Pylons' stock images"""
         return self._serve_file('/'.join(['media/img', id]))
