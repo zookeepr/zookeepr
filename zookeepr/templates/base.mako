@@ -19,7 +19,7 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
-  <script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.3/jquery.min.js"></script>          
+  <script type="text/javascript" src="/public/jquery.min.js"></script>          
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
