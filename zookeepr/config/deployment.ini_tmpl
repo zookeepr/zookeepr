@@ -47,6 +47,7 @@ sqlalchemy.url = sqlite:///%(here)s/development.db
 
 # Configure authentication
 authkit.setup.method = form, cookie
+authkit.form.action = /person/signup
 authkit.form.authenticate.user.data = visitor:open_sesame
 authkit.cookie.secret = secret string
 authkit.cookie.enforce = True
