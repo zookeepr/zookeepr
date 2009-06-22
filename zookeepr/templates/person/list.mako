@@ -35,3 +35,8 @@
 % endfor
 </table>
 
+<%def name="title()">
+People -
+ ${ parent.title() }
+</%def>
+
