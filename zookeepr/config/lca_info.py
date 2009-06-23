@@ -151,7 +151,7 @@ lca_submenus = {
   'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
-  'programme': ['About', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
+  'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
   #'programme': ['About', 'Miniconf Info', 'Paper Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
   #'programme': ['About', 'Miniconfs','Schedule','Official social events','Open day'], # stage 3
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
