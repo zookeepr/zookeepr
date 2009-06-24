@@ -52,7 +52,7 @@ ${ toolbox_extra() }
              <li> <a href="${h.url_for(controller='person', action='signout_confirm')}" ${ cls('login') |n}>Sign out</a></li>
 % else:
              <li>${ h.link_to('Sign up', url=h.url_for(controller='person', action='new')) }</li>
-             <li>${ h.link_to('Sign up', url=h.url_for(controller='person', action='signin')) }</li>
+             <li>${ h.link_to('Sign in', url=h.url_for(controller='person', action='signin')) }</li>
 % endif
             </ul>
 % if h.signed_in_person():
