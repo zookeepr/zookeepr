@@ -17,6 +17,15 @@ if h3.__len__() > 0:
 <p class="submitted">
 Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n }
 </p>
+div style="float: right; vertical-align: middle">
+    <script type="text/javascript">
+    digg_bgcolor = '#FFFFFF';
+    digg_title = '${ d.title } - ${ parent.title() }';
+    digg_url = '${ h.lca_info['event_permalink'] }${ h.url_for(action='view', id=d.id) }';
+    </script>
+    <script src="/js/diggthis.js" type="text/javascript"></script>
+<a style="vertical-align:top;" href="http://delicious.com/save" onclick="window.open('http://delicious.com/save?v=5&amp;noui&amp;jump=close&amp;url='+encodeURIComponent(${ h.lca_info["event_permalink"]}${h.url_for(action='view', id=d.id)})+'&amp;title='+encodeURIComponent(${ d.title } - ${ parent.title() }), 'delicious','toolbar=no,width=550,height=550'); return false;"><img style="vertical-align: top; padding-right: 5px" src="/images/delicious.small.gif" height="10" width="10" alt="Delicious" />Delicious</a>
+</div>
 % endif
 
 
