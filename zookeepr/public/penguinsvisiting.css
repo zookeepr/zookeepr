@@ -716,3 +716,7 @@ p.warningbox {
 fieldset {
     padding: 1em;
 }
+
+.bookmark_submit a {
+  padding-right: 5px;
+}

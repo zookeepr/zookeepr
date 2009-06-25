@@ -1,9 +1,11 @@
+<%namespace file="../bookmark_submit.mako" name="bookmark_submit" inheritable="True"/>
 <%page args="toolbox_extra"/>
 <%def name="toolbox_extra_reviewer()">
     ## Defined in children
 </%def>
 <%
     this_url = h.url_for()
+    url=h.lca_info["event_permalink"] + this_url
 %>
 <%def name="make_link(title, url)">
 <%
@@ -66,16 +68,10 @@ ${ toolbox_extra() }
       ${ make_link('Sign up', h.url_for(controller='person', action='new')) }
 % endif
     </ul>
-% if not c.db_content.is_news():
-    <div>
-    <script type="text/javascript">
-    digg_bgcolor = '#F8F3E3';
-    digg_skin = 'compact';
-    digg_url = '${ h.lca_info["event_permalink"]}${h.url_for()}';
-    </script>
-    <script src="/js/diggthis.js" type="text/javascript"></script>
-<a style="vertical-align:top;" href="http://delicious.com/save" onclick="window.open('http://delicious.com/save?v=5&amp;noui&amp;jump=close&amp;url='+encodeURIComponent(${ h.lca_info["event_permalink"]}${h.url_for()})+'&amp;title='+encodeURIComponent(document.title), 'delicious','toolbar=no,width=550,height=550'); return false;"><img style="vertical-align: top; padding-right: 5px" src="/images/delicious.small.gif" height="10" width="10" alt="Delicious" />Delicious</a>
-    </div>
+% if not c.db_content or not c.db_content.is_news():
+<div style="text-align:center;">
+${ bookmark_submit.bookmark_submit(url) }
+</div>
 % endif
 % if h.signed_in_person():
     <p class = 'more'>${h.signed_in_person().email_address}</p>
