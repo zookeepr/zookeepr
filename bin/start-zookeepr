@@ -2,6 +2,8 @@
 
 cd $(dirname $0)/..
 
+source ../pylons-0.9.7/bin/activate
+
 # Let sitecustomise.py override the default.
 export PYTHONPATH=$(pwd):$PYTHONPATH
 

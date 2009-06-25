@@ -1,7 +1,5 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<%def name="title()">
-  ${ h.lca_info["event_byline"] }
-</%def>
+<%def name="title()">${ h.lca_info["event_byline"] }</%def>
 <%def name="extra_head()">
     ## Defined in children
 </%def>
