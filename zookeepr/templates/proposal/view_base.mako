@@ -1,19 +1,15 @@
 <%inherit file="/base.mako" />
-<%namespace file="/leftcol/reviewer_sidebar.mako" name="sidebar" inheritable="True"/>
+<% c.signed_in_person = h.signed_in_person() %>
 <%def name="toolbox_extra()">
-  ${ parent.toolbox_extra() }
-  <% c.signed_in_person = h.signed_in_person() %>
-%   if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
+%   if c.signed_in_person in c.proposal.people or h.auth.authorized(h.auth.has_organiser_role):
   <li>${ h.link_to('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }</li>
+% endif 
 
-  ## Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
-%     if 'reviewer' in [x.name for x in c.signed_in_person.roles]:
-%       if h.url_for().endswith('review') is not True and h.url_for().endswith('edit') is not True:
+<%def name="toolbox_extra_reviewer()">
+## Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
+% if h.url_for().endswith('review') is not True and h.url_for().endswith('edit') is not True:
   <li>${ h.link_to('Review this proposal', url=h.url_for(action='review')) }</li>
-%       endif
-    ${ self.sidebar.toolbox_extra() }
-%     endif
-%   endif
+% endif
 </%def>
 
 <%def name="heading()">
