@@ -16,12 +16,12 @@ if h3.__len__() > 0:
 <h2>${ c.db_content.title }</h2>
 
 % if c.db_content.is_news():
-<p class="submitted">
-Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n }
-</p>
 <div style="float: right;">
 ${ bookmark_submit.bookmark_submit(url) }
 </div>
+<p class="submitted">
+Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n }
+</p>
 % endif
 
 

@@ -8,15 +8,15 @@
 
 % for d in c.db_content_collection:
 <h2>${ h.link_to(d.title, url=h.url_for(action="view", id=d.id)) }</h2>
-<p class="submitted">
-Submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
-</p>
 <div style="float: right;">
 <%
     url=h.lca_info["event_permalink"] + h.url_for(action="view", id=d.id)
 %>
 ${ bookmark_submit.bookmark_submit(url) }
 </div>
+<p class="submitted">
+Submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
+</p>
 <% (teaser, read_more) = h.make_teaser(d.body) %>
 ${ teaser |n}
 %   if read_more:
