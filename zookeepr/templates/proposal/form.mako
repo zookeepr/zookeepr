@@ -21,7 +21,7 @@
 
     <p class="label"><label for="proposal.technical_requirements">Non-standard technical requirements:</label></p>
     <p class="entries">${ h.textarea('proposal.technical_requirements', cols=70, rows=3) }</p>
-    <p class="note">If you require <b>Internet access</b>, a <b>static IP address</b>, special A/V equipment or will be demonstrating <b>security-related techniques</b> on the conference network, please list them here.</p>
+    <p class="note">Speakers will be provided with: Internet access, power, projector, audio.  If you require anything in addition, please list your technical requirements here.  Such as: a static IP address, A/V equipment or will be demonstrating security-related techniques on the conference network.</p>
 
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
@@ -52,7 +52,7 @@
     <p class="entries">${ h.link_to('Add an attachment', url=h.url_for(action='attach')) } ${ h.hidden('attachment', size=60) }<span class="note">You can attach multiple files by following this link.</span></p>
 % endif
 
-    <p class="label"><label>Travel &amp; Accommodation Assistance:</label></p>
+    <h2>Travel &amp; Accommodation Assistance</h2>
     <p class="note" style="margin-top: 0em">linux.conf.au has some funds available to provide travel and accommodation for selected speakers, both from the local region and internationally.</p>
 
     <p class="note" style="margin-top: 0em">Please note that <b>free admission</b> to the full conference is awarded to all primary speakers.</p>
