@@ -16,9 +16,9 @@ for d in c.db_content_news_all:
 		<h1>linux.conf.au 2010 in Wellington, New Zealand!</h1>
 
 		<p>linux.conf.au is one of the world's best conferences for free and open source software!</p>
-		<p>Now in its 11th year, linux.conf.au attracts some of the brightest minds from the southern and northern hemisphere – a major annual event in the conference calendar.</p>
-		<p>In January 2010 from the 18th till the 23rd, linux.conf.au will be visiting Wellington, New Zealand, home of the little blue penguin or Kororā as they are called in Māori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?</p>
-		<p>linux.conf.au is run by the community, for the community – much in the same way that the community has made Linux, and the whole free and open source movement the phenomenon it is today.</p>
+		<p>Now in its <a href="/about/history">11th year</a>, linux.conf.au attracts some of the brightest minds from the southern and northern hemisphere – a major annual event in the conference calendar.</p>
+		<p>LCA2010 will be held from Monday 18 January to Friday 23 January 2010 at the <a href="/about/venue">Wellington Convention Centre</a> in <a href="/wellington/about">Wellington</a>, <a href="/about/new_zealand">New Zealand</a>, home of the little blue penguin or Kororā as they are called in Māori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?</p>
+		<p><a href="/about/linux.conf.au">linux.conf.au</a> is run by the community, for the community – much in the same way that the community has made <a href="/about/linux_open_source">Linux</a>, and the whole <a href="/about/linux_open_source">free and open source</a> movement the phenomenon it is today.</p>
 		<p>Subscribe to our <a href="/media/news/rss">news feed</a> to stay up to date with announcements, as we prepare to host the best <a href="http://linux.conf.au/">linux.conf.au</a> yet!</p>
 
 
