@@ -35,7 +35,7 @@ lca_info = {
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'not_open',
+  'cfp_status' : 'open',
   'cfmini_status' : 'open',
   'paper_editing' : 'not_open',
   'conference_status': 'not_open',
@@ -152,8 +152,8 @@ lca_submenus = {
   'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
-  'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
-  #'programme': ['About', 'Miniconf Info', 'Paper Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
+  #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
+  'programme': ['About', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
   #'programme': ['About', 'Miniconfs','Schedule','Official social events','Open day'], # stage 3
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
   'media': ['News','In the press']
