@@ -42,7 +42,8 @@ lca_info = {
 
   'emails': {
      'presentation' : 'speakers@lca2010.org.nz',
-     'tutorial'     : 'speakers@lca2010.org.nz',
+     'tutorial - 1 hour and 45 minutes'     : 'speakers@lca2010.org.nz',
+     'tutorial - 3 hours and 30 minutes'    : 'speakers@lca2010.org.nz',
      'miniconf'     : 'miniconfs@lca2010.org.nz',
   },
 
