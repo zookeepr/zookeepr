@@ -3,6 +3,9 @@
 <%def name="toolbox_extra_reviewer()">
     ## Defined in children
 </%def>
+<%def name="toolbox_extra_admin()">
+    ## Defined in children
+</%def>
 <%
     this_url = h.url_for()
     url=h.lca_info["event_permalink"] + this_url
@@ -32,6 +35,7 @@
 %   if c.db_content and not h.url_for().endswith('/edit'):
       ${ make_link('Edit page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
 %   endif
+${ toolbox_extra_admin() }
 % endif
 % if h.auth.authorized(h.auth.has_reviewer_role):
       <li><em>Reviewer</em></li>
@@ -64,8 +68,8 @@ ${ toolbox_extra() }
       ${ make_link('My profile', h.url_for(controller='person', action='view', id=h.signed_in_person().id)) }
       ${ make_link('Sign out', h.url_for(controller='person', action='signout_confirm')) }
 % else:
-      ${ make_link('Sign in', h.url_for(controller='person', action='signin')) }
-      ${ make_link('Sign up', h.url_for(controller='person', action='new')) }
+      ${ make_link('Sign in', "/person/signin") }
+      ${ make_link('Sign up', "/person/new") }
 % endif
     </ul>
 % if not c.db_content or not c.db_content.is_news():
