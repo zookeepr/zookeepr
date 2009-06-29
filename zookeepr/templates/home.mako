@@ -1,3 +1,4 @@
+## -- coding: utf-8 --
 <%inherit file="/base.mako" />
 <%
 featured = []
@@ -10,16 +11,48 @@ for d in c.db_content_news_all:
 %>
 
 
-## -- coding: utf-8 --
-		<!-- <img src = '/images/heightfix.png' class = 'heightfix' alt = ''> -->
+<!-- <img src = '/images/heightfix.png' class = 'heightfix' alt = ''> -->
 
-		<h1>linux.conf.au 2010 in Wellington, New Zealand!</h1>
+<h1>linux.conf.au 2010 in Wellington, New Zealand!</h1>
 
-		<p>linux.conf.au is one of the world's best conferences for free and open source software!</p>
-		<p>Now in its <a href="/about/history">11th year</a>, linux.conf.au attracts some of the brightest minds from the southern and northern hemisphere – a major annual event in the conference calendar.</p>
-		<p>LCA2010 will be held from Monday 18 January to Friday 23 January 2010 at the <a href="/about/venue">Wellington Convention Centre</a> in <a href="/wellington/about">Wellington</a>, <a href="/about/new_zealand">New Zealand</a>, home of the little blue penguin or Kororā as they are called in Māori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?</p>
-		<p><a href="/about/linux.conf.au">linux.conf.au</a> is run by the community, for the community – much in the same way that the community has made <a href="/about/linux_open_source">Linux</a>, and the whole <a href="/about/linux_open_source">free and open source</a> movement the phenomenon it is today.</p>
-		<p>Subscribe to our <a href="/media/news/rss">news feed</a> to stay up to date with announcements, as we prepare to host the best <a href="http://linux.conf.au/">linux.conf.au</a> yet!</p>
+<p>linux.conf.au is one of the world's best conferences for free and open source software!</p>
+<p>LCA2010 will be held from Monday 18 January to Friday 23 January 2010 at the <a href="/about/venue">Wellington Convention Centre</a> in <a href="/wellington/about">Wellington</a>, <a href="/about/new_zealand">New Zealand</a>, home of the little blue penguin or Kororā as they are called in Māori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?</p>
+<p>Subscribe to our <a href="/media/news/rss">news feed</a> to stay up to date with announcements, as we prepare to host the best <a href="about/linux.conf.au">linux.conf.au</a> yet!</p>
+
+<h1>linux.conf.au 2010 Current Happenings</h1>
+
+<h2>Call for Papers</h2>
+<p>Monday 29 June 2009 – Call for Papers are now open! The LCA2010 Papers Committee is looking for a broad range of papers spanning everything from programming and software to desktop and userspace to community, government and education.  
+If you would like to take this opportunity to submit a Paper to LCA2010, please visit <a href="programme/papers_info">Papers Info</a> for more information before <a href="programme/submit_a_paper">Submitting a Paper</a>.</p>
+
+<table>
+<tr class="odd">
+  <td>Call for Papers opens</td><td>Monday 29 June 2009</td>
+</tr>
+<tr class="even">
+  <td>Call for Papers closes</td><td>Friday 24 July 2009</td>
+</tr>
+<tr class="odd">
+  <td>Papers Notifcations</td><td>Early September 2009</td>
+</tr>
+</table>
+
+<h2>Call for Miniconfs</h2>
+
+<p>Monday 15 June 2009 – Call for Miniconfs are now open!. LCA2010 provides the opportunity of hosting 1-day mini-conferences on a variety of Free Software related subjects; from Linux and the BSDs to OpenOffice.org, from networking to audio-visual magic, from deep hacks to Creative Commons.  
+If you would like to take this opportunity to submit a Miniconf to LCA2010, please visit <a href="programme/miniconf_info">Miniconf Info</a> for more information before <a href="programme/submit_a_miniconf">Submitting a Miniconf</a>.</p>
+
+<table>
+<tr class="odd">
+  <td>Call for Miniconfs opens</td><td>Monday 15 June 2009</td>
+</tr>
+<tr class="even">
+  <td>Call for Miniconfs closes</td><td>Friday 17 July 2009</td>
+</tr>
+<tr class="odd">
+  <td>Miniconf Notifications</td><td>Early September 2009</td>
+</tr>
+</table>
 
 
 <%def name="big_promotion()">
