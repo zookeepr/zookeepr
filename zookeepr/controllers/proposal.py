@@ -116,6 +116,7 @@ class ProposalController(BaseController):
             'person.mobile': c.person.mobile,
             'person.experience': c.person.experience,
             'person.bio': c.person.bio,
+            'person.url': c.person.url,
         }
         form = render("proposal/new.mako")
         return htmlfill.render(form, defaults)
