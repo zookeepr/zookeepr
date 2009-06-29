@@ -29,7 +29,7 @@
 	endfor
 %>
 
-<h2>${ pt.name }s (${ len(collection) })</h2>
+<h2>${ pt.name } proposals (${ len(collection) })</h2>
 
 <table class="list">
 
