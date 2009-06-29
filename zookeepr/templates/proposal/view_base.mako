@@ -4,6 +4,7 @@
 %   if c.signed_in_person in c.proposal.people or h.auth.authorized(h.auth.has_organiser_role):
   <li>${ h.link_to('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }</li>
 % endif 
+</%def>
 
 <%def name="toolbox_extra_reviewer()">
 ## Add review link if the signed in person is a reviewer, but not if they've already reviewed this proposal
