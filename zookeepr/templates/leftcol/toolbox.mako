@@ -40,7 +40,7 @@ ${ toolbox_extra_admin() }
 % if h.auth.authorized(h.auth.has_reviewer_role):
       <li><em>Reviewer</em></li>
 ${ toolbox_extra_reviewer() }
-      ${ make_link('How to review', '/review/help') }
+      ${ make_link('How to review', '/help/review') }
       ${ make_link('Review proposals', h.url_for(controller='proposal', action='review_index')) }
       ${ make_link('Your reviews', h.url_for(controller='review', action='index')) }
       ${ make_link('Summary of proposals', h.url_for(controller='proposal', action='summary')) }
