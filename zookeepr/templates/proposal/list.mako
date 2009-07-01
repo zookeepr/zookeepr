@@ -25,7 +25,7 @@
 %  endif
 <p>Below is a list of proposals you have submitted. To view one click on the title; or to edit, click on the edit link.</p>
 <table>
-  <tr>
+  <tr class="odd">
     <th>Title</th>
     <th>Proposal Type</th>
     <th>Abstract</th>
