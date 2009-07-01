@@ -27,7 +27,7 @@
 
 
 <%def name="title()">
-Profile -
+Roles -
 ${ c.person.firstname |h } ${ c.person.lastname |h } - 
 Roles
 ${ parent.title() }
