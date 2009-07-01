@@ -31,6 +31,9 @@ ${ d.url |h}, submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
 </p>
 % endif
 
+<%def name="short_title()"><%
+  return "In the press"
+%></%def>
 <%def name="title()">
 In the press -
  ${ parent.title() }

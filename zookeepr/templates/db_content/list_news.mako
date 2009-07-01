@@ -35,6 +35,9 @@ ${ teaser |n}
 </p>
 % endif
 
+<%def name="short_title()"><%
+  return "News"
+%></%def>
 <%def name="title()">
 News -
  ${ parent.title() }

@@ -94,3 +94,7 @@ If you would like to take this opportunity to submit a Miniconf to LCA2010, plea
 %    endif
 % endfor
 </%def>
+
+<%def name="short_title()"><%
+  return "Homepage"
+%></%def>
