@@ -22,6 +22,7 @@ lca_info = {
   'event_shortname' : 'lca2010',
   'event_url' : 'http://www.lca2010.org.nz',
   'event_permalink' : 'http://lca2010.linux.org.au',
+  'event_hashtag' : '#LCA2010',
 #  'event_tax_number' : 'ABN 56 987 117 479',
  'event_tax_number' : 'NZ GST #90-792-369',
   'event_postal_address' : 'PO Box 11-682, Manners St, Wellington, NEW ZEALAND 6142',

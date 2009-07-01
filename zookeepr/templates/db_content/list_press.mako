@@ -10,7 +10,7 @@
 %for d in c.db_content_collection:
 <h3>${ h.link_to(d.title, url=d.url) }</h3>
 <div style="float: right">
-${ bookmark_submit.bookmark_submit(d.url) }
+${ bookmark_submit.bookmark_submit(d.url, d.title) }
 </div>
 <p class="submitted">
 ${ d.url |h}, submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }

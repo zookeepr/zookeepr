@@ -12,7 +12,7 @@
 <%
     url=h.lca_info["event_permalink"] + h.url_for(action="view", id=d.id)
 %>
-${ bookmark_submit.bookmark_submit(url) }
+${ bookmark_submit.bookmark_submit(url, d.title) }
 </div>
 <p class="submitted">
 Submitted on ${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }
