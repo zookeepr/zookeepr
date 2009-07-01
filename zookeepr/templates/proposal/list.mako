@@ -118,6 +118,10 @@ ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw',
 %  endif
 </ul></p>
 
+<%def name="short_title()"><%
+  return 'My Proposals'
+%>
+</%def>
 <%def name="title()">
 Proposals - ${ parent.title() }
 </%def>

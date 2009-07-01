@@ -1,5 +1,8 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%def name="title()">${ h.lca_info["event_byline"] }</%def>
+<%def name="short_title()">
+   ## Defined in children
+</%def>
 <%def name="extra_head()">
     ## Defined in children
 </%def>
@@ -9,6 +12,13 @@
 <%def name="toolbox_extra()">
     ## Defined in children
 </%def>
+<%def name="toolbox_extra_admin()">
+    ## Defined in children
+</%def>
+<%def name="toolbox_extra_reviewer()">
+    ## Defined in children
+</%def>
+
 
 <html lang="en-us">
 <head>
@@ -54,7 +64,7 @@
 % else:
     <%include file="/leftcol/contents.mako" />
 % endif
-<%include file="/leftcol/toolbox.mako" args="toolbox_extra=self.toolbox_extra" />
+<%include file="/leftcol/toolbox.mako" args="parent=self" />
 % if h.url_for() != '/':
     <%include file="/leftcol/top_sponsors.mako" />
 % endif

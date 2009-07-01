@@ -43,6 +43,9 @@
       ${ h.end_form() }
       </div>
 
+<%def name="short_title()"><%
+  return "Conference Registration"
+%></%def>
 <%def name="title()" >
 Register - ${ parent.title() }
 </%def>

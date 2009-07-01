@@ -1,11 +1,5 @@
+<%page args="parent" />
 <%namespace file="../bookmark_submit.mako" name="bookmark_submit" inheritable="True"/>
-<%page args="toolbox_extra"/>
-<%def name="toolbox_extra_reviewer()">
-    ## Defined in children
-</%def>
-<%def name="toolbox_extra_admin()">
-    ## Defined in children
-</%def>
 <%
     this_url = h.url_for()
     url=h.lca_info["event_permalink"] + this_url
@@ -35,11 +29,11 @@
 %   if c.db_content and not h.url_for().endswith('/edit'):
       ${ make_link('Edit page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
 %   endif
-${ toolbox_extra_admin() }
+${ parent.toolbox_extra_admin() }
 % endif
 % if h.auth.authorized(h.auth.has_reviewer_role):
       <li><em>Reviewer</em></li>
-${ toolbox_extra_reviewer() }
+${ parent.toolbox_extra_reviewer() }
       ${ make_link('How to review', '/help/review') }
       ${ make_link('Review proposals', h.url_for(controller='proposal', action='review_index')) }
       ${ make_link('Your reviews', h.url_for(controller='review', action='index')) }
@@ -53,7 +47,7 @@ ${ toolbox_extra_reviewer() }
         ${ make_link('stream and score', h.url_for(controller='admin', action='proposals_by_stream')) }
       </ul>
 % endif
-${ toolbox_extra() }
+${ parent.toolbox_extra() }
 % if h.signed_in_person():
       <li><em>${ h.signed_in_person().firstname }</em></li>
 %   if h.lca_info["cfp_status"] == 'open':
@@ -72,9 +66,13 @@ ${ toolbox_extra() }
       ${ make_link('Sign up', "/person/new") }
 % endif
     </ul>
-% if not c.db_content or not c.db_content.is_news():
+% if (c.db_content and not c.db_content.is_news()) or len(parent.short_title()) > 0:
 <div style="text-align:center;">
-${ bookmark_submit.bookmark_submit(url) }
+%   if c.db_content:
+${ bookmark_submit.bookmark_submit(url, c.db_content.title) }
+%   else:
+${ bookmark_submit.bookmark_submit(url, parent.short_title()) }
+%   endif
 </div>
 % endif
 % if h.signed_in_person():
