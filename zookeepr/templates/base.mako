@@ -29,9 +29,9 @@
   <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
   <script type="text/javascript" src="/jquery.min.js"></script>          
-  <script src="js/prototype.js" type="text/javascript"></script>
-  <script src="js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
-  <script src="js/lightbox.js" type="text/javascript"></script>
+  <script src="/js/prototype.js" type="text/javascript"></script>
+  <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
+  <script src="/js/lightbox.js" type="text/javascript"></script>
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
