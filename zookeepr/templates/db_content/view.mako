@@ -11,6 +11,12 @@ if h3.__len__() > 0:
     for match in h3:
         simple_title = re.compile('([^a-zA-Z])').sub('', match[1])
         body = re.compile(match[0]).sub(r'<a name="' + simple_title + '"></a>\g<0>', body)
+
+findslideshow = re.compile('({{slideshow:(.*?)(,\s*(.*))?}})', re.DOTALL)
+slideshow = findslideshow.findall(c.db_content.body)
+if slideshow.__len__() > 0:
+   for match in slideshow:
+      body = re.compile(match[0]).sub(h.slideshow(match[1], match[3]), body)
 %>
 
 <h2>${ c.db_content.title }</h2>

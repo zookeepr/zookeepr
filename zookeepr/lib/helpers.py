@@ -29,7 +29,8 @@ from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus,
 
 from sqlalchemy.orm.util import object_mapper
 
-import itertools, re
+import itertools, re, Image
+from glob import glob
 
 
 def iterdict(items):
@@ -208,6 +209,49 @@ def event_name():
 #    except IndexError:
 #        return "no images found"
 #
+
+def slideshow(set, small=None):
+    """
+    Generate a slideshow of a set of images, randomly selecting one to
+    show first, unless a file is specified.
+    """
+    try:
+        if small == None or small == "":
+            # Randomly select a smaller image, set the width of the div to be
+            # the width of image.
+            small = random.choice(glob(file_paths["public_path"] + "/images/" + set + "/small/*"))
+        else:
+            small = file_paths["public_path"] + "/images/" + set + "/small/" + small
+
+        output = "<div class=\"slideshow\" id=\"%s\" style=\"width: %dpx\">" % (set, int(Image.open(small).size[0]))
+        small = os.path.basename(small)
+
+        # Load up all the images in the set directory.
+        files = glob(file_paths['public_path'] + "/images/" + set + '/*')
+        for file in files:
+           if os.path.isfile(file):
+               short_file = os.path.basename(file)
+               output += "<a href=\"" + file_paths["public_html"] + "/images/" + set + "/" + short_file + "\" rel=\"lightbox[" + set + "]\">"
+
+               # If we're looking at the small one we've picked, display
+               # it as well.
+               if short_file == small:
+                   output += "<img src=\"" +  file_paths["public_html"] + "/images/" + set + "/small/" + short_file + "\">"
+
+                   # If there are more than one image in the slideshow
+                   # then also display "more...".
+                   if files.__len__() > 1:
+                      output += '<div class="more">More images...</div>'
+               output += "</a>\n";
+        output += "</div>\n"
+        return output
+            
+    except IndexError:
+        return "no images found"
+
+
+
+
 
 break_re = re.compile(r'(\n|\r\n)')
 def line_break(s):

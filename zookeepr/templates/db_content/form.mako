@@ -44,7 +44,16 @@ ${ h.textarea('db_content.body', cols="80", rows="40") }
 </p>
 <ul class="note"><li>The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate. Use &lt;h3&gt;'s to automatically create a "contents" section.</li>
 <li>For news articles you can place a &lt;!--break--&gt; statement to separate the entire body from the preview on the news page.</li>
-<li>For in the press this becomes the comment under the link.</li></ul>
+<li>For in the press this becomes the comment under the link.</li>
+<li>To include a slideshow of images, or an image using a lightbox then:</li>
+<ul>
+  <li>upload the images to <tt>public/images/&lt;set name&gt;</tt></li>
+  <li>upload thumbnail sized images to <tt>public/images/&lt;set name&gt;/small</tt></li>
+  <li>the image displayed on the generated page is randomly selected from the images in the <tt>small</tt> directory unless an image is specified.</li>
+  <li>add <tt>{{slideshow: &lt;set name&gt;}}</tt> where you want the first image displayed.</li>
+  <li>to specify one small image to be in the generated page then insert: <tt>{{slideshow: &lt;set name&gt;, &lt;file name&gt;}}</tt> this file must exist in the small directory.</li>
+</ul>
+</ul>
 <p>
 ${ h.submit("submit", "Save",) }
 </p>

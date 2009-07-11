@@ -721,3 +721,9 @@ fieldset {
 .bookmark_submit a {
   padding-right: 5px;
 }
+
+.slideshow .more {
+  text-align: right;
+  font-style: 1em;
+  font-style: italic;
+}
