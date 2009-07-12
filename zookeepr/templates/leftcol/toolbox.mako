@@ -63,7 +63,7 @@ ${ parent.toolbox_extra() }
       ${ make_link('Sign out', h.url_for(controller='person', action='signout_confirm')) }
 % else:
       ${ make_link('Sign in', "/person/signin") }
-      ${ make_link('Sign up', "/person/new") }
+      ${ make_link('Register', "/person/new") }
 % endif
     </ul>
 % if (c.db_content and not c.db_content.is_news()) or len(parent.short_title()) > 0:
