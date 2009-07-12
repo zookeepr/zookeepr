@@ -271,6 +271,7 @@ class PersonController(BaseController): #Read, Update, List
         results = self.form_result['person']
         del results['password_confirm']
         c.person = Person(**results)
+        c.person.email_address = c.person.email_address.lower()
         meta.Session.add(c.person)
         meta.Session.commit()
 
