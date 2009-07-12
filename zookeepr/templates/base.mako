@@ -46,6 +46,7 @@
        });
 
      });
+     Event.observe(window,'load',function(){ Lightbox.initialize({googleAnalytics:true}); });
   </script>
   ${self.extra_head()}
 </head>
