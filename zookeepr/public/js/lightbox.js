@@ -82,7 +82,7 @@ var Lightbox = {
 			borderSize : 10, // if you adjust the padding in the CSS, you will need to update this variable
 			containerID : document, // lightbox container object
 			enableSlideshow : true, // enable slideshow feature
-			googleAnalytics : true, // track individual image views using Google Analytics
+			googleAnalytics : false, // track individual image views using Google Analytics
 			imageDataLocation : 'south', // location of image caption information
 			initImage : '', // ID of image link to automatically launch when upon script initialization
 			loop : true, // whether to continuously loop slideshow images
