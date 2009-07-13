@@ -82,7 +82,7 @@ var Lightbox = {
 			borderSize : 10, // if you adjust the padding in the CSS, you will need to update this variable
 			containerID : document, // lightbox container object
 			enableSlideshow : true, // enable slideshow feature
-			googleAnalytics : false, // track individual image views using Google Analytics
+			googleAnalytics : true, // track individual image views using Google Analytics
 			imageDataLocation : 'south', // location of image caption information
 			initImage : '', // ID of image link to automatically launch when upon script initialization
 			loop : true, // whether to continuously loop slideshow images
@@ -92,7 +92,7 @@ var Lightbox = {
 			relAttribute : 'lightbox', // specifies the rel attribute value that triggers lightbox
 			resizeSpeed : 7, // controls the speed of the image resizing (1=slowest and 10=fastest)
 			showGroupName : false, // show group name of images in image details
-			slideTime : 4, // time to display images during slideshow
+			slideTime : 15, // time to display images during slideshow
 			strings : { // allows for localization
 				closeLink : 'close',
 				loadingMsg : 'loading',
