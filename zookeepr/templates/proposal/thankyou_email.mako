@@ -9,7 +9,7 @@ Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ h.lca_info['e
 If you have any queries about your proposed ${ c.proposal.type.name.lower()},
 please email ${ h.lca_info['emails'][c.proposal.type.name.lower()] }
 
-Title:             ${ c.proposal.title }
+Title:             ${ c.proposal.title |n }
 Target audience:   ${ c.proposal.audience.name }
 URL:               ${ c.proposal.url }
 Attachments:       ${ len(c.proposal.attachments) }

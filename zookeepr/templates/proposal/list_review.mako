@@ -45,7 +45,7 @@
 ## don't show the row if we've already reviewed it
 %		if not [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
 <tr class="${ h.cycle('even', 'odd') }">
-	<td>${ h.link_to("%s - %s" % (s.id, h.util.html_escape(s.title)), url=h.url_for(action='view', id=s.id)) }</td>
+	<td>${ h.link_to("%s - %s" % (s.id, s.title), url=h.url_for(action='view', id=s.id)) }</td>
 	<td>
 % 		for p in s.people:
 
