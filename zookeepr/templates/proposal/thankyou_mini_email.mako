@@ -14,8 +14,8 @@ URL:         ${ c.proposal.url }
 Attachments: ${ len(c.proposal.attachments) }
 Summary:     ${ c.proposal.abstract }
 
-Should you need to update the details of this proposal, please following
-this URL:
+Should you need to update the details of this proposal, please use the following
+URL:
 
   http://${ h.host_name() }/proposal
 

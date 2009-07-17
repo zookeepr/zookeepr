@@ -51,8 +51,8 @@ ${c.proposal.type.name.lower()} and your slides, so that the community can
 gain the maximum benefit from your ${c.proposal.type.name.lower()}!
 % endif
 
-Should you need to update the details of this proposal, please following
-this URL:
+Should you need to update the details of this proposal, please use the follow
+URL:
 
   http://${ h.host_name() }/proposal
 
