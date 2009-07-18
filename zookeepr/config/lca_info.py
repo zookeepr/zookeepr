@@ -37,8 +37,8 @@ lca_info = {
 
 # Possible statuses not_open|open|closed
   'cfp_status' : 'open',
-  'cfmini_status' : 'open',
-  'paper_editing' : 'not_open',
+  'cfmini_status' : 'closed',
+  'paper_editing' : 'open',
   'conference_status': 'not_open',
 
   'emails': {
