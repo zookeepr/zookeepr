@@ -40,7 +40,7 @@ ${ "%#.*f" % (2, avg) }
 </table>
 
 <%def name="title()" >
-Review Summary - ${ parent.title() }
+Summary of Reviewers - ${ parent.title() }
 </%def>
 
 

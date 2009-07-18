@@ -79,5 +79,5 @@ ${ len(s.reviews) }
 % endfor proposal types
 
 <%def name="title()" >
-Proposals - ${ parent.title() }
+Proposals you haven't reviewed - ${ parent.title() }
 </%def>
