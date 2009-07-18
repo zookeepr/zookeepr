@@ -123,6 +123,10 @@ class ProposalController(BaseController):
 
     @validate(schema=NewProposalSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
+        if c.cfp_status == 'closed':
+           return render("proposal/closed.mako")
+        elif c.cfp_status == 'not_open':
+           return render("proposal/not_open.mako")
 
         person_results = self.form_result['person']
         proposal_results = self.form_result['proposal']
@@ -255,6 +259,12 @@ class ProposalController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
+        if not h.auth.authorized(h.auth.has_organiser_role):
+          if c.paper_editing == 'closed':
+             return render("proposal/editing_closed.mako")
+          elif c.paper_editing == 'not_open':
+             return render("proposal/editing_not_open.mako")
+
         c.proposal = Proposal.find_by_id(id)
 
         c.person = c.proposal.people[0]
@@ -285,6 +295,12 @@ class ProposalController(BaseController):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
+
+        if not h.auth.authorized(h.auth.has_organiser_role):
+          if c.paper_editing == 'closed':
+             return render("proposal/editing_closed.mako")
+          elif c.paper_editing == 'not_open':
+             return render("proposal/editing_not_open.mako")
 
         c.proposal = Proposal.find_by_id(id)
         for key in self.form_result['proposal']:
