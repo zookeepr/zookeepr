@@ -923,9 +923,8 @@ class AdminController(BaseController):
         in AV splash screens [AV] """
         c.talks = meta.Session.query(Proposal).filter_by(accepted=True).all()
 
-        res = Response(render('admin/acc_papers_xml.mako', fragment=True))
-        res.headers['Content-type']='text/plain; charset=utf-8'
-        return res
+        response.headers['Content-type']='text/plain; charset=utf-8'
+        return render('admin/acc_papers_xml.mako', fragment=True)
         
     @authorize(h.auth.has_organiser_role)
     def people_by_country(self):
@@ -1082,8 +1081,7 @@ def keysigning_pdf(keyid):
     return pdf
 
 def csv_response(sql):
-    import zookeepr.model
-    res = zookeepr.model.metadata.bind.execute(sql);
+    res = meta.Session.execute(sql)
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql
@@ -1093,10 +1091,9 @@ def csv_response(sql):
     w = csv.writer(f)
     w.writerow(c.columns)
     w.writerows(c.data)
-    res = Response(f.getvalue())
-    res.headers['Content-type']='text/plain; charset=utf-8'
-    res.headers['Content-Disposition']='attachment; filename="table.csv"'
-    return res
+    response.headers['Content-type']='text/plain; charset=utf-8'
+    response.headers['Content-Disposition']='attachment; filename="table.csv"'
+    return f.getvalue()
 
 def sql_execute(sql):
     import zookeepr.model
