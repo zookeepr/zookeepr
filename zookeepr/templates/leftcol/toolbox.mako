@@ -35,9 +35,9 @@ ${ parent.toolbox_extra_admin() }
       <li><em>Reviewer</em></li>
 ${ parent.toolbox_extra_reviewer() }
       ${ make_link('How to review', '/help/review') }
-      ${ make_link('Review proposals', h.url_for(controller='proposal', action='review_index')) }
-      ${ make_link('Your reviews', h.url_for(controller='review', action='index')) }
-      ${ make_link('Summary of proposals', h.url_for(controller='proposal', action='summary')) }
+      ${ make_link('Proposals to review', h.url_for(controller='proposal', action='review_index')) }
+      ${ make_link('Reviews you've made', h.url_for(controller='review', action='index')) }
+      ${ make_link('Summary of reviewed proposals', h.url_for(controller='proposal', action='summary')) }
       ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary')) }
       ${ make_link('Change proposal statuses', h.url_for(controller='proposal', action='approve')) }
       <li>List of proposals by:</li>

@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>Reviews Summary</h2>
+<h2>Summary of Reviewers</h2>
 
 <%
 review_summary = {}

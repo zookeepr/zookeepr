@@ -2,7 +2,7 @@
 
 <% import random %>
 <% c.signed_in_person = h.signed_in_person() %>
-<h2>Proposal List</h2>
+<h2>Proposals You Haven't Reviewed</h2>
 
 % if c.num_reviewers <= 0:
    <% c.num_reviewers = 1 %>
