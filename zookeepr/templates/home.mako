@@ -37,24 +37,6 @@ If you would like to take this opportunity to submit a Paper to LCA2010, please 
 </tr>
 </table>
 
-<h2>Call for Miniconfs</h2>
-
-<p>Monday 15 June 2009 – Call for Miniconfs are now open!. LCA2010 provides the opportunity of hosting 1-day mini-conferences on a variety of Free Software related subjects; from Linux and the BSDs to OpenOffice.org, from networking to audio-visual magic, from deep hacks to Creative Commons.  
-If you would like to take this opportunity to submit a Miniconf to LCA2010, please visit <a href="programme/miniconf_info">Miniconf Info</a> for more information before <a href="programme/submit_a_miniconf">Submitting a Miniconf</a>.</p>
-
-<table>
-<tr class="odd">
-  <td>Call for Miniconfs opens</td><td>Monday 15 June 2009</td>
-</tr>
-<tr class="even">
-  <td>Call for Miniconfs closes</td><td>Friday 17 July 2009</td>
-</tr>
-<tr class="odd">
-  <td>Miniconf Notifications</td><td>Early September 2009</td>
-</tr>
-</table>
-
-
 <%def name="big_promotion()">
 % for d in c.db_content_news_all:
      <% directory = h.featured_image(d.title, big = True) %>
