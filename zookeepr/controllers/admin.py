@@ -312,10 +312,10 @@ class AdminController(BaseController):
     def paper_list(self):
         """ Large table of all the paper proposals. [CFP] """
         return sql_response("""
-          SELECT proposal.id, proposal.title, proposal.creation_timestamp, proposal.last_modification_timestamp,
+          SELECT proposal.id, proposal.title, proposal.creation_timestamp AS ctime, proposal.last_modification_timestamp AS mtime, proposal_status.name AS status,
             person.firstname || ' ' || person.lastname as name, person.email_address
-          FROM proposal, person, person_proposal_map, proposal_type
-          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name <> 'Miniconf'
+          FROM proposal, person, person_proposal_map, proposal_type, proposal_status
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name <> 'Miniconf' AND proposal_status.id = proposal.status_id
           ORDER BY proposal.title ASC;
         """)
 
@@ -323,10 +323,10 @@ class AdminController(BaseController):
     def miniconf_list(self):
         """ Large table of all the miniconf proposals. [CFP] """
         return sql_response("""
-          SELECT proposal.id, proposal.title, proposal.creation_timestamp, proposal.last_modification_timestamp,
+          SELECT proposal.id, proposal.title, proposal.creation_timestamp AS ctime, proposal.last_modification_timestamp AS mtime, proposal_status.name AS status,
             person.firstname || ' ' || person.lastname as name, person.email_address
-          FROM proposal, person, person_proposal_map, proposal_type
-          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name = 'Miniconf'
+          FROM proposal, person, person_proposal_map, proposal_type, proposal_status
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name = 'Miniconf' AND proposal_status.id = proposal.status_id
           ORDER BY proposal.title ASC;
         """)
 
