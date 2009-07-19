@@ -311,8 +311,8 @@ class AdminController(BaseController):
     def proposal_list(self):
         """ Large table of all the proposals, presenters and dates. [CFP] """
         return sql_response("""
-          SELECT proposal.*,
-            person.firstname || ' ' || person.lastname as name, person.email_address, person.address1, person.address2, person.city, person.state, person.postcode, person.country, person.company, person.phone, person.mobile, person.url, person.experience, person.bio, person.creation_timestamp as account_creation
+          SELECT proposal.id, proposal.title, proposal.creation_timestamp, proposal.last_modification_timestamp,
+            person.firstname || ' ' || person.lastname as name, person.email_address
           FROM proposal, person, person_proposal_map
           WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id
           ORDER BY proposal.title ASC;
