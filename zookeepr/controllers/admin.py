@@ -307,14 +307,26 @@ class AdminController(BaseController):
         from role, person, person_role_map
         where person.id=person_id and role.id=role_id
         order by role, lastname, firstname""")
+
     @authorize(h.auth.has_organiser_role)
-    def proposal_list(self):
-        """ Large table of all the proposals, presenters and dates. [CFP] """
+    def paper_list(self):
+        """ Large table of all the paper proposals. [CFP] """
         return sql_response("""
           SELECT proposal.id, proposal.title, proposal.creation_timestamp, proposal.last_modification_timestamp,
             person.firstname || ' ' || person.lastname as name, person.email_address
-          FROM proposal, person, person_proposal_map
-          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id
+          FROM proposal, person, person_proposal_map, proposal_type
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name <> 'Miniconf'
+          ORDER BY proposal.title ASC;
+        """)
+
+    @authorize(h.auth.has_organiser_role)
+    def miniconf_list(self):
+        """ Large table of all the miniconf proposals. [CFP] """
+        return sql_response("""
+          SELECT proposal.id, proposal.title, proposal.creation_timestamp, proposal.last_modification_timestamp,
+            person.firstname || ' ' || person.lastname as name, person.email_address
+          FROM proposal, person, person_proposal_map, proposal_type
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name = 'Miniconf'
           ORDER BY proposal.title ASC;
         """)
 
