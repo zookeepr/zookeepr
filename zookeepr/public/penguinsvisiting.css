@@ -332,6 +332,7 @@ td {
        background-color:#FFFFFF;
        border-bottom:2px solid #d7e7f0;
        padding:0.5em 1em;
+       line-height: 1.4em;
 }
 
 pre {
