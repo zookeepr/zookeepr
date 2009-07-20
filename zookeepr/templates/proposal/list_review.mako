@@ -56,7 +56,7 @@ ${ h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address or p.id, ur
 <td>
 ${ s.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n}
 </td>
-<td>
+<td align="right">
 ${ len(s.reviews) }
 </td>
 
