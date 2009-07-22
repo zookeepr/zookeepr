@@ -310,6 +310,11 @@ h6 {
                 text-align: center;
                 vertical-align: middle;
         }
+
+        .sponsor_image img
+        {
+                vertical-align: middle;
+        }
         
         .sponsors_footer
         {
