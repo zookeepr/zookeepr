@@ -322,7 +322,7 @@ class Proposal(Base):
                    EXCEPT
                        SELECT proposal_id AS id
                        FROM review
-                       WHERE review.reviewer_id <> %d) AS p
+                       WHERE review.reviewer_id = %d) AS p
               LEFT JOIN
                       review AS r
                               ON(p.id=r.proposal_id)
