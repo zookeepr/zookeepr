@@ -15,4 +15,12 @@
         </div>
 %   endfor
 %endif
+%if c.form_errors:
+        <div class="message message-error">
+        <ul>
+%       for field in c.form_errors:
+           <li>${ field }: ${ c.form_errors[field] }</li>
+%       endfor
+        </ul>
+%endif
     </div>
