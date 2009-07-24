@@ -21,8 +21,8 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
-<h2>Call for Papers</h2>
-<p>Monday 29 June 2009 – Call for Papers are now open! The LCA2010 Papers Committee is looking for a broad range of papers spanning everything from programming and software to desktop and userspace to community, government and education.  
+<h2>Call for Papers Extended by One Week</h2>
+<p>Friday 24 July 2009 – Call for Papers has been extended by one week! The LCA2010 Papers Committee is looking for a broad range of papers spanning everything from programming and software to desktop and userspace to community, government and education.  
 If you would like to take this opportunity to submit a Paper to LCA2010, please visit <a href="programme/papers_info">Papers Info</a> for more information before <a href="programme/submit_a_paper">Submitting a Paper</a>.</p>
 
 <table>
@@ -30,7 +30,7 @@ If you would like to take this opportunity to submit a Paper to LCA2010, please 
   <td>Call for Papers opens</td><td>Monday 29 June 2009</td>
 </tr>
 <tr class="even">
-  <td>Call for Papers closes</td><td>Friday 24 July 2009</td>
+  <td>Call for Papers closes</td><td>Friday <s>24</s> 31 July 2009 17:00 NZST</td>
 </tr>
 <tr class="odd">
   <td>Papers Notifcations</td><td>Early September 2009</td>
