@@ -61,7 +61,11 @@ ${ r.score | h }
 </td>
 
 <td style="vertical-align: top;">
+% if r.stream is not None:
 ${ r.stream.name | h }
+% else:
+(none)
+% endif
 </td>
 
 <td style="vertical-align: top;">

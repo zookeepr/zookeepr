@@ -24,7 +24,11 @@ ${ r.score |h }
 </td>
 
 <td>
+% if r.stream is not None:
 ${ r.stream.name |h }
+% else:
+(none)
+% endif
 </td>
 
 <td>

@@ -120,10 +120,12 @@ ${ person.lastname },
                 num_reviewers += 1
                 total_score += review.score
                 scores += review.reviewer.firstname + " " + review.reviewer.lastname + ": %s " % review.score + "<br>"
-            if review.stream.name in streams:
-                streams[review.stream.name] += 1
-            else:
-                streams[review.stream.name] = 1
+            if review.stream is not None:
+                if review.stream.name in streams:
+                    streams[review.stream.name] += 1
+                else:
+                    streams[review.stream.name] = 1
+
         if num_reviewers == 0:
             avg_score = "No Reviews"
         else:
