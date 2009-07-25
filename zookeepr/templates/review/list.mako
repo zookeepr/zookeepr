@@ -32,7 +32,7 @@ ${ h.truncate(r.comment) }
 </td>
 
 <td>
-${ h.link_to("edit", url=h.url_for(controller='review', action='edit', id=r.id)) }
+${ h.link_to("edit", url=h.url_for(controller='review', action='edit', id=r.id)) }&nbsp;-&nbsp;${ h.link_to("delete", url=h.url_for(controller='review', action='delete', id=r.id)) }
 </td>
 </tr>
 
