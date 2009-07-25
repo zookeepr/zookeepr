@@ -10,8 +10,8 @@ def setup(meta):
         [
             Role(name='organiser'),
             Role(name='team'),
-            Role(name='reviewer'),
-            Role(name='miniconf'),
+            Role(name='reviewer', pretty_name='Paper Reviewer'),
+            Role(name='miniconf', pretty_name='Miniconf Organiser'),
         ]
     )
 
@@ -22,6 +22,8 @@ class Role(Base):
 
     id = sa.Column(sa.types.Integer, primary_key=True)
     name = sa.Column(sa.types.Text, unique=True, nullable=False)
+    pretty_name = sa.Column(sa.types.Text, nullable=True)
+    display_order = sa.Column(sa.types.Integer, nullable=True)
 
     def __init__(self, **kwargs):
         super(Role, self).__init__(**kwargs)
@@ -45,4 +47,4 @@ class Role(Base):
         return Session.query(Role).order_by(Role.name).all()
 
     def __repr__(self):
-        return '<Role id="%s" name="%s">' % (self.id, self.name)
+        return '<Role id="%s" name="%s" pretty_name="%s" display_order="%s">' % (self.id, self.name, self.pretty_name, self.display_order)

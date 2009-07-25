@@ -7,6 +7,7 @@
 % if len(c.role_collection) > 0:
 <tr>
 <th>Name</th>
+<th>Pretty Name</th>
 <th></th>
 <th></th>
 </tr>
@@ -16,6 +17,13 @@
 <tr>
 <tr class="${ h.cycle('odd', 'even') }">
         <td>${ h.link_to(st.name, url=h.url_for(action='view', id=st.id)) }</td>
+        <td>
+%   if st.pretty_name is not None:
+        ${ h.link_to(st.pretty_name, url=h.url_for(action='view', id=st.id)) }
+%   else:
+        &nbsp;
+%   endif
+        </td>
 %       for action in ['edit', 'delete']:
         <td>${ h.link_to(action, url=h.url_for(action=action, id=st.id)) }</td>
 %       endfor
