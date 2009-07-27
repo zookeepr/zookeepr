@@ -12,3 +12,8 @@
         </div>
 </form>
 
+<%def name="title()">
+Forgotten Password? -
+ ${ parent.title() }
+</%def>
+
