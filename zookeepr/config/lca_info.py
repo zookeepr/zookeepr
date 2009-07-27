@@ -151,7 +151,8 @@ lca_menu = [
 
 lca_submenus = {
   'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'History', 'New Zealand', 'Linux/Open Source'],
-  'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
+  #'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
+  'wellington': ['About', 'Accommodation', 'Sightseeing', 'Pre and Post' ],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
