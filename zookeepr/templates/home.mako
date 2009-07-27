@@ -33,7 +33,7 @@ If you would like to take this opportunity to submit a Paper to LCA2010, please 
   <td>Call for Papers closes</td><td>Friday <s>24</s> 31 July 2009 17:00 NZST</td>
 </tr>
 <tr class="odd">
-  <td>Papers Notifcations</td><td>Early September 2009</td>
+  <td>Papers Notifications</td><td>Early September 2009</td>
 </tr>
 </table>
 
