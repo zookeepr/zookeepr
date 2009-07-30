@@ -66,7 +66,7 @@ ${ len(s.reviews) }
 	${ h.link_to("review anyway", url=h.url_for(action="review", id=s.id)) }
 	</small>
 %		else:
-	${ h.link_to("Review now!", url=h.url_for(action="review", id=s.id)) }
+	${ h.link_to("Review!", url=h.url_for(action="review", id=s.id)) }
 %		endif
 	</td>
 </tr>
