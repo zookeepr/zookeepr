@@ -12,6 +12,7 @@ def setup(meta):
             Role(name='team'),
             Role(name='reviewer', pretty_name='Paper Reviewer'),
             Role(name='miniconf', pretty_name='Miniconf Organiser'),
+            Role(name='papers_chair', pretty_name='Papers Chair'),
         ]
     )
 

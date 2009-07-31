@@ -319,6 +319,7 @@ def no_role():
 # Role shortcuts to save db work
 has_organiser_role = HasZookeeprRole('organiser')
 has_reviewer_role = HasZookeeprRole('reviewer')
+has_papers_chair_role = HasZookeeprRole('papers_chair')
 has_planetfeed_role = HasZookeeprRole('planetfeed')
 has_keysigning_role = HasZookeeprRole('keysigning')
 is_valid_user = ValidZookeeprUser()
