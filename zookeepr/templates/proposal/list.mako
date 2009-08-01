@@ -91,7 +91,7 @@
     </td>
     <td>
 %if s.status.name == 'Pending' or s.accepted:
-%  if c.paper_editing == 'open':
+%  if c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
   ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
 %  endif
 ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }

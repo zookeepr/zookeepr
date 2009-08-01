@@ -3,7 +3,7 @@
 
 <div id="proposal">
 
-% if c.paper_editing == 'closed':
+% if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
 <p>Editing has been disabled while proposals are reviewed. If your paper is successful in its submission, you will be able to update your details later when the schedule is finalised.</p>
 % else:
 

@@ -320,6 +320,7 @@ def no_role():
 has_organiser_role = HasZookeeprRole('organiser')
 has_reviewer_role = HasZookeeprRole('reviewer')
 has_papers_chair_role = HasZookeeprRole('papers_chair')
+has_late_submitter_role = HasZookeeprRole('late_submitter')
 has_planetfeed_role = HasZookeeprRole('planetfeed')
 has_keysigning_role = HasZookeeprRole('keysigning')
 is_valid_user = ValidZookeeprUser()

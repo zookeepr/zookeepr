@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 <% c.signed_in_person = h.signed_in_person() %>
 <%def name="toolbox_extra()">
-%   if c.signed_in_person in c.proposal.people or h.auth.authorized(h.auth.has_organiser_role):
+% if h.auth.authorized(h.auth.has_organiser_role) or ((c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role)) and c.signed_in_person in c.proposal.people):
   <li>${ h.link_to('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }</li>
 % endif 
 </%def>
@@ -25,12 +25,10 @@
 <%include file="view_fragment.mako" />
 
 
-% if c.signed_in_person in c.proposal.people or ('organiser' in [x.name for x in c.signed_in_person.roles]):
-%     if c.paper_editing == 'open':
+% if h.auth.authorized(h.auth.has_organiser_role) or ((c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role)) and c.signed_in_person in c.proposal.people):
 <ul><li>
 ${ h.link_to('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }
 </li></ul>
-%     endif
 % endif
 
 

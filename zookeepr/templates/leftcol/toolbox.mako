@@ -54,7 +54,7 @@ ${ parent.toolbox_extra_reviewer() }
     <h2>${ h.signed_in_person().firstname }</h2>
     <ul>
 ${ parent.toolbox_extra() }
-%   if h.lca_info["cfp_status"] == 'open':
+%   if h.lca_info["cfp_status"] == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
       ${ make_link('Submit a paper', h.url_for(controller='proposal', action='new', id=None)) }
 %   endif
 %   if h.lca_info["cfmini_status"] == 'open':
