@@ -505,7 +505,7 @@ class RegistrationController(BaseController):
                     # and it can either favor the customer or LCA, depending on the order
                     # of items on the invoice
                     if free_cost > 0:
-                        discount_item = model.InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
+                        discount_item = InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
                         invoice.items.append(discount_item)
 
         meta.Session.commit()
