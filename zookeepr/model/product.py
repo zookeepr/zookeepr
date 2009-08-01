@@ -58,17 +58,17 @@ def setup(meta):
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Speaker Ticket",
-                      cost="0", auth="AuthFunc('is_speaker').authorise(self)", validate=None)
+                      cost="0", auth="self.is_speaker()", validate=None)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Miniconf Organiser Ticket",
-                      cost="0", auth="AuthFunc('is_miniconf_org').authorise(self)", validate=None)
+                      cost="0", auth="self.is_miniconf_org()", validate=None)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Volunteer Ticket",
-                      cost="0", auth="AuthFunc('is_volunteer').authorise(self)", validate=None)
+                      cost="0", auth="self.is_volunteer()", validate=None)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
