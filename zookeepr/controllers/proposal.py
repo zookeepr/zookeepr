@@ -262,10 +262,10 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         if not h.auth.authorized(h.auth.has_organiser_role):
-          if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
-             return render("proposal/editing_closed.mako")
-          elif c.paper_editing == 'not_open':
-             return render("proposal/editing_not_open.mako")
+            if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
+                return render("proposal/editing_closed.mako")
+            elif c.paper_editing == 'not_open':
+                return render("proposal/editing_not_open.mako")
 
         c.proposal = Proposal.find_by_id(id)
 
@@ -299,11 +299,10 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         if not h.auth.authorized(h.auth.has_organiser_role):
-          if c.paper_editing == 'closed':
-             if not h.auth.authorized(h.auth.has_late_submitter_role):
-               return render("proposal/editing_closed.mako")
-          elif c.paper_editing == 'not_open':
-             return render("proposal/editing_not_open.mako")
+            if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
+                return render("proposal/editing_closed.mako")
+            elif c.paper_editing == 'not_open':
+                return render("proposal/editing_not_open.mako")
 
         c.proposal = Proposal.find_by_id(id)
         for key in self.form_result['proposal']:

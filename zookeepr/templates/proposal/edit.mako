@@ -3,10 +3,6 @@
 
 <div id="proposal">
 
-% if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
-<p>Editing has been disabled while proposals are reviewed. If your paper is successful in its submission, you will be able to update your details later when the schedule is finalised.</p>
-% else:
-
 ${ h.form(h.url_for()) }
 %   if c.miniconf:
         <%include file="form_mini.mako" args="editing=True" />
@@ -20,6 +16,5 @@ ${ h.submit('Update', 'Update') }
 
 ${ h.end_form() }
 
-% endif
 </div>
 

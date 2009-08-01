@@ -1072,6 +1072,30 @@ class AdminController(BaseController):
         c.text = render_response('admin/table.myt', fragment=True)
         return render_response('admin/text.myt')
 
+    def late_submitters(self):
+        """ List of people who are allowed to submit and edit their proposals after the CFP has closed. [CFP]"""
+        c.text = '<p>List of people who are allowed to submit and edit their proposals after the CFP has closed.</p><p><b>The role should be REMOVED once they have submitted their paper.</b></p>'
+
+        query = """SELECT p.id, p.firstname || ' ' || p.lastname as name, p.email_address,
+                          (SELECT count(*)
+                             FROM person_proposal_map ppm
+                            WHERE ppm.person_id = p.id) AS number_proposals
+                    FROM person p
+                    JOIN person_role_map prm ON p.id = prm.person_id
+                    JOIN role r ON prm.role_id = r.id
+                   WHERE r.name = 'late_submitter'
+                ORDER BY number_proposals DESC, p.id
+        """
+        res = meta.Session.execute(query)
+        c.columns = res.keys
+        c.data = []
+        for r in res.fetchall():
+            idlink = '<a href="/person/' + str(r[0]) + '/roles">' + str(r[0]) + '</a>'
+            c.data.append([ idlink, h.util.html_escape(r[1]), h.util.html_escape(r[2]), str(r[3]) ])
+        c.noescape = True
+        c.sql = query
+        return render('admin/table.mako')
+
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66
