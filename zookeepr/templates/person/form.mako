@@ -7,11 +7,15 @@
 <p class="label"><label for="person.company">Company:</label></p>
 <p class="entries">${ h.text('person.company', size=40) }</p>
 
-% if c.form is not 'edit':
+% if c.form is not 'edit' or h.auth.authorized(h.auth.has_organiser_role):
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>
 <p class="entries">${ h.text('person.email_address', size=40) }</p>
-<p class="note">You will be using this email address to login, please make sure you don't typo.</p>
+<p class="note">You will be using this email address to login, please make sure you don't make typos.</p>
+% else:
+${ h.hidden('person.email_address', '') }</p>
+% endif
 
+% if c.form is not 'edit':
 <p class="label"><span class="mandatory">*</span><label for="person.password">Choose a password:</label></p>
 <p class="entries">${ h.password("person.password", size=40) }</p>
 

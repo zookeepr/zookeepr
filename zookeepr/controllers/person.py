@@ -45,6 +45,7 @@ class NewPersonSchema(BaseSchema):
 class _UpdatePersonSchema(BaseSchema):
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    email_address = validators.String()
     company = validators.String()
     phone = validators.String()
     mobile = validators.String()
@@ -232,7 +233,8 @@ class PersonController(BaseController): #Read, Update, List
         c.person = Person.find_by_id(id)
 
         for key in self.form_result['person']:
-            setattr(c.person, key, self.form_result['person'][key])
+            if key != 'email_address' or h.auth.authorized(h.auth.has_organiser_role):
+                setattr(c.person, key, self.form_result['person'][key])
 
         # update the objects with the validated form data
         meta.Session.commit()
