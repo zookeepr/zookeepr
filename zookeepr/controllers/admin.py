@@ -316,7 +316,7 @@ class AdminController(BaseController):
             person.firstname || ' ' || person.lastname as name, person.email_address
           FROM proposal, person, person_proposal_map, proposal_type, proposal_status
           WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name <> 'Miniconf' AND proposal_status.id = proposal.status_id
-          ORDER BY proposal.title ASC;
+          ORDER BY proposal.id ASC;
         """)
 
     @authorize(h.auth.has_organiser_role)
@@ -327,7 +327,7 @@ class AdminController(BaseController):
             person.firstname || ' ' || person.lastname as name, person.email_address
           FROM proposal, person, person_proposal_map, proposal_type, proposal_status
           WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name = 'Miniconf' AND proposal_status.id = proposal.status_id
-          ORDER BY proposal.title ASC;
+          ORDER BY proposal.id ASC;
         """)
 
     @authorize(h.auth.has_reviewer_role)
