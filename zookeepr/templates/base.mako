@@ -27,11 +27,8 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
   <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
+<script type="text/javascript" src="/jquery.min.js"></script>          
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
-  <script type="text/javascript" src="/jquery.min.js"></script>          
-  <script src="/js/prototype.js" type="text/javascript"></script>
-  <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
-  <script src="/js/lightbox.js" type="text/javascript"></script>
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
@@ -104,6 +101,9 @@ ${next.body()}
     </div>
   </div>
 
+<script src="/js/prototype.js" type="text/javascript"></script>
+<script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
+<script src="/js/lightbox.js" type="text/javascript"></script>
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
