@@ -199,7 +199,7 @@ Reviews - ${ parent.title() }
 
   for pt in c.proposal_types:
     simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name)
-    menu += '<li><a href="#' + simple_title + '">' + pt.name + 's</a></li>'
+    menu += '<li><a href="#' + simple_title + '">' + pt.name + ' proposals</a></li>'
   return menu
 %>
 </%def>
