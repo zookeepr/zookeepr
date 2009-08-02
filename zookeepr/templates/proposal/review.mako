@@ -131,5 +131,3 @@ ${ h.end_form() }
 <%def name="title()">
 Reviewing proposal #${ c.proposal.id } - ${ parent.title() }
 </%def>
-
-

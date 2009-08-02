@@ -18,6 +18,9 @@
 <%def name="toolbox_extra_reviewer()">
     ## Defined in children
 </%def>
+<%def name="contents()">
+    ## Defined in children
+</%def>
 
 
 <html lang="en-us">
@@ -63,7 +66,7 @@
     <%include file="/leftcol/news.mako" />
     <%include file="/leftcol/in_the_press.mako" />
 % else:
-    <%include file="/leftcol/contents.mako" />
+    <%include file="/leftcol/contents.mako" args="parent=self" />
 % endif
 <%include file="/leftcol/toolbox.mako" args="parent=self" />
 % if h.url_for() != '/':

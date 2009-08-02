@@ -55,10 +55,14 @@ function toggleDiv(id,flagit) {
 </ul>
 
 
+<% import re %>
 % for pt in c.proposal_types:
     <% collection = getattr(c, '%s_collection' % pt.name) %>
     <% i = 1 %>
 
+    <% simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name) %>
+
+<a name="${ simple_title }"></a>
 <h2>${ pt.name }s </h2>
 
 <table>
@@ -186,3 +190,17 @@ ${ stream } (${ stream_score })
 <%def name="title()" >
 Reviews - ${ parent.title() }
 </%def>
+
+<%def name="contents()">
+<%
+  menu = ''
+
+  import re
+
+  for pt in c.proposal_types:
+    simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name)
+    menu += '<li><a href="#' + simple_title + '">' + pt.name + 's</a></li>'
+  return menu
+%>
+</%def>
+

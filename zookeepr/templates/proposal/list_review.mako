@@ -11,12 +11,14 @@
 <p>You have reviewed ${ len(c.person.reviews) } out of your quota of  ${ c.num_proposals * 3 / c.num_reviewers }. </p>
 
 
+<% import re %>
 
 % for pt in c.proposal_types:
 <%
 	collection = getattr(c, '%s_collection' % pt.name)
 	random.shuffle(collection)
 	collection.sort(cmp = lambda x, y: cmp(len(x.reviews), len(y.reviews)))
+        simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name) 
 
 
 	min_reviews = 100
@@ -29,6 +31,7 @@
 	endfor
 %>
 
+<a name="${ simple_title }"></a>
 <h2>${ pt.name } proposals (${ len(collection) })</h2>
 
 <table class="list">
@@ -81,3 +84,17 @@ ${ len(s.reviews) }
 <%def name="title()" >
 Proposals you haven't reviewed - ${ parent.title() }
 </%def>
+
+<%def name="contents()">
+<%
+  menu = ''
+
+  import re
+
+  for pt in c.proposal_types:
+    simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name) 
+    menu += '<li><a href="#' + simple_title + '">' + pt.name + 's</a></li>' 
+  return menu
+%>
+</%def>
+

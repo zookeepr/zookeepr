@@ -105,13 +105,11 @@ class AdminController(BaseController):
                     sect[s] = sect.get(s, []) + [(page, desc)]
             else:
                 sect['Other'] = sect.get('Other', []) + [(page, desc)]
-        text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
         c.noescape = True
 
         sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
-        text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
-                                                  for s_lower, s in sects])
-        text += '\t\t\t</ul>\n\t\t\t</div>'
+        c.sects = sects
+        text = ''
         sect_text = ""
         for s_lower, s in sects:
             c.text = '<a name="%s"></a>' % s
