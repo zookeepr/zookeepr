@@ -92,7 +92,7 @@ import datetime
           <p class="entries">${ h.text('person.postcode', size=40) }</p>
 
 <%
-if 'signed_in_person_id' in session:
+if h.signed_in_person():
   is_speaker = c.signed_in_person.is_speaker()
 else:
   is_speaker = False
@@ -284,6 +284,9 @@ else:
           <fieldset>
             <legend>&nbsp;</legend>
             <h2>Optional</h2>
+<table>
+<tr>
+  <td>
             <p class="label"><label for="registration.shell">Your favourite shell:</label></p>
             <p class="entries">
               <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
@@ -299,6 +302,8 @@ else:
               <span id="shell_other" style="display: inline">${ h.text('registration.shelltext') }</span>
 % endif
             </p>
+  </td>
+  <td>
 
             <p class="label"><label for="registration.editor">Your favourite editor:</label></p>
             <p class="entries">
@@ -315,6 +320,8 @@ else:
               <span id="editor_other" style="display: inline">${ h.text('registration.editortext') }</span>
 % endif
             </p>
+  </td>
+  <td>
 
             <p class="label"><label for="registration.distro">Your favourite distro:</label></p>
             <p class="entries">
@@ -331,6 +338,9 @@ else:
               <span id="distro_other" style="display: inline">${ h.text('registration.distrotext') }</span>
 % endif
             </p>
+  </td>
+</tr>
+</table>
 
             <p class="label"><label for="registration.nick">Superhero name:</label></p>
             <p class="entries">${ h.text('registration.nick', size=30) }</p>
