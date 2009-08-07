@@ -144,10 +144,10 @@ lca_menu = [
   ('Programme', '/programme/about', 'programme'),
   ('Register', '/register/about', 'register'),
   #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 4
-  #('Wiki', '/wiki', 'wiki'),
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
   ('Planet', 'http://planet.lca2010.org.nz', 'planet'),
+  ('Wiki', '/wiki', 'wiki'),
 ]
 
 lca_submenus = {
