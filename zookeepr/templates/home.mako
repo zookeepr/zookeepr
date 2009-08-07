@@ -21,20 +21,11 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
-<h2>Call for Papers Closed!</h2>
-<p>Friday 31 July 2009 – Call for Papers are now closed!
+<h2>Registrations coming soon!</h2>
 
-<table>
-<tr class="odd">
-  <td>Call for Papers opens</td><td>Monday 29 June 2009</td>
-</tr>
-<tr class="even">
-  <td>Call for Papers closes</td><td>Friday <s>24</s> 31 July 2009 17:00 NZST</td>
-</tr>
-<tr class="odd">
-  <td>Papers Notifications</td><td>Early September 2009</td>
-</tr>
-</table>
+<p>Online registrations for LCA2010 will be opening in mid-September 2009. There will be a limited number of Early Bird Registrations available, so get in early.</p>
+
+<p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
 
 <%def name="big_promotion()">
 % for d in c.db_content_news_all:
