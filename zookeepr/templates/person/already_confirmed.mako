@@ -4,7 +4,7 @@ Your account has already been confirmed.
 </h2>
 
 <p>
-Please ${ h.link_to('sign in', url=h.url_for(controller='person', action='signin')) } to your account.
+Please ${ h.link_to('sign in', url=h.url_for(controller='/person', action='signin')) } to your account.
 </p>
 
 <p>
