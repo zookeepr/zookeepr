@@ -16,6 +16,20 @@
   </tr>
 </table>
 
+<h2>People with this role</h2>
+
+<table>
+%   for person in c.role.people:
+<tr class="${ h.cycle('even', 'odd') }">
+<td>
+${ h.link_to("%d - %s %s" % (person.id, person.firstname, person.lastname), url=h.url_for(controller='person', id=person.id, action='view')) }
+</td>
+<td>
+${ h.link_to("roles", url=h.url_for(controller='person', id=person.id, action='roles')) }
+<td>
+%   endfor
+</table>
+
 <hr>
 <p>
 <ul>
