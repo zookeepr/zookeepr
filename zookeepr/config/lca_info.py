@@ -157,7 +157,8 @@ lca_submenus = {
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
-  'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
+  #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
+  'programme': ['About', 'Keynotes', 'Miniconfs', 'Miniconf Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
   #'programme': ['About', 'Keynotes', 'Miniconfs','Schedule','Social Events','Open Day', 'Partners Programme'], # stage 3
   'register': ['About', 'Accommodation', 'Terms and Conditions'],
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
