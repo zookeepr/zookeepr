@@ -18,6 +18,7 @@
 
 <h2>People with this role</h2>
 
+% if len(c.role.people) > 0:
 <table>
 %   for person in c.role.people:
 <tr class="${ h.cycle('even', 'odd') }">
@@ -29,6 +30,9 @@ ${ h.link_to("roles", url=h.url_for(controller='person', id=person.id, action='r
 <td>
 %   endfor
 </table>
+% else:
+<p>None</p>
+% endif
 
 <hr>
 <p>
