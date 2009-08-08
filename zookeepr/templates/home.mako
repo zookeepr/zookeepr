@@ -21,6 +21,56 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
+<h2>LCA2010 Miniconfs</h2>
+
+<p>LCA2010 Organisers have <a href="/media/news/74">announced</a> the
+successful <a href="/programme/miniconfs">Miniconfs for LCA2010</a>:</p>
+
+<table>
+  <tr class="odd">
+    <td><b>Arduino</b></td>  <td>Jonathan Oxer</td>
+  </tr>
+  <tr class="even">
+    <td><b>Business of Open Source</b></td>  <td>Martin Michlmayr</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Data Storage and Retrieval</b></td>  <td>Peter Lieverdink</td>
+  </tr>
+  <tr class="even">
+    <td><b>Distro Summit</b></td>  <td>Fabio Tranchitella</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Education</b></td>  <td>Tabitha Roder</td>
+  </tr>
+  <tr class="even">
+    <td><b>Free The Cloud!</b></td>  <td>Evan Prodromou</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Haecksen and Linuxchix</b></td>  <td>Joh Clarke</td>
+  </tr>
+  <tr class="even">
+    <td><b>Mini Libre Graphics Meeting</b></td>  <td>Jon Cruz</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Multicore and Parallel Computing</b></td>  <td>Nicolas Erdody</td>
+  </tr>
+  <tr class="even">
+    <td><b>Multimedia</b></td>  <td>Conrad Parker</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Open and the Public Sector</b></td>  <td>Daniel Spector</td>
+  </tr>
+  <tr class="even">
+    <td><b>Open Programming Languages</b></td>  <td>Christopher Neugebauer</td>
+  </tr>
+  <tr class="odd">
+    <td><b>System Administration</b></td>  <td>Simon Lyall</td>
+  </tr>
+  <tr class="even">
+    <td><b>Wave Developers</b></td>  <td>Shane Stephens</td>
+  </tr>
+</table>
+
 <h2>Registrations coming soon!</h2>
 
 <p>Online registrations for LCA2010 will be opening in mid-September 2009. There will be a limited number of Early Bird Registrations available, so get in early.</p>
