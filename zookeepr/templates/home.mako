@@ -50,7 +50,7 @@ successful <a href="/programme/miniconfs">Miniconfs for LCA2010</a>:</p>
     <td><b>Haecksen and Linuxchix</b></td>  <td>Joh Clarke</td>
   </tr>
   <tr class="even">
-    <td><b>Mini Libre Graphics Meeting</b></td>  <td>Jon Cruz</td>
+    <td><b>Libre Graphics Day</b></td>  <td>Jon Cruz</td>
   </tr>
   <tr class="odd">
     <td><b>Multicore and Parallel Computing</b></td>  <td>Nicolas Erdody</td>
