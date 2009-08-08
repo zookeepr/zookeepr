@@ -23,6 +23,7 @@ for d in c.db_content_news_all:
 
 <h2>LCA2010 Miniconfs</h2>
 
+<br />
 <p>LCA2010 Organisers have <a href="/media/news/74">announced</a> the
 successful <a href="/programme/miniconfs">Miniconfs for LCA2010</a>:</p>
 
