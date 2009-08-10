@@ -155,6 +155,22 @@ else:
              <% j += 1 %>
 %           endfor
           </tr></table><p><span class="mandatory">^</span>Sold out</p>
+%       elif category.display_grid and category.display == 'qty':
+<table>
+  <tr>
+%           for product in products:
+<%
+               soldout = ''
+               if not product.available():
+                   soldout = '<span class="mandatory">SOLD OUT</span><br />'
+%>
+    <th>${ product.description }<br />${ soldout }(${ h.number_to_currency(product.cost/100.0) })</th>
+%           endfor
+  </tr>
+%           for product in products:
+    <td align="center">${ h.text('products.product_' + str(product.id) + '_qty', size=2) }</td>
+%           endfor
+</table>
 %       elif category.display == 'radio':
 %           for product in products:
 <%

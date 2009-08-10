@@ -10,9 +10,9 @@ def setup(meta):
         [
             ProductCategory(name='Ticket', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
             ProductCategory(name='Shirt', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=100),
-            ProductCategory(name='Dinner Ticket', description='Please indicate how many penguin dinner tickets you wish to purchase. You should include yourself in this number, even if you buy a professional registration.', display='qty', min_qty=0, max_qty=5),
+            ProductCategory(name='Dinner Ticket', description='Please indicate how many penguin dinner tickets you wish to purchase. You should include yourself in this number, even if you buy a professional registration.', display='qty', min_qty=0, max_qty=5, display_grid='t'),
             ProductCategory(name='Accommodation', description='Where would you like to stay during the conference?', display='select', min_qty=0, max_qty=10),
-            ProductCategory(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=50),
+            ProductCategory(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=50, display_grid='t'),
         ]
     )
 
@@ -31,6 +31,9 @@ class ProductCategory(Base):
     # The first three are self explanatory and act as the HTML counterpart
     # qty is an interger validated text box
     display = sa.Column(sa.types.Text, nullable=False) 
+
+    # Should this product be displayed in a grid?
+    display_grid = sa.Column(sa.types.Boolean, default='f', nullable=False) 
     
     min_qty = sa.Column(sa.types.Integer, nullable=True)
     max_qty = sa.Column(sa.types.Integer, nullable=True)
