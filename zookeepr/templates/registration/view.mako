@@ -56,7 +56,7 @@
 %           endif
 %       endfor
 %   endfor
-%   if category.name == 'Accommodation':
+%   if category.name == 'Accommodation' and not h.lca_rego['accommodation']['self_book'] == 'yes':
 
         <p class="label">Check in on:</p>
         <p>${ h.date(c.registration.checkin) }</p>

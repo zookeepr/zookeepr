@@ -52,6 +52,12 @@ lca_info = {
 }
 
 lca_rego = {
+  'accommodation': {
+      # Will delegates be force to organise their own accommodation?
+      # set to yes to disable the accommodation questions.
+      'self_book': 'yes'
+  },
+
   'volunteer_areas': (
             {'name': 'Administration', 'description': 'Take care and help out on any administration tasks.'},
             {'name': 'Registration Desk', 'description': 'Sign people into the conference and help with general enquires.'},
