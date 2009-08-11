@@ -93,7 +93,9 @@ def setup(meta):
             Product(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2200", auth=None, validate=None),
 
             # Dinner
-            Product(category_id='3', active=True, description="Dinner Tickets", cost="8000", auth=None, validate="ProDinner(dinner_field='product_26_qty',ticket_category='category_1',ticket_id=[5,4])"),
+            Product(category_id='3', active=True, description="Adult", cost="8000", auth=None, validate="ProDinner(dinner_field='product_Dinner_Adult_qty',ticket_category='category_1',ticket_id=[5,4])"),
+            Product(category_id='3', active=True, description="Infant (0-1 years)", cost="4000", auth=None, validate="ProDinner(dinner_field='product_Dinner_Adult_qty',ticket_category='category_1',ticket_id=[5,4])"),
+            Product(category_id='3', active=True, description="Child (1-5 years)", cost="4000", auth=None, validate="ProDinner(dinner_field='product_Dinner_Adult26_qty',ticket_category='category_1',ticket_id=[5,4])"),
         ]
     )
 
@@ -112,12 +114,12 @@ def setup(meta):
     # Partner's Programme
     meta.Session.add_all(
         [
-            Product(category_id='5', active=True, description="Adult", cost="20000", auth=None, validate="PPEmail(adult_field='product_30_qty',email_field='partner_email')"),
-            Product(category_id='5', active=True, description="Child (0-3 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_31_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (4-6 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_32_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (7-9 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_33_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (10-12 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_34_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (13-17 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_35_qty',adult_field='product_30_qty')"),
+            Product(category_id='5', active=True, description="Adult", cost="20000", auth=None, validate="PPEmail(adult_field='product_Partners Programme_Adult_qty',email_field='partner_email')"),
+            Product(category_id='5', active=True, description="Child (0-3 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_5 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Child (4-6 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (4_6 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Child (7-9 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (7_9 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Child (10-12 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (10_12 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Child (13-17 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (13_17 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
         ]
     )
 
@@ -156,7 +158,7 @@ class Product(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
     category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id'), nullable=False)
     active = sa.Column(sa.types.Boolean, nullable=False)
-    description = sa.Column(sa.types.Text, nullable=False, unique=True)
+    description = sa.Column(sa.types.Text, nullable=False)
     cost = sa.Column(sa.types.Integer, nullable=False)
     auth = sa.Column(sa.types.Text, nullable=True)
     validate = sa.Column(sa.types.Text, nullable=True)
@@ -164,6 +166,9 @@ class Product(Base):
     # relations
     ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
     category = sa.orm.relation(ProductCategory, lazy=True, backref='products')
+
+    # Descriptions should be unique within a category
+    sa.UniqueConstraint(category_id, description, name='category_description');
 
     def __init__(self, **kwargs):
         super(Product, self).__init__(**kwargs)
@@ -232,6 +237,9 @@ class Product(Base):
                 until.append(ceiling.available_until)
         if len(until) > 0:
             return max(until)
+
+    def clean_description(self):
+        return self.description.replace('-','_');
 
     def __repr__(self):
         return '<Product id=%r active=%r description=%r cost=%r auth=%r validate%r>' % (self.id, self.active, self.description, self.cost, self.auth, self.validate)

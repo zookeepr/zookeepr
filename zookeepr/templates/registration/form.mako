@@ -148,9 +148,9 @@ else:
             </tr><tr><td>${ fields[i][0] }</td>
 %               endif
 %               if not product.available():
-            <td><span class="mandatory">^</span>${ h.text('none', size=2, disabled=True) }${ h.hidden_field('products.product_' + str(product.id) + '_qty') }</td>
+            <td><span class="mandatory">^</span>${ h.text('none', size=2, disabled=True) }${ h.hidden_field('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty') }</td>
 %               else:
-            <td>${ h.text('products.product_' + str(product.id) + '_qty', size=2) }</td>
+            <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
 %               endif
              <% j += 1 %>
 %           endfor
@@ -168,7 +168,7 @@ else:
 %           endfor
   </tr>
 %           for product in products:
-    <td align="center">${ h.text('products.product_' + str(product.id) + '_qty', size=2) }</td>
+    <td align="center">${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
 %           endfor
 </table>
 %       elif category.display == 'radio':
@@ -178,11 +178,20 @@ else:
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-          <p><label>${ h.radio('products.category_' + str(category.id), product.id) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+          <p><label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'select':
+%         if (category.name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] == 'yes'):
+            <input type="hidden" name="products.category_${ category.name.replace('-','_') }"
+%             for product in products:
+%               if product.description == 'I will organise my own':
+                  value="${ product.id }"
+%               endif
+%             endfor
+             >
+%         else:
           <p class="entries">
-            <select name="products.category_${ category.id }">
+            <select name="products.category_${ category.name.replace('-','_') }">
               <option value=""> - </option>
 %           for product in products:
 <%
@@ -195,6 +204,7 @@ else:
 %           endfor
             </select>
           </p>
+%         endif
 %       elif category.display == 'checkbox':
 %           for product in products:
 <%
@@ -202,7 +212,7 @@ else:
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-          <p><label>${ h.checkbox('products.product_' + str(product.id)) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+          <p><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + product.description.replace('-','_')) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
@@ -215,7 +225,16 @@ else:
 %           endfor
 %       endif
 %       if category.name == 'Accommodation':
-          <p>Please see ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) } for prices and details, including how to book your Wrest Point room at LCA09 rates.</p>
+%         if h.lca_rego['accommodation']['self_book'] == 'yes':
+          <p>You must book accommodation for ${ h.lca_info['event_name'] }
+          youself.  Please see
+          ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) }
+          for prices and details that the organisers have negotiated for
+          delegates.</p>
+          <input type="hidden" name="registration.checkin" value='2020/01/01'>
+          <input type="hidden" name="registration.checkout" value='2020/01/01'>
+%         else:
+          <p>Please see ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) } for prices and details.</p>
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">
@@ -234,6 +253,7 @@ else:
 %           endfor
             </select>
           </p>
+%         endif
 %       elif category.name == 'Partners Programme':
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries">${ h.text('products.partner_email', size=50) }</p>

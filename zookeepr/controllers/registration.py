@@ -175,9 +175,11 @@ class RegistrationController(BaseController):
         
         # Go through each category and each product and add generic validation
         for category in c.product_categories:
+            clean_cat_name = category.clean_name()
+
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
-                ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, not_empty=True))
+                ProductSchema.add_field('category_' + clean_cat_name, ProductInCategory(category=category, not_empty=True))
                 for product in category.products:
                     if product.validate is not None:
                         exec("validator = " + product.validate)
@@ -185,9 +187,10 @@ class RegistrationController(BaseController):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
+                    clean_prod_desc = product.clean_description
                     #if self._product_available(product):
-                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
-                    product_fields.append('product_' + str(product.id))
+                    ProductSchema.add_field('product_' + clean_cat_name, validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
+                    product_fields.append('product_' + clean_cat_name)
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
@@ -196,9 +199,11 @@ class RegistrationController(BaseController):
                 # qty
                 product_fields = []
                 for product in category.products:
+                    clean_prod_desc = product.clean_description()
+  
                     #if self._product_available(product):
-                    ProductSchema.add_field('product_' + str(product.id) + '_qty', ProductQty(product=product, if_missing=None))
-                    product_fields.append('product_' + str(product.id) + '_qty')
+                    ProductSchema.add_field('product_' + clean_cat_name + '_' + clean_prod_desc + '_qty', ProductQty(product=product, if_missing=None))
+                    product_fields.append('product_' + clean_cat_name + '_' + clean_prod_desc+ '_qty')
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
@@ -352,8 +357,10 @@ class RegistrationController(BaseController):
 
         # Store Product details
         for category in c.product_categories:
+            clean_cat_name = category.clean_name()
             if category.display in ('radio', 'select'):
-                product = Product.find_by_id(result['products']['category_' + str(category.id)])
+                #product = Product.find_by_cat_and_desc(category.id, result['products']['category_' + clean_cat_name])
+                product = Product.find_by_id(result['products']['category_' + clean_cat_name])
                 if product != None:
                     rego_product = RegistrationProduct()
                     rego_product.registration = c.registration
@@ -365,7 +372,9 @@ class RegistrationController(BaseController):
                     c.registration.products.append(rego_product)
             elif category.display == 'checkbox':
                 for product in category.products:
-                    if result['products']['product_' + str(product.id)] == True:
+                    clean_prod_desc = product.clean_description()
+
+                    if result['products']['product_' + clean_cat_name + '_' + clean_prod_desc] == True:
                         rego_product = RegistrationProduct()
                         rego_product.registration = c.registration
                         rego_product.product = product
@@ -373,13 +382,16 @@ class RegistrationController(BaseController):
                         c.registration.products.append(rego_product)
             elif category.display == 'qty':
                 for product in category.products:
-                    if result['products']['product_' + str(product.id) + '_qty'] not in [0, None]:
+                    clean_prod_desc = product.clean_description()
+
+                    if result['products']['product_' + clean_cat_name + '_' + clean_prod_desc + '_qty'] not in [0, None]:
                         rego_product = RegistrationProduct()
                         rego_product.registration = c.registration
                         rego_product.product = product
-                        rego_product.qty = result['products']['product_' + str(product.id) + '_qty']
+                        rego_product.qty = result['products']['product_' + clean_cat_name + '_' + clean_prod_desc + '_qty']
                         c.registration.products.append(rego_product)
 
+        print "All committed?"
         meta.Session.commit()
 
     def status(self):
@@ -470,7 +482,7 @@ class RegistrationController(BaseController):
         # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
             if self._product_available(rproduct.product):
-                ii = InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
+                ii = InvoiceItem(description=rproduct.product.category.name + ' - ' + rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
                 ii.invoice = invoice
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until()
