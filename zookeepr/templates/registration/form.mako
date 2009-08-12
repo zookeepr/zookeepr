@@ -231,8 +231,8 @@ else:
           ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) }
           for prices and details that the organisers have negotiated for
           delegates.</p>
-          <input type="hidden" name="registration.checkin" value='2020/01/01'>
-          <input type="hidden" name="registration.checkout" value='2020/01/01'>
+          <input type="hidden" name="registration.checkin" value='2010/01/01'>
+          <input type="hidden" name="registration.checkout" value='2010/01/01'>
 %         else:
           <p>Please see ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) } for prices and details.</p>
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
