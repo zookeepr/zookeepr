@@ -16,7 +16,7 @@ from formencode import validators, htmlfill, Invalid
 from zookeepr.lib.validators import BaseSchema
 
 from zookeepr.model import meta
-from zookeepr.model import Person, Role, Proposal, Invoice
+from zookeepr.model import Person, Role, Proposal, Invoice, Registration
 
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
 from authkit.authorize import PermissionSetupError, middleware
@@ -281,6 +281,40 @@ class IsSameZookeeprAttendee(UserIn):
 
         return app(environ, start_response)
 
+class IsSameZookeeprRegistration(UserIn):
+    """
+    Checks that the signed in user is the user this registration belongs
+    to.
+    """
+    def __init__(self, registration_id):
+        self.registration_id = int(registration_id)
+
+    def check(self, app, environ, start_response):
+
+        if not environ.get('REMOTE_USER'):
+            raise NotAuthenticatedError('Not Authenticated')
+
+        person = Person.find_by_email(environ['REMOTE_USER'])
+        if person is None:
+            environ['auth_failure'] = 'NO_USER'
+            raise NotAuthorizedError(
+                'You are not one of the users allowed to access this resource.'
+            )
+
+        registration = Registration.find_by_id(self.registration_id)
+        if registration is None:
+            raise NotAuthorizedError(
+                "Registration doesn't exist"
+            )
+
+        if person.id <> registration.person_id:
+            environ['auth_failure'] = 'NO_ROLE'
+            raise NotAuthorizedError(
+                "Registration is not for this user"
+            )
+
+        return app(environ, start_response)
+
 
 class Or(Permission):
     """
@@ -327,3 +361,4 @@ is_valid_user = ValidZookeeprUser()
 is_same_zookeepr_user = IsSameZookeeprUser
 is_same_zookeepr_submitter = IsSameZookeeprSubmitter
 is_same_zookeepr_attendee = IsSameZookeeprAttendee
+is_same_zookeepr_registration = IsSameZookeeprRegistration
