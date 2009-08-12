@@ -34,7 +34,7 @@ class Volunteer(Base):
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Volunteer).filter_by(id=id).first()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such volunteer object")
         return result
 
     @classmethod

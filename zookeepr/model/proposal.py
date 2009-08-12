@@ -254,7 +254,7 @@ class Proposal(Base):
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(id=id).first()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     @classmethod
@@ -265,14 +265,14 @@ class Proposal(Base):
     def find_all_by_accommodation_assistance_type_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(accommodation_assistance_type_id=id).all()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     @classmethod
     def find_all_by_travel_assistance_type_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(travel_assistance_type_id=id).all()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     # TODO: add an optional filter for removing the signed in user's proposals
@@ -285,7 +285,7 @@ class Proposal(Base):
 
         result = result.all()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     @classmethod

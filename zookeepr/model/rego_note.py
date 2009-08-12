@@ -36,7 +36,7 @@ class RegoNote(Base):
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(RegoNote).filter_by(id=id).first()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such rego note object")
         return result
         
     @classmethod

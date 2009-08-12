@@ -158,14 +158,14 @@ class Person(Base):
     def find_by_email(cls, email, abort_404 = False):
         result = Session.query(Person).filter_by(email_address=email.lower()).first()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such person object")
         return result
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Person).filter_by(id=id).first()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such person object")
         return result
 
     @classmethod
@@ -176,5 +176,5 @@ class Person(Base):
     def find_by_url_hash(cls, url_hash, abort_404 = True):
         result = Session.query(Person).filter_by(url_hash=url_hash).first()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such person object")
         return result
