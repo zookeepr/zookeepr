@@ -1,47 +1,71 @@
 <%inherit file="/base.mako" />
+<%def name="toolbox_extra_admin()">
+  <li>${ h.link_to('Edit Person', url=h.url_for(controller='person', action='edit',id=c.person.id)) }</li>
+  <li>${ h.link_to('Edit Person Roles', url=h.url_for(controller='person', action='roles',id=c.person.id)) }</li>
+</%def>
+
 <h2>${ c.person.firstname |h }'s profile</h2>
 
 <table>
     <tr>
-        <td><b>First name:</b></td>
-        <td>${ c.person.firstname | h }</td>
+        <td><b>First name:</b></p></td>
+        <td>${ c.person.firstname }</td>
     </tr>
     <tr>
         <td><b>Last name:</b></p></td>
-        <td>${ c.person.lastname | h }</td>
+        <td>${ c.person.lastname }</td>
     </tr>
     <tr>
         <td><b>Email:</b></p></td>
-        <td>${ c.person.email_address | h }</td>
+        <td><a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a></td>
     </tr>
+% if h.auth.authorized(auth.has_organiser_role):
+    <tr>
+      <td valign="top"><b>Roles:</b></td>
+      <td>
+% if len(c.person.roles) > 0:
+%   for role in c.person.roles:
+%     if role.pretty_name is None or role.pretty_name == '':
+${ role.name }
+%     else:
+${ role.pretty_name }
+%     endif
+%   endfor
+% else:
+None
+% endif
+      </p></td>
+    </tr>
+% endif
 % if c.person.phone:
     <tr>
-        <td><b>Phone:</b></p></td>
-        <td>${ c.person.phone | h }</td>
+        <td><b>Phone:</b></td>
+        <td>${ c.person.phone }</td>
     </tr>
 % endif
 % if c.person.mobile:
     <tr>
         <td><b>Mobile:</b></td>
-        <td>${ c.person.mobile | h }</td>
+        <td>${ c.person.mobile }</td>
     </tr>
 % endif
 % if c.person.company:
     <tr>
         <td><b>Company:</b></td>
-        <td>${ c.person.company | h }</td>
+        <td>${ c.person.company }</td>
     </tr>
 % endif
     <tr>
-        <td valign="top"><p><b>Address:</b></td>
-        <td>${ c.person.address1 |h }<br>
+        <td valign="top"><b>Address:</b></td>
+        <td><p>${ c.person.address1 }<br>
 % if c.person.address2:
-                ${ c.person.address2 |h }<br>
+                ${ c.person.address2 }<br>
 % endif
-                ${ c.person.city |h }<br>
-                ${ c.person.state |h } ${ c.person.postcode |h }<br>
-                ${ c.person.country |h }</td>
+                ${ c.person.city }<br>
+                ${ c.person.state } ${ c.person.postcode }<br>
+                ${ c.person.country }</td>
     </tr>
+% endfor
 </table>
 
 <h2>Submitted Proposals</h2>
@@ -93,6 +117,9 @@ ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw',
 
 % if h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.person.id), h.auth.has_organiser_role)):
 <ul><li>${ h.link_to('Edit', url=h.url_for(action='edit',id=c.person.id)) }</li></ul>
+% endif
+% if h.auth.authorized(h.auth.has_organiser_role):
+<ul><li>${ h.link_to('Edit Person Roles', url=h.url_for(action='roles',id=c.person.id)) }</li></ul>
 % endif
 
 <%def name="title()">
