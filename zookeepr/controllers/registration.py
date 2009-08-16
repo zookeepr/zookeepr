@@ -128,6 +128,7 @@ edit_schema = UpdateRegistrationSchema()
 
 class RegistrationController(BaseController):
 
+    @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
         c.product_categories = ProductCategory.find_all()
         c.ceilings = {}
@@ -302,10 +303,9 @@ class RegistrationController(BaseController):
                 your registration and pay your invoice.""")
             redirect_to('/')
 
-    @authorize(h.auth.is_valid_user)
     @dispatch_on(POST="_edit")
     def edit(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
         able, response = self._able_to_edit()
@@ -323,11 +323,10 @@ class RegistrationController(BaseController):
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @authorize(h.auth.is_valid_user)
     @validate(schema=edit_schema, form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -408,9 +407,8 @@ class RegistrationController(BaseController):
     def status(self):
         return render("/registration/status.mako")
 
-    @authorize(h.auth.is_valid_user)
     def pay(self, id, quiet=0):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
         registration = Registration.find_by_id(id)
@@ -842,10 +840,9 @@ class RegistrationController(BaseController):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
         return disallowed_chars.sub(' ', h.esc(field.strip()))
 
-    @authorize(h.auth.is_valid_user)
     def view(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 

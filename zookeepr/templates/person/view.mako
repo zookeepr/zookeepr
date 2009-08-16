@@ -19,7 +19,7 @@
         <td><b>Email:</b></p></td>
         <td><a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a></td>
     </tr>
-% if h.auth.authorized(auth.has_organiser_role):
+% if h.auth.authorized(h.auth.has_organiser_role):
     <tr>
       <td valign="top"><b>Roles:</b></td>
       <td>
@@ -65,7 +65,6 @@ None
                 ${ c.person.state } ${ c.person.postcode }<br>
                 ${ c.person.country }</td>
     </tr>
-% endfor
 </table>
 
 <h2>Submitted Proposals</h2>
