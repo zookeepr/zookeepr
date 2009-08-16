@@ -24,13 +24,21 @@
       <td valign="top"><b>Roles:</b></td>
       <td>
 % if len(c.person.roles) > 0:
+<%  first = True %>
 %   for role in c.person.roles:
-%     if role.pretty_name is None or role.pretty_name == '':
-${ role.name }
+%     if first:
+<%    first = False %>
 %     else:
-${ role.pretty_name }
+<br />
 %     endif
-%   endfor
+<%
+      if role.pretty_name is None or role.pretty_name == '':
+        role_name = role.name 
+      else:
+        role_name = role.pretty_name 
+%>
+     ${ h.link_to(role_name, url=h.url_for(controller='role', action='view',id=role.id)) }
+%    endfor
 % else:
 None
 % endif
