@@ -30,6 +30,7 @@ class Registration(Base):
     diet = sa.Column(sa.types.Text)
     special = sa.Column(sa.types.Text)
     partner_email = sa.Column(sa.types.Text)
+    partner_mobile = sa.Column(sa.types.Text)
     checkin = sa.Column(sa.types.Integer)
     checkout = sa.Column(sa.types.Integer)
     prevlca = sa.Column(CommaList)

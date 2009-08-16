@@ -95,6 +95,8 @@ class RegistrationSchema(BaseSchema):
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
+    partner_mobile = validators.String()
+
 
     chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
@@ -214,13 +216,22 @@ class RegistrationController(BaseController):
         edit_schema.add_field('products', ProductSchema)
 
     def is_speaker(self):
-        return c.signed_in_person.is_speaker()
+        try:
+       	    return c.signed_in_person.is_speaker()
+        except:
+            return False
 
     def is_miniconf_org(self):
-        return c.signed_in_person.is_miniconf_org()
+        try:
+            return c.signed_in_person.is_miniconf_org()
+        except:
+            return False
 
     def is_volunteer(self):
-        return c.signed_in_person.is_volunteer()
+        try:
+            return c.signed_in_person.is_volunteer()
+        except:
+            return False
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person

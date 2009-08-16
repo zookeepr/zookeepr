@@ -10,9 +10,10 @@ def setup(meta):
         [
             ProductCategory(name='Ticket', description='Please choose your registration type?', display='radio', min_qty=1, max_qty=1),
             ProductCategory(name='Shirt', description='Please choose how many shirts you would like. The first one is free with your registration.', display='qty', min_qty=1, max_qty=100),
-            ProductCategory(name='Dinner Ticket', description='Please indicate how many penguin dinner tickets you wish to purchase. You should include yourself in this number, even if you buy a professional registration.', display='qty', min_qty=0, max_qty=5, display_grid='t'),
+            ProductCategory(name='Dinner Ticket', description='Please indicate how many penguin dinner tickets you wish to purchase. You should include yourself in this number, even if you buy a professional registration.  Adult ticket is an adult meal, infant ticket is no meal and sit on your knee, child ticket is a childs meal.  If your child requires an adult meal, then purchase an adult ticket for them.', display='qty', min_qty=0, max_qty=5, display_grid='t'),
             ProductCategory(name='Accommodation', description='Where would you like to stay during the conference?', display='select', min_qty=0, max_qty=10),
             ProductCategory(name='Partners Programme', description='Would your partner like to participate in the partners programme?', display='qty', min_qty=0, max_qty=50, display_grid='t'),
+            ProductCategory(name='Speakers Dinner Ticket', description='Please indicate how many speaker dinner tickets you need. These are for you, your significant other, and your children. Adult ticket is an adult meal, infant ticket is no meal and sit on your knee, child ticket is a childs meal. If your child requires an adult meal, then purchase an adult ticket for them.', display='qty', min_qty=0, max_qty=200, display_grid='t'),
         ]
     )
 
