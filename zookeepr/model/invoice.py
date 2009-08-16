@@ -6,8 +6,12 @@ from pylons.controllers.util import abort
 
 from person import Person
 from invoice_item import InvoiceItem
+from payment import Payment
+from payment_received import PaymentReceived
 
 from zookeepr.model.meta import Session
+
+import datetime
 
 def setup(meta):
     pass
@@ -27,7 +31,9 @@ class Invoice(Base):
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
-    # relation
+    # relations
+    payment_received = sa.orm.relation(PaymentReceived, backref='invoice')
+    payments = sa.orm.relation(Payment, backref='invoice')
     person = sa.orm.relation(Person,lazy=True,backref=sa.orm.backref('invoices', cascade="all, delete-orphan"))
     items = sa.orm.relation(InvoiceItem, backref='invoice', cascade="all, delete-orphan")
 
@@ -44,11 +50,15 @@ class Invoice(Base):
             t += ii.total()
         return t
 
+    def good_payments(self):
+        return Session.query(PaymentReceived).filter_by(approved=True, invoice_id=self.id)
+
+    def bad_payments(self):
+        return Session.query(PaymentReceived).filter_by(approved=False, invoice_id=self.id)
+
     def paid(self):
         """Return whether the invoice is paid (or zero-balance) """
-        print "FIXME!" # TODO: remove this once payment works
-        return True
-        return bool(self.good_payments or self.total()==0)
+        return bool(self.good_payments().count() > 0 or self.total()==0)
 
     def status(self):
         if self.is_void() == True:

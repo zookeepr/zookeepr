@@ -41,11 +41,11 @@ You will need to go to http://${ h.host_name() }/registration/remind as well to 
 <%         continue %>
 %     elif not i.payments:
 <%         status = "NOT_PAID" %>
-%     elif i.bad_payments:
+%     elif i.bad_payments().count() > 0:
 <%         status = "INVALID" %>
-%     elif not i.good_payments:
+%     elif not i.good_payments().count() > 0:
 <%         status = "BAD_PAYMENT" %>
-%     elif i.good_payments:
+%     elif i.good_payments().count() > 0:
 <%         continue %>
 %     else:
 <%         status = "UNKNOWN" %>

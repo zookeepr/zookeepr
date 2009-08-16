@@ -7,11 +7,11 @@
 
 <% amt = c.invoice.total() %>
   <amount cents="${ amt }">${ h.number_to_currency(amt/100.0) }</amount>
-% if c.invoice.good_payments:
+% if c.invoice.good_payments().count() > 0:
   <paid>
 <% pp = [] %>
-%   for p in c.invoice.good_payments:
-<%     pp.append(str(p.TransID)) %>
+%   for p in c.invoice.good_payments():
+<%     pp.append(str(p.gateway_ref)) %>
 %   endfor
     <transaction>${ '-'.join(pp) }</transaction>
   </paid>
@@ -20,7 +20,7 @@
 % else:
   <owed cents="${ amt }"/>
 % endif
-% if c.invoice.bad_payments:
+% if c.invoice.bad_payments().count() > 0:
   <badpayments/>
 % endif
 

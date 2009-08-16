@@ -6,7 +6,7 @@
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
 % if not c.invoice.is_void() and c.invoice.paid():
         <li>Invoice has been paid.</li>
-% elif c.invoice.bad_payments:
+% elif c.invoice.bad_payments().count() > 0:
         <li>Invalid payments have been applied to this invoice, please email ${ h.contact_email('the organising committee') }</a></li>
 % elif not c.invoice.is_void() and not c.invoice.paid():
         <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>

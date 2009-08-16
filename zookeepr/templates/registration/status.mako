@@ -127,7 +127,7 @@
 %   endfor
     </table>
 
-% elif False and h.signed_in_person().invoices[0].bad_payments:
+% elif False and h.signed_in_person().invoices[0].bad_payments().count() > 0:
     <p><b>Tentatively registered and tried to pay.</b></p>
 
     <p>Unfortunately, there was some sort of problem with your payment.</p>

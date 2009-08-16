@@ -1,12 +1,8 @@
 import datetime
-
-import hmac
-import sha
-
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import redirect_to, Response
+from pylons.controllers.util import redirect_to, Response, redirect
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -23,9 +19,11 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory
-from zookeepr.model.payment import PaymentOptions
+from zookeepr.model.payment import Payment, PaymentOptions
 
 from zookeepr.config.lca_info import lca_info, file_paths
+
+import zookeepr.lib.pxpay as pxpay
 
 log = logging.getLogger(__name__)
 
@@ -46,6 +44,9 @@ class InvoiceSchema(BaseSchema):
 class NewInvoiceSchema(BaseSchema):
     invoice = InvoiceSchema()
     pre_validators = [NestedVariables]
+
+class PayInvoiceSchema(BaseSchema):
+    payment_id = validators.Int(min=1)
 
 class InvoiceController(BaseController):
     @authorize(h.auth.is_valid_user)
@@ -93,9 +94,6 @@ class InvoiceController(BaseController):
 
         c.printable = False
         c.invoice = Invoice.find_by_id(id, True)
-        # TODO: remove these once payment works
-        c.invoice.good_payments = False
-        c.invoice.bad_payments = False
         return render('/invoice/view.mako')
 
     def printable(self, id):
@@ -105,9 +103,6 @@ class InvoiceController(BaseController):
 
         c.printable = True
         c.invoice = Invoice.find_by_id(id, True)
-        # TODO: remove these once payment works
-        c.invoice.good_payments = False
-        c.invoice.bad_payments = False
         return render('/invoice/view_printable.mako')
 
     def index(self):
@@ -118,10 +113,6 @@ class InvoiceController(BaseController):
             c.can_edit = False
             c.invoice_collection = Invoice.find_by_person(h.signed_in_person().id)
 
-        # TODO: the payment stuff is not yet implemented
-        for i in c.invoice_collection:
-            i.good_payments = False
-            i.bad_payments = False
         return render('/invoice/list.mako')
 
     @authorize(h.auth.has_organiser_role)
@@ -131,32 +122,49 @@ class InvoiceController(BaseController):
 
         return render('/invoice/remind.mako')
 
+    @dispatch_on(POST="_pay")
     def pay(self, id):
-        return "TODO: pay (needs payment controller)"
-        """Pay an invoice.
-
-        This method bounces the user off to the commsecure website.
+        """Request confirmation from user
         """
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+        invoice = Invoice.find_by_id(id, True)
+        person = invoice.person
+
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
-        c.invoice = Invoice.find_by_id(id, True)
-
         #return render('/registration/really_closed.mako')
-        if c.invoice.person.invoices:
-            if c.invoice.paid() or c.invoice.bad_payments:
+
+        c.payment = Payment()
+        c.payment.amount = invoice.total()
+        c.payment.invoice = invoice
+
+        meta.Session.commit()
+        return render("/invoice/payment.mako")
+
+    @validate(schema=PayInvoiceSchema(), form='pay', post_only=True, on_get=True, variable_decode=True)
+    def _pay(self, id):
+        payment = Payment.find_by_id(self.form_result['payment_id'])
+        c.invoice = payment.invoice
+        person = c.invoice.person
+
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        if person.invoices:
+            if c.invoice.paid() or c.invoice.bad_payments().count() > 0:
                 c.status = []
                 if c.invoice.total()==0:
                   c.status.append('zero balance')
-                if c.invoice.good_payments:
+                if c.invoice.good_payments().count() > 0:
                   c.status.append('paid')
-                  if len(c.invoice.good_payments)>1:
-                    c.status[-1] += ' (%d times)' % len(c.invoice.good_payments)
-                if c.invoice.bad_payments:
+                  if c.invoice.good_payments().count()>1:
+                    c.status[-1] += ' (%d times)' % c.invoice.good_payments().count()
+                if c.invoice.bad_payments().count() > 0:
                   c.status.append('tried to pay')
-                  if len(c.invoice.bad_payments)>1:
-                    c.status[-1] += ' (%d times)' % len(c.invoice.bad_payments)
+                  if c.invoice.bad_payments().count()>1:
+                    c.status[-1] += ' (%d times)' % c.invoice.bad_payments().count()
                 c.status = ' and '.join(c.status)
                 return render('/invoice/already.mako')
 
@@ -168,38 +176,21 @@ class InvoiceController(BaseController):
                 if ii.product and not ii.product.available():
                     return render('/invoice/expired.mako')
 
-        # get our merchant id and secret
-        merchant_id = lca_info['commsecure_merchantid']
-        secret = lca_info['commsecure_secret']
-
-        # create payment entry
-        payment = model.Payment()
-        payment.invoice = c.invoice
-        # not sure why we do this anymore, convenience i guess
-        payment.amount = c.invoice.total()
-
-        self.dbsession.save(payment)
-        self.dbsession.flush()
-
-        fields = {
-            'MerchantID': merchant_id,
-            'PaymentID': payment.id,
-            'Amount': payment.amount,
-            'InvoiceID': payment.invoice.id,
-            }
-
-        # Generate HMAC
-        keys = fields.keys()
-        keys.sort()     # keys in alphabetical order
-
-        # key1=value1&key2=value2&key3=value3 ...
-        stringToMAC = '&'.join(['%s=%s' % (key, fields[key]) for key in keys])
-        mac = hmac.new(secret, stringToMAC, sha).hexdigest()
-        fields['MAC'] = mac
-
-        res=Response(render('/invoice/payment.mako', fields=fields))
-        res.headers['Refresh']='300'
-        return res
+        # Prepare fields for PxPay
+        params = {
+            'payment_id': payment.id,
+            'amount': "%#.*f" % (2, payment.amount / 100.0),
+            'invoice_id': payment.invoice.id,
+            'email_address': payment.invoice.person.email_address,
+            'client_ip' : request.environ['REMOTE_ADDR'],
+            'return_url' : lca_info['event_url'] + '/payment/new',
+            #'return_url' : 'http://localhost:5000/payment/new', # for local testing
+        }
+        uri = pxpay.generate_request(params)
+        if uri is None:
+            return render("/payment/generate_request_error.mako") # TODO: create this error page
+        else:
+            redirect(uri)
 
     def pdf(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
@@ -210,9 +201,6 @@ class InvoiceController(BaseController):
 
         c.invoice = Invoice.find_by_id(id, True)
 
-        # TODO: remove these once payment works
-        c.invoice.good_payments = False
-        c.invoice.bad_payments = False
         xml_s = render('/invoice/pdf.mako')
 
         xsl_f = file_paths['zk_root'] + '/zookeepr/templates/invoice/pdf.xsl'

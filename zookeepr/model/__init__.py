@@ -38,6 +38,7 @@ from ceiling import Ceiling
 from invoice import Invoice
 from invoice_item import InvoiceItem
 from payment import Payment
+from payment_received import PaymentReceived
 
 from registration import Registration
 from registration_product import RegistrationProduct
@@ -70,6 +71,9 @@ def setup(meta):
 
     db_content.setup(meta)
     volunteer.setup(meta)
+
+    payment.setup(meta)
+    payment_received.setup(meta)
 
     meta.Session.commit()
 

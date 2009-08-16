@@ -38,26 +38,21 @@
         </td>
         <td>${ h.yesno(i.manual) |n }</td>
         <td>
-%   if i.good_payments:
-%       for p in i.good_payments:
-%           if p.Amount != i.total():
+%   if i.good_payments().count() > 0:
+%       for p in i.good_payments():
+%           if p.amount_paid != i.total():
           <b>mismatch!</b>
 %           endif
-          ${ "$%.2f" % (p.Amount / 100.0) }
-          <small>${ p.TransID |h}</small>
-%           if p.HTTP_X_FORWARDED_FOR != '203.89.255.156':
-          <br><b>unknown IP!</b>
-          ${ p.HTTP_X_FORWARDED_FOR |h}
-%           endif
-
+          ${ "$%.2f" % (p.amount_paid / 100.0) }
+          <small>${ p.gateway_ref |h}</small>
 %       endfor
+%   elif i.bad_payments().count() > 0:
+        Bad payment(s)!
 %   else:
           -
 %   endif
         </td>
-%   if i.bad_payments:
-        <td>Bad payment(s)!</td>
-%   endif
+        </td>
       </tr>
 % endfor
     </table>

@@ -484,8 +484,9 @@ class RegistrationController(BaseController):
                 ii.invoice = invoice
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until()
-                if product_expires != None and product_expires < invoice.due_date:
-                    invoice.due_date = product_expires
+                if product_expires is not None:
+                    if invoice.due_date is None or product_expires < invoice.due_date:
+                        invoice.due_date = product_expires
                 invoice.items.append(ii)
             else:
                 for ii in invoice.items:

@@ -4,10 +4,8 @@ from datetime import datetime
 
 
 lca_info = {
-# CommSecure (the payment gateway provider) requires a Merchant ID
-# and a shared secret
-  'commsecure_merchantid' : 'TestZookeeprMerchantID',
-  'commsecure_secret' : 'zing',
+  'paymentgateway_userid' : '',
+  'paymentgateway_secretkey' : '',
 
 # Contact email for the committee
   'contact_email' : 'contact@lca2010.org.nz',

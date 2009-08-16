@@ -4,8 +4,6 @@ from meta import Base
 
 from pylons.controllers.util import abort
 
-from invoice import Invoice
-
 from zookeepr.model.meta import Session
 
 def setup(meta):
@@ -26,9 +24,6 @@ class Payment(Base):
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
-    # relation
-    invoice = sa.orm.relation(Invoice, backref='payments')
-
     def __init__(self, **kwargs):
         super(Payment, self).__init__(**kwargs)
 
@@ -40,5 +35,9 @@ class Payment(Base):
         return Session.query(Payment).order_by(Payment.id).all()
 
     @classmethod
-    def find_by_id(cls, id):
-        return Session.query(Payment).filter_by(id=id).first()
+    def find_by_id(cls, id, abort_404 = False):
+        result =  Session.query(Payment).filter_by(id=id).first()
+        if result is None and abort_404:
+            abort(404, "No such payment object")
+        return result
+

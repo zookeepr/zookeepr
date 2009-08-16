@@ -64,7 +64,7 @@
     
 % if not c.invoice.is_void() and c.invoice.paid():
         <p class="pay_button">Invoice has been paid.</p>
-% elif c.invoice.bad_payments:
+% elif c.invoice.bad_payments().count() > 0:
         <p class="pay_button">Invalid payments have been applied to this invoice, please email ${ h.contact_email('the organising committee') }</a></p>
 % elif not c.invoice.is_void() and not c.invoice.paid():
         <p class="pay_button">${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</p>
