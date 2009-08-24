@@ -1,23 +1,24 @@
-Subject: Confirmation of your payment attempt for ${ h.event_name() }
-To: ${ c.person.firstname }  ${ c.person.lastname } <${ c.person.email_address }>
+To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
+%if not c.response['approved']:
+Subject: Rejected payment attempt for ${ h.lca_info['event_name'] }
 
-Thank you for your payment attempt, the results are below.
-
-<p>
-% if c.payment.result != 'OK':
-This is an invalid payment. Please contact ${ h.contact_email }
-% elif c.payment.Status == 'Accepted':
-Your payment was successful. Your receipt number is ${ c.payment.id }
-You can view your invoice at http://${ h.site_name() | u }/invoice/${ c.payment.invoice.id }
-% else:
 Your payment was unsuccessful. The reason was:
 
-    ${ c.payment.ErrorString }
+    ${ c.pr.response_text }
 
-You can try again by visiting http://${ h.site_name() | u }/registration/${ c.payment.invoice.person.registration.id }/pay
+You can try again by visiting:
+  ${ h.lca_info['event_url'] }/registration/${ c.pr.invoice.person.registration.id }/pay
+%else:
+Subject: Sucessful payment for ${ h.lca_info['event_name'] }
 
-% endif
+Your payment for ${ h.number_to_currency(c.response['amount_paid'] / 100.0) } was successful.
+
+Your receipt number is: PR${ c.pr.id }
+
+You can view your invoice at
+  ${ h.lca_info['event_url'] }/invoice/${ c.pr.invoice.id }
 
 Thanks again, and have a great day!
+%endif
 
-The ${ h.event_name() } Organising Committee
+The ${ h.lca_info['event_name'] } Organising Committee

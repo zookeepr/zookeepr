@@ -69,49 +69,52 @@ class PaymentController(BaseController):
     # No authentication because it's called directly by the payment gateway
     def new(self):
         payment = None
+        c.person = None
 
         fields = dict(request.GET)
-        response, validation_errors = pxpay.process_response(fields)
+        c.response, validation_errors = pxpay.process_response(fields)
 
-        if response is None:
+        if c.response is None:
             # TODO: return a non-200 page to force the payment gateway to retry?
-            response = { 'approved' : False }
+            c.response = { 'approved' : False }
         else:
             # Make sure the same browser created the zookeepr payment object and paid by credit card
-            if response['client_ip_gateway'] != response['client_ip_zookeepr']:
-                validation_errors.append('Mismatch in IP addresses: zookeepr=' + response['client_ip_zookeepr'] + ' gateway=' + response['client_ip_gateway'])
+            if c.response['client_ip_gateway'] != c.response['client_ip_zookeepr']:
+                validation_errors.append('Mismatch in IP addresses: zookeepr=' + c.response['client_ip_zookeepr'] + ' gateway=' + c.response['client_ip_gateway'])
 
             # Get the payment object associated with this transaction
-            payment = Payment.find_by_id(response['payment_id'])
+            payment = Payment.find_by_id(c.response['payment_id'])
+        
+        if payment is None:
+            validation_errors.append('Invalid payment ID from the payment gateway')
+        else:
+            c.person = payment.invoice.person
 
-            if payment is None:
-                validation_errors.append('Invalid payment ID from the payment gateway')
-            else:
-                # Check whether a payment has already been received for this payment object
-                received = PaymentReceived.find_by_payment(payment.id)
-                if received is not None:
-                    # Ignore repeat payment
-                    return redirect_to(action='view', id=payment.id)
+            # Check whether a payment has already been received for this payment object
+            received = PaymentReceived.find_by_payment(payment.id)
+            if received is not None:
+                # Ignore repeat payment
+                return redirect_to(action='view', id=payment.id)
 
-        if payment is not None:
-            if response['amount_paid'] != payment.amount:
+            # Extra validation
+            if c.response['amount_paid'] != payment.amount:
                 validation_errors.append('Mismatch between amounts paid and invoiced')
-            if response['invoice_id'] != payment.invoice.id:
+            if c.response['invoice_id'] != payment.invoice.id:
                 validation_errors.append('Mismatch between returned invoice ID and payment object')
-            if response['email_address'] != payment.invoice.person.email_address:
+            if c.response['email_address'] != payment.invoice.person.email_address:
                 validation_errors.append('Mismatch between returned email address and invoice object')
 
-        if len(validation_errors) > 0 and response['approved']:
-            # Suspiciously approved transaction which needs to be checked manually
-            # TODO: fire off an email to the organisers
-            pass
-        
-        pr = PaymentReceived(**response)
-        pr.validation_errors = ';'.join(validation_errors)
-        meta.Session.add(pr)
+        c.pr = PaymentReceived(**c.response)
+        c.pr.validation_errors = ';'.join(validation_errors)
+        meta.Session.add(c.pr)
         meta.Session.commit()
 
-        # TODO: email user about their transaction
+        if len(validation_errors) > 0 and c.response['approved']:
+            # Suspiciously approved transaction which needs to be checked manually
+            email(lca_info['contact_email'], render('/payment/suspicious_payment.mako'))
+        
+        if c.person is not None:
+            email(c.person.email_address, render('/payment/response.mako'))
 
         # OK we now have a valid transaction, we redirect the user to the view page
         # so they can see if their transaction was accepted or declined
