@@ -87,9 +87,9 @@ class PaymentController(BaseController):
             if payment is None:
                 validation_errors.append('Invalid payment ID from the payment gateway')
             else:
-                # TODO: check whether a payment has already been received for this payment object
-                already_paid = False
-                if already_paid:
+                # Check whether a payment has already been received for this payment object
+                received = PaymentReceived.find_by_payment(payment.id)
+                if received is not None:
                     # Ignore repeat payment
                     return redirect_to(action='view', id=payment.id)
 

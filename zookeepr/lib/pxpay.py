@@ -42,10 +42,7 @@ def generate_request(fields):
 
     request_node = xml_response.getElementsByTagName("Request")[0]
     valid = request_node.getAttribute("valid")
-    if valid != '1':
-        return None
-
-    return get_node_value(request_node, 'URI')
+    return valid, get_node_value(request_node, 'URI')
 
 def process_response(fields):
     if fields['userid'] != lca_info['paymentgateway_userid']:

@@ -186,9 +186,11 @@ class InvoiceController(BaseController):
             'return_url' : lca_info['event_url'] + '/payment/new',
             #'return_url' : 'http://localhost:5000/payment/new', # for local testing
         }
-        uri = pxpay.generate_request(params)
-        if uri is None:
-            return render("/payment/generate_request_error.mako") # TODO: create this error page
+
+        (valid, uri) = pxpay.generate_request(params)
+        if valid != '1':
+            c.error_msg = "PxPay Generate Request error: " + uri
+            return render("/payment/gateway_error.mako")
         else:
             redirect(uri)
 
