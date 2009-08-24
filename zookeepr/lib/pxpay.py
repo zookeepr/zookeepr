@@ -46,7 +46,7 @@ def generate_request(fields):
 
 def process_response(fields):
     if fields['userid'] != lca_info['paymentgateway_userid']:
-        return None, ['Invalid userid in redirect from payment gateway']
+        return None, ['Invalid userid in redirect from payment gateway: ' + fields['userid'] ]
 
     xml_request = "<ProcessResponse>"
     xml_request += "<PxPayUserId>" + lca_info['paymentgateway_userid'] + "</PxPayUserId>"
@@ -60,7 +60,7 @@ def process_response(fields):
     response_node = xml_response.getElementsByTagName("Response")[0]
     valid = response_node.getAttribute("valid")
     if valid != '1':
-        return None, ['Invalid response from payment gateway']
+        return None, ['Invalid response from payment gateway: ' + get_node_value(response_node, 'ResponseText')]
 
     currency_request = get_node_value(response_node, 'CurrencyInput')
     transaction_type = get_node_value(response_node, 'TxnType')

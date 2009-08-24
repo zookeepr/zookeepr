@@ -2,7 +2,7 @@ import logging
 import datetime
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import redirect_to
+from pylons.controllers.util import redirect_to, abort
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -75,8 +75,7 @@ class PaymentController(BaseController):
         c.response, validation_errors = pxpay.process_response(fields)
 
         if c.response is None:
-            # TODO: return a non-200 page to force the payment gateway to retry?
-            c.response = { 'approved' : False }
+            abort(500, ''.join(validation_errors))
         else:
             # Make sure the same browser created the zookeepr payment object and paid by credit card
             if c.response['client_ip_gateway'] != c.response['client_ip_zookeepr']:
