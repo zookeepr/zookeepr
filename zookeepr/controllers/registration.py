@@ -95,8 +95,6 @@ class RegistrationSchema(BaseSchema):
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
-    partner_mobile = validators.String()
-
 
     chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
 
@@ -174,7 +172,10 @@ class RegistrationController(BaseController):
             
             # 2009-05-07 Josh H: Not sure why, but there is a reason this class is declaired within this method and not earlier on like in the voucher controller. Or maybe I just did this poorly...
             pass
-        ProductSchema.add_field('partner_email', validators.Email()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+
+        # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+        ProductSchema.add_field('partner_email', validators.Email())
+        ProductSchema.add_field('partner_mobile', validators.String())
         
         # Go through each category and each product and add generic validation
         for category in c.product_categories:
@@ -346,7 +347,10 @@ class RegistrationController(BaseController):
                     setattr(c.registration, k, result['registration'][k])
             else:
                 setattr(c.registration, k, result['registration'][k])
-        setattr(c.registration, 'partner_email', result['products']['partner_email']) # hacky method to make validating sane
+
+        # hacky method to make validating sane
+        setattr(c.registration, 'partner_email', result['products']['partner_email'])
+        setattr(c.registration, 'partner_mobile', result['products']['partner_mobile'])
 
         # Check whether we're already signed in or not, and store person details
         if not c.signed_in_person:
