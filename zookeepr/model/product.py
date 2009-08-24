@@ -93,9 +93,14 @@ def setup(meta):
             Product(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2200", auth=None, validate=None),
 
             # Dinner
-            Product(category_id='3', active=True, description="Adult", cost="8000", auth=None, validate="ProDinner(dinner_field='product_Dinner_Adult_qty',ticket_category='category_1',ticket_id=[5,4])"),
-            Product(category_id='3', active=True, description="Infant (0-1 years)", cost="4000", auth=None, validate="ProDinner(dinner_field='product_Dinner_Adult_qty',ticket_category='category_1',ticket_id=[5,4])"),
-            Product(category_id='3', active=True, description="Child (1-5 years)", cost="4000", auth=None, validate="ProDinner(dinner_field='product_Dinner_Adult26_qty',ticket_category='category_1',ticket_id=[5,4])"),
+            Product(category_id='3', active=True, description="Adult", cost="11500", auth=None, validate="ProDinner(dinner_field='product_Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])"),
+            Product(category_id='3', active=True, description="Infant", cost="0", auth=None, validate=None),
+            Product(category_id='3', active=True, description="Child", cost="2000", auth=None, validate=None),
+
+            # Speakers Dinner
+            Product(category_id='6', active=True, description="Adult", cost="8000", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8])", auth="self.is_speaker() or self.is_miniconf_org()"),
+            Product(category_id='6', active=True, description="Infant", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
+            Product(category_id='6', active=True, description="Child", cost="2000", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
         ]
     )
 

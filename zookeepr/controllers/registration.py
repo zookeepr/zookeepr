@@ -172,7 +172,10 @@ class RegistrationController(BaseController):
             
             # 2009-05-07 Josh H: Not sure why, but there is a reason this class is declaired within this method and not earlier on like in the voucher controller. Or maybe I just did this poorly...
             pass
-        ProductSchema.add_field('partner_email', validators.Email()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+
+        # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+        ProductSchema.add_field('partner_email', validators.Email())
+        ProductSchema.add_field('partner_mobile', validators.String())
         
         # Go through each category and each product and add generic validation
         for category in c.product_categories:
@@ -215,13 +218,22 @@ class RegistrationController(BaseController):
         edit_schema.add_field('products', ProductSchema)
 
     def is_speaker(self):
-        return c.signed_in_person.is_speaker()
+        try:
+       	    return c.signed_in_person.is_speaker()
+        except:
+            return False
 
     def is_miniconf_org(self):
-        return c.signed_in_person.is_miniconf_org()
+        try:
+            return c.signed_in_person.is_miniconf_org()
+        except:
+            return False
 
     def is_volunteer(self):
-        return c.signed_in_person.is_volunteer()
+        try:
+            return c.signed_in_person.is_volunteer()
+        except:
+            return False
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -335,7 +347,10 @@ class RegistrationController(BaseController):
                     setattr(c.registration, k, result['registration'][k])
             else:
                 setattr(c.registration, k, result['registration'][k])
-        setattr(c.registration, 'partner_email', result['products']['partner_email']) # hacky method to make validating sane
+
+        # hacky method to make validating sane
+        setattr(c.registration, 'partner_email', result['products']['partner_email'])
+        setattr(c.registration, 'partner_mobile', result['products']['partner_mobile'])
 
         # Check whether we're already signed in or not, and store person details
         if not c.signed_in_person:
