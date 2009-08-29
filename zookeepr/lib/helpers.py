@@ -462,5 +462,8 @@ def zk_root():
     pass #TODO
 
 def number_to_currency(number, unit='$', precision=2):
-    # TODO: use commas to separator thousands
-    return unit + "%#.*f" % (precision, number)
+    # TODO: use commas to separate thousands
+    if number == 0:
+      return 'Free'
+    else:
+      return unit + "%#.*f" % (precision, number)
