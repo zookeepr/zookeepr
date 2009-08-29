@@ -98,14 +98,14 @@ else:
   is_speaker = False
 %>
 
-          <p class="label"><label for="person.mobile">Phone number:</label></p>
+          <p class="label"><label for="person.mobile">Phone number (International Format):</label></p>
           <p class="entries">${ h.text('person.phone') }</p>
 
           <p class="label">
 % if is_speaker:
             <span class="mandatory">*</span>
 % endif
-            <label for="person.mobile">Mobile/Cell number:</label>
+            <label for="person.mobile">Mobile/Cell number (International Format):</label>
           </p>
           <p class="entries">${ h.text('person.mobile') }</p>
 
@@ -172,14 +172,16 @@ else:
 %           endfor
 </table>
 %       elif category.display == 'radio':
+         <p class="entries">
 %           for product in products:
 <%
                soldout = ''
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-          <p><label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+           <label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br /><br />
 %           endfor
+          </p>
 %       elif category.display == 'select':
 %         if (category.name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] == 'yes'):
             <input type="hidden" name="products.category_${ category.name.replace('-','_') }"
@@ -212,7 +214,7 @@ else:
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-          <p><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + product.description.replace('-','_')) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + product.description.replace('-','_')) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
@@ -226,11 +228,12 @@ else:
 %       endif
 %       if category.name == 'Accommodation':
 %         if h.lca_rego['accommodation']['self_book'] == 'yes':
-          <p>You must book accommodation for ${ h.lca_info['event_name'] }
-          youself.  Please see
+          <p>Please see the
           ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) }
-          for prices and details that the organisers have negotiated for
-          delegates.</p>
+          for discounted rates for delegates. You <strong>must</strong> book
+          your accommodation directly through the accommodation providers
+          yourself. Registering for the conference <strong>does not</strong>
+          book your accommodation.</p>
           <input type="hidden" name="registration.checkin" value='2010/01/01'>
           <input type="hidden" name="registration.checkout" value='2010/01/01'>
 %         else:
@@ -258,7 +261,7 @@ else:
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries">${ h.text('products.partner_email', size=50) }</p>
           <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
-          <p class="label"><span class="mandatory">^</span><label for="registration.partner_mobile">Your partner's mobile (if known):</label></p>
+          <p class="label"><span class="mandatory">^</span><label for="registration.partner_mobile">Your partner's mobile (if known, in international format):</label></p>
           <p class="entries">${ h.text('products.partner_mobile', size=50) }</p>
           <p class="note">A partners programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
 %       endif
@@ -270,7 +273,7 @@ else:
           <legend>&nbsp;</legend>
           <h2>Further Information</h2>
 
-          <p class="entries">${ h.checkbox('registration.over18') }<label for="registrationover18">Are you over 18?</label></p>
+          <p class="entries">${ h.checkbox('registration.over18') } <label for="registrationover18">Are you over 18?</label></p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 
           <p class="label"><label for="registration.voucher_code">Voucher Code</label></p>
@@ -284,7 +287,7 @@ else:
           <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
 
-          <p class="label"><label for="registration.miniconfs">Preferred mini-confs:</label></p>
+          <p class="label"><label for="registration.miniconfs">Preferred miniconfs:</label></p>
           <p class="entries">
             <table>
               <tr>
@@ -297,8 +300,7 @@ else:
                 <td>
 %   for miniconf in miniconfs:
         <% label = 'registration.miniconf.%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_')) %>
-                  ${ h.checkbox(label) }
-                  <label for="${ label }">${ miniconf }</label>
+                  <label>${ h.checkbox(label) } ${ miniconf }</label>
                   <br>
 %   endfor
                 </td>
@@ -310,12 +312,16 @@ else:
 
             <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
             <p class="entries">
+            <table>
+              <tr>
+                <td>
 % for (year, desc) in h.lca_rego['past_confs']:
    <% label = 'registration.prevlca.%s' % year %>
-                ${ h.checkbox(label) }
-                <label for="${ label }">${ desc }</label>
-                <br>
+                <label>${ h.checkbox(label) } ${ desc }</label><br />
 % endfor
+                </td>
+              </tr>
+            </table>
             </p>
           </fieldset>
 
@@ -402,30 +408,26 @@ else:
           <fieldset>
             <legend>&nbsp;</legend>
             <h2>Subscriptions</h2>
+             <p class="note">Tick below to sign up for the following:</p>
 
             <p class="entries">
-              ${ h.checkbox('registration.signup.linuxaustralia') }
-              <label for="registrationsignuplinuxaustralia">Sign up for membership with Linux Australia</label> <a href="http://www.linux.org.au/">(read more)</a>
+              <label>${ h.checkbox('registration.signup.linuxaustralia') } membership with Linux Australia</label> <a href="http://www.linux.org.au/" target="_blank">(read more)</a>
             </p>
 
             <p class="entries">
-              ${ h.checkbox('registration.signup.nzoss') }
-              <label for="registrationsignupnzoss">Sign up for membership with the New Zealand Open Source Society</label> <a href="http://nzoss.org.nz/nzoss/about">(read more)</a>
+              <label>${ h.checkbox('registration.signup.nzoss') } membership with the New Zealand Open Source Society</label> <a href="http://nzoss.org.nz/nzoss/about" target="_blank">(read more)</a>
             </p>
 
             <p class="entries">
-              ${ h.checkbox('registration.signup.internetnz') }
-              <label for="registrationsignupinternetnz">Sign up for membership with Internet NZ</label> <a href="http://www.internetnz.org.nz/membership">(read more)</a>
+              <label>${ h.checkbox('registration.signup.internetnz') } membership with Internet NZ</label> <a href="http://www.internetnz.org.nz/membership" target="_blank">(read more)</a>
             </p>
 
             <p class="entries">
-              ${ h.checkbox('registration.signup.announce') }
-              <label for="registrationsignupannounce">Sign up to the low traffic <b>conference announcement list</b></label>
+              <label>${ h.checkbox('registration.signup.announce') } the low traffic <b>${ h.event_name() }  announcement list</b></label>
             </p>
 
             <p class="entries">
-              ${ h.checkbox('registration.signup.chat') } 
-              <label for="registrationsignupchat" >Sign up to the <b>conference attendees list</b></label>
+              <label>${ h.checkbox('registration.signup.chat') } the <b>${ h.event_name() } attendees list</b></label>
             </p>
           </fieldset>
 
