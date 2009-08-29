@@ -29,6 +29,7 @@ lca_info = {
   'event_fax_number' : '+64 4 802 0422',
   'event_phone_number': '+64 4 802 0422',
   'event_byline': 'linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!',
+  'event_pricing_disclaimer': 'All prices are in New Zealand dollars and include 12.5% New Zealand Goods and Services Tax.',
   'date' : datetime(2010, 1, 17, 9, 0, 00),
   'media_license_name' : 'Creative Commons Attribution-Share Alike License',
   'media_license_url'  : 'http://creativecommons.org/licenses/by-sa/3.0/',

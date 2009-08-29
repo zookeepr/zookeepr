@@ -1,6 +1,9 @@
 <%
 import datetime
 %>
+
+<p class="note">${ h.lca_info['event_pricing_disclaimer'] }</p>
+
         <fieldset id="person">
           <legend>&nbsp;</legend>
           <h2>About yourself</h2>
