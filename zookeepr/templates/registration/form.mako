@@ -340,13 +340,8 @@ else:
 % for s in h.lca_rego['shells']:
                 <option value="${s}">${ s }</option>
 % endfor
-                <option value="other">other:</option>
+                <option value="other">other</option>
               </select>
-% if not registration or registration.shell in h.lca_rego['shells'] or registration.shell == '':
-              <span id="shell_other" style="display: none">${ h.text('registration.shelltext') }</span>
-% else:
-              <span id="shell_other" style="display: inline">${ h.text('registration.shelltext') }</span>
-% endif
             </p>
   </td>
   <td>
@@ -358,13 +353,8 @@ else:
 % for e in h.lca_rego['editors']:
                 <option value="${ e }">${ e }</option>
 % endfor
-                <option value="other">other:</option>
+                <option value="other">other</option>
               </select>
-% if not registration or registration.editor in h.lca_rego['editors'] or registration.editor == '':
-              <span id="editor_other" style="display: none">${ h.text('registration.editortext') }</span>
-% else:
-              <span id="editor_other" style="display: inline">${ h.text('registration.editortext') }</span>
-% endif
             </p>
   </td>
   <td>
@@ -376,17 +366,40 @@ else:
 % for d in h.lca_rego['distros']:
                 <option value="${ d }">${ d }</option>
 % endfor
-                <option value="other">other:</option>
+                <option value="other">other</option>
               </select>
-% if not registration or registration.distro in h.lca_rego['distros'] or registration.distro == '':
-              <span id="distro_other" style="display: none">${ h.text('registration.distrotext') }</span>
-% else:
-              <span id="distro_other" style="display: inline">${ h.text('registration.distrotext') }</span>
-% endif
             </p>
   </td>
 </tr>
 </table>
+
+% if not registration or registration.shell in h.lca_rego['shells'] or registration.shell == '':
+<span id="shell_other" style="display: none">
+% else:
+<span id="shell_other" style="display: inline">
+% endif
+  <p class="label"><label for="registration.shelltext">Your Favourite Shell:</label></p>
+  <p class="entries">${ h.text('registration.shelltext', size=30) }</entries></p>
+</span>
+
+% if not registration or registration.editor in h.lca_rego['editors'] or registration.editor == '':
+<span id="editor_other" style="display: none">
+% else:
+<span id="editor_other" style="display: inline">
+% endif
+  <p class="label"><label for="registration.editortext">Your Favourite Editor:</label></p>
+  <p class="entries">${ h.text('registration.editortext', size=30) }</entries></p>
+</span>
+
+% if not registration or registration.distro in h.lca_rego['distros'] or registration.distro == '':
+<span id="distro_other" style="display: none">
+% else:
+<span id="distro_other" style="display: inline">
+% endif
+  <p class="label"><label for="registration.distrotext">Your Favourite Distro:</label></p>
+  <p class="entries">${ h.text('registration.distrotext', size=30) }</entries></p>
+${ h.text('registration.distrotext') }
+</span>
 
             <p class="label"><label for="registration.nick">Superhero name:</label></p>
             <p class="entries">${ h.text('registration.nick', size=30) }</p>
