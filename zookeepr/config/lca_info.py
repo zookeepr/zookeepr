@@ -58,6 +58,9 @@ lca_rego = {
       'self_book': 'yes'
   },
 
+  # Set to yes to collect PGP key IDs in rego, no to disable collection.
+  'pgp_collection': 'no',
+
   'volunteer_areas': (
             {'name': 'Administration', 'description': 'Take care and help out on any administration tasks.'},
             {'name': 'Registration Desk', 'description': 'Sign people into the conference and help with general enquires.'},
