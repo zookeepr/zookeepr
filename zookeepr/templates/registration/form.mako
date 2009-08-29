@@ -283,7 +283,7 @@ else:
 
           <p class="label"><label for="registration.voucher_code">Voucher code:</label></p>
           <p class="entries">${ h.text('registration.voucher_code', size=15) }</p>
-          <p class="note">If you have been provided with a voucher code enter it here.</p>
+          <p class="note">If you have been provided with a voucher code, please enter it here.</p>
 
           <p class="label"><label for="registration.diet">Dietary requirements:</label></p>
           <p class="entries">${ h.text('registration.diet', size=60) }</p>
@@ -419,7 +419,7 @@ ${ h.text('registration.distrotext') }
             <p class="note">If you have a Blog and would like it included in the conference planet, please specify an <em>LCA specific feed</em> to be included.</p>
 
             <p class="label"><label for="registration.silly_description">Description:</label>
-            <blockquote>${ c.silly_description }</blockquote></p>
+            <blockquote class="entries">${ c.silly_description }</blockquote></p>
             ${ h.hidden('registration.silly_description') }
             ${ h.hidden('registration.silly_description_checksum') }
             <p class="note">This is a randomly chosen description for your name badge</p>
