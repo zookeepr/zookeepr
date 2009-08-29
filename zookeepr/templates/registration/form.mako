@@ -335,8 +335,12 @@ else:
             <h2>Optional</h2>
 <table>
 <tr>
+  <th>Your favourite shell</th>
+  <th>Your favourite editor</th>
+  <th>Your favourite distro</th>
+</tr>
+<tr>
   <td>
-            <p class="label"><label for="registration.shell">Your favourite shell:</label></p>
             <p class="entries">
               <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
                 <option value="">(please select)</option>
@@ -347,9 +351,8 @@ else:
               </select>
             </p>
   </td>
-  <td>
 
-            <p class="label"><label for="registration.editor">Your favourite editor:</label></p>
+  <td>
             <p class="entries">
               <select id="registration.editor" name="registration.editor" onchange="toggle_select_hidden(this.id, 'editor_other')">
                 <option value="">(please select)</option>
@@ -360,9 +363,8 @@ else:
               </select>
             </p>
   </td>
-  <td>
 
-            <p class="label"><label for="registration.distro">Your favourite distro:</label></p>
+  <td>
             <p class="entries">
               <select id="registration.distro" name="registration.distro" onchange="toggle_select_hidden(this.id, 'distro_other')">
                 <option value="">(please select)</option>
