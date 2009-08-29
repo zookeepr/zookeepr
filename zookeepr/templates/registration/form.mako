@@ -135,7 +135,7 @@ else:
            fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
            i = j = 0
 %>
-          <p>S,M,L,XL shirts are $20 each, larger shirts are $22. More details and measurements on shirt sizes can be found on the ${ h.link_to('registration information', url='/register/shirts', popup=True) }.</p>
+          <p>One t-shirt is free with your registration, any others are $25 each. More details and measurements on t-shirt sizes can be found on the ${ h.link_to('registration information', url='/register/shirts', popup=True) }.</p>
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td>${ fields[0][0] }</td>
@@ -173,14 +173,16 @@ else:
 </table>
 %       elif category.display == 'radio':
          <p class="entries">
+         <ul class="entries">
 %           for product in products:
 <%
                soldout = ''
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD OUT</span> '
 %>
-           <label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br /><br />
+           <li> <label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
 %           endfor
+          </ul>
           </p>
 %       elif category.display == 'select':
 %         if (category.name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] == 'yes'):
@@ -276,14 +278,14 @@ else:
           <p class="entries">${ h.checkbox('registration.over18') } <label for="registrationover18">Are you over 18?</label></p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 
-          <p class="label"><label for="registration.voucher_code">Voucher Code</label></p>
+          <p class="label"><label for="registration.voucher_code">Voucher code:</label></p>
           <p class="entries">${ h.text('registration.voucher_code', size=15) }</p>
           <p class="note">If you have been provided with a voucher code enter it here.</p>
 
           <p class="label"><label for="registration.diet">Dietary requirements:</label></p>
           <p class="entries">${ h.text('registration.diet', size=60) }</p>
 
-          <p class="label"><label for="registration.special">Other special requirements</label></p>
+          <p class="label"><label for="registration.special">Other special requirements:</label></p>
           <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
 
@@ -408,26 +410,20 @@ else:
           <fieldset>
             <legend>&nbsp;</legend>
             <h2>Subscriptions</h2>
-             <p class="note">Tick below to sign up for the following:</p>
+             <p class="note">Tick below to sign up for any of the following:</p>
 
             <p class="entries">
-              <label>${ h.checkbox('registration.signup.linuxaustralia') } membership with Linux Australia</label> <a href="http://www.linux.org.au/" target="_blank">(read more)</a>
-            </p>
+            <ul class="entries">
+              <li> <label>${ h.checkbox('registration.signup.linuxaustralia') } membership with Linux Australia</label> <a href="http://www.linux.org.au/" target="_blank">(read more)</a>
 
-            <p class="entries">
-              <label>${ h.checkbox('registration.signup.nzoss') } membership with the New Zealand Open Source Society</label> <a href="http://nzoss.org.nz/nzoss/about" target="_blank">(read more)</a>
-            </p>
+              <li> <label>${ h.checkbox('registration.signup.nzoss') } membership with the New Zealand Open Source Society</label> <a href="http://nzoss.org.nz/nzoss/about" target="_blank">(read more)</a>
 
-            <p class="entries">
-              <label>${ h.checkbox('registration.signup.internetnz') } membership with Internet NZ</label> <a href="http://www.internetnz.org.nz/membership" target="_blank">(read more)</a>
-            </p>
+              <li> <label>${ h.checkbox('registration.signup.internetnz') } membership with Internet NZ</label> <a href="http://www.internetnz.org.nz/membership" target="_blank">(read more)</a>
 
-            <p class="entries">
-              <label>${ h.checkbox('registration.signup.announce') } the low traffic <b>${ h.event_name() }  announcement list</b></label>
-            </p>
+              <li> <label>${ h.checkbox('registration.signup.announce') } the low traffic <b>${ h.event_name() }  announcement list</b></label>
 
-            <p class="entries">
-              <label>${ h.checkbox('registration.signup.chat') } the <b>${ h.event_name() } attendees list</b></label>
+              <li> <label>${ h.checkbox('registration.signup.chat') } the <b>${ h.event_name() } attendees list</b></label>
+            </ul>
             </p>
           </fieldset>
 
