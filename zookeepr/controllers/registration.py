@@ -1,3 +1,4 @@
+# coding=utf-8
 import logging
 
 from pylons import request, response, session, tmpl_context as c
@@ -803,7 +804,7 @@ class RegistrationController(BaseController):
                             ticket = 'Concession'
                         elif item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1:
                             ticket = 'Hobbyist'
-                        elif (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                        elif (item.description.find('Professional') > -1 or item.description.startswith('Kororā')):
                             ticket = 'Professional'
                         elif item.description.startswith('Press'):
                             ticket = 'Press'
