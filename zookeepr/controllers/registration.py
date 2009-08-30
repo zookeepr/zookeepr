@@ -323,6 +323,11 @@ class RegistrationController(BaseController):
             product = rproduct.product
             defaults['products.category_' + str(product.category.id)] = product.id
 
+        # generate new silly description
+        c.silly_description, checksum = h.silly_description()
+        defaults['registration.silly_description'] = c.silly_description
+        defaults['registration.silly_description_checksum'] = checksum
+
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
 
