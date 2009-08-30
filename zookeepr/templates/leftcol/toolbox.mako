@@ -28,7 +28,7 @@
       ${ make_link('View Pages', h.url_for(controller='db_content')) }
       ${ make_link('New Page', h.url_for(controller='db_content', action='new')) }
 %   if c.db_content and not h.url_for().endswith('/edit'):
-      ${ make_link('Edit page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
+      ${ make_link('Edit Page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
 %   endif
 ${ parent.toolbox_extra_admin() }
     </ul>

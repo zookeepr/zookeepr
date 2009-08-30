@@ -28,6 +28,8 @@ def make_map():
     map.connect('/media/news/{id}',    controller='db_content', action='view')
     map.connect('/media/in_the_press', controller='db_content', action='list_press')
 
+    map.connect('/sitemap',            controller='sitemap', action='view')
+
     # DB content
     map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
     map.connect('/db_content/delete_file',   controller='db_content', action='delete_file', id=None)

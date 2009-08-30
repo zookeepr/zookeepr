@@ -1,0 +1,20 @@
+#!/bin/bash
+
+source /home/zookeepr/pylons_0.9.7/bin/activate
+
+cd $(dirname $0)/..
+
+source ../pylons-0.9.7/bin/activate
+
+# Let sitecustomise.py override the default.
+export PYTHONPATH=$(pwd):$PYTHONPATH:$(pwd)/lib/python2.5/site-packages
+
+if [ -f development.db ]; then
+  rm development.db
+fi
+
+paster setup-app development.ini
+
+if [ -f init.sql ]; then
+  sqlite3 development.db < init.sql
+fi

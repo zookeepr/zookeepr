@@ -27,6 +27,7 @@ lca_info = {
   'event_fax_number' : '+64 4 802 0422',
   'event_phone_number': '+64 4 802 0422',
   'event_byline': 'linux.conf.au 2010 | 18 - 23 Jan | Follow the signs!',
+  'event_pricing_disclaimer': 'All prices are in New Zealand dollars and include 12.5% New Zealand Goods and Services Tax.',
   'date' : datetime(2010, 1, 17, 9, 0, 00),
   'media_license_name' : 'Creative Commons Attribution-Share Alike License',
   'media_license_url'  : 'http://creativecommons.org/licenses/by-sa/3.0/',
@@ -55,6 +56,9 @@ lca_rego = {
       # set to yes to disable the accommodation questions.
       'self_book': 'yes'
   },
+
+  # Set to yes to collect PGP key IDs in rego, no to disable collection.
+  'pgp_collection': 'no',
 
   'volunteer_areas': (
             {'name': 'Administration', 'description': 'Take care and help out on any administration tasks.'},
@@ -162,7 +166,7 @@ lca_submenus = {
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
-  'programme': ['About', 'Keynotes', 'Miniconfs', 'Miniconf Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
+  'programme': ['About', 'Keynotes', 'Miniconfs', 'Miniconf Info', 'Speakers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
   #'programme': ['About', 'Keynotes', 'Miniconfs','Schedule','Social Events','Open Day', 'Partners Programme'], # stage 3
   'register': ['Prices', 'Accommodation', 'Terms and Conditions'],
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4

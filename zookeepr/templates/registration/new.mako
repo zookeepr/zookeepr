@@ -2,17 +2,17 @@
 
 <% desc, descChecksum = h.silly_description() %>
 
-    <h2>Register for the conference</h2>
+    <h2>Register for ${ h.event_name() }</h2>
     <div id="registration">
 % if not 'conference' in c.ceilings or c.ceilings['conference'].available(): 
-      <p>Welcome to the conference registration. Please fill in the form as best you can.</p>
+      <p>Welcome to the registration form for ${ h.event_name() }. Please fill in the form as best you can.</p>
 % else:
       <p class="error-message"><i>Registration is closed.</i></p>
       <p class="error-message">
         Please only use this form:
         <ul class="error-message">
           <li>to volunteer to help at the conference, or</li>
-          <li>to buy the Monday, Tuesday or Penguin Dinner tickets, or</li>
+          <li>to buy dinner tickets, or</li>
           <li>if you are have a voucher code or similar.</li>
         </ul>
       </p>
@@ -44,7 +44,7 @@
       </div>
 
 <%def name="short_title()"><%
-  return "Conference Registration"
+  return "Registration"
 %></%def>
 <%def name="title()" >
 Register - ${ parent.title() }

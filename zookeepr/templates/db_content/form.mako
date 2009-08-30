@@ -23,8 +23,7 @@ ${ h.text('db_content.title', size=60) }
 </p>
 
 <p class="entries">
-${ h.checkbox('db_content.published') }
-<label for="db_content.published">Published</label>
+<label>${ h.checkbox('db_content.published') } Published</label>
 </p>
 <ul class="note"><li>Should this page be published?</li></ul>
 
