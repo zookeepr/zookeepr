@@ -28,12 +28,16 @@
 
 %  if len(c.validation_errors) > 0:
 <tr><td><b>Zookeepr validation errors:</b></td>
-<td>${ '<br>'.join(c.validation_errors) }</td></tr>
+<td>${ '<br>'.join(c.validation_errors) | n}</td></tr>
 %  endif
 
 <tr><td><b>Invoice:</b></td>
+%if c.payment.invoice is not None:
 <td>${ h.link_to(c.payment.invoice.id, url=h.url_for(controller='invoice', action='view', id=c.payment.invoice.id)) }
 (${ c.payment.invoice.status() })</td></tr>
+%else:
+<td><font color="red">INVALID</font></td>
+%endif
 
 <tr><td><b>Amount paid:</b></td>
 <td>${ h.number_to_currency(c.payment.amount_paid / 100.0) } (charged in ${ c.payment.currency_used })</td></tr>
