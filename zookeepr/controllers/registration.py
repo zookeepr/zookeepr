@@ -322,7 +322,11 @@ class RegistrationController(BaseController):
         defaults.update(h.object_to_defaults(c.registration.person, 'person'))
         for rproduct in c.registration.products:
             product = rproduct.product
-            defaults['products.category_' + str(product.category.id)] = product.id
+            category_name = str(product.category.name)
+            category_name = category_name.replace('-', '_')
+            defaults['products.category_' + category_name] = product.id
+            if rproduct.qty > 0:
+                defaults['products.product_' + category_name + '_' + str(product.description) + '_qty'] = rproduct.qty
 
         # generate new silly description
         c.silly_description, checksum = h.silly_description()
