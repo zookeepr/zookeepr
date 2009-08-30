@@ -409,14 +409,13 @@ else:
 % endif
   <p class="label"><label for="registration.distrotext">Your Favourite Distro:</label></p>
   <p class="entries">${ h.text('registration.distrotext', size=30) }</entries></p>
-${ h.text('registration.distrotext') }
 </span>
 
             <p class="label"><label for="registration.nick">Superhero name:</label></p>
             <p class="entries">${ h.text('registration.nick', size=30) }</p>
             <p class="note">Your IRC nick or other handle you go by.</p>
 
-% if h.lca_rego['pgp_collection'] == 'yes':
+% if h.lca_rego['pgp_collection'] != 'no':
             <p class="label"><label for="registration.keyid">GnuPG/PGP Keyid:</label></p>
             <p class="entries">${ h.text('registration.keyid', size=10) }</p>
             <p class="note">If you have a GnuPG or PGP key that is stored on a public key server and would like to participate in the Conference Key Signing, please enter your keyid (e.g. A3D48B3C) here. More information about the key signing will be made available closer to the conference.</p>

@@ -74,8 +74,7 @@
 
         <p>${ h.yesno(c.registration.over18) |n } Are you over 18?</p>
 
-        <p class="label">Voucher Code:</p>
-        <p>${ c.registration.voucher_code | h }</p>
+        <p class="label">Voucher Code: ${ c.registration.voucher_code | h }</p>
 
         <p class="label">Dietary requirements:</p>
         <p>${ c.registration.diet | h }</p>
@@ -116,24 +115,18 @@
           </p>
 
           <h2>Optional</h2>
-          <p class="label">Your favourite shell:</p>
-          <p>${ c.registration.shell | h }
+          <p class="label">Your favourite shell: ${ c.registration.shell }</p>
 
-          <p class="label">Your favourite editor:</p>
-          <p>${ c.registration.editor | h }
+          <p class="label">Your favourite editor: ${ c.registration.editor }</p>
 
-          <p class="label">Your favourite distro:</p>
-          <p>${ c.registration.distro | h }
+          <p class="label">Your favourite distro: ${ c.registration.distro }</p>
 
-          <p class="label">Superhero name:</p>
-          <p>${ c.registration.nick | h }
-          <p class="note">Your IRC nick or other handle you go by.</p>
+          <p class="label">Superhero name: ${ c.registration.nick }</p>
 
-          <p class="label">GnuPG/PGP Keyid:</p>
-          <p>${ c.registration.keyid | h }
-
-          <p class="label">Planet Feed:</p>
-          <p>${ c.registration.planetfeed }</p>
+%if h.lca_rego['pgp_collection'] != 'no':
+          <p class="label">GnuPG/PGP Keyid: ${ c.registration.keyid }</p>
+%endif
+          <p class="label">Planet Feed: ${ c.registration.planetfeed }</p>
 
           <p class="label"><label for="registration.silly_description">Description:</label></p>
           <blockquote><p>${ c.registration.silly_description | h }</p></blockquote>
