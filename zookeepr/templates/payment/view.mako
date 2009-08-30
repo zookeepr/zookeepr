@@ -72,7 +72,7 @@ ${ c.payment.client_ip_gateway } (gateway)</td></tr>
 
 % if c.payment.approved:
 <p>Your payment was <b>successful</b>.</p>
-<p>Your receipt number is: <b>PR${ c.payment.id }</b></p>
+<p>Your receipt number is: <b>PR${ c.payment.id }P${ c.payment.payment.id }</b></p>
 % else:
 <p>Your payment was <b>unsuccessful</b>.</p>
 <p>The reason was:

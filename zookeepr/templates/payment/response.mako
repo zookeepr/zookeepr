@@ -13,7 +13,7 @@ Subject: Sucessful payment for ${ h.lca_info['event_name'] }
 
 Your payment for ${ h.number_to_currency(c.response['amount_paid'] / 100.0) } was successful.
 
-Your receipt number is: PR${ c.pr.id }
+Your receipt number is: PR${ c.pr.id }P${ c.pr.payment.id }
 
 You can view your invoice at
   ${ h.lca_info['event_url'] }/invoice/${ c.pr.invoice.id }
