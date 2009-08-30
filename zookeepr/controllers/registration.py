@@ -438,16 +438,14 @@ class RegistrationController(BaseController):
             for old_invoice in registration.person.invoices:
                 if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.is_void():
                     if self.invoices_identical(old_invoice, new_invoice):
-                        for ii in new_invoice.items:
-                            meta.Session.expunge(ii)
-                        meta.Session.expunge(new_invoice)
                         invoice = old_invoice
+                        meta.Session.clear()
+
+                        if quiet: return
+                        redirect_to(controller='invoice', action='view', id=invoice.id)
                     else:
                         if old_invoice.due_date < new_invoice.due_date:
                             new_invoice.due_date = old_invoice.due_date
-                        #ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
-                        #self.dbsession.save(ii2)
-                        #old_invoice.items.append(ii2)
                         old_invoice.void = "Registration Change"
 
             invoice.last_modification_timestamp = datetime.datetime.now()
@@ -463,9 +461,6 @@ class RegistrationController(BaseController):
             if not invoice.is_void() and not invoice.manual and not invoice.paid():
                 for ii in invoice.items:
                     if ii.product and not self._product_available(ii.product):
-                        #ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
-                        #self.dbsession.save(ii2)
-                        #invoice.items.append(ii2)
                         invoice.void = "Product " + ii.product.description + " is no longer available"
 
     def manual_invoice(self, invoices):
@@ -478,10 +473,19 @@ class RegistrationController(BaseController):
         if invoice1.total() == invoice2.total():
             if len(invoice1.items) == len(invoice2.items):
                 matched_products = 0
+                invoice1_matched_items = dict()
+                invoice2_matched_items = dict()
                 for invoice1_item in invoice1.items:
+                    if invoice1_item.id in invoice1_matched_items:
+                        continue
                     for invoice2_item in invoice2.items:
+                        if invoice2_item.id in invoice2_matched_items:
+                            continue
                         if invoice1_item.product == invoice2_item.product and invoice1_item.description == invoice2_item.description and invoice1_item.qty == invoice2_item.qty and invoice1_item.cost == invoice2_item.cost:
+                            invoice1_matched_items[invoice1_item.id] = True
+                            invoice2_matched_items[invoice2_item.id] = True
                             matched_products += 1
+                            break
                 if len(invoice1.items) == matched_products:
                     return True
         return False
@@ -497,13 +501,13 @@ class RegistrationController(BaseController):
         for rproduct in registration.products:
             if self._product_available(rproduct.product):
                 ii = InvoiceItem(description=rproduct.product.category.name + ' - ' + rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
-                ii.invoice = invoice
+                ii.invoice = invoice # automatically appends ii to invoice.items
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until()
                 if product_expires is not None:
                     if invoice.due_date is None or product_expires < invoice.due_date:
                         invoice.due_date = product_expires
-                invoice.items.append(ii)
+                meta.Session.add(ii)
             else:
                 for ii in invoice.items:
                     meta.Session.expunge(ii)
@@ -534,8 +538,9 @@ class RegistrationController(BaseController):
                     if free_cost > 0:
                         discount_item = InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
                         invoice.items.append(discount_item)
+                        meta.Session.add(discount_item)
 
-        meta.Session.commit()
+        meta.Session.add(invoice)
         return invoice
 
     def apply_voucher(self, invoice, voucher):
@@ -557,7 +562,7 @@ class RegistrationController(BaseController):
                     else:
                         discount = ii.product.cost
                     discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
-                    self.dbsession.save(discount_item)
+                    meta.Session.add(discount_item)
                     invoice.items.append(discount_item)
                     break
                     
@@ -749,7 +754,7 @@ class RegistrationController(BaseController):
                             data.append(self._registration_badge_data(registration, stamp))
                             registration.person.badge_printed = True
 
-            self.dbsession.flush() # save badge printed data
+            meta.Session.flush() # save badge printed data
             setattr(c, 'data', data)
 
             import os, tempfile
