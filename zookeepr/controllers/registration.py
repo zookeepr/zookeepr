@@ -64,6 +64,11 @@ class SillyDescriptionChecksum(validators.FancyValidator):
         if value['silly_description_checksum'] != checksum:
             raise Invalid("Smart enough to hack the silly description, not smart enough to hack the checksum.", value, state)
 
+class IAgreeValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if not value['i_agree']:
+            raise Invalid("You must read and accept the terms and conditions before you can register.", value, state)
+
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
     phone = validators.String()
@@ -97,8 +102,9 @@ class RegistrationSchema(BaseSchema):
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
+    i_agree = validators.Bool(if_missing=False)
 
-    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator()]
 
 class NewRegistrationSchema(BaseSchema):
     person = PersonSchema()
@@ -418,7 +424,6 @@ class RegistrationController(BaseController):
                         rego_product.qty = result['products']['product_' + clean_cat_name + '_' + clean_prod_desc + '_qty']
                         c.registration.products.append(rego_product)
 
-        print "All committed?"
         meta.Session.commit()
 
     def status(self):

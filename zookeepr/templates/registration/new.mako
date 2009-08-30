@@ -37,6 +37,7 @@
 
 <%include file="form.mako" />
 
+        <p>${ h.checkbox('registration.i_agree') } <label for="registrationi_agree">I agree to the</label> <a href="${ h.lca_info['event_url']}/register/terms_and_conditions">terms and conditions</a></p>
         <p class="submit">${ h.submit("submit", "Register me!") }</p>
         <p><span class="fielddesc">If you encounter any problems signing up please email ${ h.contact_email() }.</span></p>
 
