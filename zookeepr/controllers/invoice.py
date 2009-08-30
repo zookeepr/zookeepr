@@ -184,7 +184,6 @@ class InvoiceController(BaseController):
             'email_address': payment.invoice.person.email_address,
             'client_ip' : request.environ['REMOTE_ADDR'],
             'return_url' : lca_info['event_url'] + '/payment/new',
-            #'return_url' : 'http://localhost:5000/payment/new', # for local testing
         }
 
         (valid, uri) = pxpay.generate_request(params)
