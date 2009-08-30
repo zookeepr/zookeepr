@@ -251,6 +251,9 @@ class ProDinner(validators.FancyValidator):
         except:
             #they haven't gotten a ticket yet
             return
+        if not self.dinner_field in value:
+            # the Speakers Dinner field is not present for non-speakers
+            return
         if len(value[self.dinner_field]) == 0 and ticket in self.ticket_id:
             raise Invalid("The ticket you have chosen includes one free dinner ticket, however you haven't enterered anything into the Dinner tickets box. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself.", value, state)
         return
