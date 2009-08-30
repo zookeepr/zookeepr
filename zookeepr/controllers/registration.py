@@ -27,7 +27,7 @@ from zookeepr.model import Registration, Role, RegistrationProduct, Person
 from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
 from zookeepr.model import Invoice, InvoiceItem
 
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, lca_rego
 
 from zookeepr.controllers.person import PersonSchema
 #from zookeepr.controllers.registration import PaymentOptions
@@ -85,7 +85,8 @@ class RegistrationSchema(BaseSchema):
     distrotext = validators.String()
     silly_description = validators.String()
     silly_description_checksum = validators.String(strip=True)
-    keyid = validators.String()
+    if lca_rego['pgp_collection'] != 'no':
+        keyid = validators.String()
     planetfeed = validators.String()
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
@@ -829,7 +830,6 @@ class RegistrationController(BaseController):
                      'nickname': self._sanitise_badge_field(registration.nick),
                      'company': self._sanitise_badge_field(registration.person.company),
                      'favourites': ", ".join(favourites),
-                     'gpg': self._sanitise_badge_field(registration.keyid),
                      'region': region,
                      'dinner_tickets': dinner_tickets,
                      'over18': registration.over18,
@@ -838,6 +838,8 @@ class RegistrationController(BaseController):
                      'artist': 'artist' in [role.name for role in registration.person.roles],
                      'silly': self._sanitise_badge_field(registration.silly_description)
             }
+            if lca_rego['pgp_collection'] != 'no':
+                data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
         return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': True, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
 
