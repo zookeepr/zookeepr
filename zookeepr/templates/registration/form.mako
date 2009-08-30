@@ -129,16 +129,16 @@ else:
         <fieldset id="${ h.computer_title(category.name) }">
           <legend>&nbsp;</legend>
           <h2>${ category.name.title() }</h2>
-          <p class="note">${ category.description }</p>
+          <p class="description">${ category.description }</p>
 ## Manual category display goes here:
-%       if category.name == 'Shirt':
+%       if category.name == 'T-Shirt':
 <%
 ##         # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
 ##         # Number of items in the row must be the same for each row
-           fields = [("Men's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's Short Sleeved Shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
+           fields = [("Men's t-shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's t-shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
            i = j = 0
 %>
-          <p>One t-shirt is free with your registration, any others are $25 each. More details and measurements on t-shirt sizes can be found on the ${ h.link_to('registration information', url='/register/shirts', popup=True) }.</p>
+          <p class="note">One t-shirt is free with your registration, any others are ${ h.number_to_currency(product.cost/100.0) } each. More details and measurements on t-shirt sizes can be found on the ${ h.link_to('registration information', url='/register/shirts', popup=True) }.</p>
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
             <tr><td>${ fields[0][0] }</td>
@@ -233,7 +233,7 @@ else:
 %       endif
 %       if category.name == 'Accommodation':
 %         if h.lca_rego['accommodation']['self_book'] == 'yes':
-          <p>Please see the
+          <p class="note">Please see the
           ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) }
           for discounted rates for delegates. You <strong>must</strong> book
           your accommodation directly through the accommodation providers
@@ -262,14 +262,20 @@ else:
             </select>
           </p>
 %         endif
-%       elif category.name == 'Partners Programme':
+%       elif category.name == "Partners' Programme":
+          <p class="label"><span class="mandatory">^</span><label for="registration.partner_name">Your partner's name:</label></p>
+          <p class="entries">${ h.text('products.partner_name', size=50) }</p>
+          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners' Programme manager can contact them.</p>
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries">${ h.text('products.partner_email', size=50) }</p>
-          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
+          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners' Programme manager can contact them.</p>
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_mobile">Your partner's mobile (if known, in international format):</label></p>
           <p class="entries">${ h.text('products.partner_mobile', size=50) }</p>
-          <p class="note">A partners programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
+          <p class="note">A Partners' Programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
 %       endif
+%     if category.note:
+        <p class="note">${ category.note }</p>
+%     endif
         </fieldset>
 %   endif
 % endfor

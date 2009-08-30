@@ -1,3 +1,4 @@
+# coding=utf-8
 """The application's model objects"""
 import sqlalchemy as sa
 
@@ -18,41 +19,41 @@ def setup(meta):
 
     # Tickets
     product = Product(category_id='1', active=True, description="Concession/Student Ticket",
-                      cost="16000", auth=None, validate=None)
+                      cost="24900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Earlybird Hobbyist Ticket",
-                      cost="29000", auth=None, validate=None)
+                      cost="39900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_earlybird)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Hobbyist Ticket",
-                      cost="36500", auth=None, validate=None)
+                      cost="49900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_nonearlybird)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Earlybird Professional Ticket",
-                      cost="63500", auth=None, validate=None)
+                      cost="79900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_earlybird)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Professional Ticket",
-                      cost="78500", auth=None, validate=None)
+                      cost="99900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_nonearlybird)
     meta.Session.add(product);
 
-    product = Product(category_id='1', active=True, description="Fairy Penguin Sponsorship",
-                      cost="150000", auth=None, validate=None)
+    product = Product(category_id='1', active=True, description="Kororā Little Blue Penguin Sponsorship",
+                      cost="225000", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
@@ -75,32 +76,32 @@ def setup(meta):
     meta.Session.add_all(
         [
             # Shirts
-            Product(category_id='2', active=True, description="Men's Small Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's Medium Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's X Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XXXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XXXXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Small Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Medium Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's X Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XXXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2200", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's Small Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's Medium Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's X Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's XX Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's XXX Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's XXXX Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's XXXXX Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Small Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Medium Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's X Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's XX Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's XXX Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's XXXX Large Shirt", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2500", auth=None, validate=None),
 
             # Dinner
             Product(category_id='3', active=True, description="Adult", cost="11500", auth=None, validate="ProDinner(dinner_field='product_Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])"),
-            Product(category_id='3', active=True, description="Infant", cost="0", auth=None, validate=None),
             Product(category_id='3', active=True, description="Child", cost="2000", auth=None, validate=None),
+            Product(category_id='3', active=True, description="Infant", cost="0", auth=None, validate=None),
 
             # Speakers Dinner
-            Product(category_id='6', active=True, description="Adult", cost="8000", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8])", auth="self.is_speaker() or self.is_miniconf_org()"),
+            Product(category_id='6', active=True, description="Adult", cost="0", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8])", auth="self.is_speaker() or self.is_miniconf_org()"),
+            Product(category_id='6', active=True, description="Child", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
             Product(category_id='6', active=True, description="Infant", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
-            Product(category_id='6', active=True, description="Child", cost="2000", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
         ]
     )
 
@@ -119,12 +120,10 @@ def setup(meta):
     # Partner's Programme
     meta.Session.add_all(
         [
-            Product(category_id='5', active=True, description="Adult", cost="20000", auth=None, validate="PPEmail(adult_field='product_Partners Programme_Adult_qty',email_field='partner_email')"),
-            Product(category_id='5', active=True, description="Child (0-3 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_3 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-            Product(category_id='5', active=True, description="Child (4-6 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (4_6 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-            Product(category_id='5', active=True, description="Child (7-9 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (7_9 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-            Product(category_id='5', active=True, description="Child (10-12 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (10_12 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-            Product(category_id='5', active=True, description="Child (13-17 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (13_17 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Adult", cost="25000", auth=None, validate="PPEmail(adult_field='product_Partners Programme_Adult_qty',email_field='partner_email')"),
+            Product(category_id='5', active=True, description="Child (5-14 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (7_9 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Child (3-4 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (4_6 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
         ]
     )
 

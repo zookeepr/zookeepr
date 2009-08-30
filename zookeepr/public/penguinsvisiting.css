@@ -751,6 +751,9 @@ p.entries {
 }
 p.note {
   margin: 0 15px;
+}
+p.description {
+  margin: 0 15px;
   font-style: italic;
 }
 

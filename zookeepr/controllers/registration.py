@@ -175,6 +175,7 @@ class RegistrationController(BaseController):
             pass
 
         # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+        ProductSchema.add_field('partner_name', validators.String())
         ProductSchema.add_field('partner_email', validators.Email())
         ProductSchema.add_field('partner_mobile', validators.String())
         
@@ -350,6 +351,7 @@ class RegistrationController(BaseController):
                 setattr(c.registration, k, result['registration'][k])
 
         # hacky method to make validating sane
+        setattr(c.registration, 'partner_name', result['products']['partner_name'])
         setattr(c.registration, 'partner_email', result['products']['partner_email'])
         setattr(c.registration, 'partner_mobile', result['products']['partner_mobile'])
 

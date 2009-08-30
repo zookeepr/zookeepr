@@ -29,6 +29,7 @@ class Registration(Base):
     voucher_code = sa.Column(sa.types.Text, unique=True)
     diet = sa.Column(sa.types.Text)
     special = sa.Column(sa.types.Text)
+    partner_name = sa.Column(sa.types.Text)
     partner_email = sa.Column(sa.types.Text)
     partner_mobile = sa.Column(sa.types.Text)
     checkin = sa.Column(sa.types.Integer)
