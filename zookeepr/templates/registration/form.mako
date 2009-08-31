@@ -284,7 +284,11 @@ else:
           <legend>&nbsp;</legend>
           <h2>Further Information</h2>
 
-          <p class="entries">${ h.checkbox('registration.over18') } <label for="registrationover18">Are you over 18?</label></p>
+          <p class="label"><span class="mandatory">*</span> <label for="registration.over18">Are you over 18?</label></p>
+          <p class="entries">
+            <label>${ h.radio('registration.over18', 'True') } Yes</label><br />
+            <label>${ h.radio('registration.over18', 'False') } No</label><br />
+           </p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 
           <p class="label"><label for="registration.voucher_code">Voucher code:</label></p>
@@ -423,7 +427,7 @@ else:
 
             <p class="label"><label for="registration.planetfeed">Planet Feed:</label></p>
             <p class="entries">${ h.text('registration.planetfeed', size=50) }</p>
-            <p class="note">If you have a blog and would like it included in the conference planet, please specify an <b>LCA-specific feed</b> to be included.</p>
+            <p class="note">If you have a blog and would like it included in the ${ h.event_name() } planet, please specify an <b>${ h.event_name() } specific feed</b> to be included.</p>
 
             <p class="label"><label for="registration.silly_description">Description:</label>
             <blockquote class="entries">${ c.silly_description }</blockquote></p>
