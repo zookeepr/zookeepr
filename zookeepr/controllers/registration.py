@@ -14,7 +14,7 @@ from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
 from zookeepr.lib.validators import ProductQty, ProductMinMax, CheckAccomDates
 
 # validators used from the database
-from zookeepr.lib.validators import ProDinner, PPEmail, PPChildrenAdult
+from zookeepr.lib.validators import ProDinner, PPDetails, PPChildrenAdult
 
 import zookeepr.lib.helpers as h
 
@@ -326,6 +326,11 @@ class RegistrationController(BaseController):
         c.silly_description, checksum = h.silly_description()
         defaults['registration.silly_description'] = c.silly_description
         defaults['registration.silly_description_checksum'] = checksum
+
+        # the partner fields are attached to the product in the form for some reason
+        defaults['products.partner_name'] = c.registration.partner_name
+        defaults['products.partner_email'] = c.registration.partner_email
+        defaults['products.partner_mobile'] = c.registration.partner_mobile
 
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)

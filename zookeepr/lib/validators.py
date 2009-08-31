@@ -227,7 +227,7 @@ class ProductQty(validators.Int):
             raise Invalid("The selected product, " + self.product.description + ", has unfortunately sold out.", value, state)
         return
 
-class PPEmail(validators.FancyValidator):
+class PPDetails(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes adult_field, email_field
 
@@ -239,6 +239,10 @@ class PPEmail(validators.FancyValidator):
             return
         if adult_field > 0 and value[self.email_field] == '':
             raise Invalid("You must supply a valid email address for the partners programme.", value, state)
+        if adult_field > 0 and value[self.name_field] == '':
+            raise Invalid("You must supply a valid name for the partners programme.", value, state)
+        if adult_field > 0 and value[self.mobile_field] == '':
+            raise Invalid("You must supply a valid mobile number for the partners programme.", value, state)
         return
 
 class ProDinner(validators.FancyValidator):

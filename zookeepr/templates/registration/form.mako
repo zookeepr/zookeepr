@@ -262,16 +262,16 @@ else:
             </select>
           </p>
 %         endif
-%       elif category.name == "Partners' Programme":
+%       elif category.name == "Partners Programme":
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_name">Your partner's name:</label></p>
           <p class="entries">${ h.text('products.partner_name', size=50) }</p>
-          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners' Programme manager can contact them.</p>
+          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries">${ h.text('products.partner_email', size=50) }</p>
-          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners' Programme manager can contact them.</p>
+          <p class="note">^If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
           <p class="label"><span class="mandatory">^</span><label for="registration.partner_mobile">Your partner's mobile (if known, in international format):</label></p>
           <p class="entries">${ h.text('products.partner_mobile', size=50) }</p>
-          <p class="note">A Partners' Programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
+          <p class="note">A Partners Programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
 %       endif
 %     if category.note:
         <p class="note">${ category.note }</p>

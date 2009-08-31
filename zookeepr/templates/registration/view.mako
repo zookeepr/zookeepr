@@ -65,8 +65,12 @@
         <p>${ h.date(c.registration.checkout) }</p>
 %   elif category.name == 'Partners Programme':
 
+        <p class="label">Your partner's name:</p>
+        <p>${ c.registration.partner_name }</p>
         <p class="label">Your partner's email address:</p>
-        <p>${ c.registration.partner_email | h }</p>
+        <p>${ c.registration.partner_email }</p>
+        <p class="label">Your partner's mobile number:</p>
+        <p>${ c.registration.partner_mobile }</p>
 %   endif
 % endfor
 
