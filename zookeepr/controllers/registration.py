@@ -106,13 +106,6 @@ class RegistrationSchema(BaseSchema):
 
     chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator()]
 
-class NewRegistrationSchema(BaseSchema):
-    person = PersonSchema()
-    registration = RegistrationSchema()
-
-    chained_validators = [NotExistingRegistrationValidator()]
-    pre_validators = [NestedVariables]
-
 class UpdateRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
     registration = RegistrationSchema()
@@ -129,7 +122,6 @@ class ProductUnavailable(Exception):
     def __init__(self, product):
         self.product = product
 
-new_schema = NewRegistrationSchema()
 edit_schema = UpdateRegistrationSchema()
 
 class RegistrationController(BaseController):
@@ -223,7 +215,6 @@ class RegistrationController(BaseController):
 
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
 
-        new_schema.add_field('products', ProductSchema)
         edit_schema.add_field('products', ProductSchema)
 
     def is_speaker(self):
@@ -285,10 +276,7 @@ class RegistrationController(BaseController):
             redirect_to(action='status')
             return
 
-        if c.signed_in_person:
-            current_schema = edit_schema
-        else:
-            current_schema = new_schema
+        current_schema = edit_schema
 
         result = self.form_result
 

@@ -18,11 +18,6 @@
       </p>
 % endif
 
-% if not h.signed_in_person():
-      <p>If you already have an account (through a submitting a proposal, or other interaction with this site), then please ${ h.link_to('sign in', url=h.url_for(controller='person', action='signin')) }.</p>
-      <p>If you can't log in, you can try ${ h.link_to('recovering your password', url=h.url_for(controller='person', action='forgotten_password')) }.</p>
-% endif
-
 % if errors:
       <p class="error-message">There
 %   if len(errors)==1:

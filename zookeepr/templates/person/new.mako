@@ -11,10 +11,6 @@ If you've already got an account but can't log in, you can
 ${ h.link_to('recover your password', url=h.url_for(action='forgotten_password')) }.
 </p>
 
-%if c.conference_open:
-<p><b>To register for the conference, ${ h.link_to('go directly to the registration form', url=h.url_for(controller='registration', action='new')) }, don't bother with this one.</b></p>
-%endif
-
 ${ h.form(h.url_for(), method='post') }
 
 <%include file="form.mako" />
