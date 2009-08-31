@@ -69,6 +69,11 @@ class IAgreeValidator(validators.FancyValidator):
         if not value['i_agree']:
             raise Invalid("You must read and accept the terms and conditions before you can register.", value, state)
 
+class PrevLCAValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if '98' in value['prevlca']:
+            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
+
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
     phone = validators.String()
@@ -104,7 +109,7 @@ class RegistrationSchema(BaseSchema):
     miniconf = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
-    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator()]
 
 class UpdateRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
