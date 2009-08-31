@@ -192,7 +192,7 @@ class RegistrationController(BaseController):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
-                    clean_prod_desc = product.clean_description
+                    clean_prod_desc = product.clean_description()
                     #if self._product_available(product):
                     ProductSchema.add_field('product_' + clean_cat_name, validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
                     product_fields.append('product_' + clean_cat_name)
@@ -316,11 +316,10 @@ class RegistrationController(BaseController):
         defaults.update(h.object_to_defaults(c.registration.person, 'person'))
         for rproduct in c.registration.products:
             product = rproduct.product
-            category_name = str(product.category.name)
-            category_name = category_name.replace('-', '_')
+            category_name = product.category.clean_name()
             defaults['products.category_' + category_name] = product.id
             if rproduct.qty > 0:
-                defaults['products.product_' + category_name + '_' + str(product.description) + '_qty'] = rproduct.qty
+                defaults['products.product_' + category_name + '_' + product.clean_description() + '_qty'] = rproduct.qty
 
         # generate new silly description
         c.silly_description, checksum = h.silly_description()

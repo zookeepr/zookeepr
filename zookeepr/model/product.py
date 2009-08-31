@@ -94,7 +94,7 @@ def setup(meta):
             Product(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2500", auth=None, validate=None),
 
             # Dinner
-            Product(category_id='3', active=True, description="Adult", cost="11500", auth=None, validate="ProDinner(dinner_field='product_Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])"),
+            Product(category_id='3', active=True, description="Adult", cost="11500", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])"),
             Product(category_id='3', active=True, description="Child", cost="2000", auth=None, validate=None),
             Product(category_id='3', active=True, description="Infant", cost="0", auth=None, validate=None),
 
@@ -121,8 +121,8 @@ def setup(meta):
     meta.Session.add_all(
         [
             Product(category_id='5', active=True, description="Adult", cost="25000", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')"),
-            Product(category_id='5', active=True, description="Child (5-14 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (7_9 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-            Product(category_id='5', active=True, description="Child (3-4 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (4_6 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Child (5-14 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (5_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Child (3-4 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_4 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
             Product(category_id='5', active=True, description="Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
         ]
     )
