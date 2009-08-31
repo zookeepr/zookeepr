@@ -422,8 +422,8 @@ else:
 % endif
 
             <p class="label"><label for="registration.planetfeed">Planet Feed:</label></p>
-            <p class="entries">${ h.text('registration.planetfeed') }</p>
-            <p class="note">If you have a Blog and would like it included in the conference planet, please specify an <em>LCA specific feed</em> to be included.</p>
+            <p class="entries">${ h.text('registration.planetfeed', size=50) }</p>
+            <p class="note">If you have a blog and would like it included in the conference planet, please specify an <b>LCA-specific feed</b> to be included.</p>
 
             <p class="label"><label for="registration.silly_description">Description:</label>
             <blockquote class="entries">${ c.silly_description }</blockquote></p>
