@@ -286,8 +286,8 @@ else:
 
           <p class="label"><span class="mandatory">*</span> <label for="registration.over18">Are you over 18?</label></p>
           <p class="entries">
-            <label>${ h.radio('registration.over18', 'True') } Yes</label><br />
-            <label>${ h.radio('registration.over18', 'False') } No</label><br />
+            <label>${ h.radio('registration.over18', 1) } Yes</label><br />
+            <label>${ h.radio('registration.over18', 0) } No</label><br />
            </p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 

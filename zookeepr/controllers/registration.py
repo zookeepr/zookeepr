@@ -81,7 +81,7 @@ class ExistingPersonSchema(BaseSchema):
     country = validators.String(not_empty=True)
 
 class RegistrationSchema(BaseSchema):
-    over18 = validators.Bool()
+    over18 = validators.Int(min=0, max=1, not_empty=True)
     nick = validators.String()
     shell = validators.String()
     shelltext = validators.String()
@@ -254,7 +254,6 @@ class RegistrationController(BaseController):
                 if v is not None:
                     defaults['person.' + k] = getattr(c.signed_in_person, k)
 
-        defaults['registration.over18'] = 1
         defaults['registration.signup.announce'] = 1
         defaults['registration.checkin'] = 17
         defaults['registration.checkout'] = 24
@@ -331,6 +330,11 @@ class RegistrationController(BaseController):
         defaults['products.partner_email'] = c.registration.partner_email
         defaults['products.partner_mobile'] = c.registration.partner_mobile
 
+        if c.registration.over18:
+            defaults['registration.over18'] = 1
+        else:
+            defaults['registration.over18'] = 0
+
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
 
@@ -357,6 +361,11 @@ class RegistrationController(BaseController):
                     setattr(c.registration, k, result['registration'][k])
             else:
                 setattr(c.registration, k, result['registration'][k])
+        
+        if result['registration']['over18'] == 1:
+            setattr(c.registration, 'over18', True)
+        else:
+            setattr(c.registration, 'over18', False)
 
         # hacky method to make validating sane
         setattr(c.registration, 'partner_name', result['products']['partner_name'])
