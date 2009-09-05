@@ -103,6 +103,10 @@ h6 {
         margin-bottom: 10px;
         float: left;
 }
+#footer_logo {
+        margin-left: 5px;
+        float: left;
+}
 
 * html #logo {
 	margin-left: 8px;
@@ -275,14 +279,16 @@ h6 {
 #footer, #push, #sponsors {
 	clear:left;
 	width: 100%;
-	height:80px;
 	line-height:20px;
 	font-size: 0.8em;
 	text-align: center;
+        valign: bottom;
 }
 #footer {
 	color: #959595;
+	height:110px;
 	background: url(images/footer.jpg) repeat-x bottom left;
+	image: url(images/sign-and-pole.png) bottom right;
 	width: 100%;
 }
 #footer a {
