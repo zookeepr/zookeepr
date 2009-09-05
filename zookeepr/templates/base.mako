@@ -30,6 +30,7 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
   <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
+  <link rel="stylesheet" media="print" href="/print.css" type="text/css">
 <script type="text/javascript" src="/jquery.min.js"></script>          
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
   <!--[if lt IE 7]>
@@ -52,7 +53,7 @@
 
   <div id = "container">
     <div id = "logo">
-      <a href="/"><img src="/images/logo.jpg" style="border: 0;" alt="linux.conf.au" /></a>
+      <a href="/"><img src="/images/logo.png" style="border: 0;" alt="linux.conf.au" /></a>
     </div>
     <div id = 'main_menu'>
       <%include file="/nav.mako" />
@@ -99,6 +100,9 @@ ${next.body()}
 % endif
 
   <div id = 'footer'>
+    <div id = "footer_logo">
+      <img src="/images/sign-and-pole.png" style="border: 0;" alt="Penguins Visiting" />
+    </div>
     <div class = 'copyright'>
   &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2010</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
     </div>
