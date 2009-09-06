@@ -72,6 +72,11 @@ class IAgreeValidator(validators.FancyValidator):
         if not value['i_agree']:
             raise Invalid("You must read and accept the terms and conditions before you can register.", value, state)
 
+class PrevLCAValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['prevlca'] is not None and '00' in value['prevlca']:
+            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
+
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
     phone = validators.String()
