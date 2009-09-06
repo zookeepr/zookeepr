@@ -17,6 +17,26 @@
       </tr>
    </table>
 
+%if c.registrations.count() > 0:
+    <p>People who took advantage of this offer:
+    <ul>
+%  for rego in c.registrations:
+        <li>${ h.link_to(rego.person.firstname + ' ' + rego.person.lastname, url=h.url_for(controller='person', action='view', id=rego.person.id)) }: '${rego.member_number }' --
+%    if rego.person.registration:
+${ h.link_to('registered', url=h.url_for(controller='registration', action='view', id=rego.person.registration.id)) }
+%      if rego.person.paid():
+and paid
+%      else:
+but not paid
+%      endif
+%    else:
+not registered
+%    endif
+</li>
+%  endfor
+    </ul>
+%endif
+    </p>
     <p>
     ${ h.link_to('Edit', url=h.url_for(action='edit',id=c.special_offer.id)) } |
     ${ h.link_to('Delete', url=h.url_for(action='delete',id=c.special_offer.id)) } |

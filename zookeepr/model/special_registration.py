@@ -33,6 +33,10 @@ class SpecialRegistration(Base):
         return Session.query(SpecialRegistration).filter_by(name=name).first()
 
     @classmethod
+    def find_by_offer(cls, offer):
+        return Session.query(SpecialRegistration).filter_by(special_offer_id=offer)
+
+    @classmethod
     def find_by_person_and_offer(cls, person, offer):
         return Session.query(SpecialRegistration).filter_by(person_id=person, special_offer_id=offer).first()
 

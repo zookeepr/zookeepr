@@ -19,6 +19,7 @@ from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
 from zookeepr.model.special_offer import SpecialOffer
+from zookeepr.model.special_registration import SpecialRegistration
 
 from zookeepr.config.lca_info import lca_info
 
@@ -68,6 +69,7 @@ class SpecialOfferController(BaseController):
 
     def view(self, id):
         c.special_offer = SpecialOffer.find_by_id(id)
+        c.registrations = SpecialRegistration.find_by_offer(id)
         return render('/special_offer/view.mako')
 
     def index(self):
