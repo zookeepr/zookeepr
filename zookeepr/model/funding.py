@@ -68,6 +68,12 @@ class FundingType(Base):
         # remove the args that should never be set via creation
         super(FundingType, self).__init__(**kwargs)
 
+    def available(self):
+        if self.active:
+           return True
+        else:
+           return False
+
     @classmethod
     def find_by_id(cls, id):
         return Session.query(FundingType).filter_by(id=id).first()
@@ -115,12 +121,6 @@ class Funding(Base):
 
     def __init__(self, **kwargs):
         super(Funding, self).__init__(**kwargs)
-
-    def available(self):
-        if self.active:
-           return True
-        else:
-           return False
 
     def __repr__(self):
         return '<Funding id=%r person_id=%r>' % (self.id, self.person_id)
