@@ -117,6 +117,46 @@ ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw',
     <p>None submitted.</p>
 %endif
 
+<h2>Submitted Funding Applications</h2>
+
+% if len(c.person.funding) > 0:
+<table>
+  <tr class="odd">
+    <th>Proposal Type</th>
+    <th>Status</th>
+    <th>&nbsp;</th>
+  </tr>
+%   for s in c.person.funding:
+  <tr class="${ h.cycle('even', 'odd') }">
+    <td>${ s.type.name }</td>
+    <td>
+%     if s.status.name == 'Pending':
+        <i>Undergoing review</i>
+%     elif s.status.name == 'Accepted':
+        Accepted</p>
+%     elif s.status.name == 'Withdrawn':
+        Withdrawn
+%     else:
+        Declined
+%     endif
+    </td>
+    <td>
+      ${ h.link_to("view", url=h.url_for(controller='funding', action='view', id=s.id)) }
+%if s.status.name == 'Pending' or s.status.name == 'Accepted':
+%  if c.funding_editing == 'open':
+  ${ h.link_to("edit", url=h.url_for(controller='funding', action='edit', id=s.id)) }
+%  endif
+${ h.link_to("withdraw", url=h.url_for(controller='funding', action='withdraw', id=s.id)) }
+    </td>
+  </tr>
+%endif
+% endfor
+</table>
+
+
+%else:
+    <p>None submitted.</p>
+%endif
 
 
 

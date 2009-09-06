@@ -38,6 +38,8 @@ lca_info = {
   'cfp_status' : 'closed',
   'cfmini_status' : 'closed',
   'paper_editing' : 'closed',
+  'funding_status' : 'not_open',
+  'funding_editing' : 'not_open',
   'conference_status': 'not_open',
 
   'emails': {
@@ -45,6 +47,7 @@ lca_info = {
      'tutorial - 1 hour and 45 minutes'     : 'speakers@lca2010.org.nz',
      'tutorial - 3 hours and 30 minutes'    : 'speakers@lca2010.org.nz',
      'miniconf'     : 'miniconfs@lca2010.org.nz',
+     'funding'      : 'funding@lca2010.org.nz',
   },
 
   'proposal_update_email': 'puck@lca2010.org.nz', # recieve notifications when proposals are changed. Leave blank for none.

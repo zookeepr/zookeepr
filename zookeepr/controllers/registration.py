@@ -12,6 +12,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
 from zookeepr.lib.validators import ProductQty, ProductMinMax, CheckAccomDates
+from zookeepr.lib.validators import PrevLCAValidator
 
 # validators used from the database
 from zookeepr.lib.validators import ProDinner, PPDetails, PPChildrenAdult
@@ -68,11 +69,6 @@ class IAgreeValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         if not value['i_agree']:
             raise Invalid("You must read and accept the terms and conditions before you can register.", value, state)
-
-class PrevLCAValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        if '98' in value['prevlca']:
-            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
 
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()

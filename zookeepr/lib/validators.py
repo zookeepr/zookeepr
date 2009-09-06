@@ -1,7 +1,10 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType, Registration, Product, ProductCategory, Ceiling
+from zookeepr.model import Person, Proposal, ProposalType, TargetAudience
+from zookeepr.model import ProposalStatus, Stream, AccommodationAssistanceType
+from zookeepr.model import TravelAssistanceType, DbContentType, Registration
+from zookeepr.model import  Product, ProductCategory, Ceiling, FundingType
 
 from zookeepr.config.lca_info import lca_info
 
@@ -65,6 +68,21 @@ class FileUploadValidator(validators.FancyValidator):
             raise Invalid('Files must not be bigger than 2MB', value, state)
         return dict(filename=filename, content=content)
 
+class FundingTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        funding_type = FundingType.find_by_id(int(value))
+        if funding_type != None:
+          return funding_type.available()
+        else:
+          return False
+
+class FundingStatusValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return FundingStatus.find_by_id(int(value))
+
+class FundingValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Funding.find_by_id(int(value))
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -98,6 +116,11 @@ class ReviewSchema(BaseSchema):
     stream = StreamValidator()
     miniconf = validators.String()
     comment = validators.String()
+
+class PrevLCAValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['prevlca'] != None and '98' in value['prevlca']:
+            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
 
 class ExistingRegistrationValidator(validators.FancyValidator):
     def _to_python(self, value, state):

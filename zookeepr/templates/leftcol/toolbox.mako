@@ -61,6 +61,9 @@ ${ parent.toolbox_extra() }
 %   if h.lca_info["cfmini_status"] == 'open':
       ${ make_link('Submit a miniconf', h.url_for(controller='miniconf_proposal', action='new', id=None)) }
 %   endif
+%   if h.lca_info["funding_status"] == 'open':
+      ${ make_link('Submit a Funding Application', h.url_for(controller='funding', action='new', id=None)) }
+%   endif
 %   if len(h.signed_in_person().proposals) > 0:
       ${ make_link('My proposals', h.url_for(controller='proposal')) }
 %   endif

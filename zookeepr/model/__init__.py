@@ -22,6 +22,8 @@ import ceiling
 import product
 import product_ceiling_map
 import rego_note
+import funding
+import funding_attachment
 
 from person import Person
 from role import Role
@@ -30,6 +32,8 @@ from password_reset_confirmation import PasswordResetConfirmation
 from proposal import Proposal, ProposalStatus, ProposalType, TravelAssistanceType, AccommodationAssistanceType, TargetAudience
 from attachment import Attachment
 from review import Review, Stream
+from funding import Funding, FundingType, FundingStatus
+from funding_attachment import FundingAttachment
 
 from product import Product, ProductInclude
 from product_category import ProductCategory
@@ -74,6 +78,9 @@ def setup(meta):
 
     payment.setup(meta)
     payment_received.setup(meta)
+
+    funding.setup(meta)
+    funding_attachment.setup(meta)
 
     meta.Session.commit()
 

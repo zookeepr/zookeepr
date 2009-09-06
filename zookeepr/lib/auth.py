@@ -16,7 +16,7 @@ from formencode import validators, htmlfill, Invalid
 from zookeepr.lib.validators import BaseSchema
 
 from zookeepr.model import meta
-from zookeepr.model import Person, Role, Proposal, Invoice, Registration
+from zookeepr.model import Person, Role, Proposal, Invoice, Registration, Funding
 
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
 from authkit.authorize import PermissionSetupError, middleware
@@ -247,6 +247,40 @@ class IsSameZookeeprSubmitter(UserIn):
 
         return app(environ, start_response)
 
+class IsSameZookeeprFundingSubmitter(UserIn):
+    """
+    Checks that the signed in user is one of the users specified when setting up
+    the user management API.
+    """
+    def __init__(self, funding_id):
+        self.funding_id = int(funding_id)
+
+    def check(self, app, environ, start_response):
+
+        if not environ.get('REMOTE_USER'):
+            raise NotAuthenticatedError('Not Authenticated')
+
+        person = Person.find_by_email(environ['REMOTE_USER'])
+        if person is None:
+            environ['auth_failure'] = 'NO_USER'
+            raise NotAuthorizedError(
+                'You are not one of the users allowed to access this resource.'
+            )
+
+        funding = Funding.find_by_id(self.funding_id)
+        if funding is None:
+            raise NotAuthorizedError(
+                "Funding Request doesn't exist"
+            )
+
+        if person != funding.person:
+            environ['auth_failure'] = 'NO_ROLE'
+            raise NotAuthorizedError(
+                "User doesn't have any of the specified roles"
+            )
+
+        return app(environ, start_response)
+
 class IsSameZookeeprAttendee(UserIn):
     """
     Checks that the signed in user is the user for which the given invoice
@@ -353,6 +387,7 @@ def no_role():
 # Role shortcuts to save db work
 has_organiser_role = HasZookeeprRole('organiser')
 has_reviewer_role = HasZookeeprRole('reviewer')
+has_funding_reviewer_role = HasZookeeprRole('funding_reviewer')
 has_papers_chair_role = HasZookeeprRole('papers_chair')
 has_late_submitter_role = HasZookeeprRole('late_submitter')
 has_planetfeed_role = HasZookeeprRole('planetfeed')
@@ -362,3 +397,4 @@ is_same_zookeepr_user = IsSameZookeeprUser
 is_same_zookeepr_submitter = IsSameZookeeprSubmitter
 is_same_zookeepr_attendee = IsSameZookeeprAttendee
 is_same_zookeepr_registration = IsSameZookeeprRegistration
+is_same_zookeepr_funding_submitter = IsSameZookeeprFundingSubmitter
