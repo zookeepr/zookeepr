@@ -5,7 +5,29 @@
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
 % if not c.invoice.is_void() and c.invoice.paid():
+%   if h.auth.authorized(h.auth.has_organiser_role):
+        <li>Invoice was paid by ${ c.invoice.person.email_address }.</li>
+        <ul>
+%     for pr in c.invoice.payment_received:
+            <li>
+%       if pr.approved:
+              <font color="green">APPROVED</font>
+%       else:
+              <font color="red">DECLINED</font>
+%       endif
+              PaymentReceived ${ h.link_to(str(pr.id), url=h.url_for(controller='payment', action='view', id=pr.payment.id)) } (${ pr.email_address })
+%       if pr.validation_errors:
+              -- <font color="red">Validation errors</font>
+%       endif
+            </li>
+%     endfor
+%     for payment in c.invoice.payments:
+            <li>Payment ${ h.link_to(str(payment.id), url=h.url_for(controller='payment', action='view', id=payment.id)) } (${ payment.invoice.person.email_address })</li>
+%     endfor
+        </ul>
+%   else:
         <li>Invoice has been paid.</li>
+%   endif
 % elif c.invoice.bad_payments().count() > 0:
         <li>Invalid payments have been applied to this invoice, please email ${ h.contact_email('the organising committee') }</a></li>
 % elif not c.invoice.is_void() and not c.invoice.paid():

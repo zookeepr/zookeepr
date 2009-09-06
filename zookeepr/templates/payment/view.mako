@@ -26,17 +26,21 @@
 </td>
 </tr>
 
-%  if len(c.validation_errors) > 0:
-<tr><td><b>Zookeepr validation errors:</b></td>
+%  if c.validation_errors:
+<tr><td><b><font color="red">Zookeepr validation errors:</font></b></td>
 <td>${ '<br>'.join(c.validation_errors) | n}</td></tr>
 %  endif
 
 <tr><td><b>Invoice:</b></td>
-%if c.payment.invoice is not None:
-<td>${ h.link_to(c.payment.invoice.id, url=h.url_for(controller='invoice', action='view', id=c.payment.invoice.id)) }
-(${ c.payment.invoice.status() })</td></tr>
+%if c.payment.invoice is None:
+<td><font color="red">None found</font></td>
 %else:
-<td><font color="red">INVALID</font></td>
+<td>${ h.link_to(c.payment.invoice.id, url=h.url_for(controller='invoice', action='view', id=c.payment.invoice.id)) }
+(${ c.payment.invoice.status() })
+%  if c.payment.payment not in c.payment.invoice.payments:
+<font color="red">(INVALID)</font>
+%  endif
+</td></tr>
 %endif
 
 <tr><td><b>Amount paid:</b></td>
