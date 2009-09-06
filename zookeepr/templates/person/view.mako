@@ -19,6 +19,14 @@
         <td><b>Email:</b></p></td>
         <td><a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a></td>
     </tr>
+%if c.person.special_registration is not None:
+% for special_registration in c.person.special_registration:
+    <tr>
+        <td><b>${ special_registration.special_offer.id_name }:</b></p></td>
+        <td>${ special_registration.member_number }</td>
+    </tr>
+% endfor
+%endif
 % if h.auth.authorized(h.auth.has_organiser_role):
     <tr>
       <td valign="top"><b>Roles:</b></td>

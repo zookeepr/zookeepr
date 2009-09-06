@@ -28,6 +28,8 @@ from zookeepr.model import meta
 from zookeepr.model import Registration, Role, RegistrationProduct, Person
 from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
 from zookeepr.model import Invoice, InvoiceItem
+from zookeepr.model.special_offer import SpecialOffer
+from zookeepr.model.special_registration import SpecialRegistration
 
 from zookeepr.config.lca_info import lca_info, lca_rego
 
@@ -107,9 +109,14 @@ class RegistrationSchema(BaseSchema):
 
     chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator()]
 
-class UpdateRegistrationSchema(BaseSchema):
+class SpecialOfferSchema(BaseSchema):
+    name = validators.String()
+    member_number = validators.String()
+
+class NewRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
     registration = RegistrationSchema()
+    special_offer = SpecialOfferSchema()
 
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [NestedVariables]
@@ -123,7 +130,7 @@ class ProductUnavailable(Exception):
     def __init__(self, product):
         self.product = product
 
-edit_schema = UpdateRegistrationSchema()
+edit_schema = NewRegistrationSchema()
 
 class RegistrationController(BaseController):
 
@@ -245,7 +252,27 @@ class RegistrationController(BaseController):
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='edit', id=c.signed_in_person.registration.id)
 
-        if lca_info['conference_status'] is not 'open':
+        fields = dict(request.GET)
+        c.special_offer = None
+        if 'offer' in fields:
+            c.special_offer = SpecialOffer.find_by_name(fields['offer'])
+            if c.special_offer is not None:
+                if c.special_offer.enabled:
+                    # Create the special_registration record
+                    special_registration = SpecialRegistration()
+                    special_registration.special_offer_id = c.special_offer.id
+                    special_registration.member_number = '' # TODO: switch to None
+                    special_registration.person_id = c.signed_in_person.id
+                    meta.Session.add(special_registration)
+                    meta.Session.commit()
+                else:
+                    c.special_offer = None
+        else:
+            # The user alreay has used a special URL to register
+            if c.signed_in_person.special_registration:
+                c.special_offer = c.signed_in_person.special_registration[0].special_offer
+
+        if c.special_offer is None and lca_info['conference_status'] is not 'open':
             redirect_to(action='status')
 
         defaults = {}
@@ -272,13 +299,16 @@ class RegistrationController(BaseController):
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='_edit', id=c.signed_in_person.registration.id)
 
-        if lca_info['conference_status'] is not 'open':
-            redirect_to(action='status')
-            return
-
-        current_schema = edit_schema
-
         result = self.form_result
+
+        c.special_offer = None
+        if 'special_offer' in result:
+            c.special_offer = SpecialOffer.find_by_name(result['special_offer']['name'])
+            if c.special_offer is not None and not c.special_offer.enabled:
+                c.special_offer = None
+        
+        if c.special_offer is None and lca_info['conference_status'] is not 'open':
+            redirect_to(action='status')
 
         # A blank registration
         c.registration = Registration()
@@ -348,6 +378,7 @@ class RegistrationController(BaseController):
 
         c.registration = Registration.find_by_id(id)
         result = self.form_result
+        c.special_offer = None
         self.save_details(result)
 
         redirect_to(action='status')
@@ -374,9 +405,7 @@ class RegistrationController(BaseController):
         setattr(c.registration, 'partner_mobile', result['products']['partner_mobile'])
 
         # Check whether we're already signed in or not, and store person details
-        if not c.signed_in_person:
-            c.person = Person()
-        elif c.registration.person:
+        if c.registration.person:
             c.person = c.registration.person
         else:
             c.person = c.signed_in_person
@@ -386,6 +415,12 @@ class RegistrationController(BaseController):
 
         # Create person<->registration relationship
         c.registration.person = c.person
+
+        # Deal with the special offer if any
+        if c.special_offer is not None:
+            special_registration = SpecialRegistration.find_by_person_and_offer(c.person.id, c.special_offer.id)
+            special_registration.member_number = result['special_offer']['member_number']
+            meta.Session.add(special_registration)
 
         # Always delete the current products
         c.registration.products = []

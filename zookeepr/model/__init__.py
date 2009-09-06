@@ -24,6 +24,8 @@ import product_ceiling_map
 import rego_note
 import funding
 import funding_attachment
+import special_offer
+import special_registration
 
 from person import Person
 from role import Role
@@ -81,6 +83,9 @@ def setup(meta):
 
     funding.setup(meta)
     funding_attachment.setup(meta)
+
+    special_offer.setup(meta)
+    special_registration.setup(meta)
 
     meta.Session.commit()
 

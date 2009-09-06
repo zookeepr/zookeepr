@@ -24,10 +24,10 @@
 """
 %>
 
-% if 'conference' not in c.ceilings or h.lca_info['conference_status'] == 'not_open':
+% if 'conference' not in c.ceilings or (h.signed_in_person().registration is None and h.lca_info['conference_status'] == 'not_open'):
     <h2>Registrations are not open</h2>
     <p>Registrations are not yet open. Please come back soon!</p>
-% elif h.lca_info['conference_status'] == 'closed':
+% elif h.signed_in_person().registration is None and h.lca_info['conference_status'] == 'closed':
     <h2>Registrations are closed</h2>
     <p>Registrations are completely closed.</p>
 % else:
@@ -40,22 +40,7 @@
 % endif
     <h3>Your registration status</h3>
 
-% if not h.signed_in_person():
-    <p><b>Not signed in.</b></p>
-
-    <h3>Next step</h3>
-
-    <p>${ h.link_to('Sign in', h.url_for(controller='person', action='signin')) } if you already have an account
-    (you've already registered, submitted a proposal or similar).  If you can't log in, you can try
-    ${ h.link_to('recovering your password', h.url_for(controller='person', action='forgotten_password')) }.</p>
-<%
-    session['sign_in_redirect'] = h.url_for(action='status')
-    session.save()
-%>
-
-    <p><b>${ h.link_to('Go directly to the registration form', h.url_for(action='new')) } otherwise.</b></p>
-
-% elif h.signed_in_person() and h.signed_in_person().registration == None:
+% if h.signed_in_person().registration is None:
     <p><b>Not registered.</b>
 
 <%include file="volunteer.mako" />
@@ -64,7 +49,7 @@
 
     <p>${ h.link_to('Fill in registration form', h.url_for(action='new')) }.</p>
 
-% elif h.signed_in_person() and h.signed_in_person().registration:
+% elif h.signed_in_person().registration:
 %   if h.signed_in_person().paid():
     <p><b>Registered and paid.</b></p>
 %   else:

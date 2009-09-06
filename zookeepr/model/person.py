@@ -7,6 +7,7 @@ from pylons.controllers.util import abort
 
 from role import Role
 from person_role_map import person_role_map
+from special_registration import SpecialRegistration
 
 from zookeepr.model.meta import Session
 
@@ -72,6 +73,7 @@ class Person(Base):
 
     # relations
     roles = sa.orm.relation(Role, secondary=person_role_map, backref='people', order_by=Role.name)
+    special_registration = sa.orm.relation(SpecialRegistration, backref='person')
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation

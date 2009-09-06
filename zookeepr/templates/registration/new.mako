@@ -2,10 +2,16 @@
 
 <% desc, descChecksum = h.silly_description() %>
 
+% if not 'conference' in c.ceilings or c.ceilings['conference'].available(): 
+%   if c.special_offer is not None:
+    <h2>Register for ${ h.event_name() } (${ c.special_offer.name } Special Offer)</h2>
+    <div id="registration">
+${ c.special_offer.description | n }
+%   else:
     <h2>Register for ${ h.event_name() }</h2>
     <div id="registration">
-% if not 'conference' in c.ceilings or c.ceilings['conference'].available(): 
       <p>Welcome to the registration form for ${ h.event_name() }. Please fill in the form as best you can.</p>
+%   endif
 % else:
       <p class="error-message"><i>Registration is closed.</i></p>
       <p class="error-message">
@@ -29,6 +35,14 @@
 % endif
 
       ${ h.form(h.url_for()) }
+%if c.special_offer is not None:
+        ${ h.hidden('special_offer.name', c.special_offer.name) }
+        <p class="label"><span class="mandatory">*</span><label for="special_offermember_number">${ c.special_offer.id_name }:</label></p>
+        <p class="entries">${ h.text('special_offer.member_number', size=40) }</p>
+%else:
+        ${ h.hidden('special_offer.name', '') }
+        ${ h.hidden('special_offer.member_number', '') }
+%endif
 
 <%include file="form.mako" />
 

@@ -13,7 +13,7 @@ ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
 submitted a payment which was approved but the following validation errors
 occurred:
 
-    ${ c.pr.validation_errors }
+    ${ '\n    '.join(c.pr.validation_errors.split(';')) }
 
 More details can be seen here:
   ${ h.lca_info['event_url'] }/payment/${ c.pr.payment.id }
