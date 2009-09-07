@@ -12,7 +12,6 @@
 %  endif
 % endfor
     </p>
-    <p class="note">Please select the Funding Programme you are applying for.</p>
   </fieldset>
 
   <fieldset id="google">
