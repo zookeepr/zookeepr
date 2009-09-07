@@ -21,7 +21,7 @@ def setup(meta):
    meta.Session.add_all(
         [
             FundingType(name='InternetNZ Oceania Programme', active=True),
-            FundingType(name='InternetNZ Kiwi Programme', active=True),
+            FundingType(name='InternetNZ Kiwi Fellowship', active=True),
             FundingType(name='Google Diversity Programme', active=True),
         ]
     )
