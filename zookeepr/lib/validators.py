@@ -71,8 +71,8 @@ class FileUploadValidator(validators.FancyValidator):
 class FundingTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         funding_type = FundingType.find_by_id(int(value))
-        if funding_type != None:
-          return funding_type.available()
+        if funding_type != None and funding_type.available():
+          return funding_type
         else:
           return False
 
