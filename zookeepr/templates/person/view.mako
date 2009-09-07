@@ -143,7 +143,7 @@ ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw',
     <td>
       ${ h.link_to("view", url=h.url_for(controller='funding', action='view', id=s.id)) }
 %if s.status.name == 'Pending' or s.status.name == 'Accepted':
-%  if c.funding_editing == 'open':
+%  if h.lca_info['funding_editing'] == 'open':
   ${ h.link_to("edit", url=h.url_for(controller='funding', action='edit', id=s.id)) }
 %  endif
 ${ h.link_to("withdraw", url=h.url_for(controller='funding', action='withdraw', id=s.id)) }

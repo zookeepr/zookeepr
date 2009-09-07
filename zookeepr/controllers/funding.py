@@ -92,7 +92,12 @@ class FundingController(BaseController):
         if c.funding_status == 'closed':
             return render("funding/closed.mako")
         elif c.funding_status == 'not_open':
-           return render("funding/not_open.mako")
+            return render("funding/not_open.mako")
+
+        if self.form_result['funding']['male'] == 1:
+            self.form_result['funding']['male'] = True
+        elif self.form_result['funding']['male'] == 0:
+            self.form_result['funding']['male'] = False
 
         funding_results = self.form_result['funding']
         attachment_results1 = self.form_result['attachment1']
@@ -207,11 +212,11 @@ class FundingController(BaseController):
         for key in self.form_result['funding']:
             setattr(c.funding, key, self.form_result['funding'][key])
 
-        c.person = self.form_result['person_to_edit']
+        c.person = c.funding.person
 
         meta.Session.commit()
 
-        h.flash("Funding for %s edited!"%c.person.first_name)
+        h.flash("Funding for %s edited!"%c.person.firstname)
         return redirect_to('/funding')
 
     def index(self):
