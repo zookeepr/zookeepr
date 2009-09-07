@@ -24,51 +24,65 @@ for d in c.db_content_news_all:
 <h2>LCA2010 Miniconfs</h2>
 
 <br />
-<p>LCA2010 Organisers have <a href="/media/news/74">announced</a> the
-successful <a href="/programme/miniconfs">Miniconfs for LCA2010</a>:</p>
+<p>The <a href="/programme/miniconfs">linux.conf.au 2010 Miniconfs</a> have put put their
+<a href="/wiki/Miniconfs">Call for Miniconf Papers</a>!</p>
 
 <table>
   <tr class="odd">
-    <td><b>Arduino</b></td>  <td>Jonathan Oxer</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Arduino">Arduino</a></td>  <td>Jonathan Oxer</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Arduino">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><b>Business of Open Source</b></td>  <td>Martin Michlmayr</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></td>  <td>Martin Michlmayr</td>
+    <td><a href="https://fossbazaar.org/content/lca-devbiz-january-2010">Submit a proposal</a></td>
   </tr>
   <tr class="odd">
-    <td><b>Data Storage and Retrieval</b></td>  <td>Peter Lieverdink</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>  <td>Peter Lieverdink</td>
+    <td><a href="http://miniconf.osda.asn.au/node/add/proposal">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><b>Distro Summit</b></td>  <td>Fabio Tranchitella</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Distro_Summit">Distro Summit</a></td>  <td>Fabio Tranchitella</td>
+    <td><a href="http://distrosummit.org/cfp.html">Submit a proposal</a></td>
   </tr>
   <tr class="odd">
-    <td><b>Education</b></td>  <td>Tabitha Roder</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Education">Education</a></td>  <td>Tabitha Roder</td>
+    <td><a href="http://laptop.org.nz/node/add/miniconfsubmission">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><b>Free The Cloud!</b></td>  <td>Evan Prodromou</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Free_The_Cloud%21">Free The Cloud!</a></td>  <td>Evan Prodromou</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Free_The_Cloud%21">Submit a proposal</a></td>
   </tr>
   <tr class="odd">
-    <td><b>Haecksen and Linuxchix</b></td>  <td>Joh Clarke</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Haecksen_and_Linuxchix">Haecksen and Linuxchix</a></td>  <td>Joh Clarke</td>
+    <td><a href="http://haecksen.org.nz/node/add/miniconfsubmission">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><b>Libre Graphics Day</b></td>  <td>Jon Cruz</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Libre Graphics Day">Libre Graphics Day</a></td>  <td>Jon Cruz</td>
+    <td><a href="http://libregraphicsday.org/submit-proposal">Submit a proposal</a></td>
   </tr>
   <tr class="odd">
-    <td><b>Multicore and Parallel Computing</b></td>  <td>Nicolas Erdody</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>  <td>Nicol&aacute;s Erd&ouml;dy</td>
+    <td><a href="http://multicorenz.wordpress.com/lca2010-miniconf/">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><b>Multimedia</b></td>  <td>Conrad Parker</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Multimedia">Multimedia</a></td>  <td>Conrad Parker</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Multimedia">Submit a proposal</a></td>
   </tr>
   <tr class="odd">
-    <td><b>Open and the Public Sector</b></td>  <td>Daniel Spector</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Open_and_the_Public_Sector">Open and the Public Sector</a></td>  <td>Daniel Spector</td>
+    <td><a href="http://open.org.nz/lca2010-open-government-miniconf/">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><b>Open Programming Languages</b></td>  <td>Christopher Neugebauer</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Open_Programming_Languages">Open Programming Languages</a></td>  <td>Christopher Neugebauer</td>
+    <td><a href="http://blogs.tucs.org.au/oplm/cfp/">Submit a proposal</a></td>
   </tr>
   <tr class="odd">
-    <td><b>System Administration</b></td>  <td>Simon Lyall</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/System_Administration">System Administration</a></td>  <td>Simon Lyall</td>
+    <td><a href="http://sysadmin.miniconf.org/cfp10.html">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><b>Wave Developers</b></td>  <td>Shane Stephens</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Wave_Developers">Wave Developers</a></td>  <td>Shane Stephens</td>
+    <td><a href="http://sites.google.com/site/waveminiconfatlca/signup-form">Submit a proposal</a></td>
   </tr>
 </table>
 
