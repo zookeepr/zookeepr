@@ -25,7 +25,7 @@ for d in c.db_content_news_all:
 
 <br />
 <p>The <a href="/programme/miniconfs">linux.conf.au 2010 Miniconfs</a> have put put their
-<a href="/wiki/Miniconfs">Call for Miniconf Papers</a>!</p>
+<a href="/media/news/92">Call for Miniconf Papers</a>!</p>
 
 <table>
   <tr class="odd">
