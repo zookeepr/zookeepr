@@ -85,6 +85,7 @@ class AdminController(BaseController):
           ('/proposal/summary', ''' Summary of the reviewed papers [CFP] '''),
           ('/review/summary', ''' List of reviewers and scores [CFP] '''),
           ('/proposal/approve', ''' Change proposal status for papers [CFP] '''),
+          ('/funding/review_index', ''' To see what you need to reveiw [Funding] '''),
           ('/funding_type', ''' Manage Funding Types [Funding] '''),
 
           #('/registration/list_miniconf_orgs', ''' list of miniconf
@@ -206,8 +207,7 @@ class AdminController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def rej_papers_abstracts(self):
-        """ Rejected papers, with abstracts (for the miniconf organisers)
-        [Schedule] """
+        """ Rejected papers, with abstracts (for the miniconf organisers) [Schedule] """
         return sql_response("""
             SELECT
                 proposal.id, 
@@ -222,19 +222,20 @@ class AdminController(BaseController):
                 person.bio,
                 person.experience,
                 stream.name AS stream,
-                MAX(review.score),
-                MIN(review.score),
-                AVG(review.score)
+                MAX(review.score) as max,
+                MIN(review.score) as min,
+                AVG(review.score) as avg
             FROM proposal 
                 LEFT JOIN review ON (proposal.id=review.proposal_id)
                 LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
                 LEFT JOIN stream ON (review.stream_id=stream.id)
                 LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
                 LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+                LEFT JOIN proposal_status ON (proposal.status_id = proposal_status.id)
             WHERE
                 review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
-                AND proposal.proposal_type_id != 2
-                AND proposal.accepted = False
+                AND proposal_type.name <> 'Miniconf'
+                AND proposal_status.name = 'Rejected'
             GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
             ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
         """)
@@ -697,10 +698,10 @@ class AdminController(BaseController):
             if person.is_speaker():
                 for invoice in person.invoices:
                     for item in invoice.items:
-                        if item.description.startswith("Partners Programme"):
+                        if item.product.product_category.name("Partners Programme"):
                             partners.append(item.description + " x" + str(item.qty))
                             total_partners += item.qty
-                        if item.description.startswith("Dinner"):
+                        if item.product.product_category.name("Penguin Dinner"):
                             dinner_tickets += item.qty
                             total_dinner += item.qty
                 c.data.append([person.firstname + " " + person.lastname,
