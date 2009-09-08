@@ -221,7 +221,7 @@ class AdminController(BaseController):
                 person.url as homepage,
                 person.bio,
                 person.experience,
-                stream.name AS stream,
+                (SELECT review2.miniconf FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.miniconf ORDER BY count(review2.miniconf) DESC LIMIT 1) AS miniconf,
                 MAX(review.score) as max,
                 MIN(review.score) as min,
                 AVG(review.score) as avg
@@ -233,11 +233,10 @@ class AdminController(BaseController):
                 LEFT JOIN person ON (person_proposal_map.person_id = person.id)
                 LEFT JOIN proposal_status ON (proposal.status_id = proposal_status.id)
             WHERE
-                review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
-                AND proposal_type.name <> 'Miniconf'
+                proposal_type.name <> 'Miniconf'
                 AND proposal_status.name = 'Rejected'
             GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
-            ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+            ORDER BY miniconf, proposal_type.name ASC
         """)
 
     def collect_garbage(self):
