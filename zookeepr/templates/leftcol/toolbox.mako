@@ -30,6 +30,7 @@
 %   if c.db_content and not h.url_for().endswith('/edit'):
       ${ make_link('Edit Page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
 %   endif
+      ${ make_link('Change proposal statuses', h.url_for(controller='proposal', action='approve')) }
 ${ parent.toolbox_extra_admin() }
     </ul>
 % endif
@@ -42,7 +43,6 @@ ${ parent.toolbox_extra_reviewer() }
       ${ make_link("Reviews you've made", h.url_for(controller='review', action='index')) }
       ${ make_link('Summary of reviewed proposals', h.url_for(controller='proposal', action='summary')) }
       ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary')) }
-      ${ make_link('Change proposal statuses', h.url_for(controller='proposal', action='approve')) }
       <li>List of proposals by:</li>
       <ul class="indent">
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank')) }

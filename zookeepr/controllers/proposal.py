@@ -379,7 +379,7 @@ class ProposalController(BaseController):
         return render('/proposal/list.mako')
 
     @dispatch_on(POST="_approve")
-    @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
+    @authorize(h.auth.has_organiser_role)
     def approve(self):
         c.highlight = set()
         c.proposals = Proposal.find_all()
@@ -387,7 +387,7 @@ class ProposalController(BaseController):
         return render("proposal/approve.mako")
 
     @validate(schema=ApproveSchema(), form='approve', post_only=True, on_get=True, variable_decode=True)
-    @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
+    @authorize(h.auth.has_organiser_role)
     def _approve(self):
         c.highlight = set()
         talks = self.form_result['talk']
