@@ -231,7 +231,7 @@ class FundingController(BaseController):
         return render('/funding/list.mako')
 
     @dispatch_on(POST="_approve")
-    @authorize(h.auth.Or(h.auth.has_funding_reviewer_role, h.auth.has_organiser_role))
+    @authorize(h.auth.has_organiser_role)
     def approve(self):
         c.highlight = set()
         c.requests = Funding.find_all()
@@ -239,7 +239,7 @@ class FundingController(BaseController):
         return render("funding/approve.mako")
 
     @validate(schema=ApproveSchema(), form='approve', post_only=True, on_get=True, variable_decode=True)
-    @authorize(h.auth.Or(h.auth.has_funding_reviewer_role, h.auth.has_organiser_role))
+    @authorize(h.auth.has_organiser_role)
     def _approve(self):
         c.highlight = set()
         requests = self.form_result['funding']
