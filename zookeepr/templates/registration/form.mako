@@ -234,7 +234,7 @@ else:
 %       if category.name == 'Accommodation':
 %         if h.lca_rego['accommodation']['self_book'] == 'yes':
           <p class="note">Please see the
-          ${ h.link_to('the accommodation page', url='/register/accommodation', popup=True) }
+          ${ h.link_to('accommodation page', url='/register/accommodation', popup=True) }
           for discounted rates for delegates. You <strong>must</strong> book
           your accommodation directly through the accommodation providers
           yourself. Registering for the conference <strong>does not</strong>
