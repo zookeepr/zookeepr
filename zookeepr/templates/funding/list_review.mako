@@ -2,23 +2,22 @@
 
 <% import random %>
 <% c.signed_in_person = h.signed_in_person() %>
-<h2>Proposals You Haven't Reviewed</h2>
+<h2>Funding Applications You Haven't Reviewed</h2>
 
 % if c.num_reviewers <= 0:
    <% c.num_reviewers = 1 %>
 % endif
-<p>Below is all of the proposals that you have not yet reviewed. To start, please click "review now".</p>
-<p>You have reviewed ${ len(c.person.reviews) } out of your quota of  ${ c.num_proposals * 3 / c.num_reviewers }. </p>
+<p>Below is all of the funding applications that you have not yet reviewed. To start, please click "review now".</p>
 
 
 <% import re %>
 
-% for pt in c.proposal_types:
+% for ft in c.funding_types:
 <%
-	collection = getattr(c, '%s_collection' % pt.name)
+	collection = getattr(c, '%s_collection' % ft.name)
 	random.shuffle(collection)
 	collection.sort(cmp = lambda x, y: cmp(len(x.reviews), len(y.reviews)))
-        simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name) 
+        simple_title = re.compile('([^a-zA-Z0-9])').sub('', ft.name) 
 
 
 	min_reviews = 100
@@ -32,13 +31,13 @@
 %>
 
 <a name="${ simple_title }"></a>
-<h2>${ pt.name } proposals (${ len(collection) })</h2>
+<h2>${ ft.name } requests (${ len(collection) })</h2>
 
 <table class="list">
 
 <tr>
-<th>ID - Title</th>
-<th>Submitter(s)</th>
+<th>ID</th>
+<th>Submitter</th>
 <th>Submission Time</th>
 <th>Number of reviews</th>
 <th>Reviewed?</th>
@@ -48,14 +47,10 @@
 ## don't show the row if we've already reviewed it
 %		if not [ r for r in s.reviews if r.reviewer == c.signed_in_person ]:
 <tr class="${ h.cycle('even', 'odd') }">
-	<td>${ h.link_to("%s - %s" % (s.id, s.title), url=h.url_for(action='view', id=s.id)) }</td>
+	<td>${ h.link_to("%s" % (s.id), url=h.url_for(action='view', id=s.id)) }</td>
 	<td>
-% 		for p in s.people:
-
-${ h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address or p.id, url=h.url_for(controller='person', action='view', id=p.id)) }
-%	endfor
-</td>
-
+${ h.link_to( s.person.fullname(), url=h.url_for(controller='person', action='view', id=s.person.id)) }
+        </td>
 <td>
 ${ s.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n}
 </td>
@@ -82,7 +77,7 @@ ${ len(s.reviews) }
 % endfor proposal types
 
 <%def name="title()" >
-Proposals you haven't reviewed - ${ parent.title() }
+Funding Applications you haven't reviewed - ${ parent.title() }
 </%def>
 
 <%def name="contents()">
@@ -91,9 +86,9 @@ Proposals you haven't reviewed - ${ parent.title() }
 
   import re
 
-  for pt in c.proposal_types:
-    simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name) 
-    menu += '<li><a href="#' + simple_title + '">' + pt.name + ' proposals</a></li>' 
+  for ft in c.funding_types:
+    simple_title = re.compile('([^a-zA-Z0-9])').sub('', ft.name) 
+    menu += '<li><a href="#' + simple_title + '">' + ft.name + ' requests</a></li>' 
   return menu
 %>
 </%def>

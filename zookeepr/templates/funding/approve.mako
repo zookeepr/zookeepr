@@ -11,15 +11,10 @@ ${ h.form(h.url_for()) }
     <th>Current Status</th>
     <th>Change Status</th>
   </tr>
-%   for s in c.funding_requests:
+%   for s in c.requests:
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ h.link_to("%d" % s.id, url=h.url_for(action='view', id=s.id)) }</td>
-    <td>
-%     for p in s.people:
-      ${ h.link_to( "%s %s" % (p.firstname, p.lastname) or p.email_address
-      or p.id, url=h.url_for(controller='person', action='view', id=p.id)) }<br>
-%     endfor
-    </td>
+    <td>${ h.link_to(s.person.fullname(), url=h.url_for(controller='person', action='view', id=s.person.id)) }</td>
     <td>${ s.type.name }</td>
     <td>
 %     if s.id in c.highlight:
@@ -37,7 +32,7 @@ ${ h.form(h.url_for()) }
 %         endif
 %     endfor
       </select>
-      ${ h.hidden(name="request-%d"%s.id, value=s.id) }
+      ${ h.hidden(name="funding-%d"%s.id, value=s.id) }
 
     </td>
   </tr>

@@ -4,7 +4,7 @@
 Funding request for a
 ${ c.funding.type.name } 
 submitted by
-${ c.funding.person.firstname } ${ c.funding.person.lastname }
+${ c.funding.person.fullname() }
 &lt;${ c.funding.person.email_address }&gt;
 at
 ${ c.funding.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />

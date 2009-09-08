@@ -135,3 +135,54 @@ class Funding(Base):
     @classmethod
     def find_all(cls):
         return Session.query(Funding).order_by(Funding.id).all()
+
+    @classmethod
+    def find_next_proposal(cls, id, type_id, signed_in_person_id):
+        withdrawn = FundingStatus.find_by_name('Withdrawn')
+        next = Session.query(Funding).from_statement("""
+              SELECT
+                  f.id
+              FROM
+                  (SELECT id
+                   FROM funding
+                   WHERE id <> %d
+                     AND status_id <> %d
+                     AND funding_type_id = %d
+                   EXCEPT
+                       SELECT funding_id AS id
+                       FROM funding_review
+                       WHERE funding_review.reviewer_id = %d) AS f
+              LEFT JOIN
+                      funding_review AS r
+                              ON(f.id=r.funding_id)
+              GROUP BY
+                      f.id
+              ORDER BY COUNT(r.reviewer_id), RANDOM()
+              LIMIT 1
+        """ % (id, withdrawn.id, type_id, signed_in_person_id))
+        next = next.first()
+        if next is not None:
+            return next.id
+        else:
+            # looks like you've reviewed everything!
+            return None
+
+    @classmethod
+    def find_all_by_funding_type_id(cls, id, abort_404 = True, include_withdrawn=True):
+        result = Session.query(Funding).filter_by(funding_type_id=id)
+        if not include_withdrawn:
+            withdrawn = FundingStatus.find_by_name('Withdrawn')
+            result = result.filter(Funding.status_id != withdrawn.id)
+
+        result = result.all()
+        if result is None and abort_404:
+            abort(404, "No such funding object")
+        return result
+
+    @classmethod
+    def find_all_accepted(cls):
+        status = FundingStatus.find_by_name('Accepted')
+        result = Session.query(Funding).filter_by(status_id=status.id)
+
+        return result
+

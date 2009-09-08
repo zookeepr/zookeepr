@@ -43,41 +43,37 @@ function toggleDiv(id,flagit) {
 </style>
 
 
-<h2>Review Summary</h2>
+<h2>Application Funding Review Summary</h2>
 
 
 <p>
 <ul>
 <li>Mouse over reviewers name for their comments
 <li>Mouse over scores for score from each reviewer
-<li>Mouse over reviewer name for Bio and Experience
-<li>Mouse over stream for Stream Stats
 </ul>
 
 
 <% import re %>
-% for pt in c.proposal_types:
-    <% collection = getattr(c, '%s_collection' % pt.name) %>
+% for ft in c.funding_types:
+    <% collection = getattr(c, '%s_collection' % ft.name) %>
     <% i = 1 %>
 
-    <% simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name) %>
+    <% simple_title = re.compile('([^a-zA-Z0-9])').sub('', ft.name) %>
 
 <a name="${ simple_title }"></a>
-<h2>${ pt.name }s </h2>
+<h2>${ ft.name }s </h2>
 
 <table>
 <tr>
 <th>&nbsp;</th>
 <th>#</th>
-<th>Proposal</th>
-<th>Submitters</th>
+<th>Submitter</th>
 <th>Avg Score</th>
 <th>Reviewers</th>
-<th>Winning Stream</th>
 </tr>
 
-% for proposal in collection:
-%    if not proposal.reviews:
+% for funding in collection:
+%    if not funding.reviews:
         <% continue %>
 %    endif
 
@@ -88,47 +84,25 @@ function toggleDiv(id,flagit) {
 
 
 <td>
-<div onMouseOver="toggleDiv('${ "assistance%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "assistance%s" % proposal.id | h}',0)">
-${ h.link_to(proposal.id, url=h.url_for(controller='proposal', action='review', id=proposal.id)) }
-</div>
-
+${ h.link_to("%s (view)" % funding.id, url=h.url_for(controller='funding', action='review', id=funding.id)) }
 </td>
 
 
 
 
 <td>
-<div onMouseOver="toggleDiv('${ "proposal%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "proposal%s" % proposal.id | h}',0)">
-${ h.link_to(proposal.title, url=h.url_for(controller='proposal', action='review', id=proposal.id)) }
-</div>
-<div id="${ "proposal%s" % proposal.id }" class="biodiv"><strong>Abstract:</strong><p>${ h.line_break(h.util.html_escape(proposal.abstract)) |n }</p></pre></div>
-</td>
-
-<td>
-%       for person in proposal.people:
-<div onMouseOver="toggleDiv('${ "bio%s" % person.id | h}',1)" onMouseOut="toggleDiv('${ "bio%s" % person.id | h}',0)">
-${ person.firstname }
-${ person.lastname }, 
-</div>
-<div id="${ "bio%s" % person.id | h}" class="biodiv">${ person.firstname + " " + person.lastname |h}<br><strong>Bio:</strong><p>${ person.bio |h }</p><strong>Experience:</strong><p> ${person.experience |h}</p></div>
-%       endfor
+${ h.link_to(funding.person.fullname(), url=h.url_for(controller='person', action='view', id=funding.person.id)) }
 </td>
 
 <%
-        streams = {}
         total_score = 0
         num_reviewers = 0
         scores = ""
-        for review in proposal.reviews:
+        for review in funding.reviews:
             if review.score is not None:
                 num_reviewers += 1
                 total_score += review.score
-                scores += review.reviewer.firstname + " " + review.reviewer.lastname + ": %s " % review.score + "<br>"
-            if review.stream is not None:
-                if review.stream.name in streams:
-                    streams[review.stream.name] += 1
-                else:
-                    streams[review.stream.name] = 1
+                scores += review.reviewer.fullname() + ": %s " % review.score + "<br>"
 
         if num_reviewers == 0:
             avg_score = "No Reviews"
@@ -136,10 +110,10 @@ ${ person.lastname },
             avg_score = total_score*1.0/num_reviewers
 %>
 <td>
-<div onMouseOver="toggleDiv('${ "score%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "score%s" % proposal.id | h}',0)">
+<div onMouseOver="toggleDiv('${ "score%s" % funding.id | h}',1)" onMouseOut="toggleDiv('${ "score%s" % funding.id | h}',0)">
 ${ avg_score |h }
 </div>
-<div id="${ "score%s" % proposal.id | h}" class="commentdiv">${ scores | n}</div>
+<div id="${ "score%s" % funding.id | h}" class="commentdiv">${ scores | n}</div>
 
 </td>
 
@@ -147,48 +121,28 @@ ${ avg_score |h }
 
 
 <td>
-%       for review in proposal.reviews:
+%       for review in funding.reviews:
 <!--
 link_to doesn't let us pass javascript tags
 -->
 %           if review.comment:
-<a href="/review/${review.id}" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.firstname + " " + review.reviewer.lastname | h}</a>, 
-<div id="${ "%s%s" % (review.id, review.reviewer.id) | h}" class="commentdiv">${ review.reviewer.firstname + " " + review.reviewer.lastname + ": " + review.comment |h}</div>
+<a href="/funding_review/${review.id}" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.fullname() | h}</a>, 
+<div id="${ "%s%s" % (review.id, review.reviewer.id) | h}" class="commentdiv">${ review.reviewer.fullname() + ": " + review.comment |h}</div>
 %           else:
-${ h.link_to(review.reviewer.firstname + " " + review.reviewer.lastname, url=h.url_for(controller='review', action='view', id=review.id)) }, 
+${ h.link_to(review.reviewer.fullname(), url=h.url_for(controller='funding_review', action='view', id=review.id)) }, 
 %           endif
 %       endfor
-</td>
-
-<%
-        stream = ""
-        stream_stats = ""
-        stream_score = 0
-        for s in streams:
-            stream_stats += s + ": %s<br>" % streams[s]
-            if streams[s] > stream_score:
-                stream = s
-                stream_score = streams[s]
-            # endif
-        endfor
-%>
-
-<td>
-<div onMouseOver="toggleDiv('${ "stream%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "stream%s" % proposal.id | h}',0)">
-${ stream } (${ stream_score })
-</div>
-<div id="${ "stream%s" % proposal.id | h}" class="biodiv">${ stream_stats | n}</div>
 </td>
 
 </tr>
 
 %   endfor
 </table>
-% endfor #proposal_tyes
+% endfor #funding_types
 
 
 <%def name="title()" >
-Reviews - ${ parent.title() }
+Funding Application Reviews - ${ parent.title() }
 </%def>
 
 <%def name="contents()">
@@ -197,9 +151,9 @@ Reviews - ${ parent.title() }
 
   import re
 
-  for pt in c.proposal_types:
-    simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name)
-    menu += '<li><a href="#' + simple_title + '">' + pt.name + ' proposals</a></li>'
+  for ft in c.funding_types:
+    simple_title = re.compile('([^a-zA-Z0-9])').sub('', ft.name)
+    menu += '<li><a href="#' + simple_title + '">' + ft.name + ' reviews</a></li>'
   return menu
 %>
 </%def>

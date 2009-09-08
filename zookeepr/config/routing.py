@@ -49,6 +49,12 @@ def make_map():
     map.connect('/proposal/approve', controller='proposal', action='approve')
     map.connect('/review/summary',        controller='review', action='summary')
 
+    # Funding Review
+    map.connect('/funding/review_index', controller='funding', action='review_index')
+    map.connect('/funding/summary',      controller='funding', action='summary')
+    map.connect('/funding/approve',      controller='funding', action='approve')
+    map.connect('/funding_review/summary', controller='funding_review', action='summary')
+
     # schedule routes
     map.connect('/programme/schedule/{day}',           controller='schedule', action='index', day=None)
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)

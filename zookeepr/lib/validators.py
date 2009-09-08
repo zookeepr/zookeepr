@@ -4,7 +4,8 @@ from formencode import validators, Invalid #, schema
 from zookeepr.model import Person, Proposal, ProposalType, TargetAudience
 from zookeepr.model import ProposalStatus, Stream, AccommodationAssistanceType
 from zookeepr.model import TravelAssistanceType, DbContentType, Registration
-from zookeepr.model import  Product, ProductCategory, Ceiling, FundingType
+from zookeepr.model import Product, ProductCategory, Ceiling, FundingType
+from zookeepr.model import FundingStatus, Funding
 
 from zookeepr.config.lca_info import lca_info
 
@@ -115,6 +116,10 @@ class ReviewSchema(BaseSchema):
     score = validators.OneOf(["-2", "-1", "+1", "+2"])
     stream = StreamValidator()
     miniconf = validators.String()
+    comment = validators.String()
+
+class FundingReviewSchema(BaseSchema):
+    score = validators.OneOf(["-2", "-1", "+1", "+2"])
     comment = validators.String()
 
 class PrevLCAValidator(validators.FancyValidator):

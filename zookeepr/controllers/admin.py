@@ -377,9 +377,9 @@ class AdminController(BaseController):
                     proposal.id,
                     proposal.title,
                     proposal_type.name AS "proposal type",
-                    MAX(review.score),
-                    MIN(review.score),
-                    AVG(review.score)
+                    MAX(review.score) AS max,
+                    MIN(review.score) AS min,
+                    AVG(review.score) AS avg
                 FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
@@ -396,9 +396,9 @@ class AdminController(BaseController):
                     proposal.title, 
                     proposal_type.name AS "proposal type",
                     stream.name AS stream,
-                    MAX(review.score),
-                    MIN(review.score),
-                    AVG(review.score)
+                    MAX(review.score) AS max,
+                    MIN(review.score) AS min,
+                    AVG(review.score) AS avg
                 FROM proposal 
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
@@ -407,6 +407,66 @@ class AdminController(BaseController):
                 GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
                 ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
                 """)
+
+    @authorize(h.auth.has_funding_reviewer_role)
+    def funding_requests_by_strong_rank(self):
+        """ List of funding applications ordered by number of certain score / total number of reviewers [Funding] """
+        query = """
+                SELECT
+                    funding.id,
+                    person.firstname || ' ' || person.lastname AS fullname,
+                    funding_type.name AS "funding type",
+                    funding_review.score,
+                    COUNT(funding_review.id) AS "#reviewers at this score",
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM funding_review as review2
+                            WHERE review2.funding_id = funding.id
+                    ) AS "#total reviewers",
+                    CAST(
+                        CAST(
+                            COUNT(funding_review.id) AS float(8)
+                        ) / CAST(
+                            (SELECT COUNT(review2.id)
+                                FROM funding_review as review2
+                                WHERE review2.funding_id = funding.id
+                            ) AS float(8)
+                        ) AS float(8)
+                    ) AS "#reviewers at this score / #total reviews %%"
+                FROM funding
+                    LEFT JOIN funding_review ON (funding.id=funding_review.funding_id)
+                    LEFT JOIN funding_type ON (funding.funding_type_id=funding_type.id)
+                    LEFT JOIN person ON (funding.person_id=person.id)
+                WHERE
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM funding_review as review2
+                            WHERE review2.funding_id = funding.id
+                    ) != 0
+                GROUP BY funding.id, fullname, funding_review.score, funding_type.name
+                ORDER BY funding_type.name ASC, funding_review.score DESC, "#reviewers at this score / #total reviews %%" DESC, funding.id ASC"""
+
+        return sql_response(query)
+
+    @authorize(h.auth.has_funding_reviewer_role)
+    def funding_requests_by_max_rank(self):
+        """ List of all the funding applications ordered max score, min score then average [Funding] """
+        return sql_response("""
+                SELECT
+                    funding.id,
+                    person.firstname || ' ' || person.lastname AS fullname,
+                    funding_type.name AS "funding type",
+                    MAX(funding_review.score) AS max,
+                    MIN(funding_review.score) AS min,
+                    AVG(funding_review.score) AS avg
+                FROM funding
+                    LEFT JOIN funding_review ON (funding.id=funding_review.funding_id)
+                    LEFT JOIN funding_type ON (funding.funding_type_id=funding_type.id)
+                    LEFT JOIN person ON (funding.person_id=person.id)
+                GROUP BY funding.id, fullname, funding_type.name
+                ORDER BY funding_type.name ASC, max DESC, min DESC, avg DESC, funding.id ASC
+                """)
+
     @authorize(h.auth.has_organiser_role)
     def countdown(self):
         """ How many days until conference opens """

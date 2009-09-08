@@ -24,6 +24,7 @@ import product_ceiling_map
 import rego_note
 import funding
 import funding_attachment
+import funding_review
 import special_offer
 import special_registration
 
@@ -36,6 +37,7 @@ from attachment import Attachment
 from review import Review, Stream
 from funding import Funding, FundingType, FundingStatus
 from funding_attachment import FundingAttachment
+from funding_review import FundingReview
 
 from product import Product, ProductInclude
 from product_category import ProductCategory

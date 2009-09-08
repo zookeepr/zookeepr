@@ -18,6 +18,9 @@
 <%def name="toolbox_extra_reviewer()">
     ## Defined in children
 </%def>
+<%def name="toolbox_extra_funding_reviewer()">
+    ## Defined in children
+</%def>
 <%def name="contents()">
     ## Defined in children
 </%def>
