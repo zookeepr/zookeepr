@@ -32,7 +32,7 @@ class NotExistingSpecialOfferValidator(validators.FancyValidator):
            raise Invalid("Special Offer name already in use", value, state)
 
 class SpecialOfferSchema(BaseSchema):
-    enabled = validators.String(if_empty=False)
+    enabled = validators.Bool(if_empty=False)
     name = validators.String(not_empty=True)
     description = validators.String(not_empty=True)
     id_name = validators.String(not_empty=True)
