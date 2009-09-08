@@ -153,6 +153,9 @@ class Person(Base):
                     return False
         return status
 
+    def fullname(self):
+        return "%s %s" % (self.firstname, self.lastname)
+
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)
 
