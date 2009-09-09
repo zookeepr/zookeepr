@@ -1,37 +1,36 @@
 <table id="fri-programme" style="" summary="Programme" cellpadding="" cellspacing="">
   <thead>
     <tr>
-      <th class="programme_time_slot" align="center" valign="middle" rowspan="2">Time slot</th>
-      <th colspan="5" align = "center" class ="programme_room_header">Room Code</th>
+      <th>&nbsp;</th>
+      <th class="programme_room" align="center" valign="top">Auditorium</th>
+      <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
+      <th class="programme_room" align="center" valign="top">Renouf 1</th>
+      <th class="programme_room" align="center" valign="top">Renouf 2</th>
+      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites&nbsp;1&2</th>
     </tr>
     <tr>
-      <th class="programme_room" align="center" valign="top">Stanley Burbury 1</th>
-      <th class="programme_room" align="center" valign="top">Arts Lecture Theatre</th>
-      <th class="programme_room" align="center" valign="top">Stanley Burbury 2</th>
-      <th class="programme_room" align="center" valign="top">Social Science 1</th>
-      <th class="programme_room" align="center" valign="top">Social Science 2</th>
+      <td>&nbsp;</td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Tutorials</i></td>
     </tr>
   </thead>
 
   <tbody>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">9:00&nbsp;-&nbsp;9:30</th>
-      <td id="programme_intro" colspan="5" align="center" valign="top">
-        <b>Introduction and Housekeeping</b>
-      </td>
-    </tr>
-    <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">9:30&nbsp;-&nbsp;10:20</th>
+      <th class="programme_slot" align="center" valign="middle">9:00&nbsp;-&nbsp;10:00</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
-        <a href="/programme/keynotes#SimonPhipps">Keynote 3 - Simon Phipps</a><br><span style="font-weight: normal;">Stanley Burbury</span>
+        <a href="/programme/keynotes#NathanTorkington">Keynote: Nathan Torkington & Lightning Talks</a><br><span style="font-weight: normal;">Auditorium</span>
       </td>
     </tr>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">10:20&nbsp;-&nbsp;10:40</th>
+      <th class="programme_slot" align="center" valign="middle">10:00&nbsp;-&nbsp;10:30</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Morning Tea</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">10:40&nbsp;-&nbsp;11:30</th>
+      <th class="programme_slot" align="center" valign="top">10:30&nbsp;-&nbsp;11:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=156" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=91" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=210" /></td>
@@ -39,7 +38,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=152" /></td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">11:40&nbsp;-&nbsp;12:30</th>
+      <th class="programme_slot" align="center" valign="top">11:30&nbsp;-&nbsp;12:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=175" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=178" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=64" /></td>
@@ -47,11 +46,11 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=46" /></td>
     </tr>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">12:30&nbsp;-&nbsp;13:50</th>
+      <th class="programme_slot" align="center" valign="middle">12:15&nbsp;-&nbsp;13:30</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Lunch</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">13:50&nbsp;-&nbsp;14:40</th>
+      <th class="programme_slot" align="center" valign="top">13:30&nbsp;-&nbsp;14:15</th>
       <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=203" /></td>
       <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=106" /></td>
       <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=79" /></td>
@@ -59,7 +58,7 @@
       <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=145" /></td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">14:50&nbsp;-&nbsp;15:40</th>
+      <th class="programme_slot" align="center" valign="top">14:30&nbsp;-&nbsp;15:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=189" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=171" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=33" /></td>
@@ -67,11 +66,11 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=72" /></td>
     </tr>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">15:40&nbsp;-&nbsp;16:00</th>
+      <th class="programme_slot" align="center" valign="middle">15:15&nbsp;-&nbsp;15:45</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Afternoon Tea</td>
     </tr>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">16:00&nbsp;-&nbsp;16:50</th>
+      <th class="programme_slot" align="center" valign="top">15:45&nbsp;-&nbsp;16:30</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=126" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=30" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=105" /></td>
@@ -79,13 +78,26 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=217" /></td>
     </tr>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="top">17:00&nbsp;-&nbsp;17:50</th>
-      <td class="programme_keynote" colspan="5" align="center" valign="middle">Conference Close/Lightning Talks/BOFs</td>
+      <th class="programme_slot" align="center" valign="top">16:45&nbsp;-&nbsp;17:30</th>
+      <td class="programme_intro" colspan="5" align="center" valign="middle"><b>Closing Ceremony</b></td>
     </tr>
   </tbody>
 </table>
 
-<h3>Conference Closing Celebrations</h3>
-<p>All good things come to an end, but why not celebrate anyway! Friday night's entertainment will consist of a friendly informal get together to reminisce about all the fun we had. :)</p>
+<h3>Penguin Dinner</h3>
 
-<p><i><a href="/programme/official_social_events">All social events.</a></i></p>
+<p>The Grande Finale event is the Penguin Dinner, which will be held at the <a href="http://www.venueweb.co.nz/wcc_townhall/townhall_venues.htm">Wellington Town Hall</a> on Friday 22 January 2010.</p>
+
+<table>
+  <tr class="odd">
+    <td><b>Where</b></td><td>Wellington Town Hall (one of the two Wellington Convention Centre buildings)</td>
+  </tr>
+  <tr class="even">
+    <td><b>Date</b></td><td>Friday 22 January 2010</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Time</b></td><td>Doors open at 6.30 pm, dinner served shortly after that</td>
+  </tr>
+</table>
+
+<p>For more information, please see: <a href="/programme/social_events#PenguinDinner">Social Events</a>.</p>
