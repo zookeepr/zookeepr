@@ -9,7 +9,7 @@ def setup(meta):
     meta.Session.add_all(
         [
             ProductCategory(name='Ticket', description='Please choose your registration type.', display='radio', min_qty=1, max_qty=1, display_order=1),
-            ProductCategory(name='T-Shirt', description='Please choose how many t-shirts you would like.', display='qty', min_qty=1, max_qty=100, display_order=10),
+            ProductCategory(name='T-Shirt', description='Please choose how many t-shirts you would like.', note='One t-shirt is free with your registration, any others are $25.00 each. More details and measurements on t-shirt sizes can be found on the <a href="/register/shirts" popup="True">registration information</a>.', display='shirt', min_qty=1, max_qty=100, display_order=10),
             ProductCategory(name='Penguin Dinner Ticket', description='Please indicate how many Penguin Dinner tickets you wish to purchase.', note='You should include yourself in this number, even if you register as a Professional.  Adult ticket is an adult meal, infant ticket is no meal and sit on your knee, child ticket is a childs meal.  If your child requires an adult meal, then please purchase an adult ticket for them.', display='qty', min_qty=0, max_qty=5, display_grid='t', display_order=20),
             ProductCategory(name='Accommodation', description='Please consider where you are going to stay during the conference.', display='select', min_qty=0, max_qty=10, display_order=30),
             ProductCategory(name="Partners Programme", description="Please register your partner for the Partners Programme.", display='qty', min_qty=0, max_qty=50, display_grid='t', display_order=40),

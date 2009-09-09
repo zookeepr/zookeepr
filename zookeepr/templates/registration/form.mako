@@ -1,5 +1,7 @@
 <%
 import datetime
+import re
+import array
 %>
 
 <p class="note">${ h.lca_info['event_pricing_disclaimer'] }</p>
@@ -57,7 +59,7 @@ import datetime
 
           <p class="label"><span class="mandatory">*</span><label for="person.password">Choose a password:</label></p>
           <p class="entries">${ h.password("person.password", size=40) }</p>
-
+jj
           <p class="label"><span class="mandatory">*</span><label for="person.password_confirm">Confirm your password:</label></p>
           <p class="entries">${ h.password("person.password_confirm", size=40) }</p>
 % endif
@@ -131,31 +133,39 @@ else:
           <h2>${ category.name.title() }</h2>
           <p class="description">${ category.description }</p>
 ## Manual category display goes here:
-%       if category.name == 'T-Shirt':
+%       if category.display == 'shirt':
 <%
-##         # fields need to be exactly the same order as the shirts in the DB, this just replaces their name.
-##         # Number of items in the row must be the same for each row
-           fields = [("Men's t-shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL']),("Women's t-shirt", ['S', 'M', 'L', 'XL', 'XXL', 'XXXL', 'XXXXL', 'XXXXXL'])]
-           i = j = 0
+           fields = dict()
+           for product in products:
+             results = re.match("^([a-zA-Z0-9']+)\s+(.*)$", product.description)
+             gender = results.group(1)
+             size = results.group(2)
+
+             if gender not in fields:
+               print "%s not in fields" % gender
+               fields[gender] = []
+             #tuple = (size, product)
+             #fields[gender].append(tuple)
+             fields[gender].append((size, product))
+           endfor
 %>
-          <p class="note">One t-shirt is free with your registration, any others are ${ h.number_to_currency(product.cost/100.0) } each. More details and measurements on t-shirt sizes can be found on the ${ h.link_to('registration information', url='/register/shirts', popup=True) }.</p>
+%           for gender in fields: 
           <table>
-            <tr><th><span class="mandatory">*</span>Please pick at least one</th><th>S</th><th>M</th><th>L</th><th>XL</th><th>XXL</th><th>XXXL</th><th>XXXXL</th><th>XXXXXL</th></tr>
-            <tr><td>${ fields[0][0] }</td>
-%           for product in products:
-%               if j == len(fields[i][1]):
-<%
-                   i += 1
-                   j = 0
-%>
-            </tr><tr><td>${ fields[i][0] }</td>
-%               endif
+            <tr><th><span class="mandatory">*</span>Please pick at least one</th>
+%              for (size, product) in fields[gender]:
+               <th>${ size }</th>
+%              endfor
+             </tr>
+             <tr>
+               <td>${ gender }</td>
+%              for (size, product) in fields[gender]:
+
 %               if not product.available():
             <td><span class="mandatory">^</span>${ h.text('none', size=2, disabled=True) }${ h.hidden_field('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty') }</td>
 %               else:
             <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
 %               endif
-             <% j += 1 %>
+%             endfor
 %           endfor
           </tr></table><p><span class="mandatory">^</span>Sold out</p>
 %       elif category.display_grid and category.display == 'qty':
@@ -274,7 +284,7 @@ else:
           <p class="note">A Partners Programme shirt is included with each partner ticket. We will email the above address to get shirt sizes before the conference.</p>
 %       endif
 %     if category.note:
-        <p class="note">${ category.note }</p>
+        <p class="note">${ category.note | n }</p>
 %     endif
         </fieldset>
 %   endif
