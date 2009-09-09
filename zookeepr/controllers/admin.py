@@ -780,7 +780,8 @@ class AdminController(BaseController):
                     LEFT JOIN person_proposal_map ON (person_proposal_map.proposal_id = proposal.id)
                     LEFT JOIN person ON (person_proposal_map.person_id = person.id)
                     LEFT JOIN proposal_type ON (proposal_type.id = proposal.proposal_type_id)
-                    WHERE proposal.accepted = True
+                    LEFT JOIN proposal_status ON (proposal_status.id = proposal.status_id)
+                    WHERE proposal_status.name = 'Accepted'
                     ORDER BY proposal_type.name, proposal.scheduled, proposal.title
         """
         return sql_response(query)
