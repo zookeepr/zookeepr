@@ -215,6 +215,11 @@ class FundingController(BaseController):
             elif c.funding_editing == 'not_open':
                 return render("funding/editing_not_open.mako")
 
+        if self.form_result['funding']['male'] == 1:
+            self.form_result['funding']['male'] = True
+        elif self.form_result['funding']['male'] == 0:
+            self.form_result['funding']['male'] = False
+
         c.funding = Funding.find_by_id(id)
         for key in self.form_result['funding']:
             setattr(c.funding, key, self.form_result['funding'][key])
