@@ -77,6 +77,12 @@ class FundingController(BaseController):
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
         c.funding_types = FundingType.find_all()
+        c.form_fields = {
+          'funding.why_attend': 'Why would you like to attend ' + h.lca_info['event_name'],
+          'funding.how_contribute': 'How do you contribute to the Open Source community',
+          'funding.male': 'What is your gender',
+          'funding.financial_circumstances': 'What are your financial circumstances',
+        }
 
     @dispatch_on(POST="_new")
     def new(self):

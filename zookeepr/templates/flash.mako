@@ -19,7 +19,14 @@
         <div class="message message-error">
         <ul>
 %       for field in c.form_errors:
-           <li>${ field }: ${ c.form_errors[field] }</li>
+           <li>
+## To provide pretty field names pass them in via c.form_fields. 
+%  if field in c.form_fields:
+  ${ c.form_fields[field] }
+%  else:
+  ${ field }
+%endif
+: ${ c.form_errors[field] }</li>
 %       endfor
         </ul>
 %endif
