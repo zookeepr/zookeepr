@@ -133,7 +133,7 @@ else:
           <h2>${ category.name.title() }</h2>
           <p class="description">${ category.description }</p>
 ## Manual category display goes here:
-%       if category.display == 'shirt':
+%       if category.display_mode == 'shirt':
 <%
            fields = dict()
            for product in products:
@@ -168,7 +168,7 @@ else:
 %             endfor
 %           endfor
           </tr></table><p><span class="mandatory">^</span>Sold out</p>
-%       elif category.display_grid and category.display == 'qty':
+%       elif category.display_mode == 'grid' and category.display == 'qty':
 <table>
   <tr>
 %           for product in products:
