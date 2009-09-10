@@ -571,6 +571,11 @@ tt {
                 text-align: left;
         }
 
+        #programme 
+        {
+                margin-left: 0;
+        }
+
         .programme_room_header
         {
                 border-bottom: none;
@@ -583,6 +588,8 @@ tt {
 
         .programme_time_slot, .programme_slot
         {
+                padding-left: 6px;
+                padding-right: 6px;
                 border-right: #afafff 1px dotted;
         }
 

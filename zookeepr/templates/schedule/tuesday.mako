@@ -1,4 +1,4 @@
-<table id="mon-programme" style="" summary="Programme" cellpadding="" cellspacing="">
+<table id="programme" style="" summary="Programme" cellpadding="" cellspacing="">
   <thead>
     <tr>
       <th>&nbsp;</th>
@@ -6,9 +6,9 @@
       <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
       <th class="programme_room" align="center" valign="top">Renouf 1</th>
       <th class="programme_room" align="center" valign="top">Renouf 2</th>
-      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites&nbsp;1&2</th>
+      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
       <th class="programme_room" align="center" valign="top">Frank&nbsp;Taplin</th>
-      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite&nbsp;3</th>
+      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -24,19 +24,19 @@
 
   <tbody>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">9:00&nbsp;-&nbsp;10:00</th>
+      <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
       <td class="programme_keynote" colspan="7" align="center" valign="middle">
         <a href="/programme/keynotes#GabriellaColeman">Keynote: Gabriella Coleman</a><br><span style="font-weight: normal;">Auditorium</span>
       </td>
     </tr>
 
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">10:00&nbsp;-&nbsp;10:30</th>
+      <th class="programme_slot" align="center" valign="middle">10:00-10:30</th>
       <td class="morning_tea" colspan="7" align="center" valign="middle">Morning Tea</td>
     </tr>
 
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">10:30&nbsp;-&nbsp;12:15</th>
+      <th class="programme_slot" align="center" valign="middle">10:30-12:15</th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
@@ -48,12 +48,12 @@
     </tr>
 
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">12:15&nbsp;-&nbsp;13:30</th>
+      <th class="programme_slot" align="center" valign="middle">12:15-13:30</th>
       <td class="morning_tea" colspan="7" align="center" valign="middle">Lunch</td>
     </tr>
 
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">13:30&nbsp;-&nbsp;15:15</th>
+      <th class="programme_slot" align="center" valign="middle">13:30-15:15</th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
@@ -65,12 +65,12 @@
     </tr>
 
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">15:15&nbsp;-&nbsp;15:45</th>
+      <th class="programme_slot" align="center" valign="middle">15:15-15:45</th>
       <td class="morning_tea" colspan="7" align="center" valign="middle">Afternoon Tea</td>
     </tr>
 
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">15:45&nbsp;-&nbsp;17:30</th>
+      <th class="programme_slot" align="center" valign="middle">15:45-17:30</th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>

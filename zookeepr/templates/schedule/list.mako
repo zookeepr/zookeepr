@@ -1,6 +1,5 @@
 <%inherit file="/base.mako" />
 
-<div style="clear: both;"></div>
 % if c.day == 'all':
     <h2>Schedule</h2>
     <h2>Monday</h2>
