@@ -20,9 +20,12 @@ def setup(meta):
    )
    meta.Session.add_all(
         [
-            FundingType(name='InternetNZ Oceania Programme', active=True),
-            FundingType(name='InternetNZ Kiwi Fellowship', active=True),
-            FundingType(name='Google Diversity Programme', active=True),
+            FundingType(name='InternetNZ Oceania Programme', 
+              note='Assists people living in the Australasian and Pacific region',  active=True),
+            FundingType(name='InternetNZ Kiwi Fellowship', 
+              note='Assists people living in New Zealand', active=True),
+            FundingType(name='Google Diversity Programme',
+              note='Assists people from diverse groups, including females in IT and disabled people', active=True),
         ]
     )
 
@@ -63,6 +66,7 @@ class FundingType(Base):
 
     # title of type
     name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+    note = sa.Column(sa.types.String())
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation

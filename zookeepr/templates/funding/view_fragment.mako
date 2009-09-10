@@ -9,6 +9,21 @@ ${ c.funding.person.fullname() }
 at
 ${ c.funding.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />
 (last updated at ${ c.funding.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n})
+
+%   if h.url_for().endswith('review') is True and ('funding_reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
+<p class="submitted">
+${ c.funding.person.fullname() } &lt;${ c.funding.person.email_address }&gt;
+%if len(c.funding.person.url) > 0:
+<a href="${ c.funding.person.url}">Submitters Homepage</a>
+%endif
+<br>
+${ h.link_to('(view details)', url=h.url_for(controller='person', action='view', id=c.funding.person.id)) }
+${ h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (c.funding.person.fullname(), c.funding.person.email_address)) }
+${ h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (c.funding.person.fullname(), c.funding.person.email_address)) }
+${ h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % c.funding.person.email_address) }
+</p>
+%   endif
+
 </p>
 
 <h2>Funding Programme</h2>
@@ -16,9 +31,9 @@ ${ c.funding.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />
 <p class="label">What funding programme are you applying for?</p>
 <p><blockquote>${ c.funding.type.name }</blockquote></p>
 
-<h2>Information for Google Diversity Programme</h2>
+<h2>Personal Information</h2>
 
-<p class="label">What gender are you?</label>
+<p class="label">What is your gender?</label>
 <p><blockquote>
 % if c.funding.male == None:
   Not specified
@@ -39,28 +54,8 @@ Not specified
 % endif
 </blockquote></p>
 
-<h2>${ h.event_name() } Information</h2>
 
-<p class="label">Have you attended linux.conf.au before?</p>
-<p class="entries">
-<table>
-  <tr>
-    <td>
-% for (year, desc) in h.lca_rego['past_confs']:
-${ h.yesno(year in (c.funding.prevlca or [])) |n }
-${ desc }<br />
-% endfor
-    </td>
-  </tr>
-</table>
-</p>
-
-<p class="label">Why would you like to attend ${ h.event_name() }</p>
-<p><blockquote>
-${ h.line_break(h.util.html_escape(c.funding.why_attend)) | n}
-</blockquote></p>
-
-<h2>Funding Information</h2>
+<h2>Supporting Information</h2>
 <p class="label">How do you contribute to the Open Source community?</p>
 <p><blockquote>
 ${ h.line_break(h.util.html_escape(c.funding.how_contribute)) | n}
@@ -79,6 +74,27 @@ ${ h.line_break(h.util.html_escape(c.funding.supporting_information)) | n}
 Not specified
 % endif
 </blockquote></p>
+
+<h2>${ h.event_name() } Information</h2>
+
+<p class="label">Why would you like to attend ${ h.event_name() }</p>
+<p><blockquote>
+${ h.line_break(h.util.html_escape(c.funding.why_attend)) | n}
+</blockquote></p>
+
+<p class="label">Have you attended linux.conf.au before?</p>
+<p class="entries">
+<table>
+  <tr>
+    <td>
+% for (year, desc) in h.lca_rego['past_confs']:
+${ h.yesno(year in (c.funding.prevlca or [])) |n }
+${ desc }<br />
+% endfor
+    </td>
+  </tr>
+</table>
+</p>
 
 <h2>References</h2>
 
