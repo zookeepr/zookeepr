@@ -59,11 +59,13 @@ class ScheduleController(BaseController):
 #        for r in res.fetchall():
 #           c.subsubmenu.append(( '/programme/schedule/' + r[0].lower(), r[1] ))
         c.subsubmenu = [
+          [ '/programme/sunday',             'Sunday' ],
           [ '/programme/schedule/monday',    'Monday' ],
           [ '/programme/schedule/tuesday',   'Tuesday' ],
           [ '/programme/schedule/wednesday', 'Wednesday' ],
           [ '/programme/schedule/thursday',  'Thursday' ],
           [ '/programme/schedule/friday',    'Friday' ],
+          [ '/programme/open_day',           'Saturday' ],
         ]
 
     def _get_talk(self, talk_id):
