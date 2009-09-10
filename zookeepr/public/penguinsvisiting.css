@@ -147,7 +147,7 @@ h6 {
 #main_menu #secondarynav {
 	clear: both;
 	text-align: left;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	margin-left: 100px;
 }
 #main_menu #secondarynav li {
@@ -168,6 +168,31 @@ h6 {
 	color: #bd921e;
 	text-decoration: none;
 }
+#main_menu #tertiarynav {
+	clear: both;
+	text-align: left;
+	margin-bottom: 10px;
+	margin-left: 100px;
+}
+#main_menu #tertiarynav li {
+	list-style-type: none;
+	display: inline;
+	font-weight: bold;
+	line-height: 25px;
+}
+#main_menu #tertiarynav li a {
+        color: #bd921e;
+	padding: 3px 4px;
+}
+#main_menu #tertiarynav li a:hover {
+	color: #448ccc;
+	text-decoration: none;
+}
+#main_menu #tertiarynav li.selected a {
+	color: #5c7dae;
+	text-decoration: none;
+}
+
 
 
 #content {

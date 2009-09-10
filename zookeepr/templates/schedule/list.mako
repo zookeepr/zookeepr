@@ -1,14 +1,5 @@
 <%inherit file="/base.mako" />
 
-<ul class = 'schedule_menu'>
-    <li class = 'week_link'><a href="/programme/schedule/all">Entire Week</a></li>
-    <li class = 'monday_link'><a href="/programme/schedule/monday">Monday</a></li>
-    <li class = 'tuesday_link'><a href="/programme/schedule/tuesday">Tuesday</a></li>
-    <li class = 'wednesday_link'><a href="/programme/schedule/wednesday">Wednesday</a></li>
-    <li class = 'thursday_link'><a href="/programme/schedule/thursday">Thursday</a></li>
-    <li class = 'friday_link'><a href="/programme/schedule/friday">Friday</a></li>
-    <li class = 'saturday_link'><a href="/programme/open_day">Saturday</a></li>
-</ul>
 <div style="clear: both;"></div>
 % if c.day == 'all':
     <h2>Schedule</h2>

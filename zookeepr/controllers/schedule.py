@@ -48,6 +48,24 @@ class ScheduleController(BaseController):
     def __before__(self, **kwargs):
         c.get_talk = self._get_talk
 
+        c.subsubmenu = []
+#        query = """
+#  SELECT DISTINCT date(scheduled) AS date
+#  FROM proposal
+#  WHERE scheduled IS NOT NULL
+#  ORDER BY date;
+#"""
+#        res = meta.Session.execute(query)
+#        for r in res.fetchall():
+#           c.subsubmenu.append(( '/programme/schedule/' + r[0].lower(), r[1] ))
+        c.subsubmenu = [
+          [ '/programme/schedule/monday',    'Monday' ],
+          [ '/programme/schedule/tuesday',   'Tuesday' ],
+          [ '/programme/schedule/wednesday', 'Wednesday' ],
+          [ '/programme/schedule/thursday',  'Thursday' ],
+          [ '/programme/schedule/friday',    'Friday' ],
+        ]
+
     def _get_talk(self, talk_id):
         """ Return a proposal object """
         return Proposal.find_by_id(id=talk_id, abort_404=False)
