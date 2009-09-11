@@ -38,8 +38,8 @@ lca_info = {
   'cfp_status' : 'closed',
   'cfmini_status' : 'closed',
   'paper_editing' : 'closed',
-  'funding_status' : 'not_open',
-  'funding_editing' : 'not_open',
+  'funding_status' : 'open',
+  'funding_editing' : 'open',
   'conference_status': 'not_open',
 
   'emails': {
