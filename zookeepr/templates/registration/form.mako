@@ -142,10 +142,7 @@ else:
              size = results.group(2)
 
              if gender not in fields:
-               print "%s not in fields" % gender
                fields[gender] = []
-             #tuple = (size, product)
-             #fields[gender].append(tuple)
              fields[gender].append((size, product))
            endfor
 %>
