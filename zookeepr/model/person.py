@@ -42,6 +42,7 @@ class Person(Base):
 
     # creation timestamp of the registration
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
+    last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
     url_hash = sa.Column(sa.types.String(32), nullable=False, index=True)
 
 
