@@ -83,4 +83,4 @@ class ProductCategory(Base):
         return self.name.replace('-','_')
 
     def __repr__(self):
-        return '<ProductCategory id=%r name=%r description=%r note=%r display_order=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.note, self.order, self.display, self.min_qty, self.max_qty)
+        return '<ProductCategory id=%r name=%r description=%r note=%r display_order=%r display=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.note, self.display_order, self.display, self.min_qty, self.max_qty)
