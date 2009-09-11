@@ -21,6 +21,36 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
+<h2>Funding Programmes</h2>
+
+<p>There are some highly regarded people out there who contribute in important ways to the free and open source community and whom, without financial assistance, would not be able to attend LCA2010.</p> 
+
+<p>With thanks to our Emperor Penguin Sponsors, <a href="http://www.internetnz.org.nz/">InternetNZ</a> and <a href="http://www.google.com/">Google</a>, LCA2010 have three funding programmes which may enable these people to attend LCA2010:</p>
+
+<table>
+<tr class="odd">
+<td><strong>InternetNZ Oceania Programme</strong></td>
+</tr>
+
+<tr class="even">
+<td><strong>InternetNZ Kiwi Fellowship</strong></td>
+</tr>
+
+<tr class="odd">
+<td><strong>Google Diversity Programme</strong></td>
+</tr>
+</table>
+
+<p>To find out more about the LCA2010 Funding Programmes, please visit our <a href="/register/funding">Funding</a> page.</p>
+
+
+<h2>Registrations coming soon!</h2>
+
+<p>Online registrations for LCA2010 will be opening in mid-late September 2009. There are only a limited number of Early Bird Registrations available, so get in early!</p>
+
+<p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
+
+
 <h2>LCA2010 Miniconfs</h2>
 
 <br />
@@ -86,11 +116,6 @@ for d in c.db_content_news_all:
   </tr>
 </table>
 
-<h2>Registrations coming soon!</h2>
-
-<p>Online registrations for LCA2010 will be opening in September 2009. There will be a limited number of Early Bird Registrations available, so get in early.</p>
-
-<p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
 
 <%def name="big_promotion()">
 % for d in c.db_content_news_all:
