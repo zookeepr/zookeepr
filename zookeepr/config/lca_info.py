@@ -171,7 +171,7 @@ lca_submenus = {
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
   'programme': ['About', 'Keynotes', 'Miniconfs', 'Miniconf Info', 'Speakers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
   #'programme': ['About', 'Keynotes', 'Miniconfs','Schedule','Social Events','Open Day', 'Partners Programme'], # stage 3
-  'register': ['Prices', 'Accommodation', 'Terms and Conditions'],
+  'register': ['Prices', 'Funding', 'Accommodation', 'Terms and Conditions'],
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
   'media': ['News','In the press','Graphics']
 }
