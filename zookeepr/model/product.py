@@ -76,6 +76,7 @@ def setup(meta):
     meta.Session.add_all(
         [
             # Shirts
+            Product(category_id='2', active=True, description="Men's XS", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Men's Small", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Men's Medium", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Men's Large", cost="2500", auth=None, validate=None),
@@ -92,6 +93,7 @@ def setup(meta):
             Product(category_id='2', active=True, description="Women's Size 16", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Women's Size 18", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Women's Size 20", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 22", cost="2500", auth=None, validate=None),
 
             # Dinner
             Product(category_id='3', active=True, description="Adult", cost="11500", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])"),
@@ -131,15 +133,16 @@ def setup(meta):
     meta.Session.add_all(
         [
             # Include 1 Shirt in all registration types
-            ProductInclude(product_id='1', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='2', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='3', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='4', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='5', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='6', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='7', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='8', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='9', include_category_id='2', include_qty='2'),
+            ProductInclude(product_id='1', include_category_id='2', include_qty='1'), # Student
+            ProductInclude(product_id='2', include_category_id='2', include_qty='1'), # Hobbyist EB
+            ProductInclude(product_id='3', include_category_id='2', include_qty='1'), # Hobbyist
+            ProductInclude(product_id='4', include_category_id='2', include_qty='1'), # Pro EB
+            ProductInclude(product_id='5', include_category_id='2', include_qty='1'), # Pro
+            ProductInclude(product_id='6', include_category_id='2', include_qty='1'), # Fairy
+            ProductInclude(product_id='7', include_category_id='2', include_qty='1'), # Speaker
+            ProductInclude(product_id='8', include_category_id='2', include_qty='1'), # Miniconf
+            ProductInclude(product_id='9', include_category_id='2', include_qty='2'), # Volunteer
+            ProductInclude(product_id='37', include_category_id='2', include_qty='1'), # Partner's Programme get a t-shirt
 
             # Include 1 Dinner for Professional+miniconf and 2 for Speaker registrations
             ProductInclude(product_id='4', include_category_id='3', include_qty='1'), # pro EB

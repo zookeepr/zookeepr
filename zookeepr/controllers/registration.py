@@ -573,31 +573,52 @@ class RegistrationController(BaseController):
                 meta.Session.expunge(invoice)
                 raise ProductUnavailable(rproduct.product)
 
-        # Check for included products
+        # Some products might in turn include other products.  So the same
+        # product might be available multiple times.  Work out all the
+        # freebies first.
+        included = {}
+        included_products = {}
+        freebies = {}
         for ii in invoice.items:
             if ii.product and ii.product.included:
                 for iproduct in ii.product.included:
-                    included_qty = iproduct.include_qty
-                    included_category = iproduct.include_category
-                    free_qty = 0
-                    free_cost = 0
-                    for ii2 in invoice.items:
-                        if ii2.product and ii2.product.category == included_category:
-                            if free_qty + ii2.qty > included_qty:
-                                free_cost += (included_qty - free_qty) * ii2.product.cost
-                                free_qty += (included_qty - free_qty)
-                            else:
-                                free_cost += ii2.qty * ii2.product.cost
-                                free_qty += ii2.qty
+                    if iproduct.include_category.id not in included:
+                        included[iproduct.include_category.id] = 0
+                    included[iproduct.include_category.id] += iproduct.include_qty
+                    freebies[iproduct.include_category.id] = 0
+                    included_products[iproduct.include_category.id] = iproduct.include_category
 
-                    # We have included products, create a discount for the cost of them.
-                    # This is not perfect, products of different prices can be discounted,
-                    # and it can either favor the customer or LCA, depending on the order
-                    # of items on the invoice
-                    if free_cost > 0:
-                        discount_item = InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
-                        invoice.items.append(discount_item)
-                        meta.Session.add(discount_item)
+        prices   = {}
+        # Check for included products
+        for ii in invoice.items:
+            if ii.product and ii.product.category.id in included:
+                if ii.product.category.id not in prices:
+                    prices[ii.product.category.id] = []
+ 
+                if included[ii.product.category.id] >= ii.qty:
+                    prices[ii.product.category.id].append(ii.qty * ii.product.cost)
+
+                    freebies[ii.product.category.id] += ii.qty
+                    included[ii.product.category.id] -= ii.qty
+                elif included[ii.product.category.id] > 0:
+                    prices[ii.product.category.id].append(included[ii.product.category.id] * ii.product.cost)
+
+                    freebies[ii.product.category.id] = included[ii.product.category.id]
+                    included[ii.product.category.id] = 0
+
+        for freebie in freebies:
+            free_cost = 0
+            for price in prices[freebie]:
+                free_cost += price
+
+            # We have included products, create a discount for the cost of them.
+            # This is not perfect, products of different prices can be discounted,
+            # and it can either favor the customer or LCA, depending on the order
+            # of items on the invoice
+            if free_cost > 0:
+                discount_item = InvoiceItem(description="Discount for " + str(freebies[freebie]) + " included " + included_products[freebie].name, qty=1, cost=-free_cost)
+                invoice.items.append(discount_item)
+                meta.Session.add(discount_item)
 
         meta.Session.add(invoice)
         return invoice
