@@ -2,13 +2,20 @@
   <thead>
     <tr>
       <th>&nbsp;</th>
-      <th class="programme_room" align="center" valign="top">Auditorium</th>
-      <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
-      <th class="programme_room" align="center" valign="top">Renouf 1</th>
-      <th class="programme_room" align="center" valign="top">Renouf 2</th>
-      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
-      <th class="programme_room" align="center" valign="top">Frank&nbsp;Taplin</th>
-      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+      <th>&nbsp;</th>
+##      <th class="programme_room" align="center" valign="top">Auditorium</th>
+##      <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
+##      <th class="programme_room" align="center" valign="top">Renouf 1</th>
+##      <th class="programme_room" align="center" valign="top">Renouf 2</th>
+##      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
+##      <th class="programme_room" align="center" valign="top">Frank&nbsp;Taplin</th>
+##      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
     </tr>
     <tr>
       <td>&nbsp;</td>
