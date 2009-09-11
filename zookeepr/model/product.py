@@ -122,9 +122,8 @@ def setup(meta):
     # Partner's Programme
     meta.Session.add_all(
         [
-            Product(category_id='5', active=True, description="Adult", cost="25000", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')"),
-            Product(category_id='5', active=True, description="Child (5-14 years old)", cost="12500", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (5_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-            Product(category_id='5', active=True, description="Child (3-4 years old)", cost="6250", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_4 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Adult", cost="28000", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')"),
+            Product(category_id='5', active=True, description="Child (3-14 years old)", cost="21000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
             Product(category_id='5', active=True, description="Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
         ]
     )
