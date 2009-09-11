@@ -16,7 +16,7 @@
         <td><b>Display:</b></td><td>${ c.product_category.display }</td>
       </tr>
       <tr class="odd">
-        <td><b>Display in a Grid:</b></td><td>${ c.product_category.display_grid }</td>
+        <td><b>Display mode:</b></td><td>${ c.product_category.display_mode }</td>
       </tr>
       <tr class="even">
         <td><b>Display Order:</b></td><td>${ c.product_category.display_order }</td>

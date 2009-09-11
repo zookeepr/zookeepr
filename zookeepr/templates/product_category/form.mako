@@ -18,8 +18,8 @@
         ${ h.radio('product_category.display', 'qty', label="Quantity (integer)") }
         </p>
 
-        <p class="label"><label for="product_category.display_grid">Display in a grid:</label></p>
-        <p class="entries">${ h.checkbox('product_category.display_grid') }</p>
+        <p class="label"><label for="product_category.display_mode">Display mode:</label></p>
+        <p class="entries">${ h.text('product_category.display_mode') }</p>
 
         <p class="label"><label for="product_category.display_order">Display Order:</label></p>
         <p class="entries">${ h.text('product_category.display_order') }</p>
