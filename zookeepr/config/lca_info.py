@@ -37,10 +37,10 @@ lca_info = {
 # Possible statuses not_open|open|closed
   'cfp_status' : 'closed',
   'cfmini_status' : 'closed',
-  'paper_editing' : 'closed',
+  'paper_editing' : 'open',
   'funding_status' : 'open',
   'funding_editing' : 'open',
-  'conference_status': 'not_open',
+  'conference_status': 'open',
 
   'emails': {
      'presentation' : 'speakers@lca2010.org.nz',
