@@ -99,7 +99,10 @@ ${next.body()}
 % if h.url_for() == '/':
   <div id="sponsors">
     <p>Thanks to our Emperor Penguin Sponsors:</p>
-    <p><a href="http://www.internetnz.org.nz"><img src="/images/sponsor-InternetNZ.png" alt="InternetNZ" title="Internet NZ works to keep the Internet open and uncaptureable, protecting and promoting the Internet for New Zealand." /></a></p>
+    <p>
+      <a href="http://www.internetnz.org.nz"><img src="/images/sponsor-InternetNZ.png" alt="InternetNZ" title="Internet NZ works to keep the Internet open and uncaptureable, protecting and promoting the Internet for New Zealand." /></a>
+      <a style="padding-left: 10px;" href="http://www.google.com"><img src="/images/sponsor-google.gif" alt="Google" title="Google" /></a>
+    </p>
   </div>
 % endif
 
