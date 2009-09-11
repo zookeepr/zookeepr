@@ -40,7 +40,7 @@ lca_info = {
   'paper_editing' : 'open',
   'funding_status' : 'open',
   'funding_editing' : 'open',
-  'conference_status': 'open',
+  'conference_status': 'not_open',
 
   'emails': {
      'presentation' : 'speakers@lca2010.org.nz',
