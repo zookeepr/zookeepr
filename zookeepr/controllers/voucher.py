@@ -84,7 +84,6 @@ class VoucherController(BaseController):
                     # min/max can't be calculated on this form. You should only have 1 selected.
                     ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, if_missing=None)) # See lib/validators for ProductInCategory procedure.
                     ProductSchema.add_field('category_' + str(category.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
-                    print "Added radio field" + ' category_' + str(category.id) # TODO: debug, remove me!
                 elif category.display == 'checkbox':
                     for product in category.products:
                         ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
@@ -129,7 +128,6 @@ class VoucherController(BaseController):
                     # depending on "display" type of product, handle the input appropriately
                     if category.display == 'radio':
                         if 'category_' + str(category.id) in results['products']:
-                            print 'received product for category_' + str(category.id) # TODO: debug, remove me!
                             product = Product.find_by_id(results['products']['category_' + str(category.id)])
                             vproduct = VoucherProduct()
                             vproduct.voucher = c.voucher
