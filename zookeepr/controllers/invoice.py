@@ -19,7 +19,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory
-from zookeepr.model.payment import Payment, PaymentOptions
+from zookeepr.model.payment import Payment
 
 from zookeepr.config.lca_info import lca_info, file_paths
 
@@ -118,8 +118,6 @@ class InvoiceController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def remind(self):
         c.invoice_collection = Invoice.find_all();
-        c.payment_options = PaymentOptions();
-
         return render('/invoice/remind.mako')
 
     @dispatch_on(POST="_pay")

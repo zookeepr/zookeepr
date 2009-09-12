@@ -34,12 +34,10 @@ from zookeepr.model.special_registration import SpecialRegistration
 from zookeepr.config.lca_info import lca_info, lca_rego
 
 from zookeepr.controllers.person import PersonSchema
-#from zookeepr.controllers.registration import PaymentOptions
 
 log = logging.getLogger(__name__)
 
 import datetime
-# import warnings
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -938,3 +936,8 @@ class RegistrationController(BaseController):
 
         c.registration = Registration.find_by_id(id)
         return render('/registration/view.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def remind(self):
+        c.registration_collection = Registration.find_all()
+        return render('/registration/remind.mako')

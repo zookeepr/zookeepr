@@ -9,10 +9,6 @@ from zookeepr.model.meta import Session
 def setup(meta):
     pass
 
-class PaymentOptions():
-    def is_earlybird(self, creation_timestamp):
-        return True # TODO: Invoice::remind() needs this
-
 class Payment(Base):
     """Stores details of payments made against invoices
     """

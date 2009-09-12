@@ -59,10 +59,10 @@ def make_map():
     map.connect('/programme/schedule/{day}',           controller='schedule', action='index', day=None)
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
 
-    # Invoice Reminder
+    # registration and invoicing
     map.connect('/invoice/pdf/{id}',               controller='invoice', action='pdf', id=None)
-    #map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
-    #map.connect('/registration/remind',            controller='registration', action='remind', id=None)
+    map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
+    map.connect('/registration/remind',            controller='registration', action='remind', id=None)
     map.connect('/register/status',                controller='registration', action='status')
     map.connect('/registration/silly_description', controller='registration', action='silly_description')
     map.connect('/registration/generate_badges',   controller='registration', action='generate_badges')
