@@ -118,6 +118,21 @@ class Person(Base):
             return self.volunteer.accepted
         return False
 
+    def is_from_common_country(self):
+        # People registering from these countries will not require extra verification
+        common_countries = ['australia', 'new zealand', 'united states', 'canada',
+                            'germany', 'france', 'spain', 'italy', 'switzerland',
+                            'austria', 'united kingdom', 'ireland', 'japan', 'norway',
+                            'denmark', 'sweden', 'finland', 'iceland', 'belgium',
+                            'brazil', 'mexico', 'argentina', 'chile', 'columbia',
+                            'estonia', 'greece', 'hong kong', 'israel', 'luxembourg', 
+                            'monaco', 'netherlands', 'portugal', 'south africa']
+
+        if self.country.strip().lower() in common_countries:
+            return True
+        else:
+            return False
+
     def _update_url_hash(self):
         """Update the stored URL hash for this person.
 
