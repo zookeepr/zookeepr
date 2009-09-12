@@ -54,9 +54,7 @@ class DuplicateVoucherValidator(validators.FancyValidator):
         voucher = Voucher.find_by_code(value['voucher_code'])
         if voucher != None:
             if voucher.registration:
-                if not 'signed_in_person_id' in session:
-                    raise Invalid("Voucher code already in use! (not logged in)", value, state)
-                if voucher.registration.person_id != session['signed_in_person_id']:
+                if voucher.registration[0].person.id != h.signed_in_person().id:
                     raise Invalid("Voucher code already in use!", value, state)
         elif value['voucher_code']:
             raise Invalid("Unknown voucher code!", value, state)
@@ -641,7 +639,7 @@ class RegistrationController(BaseController):
                         discount = max_discount
                     else:
                         discount = ii.product.cost
-                    discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
+                    discount_item = InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
                     meta.Session.add(discount_item)
                     invoice.items.append(discount_item)
                     break
