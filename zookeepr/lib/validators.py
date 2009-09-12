@@ -225,11 +225,16 @@ class CheckAccomDates(validators.FancyValidator):
 class ProductInCategory(validators.FancyValidator):
     """ Check to see if product is available """
     def validate_python(self, value, state):
-        for product in self.category.products:
-            if product.id == int(value) and product.available():
-                return
-            elif product.id == int(value) and product.available(stock=False):
-                raise Invalid("The selected product, " + product.description + ", has unfortunately sold out.", value, state)
+        p = Product.find_by_id(int(value))
+        for product in Product.find_by_category(p.category.id):
+            if product.id == int(value):
+                if product.available():
+                    return # All good!
+                elif product.available(stock=False):
+                    raise Invalid("The selected product, " + product.description + ", has unfortunately sold out.", value, state)
+                else:
+                    raise Invalid("The selected product, " + product.description + ", is not available.", value, state)
+
         raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
 
 #class ProductCheckbox(validators.FancyValidator):

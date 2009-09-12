@@ -24,7 +24,7 @@
           <p class="entries">
           <table>
 % for category in c.product_categories:
-%   if category.name in ['Ticket', 'Accommodation']:
+%   if category.name in c.allowed_categories:
             <tr>
               <td colspan="3" align="center"><h3>${ category.name |h }</h3></td>
             </tr>

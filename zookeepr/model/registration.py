@@ -26,7 +26,7 @@ class Registration(Base):
     silly_description = sa.Column(sa.types.Text)
     keyid = sa.Column(sa.types.Text)
     planetfeed = sa.Column(sa.types.Text)
-    voucher_code = sa.Column(sa.types.Text, unique=True)
+    voucher_code = sa.Column(sa.types.Text, sa.ForeignKey('voucher.code'), unique=True)
     diet = sa.Column(sa.types.Text)
     special = sa.Column(sa.types.Text)
     partner_name = sa.Column(sa.types.Text)
@@ -47,7 +47,7 @@ class Registration(Base):
     voucher = sa.orm.relation(Voucher, uselist=False,
                                 primaryjoin='Registration.voucher_code==Voucher.code',
                                 foreign_keys=Voucher.code,
-                                #backref = 'registration',
+                                backref = 'registration',
                                )
 
     def __init__(self, **kwargs):

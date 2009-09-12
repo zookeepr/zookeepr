@@ -187,6 +187,10 @@ class Product(Base):
     def find_by_id(cls, id):
         return Session.query(Product).filter_by(id=id).first()
 
+    @classmethod
+    def find_by_category(cls, id):
+        return Session.query(Product).filter_by(category_id=id)
+
     def qty_sold(self):
         qty = 0
         for ii in self.invoice_items:
