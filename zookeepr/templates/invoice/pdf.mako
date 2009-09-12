@@ -1,6 +1,6 @@
 <% date_format = "<date><day>%d</day><month>%b</month><year>%Y</year></date>" %>
 <invoice>
-  <logo>/home/josh/LCA09/website/registrations/zookeepr/templates/invoice/tuz.png</logo>
+  <logo></logo>
   <number>${ c.invoice.id }</number>
   <issued>${ c.invoice.issue_date.strftime(date_format) }</issued>
   <due>${ c.invoice.due_date.strftime(date_format) }</due>
@@ -56,8 +56,7 @@
 % endfor
   </items>
 
-<% gst = int(c.invoice.total()/11.0 + 0.5) %>
-# +0.5 for rounding
+<% gst = int(c.invoice.total() * h.lca_info['sales_tax']) %>
   <gst cents="${ gst }">${ h.number_to_currency(gst/100.0) }</gst>
 
 </invoice>

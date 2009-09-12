@@ -58,7 +58,7 @@
       </tr>
       <tr>
         <td style="text-align: right" colspan="3">(Includes GST</td>
-        <td style="text-align: right">${ h.number_to_currency(c.invoice.total()/100.0/11) })</td>
+        <td style="text-align: right">${ h.number_to_currency(c.invoice.total()/100.0 * h.lca_info['sales_tax']) })</td>
       </tr>
     </table>
     
