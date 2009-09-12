@@ -25,7 +25,7 @@ from zookeepr.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 def generate_code():
-    res = os.popen('pwgen -Bnc').read().strip()
+    res = os.popen('pwgen -BnA').read().strip()
     if len(res)<3:
         raise "pwgen call failed"
     return res
