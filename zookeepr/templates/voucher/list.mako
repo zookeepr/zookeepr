@@ -47,11 +47,11 @@
 %   endif
         <td>${ voucher.comment |h}</td>
 %   if voucher.registration:
-        <td>${ voucher.registration.person.firstname } ${ voucher.registration.person.lastname }
-%          if voucher.registration.person.company:
-           ${ "(" + voucher.registration.person.company + ")"}
+        <td>${ voucher.registration[0].person.firstname } ${ voucher.registration[0].person.lastname }
+%          if voucher.registration[0].person.company:
+           ${ "(" + voucher.registration[0].person.company + ")"}
 %          endif
-           &lt;${ voucher.registration.person.email_address }&gt;
+           &lt;${ voucher.registration[0].person.email_address }&gt;
         </td>
 %   else:
         <td><strong>Hasn't been used</strong></td>
