@@ -63,7 +63,7 @@ ${ c.talk.url }
 <div class="bio">
 <blockquote><p>
 %   if person.bio:
-${ h.line_break(h.url_to_link(person.bio)) }
+${ h.line_break(h.url_to_link(person.bio)) | n  }
 %   else:
 [none provided]
 %   endif
