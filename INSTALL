@@ -1,79 +1,110 @@
-== Install instructions ==
+# Install instructions #
 
 Here be the way of getting zookeepr going.
 
-This be instructions for Ubuntu 8.04. Main reason for this is so we can use apt
-to get the latest (for now) versions of python, pylons and all that jazz. Plus
-being an LTS release we felt that this would be a good platform to deploy on.
+## HTML output ##
 
-====== Dependencies ======
+This file is formatted with
+[Markdown](http://daringfireball.net/projects/markdown/). You can get nicely
+formatted HTML output with the following commands.
 
-// Fixme: I think with pylons 0.9.7 as we are using the go-pylons script we
-// don't need all these deps...
+	aptitude install markdown # install somehow Markdown
+	markdown INSTALL > /somewhere/install.html
 
-aptitude install python-dev python-pylons python-sqlalchemy python-simplejson \
-    python-libxml2 python-xsltproc python-setuptools python-dnspython \
-    python-cheetah python-psycopg2 miscfiles pwgen python-myghty
+Open this file with your preferred browser. For example Epiphany.
+
+	epiphany /somewhere/install.html &
+
+## Dependencies ##
+
+### Without package management and with go-pylons script ###
+
+Install latest pylons in a development directory: 
+
+	mkdir pylons && cd pylons
+	wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
+	python go-pylons.py ./
+	alias pylons="source `pwd`/bin/activate"
+
+### Ubuntu Hardy 8.04 LTS ###
+
+Ubuntu Hardy 8.04 LTS was used as the server system for LCA2009.
+
+	aptitude install python-dev python-pylons python-sqlalchemy \
+	python-simplejson python-libxml2 python-xsltproc python-setuptools \
+	python-dnspython python-cheetah python-psycopg2 miscfiles pwgen \
+	python-myghty
 
 For Ubuntu Hardy add from Jaunty:
 
-  javascript-common 5
-  libjs-prototype 1.6.0.3-1
-  python-webhelpers 0.6.4-1
-  wwwconfig-common 0.2.1
+	javascript-common 5
+	libjs-prototype 1.6.0.3-1
+	python-webhelpers 0.6.4-1
+	wwwconfig-common 0.2.1
+
+### Debian Lenny ###
 
 For Debian Lenny, you must downgrade these packages:
 
-  python-pylons down to 0.9.6.1-1
-  python-beaker down to 0.8-1
+ - python-pylons down to 0.9.6.1-1
+ - python-beaker down to 0.8-1
 
-====== PDF generation ======
+### Debian Squeeze ###
 
-You need to follow these steps for PDF generation to work:
+	aptitude install python-pylons python-beaker python-authkit \
+	python-imaging
 
- - Install Deps:
-     * aptitude install inkscape
+## Optional dependencies ##
 
-====== Keysigning code ======
+### PDF generation ###
+
+You need to install the following package for PDF generation to work, e. g.:
+
+	aptitude install inkscape
+
+### Keysigning code ###
 
 To allow the generation of key fingerprint pages you will need to install the
 following packages:
- * aptitude install gnupg mpage ghostscript
 
-====== Installing and setting up Zookeepr ======
+	aptitude install gnupg mpage ghostscript
 
- - Install latest pylons in a development directory:
-     * mkdir pylons && cd pylons
-     * wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
-     * python go-pylons.py ./
-     * alias pylons="source `pwd`/bin/activate"
- 
- - Change directories into zookeepr (Where this INSTALL file is):
-    * pylons
-    * python setup.py develop
+## Installing and setting up Zookeepr ##
+
+ - Change directories into zookeepr (Where this `INSTALL` file is):
+
+		pylons # not available/needed on Debian or Ubuntu
+		python setup.py develop
 
  - Make a config file as follows (you may skip this step and use the supplied
-   development.ini):
-     paster make-config zookeepr config.ini
+   `development.ini`):
 
- - Tweak config.ini file as appropriate 
-     - Set up dburi to something appropriate (possibly sqlite:/// for SQLite3
-       or postgres:// for a PostgreSQL setup).
+		paster make-config zookeepr config.ini
 
- - Generate an empty database: "paster setup-app config.ini"
+ - Tweak `config.ini` file as appropriate: 
+   * Set up `dburi` to something appropriate (possibly `sqlite:///` for SQLite3
+       or `postgres://` for a PostgreSQL setup).
+
+ - Generate an empty database:
+
+		paster setup-app config.ini
 
  - To easily regenerate the database during development check out:
-     bin/reset-development-db
+
+		bin/reset-development-db
  
-====== Running Zookeepr ======
+## Running Zookeepr ##
 
-paster serve --reload -v config.ini
+	paster serve --reload -v config.ini
 
-====== Administering Zookeepr ======
+## Administering Zookeepr ##
 
  - A default admin account exists with the following credentials:
-   email:    admin@zookeepr.org
-   password: password
- - By visiting http://127.0.0.1:5000/admin you will be prompted to log in and
+
+   email:    `admin@zookeepr.org`  
+   password: `password`
+
+ - By visiting <http://127.0.0.1:5000/admin> you will be prompted to log in and
    redirected to the administration hub.
+
  - Be sure to update/delete this user before deploying!
