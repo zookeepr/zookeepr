@@ -73,6 +73,12 @@ class PrevLCAValidator(validators.FancyValidator):
         if value['prevlca'] is not None and '00' in value['prevlca']:
             raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
 
+class ShellValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['shelltext'] is not None and value['shell'] == 'other':
+            if value['shelltext'].lower() == 'cmd.exe' or value['shelltext'].lower() == 'command.com':
+                raise Invalid(value['shelltext'].lower() + ' -- Nice try!', value, state)
+
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
     phone = validators.String()
@@ -108,7 +114,7 @@ class RegistrationSchema(BaseSchema):
     miniconf = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
-    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
 
 class SpecialOfferSchema(BaseSchema):
     name = validators.String()
@@ -366,6 +372,22 @@ class RegistrationController(BaseController):
             defaults['registration.over18'] = 1
         else:
             defaults['registration.over18'] = 0
+
+        if c.registration.shell in lca_rego['shells']:
+            defaults['registration.shell'] = c.registration.shell
+        else:
+            defaults['registration.shell'] = 'other'
+            defaults['registration.shelltext'] = c.registration.shell
+        if c.registration.editor in lca_rego['editors']:
+            defaults['registration.editor'] = c.registration.editor
+        else:
+            defaults['registration.editor'] = 'other'
+            defaults['registration.editortext'] = c.registration.editor
+        if c.registration.distro in lca_rego['distros']:
+            defaults['registration.distro'] = c.registration.distro
+        else:
+            defaults['registration.distro'] = 'other'
+            defaults['registration.distrotext'] = c.registration.distro
 
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
