@@ -216,6 +216,7 @@ class PersonController(BaseController): #Read, Update, List
         c.person = Person.find_by_id(id)
 
         defaults = h.object_to_defaults(c.person, 'person')
+        defaults['person.email_address2'] = c.person.email_address
 
         form = render('/person/edit.mako')
         return htmlfill.render(form, defaults)
@@ -268,6 +269,7 @@ class PersonController(BaseController): #Read, Update, List
         # Remove fields not in class
         results = self.form_result['person']
         del results['password_confirm']
+        del results['email_address2']
         c.person = Person(**results)
         c.person.email_address = c.person.email_address.lower()
         meta.Session.add(c.person)

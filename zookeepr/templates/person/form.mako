@@ -10,9 +10,13 @@
 % if c.form is not 'edit' or h.auth.authorized(h.auth.has_organiser_role):
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>
 <p class="entries">${ h.text('person.email_address', size=40) }</p>
-<p class="note">You will be using this email address to login, please make sure you don't make typos.</p>
+%   if c.form is not 'edit':
+<p class="label"><span class="mandatory">*</span><label for="person.email_address2">Confirm your email address:</label></p>
+<p class="entries">${ h.text('person.email_address2', size=40) }</p>
+%   endif
 % else:
 ${ h.hidden('person.email_address', '') }</p>
+${ h.hidden('person.email_address2', '') }</p>
 % endif
 
 % if c.form is not 'edit':

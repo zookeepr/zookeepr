@@ -161,6 +161,12 @@ class NotExistingPersonValidator(validators.FancyValidator):
             msg = "A person with this email already exists. Please try signing in first."
             raise Invalid(msg, value, state, error_dict={'email_address': msg})
 
+class SameEmailAddress(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['email_address'] != value['email_address2']:
+            msg = 'Email addresses don\'t match'
+            raise Invalid(msg, value, state, error_dict={'email_address2': msg})
+
 class PersonSchema(BaseSchema):
     #allow_extra_fields = False
 
@@ -168,6 +174,7 @@ class PersonSchema(BaseSchema):
     lastname = validators.String(not_empty=True)
     company = validators.String()
     email_address = validators.Email(not_empty=True)
+    email_address2 = validators.Email(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     phone = validators.String()
@@ -179,7 +186,7 @@ class PersonSchema(BaseSchema):
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm'), SameEmailAddress()]
 
 
 
