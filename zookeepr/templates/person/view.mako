@@ -17,7 +17,18 @@
     </tr>
     <tr>
         <td><b>Email:</b></p></td>
-        <td><a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a></td>
+        <td>
+%if not c.person.activated:
+${ c.person.email_address }
+%  if h.auth.authorized(h.auth.has_organiser_role):
+(${ h.link_to('mark as verified', '/person/confirm/' + c.person.url_hash) })
+%  else:
+(not verified)
+%  endif
+%else:
+<a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a>
+%endif
+        </td>
     </tr>
 %if c.person.special_registration is not None:
 % for special_registration in c.person.special_registration:
