@@ -45,6 +45,8 @@ class ScheduleController(BaseController):
                  'friday':    date(2010,1,22),
                  'saturday':  date(2010,1,23)}
 
+    # Use this to limit to organisers only.
+    #@authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
         c.get_talk = self._get_talk
 
