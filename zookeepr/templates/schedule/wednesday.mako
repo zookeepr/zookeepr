@@ -36,7 +36,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50271" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50198" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50329" /></td>
-      <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50171" /></td>
+      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=50171" /></td>
     </tr>
 
     <tr class="odd">
@@ -45,7 +45,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50267" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50294" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50183" /></td>
-      <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50171" /></td>
+
     </tr>
 
     <tr class="even">
@@ -59,8 +59,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50109" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50149" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50291" /></td>
-      <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50324" /></td>
-
+      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=50324" /></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">14:30-15:15</th>
@@ -68,7 +67,6 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50297" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50163" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50328" /></td>
-      <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50324" /></td>
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:15-15:45</th>
@@ -80,7 +78,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50282" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50162" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50260" /></td>
-      <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50324" /></td>
+      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=50324" /> <i>(cont'd)</i></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">16:45-17:30</th>
@@ -88,7 +86,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50339" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50346" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50029" /></td>
-      <td class="tutorial" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50324" /></td>
+
     </tr>
   </tbody>
 </table>

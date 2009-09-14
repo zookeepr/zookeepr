@@ -49,8 +49,8 @@
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrival</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Mulitcore and Parallel Computing</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
     </tr>
     </tr>
 
@@ -66,8 +66,8 @@
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrival</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Mulitcore and Parallel Computing</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
     </tr>
     </tr>
 
@@ -83,8 +83,8 @@
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrival</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Mulitcore and Parallel Computing</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
     </tr>
 
   </tbody>
