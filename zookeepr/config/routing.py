@@ -56,7 +56,8 @@ def make_map():
     map.connect('/funding_review/summary', controller='funding_review', action='summary')
 
     # schedule routes
-    map.connect('/programme/schedule/{day}',           controller='schedule', action='index', day=None)
+    map.connect('/programme/schedule',                controller='schedule', action='index', day='monday')
+    map.connect('/programme/schedule/{day}',          controller='schedule', action='index', day=None)
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
 
     # registration and invoicing
