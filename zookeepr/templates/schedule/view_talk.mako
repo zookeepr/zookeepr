@@ -48,6 +48,13 @@ ${ c.talk.url }
 % endif
 </td>
 
+% if c.talk.type.name.startswith('Tutorial'):
+  <tr class="${ h.cycle('even', 'odd')}">
+    <td><strong>Wiki Page:</td>
+    <td><a href="/wiki/Tutorials/${ c.talk.title }">${ c.talk.title }</a></td>
+  </tr>
+% endif
+
 </table>
 
 
