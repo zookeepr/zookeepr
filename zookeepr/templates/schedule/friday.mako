@@ -81,7 +81,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50315" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50181" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50208" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50168" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50168" /> <i>(Presentation)</i></td>
     </tr>
 
     <tr class="even">
