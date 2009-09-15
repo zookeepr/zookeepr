@@ -22,6 +22,8 @@ import ceiling
 import product
 import product_ceiling_map
 import rego_note
+import social_network
+import person_social_network_map
 import funding
 import funding_attachment
 import funding_review
@@ -31,6 +33,8 @@ import special_registration
 from person import Person
 from role import Role
 from password_reset_confirmation import PasswordResetConfirmation
+
+from social_network import SocialNetwork
 
 from proposal import Proposal, ProposalStatus, ProposalType, TravelAssistanceType, AccommodationAssistanceType, TargetAudience
 from attachment import Attachment
@@ -66,6 +70,9 @@ def setup(meta):
     role.setup(meta)
     person_role_map.setup(meta)
     person.setup(meta)
+
+    social_network.setup(meta)
+    person_social_network_map.setup(map)
 
     product_category.setup(meta)
     ceiling.setup(meta)

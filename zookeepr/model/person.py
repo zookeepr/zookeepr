@@ -1,5 +1,7 @@
 """The application's model objects"""
 import sqlalchemy as sa
+from sqlalchemy.ext.associationproxy import association_proxy 
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from meta import Base
 
@@ -7,6 +9,8 @@ from pylons.controllers.util import abort
 
 from role import Role
 from person_role_map import person_role_map
+from social_network import SocialNetwork
+from person_social_network_map import PersonSocialNetworkMap
 from special_registration import SpecialRegistration
 
 from zookeepr.model.meta import Session
@@ -72,8 +76,17 @@ class Person(Base):
 
     badge_printed = sa.Column(sa.types.Boolean, default='False')
 
+    def _create_social_network_map(network, account_name):
+       """Constructs SocialNetworkMaps from the SocialNetowkr and the
+          account_name."""
+       return PersonSocialNetworkMap(social_network=network, account_name=account_name)
+
     # relations
     roles = sa.orm.relation(Role, secondary=person_role_map, backref='people', order_by=Role.name)
+    by_social_network = sa.orm.relation(PersonSocialNetworkMap, 
+      collection_class=attribute_mapped_collection('social_network'),
+      cascade="all, delete-orphan")
+    social_networks = association_proxy('by_social_network', 'account_name', creator=_create_social_network_map)
     special_registration = sa.orm.relation(SpecialRegistration, backref='person')
 
     def __init__(self, **kwargs):
@@ -168,6 +181,16 @@ class Person(Base):
                 else:
                     return False
         return status
+
+    def fetch_social_networks(self):
+        self.social_network = dict()
+
+        for sn in self.social_networks:
+            self.social_network[sn.name] = self.social_networks[sn]
+
+        for sn in SocialNetwork.find_all():
+            if sn.name not in self.social_network:
+                self.social_network[sn.name] = ''
 
     def fullname(self):
         return "%s %s" % (self.firstname, self.lastname)

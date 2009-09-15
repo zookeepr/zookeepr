@@ -1,11 +1,13 @@
 import formencode
-from formencode import validators, Invalid #, schema
+from formencode import validators, Invalid, ForEach #, schema
 
 from zookeepr.model import Person, Proposal, ProposalType, TargetAudience
 from zookeepr.model import ProposalStatus, Stream, AccommodationAssistanceType
 from zookeepr.model import TravelAssistanceType, DbContentType, Registration
 from zookeepr.model import Product, ProductCategory, Ceiling, FundingType
+from zookeepr.model import Product, ProductCategory, Ceiling, FundingType
 from zookeepr.model import FundingStatus, Funding
+from zookeepr.model import SocialNetwork
 
 from zookeepr.config.lca_info import lca_info
 
@@ -103,6 +105,13 @@ class CeilingValidator(validators.FancyValidator):
     def _from_python(self, value, state):
         return value.id
 
+class SocialNetworkValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return SocialNetwork.find_by_id(value)
+
+    def _from_python(self, value, state):
+        return value.id
+
 
 
 class ProductCategoryValidator(validators.FancyValidator):
@@ -167,6 +176,10 @@ class SameEmailAddress(validators.FancyValidator):
             msg = 'Email addresses don\'t match'
             raise Invalid(msg, value, state, error_dict={'email_address2': msg})
 
+class _SocialNetworkSchema(BaseSchema):
+   name = validators.String()
+   account_name = validators.String()
+
 class PersonSchema(BaseSchema):
     #allow_extra_fields = False
 
@@ -185,6 +198,7 @@ class PersonSchema(BaseSchema):
     state = validators.String()
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
+    social_network = ForEach(_SocialNetworkSchema())
 
     chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm'), SameEmailAddress()]
 

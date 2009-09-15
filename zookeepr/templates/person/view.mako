@@ -92,6 +92,22 @@ None
                 ${ c.person.state } ${ c.person.postcode }<br>
                 ${ c.person.country }</td>
     </tr>
+    <tr>
+      <td colspan="2" align="center"><b>Social Networking</b></td>
+    </tr>
+% for sn in c.person.social_networks:
+    <tr>
+      <td><img style="padding-right: 5px" src="/images/${ sn.logo }">${ sn.name }</td>
+<%
+  import re
+  p = re.compile('(USER)')
+  url =  p.sub(c.person.social_networks[sn], sn.url)
+%>
+
+      <td><a href="${ url }">${ c.person.social_networks[sn] }</a></td>
+##      <td><a href="${ c.person.social_networks[sn].account_url() }">${ c.person.social_networks[sn].account_name }</a></td>
+    </tr>
+% endfor
 </table>
 
 <h2>Submitted Proposals</h2>
