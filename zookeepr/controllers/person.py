@@ -249,6 +249,7 @@ class PersonController(BaseController): #Read, Update, List
                        c.person.social_networks[network] = sn['account_name']
                    elif network in c.person.social_networks:
                        del c.person.social_networks[network]
+            else:
                 setattr(c.person, key, self.form_result['person'][key])
 
         # update the objects with the validated form data
