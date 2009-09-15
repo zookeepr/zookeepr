@@ -25,8 +25,8 @@ class SocialNetwork(Base):
 
     id = sa.Column(sa.types.Integer, primary_key=True)
     name = sa.Column(sa.types.Text, unique=True, nullable=False)
-    url = sa.Column(sa.types.Text, unique=True, nullable=False)
-    logo = sa.Column(sa.types.Text, unique=True, nullable=False)
+    url = sa.Column(sa.types.Text, nullable=False)
+    logo = sa.Column(sa.types.Text, nullable=False)
 
     def __init__(self, **kwargs):
         super(SocialNetwork, self).__init__(**kwargs)
