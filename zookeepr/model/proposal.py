@@ -253,6 +253,8 @@ class Proposal(Base):
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(id=id).first()
+#        if result is None and abort_404:
+#            abort(404, "No such proposal object")
         if result is None and abort_404:
             abort(404, "No such proposal object")
         return result

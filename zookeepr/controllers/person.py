@@ -38,14 +38,15 @@ class PasswordResetSchema(BaseSchema):
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
+class _SocialNetworkSchema(BaseSchema):
+   name = validators.String()
+   account_name = validators.String()
+
 class NewPersonSchema(BaseSchema):
     pre_validators = [NestedVariables]
 
     person = PersonSchema()
-
-class _SocialNetworkSchema(BaseSchema):
-   name = validators.String()
-   account_name = validators.String()
+    social_network = ForEach(_SocialNetworkSchema())
 
 class _UpdatePersonSchema(BaseSchema):
     firstname = validators.String(not_empty=True)
@@ -60,10 +61,10 @@ class _UpdatePersonSchema(BaseSchema):
     state = validators.String()
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
-    social_network = ForEach(_SocialNetworkSchema())
 
 class UpdatePersonSchema(BaseSchema):
     person = _UpdatePersonSchema()
+    social_network = ForEach(_SocialNetworkSchema())
     pre_validators = [NestedVariables]
 
 class RoleSchema(BaseSchema):
@@ -242,15 +243,14 @@ class PersonController(BaseController): #Read, Update, List
         c.person = Person.find_by_id(id)
 
         for key in self.form_result['person']:
-            if key == 'social_network':
-                for sn in self.form_result['person'][key]:
-                   network = SocialNetwork.find_by_name(sn['name'])
-                   if sn['account_name']:
-                       c.person.social_networks[network] = sn['account_name']
-                   elif network in c.person.social_networks:
-                       del c.person.social_networks[network]
-            else:
-                setattr(c.person, key, self.form_result['person'][key])
+            setattr(c.person, key, self.form_result['person'][key])
+
+        for sn in self.form_result['social_network']:
+           network = SocialNetwork.find_by_name(sn['name'])
+           if sn['account_name']:
+               c.person.social_networks[network] = sn['account_name']
+           elif network in c.person.social_networks:
+               del c.person.social_networks[network]
 
         # update the objects with the validated form data
         meta.Session.commit()
@@ -281,15 +281,13 @@ class PersonController(BaseController): #Read, Update, List
 
         # Remove fields not in class
         results = self.form_result['person']
-        social_networks = self.form_result['person']['social_network']
-        del results['social_network']
         del results['password_confirm']
         del results['email_address2']
         c.person = Person(**results)
         c.person.email_address = c.person.email_address.lower()
         meta.Session.add(c.person)
 
-        for sn in social_networks:
+        for sn in self.form_result['social_network']:
            network = SocialNetwork.find_by_name(sn['name'])
            if sn['account_name']:
                c.person.social_networks[network] = sn['account_name']

@@ -64,9 +64,9 @@ ${ h.select('person.country', None, h.countries()) }
   <tr class="${ h.cycle('even', 'odd') }">
     <td><img style="padding-right: 5px" src="/images/${ network.logo }">${ network.name }</td>
 %   if c.person:
-    <td>${ h.hidden('person.social_network-%s.name' % network.id, value=network.name) }${ h.text('person.social_network-%s.account_name' % network.id, value=c.person.social_network[network.name]) }</td>
+    <td>${ h.hidden('social_network-%s.name' % network.id, value=network.name) }${ h.text('social_network-%s.account_name' % network.id, value=c.person.social_network[network.name]) }</td>
 %   else:
-    <td>${ h.hidden('person.social_network-%s.name' % network.id, value=network.name) }${ h.text('person.social_network-%s.account_name' % network.id, value='') }</td>
+    <td>${ h.hidden('social_network-%s.name' % network.id, value=network.name) }${ h.text('social_network-%s.account_name' % network.id, value='') }</td>
 %   endif
   </tr>
 % endfor
