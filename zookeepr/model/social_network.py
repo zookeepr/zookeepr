@@ -1,10 +1,12 @@
 """The application's model objects"""
 import sqlalchemy as sa
+from sqlalchemy.ext.associationproxy import association_proxy
+from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from meta import Base
 from pylons.controllers.util import abort
 from zookeepr.model.meta import Session
-#from person_social_network_map import PersonSocialNetworkMap
+from person_social_network_map import PersonSocialNetworkMap
 
 def setup(meta):
     meta.Session.add_all(
@@ -27,6 +29,13 @@ class SocialNetwork(Base):
     name = sa.Column(sa.types.Text, unique=True, nullable=False)
     url = sa.Column(sa.types.Text, nullable=False)
     logo = sa.Column(sa.types.Text, nullable=False)
+
+    by_person = sa.orm.relation(PersonSocialNetworkMap,
+      collection_class=attribute_mapped_collection('person'),
+      cascade="all, delete-orphan",
+      backref='social_network')
+    people = association_proxy('by_person', 'account_name')
+
 
     def __init__(self, **kwargs):
         super(SocialNetwork, self).__init__(**kwargs)

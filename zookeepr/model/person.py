@@ -85,7 +85,7 @@ class Person(Base):
     roles = sa.orm.relation(Role, secondary=person_role_map, backref='people', order_by=Role.name)
     by_social_network = sa.orm.relation(PersonSocialNetworkMap, 
       collection_class=attribute_mapped_collection('social_network'),
-      cascade="all, delete-orphan")
+      cascade="all, delete-orphan", backref='person')
     social_networks = association_proxy('by_social_network', 'account_name', creator=_create_social_network_map)
     special_registration = sa.orm.relation(SpecialRegistration, backref='person')
 

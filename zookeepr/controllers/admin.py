@@ -60,6 +60,7 @@ class AdminController(BaseController):
           ('/db_content', '''Edit HTML pages that are stored in the database. [Content]'''),
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
           ('/person', '''List of people signed up to the webpage (with option to view/change their zookeepr roles) [Accounts]'''),
+          ('/social_network', '''List social networks that people can indicate they are members of [Accounts]'''),
           ('/product', '''Manage all of zookeeprs products. [Inventory]'''),
           ('/product_category', '''Manage all of zookeeprs product categories. [Inventory]'''),
           ('/voucher', '''Manage vouchers to give to delegates. [Inventory]'''),

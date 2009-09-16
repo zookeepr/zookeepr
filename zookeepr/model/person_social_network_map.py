@@ -4,7 +4,7 @@ import re
 
 from meta import Base
 from zookeepr.model.meta import metadata
-from social_network import SocialNetwork
+#from social_network import SocialNetwork
 
 def setup(meta):
     pass
@@ -20,7 +20,7 @@ class PersonSocialNetworkMap(Base):
 
     sa.UniqueConstraint('person_id', 'social_network_id', name='sn_social_network_person')
 
-    social_network = sa.orm.relation(SocialNetwork)
+#    social_network = sa.orm.relation(SocialNetwork, backref='people')
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
