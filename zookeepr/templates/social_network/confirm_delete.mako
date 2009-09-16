@@ -20,3 +20,11 @@ people.
  or ${ h.link_to('No, take me back.', url=h.url_for(action='index', id=None)) }</p>
 
 ${ h.end_form() }
+
+<%def name="title()">
+Social Network -
+${ c.social_network.name } -
+Confirm Delete -
+ ${ parent.title() }
+</%def>
+

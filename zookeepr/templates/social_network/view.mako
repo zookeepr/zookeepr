@@ -40,4 +40,12 @@
 
     <p>
     ${ h.link_to('Edit', url=h.url_for(action='edit',id=c.social_network.id)) } |
+    ${ h.link_to('Delete', url=h.url_for(action='delete',id=c.social_network.id)) } |
     ${ h.link_to('Back', url=h.url_for(action='index', id=None)) }</p>
+
+<%def name="title()">
+Social Network -
+${ c.social_network.name } -
+View -
+ ${ parent.title() }
+</%def>

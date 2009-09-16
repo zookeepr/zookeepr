@@ -29,3 +29,8 @@
     <p>${ h.link_to('New Social Network', url=h.url_for(action='new')) }</p>
 % endif
  
+<%def name="title()">
+Social Network -
+List All -
+ ${ parent.title() }
+</%def>
