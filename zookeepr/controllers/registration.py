@@ -626,8 +626,9 @@ class RegistrationController(BaseController):
 
         for freebie in freebies:
             free_cost = 0
-            for price in prices[freebie]:
-                free_cost += price
+            if freebie in prices:
+                for price in prices[freebie]:
+                    free_cost += price
 
             # We have included products, create a discount for the cost of them.
             # This is not perfect, products of different prices can be discounted,
