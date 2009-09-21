@@ -321,6 +321,17 @@ class RegistrationController(BaseController):
         c.registration = Registration()
         self.save_details(result)
 
+        c.student_ticket = False
+        c.infants = False
+        c.children = False
+        for rproduct in c.registration.products:
+            if 'Ticket' in rproduct.product.category.name and 'Student' in rproduct.product.description:
+                c.student_ticket = True
+            elif 'Infant' in rproduct.product.description:
+                c.infants = True
+            elif 'Child' == rproduct.product.description:
+                c.children = True
+
         email(
             c.person.email_address,
             render('registration/response.mako'))
@@ -328,15 +339,9 @@ class RegistrationController(BaseController):
         self.pay(c.registration.id, quiet=1)
 
         h.flash("Thank you for your registration!")
-        if c.signed_in_person:
-            h.flash("""To complete the registration process, please pay
-                                                          your invoice.""")
-            redirect_to(action='status')
-        else:
-            h.flash("""An e-mail has been sent to you with a confirmation
-                code. Once it arrives, please follow the link to activate
-                your registration and pay your invoice.""")
-            redirect_to('/')
+        if not c.person.paid():
+            h.flash("To complete the registration process, please pay your invoice.")
+        redirect_to(action='status')
 
     @dispatch_on(POST="_edit")
     def edit(self, id):
