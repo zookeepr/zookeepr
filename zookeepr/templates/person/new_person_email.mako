@@ -8,8 +8,6 @@ Please validate your account by clicking on this URL:
 
   ${ h.lca_info['event_url'] }${ h.url_for('acct_confirm', confirm_hash=c.person.url_hash) }
 
-(If clicking does not work, please paste it into your web browser.)
-
 Once your account has been confirmed, you will be able to log into the web
 site with the password you provided.
 
