@@ -15,7 +15,7 @@ from zookeepr.lib.validators import BaseSchema
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.model import meta, Person, Product
+from zookeepr.model import meta, Person, Product, Registration
 
 from zookeepr.config.lca_info import lca_info, lca_rego
 
@@ -26,7 +26,7 @@ import re
 from datetime import datetime
 import os, random, re, urllib
 #from zookeepr.controllers.proposal import Proposal
-#from zookeepr.model import Registration, Invoice, PaymentReceived, Product, InvoiceItem
+#from zookeepr.model import Invoice, PaymentReceived, Product, InvoiceItem
 #from zookeepr.model.registration import RegoNote
 
 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -853,7 +853,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def miniconf_preferences(self):
         """ Preferred miniconfs. All people - including unpaid [Statistics] """
-        registration_list = meta.Session.query(Registration).all()
+        registration_list = Registration.find_all()
         c.columns = ['miniconf', 'People']
         c.data = []
         miniconfs = {}
