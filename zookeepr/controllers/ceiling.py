@@ -34,8 +34,8 @@ class NotExistingCeilingValidator(validators.FancyValidator):
 class CeilingSchema(BaseSchema):
     name = validators.String(not_empty=True)
     max_sold = validators.Int(min=0, max=2000000)
-    available_from = validators.DateConverter(format='%d/%m/%y')
-    available_until = validators.DateConverter(format='%d/%m/%y')
+    available_from = validators.DateConverter(month_style='dd/mm/yyyy')
+    available_until = validators.DateConverter(month_style='dd/mm/yyyy')
     products = ForEach(ProductValidator())
 
 class NewCeilingSchema(BaseSchema):
