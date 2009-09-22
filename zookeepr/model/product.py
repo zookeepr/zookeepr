@@ -76,7 +76,6 @@ def setup(meta):
     meta.Session.add_all(
         [
             # Shirts
-            Product(category_id='2', active=True, description="Men's XS", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Men's Small", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Men's Medium", cost="2500", auth=None, validate=None),
             Product(category_id='2', active=True, description="Men's Large", cost="2500", auth=None, validate=None),
