@@ -13,7 +13,7 @@ ${ c.funding.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />
 %   if h.url_for().endswith('review') is True and ('funding_reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <p class="submitted">
 ${ c.funding.person.fullname() } &lt;${ c.funding.person.email_address }&gt;
-%if len(c.funding.person.url) > 0:
+%if c.funding.person.url and len(c.funding.person.url) > 0:
 <a href="${ c.funding.person.url}">Submitters Homepage</a>
 %endif
 <br>
