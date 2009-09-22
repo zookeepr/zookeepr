@@ -163,8 +163,10 @@ else:
             <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
 %               endif
 %             endfor
+            </tr>
+          </table>
 %           endfor
-          </tr></table><p><span class="mandatory">^</span>Sold out</p>
+          <p><span class="mandatory">^</span>Sold out</p>
 %       elif category.display_mode == 'grid' and category.display == 'qty':
 <table>
   <tr>
