@@ -219,11 +219,11 @@ class Product(Base):
                 max_ceiling = c.remaining
         return max_ceiling
 
-    def available(self, stock=True):
+    def available(self, stock=True, qty=0):
     # bool stock: care about if the product is in stock (ie sold out?)
         if self.active:
            for c in self.ceilings:
-                if not c.available(stock):
+                if not c.available(stock, qty):
                     return False
            return True
         else:

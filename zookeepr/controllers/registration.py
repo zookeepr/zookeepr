@@ -162,9 +162,9 @@ class RegistrationController(BaseController):
                     return False, "Sorry, you've already paid"
         return True, "You can edit"
 
-    def _product_available(self, product, stock=True):
+    def _product_available(self, product, stock=True, qty=0):
         # bool stock: care about if the product is in stock (ie sold out?)
-        if not product.available(stock):
+        if not product.available(stock, qty):
             return False
         if product.auth is not None:
             exec("auth = " + product.auth)
@@ -510,7 +510,9 @@ class RegistrationController(BaseController):
                 invoice = self._create_invoice(registration)
             except ProductUnavailable, inst:
                 if quiet: return
-                return render("registration/product_unavailable.mako", product=inst.product)
+                c.product = inst.product
+                c.registration = registration
+                return render('/registration/product_unavailable.mako')
 
             if registration.voucher:
                 self.apply_voucher(invoice, registration.voucher)
@@ -542,7 +544,7 @@ class RegistrationController(BaseController):
         for invoice in invoices:
             if not invoice.is_void() and not invoice.manual and not invoice.paid():
                 for ii in invoice.items:
-                    if ii.product and not self._product_available(ii.product):
+                    if ii.product and not self._product_available(ii.product, True, ii.qty):
                         invoice.void = "Product " + ii.product.description + " is no longer available"
 
     def manual_invoice(self, invoices):
@@ -581,7 +583,7 @@ class RegistrationController(BaseController):
 
         # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
-            if self._product_available(rproduct.product):
+            if self._product_available(rproduct.product, True, rproduct.qty):
                 ii = InvoiceItem(description=rproduct.product.category.name + ' - ' + rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
                 ii.invoice = invoice # automatically appends ii to invoice.items
                 ii.product = rproduct.product

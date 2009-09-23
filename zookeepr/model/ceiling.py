@@ -79,10 +79,18 @@ class Ceiling(Base):
         if self.max_sold != None:
             return self.qty_invoiced() >= self.max_sold
             #return self.qty_sold() >= self.max_sold
+        return False
 
-    def available(self, stock=True):
+    def enough_left(self, qty):
+        if self.max_sold != None:
+            return (self.qty_invoiced() + qty) > self.max_sold
+        return False
+
+    def available(self, stock=True, qty=0):
         # bool stock: care about if the product is in stock (ie sold out?)
         if stock and self.soldout():
+            return False
+        elif qty > 0 and self.enough_left(qty):
             return False
         elif self.available_from is not None and self.available_from >= datetime.datetime.now():
             return False
