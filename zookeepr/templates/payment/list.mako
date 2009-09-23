@@ -19,7 +19,7 @@
 %for p in c.payment_collection:
   <tr class="${ h.cycle('odd', 'even') }">
     <td>${ h.link_to(p.id, url=h.url_for(action='view', id=p.id)) }</td>
-    <td>${ p.invoice.id }</td>
+    <td>${ h.link_to(p.invoice.id, url=h.url_for(controller='invoice', action='view', id=p.invoice.id)) }</td>
     <td>${ h.number_to_currency(p.amount/100.0) }</td>
     <td>
 % if len(p.payment_received) > 0:
