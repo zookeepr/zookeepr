@@ -30,7 +30,7 @@ You can view your invoice for payment:
   ${ h.lca_info['event_url'] + h.url_for(action='status') }
 
 Please follow the instructions to finalise your payment. Payment must be
-received in LCA2010 bank account before Friday 15 January 2010.
+received before Friday 15 January 2010.
 
 %endif
 %if not c.person.is_speaker():
