@@ -174,13 +174,17 @@ class InvoiceController(BaseController):
                 if ii.product and not ii.product.available():
                     return render('/invoice/expired.mako')
 
+        client_ip = request.environ['REMOTE_ADDR']
+        if 'HTTP_X_FORWARDED_FOR' in request.environ:
+            client_ip = request.environ['HTTP_X_FORWARDED_FOR']
+
         # Prepare fields for PxPay
         params = {
             'payment_id': payment.id,
             'amount': "%#.*f" % (2, payment.amount / 100.0),
             'invoice_id': payment.invoice.id,
             'email_address': payment.invoice.person.email_address,
-            'client_ip' : request.environ['REMOTE_ADDR'],
+            'client_ip' : client_ip,
             'return_url' : lca_info['event_url'] + '/payment/new',
         }
 
