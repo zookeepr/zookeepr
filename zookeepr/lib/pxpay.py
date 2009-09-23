@@ -114,3 +114,8 @@ def process_response(fields):
         validation_errors.append('An invalid currency type was requested: ' + response['currency_request'])
 
     return response, validation_errors
+
+# The TXT fields used to store user emails in PxPay are buggy and drop certain characters :(
+def munge_email(email):
+    ret = email.replace('+', ' ')
+    return ret

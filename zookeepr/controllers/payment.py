@@ -78,8 +78,8 @@ class PaymentController(BaseController):
             abort(500, ''.join(validation_errors))
         else:
             # Make sure the same browser created the zookeepr payment object and paid by credit card
-            if c.response['client_ip_gateway'] != c.response['client_ip_zookeepr']:
-                validation_errors.append('Mismatch in IP addresses: zookeepr=' + c.response['client_ip_zookeepr'] + ' gateway=' + c.response['client_ip_gateway'])
+            #if c.response['client_ip_gateway'] != c.response['client_ip_zookeepr']:
+                #validation_errors.append('Mismatch in IP addresses: zookeepr=' + c.response['client_ip_zookeepr'] + ' gateway=' + c.response['client_ip_gateway'])
 
             # Get the payment object associated with this transaction
             payment = Payment.find_by_id(c.response['payment_id'])
@@ -100,7 +100,7 @@ class PaymentController(BaseController):
                 validation_errors.append('Mismatch between amounts paid and invoiced')
             if c.response['invoice_id'] != payment.invoice.id:
                 validation_errors.append('Mismatch between returned invoice ID and payment object')
-            if c.response['email_address'] != payment.invoice.person.email_address:
+            if c.response['email_address'] != pxpay.munge_email(payment.invoice.person.email_address):
                 validation_errors.append('Mismatch between returned email address and invoice object')
             if not c.person.is_from_common_country():
                 validation_errors.append('Uncommon country: ' + c.person.country)
