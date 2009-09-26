@@ -7,6 +7,20 @@
 % if not c.invoice.is_void() and c.invoice.paid():
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>Invoice was paid by ${ c.invoice.person.email_address }.</li>
+%   else:
+        <li>Invoice has been paid.</li>
+%   endif
+% elif c.invoice.bad_payments().count() > 0:
+        <li>Invalid payments have been applied to this invoice, please email ${ h.contact_email('the organising committee') }</a></li>
+% elif not c.invoice.is_void() and not c.invoice.paid():
+        <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>
+        <li>
+          ${ h.link_to('Regenerate invoice', url = h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }
+          <br><span style="font-size: small;">Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</span>
+        </li>
+% endif
+
+%if h.auth.authorized(h.auth.has_organiser_role):
         <ul>
 %     for pr in c.invoice.payment_received:
             <li>
@@ -25,18 +39,7 @@
             <li>Payment ${ h.link_to(str(payment.id), url=h.url_for(controller='payment', action='view', id=payment.id)) } (${ payment.invoice.person.email_address })</li>
 %     endfor
         </ul>
-%   else:
-        <li>Invoice has been paid.</li>
-%   endif
-% elif c.invoice.bad_payments().count() > 0:
-        <li>Invalid payments have been applied to this invoice, please email ${ h.contact_email('the organising committee') }</a></li>
-% elif not c.invoice.is_void() and not c.invoice.paid():
-        <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>
-        <li>
-          ${ h.link_to('Regenerate invoice', url = h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }
-          <br><span style="font-size: small;">Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</span>
-        </li>
-% endif
+%endif
       </ul>
 %   if 'invoice_message' in h.lca_info and (c.invoice.is_void() or not c.invoice.paid()):
           <p><small><strong>Please Note:</strong> ${ h.lca_info['invoice_message'] }</small></p>
