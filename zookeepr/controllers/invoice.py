@@ -257,12 +257,19 @@ class InvoiceController(BaseController):
             h.auth.no_role()
         
         c.invoice = Invoice.find_by_id(id, True)
+        if c.invoice.is_void():
+            h.flash("Invoice was already voided.")
+            return redirect_to(action='view', id=c.invoice.id)
+
         if h.auth.authorized(h.auth.has_organiser_role):
             c.invoice.void = "Administration Change"
             meta.Session.commit()
             h.flash("Invoice was voided.")
             return redirect_to(action='view', id=c.invoice.id)
         else:
+            if c.invoice.paid():
+                h.flash("Cannot void a paid invoice.")
+                return redirect_to(action='view', id=c.invoice.id)
             c.invoice.void = "User cancellation"
             c.person = c.invoice.person
             meta.Session.commit()
