@@ -190,7 +190,7 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
         <small><a href="#" onclick="return display_toggle('products_${ rinvoice.id }')">+</a></small>
 <%
        display = "display: none;"
-       if rinvoice.is_void() is not True: display=""
+       #if rinvoice.is_void() is not True: display=""
 %>
         <div id="products_${ rinvoice.id }" style="${ display } background: #ddd;">
 %       for rproduct in rinvoice.items:
