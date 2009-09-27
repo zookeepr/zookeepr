@@ -120,6 +120,33 @@ class InvoiceController(BaseController):
         c.invoice_collection = Invoice.find_all();
         return render('/invoice/remind.mako')
 
+    def _check_invoice(self, person, invoice):
+        if person.invoices:
+            if invoice.paid() or invoice.bad_payments().count() > 0:
+                c.status = []
+                if invoice.total()==0:
+                  c.status.append('zero balance')
+                if invoice.good_payments().count() > 0:
+                  c.status.append('paid')
+                  if invoice.good_payments().count()>1:
+                    c.status[-1] += ' (%d times)' % invoice.good_payments().count()
+                if invoice.bad_payments().count() > 0:
+                  c.status.append('tried to pay')
+                  if invoice.bad_payments().count()>1:
+                    c.status[-1] += ' (%d times)' % invoice.bad_payments().count()
+                c.status = ' and '.join(c.status)
+                return render('/invoice/already.mako')
+
+        if invoice.is_void():
+            c.signed_in_person = h.signed_in_person()
+            return render('/invoice/invalid.mako')
+        if invoice.overdue():
+            for ii in invoice.items:
+                if ii.product and not ii.product.available():
+                    return render('/invoice/expired.mako')
+
+        return None # All fine
+
     @dispatch_on(POST="_pay")
     def pay(self, id):
         """Request confirmation from user
@@ -132,6 +159,10 @@ class InvoiceController(BaseController):
             h.auth.no_role()
 
         #return render('/registration/really_closed.mako')
+
+        error = self._check_invoice(person, invoice)
+        if error is not None:
+            return error
 
         c.payment = Payment()
         c.payment.amount = invoice.total()
@@ -150,29 +181,9 @@ class InvoiceController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
-        if person.invoices:
-            if c.invoice.paid() or c.invoice.bad_payments().count() > 0:
-                c.status = []
-                if c.invoice.total()==0:
-                  c.status.append('zero balance')
-                if c.invoice.good_payments().count() > 0:
-                  c.status.append('paid')
-                  if c.invoice.good_payments().count()>1:
-                    c.status[-1] += ' (%d times)' % c.invoice.good_payments().count()
-                if c.invoice.bad_payments().count() > 0:
-                  c.status.append('tried to pay')
-                  if c.invoice.bad_payments().count()>1:
-                    c.status[-1] += ' (%d times)' % c.invoice.bad_payments().count()
-                c.status = ' and '.join(c.status)
-                return render('/invoice/already.mako')
-
-        if c.invoice.is_void():
-            c.signed_in_person = h.signed_in_person()
-            return render('/invoice/invalid.mako')
-        if c.invoice.overdue():
-            for ii in c.invoice.items:
-                if ii.product and not ii.product.available():
-                    return render('/invoice/expired.mako')
+        error = self._check_invoice(person, c.invoice)
+        if error is not None:
+            return error
 
         client_ip = request.environ['REMOTE_ADDR']
         if 'HTTP_X_FORWARDED_FOR' in request.environ:
