@@ -1,4 +1,3 @@
-# coding=utf-8
 """The application's model objects"""
 import sqlalchemy as sa
 
@@ -52,7 +51,7 @@ def setup(meta):
     product.ceilings.append(ceiling_nonearlybird)
     meta.Session.add(product);
 
-    product = Product(category_id='1', active=True, description="Kororā Little Blue Penguin Sponsorship",
+    product = Product(category_id='1', active=True, description="Korora Little Blue Penguin Sponsorship",
                       cost="225000", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
