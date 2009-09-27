@@ -61,12 +61,13 @@
         <td style="text-align: right">${ h.number_to_currency(c.invoice.total()/100.0 * h.lca_info['sales_tax']) })</td>
       </tr>
     </table>
-    
-% if not c.invoice.is_void() and c.invoice.paid():
+% if c.invoice.is_void():
+        <p class="pay_button">This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</p>
+% elif c.invoice.paid():
         <p class="pay_button">Invoice has been paid.</p>
 % elif c.invoice.bad_payments().count() > 0:
-        <p class="pay_button">Invalid payments have been applied to this invoice, please email ${ h.contact_email('the organising committee') }</a></p>
-% elif not c.invoice.is_void() and not c.invoice.paid():
+        <p class="pay_button">Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></p>
+% else:
         <p class="pay_button">${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</p>
 % endif    
     <p>Further information on your registration is available at: ${ h.link_to('http://' + h.host_name() + h.url_for(controller='registration', action='status'), h.url_for(controller='registration', action='status')) }</p>

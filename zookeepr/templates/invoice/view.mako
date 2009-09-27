@@ -4,15 +4,17 @@
         <li>${ h.link_to('Registration status', url=h.url_for(controller='registration', action='status')) }</li>
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
-% if not c.invoice.is_void() and c.invoice.paid():
+% if c.invoice.is_void():
+        <li>This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
+% elif c.invoice.paid():
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>Invoice was paid by ${ c.invoice.person.email_address }.</li>
 %   else:
         <li>Invoice has been paid.</li>
 %   endif
 % elif c.invoice.bad_payments().count() > 0:
-        <li>Invalid payments have been applied to this invoice, please email ${ h.contact_email('the organising committee') }</a></li>
-% elif not c.invoice.is_void() and not c.invoice.paid():
+        <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></li>
+% else:
         <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>
         <li>
           ${ h.link_to('Regenerate invoice', url = h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }

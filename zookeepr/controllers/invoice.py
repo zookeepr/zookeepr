@@ -238,13 +238,24 @@ class InvoiceController(BaseController):
         # We should really remove the pdf file, shouldn't we.
         return res
 
-    @authorize(h.auth.has_organiser_role)
     def void(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+        
         c.invoice = Invoice.find_by_id(id, True)
-        c.invoice.void = "Administration Change"
-        meta.Session.commit()
-        h.flash("Invoice was voided.")
-        return redirect_to(action='view', id=c.invoice.id)
+        if h.auth.authorized(h.auth.has_organiser_role):
+            c.invoice.void = "Administration Change"
+            meta.Session.commit()
+            h.flash("Invoice was voided.")
+            return redirect_to(action='view', id=c.invoice.id)
+        else:
+            c.invoice.void = "User cancellation"
+            c.person = c.invoice.person
+            meta.Session.commit()
+            email(lca_info['contact_email'], render('/invoice/user_voided.mako'))
+            h.flash("Previous invoice was voided.")
+            return redirect_to(controller='registration', action='pay', id=c.person.registration.id)
 
     @authorize(h.auth.has_organiser_role)
     def unvoid(self, id):
