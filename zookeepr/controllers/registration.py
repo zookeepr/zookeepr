@@ -159,7 +159,7 @@ class RegistrationController(BaseController):
         for invoice in h.signed_in_person().invoices:
             if not invoice.is_void():
                 if invoice.paid() and invoice.total() != 0:
-                    return False, "Sorry, you've already paid"
+                    return False, "Sorry, you've already paid. Contact the team at " + h.lca_info['contact_email'] + " if you need anything changed."
         return True, "You can edit"
 
     def _product_available(self, product, stock=True, qty=0):
