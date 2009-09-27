@@ -207,6 +207,8 @@ class InvoiceController(BaseController):
             redirect(uri)
 
     def pdf(self, id):
+        return "Currently disabled." # FIXME: remove PDF invoices work again
+
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()

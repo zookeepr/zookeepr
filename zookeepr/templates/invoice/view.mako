@@ -3,7 +3,7 @@
       <ul>
         <li>${ h.link_to('Registration status', url=h.url_for(controller='registration', action='status')) }</li>
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
-        <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
+##        <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
 % if c.invoice.is_void():
         <li>This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
 % elif c.invoice.paid():
