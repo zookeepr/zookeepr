@@ -2,52 +2,46 @@
 
         <h2>Your registration details</h2>
         <p>Here are the registration details we have for you.</p>
-        <p>${ h.link_to('Registration status', url=h.url_for(action='status')) }</p>
 
-        <h2>About yourself</h2>
-
-        <p class="label">Your first name:</p>
-        <p>${ c.registration.person.firstname | h }</p>
-
-        <p class="label">Your last name:</p>
-        <p>${ c.registration.person.lastname | h }</p>
-
-        <p class="label">Email address:</p>
-        <p>${ c.registration.person.email_address | h }</p>
-        <p class="note">Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.</p>
-
-        <h2>Personal Information</h2>
-
-        <p class="label">Address:</p>
+        <blockquote>
         <p>
-          ${ c.registration.person.address1 | h }
-          <br>
-          ${ c.registration.person.address2 | h }
+        ${ c.registration.person.firstname } ${ c.registration.person.lastname }
+        <br/>${ c.registration.person.address1 }
+%if c.registration.person.address2:
+        <br/>${ c.registration.person.address2 }
+%endif
+%if c.registration.person.state:
+        <br/>${ c.registration.person.city }
+        <br/>${ c.registration.person.state }, ${ c.registration.person.postcode }
+%else:
+        <br/>${ c.registration.person.city }, ${ c.registration.person.postcode }
+%endif
+        <br/>${ c.registration.person.country }
         </p>
-        <p class="label">City/Suburb:</p>
-        <p>${ c.registration.person.city | h }</p>
-        <p class="label">State/Province:</p>
-        <p>${ c.registration.person.state | h }</p>
-        <p class="label">Country:</p>
-        <p>${ c.registration.person.country | h }</p>
-        <p class="label">Postcode/ZIP:</p>
-        <p>${ c.registration.person.postcode | h }</p>
-
-        <p class="label">Phone number:</p>
-        <p>${ c.registration.person.phone | h }</p>
-
-        <p class="label">Mobile/Cell number:</p>
-        <p>${ c.registration.person.mobile | h }</p>
-
-        <p class="label">Company:</p>
-        <p>${ c.registration.person.company | h }</p>
+        </blockquote>
+%if c.registration.person.phone:
+        <p class="label"><b>Phone number:</b> ${ c.registration.person.phone }</p>
+%endif
+%if c.registration.person.mobile:
+        <p class="label"><b>Mobile/Cell number:</b> ${ c.registration.person.mobile }</p>
+%endif
+%if c.registration.person.company:
+        <p class="label"><b>Company:</b> ${ c.registration.person.company }</p>
+%endif
 
 % for category in c.product_categories:
 
-        <h2>${ category.name.title() }</h2>
+<%  category_printed = False %>
+
+%if category.name != 'Accommodation' or h.lca_rego['accommodation']['self_book'] != 'yes':
+
 %   for product in category.products:
 %       for rproduct in c.registration.products:
 %           if rproduct.product == product:
+%               if not category_printed:
+        <h2>${ category.name.title() }</h2>
+<%                category_printed = True %>
+%               endif
 %               if category.display == 'qty':
         <p>${ rproduct.qty } x ${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</p>
 %               else:
@@ -56,7 +50,7 @@
 %           endif
 %       endfor
 %   endfor
-%   if category.name == 'Accommodation' and not h.lca_rego['accommodation']['self_book'] == 'yes':
+%   if category.name == 'Accommodation':
 
         <p class="label">Check in on:</p>
         <p>${ h.date(c.registration.checkin) }</p>
@@ -64,29 +58,33 @@
         <p class="label">Check out on:</p>
         <p>${ h.date(c.registration.checkout) }</p>
 %   elif category.name == 'Partners Programme':
-
-        <p class="label">Your partner's name:</p>
-        <p>${ c.registration.partner_name }</p>
-        <p class="label">Your partner's email address:</p>
-        <p>${ c.registration.partner_email }</p>
-        <p class="label">Your partner's mobile number:</p>
-        <p>${ c.registration.partner_mobile }</p>
+%     if c.registration.partner_name:
+        <p class="label"><b>Your partner's name:</b> ${ c.registration.partner_name }</p>
+%     endif
+%     if c.registration.partner_email:
+        <p class="label"><b>Your partner's email address:</b> ${ c.registration.partner_email }</p>
+%     endif
+%     if c.registration.partner_mobile:
+        <p class="label"><b>Your partner's mobile number:</b> ${ c.registration.partner_mobile }</p>
+%     endif
 %   endif
+%endif
 % endfor
 
         <h2>Further Information</h2>
 
-        <p>${ h.yesno(c.registration.over18) |n } Are you over 18?</p>
+        <p>${ h.yesno(c.registration.over18) |n } Over 18 year old</p>
 
-        <p class="label">Voucher Code: ${ c.registration.voucher_code | h }</p>
-
-        <p class="label">Dietary requirements:</p>
-        <p>${ c.registration.diet | h }</p>
-
-        <p class="label">Other special requirements:</p>
-        <p>${ c.registration.special | h }</p>
-
-        <p class="label">Preferred mini-confs:</p>
+%if c.registration.voucher_code:
+        <p class="label"><b>Voucher Code:</b> ${ c.registration.voucher_code }</p>
+%endif
+%if c.registration.diet:
+        <p class="label"><b>Dietary requirements:</b> ${ c.registration.diet }</p>
+%endif
+%if c.registration.special:
+        <p class="label"><b>Other special requirements:</b> ${ c.registration.special }</p>
+%endif
+        <p class="label"><b>Preferred mini-confs:</b></p>
         <p>
           <table>
             <tr>
@@ -107,9 +105,8 @@
 % endfor
             </tr>
           </table>
-          <p class="note">Please check the ${ h.link_to('mini-confs', url="/programme/mini-confs") } page for details on each event. You can choose to attend multiple mini-confs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
 
-          <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
+          <p class="label"><label for="registration.prevlca"><b>Previous LCA attendance:</b></label></p>
           <p class="entries">
 % for (year, desc) in h.lca_rego['past_confs']:
             <br>
@@ -118,36 +115,38 @@
 % endfor
           </p>
 
-          <h2>Optional</h2>
-          <p class="label">Your favourite shell: ${ c.registration.shell }</p>
-
-          <p class="label">Your favourite editor: ${ c.registration.editor }</p>
-
-          <p class="label">Your favourite distro: ${ c.registration.distro }</p>
-
-          <p class="label">Superhero name: ${ c.registration.nick }</p>
-
-%if h.lca_rego['pgp_collection'] != 'no':
-          <p class="label">GnuPG/PGP Keyid: ${ c.registration.keyid }</p>
+%if c.registration.shell:
+          <p class="label"><b>Your favourite shell:</b> ${ c.registration.shell }</p>
 %endif
-          <p class="label">Planet Feed: ${ c.registration.planetfeed }</p>
-
-          <p class="label"><label for="registration.silly_description">Description:</label></p>
-          <blockquote><p>${ c.registration.silly_description | h }</p></blockquote>
+%if c.registration.editor:
+          <p class="label"><b>Your favourite editor:</b> ${ c.registration.editor }</p>
+%endif
+%if c.registration.distro:
+          <p class="label"><b>Your favourite distro:</b> ${ c.registration.distro }</p>
+%endif
+%if c.registration.nick:
+          <p class="label"><b>Superhero name:</b> ${ c.registration.nick }</p>
+%endif
+%if h.lca_rego['pgp_collection'] != 'no' and c.registration.keyid:
+          <p class="label"><b>GnuPG/PGP Keyid:</b> ${ c.registration.keyid }</p>
+%endif
+%if c.registration.planetfeed:
+          <p class="label"><b>Planet Feed:</b> ${ c.registration.planetfeed }</p>
+%endif
+          <p class="label"><label for="registration.silly_description"><b>Description:</b> ${ c.registration.silly_description }</p>
           <p class="note">This is a randomly chosen description for your name badge</p>
-
 
           <h2>Subscriptions</h2>
 
-          <p>${ h.yesno('linuxaustralia' in c.registration.signup) |n } I want to sign up for (free) Linux Australia membership!</p>
+          <p>${ h.yesno('linuxaustralia' in (c.registration.signup or [])) |n } I want to sign up for (free) Linux Australia membership!</p>
 
-          <p>${ h.yesno('nzoss' in c.registration.signup) |n } I want to sign up for membership with the New Zealand Open Source Society.</p>
+          <p>${ h.yesno('nzoss' in (c.registration.signup or [])) |n } I want to sign up for membership with the New Zealand Open Source Society.</p>
 
-          <p>${ h.yesno('internetnz' in c.registration.signup) |n } I want to sign up for membership with the Internet NZ.</p>
+          <p>${ h.yesno('internetnz' in (c.registration.signup or [])) |n } I want to sign up for membership with the Internet NZ.</p>
 
-          <p>${ h.yesno('announce' in c.registration.signup) |n } I want to sign up to the low traffic conference announcement mailing list!</p>
+          <p>${ h.yesno('announce' in (c.registration.signup or [])) |n } I want to sign up to the low traffic conference announcement mailing list!</p>
 
-          <p>${ h.yesno('chat' in c.registration.signup) |n } I want to sign up to the conference attendees mailing list!</p>
+          <p>${ h.yesno('chat' in (c.registration.signup or [])) |n } I want to sign up to the conference attendees mailing list!</p>
 
 % if c.registration.person.is_speaker():
           <h2>Speaker recording consent and release</h2>
