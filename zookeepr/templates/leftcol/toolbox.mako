@@ -81,6 +81,12 @@ ${ parent.toolbox_extra() }
 %   if h.lca_info['conference_status'] == 'open' or h.signed_in_person().registration:
       ${ make_link('Conference registration', h.url_for(controller='registration', action='status')) }
 %   endif
+%   if h.signed_in_person().is_speaker():
+      ${ make_link('Speaker Info', '/programme/speaker_info') }
+%   endif
+%   if h.signed_in_person().is_miniconf_org():
+      ${ make_link('Miniconf Organiser Info', '/programme/miniconf_info') }
+%   endif
 %   if len(h.signed_in_person().proposals) > 0:
       ${ make_link('My proposals', h.url_for(controller='proposal')) }
 %   endif
