@@ -150,7 +150,11 @@ else:
           <table>
             <tr><th><span class="mandatory">*</span>Please pick at least one</th>
 %              for (size, product) in fields[gender]:
-               <th>${ size }</th>
+               <th>${ size }
+%               if not product.available():
+                  <span class="mandatory">^</span>
+%               endif
+               </th>
 %              endfor
              </tr>
              <tr>
@@ -158,7 +162,7 @@ else:
 %              for (size, product) in fields[gender]:
 
 %               if not product.available():
-            <td><span class="mandatory">^</span>${ h.text('none', size=2, disabled=True) }${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
+            <td>${ h.text('none', size=2, disabled=True) }${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
 %               else:
             <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
 %               endif
