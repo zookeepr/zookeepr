@@ -66,7 +66,7 @@
 % if c.invoice.is_void():
         <p class="pay_button">This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</p>
 % elif c.invoice.paid():
-        <p class="pay_button">Invoice has been paid.</p>
+        <p class="pay_button">Invoice has been <b>paid</b>. Receipt number: <code>PR${ c.payment_received.id }P${ c.payment.id }</code></p>
 % elif c.invoice.bad_payments().count() > 0:
         <p class="pay_button">Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></p>
 % else:

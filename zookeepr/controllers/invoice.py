@@ -94,6 +94,11 @@ class InvoiceController(BaseController):
 
         c.printable = False
         c.invoice = Invoice.find_by_id(id, True)
+        c.payment_received = None
+        c.payment = None
+        if c.invoice.paid():
+            c.payment_received = c.invoice.good_payments()[0]
+            c.payment = c.payment_received.payment
         return render('/invoice/view.mako')
 
     def printable(self, id):
@@ -103,6 +108,11 @@ class InvoiceController(BaseController):
 
         c.printable = True
         c.invoice = Invoice.find_by_id(id, True)
+        c.payment_received = None
+        c.payment = None
+        if c.invoice.paid():
+            c.payment_received = c.invoice.good_payments()[0]
+            c.payment = c.payment_received.payment
         return render('/invoice/view_printable.mako')
 
     def index(self):
