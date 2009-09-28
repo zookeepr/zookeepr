@@ -121,6 +121,7 @@ class InvoiceController(BaseController):
         return render('/invoice/remind.mako')
 
     def _check_invoice(self, person, invoice):
+        c.invoice = invoice
         if person.invoices:
             if invoice.paid() or invoice.bad_payments().count() > 0:
                 c.status = []
