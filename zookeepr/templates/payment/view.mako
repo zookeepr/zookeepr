@@ -15,7 +15,7 @@
 
 <p>
 <table>
-<tr><td><b>Status:</b></td>
+<tr><td valign="top"><b>Status:</b></td>
 <td>
 % if c.payment.approved:
 <font color="green">Approved</font>
@@ -27,11 +27,11 @@
 </tr>
 
 %  if c.validation_errors:
-<tr><td><b><font color="red">Zookeepr validation errors:</font></b></td>
+<tr><td valign="top"><b><font color="red">Zookeepr validation errors:</font></b></td>
 <td>${ '<br>'.join(c.validation_errors) | n}</td></tr>
 %  endif
 
-<tr><td><b>Invoice:</b></td>
+<tr><td valign="top"><b>Invoice:</b></td>
 %if c.payment.invoice is None:
 <td><font color="red">None found</font></td>
 %else:
@@ -43,15 +43,15 @@
 </td></tr>
 %endif
 
-<tr><td><b>Amount paid:</b></td>
+<tr><td valign="top"><b>Amount paid:</b></td>
 <td>${ h.number_to_currency(c.payment.amount_paid / 100.0) } (charged in ${ c.payment.currency_used })</td></tr>
 
-<tr><td><b>Payment gateway:</b></td>
+<tr><td valign="top"><b>Payment gateway:</b></td>
 <td>Auth: ${ c.payment.auth_code }
 <br>Reference: ${ c.payment.gateway_ref }</td></tr>
 
 %  if c.payment.card_type is not None:
-<tr><td><b>${ c.payment.card_type } Card:</b></td>
+<tr><td valign="top"><b>${ c.payment.card_type } Card:</b></td>
 <td>${ c.payment.card_name }
 <br>${ c.payment.card_number }
 <br>${ c.payment.card_expiry }
@@ -62,14 +62,14 @@
 -->
 %  endif
 
-<tr><td><b>Email address:</b></td>
+<tr><td valign="top"><b>Email address:</b></td>
 <td>${ c.payment.email_address }</td></tr>
 
-<tr><td><b>Client IP:</b></td>
+<tr><td valign="top"><b>Client IP:</b></td>
 <td>${ c.payment.client_ip_zookeepr } (zookeepr)<br>
 ${ c.payment.client_ip_gateway } (gateway)</td></tr>
 
-<tr><td><b>Timestamp:</b></td>
+<tr><td valign="top"><b>Timestamp:</b></td>
 <td>${ c.payment.creation_timestamp } (created)
 <br>${ c.payment.last_modification_timestamp } (modified)</td></tr>
 
