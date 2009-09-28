@@ -128,7 +128,7 @@ import array
 %              for (size, product) in fields[gender]:
 
 %               if not product.available():
-            <td>'<span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
+            <td><span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
 %               else:
             <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
 %               endif
