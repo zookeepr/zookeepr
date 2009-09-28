@@ -118,6 +118,16 @@ else:
           <p class="entries">${ h.text('person.company', size=60) }</p>
 
         </fieldset>
+
+        <fieldset id="voucher">
+          <legend>&nbsp;</legend>
+          <h2>Voucher</h2>
+
+          <p class="label"><label for="registration.voucher_code">Voucher code:</label></p>
+          <p class="entries">${ h.text('registration.voucher_code', size=15) }</p>
+          <p class="note">If you have been provided with a voucher code, please enter it here.</p>
+
+        </fieldset>
 % for category in c.product_categories:
 <%
   all_products = category.available_products(c.signed_in_person, stock=False)
@@ -303,10 +313,6 @@ else:
             <label>${ h.radio('registration.over18', 0) } No</label><br />
            </p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
-
-          <p class="label"><label for="registration.voucher_code">Voucher code:</label></p>
-          <p class="entries">${ h.text('registration.voucher_code', size=15) }</p>
-          <p class="note">If you have been provided with a voucher code, please enter it here.</p>
 
           <p class="label"><label for="registration.diet">Dietary requirements:</label></p>
           <p class="entries">${ h.text('registration.diet', size=60) }</p>
