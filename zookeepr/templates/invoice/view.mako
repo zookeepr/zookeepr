@@ -16,10 +16,10 @@
         <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></li>
 % else:
         <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>
-        <li>
-          ${ h.link_to('Regenerate invoice', url = h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }
-          <br><span style="font-size: small;">Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</span>
-        </li>
+        <li>${ h.link_to('Regenerate invoice', url = h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
+        <ul>
+          <li><span style="note">Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</li>
+        </ul>
 % endif
 
 %if h.auth.authorized(h.auth.has_organiser_role):
@@ -31,7 +31,7 @@
 %       else:
               <font color="red">DECLINED</font>
 %       endif
-              PaymentReceived ${ h.link_to(str(pr.id), url=h.url_for(controller='payment', action='view', id=pr.payment.id)) } (${ pr.email_address })
+              Payment Received ${ h.link_to(str(pr.id), url=h.url_for(controller='payment', action='view', id=pr.payment.id)) } (${ pr.email_address })
 %       if pr.validation_errors:
               -- <font color="red">Validation errors</font>
 %       endif
@@ -44,7 +44,7 @@
 %endif
       </ul>
 %   if 'invoice_message' in h.lca_info and (c.invoice.is_void() or not c.invoice.paid()):
-          <p><small><strong>Please Note:</strong> ${ h.lca_info['invoice_message'] }</small></p>
+          <p style="note"><strong>Please Note:</strong> ${ h.lca_info['invoice_message'] }</p>
 %   endif
     </div>
 
