@@ -33,7 +33,7 @@ lca_info = {
   'media_license_url'  : 'http://creativecommons.org/licenses/by-sa/3.0/',
   'sales_tax' : 0.125,
 
-  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 27th of October (unless earlybird tickets sell out earlier).',
+  'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 30th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
   'cfp_status' : 'closed',
