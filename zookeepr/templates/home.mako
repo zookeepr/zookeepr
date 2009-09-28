@@ -46,7 +46,7 @@ for d in c.db_content_news_all:
 
 <h2>Registrations coming soon!</h2>
 
-<p>Online registrations for LCA2010 will be opening in mid-late September 2009. There are only a limited number of Early Bird Registrations available, so get in early!</p>
+<p>Online registrations for LCA2010 will be opening in early October 2009. There are only a limited number of Early Bird Registrations available, so get in early!</p>
 
 <p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
 
