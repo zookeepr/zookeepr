@@ -324,13 +324,17 @@ class RegistrationController(BaseController):
         c.student_ticket = False
         c.infants = False
         c.children = False
+        c.pp_children = False
         for rproduct in c.registration.products:
             if 'Ticket' in rproduct.product.category.name and 'Student' in rproduct.product.description:
                 c.student_ticket = True
-            elif 'Infant' in rproduct.product.description:
-                c.infants = True
-            elif 'Child' == rproduct.product.description:
-                c.children = True
+            elif 'Dinner' in rproduct.product.category.name:
+                if 'Infant' == rproduct.product.description:
+                    c.infants = True
+                elif 'Child' == rproduct.product.description:
+                    c.children = True
+            elif rproduct.product.category.name == 'Partners Programme' and ('Child' in rproduct.product.description or 'Infant' in rproduct.product.description):
+                c.pp_children = True
 
         email(
             c.person.email_address,
