@@ -128,7 +128,7 @@ import array
 %              for (size, product) in fields[gender]:
 
 %               if not product.available():
-            <td>Sold&nbsp;out!${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
+            <td>'<span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
 %               else:
             <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
 %               endif
@@ -143,9 +143,9 @@ import array
 <%
                soldout = ''
                if not product.available():
-                   soldout = '<span class="mandatory">SOLD OUT</span><br />'
+                   soldout = '<span class="mandatory">SOLD&nbsp;OUT</span><br />'
 %>
-    <th>${ product.description }<br />${ soldout }(${ h.number_to_currency(product.cost/100.0) })</th>
+    <th>${ product.description }<br />${ soldout | n}(${ h.number_to_currency(product.cost/100.0) })</th>
 %           endfor
   </tr>
 %           for product in products:
@@ -159,9 +159,9 @@ import array
 <%
                soldout = ''
                if not product.available():
-                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+                   soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-           <li> <label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
+           <li> <label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
 %           endfor
           </ul>
           </p>
@@ -182,10 +182,10 @@ import array
 <%
                soldout = ''
                if not product.available():
-                   soldout = ' SOLD OUT '
+                   soldout = ' SOLD&nbsp;OUT '
                endif
 %>
-              <option value="${ product.id }"> ${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</option>
+              <option value="${ product.id }"> ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</option>
 %           endfor
             </select>
           </p>
@@ -195,18 +195,18 @@ import array
 <%
                soldout = ''
                if not product.available():
-                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+                   soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + product.description.replace('-','_')) }${ soldout }${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + product.description.replace('-','_')) }${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
 <%
                soldout = ''
                if not product.available():
-                   soldout = ' <span class="mandatory">SOLD OUT</span> '
+                   soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-          <p>${ soldout }${ product.description } ${ h.text('products.product_' + str(product.id) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
+          <p>${ soldout |n}${ product.description } ${ h.text('products.product_' + str(product.id) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
 %           endfor
 %       endif
 %       if category.name == 'Accommodation':
