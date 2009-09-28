@@ -45,12 +45,14 @@
         <th>Total (Inc. GST)</th>
       </tr></thead>
 % for item in c.invoice.items:
+%   if h.lca_rego['accommodation']['self_book'] != 'yes' or item.product is None or item.product.category.name != 'Accommodation':
       <tr class="${ h.cycle('even', 'odd') }">
         <td>${ item.description }</td>
         <td style="text-align:center">${ item.qty }</td>
         <td style="text-align:right">${ h.number_to_currency(item.cost/100.0) }</td>
         <td style="text-align:right">${ h.number_to_currency(item.total()/100.0) }</td>
       </tr>
+%   endif
 % endfor
       <tr>
         <td style="text-align: right" colspan="3"><strong>Total</strong></td>
