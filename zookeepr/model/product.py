@@ -112,7 +112,7 @@ def setup(meta):
     product = Product(category_id='4', active=True, description="Wrest Point (Visit Accommodation page)",
                       cost="0", auth=None, validate=None)
     meta.Session.add(product);
-    product = Product(category_id='4', active=True, description="University Accommodation - Includes Breakfast! (price per night)",
+    product = Product(category_id='4', active=True, description="University Accommodation",
                       cost="6000", auth=None, validate=None)
     product.ceilings.append(ceiling_uniaccom)
     meta.Session.add(product);
