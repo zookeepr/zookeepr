@@ -6,70 +6,33 @@ import array
 
 <p class="note">${ h.lca_info['event_pricing_disclaimer'] }</p>
 
-        <fieldset id="person">
-          <legend>&nbsp;</legend>
-          <h2>About yourself</h2>
-
-% if not h.signed_in_person():
-          <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
-% endif
-          <p class="label">
-% if not c.signed_in_person:
-            <span class="mandatory">*</span>
-% endif
-            <label for="person.firstname">Your first name:</label>
-          </p>
-% if c.registration and c.registration.person:
-          <p>${ c.registration.person.firstname | h }</p>
-% elif c.signed_in_person:
-          <p>${ c.signed_in_person.firstname | h }</p>
-% else:
-          <p class="entries">${ h.text('person.firstname', size=40) }</p>
-% endif
-
-          <p class="label">
-% if not c.signed_in_person:
-            <span class="mandatory">*</span>
-% endif
-            <label for="person.lastname">Your last name:</label>
-          </p>
-% if c.registration and c.registration.person:
-          <p>${ c.registration.person.lastname | h }</p>
-% elif c.signed_in_person:
-          <p>${ c.signed_in_person.lastname | h }</p>
-% else:
-          <p class="entries">${ h.text('person.lastname', size=40) }</p>
-% endif
-
-          <p class="label">
-% if not c.signed_in_person:
-            <span class="mandatory">*</span>
-% endif
-            <label for="person.email_address">Email address:</label>
-          </p>
-% if c.registration and c.registration.person:
-          <p>${ c.registration.person.email_address | h }</p>
-% elif c.signed_in_person:
-          <p>${ c.signed_in_person.email_address | h }</p>
-% else:
-          <p class="entries">${ h.text('person.email_address', size=40) }</p>
-% endif
-          <p class="note">Your email address will only be used to correspond with you, and is your login name for the website.  It will not be shown or used otherwise.</p>
-% if not c.signed_in_person:
-
-          <p class="label"><span class="mandatory">*</span><label for="person.password">Choose a password:</label></p>
-          <p class="entries">${ h.password("person.password", size=40) }</p>
-jj
-          <p class="label"><span class="mandatory">*</span><label for="person.password_confirm">Confirm your password:</label></p>
-          <p class="entries">${ h.password("person.password_confirm", size=40) }</p>
-% endif
-        </fieldset>
-
         <fieldset id="personal">
           <legend>&nbsp;</legend>
           <h2>Personal Information</h2>
 
           <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
+
+          <p class="label">
+            <b>Name:</b>
+% if c.registration and c.registration.person:
+          ${ c.registration.person.firstname }
+% else:
+          ${ c.signed_in_person.firstname }
+% endif
+% if c.registration and c.registration.person:
+          ${ c.registration.person.lastname }
+% else:
+          ${ c.signed_in_person.lastname }
+% endif
+          </p>
+          <p class="label">
+            <b>Email address:</b>
+% if c.registration and c.registration.person:
+          ${ c.registration.person.email_address }
+% else:
+          ${ c.signed_in_person.email_address }
+% endif
+          </p>
 
           <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
           <p class="entries">
@@ -97,10 +60,7 @@ jj
           <p class="entries">${ h.text('person.postcode', size=40) }</p>
 
 <%
-if h.signed_in_person():
   is_speaker = c.signed_in_person.is_speaker()
-else:
-  is_speaker = False
 %>
 
           <p class="label"><label for="person.mobile">Phone number (International Format):</label></p>
