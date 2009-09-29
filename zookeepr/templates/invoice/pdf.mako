@@ -73,7 +73,7 @@
   </items>
 
   <itemcount>${ itemid }</itemcount>
-
-  <gst cents="${ gst }">${ h.number_to_currency(h.sales_tax(c.invoice.total())/100.0) }</gst>
+<% gst = h.sales_tax(c.invoice.total()) %>
+  <gst cents="${ gst }">${ h.number_to_currency(gst/100.0) }</gst>
 
 </invoice>
