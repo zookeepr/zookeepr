@@ -74,7 +74,6 @@
 
   <itemcount>${ itemid }</itemcount>
 
-<% gst = int(c.invoice.total() * h.lca_info['sales_tax']) %>
-  <gst cents="${ gst }">${ h.number_to_currency(gst/100.0) }</gst>
+  <gst cents="${ gst }">${ h.number_to_currency(h.sales_tax(c.invoice.total())/100.0) }</gst>
 
 </invoice>

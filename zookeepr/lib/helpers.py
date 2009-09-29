@@ -467,3 +467,16 @@ def number_to_currency(number, unit='$', precision=2):
       return 'Free'
     else:
       return unit + "%#.*f" % (precision, number)
+
+def sales_tax(amount):
+    """ Calculate the sales tax that for the supplied amount. """
+    if 'sales_tax_multiplier' in lca_info:
+      sales_tax = int(amount * lca_info['sales_tax_multiplier'])
+    elif 'sales_tax_divisor' in lca_info:
+      sales_tax = int(amount / lca_info['sales_tax_divisor'])
+    else:
+      # wtf?
+      sales_tax = 0
+
+    return sales_tax
+

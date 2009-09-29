@@ -31,7 +31,8 @@ lca_info = {
   'date' : datetime(2010, 1, 17, 9, 0, 00),
   'media_license_name' : 'Creative Commons Attribution-Share Alike License',
   'media_license_url'  : 'http://creativecommons.org/licenses/by-sa/3.0/',
-  'sales_tax' : 0.125,
+  #'sales_tax_multiplier' : 0.125,
+  'sales_tax_divisor'    : 9,
 
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 30th of October (unless earlybird tickets sell out earlier).',
 
