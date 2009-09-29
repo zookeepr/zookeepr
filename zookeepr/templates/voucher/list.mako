@@ -47,7 +47,7 @@
 %   endif
         <td>${ voucher.comment |h}</td>
 %   if voucher.registration:
-        <td>${ voucher.registration[0].person.firstname } ${ voucher.registration[0].person.lastname }
+        <td>${ h.link_to(${ voucher.registration[0].person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration[0].person.id)) }
 %          if voucher.registration[0].person.company:
            ${ "(" + voucher.registration[0].person.company + ")"}
 %          endif
@@ -55,9 +55,13 @@
         </td>
 %   else:
         <td><strong>Hasn't been used</strong></td>
+        <td>
 %       if c.admin:
-        <td>${ h.link_to('delete', url=h.url_for(action='delete', id=voucher.id)) }</td>
+          ${ h.link_to('delete', url=h.url_for(action='delete', id=voucher.id)) }
+%       else:
+          &nbsp;
 %       endif
+        </td>
 %   endif
 
       </tr>
