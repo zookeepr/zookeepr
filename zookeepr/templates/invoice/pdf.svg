@@ -1,10 +1,4 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!-- Created with Inkscape (http://www.inkscape.org/) -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:template match="/">
-<xsl:comment>
-  Zookeepr invoice template
-</xsl:comment>
 <svg:svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -151,7 +145,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3859"><xsl:value-of select="invoice/items/item12/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3859">desc 12</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3269"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -164,7 +158,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3275"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 12<value-of
    select="invoice/items/item12/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3277"
@@ -178,7 +172,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3283"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 12<value-of
    select="invoice/items/item12/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,178.63993)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -192,7 +186,7 @@
              width="139.26213"
              id="rect3289" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3291"><xsl:value-of
+           id="flowPara3291">sub 12<value-of
    select="invoice/items/item12/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g3433"
@@ -319,23 +313,23 @@
            y="423.52911"
            style="font-size:16px" /></svg:flowRegion><svg:flowPara
          id="flowPara2713"
-         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><xsl:value-of select="invoice/attn/field1" /></svg:flowPara><svg:flowPara
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">attn 1</svg:flowPara><svg:flowPara
          id="flowPara2721"
-         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><xsl:value-of select="invoice/attn/field2" /></svg:flowPara><svg:flowPara
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">attn 2</svg:flowPara><svg:flowPara
          id="flowPara2734"
-         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"><xsl:value-of select="invoice/attn/field3" /></svg:flowPara><svg:flowPara
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">attn 3</svg:flowPara><svg:flowPara
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-         id="flowPara2744"><xsl:value-of select="invoice/attn/field4" /></svg:flowPara><svg:flowPara
+         id="flowPara2744">attn 4</svg:flowPara><svg:flowPara
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-         id="flowPara2746"><xsl:value-of select="invoice/attn/field5" /></svg:flowPara><svg:flowSpan
+         id="flowPara2746">attn 5</svg:flowPara><svg:flowSpan
          style="font-size:14;-inkscape-font-specification:DejaVu Sans;font-family:DejaVu Sans;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
-         id="flowSpan2760"><xsl:value-of select="invoice/attn/field6" /></svg:flowSpan><svg:flowPara
+         id="flowSpan2760">attn 6</svg:flowSpan><svg:flowPara
          id="flowPara2736"
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans" /><svg:flowPara
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-         id="flowPara2764"><xsl:value-of select="invoice/attn/field7" /></svg:flowPara><svg:flowPara
+         id="flowPara2764">attn 7</svg:flowPara><svg:flowPara
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Bitstream Vera Sans;-inkscape-font-specification:Bitstream Vera Sans"
-         id="flowPara2768"><xsl:value-of select="invoice/attn/email" /></svg:flowPara><svg:flowPara
+         id="flowPara2768">attn email</svg:flowPara><svg:flowPara
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
          id="flowPara2766" /></svg:flowRoot>    <svg:path
        style="fill:#1c67ba;fill-opacity:1;fill-rule:evenodd;stroke:#1c67ba;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -420,7 +414,7 @@
              width="129.21223"
              id="rect3385" /></svg:flowRegion><svg:flowPara
            style="font-size:16px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3387"><xsl:value-of
+           id="flowPara3387"><value-of
              select="invoice/amount" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2740"
@@ -438,7 +432,7 @@
              y="634.57581"
              style="font-size:14px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3148"><xsl:value-of select="invoice/items/item1/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3148">desc 1</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3447"
          style="font-size:11.6358366px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -451,7 +445,7 @@
              y="634.57581"
              style="font-size:11.6358366px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3453"
-           style="font-size:11.6358366px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:11.6358366px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 1<value-of
    select="invoice/items/item1/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="matrix(1,0,0,1.0635729,408.87538,-221.7857)"
          style="font-size:11.6358366px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -465,7 +459,7 @@
              width="87.577217"
              id="rect3781" /></svg:flowRegion><svg:flowPara
            style="font-size:11.6358366px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3783"><xsl:value-of
+           id="flowPara3783">each 1<value-of
    select="invoice/items/item1/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="matrix(1,0,0,1.0635729,481.21485,-221.19815)"
          style="font-size:11.6358366px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -479,7 +473,7 @@
              width="139.26213"
              id="rect3435" /></svg:flowRegion><svg:flowPara
            style="font-size:11.6358366px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3437"><xsl:value-of
+           id="flowPara3437">sub 1<value-of
    select="invoice/items/item1/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2758"
@@ -497,7 +491,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3146"><xsl:value-of select="invoice/items/item2/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3146">desc 2</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3477"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -510,7 +504,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3483"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 2<value-of
    select="invoice/items/item2/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3485"
@@ -524,7 +518,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3491"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 2<value-of
    select="invoice/items/item2/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,-145.00535)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -538,7 +532,7 @@
              width="139.26213"
              id="rect3497" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3499"><xsl:value-of
+           id="flowPara3499">sub 2<value-of
    select="invoice/items/item2/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2794"
@@ -556,7 +550,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3150"><xsl:value-of select="invoice/items/item3/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3150">desc 3</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3509"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -569,7 +563,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3515"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 3<value-of
    select="invoice/items/item3/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3517"
@@ -583,7 +577,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3523"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 3<value-of
    select="invoice/items/item3/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,-80.276319)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -597,7 +591,7 @@
              width="139.26213"
              id="rect3529" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3531"><xsl:value-of
+           id="flowPara3531">sub 3<value-of
    select="invoice/items/item3/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2848"
@@ -617,7 +611,7 @@
                width="87.577217"
                id="rect3459" /></svg:flowRegion><svg:flowPara
              style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-             id="flowPara3461"><xsl:value-of
+             id="flowPara3461">each 4<value-of
    select="invoice/items/item4/each" /></svg:flowPara></svg:flowRoot>        <svg:flowRoot
            transform="translate(-38.763682,-16.035535)"
            style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -631,7 +625,7 @@
                width="359.80063"
                id="rect3537" /></svg:flowRegion><svg:flowPara
              style="font-size:12px;font-family:DejaVu Sans"
-             id="flowPara3152"><xsl:value-of select="invoice/items/item4/description" /></svg:flowPara></svg:flowRoot>        <svg:flowRoot
+             id="flowPara3152">desc 4</svg:flowPara></svg:flowRoot>        <svg:flowRoot
            transform="translate(327.73323,-16.035535)"
            style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
            id="flowRoot3541"
@@ -644,7 +638,7 @@
                width="66.04184"
                id="rect3545" /></svg:flowRegion><svg:flowPara
              style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-             id="flowPara3547"><xsl:value-of
+             id="flowPara3547">qty 4<value-of
    select="invoice/items/item4/qty" /></svg:flowPara></svg:flowRoot>        <svg:flowRoot
            xml:space="preserve"
            id="flowRoot3557"
@@ -658,7 +652,7 @@
                y="634.57581"
                style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
              id="flowPara3563"
-             style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+             style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">sub 4<value-of
    select="invoice/items/item4/subtotal" /></svg:flowPara></svg:flowRoot>      </svg:g>
     </svg:g>
     <svg:g
@@ -677,7 +671,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3879"><xsl:value-of select="invoice/items/item5/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3879">desc 5</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3573"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -690,7 +684,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3579"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 5<value-of
    select="invoice/items/item5/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3581"
@@ -704,7 +698,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3587"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 5<value-of
    select="invoice/items/item5/each" /></svg:flowPara></svg:flowRoot>      <svg:g
          id="g2885">
         <svg:flowRoot
@@ -720,7 +714,7 @@
                y="634.57581"
                style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
              id="flowPara3595"
-             style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+             style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">sub 5<value-of
    select="invoice/items/item5/subtotal" /></svg:flowPara></svg:flowRoot>      </svg:g>
     </svg:g>
     <svg:g
@@ -739,7 +733,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3829"><xsl:value-of select="invoice/items/item6/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3829">desc 6</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3605"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -752,7 +746,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3611"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 6<value-of
    select="invoice/items/item6/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3613"
@@ -766,7 +760,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3619"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 6<value-of
    select="invoice/items/item6/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,113.91087)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -780,7 +774,7 @@
              width="139.26213"
              id="rect3625" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3627"><xsl:value-of
+           id="flowPara3627">sub 6<value-of
    select="invoice/items/item6/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:path
        style="fill:#1c67ba;fill-opacity:1;fill-rule:evenodd;stroke:#1c67ba;stroke-width:0.71669686px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
@@ -808,7 +802,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3831"><xsl:value-of select="invoice/items/item7/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3831">desc 7</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3109"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -821,7 +815,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3115"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 7<value-of
    select="invoice/items/item7/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(408.77968,-112.64085)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -835,7 +829,7 @@
              width="87.577217"
              id="rect3121" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3123"><xsl:value-of
+           id="flowPara3123">each 7<value-of
    select="invoice/items/item7/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,-112.64085)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -849,7 +843,7 @@
              width="139.26213"
              id="rect3137" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3139"><xsl:value-of
+           id="flowPara3139">sub 7<value-of
    select="invoice/items/item7/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2812"
@@ -867,7 +861,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3889"><xsl:value-of select="invoice/items/item8/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3889">desc 8</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3149"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -880,7 +874,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3155"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 8<value-of
    select="invoice/items/item8/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3157"
@@ -894,7 +888,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3163"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 8<value-of
    select="invoice/items/item8/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,-47.911786)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -908,7 +902,7 @@
              width="139.26213"
              id="rect3169" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3171"><xsl:value-of
+           id="flowPara3171">sub 8<value-of
    select="invoice/items/item8/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2867"
@@ -927,7 +921,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3853"><xsl:value-of select="invoice/items/item9/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3853">desc 9</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3181"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -940,7 +934,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3187"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 9<value-of
    select="invoice/items/item9/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3189"
@@ -954,7 +948,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3195"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 9<value-of
    select="invoice/items/item9/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,16.817279)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -968,7 +962,7 @@
              width="139.26213"
              id="rect3201" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3203"><xsl:value-of
+           id="flowPara3203">sub 9<value-of
    select="invoice/items/item9/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2970"
@@ -987,7 +981,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3131"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 10<value-of
    select="invoice/items/item10/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3205"
@@ -1001,7 +995,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3855"><xsl:value-of select="invoice/items/item10/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3855">desc 10</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3213"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1014,7 +1008,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3219"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 10<value-of
    select="invoice/items/item10/qty" /></svg:flowPara></svg:flowRoot>      <svg:g
          id="g2891"
          style="font-size:12px">
@@ -1031,7 +1025,7 @@
                y="634.57581"
                style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
              id="flowPara3227"
-             style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+             style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">sub 10<value-of
    select="invoice/items/item10/subtotal" /></svg:flowPara></svg:flowRoot>      </svg:g>
     </svg:g>
     <svg:g
@@ -1051,7 +1045,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3857"><xsl:value-of select="invoice/items/item11/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3857">desc 11</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3237"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1064,7 +1058,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3243"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 11<value-of
    select="invoice/items/item11/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3245"
@@ -1078,7 +1072,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3251"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 11<value-of
    select="invoice/items/item11/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,146.27541)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1092,7 +1086,7 @@
              width="139.26213"
              id="rect3257" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3259"><xsl:value-of
+           id="flowPara3259">sub 11<value-of
    select="invoice/items/item11/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:flowRoot
        xml:space="preserve"
@@ -1140,7 +1134,7 @@
            y="613.04047"
            style="font-size:16px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
          id="flowPara2808"
-         style="font-size:14px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+         style="font-size:14px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><value-of
            select="invoice/gst" /></svg:flowPara></svg:flowRoot>    <svg:flowRoot
        xml:space="preserve"
        id="flowRoot2676"
@@ -1192,8 +1186,8 @@
            x="192.38272"
            y="476.64972" /></svg:flowRegion><svg:flowPara
          id="flowPara2667"
-         style="font-size:14px;font-family:DejaVu Sans"><xsl:value-of
-   select="invoice/number" />    <xsl:value-of
+         style="font-size:14px;font-family:DejaVu Sans"><value-of
+   select="invoice/number" />    <value-of
    select="invoice/paid/transaction" /></svg:flowPara></svg:flowRoot>    <svg:flowRoot
        style="font-size:48px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
        id="flowRoot2669"
@@ -1206,9 +1200,9 @@
            width="346.00177"
            id="rect2673" /></svg:flowRegion><svg:flowPara
          style="font-size:14px;font-family:DejaVu Sans"
-         id="flowPara2675"><xsl:value-of
-   select="invoice/issued/date/day" /> <xsl:value-of
-   select="invoice/issued/date/month" />, <xsl:value-of
+         id="flowPara2675"><value-of
+   select="invoice/issued/date/day" /> <value-of
+   select="invoice/issued/date/month" />, <value-of
    select="invoice/issued/date/year" /></svg:flowPara></svg:flowRoot>    <svg:text
        id="text2684"
        y="342.86639"
@@ -1265,7 +1259,7 @@
            x="-440.75742"
            y="544.12726" /></svg:flowRegion><svg:flowPara
          id="flowPara3639"
-         style="font-size:16px;font-weight:bold;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+         style="font-size:16px;font-weight:bold;text-align:end;text-anchor:end;font-family:DejaVu Sans"><value-of
            select="invoice/amount" /></svg:flowPara></svg:flowRoot>    <svg:path
        style="fill:#1c67ba;fill-opacity:1;fill-rule:evenodd;stroke:#1c67ba;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 38.966714,876.43933 L 705.12772,876.43933"
@@ -1324,7 +1318,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3861"><xsl:value-of select="invoice/items/item13/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3861">desc 13</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot2999"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1337,7 +1331,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3005"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of select="invoice/items/item13/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 13</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3007"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1350,7 +1344,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3013"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of select="invoice/items/item13/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 13</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(470.30714,105.85203)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
          id="flowRoot3015"
@@ -1363,7 +1357,7 @@
              width="139.26213"
              id="rect3019" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3021"><xsl:value-of select="invoice/items/item13/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
+           id="flowPara3021">sub 13</svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g3023"
        transform="translate(-0.3998098,-23.299001)"
@@ -1381,7 +1375,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3863"><xsl:value-of select="invoice/items/item14/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3863">desc 14</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3033"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1394,7 +1388,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3039"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of select="invoice/items/item14/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 14</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3041"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1407,7 +1401,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3047"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of select="invoice/items/item14/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 14</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,178.63993)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
          id="flowRoot3049"
@@ -1420,7 +1414,7 @@
              width="139.26213"
              id="rect3053" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3055"><xsl:value-of select="invoice/items/item14/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
+           id="flowPara3055">sub 14</svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g3091"
        transform="translate(-2.48098e-2,4.8070626)"
@@ -1438,7 +1432,7 @@
              y="634.57581"
              style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
-           id="flowPara3865"><xsl:value-of select="invoice/items/item15/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           id="flowPara3865">desc 15</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3102"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1451,7 +1445,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3108"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of select="invoice/items/item15/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">qty 15</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3110"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
@@ -1464,7 +1458,7 @@
              y="634.57581"
              style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3116"
-           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of select="invoice/items/item15/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans">each 15</svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="translate(481.21485,178.63993)"
          style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
          id="flowRoot3118"
@@ -1477,8 +1471,6 @@
              width="139.26213"
              id="rect3122" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3124"><xsl:value-of select="invoice/items/item15/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
+           id="flowPara3124">sub 15</svg:flowPara></svg:flowRoot>    </svg:g>
   </svg:g>
 </svg:svg>
-</xsl:template>
-</xsl:stylesheet>

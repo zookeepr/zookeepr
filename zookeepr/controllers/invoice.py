@@ -218,8 +218,6 @@ class InvoiceController(BaseController):
             redirect(uri)
 
     def pdf(self, id):
-        return "Currently disabled." # FIXME: remove PDF invoices work again
-
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
@@ -253,8 +251,8 @@ class InvoiceController(BaseController):
         pdf_f = file(pdf)
         res = Response(pdf_f.read())
         pdf_f.close()
-        #res.headers['Content-type']='application/pdf'
-        res.headers['Content-type']='application/octet-stream'
+        res.headers['Content-type']='application/pdf'
+        #res.headers['Content-type']='application/octet-stream'
         #res.headers['Content-type']='text/plain; charset=utf-8'
         filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'
         res.headers['Content-Disposition']=( 'attachment; filename=%s' % filename )
