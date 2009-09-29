@@ -47,9 +47,15 @@
 %   endif
         <td>${ voucher.comment |h}</td>
 %   if voucher.registration:
-        <td>${ h.link_to(voucher.registration[0].person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration[0].person.id)) }
+        <td>
+%          if c.admin:
+           ${ h.link_to(voucher.registration[0].person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration[0].person.id)) }
+%          else:
+           ${ voucher.registration[0].person.fullname() }
+%          endif
+           <br />
 %          if voucher.registration[0].person.company:
-           ${ "(" + voucher.registration[0].person.company + ")"}
+           ${ "(" + voucher.registration[0].person.company + ")"}<br />
 %          endif
            &lt;${ voucher.registration[0].person.email_address }&gt;
         </td>
