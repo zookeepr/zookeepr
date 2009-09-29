@@ -4,7 +4,7 @@
         <li>${ h.link_to('Registration status', url=h.url_for(controller='registration', action='status')) }</li>
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
-% if c.invoice.is_void():
+% if c.invoice.is_void() and c.invoice.person.registration:
         <li>This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
 % elif c.invoice.paid():
 %   if h.auth.authorized(h.auth.has_organiser_role):
@@ -16,10 +16,12 @@
         <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></li>
 % else:
         <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>
+%   if c.invoice.person.registration:
         <li>${ h.link_to('Regenerate invoice', url = h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
         <ul>
           <li><span style="note">Use the regenerate invoice link if you have edited your registration but the invoice doesn't look quite right.</li>
         </ul>
+%   endif
 % endif
 
 %if h.auth.authorized(h.auth.has_organiser_role):
