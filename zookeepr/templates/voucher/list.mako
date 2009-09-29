@@ -47,7 +47,7 @@
 %   endif
         <td>${ voucher.comment |h}</td>
 %   if voucher.registration:
-        <td>${ h.link_to(${ voucher.registration[0].person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration[0].person.id)) }
+        <td>${ h.link_to(voucher.registration[0].person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration[0].person.id)) }
 %          if voucher.registration[0].person.company:
            ${ "(" + voucher.registration[0].person.company + ")"}
 %          endif
