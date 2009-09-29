@@ -188,9 +188,59 @@ ${ h.link_to("withdraw", url=h.url_for(controller='funding', action='withdraw', 
 % endfor
 </table>
 
-
 %else:
     <p>None submitted.</p>
+%endif
+
+% if h.auth.authorized(h.auth.has_organiser_role):
+<h2>Raised Invoices</h2>
+
+%   if len(c.person.invoices) > 0:
+<table>
+  <tr>
+    <th>Invoice</th>
+    <th>Created</th>
+    <th>Amount</th>
+    <th>Status</th>
+    <th>Manual</th>
+    <th>Payment(s)</th>
+  </tr>
+%    for i in c.person.invoices:
+  <tr class="${ h.cycle('even', 'odd') }">
+    <td>${ h.link_to(str(i.id), h.url_for(controller="invoice", action='view', id=i.id)) }</td>
+    <td>${ i.creation_timestamp }</td>
+    <td align="right">${ "$%.2f" % (i.total()/100.0) }</td>
+    <td>${ i.status() }
+%   if i.status() == 'Unpaid' or i.total() == 0:
+            <span style="font-size: smaller;">(${ h.link_to('Void', h.url_for(controller="invoice", action="void", id=i.id)) })</span>
+%   endif
+%   if i.status() == 'Invalid':
+            <span style="font-size: smaller;">(${ h.link_to('Unvoid', h.url_for(controller="invoice", action="unvoid", id=i.id)) })</span>
+%   endif        
+        </td>
+        <td>${ h.yesno(i.manual) |n }</td>
+        <td>
+%   if i.good_payments().count() > 0:
+%       for p in i.good_payments():
+%           if p.amount_paid != i.total():
+          <b>mismatch!</b>
+%           endif
+          ${ "$%.2f" % (p.amount_paid / 100.0) }
+          <small>${ p.gateway_ref |h}</small>
+%       endfor
+%   elif i.bad_payments().count() > 0:
+        Bad payment(s)!
+%   else:
+          -
+%   endif
+        </td>
+      </tr>
+% endfor
+    </table>
+
+%else:
+    <p>None raised.</p>
+%endif
 %endif
 
 
