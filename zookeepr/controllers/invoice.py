@@ -96,7 +96,7 @@ class InvoiceController(BaseController):
         c.invoice = Invoice.find_by_id(id, True)
         c.payment_received = None
         c.payment = None
-        if c.invoice.paid():
+        if c.invoice.paid() and c.invoice.total() > 0:
             c.payment_received = c.invoice.good_payments()[0]
             c.payment = c.payment_received.payment
         return render('/invoice/view.mako')
