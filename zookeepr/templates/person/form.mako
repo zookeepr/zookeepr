@@ -27,15 +27,15 @@ ${ h.hidden('person.email_address2', '') }</p>
 <p class="entries">${ h.password("person.password_confirm", size=40) }</p>
 % endif
 
-<p><label for="person.phone">Phone number</label></p>
+<p class="label"><label for="person.phone">Phone number:</label></p>
 <p class="entries">${ h.text('person.phone') }</p>
 
 % if c.mobile_is_mandatory:
 <p class="label"><span class="mandatory">*</span>
 % else:
-<p>
+<p class="label">
 % endif
-<label for="person.mobile">Mobile/Cell number</label></p>
+<label for="person.mobile">Mobile/Cell number:</label></p>
 <p class="entries">${ h.text('person.mobile') }</p>
 
 <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
