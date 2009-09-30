@@ -60,7 +60,7 @@ ${ h.select('person.country', None, h.countries()) }
 </p>
 
 %if c.social_networks:
-<p>Your <b>username</b> on social networking sites:
+<p class="label">Your <b>username</b> on social networking sites:
 <table>
 % for network in c.social_networks:
   <tr class="${ h.cycle('even', 'odd') }">
