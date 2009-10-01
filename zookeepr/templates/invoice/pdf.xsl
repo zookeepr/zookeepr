@@ -328,7 +328,7 @@
          id="flowPara2744"><xsl:value-of select="invoice/attn/field4" /></svg:flowPara><svg:flowPara
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
          id="flowPara2746"><xsl:value-of select="invoice/attn/field5" /></svg:flowPara><svg:flowSpan
-         style="font-size:14;-inkscape-font-specification:DejaVu Sans;font-family:DejaVu Sans;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
+         style="font-size:14px;-inkscape-font-specification:DejaVu Sans;font-family:DejaVu Sans;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal"
          id="flowSpan2760"><xsl:value-of select="invoice/attn/field6" /></svg:flowSpan><svg:flowPara
          id="flowPara2736"
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans" /><svg:flowPara
@@ -347,7 +347,7 @@
        style="fill:#1c67ba;fill-opacity:1;fill-rule:evenodd;stroke:#1c67ba;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1" />
     <svg:text
        xml:space="preserve"
-       style="font-size:49.50224304px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+       style="font-size:48px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
        x="41.83807"
        y="396.65161"
        id="text3357"
@@ -356,10 +356,10 @@
          id="tspan3359"
          x="41.83807"
          y="396.65161"
-         style="font-size:14.43815422px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Description</svg:tspan></svg:text>
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Description</svg:tspan></svg:text>
     <svg:text
        xml:space="preserve"
-       style="font-size:49.50224304px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+       style="font-size:48px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
        x="427.71948"
        y="396.65161"
        id="text3361"
@@ -368,10 +368,10 @@
          id="tspan3363"
          x="427.71948"
          y="396.65161"
-         style="font-size:14.43815422px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Quantity</svg:tspan></svg:text>
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Quantity</svg:tspan></svg:text>
     <svg:text
        xml:space="preserve"
-       style="font-size:49.50224304px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+       style="font-size:48px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
        x="534.92804"
        y="397.9241"
        id="text3365"
@@ -380,15 +380,15 @@
          id="tspan3367"
          x="534.92804"
          y="397.9241"
-         style="font-size:14.43815422px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Cost</svg:tspan></svg:text>
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">Cost</svg:tspan></svg:text>
     <svg:text
        id="text3369"
        y="398.05103"
        x="649.46918"
-       style="font-size:49.50224304px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+       style="font-size:48px;font-style:normal;font-weight:normal;fill:#1c67ba;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
        xml:space="preserve"
        transform="scale(0.969653,1.0312967)"><svg:tspan
-         style="font-size:14.43815422px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+         style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
          y="398.05103"
          x="649.46918"
          id="tspan3371"
@@ -428,7 +428,7 @@
       <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3439"
-         style="font-size:14px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+         style="font-size:12px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
          transform="matrix(1,0,0,1.0635729,-38.728516,-221.71747)"><svg:flowRegion
            id="flowRegion3441"><svg:rect
              id="rect3443"
@@ -436,12 +436,12 @@
              height="28.961477"
              x="78.963058"
              y="634.57581"
-             style="font-size:14px" /></svg:flowRegion><svg:flowPara
+             style="font-size:12px" /></svg:flowRegion><svg:flowPara
            style="font-size:12px;font-family:DejaVu Sans"
            id="flowPara3148"><xsl:value-of select="invoice/items/item1/description" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          xml:space="preserve"
          id="flowRoot3447"
-         style="font-size:11.6358366px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+         style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
          transform="matrix(1,0,0,1.0635729,328.23909,-221.71747)"><svg:flowRegion
            id="flowRegion3449"><svg:rect
              id="rect3451"
@@ -449,36 +449,36 @@
              height="21.535383"
              x="78.963058"
              y="634.57581"
-             style="font-size:11.6358366px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
+             style="font-size:12px;text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
            id="flowPara3453"
-           style="font-size:11.6358366px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
    select="invoice/items/item1/qty" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="matrix(1,0,0,1.0635729,408.87538,-221.7857)"
-         style="font-size:11.6358366px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+         style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
          id="flowRoot3777"
          xml:space="preserve"><svg:flowRegion
            id="flowRegion3779"><svg:rect
-             style="font-size:11.6358366px;text-align:end;text-anchor:end"
+             style="font-size:12px;text-align:end;text-anchor:end"
              y="634.57581"
              x="78.963058"
              height="18.286243"
              width="87.577217"
              id="rect3781" /></svg:flowRegion><svg:flowPara
-           style="font-size:11.6358366px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
            id="flowPara3783"><xsl:value-of
    select="invoice/items/item1/each" /></svg:flowPara></svg:flowRoot>      <svg:flowRoot
          transform="matrix(1,0,0,1.0635729,481.21485,-221.19815)"
-         style="font-size:11.6358366px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+         style="font-size:12px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
          id="flowRoot3431"
          xml:space="preserve"><svg:flowRegion
            id="flowRegion3433"><svg:rect
-             style="font-size:11.6358366px;text-align:end;text-anchor:end"
+             style="font-size:12px;text-align:end;text-anchor:end"
              y="634.57581"
              x="78.963058"
              height="21.535383"
              width="139.26213"
              id="rect3435" /></svg:flowRegion><svg:flowPara
-           style="font-size:11.6358366px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
+           style="font-size:12px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
            id="flowPara3437"><xsl:value-of
    select="invoice/items/item1/subtotal" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
@@ -1097,7 +1097,7 @@
     <svg:flowRoot
        xml:space="preserve"
        id="flowRoot4347"
-       style="fill:black;fill-opacity:1;stroke:none;stroke-opacity:1;stroke-width:1pt;stroke-linejoin:miter;stroke-linecap:butt;font-family:URW Chancery L;font-style:italic;font-weight:bold;font-size:6;text-anchor:middle;text-align:center;-inkscape-font-specification:URW Chancery L Bold Italic;font-stretch:normal;font-variant:normal"><svg:flowRegion
+       style="fill:black;fill-opacity:1;stroke:none;stroke-opacity:1;stroke-width:1pt;stroke-linejoin:miter;stroke-linecap:butt;font-family:URW Chancery L;font-style:italic;font-weight:bold;font-size:6px;text-anchor:middle;text-align:center;-inkscape-font-specification:URW Chancery L Bold Italic;font-stretch:normal;font-variant:normal"><svg:flowRegion
          id="flowRegion4349"><svg:rect
            id="rect4351"
            width="82.737785"
@@ -1107,7 +1107,7 @@
          id="flowPara4353" /></svg:flowRoot>    <svg:flowRoot
        xml:space="preserve"
        id="flowRoot4355"
-       style="fill:black;fill-opacity:1;stroke:none;stroke-opacity:1;stroke-width:1pt;stroke-linejoin:miter;stroke-linecap:butt;font-family:URW Chancery L;font-style:italic;font-weight:bold;font-size:6;text-anchor:middle;text-align:center;-inkscape-font-specification:URW Chancery L Bold Italic;font-stretch:normal;font-variant:normal"><svg:flowRegion
+       style="fill:black;fill-opacity:1;stroke:none;stroke-opacity:1;stroke-width:1pt;stroke-linejoin:miter;stroke-linecap:butt;font-family:URW Chancery L;font-style:italic;font-weight:bold;font-size:6px;text-anchor:middle;text-align:center;-inkscape-font-specification:URW Chancery L Bold Italic;font-stretch:normal;font-variant:normal"><svg:flowRegion
          id="flowRegion4357"><svg:rect
            id="rect4359"
            width="115.22379"
@@ -1168,7 +1168,7 @@
        id="text2607"
        y="342.3512"
        x="488.2644"
-       style="font-size:15.22381306px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans"
+       style="font-size:16px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans"
        xml:space="preserve"><svg:tspan
          y="342.3512"
          x="488.2644"
@@ -1213,7 +1213,7 @@
        id="text2684"
        y="342.86639"
        x="488.2644"
-       style="font-size:15.22381306px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans"
+       style="font-size:16px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:DejaVu Sans"
        xml:space="preserve"><svg:tspan
          id="tspan2689"
          y="342.86639"
