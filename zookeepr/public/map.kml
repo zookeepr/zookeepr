@@ -1,0 +1,397 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document>
+  <name>LCA2010 - Wellington</name>
+  <description><![CDATA[Main reference points for LCA2010 in Wellington]]></description>
+  <Style id="style12">
+    <IconStyle>
+      <Icon>
+        <href>http://www.lca2010.org.nz/images/LCA2010_Blu_map.jpg</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style8">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/rangerstation.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style22">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/arts.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style3">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/rangerstation.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style18">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.google.com/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style11">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style21">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style25">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style1">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style14">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style5">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style17">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style20">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/plane.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style4">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.google.com/mapfiles/ms/micons/rail.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style23">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.google.com/mapfiles/ms/micons/info.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style15">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/convienancestore.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style19">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/convienancestore.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style13">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.google.com/mapfiles/ms/micons/postoffice-us.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style7">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/hospitals.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style10">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/hospitals.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style24">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/hospitals.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style6">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/hospitals.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style16">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/bus.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style2">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/bus.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style26">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_nz/mapfiles/ms/micons/mechanic.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style9">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_nz/mapfiles/ms/micons/mechanic.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Placemark>
+    <name>Wellington Convention Centre</name>
+    <description><![CDATA[<div dir="ltr">Conference Venue for LCA2010</div>]]></description>
+    <styleUrl>#style12</styleUrl>
+    <Point>
+      <coordinates>174.778076,-41.290115,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Museum of New Zealand - Te Papa Tongarewa</name>
+    <description><![CDATA[<div dir="ltr">Speakers&apos; Dinner</div>]]></description>
+    <styleUrl>#style8</styleUrl>
+    <Point>
+      <coordinates>174.782166,-41.290627,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>The Opera House</name>
+    <description><![CDATA[<div dir="ltr">Professional Delegates Networking Session</div>]]></description>
+    <styleUrl>#style22</styleUrl>
+    <Point>
+      <coordinates>174.777847,-41.291618,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Wellington Town Hall</name>
+    <description><![CDATA[<div dir="ltr">Penguin Dinner and Open Day</div>]]></description>
+    <styleUrl>#style3</styleUrl>
+    <Point>
+      <coordinates>174.777649,-41.289627,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>UStay</name>
+    <description><![CDATA[<div dir="ltr">Dorm Accommodation<br></div>]]></description>
+    <styleUrl>#style18</styleUrl>
+    <Point>
+      <coordinates>174.772736,-41.293118,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Village Accommodation (Flagstaff &amp; Willis St)</name>
+    <description><![CDATA[<div dir="ltr">Serviced Apartments</div>]]></description>
+    <styleUrl>#style11</styleUrl>
+    <Point>
+      <coordinates>174.773987,-41.289932,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Village Accommodation (Boulcott Suites)</name>
+    <description><![CDATA[<div dir="ltr">Serviced Apartments</div>]]></description>
+    <styleUrl>#style21</styleUrl>
+    <Point>
+      <coordinates>174.773819,-41.288898,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Village Accommodation (Courtenay Pl)</name>
+    <description><![CDATA[<div dir="ltr">Serviced Apartments</div>]]></description>
+    <styleUrl>#style25</styleUrl>
+    <Point>
+      <coordinates>174.782776,-41.293987,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Village Accommodation (Brandon St)</name>
+    <description><![CDATA[<div dir="ltr">Serviced Apartments</div>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>174.776489,-41.283241,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>West Plaza Hotel</name>
+    <description><![CDATA[<div dir="ltr">Hotel Accommodation</div>]]></description>
+    <styleUrl>#style14</styleUrl>
+    <Point>
+      <coordinates>174.776566,-41.289562,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Museum Hotel</name>
+    <description><![CDATA[<div dir="ltr">Hotel Accommodation</div>]]></description>
+    <styleUrl>#style5</styleUrl>
+    <Point>
+      <coordinates>174.782578,-41.291851,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>InterContinental Wellington</name>
+    <description><![CDATA[<div dir="ltr">Hotel Accommodation</div>]]></description>
+    <styleUrl>#style17</styleUrl>
+    <Point>
+      <coordinates>174.776672,-41.284706,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Wellington International Airport</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style20</styleUrl>
+    <Point>
+      <coordinates>174.808914,-41.329823,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Wellington Station</name>
+    <description><![CDATA[<span name="attr"><br><a href="/maps/iw?lyr=w2.92&amp;ie=UTF8&amp;hl=en&amp;latlng=&amp;ei=ZLPKScOyJYTkiwPlq8E8&amp;ftid=0x6d38ae2c40b79771:0x8cb42f993a03ee23">more info »</a></span>]]></description>
+    <styleUrl>#style4</styleUrl>
+    <Point>
+      <coordinates>174.780121,-41.279419,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Wellington Visitor Information Centre</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style23</styleUrl>
+    <Point>
+      <coordinates>174.777283,-41.289417,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>New World Supermarket (Metro)</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style15</styleUrl>
+    <Point>
+      <coordinates>174.775253,-41.287682,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>New World Supermarket (Chaffers St)</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style19</styleUrl>
+    <Point>
+      <coordinates>174.784088,-41.292824,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Manners Street PostShop</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style13</styleUrl>
+    <Point>
+      <coordinates>174.774933,-41.289963,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Wellington Hospital</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style7</styleUrl>
+    <Point>
+      <coordinates>174.778915,-41.309422,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>After Hours Medical Centre</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style10</styleUrl>
+    <Point>
+      <coordinates>174.779785,-41.301941,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Radius Pharmacy, Willis Street</name>
+    <description><![CDATA[<br>]]></description>
+    <styleUrl>#style24</styleUrl>
+    <Point>
+      <coordinates>174.775772,-41.286861,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Port Nicholson Medical Centre</name>
+    <description><![CDATA[<div dir="ltr">Doctor&apos;s Surgery (GPs)</div>]]></description>
+    <styleUrl>#style6</styleUrl>
+    <Point>
+      <coordinates>174.778732,-41.293198,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Dixon Street Bus Stop</name>
+    <description><![CDATA[<div dir="ltr">For northbound buses, get off here to get to the conference venue.</div>]]></description>
+    <styleUrl>#style16</styleUrl>
+    <Point>
+      <coordinates>174.776749,-41.292027,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>James Smith&#39;s Corner</name>
+    <description><![CDATA[<div dir="ltr">For south-bound buses, get off here to get to the conference venue.</div>]]></description>
+    <styleUrl>#style2</styleUrl>
+    <Point>
+      <coordinates>174.777115,-41.291252,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Jaycar Electronics</name>
+    <description><![CDATA[<div dir="ltr">Jaycar Electronics has actual electronic components.</div>]]></description>
+    <styleUrl>#style26</styleUrl>
+    <Point>
+      <coordinates>174.774750,-41.299572,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>DSE</name>
+    <description><![CDATA[<div dir="ltr">Dick Smith Electronics - mostly consumer stuff, and some useful bits like cables, blank CDs, etc.</div>]]></description>
+    <styleUrl>#style9</styleUrl>
+    <Point>
+      <coordinates>174.776672,-41.291206,0.000000</coordinates>
+    </Point>
+  </Placemark>
+</Document>
+</kml>

@@ -53,6 +53,9 @@ lca_info = {
   },
 
   'proposal_update_email': 'puck@lca2010.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
+
+  'google_map_url': 'http://maps.google.com/maps/ms?ie=UTF8&hl=en&oe=UTF8&msa=0&msid=101517653478883872270.000465f8e2539e5281739',
+  'google_map_latlng': '-41.288868, 174.781322',
 }
 
 lca_rego = {
@@ -164,7 +167,7 @@ lca_menu = [
 ]
 
 lca_submenus = {
-  'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'History', 'New Zealand', 'Linux/Open Source'],
+  'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'Map', 'History', 'New Zealand', 'Linux/Open Source'],
   #'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
   'wellington': ['About', 'Sightseeing', 'Pre and Post' ],
   'sponsors': ['Sponsors', 'Why Sponsor'],

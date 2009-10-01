@@ -6,6 +6,9 @@
 <%def name="extra_head()">
     ## Defined in children
 </%def>
+<%def name="extra_body()">
+  <body>
+</%def>
 <%def name="big_promotion()">
     ## Defined in children
 </%def>
@@ -39,6 +42,7 @@
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
+  ${self.extra_head()}
   <script type="text/javascript">
      $(document).ready(function() {
        $("#flash > div").hide().fadeIn(3500);
@@ -51,8 +55,9 @@
 
      });
   </script>
-  ${self.extra_head()}
 </head>
+
+${self.extra_body()}
 
   <div id = "container">
     <div id = "logo">

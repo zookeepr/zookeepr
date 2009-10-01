@@ -27,6 +27,7 @@ def make_map():
     map.connect('/media/news/rss',     controller='db_content', action='rss_news')
     map.connect('/media/news/{id}',    controller='db_content', action='view')
     map.connect('/media/in_the_press', controller='db_content', action='list_press')
+    map.connect('/about/map',          controller='map')
 
     map.connect('/sitemap',            controller='sitemap', action='view')
 
