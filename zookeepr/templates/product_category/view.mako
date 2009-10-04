@@ -7,7 +7,7 @@
         <td><b>Name:</b></td><td>${ c.product_category.name  }</td>
       </tr>
       <tr class="even">
-        <td valign="top"><b>Description:</b></td><td>${ c.product_category.description }</td>
+        <td valign="top"><b>Description:</b></td><td>${ c.product_category.description |n}</td>
       </tr>
       <tr class="odd">
         <td valign="top"><b>Note:</b></td><td>${ c.product_category.note }</td>

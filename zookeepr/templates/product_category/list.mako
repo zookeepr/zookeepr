@@ -16,7 +16,7 @@
 %   for category in c.product_category_collection:
   <tr class="${ h.cycle('even', 'odd')}">
     <td>${ h.link_to(category.name, url=h.url_for(action='view', id=category.id)) }</td>
-    <td>${ category.description }</td>
+    <td>${ category.description |n}</td>
     <td>${ category.display }</td>
     <td>${ category.display_order }</td>
     <td>${ category.min_qty }</td>

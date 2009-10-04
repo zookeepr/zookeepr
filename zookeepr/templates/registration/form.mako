@@ -101,7 +101,7 @@ import array
         <fieldset id="${ h.computer_title(category.name) }">
           <legend>&nbsp;</legend>
           <h2>${ category.name.title() }</h2>
-          <p class="description">${ category.description }</p>
+          <p class="description">${ category.description |n}</p>
 ## Manual category display goes here:
 %       if category.display_mode == 'shirt':
 <%
