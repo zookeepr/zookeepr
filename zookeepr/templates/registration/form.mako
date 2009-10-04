@@ -399,7 +399,7 @@ import array
 
             <p class="label"><label for="registration.planetfeed">Planet Feed:</label></p>
             <p class="entries">${ h.text('registration.planetfeed', size=50) }</p>
-            <p class="note">If you have a blog and would like it included in the ${ h.event_name() } planet, please specify an <b>${ h.event_name() } specific feed</b> to be included.</p>
+            <p class="note">If you have a blog and would like it included in the ${ h.event_name() } planet, please specify an <b>${ h.event_name() } specific feed</b> to be included. (This is the URL of the RSS feed.)</p>
 
             <p class="label"><label for="registration.silly_description">Description:</label>
             <blockquote class="entries">${ c.silly_description }</blockquote></p>
