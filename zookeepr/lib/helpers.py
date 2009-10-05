@@ -469,7 +469,7 @@ def number_to_currency(number, unit='$', precision=2):
       return unit + "%#.*f" % (precision, number)
 
 def number_to_percentage(number):
-    return str(number * 100) + '%'
+    return str(number) + '%'
 
 def sales_tax(amount):
     """ Calculate the sales tax that for the supplied amount. """
