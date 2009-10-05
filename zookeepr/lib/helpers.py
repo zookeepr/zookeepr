@@ -468,6 +468,9 @@ def number_to_currency(number, unit='$', precision=2):
     else:
       return unit + "%#.*f" % (precision, number)
 
+def number_to_percentage(number):
+    return str(number * 100) + '%'
+
 def sales_tax(amount):
     """ Calculate the sales tax that for the supplied amount. """
     if 'sales_tax_multiplier' in lca_info:
