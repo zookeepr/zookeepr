@@ -226,7 +226,7 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 <p>
 
 %if c.registration_pages.next_page:
-${h.link_to('<span style="float: right;">Next page</span>', url=attribs)}
+<span style="float: right;">${h.link_to('Next page', url=attribs)}</span>
 %endif
 %if c.registration_pages.previous_page:
 ${h.link_to('Previous page', url=h.url(page=c.registration_pages.current.previous))}&nbsp;
