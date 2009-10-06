@@ -26,16 +26,16 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1.28"
-     inkscape:cx="578.46462"
+     inkscape:cx="476.51149"
      inkscape:cy="707.48129"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showguides="true"
      inkscape:guide-bbox="true"
-     inkscape:window-width="1508"
-     inkscape:window-height="1130"
+     inkscape:window-width="1400"
+     inkscape:window-height="975"
      inkscape:window-x="0"
-     inkscape:window-y="0"
+     inkscape:window-y="25"
      showgrid="false" />
   <svg:defs
      id="defs4">
@@ -1178,7 +1178,7 @@
        xml:space="preserve"
        id="flowRoot2661"
        style="font-size:48px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
-       transform="translate(425.02734,-130.25304)"><svg:flowRegion
+       transform="translate(413.16016,-130.25304)"><svg:flowRegion
          id="flowRegion2663"><svg:rect
            id="rect2665"
            width="330.20917"
@@ -1186,13 +1186,13 @@
            x="192.38272"
            y="476.64972" /></svg:flowRegion><svg:flowPara
          id="flowPara2667"
-         style="font-size:14px;font-family:DejaVu Sans"><value-of
-   select="invoice/number" />    <value-of
+         style="font-size:14px;font-family:DejaVu Sans">inv num<value-of
+   select="invoice/number" />    inv paid txn<value-of
    select="invoice/paid/transaction" /></svg:flowPara></svg:flowRoot>    <svg:flowRoot
        style="font-size:48px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
        id="flowRoot2669"
        xml:space="preserve"
-       transform="translate(425.64258,-147.2541)"><svg:flowRegion
+       transform="translate(412.94141,-147.2541)"><svg:flowRegion
          id="flowRegion2671"><svg:rect
            y="476.64972"
            x="192.38272"
@@ -1200,10 +1200,7 @@
            width="346.00177"
            id="rect2673" /></svg:flowRegion><svg:flowPara
          style="font-size:14px;font-family:DejaVu Sans"
-         id="flowPara2675"><value-of
-   select="invoice/issued/date/day" /> <value-of
-   select="invoice/issued/date/month" />, <value-of
-   select="invoice/issued/date/year" /></svg:flowPara></svg:flowRoot>    <svg:text
+         id="flowPara2675">issued day issued month, issued year</svg:flowPara></svg:flowRoot>    <svg:text
        id="text2684"
        y="342.86639"
        x="488.2644"
@@ -1217,12 +1214,12 @@
     <svg:text
        xml:space="preserve"
        style="font-size:12px;font-style:normal;font-weight:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1pt;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Bitstream Vera Sans"
-       x="658.77344"
+       x="646.6875"
        y="376.9306"
        id="text2697"><svg:tspan
          sodipodi:role="line"
          id="tspan2699"
-         x="658.77344"
+         x="646.6875"
          y="376.9306"
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans">90-792-369</svg:tspan></svg:text>
     <svg:text

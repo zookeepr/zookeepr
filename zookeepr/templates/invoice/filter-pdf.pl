@@ -9,6 +9,8 @@ my %names = (
   sub  => 'subtotal',
   each => 'each',
   attn => 'attn',
+  'inv num' => 'invoice/number',
+  'inv paid txn' => 'invoice/paid/transaction',
 );
 
 
@@ -18,6 +20,10 @@ while (<>) {
 
   $_ =~ s/>(attn) (\d+)<(?!(xsl:)?value-of)/><xsl:value-of select="invoice\/$1\/field$2" \/></;
   $_ =~ s/>(attn) (\w+)<(?!(xsl:)?value-of)/><xsl:value-of select="invoice\/$1\/$2" \/></;
+
+  $_ =~ s/issued (\w+)(?!<(xsl:)?value-of)/<xsl:value-of select="invoice\/issued\/date\/$1" \/>/g;
+  $_ =~ s/inv (num|paid txn)(?!<(xsl:)?value-of)/<xsl:value-of select="$names{$1}" \/>/g;
+  $_ =~ s/inv (num|paid txn)(<(xsl:)?value-of)/$2/g;
 
 
   $_ =~ s/<value-of/<xsl:value-of/;
