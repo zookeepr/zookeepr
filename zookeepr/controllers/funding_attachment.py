@@ -59,7 +59,7 @@ class FundingAttachmentController(BaseController):
         attachment = FundingAttachment.find_by_id(id)
         funding = Funding.find_by_id(attachment.funding_id)
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(h.signed_in_person().id), h.auth.has_organiser_role, h.auth.has_funding_reviewer_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(funding.id), h.auth.has_organiser_role, h.auth.has_funding_reviewer_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
