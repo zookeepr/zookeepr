@@ -549,7 +549,7 @@ class RegistrationController(BaseController):
             if not invoice.is_void() and not invoice.manual and not invoice.paid():
                 for ii in invoice.items:
                     if ii.product and not self._product_available(ii.product, True, ii.qty):
-                        invoice.void = "Product " + ii.product.description + " is no longer available"
+                        invoice.void = "Product " + ii.product.category.name + " - " + ii.product.description + " is no longer available"
 
     def manual_invoice(self, invoices):
         for invoice in invoices:
