@@ -59,7 +59,7 @@
         <td style="text-align: right"><strong>${ h.number_to_currency(c.invoice.total()/100.0) }</strong></td>
       </tr>
       <tr>
-        <td style="text-align: right" colspan="3">(Includes GST</td>
+        <td style="text-align: right" colspan="3">(Includes NZ GST</td>
         <td style="text-align: right">${ h.number_to_currency(h.sales_tax(c.invoice.total())/100.0) })</td>
       </tr>
     </table>
