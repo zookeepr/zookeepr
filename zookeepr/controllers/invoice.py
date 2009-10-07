@@ -207,7 +207,7 @@ class InvoiceController(BaseController):
             'invoice_id': payment.invoice.id,
             'email_address': payment.invoice.person.email_address,
             'client_ip' : client_ip,
-            'return_url' : lca_info['event_url'] + '/payment/new',
+            'return_url' : 'https://conf.linux.org.au/payment/new',
         }
 
         (valid, uri) = pxpay.generate_request(params)
