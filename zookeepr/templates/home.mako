@@ -21,29 +21,6 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
-<h2>Funding Programmes</h2>
-
-<p>There are some highly regarded people out there who contribute in important ways to the free and open source community and whom, without financial assistance, would not be able to attend LCA2010.</p> 
-
-<p>With thanks to our Emperor Penguin Sponsors, <a href="http://www.internetnz.org.nz/">InternetNZ</a> and <a href="http://www.google.com/">Google</a>, LCA2010 have three funding programmes which may enable these people to attend LCA2010:</p>
-
-<table>
-<tr class="odd">
-<td><strong>InternetNZ Oceania Programme</strong></td>
-</tr>
-
-<tr class="even">
-<td><strong>InternetNZ Kiwi Fellowship</strong></td>
-</tr>
-
-<tr class="odd">
-<td><strong>Google Diversity Programme</strong></td>
-</tr>
-</table>
-
-<p>To find out more about the LCA2010 Funding Programmes, please visit our <a href="/register/funding">Funding</a> page.</p>
-
-
 <h2>Registrations coming soon!</h2>
 
 <p>Online registrations for LCA2010 will be opening in early October 2009. There are only a limited number of Early Bird Registrations available, so get in early!</p>
