@@ -1,5 +1,9 @@
 <%inherit file="/base.mako" />
 
+<%
+import hashlib
+%>
+
 <p><a href="/programme/schedule/${ c.day }">&lt;-- Back to schedule</a></p>
 
 <h2>${ c.talk.title | h }</h2>
@@ -68,7 +72,9 @@ ${ c.talk.url }
 
 <h2>${ person.firstname | h} ${ person.lastname | h}</h2>
 <div class="bio">
-<blockquote><p>
+<blockquote>
+<div style="float: right; padding-left: 5px; padding-bottom: 5px; "><img src="http://www.gravatar.com/avatar/${ hashlib.md5(person.email_address.lower()).hexdigest() }?d=404" alt=""></div>
+<p>
 %   if person.bio:
 ${ h.line_break(h.url_to_link(person.bio)) | n  }
 %   else:
