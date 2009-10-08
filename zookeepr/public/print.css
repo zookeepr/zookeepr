@@ -102,6 +102,7 @@ h6 {
         margin-left: 15px;
         margin-bottom: 10px;
         float: left;
+	display: none;
 }
 #footer_logo {
         margin-left: 5px;
@@ -109,15 +110,16 @@ h6 {
 }
 
 * html #logo {
-	margin-left: 8px;
-	margin-bottom: 10px;
-	float: left;
+        display: none;
 }
 #main_menu {
 	margin: 100px 7px 0 0;
 	float: right;
 }
 #main_menu #primarynav {
+        display: none;
+}
+#main_menu #secondarynav {
         display: none;
 }
 
