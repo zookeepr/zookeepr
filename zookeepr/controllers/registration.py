@@ -71,7 +71,7 @@ class IAgreeValidator(validators.FancyValidator):
 class PrevLCAValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         if value['prevlca'] is not None and '00' in value['prevlca']:
-            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
+            raise Invalid("LCA in Auckland -- Really?  Are you sure?", value, state)
 
 class ShellValidator(validators.FancyValidator):
     def validate_python(self, value, state):
