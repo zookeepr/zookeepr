@@ -27,15 +27,15 @@ for d in c.db_content_news_all:
 
 <table>
 <tr class="even">
-<td>'''Registrations Opened'''</td> <td>10 October 2009</td> 
+<td><b>Registrations Opened</b></td> <td>10 October 2009</td> 
 </tr>
 
 <tr class="odd">
-<td>'''Early Bird Closes'''</td> <td>13 November 2009</td> 
+<td><b>Early Bird Closes</b></td> <td>13 November 2009</td> 
 </tr>
 
 <tr class="even">
-<td>'''Registrations Closes'''</td> <td>24 December 2009</td> 
+<td><b>Registrations Closes</b></td> <td>24 December 2009</td> 
 </tr>
 </table>
 
