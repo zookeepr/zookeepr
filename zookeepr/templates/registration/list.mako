@@ -141,13 +141,13 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
     </p>
     </form>
     
-    <p style="float: right;">${ h.link_to('Export as CSV', url=attribs + "&export=true") }</p>
+    <p>${ h.link_to('Export as CSV', url=attribs + "&export=true") }</p>
     
-    <table style="clear: both;"> 
+    <table> 
       <thead><tr>
         <th>Rego</th>
-        <th>Name</th>
-        <th>Email</th>
+        <th>Name / Email</th>
+##        <th>Email</th>
         <th>Role(s)</th>
         <th>Invoices</th>
         <th>Notes</th>
@@ -155,10 +155,10 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 <% count = 0 %>
 % for registration in c.registration_collection:
     <% count += 1 %>
-      <tr>
+      <tr class="${ h.cycle('odd', 'even') }">
         <td>${ h.link_to('id: ' + str(registration.id), url=h.url_for(action='view', id=registration.id)) }</td>
-        <td>${ h.link_to(h.util.html_escape(registration.person.firstname + ' ' + registration.person.lastname), h.url_for(controller='person', action='view', id=registration.person.id)) }</td>
-        <td>${ registration.person.email_address | h }</td>
+        <td>${ h.link_to(h.util.html_escape(registration.person.firstname + ' ' + registration.person.lastname), h.url_for(controller='person', action='view', id=registration.person.id)) }<br />
+        ${ registration.person.email_address | h }</td>
         <td>
 <%
    role = []

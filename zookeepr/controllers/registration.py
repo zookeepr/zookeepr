@@ -1,8 +1,9 @@
 # coding=utf-8
 import logging
+import re
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import redirect_to
+from pylons.controllers.util import redirect_to, Response
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -71,7 +72,7 @@ class IAgreeValidator(validators.FancyValidator):
 class PrevLCAValidator(validators.FancyValidator):
     def validate_python(self, value, state):
         if value['prevlca'] is not None and '00' in value['prevlca']:
-            raise Invalid("LCA in Auckland -- Really?  Are you sure?", value, state)
+            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
 
 class ShellValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -708,7 +709,7 @@ class RegistrationController(BaseController):
 
         if (len(filter) in [2,3,4] and filter.has_key('per_page') and (len(filter['role']) == 0 or 'all' in filter['role']) and filter['status'] == 'all' and (len(filter['product']) == 0 or 'all' in filter['product'])) or len(filter) < 2:
             # no actual filters to apply besides per_page, so we can get paginate to do the query
-            registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+            registration_list = meta.Session.query(Registration).order_by(Registration.id).all()
         else:
             import copy
             registration_list_full = Registration.find_all()
@@ -823,16 +824,17 @@ class RegistrationController(BaseController):
         if request.method == 'POST' and defaults:
             if defaults['reg_id'] != '':
                 reg_id_list = defaults['reg_id'].split("\n")
-                registration_list = self.dbsession.query(self.model).filter(model.Registration.id.in_(reg_id_list)).all()
+                #registration_list = self.dbsession.query(self.model).filter(model.Registration.id.in_(reg_id_list)).all()
+                registration_list = self.dbsession.query(Registration).filter_by(id.in_(reg_id_list)).all()
                 if len(registration_list) != len(reg_id_list):
                     c.text = 'Registration ID not found. Please check the <a href="/registration">registration list</a>.'
-                    return render('%s/generate_badges.mako' % self.individual)
+                    return render('registration/generate_badges.mako')
                 else:
                     for registration in registration_list:
                         data.append(self._registration_badge_data(registration, stamp))
                         registration.person.badge_printed = True
             else:
-                registration_list = self.dbsession.query(self.model).all()
+                registration_list = Registration.find_all()
                 for registration in registration_list:
                     append = False
                     if registration.person.has_paid_ticket() and not registration.person.badge_printed:
@@ -846,7 +848,7 @@ class RegistrationController(BaseController):
                                             append = True
                                         elif defaults['type'] == 'hobby' and (item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1):
                                             append = True
-                                        elif defaults['type'] == 'professional' and (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                                        elif defaults['type'] == 'professional' and (item.description.find('Professional') > -1 or item.description.startswith('Karoro')):
                                             append = True
                                         elif defaults['type'] == 'press' and item.description.startswith('Press'):
                                             append = True
@@ -873,7 +875,7 @@ class RegistrationController(BaseController):
             while c.index < len(c.data):
                 while c.index + 4 > len(c.data):
                     c.data.append(self._registration_badge_data(False))
-                res = render('%s/badges_svg.mako' % self.individual, fragment=True)
+                res = render('registration/badges_svg.mako')
                 (svg_fd, svg) = tempfile.mkstemp('.svg')
                 svg_f = os.fdopen(svg_fd, 'w')
                 svg_f.write(res)
@@ -891,7 +893,7 @@ class RegistrationController(BaseController):
             res.headers['Content-type'] = 'application/octet-stream'
             res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar' )
             return res
-        return render('%s/generate_badges.mako' % self.individual)
+        return render('registration/generate_badges.mako')
 
     def _registration_badge_data(self, registration, stamp = False):
         if registration:
@@ -900,13 +902,13 @@ class RegistrationController(BaseController):
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.is_void():
                     for item in invoice.items:
-                        if item.description.startswith('Dinner Ticket'):
+                        if item.description.startswith('Penguin Dinner'):
                             dinner_tickets += item.qty
                         elif item.description.startswith('Concession'):
                             ticket = 'Concession'
                         elif item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1:
                             ticket = 'Hobbyist'
-                        elif (item.description.find('Professional') > -1 or item.description.startswith('Kororā')):
+                        elif (item.description.find('Professional') > -1 or item.description.startswith('Kororo')):
                             ticket = 'Professional'
                         elif item.description.startswith('Press'):
                             ticket = 'Press'
@@ -960,7 +962,7 @@ class RegistrationController(BaseController):
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
-        return disallowed_chars.sub(' ', h.esc(field.strip()))
+        return disallowed_chars.sub(' ', h.escape(field.strip()))
 
     def view(self, id):
         # We need to recheck auth in here so we can pass in the id
