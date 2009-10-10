@@ -54,6 +54,7 @@ ${ parent.toolbox_extra_reviewer() }
     <h2>Funding Reviewer</h2>
     <ul>
 ${ parent.toolbox_extra_funding_reviewer() }
+      ${ make_link('How to review', '/help/funding_review') }
       ${ make_link('Proposals to review', h.url_for(controller='funding', action='review_index')) }
       ${ make_link("Reviews you've made", h.url_for(controller='funding_review', action='index')) }
       ${ make_link('Summary of reviewed proposals', h.url_for(controller='funding', action='summary')) }
