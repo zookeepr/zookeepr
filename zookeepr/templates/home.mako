@@ -21,11 +21,25 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
-<h2>Registrations coming soon!</h2>
+<h3>Registrations are now open!</h3>
 
-<p>Online registrations for LCA2010 will be opening in early October 2009. There are only a limited number of Early Bird Registrations available, so get in early!</p>
+<p>Online <a href="/register/new">registrations</a> for LCA2010 are now open! There are only a limited number of Early Bird Registrations available. Early Bird tickets will be available until 13 November 2009, unless sold out earlier. So get in quick!!</p>
 
-<p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
+<table>
+<tr class="even">
+<td>'''Registrations Opened'''</td> <td>10 October 2009</td> 
+</tr>
+
+<tr class="odd">
+<td>'''Early Bird Closes'''</td> <td>13 November 2009</td> 
+</tr>
+
+<tr class="even">
+<td>'''Registrations Closes'''</td> <td>24 December 2009</td> 
+</tr>
+</table>
+
+<p>To register for linux.conf.au 2010, please go to the <a href="/register/status">Registration Page</a> or simply click on the Register link in the toolbox.</p>
 
 
 <h2>LCA2010 Miniconfs</h2>
@@ -92,6 +106,8 @@ for d in c.db_content_news_all:
     <td><a href="http://sites.google.com/site/waveminiconfatlca/signup-form">Submit a proposal</a></td>
   </tr>
 </table>
+
+<p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
 
 
 <%def name="big_promotion()">
