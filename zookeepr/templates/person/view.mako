@@ -128,13 +128,13 @@ None
     <td>${ h.truncate(h.util.html_escape(s.abstract)) | n}</td>
     <td>
 %     if s.status.name == 'Pending':
-        <p><i>Undergoing review</i></p>
+        <i>Undergoing review</i>
 %     elif s.accepted:
-        <p>Accepted</p>
+        Accepted
 %     elif s.status.name == 'Withdrawn':
-        <p>Withdrawn</p>
+        Withdrawn
 %     else:
-        <p>Declined</p>
+        Declined
 %     endif
     </td>
     <td>
