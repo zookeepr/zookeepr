@@ -173,7 +173,7 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
    for auth_role in registration.person.roles:
        role.append(auth_role.name)
 %>
-        ${ '<i>' + '</i>, <i>'.join(role) + '</i>' |n}
+        ${ '<i>' + '</i>,<br /> <i>'.join(role) + '</i>' |n}
         </td>
         <td>
 <%  firstinvoice = True %>
