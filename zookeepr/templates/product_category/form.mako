@@ -2,10 +2,11 @@
         <p class="entries">${ h.text('product_category.name') }</p>
 
         <p class="label"><span class="mandatory">*</span><label for="product_category.description">Description:</label></p>
-        <p class="entries">${ h.text('product_category.description') }</p>
+        <p class="entries">${ h.textarea('product_category.description', cols=80, rows=5) }</p>
+
 
         <p class="label"><label for="product_category.note">Note:</label></p>
-        <p class="entries">${ h.text('product_category.note') }</p>
+        <p class="entries">${ h.text('product_category.note', cols=80, rows=5) }</p>
 
         <p class="label"><span class="mandatory">*</span><label for="product_category.display">Display as:</label></p>
         <p class="entries">
