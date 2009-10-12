@@ -23,7 +23,7 @@ for d in c.db_content_news_all:
 
 <h3>Registrations are now open!</h3>
 
-<p>Online <a href="/register/new">registrations</a> for LCA2010 are now open! There are only a limited number of Early Bird Registrations available. Early Bird tickets will be available until 13 November 2009, unless sold out earlier. So get in quick!!</p>
+<p>Online <a href="/register/status">registrations</a> for LCA2010 are now open! There are only a limited number of Early Bird Registrations available. Early Bird tickets will be available until 13 November 2009, unless sold out earlier. So get in quick!!</p>
 
 <table>
 <tr class="even">
