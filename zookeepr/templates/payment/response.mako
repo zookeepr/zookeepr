@@ -9,7 +9,7 @@ Your payment was unsuccessful. The reason was:
 You can try again by visiting:
   ${ h.lca_info['event_url'] }/registration/${ c.pr.invoice.person.registration.id }/pay
 %else:
-Subject: Sucessful payment for ${ h.lca_info['event_name'] }
+Subject: Successful payment for ${ h.lca_info['event_name'] }
 
 Your payment for ${ h.number_to_currency(c.response['amount_paid'] / 100.0) } was successful.
 
