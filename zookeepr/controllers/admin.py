@@ -451,8 +451,8 @@ class AdminController(BaseController):
               consents = []
               for t in talks:
                   cons = [con.replace('_', ' ') for con in cons_list
-                                               if getattr(p.registration, con)] 
-                  if len(cons)==lend(cons_list):
+                                               if getattr(t, con)] 
+                  if len(cons)==len(cons_list):
                     consents.append('Release All')
                   elif len(cons)==0:
                     consents.append('None')
