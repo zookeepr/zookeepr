@@ -677,13 +677,14 @@ class AdminController(BaseController):
             if person.is_speaker():
                 for invoice in person.invoices:
                     for item in invoice.items:
-                        if item.product.product_category.name("Partners Programme"):
-                            partners.append(item.description + " x" + str(item.qty))
-                            total_partners += item.qty
-                        if item.product.product_category.name("Penguin Dinner"):
-                            dinner_tickets += item.qty
-                            total_dinner += item.qty
-                c.data.append([person.firstname + " " + person.lastname,
+                        if item.product is not None:
+                            if item.product.category.name == "Partners Programme":
+                                partners.append(item.description + " x" + str(item.qty))
+                                total_partners += item.qty
+                            if item.product.category.name == "Penguin Dinner":
+                                dinner_tickets += item.qty
+                                total_dinner += item.qty
+                c.data.append([person.fullname(),
                                person.email_address,
                                ", ".join(partners),
                                str(dinner_tickets)])
