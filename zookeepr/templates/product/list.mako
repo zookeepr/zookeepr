@@ -17,6 +17,7 @@
         <th>Invoiced (inc. overdue)</th>
         <th>Valid Invoices</th>
         <th>Sold</th>
+        <th>Free</th>
         <th>Total</th>
         <th>&nbsp;</th>
         <th>&nbsp;</th>
@@ -33,6 +34,7 @@
         <td>${ product.qty_invoiced(date = False) }</td>
         <td>${ product.qty_invoiced() }</td>
         <td>${ product.qty_sold() }</td>
+        <td>${ product.qty_free() }</td>
         <td>${ h.number_to_currency((product.qty_sold() * product.cost)/100) }</td>
 %               if c.can_edit:
 %                   for action in ['edit', 'delete']:
@@ -43,7 +45,7 @@
 %           endfor
 <%           grand_total += cat_total %>
         <tr>
-            <td colspan="7" style="font-weight: bold; text-align: right;">Sub-Total:</td>
+            <td colspan="8" style="font-weight: bold; text-align: right;">Sub-Total:</td>
             <td colspan="3">${ h.number_to_currency(cat_total/100) }</td>
         </tr>
 %       endif

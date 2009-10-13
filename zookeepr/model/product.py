@@ -189,6 +189,16 @@ class Product(Base):
     def find_by_category(cls, id):
         return Session.query(Product).filter_by(category_id=id)
 
+    def qty_free(self):
+        qty = 0
+        for ii in self.invoice_items:
+            if not ii.invoice.void and ii.invoice.paid():
+                if self.category.name == 'Accommodation':
+                    qty += 1
+                else:
+                    qty += ii.free_qty
+        return qty
+
     def qty_sold(self):
         qty = 0
         for ii in self.invoice_items:
@@ -196,7 +206,7 @@ class Product(Base):
                 if self.category.name == 'Accommodation':
                     qty += 1
                 else:
-                    qty += ii.qty
+                    qty += (ii.qty - ii.free_qty)
         return qty
 
     def qty_invoiced(self, date=True):

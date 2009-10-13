@@ -627,11 +627,13 @@ class RegistrationController(BaseController):
  
                 if included[ii.product.category.id] >= ii.qty:
                     prices[ii.product.category.id].append(ii.qty * ii.product.cost)
+                    ii.free_qty = ii.qty
 
                     freebies[ii.product.category.id] += ii.qty
                     included[ii.product.category.id] -= ii.qty
                 elif included[ii.product.category.id] > 0:
                     prices[ii.product.category.id].append(included[ii.product.category.id] * ii.product.cost)
+                    ii.free_qty = included[ii.product.category.id]
 
                     freebies[ii.product.category.id] = included[ii.product.category.id]
                     included[ii.product.category.id] = 0
@@ -758,8 +760,13 @@ class RegistrationController(BaseController):
             except:
                 pass
 
+        if filter.has_key('page'):
+            page = int(filter['page'])
+        else:
+            page = 1
+
         setattr(c, 'per_page', per_page)
-        pagination =  paginate.Page(registration_list, per_page = per_page)
+        pagination =  paginate.Page(registration_list, per_page = per_page, page = page)
         setattr(c, 'registration_pages', pagination)
         setattr(c, 'registration_collection', pagination.items)
         setattr(c, 'registration_request', filter)

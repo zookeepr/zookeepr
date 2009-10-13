@@ -21,6 +21,7 @@ class InvoiceItem(Base):
     product_id = sa.Column(sa.types.Integer, sa.ForeignKey('product.id'), nullable=True)
     description = sa.Column(sa.types.Text, nullable=False)
     qty = sa.Column(sa.types.Integer, nullable=False)
+    free_qty = sa.Column(sa.types.Integer, nullable=False, default=0)
     cost = sa.Column(sa.types.Integer, nullable=False)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False,
