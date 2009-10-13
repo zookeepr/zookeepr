@@ -10,7 +10,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema
+from zookeepr.lib.validators import BaseSchema, ExistingPaymentValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -18,13 +18,24 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.lib.mail import email
 
-from zookeepr.model import meta, Payment, PaymentReceived
+from zookeepr.model import meta, Payment, PaymentReceived, Invoice
 
 from zookeepr.config.lca_info import lca_info
 
 import zookeepr.lib.pxpay as pxpay
 
 log = logging.getLogger(__name__)
+
+class PaymentSchema(BaseSchema):
+    approved = validators.Int(min=0, max=1, not_empty=True)
+    amount_paid = validators.Int(min=0, max=2000000)
+    currency_used = validators.String()
+    gateway_ref = validators.String()
+    email_address = validators.String(not_empty=False)
+    success_code = validators.String()
+
+class NewPaymentSchema(BaseSchema):
+    payment = PaymentSchema()
 
 class PaymentController(BaseController):
     """This controller receives payment advice from the payment gateway.
@@ -54,7 +65,7 @@ class PaymentController(BaseController):
         c.payment = PaymentReceived.find_by_payment(payment.id)
 
         c.validation_errors = []
-        if c.payment is not None and len(c.payment.validation_errors) > 0:
+        if c.payment is not None and c.payment.validation_errors is not None and len(c.payment.validation_errors) > 0:
             c.validation_errors = c.payment.validation_errors.split(';')
 
         same_invoice = PaymentReceived.find_by_invoice(payment.invoice.id)
@@ -120,3 +131,63 @@ class PaymentController(BaseController):
         # OK we now have a valid transaction, we redirect the user to the view page
         # so they can see if their transaction was accepted or declined
         return redirect_to(action='view', id=payment.id)
+
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_new_manual") 
+    def new_manual(self, id):
+        c.payment = Payment.find_by_id(id)
+        payment = None
+        c.person = c.payment.invoice.person
+
+
+        defaults = {
+            'payment.approved': 1,
+            'payment.email_address': c.person.email_address,
+            'payment.success_code': 'Received',
+            'payment.amount_paid': c.payment.amount,
+            'payment.currency_used': 'NZD',
+        }
+
+        form = render('/payment/new.mako')
+        return htmlfill.render(form, defaults)
+
+    @authorize(h.auth.has_organiser_role)
+    @validate(schema=NewPaymentSchema(), form='new_manual', post_only=True, on_get=True, variable_decode=True)
+    def _new_manual(self, id):
+        """Create a new payment."""
+        results = self.form_result['payment']
+
+        # Check whether a payment has already been received for this payment object
+        payment = Payment.find_by_id(id)
+        received = PaymentReceived.find_by_payment(payment.id)
+        if received is not None:
+            print "WTF"
+            # Ignore repeat payment
+            return redirect_to(action='view', id=payment.id)
+
+        client_ip = request.environ['REMOTE_ADDR']
+        if 'HTTP_X_FORWARDED_FOR' in request.environ:
+            client_ip = request.environ['HTTP_X_FORWARDED_FOR']
+
+        results['response_text'] = 'Manual payment processed by ' + h.signed_in_person().fullname()
+        results['client_ip_zookeepr'] = client_ip
+        results['client_ip_gateway'] = client_ip
+        results['payment'] = payment
+
+        c.payment_received = PaymentReceived(**results)
+        c.payment_received.email_address.lower()
+
+        if results['approved'] == 1:
+            setattr(c.payment_received, 'approved', True)
+        else:
+            setattr(c.payment_received, 'approved', False)
+
+        setattr(c.payment_received, 'validation_errors', '')
+        setattr(c.payment_received, 'invoice', payment.invoice)
+
+
+        meta.Session.add(c.payment_received)
+        meta.Session.commit()
+
+        return redirect_to(action='view', id=payment.id)
+

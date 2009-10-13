@@ -5,8 +5,8 @@ from zookeepr.model import Person, Proposal, ProposalType, TargetAudience
 from zookeepr.model import ProposalStatus, Stream, AccommodationAssistanceType
 from zookeepr.model import TravelAssistanceType, DbContentType, Registration
 from zookeepr.model import Product, ProductCategory, Ceiling, FundingType
-from zookeepr.model import Product, ProductCategory, Ceiling, FundingType
 from zookeepr.model import FundingStatus, Funding
+from zookeepr.model import Invoice, Payment
 from zookeepr.model import SocialNetwork
 
 from zookeepr.config.lca_info import lca_info
@@ -143,6 +143,26 @@ class ExistingRegistrationValidator(validators.FancyValidator):
             raise Invalid("Unknown registration ID.", value, state)
         else:
             return registration
+    def _from_python(self, value, state):
+        return value.id
+
+class ExistingInvoiceValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        invoice = Invoice.find_by_id(int(value), False)
+        if invoice is None:
+            raise Invalid("Unknown invoice ID.", value, state)
+        else:
+            return invoice
+    def _from_python(self, value, state):
+        return value.id
+
+class ExistingPaymentValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        payment = Payment.find_by_id(int(value), abort_404=False)
+        if payment is None:
+            raise Payment("Unknown payment ID.", value, state)
+        else:
+            return payment
     def _from_python(self, value, state):
         return value.id
 

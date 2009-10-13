@@ -217,6 +217,26 @@ class InvoiceController(BaseController):
         else:
             redirect(uri)
 
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_pay_manual")
+    def pay_manual(self, id):
+        """Request confirmation from user
+        """
+        invoice = Invoice.find_by_id(id, True)
+        person = invoice.person
+
+        error = self._check_invoice(person, invoice)
+        if error is not None:
+            return error
+
+        c.payment = Payment()
+        c.payment.amount = invoice.total()
+        c.payment.invoice = invoice
+
+        meta.Session.commit()
+        return redirect_to(controller='payment', id=c.payment.id, action='new_manual')
+
+    
     def pdf(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
             # Raise a no_auth error

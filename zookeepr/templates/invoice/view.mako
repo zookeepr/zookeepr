@@ -15,6 +15,10 @@
 % elif c.invoice.bad_payments().count() > 0:
         <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></li>
 % else:
+%   if h.auth.authorized(h.auth.has_organiser_role):
+        <li>${ h.link_to('Pay this invoice manually', url = h.url_for(action='pay_manual')) }</li>
+         <ul><li>Use this if the person has paid via direct credit to the bank account or similar</li></ul>
+%   endif
         <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>
 %   if c.invoice.person.registration:
         <li>${ h.link_to('Regenerate invoice', url = h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
