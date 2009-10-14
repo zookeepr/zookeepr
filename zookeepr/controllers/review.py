@@ -45,6 +45,8 @@ class ReviewController(BaseController):
 
         c.proposal = c.review.proposal
         defaults = h.object_to_defaults(c.review, 'review')
+        if defaults['review.score'] == 1 or defaults['review.score'] == 2:
+            defaults['review.score'] = '+%s'  % defaults['review.score']
 
         c.signed_in_person = h.signed_in_person()
         form = render('/review/edit.mako')
