@@ -24,15 +24,9 @@ from zookeepr.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
-class NewFundingReviewSchema(BaseSchema):
-    pre_validators = [NestedVariables]
-
-    review = FundingReviewSchema()
-
 class EditFundingReviewSchema(BaseSchema):
-    review = NewFundingReviewSchema()
+    review = FundingReviewSchema()
     pre_validators = [NestedVariables]
-
 
 class FundingReviewController(BaseController):
     @authorize(h.auth.has_funding_reviewer_role)
@@ -51,6 +45,8 @@ class FundingReviewController(BaseController):
 
         c.funding = c.review.funding
         defaults = h.object_to_defaults(c.review, 'review')
+        if defaults['review.score'] == 1 or defaults['review.score'] == 2:
+            defaults['review.score'] = '+%s'  % defaults['review.score']
 
         c.signed_in_person = h.signed_in_person()
         form = render('/funding_review/edit.mako')
