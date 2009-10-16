@@ -62,7 +62,7 @@ for d in c.db_content_news_all:
     <td><a href="http://miniconf.osda.asn.au/node/add/proposal">Submit a proposal</a></td>
   </tr>
   <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Distro_Summit">Distro Summit</a></td>  <td>Fabio Tranchitella</td>
+    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Distro_Summit">Distro Summit</a></td>  <td>Martin F. Krafft</td>
     <td><a href="http://distrosummit.org/cfp.html">Submit a proposal</a></td>
   </tr>
   <tr class="odd">
