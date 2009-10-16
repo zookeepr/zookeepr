@@ -23,7 +23,11 @@ ${ h.link_to("%s - %s" % (r.funding.id, r.funding.person.fullname() ), url=h.url
 ${ r.funding.type.name }
 
 <td>
+% if r.score is None:
+abstain
+% else:
 ${ r.score }
+% endif
 </td>
 
 <td>

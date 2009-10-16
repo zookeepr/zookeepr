@@ -11,7 +11,13 @@
 </p>
 
 <br />
-<p><b>Score:</b> ${ c.review.score | h }</p>
+<p><b>Score:</b> 
+% if c.review.score is None:
+abstain
+% else:
+${ c.review.score }
+%endif
+</p>
 
 <p><b>Reviewer Comment:</b></p>
 <blockquote>
