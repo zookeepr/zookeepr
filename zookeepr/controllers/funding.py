@@ -320,7 +320,7 @@ class FundingController(BaseController):
         person = c.signed_in_person
         if person in [ review.reviewer for review in c.funding.reviews]:
             h.flash('Already reviewed')
-            return redirect_to(action='review', funding_id=c.next_review_id)
+            return redirect_to(action='review', id=c.next_review_id)
 
         results = self.form_result['review']
         review = FundingReview(**results)
@@ -332,7 +332,7 @@ class FundingController(BaseController):
 
         meta.Session.commit()
         if c.next_review_id:
-            return redirect_to(action='review', funding_id=c.next_review_id)
+            return redirect_to(action='review', id=c.next_review_id)
 
         h.flash("No more funding applications to review")
 
