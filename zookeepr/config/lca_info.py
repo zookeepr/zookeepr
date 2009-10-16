@@ -41,7 +41,7 @@ lca_info = {
   'cfmini_status' : 'closed',
   'paper_editing' : 'open',
   'funding_status' : 'closed',
-  'funding_editing' : 'closed',
+  'funding_editing' : 'open',
   'conference_status': 'open',
 
   'emails': {
