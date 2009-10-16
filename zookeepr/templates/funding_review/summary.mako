@@ -5,13 +5,14 @@
 <%
 review_summary = {}
 for r in c.review_collection:
-    if r.reviewer in review_summary:
-        review_summary[r.reviewer]['num_reviews'] += 1
-        review_summary[r.reviewer]['total_score'] += r.score
-    else:
-        review_summary[r.reviewer] = {}
-        review_summary[r.reviewer]['num_reviews'] = 1
-        review_summary[r.reviewer]['total_score'] = r.score
+    if r.score is not None:
+        if r.reviewer in review_summary:
+            review_summary[r.reviewer]['num_reviews'] += 1
+            review_summary[r.reviewer]['total_score'] += r.score
+        else:
+            review_summary[r.reviewer] = {}
+            review_summary[r.reviewer]['num_reviews'] = 1
+            review_summary[r.reviewer]['total_score'] = r.score
 %>
 
 <table>

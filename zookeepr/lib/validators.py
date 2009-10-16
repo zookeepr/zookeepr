@@ -122,13 +122,13 @@ class ProductCategoryValidator(validators.FancyValidator):
         return value.id
 
 class ReviewSchema(BaseSchema):
-    score = validators.OneOf(["-2", "-1", "+1", "+2"])
+    score = validators.OneOf(["-2", "-1", "+1", "+2", "null"])
     stream = StreamValidator()
     miniconf = validators.String()
     comment = validators.String()
 
 class FundingReviewSchema(BaseSchema):
-    score = validators.OneOf(["-2", "-1", "+1", "+2"])
+    score = validators.OneOf(["-2", "-1", "+1", "+2", "null"])
     comment = validators.String()
 
 class PrevLCAValidator(validators.FancyValidator):

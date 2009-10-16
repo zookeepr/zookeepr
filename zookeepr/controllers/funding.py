@@ -323,6 +323,9 @@ class FundingController(BaseController):
             return redirect_to(action='review', id=c.next_review_id)
 
         results = self.form_result['review']
+        if results['score'] == 'null':
+          results['score'] = None
+
         review = FundingReview(**results)
 
         meta.Session.add(review)

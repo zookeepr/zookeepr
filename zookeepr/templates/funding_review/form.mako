@@ -6,6 +6,8 @@ Your opinion on this funding application.
 <div id="q1">
 <p><span class="mandatory">*</span><b>What score do you give this application?</b>
 <br>
+${ h.radio('review.score', 'null', label="Abstain") }
+<br>
 ${ h.radio('review.score', '-2', label="-2 (strong reject) I want this funding application to be rejected, and if asked to I will advocate for it to be rejected.") }
 <br>
 ${ h.radio('review.score', '-1', label="-1 (reject) I want this funding application to be rejected") }

@@ -45,6 +45,8 @@ class FundingReviewController(BaseController):
 
         c.funding = c.review.funding
         defaults = h.object_to_defaults(c.review, 'review')
+        if defaults['review.score'] == None:
+            defaults['review.score'] = 'null'
         if defaults['review.score'] == 1 or defaults['review.score'] == 2:
             defaults['review.score'] = '+%s'  % defaults['review.score']
 
@@ -56,6 +58,9 @@ class FundingReviewController(BaseController):
     def _edit(self, id):
         c.review = FundingReview.find_by_id(id)
         self._is_reviewer()
+
+        if self.form_result['review']['score'] == 'null':
+            self.form_result['review']['score'] = None
 
         for key in self.form_result['review']:
             setattr(c.review, key, self.form_result['review'][key])

@@ -103,6 +103,8 @@ ${ h.link_to(funding.person.fullname(), url=h.url_for(controller='person', actio
                 num_reviewers += 1
                 total_score += review.score
                 scores += review.reviewer.fullname() + ": %s " % review.score + "<br>"
+            else:
+                scores += review.reviewer.fullname() + ": Abstain<br>"
 
         if num_reviewers == 0:
             avg_score = "No Reviews"
