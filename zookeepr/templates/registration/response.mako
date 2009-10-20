@@ -36,8 +36,9 @@ You can view your invoice for payment:
 
     ${ h.lca_info['event_url'] + h.url_for(action='status') }
 
-Please follow the instructions to finalise your payment. Payment must be
-received before Friday 8 January 2010.
+Registering for the conference DOES NOT HOLD YOUR TICKET until it has
+been paid in full. So to ensure that you secure your ticket, pay the
+registration invoice as soon as possible.
 
 %endif
 %if not c.person.is_speaker():
