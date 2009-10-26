@@ -101,7 +101,7 @@ class ProposalController(BaseController):
     @dispatch_on(POST="_new")
     def new(self):
         if c.cfp_status == 'closed':
-           if not h.auth.authorized(h.auth.has_late_submitter_role):
+           if not h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_late_submitter_role)):
               return render("proposal/closed.mako")
         elif c.cfp_status == 'not_open':
            return render("proposal/not_open.mako")
