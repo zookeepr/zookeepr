@@ -11,6 +11,10 @@
     <td>${ c.role.pretty_name }</td>
   </tr>
   <tr class="odd">
+    <td>Comment:</td>
+    <td>${ c.role.comment }</td>
+  </tr>
+  <tr class="even">
     <td>Display Order:</td>
     <td>${ c.role.display_order }</td>
   </tr>

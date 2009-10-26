@@ -8,6 +8,7 @@
 <tr>
 <th>Name</th>
 <th>Pretty Name</th>
+<th>Comment</th>
 <th></th>
 <th></th>
 </tr>
@@ -24,6 +25,7 @@
         &nbsp;
 %   endif
         </td>
+        <td>${ st.comment }</td>
 %       for action in ['edit', 'delete']:
         <td>${ h.link_to(action, url=h.url_for(action=action, id=st.id)) }</td>
 %       endfor
