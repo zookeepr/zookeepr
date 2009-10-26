@@ -116,9 +116,9 @@ import array
              fields[gender].append((size, product))
            endfor
 %>
-%           for gender in fields: 
           <table>
-            <tr><th><span class="mandatory">*</span>Please pick at least one</th>
+%           for gender in fields: 
+            <tr><th>&nbsp;</th>
 %              for (size, product) in fields[gender]:
                <th>${ size }</th>
 %              endfor
@@ -134,8 +134,8 @@ import array
 %               endif
 %             endfor
             </tr>
-          </table>
 %           endfor
+          </table>
 %       elif category.display_mode == 'grid' and category.display == 'qty':
 <table>
   <tr>
