@@ -27,6 +27,7 @@ log = logging.getLogger(__name__)
 class RoleSchema(BaseSchema):
     name = validators.PlainText()
     pretty_name = validators.String()
+    comment = validators.String()
     display_order = validators.Int()
 
 class NewRoleSchema(BaseSchema):
