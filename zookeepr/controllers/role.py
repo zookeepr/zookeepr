@@ -61,6 +61,9 @@ class RoleController(BaseController): # Delete
         for key in self.form_result['role']:
             setattr(c.role, key, self.form_result['role'][key])
 
+        if c.role.pretty_name is not None and c.role.pretty_name == '':
+            setattr(c.role, 'pretty_name', None)
+
         # update the objects with the validated form data
         meta.Session.commit()
 
