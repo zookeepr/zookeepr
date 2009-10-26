@@ -74,6 +74,7 @@ class VolunteerController(BaseController):
 
         return render('volunteer/view.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         # Check access and redirect
         if not h.auth.has_organiser_role:
