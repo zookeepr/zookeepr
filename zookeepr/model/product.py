@@ -72,6 +72,11 @@ def setup(meta):
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
+    product = Product(category_id='1', active=True, description="Press Ticket",
+                      cost="0", auth="self.is_press()", validate=None)
+    product.ceilings.append(ceiling_all_conference)
+    meta.Session.add(product);
+
     meta.Session.add_all(
         [
             # Shirts
@@ -139,14 +144,16 @@ def setup(meta):
             ProductInclude(product_id='7', include_category_id='2', include_qty='1'), # Speaker
             ProductInclude(product_id='8', include_category_id='2', include_qty='1'), # Miniconf
             ProductInclude(product_id='9', include_category_id='2', include_qty='2'), # Volunteer
-            ProductInclude(product_id='37', include_category_id='2', include_qty='1'), # Partner's Programme get a t-shirt
+            ProductInclude(product_id='10', include_category_id='2', include_qty='1'), # Press
+            ProductInclude(product_id='38', include_category_id='2', include_qty='1'), # Partner's Programme get a t-shirt
 
             # Include 1 Dinner for Professional+miniconf and for Speaker registrations
-            ProductInclude(product_id='4', include_category_id='3', include_qty='1'), # pro EB
-            ProductInclude(product_id='5', include_category_id='3', include_qty='1'), # pro
-            ProductInclude(product_id='6', include_category_id='3', include_qty='1'), # fairy
-            ProductInclude(product_id='7', include_category_id='3', include_qty='1'), # speaker
-            ProductInclude(product_id='8', include_category_id='3', include_qty='1'), # miniconf
+            ProductInclude(product_id='4', include_category_id='3', include_qty='1'), # Pro EB
+            ProductInclude(product_id='5', include_category_id='3', include_qty='1'), # Pro
+            ProductInclude(product_id='6', include_category_id='3', include_qty='1'), # Fairy
+            ProductInclude(product_id='7', include_category_id='3', include_qty='1'), # Speaker
+            ProductInclude(product_id='8', include_category_id='3', include_qty='1'), # Miniconf
+            ProductInclude(product_id='10', include_category_id='3', include_qty='1'), # Press
 
             # Include 5 partners in the partners program for speakers
             ProductInclude(product_id='7', include_category_id='5', include_qty='5'),

@@ -15,6 +15,7 @@ def setup(meta):
             Role(name='papers_chair', pretty_name='Papers Chair', comment='Has access to paper review system management functions'),
             Role(name='late_submitter', comment='Is allowed to submit paper proposals late'),
             Role(name='funding_reviewer', pretty_name='Funding Reviewer', comment='Has access to the funding review system'),
+            Role(name='press', pretty_name='Press Pass', comment='Members of the press and media who can receive a press ticket'),
         ]
     )
 

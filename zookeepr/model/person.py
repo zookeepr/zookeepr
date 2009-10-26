@@ -126,6 +126,13 @@ class Person(Base):
         return reduce(lambda a, b: a or (b.accepted and b.type.name == 'Miniconf'), self.proposals, False) or False
         # note: the "or False" at the end converts a None into a False
 
+    def has_role(self, name):
+        name = name.lower()
+        for role in self.roles:
+          if role.name.lower() == name:
+            return True
+        return False
+        
     def is_volunteer(self):
         if self.volunteer and self.volunteer.accepted is not None:
             return self.volunteer.accepted

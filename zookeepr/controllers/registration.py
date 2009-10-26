@@ -251,6 +251,12 @@ class RegistrationController(BaseController):
         except:
             return False
 
+    def is_press(self):
+        try:
+            return c.signed_in_person.has_role('press')
+        except:
+            return False
+
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
 
