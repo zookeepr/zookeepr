@@ -45,7 +45,7 @@ for d in c.db_content_news_all:
 <h2>LCA2010 Miniconfs</h2>
 
 <br />
-<p>The <a href="/programme/miniconfs">linux.conf.au 2010 Miniconfs</a> have put put their
+<p>The <a href="/programme/miniconfs">linux.conf.au 2010 Miniconfs</a> have put out their
 <a href="/media/news/92">Call for Miniconf Papers</a>!</p>
 
 <table>
@@ -75,7 +75,7 @@ for d in c.db_content_news_all:
   </tr>
   <tr class="odd">
     <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Haecksen_and_Linuxchix">Haecksen and Linuxchix</a></td>  <td>Joh Clarke</td>
-    <td><a href="http://haecksen.org.nz/node/add/miniconfsubmission">Submit a proposal</a></td>
+    <td>Submissions closed!</td>
   </tr>
   <tr class="even">
     <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Libre Graphics Day">Libre Graphics Day</a></td>  <td>Jon Cruz</td>
@@ -95,11 +95,11 @@ for d in c.db_content_news_all:
   </tr>
   <tr class="even">
     <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Open_Programming_Languages">Open Programming Languages</a></td>  <td>Christopher Neugebauer</td>
-    <td><a href="http://blogs.tucs.org.au/oplm/cfp/">Submit a proposal</a></td>
+    <td>Submissions closed!</td>
   </tr>
   <tr class="odd">
     <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/System_Administration">System Administration</a></td>  <td>Simon Lyall</td>
-    <td><a href="http://sysadmin.miniconf.org/cfp10.html">Submit a proposal</a></td>
+    <td>Submissions closed!</td>
   </tr>
   <tr class="even">
     <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Wave_Developers">Wave Developers</a></td>  <td>Shane Stephens</td>
