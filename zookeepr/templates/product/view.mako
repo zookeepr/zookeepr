@@ -1,3 +1,8 @@
+<%def name="extra_head()">
+    <!--[if IE]><script language="javascript" type="text/javascript" src="/js/flot/excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.js"></script>
+</%def>
+
 <%inherit file="/base.mako" />
 
     <h2>View product</h2>
@@ -63,6 +68,15 @@
     </table>
 
     <h3>This Product Sales</h3>
+
+    <div id="graph_sales" style="width:600px;height:200px;"></div>
+<%
+#  sales = []
+  sales_working = dict()
+  sales_start = 0
+  sales_end = 0
+%>
+
     <table>
       <thead><tr>
         <th>Invoice</th>
@@ -72,6 +86,19 @@
       </tr></thead>
 %for invoice_item in c.product.invoice_items:
 %    if invoice_item.invoice.paid():
+<%
+       sale_date = int(invoice_item.invoice.payment_received[0].last_modification_timestamp.strftime("%s")) * 1000
+
+       if sales_start == 0 or sales_start > sale_date:
+         sales_start = sale_date
+       if sales_end < sale_date:
+         sales_end = sale_date
+#       sales.append('%s, %s' % (sale_date, invoice_item.qty))
+       if sale_date not in sales_working:
+         sales_working[sale_date] = invoice_item.qty
+       else:
+         sales_working[sale_date] += invoice_item.qty
+%>
       <tr>
         <td>${ h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url_for(controller='invoice', action='view', id=invoice_item.invoice.id)) }</td>
         <td>${ h.link_to(invoice_item.invoice.person.firstname + ' ' + invoice_item.invoice.person.lastname, h.url_for(controller='person', action='view', id=invoice_item.invoice.person.id)) }</td>
@@ -81,6 +108,20 @@
 %    endif
 %endfor
     </table>
+
+<%
+  sales_dates = sales_working.keys()
+  sales_dates.sort()
+  sales = []
+  sales_running = []
+  sales_running_count = 0
+  for sale_date in sales_dates:
+    print sale_date
+    sales_running_count += sales_working[sale_date]
+    sales_running.append('%s, %s' % (sale_date, sales_running_count))
+    sales.append('%s, %s' % (sale_date, sales_working[sale_date]))
+%>
+
 
     <h3>This Product Invoices</h3>
     <table>
@@ -128,3 +169,31 @@
 % endif
       ${ h.link_to('Back', url=h.url_for(action='index', id=None)) }
     </p>
+
+<script type="text/javascript">
+    var d1 = [[ ${ "], [".join(sales_running) | n } ]];
+    var d2 = [[ ${ "], [".join(sales) | n } ]];
+
+    $.plot($("#graph_sales"), [ 
+        { label: "Count", data: d1, lines: { fill: true } },
+        { label: "Per Day", data: d2 },
+      ], {
+        series: { points: { show: true } },
+        series: { lines: { show: true } },
+        legend: {
+          position: "nw"
+        },
+        yaxis: {
+          minTickSize: 1,
+          label: "Count",
+        },
+        xaxis: {
+          minTickSize: [1, "hour"],
+          mode: "time",
+          label: "Date",
+          min: ${ sales_start },
+          max: ${ sales_end },
+        }
+      }
+    );
+</script>
