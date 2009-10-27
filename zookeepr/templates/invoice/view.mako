@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
     <div id="actions">
       <ul>
-        <li>${ h.link_to('Registration status', url=h.url_for(controller='registration', action='status')) }</li>
+        <li>${ h.link_to('Registration status', url=h.url_for(controller='registration', action='status', id=c.invoice.person.registration.id)) }</li>
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
 % if c.invoice.is_void() and c.invoice.person.registration:
