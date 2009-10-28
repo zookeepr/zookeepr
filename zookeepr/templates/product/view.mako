@@ -73,6 +73,7 @@
 <%
 #  sales = []
   sales_working = dict()
+  sales_working_by_day = dict()
   sales_start = 0
   sales_end = 0
 %>
@@ -88,14 +89,21 @@
 %    if invoice_item.invoice.paid():
 <%
        sale_date = None
+       sale_date_by_day = None
        for pr in invoice_item.invoice.payment_received:
          sale_date = int(pr.last_modification_timestamp.strftime("%s")) * 1000
+         sale_date_by_day = int(pr.last_modification_timestamp.date().strftime("%s")) * 1000
 
        if sale_date is not None:
          if sale_date not in sales_working:
            sales_working[sale_date] = invoice_item.qty
          else:
            sales_working[sale_date] += invoice_item.qty
+
+         if sale_date_by_day not in sales_working_by_day:
+           sales_working_by_day[sale_date_by_day] = invoice_item.qty
+         else:
+           sales_working_by_day[sale_date_by_day] += invoice_item.qty
 %>
       <tr>
         <td>${ h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url_for(controller='invoice', action='view', id=invoice_item.invoice.id)) }</td>
@@ -121,7 +129,11 @@
     print sale_date
     sales_running_count += sales_working[sale_date]
     sales_running.append('%s, %s' % (sale_date, sales_running_count))
-    sales.append('%s, %s' % (sale_date, sales_working[sale_date]))
+
+  sales_dates_by_day = sales_working_by_day.keys()
+  sales_dates_by_day.sort()
+  for sale_date in sales_dates_by_day:
+    sales.append('%s, %s' % (sale_date, sales_working_by_day[sale_date]))
 %>
 
 
@@ -178,10 +190,13 @@
 
     $.plot($("#graph_sales"), [ 
         { label: "Count",
-           data: d1,
+          data: d1,
            lines: { show: true, fill: true },
            points: { show: true } },
-        { label: "Per Day", data: d2, yaxis: 2, bars: { show: true } },
+        { label: "Per Day",
+          data: d2,
+          yaxis: 2,
+          bars: { show: true, barWidth: 86400000 } },
       ], {
         legend: {
           position: "nw"
