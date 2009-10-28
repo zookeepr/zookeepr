@@ -193,6 +193,35 @@ ${ h.link_to("withdraw", url=h.url_for(controller='funding', action='withdraw', 
 %endif
 
 % if h.auth.authorized(h.auth.has_organiser_role):
+<h2>Registration</h2>
+
+%   if c.person.registration is not None:
+<p>${ h.link_to('View Registration', h.url_for(controller="registration", action='view', id=c.person.registration.id)) }</p>
+%   endif
+
+%   if len(c.person.registration.notes) > 0:
+<table>
+  <tr>
+    <th>By</th>
+    <th>Note</th>
+    <th>&nbsp;</th>
+  </tr>
+%     for n in c.person.registration.notes:
+  <tr class="${ h.cycle('even', 'odd') }">
+    <td valign="top">${ n.by.fullname() } <i>${ n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp; %H:%M") | n}</i></td>
+    <td valign="top">${ h.line_break(n.note) }</td>
+    <td valign="top">${ h.link_to("edit", h.url_for(controller='rego_note', action='edit', id=n.id)) }
+    ${ h.link_to("view", h.url_for(controller='rego_note', action='view', id=n.id)) }</td>
+  </tr>
+%     endfor
+</table>
+%   else:
+No registration notes
+%   endif
+
+${ h.link_to("Add New Note", h.url_for(controller='rego_note', action='new', rego_id=c.person.registration.id)) }
+
+
 <h2>Raised Invoices</h2>
 
 %   if len(c.person.invoices) > 0:
