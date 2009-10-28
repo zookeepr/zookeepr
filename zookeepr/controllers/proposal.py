@@ -433,7 +433,8 @@ class ProposalController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def latex(self):
-        c.proposal_type = meta.Session.query(ProposalType).select_from(ProposalType, Proposal, ProposalStatus).order_by(ProposalType.name).order_by(Proposal.title).filter(ProposalStatus.name='Accepted').all()
+        c.proposal_type = ProposalType.find_all()
+#        c.proposal_type = meta.Session.query(ProposalType).select_from(ProposalType, Proposal, ProposalStatus).order_by(ProposalType.name).order_by(Proposal.title).filter(ProposalStatus.name='Accepted').all()
 
         for type in c.proposal_type:
           print type
