@@ -71,7 +71,6 @@
 
     <div id="graph_sales" style="width:600px;height:200px;"></div>
 <%
-#  sales = []
   sales_working = dict()
   sales_working_by_day = dict()
   sales_start = 0
@@ -126,7 +125,6 @@
   sales_running = []
   sales_running_count = 0
   for sale_date in sales_dates:
-    print sale_date
     sales_running_count += sales_working[sale_date]
     sales_running.append('%s, %s' % (sale_date, sales_running_count))
 
