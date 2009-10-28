@@ -87,17 +87,15 @@
 %for invoice_item in c.product.invoice_items:
 %    if invoice_item.invoice.paid():
 <%
-       sale_date = int(invoice_item.invoice.payment_received[0].last_modification_timestamp.strftime("%s")) * 1000
+       sale_date = None
+       for pr in invoice_item.invoice.payment_received:
+         sale_date = int(pr.last_modification_timestamp.strftime("%s")) * 1000
 
-       if sales_start == 0 or sales_start > sale_date:
-         sales_start = sale_date
-       if sales_end < sale_date:
-         sales_end = sale_date
-#       sales.append('%s, %s' % (sale_date, invoice_item.qty))
-       if sale_date not in sales_working:
-         sales_working[sale_date] = invoice_item.qty
-       else:
-         sales_working[sale_date] += invoice_item.qty
+       if sale_date is not None:
+         if sale_date not in sales_working:
+           sales_working[sale_date] = invoice_item.qty
+         else:
+           sales_working[sale_date] += invoice_item.qty
 %>
       <tr>
         <td>${ h.link_to('id: ' + str(invoice_item.invoice.id), url=h.url_for(controller='invoice', action='view', id=invoice_item.invoice.id)) }</td>
@@ -112,6 +110,10 @@
 <%
   sales_dates = sales_working.keys()
   sales_dates.sort()
+  if len(sales_dates) > 0:
+    sales_start = sales_dates[0]
+    sales_end = sales_dates[-1]
+
   sales = []
   sales_running = []
   sales_running_count = 0
@@ -175,11 +177,12 @@
     var d2 = [[ ${ "], [".join(sales) | n } ]];
 
     $.plot($("#graph_sales"), [ 
-        { label: "Count", data: d1, lines: { fill: true } },
-        { label: "Per Day", data: d2, yaxis: 2 },
+        { label: "Count",
+           data: d1,
+           lines: { show: true, fill: true },
+           points: { show: true } },
+        { label: "Per Day", data: d2, yaxis: 2, bars: { show: true } },
       ], {
-        series: { points: { show: true } },
-        series: { lines: { show: true } },
         legend: {
           position: "nw"
         },
