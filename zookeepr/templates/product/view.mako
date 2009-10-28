@@ -176,7 +176,7 @@
 
     $.plot($("#graph_sales"), [ 
         { label: "Count", data: d1, lines: { fill: true } },
-        { label: "Per Day", data: d2 },
+        { label: "Per Day", data: d2, yaxis: 2 },
       ], {
         series: { points: { show: true } },
         series: { lines: { show: true } },
@@ -185,7 +185,9 @@
         },
         yaxis: {
           minTickSize: 1,
-          label: "Count",
+        },
+        yaxis2: {
+          minTickSize: 1,
         },
         xaxis: {
           minTickSize: [1, "hour"],
