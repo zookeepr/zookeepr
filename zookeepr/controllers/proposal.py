@@ -125,7 +125,7 @@ class ProposalController(BaseController):
     @validate(schema=NewProposalSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         if c.cfp_status == 'closed':
-           if not h.auth.authorized(h.auth.has_late_submitter_role):
+           if not h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_late_submitter_role)):
               return render("proposal/closed.mako")
         elif c.cfp_status == 'not_open':
            return render("proposal/not_open.mako")
@@ -430,3 +430,14 @@ class ProposalController(BaseController):
 
         h.flash("Proposal withdrawn. The organisers have been notified.")
         return redirect_to(controller='proposal', action="index", id=None)
+
+    @authorize(h.auth.has_organiser_role)
+    def latex(self):
+        c.proposal_type = meta.Session.query(ProposalType).select_from(ProposalType, Proposal, ProposalStatus).order_by(ProposalType.name).order_by(Proposal.title).filter(ProposalStatus.name='Accepted').all()
+
+        for type in c.proposal_type:
+          print type
+
+        response.headers['Content-type']='text/plain; charset=utf-8'
+
+        return render('/proposal/latex.mako')
