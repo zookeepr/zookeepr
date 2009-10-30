@@ -98,7 +98,7 @@ ${next.body()}
 ##         </div>
 ##% #endif
     </div>
-    <div id = "push"></div>
+    <div id = "push"><br /><br /<br /><br />></div>
   </div>
 
 % if h.url_for() == '/':
