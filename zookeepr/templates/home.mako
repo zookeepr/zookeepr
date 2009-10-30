@@ -21,7 +21,7 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
-<h3>Registrations are now open!</h3>
+<h2>Registrations are now open!</h2>
 
 <p>Online <a href="/register/status">registrations</a> for LCA2010 are now open! There are only a limited number of Early Bird Registrations available. Early Bird tickets will be available until 13 November 2009, unless sold out earlier. So get in quick!!</p>
 
@@ -42,69 +42,71 @@ for d in c.db_content_news_all:
 <p>To register for linux.conf.au 2010, please go to the <a href="/register/status">Registration Page</a> or simply click on the Register link in the toolbox.</p>
 
 
-<h2>LCA2010 Miniconfs</h2>
+<h2>Funding</h2>
 
-<br />
-<p>The <a href="/programme/miniconfs">linux.conf.au 2010 Miniconfs</a> have put out their
-<a href="/media/news/92">Call for Miniconf Papers</a>!</p>
+<p>There are three LCA2010 Funding Programmes available for those highly regarded people out there who contribute in important ways to the free and open source community and whom, without financial assistance, would not be able to attend LCA2010.</p>
+
+<h3>Winners of the Funding Programmes</h3>
+
+<h5>InternetNZ Oceania Programme</h5>
 
 <table>
-  <tr class="odd">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Arduino">Arduino</a></td>  <td>Jonathan Oxer</td>
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Arduino">Submit a proposal</a></td>
-  </tr>
-  <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></td>  <td>Martin Michlmayr</td>
-    <td><a href="https://fossbazaar.org/content/lca-devbiz-january-2010">Submit a proposal</a></td>
-  </tr>
-  <tr class="odd">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>  <td>Peter Lieverdink</td>
-    <td><a href="http://miniconf.osda.asn.au/node/add/proposal">Submit a proposal</a></td>
-  </tr>
-  <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Distro_Summit">Distro Summit</a></td>  <td>Martin F. Krafft</td>
-    <td><a href="http://distrosummit.org/cfp.html">Submit a proposal</a></td>
-  </tr>
-  <tr class="odd">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Education">Education</a></td>  <td>Tabitha Roder</td>
-    <td><a href="http://laptop.org.nz/node/add/miniconfsubmission">Submit a proposal</a></td>
-  </tr>
-  <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Free_The_Cloud%21">Free The Cloud!</a></td>  <td>Evan Prodromou</td>
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Free_The_Cloud%21">Submit a proposal</a></td>
-  </tr>
-  <tr class="odd">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Haecksen_and_Linuxchix">Haecksen and Linuxchix</a></td>  <td>Joh Clarke</td>
-    <td>Submissions closed!</td>
-  </tr>
-  <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Libre Graphics Day">Libre Graphics Day</a></td>  <td>Jon Cruz</td>
-    <td><a href="http://libregraphicsday.org/submit-proposal">Submit a proposal</a></td>
-  </tr>
-  <tr class="odd">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>  <td>Nicol&aacute;s Erd&ouml;dy</td>
-    <td><a href="http://multicorenz.wordpress.com/lca2010-miniconf/">Submit a proposal</a></td>
-  </tr>
-  <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Multimedia">Multimedia</a></td>  <td>Conrad Parker</td>
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Multimedia">Submit a proposal</a></td>
-  </tr>
-  <tr class="odd">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Open_and_the_Public_Sector">Open and the Public Sector</a></td>  <td>Daniel Spector</td>
-    <td><a href="http://open.org.nz/lca2010-open-government-miniconf/">Submit a proposal</a></td>
-  </tr>
-  <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Open_Programming_Languages">Open Programming Languages</a></td>  <td>Christopher Neugebauer</td>
-    <td>Submissions closed!</td>
-  </tr>
-  <tr class="odd">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/System_Administration">System Administration</a></td>  <td>Simon Lyall</td>
-    <td>Submissions closed!</td>
-  </tr>
-  <tr class="even">
-    <td><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Wave_Developers">Wave Developers</a></td>  <td>Shane Stephens</td>
-    <td><a href="http://sites.google.com/site/waveminiconfatlca/signup-form">Submit a proposal</a></td>
-  </tr>
+<tr class="odd">
+<td>Etuate Cocker</td>
+</tr>
+
+<tr class="even">
+<td>Andy Fitzsimon</td>
+</tr>
+
+<tr class="odd">
+<td>Opetaia Simati</td> 
+</tr>
+
+<tr class="even">
+<td>Bernard Ugalde</td> 
+</tr>
+</table>
+
+<h5>InternetNZ Kiwi Fellowship</h5>
+
+<table>
+<tr class="odd">
+<td>Mark Osborne</td>
+</tr>
+
+<tr class="even">
+<td>Lynne Pope</td>
+</tr>
+
+<tr class="odd">
+<td>Nicolas Steenhout</td> 
+</tr>
+</table>
+
+<h5>Google Diversity Programme</h5>
+
+<table>
+<tr class="odd">
+<td>Sara Falamaki</td>
+</tr>
+
+<tr class="even">
+<td>Elizabeth Garbee</td> 
+</tr>
+
+<tr class="odd">
+<td>Liz Henry</td>
+</tr>
+
+<tr class="even">
+<td>Emma Jane Hogbin</td>
+</tr>
+
+<tr class="odd">
+<td>Nancy Mauro-Flude</td>
+</tr>
+
 </table>
 
 <p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
