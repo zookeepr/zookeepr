@@ -217,10 +217,10 @@ This person hasn't registered yet.
 %       endfor
 </table>
 %     else:
-No registration notes
+<p>No registration notes</p>
 %     endif
 
-${ h.link_to("Add New Note", h.url_for(controller='rego_note', action='new', rego_id=c.person.registration.id)) }
+<p>${ h.link_to("Add New Note", h.url_for(controller='rego_note', action='new', rego_id=c.person.registration.id)) }</p>
 %   endif
 
 <h2>Raised Invoices</h2>
