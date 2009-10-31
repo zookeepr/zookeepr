@@ -9,13 +9,13 @@
       <th>&nbsp;</th>
       <th>&nbsp;</th>
       <th>&nbsp;</th>
-##      <th class="programme_room" align="center" valign="top">Auditorium</th>
-##      <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
-##      <th class="programme_room" align="center" valign="top">Renouf 1</th>
-##      <th class="programme_room" align="center" valign="top">Renouf 2</th>
-##      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
-##      <th class="programme_room" align="center" valign="top">Frank&nbsp;Taplin</th>
-##      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
+      <th class="programme_room" align="center" valign="top">Auditorium</th>
+      <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
+      <th class="programme_room" align="center" valign="top">Renouf 1</th>
+      <th class="programme_room" align="center" valign="top">Renouf 2</th>
+      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
+      <th class="programme_room" align="center" valign="top">Frank&nbsp;Taplin</th>
+      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
     </tr>
     <tr>
       <td>&nbsp;</td>
@@ -44,13 +44,13 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">10:30-12:15</th>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
     </tr>
     </tr>
 
@@ -61,13 +61,13 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">13:30-15:15</th>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
     </tr>
     </tr>
 
@@ -78,13 +78,13 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">15:45-17:30</th>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Free_The_Cloud!">Free the Cloud!</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multimedia">Multimedia</a></td>
     </tr>
 
   </tbody>
