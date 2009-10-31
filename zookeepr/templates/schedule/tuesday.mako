@@ -2,13 +2,6 @@
   <thead>
     <tr>
       <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
-      <th>&nbsp;</th>
       <th class="programme_room" align="center" valign="top">Auditorium</th>
       <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
       <th class="programme_room" align="center" valign="top">Renouf 1</th>
