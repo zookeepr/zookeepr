@@ -46,6 +46,9 @@ You will need to go to ${ h.link_to('this page', h.url_for(controller='registrat
 <%             continue %>
 %         endif
 %     endif
+%     if i.person.paid():
+<%             continue %>
+%     endif
 <%     status = "" %>
 %     if i.total() == 0:
 <%         continue %>
