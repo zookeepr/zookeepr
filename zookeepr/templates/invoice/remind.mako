@@ -32,7 +32,7 @@ Send emails as follows.<br>
 You will need to go to ${ h.link_to('this page', h.url_for(controller='registration', action='remind')) } as well to get those people that havn't generated an invoice yet.
 <p>
 
-<strong>firstname,lastname,email_address,profile_id,status</strong><br>
+<strong>firstname,lastname,email_address,profile_id,invoice_id,status</strong><br>
 <% count = 0 %>
 % for i in c.invoice_collection:
 <%     speaker = False %>
@@ -64,7 +64,7 @@ You will need to go to ${ h.link_to('this page', h.url_for(controller='registrat
 %     if status == "INVALID":
 <strong>
 %     endif
-"${ i.person.firstname }","${ i.person.lastname }","${ i.person.email_address }",${ i.person.id },${ status }<br/>
+"${ i.person.firstname }","${ i.person.lastname }","${ i.person.email_address }",${ i.person.id },${ i.id },${ status }<br/>
 %     if status == "INVALID":
 </strong>
 %     endif
