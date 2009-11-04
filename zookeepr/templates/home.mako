@@ -23,9 +23,7 @@ for d in c.db_content_news_all:
 
 <h2>Registrations are now open!</h2>
 
-<p>Early Bird <a href="/register/status">registrations</a> for LCA2010 have almost sold
-out! There are only a limited number of Early Bird tickets left and they are selling out
-fast. So get in quick!!</p>
+<p>Early Bird Registrations for LCA2010 have sold out! If you haven't already registered, you still have a chance. <a href="/register/status">Registrations</a> will remain open until 24 December 2009. So get in quick!!</p>
 
 <table>
 <tr class="even">
@@ -33,7 +31,7 @@ fast. So get in quick!!</p>
 </tr>
 
 <tr class="odd">
-<td><b>Early Bird Closes</b></td> <td>13 November 2009</td> 
+<td><b>Early Bird Closes</b></td> <td><s>13</s> 5 November 2009</td> 
 </tr>
 
 <tr class="even">
