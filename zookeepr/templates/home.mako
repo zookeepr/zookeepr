@@ -31,7 +31,7 @@ for d in c.db_content_news_all:
 </tr>
 
 <tr class="odd">
-<td><b>Early Bird Closes</b></td> <td><s>13</s> 5 November 2009</td> 
+<td><b>Early Birds Sold Out</b></td> <td><s>13</s> 5 November 2009</td> 
 </tr>
 
 <tr class="even">
