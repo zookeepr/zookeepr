@@ -80,7 +80,7 @@ ${ parent.toolbox_extra() }
       ${ make_link('Submit a Funding Application', h.url_for(controller='funding', action='new', id=None)) }
 %   endif
 %   if h.lca_info['conference_status'] == 'open' or h.signed_in_person().registration:
-      ${ make_link('Conference registration', h.url_for(controller='registration', action='status')) }
+      ${ make_link('Conference registration', '/register/status') }
 %   endif
 %   if h.signed_in_person().is_speaker():
       ${ make_link('Speakers Info', '/programme/speakers_info') }
