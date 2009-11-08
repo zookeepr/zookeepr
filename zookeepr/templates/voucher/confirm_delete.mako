@@ -10,3 +10,9 @@ ${ h.form(h.url_for()) }
  or ${ h.link_to('No, take me back.', url=h.url_for(action='index', id=None)) }</p>
 
 ${ h.end_form() }
+
+<%def name="title()">
+Voucher - Delete - 
+ ${ parent.title() }
+</%def>
+

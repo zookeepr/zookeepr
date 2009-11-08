@@ -79,3 +79,9 @@
     <br>
     <p>${ h.link_to('Add another', url=h.url_for(controller='voucher', action='new')) }</p>
 % endif
+
+<%def name="title()">
+Voucher - List
+ ${ parent.title() }
+</%def>
+
