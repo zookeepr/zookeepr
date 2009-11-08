@@ -130,7 +130,7 @@ class InvoiceController(BaseController):
         c.invoice_collection = Invoice.find_all();
         return render('/invoice/remind.mako')
 
-    def _check_invoice(self, person, invoice):
+    def _check_invoice(self, person, invoice, ignore_overdue = False):
         c.invoice = invoice
         if person.invoices:
             if invoice.paid() or invoice.bad_payments().count() > 0:
@@ -151,7 +151,7 @@ class InvoiceController(BaseController):
         if invoice.is_void():
             c.signed_in_person = h.signed_in_person()
             return render('/invoice/invalid.mako')
-        if invoice.overdue():
+        if not ignore_overdue and invoice.overdue():
             for ii in invoice.items:
                 if ii.product and not ii.product.available():
                     return render('/invoice/expired.mako')
@@ -225,7 +225,7 @@ class InvoiceController(BaseController):
         invoice = Invoice.find_by_id(id, True)
         person = invoice.person
 
-        error = self._check_invoice(person, invoice)
+        error = self._check_invoice(person, invoice, ignore_overdue=True)
         if error is not None:
             return error
 
