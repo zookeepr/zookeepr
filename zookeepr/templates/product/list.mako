@@ -33,9 +33,21 @@
         <th>&nbsp;</th>
       </tr></thead>
 %       if len(category.products) > 0:
-<%           cat_total = 0 %>
+<%
+           cat_total = 0
+           invoiced_total = 0
+           valid_invoices_total = 0
+           sold_total = 0
+           free_total = 0
+%>
 %           for product in category.products:
-<%               cat_total += (product.qty_sold() * product.cost) %>
+<%
+                 cat_total += (product.qty_sold() * product.cost)
+                 invoiced_total += product.qty_invoiced(date = False)
+                 valid_invoices_total += product.qty_invoiced()
+                 sold_total += product.qty_sold()
+                 free_total += product.qty_free()
+%>
       <tr class="${ h.cycle('odd', 'even') }">
         <td>${ h.link_to(product.description, url=h.url_for(action='view', id=product.id)) }</td>
         <td>${ h.yesno(product.active) |n }</td>
@@ -55,7 +67,11 @@
 %           endfor
 <%           grand_total += cat_total %>
         <tr>
-            <td colspan="8" style="font-weight: bold; text-align: right;">Sub-Total:</td>
+            <td colspan="4" style="font-weight: bold; text-align: right;">Totals:</td>
+            <td>${ invoiced_total }</td>
+            <td>${ valid_invoices_total }</td>
+            <td>${ sold_total }</td>
+            <td>${ free_total }</td>
             <td colspan="3">${ h.number_to_currency(cat_total/100) }</td>
         </tr>
 %       endif
