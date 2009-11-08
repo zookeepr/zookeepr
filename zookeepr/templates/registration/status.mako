@@ -24,10 +24,10 @@
 """
 %>
 
-% if 'conference' not in c.ceilings or (h.signed_in_person().registration is None and h.lca_info['conference_status'] == 'not_open'):
+% if 'conference' not in c.ceilings or (c.registration is None and h.lca_info['conference_status'] == 'not_open'):
     <h2>Registrations are not open</h2>
     <p>Registrations are not yet open. Please come back soon!</p>
-% elif h.signed_in_person().registration is None and h.lca_info['conference_status'] == 'closed':
+% elif c.registration is None and h.lca_info['conference_status'] == 'closed':
     <h2>Registrations are closed</h2>
     <p>Registrations are completely closed.</p>
 % else:
@@ -40,7 +40,7 @@
 % endif
     <h3>Your registration status</h3>
 
-% if h.signed_in_person().registration is None:
+% if c.registration is None:
     <p><b>Not registered.</b>
 
 <%include file="volunteer.mako" />
@@ -49,8 +49,8 @@
 
     <p>${ h.link_to('Fill in registration form', h.url_for(action='new')) }.</p>
 
-% elif h.signed_in_person().registration:
-%   if h.signed_in_person().paid():
+% elif c.registration:
+%   if c.person.paid():
     <p><b>Registered and paid.</b></p>
 %   else:
     <p><b>Tentatively registered.</b></p>
@@ -58,22 +58,22 @@
 
 <%include file="volunteer.mako" />
 
-%   if not h.signed_in_person().paid():
+%   if not c.person.paid():
     <h3>Next step</h3>
 
-%       if h.signed_in_person().valid_invoice():
-%           if c.manual_invoice(h.signed_in_person().invoices):
+%       if c.person.valid_invoice():
+%           if c.manual_invoice(c.person.invoices):
     <p>Please see the invoices listed below</p>
-%           elif h.signed_in_person().paid():
-    <p>${ h.link_to('View Invoice', h.url_for(controller='invoice', action='view', id=h.signed_in_person().valid_invoice().id)) }</p>
+%           elif c.person.paid():
+    <p>${ h.link_to('View Invoice', h.url_for(controller='invoice', action='view', id=c.person.valid_invoice().id)) }</p>
 %           else:
-    <p>${ h.link_to('Pay Invoice', h.url_for(action='pay', id=h.signed_in_person().registration.id)) }</p>
+    <p>${ h.link_to('Pay Invoice', h.url_for(action='pay', id=c.registration.id)) }</p>
 %           endif
 %       else:
-%           if c.manual_invoice(h.signed_in_person().invoices):
+%           if c.manual_invoice(c.person.invoices):
     <p>Please see the invoices listed below</p>
 %           else:
-    <p>${ h.link_to('Generate Invoice', h.url_for(action='pay', id=h.signed_in_person().registration.id)) }</p>
+    <p>${ h.link_to('Generate Invoice', h.url_for(action='pay', id=c.registration.id)) }</p>
 %           endif
 %       endif
 %   endif
@@ -81,16 +81,16 @@
     <h3>Other options</h3>
 
     <p>
-%   if h.signed_in_person().volunteer and (h.signed_in_person().volunteer.accepted or h.signed_in_person().volunteer.accepted is None):
-    ${ h.link_to('Change volunteer areas of interest', h.url_for(controller='volunteer', action='edit', id=h.signed_in_person().volunteer.id)) }<br>
+%   if c.person.volunteer and (c.person.volunteer.accepted or c.person.volunteer.accepted is None):
+    ${ h.link_to('Change volunteer areas of interest', h.url_for(controller='volunteer', action='edit', id=c.person.volunteer.id)) }<br>
 %   endif
-    ${ h.link_to('Edit details', h.url_for(action='edit', id=h.signed_in_person().registration.id)) }<br>
-%   if h.signed_in_person().valid_invoice() and h.signed_in_person().valid_invoice().paid():
-    ${ h.link_to('View invoice', h.url_for(controller='invoice', action='view', id=h.signed_in_person().valid_invoice().id)) }<br>
+    ${ h.link_to('Edit details', h.url_for(action='edit', id=c.registration.id)) }<br>
+%   if c.person.valid_invoice() and c.person.valid_invoice().paid():
+    ${ h.link_to('View invoice', h.url_for(controller='invoice', action='view', id=c.person.valid_invoice().id)) }<br>
 %   else:
-    ${ h.link_to('Pay invoice', h.url_for(action='pay', id=h.signed_in_person().registration.id)) }<br>
+    ${ h.link_to('Pay invoice', h.url_for(action='pay', id=c.registration.id)) }<br>
 %   endif
-    ${ h.link_to('View details', h.url_for(action='view', id=h.signed_in_person().registration.id)) }<br>
+    ${ h.link_to('View details', h.url_for(action='view', id=c.registration.id)) }<br>
     <table>
       <tr>
         <th>Invoice #</th>
@@ -98,7 +98,7 @@
         <th>Amount</th>
         <th></th>
       </tr>
-%   for invoice in h.signed_in_person().invoices:
+%   for invoice in c.person.invoices:
       <tr>
         <td>${ h.link_to(invoice.id, h.url_for(controller='invoice', action='view', id=invoice.id)) }</td>
         <td>${ invoice.status() }</td>
@@ -112,7 +112,7 @@
 %   endfor
     </table>
 
-% elif False and h.signed_in_person().invoices[0].bad_payments().count() > 0:
+% elif False and c.person.invoices[0].bad_payments().count() > 0:
     <p><b>Tentatively registered and tried to pay.</b></p>
 
     <p>Unfortunately, there was some sort of problem with your payment.</p>
@@ -122,22 +122,22 @@
     <p>${ h.contact_email("Contact the committee") }</p>
 
     <p>Your details are:
-    person ${ h.signed_in_person().id },
-    registration ${ h.signed_in_person().registration.id },
-    invoice ${ h.signed_in_person().invoices[0].id }.</p>
+    person ${ c.person.id },
+    registration ${ c.registration.id },
+    invoice ${ c.person.invoices[0].id }.</p>
 
     <h3>Other option</h3>
-    ${ h.link_to("View registration details", url=h.url_for(action="view", id=h.signed_in_person().registration.id)) }<br>
+    ${ h.link_to("View registration details", url=h.url_for(action="view", id=c.registration.id)) }<br>
 
 % else:
     <p>Interesting!</p>
 % endif
 
     <h3>Summary of steps</h3>
-% if h.signed_in_person():
-    <p>${ h.yesno(h.signed_in_person().registration != None) |n} Fill in registration form
-    <br>${ h.yesno(h.signed_in_person().valid_invoice()) |n} Generate invoice
-    <br>${ h.yesno(h.signed_in_person().paid()) |n} Pay
+% if c.person:
+    <p>${ h.yesno(c.registration != None) |n} Fill in registration form
+    <br>${ h.yesno(c.person.valid_invoice()) |n} Generate invoice
+    <br>${ h.yesno(c.person.paid()) |n} Pay
     <br>${ h.yesno(False) |n} Attend conference</p>
 % else:
     <p>${ h.yesno(False) |n} Fill in registration form
@@ -146,3 +146,8 @@
     <br>${ h.yesno(False) |n} Attend conference</p>
 % endif
 % endif
+
+<%def name="title()" >
+Registration Status - ${ c.person.fullname() } - ${ parent.title() }
+</%def>
+

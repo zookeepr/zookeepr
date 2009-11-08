@@ -359,10 +359,12 @@ class RegistrationController(BaseController):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
-        able, response = self._able_to_edit()
-        if not able:
-            c.error = response
-            return render("/registration/error.mako")
+        # If we're an organiser, then don't check payment status.
+        if not h.auth.authorized(h.auth.has_organiser_role):
+            able, response = self._able_to_edit()
+            if not able:
+                c.error = response
+                return render("/registration/error.mako")
         c.registration = Registration.find_by_id(id)
         defaults = {}
         defaults.update(h.object_to_defaults(c.registration, 'registration'))
@@ -502,7 +504,23 @@ class RegistrationController(BaseController):
 
         meta.Session.commit()
 
-    def status(self):
+    def status(self, id=0):
+        if int(id) == 0:
+            if h.signed_in_person() and h.signed_in_person().registration:
+                c.registration = h.signed_in_person().registration
+            else:
+                c.registration = None
+        else:
+            if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
+                # Raise a no_auth error
+                h.auth.no_role()
+            c.registration = Registration.find_by_id(id, abort_404 = False)
+
+        if c.registration is None:
+          c.person = h.signed_in_person()
+        else:
+          c.person = c.registration.person
+
         return render("/registration/status.mako")
 
     def pay(self, id, quiet=0):
