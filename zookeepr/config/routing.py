@@ -78,6 +78,11 @@ def make_map():
     map.connect('/person/forgotten_password',        controller='person', action='forgotten_password')
     map.connect('/person/reset_password/{url_hash}', controller='person', action='reset_password')
 
+    # booklet
+    map.connect('/registration/professionals_latex', controller='registration', action='professionals_latex')
+    map.connect('/proposal/latex',                  controller='proposal', action='latex')
+    
+
     # admin controller
     map.connect('/admin/{action}', controller='admin')
 

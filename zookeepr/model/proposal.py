@@ -218,7 +218,7 @@ class Proposal(Base):
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     # relations
-    type = sa.orm.relation(ProposalType)
+    type = sa.orm.relation(ProposalType, backref='proposals', lazy=True)
     accommodation_assistance = sa.orm.relation(AccommodationAssistanceType)
     travel_assistance = sa.orm.relation(TravelAssistanceType)
     status = sa.orm.relation(ProposalStatus)

@@ -1008,3 +1008,28 @@ class RegistrationController(BaseController):
     def remind(self):
         c.registration_collection = Registration.find_all()
         return render('/registration/remind.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def professionals_latex(self):
+        c.profs= {}
+        registration_list = Registration.find_all()
+        for r in registration_list:
+            is_prof = False
+            for invoice in r.person.invoices:
+                if invoice.paid() and not invoice.is_void():
+                    if r.person.is_speaker() or r.person.is_miniconf_org():
+                        is_prof = True
+                    else:
+                        for item in invoice.items:
+                            if (item.description.find('Professional') > -1 or item.description.startswith('Korora')):
+                               is_prof = True
+
+            if is_prof:
+                if r.person.company not in c.profs:
+                     c.profs[r.person.company] = {}
+                if r.person.lastname not in c.profs[r.person.company]:
+                    c.profs[r.person.company][r.person.lastname] = []
+                c.profs[r.person.company][r.person.lastname].append(r.person.fullname())
+
+        response.headers['Content-type']='text/plain; charset=utf-8'
+        return render('/registration/professionals_latex.mako')

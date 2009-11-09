@@ -88,6 +88,8 @@ class AdminController(BaseController):
           ('/proposal/approve', ''' Change proposal status for papers [CFP] '''),
           ('/funding/review_index', ''' To see what you need to reveiw [Funding] '''),
           ('/funding_type', ''' Manage Funding Types [Funding] '''),
+          ('/proposal/latex', ''' Proposals with LaTeX formatting [Booklet] '''),
+          ('/registration/professionals_latex', ''' Profressionals with LaTeX formatting [Booklet] '''),
 
           #('/registration/list_miniconf_orgs', ''' list of miniconf
           #organisers (as the registration code knows them, for miniconf

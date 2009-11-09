@@ -253,7 +253,7 @@ def slideshow(set, small=None):
 
 
 
-break_re = re.compile(r'(\n|\r\n)')
+break_re = re.compile(r'(\n|\r\n)(?!\s*<(li|ul|ol)>)')
 def line_break(s):
     """ Turn line breaks into <br>'s """
     return break_re.sub('<br />', s)
@@ -483,3 +483,18 @@ def sales_tax(amount):
 
     return sales_tax
 
+def latex_clean(str):
+    """ Sanitise a string suitable for use in LaTeX. """
+    str = str.replace('_', '\_')
+    str = str.replace('&lt;', '<')
+    str = str.replace('&gt;', '>')
+    str = str.replace('&', '\&')
+    str = str.replace('C#', 'C\#')
+    str = re.sub('"(.*?)"', "``\\1''", str)
+    str = str.replace('<ul>', '\\begin{itemize}')
+    str = str.replace('</ul>', '\end{itemize}')
+    str = str.replace('<li>', '\item ')
+    str = str.replace('</li>', '')
+    str = str.replace('$', '\$')
+
+    return str
