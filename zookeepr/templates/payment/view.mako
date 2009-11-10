@@ -107,5 +107,5 @@ ${ c.payment.client_ip_gateway } (gateway)</td></tr>
 
 <p>Back to ${ h.link_to('payment list', url=h.url_for(controller='payment', action='index')) }.</p>
 %else:
-<p>Back to ${ h.link_to('registration page', url=h.url_for(controller='registration', action='status')) }.</p>
+<p>Back to ${ h.link_to('registration page', url=h.url_for(controller='registration', action='status',  id=c.person.registration.id)) }.</p>
 %endif
