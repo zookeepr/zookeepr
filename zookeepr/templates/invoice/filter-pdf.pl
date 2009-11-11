@@ -11,6 +11,8 @@ my %names = (
   attn => 'attn',
   'inv num' => 'invoice/number',
   'inv paid txn' => 'invoice/paid/transaction',
+  'inv amount' => 'invoice/amount',
+  'inv owed' => 'invoice/owed',
 );
 
 
@@ -22,6 +24,7 @@ while (<>) {
   $_ =~ s/>(attn) (\w+)<(?!(xsl:)?value-of)/><xsl:value-of select="invoice\/$1\/$2" \/></;
 
   $_ =~ s/issued (\w+)(?!<(xsl:)?value-of)/<xsl:value-of select="invoice\/issued\/date\/$1" \/>/g;
+  $_ =~ s/(inv (amount|owed))(?!<(xsl:)?value-of)/<xsl:value-of select="$names{$1}" \/>/g;
   $_ =~ s/inv (num|paid txn)(?!<(xsl:)?value-of)/<xsl:value-of select="$names{$1}" \/>/g;
   $_ =~ s/inv (num|paid txn)(<(xsl:)?value-of)/$2/g;
 

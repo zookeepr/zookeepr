@@ -33,7 +33,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.28"
      inkscape:cx="476.51149"
-     inkscape:cy="707.48129"
+     inkscape:cy="579.67948"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showguides="true"
@@ -420,8 +420,7 @@
              width="129.21223"
              id="rect3385" /></svg:flowRegion><svg:flowPara
            style="font-size:16px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-           id="flowPara3387"><xsl:value-of
-             select="invoice/amount" /></svg:flowPara></svg:flowRoot>    </svg:g>
+           id="flowPara3387"><xsl:value-of select="invoice/amount" /></svg:flowPara></svg:flowRoot>    </svg:g>
     <svg:g
        id="g2740"
        transform="translate(0,-33.030898)">
@@ -1193,8 +1192,7 @@
            y="476.64972" /></svg:flowRegion><svg:flowPara
          id="flowPara2667"
          style="font-size:14px;font-family:DejaVu Sans"><xsl:value-of
-   select="invoice/number" />    <xsl:value-of
-   select="invoice/paid/transaction" /></svg:flowPara></svg:flowRoot>    <svg:flowRoot
+   select="invoice/number" /></svg:flowPara></svg:flowRoot>    <svg:flowRoot
        style="font-size:48px;font-style:normal;font-weight:normal;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
        id="flowRoot2669"
        xml:space="preserve"
@@ -1262,8 +1260,7 @@
            x="-440.75742"
            y="544.12726" /></svg:flowRegion><svg:flowPara
          id="flowPara3639"
-         style="font-size:16px;font-weight:bold;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of
-           select="invoice/amount" /></svg:flowPara></svg:flowRoot>    <svg:path
+         style="font-size:16px;font-weight:bold;text-align:end;text-anchor:end;font-family:DejaVu Sans"><xsl:value-of select="invoice/owed" /></svg:flowPara></svg:flowRoot>    <svg:path
        style="fill:#1c67ba;fill-opacity:1;fill-rule:evenodd;stroke:#1c67ba;stroke-width:0.99999994px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1"
        d="M 38.966714,876.43933 L 705.12772,876.43933"
        id="path2931" />

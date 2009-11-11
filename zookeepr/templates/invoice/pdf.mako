@@ -15,7 +15,9 @@
 %   endfor
     <transaction>${ '-'.join(pp) }</transaction>
   </paid>
+  <owed cents="0">0.00</owed>
 % elif c.invoice.total() == 0:
+  <owed cents="0">0.00</owed>
   <zero/>
 % else:
   <owed cents="${ amt }"/>
