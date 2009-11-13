@@ -84,7 +84,7 @@ ${ c.proposal.project | h }
 %   if h.url_for().endswith('review') is True and ('reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <p class="submitted">
 ${ person.firstname | h } ${ person.lastname | h } &lt;${ person.email_address }&gt;
-%if len(person.url) > 0:
+%if person.url is not None and len(person.url) > 0:
 <a href="${ person.url}">Speaker's Homepage</a>
 %endif
 <br>
