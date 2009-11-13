@@ -498,6 +498,10 @@ def latex_clean(str):
     str = str.replace('<li>', '\item ')
     str = str.replace('</li>', '')
     str = str.replace('$', '\$')
+    str = str.replace('<div>', '')
+    str = str.replace('</div>', '')
+    str = str.replace('<p>', '')
+    str = str.replace('</p>', '')
 
     return str
 
