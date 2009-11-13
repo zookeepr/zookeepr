@@ -136,6 +136,7 @@ class ProposalController(BaseController):
 
         c.proposal = Proposal(**proposal_results)
         c.proposal.status = ProposalStatus.find_by_name('Pending')
+        c.proposal.abstract = h.html_clean(c.proposal.abstract)
         meta.Session.add(c.proposal)
 
         if not h.signed_in_person():
@@ -307,6 +308,8 @@ class ProposalController(BaseController):
         c.proposal = Proposal.find_by_id(id)
         for key in self.form_result['proposal']:
             setattr(c.proposal, key, self.form_result['proposal'][key])
+
+        c.proposal.abstract = h.html_clean(c.proposal.abstract)
 
         c.person = self.form_result['person_to_edit']
         if (c.person.id == h.signed_in_person().id or

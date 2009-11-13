@@ -25,7 +25,7 @@ ${ c.proposal.type.name }
 <em>Abstract:</em>
 </p>
 <blockquote>
-<p>${ h.line_break(h.util.html_escape(c.proposal.abstract)) | n}</p>
+<p>${ h.line_break(c.proposal.abstract) | n}</p>
 </blockquote>
 </div>
 

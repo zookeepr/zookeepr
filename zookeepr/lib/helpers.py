@@ -12,6 +12,8 @@ from webhelpers.html.secure_form import secure_form
 from webhelpers.text import *
 import webhelpers.constants
 
+from lxml.html.clean import Cleaner
+
 import webhelpers.util as util
 
 from routes import request_config
@@ -498,3 +500,8 @@ def latex_clean(str):
     str = str.replace('$', '\$')
 
     return str
+
+def html_clean(str):
+    """ Clean up HTML to be safe """
+    cleaner = Cleaner(safe_attrs_only=True)
+    return cleaner.clean_html(str)
