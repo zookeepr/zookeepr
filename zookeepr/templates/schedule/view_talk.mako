@@ -62,7 +62,6 @@ ${ c.talk.url }
 </table>
 
 
-% for person in c.talk.people:
 <div id="proposal">
 <div class="abstract">
 <blockquote>
@@ -70,6 +69,7 @@ ${ c.talk.url }
 </blockquote>
 </div>
 
+% for person in c.talk.people:
 <h2>${ person.firstname | h} ${ person.lastname | h}</h2>
 <div class="bio">
 <blockquote>
