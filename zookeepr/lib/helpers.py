@@ -493,6 +493,8 @@ def latex_clean(str):
     str = str.replace('&', '\&')
     str = str.replace('C#', 'C\#')
     str = re.sub('"(.*?)"', "``\\1''", str)
+    str = re.sub('<b>(.*?)</b>', "\textbf{\\1}", str)
+    str = re.sub('<i>(.*?)</i>', "\emph{\\1}", str)
     str = str.replace('<ul>', '\\begin{itemize}')
     str = str.replace('</ul>', '\end{itemize}')
     str = str.replace('<ol>', '\\begin{enumerate}')
