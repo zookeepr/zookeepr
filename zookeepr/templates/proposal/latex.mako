@@ -31,8 +31,14 @@
   presenters = []
   for person in t.people:
     presenters.append(person.fullname())
+
+  if len(presenters) == 1:
+    presenters = presenters[0]
+  else:
+    presenters = '%s and %s' % (', '.join(presenters[: -1]), presenters[-1])
 %>
-\abstract{${ ",".join(presenters) }}{${ t.title }}{${ t.scheduled.strftime("%A %H:%M") } - ${ t.building } - ${ t.theatre }}
+
+\abstract{${ presenters }}{${ t.title }}{${ t.scheduled.strftime("%A %H:%M") } - ${ t.building } - ${ t.theatre }}
 
 ${ h.latex_clean(t.abstract) | n }
 
