@@ -4,6 +4,13 @@
 import hashlib
 %>
 
+<%def name="toolbox_extra_admin()">
+% if h.auth.authorized(h.auth.has_organiser_role):
+  <li>${ h.link_to('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.talk.id)) }</li>
+  <li>${ h.link_to('View Proposal', url=h.url_for(controller='proposal', action='view',id=c.talk.id)) }</li>
+% endif 
+</%def>
+
 <p><a href="/programme/schedule/${ c.day }">&lt;-- Back to schedule</a></p>
 
 <h2>${ c.talk.title | h }</h2>
