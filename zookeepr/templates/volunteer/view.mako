@@ -12,17 +12,31 @@
         <td valign="middle" align="center">${ h.yesno(code in c.volunteer.areas) |n }</td>
         <td>${ area['name'] }
 %   if area.has_key('description'):
-          <br><small>${ area['description'] }</small>
+          <p class="note"><small>${ area['description'] }</small></p>
 %   endif
         </td>
       </tr>
 % endfor
       <tr class="${ h.cycle('even', 'odd') }">
-        <td colspan="2">
-          <p class="entries">Other: ${ h.line_break(c.volunteer.other) }</p>
-          <p class="note">Any other areas of interest or useful skills. Arrival and departure dates, if you're not local.</p>
+        <td>
+          <p class="entries">Other:</p>
+        </td>
+        <td>
+          <p class="entries"><blockquote>${ h.line_break(c.volunteer.other) }</blockquote></p>
+          <p class="note"><small>Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during LCA2010, and any special requirements (dietary or otherwise).</small></p>
         </td>
       </tr>
+
+      <tr class="${ h.cycle('even', 'odd') }">
+        <td>
+          <p class="entries">Experience:</p>
+        </td>
+        <td>
+          <p class="entries"><blockquote>${ h.line_break(c.volunteer.experience) }</blockquote></p>
+          <p class="note"><small>Please provide details of your involvement at previous LCAs. If you have selected either of the technical options above (i.e., A/V or networking), then please indicate your relevant experience and skills here.</small></p>
+        </td>
+      </tr>
+    </table>
     </table>
     <p>
 % if c.can_edit:
