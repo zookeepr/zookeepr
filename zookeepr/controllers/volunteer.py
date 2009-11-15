@@ -27,6 +27,7 @@ log = logging.getLogger(__name__)
 class VolunteerSchema(BaseSchema):
     areas = DictSet(not_empty=True)
     other = validators.String()
+    experience = validators.String()
 
 class NewVolunteerSchema(BaseSchema):
     volunteer = VolunteerSchema()
@@ -61,12 +62,14 @@ class VolunteerController(BaseController):
 
     @authorize(h.auth.is_valid_user)
     def view(self, id):
+        c.volunteer = Volunteer.find_by_id(id)
+
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.volunteer.person.id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
-        c.can_edit = h.auth.is_same_zookeepr_user(id)
+        c.can_edit = h.auth.is_same_zookeepr_user(c.volunteer.person.id)
 
         c.volunteer = Volunteer.find_by_id(id)
         if c.volunteer is None:
@@ -86,12 +89,13 @@ class VolunteerController(BaseController):
     @dispatch_on(POST="_edit") 
     @authorize(h.auth.is_valid_user)
     def edit(self, id):
+        c.volunteer = Volunteer.find_by_id(id)
+
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.volunteer.person.id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
-        c.volunteer = Volunteer.find_by_id(id)
         if c.volunteer.accepted is not None:
             return render('volunteer/already.mako')
 
@@ -103,6 +107,11 @@ class VolunteerController(BaseController):
     @validate(schema=EditVolunteerSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         volunteer = Volunteer.find_by_id(id)
+
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(volunteer.person.id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
 
         for key in self.form_result['volunteer']:
             setattr(volunteer, key, self.form_result['volunteer'][key])
