@@ -79,8 +79,8 @@ lca_rego = {
             {'name': 'Usher', 'description': 'Introduce speakers and manage rooms, keeping them to a schedule.'},
             {'name': 'Driver', 'description': 'Have driver\'s licence, will travel to help pick up items and shuttle VIP\'s.'},
             {'name': 'Car', 'description': 'Have car and can be a driver.'},
-            {'name': 'Week Before', 'description': 'Available during the week before the conference (x-y Jan).'},
-            {'name': 'Week After', 'description': 'Available during the week after the conference (a-c Jan).'},
+            {'name': 'Week Before', 'description': 'Available during the week before the conference (9-17 Jan).'},
+            {'name': 'Week After', 'description': 'Available during the week after the conference (23-31 Jan).'},
             {'name': 'Packout', 'description': 'Available to help pack-out of the venue on Saturday and Sunday.'},
         ),
   'miniconfs' : (
