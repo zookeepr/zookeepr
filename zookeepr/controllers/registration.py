@@ -1021,7 +1021,7 @@ class RegistrationController(BaseController):
                         is_prof = True
                     else:
                         for item in invoice.items:
-                            if (item.description.find('Professional') > -1 or item.description.find('Little Blue')):
+                            if (item.description.find('Professional') > -1 or item.description.find('Little Blue') > -1):
                                is_prof = True
 
             if is_prof:
