@@ -20,6 +20,7 @@ class Volunteer(Base):
     person_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), unique=True, nullable=False)
     areas = sa.Column(CommaList, nullable=False)
     other = sa.Column(sa.types.Text, nullable=False)
+    experience = sa.Column(sa.types.Text)
     accepted = sa.Column(sa.types.Boolean)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
