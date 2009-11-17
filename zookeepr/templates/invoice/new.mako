@@ -4,8 +4,8 @@
     <h2>Create Manual Invoice</h2>
     <input type="hidden" value="${ c.item_count }" id="invoice.item_count" name="invoice.item_count" />
 
-    <p>Person ID: ${ h.text('invoice.person') }</p>
-    <p>Due Date: ${ h.text('invoice.due_date') } <span style="font-size: smaller;">(DD/MM/YYYY). Setting this in the future reserves products.</span></p>
+    <p>Person ID: ${ h.text('invoice.person', value=c.invoice_person) }</p>
+    <p>Due Date: ${ h.text('invoice.due_date', value=c.due_date) } <span style="font-size: smaller;">(DD/MM/YYYY). Setting this in the future reserves products.</span></p>
 
     <p>Invoice Items:</p>
     <table id="products">

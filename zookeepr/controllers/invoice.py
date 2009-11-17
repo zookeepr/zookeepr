@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.lib.mail import email
 
-from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory
+from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product
 from zookeepr.model.payment import Payment
 
 from zookeepr.config.lca_info import lca_info, file_paths
@@ -56,6 +56,13 @@ class InvoiceController(BaseController):
     @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new")
     def new(self):
+        try:
+            c.invoice_person = request.GET['person_id']
+        except:
+            c.invoice_person = ''
+
+        c.due_date = datetime.date.today().strftime("%d/%y/%Y")
+
         c.product_categories = ProductCategory.find_all()
         c.item_count = 0;
         return render("/invoice/new.mako")
@@ -72,8 +79,10 @@ class InvoiceController(BaseController):
             if i['description'] != "":
                 item.description = i['description']
             else:
+                product = Product.find_by_id(i['product'].id)
+                category = product.category
                 item.product = i['product']
-                item.description = i['product'].description
+                item.description = product.category.name + ' - ' + product.description
             item.cost = i['cost']
             item.qty = i['qty']
             results['items'].append(item)
