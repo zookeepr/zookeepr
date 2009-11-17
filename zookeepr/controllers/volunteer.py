@@ -39,8 +39,11 @@ class EditVolunteerSchema(BaseSchema):
 
 class VolunteerController(BaseController):
 
-    @dispatch_on(POST="_new") 
     @authorize(h.auth.is_valid_user)
+    def __before__(self, **kwargs):
+        pass
+
+    @dispatch_on(POST="_new") 
     def new(self):
         # A person can only volunteer once
         if h.signed_in_person() and h.signed_in_person().volunteer:
@@ -60,7 +63,6 @@ class VolunteerController(BaseController):
         h.flash("Volunteer application submitted. Thank you for your interest.")
         redirect_to(action='view', id=c.volunteer.id)
 
-    @authorize(h.auth.is_valid_user)
     def view(self, id):
         c.volunteer = Volunteer.find_by_id(id)
 
@@ -87,7 +89,6 @@ class VolunteerController(BaseController):
         return render('volunteer/list.mako')
 
     @dispatch_on(POST="_edit") 
-    @authorize(h.auth.is_valid_user)
     def edit(self, id):
         c.volunteer = Volunteer.find_by_id(id)
 
