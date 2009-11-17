@@ -1,7 +1,12 @@
 <%inherit file="/base.mako" />
     <div id="actions">
       <ul>
+% if h.auth.authorized(h.auth.has_organiser_role):
+        <li>${ h.link_to(c.invoice.person.firstname + "'s Profile", url=h.url_for(controller='person', action='view', id=c.invoice.person.id)) }</li>
+% endif
+% if c.invoice.person.registration is not None:
         <li>${ h.link_to('Registration status', url=h.url_for(controller='registration', action='status', id=c.invoice.person.registration.id)) }</li>
+% endif
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
 % if c.invoice.is_void() and c.invoice.person.registration:
