@@ -9,4 +9,7 @@ source ../pylons-0.9.7/bin/activate
 # Let sitecustomise.py override the default.
 export PYTHONPATH=$(pwd):$PYTHONPATH:$(pwd)/lib/python2.5/site-packages
 
-paster serve --reload -v ${1:-config.ini} --log-file /var/log/zookeepr/prod.log
+configfile=${1:-config.ini}
+logfile=$(basename $configfile .ini).log
+
+paster serve --reload -v $configfile --log-file /var/log/zookeepr/$logfile
