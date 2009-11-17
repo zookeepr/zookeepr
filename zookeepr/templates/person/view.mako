@@ -271,6 +271,8 @@ This person hasn't registered yet.
 %else:
     <p>None raised.</p>
 %endif
+<p>${ h.link_to('New manual invoice', url=h.url_for(controller='invoice', action='new', id=None, person_id=c.person.id)) }</p>
+
 %endif
 
 
