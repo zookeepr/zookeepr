@@ -639,6 +639,33 @@ class AdminController(BaseController):
         return render('admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
+    def partners_programme_signup(self):
+        """ List of partners programme people for mailing list [Mailing Lists] """
+        c.text = """<p>Partners Programme people.  If they don't have an email address listed, then we'll use the person actually registered for the conference.</p>
+        <p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners Programme')).all()
+
+        for item in partners_list:
+            for invoice_item in item.invoice_items:
+                if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
+                    r = invoice_item.invoice.person.registration
+                    if r.partner_email is not None:
+                        c.text += r.partner_name + " &lt;" + r.partner_email + "&gt;\n"
+                    elif r.partner_name is not None:
+                        c.text += r.partner_name + " &lt;" + r.person.email_address + "&gt;\n"
+                    else:
+                        c.text += r.person.fullname() + " &lt;" + r.person.email_address + "&gt;\n"
+                    count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render('/admin/table.mako')
+
+    
+    @authorize(h.auth.has_organiser_role)
     def accom_wp_registers(self):
         """ People who selected "Wrest Point" as their accommodation option. (Includes un-paid invoices!) [Accommodation] """
         query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
