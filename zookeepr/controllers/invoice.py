@@ -74,6 +74,8 @@ class InvoiceController(BaseController):
 
         items = results['items']
         results['items'] = []
+        c.invoice = Invoice(**results)
+
         for i in items:
             item = InvoiceItem()
             if i['description'] != "":
@@ -85,9 +87,8 @@ class InvoiceController(BaseController):
                 item.description = product.category.name + ' - ' + product.description
             item.cost = i['cost']
             item.qty = i['qty']
-            results['items'].append(item)
+            c.invoice.items.append(item)
 
-        c.invoice = Invoice(**results)
         c.invoice.manual = True
         c.invoice.void = None
         meta.Session.add(c.invoice)
