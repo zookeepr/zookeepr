@@ -69,6 +69,7 @@ class AdminController(BaseController):
           ('/invoice', '''View assigned invoices and their status. [Invoicing]'''),
           ('/invoice/new', '''Create manual invoice for a person. [Invoicing]'''),
           ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
+          ('/volunteer/0/grid', '''View volunteer in a grid showing areas. [Registrations]'''),
           ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
           ('/registration/generate_badges', '''Generate one or many Badges. [Registrations]'''),

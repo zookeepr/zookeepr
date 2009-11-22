@@ -88,6 +88,39 @@ class VolunteerController(BaseController):
         c.volunteer_collection = Volunteer.find_all()
         return render('volunteer/list.mako')
 
+    @authorize(h.auth.has_organiser_role)
+    def grid(self):
+        # Check access and redirect
+        if not h.auth.has_organiser_role:
+            redirect_to(action='new')
+
+
+        c.data = []
+        c.noescape = True
+        c.columns = ['Name', 'Email']
+        for area in h.lca_rego['volunteer_areas']:
+          c.columns.append(area['name'])
+        c.columns.append('Other')
+        c.columns.append('Experience')
+
+        volunteer_collection = Volunteer.find_all()
+        for v in volunteer_collection:
+          row = [h.link_to(v.person.fullname(), url=h.url_for(controller="person", id=v.person.id))]
+          row.append(h.link_to(v.person.email_address, url="mailto:" + v.person.email_address))
+          
+          for area in h.lca_rego['volunteer_areas']:
+            if area['name'] in v.areas:
+              row.append('Yes')
+            else:
+              row.append('No')
+
+          row.append(v.other)
+          row.append(v.experience)
+
+          c.data.append(row)
+
+        return render('/admin/table.mako')
+
     @dispatch_on(POST="_edit") 
     def edit(self, id):
         c.volunteer = Volunteer.find_by_id(id)
