@@ -105,11 +105,12 @@ class VolunteerController(BaseController):
 
         volunteer_collection = Volunteer.find_all()
         for v in volunteer_collection:
-          row = [h.link_to(v.person.fullname(), url=h.url_for(controller="person", id=v.person.id))]
+          row = [h.link_to(v.person.fullname(), url=h.url_for(controller="person", action='view', id=v.person.id))]
           row.append(h.link_to(v.person.email_address, url="mailto:" + v.person.email_address))
           
           for area in h.lca_rego['volunteer_areas']:
-            if area['name'] in v.areas:
+            code = area['name'].replace(' ', '_').replace('.', '_')
+            if code in v.areas:
               row.append('Yes')
             else:
               row.append('No')
