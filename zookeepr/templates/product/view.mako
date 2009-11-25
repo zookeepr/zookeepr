@@ -90,8 +90,14 @@
        sale_date = None
        sale_date_by_day = None
        for pr in invoice_item.invoice.payment_received:
-         sale_date = int(pr.last_modification_timestamp.strftime("%s")) * 1000
-         sale_date_by_day = int(pr.last_modification_timestamp.date().strftime("%s")) * 1000
+         sale_date = pr.last_modification_timestamp
+         sale_date_by_day = pr.last_modification_timestamp
+
+       if sale_date is None and invoice_item.invoice.total() == 0:
+         sale_date = invoice_item.invoice.last_modification_timestamp
+
+       sale_date = int(sale_date.date().strftime("%s")) * 1000
+       sale_date_by_day = sale_date
 
        if sale_date is not None:
          if sale_date not in sales_working:
