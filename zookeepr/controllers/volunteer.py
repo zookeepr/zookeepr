@@ -97,7 +97,7 @@ class VolunteerController(BaseController):
 
         c.data = []
         c.noescape = True
-        c.columns = ['Name', 'Email']
+        c.columns = ['ID', 'Vol ID', 'Name', 'Email', 'Country', 'City']
         for area in h.lca_rego['volunteer_areas']:
           c.columns.append(area['name'])
         c.columns.append('Other')
@@ -105,8 +105,12 @@ class VolunteerController(BaseController):
 
         volunteer_collection = Volunteer.find_all()
         for v in volunteer_collection:
+          row.append(v.person.id)
+          row.append(v.id)
           row = [h.link_to(v.person.fullname(), url=h.url_for(controller="person", action='view', id=v.person.id))]
           row.append(h.link_to(v.person.email_address, url="mailto:" + v.person.email_address))
+          row.append(v.person.country)
+          row.append(v.person.city)
           
           for area in h.lca_rego['volunteer_areas']:
             code = area['name'].replace(' ', '_').replace('.', '_')
