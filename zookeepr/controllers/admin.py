@@ -398,6 +398,38 @@ class AdminController(BaseController):
         c.text = "%.1f days" % (timeleft.days +
                                                timeleft.seconds / (3600*24.))
         return render('/admin/text.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def registered_followup(self):
+        """ CSV export of registrations for mail merges [Registrations] """
+        c.data = []
+        c.text = ''
+        c.columns = ('name', 'firstname', 'email_address', 'country', 'speaker', 'keynote', 'miniconf', 'dietary_requirements', 'special_requirements', 'paid')
+        c.noescape = True
+        for r in meta.Session.query(Registration).all():
+          row = []
+          row.append(r.person.fullname())
+          row.append(r.person.firstname)
+          row.append(r.person.email_address)
+          row.append(r.person.country)
+          if r.person.is_speaker():
+            row.append('Yes')
+          else:
+            row.append('No')
+          row.append('No')
+          if r.person.is_miniconf_org():
+            row.append('Yes')
+          else:
+            row.append('No')
+          row.append(r.diet)
+          row.append(r.special)
+          if r.person.paid():
+            row.append('Yes')
+          else:
+            row.append('No')
+
+          c.data.append(row)
+        return render('/admin/table.mako')
         
     @authorize(h.auth.has_organiser_role)
     def registered_speakers(self):
