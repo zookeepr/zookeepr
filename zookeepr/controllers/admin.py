@@ -16,8 +16,11 @@ from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta, Person, Product, Registration, ProductCategory
+from zookeepr.model import meta, Proposal, ProposalType, ProposalStatus
 
 from zookeepr.config.lca_info import lca_info, lca_rego
+
+from sqlalchemy import and_
 
 log = logging.getLogger(__name__)
 
@@ -162,6 +165,13 @@ class AdminController(BaseController):
             GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
             ORDER BY miniconf, proposal_type.name ASC
         """)
+
+    def papers_by_room(self):
+        """ Papers by room for use by the room MC. [Schedule] """
+
+        c.papers = meta.Session.query(Proposal).order_by(Proposal.building).order_by(Proposal.theatre).order_by(Proposal.scheduled).filter(and_(ProposalType.name != 'Miniconf', ProposalStatus.name == 'Accepted', Proposal.scheduled != None)).all()
+ 
+        return render('admin/papers_by_room.mako')
 
     def collect_garbage(self):
         """
