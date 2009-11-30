@@ -1,11 +1,9 @@
-<%inherit file="/base.mako" />
-
 <% theatre = '' %>
 % for p in c.papers:
 %   if p.theatre != theatre:
 <%     theatre = p.theatre %>
 <%     day = '' %>
-  <h1>${ p.theatre }</h1>
+\lcasection{${ p.theatre }}
 %   endif
 
 %   if p.scheduled is None:
@@ -13,23 +11,20 @@ Huh? No scheduled time for talk ${ p.id }.
 %   else:
 %     if day != p.scheduled.strftime('%Y-%m-%d - %A'):
 <%      day = p.scheduled.strftime('%Y-%m-%d - %A') %>
-<h2>${ day }</h2>
+\lcasubsection{${ day }}
 %     endif
-<h3>${ p.scheduled.strftime('%H:%M') } - ${ p.title }</h3>
+\lcasubsubsection{${ p.scheduled.strftime('%H:%M') } - ${ p.title }}
 
-<p>${ h.line_break(h.url_to_link(p.abstract)) | n}</p>
+${ h.latex_clean(p.abstract) | n}
 
 %     for person in p.people:
-<h4>${ person.fullname() }</h2>
-<div class="bio">
-<p>
+{\bf ${ person.fullname() }}
+
 %        if person.bio:
-${ h.line_break(h.url_to_link(person.bio)) | n  }
+${ h.latex_clean(person.bio) | n  }
 %        else:
 [no bio provided]
 %        endif
-</p>
-</div>
 %     endfor
 %   endif
 

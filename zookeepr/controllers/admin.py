@@ -166,12 +166,21 @@ class AdminController(BaseController):
             ORDER BY miniconf, proposal_type.name ASC
         """)
 
-    def papers_by_room(self):
+    def papers_by_room(self, latex=False):
         """ Papers by room for use by the room MC. [Schedule] """
 
         c.papers = meta.Session.query(Proposal).order_by(Proposal.building).order_by(Proposal.theatre).order_by(Proposal.scheduled).filter(and_(ProposalType.name != 'Miniconf', ProposalStatus.name == 'Accepted', Proposal.scheduled != None)).all()
  
-        return render('admin/papers_by_room.mako')
+        if latex:
+          response.headers['Content-type']='text/plain; charset=utf-8'
+          return render('admin/papers_by_room_latex.mako')
+        else:
+          return render('admin/papers_by_room.mako')
+
+    def papers_by_room_latex(self):
+        """ Papers by room for use by the room MC as LaTeX. [Schedule] """
+
+        return self.papers_by_room(True)
 
     def collect_garbage(self):
         """
