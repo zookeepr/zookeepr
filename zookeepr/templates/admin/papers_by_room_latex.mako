@@ -10,6 +10,9 @@
 Huh? No scheduled time for talk ${ p.id }.
 %   else:
 %     if day != p.scheduled.strftime('%Y-%m-%d - %A'):
+%       if day != '':
+\newpage
+%       endif
 <%      day = p.scheduled.strftime('%Y-%m-%d - %A') %>
 \lcasubsection{${ day }}
 %     endif
