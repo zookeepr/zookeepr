@@ -4,6 +4,9 @@
 %>
 
 <p> ${ c.text | n } </p>
+
+<p><a href="?csv=true">Export as CSV</a></p>
+
 <table>
 <tr>
 % for header in c.columns:
