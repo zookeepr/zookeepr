@@ -60,6 +60,12 @@ class Ceiling(Base):
             qty += p.qty_invoiced(date)
         return qty
 
+    def qty_free(self):
+        qty = 0
+        for p in self.products:
+            qty += p.qty_free()
+        return qty
+
     def percent_sold(self):
         if self.max_sold == None:
             return 0

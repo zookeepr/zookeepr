@@ -19,11 +19,9 @@
       <br>
     </p>
     <p><b>Currently Available:</b> ${ h.yesno(c.ceiling.available()) | n } <br></p>
-    <p><b>Invoiced:</b> ${ c.ceiling.qty_invoiced() | h }<br></p>
-    <p><b>Sold:</b> ${ c.ceiling.qty_sold() | h }<br></p>
 
     <h3>Products in this Ceiling</h3>
-    <p><b>Note:</b> Totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
+    <p><b>Note:</b> Dollar totals are not necessarily accurate as they do not take into account vouchers. They are simply paid items times cost.</p>
     <table>
       <thead><tr>
         <th>Description</th>
@@ -31,8 +29,9 @@
         <th>Active</th>
         <th>Cost</th>
         <th>Invoiced (inc. overdue)</th>
-        <th>Valid Invoices</th>
-        <th>Sold</th>
+        <th>Valid Invoices (paid)</th>
+        <th>Paid</th>
+        <th>Free</th>
         <th>Total</th>
       </tr></thead>
 <% ceiling_total = 0 %>
@@ -40,17 +39,22 @@
 <%   ceiling_total += product.qty_sold() * product.cost %>
       <tr>
         <td>${ h.link_to(product.description, url=h.url_for(controller='product', action='view', id=product.id)) }</td>
-        <td>${ product.category.name | h }</td>
+        <td>${ product.category.name }</td>
         <td>${ h.yesno(product.active) | n }</td>
         <td>${ h.number_to_currency(product.cost/100.0) }</td>
-        <td>${ product.qty_invoiced(date=False) | h }</td>
-        <td>${ product.qty_invoiced() | h }</td>
-        <td>${ product.qty_sold() | h }</td>
+        <td>${ product.qty_invoiced(date=False) }</td>
+        <td>${ product.qty_invoiced() }</td>
+        <td>${ product.qty_sold() }</td>
+        <td>${ product.qty_free() }</td>
         <td>${ h.number_to_currency((product.qty_sold() * product.cost)/100) }</td>
       </tr>
 % endfor
       <tr>
-        <td colspan="7" style="font-weight: bold; text-align: right;">Total:</td>
+        <td colspan="4" style="font-weight: bold; text-align: right;">Total:</td>
+        <td>${ c.ceiling.qty_invoiced( date = False )  }</td>
+        <td>${ c.ceiling.qty_invoiced()  }</td>
+        <td>${ c.ceiling.qty_sold()  }</td>
+        <td>${ c.ceiling.qty_free()  }</td>
         <td>${ h.number_to_currency(ceiling_total/100) }</td>
     </table>
     
