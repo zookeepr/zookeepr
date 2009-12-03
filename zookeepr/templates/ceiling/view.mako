@@ -1,5 +1,6 @@
 <%inherit file="/base.mako" />
 
+    <a name="summary"></a>
     <h2>View ceiling</h2>
 
     <p><b>Name:</b> ${ c.ceiling.name }<br></p>
@@ -20,7 +21,9 @@
     </p>
     <p><b>Currently Available:</b> ${ h.yesno(c.ceiling.available()) | n } <br></p>
 
+    <a name="products"></a>
     <h3>Products in this Ceiling</h3>
+
     <p><b>Note:</b> Dollar totals are not necessarily accurate as they do not take into account vouchers. They are simply paid items times cost.</p>
     <table>
       <thead><tr>
@@ -58,7 +61,8 @@
         <td>${ h.number_to_currency(ceiling_total/100) }</td>
     </table>
     
-    <h3>Sales in this Ceiling</h3>
+    <a name="paid_invoices"></a>
+    <h3>Paid invoices in this Ceiling</h3>
     <table>
       <thead><tr>
         <th>Invoice</th>
@@ -82,7 +86,8 @@
 % endfor
     </table>
 
-    <h3>Invoices in this Ceiling</h3>
+    <a name="unpaid_invoices"></a>
+    <h3>Unpaid invoices in this Ceiling</h3>
     <table>
       <thead><tr>
         <th>Invoice</th>
@@ -106,6 +111,7 @@
 % endfor
     </table>
 
+    <a name="invalid_invoices"></a>
     <h3>Invalid Invoices in this Ceiling</h3>
     <table>
       <thead><tr>
@@ -133,3 +139,19 @@
     <p>
     ${ h.link_to('Edit', url=h.url_for(action='edit',id=c.ceiling.id)) } |
     ${ h.link_to('Back', url=h.url_for(action='index', id=None)) }</p>
+
+<%def name="contents()">
+<%
+  menu =  '<li><a href="#summary">Summary</a></li>'
+  menu += '<li><a href="#products">Products in Ceiling</a></li>'
+  menu += '<li><a href="#paid_invoices">Paid Invoices</a></li>'
+  menu += '<li><a href="#unpaid_invoices">Unpaid Invoices</a></li>'
+  menu += '<li><a href="#invalid_invoices">Invalid Invoices</a></li>'
+
+  return menu
+%>
+</%def>
+<%def name="title()">
+Ceiling - ${ c.ceiling.name } - ${ parent.title() }
+</%def>
+
