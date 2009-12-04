@@ -20,6 +20,7 @@
   lastnames = talks_by_person.keys()
   lastnames.sort()
 %>
+<% first = 1 %>
 %       for lastname in lastnames:
 <%
   names = talks_by_person[lastname].keys()
@@ -27,6 +28,11 @@
 %>
 %         for name in names:
 %           for t in talks_by_person[lastname][name]:
+%             if first == 1:
+<%   first = 0 %>
+%             else:
+\vspace{1cm}
+%             endif
 <%
   presenters = []
   for person in t.people:
