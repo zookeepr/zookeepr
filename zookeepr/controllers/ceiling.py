@@ -72,6 +72,10 @@ class CeilingController(BaseController):
         c.ceiling = Ceiling.find_by_id(id)
         return render('/ceiling/view.mako')
 
+    def special_cases(self, id):
+        c.ceiling = Ceiling.find_by_id(id)
+        return render('/ceiling/special_cases.mako')
+
     def index(self):
         c.can_edit = True
         c.ceiling_collection = Ceiling.find_all()

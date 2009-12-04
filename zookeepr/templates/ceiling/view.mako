@@ -3,7 +3,8 @@
     <a name="summary"></a>
     <h2>View ceiling</h2>
 
-    <p><b>Name:</b> ${ c.ceiling.name }<br></p>
+    <p><b>Name:</b> ${ c.ceiling.name } - ${ h.link_to('Special cases', url=h.url_for(action='special_cases')) }</p>
+
     <p><b>Limit:</b> ${ c.ceiling.max_sold | h }<br></p>
     <p>
       <b>Available From:</b>
