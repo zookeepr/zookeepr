@@ -1,10 +1,15 @@
+<%def name="extra_head()">
+    <!--[if IE]><script language="javascript" type="text/javascript" src="/js/flot/excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.pie.js"></script>
+</%def>
+
 <%inherit file="/base.mako" />
 
     <a name="summary"></a>
     <h2>View ceiling</h2>
 
     <p><b>Name:</b> ${ c.ceiling.name } - ${ h.link_to('Special cases', url=h.url_for(action='special_cases')) }</p>
-
     <p><b>Limit:</b> ${ c.ceiling.max_sold | h }<br></p>
     <p>
       <b>Available From:</b>
@@ -25,6 +30,17 @@
     <a name="products"></a>
     <h3>Products in this Ceiling</h3>
 
+    <table>
+      <tr>
+        <th>Invoiced</th>
+        <th>Sold</th>
+      </tr>
+      <tr>
+        <td><div id="graph_invoiced_sales" style="width:300px;height:200px;"></div></td>
+        <td><div id="graph_valid_sales" style="width:300px;height:200px;"></div></td>
+      </tr>
+    </table>
+
     <p><b>Note:</b> Dollar totals are not necessarily accurate as they do not take into account vouchers. They are simply paid items times cost.</p>
     <table>
       <thead><tr>
@@ -39,6 +55,10 @@
         <th>Total</th>
       </tr></thead>
 <% ceiling_total = 0 %>
+<%
+  graph_invoiced_sales = {}
+  graph_valid_sales = {}
+%> 
 % for product in c.ceiling.products:
 <%   ceiling_total += product.qty_sold() * product.cost %>
       <tr>
@@ -52,6 +72,10 @@
         <td>${ product.qty_free() }</td>
         <td>${ h.number_to_currency((product.qty_sold() * product.cost)/100) }</td>
       </tr>
+<%
+  graph_invoiced_sales[product.description] = product.qty_invoiced(date=False)
+  graph_valid_sales[product.description] = product.qty_invoiced()
+%>
 % endfor
       <tr>
         <td colspan="4" style="font-weight: bold; text-align: right;">Total:</td>
@@ -61,6 +85,72 @@
         <td>${ c.ceiling.qty_free()  }</td>
         <td>${ h.number_to_currency(ceiling_total/100) }</td>
     </table>
+<script type="text/javascript">
+<%
+  d1 = '['
+  first = True
+  for desc in graph_invoiced_sales:
+    if first:
+      first = False
+    else:
+      d1 += ', '
+    d1 += '{ label: "' + desc + '", data: ' + str(graph_invoiced_sales[desc]) + '}'
+  d1 += ']'
+  d2 = '['
+  first = True
+  for desc in graph_valid_sales:
+    if first:
+      first = False
+    else:
+      d2 += ', '
+    d2 += '{ label: "' + desc + '", data: ' + str(graph_valid_sales[desc]) + '}'
+  d2 += ']'
+%>
+  var d1 = ${ d1 | n };
+  var d2 = ${ d2 | n };
+
+  $.plot($("#graph_invoiced_sales"), d1,
+    {
+      series: {
+        pie: {
+          show: true,
+          label: {
+            radius: 3/4,
+            opacity: 0.5,
+            formatter: function(label, series){
+              return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+            }
+          },
+          combine: {
+             color: '#999',
+             threshold: 0.02
+          }
+        }
+      },
+      legend: { backgroundOpacity: 0.5 }
+    });
+  $.plot($("#graph_valid_sales"), d2,
+    {
+      series: {
+        pie: {
+          show: true,
+          radius: 3/4,
+          label: {
+            radius: 1,
+            background: { opacity: 0.8 },
+            formatter: function(label, series){
+              return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
+            }
+          },
+          combine: {
+            color: '#999',
+            threshold: 0.02
+          }
+        }
+      },
+      legend: { show: false }
+    });
+</script>
     
     <a name="paid_invoices"></a>
     <h3>Paid invoices in this Ceiling</h3>
