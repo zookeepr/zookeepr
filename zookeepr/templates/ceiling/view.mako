@@ -33,11 +33,9 @@
     <table>
       <tr>
         <th>Invoiced</th>
-        <th>Sold</th>
       </tr>
       <tr>
-        <td><div id="graph_invoiced_sales" style="width:300px;height:200px;"></div></td>
-        <td><div id="graph_valid_sales" style="width:300px;height:200px;"></div></td>
+        <td><div id="graph_invoiced_sales" style="width:500px;height:200px;"></div></td>
       </tr>
     </table>
 
@@ -57,7 +55,6 @@
 <% ceiling_total = 0 %>
 <%
   graph_invoiced_sales = {}
-  graph_valid_sales = {}
 %> 
 % for product in c.ceiling.products:
 <%   ceiling_total += product.qty_sold() * product.cost %>
@@ -74,7 +71,6 @@
       </tr>
 <%
   graph_invoiced_sales[product.description] = product.qty_invoiced(date=False)
-  graph_valid_sales[product.description] = product.qty_invoiced()
 %>
 % endfor
       <tr>
@@ -96,18 +92,8 @@
       d1 += ', '
     d1 += '{ label: "' + desc + '", data: ' + str(graph_invoiced_sales[desc]) + '}'
   d1 += ']'
-  d2 = '['
-  first = True
-  for desc in graph_valid_sales:
-    if first:
-      first = False
-    else:
-      d2 += ', '
-    d2 += '{ label: "' + desc + '", data: ' + str(graph_valid_sales[desc]) + '}'
-  d2 += ']'
 %>
   var d1 = ${ d1 | n };
-  var d2 = ${ d2 | n };
 
   $.plot($("#graph_invoiced_sales"), d1,
     {
@@ -128,27 +114,6 @@
         }
       },
       legend: { backgroundOpacity: 0.5 }
-    });
-  $.plot($("#graph_valid_sales"), d2,
-    {
-      series: {
-        pie: {
-          show: true,
-          radius: 3/4,
-          label: {
-            radius: 1,
-            background: { opacity: 0.8 },
-            formatter: function(label, series){
-              return '<div style="font-size:8pt;text-align:center;padding:2px;color:white;">'+label+'<br/>'+Math.round(series.percent)+'%</div>';
-            }
-          },
-          combine: {
-            color: '#999',
-            threshold: 0.02
-          }
-        }
-      },
-      legend: { show: false }
     });
 </script>
     
