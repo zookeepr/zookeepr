@@ -1336,6 +1336,7 @@
            x="-617.06201"
            id="tspan11295"
            sodipodi:role="line">${ c.data[c.index]['nickname'] }</tspan></text>
+%if h.lca_rego['pgp_collection'] == 'yes':
       <text
          transform="scale(-1,-1)"
          sodipodi:linespacing="125%"
@@ -1348,6 +1349,7 @@
            x="-617.06201"
            id="tspan11299"
            sodipodi:role="line">${ c.data[c.index]['gpg'] }</tspan></text>
+%endif
       <flowRoot
          transform="matrix(-1,0,0,-1,658.96046,667.58208)"
          style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:justify;line-height:110.00000238%;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Caslon Antique;-inkscape-font-specification:Caslon Antique"

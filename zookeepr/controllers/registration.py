@@ -855,8 +855,7 @@ class RegistrationController(BaseController):
         if request.method == 'POST' and defaults:
             if defaults['reg_id'] != '':
                 reg_id_list = defaults['reg_id'].split("\n")
-                #registration_list = self.dbsession.query(self.model).filter(model.Registration.id.in_(reg_id_list)).all()
-                registration_list = self.dbsession.query(Registration).filter_by(id.in_(reg_id_list)).all()
+                registration_list = Registration.find_by_ids(reg_id_list)
                 if len(registration_list) != len(reg_id_list):
                     c.text = 'Registration ID not found. Please check the <a href="/registration">registration list</a>.'
                     return render('registration/generate_badges.mako')
