@@ -16,6 +16,7 @@ def setup(meta):
             Role(name='late_submitter', comment='Is allowed to submit paper proposals late'),
             Role(name='funding_reviewer', pretty_name='Funding Reviewer', comment='Has access to the funding review system'),
             Role(name='press', pretty_name='Press Pass', comment='Members of the press and media who can receive a press ticket'),
+            Role(name='miniconfsonly', pretty_name='Miniconfs Only', comment='Only gives access to Monday and Tuesday'),
         ]
     )
 
