@@ -973,7 +973,8 @@ class RegistrationController(BaseController):
                 favourites.append(self._sanitise_badge_field(registration.distro))
 
             data = { 'ticket': ticket,
-                     'name': self._sanitise_badge_field(registration.person.firstname + " " + registration.person.lastname),
+                     'firstname' : self._sanitise_badge_field(registration.person.firstname),
+                     'lastname' : self._sanitise_badge_field(registration.person.lastname),
                      'nickname': self._sanitise_badge_field(registration.nick),
                      'company': self._sanitise_badge_field(registration.person.company),
                      'favourites': ", ".join(favourites),
@@ -982,7 +983,6 @@ class RegistrationController(BaseController):
                      'over18': registration.over18,
                      'ghost': 'ghost' in [role.name for role in registration.person.roles],
                      'papers': 'reviewer' in [role.name for role in registration.person.roles],
-                     'artist': 'artist' in [role.name for role in registration.person.roles],
                      'silly': self._sanitise_badge_field(registration.silly_description)
             }
             if lca_rego['pgp_collection'] != 'no':
