@@ -1,25 +1,38 @@
 <%inherit file="/base.mako" />
+<%def name="extra_head()">
+    <!--[if IE]><script language="javascript" type="text/javascript" src="/js/flot/excanvas.min.js"></script><![endif]-->
+    <script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.js"></script>
+    <script language="javascript" type="text/javascript" src="/js/flot/jquery.flot.pie.js"></script>
+</%def>
+
 <%
   import re 
   grand_total = 0
   count = 0
+  graph_data = []
 %>
 
     <h2>List products</h2>
-    <p><b>Note:</b> Totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
+    <p><b>Note:</b> Money totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
+    <p><b>Pie charts:</b> Show invoiced product counts (including overdue).</p>
 % if len(c.product_categories) > 0:
 %   for category in c.product_categories:
 <%
       simple_title = re.compile('([^a-zA-Z0-9])').sub('', category.name) 
       count = count + 1
+      graph_invoiced_sales = dict()
 %>
 
     <table>
+      <thead>
       <tr>
         <a name="${ simple_title }"></a>
-        <td colspan="10" align="center"><h3>${ category.name }</h3></td>
+        <td colspan="11" align="center"><h3>${ category.name }</h3></td>
       </tr>
-      <thead><tr>
+      <tr>
+        <td colspan="11" align="center"><div id="sales${ simple_title }" style="width:600px;height:300px;"></div></td>
+      </tr>
+      <tr>
         <th>Description</th>
         <th>Active</th>
         <th>Available</th>
@@ -42,12 +55,14 @@
 %>
 %           for product in category.products:
 <%
-                 cat_total += (product.qty_sold() * product.cost)
-                 invoiced_total += product.qty_invoiced(date = False)
-                 valid_invoices_total += product.qty_invoiced()
-                 sold_total += product.qty_sold()
-                 free_total += product.qty_free()
+               cat_total += (product.qty_sold() * product.cost)
+               invoiced_total += product.qty_invoiced(date = False)
+               valid_invoices_total += product.qty_invoiced()
+               sold_total += product.qty_sold()
+               free_total += product.qty_free()
+               graph_invoiced_sales[product.description] = product.qty_invoiced(date = False)
 %>
+
       <tr class="${ h.cycle('odd', 'even') }">
         <td>${ h.link_to(product.description, url=h.url_for(action='view', id=product.id)) }</td>
         <td>${ h.yesno(product.active) |n }</td>
@@ -65,7 +80,24 @@
 %               endif
       </tr>
 %           endfor
-<%           grand_total += cat_total %>
+<%
+            grand_total += cat_total
+
+            products = graph_invoiced_sales.keys()
+            products.sort()
+            graph_data = []
+
+            sales_d1 = '['
+            first = True
+            for p in products:
+              if first:
+                first = False
+              else:
+                sales_d1 += ', '
+
+              sales_d1 += '{ label: "' + p + '", data: ' + str(graph_invoiced_sales[p]) + '}'
+            sales_d1 += ']'
+%>
         <tr>
             <td colspan="4" style="font-weight: bold; text-align: right;">Totals:</td>
             <td>${ invoiced_total }</td>
@@ -82,6 +114,34 @@
         </tr>
 %       endif
     </table>
+
+<script type="text/javascript">
+%       if sales_d1 == '[]':
+    $("#sales${simple_title }").hide()
+%       else:
+  var sales_d1 = ${ sales_d1 | n };
+
+    $.plot($("#sales${ simple_title }"), sales_d1, {
+        "series": {
+          "pie": {
+            "show": true,
+            "combine": {
+              "color": "#999",
+              "threshold": 0.02
+            }
+          },
+        },
+        "legend": {
+          "backgroundOpacity": 0.5,
+        },
+      }
+    );
+%       endif:
+</script>
+
+
+
+
 %   endfor
 % endif
 
