@@ -85,7 +85,7 @@ lca_rego = {
         ),
   'miniconfs' : (
               ('Monday',('Wave Developers', 'Open Programming Languages', 'Open and the Public Sector', 'Haecksen and Linuxchix', 'Libre Graphics Day', 'Arduino', 'Distro Summit')),
-              ('Tuesday',('Free The Cloud!', 'System Administration', 'Business of Open Source', 'Education', 'Multimedia', 'Data Storage and Retrieval', 'Multicore and Parallel Computing'))
+              ('Tuesday',('Launchpad', 'System Administration', 'Business of Open Source', 'Education', 'Multimedia', 'Data Storage and Retrieval', 'Multicore and Parallel Computing'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'eclipse', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
