@@ -33,7 +33,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="1.28"
      inkscape:cx="476.51149"
-     inkscape:cy="579.67948"
+     inkscape:cy="847.17141"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showguides="true"
@@ -220,28 +220,7 @@
              id="rect3429" /></svg:flowRegion><svg:flowPara
            style="font-size:16px;font-weight:bold;text-align:start;text-anchor:start;font-family:DejaVu Sans"
            id="flowPara3431">Amount Owing (NZD):</svg:flowPara></svg:flowRoot>    </svg:g>
-    <svg:flowRoot
-       xml:space="preserve"
-       id="flowRoot2583"
-       style="font-size:48px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
-       transform="translate(-21.249017,-69.338839)"><svg:flowRegion
-         id="flowRegion2585"><svg:rect
-           id="rect2587"
-           width="218.22522"
-           height="86.141533"
-           x="502.49219"
-           y="193.81841"
-           style="text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
-         id="flowPara2589"
-         style="font-size:24px;font-weight:bold;text-align:end;text-anchor:end;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans Mono">Tax Invoice</svg:flowPara><svg:flowPara
-         id="flowPara2593"
-         style="font-size:20px;text-align:end;text-anchor:end;font-family:DejaVu Sans">Linux Australia Inc.</svg:flowPara><svg:flowPara
-         id="flowPara2597"
-         style="text-align:end;text-anchor:end;font-family:DejaVu Sans" /><svg:flowPara
-         id="flowPara2599"
-         style="text-align:end;text-anchor:end;font-family:DejaVu Sans" /><svg:flowPara
-         id="flowPara2595"
-         style="text-align:end;text-anchor:end;font-family:DejaVu Sans" /></svg:flowRoot>    <svg:text
+    <svg:text
        id="text2621"
        y="172.1601"
        x="41.436577"
@@ -1292,6 +1271,27 @@
        x="22.047241"
        y="25.244202" />
     <svg:flowRoot
+       xml:space="preserve"
+       id="flowRoot2583"
+       style="font-size:48px;font-style:normal;font-weight:normal;text-align:end;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;font-family:Helvetica"
+       transform="translate(-21.249017,-69.338839)"><svg:flowRegion
+         id="flowRegion2585"><svg:rect
+           id="rect2587"
+           width="218.22522"
+           height="86.141533"
+           x="502.49219"
+           y="193.81841"
+           style="text-align:end;text-anchor:end" /></svg:flowRegion><svg:flowPara
+         id="flowPara2589"
+         style="font-size:24px;font-weight:bold;text-align:end;text-anchor:end;fill:#1c67ba;fill-opacity:1;font-family:DejaVu Sans Mono">Tax Invoice</svg:flowPara><svg:flowPara
+         style="font-size:20px;text-align:end;text-anchor:end;font-family:DejaVu Sans"
+         id="flowPara2763">Linux Australia Inc.</svg:flowPara><svg:flowPara
+         id="flowPara2597"
+         style="text-align:end;text-anchor:end;font-family:DejaVu Sans" /><svg:flowPara
+         id="flowPara2599"
+         style="text-align:end;text-anchor:end;font-family:DejaVu Sans" /><svg:flowPara
+         id="flowPara2595"
+         style="text-align:end;text-anchor:end;font-family:DejaVu Sans" /></svg:flowRoot>    <svg:flowRoot
        xml:space="preserve"
        id="flowRoot2691"
        style="fill:black;fill-opacity:1;stroke:none;stroke-opacity:1;stroke-width:1pt;stroke-linejoin:miter;stroke-linecap:butt;font-family:DejaVu Sans;font-style:normal;font-weight:normal;font-size:12px;text-anchor:middle;text-align:center;-inkscape-font-specification:DejaVu Sans;font-stretch:normal;font-variant:normal"><svg:flowRegion
