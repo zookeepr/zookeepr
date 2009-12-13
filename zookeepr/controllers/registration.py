@@ -934,39 +934,48 @@ class RegistrationController(BaseController):
     def _registration_badge_data(self, registration, stamp = False):
         if registration:
             dinner_tickets = 0
+            speakers_tickets = 0
             ticket = ''
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.is_void():
                     for item in invoice.items:
                         if item.description.startswith('Penguin Dinner'):
                             dinner_tickets += item.qty
+                        elif item.description.startswith('Speakers Dinner'):
+                            speakers_tickets += item.qty
                         elif item.description.startswith('Concession'):
                             ticket = 'Concession'
-                        elif item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1:
+                        elif item.description.find('Hobbyist') > -1:
                             ticket = 'Hobbyist'
-                        elif (item.description.find('Professional') > -1 or item.description.startswith('Kororo')):
+                        elif (item.description.find('Professional') > -1 or item.description.startswith('Korora')):
                             ticket = 'Professional'
                         elif item.description.startswith('Press'):
                             ticket = 'Press'
                         elif item.description.startswith('Organiser'):
                             ticket = 'Organiser'
-                        elif item.description.find('Monday + Tuesday') > -1:
-                            ticket = 'miniconfs Only'
+                        elif item.description.find('Miniconfs Only') > -1:
+                            ticket = 'Miniconfs Only'
             if registration.person.is_speaker():
                 ticket = 'Speaker'
             elif registration.person.is_miniconf_org():
-                ticket = 'miniconf Organiser'
+                ticket = 'Miniconf Organiser'
             elif registration.person.is_volunteer():
                 ticket = 'Volunteer'
 
             if not stamp:
                 ticket = ''
 
+            north_island = ['wellington', 'welly', 'wlg', 'auckland', 'akl', 'hamilton', 'porirua', 'palmerston north', 'upper hutt', 'petone', 'lower hutt', 'johnsonville', 'karori', 'te aro', 'auckland central', 'whangarei', 'northland', 'albany', 'miramar', 'tawa', 'avalon', 'tauranga', 'north shore city', 'levin', 'kelburn', 'manukau city', 'thorndon', 'paraparaumu', 'north shore', 'mount victoria', 'taupo', 'rotorua', 'new plymouth'];
+            south_island = ['christchurch', 'dunedin', 'nelson', 'queenstown', 'invercargill', 'greymouth', 'westport'];
             region = 'world'
             if registration.person.country.strip().lower() == 'australia' and registration.person.state.strip().lower() in ['tas', 'tasmania']:
                 region = 'tasmania'
             elif registration.person.country.strip().lower() == 'australia':
                 region = 'australia'
+            elif registration.person.city.strip().lower() in north_island:
+                region = 'north_island'
+            elif registration.person.city.strip().lower() in south_island:
+                region = 'south_island'
             elif registration.person.country.strip().lower() in ['new zealand', 'nz']:
                 region = 'new_zealand'
 
@@ -986,6 +995,7 @@ class RegistrationController(BaseController):
                      'favourites': ", ".join(favourites),
                      'region': region,
                      'dinner_tickets': dinner_tickets,
+                     'speakers_tickets': speakers_tickets,
                      'over18': registration.over18,
                      'ghost': 'ghost' in [role.name for role in registration.person.roles],
                      'papers': 'reviewer' in [role.name for role in registration.person.roles],
@@ -994,7 +1004,7 @@ class RegistrationController(BaseController):
             if lca_rego['pgp_collection'] != 'no':
                 data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
-        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': True, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
+        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'over18': True, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
