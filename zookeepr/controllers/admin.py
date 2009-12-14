@@ -16,7 +16,8 @@ from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta, Person, Product, Registration, ProductCategory
-from zookeepr.model import meta, Proposal, ProposalType, ProposalStatus
+from zookeepr.model import Proposal, ProposalType, ProposalStatus
+from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info, lca_rego
 
@@ -72,7 +73,6 @@ class AdminController(BaseController):
           ('/invoice', '''View assigned invoices and their status. [Invoicing]'''),
           ('/invoice/new', '''Create manual invoice for a person. [Invoicing]'''),
           ('/volunteer', '''View and approve/deny applications for volunteers. [Registrations]'''),
-          ('/volunteer/0/grid', '''View volunteer in a grid showing areas. [Registrations]'''),
           ('/rego_note', '''Create and manage private notes on individual registrations. [Registrations]'''),
           ('/role', '''Add, delete and modify available roles. View the person list to actually assign roles. [Accounts]'''),
           ('/registration/generate_badges', '''Generate one or many Badges. [Registrations]'''),
@@ -1161,6 +1161,76 @@ class AdminController(BaseController):
             c.data.append([ idlink, h.util.html_escape(r[1]), h.util.html_escape(r[2]), str(r[3]) ])
         c.noescape = True
         c.sql = query
+        return table_response()
+
+    def rego_list(self):
+        """ List of paid regos - for rego desk. [Registrations] """
+        c.data = [
+           (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r)
+                                                 for r in Registration.find_all()]
+        c.data.sort()
+        c.data = [row[-1] for row in c.data]
+        c.tshirts = ProductCategory.find_by_name('T-Shirt')
+        c.prn = request.GET.has_key('print')
+        return render('admin/rego_list.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def volunteer_grid(self):
+        """ List of volunteers for exporting to mgmt DB. [Registrations] """
+        c.data = []
+        c.noescape = True
+        c.columns = ['ID', 'Vol ID', 'Name', 'Email', 'Country', 'City', 'Status', 'Type']
+        for area in h.lca_rego['volunteer_areas']:
+          c.columns.append(area['name'])
+        c.columns.append('Other')
+        c.columns.append('Experience')
+
+        volunteer_collection = Volunteer.find_all()
+        for v in volunteer_collection:
+          row = [str(v.person.id)]
+          row.append(str(v.id))
+          row.append(h.link_to(v.person.fullname(), url=h.url_for(controller="person", action='view', id=v.person.id)))
+          row.append(h.link_to(v.person.email_address, url="mailto:" + v.person.email_address))
+          row.append(v.person.country)
+          row.append(v.person.city)
+          if v.accepted is None:
+            status = 'Pending'         
+          elif v.accepted == True:
+            status = 'Accepted'         
+          else:
+            status = 'Rejected'         
+          row.append(status)
+
+          type = 'Unknown'
+          if v.person.is_speaker():
+            type = 'Speaker'
+          elif v.person.is_miniconf_org():
+            type = 'Miniconf Org'
+          else:
+            type = 'Not Registered'
+
+            for invoice in v.person.invoices:
+              if invoice.paid() and not invoice.is_void():
+                for item in invoice.items:
+                  if item.description.find('Volunteer') > -1:
+                    type = 'Volunteer'
+                  elif item.description.find('Ticket') > -1:
+                    type = 'Delegate'
+
+          row.append(type)
+
+          for area in h.lca_rego['volunteer_areas']:
+            code = area['name'].replace(' ', '_').replace('.', '_')
+            if code in v.areas:
+              row.append('Yes')
+            else:
+              row.append('No')
+
+          row.append(v.other)
+          row.append(v.experience)
+
+          c.data.append(row)
+
         return table_response()
 
 def keysigning_pdf(keyid):
