@@ -9,8 +9,20 @@
 % endif
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
+% if h.auth.authorized(h.auth.has_organiser_role):
+%   if c.invoice.is_void():
+        <li>${ h.link_to('Unvoid this invoice', url = h.url_for(action='unvoid')) }</li>
+         <ul><li>Unvoiding invoices marks them as manual.</li></ul>
+%   else:
+        <li>${ h.link_to('Void this invoice', url = h.url_for(action='void')) }</li>
+%   endif
+% endif
 % if c.invoice.is_void() and c.invoice.person.registration:
+%   if h.auth.authorized(h.auth.has_organiser_role):
+        <li>${  h.link_to('Generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
+%   else:
         <li>This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
+%   endif
 % elif c.invoice.paid():
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>Invoice was paid by ${ c.invoice.person.email_address }.</li>
