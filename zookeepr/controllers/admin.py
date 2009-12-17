@@ -16,7 +16,7 @@ from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta, Person, Product, Registration, ProductCategory
-from zookeepr.model import Proposal, ProposalType, ProposalStatus
+from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice
 from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info, lca_rego
@@ -1233,6 +1233,37 @@ class AdminController(BaseController):
 
         return table_response()
 
+    @authorize(h.auth.has_organiser_role)
+    def paid_counts_by_date(self):
+        """ Number of paid (or zerod) invoices by date. [Registrations] """
+        invoices = Invoice.find_all()
+    
+        payments_count = dict()
+        for i in invoices:
+          if i.paid() and not i.is_void():
+            if i.total() == 0:
+              date = i.creation_timestamp.date()
+            else:
+              date = i.good_payments()[0].creation_timestamp.date()
+    
+            if date not in payments_count:
+              payments_count[date] = 0
+    
+            payments_count[date] += 1
+    
+        c.data = []
+        c.noescape = True
+        c.columns = ['Date', 'Count' ]
+        if len(payments_count) > 0:
+          dates = payments_count.keys()
+          dates.sort()
+
+          for date in dates:
+            row = [ "%s" % date, str(payments_count[date]) ]
+            c.data.append(row)
+         
+        return table_response()
+    
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66

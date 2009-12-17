@@ -1048,3 +1048,16 @@ class RegistrationController(BaseController):
 
         response.headers['Content-type']='text/plain; charset=utf-8'
         return render('/registration/professionals_latex.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def rego_desk_latex(self):
+        registration_list = Registration.find_all()
+        for r in registration_list:
+            if r.person.is_professional():
+                if r.person.company not in c.profs:
+                     c.profs[r.person.company] = {}
+                if r.person.lastname not in c.profs[r.person.company]:
+                    c.profs[r.person.company][r.person.lastname] = []
+                c.profs[r.person.company][r.person.lastname].append(r.person.fullname())
+
+        response.headers['Content-type']='text/plain; charset=utf-8'
