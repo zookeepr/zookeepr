@@ -423,10 +423,11 @@ class AdminController(BaseController):
         """ CSV export of registrations for mail merges [Registrations] """
         c.data = []
         c.text = ''
-        c.columns = ('name', 'firstname', 'email_address', 'country', 'speaker', 'keynote', 'miniconf', 'dietary_requirements', 'special_requirements', 'paid')
+        c.columns = ('id', 'name', 'firstname', 'email_address', 'country', 'speaker', 'keynote', 'miniconf', 'dietary_requirements', 'special_requirements', 'paid')
         c.noescape = True
         for r in meta.Session.query(Registration).all():
           row = []
+          row.append(r.person.id)
           row.append(r.person.fullname())
           row.append(r.person.firstname)
           row.append(r.person.email_address)
