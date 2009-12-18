@@ -88,40 +88,6 @@ class VolunteerController(BaseController):
         c.volunteer_collection = Volunteer.find_all()
         return render('volunteer/list.mako')
 
-    @dispatch_on(POST="_edit") 
-    def edit(self, id):
-        c.volunteer = Volunteer.find_by_id(id)
-
-        # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.volunteer.person.id), h.auth.has_organiser_role)):
-            # Raise a no_auth error
-            h.auth.no_role()
-
-        if c.volunteer.accepted is not None:
-            return render('volunteer/already.mako')
-
-        defaults = h.object_to_defaults(c.volunteer, 'volunteer')
-
-        form = render('volunteer/edit.mako')
-        return htmlfill.render(form, defaults)
-
-    @validate(schema=EditVolunteerSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
-    def _edit(self, id):
-        volunteer = Volunteer.find_by_id(id)
-
-        # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(volunteer.person.id), h.auth.has_organiser_role)):
-            # Raise a no_auth error
-            h.auth.no_role()
-
-        for key in self.form_result['volunteer']:
-            setattr(volunteer, key, self.form_result['volunteer'][key])
-
-        # update the objects with the validated form data
-        meta.Session.commit()
-        h.flash("Your details were updated successfully.")
-        redirect_to(action='view', id=id)
-
     @authorize(h.auth.has_organiser_role)
     def accept(self, id):
         volunteer = Volunteer.find_by_id(id)
