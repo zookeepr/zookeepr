@@ -935,6 +935,7 @@ class RegistrationController(BaseController):
         if registration:
             dinner_tickets = 0
             speakers_tickets = 0
+            pdns_ticket = False
             ticket = ''
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.is_void():
@@ -944,26 +945,28 @@ class RegistrationController(BaseController):
                         elif item.description.startswith('Speakers Dinner'):
                             speakers_tickets += item.qty
                         elif item.description.startswith('Concession'):
-                            ticket = 'Concession'
+                            ticket = 'Hobbyist'
                         elif item.description.find('Hobbyist') > -1:
                             ticket = 'Hobbyist'
                         elif (item.description.find('Professional') > -1 or item.description.startswith('Korora')):
                             ticket = 'Professional'
+                            pdns_ticket = True
                         elif item.description.startswith('Press'):
                             ticket = 'Press'
+                            pdns_ticket = True
                         elif item.description.startswith('Organiser'):
                             ticket = 'Organiser'
+                            pdns_ticket = True
                         elif item.description.find('Miniconfs Only') > -1:
                             ticket = 'Miniconfs Only'
             if registration.person.is_speaker():
                 ticket = 'Speaker'
+                pdns_ticket = True
             elif registration.person.is_miniconf_org():
                 ticket = 'Miniconf Organiser'
+                pdns_ticket = True
             elif registration.person.is_volunteer():
                 ticket = 'Volunteer'
-
-            if not stamp:
-                ticket = ''
 
             north_island = ['wellington', 'welly', 'wlg', 'auckland', 'akl', 'hamilton', 'porirua', 'palmerston north', 'upper hutt', 'petone', 'lower hutt', 'johnsonville', 'karori', 'te aro', 'auckland central', 'whangarei', 'northland', 'albany', 'miramar', 'tawa', 'avalon', 'tauranga', 'north shore city', 'levin', 'kelburn', 'manukau city', 'thorndon', 'paraparaumu', 'north shore', 'mount victoria', 'taupo', 'rotorua', 'new plymouth'];
             south_island = ['christchurch', 'dunedin', 'nelson', 'queenstown', 'invercargill', 'greymouth', 'westport'];
@@ -996,15 +999,14 @@ class RegistrationController(BaseController):
                      'region': region,
                      'dinner_tickets': dinner_tickets,
                      'speakers_tickets': speakers_tickets,
+                     'pdns_ticket' : pdns_ticket,
                      'over18': registration.over18,
-                     'ghost': 'ghost' in [role.name for role in registration.person.roles],
-                     'papers': 'reviewer' in [role.name for role in registration.person.roles],
                      'silly': self._sanitise_badge_field(registration.silly_description)
             }
             if lca_rego['pgp_collection'] != 'no':
                 data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
-        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'over18': True, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
+        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': ''}
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
