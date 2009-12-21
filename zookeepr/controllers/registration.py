@@ -944,7 +944,7 @@ class RegistrationController(BaseController):
                             dinner_tickets += item.qty
                         elif item.description.startswith('Speakers Dinner'):
                             speakers_tickets += item.qty
-                        elif item.description.startswith('Concession'):
+                        elif item.description.find('Student') > -1:
                             ticket = 'Hobbyist'
                         elif item.description.find('Hobbyist') > -1:
                             ticket = 'Hobbyist'
