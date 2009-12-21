@@ -326,6 +326,16 @@
        y1="349.39813"
        x2="120.17073"
        y2="212.55632" />
+    <linearGradient
+       inkscape:collect="always"
+       xlink:href="#linearGradient4020"
+       id="linearGradient4746"
+       gradientUnits="userSpaceOnUse"
+       gradientTransform="matrix(0.9971182,0,0,1,152.53088,165.11347)"
+       x1="119.82342"
+       y1="350.19275"
+       x2="119.82342"
+       y2="118.68147" />
   </defs>
   <metadata
      id="metadata7">
@@ -346,27 +356,14 @@
      inkscape:groupmode="layer"
      transform="translate(0,308.26772)">
 %for side in ('front', 'back'):
-## TODO: remove this border
-    <rect
-       y="18.204805"
-%  if 'front' == side:
-       x="-697.03265"
-%  else:
-       x="-459.63107"
-%  endif
-       height="346.27084"
-       width="233.10611"
-       id="Border"
-       style="fill:none;stroke:#000000;stroke-width:0.97654593;stroke-opacity:1;display:inline"
-       transform="matrix(0,-1,1,0,0,0)" />
 %if c.data[c.index]['ticket'] == 'Speaker':
     <g
        style="display:inline"
        id="g4394"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4280);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
@@ -399,9 +396,9 @@
        style="display:inline"
        id="g4767"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4280);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
@@ -434,12 +431,12 @@
        style="display:inline"
        id="g4767"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
-         style="fill:url(#linearGradient4282);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
+         style="fill:url(#linearGradient4746);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
          id="rect3248"
          width="240.34146"
          height="231.31128"
@@ -469,9 +466,9 @@
        style="display:inline"
        id="g4773"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4284);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -504,9 +501,9 @@
        style="display:inline"
        id="g4779"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4286);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -539,9 +536,9 @@
        style="display:inline"
        id="g4785"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4288);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -574,9 +571,9 @@
        style="display:inline"
        id="g4791"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4290);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -609,9 +606,9 @@
        style="display:inline"
        id="g4797"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4292);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -685,9 +682,9 @@
        style="display:inline"
        id="g4803"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <rect
          style="fill:url(#linearGradient4294);fill-opacity:1;fill-rule:nonzero;stroke:none"
@@ -799,9 +796,9 @@
     <g
        id="PDNS"
 %  if 'front' == side:
-       transform="matrix(0,-0.3413929,0.34705619,0,246.99066,629.62213)"
+       transform="matrix(0,-0.3413929,0.34705619,0,250.99109,629.62213)"
 %  else:
-       transform="matrix(0,-0.3413929,0.34705619,0,246.99066,392.7311)"
+       transform="matrix(0,-0.3413929,0.34705619,0,250.99109,389.73067)"
 %  endif
        style="display:inline">
       <g
@@ -851,9 +848,9 @@
 %if c.data[c.index]['dinner_tickets'] > 0:
     <g
 %  if 'front' == side:
-       transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,-61.975601,520.38908)"
+       transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,-57.975174,520.38908)"
 %  else:
-       transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,-61.975601,283.49805)"
+       transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,-57.975174,280.49762)"
 %  endif
        id="Penguin_Dinner_background"
        style="display:inline">
@@ -870,73 +867,73 @@
 %endif
     <text
        id="IRC_Nickname"
-       y="231.53758"
+       y="235.50523"
 %  if 'front' == side:
        x="-660.68604"
 %  else:
-       x="-421.32346"
+       x="-418.29825"
 %  endif
        style="font-size:11.71855068px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
        xml:space="preserve"
 %  if 'front' == side:
-       transform="matrix(0,-0.9918074,1.0082603,0,0,0)"><tspan
-%  else:
        transform="matrix(0,-0.99180739,1.0082603,0,0,0)"><tspan
+%  else:
+       transform="matrix(0,-0.99180738,1.0082603,0,0,0)"><tspan
 %  endif
          style="font-size:7.81236696px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-         y="231.53758"
+         y="235.50523"
 %  if 'front' == side:
          x="-660.68604"
 %  else:
-         x="-421.32346"
+         x="-418.29825"
 %  endif
          id="tspan4903"
          sodipodi:role="line">${ c.data[c.index]['nickname'] }</tspan></text>
     <text
        id="Last_Name"
-       y="93.127708"
+       y="97.09536"
 %  if 'front' == side:
        x="-666.39148"
 %  else:
-       x="-427.0289"
+       x="-424.00369"
 %  endif
        style="font-size:11.71855068px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
        xml:space="preserve"
 %  if 'front' == side:
-       transform="matrix(0,-0.9918074,1.0082603,0,0,0)"><tspan
-%  else:
        transform="matrix(0,-0.99180739,1.0082603,0,0,0)"><tspan
+%  else:
+       transform="matrix(0,-0.99180738,1.0082603,0,0,0)"><tspan
 %  endif
          style="font-size:19.53091812px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Yanone Kaffeesatz;-inkscape-font-specification:Yanone Kaffeesatz"
-         y="93.127708"
+         y="97.09536"
 %  if 'front' == side:
          x="-666.39148"
 %  else:
-         x="-427.0289"
+         x="-424.00369"
 %  endif
          id="tspan3266"
          sodipodi:role="line">${ c.data[c.index]['lastname'] }</tspan></text>
     <text
        id="First_Name"
-       y="69.236313"
+       y="73.203964"
 %  if 'front' == side:
        x="-666.81177"
 %  else:
-       x="-427.44919"
+       x="-424.42398"
 %  endif
        style="font-size:11.71855068px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
        xml:space="preserve"
 %  if 'front' == side:
-       transform="matrix(0,-0.9918074,1.0082603,0,0,0)"><tspan
-%  else:
        transform="matrix(0,-0.99180739,1.0082603,0,0,0)"><tspan
+%  else:
+       transform="matrix(0,-0.99180738,1.0082603,0,0,0)"><tspan
 %  endif
          style="font-size:31.24946785px;font-style:normal;font-variant:normal;font-weight:bold;font-stretch:normal;font-family:Yanone Kaffeesatz;-inkscape-font-specification:Yanone Kaffeesatz Bold"
          y="69.236313"
 %  if 'front' == side:
          x="-666.81177"
 %  else:
-         x="-427.44919"
+         x="-424.42398"
 %  endif
          id="tspan3262"
          sodipodi:role="line">${ c.data[c.index]['firstname'] }</tspan></text>
@@ -972,9 +969,9 @@
 %elif c.data[c.index]['region'] == 'south_island':
     <g
 %  if 'front' == side:
-       transform="matrix(0,-0.26973449,0.27420904,0,31.62419,564.1742)"
+       transform="matrix(0,-0.26973449,0.27420904,0,35.624617,564.1742)"
 %  else:
-       transform="matrix(0,-0.26973449,0.27420904,0,31.62419,327.28317)"
+       transform="matrix(0,-0.26973449,0.27420904,0,35.624617,324.28274)"
 %  endif
        id="South_Island"
        style="display:inline;overflow:visible">
@@ -1180,11 +1177,11 @@
     </g>
 %endif
     <rect
-       y="209.03532"
+       y="213.03575"
 %  if 'front' == side:
        x="-602.57953"
 %  else:
-       x="-365.17795"
+       x="-362.17752"
 %  endif
        height="44.629608"
        width="43.90134"
@@ -1209,33 +1206,33 @@
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Yanone Kaffeesatz;-inkscape-font-specification:Yanone Kaffeesatz"
          id="flowPara5126">${ c.data[c.index]['company'] }</flowPara></flowRoot>    <text
        id="shell_editor"
-       y="323.38498"
+       y="327.35263"
 %  if 'front' == side:
        x="-601.36755"
 %  else:
-       x="-362.00497"
+       x="-358.97977"
 %  endif
        style="font-size:11.71855068px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
        xml:space="preserve"
 %  if 'front' == side:
-       transform="matrix(0,-0.9918074,1.0082603,0,0,0)"><tspan
-%  else:
        transform="matrix(0,-0.99180739,1.0082603,0,0,0)"><tspan
+%  else:
+       transform="matrix(0,-0.99180738,1.0082603,0,0,0)"><tspan
 %  endif
          style="font-size:7.81236696px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-         y="323.38498"
+         y="327.35263"
 %  if 'front' == side:
          x="-601.36755"
 %  else:
-         x="-362.00497"
+         x="-358.97977"
 %  endif
          id="tspan4895"
          sodipodi:role="line">${ c.data[c.index]['favourites'] }</tspan></text>
     <flowRoot
 %  if 'front' == side:
-       transform="matrix(0,-0.96854546,0.9846124,0,77.07227,643.34696)"
+       transform="matrix(0,-0.96854546,0.9846124,0,81.072697,643.34696)"
 %  else:
-       transform="matrix(0,-0.96854546,0.9846124,0,77.07227,405.94539)"
+       transform="matrix(0,-0.96854546,0.9846124,0,81.072697,402.94496)"
 %  endif
        style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
        id="flowRoot5193"
@@ -1281,12 +1278,12 @@
 %  if 'front' == side:
        x="-646.62616"
 %  else:
-       x="-407.30753"
+       x="-404.28232"
 %  endif
-       y="278.06223"
+       y="282.02988"
        id="text4813"
 %  if 'front' == side:
-       transform="matrix(0,-0.9918074,1.0082603,0,0,0)"><tspan
+       transform="matrix(0,-0.99180739,1.0082603,0,0,0)"><tspan
 %  else:
        transform="matrix(0,-0.99180738,1.0082603,0,0,0)"><tspan
 %  endif
@@ -1295,17 +1292,17 @@
 %  if 'front' == side:
          x="-646.62616"
 %  else:
-         x="-407.30753"
+         x="-404.28232"
 %  endif
-         y="278.06223"
+         y="282.02988"
          style="font-size:19.53091812px;font-weight:bold;-inkscape-font-specification:DejaVu Sans Bold">${ c.data[c.index]['dinner_tickets'] }</tspan></text>
 %endif
     <g
        id="g4528"
 %  if 'front' == side:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,845.60827)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %  else:
-       transform="matrix(0,-0.97579374,0.98892441,0,-145.02681,608.2067)">
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
 %  endif
       <path
          id="Linux.Conf.Au"
