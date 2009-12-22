@@ -1098,6 +1098,7 @@ class AdminController(BaseController):
         )
         return table_response()
 
+    @authorize(h.auth.has_organiser_role)
     def email_registration_reminder(self):
         """ Send all attendees a confirmation email of their registration details. [Registrations]"""
         c.text = 'Emailed the following attendees:'
@@ -1140,6 +1141,7 @@ class AdminController(BaseController):
         c.text = render_response('admin/table.myt', fragment=True)
         return render_response('admin/text.myt')
 
+    @authorize(h.auth.has_organiser_role)
     def late_submitters(self):
         """ List of people who are allowed to submit and edit their proposals after the CFP has closed. [CFP]"""
         c.text = '<p>List of people who are allowed to submit and edit their proposals after the CFP has closed.</p><p><b>The role should be REMOVED once they have submitted their paper.</b></p>'
@@ -1164,16 +1166,80 @@ class AdminController(BaseController):
         c.sql = query
         return table_response()
 
+    @authorize(h.auth.has_organiser_role)
     def rego_list(self):
         """ List of paid regos - for rego desk. [Registrations] """
-        c.data = [
-           (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r)
+        people = [
+           (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r.person)
                                                  for r in Registration.find_all()]
-        c.data.sort()
-        c.data = [row[-1] for row in c.data]
-        c.tshirts = ProductCategory.find_by_name('T-Shirt')
-        c.prn = request.GET.has_key('print')
-        return render('admin/rego_list.mako')
+        people.sort()
+        people = [row[-1] for row in people]
+
+        # Find the categories that we display in the rego list.
+        categories = []
+        for category in ProductCategory.find_all():
+          name = category.name
+          if name != 'Ticket':
+            if name != 'Accommodation' or (name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] != 'yes'):
+              categories.append(category.name)
+        categories.sort()
+
+        c.columns = ['Name', '', 'ID', 'Ticket', 'Bag']
+        for cat in categories:
+          c.columns.append(cat)
+
+        c.data = []
+        for person in people:
+          row = [ "%s, %s" % (person.lastname, person.firstname) ]
+          if not person.paid():
+            row.append('NOT PAID')
+          else:
+            row.append('')
+          row.append(person.id)
+
+          bag = 'Professional'
+          type = ''
+          if person.is_speaker():
+            type = 'Speaker'
+          if person.is_miniconf_org():
+            type = 'Minconf Org'
+          elif person.is_professional():
+            type = 'Professional'
+          elif person.has_role('press'):
+            type = 'Media'
+          else:
+            type = 'Hobby / Student'
+            bag = 'Hobby'
+          if person.is_volunteer():
+            type += " Volunteer"
+
+          row.append(type)
+          row.append(bag)
+
+          first = True
+          products = dict()
+          for category in categories:
+            products[category] = []
+
+          for invoice in person.invoices:
+            if not invoice.is_void():
+              for ii in invoice.items:
+                if ii.product is not None and ii.product.category is not None:
+                  if ii.product.category.name in products:
+                    text = "%s x %s" % (ii.qty, ii.product.description)
+                    if not invoice.paid():
+                      text += " (Not paid)"
+                    products[ii.product.category.name].append(text)
+
+          for category in categories:
+            if len(products[category]) == 0:
+              row.append('')
+            else:
+              row.append(", ".join(products[category]))
+
+          c.data.append(row)
+
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def volunteer_grid(self):
@@ -1336,6 +1402,11 @@ def table_response():
     """ Display a table of data, possible jumping off to CSV. """
     if request.GET.has_key('csv'):
         return table_csv_response()
+    elif request.GET.has_key('latex'):
+      response.headers['Content-type']='text/plain; charset=utf-8'
+      response.headers['Content-Disposition']='attachment; filename="table.csv"'
+
+      return render('admin/table_latex.mako')
 
     return render('admin/table.mako')
 

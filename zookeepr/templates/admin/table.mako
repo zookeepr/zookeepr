@@ -5,7 +5,10 @@
 
 <p> ${ c.text | n } </p>
 
-<p><a href="?csv=true">Export as CSV</a></p>
+<p>
+<a href="?csv=true">Export as CSV</a>
+<a href="?latex=true">Export as LaTeX table</a>
+</p>
 
 <table>
 <tr>
