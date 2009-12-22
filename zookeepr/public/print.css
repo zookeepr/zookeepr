@@ -21,15 +21,15 @@ body {
 	font-size: 75%;
 	color: #4e4e4e;
 	height: 100%;
-	background: #FFF url(images/bkgd.gif) repeat-x top left;
+/*	background: #FFF url(images/bkgd.gif) repeat-x top left; */
 }
 #container {
-	min-height: 100%;
-	height: auto !important;
-	height: 100%;
-	width: 984px;
-	margin: 0 auto -80px auto;
-	background: #FFF url(images/header.jpg) no-repeat top left;
+/*	min-height: 100%; */
+/*	height: auto !important; */
+/*	height: 100%; */
+/*	width: 984px; */
+/*	margin: 0 auto -80px auto; */
+/*	background: #FFF url(images/header.jpg) no-repeat top left; */
 }
 
 #wrapper {
@@ -107,6 +107,7 @@ h6 {
 #footer_logo {
         margin-left: 5px;
         float: left;
+	display: none;
 }
 
 * html #logo {
@@ -241,8 +242,8 @@ h6 {
 #footer {
 	color: #959595;
 	height:110px;
-	background: url(images/footer.jpg) repeat-x bottom left;
-	image: url(images/sign-and-pole.png) bottom right;
+/*	background: url(images/footer.jpg) repeat-x bottom left; */
+/*	image: url(images/sign-and-pole.png) bottom right; */
 	width: 100%;
 }
 #footer a {
