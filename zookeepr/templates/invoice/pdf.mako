@@ -20,7 +20,7 @@
   <owed cents="0">0.00</owed>
   <zero/>
 % else:
-  <owed cents="${ amt }"/>
+  <owed cents="${ amt }">${ h.number_to_currency(amt/100.0) }</owed>
 % endif
 % if c.invoice.bad_payments().count() > 0:
   <badpayments/>
