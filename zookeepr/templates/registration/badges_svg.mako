@@ -355,10 +355,12 @@
      id="layer12"
      inkscape:groupmode="layer"
      transform="translate(0,308.26772)">
-%for badge in ('bl', 'br'):
+%for badge in ('bl', 'tl', 'br'):
 <% current_index = c.index %>
-%  if 'br' == badge:
+%  if 'tl' == badge:
   <% current_index = c.index + 1 %>
+%  elif 'br' == badge:
+  <% current_index = c.index + 2 %>
 %  endif
 
 %  if current_index >= len(c.data):
@@ -373,6 +375,12 @@
   <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)' %>
 %    else:
   <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)' %>
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,365.68187)' %>
+%    else:
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,125.27987)' %>
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -705,12 +713,18 @@
 %endif
 %if not c.data[current_index]['over18']:
     <g
-       id="Speakers_Dinner_Count"
+       id="Underage"
 %  if 'bl' == badge:
 %    if 'front' == side:
        transform="matrix(0,-0.29429447,0.29917646,0,85.43608,666.02617)"
 %    else:
        transform="matrix(0,-0.29429447,0.29917646,0,85.43608,429.13514)"
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.29429447,0.29917646,0,85.43608,184.49074)"
+%    else:
+       transform="matrix(0,-0.29429447,0.29917646,0,85.43608,-52.40029)"
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -779,6 +793,12 @@
 %    else:
        transform="matrix(0,-0.07615602,0.07741936,0,258.31813,306.61619)">
 %    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.07615602,0.07741936,0,258.31813,64.047776)">
+%    else:
+       transform="matrix(0,-0.07615602,0.07741936,0,258.31813,-173.31021)">
+%    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
        transform="matrix(0,-0.07615602,0.07741936,0,618.03446,543.97419)">
@@ -806,6 +826,12 @@
        transform="matrix(0,-0.3413929,0.34705619,0,250.99109,629.62213)"
 %    else:
        transform="matrix(0,-0.3413929,0.34705619,0,250.99109,389.73067)"
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.3413929,0.34705619,0,250.99109,149.69573)"
+%    else:
+       transform="matrix(0,-0.3413929,0.34705619,0,250.99109,-90.195734)"
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -867,6 +893,12 @@
 %    else:
        transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,-57.975174,280.49762)"
 %    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,-57.975174,40.462676)"
+%    else:
+       transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,-57.975174,-199.42878)"
+%    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
        transform="matrix(0.16155886,0.5239461,0.53263771,-0.15892251,301.74115,520.38909)"
@@ -891,15 +923,23 @@
        id="IRC_Nickname"
 <% x = '' %>
 <% y = '' %>
-%  if 'bl' == badge:
+%  if 'bl' == badge or 'tl' == badge:
   <% y = '235.50523' %>
 %  elif 'br' == badge:
   <% y = '591.12653' %>
 %  endif
 %  if 'front' == side:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-660.68604' %>
+%    elif 'tl' == badge:
+  <% x = '-175.17299' %>
+%    endif
 %  else:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-418.29825' %>
+%    elif 'tl' == badge:
+  <% x = '67.214806' %>
+%    endif
 %  endif
        x="${ x }"
        y="${ y }"
@@ -919,16 +959,26 @@
        id="Last_Name"
 <% x = '' %>
 <% y = '' %>
-%  if 'bl' == badge:
+%  if 'bl' == badge or 'tl' == badge:
   <% y = '97.09536' %>
 %  elif 'br' == badge:
   <% y = '453.86469' %>
 %  endif
+
 %  if 'front' == side:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-666.39148' %>
+%    elif 'tl' == badge:
+  <% x = '-182.50075' %>
+%    endif
 %  else:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-424.00369' %>
+%    elif 'tl' == badge:
+  <% x = '59.887043' %>
+%    endif
 %  endif
+
        y="${ y }"
        x="${ x }"
        style="font-size:11.71855068px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
@@ -947,15 +997,24 @@
        id="First_Name"
 <% x = '' %>
 <% y = '' %>
-%  if 'bl' == badge:
+%  if 'bl' == badge or 'tl' == badge:
   <% y = '73.203964' %>
 %  elif 'br' == badge:
   <% y = '429.97327' %>
 %  endif
+
 %  if 'front' == side:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-666.81177' %>
+%    elif 'tl' == badge:
+  <% x = '-182.92104' %>
+%    endif
 %  else:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-424.42398' %>
+%    elif 'tl' == badge:
+  <% x = '59.466755' %>
+%    endif
 %  endif
        y="${ y }"
        x="${ x }"
@@ -979,6 +1038,12 @@
 %    else:
   <% m = '217.47136,286.30447' %>
 %    endif
+%  elif 'tl' == badge:
+%    if 'front' == side: 
+  <% m = '217.47316,43.269096' %>
+%    else:
+  <% m = '217.47315,-193.62193' %>
+%    endif
 %  elif 'br' == badge:
 %    if 'front' == side: 
   <% m = '577.1877,523.19551' %>
@@ -998,6 +1063,12 @@
   <% m = '218.11954,540.82945' %>
 %    else:
   <% m = '218.11954,303.93842' %>
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side: 
+  <% m = '218.11954,61.441181' %>
+%    else:
+  <% m = '218.11954,-182.32632' %>
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -1019,6 +1090,12 @@
 %    else:
   <% m = '251.85372,286.30447' %>
 %    endif
+%  elif 'tl' == badge:
+%    if 'front' == side: 
+  <% m = '249.1105,41.66007' %>
+%    else:
+  <% m = '251.0752,-195.23096' %>
+%    endif
 %  elif 'br' == badge:
 %    if 'front' == side: 
   <% m = '609.88902,523.1955' %>
@@ -1037,6 +1114,12 @@
        transform="matrix(0,-0.26973449,0.27420904,0,35.624617,564.1742)"
 %    else:
        transform="matrix(0,-0.26973449,0.27420904,0,35.624617,324.28274)"
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.26973449,0.27420904,0,35.624617,76.927107)"
+%    else:
+       transform="matrix(0,-0.26973449,0.27420904,0,35.624617,-163.94671)"
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -1121,6 +1204,12 @@
        transform="matrix(0,-0.02992741,0.03042387,0,219.35956,544.07534)"
 %    else:
        transform="matrix(0,-0.02992741,0.03042387,0,219.35956,306.71735)"
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.02992741,0.03042387,0,219.35956,57.8106)"
+%    else:
+       transform="matrix(0,-0.02992741,0.03042387,0,219.35956,-179.54739)"
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -1214,6 +1303,12 @@
 %    else:
        transform="matrix(0,-0.05213544,0.0530003,0,221.00051,312.16254)"
 %    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.05213544,0.0530003,0,221.00051,67.228782)"
+%    else:
+       transform="matrix(0,-0.05213544,0.0530003,0,221.00051,-171.15514)"
+%    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
        transform="matrix(0,-0.05213544,0.0530003,0,581.52406,549.56411)"
@@ -1265,15 +1360,23 @@
     </g>
 %endif
     <rect
-%  if 'bl' == badge:
+%  if 'bl' == badge or 'tl' == badge:
        y="213.03575"
 %  elif 'br' == badge:
        y="572.75208"
 %  endif
 %  if 'front' == side:
+%    if 'bl' == badge or 'br' == badge:
        x="-602.57953"
+%    elif 'tl' == badge:
+       x="-122.65312"
+%    endif
 %  else:
+%    if 'bl' == badge or 'br' == badge:
        x="-362.17752"
+%    elif 'tl' == badge:
+       x="117.74889"
+%    endif
 %  endif
        height="44.629608"
        width="43.90134"
@@ -1286,6 +1389,12 @@
        transform="matrix(0,-0.96854546,0.9846124,0,-170.37195,844.50795)"
 %    else:
        transform="matrix(0,-0.96854546,0.9846124,0,-170.37195,607.14996)"
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.96854546,0.9846124,0,-170.37195,364.13733)"
+%    else:
+       transform="matrix(0,-0.96854546,0.9846124,0,-170.37195,123.83228)"
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -1309,15 +1418,23 @@
        id="shell_editor"
 <% x = '' %>
 <% y = '' %>
-%  if 'bl' == badge:
+%  if 'bl' == badge or 'tl' == badge:
   <% y = '327.35263' %>
 %  elif 'br' == badge:
   <% y = '684.12201' %>
 %  endif
 %  if 'front' == side:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-601.36755' %>
+%    elif 'tl' == badge:
+  <% x = '-117.47681' %>
+%    endif
 %  else:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-358.97977' %>
+%    elif 'tl' == badge:
+  <% x = '124.91097' %>
+%    endif
 %  endif
        y="${ y }"
        x="${ x }"
@@ -1339,6 +1456,12 @@
        transform="matrix(0,-0.96854546,0.9846124,0,81.072697,643.34696)"
 %    else:
        transform="matrix(0,-0.96854546,0.9846124,0,81.072697,402.94496)"
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.96854546,0.9846124,0,81.072697,163.42056)"
+%    else:
+       transform="matrix(0,-0.96854546,0.9846124,0,81.072697,-76.981444)"
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -1364,15 +1487,23 @@
        style="font-size:11.71855068px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
 <% x = '' %>
 <% y = '' %>
-%  if 'bl' == badge:
+%  if 'bl' == badge or 'tl' == badge:
   <% y = '277.24469' %>
 %  elif 'br' == badge:
   <% y = '634.0141' %>
 %  endif
 %  if 'front' == side:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-536.66467' %>
+%    elif 'tl' == badge:
+  <% x = '-52.773941' %>
+%    endif
 %  else:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-297.34604' %>
+%    elif 'tl' == badge:
+  <% x = '186.54469' %>
+%    endif
 %  endif
        x="${ x }"
        y="${ y }"
@@ -1391,15 +1522,23 @@
 %if c.data[current_index]['dinner_tickets'] > 0:
 <% x = '' %>
 <% y = '' %>
-%  if 'bl' == badge:
+%  if 'bl' == badge or 'tl' == badge:
   <% y = '282.02988' %>
 %  elif 'br' == badge:
   <% y = '638.79932' %>
 %  endif
 %  if 'front' == side:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-646.62616' %>
+%    elif 'tl' == badge:
+  <% x = '-162.73543' %>
+%    endif
 %  else:
+%    if 'bl' == badge or 'br' == badge:
   <% x = '-404.28232' %>
+%    elif 'tl' == badge:
+  <% x = '79.608421' %>
+%    endif
 %  endif
     <text
        xml:space="preserve"
@@ -1425,6 +1564,12 @@
        transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)">
 %    else:
        transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)">
+%    endif
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,365.68187)">
+%    else:
+       transform="matrix(0,-0.97579374,0.98892441,0,-141.02638,125.27987)">
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
