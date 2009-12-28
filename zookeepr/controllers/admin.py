@@ -1417,7 +1417,7 @@ def table_response():
         return table_csv_response()
     elif request.GET.has_key('latex'):
       response.headers['Content-type']='text/plain; charset=utf-8'
-      response.headers['Content-Disposition']='attachment; filename="table.csv"'
+      response.headers['Content-Disposition']='attachment; filename="table.tex"'
 
       return render('admin/table_latex.mako')
 
