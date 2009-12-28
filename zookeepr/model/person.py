@@ -120,7 +120,7 @@ class Person(Base):
 
     def is_professional(self):
         """We treat speakers, miniconf orgs, Little Blue sponsors and
-           professionals as professions."""
+           professionals as professionals."""
         for invoice in self.invoices:
             if invoice.paid() and not invoice.is_void():
                 if self.is_speaker() or self.is_miniconf_org():
@@ -191,6 +191,17 @@ class Person(Base):
                     if item.product is not None and item.product.category.name == 'Ticket':
                         return True
         return False
+
+    def ticket_type(self):
+        for invoice in self.invoices:
+            if not invoice.is_void():
+                for item in invoice.items:
+                    if item.product is not None and item.product.category.name == 'Ticket':
+                        # Strip off any mention of "Ticket".
+                        str = item.description
+                        str = str.replace('Ticket - ', '')
+                        str = str.replace(' Ticket', '')
+                        return str
 
     def paid(self):
         status = False

@@ -1198,23 +1198,34 @@ class AdminController(BaseController):
           row.append(person.id)
 
           bag = 'Professional'
-          type = ''
-          if person.is_speaker():
-            type = 'Speaker'
+          type = []
+          if person.is_speaker() and not person.has_role('organiser'):
+            type.append('Speaker')
           if person.is_miniconf_org():
-            type = 'Minconf Org'
-          elif person.is_professional():
-            type = 'Professional'
-          elif person.has_role('press'):
-            type = 'Media'
-          else:
-            type = 'Hobby / Student'
-            bag = 'Hobby'
-          if person.is_volunteer():
-            type += " Volunteer"
+            type.append('Minconf Org')
+          #if person.is_professional() and not (person.is_speaker() or person.is_miniconf_org() or person.has_role('organiser')):
+          #  type.append('Professional')
+          if person.has_role('press'):
+            type.append('Media')
+          if person.has_role('organiser'):
+            type.append('Organiser')
+          if len(type) == 0:
+            ticket = person.ticket_type()
+            if ticket is not None:
+              type.append(ticket)
+            if not person.is_professional():
+              bag = 'Hobby'
+          if person.is_volunteer() and 'Volunteer' not in type:
+            type.append("Volunteer")
 
-          row.append(type)
+          if len(type) > 0:
+            row.append(", ".join(type))
+          else:
+            row.append("No valid ticket")
           row.append(bag)
+
+          # We only want to put someone on the list if they have valid invoices.
+          valid_invoices = False
 
           first = True
           products = dict()
@@ -1223,6 +1234,7 @@ class AdminController(BaseController):
 
           for invoice in person.invoices:
             if not invoice.is_void():
+              valid_invoices = True
               for ii in invoice.items:
                 if ii.product is not None and ii.product.category is not None:
                   if ii.product.category.name in products:
@@ -1237,7 +1249,8 @@ class AdminController(BaseController):
             else:
               row.append(", ".join(products[category]))
 
-          c.data.append(row)
+          if valid_invoices:
+            c.data.append(row)
 
         return table_response()
 
