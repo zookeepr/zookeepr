@@ -23,7 +23,7 @@ for d in c.db_content_news_all:
 
 <h2>Registrations are now open!</h2>
 
-<p>Early Bird Registrations for LCA2010 have sold out! If you haven't already registered, you still have a chance. <a href="/register/status">Registrations</a> will remain open until 24 December 2009. So get in quick!!</p>
+<p>Early Bird Registrations for LCA2010 have sold out! If you haven't already registered, you still have a chance. <a href="/register/status">Registrations</a> will remain open until early January. So get in quick!!</p>
 
 <table>
 <tr class="even">
@@ -35,7 +35,7 @@ for d in c.db_content_news_all:
 </tr>
 
 <tr class="even">
-<td><b>Registrations Closes</b></td> <td>24 December 2009</td> 
+<td><b>Registrations Closes</b></td> <td><s>24 December 2009</s></td> 
 </tr>
 </table>
 
