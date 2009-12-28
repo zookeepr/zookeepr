@@ -951,13 +951,13 @@ class RegistrationController(BaseController):
                         elif (item.description.find('Professional') > -1 or item.description.startswith('Korora')):
                             ticket = 'Professional'
                             pdns_ticket = True
-                        elif item.description.startswith('Press'):
+                        elif item.description.find('Press') > -1:
                             ticket = 'Press'
                             pdns_ticket = True
                         elif item.description.startswith('Organiser'):
                             ticket = 'Organiser'
                             pdns_ticket = True
-                        elif item.description.find('Miniconfs Only') > -1:
+                        elif item.description.find('Miniconfs Only') > -1 or item.description.find('Minconfs Only') > -1:
                             ticket = 'Miniconfs Only'
             if registration.person.is_speaker():
                 ticket = 'Speaker'
