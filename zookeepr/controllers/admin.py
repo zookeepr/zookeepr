@@ -1212,6 +1212,8 @@ class AdminController(BaseController):
           if len(type) == 0:
             ticket = person.ticket_type()
             if ticket is not None:
+              ticket = ticket.replace('Earlybird ', '')
+              ticket = ticket.replace('Concession/Student', 'Student')
               type.append(ticket)
             if not person.is_professional():
               bag = 'Hobby'
