@@ -145,7 +145,7 @@ class Person(Base):
           if role.name.lower() == name:
             return True
         return False
-        
+
     def is_volunteer(self):
         if self.volunteer and self.volunteer.accepted is not None:
             return self.volunteer.accepted
@@ -183,6 +183,12 @@ class Person(Base):
             if not invoice.is_void() and not invoice.manual:
                 return invoice
         return None
+
+    def has_valid_invoice(self):
+        for invoice in self.invoices:
+            if not invoice.is_void():
+                return True
+        return False
 
     def has_paid_ticket(self):
         for invoice in self.invoices:

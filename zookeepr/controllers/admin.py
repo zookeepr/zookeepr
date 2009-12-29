@@ -426,8 +426,12 @@ class AdminController(BaseController):
         c.columns = ('id', 'name', 'firstname', 'email_address', 'country', 'speaker', 'keynote', 'miniconf', 'dietary_requirements', 'special_requirements', 'paid')
         c.noescape = True
         for r in meta.Session.query(Registration).all():
+          # We only care about people that have valid invoices.
+          if not r.person.has_valid_invoice():
+            continue
+
           row = []
-          row.append(r.person.id)
+          row.append(str(r.person.id))
           row.append(r.person.fullname())
           row.append(r.person.firstname)
           row.append(r.person.email_address)
