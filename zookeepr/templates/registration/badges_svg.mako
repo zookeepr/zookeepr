@@ -406,10 +406,10 @@
       <rect
          style="fill:url(#linearGradient4280);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
          id="rect2383"
-         width="239.29951"
-         height="252.84477"
-         x="152.88664"
-         y="262.36145" />
+         width="240.34146"
+         height="231.31128"
+         x="151.83824"
+         y="283.89496" />
       <text
          xml:space="preserve"
          style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
