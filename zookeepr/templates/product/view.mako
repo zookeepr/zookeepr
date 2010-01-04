@@ -221,3 +221,10 @@
       }
     );
 </script>
+
+<%def name="title()">
+Product -
+${ c.product.category.name |h } - ${ c.product.description |h } -
+ ${ parent.title() }
+</%def>
+
