@@ -21,9 +21,9 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
-<h2>Registrations are now open!</h2>
+<h2>Registrations have been extended!</h2>
 
-<p>Early Bird Registrations for LCA2010 have sold out! If you haven't already registered, you still have a chance. <a href="/register/status">Registrations</a> will remain open until early January. So get in quick!!</p>
+<p>Registrations have been extended to accommodate linux.conf.au 2010 new-found Amex processing capabilities. Only a limited number of tickets to linux.conf.au 2010 remain, so get in quick! <a href="/register/status">Registrations</a> will remain open until early January. So get in quick!!</p>
 
 <table>
 <tr class="even">
