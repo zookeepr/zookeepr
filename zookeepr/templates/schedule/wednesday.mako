@@ -91,4 +91,22 @@
   </tbody>
 </table>
 
+<h3>Screening of the "Code Rush" Movie</h3>
 
+<p>Delegates are invited to a screening of <a href="http://clickmovement.org/coderush">Code Rush</a>, a documentary
+following the lives of a group of Netscape engineers in Silicon Valley. It was shot during a time of flagging company
+fortunes, the initial release of the Mozilla code as an open source project, and the friction of an impending
+AOL-Netscape merger. The documentary depicts Netscape programmers forgoing their normal lives and families in an
+attempt to save the company from ruin.</p>
+
+<table>
+  <tr class="odd">
+    <td><b>Where</b></td><td>Auditorium, Michael Fowler Centre</td>
+  </tr>
+  <tr class="even">
+    <td><b>Date</b></td><td>Wednesday 20 January 2010</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Time</b></td><td>Starts at 7:30 pm and runs for about an hour.</td>
+  </tr>
+</table>
