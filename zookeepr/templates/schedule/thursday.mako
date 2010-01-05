@@ -19,6 +19,9 @@
   </thead>
 
   <tbody>
+    <tr class="even">
+      <th class="programme_slot" align="center" valign="middle">8:00-8:45</th><td colspan="5" align="center" valign="middle"><a href="http://www.lca2010.org.nz/wiki/Yoga">Morning Yoga</a> (limit of 20 people)<br/><i>Frank Taplin Room</i></td>
+    </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
