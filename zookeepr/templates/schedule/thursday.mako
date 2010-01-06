@@ -59,7 +59,7 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">13:30-14:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50274" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50205" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50355" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50322" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50089" /></td>
       <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=50180" /></td>
