@@ -488,8 +488,10 @@ def sales_tax(amount):
 def latex_clean(str):
     """ Sanitise a string suitable for use in LaTeX. """
     str = str.replace('_', '\_')
-    str = str.replace('&lt;', '<')
-    str = str.replace('&gt;', '>')
+    str = str.replace('<', '$<$')
+    str = str.replace('>', '$>$')
+    str = str.replace('&lt;', '$<$')
+    str = str.replace('&gt;', '$>$')
     str = str.replace('&', '\&')
     str = str.replace('C#', 'C\#')
     str = re.sub('"(.*?)"', "``\\1''", str)
