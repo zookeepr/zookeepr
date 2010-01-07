@@ -980,6 +980,12 @@ class RegistrationController(BaseController):
                 region = 'australia'
             elif registration.person.country.strip().lower() == 'switzerland':
                 region = 'switzerland'
+            elif registration.person.country.strip().lower() == 'canada':
+                region = 'canada'
+            elif registration.person.country.strip().lower() == 'finland':
+                region = 'finland'
+            elif registration.person.country.strip().lower() == 'norway':
+                region = 'norway'
             elif registration.person.city.strip().lower() in north_island:
                 region = 'north_island'
             elif registration.person.city.strip().lower() in south_island:
