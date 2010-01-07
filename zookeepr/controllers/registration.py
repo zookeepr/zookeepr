@@ -972,11 +972,14 @@ class RegistrationController(BaseController):
 
             north_island = ['wellington', 'welly', 'wlg', 'auckland', 'akl', 'hamilton', 'porirua', 'palmerston north', 'upper hutt', 'petone', 'lower hutt', 'johnsonville', 'karori', 'te aro', 'auckland central', 'whangarei', 'northland', 'albany', 'miramar', 'tawa', 'avalon', 'tauranga', 'north shore city', 'levin', 'kelburn', 'manukau city', 'thorndon', 'paraparaumu', 'north shore', 'mount victoria', 'taupo', 'rotorua', 'new plymouth'];
             south_island = ['christchurch', 'dunedin', 'nelson', 'queenstown', 'invercargill', 'greymouth', 'westport'];
+
             region = 'world'
             if registration.person.country.strip().lower() == 'australia' and registration.person.state.strip().lower() in ['tas', 'tasmania']:
                 region = 'tasmania'
             elif registration.person.country.strip().lower() == 'australia':
                 region = 'australia'
+            elif registration.person.country.strip().lower() == 'switzerland':
+                region = 'switzerland'
             elif registration.person.city.strip().lower() in north_island:
                 region = 'north_island'
             elif registration.person.city.strip().lower() in south_island:
