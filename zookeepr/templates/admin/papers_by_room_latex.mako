@@ -19,8 +19,8 @@ Huh? No scheduled time for talk ${ p.id }.
 \lcasubsubsection{${ p.scheduled.strftime('%H:%M') } - ${ p.title }}
 
 ${ h.latex_clean(p.abstract) | n}
-
 %     for person in p.people:
+
 {\bf ${ person.fullname() }}
 
 %        if person.bio:
