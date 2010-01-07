@@ -39,7 +39,7 @@
       <th class="programme_slot" align="center" valign="middle">10:30-12:15</th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Bridging_the_gap">Bridging the gap</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Open_and_the_Public_Sector">Open and the Public Sector</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
@@ -56,7 +56,7 @@
       <th class="programme_slot" align="center" valign="middle">13:30-15:15</th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Bridging_the_gap">Bridging the gap</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Open_and_the_Public_Sector">Open and the Public Sector</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
@@ -73,7 +73,7 @@
       <th class="programme_slot" align="center" valign="middle">15:45-17:30</th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/System_Administration">System Administration</a></th>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Bridging_the_gap">Bridging the gap</a></td>
-      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source</a></th>
+      <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Open_and_the_Public_Sector">Open and the Public Sector</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Education">Education</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval</a></td>
       <td class="programme_room" align="center" valign="top"><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing</a></td>
