@@ -9,14 +9,14 @@
 %   if p.scheduled is None:
 Huh? No scheduled time for talk ${ p.id }.
 %   else:
-%     if day != p.scheduled.strftime('%Y-%m-%d - %A'):
+%     if day != p.scheduled.strftime('%Y-%m-%d --- %A'):
 %       if day != '':
 \newpage
 %       endif
-<%      day = p.scheduled.strftime('%Y-%m-%d - %A') %>
+<%      day = p.scheduled.strftime('%Y-%m-%d --- %A') %>
 \lcasubsection{${ day }}
 %     endif
-\lcasubsubsection{${ p.scheduled.strftime('%H:%M') } - ${ p.title }}
+\lcasubsubsection{${ p.scheduled.strftime('%H:%M') } --- ${ p.title }}
 
 ${ h.latex_clean(p.abstract) | n}
 %     for person in p.people:
