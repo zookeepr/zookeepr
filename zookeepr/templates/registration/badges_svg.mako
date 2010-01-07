@@ -568,14 +568,14 @@
       <text
          xml:space="preserve"
          style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-         x="214.25952"
+         x="199.25952"
          y="500.51761"
          id="text2960"><tspan
            sodipodi:role="line"
            id="tspan2962"
-           x="214.25952"
+           x="199.25952"
            y="500.51761"
-           style="font-size:20px;font-weight:bold;fill:#ffffff;-inkscape-font-specification:DejaVu Sans Bold">Organiser</tspan></text>
+           style="font-size:20px;font-weight:bold;fill:#ffffff;-inkscape-font-specification:DejaVu Sans Bold">Capital Cabal</tspan></text>
       <rect
          style="fill:#ffffff;fill-opacity:0.99596767;fill-rule:nonzero;stroke:none;display:inline"
          id="rect4568"

@@ -959,7 +959,9 @@ class RegistrationController(BaseController):
                             pdns_ticket = True
                         elif item.description.find('Miniconfs Only') > -1 or item.description.find('Minconfs Only') > -1:
                             ticket = 'Miniconfs Only'
-            if registration.person.is_speaker():
+            if registration.person.has_role('core_team'):
+                ticket = 'Organiser'
+            elif registration.person.is_speaker():
                 ticket = 'Speaker'
                 pdns_ticket = True
             elif registration.person.is_miniconf_org():
