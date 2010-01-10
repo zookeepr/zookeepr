@@ -1188,20 +1188,20 @@ class AdminController(BaseController):
               categories.append(category.name)
         categories.sort()
 
-        c.columns = ['Name', '', 'ID', 'Ticket', 'Bag']
+        c.columns = ['Name', '', '', 'ID', 'Ticket', 'Bag']
         for cat in categories:
           c.columns.append(cat)
 
         c.data = []
         for person in people:
           row = [ "%s, %s" % (person.lastname, person.firstname) ]
+          not_paid = ''
           if not person.paid():
-            row.append('NOT PAID')
-          else:
-            row.append('')
+            not_paid = '{\\bf NOT PAID} \\newline '
+          row.append(not_paid + '\\barcode{' + str(person.id) + '}')
           row.append(person.id)
 
-          bag = 'Professional'
+          bag = 'Prof'
           type = []
           if person.is_speaker() and not person.has_role('organiser'):
             type.append('Speaker')
@@ -1218,6 +1218,7 @@ class AdminController(BaseController):
             if ticket is not None:
               ticket = ticket.replace('Earlybird ', '')
               ticket = ticket.replace('Concession/Student', 'Student')
+              ticket = ticket.replace('Sponsorship', '')
               type.append(ticket)
             if not person.is_professional():
               bag = 'Hobby'
@@ -1225,7 +1226,7 @@ class AdminController(BaseController):
             type.append("Volunteer")
 
           if len(type) > 0:
-            row.append(", ".join(type))
+            row.append(",\\newline ".join(type))
           else:
             row.append("No valid ticket")
           row.append(bag)
@@ -1245,15 +1246,16 @@ class AdminController(BaseController):
                 if ii.product is not None and ii.product.category is not None:
                   if ii.product.category.name in products:
                     text = "%s x %s" % (ii.qty, ii.product.description)
-                    if not invoice.paid():
-                      text += " (Not paid)"
+                    text = text.replace(' years old', '')
+#                    if not invoice.paid():
+#                      text += " (Not paid)"
                     products[ii.product.category.name].append(text)
 
           for category in categories:
             if len(products[category]) == 0:
               row.append('')
             else:
-              row.append(", ".join(products[category]))
+              row.append(",\\newline ".join(products[category]))
 
           if valid_invoices:
             c.data.append(row)
