@@ -1188,7 +1188,7 @@ class AdminController(BaseController):
               categories.append(category.name)
         categories.sort()
 
-        c.columns = ['Name', '', '', 'ID', 'Ticket', 'Bag']
+        c.columns = ['Name', '', 'ID', 'Ticket', 'Bag']
         for cat in categories:
           c.columns.append(cat)
 
