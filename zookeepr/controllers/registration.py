@@ -861,7 +861,11 @@ class RegistrationController(BaseController):
         if request.method == 'POST' and defaults:
             if defaults['reg_id'] != '':
                 reg_id_list = defaults['reg_id'].split("\n")
-                registration_list = Registration.find_by_ids(reg_id_list)
+                regos = [(r.person.lastname.lower(), r.person.firstname.lower(), r)
+                         for r in Registration.find_by_ids(reg_id_list)]
+                regos.sort()
+                registration_list = [row[-1] for row in regos]
+
                 if len(registration_list) != len(reg_id_list):
                     c.text = 'Registration ID not found. Please check the <a href="/registration">registration list</a>.'
                     return render('registration/generate_badges.mako')
@@ -870,7 +874,11 @@ class RegistrationController(BaseController):
                         data.append(self._registration_badge_data(registration, stamp))
                         registration.person.badge_printed = True
             else:
-                registration_list = Registration.find_all()
+                regos = [(r.person.lastname.lower(), r.person.firstname.lower(), r)
+                         for r in Registration.find_all()]
+                regos.sort()
+                registration_list = [row[-1] for row in regos]
+
                 for registration in registration_list:
                     append = False
                     if registration.person.has_paid_ticket() and not registration.person.badge_printed:
