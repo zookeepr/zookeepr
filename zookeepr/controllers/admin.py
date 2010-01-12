@@ -1030,6 +1030,25 @@ class AdminController(BaseController):
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
+    def speakers_by_country(self):
+        """ Speakers by country [Statistics] """
+        data = {}
+        for person in meta.Session.query(Person).all():
+            if person.is_speaker():
+                country = person.country.capitalize()
+                data[country] = data.get(country, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return table_response()
+    
+    @authorize(h.auth.has_organiser_role)
     def people_by_state(self):
         """ Registered and paid people by state - Australia Only [Statistics] """
         data = {}
