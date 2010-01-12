@@ -21,6 +21,8 @@ for d in c.db_content_news_all:
 
 <h1>linux.conf.au 2010 Current Happenings</h1>
 
+<p>See the <a href="/schedule">programme schedule</a>.</p>
+
 <h2>Registrations have been extended!</h2>
 
 <p>Registrations have been extended to accommodate linux.conf.au 2010 new-found Amex processing capabilities. Only a limited number of tickets to linux.conf.au 2010 remain, so get in quick! <a href="/register/status">Registrations</a> will remain open until early January. So get in quick!!</p>
