@@ -2530,42 +2530,43 @@
            id="rect5124" /></flowRegion><flowPara
          style="font-size:14px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:Yanone Kaffeesatz;-inkscape-font-specification:Yanone Kaffeesatz"
          id="flowPara5126">${ c.data[current_index]['company'] }</flowPara></flowRoot>
-    <text
-       id="shell_editor"
-<% x = '' %>
-<% y = '' %>
-%  if 'bl' == badge or 'tl' == badge:
-  <% y = '327.35263' %>
-%  elif 'br' == badge or 'tr' == badge:
-  <% y = '684.12201' %>
-%  endif
-%  if 'front' == side:
-%    if 'bl' == badge or 'br' == badge:
-  <% x = '-601.36755' %>
-%    elif 'tl' == badge or 'tr' == badge:
-  <% x = '-117.47681' %>
+    <flowRoot
+%  if 'bl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.96854546,0.9846124,0,103.0727,643.34696)"
+%    else:
+       transform="matrix(0,-0.96854546,0.9846124,0,103.0727,402.94496)"
 %    endif
-%  else:
-%    if 'bl' == badge or 'br' == badge:
-  <% x = '-358.97977' %>
-%    elif 'tl' == badge or 'tr' == badge:
-  <% x = '124.91097' %>
+%  elif 'tl' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.96854546,0.9846124,0,103.0727,163.42056)"
+%    else:
+       transform="matrix(0,-0.96854546,0.9846124,0,103.0727,-76.981444)"
+%    endif
+%  elif 'br' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.96854546,0.9846124,0,462.789033,643.34696)"
+%    else:
+       transform="matrix(0,-0.96854546,0.9846124,0,462.789033,402.94496)"
+%    endif
+%  elif 'tr' == badge:
+%    if 'front' == side:
+       transform="matrix(0,-0.96854546,0.9846124,0,462.789033,163.42056)"
+%    else:
+       transform="matrix(0,-0.96854546,0.9846124,0,462.789033,-76.981444)"
 %    endif
 %  endif
-       y="${ y }"
-       x="${ x }"
-       style="font-size:11.71855068px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-       xml:space="preserve"
-%  if 'front' == side:
-       transform="matrix(0,-0.99180739,1.0082603,0,0,0)"><tspan
-%  else:
-       transform="matrix(0,-0.99180738,1.0082603,0,0,0)"><tspan
-%  endif
-         style="font-size:7.81236696px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
-         y="${ y }"
-         x="${ x }"
-         id="tspan4895"
-         sodipodi:role="line">${ c.data[current_index]['favourites'] }</tspan></text>
+       style="font-size:8px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;display:inline;font-family:DejaVu Sans;-inkscape-font-specification:DejaVu Sans"
+       id="flowRoot5193"
+       xml:space="preserve"><flowRegion
+         id="flowRegion5195"><rect
+           style="font-size:8px;text-align:center;text-anchor:middle"
+           y="221.73387"
+           x="-19.449596"
+           height="24.311996"
+           width="171.57324"
+           id="rect5197" /></flowRegion><flowPara
+         id="flowPara5199">${ c.data[current_index]['favourites'] }</flowPara></flowRoot>
     <flowRoot
 %  if 'bl' == badge:
 %    if 'front' == side:
