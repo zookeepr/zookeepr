@@ -910,7 +910,7 @@ class RegistrationController(BaseController):
                             data.append(self._registration_badge_data(registration, stamp))
                             registration.person.badge_printed = True
 
-            meta.Session.flush() # save badge printed data
+            meta.Session.commit() # save badge printed data
             setattr(c, 'data', data)
 
             import os, tempfile
