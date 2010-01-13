@@ -195,16 +195,6 @@
        gradientUnits="userSpaceOnUse" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient3205"
-       id="linearGradient4280"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.00731,0,0,1.75,151.48721,-99.8873)"
-       x1="118.78147"
-       y1="349.39813"
-       x2="120.17073"
-       y2="212.55632" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4020"
        id="linearGradient4282"
        gradientUnits="userSpaceOnUse"
@@ -215,16 +205,6 @@
        y2="118.68147" />
     <linearGradient
        inkscape:collect="always"
-       xlink:href="#linearGradient4463"
-       id="linearGradient4284"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.9919028,0,0,1,151.2377,163.0706)"
-       x1="108.05883"
-       y1="350.78738"
-       x2="107.07648"
-       y2="133.68736" />
-    <linearGradient
-       inkscape:collect="always"
        xlink:href="#linearGradient4502"
        id="linearGradient4286"
        gradientUnits="userSpaceOnUse"
@@ -233,36 +213,6 @@
        y1="350.78738"
        x2="111.00589"
        y2="134.66972" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4546"
-       id="linearGradient4288"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(151.28236,164.41886)"
-       x1="103.14706"
-       y1="346.85797"
-       x2="104.12942"
-       y2="134.66972" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4579"
-       id="linearGradient4290"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(152.26472,163.4365)"
-       x1="109.04118"
-       y1="350.78738"
-       x2="109.04118"
-       y2="136.63443" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4467"
-       id="linearGradient4292"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="translate(152.26472,164.41886)"
-       x1="113.95295"
-       y1="348.82269"
-       x2="111.98824"
-       y2="132.70502" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient4609"
@@ -326,16 +276,6 @@
        y1="349.39813"
        x2="120.17073"
        y2="212.55632" />
-    <linearGradient
-       inkscape:collect="always"
-       xlink:href="#linearGradient4020"
-       id="linearGradient4746"
-       gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.9971182,0,0,1,152.53088,165.11347)"
-       x1="119.82342"
-       y1="350.19275"
-       x2="119.82342"
-       y2="118.68147" />
     <inkscape:perspective
        id="perspective7589"
        inkscape:persp3d-origin="0.5 : 0.33333333 : 1"
@@ -383,25 +323,25 @@
 %    if 'front' == side:
   <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,845.60827)' %>
 %    else:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,605.20627)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,603.20627)' %>
 %    endif
 %  elif 'tl' == badge:
 %    if 'front' == side:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,365.68187)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,363.68187)' %>
 %    else:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,125.27987)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,123.27987)' %>
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
   <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.68995,845.60827)' %>
 %    else:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.68995,605.20627)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.68995,603.20627)' %>
 %    endif
 %  elif 'tr' == badge:
 %    if 'front' == side:
   <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.06101,365.68187)' %>
 %    else:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.06101,125.27987)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.06101,123.27987)' %>
 %    endif
 %  endif
 
@@ -411,7 +351,7 @@
        id="g4394"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4280);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
+         style="fill:#c70606;fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
          id="rect2383"
          width="240.34146"
          height="231.31128"
@@ -442,7 +382,7 @@
        id="g4767"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4280);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
+         style="fill:#c70606;fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
          id="rect3248"
          width="240.34146"
          height="231.31128"
@@ -473,7 +413,7 @@
        id="g4767"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4746);fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
+         style="fill:#388dab;fill-opacity:1;fill-rule:nonzero;stroke:none;display:inline"
          id="rect3248"
          width="240.34146"
          height="231.31128"
@@ -504,7 +444,7 @@
        id="g4773"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4284);fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#ffa235;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="rect4461"
          width="240.67648"
          height="228.88824"
@@ -566,7 +506,7 @@
        id="g4785"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4288);fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#abcabe;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="rect4536"
          width="240.6765"
          height="228.88824"
@@ -597,7 +537,7 @@
        id="g4791"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4290);fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#6a721f;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="rect4577"
          width="239.69414"
          height="229.87061"
@@ -628,7 +568,7 @@
        id="g4797"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4292);fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#ff8cb1;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="rect3695"
          width="240.67648"
          height="228.88824"
@@ -700,7 +640,7 @@
        id="g4803"
        transform="${ ticket_transform }">
       <rect
-         style="fill:url(#linearGradient4294);fill-opacity:1;fill-rule:nonzero;stroke:none"
+         style="fill:#55ff00;fill-opacity:1;fill-rule:nonzero;stroke:none"
          id="rect4607"
          width="238.99951"
          height="228.88824"
