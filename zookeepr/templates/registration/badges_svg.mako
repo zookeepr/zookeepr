@@ -329,7 +329,7 @@
 %    if 'front' == side:
   <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,363.68187)' %>
 %    else:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,123.27987)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,-141.02638,121.27987)' %>
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -339,9 +339,9 @@
 %    endif
 %  elif 'tr' == badge:
 %    if 'front' == side:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.06101,365.68187)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.06101,363.68187)' %>
 %    else:
-  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.06101,123.27987)' %>
+  <% ticket_transform = 'matrix(0,-0.97579374,0.98892441,0,218.06101,121.27987)' %>
 %    endif
 %  endif
 
