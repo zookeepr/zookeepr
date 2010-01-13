@@ -2780,7 +2780,7 @@
 %    if 'front' == side:
        transform="translate(-360,238)">
 %    else:
-       transform="translate(-360,-2)">
+       transform="translate(-360,-4)">
 %    endif
 %  elif 'br' == badge:
 %    if 'front' == side:
@@ -2792,7 +2792,7 @@
 %    if 'front' == side:
        transform="translate(0,238)">
 %    else:
-       transform="translate(0,-2)">
+       transform="translate(0,-4)">
 %    endif
 %  endif
       <g
