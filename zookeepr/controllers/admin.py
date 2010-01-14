@@ -1396,6 +1396,30 @@ class AdminController(BaseController):
         c.noescape = True
         return table_response()
 
+    @authorize(h.auth.has_organiser_role)
+    def av_technical_requirements(self):
+        """ Technical requirements list [AV] """
+        talk_list = Proposal.find_all_accepted().filter(Proposal.technical_requirements > '').order_by(Proposal.scheduled)
+
+        c.columns = ['Talk', 'Title', 'Who', 'When', 'Requirements']
+        c.data = []
+        for t in talk_list:
+            c.data.append(['<a href="/programme/schedule/view_talk/%d">%d</a>' % (t.id, t.id),
+                           h.util.html_escape(t.title),
+                           '<br/>'.join([
+                                '<a href="/person/%d">%s</a> (<a href="mailto:%s">%s</a>)' % (
+                                    p.id,
+                                    h.util.html_escape(p.fullname()),
+                                    h.util.html_escape(p.email_address),
+                                    h.util.html_escape(p.email_address)
+                                ) for p in t.people
+                           ]),
+                           h.util.html_escape(t.scheduled),
+                           h.util.html_escape(t.technical_requirements),
+            ])
+        c.noescape = True
+        return table_response()
+
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66
