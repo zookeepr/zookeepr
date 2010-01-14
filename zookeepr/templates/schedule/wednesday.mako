@@ -107,9 +107,25 @@ attempt to save the company from ruin.</p>
     <td><b>Where</b></td><td>Auditorium, Michael Fowler Centre</td>
   </tr>
   <tr class="even">
-    <td><b>Date</b></td><td>Wednesday 20 January 2010</td>
-  </tr>
-  <tr class="odd">
     <td><b>Time</b></td><td>Starts at 7:30 pm and runs for about an hour.</td>
   </tr>
 </table>
+
+<h3>Programming 'Hackoff'</h3>
+
+<p><a href="http://wellington.pm.org/">Wellington Perl Mongers</a>
+and <a href="http://www.catalyst.net.nz">Catalyst IT</a> are joining forces
+to host a team-based programming competition.</p>
+
+<table>
+  <tr class="odd">
+    <td><b>Where</b></td><td>Conference Tutorials Room (Civics 1 & 2), Town Hall</td>
+  </tr>
+  <tr class="even">
+    <td><b>Time</b></td><td>6:00pm (come in and get set up from 5:45)</td>
+  </tr>
+</table>
+
+<p>For more details of how it works and sample problems from the HackOff2008
+event, visit the <a href="http://wellington.pm.org/hackoff/">Wellington Perl
+Mongers website</a>.</p>
