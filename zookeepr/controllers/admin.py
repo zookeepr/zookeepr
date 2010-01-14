@@ -21,7 +21,7 @@ from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info, lca_rego
 
-from sqlalchemy import and_
+from sqlalchemy import and_, or_
 
 log = logging.getLogger(__name__)
 
@@ -137,8 +137,8 @@ class AdminController(BaseController):
         """ Rejected papers, with abstracts (for the miniconf organisers) [Schedule] """
         return sql_response("""
             SELECT
-                proposal.id, 
-                proposal.title, 
+                proposal.id,
+                proposal.title,
                 proposal_type.name AS "proposal type",
                 proposal.project,
                 proposal.url as project_url,
@@ -152,7 +152,7 @@ class AdminController(BaseController):
                 MAX(review.score) as max,
                 MIN(review.score) as min,
                 AVG(review.score) as avg
-            FROM proposal 
+            FROM proposal
                 LEFT JOIN review ON (proposal.id=review.proposal_id)
                 LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
                 LEFT JOIN stream ON (review.stream_id=stream.id)
@@ -170,7 +170,7 @@ class AdminController(BaseController):
         """ Papers by room for use by the room MC. [Schedule] """
 
         c.papers = meta.Session.query(Proposal).order_by(Proposal.building).order_by(Proposal.theatre).order_by(Proposal.scheduled).filter(and_(ProposalType.name != 'Miniconf', ProposalStatus.name == 'Accepted', Proposal.scheduled != None)).all()
- 
+
         if latex:
           response.headers['Content-type']='text/plain; charset=utf-8'
           return render('admin/papers_by_room_latex.mako')
@@ -203,7 +203,7 @@ class AdminController(BaseController):
           garbage, uncollectable,
           after,
         ))
-        
+
     @authorize(h.auth.has_organiser_role)
     def known_objects(self):
         """
@@ -335,14 +335,14 @@ class AdminController(BaseController):
         """ List of all the proposals ordered by stream, max score, min score then average [CFP] """
         return sql_response("""
                 SELECT
-                    proposal.id, 
-                    proposal.title, 
+                    proposal.id,
+                    proposal.title,
                     proposal_type.name AS "proposal type",
                     stream.name AS stream,
                     MAX(review.score) AS max,
                     MIN(review.score) AS min,
                     AVG(review.score) AS avg
-                FROM proposal 
+                FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
                     LEFT JOIN stream ON (review.stream_id=stream.id)
@@ -454,7 +454,7 @@ class AdminController(BaseController):
 
           c.data.append(row)
         return table_response()
-        
+
     @authorize(h.auth.has_organiser_role)
     def registered_speakers(self):
         """ Listing of speakers and various stuff about them [Speakers] """
@@ -511,7 +511,7 @@ class AdminController(BaseController):
               consents = []
               for t in talks:
                   cons = [con.replace('_', ' ') for con in cons_list
-                                               if getattr(t, con)] 
+                                               if getattr(t, con)]
                   if len(cons)==len(cons_list):
                     consents.append('Release All')
                   elif len(cons)==0:
@@ -608,7 +608,7 @@ class AdminController(BaseController):
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname, 
+        query = """SELECT person.firstname, person.lastname,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -628,7 +628,7 @@ class AdminController(BaseController):
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname, 
+        query = """SELECT person.firstname, person.lastname,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -648,7 +648,7 @@ class AdminController(BaseController):
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname, 
+        query = """SELECT person.firstname, person.lastname,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -663,7 +663,7 @@ class AdminController(BaseController):
     def lca_announce_signup(self):
         """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
 
-        c.text = """<p>People who ticked "I want to sign up to the low traffic conference 
+        c.text = """<p>People who ticked "I want to sign up to the low traffic conference
         announcement mailing list!" (whether or not they then went on to pay for
         the conference).</p><p>Copy and paste the following into mailman</p>
         <p><textarea cols="100" rows="25">"""
@@ -722,7 +722,7 @@ class AdminController(BaseController):
 
         return table_response()
 
-    
+
     @authorize(h.auth.has_organiser_role)
     def accom_wp_registers(self):
         """ People who selected "Wrest Point" as their accommodation option. (Includes un-paid invoices!) [Accommodation] """
@@ -741,9 +741,9 @@ class AdminController(BaseController):
         for item in uni_list:
             for invoice_item in item.invoice_items:
                 if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
-                    c.data.append([item.description, 
-                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
-                                   invoice_item.invoice.person.email_address, 
+                    c.data.append([item.description,
+                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname,
+                                   invoice_item.invoice.person.email_address,
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
@@ -818,13 +818,13 @@ class AdminController(BaseController):
         for item in partners_list:
             for invoice_item in item.invoice_items:
                 if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
-                    c.data.append([item.description, 
+                    c.data.append([item.description,
                                    invoice_item.qty,
-                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
-                                   invoice_item.invoice.person.email_address, 
-                                   invoice_item.invoice.person.registration.partner_name, 
-                                   invoice_item.invoice.person.registration.partner_email, 
-                                   invoice_item.invoice.person.registration.partner_mobile, 
+                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname,
+                                   invoice_item.invoice.person.email_address,
+                                   invoice_item.invoice.person.registration.partner_name,
+                                   invoice_item.invoice.person.registration.partner_email,
+                                   invoice_item.invoice.person.registration.partner_mobile,
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
@@ -1009,7 +1009,7 @@ class AdminController(BaseController):
 
         response.headers['Content-type']='text/plain; charset=utf-8'
         return render('admin/acc_papers_xml.mako', fragment=True)
-        
+
     @authorize(h.auth.has_organiser_role)
     def people_by_country(self):
         """ Registered and paid people by country [Statistics] """
@@ -1047,7 +1047,7 @@ class AdminController(BaseController):
             '|'.join([label for (label, count) in c.data]),
         )
         return table_response()
-    
+
     @authorize(h.auth.has_organiser_role)
     def people_by_state(self):
         """ Registered and paid people by state - Australia Only [Statistics] """
@@ -1301,11 +1301,11 @@ class AdminController(BaseController):
           row.append(v.person.country)
           row.append(v.person.city)
           if v.accepted is None:
-            status = 'Pending'         
+            status = 'Pending'
           elif v.accepted == True:
-            status = 'Accepted'         
+            status = 'Accepted'
           else:
-            status = 'Rejected'         
+            status = 'Rejected'
           row.append(status)
 
           type = 'Unknown'
@@ -1344,7 +1344,7 @@ class AdminController(BaseController):
     def paid_counts_by_date(self):
         """ Number of paid (or zerod) invoices by date. [Registrations] """
         invoices = Invoice.find_all()
-    
+
         payments_count = dict()
         for i in invoices:
           if i.paid() and not i.is_void():
@@ -1352,12 +1352,12 @@ class AdminController(BaseController):
               date = i.creation_timestamp.date()
             else:
               date = i.good_payments()[0].creation_timestamp.date()
-    
+
             if date not in payments_count:
               payments_count[date] = 0
-    
+
             payments_count[date] += 1
-    
+
         c.data = []
         c.noescape = True
         c.columns = ['Date', 'Count' ]
@@ -1368,9 +1368,34 @@ class AdminController(BaseController):
           for date in dates:
             row = [ "%s" % date, str(payments_count[date]) ]
             c.data.append(row)
-         
+
         return table_response()
-    
+
+    @authorize(h.auth.has_organiser_role)
+    def av_norelease(self):
+        """ A list of proposals without releases for video/slides [AV] """
+        talk_list = Proposal.find_all_accepted().filter(or_(Proposal.video_release==False, Proposal.slides_release==False)).order_by(Proposal.scheduled)
+
+        c.columns = ['Talk', 'Title', 'Who', 'When', 'Video?', 'Slides?']
+        c.data = []
+        for t in talk_list:
+            c.data.append(['<a href="/programme/schedule/view_talk/%d">%d</a>' % (t.id, t.id),
+                           h.util.html_escape(t.title),
+                           '<br/>'.join([
+                                '<a href="/person/%d">%s</a> (<a href="mailto:%s">%s</a>)' % (
+                                    p.id,
+                                    h.util.html_escape(p.fullname()),
+                                    h.util.html_escape(p.email_address),
+                                    h.util.html_escape(p.email_address)
+                                ) for p in t.people
+                           ]),
+                           h.util.html_escape(t.scheduled),
+                           h.util.html_escape(t.video_release),
+                           h.util.html_escape(t.slides_release),
+            ])
+        c.noescape = True
+        return table_response()
+
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66
