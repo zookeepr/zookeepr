@@ -956,7 +956,7 @@ class RegistrationController(BaseController):
                             ticket = 'Hobbyist'
                         elif item.description.find('Hobbyist') > -1:
                             ticket = 'Hobbyist'
-                        elif (item.description.find('Professional') > -1 or item.description.startswith('Korora')):
+                        elif item.description.find('Professional') > -1 or item.description.find('Korora') > -1:
                             ticket = 'Professional'
                             pdns_ticket = True
                         elif item.description.find('Press') > -1:
