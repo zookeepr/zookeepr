@@ -118,7 +118,6 @@
 <p><b>13:30–13:55</b><br/><a href="http://multicorenz.wordpress.com/2009/11/29/miniconf-abstracts-and-bios/">View-Oriented Parallel Programming</a><br/><i>by</i> Zhiyi Huang</p>
 <p><b>13:55–14:10</b><br/><a href="http://multicorenz.wordpress.com/2009/11/29/miniconf-abstracts-and-bios/">Scientific high-performance computing</a><br/><i>by</i> Matthias Meyer</p>
 <p><b>14:10–14:30</b><br/><a href="http://multicorenz.wordpress.com/2009/11/29/miniconf-abstracts-and-bios/">Extending the Scope of Mobile Devices Running GNU/Linux</a><br/><i>by</i> Timo Hoenig</p>
-<p><b>14:30–15:15</b><br/><a href="http://multicorenz.wordpress.com/2009/11/29/miniconf-abstracts-and-bios/">Parallelism in Declarative Languages</a></p>
 <p><b>14:30–14:50</b><br/><a href="http://multicorenz.wordpress.com/2009/11/29/miniconf-abstracts-and-bios/">Haskell and Multi-core</a><br/><i>by</i> Stephen Blackheath</p>
 <p><b>14:50–15:15</b><br/><a href="http://multicorenz.wordpress.com/2009/11/29/miniconf-abstracts-and-bios/">Automatic Parallelism in Mercury</a><br/><i>by</i> Paul Bone</p>
 </td>
