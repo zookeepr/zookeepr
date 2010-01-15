@@ -830,7 +830,7 @@ class AdminController(BaseController):
                                  ])
         return table_response()
 
-    @authorize(h.auth.has_planetfeed_role)
+    @authorize(h.auth.has_organiser_role)
     def planet_lca(self):
         """ List of blog RSS feeds, planet compatible. [Mailing Lists] """
         c.text = """<p>List of RSS feeds for LCA planet.</p>
