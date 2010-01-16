@@ -39,6 +39,8 @@ def make_map():
     map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
 
     # Schedule
+    map.connect('/schedule/video', controller='schedule', action='video_room', room=None)
+    map.connect('/schedule/video/{room}', controller='schedule', action='video_room', room=None)
     map.connect('/schedule/{day}', controller='schedule', day=None)
 
     # Proposal submission
@@ -81,7 +83,7 @@ def make_map():
     # booklet
     map.connect('/registration/professionals_latex', controller='registration', action='professionals_latex')
     map.connect('/proposal/latex',                  controller='proposal', action='latex')
-    
+
 
     # admin controller
     map.connect('/admin/{action}', controller='admin')

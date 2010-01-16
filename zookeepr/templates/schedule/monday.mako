@@ -6,19 +6,29 @@
       <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
       <th class="programme_room" align="center" valign="top">Renouf 1</th>
       <th class="programme_room" align="center" valign="top">Renouf 2</th>
-      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
+      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&amp;2</th>
       <th class="programme_room" align="center" valign="top">Frank&nbsp;Taplin</th>
       <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td align="center"><i><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source Miniconf</a></i></td>
-      <td align="center"><i><a href="/wiki/Miniconfs/Open_Programming_Languages">Open Programming Languages Miniconf</a></i></td>
-      <td align="center"><i><a href="/wiki/Miniconfs/Wave_Developers">Wave Developers Miniconf</a></i></td>
-      <td align="center"><i><a href="/wiki/Miniconfs/Haecksen_and_Linuxchix">Haecksen and Linuxchix Miniconf</a></i></td>
-      <td align="center"><i><a href="/wiki/Miniconfs/Libre_Graphics_Day">Libre Graphics Day</a></i></td>
-      <td align="center"><i><a href="/wiki/Miniconfs/Arduino">Arduino Miniconf</a></i></td>
-      <td align="center"><i><a href="/wiki/Miniconfs/Distro_Summit">Distro Summit</a></i></td>
+      <td class="programme_room_header">&nbsp;</td>
+      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source Miniconf</a></i></td>
+      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Open_Programming_Languages">Open Programming Languages Miniconf</a></i></td>
+      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Wave_Developers">Wave Developers Miniconf</a></i></td>
+      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Haecksen_and_Linuxchix">Haecksen and Linuxchix Miniconf</a></i></td>
+      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Libre_Graphics_Day">Libre Graphics Day</a></i></td>
+      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Arduino">Arduino Miniconf</a></i></td>
+      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Distro_Summit">Distro Summit</a></i></td>
+    </tr>
+    <tr>
+      <th>&nbsp;</th>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/mfc">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/illott">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-2">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/ftaplin">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-3">Live&nbsp;Video</a>&nbsp;&laquo;</td>
     </tr>
   </thead>
 
@@ -72,7 +82,7 @@
 <p><b>10:55-11:25</b><br/><a href="">The state of the LSB</a><br/><i>by</i> Bdale Garbee</p>
 <p><b>11:30-12:15</b><br/><a href="">vcs-pkg.org</a><br/><i>by</i> Martin F. Krafft</p>
 </td>
-    </tr>     
+    </tr>
 
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">12:15-13:30</th>
@@ -116,7 +126,7 @@
 <p><b>13:55-14:25</b><br/><a href="">Cutting down boot times</a><br/><i>by</i> Scott James Remnant</p>
 <p><b>14:30-15:15</b><br/><a href="">Source Juicer</a><br/><i>by</i> Laszlo Peter</p>
 </td>
-    </tr>  
+    </tr>
 
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:15-15:45</th>
@@ -164,7 +174,7 @@
 <p><b>15:45-16:40</b><br/><a href="">At First I was Afraid, I was Petrified… of Launchpad</a><br/><i>by</i> Dustin Kirkland</p>
 <p><b>16:45-17:30</b><br/><a href="">The relationship between Debian and Ubuntu</a><br/><i>by</i> Lucas Nussbaum</p>
 </td>
-    </tr>  
+    </tr>
 
   </tbody>
 </table>

@@ -125,7 +125,7 @@ class ScheduleController(BaseController):
         c.speex_list = {} # TODO: fill these in
         if file_paths.has_key('speex_path') and file_paths['speex_path'] != '':
             c.speex_path =  file_paths['speex_path']
-        
+
         c.talks = Proposal.find_all_accepted()
         if c.day in self.day_dates:
             # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
@@ -144,3 +144,35 @@ class ScheduleController(BaseController):
                         c.programme[talk_day][talk.building][talk.theatre] = []
                     c.programme[talk_day][talk.building][talk.theatre].append(talk)
         return render('/schedule/list.mako')
+
+    _ROOMS = (
+        ('mfc', 'Auditorium', None),
+        ('_mfc_384', 'Auditorium', 'r2-stream-1'),
+        ('_mfc_128', 'Auditorium', 'r2-stream-2'),
+        ('_mfc_56', 'Auditorium', 'r2-stream-3'),
+        ('_mfc_28a', 'Auditorium', 'r2-stream-4'),
+        #('_mfc_mfc-slides', 'Auditorium', ''),
+        ('illott', 'Ilott Theatre', 'r2-stream-16'),
+        ('renouf-1', 'Renouf 1', 'r2-stream-11'),
+        ('renouf-2', 'Renouf 2', 'r2-stream-12'),
+        ('civic-1', 'Civic Suites 1 & 2', 'r2-stream-14'),
+        ('ftaplin', 'Frank Taplin', 'r2-stream-13'),
+        ('civic-3', 'Civic Suite 3', 'r2-stream-15'),
+    )
+    _ROOMS_D = dict([(r[0], (r[1], r[2])) for r in _ROOMS])
+
+    def video_room(self, room=None):
+        c.all_rooms = self._ROOMS
+
+        if room in self._ROOMS_D:
+            c.room_id = room
+            c.room_name = self._ROOMS_D[room][0]
+            c.room_stream_id = self._ROOMS_D[room][1]
+            if room.startswith('_'):
+                c.room_id = c.room_id.split('_')[2]
+        else:
+            c.room_id = None
+            c.room_name = None
+            c.room_stream_id = None
+
+        return render('/schedule/video_room.mako')
