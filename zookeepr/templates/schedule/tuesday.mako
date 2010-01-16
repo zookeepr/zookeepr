@@ -43,7 +43,7 @@
 <p><b>11:55-12:15</b><br/><a href="http://sysadmin.miniconf.org/presentations10.html#03">Going mad with MDADM</a><br/><i>by</i> Steven Ellis</p>
 </td>
       <td class="programme_room" align="center" valign="top">
-<p><b>10:30-11:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Why_Launchpad">Why Launchpad?</a><br/><i>by</i> Jonathan Lange</p>
+<p><b>10:30-11:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Why_Launchpad.3F">Why Launchpad?</a><br/><i>by</i> Jonathan Lange</p>
 <p><b>11:15-11:45</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Linking_with_external_bugtrackers">Linking with external bugtrackers</a><br/><i>by</i> Björn Tillenius</p>
 <p><b>11:45-12:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Working_with_translations">Working with translations</a><br/><i>by</i> Jeroen Vermeulen</p>
 </td>
