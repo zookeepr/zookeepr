@@ -50,7 +50,7 @@
       <td class="programme_room" align="center" valign="top">
 <p><b>10:30-10:40</b><br/>Welcomes and Introductions</p>
 <p><b>10:45-11:25</b><br/><a href="http://sites.google.com/site/waveminiconfatlca/Home/schedule#TOC-Building-the-Independent-Wave">Building the Independent Wave</a><br/><i>by</i> James Purser</p>
-<p><b>11:30-12:15</b><br/><a href="http://sites.google.com/site/waveminiconfatlca/Home/schedule#TOC-Building-the-Independent-Wave">A tutorial on building a collaborative text editing web application</a><br/><i>by</i> Brett Morgan</p>
+<p><b>11:30-12:15</b><br/><a href="http://sites.google.com/site/waveminiconfatlca/Home/schedule#TOC-A-tutorial-on-building-a-collaborat">A tutorial on building a collaborative text editing web application</a><br/><i>by</i> Brett Morgan</p>
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>10:30-11:05</b><br/><a href="">Version Control For Mere Mortals</a><br/><i>by</i> Emma Jane Hogbin</p>
