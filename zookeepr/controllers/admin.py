@@ -17,6 +17,7 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta, Person, Product, Registration, ProductCategory
 from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice
+from zookeepr.model.social_network import SocialNetwork
 from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info, lca_rego
@@ -1418,6 +1419,38 @@ class AdminController(BaseController):
                            h.util.html_escape(t.technical_requirements),
             ])
         c.noescape = True
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def random_delegates(self):
+        """ Select 20 random (paid, non-volunteer, non-organiser, non-speaker, non-media) delegates for prize draws """
+
+        filtered_list = []
+
+        for r in Registration.find_all():
+            p = r.person
+            if p.is_speaker() or p.is_volunteer():
+                continue
+            if len(filter(lambda r: r.name in ('core_team', 'miniconfsonly', 'press', 'team', 'organiser', 'miniconf'), p.roles)):
+                continue
+            if p.paid() and p.has_paid_ticket():
+                filtered_list.append(r)
+
+        random.shuffle(filtered_list)
+
+        c.columns = ['Who', 'From', 'Email', 'Shell', 'Nick', 'Twitter', 'Previous LCAs']
+        c.data = []
+        sn_twitter = SocialNetwork.find_by_name("Twitter")
+        for r in filtered_list[:20]:
+            c.data.append([
+                "%s %s (%d)" % (r.person.firstname, r.person.lastname, r.person.id),
+                "%s, %s" % (r.person.city, r.person.country),
+                r.person.email_address,
+                r.shell,
+                r.nick,
+                r.person.social_networks.get(sn_twitter),
+                ','.join(r.prevlca or []),
+            ])
         return table_response()
 
 def keysigning_pdf(keyid):
