@@ -25,7 +25,7 @@
 
         <h3>Linux</h3>
         <p>The webcast is best viewed in <a href="http://www.mplayerhq.hu/">MPlayer</a>, although <a href="http://www.gnome.org/projects/totem/">Totem</a> and <a href="http://www.videolan.org/">VideoLan (VLC)</a> also work well.
-        <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View Stream</a></strong></p>
+        <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View Stream (or give this URL to MPlayer/etc)</a></strong></p>
 
         <hr/>
 
