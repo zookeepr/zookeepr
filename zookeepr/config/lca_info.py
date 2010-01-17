@@ -68,6 +68,9 @@ lca_rego = {
   # Set to yes to collect PGP key IDs in rego, no to disable collection.
   'pgp_collection': 'no',
 
+  # Set to no once the conference starts to speed things up
+  'confirm_email_address' : 'no',
+
   'volunteer_areas': (
             {'name': 'Administration', 'description': 'Take care and help out on any administration tasks.'},
             {'name': 'Registration Desk', 'description': 'Sign people into the conference and help with general enquires.'},
