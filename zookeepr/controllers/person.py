@@ -21,7 +21,7 @@ from zookeepr.model import meta
 from zookeepr.model import Person, PasswordResetConfirmation, Role
 from zookeepr.model import SocialNetwork
 
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, lca_rego
 
 import datetime
 
@@ -300,9 +300,11 @@ class PersonController(BaseController): #Read, Update, List
 
         meta.Session.commit()
 
-        email(c.person.email_address, render('/person/new_person_email.mako'))
-
-        return render('/person/thankyou.mako')
+        if lca_rego['confirm_email_address'] == 'no':
+            redirect_to(controller='person', action='confirm', confirm_hash=c.person.url_hash)
+        else:
+            email(c.person.email_address, render('/person/new_person_email.mako'))
+            return render('/person/thankyou.mako')
 
     @authorize(h.auth.has_organiser_role)
     def index(self):
