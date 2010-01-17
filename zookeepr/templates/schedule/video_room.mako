@@ -21,7 +21,7 @@
 %   else:
         <p>Welcome to the live webcast of the ${ c.room_name } from linux.conf.au 2010 in Wellington, New Zealand. Special thanks to <a href="http://www.r2.co.nz">R2</a> who are producing the video at LCA2010.</p>
 
-        <p>Live video can be viewed by clicking on the links or player below.</p>
+        <p>Live video can be viewed by clicking on the links or player below. Note that a few presenters have not agreed (or are not able to) release video of their presentations, and the streams will be unavailable for those periods. Videos of individual presentations will be available in various <span style="border-bottom: 1px black dotted" title="OGG Theora & H264 video, OGG Vorbis & MP3 audio">formats</span> for viewing and downloading once processing and editing is completed.</p>
 
         <h3>Linux</h3>
         <p>The webcast is best viewed in <a href="http://www.mplayerhq.hu/">MPlayer</a>, although <a href="http://www.gnome.org/projects/totem/">Totem</a> and <a href="http://www.videolan.org/">VideoLan (VLC)</a> also work well.
@@ -77,4 +77,3 @@ Live Video Streams
 
 % endif
 </%def>
-
