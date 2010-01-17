@@ -40,6 +40,8 @@ def make_map():
 
     # Schedule
     map.connect('/schedule/video', controller='schedule', action='video_room', room=None)
+    map.connect('/programme/schedule/video', controller='schedule', action='video_room', room=None)
+    map.connect('/programme/schedule/video/{room}', controller='schedule', action='video_room', room=None)
     map.connect('/schedule/video/{room}', controller='schedule', action='video_room', room=None)
     map.connect('/schedule/{day}', controller='schedule', day=None)
 
