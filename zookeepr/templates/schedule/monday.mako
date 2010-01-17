@@ -20,7 +20,7 @@
       <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Arduino">Arduino Miniconf</a></i></td>
       <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Distro_Summit">Distro Summit</a></i></td>
     </tr>
-    <tr>
+    <tr class="videoStreamLinks">
       <th>&nbsp;</th>
       <td align="center">&raquo;&nbsp;<a href="/schedule/video/mfc">Live&nbsp;Video</a>&nbsp;&laquo;</td>
       <td align="center">&raquo;&nbsp;<a href="/schedule/video/illott">Live&nbsp;Video</a>&nbsp;&laquo;</td>

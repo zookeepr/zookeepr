@@ -728,3 +728,8 @@ blockquote.entries {
   margin:0 80px 0pt;
   font-style: italic;
 }
+
+.videoStreamLinks {
+  display: none;
+}
+
