@@ -257,6 +257,12 @@ class PersonController(BaseController): #Read, Update, List
 
         redirect_to(action='view', id=id)
 
+    @authorize(h.auth.is_valid_user)
+    def reprint(self, id):
+        c.person = Person.find_by_id(id)
+        c.person.badge_printed = False
+        meta.Session.commit()
+        redirect_to(action='view', id=id)
 
     @dispatch_on(POST="_new") 
     def new(self):

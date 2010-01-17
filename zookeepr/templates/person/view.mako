@@ -30,6 +30,17 @@ ${ c.person.email_address }
 %endif
         </td>
     </tr>
+%if h.auth.authorized(h.auth.has_organiser_role):
+    <tr>
+        <td><b>Badge printed:</b></td>
+        <td>${ c.person.badge_printed }
+%  if c.person.badge_printed:
+(${ h.link_to('reprint badge', '/person/' + str(c.person.id) + '/reprint') })
+%  endif
+        </td>
+    </tr>
+%endif
+
 %if c.person.special_registration is not None:
 % for special_registration in c.person.special_registration:
     <tr>
