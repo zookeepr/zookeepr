@@ -61,7 +61,7 @@
 <p><b>10:30-10:45</b><br/><a href="http://libregraphicsday.org/proposal/69/welcome-housekeeping">Welcome + Housekeeping</a><br/><i>by</i> Jon Cruz</p>
 <p><b>10:45-11:25</b><br/><a href="http://libregraphicsday.org/proposal/57/new-ghostscript-colour-architecture">New Ghostscript Colour Architecture</a><br/><i>by</i> Ralph Giles</p>
 <p><b>11:30-11:50</b><br/><a href="http://libregraphicsday.org/proposal/87/graphic-design-apps-beyond-pixel">Graphic Design Apps - Beyond The Pixel</a><br/><i>by</i> Vik Olliver</p>
-<p><b>11:55-12:15</b><br/><a href="http://libregraphicsday.org/proposal/89/all-libre-graphics-tasks-i-said-i-would-do-are-done">All the Libre Graphics tasks I said I would do are DONE!</a><br/><i>by</i> Jon Phillips</p>
+<p><b>11:55-12:15</b><br/><a href="http://libregraphicsday.org/proposal/93/scribus">Scribus</a><br/><i>by</i> Jon Cruz</p>
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>10:30-11:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Arduino#Tutorial:_Assembly_of_Pebble_general_purpose_I.2FO_shield">Assembly of Pebble general purpose I/O shield (Part 1)</a></p>
@@ -148,7 +148,7 @@
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>15:45-16:45</b><br/><a href="http://libregraphicsday.org/proposal/45/blender-3d-modeling-and-animation">Blender 3D Modeling and Animation</a><br/><i>by</i> Lance Flavell</p>
-<p><b>16:50-17:10</b><br/><a href="http://libregraphicsday.org/proposal/93/scribus">Scribus</a><br/><i>by</i> Jon Cruz</p>
+<p><b>16:50-17:10</b><br/><a href="http://libregraphicsday.org/proposal/89/all-libre-graphics-tasks-i-said-i-would-do-are-done">All the Libre Graphics tasks I said I would do are DONE!</a><br/><i>by</i> Jon Phillips</p>
 <p><b>17:15-17:20</b><br/><a href="http://libregraphicsday.org/proposal/61/cheap-visual-gimmicks-make-your-designs-new">Cheap Visual Gimmicks to Make Your Designs 'NEW'</a><br/><i>by</i> Andy Fitzsimon</p>
 <p><b>17:20-17:25</b><br/><a href="http://libregraphicsday.org/proposal/13/dynamic-pdf-reports-xsl-and-inkscape">Dynamic PDF reports via XSL and Inkscape</a><br/><i>by</i> Peter Lieverdink</p>
 <p><b>17:25-17:30</b><br/><a href="http://libregraphicsday.org/proposal/17/inkscape-my-cheerleading-adventures">Inkscape: My Cheerleading Adventures</a><br/><i>by</i> Donna Benjamin</p>
