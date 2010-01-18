@@ -56,7 +56,7 @@
       <td class="programme_room" align="center" valign="top">
 <p><b>10:30-10:35</b><br/>Welcome and housekeeping</p>
 <p><b>10:35-10:55</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1a">The Open Source Secondary School</a><br/><i>by</i> Mark Osborne</p>
-<p><b>10:55-11:10</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1b">Kidsmart Rollout: Early childhood project</a><br/><i>by</i> Carl Klitscher</p>
+<p><b>10:55-11:10</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2b">Art education and open source</a><br/><i>by</i> Maksim Lin</p>
 <p><b>11:10-11:30</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1c">Sugarlabs: A word from the founder</a><br/><i>by</i> Walter Bender</p>
 <p><b>11:30-12:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1d">OLPC and Sugarlabs - Improving education on a global scale</a><br/><i>by</i> NZ Volunteers group</p>
 </td>
@@ -104,7 +104,7 @@
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>13:30-13:45</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2a">Koha - Nau te rourou, naku te rourou, ka ora ai te iwi</a><br/><i>by</i> Chris Cormack</p>
-<p><b>13:45-14:00</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2b">Art education and open source</a><br/><i>by</i> Maksim Lin</p>
+<p><b>13:45-14:00</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1b">Kidsmart Rollout: Early childhood project</a><br/><i>by</i> Carl Klitscher</p>
 <p><b>14:00-14:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2c">The use of FOSS in teaching Software Engineering</a><br/><i>by</i> Ashley Maher</p>
 <p><b>14:15-15:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2d">Moodle features workshop</a><br/><i>by</i> Jonathan Newman, Stacey Walker <i>and</i> Jonathan Harker</p>
 </td>
