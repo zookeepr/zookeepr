@@ -11,24 +11,14 @@
       <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
     </tr>
     <tr>
-      <td class="programme_room_header">&nbsp;</td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Open_Programming_Languages">Open Programming Languages Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Wave_Developers">Wave Developers Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Haecksen_and_Linuxchix">Haecksen and Linuxchix Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Libre_Graphics_Day">Libre Graphics Day</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Arduino">Arduino Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Distro_Summit">Distro Summit</a></i></td>
-    </tr>
-    <tr class="videoStreamLinks">
-      <th>&nbsp;</th>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/mfc">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/illott">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-2">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/ftaplin">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-3">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td>&nbsp;</td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Business_of_Open_Source">Business of Open Source Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Open_Programming_Languages">Open Programming Languages Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Wave_Developers">Wave Developers Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Haecksen_and_Linuxchix">Haecksen and Linuxchix Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Libre_Graphics_Day">Libre Graphics Day</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Arduino">Arduino Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Distro_Summit">Distro Summit</a></i></td>
     </tr>
   </thead>
 
