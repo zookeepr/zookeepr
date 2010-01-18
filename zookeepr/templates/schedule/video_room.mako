@@ -12,11 +12,10 @@
             of different streams available depending on your connection speed:
         </p>
         <ul>
-            <li><a href="_mfc_384">384kbps Stream - suitable for good broadband. Video and audio</a></li>
+            <li><a href="_mfc_384">384kbps Stream - suitable for good broadband. Video and audio (including Ogg Theora)</a></li>
             <li><a href="_mfc_128">128kbps Stream - suitable for slow broadband. Video and audio</a></li>
             <li><a href="_mfc_56">56kbps Stream - suitable for dial up modems. Video and audio</a></li>
             <li><a href="_mfc_28a">28kbps Stream - suitable for poorly connected sites. Audio only</a></li>
-            <!--li><a href="_mfc_mfc-slides">75kbps Stream - Slides and audio</a></li-->
         </ul>
 %   else:
         <p>Welcome to the live webcast of the ${ c.room_name } from linux.conf.au 2010 in Wellington, New Zealand. Special thanks to <a href="http://www.r2.co.nz">R2</a> who are producing the video at LCA2010.</p>
@@ -26,21 +25,21 @@
         <h3>Linux</h3>
         <div style="text-align:center;float:right; height:330px; width:500px; margin-left:10px; margin-bottom: 20px; border:1px solid grey;">
 %       if c.room_name == 'Auditorium':
-            <video src="http://stream.v2v.cc:8000/lca-mfc.ogg" controls="controls" width="500" height="330" >
+            <video src="http://repeater.xiph.org:8000/lca-mfc.ogg" controls="controls" width="500" height="330" >
                 Your browser does not support the HTML5 &lt;video&gt; tag.
             </video>
             <br/>
-            <a href="http://stream.v2v.cc:8000/lca-mfc.ogg">Ogg Theora stream URL for MPlayer, etc.</a>
+            <a href="http://repeater.xiph.org:8000/lca-mfc.ogg">Ogg Theora stream URL for MPlayer, etc.</a>
 %       else:
-            <video src="http://stream.v2v.cc:8000/lca-${c.room_id}.ogg" controls="controls" width="500" height="330" >
+            <video src="http://repeater.xiph.org:8000/lca-${c.room_id}.ogg" controls="controls" width="500" height="330" >
                 Your browser does not support the HTML5 &lt;video&gt; tag.
             </video>
             <br/>
-            <a href="http://stream.v2v.cc:8000/lca-${c.room_id}.ogg">Ogg Theora stream for MPlayer, etc.</a>
+            <a href="http://repeater.xiph.org:8000/lca-${c.room_id}.ogg">Ogg Theora stream for MPlayer, etc.</a>
 %       endif
         </div>
         <p>The webcast is best viewed in <a href="http://www.mplayerhq.hu/">MPlayer</a>, although <a href="http://www.gnome.org/projects/totem/">Totem</a> and <a href="http://www.videolan.org/">VideoLan (VLC)</a> also work well.
-        Thanks to Silvia Pfeiffer, Ralph Giles, Jan Gerber, Jan Schmidt, and the <a href="http://www.icecast.org/">Icecast</a> project, there's now an Ogg Theora stream of the video as well. We'll try and improve it over the week. If your browser supports the HTML5 &lt;video&gt; tag, you should see a player to the right.</p>
+        Thanks to Silvia Pfeiffer, Ralph Giles, Jan Gerber, Jan Schmidt, the <a href="http://www.icecast.org/">Icecast</a> project, and <a href="http://xiph.org">Xiph.org</a> there's now an Ogg Theora stream of the video as well. We'll try and improve it over the week. If your browser supports the HTML5 &lt;video&gt; tag, you should see a player to the right.</p>
 
         <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View WMV Stream (or give this URL to MPlayer/etc)</a></strong></p>
 
