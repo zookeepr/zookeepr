@@ -32,11 +32,11 @@
             <br/>
             <a href="http://stream.v2v.cc:8000/lca-mfc.ogg">Ogg Theora stream URL for MPlayer, etc.</a>
 %       else:
-            <video src="http://stream.v2v.cc:8000/lca-${stream_id}.ogg" controls="controls" width="500" height="330" >
+            <video src="http://stream.v2v.cc:8000/lca-${c.room_id}.ogg" controls="controls" width="500" height="330" >
                 Your browser does not support the HTML5 &lt;video&gt; tag.
             </video>
             <br/>
-            <a href="http://stream.v2v.cc:8000/lca-${stream_id}.ogg">Ogg Theora stream for MPlayer, etc.</a>
+            <a href="http://stream.v2v.cc:8000/lca-${c.room_id}.ogg">Ogg Theora stream for MPlayer, etc.</a>
 %       endif
         </div>
         <p>The webcast is best viewed in <a href="http://www.mplayerhq.hu/">MPlayer</a>, although <a href="http://www.gnome.org/projects/totem/">Totem</a> and <a href="http://www.videolan.org/">VideoLan (VLC)</a> also work well.
