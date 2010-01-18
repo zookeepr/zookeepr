@@ -24,10 +24,27 @@
         <p>Live video can be viewed by clicking on the links or player below. Note that a few presenters have not agreed (or are not able to) release video of their presentations, and the streams will be unavailable for those periods. Videos of individual presentations will be available in various <span style="border-bottom: 1px black dotted" title="OGG Theora & H264 video, OGG Vorbis & MP3 audio">formats</span> for viewing and downloading once processing and editing is completed.</p>
 
         <h3>Linux</h3>
+        <div style="text-align:center;float:right; height:330px; width:500px; margin-left:10px; margin-bottom: 20px; border:1px solid grey;">
+%       if c.room_name == 'Auditorium':
+            <video src="http://stream.v2v.cc:8000/lca-mfc.ogg" controls="controls" width="500" height="330" >
+                Your browser does not support the HTML5 &lt;video&gt; tag.
+            </video>
+            <br/>
+            <a href="http://stream.v2v.cc:8000/lca-mfc.ogg">Ogg Theora stream URL for MPlayer, etc./a>
+%       else:
+            <video src="http://stream.v2v.cc:8000/lca-${stream_id}.ogg" controls="controls" width="500" height="330" >
+                Your browser does not support the HTML5 &lt;video&gt; tag.
+            </video>
+            <br/>
+            <a href="http://stream.v2v.cc:8000/lca-${stream_id}.ogg">Ogg Theora stream</a>
+%       endif
+        </div>
         <p>The webcast is best viewed in <a href="http://www.mplayerhq.hu/">MPlayer</a>, although <a href="http://www.gnome.org/projects/totem/">Totem</a> and <a href="http://www.videolan.org/">VideoLan (VLC)</a> also work well.
-        <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View Stream (or give this URL to MPlayer/etc)</a></strong></p>
+        Thanks to Silvia Pfeiffer, Ralph Giles, Jan Gerber, Jan Schmidt, and the <a href="http://www.icecast.org/">Icecast</a> project, there's now an Ogg Theora stream of the video as well. We'll try and improve it over the week. If your browser supports the HTML5 &lt;video&gt; tag, you should see a player to the right.</p>
 
-        <hr/>
+        <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View WMV Stream (or give this URL to MPlayer/etc)</a></strong></p>
+
+        <hr style="clear:right;"/>
 
         <h3>Mac OS X</h3>
 
@@ -46,11 +63,11 @@
             <iframe style='visibility:hidden;height:0;width:0;border:0px'></iframe>
         </div>
 
-        <p>The webcast is best viewed in Silverlight Media Player (right), Real Player, or Mplayer, although Totem and VideoLan (VLC) also work well. If you see a Silverlight logo, you may install the free Silverlight player by clicking on it. After the installation of Silverlight, you may need to refresh your webpage (Crtl-R or F5).</p>
+        <p>The webcast is best viewed in Silverlight Media Player (right), Real Player, or Mplayer, although Totem and VideoLan (VLC) also work well. If you see a Silverlight logo, you may install the free Silverlight player by clicking on it. After the installation of Silverlight, you may need to refresh your webpage (Crtl-R or F5). Or feel free to use the HTML5 &lt;video&gt; player above if your browser supports it. :)</p>
         <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View Stream</a></strong></p>
 
         <h3>Windows</h3>
-        <p>The webcast is best viewed in Silverlight Media Player (right) or Real Player. VideoLan (VLC) also works well. If you see a Silverlight logo, you may install the free Silverlight player by clicking on it. After the installation of Silverlight, you may need to refresh your webpage (Crtl-R or F5).
+        <p>The webcast is best viewed in Silverlight Media Player (right) or Real Player. VideoLan (VLC) also works well. If you see a Silverlight logo, you may install the free Silverlight player by clicking on it. After the installation of Silverlight, you may need to refresh your webpage (Crtl-R or F5). Or feel free to use the HTML5 &lt;video&gt; player above if your browser supports it. :)
         <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View Stream</a></strong></p>
 
         <div style="clear:right"></div>
