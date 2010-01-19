@@ -11,24 +11,14 @@
       <th class="programme_room" align="center" valign="top">Civic&nbsp;Suite 3</th>
     </tr>
     <tr>
-      <td class="programme_room_header">&nbsp;</td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/System_Administration">System Administration Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Bridging_the_gap">Bridging the gap</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Open_and_the_Public_Sector">Open and the Public Sector</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Education">Education Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing Miniconf</a></i></td>
-      <td class="programme_room_header" align="center"><i><a href="/wiki/Miniconfs/Multimedia">Multimedia Miniconf</a></i></td>
-    </tr>
-    <tr class="videoStreamLinks">
-      <th>&nbsp;</th>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/mfc">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/illott">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-2">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/ftaplin">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-3">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td>&nbsp;</td>
+      <td align="center"><i><a href="/wiki/Miniconfs/System_Administration">System Administration Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Bridging_the_gap">Bridging the gap</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Open_and_the_Public_Sector">Open and the Public Sector</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Education">Education Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Data_Storage_and_Retrieval">Data Storage and Retrieval Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Multicore_and_Parallel_Computing">Multicore and Parallel Computing Miniconf</a></i></td>
+      <td align="center"><i><a href="/wiki/Miniconfs/Multimedia">Multimedia Miniconf</a></i></td>
     </tr>
   </thead>
 
