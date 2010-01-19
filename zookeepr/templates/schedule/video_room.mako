@@ -28,20 +28,23 @@
             <video src="http://repeater.xiph.org:8000/lca-mfc.ogg" controls="controls" width="500" height="330" >
                 Your browser does not support the HTML5 &lt;video&gt; tag.
             </video>
-            <br/>
-            <a href="http://repeater.xiph.org:8000/lca-mfc.ogg">Ogg Theora stream URL for MPlayer, etc.</a>
 %       else:
             <video src="http://repeater.xiph.org:8000/lca-${c.room_id}.ogg" controls="controls" width="500" height="330" >
                 Your browser does not support the HTML5 &lt;video&gt; tag.
             </video>
-            <br/>
-            <a href="http://repeater.xiph.org:8000/lca-${c.room_id}.ogg">Ogg Theora stream for MPlayer, etc.</a>
 %       endif
         </div>
         <p>The webcast is best viewed in <a href="http://www.mplayerhq.hu/">MPlayer</a>, although <a href="http://www.gnome.org/projects/totem/">Totem</a> and <a href="http://www.videolan.org/">VideoLan (VLC)</a> also work well.
-        Thanks to Silvia Pfeiffer, Ralph Giles, Jan Gerber, Jan Schmidt, the <a href="http://www.icecast.org/">Icecast</a> project, and <a href="http://xiph.org">Xiph.org</a> there's now an Ogg Theora stream of the video as well. We'll try and improve it over the week. If your browser supports the HTML5 &lt;video&gt; tag, you should see a player to the right.</p>
+        Thanks to Silvia Pfeiffer, Ralph Giles, Jan Gerber, Jan Schmidt, the <a href="http://www.icecast.org/">Icecast</a> project, and <a href="http://xiph.org">Xiph.org</a> there's now an Ogg Theora stream of the video as well, based out of the US. If your browser supports the HTML5 &lt;video&gt; tag, you should see a player to the right.</p>
 
         <p style="padding-left:20px"><strong><a href="http://www.r2.co.nz/20100118/${c.room_id}.asx">View WMV Stream (or give this URL to MPlayer/etc)</a></strong></p>
+        <p style="padding-left:20px"><strong>
+%       if c.room_name == 'Auditorium':
+        <a href="http://repeater.xiph.org:8000/lca-mfc.ogg">View OGG Stream (or give this URL to MPlayer/etc)</a>
+%       else:
+        <a href="http://repeater.xiph.org:8000/lca-${c.room_id}.ogg">View OGG Stream (or give this URL to MPlayer/etc)</a>
+%       endif
+        </strong></p>
 
         <hr style="clear:right;"/>
 
