@@ -23,26 +23,13 @@ for d in c.db_content_news_all:
 
 <p>See the <a href="/schedule">programme schedule</a>.</p>
 
-<h2>Registrations have been extended!</h2>
+<h1>Life Flight Trust Charity Auction</h1>
 
-<p>Registrations have been extended to accommodate linux.conf.au 2010 new-found Amex processing capabilities. Only a limited number of tickets to linux.conf.au 2010 remain, so get in quick! <a href="/register/status">Registrations</a> will remain open until early January. So get in quick!!</p>
+<p>LCA2010 delegates are invited to make donations to the Life Flight Trust and be in to win an exclusive once-in-a-lifetime experience on Saturday 23rd January 2010. The highest donor/s will win the grand prize - a trip for four people as honorary crew-members on a helicopter winch training mission!</p>
 
-<table>
-<tr class="even">
-<td><b>Registrations Opened</b></td> <td>10 October 2009</td> 
-</tr>
+<p>Delegates can donate as an individual and elect three friends of your choice to come along on this ride, OR enter as four people donating under one group name.</p>
 
-<tr class="odd">
-<td><b>Early Birds Sold Out</b></td> <td><s>13</s> 5 November 2009</td> 
-</tr>
-
-<tr class="even">
-<td><b>Registrations Closes</b></td> <td><s>24 December 2009</s><br />Still open!</td> 
-</tr>
-</table>
-
-<p>To register for linux.conf.au 2010, please go to the <a href="/register/status">Registration Page</a> or simply click on the Register link in the toolbox.</p>
-
+<h2><a href="http://www.fundraiseonline.co.nz/LCA2010/">Donate here</a></h2>
 
 <%def name="big_promotion()">
 % for d in c.db_content_news_all:
