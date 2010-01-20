@@ -23,11 +23,11 @@ for d in c.db_content_news_all:
 
 <p>See the <a href="/schedule">programme schedule</a>.</p>
 
-<h1>Life Flight Trust Charity Auction</h1>
+<h1>Life Flight Trust Charity Fundraiser - Donate Now!</h1>
 
 <p>LCA2010 delegates are invited to make donations to the Life Flight Trust and be in to win an exclusive once-in-a-lifetime experience on Saturday 23rd January 2010. The highest donor/s will win the grand prize - a trip for four people as honorary crew-members on a helicopter winch training mission!</p>
 
-<p>Delegates can donate as an individual and elect three friends of your choice to come along on this ride, OR enter as four people donating under one group name.</p>
+<p>Delegates can donate as an individual and elect three friends of your choice to come along on this ride, OR enter as four people donating under one group name. Donations are accepted up until Friday 6pm, and the winner will be announced at the Penguin Dinner on Friday night.</p>
 
 <h2><a href="http://www.fundraiseonline.co.nz/LCA2010/">Donate here</a></h2>
 
