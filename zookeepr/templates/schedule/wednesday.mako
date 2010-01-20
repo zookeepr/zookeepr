@@ -9,20 +9,12 @@
       <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
     </tr>
     <tr>
-      <td class="programme_room_header">&nbsp;</td>
-      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room programme_room_header" align="center" valign="top"><i>Tutorials</i></td>
-    </tr>
-    <tr class="videoStreamLinks">
-      <th>&nbsp;</th>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/mfc">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/illott">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-2">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td>&nbsp;</td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room" align="center" valign="top"><i>Tutorials</i></td>
     </tr>
   </thead>
 
@@ -33,6 +25,7 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
+        <div class="programmeTalkId">50349</div>
         <a href="/programme/keynotes#BenjaminMakoHill">Keynote: Benjamin Mako Hill</a><br><span style="font-weight: normal;">Auditorium</span>
       </td>
     </tr>

@@ -25,6 +25,7 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
+        <div class="programmeTalkId">50351</div>
         <a href="/programme/keynotes#NathanTorkington">Keynote: Nathan Torkington & Lightning Talks</a><br><span style="font-weight: normal;">Auditorium</span>
       </td>
 
@@ -33,7 +34,7 @@
       <th class="programme_slot" align="center" valign="middle">10:00-10:30</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Morning Tea</td>
     </tr>
- 
+
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">10:30-11:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50091" /></td>
@@ -55,7 +56,7 @@
       <th class="programme_slot" align="center" valign="middle">12:15-13:30</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Lunch</td>
     </tr>
- 
+
    <tr class="odd">
       <th class="programme_slot" align="center" valign="top">13:30-14:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50062" /></td>
@@ -72,7 +73,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50048" /></td>
 
     </tr>
- 
+
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:15-15:45</th>
       <td class="morning_tea" colspan="5" align="center" valign="middle">Afternoon Tea</td>

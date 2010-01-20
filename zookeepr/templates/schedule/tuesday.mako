@@ -26,6 +26,7 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
       <td class="programme_keynote" colspan="7" align="center" valign="middle">
+        <div class="programmeTalkId">50348</div>
         <a href="/programme/keynotes#GabriellaColeman">Keynote: Gabriella Coleman</a><br><span style="font-weight: normal;">Auditorium</span>
       </td>
     </tr>
