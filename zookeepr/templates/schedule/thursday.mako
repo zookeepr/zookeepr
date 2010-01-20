@@ -116,11 +116,24 @@
     <td><b>Where</b></td><td>The Opera House, 111 - 113 Manners Street</td>
   </tr>
   <tr class="even">
-    <td><b>Date</b></td><td>Thursday 21 January 2010</td>
-  </tr>
-  <tr class="odd">
     <td><b>Time</b></td><td>Doors open at 7:30 pm, nibbles will be served shortly after that</td>
   </tr>
 </table>
 
 <p>For more information, please see: <a href="/programme/social_events#ProfessionalDelegatesNetworkingSession">Social Events</a>.</p>
+
+<h3>Guest lecture by Biella Coleman</h3>
+
+<table>
+  <tr class="odd">
+    <td><b>What</b></td><td>Old & New Net Wars Over Free Speech, Freedom & Secrecy or How to Understand the Hacker & Lulz Battle against the C0$</td>
+  </tr>
+  <tr class="even">
+    <td><b>Where</b></td><td>Lecture Theatre 3 (Ground floor) in the Old Government Buildings<br>Victoria University, 15 Lambton Quay (<a href="http://bit.ly/7pR0YK">directions</a>)</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Time</b></td><td>5:30pm to 6:30pm</td>
+  </tr>
+</table>
+
+<p>For more information, see <a href="http://www.victoria.ac.nz/law/Centres/NZCIEL/EVENT%20DETAILS/2010/NZCIEL%20Gabriella%20Coleman%20Public%20Lecture1.pdf">the official announcement</a> or this <a href="http://www.cyberlaw.org.nz/?p=56">blog post</a>.</p>
