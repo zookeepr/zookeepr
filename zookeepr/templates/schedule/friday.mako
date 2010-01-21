@@ -9,12 +9,20 @@
       <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
     </tr>
     <tr>
-      <td>&nbsp;</td>
-      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room" align="center" valign="top"><i>Presentations</i></td>
-      <td class="programme_room" align="center" valign="top"><i>Tutorials</i></td>
+      <td class="programme_room_header">&nbsp;</td>
+      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
+      <td class="programme_room programme_room_header" align="center" valign="top"><i>Tutorials</i></td>
+    </tr>
+    <tr class="videoStreamLinks">
+      <th>&nbsp;</th>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/mfc">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/illott">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-2">Live&nbsp;Video</a>&nbsp;&laquo;</td>
+      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
     </tr>
   </thead>
 
