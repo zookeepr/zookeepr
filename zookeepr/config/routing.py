@@ -27,6 +27,10 @@ def make_map():
     map.connect('/media/news/rss',     controller='db_content', action='rss_news')
     map.connect('/media/news/{id}',    controller='db_content', action='view')
     map.connect('/media/in_the_press', controller='db_content', action='list_press')
+    map.connect('/about/map',          controller='map')
+    map.connect('/wellington/map',          controller='map')
+
+    map.connect('/sitemap',            controller='sitemap', action='view')
 
     # DB content
     map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
@@ -35,6 +39,10 @@ def make_map():
     map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
 
     # Schedule
+    map.connect('/schedule/video', controller='schedule', action='video_room', room=None)
+    map.connect('/programme/schedule/video', controller='schedule', action='video_room', room=None)
+    map.connect('/programme/schedule/video/{room}', controller='schedule', action='video_room', room=None)
+    map.connect('/schedule/video/{room}', controller='schedule', action='video_room', room=None)
     map.connect('/schedule/{day}', controller='schedule', day=None)
 
     # Proposal submission
@@ -47,14 +55,21 @@ def make_map():
     map.connect('/proposal/approve', controller='proposal', action='approve')
     map.connect('/review/summary',        controller='review', action='summary')
 
+    # Funding Review
+    map.connect('/funding/review_index', controller='funding', action='review_index')
+    map.connect('/funding/summary',      controller='funding', action='summary')
+    map.connect('/funding/approve',      controller='funding', action='approve')
+    map.connect('/funding_review/summary', controller='funding_review', action='summary')
+
     # schedule routes
-    map.connect('/programme/schedule/{day}',           controller='schedule', action='index', day=None)
+    map.connect('/programme/schedule',                controller='schedule', action='index', day='friday')
+    map.connect('/programme/schedule/{day}',          controller='schedule', action='index', day=None)
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
 
-    # Invoice Reminder
+    # registration and invoicing
     map.connect('/invoice/pdf/{id}',               controller='invoice', action='pdf', id=None)
-    #map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
-    #map.connect('/registration/remind',            controller='registration', action='remind', id=None)
+    map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
+    map.connect('/registration/remind',            controller='registration', action='remind', id=None)
     map.connect('/register/status',                controller='registration', action='status')
     map.connect('/registration/silly_description', controller='registration', action='silly_description')
     map.connect('/registration/generate_badges',   controller='registration', action='generate_badges')
@@ -66,6 +81,11 @@ def make_map():
     map.connect('/person/signout_confirm',           controller='person', action='signout_confirm')
     map.connect('/person/forgotten_password',        controller='person', action='forgotten_password')
     map.connect('/person/reset_password/{url_hash}', controller='person', action='reset_password')
+
+    # booklet
+    map.connect('/registration/professionals_latex', controller='registration', action='professionals_latex')
+    map.connect('/proposal/latex',                  controller='proposal', action='latex')
+
 
     # admin controller
     map.connect('/admin/{action}', controller='admin')

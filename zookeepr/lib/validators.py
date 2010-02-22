@@ -1,7 +1,13 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, Proposal, ProposalType, TargetAudience, ProposalStatus, Stream, AccommodationAssistanceType, TravelAssistanceType, DbContentType, Registration, Product, ProductCategory, Ceiling
+from zookeepr.model import Person, Proposal, ProposalType, TargetAudience
+from zookeepr.model import ProposalStatus, Stream, AccommodationAssistanceType
+from zookeepr.model import TravelAssistanceType, DbContentType, Registration
+from zookeepr.model import Product, ProductCategory, Ceiling, FundingType
+from zookeepr.model import FundingStatus, Funding
+from zookeepr.model import Invoice, Payment
+from zookeepr.model import SocialNetwork
 
 from zookeepr.config.lca_info import lca_info
 
@@ -65,6 +71,21 @@ class FileUploadValidator(validators.FancyValidator):
             raise Invalid('Files must not be bigger than 2MB', value, state)
         return dict(filename=filename, content=content)
 
+class FundingTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        funding_type = FundingType.find_by_id(int(value))
+        if funding_type != None and funding_type.available():
+          return funding_type
+        else:
+          return False
+
+class FundingStatusValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return FundingStatus.find_by_id(int(value))
+
+class FundingValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Funding.find_by_id(int(value))
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -84,6 +105,13 @@ class CeilingValidator(validators.FancyValidator):
     def _from_python(self, value, state):
         return value.id
 
+class SocialNetworkValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return SocialNetwork.find_by_id(value)
+
+    def _from_python(self, value, state):
+        return value.id
+
 
 
 class ProductCategoryValidator(validators.FancyValidator):
@@ -94,10 +122,19 @@ class ProductCategoryValidator(validators.FancyValidator):
         return value.id
 
 class ReviewSchema(BaseSchema):
-    score = validators.OneOf(["-2", "-1", "+1", "+2"])
+    score = validators.OneOf(["-2", "-1", "+1", "+2", "null"])
     stream = StreamValidator()
     miniconf = validators.String()
     comment = validators.String()
+
+class FundingReviewSchema(BaseSchema):
+    score = validators.OneOf(["-2", "-1", "+1", "+2", "null"])
+    comment = validators.String()
+
+class PrevLCAValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['prevlca'] != None and '98' in value['prevlca']:
+            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
 
 class ExistingRegistrationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -106,6 +143,26 @@ class ExistingRegistrationValidator(validators.FancyValidator):
             raise Invalid("Unknown registration ID.", value, state)
         else:
             return registration
+    def _from_python(self, value, state):
+        return value.id
+
+class ExistingInvoiceValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        invoice = Invoice.find_by_id(int(value), False)
+        if invoice is None:
+            raise Invalid("Unknown invoice ID.", value, state)
+        else:
+            return invoice
+    def _from_python(self, value, state):
+        return value.id
+
+class ExistingPaymentValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        payment = Payment.find_by_id(int(value), abort_404=False)
+        if payment is None:
+            raise Payment("Unknown payment ID.", value, state)
+        else:
+            return payment
     def _from_python(self, value, state):
         return value.id
 
@@ -133,6 +190,12 @@ class NotExistingPersonValidator(validators.FancyValidator):
             msg = "A person with this email already exists. Please try signing in first."
             raise Invalid(msg, value, state, error_dict={'email_address': msg})
 
+class SameEmailAddress(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['email_address'] != value['email_address2']:
+            msg = 'Email addresses don\'t match'
+            raise Invalid(msg, value, state, error_dict={'email_address2': msg})
+
 class PersonSchema(BaseSchema):
     #allow_extra_fields = False
 
@@ -140,6 +203,7 @@ class PersonSchema(BaseSchema):
     lastname = validators.String(not_empty=True)
     company = validators.String()
     email_address = validators.Email(not_empty=True)
+    email_address2 = validators.Email(not_empty=True)
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     phone = validators.String()
@@ -151,7 +215,7 @@ class PersonSchema(BaseSchema):
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm')]
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm'), SameEmailAddress()]
 
 
 
@@ -197,11 +261,16 @@ class CheckAccomDates(validators.FancyValidator):
 class ProductInCategory(validators.FancyValidator):
     """ Check to see if product is available """
     def validate_python(self, value, state):
-        for product in self.category.products:
-            if product.id == int(value) and product.available():
-                return
-            elif product.id == int(value) and product.available(stock=False):
-                raise Invalid("The selected product, " + product.description + ", has unfortunately sold out.", value, state)
+        p = Product.find_by_id(int(value))
+        for product in Product.find_by_category(p.category.id):
+            if product.id == int(value):
+                if product.available():
+                    return # All good!
+                elif product.available(stock=False):
+                    raise Invalid("The selected product, " + product.description + ", has unfortunately sold out.", value, state)
+                else:
+                    raise Invalid("The selected product, " + product.description + ", is not available.", value, state)
+
         raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
 
 #class ProductCheckbox(validators.FancyValidator):
@@ -227,7 +296,7 @@ class ProductQty(validators.Int):
             raise Invalid("The selected product, " + self.product.description + ", has unfortunately sold out.", value, state)
         return
 
-class PPEmail(validators.FancyValidator):
+class PPDetails(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes adult_field, email_field
 
@@ -239,6 +308,10 @@ class PPEmail(validators.FancyValidator):
             return
         if adult_field > 0 and value[self.email_field] == '':
             raise Invalid("You must supply a valid email address for the partners programme.", value, state)
+        if adult_field > 0 and value[self.name_field] == '':
+            raise Invalid("You must supply a valid name for the partners programme.", value, state)
+        if adult_field > 0 and value[self.mobile_field] == '':
+            raise Invalid("You must supply a valid mobile number for the partners programme.", value, state)
         return
 
 class ProDinner(validators.FancyValidator):
@@ -251,8 +324,11 @@ class ProDinner(validators.FancyValidator):
         except:
             #they haven't gotten a ticket yet
             return
+        if not self.dinner_field in value:
+            # the Speakers Dinner field is not present for non-speakers
+            return
         if len(value[self.dinner_field]) == 0 and ticket in self.ticket_id:
-            raise Invalid("The ticket you have chosen includes one free dinner ticket, however you haven't enterered anything into the Dinner tickets box. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself.", value, state)
+            raise Invalid("The ticket you have chosen includes one free dinner ticket, however you haven't enterered anything into the Speaker Dinner or Penguin Dinner tickets box. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself.", value, state)
         return
 
 class PPChildrenAdult(validators.FancyValidator):

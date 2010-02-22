@@ -26,6 +26,9 @@ log = logging.getLogger(__name__)
 
 class RoleSchema(BaseSchema):
     name = validators.PlainText()
+    pretty_name = validators.String()
+    comment = validators.String()
+    display_order = validators.Int()
 
 class NewRoleSchema(BaseSchema):
     role = RoleSchema()
@@ -57,6 +60,9 @@ class RoleController(BaseController): # Delete
 
         for key in self.form_result['role']:
             setattr(c.role, key, self.form_result['role'][key])
+
+        if c.role.pretty_name is not None and c.role.pretty_name == '':
+            setattr(c.role, 'pretty_name', None)
 
         # update the objects with the validated form data
         meta.Session.commit()
@@ -91,7 +97,7 @@ class RoleController(BaseController): # Delete
 
     @dispatch_on(POST="_delete") 
     def delete(self, id):
-        """Delete the proposal type
+        """Delete the role
 
         GET will return a form asking for approval.
 

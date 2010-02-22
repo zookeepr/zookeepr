@@ -3,11 +3,11 @@
 <% speakers = [] %>
 % if talk is not None:
 %   for person in talk.people:
-<%   speakers.append(person.firstname + ' ' + person.lastname) %>
+<%   speakers.append(h.escape(person.fullname())) %>
 %   endfor
-%   if len(speakers) == 1: 
+%   if len(speakers) == 1:
 <%    speakers = speakers[0] %>
-%   else: 
+%   else:
 <%    speakers = '%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1]) %>
 %   endif
 % endif
@@ -27,9 +27,10 @@
 <%   resources = '<br>[' + (",".join(slides_videos)) + ']' %>
 % endif
 
+<div class="programmeTalkId">${ talk_id }</div>
 <p class="talk_title">
 % if talk is not None:
-    ${ h.link_to(talk.title, url=h.url_for(controller='schedule', action='view_talk', id=talk.id)) }${ extra } <i>by</i> <span class="by_speaker">${ speakers }</span>
+    ${ h.link_to(talk.title, url=h.url_for(controller='schedule', action='view_talk', id=talk.id)) }${ extra } <i>by</i> <span class="by_speaker">${ speakers | n }</span>
 % else:
     <span class="error-message">Talk ${ talk_id } not found</span>
 % endif

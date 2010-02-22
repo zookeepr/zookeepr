@@ -6,7 +6,7 @@ To: ${ c.email }
 To reset the password on the ${ h.event_name() } website account
 for ${ c.email }, please click on the link below:
 
-http://${ h.host_name() }${ h.url_for(controller='person', action='reset_password', url_hash=c.conf_rec.url_hash) }
+  ${ h.lca_info['event_url'] }${ h.url_for(controller='person', action='reset_password', url_hash=c.conf_rec.url_hash) }
 
 Please note that this URL will expire after 24 hours.
 
@@ -20,11 +20,10 @@ website account.
 However, you don't appear to have an account on the site. If you want to
 sign up, please visit:
 
-  http://${ h.host_name() }/person/new
+  ${ h.lca_info['event_url'] }${ h.url_for(controller='person', action='new') }
 
 If you didn't ask for your password to be reset, please ignore this
 message.
 %endif
 
 The ${ h.event_name() } team
-http://${ h.host_name() }/contact

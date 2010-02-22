@@ -45,6 +45,8 @@ class ReviewController(BaseController):
 
         c.proposal = c.review.proposal
         defaults = h.object_to_defaults(c.review, 'review')
+        if defaults['review.score'] == 1 or defaults['review.score'] == 2:
+            defaults['review.score'] = '+%s'  % defaults['review.score']
 
         c.signed_in_person = h.signed_in_person()
         form = render('/review/edit.mako')
@@ -63,6 +65,30 @@ class ReviewController(BaseController):
 
         h.flash("Review has been edited!")
         redirect_to(action='view', id=id)
+
+    @dispatch_on(POST="_delete")
+    def delete(self, id):
+        c.review = Review.find_by_id(id)
+        
+        if c.review.reviewer.id != h.signed_in_person().id:
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        return render('/review/confirm_delete.mako')
+
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
+    def _delete(self, id):
+        c.review = Review.find_by_id(id)
+
+        if c.review.reviewer.id != h.signed_in_person().id:
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        meta.Session.delete(c.review)
+        meta.Session.commit()
+
+        h.flash("Review Deleted")
+        redirect_to(controller='review', action='index')
 
     def summary(self):
         c.review_collection=Review.find_all()

@@ -33,7 +33,10 @@ class NotExistingProductCategoryValidator(validators.FancyValidator):
 class ProductCategorySchema(BaseSchema):
     name = validators.String(not_empty=True)
     description = validators.String(not_empty=True)
+    note = validators.String()
     display = validators.String(not_empty=True)
+    display_grid = validators.Bool()
+    display_order = validators.Int(min=0, max=2000000, not_empty=True)
     min_qty = validators.Int(min=0, max=2000000)
     max_qty = validators.Int(min=0, max=2000000)
     # TODO: check that min_qty <= max_qty

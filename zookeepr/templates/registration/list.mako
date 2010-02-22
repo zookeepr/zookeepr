@@ -141,13 +141,13 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
     </p>
     </form>
     
-    <p style="float: right;">${ h.link_to('Export as CSV', url=attribs + "&export=true") }</p>
+    <p>${ h.link_to('Export as CSV', url=attribs + "&export=true") }</p>
     
-    <table style="clear: both;"> 
+    <table> 
       <thead><tr>
         <th>Rego</th>
-        <th>Name</th>
-        <th>Email</th>
+        <th>Name / Email</th>
+##        <th>Email</th>
         <th>Role(s)</th>
         <th>Invoices</th>
         <th>Notes</th>
@@ -155,10 +155,10 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 <% count = 0 %>
 % for registration in c.registration_collection:
     <% count += 1 %>
-      <tr>
+      <tr class="${ h.cycle('odd', 'even') }">
         <td>${ h.link_to('id: ' + str(registration.id), url=h.url_for(action='view', id=registration.id)) }</td>
-        <td>${ h.link_to(h.util.html_escape(registration.person.firstname + ' ' + registration.person.lastname), h.url_for(controller='person', action='view', id=registration.person.id)) }</td>
-        <td>${ registration.person.email_address | h }</td>
+        <td>${ h.link_to(h.util.html_escape(registration.person.firstname + ' ' + registration.person.lastname), h.url_for(controller='person', action='view', id=registration.person.id)) }<br />
+        ${ registration.person.email_address | h }</td>
         <td>
 <%
    role = []
@@ -173,7 +173,7 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
    for auth_role in registration.person.roles:
        role.append(auth_role.name)
 %>
-        ${ '<i>' + '</i>, <i>'.join(role) + '</i>' |n}
+        ${ '<i>' + '</i>,<br /> <i>'.join(role) + '</i>' |n}
         </td>
         <td>
 <%  firstinvoice = True %>
@@ -190,7 +190,7 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
         <small><a href="#" onclick="return display_toggle('products_${ rinvoice.id }')">+</a></small>
 <%
        display = "display: none;"
-       if rinvoice.is_void() is not True: display=""
+       #if rinvoice.is_void() is not True: display=""
 %>
         <div id="products_${ rinvoice.id }" style="${ display } background: #ddd;">
 %       for rproduct in rinvoice.items:
@@ -224,12 +224,13 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 % endfor
     </table>
 <p>
-<%
-if c.registration_pages.next_page:
-    m.write(h.link_to('<span style="float: right;">Next page</span>', url=attribs))
-if c.registration_pages.previous_page:
-    m.write(h.link_to('Previous page', url=h.url(page=c.registration_pages.current.previous)) + '  ')
-%>
+
+%if c.registration_pages.next_page:
+<span style="float: right;">${h.link_to('Next page', url=attribs)}</span>
+%endif
+%if c.registration_pages.previous_page:
+${h.link_to('Previous page', url=h.url_for(page=c.registration_pages.previous_page))}&nbsp;
+%endif
 </p>
 <p style="float: right;">Displaying ${ c.registration_pages.first_item
 }&#8211;${ c.registration_pages.last_item} of ${

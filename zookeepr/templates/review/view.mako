@@ -17,9 +17,15 @@
 
 <br />
 <p><b>Score:</b> ${ c.review.score | h }</p>
-<p><b>Recommended Stream:</b> ${ c.review.stream.name | h }</p>
+<p><b>Recommended Stream:</b>
+% if c.review.stream is not None:
+${ c.review.stream.name | h }
+% else:
+(none)
+% endif
+</p>
 % if c.review.proposal.proposal_type_id is not 2:
-<p><b>Recommended Miniconf:</b>${ c.review.miniconf | h }</p>
+<p><b>Recommended Miniconf:</b> ${ c.review.miniconf | h }</p>
 % endif
 
 <p><b>Reviewer Comment:</b></p>
@@ -27,5 +33,5 @@
 <p>${ c.review.comment | h}</p>
 </blockquote>
 
-${ h.link_to('Edit', url=h.url_for(action='edit')) }
+${ h.link_to('Edit', url=h.url_for(action='edit')) } - ${ h.link_to('Delete', url=h.url_for(action='delete')) }
 

@@ -16,44 +16,22 @@ for d in c.db_content_news_all:
 <h1>linux.conf.au 2010 in Wellington, New Zealand!</h1>
 
 <p>linux.conf.au is one of the world's best conferences for free and open source software!</p>
-<p>LCA2010 will be held from Monday 18 January to Friday 23 January 2010 at the <a href="/about/venue">Wellington Convention Centre</a> in <a href="/wellington/about">Wellington</a>, <a href="/about/new_zealand">New Zealand</a>, home of the little blue penguin or Kororā as they are called in Māori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?</p>
-<p>Subscribe to our <a href="/media/news/rss">news feed</a> to stay up to date with announcements, as we prepare to host the best <a href="about/linux.conf.au">linux.conf.au</a> yet!</p>
+<p>LCA2010 was held from Monday 18 January to Saturday 23 January 2010 at the <a href="/about/venue">Wellington Convention Centre</a> in <a href="/wellington/about">Wellington</a>, <a href="/about/new_zealand">New Zealand</a>, home of the little blue penguin or Kororā as they are called in Māori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?</p>
+<p>Watch this space, sign up for the <a href="http://lists.linux.org.au/listinfo/announce">mailing list</a>, follow us on <a href="http://twitter.com/linuxconfau">Twitter</a>/<a href="http://identi.ca/group/lca2010">Identica</a> or grab the <a href="http://www.lca2010.org.nz/media/news/rss">RSS feed</a>!</p>
 
-<h1>linux.conf.au 2010 Current Happenings</h1>
+<h1>Can't get enough linux.conf.au?</h1>
 
-<h2>Call for Papers</h2>
-<p>Monday 29 June 2009 – Call for Papers are now open! The LCA2010 Papers Committee is looking for a broad range of papers spanning everything from programming and software to desktop and userspace to community, government and education.  
-If you would like to take this opportunity to submit a Paper to LCA2010, please visit <a href="programme/papers_info">Papers Info</a> for more information before <a href="programme/submit_a_paper">Submitting a Paper</a>.</p>
+<p>We're all sad that linux.conf.au is over for another year.  But the good news is that you only have to wait until 2011 for the <b>next</b> linux.conf.au!  So stop Following the Signs to Wellington, and now <a href="http://followtheflow.org/">Follow the Flow</a> to Brisbane!</p>
 
-<table>
-<tr class="odd">
-  <td>Call for Papers opens</td><td>Monday 29 June 2009</td>
-</tr>
-<tr class="even">
-  <td>Call for Papers closes</td><td>Friday 24 July 2009</td>
-</tr>
-<tr class="odd">
-  <td>Papers Notifcations</td><td>Early September 2009</td>
-</tr>
-</table>
+<h1>Videos of LCA2010</h1>
 
-<h2>Call for Miniconfs</h2>
+<p>Didn't see all the talks that you wanted to see?  Check out the videos for LCA2010 which will be available late February/early March so watch this space.</p>
 
-<p>Monday 15 June 2009 – Call for Miniconfs are now open!. LCA2010 provides the opportunity of hosting 1-day mini-conferences on a variety of Free Software related subjects; from Linux and the BSDs to OpenOffice.org, from networking to audio-visual magic, from deep hacks to Creative Commons.  
-If you would like to take this opportunity to submit a Miniconf to LCA2010, please visit <a href="programme/miniconf_info">Miniconf Info</a> for more information before <a href="programme/submit_a_miniconf">Submitting a Miniconf</a>.</p>
+<h1>Over $33,000 raised in support of Life Flight Trust!</h1>
 
-<table>
-<tr class="odd">
-  <td>Call for Miniconfs opens</td><td>Monday 15 June 2009</td>
-</tr>
-<tr class="even">
-  <td>Call for Miniconfs closes</td><td>Friday 17 July 2009</td>
-</tr>
-<tr class="odd">
-  <td>Miniconf Notifications</td><td>Early September 2009</td>
-</tr>
-</table>
+<p>As supporters of Life Flight Trust, linux.conf.au 2010 raised over $33,000 in support of a national air ambulance service! The delegates in support of a group called the Wenches for Winching donated the most amount of money to Life Flight Trust, and won a unique, adrenlin-packed experience: A trip for four as honorary crew-members on a helicopter winch training mission, where they wil be winched down from the helicopter to the ground and up again on an 8mm steel cable!  Theodore T'so, as the individual who donated the most amount of money to Life Flight Trust, won a framed full-colour aerial photograph of Wellington city, shot by, Crew Chief, Dave Greenberg from the Westpac Rescue Helicopter.</p>
 
+<h2>You can still <a href="http://www.fundraiseonline.co.nz/LCA2010/">donate here</a></h2>
 
 <%def name="big_promotion()">
 % for d in c.db_content_news_all:

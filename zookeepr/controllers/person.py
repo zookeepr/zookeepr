@@ -5,7 +5,7 @@ from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
-from formencode import validators, htmlfill
+from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
@@ -19,8 +19,9 @@ from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
 from zookeepr.model import Person, PasswordResetConfirmation, Role
+from zookeepr.model import SocialNetwork
 
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, lca_rego
 
 import datetime
 
@@ -37,14 +38,20 @@ class PasswordResetSchema(BaseSchema):
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
+class _SocialNetworkSchema(BaseSchema):
+   name = validators.String()
+   account_name = validators.String()
+
 class NewPersonSchema(BaseSchema):
     pre_validators = [NestedVariables]
 
     person = PersonSchema()
+    social_network = ForEach(_SocialNetworkSchema())
 
 class _UpdatePersonSchema(BaseSchema):
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
+    email_address = validators.String()
     company = validators.String()
     phone = validators.String()
     mobile = validators.String()
@@ -57,6 +64,7 @@ class _UpdatePersonSchema(BaseSchema):
 
 class UpdatePersonSchema(BaseSchema):
     person = _UpdatePersonSchema()
+    social_network = ForEach(_SocialNetworkSchema())
     pre_validators = [NestedVariables]
 
 class RoleSchema(BaseSchema):
@@ -213,8 +221,11 @@ class PersonController(BaseController): #Read, Update, List
             h.auth.no_role()
         c.form = 'edit'
         c.person = Person.find_by_id(id)
+        c.social_networks = SocialNetwork.find_all()
+        c.person.fetch_social_networks()
 
         defaults = h.object_to_defaults(c.person, 'person')
+        defaults['person.email_address2'] = c.person.email_address
 
         form = render('/person/edit.mako')
         return htmlfill.render(form, defaults)
@@ -234,31 +245,38 @@ class PersonController(BaseController): #Read, Update, List
         for key in self.form_result['person']:
             setattr(c.person, key, self.form_result['person'][key])
 
+        for sn in self.form_result['social_network']:
+           network = SocialNetwork.find_by_name(sn['name'])
+           if sn['account_name']:
+               c.person.social_networks[network] = sn['account_name']
+           elif network in c.person.social_networks:
+               del c.person.social_networks[network]
+
         # update the objects with the validated form data
         meta.Session.commit()
 
         redirect_to(action='view', id=id)
 
+    @authorize(h.auth.is_valid_user)
+    def reprint(self, id):
+        c.person = Person.find_by_id(id)
+        c.person.badge_printed = False
+        meta.Session.commit()
+        redirect_to(action='view', id=id)
 
     @dispatch_on(POST="_new") 
     def new(self):
         """Create a new person form.
-
-        Non-CFP persons get created through this interface.
-
-        See ``cfp.py`` for more person creation code.
         """
         if h.signed_in_person():
             h.flash("You're already logged in")
             redirect_to('home')
 
-        c.conference_open = False
-        if lca_info['conference_status'] == 'open':
-            c.conference_open = True
-
         defaults = {
             'person.country': 'NEW ZEALAND',
         }
+        c.social_networks = SocialNetwork.find_all()
+
         form = render('/person/new.mako')
         return htmlfill.render(form, defaults)
 
@@ -270,13 +288,23 @@ class PersonController(BaseController): #Read, Update, List
         # Remove fields not in class
         results = self.form_result['person']
         del results['password_confirm']
+        del results['email_address2']
         c.person = Person(**results)
+        c.person.email_address = c.person.email_address.lower()
         meta.Session.add(c.person)
+
+        for sn in self.form_result['social_network']:
+           network = SocialNetwork.find_by_name(sn['name'])
+           if sn['account_name']:
+               c.person.social_networks[network] = sn['account_name']
+
         meta.Session.commit()
 
-        email(c.person.email_address, render('/person/new_person_email.mako'))
-
-        return render('/person/thankyou.mako')
+        if lca_rego['confirm_email_address'] == 'no':
+            redirect_to(controller='person', action='confirm', confirm_hash=c.person.url_hash)
+        else:
+            email(c.person.email_address, render('/person/new_person_email.mako'))
+            return render('/person/thankyou.mako')
 
     @authorize(h.auth.has_organiser_role)
     def index(self):

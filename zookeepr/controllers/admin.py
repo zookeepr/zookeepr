@@ -15,9 +15,14 @@ from zookeepr.lib.validators import BaseSchema
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.model import meta, Person, Product
+from zookeepr.model import meta, Person, Product, Registration, ProductCategory
+from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice
+from zookeepr.model.social_network import SocialNetwork
+from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info, lca_rego
+
+from sqlalchemy import and_, or_
 
 log = logging.getLogger(__name__)
 
@@ -26,7 +31,7 @@ import re
 from datetime import datetime
 import os, random, re, urllib
 #from zookeepr.controllers.proposal import Proposal
-#from zookeepr.model import Registration, Invoice, PaymentReceived, Product, InvoiceItem
+#from zookeepr.model import Invoice, PaymentReceived, Product, InvoiceItem
 #from zookeepr.model.registration import RegoNote
 
 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -60,7 +65,9 @@ class AdminController(BaseController):
           ('/db_content', '''Edit HTML pages that are stored in the database. [Content]'''),
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
           ('/person', '''List of people signed up to the webpage (with option to view/change their zookeepr roles) [Accounts]'''),
+          ('/social_network', '''List social networks that people can indicate they are members of [Accounts]'''),
           ('/product', '''Manage all of zookeeprs products. [Inventory]'''),
+          ('/product_category', '''Manage all of zookeeprs product categories. [Inventory]'''),
           ('/voucher', '''Manage vouchers to give to delegates. [Inventory]'''),
           ('/ceiling', '''Manage ceilings and available inventory. [Inventory]'''),
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
@@ -73,7 +80,7 @@ class AdminController(BaseController):
 
           #('/accommodation', ''' [accom] '''),
           #('/voucher_code', ''' Voucher codes [rego] '''),
-          #('/invoice/remind', ''' '''),
+          ('/invoice/remind', ''' Payment reminders [Invoicing] '''),
           #('/registration', ''' Summary of registrations, including summary of accommodation [rego,accom] '''),
           #('/invoice', ''' List of invoices (that is, registrations). This is probably the best place to check whether a given person has or hasn't registered and/or paid. [rego] '''),
           ('/pony', ''' OMG! Ponies!!! [ZK]'''),
@@ -84,6 +91,11 @@ class AdminController(BaseController):
           ('/proposal/summary', ''' Summary of the reviewed papers [CFP] '''),
           ('/review/summary', ''' List of reviewers and scores [CFP] '''),
           ('/proposal/approve', ''' Change proposal status for papers [CFP] '''),
+          ('/funding/review_index', ''' To see what you need to reveiw [Funding] '''),
+          ('/funding_type', ''' Manage Funding Types [Funding] '''),
+          ('/funding/approve', ''' Change proposal status for funding applications [Funding] '''),
+          ('/proposal/latex', ''' Proposals with LaTeX formatting [Booklet] '''),
+          ('/registration/professionals_latex', ''' Profressionals with LaTeX formatting [Booklet] '''),
 
           #('/registration/list_miniconf_orgs', ''' list of miniconf
           #organisers (as the registration code knows them, for miniconf
@@ -105,13 +117,11 @@ class AdminController(BaseController):
                     sect[s] = sect.get(s, []) + [(page, desc)]
             else:
                 sect['Other'] = sect.get('Other', []) + [(page, desc)]
-        text = '<div class = \'contents\'>\n\t\t\t<h3>Admin functions</h3>\n\t\t\t<ul>\n\t\t\t\t<li>'
         c.noescape = True
 
         sects = [(s.lower(), s) for s in sect.keys()]; sects.sort()
-        text += '\t\t\t\t<li>'.join(['<a href="#%s">%s</a></li>\n'%(s, s)
-                                                  for s_lower, s in sects])
-        text += '\t\t\t</ul>\n\t\t\t</div>'
+        c.sects = sects
+        text = ''
         sect_text = ""
         for s_lower, s in sects:
             c.text = '<a name="%s"></a>' % s
@@ -124,94 +134,12 @@ class AdminController(BaseController):
         return render('admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
-    def activate_talks(self):
-        """
-        Set the talks to accepted as per the list in the admin controller. [Schedule]
-        """
-        # {theatre: day: [id's]}
-        keynotes = {'Stanley Burbury': {
-                              'Wednesday':  (227),
-                              #'Thursday':   (),
-                              #'Friday':     ()
-                           }
-                         }
-        miniconfs = {'Unknown': {
-                              'Monday':  (8  , 157, 9  , 49 , 83 , 26 , 201),
-                              'Tuesday': (32 , 108, 132, 116, 121) #doesn't include 2 dayers
-                           }
-                         }
-        tutorials = {'Stanley Burbury 1': {
-                              'Wednesday': (40),
-                              'Thursday':  (143)
-                           },
-                           'Arts Lecture Theatre': {
-                              'Wednesday': (43),
-                              'Thursday':  (181)
-                           },
-                           'Stanley Burbury 2': {
-                              'Wednesday': (164),
-                              'Thursday':  (151)
-                           },
-                           'Social Science 1': {
-                              'Wednesday': (112),
-                              'Thursday':  (5)
-                           },
-                           'Social Science 2': {
-                              'Wednesday': (70),
-                              #'Thursday':  ()
-                           }
-                         }
-        presentations = {'Stanley Burbury 1': {
-                              'Wednesday': (51 , 205, 11 , 225),
-                              'Thursday':  (219, 48 , 87 , 90),
-                              'Friday':    (156, 175, 203, 189, 126)
-                           },
-                           'Arts Lecture Theatre': {
-                              'Wednesday': (218, 173, 22 , 84 ),
-                              'Thursday':  (131, 45 , 56 , 13 ),
-                              'Friday':    (91 , 178, 106, 171, 30 )
-                           },
-                           'Stanley Burbury 2': {
-                              'Wednesday': (136, 12 , 78 , 99 ),
-                              'Thursday':  (228, 122, 29 , 179),
-                              'Friday':    (210, 64 , 79 , 33 , 105)
-                           },
-                           'Social Science 1': {
-                              'Wednesday': (77 , 148, 208, 52 ),
-                              'Thursday':  (66 , 187, 93 , 139),
-                              'Friday':    (158, 176, 166, 76 , 172)
-                           },
-                           'Social Science 2': {
-                              'Wednesday': (149, 123, 211, 192),
-                              'Thursday':  (67 , 161, 80, 117, 92 , 119),
-                              'Friday':    (152, 46 , 145, 72 , 217)
-                           }
-                         }
-
-        sql_execute("UPDATE proposal SET theatre = NULL, scheduled = NULL, accepted = FALSE") # set all talks to unaccepted to start
-
-        timestamp = {'Monday':    '2010-01-20',
-                     'Tuesday':   '2010-01-21',
-                     'Wednesday': '2010-01-22',
-                     'Thursday':  '2010-01-23',
-                     'Friday':    '2010-01-24'}
-        for collection in (keynotes, miniconfs, tutorials, presentations):
-            for (room, days) in collection.iteritems():
-                for (day, ids) in days.iteritems():
-                    if type(ids) is int:
-                        ids = '(' + str(ids) + ')' # fix for single tuple
-                    sql_execute("UPDATE proposal SET theatre = '%s', scheduled = '%s', accepted = TRUE WHERE id IN %s" % (room, timestamp[day], str(ids)))
-        c.text = "<p>Updated successfully</p>"
-        return render("admin/text.mako")
-
-    @authorize(h.auth.has_organiser_role)
     def rej_papers_abstracts(self):
-        """ Rejected papers, with abstracts (for the miniconf organisers)
-        [Schedule] """
+        """ Rejected papers, with abstracts (for the miniconf organisers) [Schedule] """
         return sql_response("""
             SELECT
-                proposal.id, 
-                proposal.title, 
+                proposal.id,
+                proposal.title,
                 proposal_type.name AS "proposal type",
                 proposal.project,
                 proposal.url as project_url,
@@ -221,23 +149,39 @@ class AdminController(BaseController):
                 person.url as homepage,
                 person.bio,
                 person.experience,
-                stream.name AS stream,
-                MAX(review.score),
-                MIN(review.score),
-                AVG(review.score)
-            FROM proposal 
+                (SELECT review2.miniconf FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.miniconf ORDER BY count(review2.miniconf) DESC LIMIT 1) AS miniconf,
+                MAX(review.score) as max,
+                MIN(review.score) as min,
+                AVG(review.score) as avg
+            FROM proposal
                 LEFT JOIN review ON (proposal.id=review.proposal_id)
                 LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
                 LEFT JOIN stream ON (review.stream_id=stream.id)
                 LEFT JOIN person_proposal_map ON (proposal.id = person_proposal_map.proposal_id)
                 LEFT JOIN person ON (person_proposal_map.person_id = person.id)
+                LEFT JOIN proposal_status ON (proposal.status_id = proposal_status.id)
             WHERE
-                review.stream_id = (SELECT review2.stream_id FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.stream_id ORDER BY count(review2.stream_id) DESC LIMIT 1)
-                AND proposal.proposal_type_id != 2
-                AND proposal.accepted = False
+                proposal_type.name <> 'Miniconf'
+                AND proposal_status.name = 'Rejected'
             GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name, person.firstname, person.lastname, person.email_address, person.url, person.bio, person.experience, proposal.abstract, proposal.project, proposal.url
-            ORDER BY proposal.id ASC, stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
+            ORDER BY miniconf, proposal_type.name ASC
         """)
+
+    def papers_by_room(self, latex=False):
+        """ Papers by room for use by the room MC. [Schedule] """
+
+        c.papers = meta.Session.query(Proposal).order_by(Proposal.building).order_by(Proposal.theatre).order_by(Proposal.scheduled).filter(and_(ProposalType.name != 'Miniconf', ProposalStatus.name == 'Accepted', Proposal.scheduled != None)).all()
+
+        if latex:
+          response.headers['Content-type']='text/plain; charset=utf-8'
+          return render('admin/papers_by_room_latex.mako')
+        else:
+          return render('admin/papers_by_room.mako')
+
+    def papers_by_room_latex(self):
+        """ Papers by room for use by the room MC as LaTeX. [Schedule] """
+
+        return self.papers_by_room(True)
 
     def collect_garbage(self):
         """
@@ -260,7 +204,7 @@ class AdminController(BaseController):
           garbage, uncollectable,
           after,
         ))
-        
+
     @authorize(h.auth.has_organiser_role)
     def known_objects(self):
         """
@@ -280,7 +224,7 @@ class AdminController(BaseController):
         c.data.sort(reverse=True)
         c.columns = 'count', '%', 'type'
         c.text = "Total: %d" % total
-        return render('admin/table.mako')
+        return table_response()
 
     def tuz(self):
       return render("admin/tuz.mako")
@@ -307,15 +251,27 @@ class AdminController(BaseController):
         from role, person, person_role_map
         where person.id=person_id and role.id=role_id
         order by role, lastname, firstname""")
+
     @authorize(h.auth.has_organiser_role)
-    def proposal_list(self):
-        """ Large table of all the proposals, presenters and dates. [CFP] """
+    def paper_list(self):
+        """ Large table of all the paper proposals. [CFP] """
         return sql_response("""
-          SELECT proposal.*,
-            person.firstname || ' ' || person.lastname as name, person.email_address, person.address1, person.address2, person.city, person.state, person.postcode, person.country, person.company, person.phone, person.mobile, person.url, person.experience, person.bio, person.creation_timestamp as account_creation
-          FROM proposal, person, person_proposal_map
-          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id
-          ORDER BY proposal.title ASC;
+          SELECT proposal.id, proposal.title, proposal.creation_timestamp AS ctime, proposal.last_modification_timestamp AS mtime, proposal_status.name AS status,
+            person.firstname || ' ' || person.lastname as name, person.email_address
+          FROM proposal, person, person_proposal_map, proposal_type, proposal_status
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name <> 'Miniconf' AND proposal_status.id = proposal.status_id
+          ORDER BY proposal.id ASC;
+        """)
+
+    @authorize(h.auth.has_organiser_role)
+    def miniconf_list(self):
+        """ Large table of all the miniconf proposals. [CFP] """
+        return sql_response("""
+          SELECT proposal.id, proposal.title, proposal.creation_timestamp AS ctime, proposal.last_modification_timestamp AS mtime, proposal_status.name AS status,
+            person.firstname || ' ' || person.lastname as name, person.email_address
+          FROM proposal, person, person_proposal_map, proposal_type, proposal_status
+          WHERE proposal.id = person_proposal_map.proposal_id AND person.id = person_proposal_map.person_id AND proposal_type.id = proposal.proposal_type_id AND proposal_type.name = 'Miniconf' AND proposal_status.id = proposal.status_id
+          ORDER BY proposal.id ASC;
         """)
 
     @authorize(h.auth.has_reviewer_role)
@@ -365,9 +321,9 @@ class AdminController(BaseController):
                     proposal.id,
                     proposal.title,
                     proposal_type.name AS "proposal type",
-                    MAX(review.score),
-                    MIN(review.score),
-                    AVG(review.score)
+                    MAX(review.score) AS max,
+                    MIN(review.score) AS min,
+                    AVG(review.score) AS avg
                 FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
@@ -380,14 +336,14 @@ class AdminController(BaseController):
         """ List of all the proposals ordered by stream, max score, min score then average [CFP] """
         return sql_response("""
                 SELECT
-                    proposal.id, 
-                    proposal.title, 
+                    proposal.id,
+                    proposal.title,
                     proposal_type.name AS "proposal type",
                     stream.name AS stream,
-                    MAX(review.score),
-                    MIN(review.score),
-                    AVG(review.score)
-                FROM proposal 
+                    MAX(review.score) AS max,
+                    MIN(review.score) AS min,
+                    AVG(review.score) AS avg
+                FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
                     LEFT JOIN stream ON (review.stream_id=stream.id)
@@ -395,6 +351,66 @@ class AdminController(BaseController):
                 GROUP BY proposal.id, proposal.title, proposal_type.name, stream.name
                 ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
                 """)
+
+    @authorize(h.auth.has_funding_reviewer_role)
+    def funding_requests_by_strong_rank(self):
+        """ List of funding applications ordered by number of certain score / total number of reviewers [Funding] """
+        query = """
+                SELECT
+                    funding.id,
+                    person.firstname || ' ' || person.lastname AS fullname,
+                    funding_type.name AS "funding type",
+                    funding_review.score,
+                    COUNT(funding_review.id) AS "#reviewers at this score",
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM funding_review as review2
+                            WHERE review2.funding_id = funding.id
+                    ) AS "#total reviewers",
+                    CAST(
+                        CAST(
+                            COUNT(funding_review.id) AS float(8)
+                        ) / CAST(
+                            (SELECT COUNT(review2.id)
+                                FROM funding_review as review2
+                                WHERE review2.funding_id = funding.id
+                            ) AS float(8)
+                        ) AS float(8)
+                    ) AS "#reviewers at this score / #total reviews %%"
+                FROM funding
+                    LEFT JOIN funding_review ON (funding.id=funding_review.funding_id)
+                    LEFT JOIN funding_type ON (funding.funding_type_id=funding_type.id)
+                    LEFT JOIN person ON (funding.person_id=person.id)
+                WHERE
+                    (
+                        SELECT COUNT(review2.id)
+                            FROM funding_review as review2
+                            WHERE review2.funding_id = funding.id
+                    ) != 0
+                GROUP BY funding.id, fullname, funding_review.score, funding_type.name
+                ORDER BY funding_type.name ASC, funding_review.score DESC, "#reviewers at this score / #total reviews %%" DESC, funding.id ASC"""
+
+        return sql_response(query)
+
+    @authorize(h.auth.has_funding_reviewer_role)
+    def funding_requests_by_max_rank(self):
+        """ List of all the funding applications ordered max score, min score then average [Funding] """
+        return sql_response("""
+                SELECT
+                    funding.id,
+                    person.firstname || ' ' || person.lastname AS fullname,
+                    funding_type.name AS "funding type",
+                    MAX(funding_review.score) AS max,
+                    MIN(funding_review.score) AS min,
+                    AVG(funding_review.score) AS avg
+                FROM funding
+                    LEFT JOIN funding_review ON (funding.id=funding_review.funding_id)
+                    LEFT JOIN funding_type ON (funding.funding_type_id=funding_type.id)
+                    LEFT JOIN person ON (funding.person_id=person.id)
+                GROUP BY funding.id, fullname, funding_type.name
+                ORDER BY funding_type.name ASC, max DESC, min DESC, avg DESC, funding.id ASC
+                """)
+
     @authorize(h.auth.has_organiser_role)
     def countdown(self):
         """ How many days until conference opens """
@@ -402,7 +418,44 @@ class AdminController(BaseController):
         c.text = "%.1f days" % (timeleft.days +
                                                timeleft.seconds / (3600*24.))
         return render('/admin/text.mako')
-        
+
+    @authorize(h.auth.has_organiser_role)
+    def registered_followup(self):
+        """ CSV export of registrations for mail merges [Registrations] """
+        c.data = []
+        c.text = ''
+        c.columns = ('id', 'name', 'firstname', 'email_address', 'country', 'speaker', 'keynote', 'miniconf', 'dietary_requirements', 'special_requirements', 'paid')
+        c.noescape = True
+        for r in meta.Session.query(Registration).all():
+          # We only care about people that have valid invoices.
+          if not r.person.has_valid_invoice():
+            continue
+
+          row = []
+          row.append(str(r.person.id))
+          row.append(r.person.fullname())
+          row.append(r.person.firstname)
+          row.append(r.person.email_address)
+          row.append(r.person.country)
+          if r.person.is_speaker():
+            row.append('Yes')
+          else:
+            row.append('No')
+          row.append('No')
+          if r.person.is_miniconf_org():
+            row.append('Yes')
+          else:
+            row.append('No')
+          row.append(r.diet)
+          row.append(r.special)
+          if r.person.paid():
+            row.append('Yes')
+          else:
+            row.append('No')
+
+          c.data.append(row)
+        return table_response()
+
     @authorize(h.auth.has_organiser_role)
     def registered_speakers(self):
         """ Listing of speakers and various stuff about them [Speakers] """
@@ -459,8 +512,8 @@ class AdminController(BaseController):
               consents = []
               for t in talks:
                   cons = [con.replace('_', ' ') for con in cons_list
-                                               if getattr(p.registration, con)] 
-                  if len(cons)==lend(cons_list):
+                                               if getattr(t, con)]
+                  if len(cons)==len(cons_list):
                     consents.append('Release All')
                   elif len(cons)==0:
                     consents.append('None')
@@ -488,7 +541,7 @@ class AdminController(BaseController):
         for key, value in shirt_totals.items():
             c.text += "<br>" + str(key) + ": " + str(value)
         c.text += "</p>"
-        return render('/admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def reconcile(self):
@@ -545,7 +598,7 @@ class AdminController(BaseController):
             '; '.join([', '.join(d) for d in d1_t])
           ))
 
-        return render('/admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def linux_australia_signup(self):
@@ -556,7 +609,7 @@ class AdminController(BaseController):
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname, 
+        query = """SELECT person.firstname, person.lastname,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -576,7 +629,7 @@ class AdminController(BaseController):
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname, 
+        query = """SELECT person.firstname, person.lastname,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -596,7 +649,7 @@ class AdminController(BaseController):
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname, 
+        query = """SELECT person.firstname, person.lastname,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -611,7 +664,7 @@ class AdminController(BaseController):
     def lca_announce_signup(self):
         """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
 
-        c.text = """<p>People who ticked "I want to sign up to the low traffic conference 
+        c.text = """<p>People who ticked "I want to sign up to the low traffic conference
         announcement mailing list!" (whether or not they then went on to pay for
         the conference).</p><p>Copy and paste the following into mailman</p>
         <p><textarea cols="100" rows="25">"""
@@ -645,6 +698,33 @@ class AdminController(BaseController):
         return render('admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
+    def partners_programme_signup(self):
+        """ List of partners programme people for mailing list [Mailing Lists] """
+        c.text = """<p>Partners Programme people.  If they don't have an email address listed, then we'll use the person actually registered for the conference.</p>
+        <p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners Programme')).all()
+
+        for item in partners_list:
+            for invoice_item in item.invoice_items:
+                if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
+                    r = invoice_item.invoice.person.registration
+                    if r.partner_email is not None:
+                        c.text += r.partner_name + " &lt;" + r.partner_email + "&gt;\n"
+                    elif r.partner_name is not None:
+                        c.text += r.partner_name + " &lt;" + r.person.email_address + "&gt;\n"
+                    else:
+                        c.text += r.person.fullname() + " &lt;" + r.person.email_address + "&gt;\n"
+                    count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return table_response()
+
+
+    @authorize(h.auth.has_organiser_role)
     def accom_wp_registers(self):
         """ People who selected "Wrest Point" as their accommodation option. (Includes un-paid invoices!) [Accommodation] """
         query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
@@ -662,13 +742,13 @@ class AdminController(BaseController):
         for item in uni_list:
             for invoice_item in item.invoice_items:
                 if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
-                    c.data.append([item.description, 
-                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
-                                   invoice_item.invoice.person.email_address, 
+                    c.data.append([item.description,
+                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname,
+                                   invoice_item.invoice.person.email_address,
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
-        return render('admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def speakers_partners(self):
@@ -685,19 +765,20 @@ class AdminController(BaseController):
             if person.is_speaker():
                 for invoice in person.invoices:
                     for item in invoice.items:
-                        if item.description.startswith("Partners Programme"):
-                            partners.append(item.description + " x" + str(item.qty))
-                            total_partners += item.qty
-                        if item.description.startswith("Dinner"):
-                            dinner_tickets += item.qty
-                            total_dinner += item.qty
-                c.data.append([person.firstname + " " + person.lastname,
+                        if item.product is not None:
+                            if item.product.category.name == "Partners Programme":
+                                partners.append(item.description + " x" + str(item.qty))
+                                total_partners += item.qty
+                            if item.product.category.name == "Penguin Dinner":
+                                dinner_tickets += item.qty
+                                total_dinner += item.qty
+                c.data.append([person.fullname(),
                                person.email_address,
                                ", ".join(partners),
                                str(dinner_tickets)])
                 speakers_count += 1
         c.data.append(['TOTALS:', str(speakers_count) + ' speakers', str(total_partners) + ' partners', str(total_dinner) + ' dinner tickets'])
-        return render('/admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def talks(self):
@@ -708,7 +789,8 @@ class AdminController(BaseController):
                     LEFT JOIN person_proposal_map ON (person_proposal_map.proposal_id = proposal.id)
                     LEFT JOIN person ON (person_proposal_map.person_id = person.id)
                     LEFT JOIN proposal_type ON (proposal_type.id = proposal.proposal_type_id)
-                    WHERE proposal.accepted = True
+                    LEFT JOIN proposal_status ON (proposal_status.id = proposal.status_id)
+                    WHERE proposal_status.name = 'Accepted'
                     ORDER BY proposal_type.name, proposal.scheduled, proposal.title
         """
         return sql_response(query)
@@ -725,28 +807,31 @@ class AdminController(BaseController):
                 c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
                 total += item.total()
         c.data.append(['','','Total:', h.number_to_currency(total/100)])
-        return render('/admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def partners_programme(self):
         """ List of partners programme contacts [Partners Programme] """
-        partners_list = meta.Session.query(Product).filter(Product.description.like('Partners Programme%')).all()
+        partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners Programme')).all()
         c.text = "*Checkin and checkout dates aren't an accurate source."
-        c.columns = ['Partner Type', 'Registration Name', 'Registration e-mail', 'Partners e-mail', 'Checkin*', 'Checkout*']
+        c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile', 'Checkin*', 'Checkout*']
         c.data = []
         for item in partners_list:
             for invoice_item in item.invoice_items:
                 if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
-                    c.data.append([item.description, 
-                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname, 
-                                   invoice_item.invoice.person.email_address, 
-                                   invoice_item.invoice.person.registration.partner_email, 
+                    c.data.append([item.description,
+                                   invoice_item.qty,
+                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname,
+                                   invoice_item.invoice.person.email_address,
+                                   invoice_item.invoice.person.registration.partner_name,
+                                   invoice_item.invoice.person.registration.partner_email,
+                                   invoice_item.invoice.person.registration.partner_mobile,
                                    invoice_item.invoice.person.registration.checkin,
                                    invoice_item.invoice.person.registration.checkout
                                  ])
-        return render('/admin/table.mako')
+        return table_response()
 
-    @authorize(h.auth.has_planetfeed_role)
+    @authorize(h.auth.has_organiser_role)
     def planet_lca(self):
         """ List of blog RSS feeds, planet compatible. [Mailing Lists] """
         c.text = """<p>List of RSS feeds for LCA planet.</p>
@@ -855,12 +940,12 @@ class AdminController(BaseController):
                                dinner_tickets,
                                ", ".join(partners_programme)])
 
-        return render('admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def miniconf_preferences(self):
         """ Preferred miniconfs. All people - including unpaid [Statistics] """
-        registration_list = meta.Session.query(Registration).all()
+        registration_list = Registration.find_all()
         c.columns = ['miniconf', 'People']
         c.data = []
         miniconfs = {}
@@ -882,7 +967,7 @@ class AdminController(BaseController):
             '|'.join([label for (label, count) in c.data]),
         )
 
-        return render('admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def previous_years_stats(self):
@@ -915,7 +1000,7 @@ class AdminController(BaseController):
             '|'.join([label for (label, count) in c.data]),
         )
         c.text += "Veterans: " + ", ".join(veterans) + "<br><br>Veterans of LCA (excluding CALU): " + ", ".join(veterans_lca)
-        return render('admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def acc_papers_xml(self):
@@ -923,10 +1008,9 @@ class AdminController(BaseController):
         in AV splash screens [AV] """
         c.talks = meta.Session.query(Proposal).filter_by(accepted=True).all()
 
-        res = Response(render('admin/acc_papers_xml.mako', fragment=True))
-        res.headers['Content-type']='text/plain; charset=utf-8'
-        return res
-        
+        response.headers['Content-type']='text/plain; charset=utf-8'
+        return render('admin/acc_papers_xml.mako', fragment=True)
+
     @authorize(h.auth.has_organiser_role)
     def people_by_country(self):
         """ Registered and paid people by country [Statistics] """
@@ -944,7 +1028,26 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render('admin/table.mako')
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def speakers_by_country(self):
+        """ Speakers by country [Statistics] """
+        data = {}
+        for person in meta.Session.query(Person).all():
+            if person.is_speaker():
+                country = person.country.capitalize()
+                data[country] = data.get(country, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def people_by_state(self):
@@ -963,7 +1066,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render('admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def favourite_distro(self):
@@ -981,7 +1084,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render('admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def favourite_editor(self):
@@ -999,7 +1102,7 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render('admin/table.mako')
+        return table_response()
 
     @authorize(h.auth.has_organiser_role)
     def favourite_shell(self):
@@ -1017,8 +1120,9 @@ class AdminController(BaseController):
             ','.join([str(count) for (label, count) in c.data]),
             '|'.join([label for (label, count) in c.data]),
         )
-        return render('admin/table.mako')
+        return table_response()
 
+    @authorize(h.auth.has_organiser_role)
     def email_registration_reminder(self):
         """ Send all attendees a confirmation email of their registration details. [Registrations]"""
         c.text = 'Emailed the following attendees:'
@@ -1061,6 +1165,294 @@ class AdminController(BaseController):
         c.text = render_response('admin/table.myt', fragment=True)
         return render_response('admin/text.myt')
 
+    @authorize(h.auth.has_organiser_role)
+    def late_submitters(self):
+        """ List of people who are allowed to submit and edit their proposals after the CFP has closed. [CFP]"""
+        c.text = '<p>List of people who are allowed to submit and edit their proposals after the CFP has closed.</p><p><b>The role should be REMOVED once they have submitted their paper.</b></p>'
+
+        query = """SELECT p.id, p.firstname || ' ' || p.lastname as name, p.email_address,
+                          (SELECT count(*)
+                             FROM person_proposal_map ppm
+                            WHERE ppm.person_id = p.id) AS number_proposals
+                    FROM person p
+                    JOIN person_role_map prm ON p.id = prm.person_id
+                    JOIN role r ON prm.role_id = r.id
+                   WHERE r.name = 'late_submitter'
+                ORDER BY number_proposals DESC, p.id
+        """
+        res = meta.Session.execute(query)
+        c.columns = res.keys
+        c.data = []
+        for r in res.fetchall():
+            idlink = '<a href="/person/' + str(r[0]) + '/roles">' + str(r[0]) + '</a>'
+            c.data.append([ idlink, h.util.html_escape(r[1]), h.util.html_escape(r[2]), str(r[3]) ])
+        c.noescape = True
+        c.sql = query
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def rego_list(self):
+        """ List of paid regos - for rego desk. [Registrations] """
+        people = [
+           (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r.person)
+                                                 for r in Registration.find_all()]
+        people.sort()
+        people = [row[-1] for row in people]
+
+        # Find the categories that we display in the rego list.
+        categories = []
+        for category in ProductCategory.find_all():
+          name = category.name
+          if name != 'Ticket':
+            if name != 'Accommodation' or (name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] != 'yes'):
+              categories.append(category.name)
+        categories.sort()
+
+        c.columns = ['Name', '', 'ID', 'Ticket', 'Bag']
+        for cat in categories:
+          c.columns.append(cat)
+
+        c.data = []
+        for person in people:
+          row = [ "%s, %s" % (person.lastname, person.firstname) ]
+          not_paid = ''
+          if not person.paid():
+            not_paid = '{\\bf NOT PAID} \\newline '
+          row.append(not_paid + '\\barcode{' + str(person.id) + '}')
+          row.append(person.id)
+
+          bag = 'Prof'
+          type = []
+          if person.is_speaker() and not person.has_role('organiser'):
+            type.append('Speaker')
+          if person.is_miniconf_org():
+            type.append('Minconf Org')
+          #if person.is_professional() and not (person.is_speaker() or person.is_miniconf_org() or person.has_role('organiser')):
+          #  type.append('Professional')
+          if person.has_role('press'):
+            type.append('Media')
+          if person.has_role('organiser'):
+            type.append('Organiser')
+          if len(type) == 0:
+            ticket = person.ticket_type()
+            if ticket is not None:
+              ticket = ticket.replace('Earlybird ', '')
+              ticket = ticket.replace('Concession/Student', 'Student')
+              ticket = ticket.replace('Sponsorship', '')
+              type.append(ticket)
+            if not person.is_professional():
+              bag = 'Hobby'
+          if person.is_volunteer() and 'Volunteer' not in type:
+            type.append("Volunteer")
+
+          if len(type) > 0:
+            row.append(",\\newline ".join(type))
+          else:
+            row.append("No valid ticket")
+          row.append(bag)
+
+          # We only want to put someone on the list if they have valid invoices.
+          valid_invoices = False
+
+          first = True
+          products = dict()
+          for category in categories:
+            products[category] = []
+
+          for invoice in person.invoices:
+            if not invoice.is_void():
+              valid_invoices = True
+              for ii in invoice.items:
+                if ii.product is not None and ii.product.category is not None:
+                  if ii.product.category.name in products:
+                    text = "%s x %s" % (ii.qty, ii.product.description)
+                    text = text.replace(' years old', '')
+#                    if not invoice.paid():
+#                      text += " (Not paid)"
+                    products[ii.product.category.name].append(text)
+
+          for category in categories:
+            if len(products[category]) == 0:
+              row.append('')
+            else:
+              row.append(",\\newline ".join(products[category]))
+
+          if valid_invoices:
+            c.data.append(row)
+
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def volunteer_grid(self):
+        """ List of volunteers for exporting to mgmt DB. [Registrations] """
+        c.data = []
+        c.noescape = True
+        c.columns = ['ID', 'Vol ID', 'Name', 'Email', 'Country', 'City', 'Status', 'Type']
+        for area in h.lca_rego['volunteer_areas']:
+          c.columns.append(area['name'])
+        c.columns.append('Other')
+        c.columns.append('Experience')
+
+        volunteer_collection = Volunteer.find_all()
+        for v in volunteer_collection:
+          row = [str(v.person.id)]
+          row.append(str(v.id))
+          row.append(h.link_to(v.person.fullname(), url=h.url_for(controller="person", action='view', id=v.person.id)))
+          row.append(h.link_to(v.person.email_address, url="mailto:" + v.person.email_address))
+          row.append(v.person.country)
+          row.append(v.person.city)
+          if v.accepted is None:
+            status = 'Pending'
+          elif v.accepted == True:
+            status = 'Accepted'
+          else:
+            status = 'Rejected'
+          row.append(status)
+
+          type = 'Unknown'
+          if v.person.is_speaker():
+            type = 'Speaker'
+          elif v.person.is_miniconf_org():
+            type = 'Miniconf Org'
+          else:
+            type = 'Not Registered'
+
+            for invoice in v.person.invoices:
+              if invoice.paid() and not invoice.is_void():
+                for item in invoice.items:
+                  if item.description.find('Volunteer') > -1:
+                    type = 'Volunteer'
+                  elif item.description.find('Ticket') > -1:
+                    type = 'Delegate'
+
+          row.append(type)
+
+          for area in h.lca_rego['volunteer_areas']:
+            code = area['name'].replace(' ', '_').replace('.', '_')
+            if code in v.areas:
+              row.append('Yes')
+            else:
+              row.append('No')
+
+          row.append(v.other)
+          row.append(v.experience)
+
+          c.data.append(row)
+
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def paid_counts_by_date(self):
+        """ Number of paid (or zerod) invoices by date. [Registrations] """
+        invoices = Invoice.find_all()
+
+        payments_count = dict()
+        for i in invoices:
+          if i.paid() and not i.is_void():
+            if i.total() == 0:
+              date = i.creation_timestamp.date()
+            else:
+              date = i.good_payments()[0].creation_timestamp.date()
+
+            if date not in payments_count:
+              payments_count[date] = 0
+
+            payments_count[date] += 1
+
+        c.data = []
+        c.noescape = True
+        c.columns = ['Date', 'Count' ]
+        if len(payments_count) > 0:
+          dates = payments_count.keys()
+          dates.sort()
+
+          for date in dates:
+            row = [ "%s" % date, str(payments_count[date]) ]
+            c.data.append(row)
+
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def av_norelease(self):
+        """ A list of proposals without releases for video/slides [AV] """
+        talk_list = Proposal.find_all_accepted().filter(or_(Proposal.video_release==False, Proposal.slides_release==False)).order_by(Proposal.scheduled)
+
+        c.columns = ['Talk', 'Title', 'Who', 'When', 'Video?', 'Slides?']
+        c.data = []
+        for t in talk_list:
+            c.data.append(['<a href="/programme/schedule/view_talk/%d">%d</a>' % (t.id, t.id),
+                           h.util.html_escape(t.title),
+                           '<br/>'.join([
+                                '<a href="/person/%d">%s</a> (<a href="mailto:%s">%s</a>)' % (
+                                    p.id,
+                                    h.util.html_escape(p.fullname()),
+                                    h.util.html_escape(p.email_address),
+                                    h.util.html_escape(p.email_address)
+                                ) for p in t.people
+                           ]),
+                           h.util.html_escape(t.scheduled),
+                           h.util.html_escape(t.video_release),
+                           h.util.html_escape(t.slides_release),
+            ])
+        c.noescape = True
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def av_technical_requirements(self):
+        """ Technical requirements list [AV] """
+        talk_list = Proposal.find_all_accepted().filter(Proposal.technical_requirements > '').order_by(Proposal.scheduled)
+
+        c.columns = ['Talk', 'Title', 'Who', 'When', 'Requirements']
+        c.data = []
+        for t in talk_list:
+            c.data.append(['<a href="/programme/schedule/view_talk/%d">%d</a>' % (t.id, t.id),
+                           h.util.html_escape(t.title),
+                           '<br/>'.join([
+                                '<a href="/person/%d">%s</a> (<a href="mailto:%s">%s</a>)' % (
+                                    p.id,
+                                    h.util.html_escape(p.fullname()),
+                                    h.util.html_escape(p.email_address),
+                                    h.util.html_escape(p.email_address)
+                                ) for p in t.people
+                           ]),
+                           h.util.html_escape(t.scheduled),
+                           h.util.html_escape(t.technical_requirements),
+            ])
+        c.noescape = True
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def random_delegates(self):
+        """ Select 20 random (paid, non-volunteer, non-organiser, non-speaker, non-media) delegates for prize draws """
+
+        filtered_list = []
+
+        for r in Registration.find_all():
+            p = r.person
+            if p.is_speaker() or p.is_volunteer():
+                continue
+            if len(filter(lambda r: r.name in ('core_team', 'miniconfsonly', 'press', 'team', 'organiser', 'miniconf'), p.roles)):
+                continue
+            if p.paid() and p.has_paid_ticket():
+                filtered_list.append(r)
+
+        random.shuffle(filtered_list)
+
+        c.columns = ['Who', 'From', 'Email', 'Shell', 'Nick', 'Twitter', 'Previous LCAs']
+        c.data = []
+        sn_twitter = SocialNetwork.find_by_name("Twitter")
+        for r in filtered_list[:20]:
+            c.data.append([
+                "%s %s (%d)" % (r.person.firstname, r.person.lastname, r.person.id),
+                "%s, %s" % (r.person.city, r.person.country),
+                r.person.email_address,
+                r.shell,
+                r.nick,
+                r.person.social_networks.get(sn_twitter),
+                ','.join(r.prevlca or []),
+            ])
+        return table_response()
+
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66
@@ -1082,8 +1474,7 @@ def keysigning_pdf(keyid):
     return pdf
 
 def csv_response(sql):
-    import zookeepr.model
-    res = zookeepr.model.metadata.bind.execute(sql);
+    res = meta.Session.execute(sql)
     c.columns = res.keys
     c.data = res.fetchall()
     c.sql = sql
@@ -1093,10 +1484,9 @@ def csv_response(sql):
     w = csv.writer(f)
     w.writerow(c.columns)
     w.writerows(c.data)
-    res = Response(f.getvalue())
-    res.headers['Content-type']='text/plain; charset=utf-8'
-    res.headers['Content-Disposition']='attachment; filename="table.csv"'
-    return res
+    response.headers['Content-type']='text/plain; charset=utf-8'
+    response.headers['Content-Disposition']='attachment; filename="table.csv"'
+    return f.getvalue()
 
 def sql_execute(sql):
     import zookeepr.model
@@ -1129,3 +1519,25 @@ def sql_data(sql):
     """
     import zookeepr.model
     return zookeepr.model.metadata.bind.execute(sql).fetchall();
+
+def table_response():
+    """ Display a table of data, possible jumping off to CSV. """
+    if request.GET.has_key('csv'):
+        return table_csv_response()
+    elif request.GET.has_key('latex'):
+      response.headers['Content-type']='text/plain; charset=utf-8'
+      response.headers['Content-Disposition']='attachment; filename="table.tex"'
+
+      return render('admin/table_latex.mako')
+
+    return render('admin/table.mako')
+
+def table_csv_response():
+    import csv, StringIO
+    f = StringIO.StringIO()
+    w = csv.writer(f)
+    w.writerow(c.columns)
+    w.writerows(c.data)
+    response.headers['Content-type']='text/plain; charset=utf-8'
+    response.headers['Content-Disposition']='attachment; filename="table.csv"'
+    return f.getvalue()

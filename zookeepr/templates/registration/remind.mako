@@ -1,17 +1,18 @@
 <%inherit file="/base.mako" />
 
-Send emails as follows.<br>
+<p>Send emails as follows.</p>
 
-You have not yet paid your registration<br>
-Please go to http://${ h.host_name() }/profile/$profile_id to edit your registration and complete your payment.
+<blockquote>
+<p>You have not yet paid your registration</p>
+<p>Please go to ${ h.lca_info['event_url']}/profile/$profile_id to edit your registration and complete your payment.</p>
+</blockquote>
+
 <p>
+You will need to go to ${ h.link_to('this page', h.url_for(controller='invoice', action='remind')) } as well to get those people that have generated an invoice.</p>
 
-You will need to go to http://${ h.host_name() }/invoice/remind as well to get those people that have generated an invoice.
 <p>
-
-<strong>firstname,lastname,email_address,profile_id,status,earlybird</strong><br>
+<strong>firstname,lastname,email_address,profile_id,status</strong><br>
 <% count = 0 %>
-<% p = PaymentOptions() %>
 % for r in c.registration_collection:
 <%     speaker = False %>
 %     if r.person.proposals:
@@ -28,10 +29,12 @@ You will need to go to http://${ h.host_name() }/invoice/remind as well to get t
 <%         continue %>
 %     endif
 
-"${ r.person.firstname }","${ r.person.lastname }","${ r.person.email_address }",${ r.person.id },NO_INVOICE, ${ p.is_earlybird(r.creation_timestamp) }<br>
-%     count += 1
+"${ r.person.firstname }","${ r.person.lastname }","${ r.person.email_address }",${ r.person.id },NO_INVOICE<br>
+<%     count += 1 %>
 
 % endfor
+</p>
 
 <p>
 ${ count } registrations have no invoices
+</p>

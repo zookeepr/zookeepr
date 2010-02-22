@@ -23,8 +23,7 @@ ${ h.text('db_content.title', size=60) }
 </p>
 
 <p class="entries">
-${ h.checkbox('db_content.published') }
-<label for="db_content.published">Published</label>
+<label>${ h.checkbox('db_content.published') } Published</label>
 </p>
 <ul class="note"><li>Should this page be published?</li></ul>
 
@@ -52,6 +51,7 @@ ${ h.textarea('db_content.body', cols="80", rows="40") }
   <li>the image displayed on the generated page is randomly selected from the images in the <tt>small</tt> directory unless an image is specified.</li>
   <li>add <tt>{{slideshow: &lt;set name&gt;}}</tt> where you want the first image displayed.</li>
   <li>to specify one small image to be in the generated page then insert: <tt>{{slideshow: &lt;set name&gt;, &lt;file name&gt;}}</tt> this file must exist in the small directory.</li>
+  <li>to add captions, create a file called "captions" format is one file per line, lines are: filename:caption</li>
 </ul>
 </ul>
 <p>

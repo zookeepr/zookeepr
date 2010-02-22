@@ -26,10 +26,12 @@ class Registration(Base):
     silly_description = sa.Column(sa.types.Text)
     keyid = sa.Column(sa.types.Text)
     planetfeed = sa.Column(sa.types.Text)
-    voucher_code = sa.Column(sa.types.Text, unique=True)
+    voucher_code = sa.Column(sa.types.Text, sa.ForeignKey('voucher.code'), unique=True)
     diet = sa.Column(sa.types.Text)
     special = sa.Column(sa.types.Text)
+    partner_name = sa.Column(sa.types.Text)
     partner_email = sa.Column(sa.types.Text)
+    partner_mobile = sa.Column(sa.types.Text)
     checkin = sa.Column(sa.types.Integer)
     checkout = sa.Column(sa.types.Integer)
     prevlca = sa.Column(CommaList)
@@ -45,7 +47,7 @@ class Registration(Base):
     voucher = sa.orm.relation(Voucher, uselist=False,
                                 primaryjoin='Registration.voucher_code==Voucher.code',
                                 foreign_keys=Voucher.code,
-                                #backref = 'registration',
+                                backref = 'registration',
                                )
 
     def __init__(self, **kwargs):
@@ -60,6 +62,10 @@ class Registration(Base):
         if result is None and abort_404:
             abort(404, "No such Registration object")
         return result
+
+    @classmethod
+    def find_by_ids(cls, id_list):
+        return Session.query(Registration).filter(Registration.id.in_(id_list)).all()
         
     @classmethod
     def find_all(cls):

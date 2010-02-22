@@ -47,17 +47,27 @@
 %   endif
         <td>${ voucher.comment |h}</td>
 %   if voucher.registration:
-        <td>${ voucher.registration.person.firstname } ${ voucher.registration.person.lastname }
-%          if voucher.registration.person.company:
-           ${ "(" + voucher.registration.person.company + ")"}
+        <td>
+%          if c.admin:
+           ${ h.link_to(voucher.registration[0].person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration[0].person.id)) }
+%          else:
+           ${ voucher.registration[0].person.fullname() }
 %          endif
-           &lt;${ voucher.registration.person.email_address }&gt;
+           <br />
+%          if voucher.registration[0].person.company:
+           ${ "(" + voucher.registration[0].person.company + ")"}<br />
+%          endif
+           &lt;${ voucher.registration[0].person.email_address }&gt;
         </td>
 %   else:
         <td><strong>Hasn't been used</strong></td>
+        <td>
 %       if c.admin:
-        <td>${ h.link_to('delete', url=h.url_for(action='delete', id=voucher.id)) }</td>
+          ${ h.link_to('delete', url=h.url_for(action='delete', id=voucher.id)) }
+%       else:
+          &nbsp;
 %       endif
+        </td>
 %   endif
 
       </tr>
@@ -69,3 +79,9 @@
     <br>
     <p>${ h.link_to('Add another', url=h.url_for(controller='voucher', action='new')) }</p>
 % endif
+
+<%def name="title()">
+Voucher - List
+ ${ parent.title() }
+</%def>
+

@@ -24,7 +24,7 @@
           <p class="entries">
           <table>
 % for category in c.product_categories:
-%   if category.name in ['Ticket', 'Accommodation']:
+%   if category.name in c.allowed_categories:
             <tr>
               <td colspan="3" align="center"><h3>${ category.name |h }</h3></td>
             </tr>
@@ -38,8 +38,14 @@
               <th>% Discount</th>
             </tr>
 %       for product in category.products:
+<%
+            soldout = ''
+            if not product.available():
+                soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
+%>
+
             <tr>
-              <td><label for="products.product_${ product.id }">${ product.description }</label></td>
+              <td><label for="products.product_${ product.id }">${ soldout | n}${ product.description }</label></td>
 %           if category.display == 'radio':
               <td>${ h.radio('products.category_' + str(category.id), product.id) }
 ## TODO: Add other display options here later, not adding select because we want accom to include a qty

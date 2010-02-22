@@ -22,14 +22,26 @@ import ceiling
 import product
 import product_ceiling_map
 import rego_note
+import social_network
+import person_social_network_map
+import funding
+import funding_attachment
+import funding_review
+import special_offer
+import special_registration
 
 from person import Person
 from role import Role
 from password_reset_confirmation import PasswordResetConfirmation
 
+from social_network import SocialNetwork
+
 from proposal import Proposal, ProposalStatus, ProposalType, TravelAssistanceType, AccommodationAssistanceType, TargetAudience
 from attachment import Attachment
 from review import Review, Stream
+from funding import Funding, FundingType, FundingStatus
+from funding_attachment import FundingAttachment
+from funding_review import FundingReview
 
 from product import Product, ProductInclude
 from product_category import ProductCategory
@@ -38,6 +50,7 @@ from ceiling import Ceiling
 from invoice import Invoice
 from invoice_item import InvoiceItem
 from payment import Payment
+from payment_received import PaymentReceived
 
 from registration import Registration
 from registration_product import RegistrationProduct
@@ -58,6 +71,9 @@ def setup(meta):
     person_role_map.setup(meta)
     person.setup(meta)
 
+    social_network.setup(meta)
+    person_social_network_map.setup(map)
+
     product_category.setup(meta)
     ceiling.setup(meta)
     product.setup(meta)
@@ -70,6 +86,15 @@ def setup(meta):
 
     db_content.setup(meta)
     volunteer.setup(meta)
+
+    payment.setup(meta)
+    payment_received.setup(meta)
+
+    funding.setup(meta)
+    funding_attachment.setup(meta)
+
+    special_offer.setup(meta)
+    special_registration.setup(meta)
 
     meta.Session.commit()
 

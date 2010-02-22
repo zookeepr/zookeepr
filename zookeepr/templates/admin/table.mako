@@ -4,6 +4,12 @@
 %>
 
 <p> ${ c.text | n } </p>
+
+<p>
+<a href="?csv=true">Export as CSV</a>
+<a href="?latex=true">Export as LaTeX table</a>
+</p>
+
 <table>
 <tr>
 % for header in c.columns:
@@ -12,6 +18,7 @@
 </tr>
 
 % for row in c.data:
+<%   rows = rows + 1 %>
   <tr class="${ h.cycle('even', 'odd') }">
 %   for item in row:
 %     if c.noescape:

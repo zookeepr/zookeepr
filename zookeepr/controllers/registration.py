@@ -1,7 +1,9 @@
+# coding=utf-8
 import logging
+import re
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import redirect_to
+from pylons.controllers.util import redirect_to, Response
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -11,9 +13,10 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
 from zookeepr.lib.validators import ProductQty, ProductMinMax, CheckAccomDates
+from zookeepr.lib.validators import PrevLCAValidator
 
 # validators used from the database
-from zookeepr.lib.validators import ProDinner, PPEmail, PPChildrenAdult
+from zookeepr.lib.validators import ProDinner, PPDetails, PPChildrenAdult
 
 import zookeepr.lib.helpers as h
 
@@ -26,16 +29,16 @@ from zookeepr.model import meta
 from zookeepr.model import Registration, Role, RegistrationProduct, Person
 from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
 from zookeepr.model import Invoice, InvoiceItem
+from zookeepr.model.special_offer import SpecialOffer
+from zookeepr.model.special_registration import SpecialRegistration
 
-from zookeepr.config.lca_info import lca_info
+from zookeepr.config.lca_info import lca_info, lca_rego
 
 from zookeepr.controllers.person import PersonSchema
-#from zookeepr.controllers.registration import PaymentOptions
 
 log = logging.getLogger(__name__)
 
 import datetime
-# import warnings
 
 class NotExistingRegistrationValidator(validators.FancyValidator):
     def validate_python(self, value, state):
@@ -50,9 +53,7 @@ class DuplicateVoucherValidator(validators.FancyValidator):
         voucher = Voucher.find_by_code(value['voucher_code'])
         if voucher != None:
             if voucher.registration:
-                if not 'signed_in_person_id' in session:
-                    raise Invalid("Voucher code already in use! (not logged in)", value, state)
-                if voucher.registration.person_id != session['signed_in_person_id']:
+                if voucher.registration[0].person.id != h.signed_in_person().id:
                     raise Invalid("Voucher code already in use!", value, state)
         elif value['voucher_code']:
             raise Invalid("Unknown voucher code!", value, state)
@@ -62,6 +63,22 @@ class SillyDescriptionChecksum(validators.FancyValidator):
         checksum = h.silly_description_checksum(value['silly_description'])
         if value['silly_description_checksum'] != checksum:
             raise Invalid("Smart enough to hack the silly description, not smart enough to hack the checksum.", value, state)
+
+class IAgreeValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if not value['i_agree']:
+            raise Invalid("You must read and accept the terms and conditions before you can register.", value, state)
+
+class PrevLCAValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['prevlca'] is not None and '00' in value['prevlca']:
+            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
+
+class ShellValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+        if value['shelltext'] is not None and value['shell'] == 'other':
+            if value['shelltext'].lower() == 'cmd.exe' or value['shelltext'].lower() == 'command.com':
+                raise Invalid(value['shelltext'].lower() + ' -- Nice try!', value, state)
 
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
@@ -75,7 +92,7 @@ class ExistingPersonSchema(BaseSchema):
     country = validators.String(not_empty=True)
 
 class RegistrationSchema(BaseSchema):
-    over18 = validators.Bool()
+    over18 = validators.Int(min=0, max=1, not_empty=True)
     nick = validators.String()
     shell = validators.String()
     shelltext = validators.String()
@@ -85,7 +102,8 @@ class RegistrationSchema(BaseSchema):
     distrotext = validators.String()
     silly_description = validators.String()
     silly_description_checksum = validators.String(strip=True)
-    keyid = validators.String()
+    if lca_rego['pgp_collection'] != 'no':
+        keyid = validators.String()
     planetfeed = validators.String()
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
@@ -95,19 +113,18 @@ class RegistrationSchema(BaseSchema):
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
+    i_agree = validators.Bool(if_missing=False)
 
-    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
+
+class SpecialOfferSchema(BaseSchema):
+    name = validators.String()
+    member_number = validators.String()
 
 class NewRegistrationSchema(BaseSchema):
-    person = PersonSchema()
-    registration = RegistrationSchema()
-
-    chained_validators = [NotExistingRegistrationValidator()]
-    pre_validators = [NestedVariables]
-
-class UpdateRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
     registration = RegistrationSchema()
+    special_offer = SpecialOfferSchema()
 
     chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [NestedVariables]
@@ -121,11 +138,11 @@ class ProductUnavailable(Exception):
     def __init__(self, product):
         self.product = product
 
-new_schema = NewRegistrationSchema()
-edit_schema = UpdateRegistrationSchema()
+edit_schema = NewRegistrationSchema()
 
 class RegistrationController(BaseController):
 
+    @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
         c.product_categories = ProductCategory.find_all()
         c.ceilings = {}
@@ -143,12 +160,12 @@ class RegistrationController(BaseController):
         for invoice in h.signed_in_person().invoices:
             if not invoice.is_void():
                 if invoice.paid() and invoice.total() != 0:
-                    return False, "Sorry, you've already paid"
+                    return False, "Sorry, you've already paid. Contact the team at " + h.lca_info['contact_email'] + " if you need anything changed."
         return True, "You can edit"
 
-    def _product_available(self, product, stock=True):
+    def _product_available(self, product, stock=True, qty=0):
         # bool stock: care about if the product is in stock (ie sold out?)
-        if not product.available(stock):
+        if not product.available(stock, qty):
             return False
         if product.auth is not None:
             exec("auth = " + product.auth)
@@ -171,13 +188,19 @@ class RegistrationController(BaseController):
             
             # 2009-05-07 Josh H: Not sure why, but there is a reason this class is declaired within this method and not earlier on like in the voucher controller. Or maybe I just did this poorly...
             pass
-        ProductSchema.add_field('partner_email', validators.Email()) # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+
+        # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
+        ProductSchema.add_field('partner_name', validators.String())
+        ProductSchema.add_field('partner_email', validators.Email())
+        ProductSchema.add_field('partner_mobile', validators.String())
         
         # Go through each category and each product and add generic validation
         for category in c.product_categories:
+            clean_cat_name = category.clean_name()
+
             if category.display in ('radio', 'select'):
                 # min/max can't be calculated on this form. You should only have 1 selected.
-                ProductSchema.add_field('category_' + str(category.id), ProductInCategory(category=category, not_empty=True))
+                ProductSchema.add_field('category_' + clean_cat_name, ProductInCategory(category=category, not_empty=True))
                 for product in category.products:
                     if product.validate is not None:
                         exec("validator = " + product.validate)
@@ -185,9 +208,10 @@ class RegistrationController(BaseController):
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
+                    clean_prod_desc = product.clean_description()
                     #if self._product_available(product):
-                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
-                    product_fields.append('product_' + str(product.id))
+                    ProductSchema.add_field('product_' + clean_cat_name, validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
+                    product_fields.append('product_' + clean_cat_name)
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
@@ -196,26 +220,48 @@ class RegistrationController(BaseController):
                 # qty
                 product_fields = []
                 for product in category.products:
+                    clean_prod_desc = product.clean_description()
+  
                     #if self._product_available(product):
-                    ProductSchema.add_field('product_' + str(product.id) + '_qty', ProductQty(product=product, if_missing=None))
-                    product_fields.append('product_' + str(product.id) + '_qty')
+                    ProductSchema.add_field('product_' + clean_cat_name + '_' + clean_prod_desc + '_qty', ProductQty(product=product, if_missing=None))
+                    product_fields.append('product_' + clean_cat_name + '_' + clean_prod_desc+ '_qty')
                     if product.validate is not None:
                         exec("validator = " + product.validate)
                         ProductSchema.add_pre_validator(validator)
 
                 ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
 
-        new_schema.add_field('products', ProductSchema)
         edit_schema.add_field('products', ProductSchema)
 
     def is_speaker(self):
-        return c.signed_in_person.is_speaker()
+        try:
+       	    return c.signed_in_person.is_speaker()
+        except:
+            return False
 
     def is_miniconf_org(self):
-        return c.signed_in_person.is_miniconf_org()
+        try:
+            return c.signed_in_person.is_miniconf_org()
+        except:
+            return False
 
     def is_volunteer(self):
-        return c.signed_in_person.is_volunteer()
+        try:
+            return c.signed_in_person.is_volunteer()
+        except:
+            return False
+
+    def is_press(self):
+        try:
+            return c.signed_in_person.has_role('press')
+        except:
+            return False
+
+    def is_miniconfs_only(self):
+        try:
+            return c.signed_in_person.has_role('miniconfsonly')
+        except:
+            return False
 
     def is_same_person(self):
         return c.signed_in_person == c.registration.person
@@ -226,7 +272,27 @@ class RegistrationController(BaseController):
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='edit', id=c.signed_in_person.registration.id)
 
-        if lca_info['conference_status'] is not 'open':
+        fields = dict(request.GET)
+        c.special_offer = None
+        if 'offer' in fields:
+            c.special_offer = SpecialOffer.find_by_name(fields['offer'])
+            if c.special_offer is not None:
+                if c.special_offer.enabled:
+                    # Create the special_registration record
+                    special_registration = SpecialRegistration()
+                    special_registration.special_offer_id = c.special_offer.id
+                    special_registration.member_number = '' # TODO: switch to None
+                    special_registration.person_id = c.signed_in_person.id
+                    meta.Session.add(special_registration)
+                    meta.Session.commit()
+                else:
+                    c.special_offer = None
+        else:
+            # The user alreay has used a special URL to register
+            if c.signed_in_person.special_registration:
+                c.special_offer = c.signed_in_person.special_registration[0].special_offer
+
+        if c.special_offer is None and lca_info['conference_status'] is not 'open':
             redirect_to(action='status')
 
         defaults = {}
@@ -236,7 +302,6 @@ class RegistrationController(BaseController):
                 if v is not None:
                     defaults['person.' + k] = getattr(c.signed_in_person, k)
 
-        defaults['registration.over18'] = 1
         defaults['registration.signup.announce'] = 1
         defaults['registration.checkin'] = 17
         defaults['registration.checkout'] = 24
@@ -254,20 +319,35 @@ class RegistrationController(BaseController):
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='_edit', id=c.signed_in_person.registration.id)
 
-        if lca_info['conference_status'] is not 'open':
-            redirect_to(action='status')
-            return
-
-        if c.signed_in_person:
-            current_schema = edit_schema
-        else:
-            current_schema = new_schema
-
         result = self.form_result
+
+        c.special_offer = None
+        if 'special_offer' in result:
+            c.special_offer = SpecialOffer.find_by_name(result['special_offer']['name'])
+            if c.special_offer is not None and not c.special_offer.enabled:
+                c.special_offer = None
+        
+        if c.special_offer is None and lca_info['conference_status'] is not 'open':
+            redirect_to(action='status')
 
         # A blank registration
         c.registration = Registration()
         self.save_details(result)
+
+        c.student_ticket = False
+        c.infants = False
+        c.children = False
+        c.pp_children = False
+        for rproduct in c.registration.products:
+            if 'Ticket' in rproduct.product.category.name and 'Student' in rproduct.product.description:
+                c.student_ticket = True
+            elif 'Dinner' in rproduct.product.category.name:
+                if 'Infant' == rproduct.product.description:
+                    c.infants = True
+                elif 'Child' == rproduct.product.description:
+                    c.children = True
+            elif rproduct.product.category.name == 'Partners Programme' and ('Child' in rproduct.product.description or 'Infant' in rproduct.product.description):
+                c.pp_children = True
 
         email(
             c.person.email_address,
@@ -276,47 +356,76 @@ class RegistrationController(BaseController):
         self.pay(c.registration.id, quiet=1)
 
         h.flash("Thank you for your registration!")
-        if c.signed_in_person:
-            h.flash("""To complete the registration process, please pay
-                                                          your invoice.""")
-            redirect_to(action='status')
-        else:
-            h.flash("""An e-mail has been sent to you with a confirmation
-                code. Once it arrives, please follow the link to activate
-                your registration and pay your invoice.""")
-            redirect_to('/')
+        if not c.person.paid():
+            h.flash("To complete the registration process, please pay your invoice.")
+        redirect_to(action='status')
 
-    @authorize(h.auth.is_valid_user)
     @dispatch_on(POST="_edit")
     def edit(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
-        able, response = self._able_to_edit()
-        if not able:
-            c.error = response
-            return render("/registration/error.mako")
+        # If we're an organiser, then don't check payment status.
+        if not h.auth.authorized(h.auth.has_organiser_role):
+            able, response = self._able_to_edit()
+            if not able:
+                c.error = response
+                return render("/registration/error.mako")
         c.registration = Registration.find_by_id(id)
         defaults = {}
         defaults.update(h.object_to_defaults(c.registration, 'registration'))
         defaults.update(h.object_to_defaults(c.registration.person, 'person'))
         for rproduct in c.registration.products:
             product = rproduct.product
-            defaults['products.category_' + str(product.category.id)] = product.id
+            category_name = product.category.clean_name()
+            defaults['products.category_' + category_name] = product.id
+            if rproduct.qty > 0:
+                defaults['products.product_' + category_name + '_' + product.clean_description() + '_qty'] = rproduct.qty
+
+        # generate new silly description
+        c.silly_description, checksum = h.silly_description()
+        defaults['registration.silly_description'] = c.silly_description
+        defaults['registration.silly_description_checksum'] = checksum
+
+        # the partner fields are attached to the product in the form for some reason
+        defaults['products.partner_name'] = c.registration.partner_name
+        defaults['products.partner_email'] = c.registration.partner_email
+        defaults['products.partner_mobile'] = c.registration.partner_mobile
+
+        if c.registration.over18:
+            defaults['registration.over18'] = 1
+        else:
+            defaults['registration.over18'] = 0
+
+        if c.registration.shell in lca_rego['shells']:
+            defaults['registration.shell'] = c.registration.shell
+        else:
+            defaults['registration.shell'] = 'other'
+            defaults['registration.shelltext'] = c.registration.shell
+        if c.registration.editor in lca_rego['editors']:
+            defaults['registration.editor'] = c.registration.editor
+        else:
+            defaults['registration.editor'] = 'other'
+            defaults['registration.editortext'] = c.registration.editor
+        if c.registration.distro in lca_rego['distros']:
+            defaults['registration.distro'] = c.registration.distro
+        else:
+            defaults['registration.distro'] = 'other'
+            defaults['registration.distrotext'] = c.registration.distro
 
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
 
-    @authorize(h.auth.is_valid_user)
     @validate(schema=edit_schema, form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
         c.registration = Registration.find_by_id(id)
         result = self.form_result
+        c.special_offer = None
         self.save_details(result)
 
         redirect_to(action='status')
@@ -331,12 +440,19 @@ class RegistrationController(BaseController):
                     setattr(c.registration, k, result['registration'][k])
             else:
                 setattr(c.registration, k, result['registration'][k])
-        setattr(c.registration, 'partner_email', result['products']['partner_email']) # hacky method to make validating sane
+        
+        if result['registration']['over18'] == 1:
+            setattr(c.registration, 'over18', True)
+        else:
+            setattr(c.registration, 'over18', False)
+
+        # hacky method to make validating sane
+        setattr(c.registration, 'partner_name', result['products']['partner_name'])
+        setattr(c.registration, 'partner_email', result['products']['partner_email'])
+        setattr(c.registration, 'partner_mobile', result['products']['partner_mobile'])
 
         # Check whether we're already signed in or not, and store person details
-        if not c.signed_in_person:
-            c.person = Person()
-        elif c.registration.person:
+        if c.registration.person:
             c.person = c.registration.person
         else:
             c.person = c.signed_in_person
@@ -347,13 +463,21 @@ class RegistrationController(BaseController):
         # Create person<->registration relationship
         c.registration.person = c.person
 
+        # Deal with the special offer if any
+        if c.special_offer is not None:
+            special_registration = SpecialRegistration.find_by_person_and_offer(c.person.id, c.special_offer.id)
+            special_registration.member_number = result['special_offer']['member_number']
+            meta.Session.add(special_registration)
+
         # Always delete the current products
         c.registration.products = []
 
         # Store Product details
         for category in c.product_categories:
+            clean_cat_name = category.clean_name()
             if category.display in ('radio', 'select'):
-                product = Product.find_by_id(result['products']['category_' + str(category.id)])
+                #product = Product.find_by_cat_and_desc(category.id, result['products']['category_' + clean_cat_name])
+                product = Product.find_by_id(result['products']['category_' + clean_cat_name])
                 if product != None:
                     rego_product = RegistrationProduct()
                     rego_product.registration = c.registration
@@ -365,7 +489,9 @@ class RegistrationController(BaseController):
                     c.registration.products.append(rego_product)
             elif category.display == 'checkbox':
                 for product in category.products:
-                    if result['products']['product_' + str(product.id)] == True:
+                    clean_prod_desc = product.clean_description()
+
+                    if result['products']['product_' + clean_cat_name + '_' + clean_prod_desc] == True:
                         rego_product = RegistrationProduct()
                         rego_product.registration = c.registration
                         rego_product.product = product
@@ -373,21 +499,38 @@ class RegistrationController(BaseController):
                         c.registration.products.append(rego_product)
             elif category.display == 'qty':
                 for product in category.products:
-                    if result['products']['product_' + str(product.id) + '_qty'] not in [0, None]:
+                    clean_prod_desc = product.clean_description()
+
+                    if result['products']['product_' + clean_cat_name + '_' + clean_prod_desc + '_qty'] not in [0, None]:
                         rego_product = RegistrationProduct()
                         rego_product.registration = c.registration
                         rego_product.product = product
-                        rego_product.qty = result['products']['product_' + str(product.id) + '_qty']
+                        rego_product.qty = result['products']['product_' + clean_cat_name + '_' + clean_prod_desc + '_qty']
                         c.registration.products.append(rego_product)
 
         meta.Session.commit()
 
-    def status(self):
+    def status(self, id=0):
+        if int(id) == 0:
+            if h.signed_in_person() and h.signed_in_person().registration:
+                c.registration = h.signed_in_person().registration
+            else:
+                c.registration = None
+        else:
+            if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
+                # Raise a no_auth error
+                h.auth.no_role()
+            c.registration = Registration.find_by_id(id, abort_404 = False)
+
+        if c.registration is None:
+          c.person = h.signed_in_person()
+        else:
+          c.person = c.registration.person
+
         return render("/registration/status.mako")
 
-    @authorize(h.auth.is_valid_user)
     def pay(self, id, quiet=0):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
         registration = Registration.find_by_id(id)
@@ -402,7 +545,9 @@ class RegistrationController(BaseController):
                 invoice = self._create_invoice(registration)
             except ProductUnavailable, inst:
                 if quiet: return
-                return render("registration/product_unavailable.mako", product=inst.product)
+                c.product = inst.product
+                c.registration = registration
+                return render('/registration/product_unavailable.mako')
 
             if registration.voucher:
                 self.apply_voucher(invoice, registration.voucher)
@@ -412,16 +557,14 @@ class RegistrationController(BaseController):
             for old_invoice in registration.person.invoices:
                 if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.is_void():
                     if self.invoices_identical(old_invoice, new_invoice):
-                        for ii in new_invoice.items:
-                            meta.Session.expunge(ii)
-                        meta.Session.expunge(new_invoice)
                         invoice = old_invoice
+                        meta.Session.clear()
+
+                        if quiet: return
+                        redirect_to(controller='invoice', action='view', id=invoice.id)
                     else:
                         if old_invoice.due_date < new_invoice.due_date:
                             new_invoice.due_date = old_invoice.due_date
-                        #ii2 = model.InvoiceItem(description="INVALID INVOICE (Registration Change)", qty=0, cost=0)
-                        #self.dbsession.save(ii2)
-                        #old_invoice.items.append(ii2)
                         old_invoice.void = "Registration Change"
 
             invoice.last_modification_timestamp = datetime.datetime.now()
@@ -436,11 +579,8 @@ class RegistrationController(BaseController):
         for invoice in invoices:
             if not invoice.is_void() and not invoice.manual and not invoice.paid():
                 for ii in invoice.items:
-                    if ii.product and not self._product_available(ii.product):
-                        #ii2 = model.InvoiceItem(description="INVALID INVOICE (Product " + ii.product.description + " is no longer available)", qty=0, cost=0)
-                        #self.dbsession.save(ii2)
-                        #invoice.items.append(ii2)
-                        invoice.void = "Product " + ii.product.description + " is no longer available"
+                    if ii.product and not self._product_available(ii.product, True, ii.qty):
+                        invoice.void = "Product " + ii.product.category.name + " - " + ii.product.description + " is no longer available"
 
     def manual_invoice(self, invoices):
         for invoice in invoices:
@@ -452,10 +592,19 @@ class RegistrationController(BaseController):
         if invoice1.total() == invoice2.total():
             if len(invoice1.items) == len(invoice2.items):
                 matched_products = 0
+                invoice1_matched_items = dict()
+                invoice2_matched_items = dict()
                 for invoice1_item in invoice1.items:
+                    if invoice1_item.id in invoice1_matched_items:
+                        continue
                     for invoice2_item in invoice2.items:
+                        if invoice2_item.id in invoice2_matched_items:
+                            continue
                         if invoice1_item.product == invoice2_item.product and invoice1_item.description == invoice2_item.description and invoice1_item.qty == invoice2_item.qty and invoice1_item.cost == invoice2_item.cost:
+                            invoice1_matched_items[invoice1_item.id] = True
+                            invoice2_matched_items[invoice2_item.id] = True
                             matched_products += 1
+                            break
                 if len(invoice1.items) == matched_products:
                     return True
         return False
@@ -469,46 +618,72 @@ class RegistrationController(BaseController):
 
         # Loop over the registration products and add them to the invoice.
         for rproduct in registration.products:
-            if self._product_available(rproduct.product):
-                ii = InvoiceItem(description=rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
-                ii.invoice = invoice
+            if self._product_available(rproduct.product, True, rproduct.qty):
+                ii = InvoiceItem(description=rproduct.product.category.name + ' - ' + rproduct.product.description, qty=rproduct.qty, cost=rproduct.product.cost)
+                ii.invoice = invoice # automatically appends ii to invoice.items
                 ii.product = rproduct.product
                 product_expires = rproduct.product.available_until()
-                if product_expires != None and product_expires < invoice.due_date:
-                    invoice.due_date = product_expires
-                invoice.items.append(ii)
+                if product_expires is not None:
+                    if invoice.due_date is None or product_expires < invoice.due_date:
+                        invoice.due_date = product_expires
+                meta.Session.add(ii)
             else:
                 for ii in invoice.items:
                     meta.Session.expunge(ii)
                 meta.Session.expunge(invoice)
                 raise ProductUnavailable(rproduct.product)
 
-        # Check for included products
+        # Some products might in turn include other products.  So the same
+        # product might be available multiple times.  Work out all the
+        # freebies first.
+        included = {}
+        included_products = {}
+        freebies = {}
         for ii in invoice.items:
             if ii.product and ii.product.included:
                 for iproduct in ii.product.included:
-                    included_qty = iproduct.include_qty
-                    included_category = iproduct.include_category
-                    free_qty = 0
-                    free_cost = 0
-                    for ii2 in invoice.items:
-                        if ii2.product and ii2.product.category == included_category:
-                            if free_qty + ii2.qty > included_qty:
-                                free_cost += (included_qty - free_qty) * ii2.product.cost
-                                free_qty += (included_qty - free_qty)
-                            else:
-                                free_cost += ii2.qty * ii2.product.cost
-                                free_qty += ii2.qty
+                    if iproduct.include_category.id not in included:
+                        included[iproduct.include_category.id] = 0
+                    included[iproduct.include_category.id] += iproduct.include_qty
+                    freebies[iproduct.include_category.id] = 0
+                    included_products[iproduct.include_category.id] = iproduct.include_category
 
-                    # We have included products, create a discount for the cost of them.
-                    # This is not perfect, products of different prices can be discounted,
-                    # and it can either favor the customer or LCA, depending on the order
-                    # of items on the invoice
-                    if free_cost > 0:
-                        discount_item = model.InvoiceItem(description="Discount for " + str(free_qty) + " included " + included_category.name, qty=1, cost=-free_cost)
-                        invoice.items.append(discount_item)
+        prices   = {}
+        # Check for included products
+        for ii in invoice.items:
+            if ii.product and ii.product.category.id in included:
+                if ii.product.category.id not in prices:
+                    prices[ii.product.category.id] = []
+ 
+                if included[ii.product.category.id] >= ii.qty:
+                    prices[ii.product.category.id].append(ii.qty * ii.product.cost)
+                    ii.free_qty = ii.qty
 
-        meta.Session.commit()
+                    freebies[ii.product.category.id] += ii.qty
+                    included[ii.product.category.id] -= ii.qty
+                elif included[ii.product.category.id] > 0:
+                    prices[ii.product.category.id].append(included[ii.product.category.id] * ii.product.cost)
+                    ii.free_qty = included[ii.product.category.id]
+
+                    freebies[ii.product.category.id] = included[ii.product.category.id]
+                    included[ii.product.category.id] = 0
+
+        for freebie in freebies:
+            free_cost = 0
+            if freebie in prices:
+                for price in prices[freebie]:
+                    free_cost += price
+
+            # We have included products, create a discount for the cost of them.
+            # This is not perfect, products of different prices can be discounted,
+            # and it can either favor the customer or LCA, depending on the order
+            # of items on the invoice
+            if free_cost > 0:
+                discount_item = InvoiceItem(description="Discount for " + str(freebies[freebie]) + " included " + included_products[freebie].name, qty=1, cost=-free_cost)
+                invoice.items.append(discount_item)
+                meta.Session.add(discount_item)
+
+        meta.Session.add(invoice)
         return invoice
 
     def apply_voucher(self, invoice, voucher):
@@ -529,8 +704,8 @@ class RegistrationController(BaseController):
                         discount = max_discount
                     else:
                         discount = ii.product.cost
-                    discount_item = model.InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
-                    self.dbsession.save(discount_item)
+                    discount_item = InvoiceItem(description="Discount Voucher (" + voucher.comment + ") for " + vproduct.product.description, qty=qty, cost=-discount)
+                    meta.Session.add(discount_item)
                     invoice.items.append(discount_item)
                     break
                     
@@ -566,7 +741,7 @@ class RegistrationController(BaseController):
 
         if (len(filter) in [2,3,4] and filter.has_key('per_page') and (len(filter['role']) == 0 or 'all' in filter['role']) and filter['status'] == 'all' and (len(filter['product']) == 0 or 'all' in filter['product'])) or len(filter) < 2:
             # no actual filters to apply besides per_page, so we can get paginate to do the query
-            registration_list = self.dbsession.query(self.model).order_by(self.model.c.id)
+            registration_list = meta.Session.query(Registration).order_by(Registration.id).all()
         else:
             import copy
             registration_list_full = Registration.find_all()
@@ -615,8 +790,13 @@ class RegistrationController(BaseController):
             except:
                 pass
 
+        if filter.has_key('page'):
+            page = int(filter['page'])
+        else:
+            page = 1
+
         setattr(c, 'per_page', per_page)
-        pagination =  paginate.Page(registration_list, per_page = per_page)
+        pagination =  paginate.Page(registration_list, per_page = per_page, page = page)
         setattr(c, 'registration_pages', pagination)
         setattr(c, 'registration_collection', pagination.items)
         setattr(c, 'registration_request', filter)
@@ -681,16 +861,24 @@ class RegistrationController(BaseController):
         if request.method == 'POST' and defaults:
             if defaults['reg_id'] != '':
                 reg_id_list = defaults['reg_id'].split("\n")
-                registration_list = self.dbsession.query(self.model).filter(model.Registration.id.in_(reg_id_list)).all()
+                regos = [(r.person.lastname.lower(), r.person.firstname.lower(), r)
+                         for r in Registration.find_by_ids(reg_id_list)]
+                regos.sort()
+                registration_list = [row[-1] for row in regos]
+
                 if len(registration_list) != len(reg_id_list):
                     c.text = 'Registration ID not found. Please check the <a href="/registration">registration list</a>.'
-                    return render('%s/generate_badges.mako' % self.individual)
+                    return render('registration/generate_badges.mako')
                 else:
                     for registration in registration_list:
                         data.append(self._registration_badge_data(registration, stamp))
                         registration.person.badge_printed = True
             else:
-                registration_list = self.dbsession.query(self.model).all()
+                regos = [(r.person.lastname.lower(), r.person.firstname.lower(), r)
+                         for r in Registration.find_all()]
+                regos.sort()
+                registration_list = [row[-1] for row in regos]
+
                 for registration in registration_list:
                     append = False
                     if registration.person.has_paid_ticket() and not registration.person.badge_printed:
@@ -704,7 +892,7 @@ class RegistrationController(BaseController):
                                             append = True
                                         elif defaults['type'] == 'hobby' and (item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1):
                                             append = True
-                                        elif defaults['type'] == 'professional' and (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                                        elif defaults['type'] == 'professional' and (item.description.find('Professional') > -1 or item.description.startswith('Karoro')):
                                             append = True
                                         elif defaults['type'] == 'press' and item.description.startswith('Press'):
                                             append = True
@@ -722,7 +910,7 @@ class RegistrationController(BaseController):
                             data.append(self._registration_badge_data(registration, stamp))
                             registration.person.badge_printed = True
 
-            self.dbsession.flush() # save badge printed data
+            meta.Session.commit() # save badge printed data
             setattr(c, 'data', data)
 
             import os, tempfile
@@ -731,7 +919,7 @@ class RegistrationController(BaseController):
             while c.index < len(c.data):
                 while c.index + 4 > len(c.data):
                     c.data.append(self._registration_badge_data(False))
-                res = render('%s/badges_svg.mako' % self.individual, fragment=True)
+                res = render('registration/badges_svg.mako')
                 (svg_fd, svg) = tempfile.mkstemp('.svg')
                 svg_f = os.fdopen(svg_fd, 'w')
                 svg_f.write(res)
@@ -749,44 +937,67 @@ class RegistrationController(BaseController):
             res.headers['Content-type'] = 'application/octet-stream'
             res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar' )
             return res
-        return render('%s/generate_badges.mako' % self.individual)
+        return render('registration/generate_badges.mako')
 
     def _registration_badge_data(self, registration, stamp = False):
         if registration:
             dinner_tickets = 0
+            speakers_tickets = 0
+            pdns_ticket = False
             ticket = ''
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.is_void():
                     for item in invoice.items:
-                        if item.description.startswith('Dinner Ticket'):
+                        if item.description.startswith('Penguin Dinner'):
                             dinner_tickets += item.qty
-                        elif item.description.startswith('Concession'):
-                            ticket = 'Concession'
-                        elif item.description.find('Hobbyist') > -1 or item.description.find('Hobbiest') > -1:
+                        elif item.description.startswith('Speakers Dinner'):
+                            speakers_tickets += item.qty
+                        elif item.description.find('Student') > -1:
                             ticket = 'Hobbyist'
-                        elif (item.description.find('Professional') > -1 or item.description.startswith('Fairy')):
+                        elif item.description.find('Hobbyist') > -1:
+                            ticket = 'Hobbyist'
+                        elif item.description.find('Professional') > -1 or item.description.find('Korora') > -1:
                             ticket = 'Professional'
-                        elif item.description.startswith('Press'):
+                            pdns_ticket = True
+                        elif item.description.find('Press') > -1:
                             ticket = 'Press'
+                            pdns_ticket = True
                         elif item.description.startswith('Organiser'):
                             ticket = 'Organiser'
-                        elif item.description.find('Monday + Tuesday') > -1:
-                            ticket = 'miniconfs Only'
-            if registration.person.is_speaker():
+                            pdns_ticket = True
+                        elif item.description.find('Miniconfs Only') > -1 or item.description.find('Minconfs Only') > -1:
+                            ticket = 'Miniconfs Only'
+            if registration.person.has_role('core_team'):
+                ticket = 'Organiser'
+            elif registration.person.is_speaker():
                 ticket = 'Speaker'
+                pdns_ticket = True
             elif registration.person.is_miniconf_org():
-                ticket = 'miniconf Organiser'
+                ticket = 'Miniconf Organiser'
+                pdns_ticket = True
             elif registration.person.is_volunteer():
                 ticket = 'Volunteer'
 
-            if not stamp:
-                ticket = ''
+            north_island = ['wellington', 'welly', 'wlg', 'auckland', 'akl', 'hamilton', 'porirua', 'palmerston north', 'upper hutt', 'petone', 'lower hutt', 'johnsonville', 'karori', 'te aro', 'auckland central', 'whangarei', 'northland', 'albany', 'miramar', 'tawa', 'avalon', 'tauranga', 'north shore city', 'levin', 'kelburn', 'manukau city', 'thorndon', 'paraparaumu', 'north shore', 'mount victoria', 'taupo', 'rotorua', 'new plymouth'];
+            south_island = ['christchurch', 'dunedin', 'nelson', 'queenstown', 'invercargill', 'greymouth', 'westport'];
 
             region = 'world'
             if registration.person.country.strip().lower() == 'australia' and registration.person.state.strip().lower() in ['tas', 'tasmania']:
                 region = 'tasmania'
             elif registration.person.country.strip().lower() == 'australia':
                 region = 'australia'
+            elif registration.person.country.strip().lower() == 'switzerland':
+                region = 'switzerland'
+            elif registration.person.country.strip().lower() == 'canada':
+                region = 'canada'
+            elif registration.person.country.strip().lower() == 'finland':
+                region = 'finland'
+            elif registration.person.country.strip().lower() == 'norway':
+                region = 'norway'
+            elif registration.person.city.strip().lower() in north_island:
+                region = 'north_island'
+            elif registration.person.city.strip().lower() in south_island:
+                region = 'south_island'
             elif registration.person.country.strip().lower() in ['new zealand', 'nz']:
                 region = 'new_zealand'
 
@@ -799,32 +1010,75 @@ class RegistrationController(BaseController):
                 favourites.append(self._sanitise_badge_field(registration.distro))
 
             data = { 'ticket': ticket,
-                     'name': self._sanitise_badge_field(registration.person.firstname + " " + registration.person.lastname),
+                     'firstname' : self._sanitise_badge_field(registration.person.firstname),
+                     'lastname' : self._sanitise_badge_field(registration.person.lastname),
                      'nickname': self._sanitise_badge_field(registration.nick),
                      'company': self._sanitise_badge_field(registration.person.company),
                      'favourites': ", ".join(favourites),
-                     'gpg': self._sanitise_badge_field(registration.keyid),
                      'region': region,
                      'dinner_tickets': dinner_tickets,
+                     'speakers_tickets': speakers_tickets,
+                     'pdns_ticket' : pdns_ticket,
                      'over18': registration.over18,
-                     'ghost': 'ghost' in [role.name for role in registration.person.roles],
-                     'papers': 'reviewer' in [role.name for role in registration.person.roles],
-                     'artist': 'artist' in [role.name for role in registration.person.roles],
                      'silly': self._sanitise_badge_field(registration.silly_description)
             }
+            if lca_rego['pgp_collection'] != 'no':
+                data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
-        return {'ticket': '', 'name': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'over18': True, 'ghost': False, 'papers': False, 'artist': False, 'silly': ''}
+        return {'ticket': '', 'firstname': '', 'lastname': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': ''}
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
-        return disallowed_chars.sub(' ', h.esc(field.strip()))
+        return disallowed_chars.sub(' ', h.escape(field.strip()))
 
-    @authorize(h.auth.is_valid_user)
     def view(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_registration(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
         c.registration = Registration.find_by_id(id)
         return render('/registration/view.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def remind(self):
+        c.registration_collection = Registration.find_all()
+        return render('/registration/remind.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def professionals_latex(self):
+        c.profs= {}
+        registration_list = Registration.find_all()
+        for r in registration_list:
+            is_prof = False
+            for invoice in r.person.invoices:
+                if invoice.paid() and not invoice.is_void():
+                    if r.person.is_speaker() or r.person.is_miniconf_org():
+                        is_prof = True
+                    else:
+                        for item in invoice.items:
+                            if (item.description.find('Professional') > -1 or item.description.find('Little Blue') > -1):
+                               is_prof = True
+
+            if is_prof:
+                if r.person.company not in c.profs:
+                     c.profs[r.person.company] = {}
+                if r.person.lastname not in c.profs[r.person.company]:
+                    c.profs[r.person.company][r.person.lastname] = []
+                c.profs[r.person.company][r.person.lastname].append(r.person.fullname())
+
+        response.headers['Content-type']='text/plain; charset=utf-8'
+        return render('/registration/professionals_latex.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def rego_desk_latex(self):
+        registration_list = Registration.find_all()
+        for r in registration_list:
+            if r.person.is_professional():
+                if r.person.company not in c.profs:
+                     c.profs[r.person.company] = {}
+                if r.person.lastname not in c.profs[r.person.company]:
+                    c.profs[r.person.company][r.person.lastname] = []
+                c.profs[r.person.company][r.person.lastname].append(r.person.fullname())
+
+        response.headers['Content-type']='text/plain; charset=utf-8'

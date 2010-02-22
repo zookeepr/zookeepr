@@ -18,82 +18,95 @@ def setup(meta):
 
     # Tickets
     product = Product(category_id='1', active=True, description="Concession/Student Ticket",
-                      cost="16000", auth=None, validate=None)
+                      cost="24900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Earlybird Hobbyist Ticket",
-                      cost="29000", auth=None, validate=None)
+                      cost="39900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_earlybird)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Hobbyist Ticket",
-                      cost="36500", auth=None, validate=None)
+                      cost="49900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_nonearlybird)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Earlybird Professional Ticket",
-                      cost="63500", auth=None, validate=None)
+                      cost="79900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_earlybird)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Professional Ticket",
-                      cost="78500", auth=None, validate=None)
+                      cost="99900", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     product.ceilings.append(ceiling_nonearlybird)
     meta.Session.add(product);
 
-    product = Product(category_id='1', active=True, description="Fairy Penguin Sponsorship",
-                      cost="150000", auth=None, validate=None)
+    product = Product(category_id='1', active=True, description="Korora Little Blue Penguin Sponsorship",
+                      cost="225000", auth=None, validate=None)
     product.ceilings.append(ceiling_conference)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Speaker Ticket",
-                      cost="0", auth="AuthFunc('is_speaker').authorise(self)", validate=None)
+                      cost="0", auth="self.is_speaker()", validate=None)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Miniconf Organiser Ticket",
-                      cost="0", auth="AuthFunc('is_miniconf_org').authorise(self)", validate=None)
+                      cost="0", auth="self.is_miniconf_org()", validate=None)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     product = Product(category_id='1', active=True, description="Volunteer Ticket",
-                      cost="0", auth="AuthFunc('is_volunteer').authorise(self)", validate=None)
+                      cost="0", auth="self.is_volunteer()", validate=None)
+    product.ceilings.append(ceiling_all_conference)
+    meta.Session.add(product);
+
+    product = Product(category_id='1', active=True, description="Press Ticket",
+                      cost="0", auth="self.is_press()", validate=None)
     product.ceilings.append(ceiling_all_conference)
     meta.Session.add(product);
 
     meta.Session.add_all(
         [
             # Shirts
-            Product(category_id='2', active=True, description="Men's Small Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's Medium Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's X Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XXXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XXXXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Small Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Medium Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's X Large Shirt", cost="2000", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XXXX Large Shirt", cost="2200", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's XXXXX Large Shirt", cost="2200", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's Small", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's Medium", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's Large", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's XL", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's 2XL", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's 3XL", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's 5XL", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Men's 7XL", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 6", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 8", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 10", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 12", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 14", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 16", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 18", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 20", cost="2500", auth=None, validate=None),
+            Product(category_id='2', active=True, description="Women's Size 22", cost="2500", auth=None, validate=None),
 
             # Dinner
-            Product(category_id='3', active=True, description="Dinner Tickets", cost="8000", auth=None, validate="ProDinner(dinner_field='product_26_qty',ticket_category='category_1',ticket_id=[5,4])"),
+            Product(category_id='3', active=True, description="Adult", cost="11500", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])"),
+            Product(category_id='3', active=True, description="Child", cost="2000", auth=None, validate=None),
+            Product(category_id='3', active=True, description="Infant", cost="0", auth=None, validate=None),
+
+            # Speakers Dinner
+            Product(category_id='6', active=True, description="Adult", cost="0", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8])", auth="self.is_speaker() or self.is_miniconf_org()"),
+            Product(category_id='6', active=True, description="Child", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
+            Product(category_id='6', active=True, description="Infant", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
         ]
     )
 
@@ -104,7 +117,7 @@ def setup(meta):
     product = Product(category_id='4', active=True, description="Wrest Point (Visit Accommodation page)",
                       cost="0", auth=None, validate=None)
     meta.Session.add(product);
-    product = Product(category_id='4', active=True, description="University Accommodation - Includes Breakfast! (price per night)",
+    product = Product(category_id='4', active=True, description="University Accommodation",
                       cost="6000", auth=None, validate=None)
     product.ceilings.append(ceiling_uniaccom)
     meta.Session.add(product);
@@ -112,12 +125,9 @@ def setup(meta):
     # Partner's Programme
     meta.Session.add_all(
         [
-            Product(category_id='5', active=True, description="Adult", cost="20000", auth=None, validate="PPEmail(adult_field='product_30_qty',email_field='partner_email')"),
-            Product(category_id='5', active=True, description="Child (0-3 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_31_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (4-6 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_32_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (7-9 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_33_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (10-12 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_34_qty',adult_field='product_30_qty')"),
-            Product(category_id='5', active=True, description="Child (13-17 years old)", cost="14000", auth=None, validate="PPChildrenAdult(current_field='product_35_qty',adult_field='product_30_qty')"),
+            Product(category_id='5', active=True, description="Adult", cost="28000", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')"),
+            Product(category_id='5', active=True, description="Child (3-14 years old)", cost="21000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
+            Product(category_id='5', active=True, description="Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
         ]
     )
 
@@ -125,22 +135,25 @@ def setup(meta):
     meta.Session.add_all(
         [
             # Include 1 Shirt in all registration types
-            ProductInclude(product_id='1', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='2', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='3', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='4', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='5', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='6', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='7', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='8', include_category_id='2', include_qty='1'),
-            ProductInclude(product_id='9', include_category_id='2', include_qty='2'),
+            ProductInclude(product_id='1', include_category_id='2', include_qty='1'), # Student
+            ProductInclude(product_id='2', include_category_id='2', include_qty='1'), # Hobbyist EB
+            ProductInclude(product_id='3', include_category_id='2', include_qty='1'), # Hobbyist
+            ProductInclude(product_id='4', include_category_id='2', include_qty='1'), # Pro EB
+            ProductInclude(product_id='5', include_category_id='2', include_qty='1'), # Pro
+            ProductInclude(product_id='6', include_category_id='2', include_qty='1'), # Fairy
+            ProductInclude(product_id='7', include_category_id='2', include_qty='1'), # Speaker
+            ProductInclude(product_id='8', include_category_id='2', include_qty='1'), # Miniconf
+            ProductInclude(product_id='9', include_category_id='2', include_qty='2'), # Volunteer
+            ProductInclude(product_id='10', include_category_id='2', include_qty='1'), # Press
+            ProductInclude(product_id='38', include_category_id='2', include_qty='1'), # Partner's Programme get a t-shirt
 
-            # Include 1 Dinner for Professional+miniconf and 2 for Speaker registrations
-            ProductInclude(product_id='4', include_category_id='3', include_qty='1'), # pro EB
-            ProductInclude(product_id='5', include_category_id='3', include_qty='1'), # pro
-            ProductInclude(product_id='6', include_category_id='3', include_qty='1'), # fairy
-            ProductInclude(product_id='7', include_category_id='3', include_qty='2'), # speaker
-            ProductInclude(product_id='8', include_category_id='3', include_qty='1'), # miniconf
+            # Include 1 Dinner for Professional+miniconf and for Speaker registrations
+            ProductInclude(product_id='4', include_category_id='3', include_qty='1'), # Pro EB
+            ProductInclude(product_id='5', include_category_id='3', include_qty='1'), # Pro
+            ProductInclude(product_id='6', include_category_id='3', include_qty='1'), # Fairy
+            ProductInclude(product_id='7', include_category_id='3', include_qty='1'), # Speaker
+            ProductInclude(product_id='8', include_category_id='3', include_qty='1'), # Miniconf
+            ProductInclude(product_id='10', include_category_id='3', include_qty='1'), # Press
 
             # Include 5 partners in the partners program for speakers
             ProductInclude(product_id='7', include_category_id='5', include_qty='5'),
@@ -156,7 +169,7 @@ class Product(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
     category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id'), nullable=False)
     active = sa.Column(sa.types.Boolean, nullable=False)
-    description = sa.Column(sa.types.Text, nullable=False, unique=True)
+    description = sa.Column(sa.types.Text, nullable=False)
     cost = sa.Column(sa.types.Integer, nullable=False)
     auth = sa.Column(sa.types.Text, nullable=True)
     validate = sa.Column(sa.types.Text, nullable=True)
@@ -164,6 +177,9 @@ class Product(Base):
     # relations
     ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
     category = sa.orm.relation(ProductCategory, lazy=True, backref='products')
+
+    # Descriptions should be unique within a category
+    sa.UniqueConstraint(category_id, description, name='category_description');
 
     def __init__(self, **kwargs):
         super(Product, self).__init__(**kwargs)
@@ -176,6 +192,20 @@ class Product(Base):
     def find_by_id(cls, id):
         return Session.query(Product).filter_by(id=id).first()
 
+    @classmethod
+    def find_by_category(cls, id):
+        return Session.query(Product).filter_by(category_id=id)
+
+    def qty_free(self):
+        qty = 0
+        for ii in self.invoice_items:
+            if not ii.invoice.void and ii.invoice.paid():
+                if self.category.name == 'Accommodation':
+                    qty += 1
+                else:
+                    qty += ii.free_qty
+        return qty
+
     def qty_sold(self):
         qty = 0
         for ii in self.invoice_items:
@@ -183,7 +213,7 @@ class Product(Base):
                 if self.category.name == 'Accommodation':
                     qty += 1
                 else:
-                    qty += ii.qty
+                    qty += (ii.qty - ii.free_qty)
         return qty
 
     def qty_invoiced(self, date=True):
@@ -205,11 +235,11 @@ class Product(Base):
                 max_ceiling = c.remaining
         return max_ceiling
 
-    def available(self, stock=True):
+    def available(self, stock=True, qty=0):
     # bool stock: care about if the product is in stock (ie sold out?)
         if self.active:
            for c in self.ceilings:
-                if not c.available(stock):
+                if not c.available(stock, qty):
                     return False
            return True
         else:
@@ -232,6 +262,9 @@ class Product(Base):
                 until.append(ceiling.available_until)
         if len(until) > 0:
             return max(until)
+
+    def clean_description(self):
+        return self.description.replace('-','_');
 
     def __repr__(self):
         return '<Product id=%r active=%r description=%r cost=%r auth=%r validate%r>' % (self.id, self.active, self.description, self.cost, self.auth, self.validate)

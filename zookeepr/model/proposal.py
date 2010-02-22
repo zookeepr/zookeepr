@@ -218,7 +218,7 @@ class Proposal(Base):
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     # relations
-    type = sa.orm.relation(ProposalType)
+    type = sa.orm.relation(ProposalType, backref='proposals', lazy=True)
     accommodation_assistance = sa.orm.relation(AccommodationAssistanceType)
     travel_assistance = sa.orm.relation(TravelAssistanceType)
     status = sa.orm.relation(ProposalStatus)
@@ -253,8 +253,10 @@ class Proposal(Base):
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(id=id).first()
+#        if result is None and abort_404:
+#            abort(404, "No such proposal object")
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     @classmethod
@@ -265,14 +267,14 @@ class Proposal(Base):
     def find_all_by_accommodation_assistance_type_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(accommodation_assistance_type_id=id).all()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     @classmethod
     def find_all_by_travel_assistance_type_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(travel_assistance_type_id=id).all()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     # TODO: add an optional filter for removing the signed in user's proposals
@@ -285,7 +287,7 @@ class Proposal(Base):
 
         result = result.all()
         if result is None and abort_404:
-            abort(404, "No such object")
+            abort(404, "No such proposal object")
         return result
 
     @classmethod
@@ -322,7 +324,7 @@ class Proposal(Base):
                    EXCEPT
                        SELECT proposal_id AS id
                        FROM review
-                       WHERE review.reviewer_id <> %d) AS p
+                       WHERE review.reviewer_id = %d) AS p
               LEFT JOIN
                       review AS r
                               ON(p.id=r.proposal_id)

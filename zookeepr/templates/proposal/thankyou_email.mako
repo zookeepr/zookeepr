@@ -9,7 +9,7 @@ Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ h.lca_info['e
 If you have any queries about your proposed ${ c.proposal.type.name.lower()},
 please email ${ h.lca_info['emails'][c.proposal.type.name.lower()] }
 
-Title:             ${ c.proposal.title }
+Title:             ${ c.proposal.title |n }
 Target audience:   ${ c.proposal.audience.name }
 URL:               ${ c.proposal.url }
 Attachments:       ${ len(c.proposal.attachments) }
@@ -51,8 +51,8 @@ ${c.proposal.type.name.lower()} and your slides, so that the community can
 gain the maximum benefit from your ${c.proposal.type.name.lower()}!
 % endif
 
-Should you need to update the details of this proposal, please following
-this URL:
+Should you need to update the details of this proposal, please use the follow
+URL:
 
   http://${ h.host_name() }/proposal
 

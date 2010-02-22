@@ -101,7 +101,8 @@ class ProposalController(BaseController):
     @dispatch_on(POST="_new")
     def new(self):
         if c.cfp_status == 'closed':
-           return render("proposal/closed.mako")
+           if not h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_late_submitter_role)):
+              return render("proposal/closed.mako")
         elif c.cfp_status == 'not_open':
            return render("proposal/not_open.mako")
 
@@ -123,6 +124,11 @@ class ProposalController(BaseController):
 
     @validate(schema=NewProposalSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
+        if c.cfp_status == 'closed':
+           if not h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_late_submitter_role)):
+              return render("proposal/closed.mako")
+        elif c.cfp_status == 'not_open':
+           return render("proposal/not_open.mako")
 
         person_results = self.form_result['person']
         proposal_results = self.form_result['proposal']
@@ -130,6 +136,7 @@ class ProposalController(BaseController):
 
         c.proposal = Proposal(**proposal_results)
         c.proposal.status = ProposalStatus.find_by_name('Pending')
+        c.proposal.abstract = h.html_clean(c.proposal.abstract)
         meta.Session.add(c.proposal)
 
         if not h.signed_in_person():
@@ -255,6 +262,12 @@ class ProposalController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
+        if not h.auth.authorized(h.auth.has_organiser_role):
+            if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
+                return render("proposal/editing_closed.mako")
+            elif c.paper_editing == 'not_open':
+                return render("proposal/editing_not_open.mako")
+
         c.proposal = Proposal.find_by_id(id)
 
         c.person = c.proposal.people[0]
@@ -286,9 +299,17 @@ class ProposalController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
+        if not h.auth.authorized(h.auth.has_organiser_role):
+            if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
+                return render("proposal/editing_closed.mako")
+            elif c.paper_editing == 'not_open':
+                return render("proposal/editing_not_open.mako")
+
         c.proposal = Proposal.find_by_id(id)
         for key in self.form_result['proposal']:
             setattr(c.proposal, key, self.form_result['proposal'][key])
+
+        c.proposal.abstract = h.html_clean(c.proposal.abstract)
 
         c.person = self.form_result['person_to_edit']
         if (c.person.id == h.signed_in_person().id or
@@ -361,7 +382,7 @@ class ProposalController(BaseController):
         return render('/proposal/list.mako')
 
     @dispatch_on(POST="_approve")
-    @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
+    @authorize(h.auth.has_organiser_role)
     def approve(self):
         c.highlight = set()
         c.proposals = Proposal.find_all()
@@ -369,7 +390,7 @@ class ProposalController(BaseController):
         return render("proposal/approve.mako")
 
     @validate(schema=ApproveSchema(), form='approve', post_only=True, on_get=True, variable_decode=True)
-    @authorize(h.auth.Or(h.auth.has_reviewer_role, h.auth.has_organiser_role))
+    @authorize(h.auth.has_organiser_role)
     def _approve(self):
         c.highlight = set()
         talks = self.form_result['talk']
@@ -412,3 +433,15 @@ class ProposalController(BaseController):
 
         h.flash("Proposal withdrawn. The organisers have been notified.")
         return redirect_to(controller='proposal', action="index", id=None)
+
+    @authorize(h.auth.has_organiser_role)
+    def latex(self):
+        c.proposal_type = ProposalType.find_all()
+#        c.proposal_type = meta.Session.query(ProposalType).select_from(ProposalType, Proposal, ProposalStatus).order_by(ProposalType.name).order_by(Proposal.title).filter(ProposalStatus.name='Accepted').all()
+
+        for type in c.proposal_type:
+          print type
+
+        response.headers['Content-type']='text/plain; charset=utf-8'
+
+        return render('/proposal/latex.mako')

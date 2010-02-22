@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<p>${ c.text }</p>
+<p>${ c.text | n}</p>
 
 ${ h.form(h.url_for()) }
 <p>Type:<br />

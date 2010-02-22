@@ -6,6 +6,9 @@
 <%def name="extra_head()">
     ## Defined in children
 </%def>
+<%def name="extra_body()">
+  <body>
+</%def>
 <%def name="big_promotion()">
     ## Defined in children
 </%def>
@@ -18,6 +21,12 @@
 <%def name="toolbox_extra_reviewer()">
     ## Defined in children
 </%def>
+<%def name="toolbox_extra_funding_reviewer()">
+    ## Defined in children
+</%def>
+<%def name="contents()">
+    ## Defined in children
+</%def>
 
 
 <html lang="en-us">
@@ -27,14 +36,13 @@
   <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
   <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
+  <link rel="stylesheet" media="print" href="/print.css" type="text/css">
+<script type="text/javascript" src="/jquery.min.js"></script>          
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
-  <script type="text/javascript" src="/jquery.min.js"></script>          
-  <script src="/js/prototype.js" type="text/javascript"></script>
-  <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
-  <script src="/js/lightbox.js" type="text/javascript"></script>
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
+  ${self.extra_head()}
   <script type="text/javascript">
      $(document).ready(function() {
        $("#flash > div").hide().fadeIn(3500);
@@ -47,16 +55,18 @@
 
      });
   </script>
-  ${self.extra_head()}
 </head>
+
+${self.extra_body()}
 
   <div id = "container">
     <div id = "logo">
-      <a href="/"><img src="/images/logo.jpg" style="border: 0;" alt="linux.conf.au" /></a>
+      <a href="/"><img src="/images/logo.png" style="border: 0;" alt="linux.conf.au" /></a>
     </div>
     <div id = 'main_menu'>
       <%include file="/nav.mako" />
       <%include file="/subnav.mako" />
+      <%include file="/subsubnav.mako" />
     </div>
     
     <!-- start content -->
@@ -66,7 +76,7 @@
     <%include file="/leftcol/news.mako" />
     <%include file="/leftcol/in_the_press.mako" />
 % else:
-    <%include file="/leftcol/contents.mako" />
+    <%include file="/leftcol/contents.mako" args="parent=self" />
 % endif
 <%include file="/leftcol/toolbox.mako" args="parent=self" />
 % if h.url_for() != '/':
@@ -88,22 +98,33 @@ ${next.body()}
 ##         </div>
 ##% #endif
     </div>
-    <div id = "push"></div>
+    <div id = "push"><br /><br /><br /><br /></div>
   </div>
 
 % if h.url_for() == '/':
   <div id="sponsors">
     <p>Thanks to our Emperor Penguin Sponsors:</p>
-    <p><a href="http://www.internetnz.org.nz"><img src="/images/sponsor-InternetNZ.png" alt="InternetNZ" title="Internet NZ works to keep the Internet open and uncaptureable, protecting and promoting the Internet for New Zealand." /></a></p>
+    <p>
+      <a href="http://www.internetnz.org.nz"><img src="/images/sponsor-InternetNZ.png" alt="InternetNZ" title="Internet NZ works to keep the Internet open and uncaptureable, protecting and promoting the Internet for New Zealand." /></a>
+      <a style="padding-left: 10px;" href="http://www.google.com"><img src="/images/sponsor-google.gif" alt="Google" title="Google" /></a>
+      <a style="padding-left: 10px;" href="http://www.ibm.com"><img src="/images/sponsor-ibm.gif" alt="IBM" title="IBM" /></a>
+      <a style="padding-left: 10px;" href="http://www.hp.com"><img src="/images/sponsor-hp.gif" alt="HP" title="HP" /></a>
+    </p>
   </div>
 % endif
 
   <div id = 'footer'>
+    <div id = "footer_logo">
+      <img src="/images/sign-and-pole.png" style="border: 0;" alt="Penguins Visiting" />
+    </div>
     <div class = 'copyright'>
-  &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2010</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a>
+  &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2010</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
     </div>
   </div>
 
+<script src="/js/prototype.js" type="text/javascript"></script>
+<script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
+<script src="/js/lightbox.js" type="text/javascript"></script>
 <script type="text/javascript">
     var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
     document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));

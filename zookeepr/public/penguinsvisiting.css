@@ -80,8 +80,11 @@ h3 {
 }
 
 h4 {
-	font-weight: normal;
+    color: #bd921e;
     font-size: 1em;
+    font-weight: bold;
+	padding-top: 10px;
+	padding-bottom: 10px;
 }
 
 h5 {
@@ -98,6 +101,10 @@ h6 {
 #logo {
         margin-left: 15px;
         margin-bottom: 10px;
+        float: left;
+}
+#footer_logo {
+        margin-left: 5px;
         float: left;
 }
 
@@ -140,7 +147,7 @@ h6 {
 #main_menu #secondarynav {
 	clear: both;
 	text-align: left;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	margin-left: 100px;
 }
 #main_menu #secondarynav li {
@@ -151,7 +158,7 @@ h6 {
 }
 #main_menu #secondarynav li a {
 	color: #5c7dae;
-	padding: 3px 10px;
+	padding: 3px 4px;
 }
 #main_menu #secondarynav li a:hover {
 	color: #448ccc;
@@ -161,6 +168,31 @@ h6 {
 	color: #bd921e;
 	text-decoration: none;
 }
+#main_menu #tertiarynav {
+	clear: both;
+	text-align: left;
+	margin-bottom: 10px;
+	margin-left: 100px;
+}
+#main_menu #tertiarynav li {
+	list-style-type: none;
+	display: inline;
+	font-weight: bold;
+	line-height: 25px;
+}
+#main_menu #tertiarynav li a {
+        color: #bd921e;
+	padding: 3px 4px;
+}
+#main_menu #tertiarynav li a:hover {
+	color: #448ccc;
+	text-decoration: none;
+}
+#main_menu #tertiarynav li.selected a {
+	color: #5c7dae;
+	text-decoration: none;
+}
+
 
 
 #content {
@@ -272,14 +304,16 @@ h6 {
 #footer, #push, #sponsors {
 	clear:left;
 	width: 100%;
-	height:80px;
 	line-height:20px;
 	font-size: 0.8em;
 	text-align: center;
+        valign: bottom;
 }
 #footer {
 	color: #959595;
+	height:110px;
 	background: url(images/footer.jpg) repeat-x bottom left;
+	image: url(images/sign-and-pole.png) bottom right;
 	width: 100%;
 }
 #footer a {
@@ -307,6 +341,11 @@ h6 {
                 text-align: center;
                 vertical-align: middle;
         }
+
+        .sponsor_image img
+        {
+                vertical-align: middle;
+        }
         
         .sponsors_footer
         {
@@ -329,6 +368,7 @@ td {
        background-color:#FFFFFF;
        border-bottom:2px solid #d7e7f0;
        padding:0.5em 1em;
+       line-height: 1.4em;
 }
 
 pre {
@@ -436,11 +476,10 @@ tt {
                 border:2px solid #D5E0FF;
                 color:#505050;
                 display:block;
-                font-style:italic;
-                margin:20px 80px 0pt;
+                margin:20px 15px 0pt;
                 padding:10px 20px 10px 20px;
                 text-align:justify;
-                width:50%;
+                width:70%;
         }
 
         blockquote p
@@ -532,6 +571,11 @@ tt {
                 text-align: left;
         }
 
+        #programme 
+        {
+                margin-left: 0;
+        }
+
         .programme_room_header
         {
                 border-bottom: none;
@@ -544,6 +588,8 @@ tt {
 
         .programme_time_slot, .programme_slot
         {
+                padding-left: 6px;
+                padding-right: 6px;
                 border-right: #afafff 1px dotted;
         }
 
@@ -727,3 +773,40 @@ fieldset {
   font-style: 1em;
   font-style: italic;
 }
+.slideshow {
+  padding-left: 20px;
+}
+
+h2.label {
+  margin: 0 0 15px;
+}
+
+p.label {
+  margin: 15px 0 0 0;
+}
+p.entries {
+  margin: 0 0 0 0;
+}
+p.note {
+  margin: 0 15px;
+}
+p.description {
+  margin: 0 15px;
+  font-style: italic;
+}
+
+ul.entries {
+  margin: 0 0 5px;
+  padding: 0;
+  list-style-type: none;
+}
+
+blockquote.entries {
+  margin:0 80px 0pt;
+  font-style: italic;
+}
+
+.programmeTalkId {
+  display:none;
+}
+

@@ -20,50 +20,83 @@
 <div class = 'yellowbox'>
   <div class="boxheader">
     <h1>Toolbox</h1>
-    <ul>
 % if h.auth.authorized(h.auth.has_organiser_role):
-      <li><em>Organiser</em></li>
+    <h2>Organiser</h2>
+    <ul>
       ${ make_link('Admin', h.url_for(controller='admin')) }
-      ${ make_link('Person', h.url_for(controller='person')) }
-      ${ make_link('New page', h.url_for(controller='db_content', action='new')) }
+      ${ make_link('View People', h.url_for(controller='person')) }
+      ${ make_link('View Pages', h.url_for(controller='db_content')) }
+      ${ make_link('New Page', h.url_for(controller='db_content', action='new')) }
 %   if c.db_content and not h.url_for().endswith('/edit'):
-      ${ make_link('Edit page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
+      ${ make_link('Edit Page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
 %   endif
 ${ parent.toolbox_extra_admin() }
+    </ul>
 % endif
 % if h.auth.authorized(h.auth.has_reviewer_role):
-      <li><em>Reviewer</em></li>
+    <h2>Paper Reviewer</h2>
+    <ul>
 ${ parent.toolbox_extra_reviewer() }
       ${ make_link('How to review', '/help/review') }
-      ${ make_link('Review proposals', h.url_for(controller='proposal', action='review_index')) }
-      ${ make_link('Your reviews', h.url_for(controller='review', action='index')) }
-      ${ make_link('Summary of proposals', h.url_for(controller='proposal', action='summary')) }
+      ${ make_link('Proposals to review', h.url_for(controller='proposal', action='review_index')) }
+      ${ make_link("Reviews you've made", h.url_for(controller='review', action='index')) }
+      ${ make_link('Summary of reviewed proposals', h.url_for(controller='proposal', action='summary')) }
       ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary')) }
-      ${ make_link('Change proposal statuses', h.url_for(controller='proposal', action='approve')) }
       <li>List of proposals by:</li>
       <ul class="indent">
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank')) }
         ${ make_link('max score, min score then average', h.url_for(controller='admin', action='proposals_by_max_rank')) }
         ${ make_link('stream and score', h.url_for(controller='admin', action='proposals_by_stream')) }
       </ul>
+    </ul>
 % endif
-${ parent.toolbox_extra() }
+% if h.auth.authorized(h.auth.has_funding_reviewer_role):
+    <h2>Funding Reviewer</h2>
+    <ul>
+${ parent.toolbox_extra_funding_reviewer() }
+      ${ make_link('How to review', '/help/funding_review') }
+      ${ make_link('Proposals to review', h.url_for(controller='funding', action='review_index')) }
+      ${ make_link("Reviews you've made", h.url_for(controller='funding_review', action='index')) }
+      ${ make_link('Summary of reviewed proposals', h.url_for(controller='funding', action='summary')) }
+      ${ make_link('Reviewer summary', h.url_for(controller='funding_review', action='summary')) } 
+      <li>List of requests by:</li>
+      <ul class="indent">
+        ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='funding_requests_by_strong_rank')) }
+        ${ make_link('max score, min score then average', h.url_for(controller='admin', action='funding_requests_by_max_rank')) }
+      </ul>
+    </ul>
+% endif
 % if h.signed_in_person():
-      <li><em>${ h.signed_in_person().firstname }</em></li>
-%   if h.lca_info["cfp_status"] == 'open':
+    <h2>${ h.signed_in_person().firstname }</h2>
+    <ul>
+${ parent.toolbox_extra() }
+%   if h.lca_info["cfp_status"] == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
       ${ make_link('Submit a paper', h.url_for(controller='proposal', action='new', id=None)) }
 %   endif
 %   if h.lca_info["cfmini_status"] == 'open':
       ${ make_link('Submit a miniconf', h.url_for(controller='miniconf_proposal', action='new', id=None)) }
 %   endif
+%   if h.lca_info["funding_status"] == 'open':
+      ${ make_link('Submit a Funding Application', h.url_for(controller='funding', action='new', id=None)) }
+%   endif
+%   if h.lca_info['conference_status'] == 'open' or h.signed_in_person().registration:
+      ${ make_link('Conference registration', '/register/status') }
+%   endif
+%   if h.signed_in_person().is_speaker():
+      ${ make_link('Speakers Info', '/programme/speakers_info') }
+%   endif
+%   if h.signed_in_person().is_miniconf_org():
+      ${ make_link('Miniconf Organiser Info', '/programme/miniconf_info') }
+%   endif
 %   if len(h.signed_in_person().proposals) > 0:
       ${ make_link('My proposals', h.url_for(controller='proposal')) }
 %   endif
       ${ make_link('My profile', h.url_for(controller='person', action='view', id=h.signed_in_person().id)) }
-      ${ make_link('Sign out', h.url_for(controller='person', action='signout_confirm')) }
+      ${ make_link('Sign out', h.url_for(controller='person', action='signout')) }
 % else:
+    <ul>
       ${ make_link('Sign in', "/person/signin") }
-      ${ make_link('Sign up', "/person/new") }
+      ${ make_link('Register', "/person/new") }
 % endif
     </ul>
 % if (c.db_content and not c.db_content.is_news()) or len(parent.short_title()) > 0:

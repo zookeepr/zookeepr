@@ -38,7 +38,7 @@
   </tr>
 %   for s in c.person.proposals:
   <tr class="${ h.cycle('even', 'odd') }">
-    <td>${ h.link_to("%s" % (h.util.html_escape(s.title)), url=h.url_for(action='view', id=s.id)) }</td>
+    <td>${ h.link_to("%s" % (s.title), url=h.url_for(action='view', id=s.id)) }</td>
     <td>${ s.type.name }</td>
     <td>${ h.truncate(h.util.html_escape(s.abstract)) | n}</td>
     <!--<td>${ s.audience.name }</td>-->
@@ -91,7 +91,7 @@
     </td>
     <td>
 %if s.status.name == 'Pending' or s.accepted:
-%  if c.paper_editing == 'open':
+%  if c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
   ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
 %  endif
 ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }

@@ -27,6 +27,7 @@ log = logging.getLogger(__name__)
 class VolunteerSchema(BaseSchema):
     areas = DictSet(not_empty=True)
     other = validators.String()
+    experience = validators.String()
 
 class NewVolunteerSchema(BaseSchema):
     volunteer = VolunteerSchema()
@@ -38,8 +39,11 @@ class EditVolunteerSchema(BaseSchema):
 
 class VolunteerController(BaseController):
 
-    @dispatch_on(POST="_new") 
     @authorize(h.auth.is_valid_user)
+    def __before__(self, **kwargs):
+        pass
+
+    @dispatch_on(POST="_new") 
     def new(self):
         # A person can only volunteer once
         if h.signed_in_person() and h.signed_in_person().volunteer:
@@ -59,14 +63,15 @@ class VolunteerController(BaseController):
         h.flash("Volunteer application submitted. Thank you for your interest.")
         redirect_to(action='view', id=c.volunteer.id)
 
-    @authorize(h.auth.is_valid_user)
     def view(self, id):
+        c.volunteer = Volunteer.find_by_id(id)
+
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.volunteer.person.id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
-        c.can_edit = h.auth.is_same_zookeepr_user(id)
+        c.can_edit = h.auth.is_same_zookeepr_user(c.volunteer.person.id)
 
         c.volunteer = Volunteer.find_by_id(id)
         if c.volunteer is None:
@@ -74,6 +79,7 @@ class VolunteerController(BaseController):
 
         return render('volunteer/view.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         # Check access and redirect
         if not h.auth.has_organiser_role:
@@ -81,35 +87,6 @@ class VolunteerController(BaseController):
 
         c.volunteer_collection = Volunteer.find_all()
         return render('volunteer/list.mako')
-
-    @dispatch_on(POST="_edit") 
-    @authorize(h.auth.is_valid_user)
-    def edit(self, id):
-        # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
-            # Raise a no_auth error
-            h.auth.no_role()
-
-        c.volunteer = Volunteer.find_by_id(id)
-        if c.volunteer.accepted is not None:
-            return render('volunteer/already.mako')
-
-        defaults = h.object_to_defaults(c.volunteer, 'volunteer')
-
-        form = render('volunteer/edit.mako')
-        return htmlfill.render(form, defaults)
-
-    @validate(schema=EditVolunteerSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
-    def _edit(self, id):
-        volunteer = Volunteer.find_by_id(id)
-
-        for key in self.form_result['volunteer']:
-            setattr(volunteer, key, self.form_result['volunteer'][key])
-
-        # update the objects with the validated form data
-        meta.Session.commit()
-        h.flash("Your details were updated successfully.")
-        redirect_to(action='view', id=id)
 
     @authorize(h.auth.has_organiser_role)
     def accept(self, id):

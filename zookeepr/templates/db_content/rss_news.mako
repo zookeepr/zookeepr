@@ -9,7 +9,7 @@
     <item>
       <title>${ d.title }</title>
       <link>http://${ h.host_name() }/media/news/${ d.id }</link>
-      <description>${ d.body |n }</description>
+      <description>${ d.body }</description>
       <pubDate>${ d.creation_timestamp.strftime("%a, %d %b %Y %H:%M:%S +1000") }</pubDate>
       <guid>http://${ h.host_name() }/media/news/${ d.id }</guid>
     </item>
