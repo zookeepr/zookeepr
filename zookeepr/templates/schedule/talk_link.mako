@@ -34,4 +34,4 @@
 % else:
     <span class="error-message">Talk ${ talk_id } not found</span>
 % endif
-<span style="text-align: center; font-size: smaller; font-style: oblique;">${ resources }</span></p>
+<span style="text-align: center; font-size: smaller; font-style: oblique;">${ resources |n }</span></p>

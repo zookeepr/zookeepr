@@ -609,7 +609,7 @@ class AdminController(BaseController):
         Australia membership!" (whether or not they then went on to pay for
         the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname,
+        query = """SELECT person.firstname, person.lastname, person.email_address,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -625,11 +625,10 @@ class AdminController(BaseController):
         """ People who ticked "I want to sign up for New Zealand Open Source Society
         membership!" [Mailing Lists] """
 
-        c.text = """<p>People who ticked "I want to sign up for (free) Linux
-        Australia membership!" (whether or not they then went on to pay for
-        the conference).</p>"""
+        c.text = """<p>People who ticked "I want to sign up for NZOSS membership!"
+        (whether or not they then went on to pay for the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname,
+        query = """SELECT person.firstname, person.lastname, person.email_address,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
@@ -645,11 +644,10 @@ class AdminController(BaseController):
         """ People who ticked "I want to sign up for Internet NZ
         membership!" [Mailing Lists] """
 
-        c.text = """<p>People who ticked "I want to sign up for (free) Linux
-        Australia membership!" (whether or not they then went on to pay for
-        the conference).</p>"""
+        c.text = """<p>People who ticked "I want to sign up for Internet NZ membership!" 
+        (whether or not they then went on to pay for the conference).</p>"""
 
-        query = """SELECT person.firstname, person.lastname,
+        query = """SELECT person.firstname, person.lastname, person.email_address,
                     person.address1, person.address2, person.city, person.state, person.postcode, person.country,
                     person.phone, person.mobile, person.company,
                     registration.creation_timestamp
