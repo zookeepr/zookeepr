@@ -5,7 +5,8 @@
 #
 [DEFAULT]
 debug = true
-email_to = zookeepr@localhost
+# Uncomment and replace with the address which should receive any error reports
+#email_to = you@yourdomain.com
 smtp_server = localhost
 error_email_from = zookeepr@localhost
 
@@ -47,15 +48,17 @@ sqlalchemy.url = sqlite:///%(here)s/development.db
 
 # Configure authentication
 authkit.setup.method = form, cookie
-authkit.form.action = /person/signup
-authkit.form.authenticate.user.data = visitor:open_sesame
 authkit.cookie.secret = secret string
-authkit.cookie_enforce = True
+authkit.form.authenticate.function = zookeepr.lib.auth:valid_password
+authkit.forward.signinpath = /person/signin
+authkit.form.template.obj = zookeepr.lib.auth:render_signin
+authkit.cookie.signoutpath = /person/signout
+authkit.setup.intercept = 401, 403
 
 
 # Logging configuration
 [loggers]
-keys = root
+keys = root, routes, zookeepr, sqlalchemy
 
 [handlers]
 keys = console
@@ -67,6 +70,24 @@ keys = generic
 level = INFO
 handlers = console
 
+[logger_routes]
+level = INFO
+handlers =
+qualname = routes.middleware
+
+[logger_zookeepr]
+level = DEBUG
+handlers =
+qualname = zookeepr
+
+[logger_sqlalchemy]
+level = WARN
+handlers =
+qualname = sqlalchemy.engine
+# "level = INFO" logs SQL queries.
+# "level = DEBUG" logs SQL queries and results.
+# "level = WARN" logs neither.  (Recommended for production systems.)
+
 [handler_console]
 class = StreamHandler
 args = (sys.stderr,)
@@ -74,4 +95,5 @@ level = NOTSET
 formatter = generic
 
 [formatter_generic]
-format = %(asctime)s %(levelname)-5.5s [%(name)s] %(message)s
+format = %(asctime)s,%(msecs)03d %(levelname)-5.5s [%(name)s] %(message)s
+datefmt = %H:%M:%S
