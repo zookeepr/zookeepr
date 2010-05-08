@@ -25,18 +25,6 @@
 
 <p>${ h.link_to('New category', url=h.url_for(controller='product', action='new')) }</p>
 
-<%def name="contents()">
-<%
-  menu = ''
-
-  import re
-
-  for category in c.product_categories:
-    simple_title = re.compile('([^a-zA-Z0-9])').sub('', category.name) 
-    menu += '<li><a href="#' + simple_title + '">' + category.name + ' products</a></li>' 
-  return menu
-%>
-</%def>
 <%def name="title()">
 Products -
  ${ parent.title() }

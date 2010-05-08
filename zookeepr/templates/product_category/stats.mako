@@ -24,7 +24,6 @@
 %>
 
     <h2>List products in the ${c.product_category.name} category</h2>
-    <p>${cat_menu |n}</p>
 % if True:
 <%
       category = c.product_category
@@ -166,11 +165,15 @@
 <%
   menu = ''
 
-  import re
-
   for category in c.product_categories:
-    simple_title = re.compile('([^a-zA-Z0-9])').sub('', category.name) 
-    menu += '<li><a href="#' + simple_title + '">' + category.name + ' products</a></li>' 
+    esc_name = h.util.html_escape(category.name)
+    if category.id == c.product_category.id:
+      menu += '<li>'+esc_name+'</li>'
+    else:
+      menu += '<li>%s</li>'%h.link_to(esc_name,
+            url=h.url_for(controller='product_category', id=category.id,
+            action='stats'))
+
   return menu
 %>
 </%def>
