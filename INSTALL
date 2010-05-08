@@ -8,71 +8,80 @@ This file is formatted with
 [Markdown](http://daringfireball.net/projects/markdown/). You can get nicely
 formatted HTML output with the following commands.
 
-	aptitude install markdown # install somehow Markdown
-	markdown INSTALL > /somewhere/install.html
+		aptitude install markdown # install somehow Markdown
+		markdown INSTALL > /somewhere/install.html
 
 Open this file with your preferred browser. For example Epiphany.
 
-	epiphany /somewhere/install.html &
+		epiphany /somewhere/install.html &
 
-## Dependencies ##
+## Installing the Dependencies ##
 
-### Without package management and with go-pylons script ###
+In these instructions `the-development-directory` is the directory containing this INSTALL file.
 
-Install latest pylons in a development directory: 
+Regardless of what method you use to install the dependencies,
+if the result doesn't work check the dependencies listed in
+setup.py against what you have installed.
 
-	mkdir pylons && cd pylons
-	wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
-	python go-pylons.py ./
-	alias pylons="source `pwd`/bin/activate"
+### Installing without using a distro's package management ###
 
-	python setup.py develop --user
-	paster make-config zookeepr config.ini
-	paster setup-app config.ini
+This requires Python >=2.6.  Install latest pylons in a development directory: 
 
-### Ubuntu Lucid 10.04 LTS ###
-### Debian Squeeze ###
-### Debian Lenny ###
+		cd the-development-directory
+		wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
+		mkdir pylons
+		python go-pylons.py pylons
+		alias pylons="source `pwd`/bin/activate"
+		pylons
+		python setup.py develop --user
 
-    # On lenny first do blah
-    blah
+### Installing using Debian style package management ###
 
-	aptitude install python-pylons python-setuptools python-authkit python-imaging python-dnspython
+These instructions have been tested on:
 
-	python setup.py develop --no-deps
-	paster make-config zookeepr config.ini
-	paster setup-app config.ini
+  - Ubuntu Lucid 10.04 LTS
+  - Debian Squeeze
+  - Debian Lenny
 
-## Optional dependencies ##
+Some Lenny packages are too old.  So on Lenny only, install them from backports:
+
+  - Add debian-backports to /etc/apt/sources.lst
+
+		aptitude -t lenny-backports install bzr debian-backports-keyring python-pylons
+
+On all Debian derived distributions, do the following:
+
+		aptitude install python-authkit python-dnspython python-imaging python-pastedeploy python-pylons python-setuptools
+		cd the-development-directory
+		alias pylons="export PYTHONPATH=$PWD/setup-dir"
+		pylons
+		python setup.py develop --no-deps --install-dir=$PYTHONPATH
 
 ### PDF generation ###
 
 You need to install the following package for PDF generation to work, e. g.:
 
-	aptitude install inkscape
+		aptitude install inkscape
 
 ### Keysigning code ###
 
 To allow the generation of key fingerprint pages you will need to install the
 following packages:
 
-	aptitude install gnupg mpage ghostscript
+		aptitude install gnupg mpage ghostscript
 
 ## Installing and setting up Zookeepr ##
 
- - Change directories into zookeepr (Where this `INSTALL` file is):
+ - Set up the development environment:
 
-		pylons # not available/needed on Debian or Ubuntu
-		python setup.py develop
+		cd the-development-directory
+		pylons			# command created by the alias above
 
- - Make a config file as follows (you may skip this step and use the supplied
-   `development.ini`):
+ - Create a `config.ini`.
 
 		paster make-config zookeepr config.ini
 
- - Tweak `config.ini` file as appropriate: 
-   * Set up `dburi` to something appropriate (possibly `sqlite:///` for SQLite3
-       or `postgres://` for a PostgreSQL setup).
+ - The default `config.ini` uses sqlite, which is fine for development.  To use a different SQL backend edit `dburi`.
 
  - Generate an empty database:
 
@@ -84,7 +93,14 @@ following packages:
  
 ## Running Zookeepr ##
 
-	paster serve --reload -v config.ini
+ - Set up the development environment:
+
+		cd the-development-directory
+		pylons			# command created by the alias above
+
+ - Run ZooKeepr:
+
+		paster serve --reload -v config.ini
 
 ## Administering Zookeepr ##
 
