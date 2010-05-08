@@ -11,7 +11,6 @@ from person_role_map import person_role_map
 from zookeepr.model.meta import Session
 
 import datetime
-import md5
 import random
 
 def setup(meta):

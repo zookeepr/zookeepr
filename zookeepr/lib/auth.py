@@ -23,7 +23,7 @@ from authkit.authorize import PermissionSetupError, middleware
 from authkit.authorize.pylons_adaptors import authorized
 
 
-import md5
+import hashlib
 
 log = logging.getLogger(__name__)
 
@@ -51,7 +51,7 @@ def render_signin(environ):
 
 
 def encrypt(password):
-    return md5.new(password).hexdigest()
+    return hashlib.md5(password).hexdigest()
 
 
 def valid_password(environ, username, password):
