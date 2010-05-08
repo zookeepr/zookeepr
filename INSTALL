@@ -26,42 +26,22 @@ Install latest pylons in a development directory:
 	python go-pylons.py ./
 	alias pylons="source `pwd`/bin/activate"
 
-### Ubuntu Hardy 8.04 LTS ###
-
-Ubuntu Hardy 8.04 LTS was used as the server system for LCA2009.
-
-	aptitude install python-dev python-pylons python-sqlalchemy \
-	python-simplejson python-libxml2 python-xsltproc python-setuptools \
-	python-dnspython python-cheetah python-psycopg2 miscfiles pwgen \
-	python-myghty
-
-For Ubuntu Hardy add from Jaunty:
-
-	javascript-common 5
-	libjs-prototype 1.6.0.3-1
-	python-webhelpers 0.6.4-1
-	wwwconfig-common 0.2.1
-
-### Ubuntu Lucid 10.04 LTS ###
-
-	aptitude install python-pylons python-setuptools python-authkit python-imaging python-dnspython
-
-	python setup.py develop --user --no-deps
+	python setup.py develop --user
 	paster make-config zookeepr config.ini
 	paster setup-app config.ini
 
-
+### Ubuntu Lucid 10.04 LTS ###
+### Debian Squeeze ###
 ### Debian Lenny ###
 
-For Debian Lenny, you must downgrade these packages:
+    # On lenny first do blah
+    blah
 
- - python-pylons down to 0.9.6.1-1
- - python-beaker down to 0.8-1
+	aptitude install python-pylons python-setuptools python-authkit python-imaging python-dnspython
 
-### Debian Squeeze ###
-
-	aptitude install python-pylons python-beaker python-authkit \
-	python-imaging
+	python setup.py develop --no-deps
+	paster make-config zookeepr config.ini
+	paster setup-app config.ini
 
 ## Optional dependencies ##
 
