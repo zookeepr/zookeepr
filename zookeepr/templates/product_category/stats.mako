@@ -11,10 +11,15 @@
   count = 0
   graph_data = []
 
-  cat_menu = [ h.link_to(category.name,
+  cat_menu = []
+  for category in c.product_categories:
+    esc_name = h.util.html_escape(category.name)
+    if category.id == c.product_category.id:
+      cat_menu.append(esc_name)
+    else:
+      cat_menu.append(h.link_to(esc_name,
             url=h.url_for(controller='product_category', id=category.id,
-            action='stats')) for category in c.product_categories if
-            category.id != c.product_category.id ]
+            action='stats')))
   cat_menu = 'See also:' + ' &#8226; '.join(cat_menu)
 %>
 
