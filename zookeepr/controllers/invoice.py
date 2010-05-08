@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.lib.mail import email
 
-from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product
+from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
 from zookeepr.model.payment import Payment
 
 from zookeepr.config.lca_info import lca_info, file_paths
@@ -49,7 +49,7 @@ class PayInvoiceSchema(BaseSchema):
     payment_id = validators.Int(min=1)
 
 class InvoiceController(BaseController):
-    @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.Or(h.auth.is_valid_user, h.auth.has_unique_key(h.url_for())))
     def __before__(self, **kwargs):
         pass
 
@@ -97,8 +97,31 @@ class InvoiceController(BaseController):
         h.flash("Manual invoice created")
         return redirect_to(action='view', id=c.invoice.id)
 
-    def view(self, id):
+    def generate_hash(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        url = h.url_for(action='view', id=id)
+        c.hash = URLHash.find_by_url(url=url)
+        if c.hash is None:
+		    c.hash = URLHash()
+		    c.hash.url = url
+		    meta.Session.add(c.hash)
+		    meta.Session.commit()
+		    
+		    # create an entry for the payment page
+		    # TODO: depending on how the gateway works, you may need to make sure you have permissions for the page you get redirected to
+		    c.hash = URLHash()
+		    c.hash.url = h.url_for(action='pay')
+		    meta.Session.add(c.hash)
+		    meta.Session.commit()
+
+        return render('/invoice/generate_url.mako')
+
+
+    def view(self, id):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -248,7 +271,7 @@ class InvoiceController(BaseController):
 
     
     def pdf(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
             # Raise a no_auth error
             h.auth.no_role()
 

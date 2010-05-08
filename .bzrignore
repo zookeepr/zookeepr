@@ -17,3 +17,5 @@ zookeepr/public/att-data
 .coverage
 ./lib
 zookeepr.egg-info
+elementtree
+development.ini

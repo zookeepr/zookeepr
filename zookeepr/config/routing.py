@@ -67,12 +67,15 @@ def make_map():
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
 
     # registration and invoicing
-    map.connect('/invoice/pdf/{id}',               controller='invoice', action='pdf', id=None)
+    map.connect('/invoice/{id}/pdf',               controller='invoice', action='pdf', id=None)
     map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
     map.connect('/registration/remind',            controller='registration', action='remind', id=None)
     map.connect('/register/status',                controller='registration', action='status')
     map.connect('/registration/silly_description', controller='registration', action='silly_description')
     map.connect('/registration/generate_badges',   controller='registration', action='generate_badges')
+
+    map.connect('/invoice/generate_hash/{id}',     controller='invoice', action='generate_hash', id=None)
+    map.connect('/secret/{hash}',                  controller='secret_hash', action='lookup', hash=None)
 
     # account confirmation named route
     map.connect('acct_confirm', '/person/confirm/{confirm_hash}', controller='person', action='confirm')

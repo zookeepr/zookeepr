@@ -21,7 +21,7 @@ from lxml.html.clean import Cleaner
 import webhelpers.util as util
 
 from routes import request_config
-from routes.util import url_for
+from routes.util import url_for as pylons_url_for
 
 from pylons import config, request, session
 
@@ -536,3 +536,12 @@ def html_clean(str):
     """ Clean up HTML to be safe """
     cleaner = Cleaner(safe_attrs_only=True)
     return cleaner.clean_html(str)
+    
+    
+    
+def url_for(*args, **kwargs):
+    fields = dict(request.GET)
+    extra = ''
+    if fields.has_key('hash'):
+        extra='?hash=' + fields['hash']
+    return pylons_url_for(*args, **kwargs) + extra
