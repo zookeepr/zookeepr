@@ -43,6 +43,8 @@ lca_info = {
   'funding_status' : 'closed',
   'funding_editing' : 'open',
   'conference_status': 'open',
+# Mode
+  'cfp_hide_assistance_info': 'yes',
 
   'emails': {
      'presentation' : 'speakers@lca2010.org.nz',

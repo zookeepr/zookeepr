@@ -1,4 +1,4 @@
-<div id="proposal">
+<Div id="proposal">
 
 <p class="submitted">
 Proposal for a
@@ -163,16 +163,17 @@ ${ h.link_to('Add an attachment', url=h.url_for(action='attach')) }
 % endif
 </div>
 
-% if c.proposal.accommodation_assistance:
+% if c.cfp_hide_assistance_info == 'no':
+    % if c.proposal.accommodation_assistance:
 <p>
     <em>Accommodation assistance:</em> ${ c.proposal.accommodation_assistance.name }</p>
-% endif
+    % endif
 
-% if c.proposal.travel_assistance:
+    % if c.proposal.travel_assistance:
 <p>
     <em>Travel assistance:</em> ${ c.proposal.travel_assistance.name }</p>
+    % endif
 % endif
-
 
 <p><em>Consents:</em><blockquote>
 <p>I allow ${ h.lca_info["event_parent_organisation"] } to record my talk.</p>
