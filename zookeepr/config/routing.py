@@ -86,6 +86,9 @@ def make_map():
     map.connect('/registration/professionals_latex', controller='registration', action='professionals_latex')
     map.connect('/proposal/latex',                  controller='proposal', action='latex')
 
+    # product
+    map.connect('/product/new/{cat_id}', controller='product', action='new')
+
 
     # admin controller
     map.connect('/admin/{action}', controller='admin')
