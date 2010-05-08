@@ -18,3 +18,4 @@ zookeepr/public/att-data
 ./lib
 zookeepr.egg-info
 elementtree
+development.ini

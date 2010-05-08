@@ -22,7 +22,7 @@ class SpecialRegistration(Base):
 
     @classmethod
     def find_all(self):
-        return Session.query(SpecialRegistration).order_by(SpecialRegistration.display_order).order_by(SpecialRegistration.name).all()
+        return Session.query(SpecialRegistration).all()
 
     @classmethod
     def find_by_id(cls, id):
