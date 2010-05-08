@@ -54,6 +54,8 @@ authkit.forward.signinpath = /person/signin
 authkit.form.template.obj = zookeepr.lib.auth:render_signin
 authkit.cookie.signoutpath = /person/signout
 authkit.setup.intercept = 401, 403
+authkit.cookie_enforce = True
+
 
 
 # Logging configuration
