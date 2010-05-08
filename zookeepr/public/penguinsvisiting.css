@@ -722,12 +722,12 @@ tt {
                 padding-left: 0;
         }
 
-#flash
+#flash, #warningDiv
 {
     width:100%
 }
 
-#flash .message
+#flash .message, #warningDiv .message
 {
     padding-top: 1em;
     padding-left: 50px;
@@ -736,12 +736,12 @@ tt {
     background: #fffaaa url('/images/icons/emblem-note.png') no-repeat 10px 50%;
 }
 
-#flash .message-error
+#flash .message-error, #warningDiv .message-error
 {
     background: #ff9999 url('/images/icons/dialog-error.png') no-repeat 10px 50%;
 }
 
-#flash .message-warning
+#flash .message-warning, #warningDiv .message-warning
 {
     background: #ffcc88 url('/images/icons/dialog-warning.png') no-repeat 10px 50%;
 }
