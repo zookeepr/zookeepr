@@ -8,7 +8,7 @@ available to Controllers. This module is available to templates as 'h'.
 
 from webhelpers.html import escape, HTML, literal, url_escape
 from webhelpers.html.tags import *
-from webhelpers.html.secure_form import secure_form
+from webhelpers.pylonslib import secure_form
 from webhelpers.text import *
 import webhelpers.constants
 
