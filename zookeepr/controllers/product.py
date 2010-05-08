@@ -49,8 +49,14 @@ class ProductController(BaseController):
         c.ceilings = Ceiling.find_all()
 
     @dispatch_on(POST="_new") 
-    def new(self):
-        return render('/product/new.mako')
+    def new(self, cat_id=None):
+        form=render('/product/new.mako')
+        if cat_id is None:
+            return form
+        else:
+            return htmlfill.render(form, {
+                'product.category': cat_id,
+                'product.category_id': cat_id})
 
     @validate(schema=NewProductSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
@@ -70,7 +76,6 @@ class ProductController(BaseController):
 
     def index(self):
         c.can_edit = True
-        c.product_collection = Product.find_all()
         return render('/product/list.mako')
 
     @dispatch_on(POST="_edit") 

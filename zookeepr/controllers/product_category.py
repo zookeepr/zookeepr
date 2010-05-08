@@ -18,6 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
+from zookeepr.model.product import Product
 from zookeepr.model.product_category import ProductCategory
 
 from zookeepr.config.lca_info import lca_info
@@ -74,6 +75,11 @@ class ProductCategoryController(BaseController):
     def view(self, id):
         c.product_category = ProductCategory.find_by_id(id)
         return render('/product_category/view.mako')
+
+    def stats(self, id):
+        c.product_category = ProductCategory.find_by_id(id)
+        c.product_categories = ProductCategory.find_all()
+        return render('/product_category/stats.mako')
 
     def index(self):
         c.can_edit = True
