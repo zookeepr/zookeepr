@@ -110,12 +110,12 @@ class InvoiceController(BaseController):
 		    meta.Session.add(c.hash)
 		    meta.Session.commit()
 		    
-		    # create an entry for the payment page
+		    # create an entry for the payment page (not needed)
 		    # TODO: depending on how the gateway works, you may need to make sure you have permissions for the page you get redirected to
-		    c.hash = URLHash()
-		    c.hash.url = h.url_for(action='pay')
-		    meta.Session.add(c.hash)
-		    meta.Session.commit()
+		    #c.hash = URLHash()
+		    #c.hash.url = h.url_for(action='pay')
+		    #meta.Session.add(c.hash)
+		    #meta.Session.commit()
 
         return render('/invoice/generate_url.mako')
 

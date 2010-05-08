@@ -37,24 +37,24 @@
   <link rel="stylesheet" media="screen" href="/penguinsvisiting.css" type="text/css">
   <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
   <link rel="stylesheet" media="print" href="/print.css" type="text/css">
-<script type="text/javascript" src="/jquery.min.js"></script>          
+  <script type="text/javascript" src="/jquery.min.js"></script>          
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
   ${self.extra_head()}
   <script type="text/javascript">
-     $(document).ready(function() {
-       $("#flash > div").hide().fadeIn(3500);
-       $("#flash > div").fadeTo(3000, 0.3);
-       $("#flash > div").hover(function() {
-         $(this).fadeTo(250, 1);
+     jQuery(document).ready(function() {
+       jQuery("#flash > div").hide().fadeIn(3500);
+       jQuery("#flash > div").fadeTo(3000, 0.3);
+       jQuery("#flash > div").hover(function() {
+         jQuery(this).fadeTo(250, 1);
        },function(){
-         $(this).fadeTo(250, 0.3);
+         jQuery(this).fadeTo(250, 0.3);
        });
-
      });
-  </script>
+  </script>  
+
 </head>
 
 ${self.extra_body()}

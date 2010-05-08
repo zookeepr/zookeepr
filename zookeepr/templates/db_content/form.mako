@@ -34,7 +34,9 @@ ${ h.text('db_content.url', size=60) }
 </p>
 <ul class="note"><li>For pages and news items this is the URL after the linux.conf.au/ that this page should be rendered for. EG: 'about/linux'.<br>
 It is not mandatory supply a URL as content is still accessible via ID's. It is recommended not to create a URL alias for news items.</li>
-<li>For "In the press" this is the URL you want the item to link to.</li></ul>
+<li>For "In the press" this is the URL you want the item to link to.</li>
+<li>For "Redirect" this is the URL you are coming from, and the body is the URL to go to.</li>
+</ul>
 
 <p class="label">
 <label for="db_content.body">Body:</label>
@@ -44,6 +46,7 @@ ${ h.textarea('db_content.body', cols="80", rows="40") }
 <ul class="note"><li>The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate. Use &lt;h3&gt;'s to automatically create a "contents" section.</li>
 <li>For news articles you can place a &lt;!--break--&gt; statement to separate the entire body from the preview on the news page.</li>
 <li>For in the press this becomes the comment under the link.</li>
+<li>For "Redirect" the body is the URL to go to. The [Page] URL above is the URL to redirect from. This URL needs to include the full or relative path. e.g. /person/signin or http://www.linux.org.au</li>
 <li>To include a slideshow of images, or an image using a lightbox then:</li>
 <ul>
   <li>upload the images to <tt>public/images/&lt;set name&gt;</tt></li>

@@ -82,10 +82,12 @@ class DbContentController(BaseController):
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
         if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
-           c.db_content = None
-           return NotFoundController().view()
+            c.db_content = None
+            return NotFoundController().view()
         elif not c.db_content.published:
-           h.flash("This content is marked as unpublished and is only viewable by organisers.", 'Warning')
+            h.flash("This content is marked as unpublished and is only viewable by organisers.", 'Warning')
+        if c.db_content.type.name == 'Redirect':
+            redirect_to(c.db_content.body, _code=301)
         return render('/db_content/view.mako')
 
     def page(self):

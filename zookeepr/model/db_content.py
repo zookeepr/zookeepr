@@ -19,6 +19,7 @@ def setup(meta):
             DbContentType(name='Page'),
             DbContentType(name='News'),
             DbContentType(name='In the press'),
+            DbContentType(name='Redirect'),
         ]
     )
 
