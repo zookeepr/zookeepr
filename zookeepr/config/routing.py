@@ -67,7 +67,7 @@ def make_map():
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
 
     # registration and invoicing
-    map.connect('/invoice/pdf/{id}',               controller='invoice', action='pdf', id=None)
+    map.connect('/invoice/{id}/pdf',               controller='invoice', action='pdf', id=None)
     map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
     map.connect('/registration/remind',            controller='registration', action='remind', id=None)
     map.connect('/register/status',                controller='registration', action='status')

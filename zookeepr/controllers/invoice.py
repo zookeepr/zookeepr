@@ -49,7 +49,7 @@ class PayInvoiceSchema(BaseSchema):
     payment_id = validators.Int(min=1)
 
 class InvoiceController(BaseController):
-    #@authorize(h.auth.Or(h.auth.is_valid_user, h.auth.has_unique_key(h.url_for())))
+    @authorize(h.auth.Or(h.auth.is_valid_user, h.auth.has_unique_key(h.url_for())))
     def __before__(self, **kwargs):
         pass
 
@@ -107,6 +107,13 @@ class InvoiceController(BaseController):
         if c.hash is None:
 		    c.hash = URLHash()
 		    c.hash.url = url
+		    meta.Session.add(c.hash)
+		    meta.Session.commit()
+		    
+		    # create an entry for the payment page
+		    # TODO: depending on how the gateway works, you may need to make sure you have permissions for the page you get redirected to
+		    c.hash = URLHash()
+		    c.hash.url = h.url_for(action='pay')
 		    meta.Session.add(c.hash)
 		    meta.Session.commit()
 
@@ -264,7 +271,7 @@ class InvoiceController(BaseController):
 
     
     def pdf(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
             # Raise a no_auth error
             h.auth.no_role()
 

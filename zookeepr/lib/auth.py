@@ -323,11 +323,14 @@ class HasUniqueKey(Permission):
 
     def check(self, app, environ, start_response):
         fields = dict(request.GET)
-        if not fields.has_key('hash') or URLHash.find_by_url(self.url).url_hash != fields['hash']:
-            raise NotAuthorizedError(
-                "You are not authorised to view this page"
-            )
-        return app(environ, start_response)
+        if fields.has_key('hash'):
+            dburl = URLHash.find_by_hash(fields['hash']).url
+            if dburl is not None:
+                if self.url.startswith(dburl):
+                    return app(environ, start_response)
+        raise NotAuthorizedError(
+            "You are not authorised to view this page"
+        )
 
 class IsSameZookeeprRegistration(UserIn):
     """
