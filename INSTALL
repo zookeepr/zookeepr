@@ -42,6 +42,15 @@ For Ubuntu Hardy add from Jaunty:
 	python-webhelpers 0.6.4-1
 	wwwconfig-common 0.2.1
 
+### Ubuntu Lucid 10.04 LTS ###
+
+	aptitude install python-pylons python-setuptools python-authkit python-imaging python-dnspython
+
+	python setup.py develop --user --no-deps
+	paster make-config zookeepr config.ini
+	paster setup-app config.ini
+
+
 ### Debian Lenny ###
 
 For Debian Lenny, you must downgrade these packages:
