@@ -16,8 +16,11 @@ from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta, Person, Product, Registration, ProductCategory
-from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice
+from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice, Funding
+from zookeepr.model.funding_review import FundingReview
+from zookeepr.model.rego_note import RegoNote
 from zookeepr.model.social_network import SocialNetwork
+from zookeepr.model.special_registration import SpecialRegistration
 from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info, lca_rego
@@ -1450,6 +1453,56 @@ class AdminController(BaseController):
                 ','.join(r.prevlca or []),
             ])
         return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def destroy_personal_information(self):
+        """ Remove personal information from the database (HIGHLY DESTRUCTIVE!) [Other] """
+        return 'Disabled in controllers/admin.py. <br>Go enable it there if you really need it (i.e. LCA is well over and you have a <b>backup of the database</b>).<br><font color="#FF0000">You have been warned!</font>'
+        people = Person().find_all()
+        for person in people:
+            # optional fields can be cleared
+            person.company = '';
+            person.address2 = '';
+            person.state = '';
+            person.phone = '';
+            person.mobile = '';
+            person.url = '';
+
+            # required fields need some stuff in them
+            person.address1 = 'deleted';
+            person.city = 'deleted';
+            person.postcode = 'deleted';
+            person.country = 'AUSTRALIA';
+            person.url = '';
+
+            for sn in person.social_networks:
+                person.social_networks[sn] = '';
+
+        # Other tables which include personal information
+
+        rego_notes = RegoNote().find_all()
+        for note in rego_notes:
+            meta.Session.delete(note)
+
+        volunteers = Volunteer().find_all()
+        for volunteer in volunteers:
+            volunteer.other = ''
+            volunteer.experience = ''
+
+        special_regos = SpecialRegistration().find_all()
+        for special in special_regos:
+            meta.Session.delete(special)
+
+        reviews = FundingReview().find_all()
+        for review in reviews:
+            meta.Session.delete(review)
+
+        fundings = Funding().find_all()
+        for funding in fundings:
+            meta.Session.delete(funding)
+
+        meta.Session.commit()
+        return 'All done!'
 
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
