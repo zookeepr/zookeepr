@@ -27,6 +27,7 @@ ${ h.hidden('person.email_address2', '') }</p>
 <p class="entries">${ h.password("person.password_confirm", size=40) }</p>
 % endif
 
+%if h.lca_rego['personal_info']['phone'] == 'yes':
 <p class="label"><label for="person.phone">Phone number:</label></p>
 <p class="entries">${ h.text('person.phone') }</p>
 
@@ -37,7 +38,12 @@ ${ h.hidden('person.email_address2', '') }</p>
 % endif
 <label for="person.mobile">Mobile/Cell number:</label></p>
 <p class="entries">${ h.text('person.mobile') }</p>
+%else:
+${ h.hidden('person.phone') }
+${ h.hidden('person.mobile') }
+%endif
 
+%if h.lca_rego['personal_info']['home_address'] == 'yes':
 <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
 <p class="entries">
 ${ h.text('person.address1', size=40) }
@@ -53,6 +59,13 @@ ${ h.text('person.address2', size=40) }
 
 <p class="label"><span class="mandatory">*</span><label for="person.postcode">Postcode/ZIP:</label></p>
 <p class="entries">${ h.text('person.postcode', size=40) }</p>
+%else:
+${ h.hidden('person.address1') }
+${ h.hidden('person.address2') }
+${ h.hidden('person.city') }
+${ h.hidden('person.state') }
+${ h.hidden('person.postcode') }
+%endif
 
 <p class="label"><span class="mandatory">*</span><label for="person.country">Country:</label></p>
 <p class="entries">

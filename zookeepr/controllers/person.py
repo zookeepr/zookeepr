@@ -275,6 +275,11 @@ class PersonController(BaseController): #Read, Update, List
         defaults = {
             'person.country': 'NEW ZEALAND',
         }
+        if h.lca_rego['personal_info']['home_address'] == 'no':
+            defaults['person.address1'] = 'not available'
+            defaults['person.city'] = 'not available'
+            defaults['person.postcode'] = 'not available'
+
         c.social_networks = SocialNetwork.find_all()
 
         form = render('/person/new.mako')
