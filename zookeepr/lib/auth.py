@@ -16,7 +16,7 @@ from formencode import validators, htmlfill, Invalid
 from zookeepr.lib.validators import BaseSchema
 
 from zookeepr.model import meta
-from zookeepr.model import Person, Role, Proposal, Invoice, Registration, Funding
+from zookeepr.model import Person, Role, Proposal, Invoice, Registration, Funding, URLHash
 
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
 from authkit.authorize import PermissionSetupError, middleware
@@ -315,6 +315,20 @@ class IsSameZookeeprAttendee(UserIn):
 
         return app(environ, start_response)
 
+class HasUniqueKey(Permission):
+    def __init__(self, url):
+        # unique_type is arbitrary so could be 'invoice', 'user', 'registration' etc so that the one table can be used to generate keys for multiple different things
+        # reference_id is unique to the
+        self.url = url
+
+    def check(self, app, environ, start_response):
+        fields = dict(request.GET)
+        if not fields.has_key('hash') or URLHash.find_by_url(self.url).url_hash != fields['hash']:
+            raise NotAuthorizedError(
+                "You are not authorised to view this page"
+            )
+        return app(environ, start_response)
+
 class IsSameZookeeprRegistration(UserIn):
     """
     Checks that the signed in user is the user this registration belongs
@@ -349,7 +363,6 @@ class IsSameZookeeprRegistration(UserIn):
 
         return app(environ, start_response)
 
-
 class Or(Permission):
     """
     Checks all the permission objects listed as keyword arguments in turn.
@@ -368,8 +381,9 @@ class Or(Permission):
             try:
                 permission.check(app, environ, start_response)
                 return app(environ, start_response)
-            except NotAuthorizedError:
+            except:
                 pass
+            
 
 
         raise NotAuthorizedError(
@@ -398,3 +412,4 @@ is_same_zookeepr_submitter = IsSameZookeeprSubmitter
 is_same_zookeepr_attendee = IsSameZookeeprAttendee
 is_same_zookeepr_registration = IsSameZookeeprRegistration
 is_same_zookeepr_funding_submitter = IsSameZookeeprFundingSubmitter
+has_unique_key = HasUniqueKey

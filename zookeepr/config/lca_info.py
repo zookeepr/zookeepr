@@ -62,7 +62,7 @@ lca_rego = {
   'accommodation': {
       # Will delegates be force to organise their own accommodation?
       # set to yes to disable the accommodation questions.
-      'self_book': 'yes'
+      'self_book': 'no'
   },
 
   # Set to yes to collect PGP key IDs in rego, no to disable collection.

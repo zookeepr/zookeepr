@@ -9,6 +9,7 @@
 % endif
         <li>${ h.link_to('Printable version', url=h.url_for(action='printable')) }</li>
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
+        <li>${ h.link_to('Generate access URL', url=h.url_for(action='generate_hash')) }</li>
 % if h.auth.authorized(h.auth.has_organiser_role):
 %   if c.invoice.is_void():
         <li>${ h.link_to('Unvoid this invoice', url = h.url_for(action='unvoid')) }</li>

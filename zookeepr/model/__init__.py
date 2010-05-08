@@ -29,6 +29,7 @@ import funding_attachment
 import funding_review
 import special_offer
 import special_registration
+import url_hash
 
 from person import Person
 from role import Role
@@ -58,6 +59,8 @@ from registration_product import RegistrationProduct
 from voucher import Voucher, VoucherProduct
 
 from db_content import DbContentType, DbContent
+
+from url_hash import URLHash
 
 def init_model(engine):
     """Call me before using any of the tables or classes in the model"""
