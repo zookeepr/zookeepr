@@ -5,6 +5,7 @@
 #
 [DEFAULT]
 debug = true
+enable_ssl_requirement = false
 # Uncomment and replace with the address which should receive any error reports
 #email_to = you@yourdomain.com
 smtp_server = localhost
@@ -47,11 +48,9 @@ sqlalchemy.url = sqlite:///%(here)s/development.db
 #set debug = false
 
 # Configure authentication
-authkit.setup.method = form, cookie
+authkit.setup.method = forward, cookie
 authkit.cookie.secret = secret string
-authkit.form.authenticate.function = zookeepr.lib.auth:valid_password
 authkit.forward.signinpath = /person/signin
-authkit.form.template.obj = zookeepr.lib.auth:render_signin
 authkit.cookie.signoutpath = /person/signout
 authkit.setup.intercept = 401, 403
 authkit.cookie_enforce = True

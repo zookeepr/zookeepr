@@ -18,3 +18,4 @@ zookeepr.egg-info
 zookeepr.egg-info/*
 zookeepr.egg-link
 zookeepr/public/att-data
+zookeepr.wsgi
