@@ -29,5 +29,6 @@
 : ${ c.form_errors[field] }</li>
 %       endfor
         </ul>
+        </div>
 %endif
     </div>
