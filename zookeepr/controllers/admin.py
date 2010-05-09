@@ -18,6 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.model import meta, Person, Product, Registration, ProductCategory
 from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice, Funding
 from zookeepr.model.funding_review import FundingReview
+from zookeepr.model.payment_received import PaymentReceived
 from zookeepr.model.rego_note import RegoNote
 from zookeepr.model.social_network import SocialNetwork
 from zookeepr.model.special_registration import SpecialRegistration
@@ -1583,6 +1584,26 @@ class AdminController(BaseController):
                 if len(p)>0:
                     results += [(pp, 'partial name') for pp in p]
 
+            pr = meta.Session.query(PaymentReceived).filter_by(gateway_ref=id).all()
+            for rcvd in pr:
+                results.append((rcvd.invoice.person, 'payment received'))
+
+            # Commented out because sqlite doesn't have regexp; postgresql had
+            # that, but not sqlite. --Jiri 9.5.2010
+
+            #phone_pat = '[ \t()/-]*'.join(raw_id)
+            #p = meta.Session.query(Registration).filter(
+            #                  Person.phone.op('regexp')('^'+phone_pat+'$')).all()
+            #for prs in p:
+            #    results.append((prs, 'phone'))
+            #phone_pat = '[ \t()/-]*'.join(raw_id)
+            #
+            #if not p:
+            #    p = meta.Session.query(Registration).filter(
+            #                      #Person.phone.op('regexp')(phone_pat)).all()
+            #    for prs in p:
+            #        results.append((prs, 'partial phone'))
+
         try:
             id = int(id)
         except:
@@ -1608,30 +1629,10 @@ class AdminController(BaseController):
             r = meta.Session.query(Registration).filter_by(id=id).all()
             for rego in r:
                 results.append((rego.person, 'rego'))
-            
+
             p = meta.Session.query(Person).filter_by(id=id).all()
             for prs in p:
                 results.append((prs, 'person'))
-
-            p = meta.Session.query(Person).filter_by(TransID=id).all()
-            for prs in p:
-                results.append((prs, 'transaction'))
-
-        # Commented out because sqlite doesn't have regexp; postgresql had
-        # that, but not sqlite. --Jiri 9.5.2010
-
-        #phone_pat = '[ \t()/-]*'.join(raw_id)
-        #p = meta.Session.query(Registration).filter(
-        #                  Person.phone.op('regexp')('^'+phone_pat+'$')).all()
-        #for prs in p:
-        #    results.append((prs, 'phone'))
-        #phone_pat = '[ \t()/-]*'.join(raw_id)
-        #
-        #if not p:
-        #    p = meta.Session.query(Registration).filter(
-        #                      #Person.phone.op('regexp')(phone_pat)).all()
-        #    for prs in p:
-        #        results.append((prs, 'partial phone'))
 
         if len(results)==1:
             c.p, c.id_type = results[0]
