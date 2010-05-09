@@ -26,6 +26,8 @@ from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info, lca_rego
 
+from zookeepr.lib.ssl_requirement import ssl_check
+
 from sqlalchemy import and_, or_
 
 log = logging.getLogger(__name__)
@@ -53,6 +55,9 @@ def release_yesno(b):
 
 class AdminController(BaseController):
     """ Miscellaneous admin tasks. """
+
+    def __before__(self, **kwargs):
+        ssl_check(ssl_required_all=True)
 
     @authorize(h.auth.has_organiser_role)
     def index(self):

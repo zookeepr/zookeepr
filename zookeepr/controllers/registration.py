@@ -144,6 +144,8 @@ class RegistrationController(BaseController):
 
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
+        ssl_check(ssl_required=['new'])
+
         c.product_categories = ProductCategory.find_all()
         c.ceilings = {}
         for ceiling in Ceiling.find_all():

@@ -22,65 +22,23 @@ from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, N
 from authkit.authorize import PermissionSetupError, middleware
 from authkit.authorize.pylons_adaptors import authorized
 
+from zookeepr.lib.ssl_requirement import ssl_check
+from pylons import request, response, session
+
 
 import hashlib
 
 log = logging.getLogger(__name__)
 
-class LoginSchema(BaseSchema):
-    username = validators.Email(not_empty=True)
-    password = validators.String(not_empty=True)
+def set_redirect():
+    if not session.get('redirect_to', None):
+        session['redirect_to'] =  request.path_info
+        session.save()
 
-def render_signin(*dummy):
-    environ = request.environ
-    if 'auth_failure' in environ:
-        c.auth_failure = environ['auth_failure']
-    else:
-        c.auth_failure = None
-
-    errors = {}
-    defaults = dict(request.params)
-    if defaults:
-        try:
-            LoginSchema.to_python(defaults)
-        except Invalid, error:
-            defaults = error.value
-            errors = error.error_dict or {}
-
-    form = render('/person/signin.mako')
-    return htmlfill.render(form, defaults=defaults, errors=errors).replace('%', '%%').replace('FORM_ACTION', '%s')
-
-
-def encrypt(password):
-    return hashlib.md5(password).hexdigest()
-
-
-def valid_password(environ, username, password):
-    """
-    A function which can be used with the ``basic`` and ``form`` authentication
-    methods to validate a username and passowrd.
-
-    In this implementation usernames are case insensitive and passwords are
-    case sensitive. The function returns ``True`` if the user ``username`` has
-    the password specified by ``password`` and returns ``False`` if the user
-    doesn't exist or the password is incorrect.
-    """
-
-    person = Person.find_by_email(username)
-
-    if person is None:
-        environ['auth_failure'] = 'NO_USER'
-        return False
-
-    if not person.activated:
-        environ['auth_failure'] = 'NOT_ACTIVATED'
-        return False
-
-    if not person.check_password(password):
-        environ['auth_failure'] = 'BAD_PASSWORD'
-        return False
-
-    return True
+def set_role(msg):
+    if not session.get('role_error', None):
+        session['role_error'] = msg
+        session.save()
 
 
 class ValidZookeeprUser(UserIn):
@@ -94,6 +52,7 @@ class ValidZookeeprUser(UserIn):
     def check(self, app, environ, start_response):
 
         if not environ.get('REMOTE_USER'):
+            set_redirect()
             raise NotAuthenticatedError('Not Authenticated')
 
         person = Person.find_by_email(environ['REMOTE_USER'])
@@ -116,6 +75,7 @@ class HasZookeeprRole(HasAuthKitRole):
         if not environ.get('REMOTE_USER'):
             if self.error:
                 raise self.error
+            set_redirect()
             raise NotAuthenticatedError('Not authenticated')
 
         for role in self.roles:
@@ -128,7 +88,7 @@ class HasZookeeprRole(HasAuthKitRole):
                     if self.error:
                         raise self.error
                     else:
-                        environ['auth_failure'] = 'NO_ROLE'
+                        set_role("User doesn't have the role %s"%role.lower())
                         raise NotAuthorizedError(
                             "User doesn't have the role %s"%role.lower()
                         )
@@ -140,7 +100,7 @@ class HasZookeeprRole(HasAuthKitRole):
             if self.error:
                 raise self.error
             else:
-                environ['auth_failure'] = 'NO_ROLE'
+                set_role("User doesn't have any of the specified roles")
                 raise NotAuthorizedError(
                     "User doesn't have any of the specified roles"
                 )
@@ -197,6 +157,7 @@ class IsSameZookeeprUser(UserIn):
     def check(self, app, environ, start_response):
 
         if not environ.get('REMOTE_USER'):
+            set_redirect()
             raise NotAuthenticatedError('Not Authenticated')
 
         person = Person.find_by_email(environ['REMOTE_USER'])
@@ -207,7 +168,7 @@ class IsSameZookeeprUser(UserIn):
             )
 
         if self.id != person.id:
-            environ['auth_failure'] = 'NO_ROLE'
+            set_role("User doesn't have any of the specified role")
             raise NotAuthorizedError(
                 "User doesn't have any of the specified roles"
             )
@@ -225,6 +186,7 @@ class IsSameZookeeprSubmitter(UserIn):
     def check(self, app, environ, start_response):
 
         if not environ.get('REMOTE_USER'):
+            set_redirect()
             raise NotAuthenticatedError('Not Authenticated')
 
         person = Person.find_by_email(environ['REMOTE_USER'])
@@ -241,7 +203,7 @@ class IsSameZookeeprSubmitter(UserIn):
             )
 
         if person not in proposal.people:
-            environ['auth_failure'] = 'NO_ROLE'
+            set_role("User doesn't have any of the specified roles")
             raise NotAuthorizedError(
                 "User doesn't have any of the specified roles"
             )
@@ -275,7 +237,7 @@ class IsSameZookeeprFundingSubmitter(UserIn):
             )
 
         if person != funding.person:
-            environ['auth_failure'] = 'NO_ROLE'
+            set_role("User doesn't have any of the specified roles")
             raise NotAuthorizedError(
                 "User doesn't have any of the specified roles"
             )
@@ -293,6 +255,7 @@ class IsSameZookeeprAttendee(UserIn):
     def check(self, app, environ, start_response):
 
         if not environ.get('REMOTE_USER'):
+            set_redirect()
             raise NotAuthenticatedError('Not Authenticated')
 
         person = Person.find_by_email(environ['REMOTE_USER'])
@@ -309,7 +272,7 @@ class IsSameZookeeprAttendee(UserIn):
             )
 
         if person.id <> invoice.person_id:
-            environ['auth_failure'] = 'NO_ROLE'
+            set_role("Invoice is not for this user")
             raise NotAuthorizedError(
                 "Invoice is not for this user"
             )
@@ -344,6 +307,7 @@ class IsSameZookeeprRegistration(UserIn):
     def check(self, app, environ, start_response):
 
         if not environ.get('REMOTE_USER'):
+            set_redirect()
             raise NotAuthenticatedError('Not Authenticated')
 
         person = Person.find_by_email(environ['REMOTE_USER'])
@@ -360,7 +324,7 @@ class IsSameZookeeprRegistration(UserIn):
             )
 
         if person.id <> registration.person_id:
-            environ['auth_failure'] = 'NO_ROLE'
+            set_role("Registration is not for this user");
             raise NotAuthorizedError(
                 "Registration is not for this user"
             )
@@ -395,7 +359,7 @@ class Or(Permission):
         )
 
 def no_role():
-    request.environ['auth_failure'] = 'NO_ROLE'
+    set_role("User doesn't have any of the specified roles")
     raise NotAuthorizedError(
             "User doesn't have any of the specified roles"
             )

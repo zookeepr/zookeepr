@@ -7,11 +7,15 @@ from zookeepr.model import meta
 from zookeepr.model.db_content import DbContent, DbContentType
 
 from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.ssl_requirement import ssl_check
+
 
 log = logging.getLogger(__name__)
 
 
 class HomeController(BaseController):
+    def __before__(self, **kwargs):
+        ssl_check(ssl_required=['signin', 'new'])
 
     def index(self):
         """The home page of the website.
