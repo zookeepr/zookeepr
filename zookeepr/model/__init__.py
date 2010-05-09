@@ -30,6 +30,7 @@ import funding_review
 import special_offer
 import special_registration
 import url_hash
+import event_time_slot_location_map
 
 from person import Person
 from role import Role
@@ -56,10 +57,9 @@ from payment_received import PaymentReceived
 from registration import Registration
 from registration_product import RegistrationProduct
 
-from location  import Location
-from event     import Event
-from time_slot import Time_Slot
-from event_time_slot_location_map import Event_Time_Slot_Location_map
+from location import Location
+from event    import Event
+from timeSlot import TimeSlot
 
 from voucher import Voucher, VoucherProduct
 
