@@ -84,7 +84,7 @@ ${ c.error }
 <p>Looked up: ${ c.id } (${ c.id_type })</p>
 
 <p><b>${ person.firstname } ${ person.lastname }</b>
-&lt;<a href="mailto:${ person.email_address }">${ person.email_address }</a>&gt; (<a href="/profile/${ person.id }">${ person.id }</a>)
+&lt;<a href="mailto:${ person.email_address }">${ person.email_address }</a>&gt; (<a href="/person/${ person.id }">${ person.id }</a>)
 <br>${ registration.company }</p>
 
 <p>
