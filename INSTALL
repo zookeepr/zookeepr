@@ -122,3 +122,59 @@ Found at /uml_graph.png (or .svg, .jpeg etc).
    redirected to the administration hub.
 
  - Be sure to update/delete this user before deploying!
+
+## Deploying Zookeepr as a web app ##
+
+### Apache ###
+
+ - /etc/apache2/sites-enabled should look like
+	
+	<VirtualHost *:80>
+	    DocumentRoot /path/to/zookeepr/checkout
+	
+	    # Configure the cluster member proxy
+	    <IfModule mod_proxy.c>
+	        ProxyRequests Off
+	        <Proxy *>
+	            AddDefaultCharset off
+	            Order deny,allow
+	            Allow from all
+	        </Proxy>
+	        ProxyVia On
+	    </IfModule>
+	
+	    <Proxy balancer://zookeepr>
+	        BalancerMember http://127.0.0.1:5000
+	    </Proxy>
+	
+	    RewriteEngine On
+	
+	    # If there is a maintenence.html file in your
+	    # public dir all requests will get rerouted to
+	    # this file.
+	    RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+	    RewriteCond %{SCRIPT_FILENAME} ^/public/.*
+	    RewriteRule ^(.*)$ $1 [L]
+	
+	    RewriteCond %{DOCUMENT_ROOT}/maintenance.html -f
+	    RewriteCond %{SCRIPT_FILENAME} !maintenance.html
+	    RewriteRule ^.*$ /maintenance.html [L]
+	
+	    RewriteCond %{DOCUMENT_ROOT}/public/%{SCRIPT_FILENAME}  -f
+	    RewriteRule ^(.*)$ /public/$1 [L]
+	
+	    # All dynamic requests get sent to the cluster
+	    RewriteRule ^/(.*)$ balancer://zookeepr%{REQUEST_URI} [P,QSA,L]
+	    ProxyPassReverse / http://127.0.0.1:5000/
+	
+	  <Directory "/var/www-sites/www.lca2010.org.nz/html">
+	    Order allow,deny
+	    Allow from all
+	  </Directory>
+	
+	</VirtualHost>
+
+    - In the HTTPS VirtualHost add
+    RequestHeader set X_FORWARDED_PROTO "https"
+
+

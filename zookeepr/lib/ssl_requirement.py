@@ -2,7 +2,8 @@
 import logging
 
 from pylons.controllers.util import abort, redirect_to
-from pylons import request
+from pylons import request, config
+from paste.deploy.converters import asbool
 
 log = logging.getLogger(__name__)
 
@@ -20,6 +21,9 @@ def current_protocol():
 
 
 def ssl_check(ssl_required=[], ssl_allowed=[], ssl_required_all=False, ssl_allowed_all=False):
+
+    if not asbool(config.get('enable_ssl_requirement', False)):
+        return
 
     action = request.environ['pylons.routes_dict']['action']
 
