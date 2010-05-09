@@ -99,6 +99,12 @@ def make_map():
     # route rego_notes with ID's
     map.connect('registration/{rego_id}/new_note', controller='rego_note', action='new', id=None)
 
+    # UML Graphs
+    map.connect('/uml_graph.{format}',
+            controller='uml_graph', action='dotmodel',
+            requirements=dict(format='(png|jpeg|svg|dot)'),
+            conditions=dict(method='GET'))
+
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
     map.connect('/{controller}/new', action='new')

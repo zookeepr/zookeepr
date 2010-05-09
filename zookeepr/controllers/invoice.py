@@ -198,7 +198,7 @@ class InvoiceController(BaseController):
         invoice = Invoice.find_by_id(id, True)
         person = invoice.person
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
             # Raise a no_auth error
             h.auth.no_role()
 
