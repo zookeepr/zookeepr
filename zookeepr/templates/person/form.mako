@@ -69,7 +69,7 @@ ${ h.hidden('person.postcode') }
 ${ h.select('person.country', None, h.countries()) }
 </p>
 
-%if c.social_networks:
+%if False and c.social_networks:
 <p class="label">Your <b>username</b> on social networking sites:
 <table>
 % for network in c.social_networks:

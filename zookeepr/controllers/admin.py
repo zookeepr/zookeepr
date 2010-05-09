@@ -1504,6 +1504,118 @@ class AdminController(BaseController):
         meta.Session.commit()
         return 'All done!'
 
+    @authorize(h.auth.has_organiser_role)
+    def rego_lookup(self):
+        """ Look up a rego, based on any of the associated IDs, showing the
+        details as would be required for rego desk. [rego] """
+
+        args = request.POST; post=True
+        if not args:
+            args = request.GET
+            post = False
+        if not args or not (args.has_key('id') or args.has_key('p_id')):
+            c.error = 'No ID given.'
+            return render('admin/rego_lookup.mako')
+        if args.has_key('p_id'):
+            id = args['p_id']; c.id = id; raw_id = id
+            p = meta.Session.query(Person).filter_by(id=id).all()
+            if p:
+                c.id_type = 'by person ID only'
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render('admin/rego_lookup.mako')
+            else:
+                c.error = "Invalid person ID (shouldn't happen)."
+                return render('admin/rego_lookup.mako')
+
+
+        id = args['id']; c.id = id; raw_id = id
+        results = []
+
+        if True:
+            p = Person.find_by_email(id)
+            if p:
+                results.append((p, 'email'))
+
+            p = meta.Session.query(Person).filter(
+                                       Person.firstname.ilike(id)).all()
+            p += meta.Session.query(Person).filter(
+                                        Person.lastname.ilike(id)).all()
+            if len(p)>0:
+                results += [(pp, 'name') for pp in p]
+            else:
+                p = meta.Session.query(Person).filter(
+                               Person.firstname.ilike('%'+id+'%')).all()
+                p += meta.Session.query(Person).filter(
+                                Person.lastname.ilike('%'+id+'%')).all()
+                if len(p)>0:
+                    results += [(pp, 'partial name') for pp in p]
+
+        try:
+            id = int(id)
+        except:
+            pass # not an integer, never mind...
+        else:
+            # conversion of id to an integer succeeded, look it up as ID
+
+            # first, check if there's a note to be posted; in this case, ID
+            # must be a rego ID, because that's how the form is set up.
+            if post and args.has_key('note'):
+                r = meta.Session.query(Registration).filter_by(id=id).all()
+
+                n = RegoNote(note=args['note'])
+                meta.Session.save(n)
+                r[0].notes.append(n)
+                c.signed_in_person.notes_made.append(n)
+                meta.Session.flush()
+
+            i = meta.Session.query(Invoice).filter_by(id=id).all()
+            for inv in i:
+                results.append((inv.person, 'invoice'))
+
+            r = meta.Session.query(Registration).filter_by(id=id).all()
+            for rego in r:
+                results.append((rego.person, 'rego'))
+            
+            p = meta.Session.query(Person).filter_by(id=id).all()
+            for prs in p:
+                results.append((prs, 'person'))
+
+            p = meta.Session.query(Person).filter_by(TransID=id).all()
+            for prs in p:
+                results.append((prs, 'transaction'))
+
+        # Commented out because sqlite doesn't have regexp; postgresql had
+        # that, but not sqlite. --Jiri 9.5.2010
+
+        #phone_pat = '[ \t()/-]*'.join(raw_id)
+        #p = meta.Session.query(Registration).filter(
+        #                  Person.phone.op('regexp')('^'+phone_pat+'$')).all()
+        #for prs in p:
+        #    results.append((prs, 'phone'))
+        #phone_pat = '[ \t()/-]*'.join(raw_id)
+        #
+        #if not p:
+        #    p = meta.Session.query(Registration).filter(
+        #                      #Person.phone.op('regexp')(phone_pat)).all()
+        #    for prs in p:
+        #        results.append((prs, 'partial phone'))
+
+        if len(results)==1:
+            c.p, c.id_type = results[0]
+            c.r = c.p.registration; c.i = c.p.invoices
+            return render('admin/rego_lookup.mako')
+        elif len(results)>1:
+            c.many = results
+            c.many.sort(lambda a, b:
+              cmp(a[0].lastname.lower(), b[0].lastname.lower()) or 
+              cmp(a[0].firstname.lower(), b[0].firstname.lower()))
+            return render('admin/rego_lookup.mako')
+
+        c.error = 'Not found.'
+        return render('admin/rego_lookup.mako')
+
+
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66
