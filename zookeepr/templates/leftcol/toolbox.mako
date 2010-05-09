@@ -24,6 +24,7 @@
     <h2>Organiser</h2>
     <ul>
       ${ make_link('Admin', h.url_for(controller='admin')) }
+      ${ make_link('Lookup', h.url_for(controller='admin', action='lookup')) }
       ${ make_link('View People', h.url_for(controller='person')) }
       ${ make_link('View Pages', h.url_for(controller='db_content')) }
       ${ make_link('New Page', h.url_for(controller='db_content', action='new')) }
