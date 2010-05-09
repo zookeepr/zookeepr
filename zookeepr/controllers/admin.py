@@ -355,6 +355,38 @@ class AdminController(BaseController):
                 ORDER BY stream.name, proposal_type.name ASC, max DESC, min DESC, avg DESC, proposal.id ASC
                 """)
 
+    @authorize(h.auth.has_reviewer_role)
+    def proposals_by_number_of_reviewers(self):
+        """ List of all proposals ordered by number of reviewers [CFP] """
+        return sql_response("""
+                SELECT
+                    proposal.id,
+                    proposal.title,
+                    proposal_type.name AS "proposal type",
+                    COUNT(review.id) AS "reviewers"
+                FROM proposal
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                GROUP BY proposal.id, proposal.title, proposal_type.name
+                ORDER BY reviewers ASC, proposal.id ASC
+                """)
+
+    @authorize(h.auth.has_reviewer_role)
+    def proposals_by_date(self):
+        """" List of proposals by date submitted [CFP] """
+        return sql_response("""
+                SELECT
+                    proposal.id,
+                    proposal.title,
+                    proposal_type.name AS "proposal type",
+                    proposal.creation_timestamp AS "submitted"
+                FROM proposal
+                    LEFT JOIN review ON (proposal.id=review.proposal_id)
+                    LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
+                GROUP BY proposal.id, proposal.title, proposal_type.name
+                ORDER BY proposal.creation_timestamp ASC, proposal.id ASC
+                """)
+
     @authorize(h.auth.has_funding_reviewer_role)
     def funding_requests_by_strong_rank(self):
         """ List of funding applications ordered by number of certain score / total number of reviewers [Funding] """

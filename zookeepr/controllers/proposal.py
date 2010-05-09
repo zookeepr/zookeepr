@@ -91,6 +91,7 @@ class ProposalController(BaseController):
         c.cfmini_status = lca_info['cfmini_status']
         c.paper_editing = lca_info['paper_editing']
         c.cfp_hide_assistance_info = lca_info['cfp_hide_assistance_info']
+        c.cfp_hide_scores = lca_info['cfp_hide_scores']
 
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):

@@ -37,14 +37,15 @@ lca_info = {
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 30th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'closed',
-  'cfmini_status' : 'closed',
-  'paper_editing' : 'open',
-  'funding_status' : 'closed',
-  'funding_editing' : 'open',
-  'conference_status': 'open',
+  'cfp_status' : 'not_open',
+  'cfmini_status' : 'not_open',
+  'paper_editing' : 'not_open',
+  'funding_status' : 'not_open',
+  'funding_editing' : 'not_open',
+  'conference_status': 'not_open',
 # Mode
-  'cfp_hide_assistance_info': 'yes',
+  'cfp_hide_assistance_info': 'no',
+  'cfp_hide_scores': 'no',
 
   'emails': {
      'presentation' : 'speakers@lca2010.org.nz',

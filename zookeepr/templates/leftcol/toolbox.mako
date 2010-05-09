@@ -44,9 +44,13 @@ ${ parent.toolbox_extra_reviewer() }
       ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary')) }
       <li>List of proposals by:</li>
       <ul class="indent">
+    %if h.lca_info['cfp_hide_scores'] == 'no':
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank')) }
         ${ make_link('max score, min score then average', h.url_for(controller='admin', action='proposals_by_max_rank')) }
         ${ make_link('stream and score', h.url_for(controller='admin', action='proposals_by_stream')) }
+    %endif
+        ${ make_link('number of reviewers', h.url_for(controller='admin', action='proposals_by_number_of_reviewers')) }
+        ${ make_link('submission date', h.url_for(controller='admin', action='proposals_by_date')) }
       </ul>
     </ul>
 % endif
