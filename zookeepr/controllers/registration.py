@@ -418,6 +418,8 @@ class RegistrationController(BaseController):
             defaults['registration.distro'] = 'other'
             defaults['registration.distrotext'] = c.registration.distro
 
+        defaults['registration.i_agree'] = 1
+
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
 
