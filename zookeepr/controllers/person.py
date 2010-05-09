@@ -273,7 +273,7 @@ class PersonController(BaseController): #Read, Update, List
             redirect_to('home')
 
         defaults = {
-            'person.country': 'NEW ZEALAND',
+            'person.country': 'AUSTRALIA',
         }
         c.social_networks = SocialNetwork.find_all()
 
