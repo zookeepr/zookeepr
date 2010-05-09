@@ -1508,50 +1508,53 @@ class AdminController(BaseController):
     def rego_lookup(self):
         """ Look up a rego, based on any of the associated IDs, showing the
         details as would be required for rego desk. [rego] """
-        # c.talks = meta.Session.query(Proposal).filter_by(accepted=True).all()
+
         args = request.POST; post=True
         if not args:
             args = request.GET
             post = False
-        if not args or not args.has_key('id'):
+        if not args or not (args.has_key('id') or args.has_key('p_id')):
             c.error = 'No ID given.'
             return render('admin/rego_lookup.mako')
-        id = args['id']; c.id = id; raw_id = id
-
-        try:
-            id = int(id)
-        except:
-            # conversion of id to an integer failed, look it up as a name
-            p = Person.find_by_email(id)
+        if args.has_key('p_id'):
+            id = args['p_id']; c.id = id; raw_id = id
+            p = meta.Session.query(Person).filter_by(id=id).all()
             if p:
-                c.id_type = 'email'
-                c.p = p
+                c.id_type = 'by person ID only'
+                c.p = p[0]
                 c.r = c.p.registration; c.i = c.p.invoices
                 return render('admin/rego_lookup.mako')
+            else:
+                c.error = "Invalid person ID (shouldn't happen)."
+                return render('admin/rego_lookup.mako')
+
+
+        id = args['id']; c.id = id; raw_id = id
+        results = []
+
+        if True:
+            p = Person.find_by_email(id)
+            if p:
+                results.append((p, 'email'))
 
             p = meta.Session.query(Person).filter(
                                        Person.firstname.ilike(id)).all()
             p += meta.Session.query(Person).filter(
                                         Person.lastname.ilike(id)).all()
             if len(p)>0:
-                c.id_type = 'name'
+                results += [(pp, 'name') for pp in p]
             else:
-                c.id_type = 'partial name'
                 p = meta.Session.query(Person).filter(
                                Person.firstname.ilike('%'+id+'%')).all()
                 p += meta.Session.query(Person).filter(
                                 Person.lastname.ilike('%'+id+'%')).all()
+                if len(p)>0:
+                    results += [(pp, 'partial name') for pp in p]
 
-            if len(p)==1:
-                c.p = p[0]
-                c.r = c.p.registration; c.i = c.p.invoices
-                return render('admin/rego_lookup.mako')
-            elif len(p)>1:
-                c.many = p
-                c.many.sort(lambda a, b:
-                  cmp(a.lastname.lower(), b.lastname.lower()) or 
-                  cmp(a.firstname.lower(), b.firstname.lower()))
-                return render('admin/rego_lookup.mako')
+        try:
+            id = int(id)
+        except:
+            pass # not an integer, never mind...
         else:
             # conversion of id to an integer succeeded, look it up as ID
 
@@ -1567,66 +1570,46 @@ class AdminController(BaseController):
                 meta.Session.flush()
 
             i = meta.Session.query(Invoice).filter_by(id=id).all()
-            if i:
-                c.id_type = 'invoice'
-                c.p = i[0].person
-                c.r = c.p.registration; c.i = c.p.invoices
-                return render('admin/rego_lookup.mako')
+            for inv in i:
+                results.append((inv.person, 'invoice'))
 
             r = meta.Session.query(Registration).filter_by(id=id).all()
-            if r:
-                c.id_type = 'rego'
-                c.r = r[0]
-                c.p = c.r.person; c.i = c.p.invoices
-                return render('admin/rego_lookup.mako')
+            for rego in r:
+                results.append((rego.person, 'rego'))
             
             p = meta.Session.query(Person).filter_by(id=id).all()
-            if p:
-                c.id_type = 'person'
-                c.p = p[0]
-                c.r = c.p.registration; c.i = c.p.invoices
-                return render('admin/rego_lookup.mako')
+            for prs in p:
+                results.append((prs, 'person'))
 
             p = meta.Session.query(Person).filter_by(TransID=id).all()
-            if p:
-                c.id_type = 'transaction'
-                c.p = p[0]
-                c.r = c.p.registration; c.i = c.p.invoices
-                return render('admin/rego_lookup.mako')
-        
-        phone_pat = '[ \t()/-]*'.join(raw_id)
-        p = []
-        #p = meta.Session.query(Registration).filter(
-                          #Person.phone.op('regexp')('^'+phone_pat+'$')).all()
+            for prs in p:
+                results.append((prs, 'transaction'))
+
         # Commented out because sqlite doesn't have regexp; postgresql had
         # that, but not sqlite. --Jiri 9.5.2010
-        if len(p)==1:
-            c.id_type = 'phone'
-            c.p = p[0]
+
+        #phone_pat = '[ \t()/-]*'.join(raw_id)
+        #p = meta.Session.query(Registration).filter(
+        #                  Person.phone.op('regexp')('^'+phone_pat+'$')).all()
+        #for prs in p:
+        #    results.append((prs, 'phone'))
+        #phone_pat = '[ \t()/-]*'.join(raw_id)
+        #
+        #if not p:
+        #    p = meta.Session.query(Registration).filter(
+        #                      #Person.phone.op('regexp')(phone_pat)).all()
+        #    for prs in p:
+        #        results.append((prs, 'partial phone'))
+
+        if len(results)==1:
+            c.p, c.id_type = results[0]
             c.r = c.p.registration; c.i = c.p.invoices
             return render('admin/rego_lookup.mako')
-        elif len(p)>1:
-            c.id_type = 'phone'
-            c.many = p
+        elif len(results)>1:
+            c.many = results
             c.many.sort(lambda a, b:
-              cmp(a.lastname.lower(), b.lastname.lower()) or 
-              cmp(a.firstname.lower(), b.firstname.lower()))
-            return render('admin/rego_lookup.mako')
-
-        r = []
-        #r = meta.Session.query(Registration).filter(
-                                  #Registration.c.phone.op('~')(phone_pat)).all()
-        if len(r)==1:
-            c.id_type = 'partial phone'
-            c.r = r[0]
-            c.p = c.r.person; c.i = c.p.invoices
-            return render('admin/rego_lookup.mako')
-        elif len(r)>1:
-            c.id_type = 'partial phone'
-            c.many = [rego.person for rego in r]
-            c.many.sort(lambda a, b:
-              cmp(a.lastname.lower(), b.lastname.lower()) or 
-              cmp(a.firstname.lower(), b.firstname.lower()))
+              cmp(a[0].lastname.lower(), b[0].lastname.lower()) or 
+              cmp(a[0].firstname.lower(), b[0].firstname.lower()))
             return render('admin/rego_lookup.mako')
 
         c.error = 'Not found.'

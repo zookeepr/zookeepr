@@ -1,4 +1,9 @@
+<%inherit file="/base.mako" />
+
 <%
+
+# Beware ancient code with terrible hacks --Jiri, 9.5.2010
+
 def yesno(cond, yes, no):
   if cond:
     return yes
@@ -55,12 +60,13 @@ Error looking up ${ c.id |h }:
 %   endif
 ${ c.error }
 % elif c.many:
-<p>Looked up: ${ c.id } (${ c.id_type }) but found ${ len(c.many) }</p>
+<p>Looked up: ${ c.id } and found ${ len(c.many) }</p>
 <table>
-%   for p in c.many:
+%   for p, typ in c.many:
   <tr class="${ oddeven1() }">
-    <td><a href="/admin/rego_lookup?id=${ p.id }" tabindex="2">${ p.firstname }
+    <td><a href="/admin/rego_lookup?p_id=${ p.id }" tabindex="2">${ p.firstname }
 					       ${ p.lastname }</td>
+    <td>(${ typ })
     <td>
 %     if p.registration:
 %       if p.invoices and p.invoices[0].paid():
