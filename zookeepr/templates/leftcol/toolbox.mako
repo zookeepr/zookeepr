@@ -100,7 +100,7 @@ ${ parent.toolbox_extra() }
 % else:
     <ul>
       ${ make_link('Sign in', "/person/signin") }
-      ${ make_link('Register', "/person/new") }
+      ${ make_link('Create an account', "/person/new") }
 % endif
     </ul>
 % if (c.db_content and not c.db_content.is_news()) or len(parent.short_title()) > 0:

@@ -1538,17 +1538,18 @@ class AdminController(BaseController):
         return 'All done!'
 
     @authorize(h.auth.has_organiser_role)
-    def rego_lookup(self):
-        """ Look up a rego, based on any of the associated IDs, showing the
-        details as would be required for rego desk. [rego] """
+    def lookup(self):
+        """ Look up a person/rego, based on any of the associated IDs,
+        showing the details as would be required for support or rego desk.
+        [Registrations,Accounts,Invoicing] """
 
         args = request.POST; post=True
         if not args:
             args = request.GET
             post = False
         if not args or not (args.has_key('id') or args.has_key('p_id')):
-            c.error = 'No ID given.'
-            return render('admin/rego_lookup.mako')
+            c.error = 'Enter an ID or name in the box on right.'
+            return render('admin/lookup.mako')
         if args.has_key('p_id'):
             id = args['p_id']; c.id = id; raw_id = id
             p = meta.Session.query(Person).filter_by(id=id).all()
@@ -1556,10 +1557,10 @@ class AdminController(BaseController):
                 c.id_type = 'by person ID only'
                 c.p = p[0]
                 c.r = c.p.registration; c.i = c.p.invoices
-                return render('admin/rego_lookup.mako')
+                return render('admin/lookup.mako')
             else:
                 c.error = "Invalid person ID (shouldn't happen)."
-                return render('admin/rego_lookup.mako')
+                return render('admin/lookup.mako')
 
 
         id = args['id']; c.id = id; raw_id = id
@@ -1637,16 +1638,16 @@ class AdminController(BaseController):
         if len(results)==1:
             c.p, c.id_type = results[0]
             c.r = c.p.registration; c.i = c.p.invoices
-            return render('admin/rego_lookup.mako')
+            return render('admin/lookup.mako')
         elif len(results)>1:
             c.many = results
             c.many.sort(lambda a, b:
               cmp(a[0].lastname.lower(), b[0].lastname.lower()) or 
               cmp(a[0].firstname.lower(), b[0].firstname.lower()))
-            return render('admin/rego_lookup.mako')
+            return render('admin/lookup.mako')
 
         c.error = 'Not found.'
-        return render('admin/rego_lookup.mako')
+        return render('admin/lookup.mako')
 
 
 def keysigning_pdf(keyid):
