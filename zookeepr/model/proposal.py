@@ -204,8 +204,9 @@ class Proposal(Base):
     abstract_video_url = sa.Column(sa.types.Text)
 
     code = sa.Column(sa.types.Integer)
-    scheduled = sa.Column(sa.types.DateTime)
-    finished = sa.Column(sa.types.DateTime)
+
+    scheduled = sa.Column(sa.types.DateTime) # These will be removed after I've changed the code
+    finished = sa.Column(sa.types.DateTime)  # to make use of them.
     theatre = sa.Column(sa.types.Text)
     building = sa.Column(sa.types.Text)
 
@@ -253,8 +254,6 @@ class Proposal(Base):
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(id=id).first()
-#        if result is None and abort_404:
-#            abort(404, "No such proposal object")
         if result is None and abort_404:
             abort(404, "No such proposal object")
         return result
