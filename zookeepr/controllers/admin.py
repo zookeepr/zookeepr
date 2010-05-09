@@ -1504,6 +1504,131 @@ class AdminController(BaseController):
         meta.Session.commit()
         return 'All done!'
 
+    @authorize(h.auth.has_organiser_role)
+    def rego_lookup(self):
+        """ Look up a rego, based on any of the associated IDs, showing the
+        details as would be required for rego desk. [rego] """
+        # c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
+        args = request.POST; post=True
+        if not args:
+            args = request.GET
+            post = False
+        if not args or not args.has_key('id'):
+            c.error = 'No ID given.'
+            return render('admin/rego_lookup.mako')
+        id = args['id']; c.id = id; raw_id = id
+
+        try:
+            id = int(id)
+        except:
+            # conversion of id to an integer failed, look it up as a name
+            p = self.dbsession.query(Person).filter_by(email_address=id).all()
+            if p:
+                c.id_type = 'email'
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render('admin/rego_lookup.mako')
+
+            p = self.dbsession.query(Person).filter(
+                                       Person.c.firstname.op('ilike')(id)).all()
+            p += self.dbsession.query(Person).filter(
+                                        Person.c.lastname.op('ilike')(id)).all()
+            if len(p)>0:
+                c.id_type = 'name'
+            else:
+                c.id_type = 'partial name'
+                p = self.dbsession.query(Person).filter(
+                               Person.c.firstname.op('ilike')('%'+id+'%')).all()
+                p += self.dbsession.query(Person).filter(
+                                Person.c.lastname.op('ilike')('%'+id+'%')).all()
+
+            if len(p)==1:
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render('admin/rego_lookup.mako')
+            elif len(p)>1:
+                c.many = p
+                c.many.sort(lambda a, b:
+                  cmp(a.lastname.lower(), b.lastname.lower()) or 
+                  cmp(a.firstname.lower(), b.firstname.lower()))
+                return render('admin/rego_lookup.mako')
+        else:
+            # conversion of id to an integer succeeded, look it up as ID
+
+            # first, check if there's a note to be posted; in this case, ID
+            # must be a rego ID, because that's how the form is set up.
+            if post and args.has_key('note'):
+                r = self.dbsession.query(Registration).filter_by(id=id).all()
+
+                n = RegoNote(note=args['note'])
+                self.dbsession.save(n)
+                r[0].notes.append(n)
+                c.signed_in_person.notes_made.append(n)
+                self.dbsession.flush()
+
+            i = self.dbsession.query(Invoice).filter_by(id=id).all()
+            if i:
+                c.id_type = 'invoice'
+                c.p = i[0].person
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render('admin/rego_lookup.mako')
+
+            r = self.dbsession.query(Registration).filter_by(id=id).all()
+            if r:
+                c.id_type = 'rego'
+                c.r = r[0]
+                c.p = c.r.person; c.i = c.p.invoices
+                return render('admin/rego_lookup.mako')
+            
+            p = self.dbsession.query(Person).filter_by(id=id).all()
+            if p:
+                c.id_type = 'person'
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render('admin/rego_lookup.mako')
+
+            p = self.dbsession.query(Person).filter_by(TransID=id).all()
+            if p:
+                c.id_type = 'transaction'
+                c.p = p[0]
+                c.r = c.p.registration; c.i = c.p.invoices
+                return render('admin/rego_lookup.mako')
+        
+        phone_pat = '[ \t()/-]*'.join(raw_id)
+        r = self.dbsession.query(Registration).filter(
+                          Registration.c.phone.op('~')('^'+phone_pat+'$')).all()
+        if len(r)==1:
+            c.id_type = 'phone'
+            c.r = r[0]
+            c.p = c.r.person; c.i = c.p.invoices
+            return render('admin/rego_lookup.mako')
+        elif len(r)>1:
+            c.id_type = 'phone'
+            c.many = [rego.person for rego in r]
+            c.many.sort(lambda a, b:
+              cmp(a.lastname.lower(), b.lastname.lower()) or 
+              cmp(a.firstname.lower(), b.firstname.lower()))
+            return render('admin/rego_lookup.mako')
+
+        r = self.dbsession.query(Registration).filter(
+                                  Registration.c.phone.op('~')(phone_pat)).all()
+        if len(r)==1:
+            c.id_type = 'partial phone'
+            c.r = r[0]
+            c.p = c.r.person; c.i = c.p.invoices
+            return render('admin/rego_lookup.mako')
+        elif len(r)>1:
+            c.id_type = 'partial phone'
+            c.many = [rego.person for rego in r]
+            c.many.sort(lambda a, b:
+              cmp(a.lastname.lower(), b.lastname.lower()) or 
+              cmp(a.firstname.lower(), b.firstname.lower()))
+            return render('admin/rego_lookup.mako')
+
+        c.error = 'Not found.'
+        return render('admin/rego_lookup.mako')
+
+
 def keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66
