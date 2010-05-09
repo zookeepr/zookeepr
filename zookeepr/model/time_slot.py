@@ -11,8 +11,8 @@ class TimeSlot(Base):
     id         = sa.Column(sa.types.Integer , primary_key = True )
     start_time = sa.Column(sa.types.DateTime, nullable    = False)
     end_time   = sa.Column(sa.types.DateTime, nullable    = False)
-    type       = sa.Column(sa.types.Text)  
-        
+    type       = sa.Column(sa.types.Text)
+
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(TimeSlot).filter_by(id=id).first()

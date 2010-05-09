@@ -5,7 +5,7 @@ from meta import Base
 
 class Location(Base):
     __tablename__ = 'location'
-    
+
     id           = sa.Column(sa.types.Integer, primary_key = True )
     display_name = sa.Column(sa.types.Text,    nullable    = False)
 
@@ -19,7 +19,4 @@ class Location(Base):
     @classmethod
     def find_all(cls):
         return Session.query(Location).order_by(Location.id).all()
-
-
-
 
