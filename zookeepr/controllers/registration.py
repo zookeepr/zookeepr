@@ -296,6 +296,11 @@ class RegistrationController(BaseController):
             redirect_to(action='status')
 
         defaults = {}
+        if h.lca_rego['personal_info']['home_address'] == 'no':
+            defaults['person.address1'] = 'not available'
+            defaults['person.city'] = 'not available'
+            defaults['person.postcode'] = 'not available'
+
         if c.signed_in_person:
             for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
                 v = getattr(c.signed_in_person, k)
