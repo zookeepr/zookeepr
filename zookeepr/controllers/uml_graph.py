@@ -95,6 +95,7 @@ class UmlGraphController(BaseController):
             os.unlink(fn)
             response.headers['Content-Type'] = \
                 {'png':'image/png',
+                 'jpg': 'image/jpg',
                  'jpeg':'image/jpeg',
                  'svg':'image/svg+xml'
                  }[format]

@@ -102,7 +102,7 @@ def make_map():
     # UML Graphs
     map.connect('/uml_graph.{format}',
             controller='uml_graph', action='dotmodel',
-            requirements=dict(format='(png|jpeg|svg|dot)'),
+            requirements=dict(format='(png|jpeg|jpg|svg|dot)'),
             conditions=dict(method='GET'))
 
     # Note to wary travellers; an ID can never be 'new' because of this
