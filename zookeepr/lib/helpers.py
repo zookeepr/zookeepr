@@ -485,10 +485,7 @@ def zk_root():
 
 def number_to_currency(number, unit='$', precision=2):
     # TODO: use commas to separate thousands
-    if number == 0:
-      return 'Free'
-    else:
-      return unit + "%#.*f" % (precision, number)
+    return unit + "%#.*f" % (precision, number)
 
 def number_to_percentage(number):
     return str(number) + '%'
