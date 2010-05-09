@@ -8,6 +8,7 @@ from pylons import config
 from pylons.middleware import ErrorHandler, StatusCodeRedirect
 from pylons.wsgiapp import PylonsApp
 from routes.middleware import RoutesMiddleware
+from paste.recursive import RecursiveMiddleware
 
 from paste.pony import PonyMiddleware
 import authkit.authenticate
@@ -49,11 +50,13 @@ def  make_app(global_conf, full_stack=True, static_files=True, **app_conf):
     app = SessionMiddleware(app, config)
     app = CacheMiddleware(app, config)
 
+    # Needed by authkit
+    app = RecursiveMiddleware(app, global_conf)
+
     # CUSTOM MIDDLEWARE HERE (filtered by error handling middlewares)
 
     # Ponies!
     app = PonyMiddleware(app)
-
 
     # CUSTOM MIDDLEWARE END
 

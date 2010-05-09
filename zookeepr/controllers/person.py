@@ -5,7 +5,7 @@ from pylons.controllers.util import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
-from formencode import validators, htmlfill, ForEach
+from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
@@ -22,6 +22,8 @@ from zookeepr.model import Person, PasswordResetConfirmation, Role
 from zookeepr.model import SocialNetwork
 
 from zookeepr.config.lca_info import lca_info, lca_rego
+
+from zookeepr.lib.ssl_requirement import ssl_check
 
 import datetime
 
@@ -67,21 +69,69 @@ class UpdatePersonSchema(BaseSchema):
     social_network = ForEach(_SocialNetworkSchema())
     pre_validators = [NestedVariables]
 
+class AuthPersonValidator(validators.FancyValidator):
+    def validate_python(self, value, state):
+
+        c.email = value['email_address']
+        c.person = Person.find_by_email(c.email)
+
+        if c.person is None:
+            msg = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
+            raise Invalid(msg, value, state, error_dict={'email_address': msg})
+
+        if not c.person.activated:
+            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
+
+        if not c.person.check_password(value['password']):
+            raise Invalid("Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person.", value, state)
+
+class LoginPersonSchema(BaseSchema):
+    email_address = validators.Email(not_empty=True)
+    password = validators.String(not_empty=True)
+    chained_validators = [AuthPersonValidator()]
+
+class LoginSchema(BaseSchema):
+    person = LoginPersonSchema()
+    pre_validators = [NestedVariables]
+
 class RoleSchema(BaseSchema):
     role = validators.String(not_empty=True)
     action = validators.OneOf(['Grant', 'Revoke'])
 
 class PersonController(BaseController): #Read, Update, List
-    @authorize(h.auth.is_valid_user)
+    def __before__(self, **kwargs):
+        ssl_check(ssl_required=['signin', 'new'])
+
+
+    @dispatch_on(POST="_signin") 
     def signin(self):
-        # Signin is handled by authkit so we just need to redirect stright to home
+
+        role_error = session.pop('role_error', None)
+        if role_error:
+            h.flash(role_error)
+        elif h.signed_in_person():
+            h.flash("You're already logged in")
+            redirect_to('home')
+
+        return render('/person/signin.mako')
+
+    @validate(schema=LoginSchema(), form='signin', post_only=True, on_get=False, variable_decode=True)
+    def _signin(self):
+
+        # Tell authkit we authenticated them
+        request.environ['paste.auth_tkt.set_user'](c.email)
 
         h.flash('You have signed in')
+
+        redirect_location = session.pop('redirect_to', None)
+        if redirect_location:
+            redirect_to(str(redirect_location))
 
         if lca_info['conference_status'] == 'open':
             redirect_to(controller='registration', action='status')
 
         redirect_to('home')
+
 
     def signout_confirm(self, id=None):
         """ Confirm user wants to sign out
