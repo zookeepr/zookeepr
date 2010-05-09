@@ -293,10 +293,10 @@ class PersonController(BaseController): #Read, Update, List
         c.person.email_address = c.person.email_address.lower()
         meta.Session.add(c.person)
 
-        for sn in self.form_result['social_network']:
-           network = SocialNetwork.find_by_name(sn['name'])
-           if sn['account_name']:
-               c.person.social_networks[network] = sn['account_name']
+        #for sn in self.form_result['social_network']:
+        #   network = SocialNetwork.find_by_name(sn['name'])
+        #   if sn['account_name']:
+        #       c.person.social_networks[network] = sn['account_name']
 
         meta.Session.commit()
 
