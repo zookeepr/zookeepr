@@ -4,6 +4,8 @@
 <p class="label"><span class="mandatory">*</span><label for="person.lastname">Your last name:</label></p>
 <p class="entries">${ h.text('person.lastname', size=40) }</p>
 
+${ h.hidden('person.company', value='') }</p>
+
 % if c.form is not 'edit' or h.auth.authorized(h.auth.has_organiser_role):
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>
 <p class="entries">${ h.text('person.email_address', size=40) }</p>
