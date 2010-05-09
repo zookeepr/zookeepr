@@ -35,9 +35,10 @@ class UmlGraphController(BaseController):
             #manytomanys = [f for f in c._descriptor.relationships
             #                if f.__class__ == elixir.relationships.ManyToMany]
 
+
+            # SQLAlchemy makes this too hard to work out the exact relations. Just put everything as manytoones
             manytoones = [f._get_target().class_ for f in c.__mapper__._init_properties.itervalues()
                             if f.__class__ == sa.orm.properties.RelationProperty]
-            
             onetomanys = []
             onetoones = []
             manytomanys = []
@@ -66,7 +67,7 @@ class UmlGraphController(BaseController):
             
             for c2 in manytoones:
                 op += '%s : %s -> %s [headlabel="%s" taillabel="%s"]\n'% \
-                                (c.__name__, c2.__name__ ,  c2.__name__, '1', '*')
+                                (c.__name__, c2.__name__ ,  c2.__name__, '', '') # TODO: add '*', '1'
             for c2 in onetomanys:
                 op += '%s : %s -> %s [headlabel="%s" taillabel="%s"]\n' % \
                                 (c.__name__, c2.__name__ ,  c2.__name__, '*', '1')
