@@ -3,6 +3,8 @@ import sqlalchemy as sa
 
 from meta import Base
 from zookeepr.model.proposal import Proposal
+from zookeepr.model.timeSlot import TimeSlot
+from zookeepr.model.location import Location
 
 class Event(Base):
     __tablename__ = 'event'
@@ -16,6 +18,8 @@ class Event(Base):
     # relations
 
     proposal = sa.orm.relation(Proposal)
+    time     = sa.orm.relation(TimeSlot, secondary='event_time_slot_location_map', backref = 'time_slot')
+    location = sa.orm.relation(Location, secondary='event_time_slot_location_map', backref = 'location' )
     
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
