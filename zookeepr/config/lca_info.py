@@ -61,6 +61,11 @@ lca_info = {
 }
 
 lca_rego = {
+  'personal_info' : {
+      'phone' : 'no',
+      'home_address' : 'no',
+  },
+
   'accommodation': {
       # Will delegates be force to organise their own accommodation?
       # set to yes to disable the accommodation questions.

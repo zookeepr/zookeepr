@@ -6,15 +6,17 @@
         <blockquote>
         <p>
         ${ c.registration.person.firstname } ${ c.registration.person.lastname }
+%if h.lca_rego['personal_info']['home_address'] == 'yes':
         <br/>${ c.registration.person.address1 }
-%if c.registration.person.address2:
+% if c.registration.person.address2:
         <br/>${ c.registration.person.address2 }
-%endif
-%if c.registration.person.state:
+% endif
+% if c.registration.person.state:
         <br/>${ c.registration.person.city }
         <br/>${ c.registration.person.state }, ${ c.registration.person.postcode }
-%else:
+% else:
         <br/>${ c.registration.person.city }, ${ c.registration.person.postcode }
+% endif
 %endif
         <br/>${ c.registration.person.country }
         </p>

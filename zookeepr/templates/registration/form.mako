@@ -46,6 +46,7 @@ import array
 % endif
           </p>
 
+%if h.lca_rego['personal_info']['home_address'] == 'yes':
           <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
           <p class="entries">
             ${ h.text('person.address1', size=40) }
@@ -59,6 +60,16 @@ import array
           <p class="label"><label for="person.state">State/Province:</label></p>
           <p class="entries">${ h.text('person.state', size=40) }</p>
 
+          <p class="label"><span class="mandatory">*</span><label for="person.postcode">Postcode/ZIP:</label></p>
+          <p class="entries">${ h.text('person.postcode', size=40) }</p>
+%else:
+${ h.hidden('person.address1') }
+${ h.hidden('person.address2') }
+${ h.hidden('person.city') }
+${ h.hidden('person.state') }
+${ h.hidden('person.postcode') }
+%endif
+
           <p class="label"><span class="mandatory">*</span><label for="person.country">Country:</label></p>
           <p class="entries">
             <select name="person.country">
@@ -68,13 +79,11 @@ import array
             </select>
           </p>
 
-          <p class="label"><span class="mandatory">*</span><label for="person.postcode">Postcode/ZIP:</label></p>
-          <p class="entries">${ h.text('person.postcode', size=40) }</p>
-
 <%
   is_speaker = c.signed_in_person.is_speaker()
 %>
 
+%if h.lca_rego['personal_info']['phone'] == 'yes':
           <p class="label"><label for="person.mobile">Phone number (International Format):</label></p>
           <p class="entries">${ h.text('person.phone') }</p>
 
@@ -85,6 +94,10 @@ import array
             <label for="person.mobile">Mobile/Cell number (International Format):</label>
           </p>
           <p class="entries">${ h.text('person.mobile') }</p>
+%else:
+${ h.hidden('person.phone') }
+${ h.hidden('person.mobile') }
+%endif
 
           <p class="label"><label for="person.company">Company:</label></p>
           <p class="entries">${ h.text('person.company', size=60) }</p>
