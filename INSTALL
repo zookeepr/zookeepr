@@ -70,6 +70,15 @@ following packages:
 
 		aptitude install gnupg mpage ghostscript
 
+### UML Graph code ###
+
+You can generate a UML graph of all the models by installing dot. This
+is commonly found in the graphviz package
+
+		aptitude install graphviz
+
+Found at /uml_graph.png (or .svg, .jpeg etc).
+
 ## Installing and setting up Zookeepr ##
 
  - Set up the development environment:
