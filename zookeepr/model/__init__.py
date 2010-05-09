@@ -56,6 +56,11 @@ from payment_received import PaymentReceived
 from registration import Registration
 from registration_product import RegistrationProduct
 
+from location  import Location
+from event     import Event
+from time_slot import Time_Slot
+from event_time_slot_location_map import Event_Time_Slot_Location_map
+
 from voucher import Voucher, VoucherProduct
 
 from db_content import DbContentType, DbContent
