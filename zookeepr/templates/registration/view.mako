@@ -142,8 +142,6 @@
 
           <p>${ h.yesno('nzoss' in (c.registration.signup or [])) |n } I want to sign up for membership with the New Zealand Open Source Society.</p>
 
-          <p>${ h.yesno('internetnz' in (c.registration.signup or [])) |n } I want to sign up for membership with the Internet NZ.</p>
-
           <p>${ h.yesno('announce' in (c.registration.signup or [])) |n } I want to sign up to the low traffic conference announcement mailing list!</p>
 
           <p>${ h.yesno('chat' in (c.registration.signup or [])) |n } I want to sign up to the conference attendees mailing list!</p>

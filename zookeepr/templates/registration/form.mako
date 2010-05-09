@@ -447,8 +447,6 @@ import array
 
               <li> <label>${ h.checkbox('registration.signup.nzoss') } membership with the New Zealand Open Source Society</label> <a href="http://nzoss.org.nz/nzoss/about" target="_blank">(read more)</a>
 
-              <li> <label>${ h.checkbox('registration.signup.internetnz') } membership with Internet NZ</label> <a href="http://www.internetnz.org.nz/membership" target="_blank">(read more)</a>
-
               <li> <label>${ h.checkbox('registration.signup.announce') } the low traffic <b>${ h.event_name() }  announcement list</b></label>
 
               <li> <label>${ h.checkbox('registration.signup.chat') } the <b>${ h.event_name() } attendees list</b></label>
