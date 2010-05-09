@@ -49,6 +49,7 @@ from product import Product, ProductInclude
 from product_category import ProductCategory
 from ceiling import Ceiling
 
+from payment_allocation import PaymentAllocation
 from invoice import Invoice
 from invoice_item import InvoiceItem
 from payment import Payment
@@ -59,7 +60,7 @@ from registration_product import RegistrationProduct
 
 from location import Location
 from event    import Event
-from timeSlot import TimeSlot
+from time_slot import TimeSlot
 
 from voucher import Voucher, VoucherProduct
 
