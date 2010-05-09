@@ -31,7 +31,8 @@ class LoginSchema(BaseSchema):
     username = validators.Email(not_empty=True)
     password = validators.String(not_empty=True)
 
-def render_signin(environ):
+def render_signin(*dummy):
+    environ = request.environ
     if 'auth_failure' in environ:
         c.auth_failure = environ['auth_failure']
     else:

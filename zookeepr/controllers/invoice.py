@@ -105,17 +105,17 @@ class InvoiceController(BaseController):
         url = h.url_for(action='view', id=id)
         c.hash = URLHash.find_by_url(url=url)
         if c.hash is None:
-		    c.hash = URLHash()
-		    c.hash.url = url
-		    meta.Session.add(c.hash)
-		    meta.Session.commit()
-		    
-		    # create an entry for the payment page (not needed)
-		    # TODO: depending on how the gateway works, you may need to make sure you have permissions for the page you get redirected to
-		    #c.hash = URLHash()
-		    #c.hash.url = h.url_for(action='pay')
-		    #meta.Session.add(c.hash)
-		    #meta.Session.commit()
+            c.hash = URLHash()
+            c.hash.url = url
+            meta.Session.add(c.hash)
+            meta.Session.commit()
+
+            # create an entry for the payment page (not needed)
+            # TODO: depending on how the gateway works, you may need to make sure you have permissions for the page you get redirected to
+            #c.hash = URLHash()
+            #c.hash.url = h.url_for(action='pay')
+            #meta.Session.add(c.hash)
+            #meta.Session.commit()
 
         return render('/invoice/generate_url.mako')
 
@@ -269,7 +269,7 @@ class InvoiceController(BaseController):
         meta.Session.commit()
         return redirect_to(controller='payment', id=c.payment.id, action='new_manual')
 
-    
+
     def pdf(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
             # Raise a no_auth error
@@ -317,7 +317,7 @@ class InvoiceController(BaseController):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
-        
+
         c.invoice = Invoice.find_by_id(id, True)
         if c.invoice.is_void():
             h.flash("Invoice was already voided.")

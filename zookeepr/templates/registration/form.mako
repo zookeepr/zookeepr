@@ -1,3 +1,15 @@
+                <script type="text/javascript">
+                   function ticketWarning(tickettype){
+                   var str=/student/i;
+                      if(tickettype.match(str)){
+                         jQuery('#warningDiv').slideDown(1000);
+                      }
+                      else{
+                         jQuery('#warningDiv').slideUp(1000);
+                      }
+                   }
+                </script>
+
 <%
 import datetime
 import re
@@ -155,14 +167,30 @@ import array
 %       elif category.display == 'radio':
          <p class="entries">
          <ul class="entries">
-%           for product in products:
+%         for product in products:
 <%
                soldout = ''
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
-%>
-           <li> <label>${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
-%           endfor
+%> 
+
+%              if category.name == "Ticket":
+                <li> <label onclick="javascript: ticketWarning(' ${ product.description } ');"> ${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
+%                  if product.description.lower().find('student') > -1:
+
+<div id="warningDiv">
+         <div class="message message-information">
+          <p>Your student Id will be validated at the registration desk. Your card must be current or at least expired December of the previous year.</p>
+         </div>
+</div>
+          <script type="text/javascript">
+           jQuery("#warningDiv").hide();
+          </script>
+%                 endif
+%              else:
+          <li> <label> ${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
+%              endif
+%         endfor
           </ul>
           </p>
 %       elif category.display == 'select':
@@ -435,7 +463,7 @@ import array
             <p>As a service to Linux Australia members and to other interested Linux users,
             Linux Australia would like to make your presentation available to the public.
             This involves video­taping your talk, and offering the video/audio and slides
-            (for download, or on CD­ROM).</p>
+            (for download, or on physical media).</p>
 
             <p>If you have allowed Linux Australia to publish your slides, there will
             be an upload mechanism closer to the conference. We will publish them under
