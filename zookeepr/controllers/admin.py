@@ -1508,7 +1508,7 @@ class AdminController(BaseController):
     def rego_lookup(self):
         """ Look up a rego, based on any of the associated IDs, showing the
         details as would be required for rego desk. [rego] """
-        # c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
+        # c.talks = meta.Session.query(Proposal).filter_by(accepted=True).all()
         args = request.POST; post=True
         if not args:
             args = request.GET
@@ -1522,25 +1522,25 @@ class AdminController(BaseController):
             id = int(id)
         except:
             # conversion of id to an integer failed, look it up as a name
-            p = self.dbsession.query(Person).filter_by(email_address=id).all()
+            p = Person.find_by_email(id)
             if p:
                 c.id_type = 'email'
-                c.p = p[0]
+                c.p = p
                 c.r = c.p.registration; c.i = c.p.invoices
                 return render('admin/rego_lookup.mako')
 
-            p = self.dbsession.query(Person).filter(
-                                       Person.c.firstname.op('ilike')(id)).all()
-            p += self.dbsession.query(Person).filter(
-                                        Person.c.lastname.op('ilike')(id)).all()
+            p = meta.Session.query(Person).filter(
+                                       Person.firstname.ilike(id)).all()
+            p += meta.Session.query(Person).filter(
+                                        Person.lastname.ilike(id)).all()
             if len(p)>0:
                 c.id_type = 'name'
             else:
                 c.id_type = 'partial name'
-                p = self.dbsession.query(Person).filter(
-                               Person.c.firstname.op('ilike')('%'+id+'%')).all()
-                p += self.dbsession.query(Person).filter(
-                                Person.c.lastname.op('ilike')('%'+id+'%')).all()
+                p = meta.Session.query(Person).filter(
+                               Person.firstname.ilike('%'+id+'%')).all()
+                p += meta.Session.query(Person).filter(
+                                Person.lastname.ilike('%'+id+'%')).all()
 
             if len(p)==1:
                 c.p = p[0]
@@ -1558,36 +1558,36 @@ class AdminController(BaseController):
             # first, check if there's a note to be posted; in this case, ID
             # must be a rego ID, because that's how the form is set up.
             if post and args.has_key('note'):
-                r = self.dbsession.query(Registration).filter_by(id=id).all()
+                r = meta.Session.query(Registration).filter_by(id=id).all()
 
                 n = RegoNote(note=args['note'])
-                self.dbsession.save(n)
+                meta.Session.save(n)
                 r[0].notes.append(n)
                 c.signed_in_person.notes_made.append(n)
-                self.dbsession.flush()
+                meta.Session.flush()
 
-            i = self.dbsession.query(Invoice).filter_by(id=id).all()
+            i = meta.Session.query(Invoice).filter_by(id=id).all()
             if i:
                 c.id_type = 'invoice'
                 c.p = i[0].person
                 c.r = c.p.registration; c.i = c.p.invoices
                 return render('admin/rego_lookup.mako')
 
-            r = self.dbsession.query(Registration).filter_by(id=id).all()
+            r = meta.Session.query(Registration).filter_by(id=id).all()
             if r:
                 c.id_type = 'rego'
                 c.r = r[0]
                 c.p = c.r.person; c.i = c.p.invoices
                 return render('admin/rego_lookup.mako')
             
-            p = self.dbsession.query(Person).filter_by(id=id).all()
+            p = meta.Session.query(Person).filter_by(id=id).all()
             if p:
                 c.id_type = 'person'
                 c.p = p[0]
                 c.r = c.p.registration; c.i = c.p.invoices
                 return render('admin/rego_lookup.mako')
 
-            p = self.dbsession.query(Person).filter_by(TransID=id).all()
+            p = meta.Session.query(Person).filter_by(TransID=id).all()
             if p:
                 c.id_type = 'transaction'
                 c.p = p[0]
@@ -1595,23 +1595,27 @@ class AdminController(BaseController):
                 return render('admin/rego_lookup.mako')
         
         phone_pat = '[ \t()/-]*'.join(raw_id)
-        r = self.dbsession.query(Registration).filter(
-                          Registration.c.phone.op('~')('^'+phone_pat+'$')).all()
-        if len(r)==1:
+        p = []
+        #p = meta.Session.query(Registration).filter(
+                          #Person.phone.op('regexp')('^'+phone_pat+'$')).all()
+        # Commented out because sqlite doesn't have regexp; postgresql had
+        # that, but not sqlite. --Jiri 9.5.2010
+        if len(p)==1:
             c.id_type = 'phone'
-            c.r = r[0]
-            c.p = c.r.person; c.i = c.p.invoices
+            c.p = p[0]
+            c.r = c.p.registration; c.i = c.p.invoices
             return render('admin/rego_lookup.mako')
-        elif len(r)>1:
+        elif len(p)>1:
             c.id_type = 'phone'
-            c.many = [rego.person for rego in r]
+            c.many = p
             c.many.sort(lambda a, b:
               cmp(a.lastname.lower(), b.lastname.lower()) or 
               cmp(a.firstname.lower(), b.firstname.lower()))
             return render('admin/rego_lookup.mako')
 
-        r = self.dbsession.query(Registration).filter(
-                                  Registration.c.phone.op('~')(phone_pat)).all()
+        r = []
+        #r = meta.Session.query(Registration).filter(
+                                  #Registration.c.phone.op('~')(phone_pat)).all()
         if len(r)==1:
             c.id_type = 'partial phone'
             c.r = r[0]
