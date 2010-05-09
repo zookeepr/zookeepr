@@ -121,11 +121,10 @@ ${next.body()}
   &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2010</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
     </div>
   </div>
-
 <script src="/js/prototype.js" type="text/javascript"></script>
 <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
 <script src="/js/lightbox.js" type="text/javascript"></script>
-
+%if not h.debug():
     <script type="text/javascript">
         var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
         document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
@@ -137,6 +136,6 @@ ${next.body()}
             pageTracker._trackPageview();
         } catch(err) {}
     </script>
-
+%endif
 </body>
 </html>
