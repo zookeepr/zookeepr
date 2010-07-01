@@ -97,7 +97,7 @@ None
         </td>
         <td>
           <p class="entries"><blockquote>${ h.line_break(c.volunteer.other) }</blockquote></p>
-          <p class="note"><small>Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during LCA2010, and any special requirements (dietary or otherwise).</small></p>
+          <p class="note"><small>Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during LCA2011, and any special requirements (dietary or otherwise).</small></p>
         </td>
       </tr>
 

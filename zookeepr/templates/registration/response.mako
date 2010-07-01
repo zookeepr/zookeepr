@@ -45,25 +45,14 @@ registration invoice as soon as possible.
 Accommodation
 =============
 
-LCA2010 have negotiated discounts with some local accommodation providers:
+LCA2011 have negotiated discounts with some local accommodation providers:
 
-    http://www.lca2010.org.nz/register/accommodation
+    http://www.lca2011.linux.org.au/register/accommodation
 
 Please note, you *must* book your accommodation directly through the
-accommodation providers. Registration on the LCA2010 website DOES NOT book
+accommodation providers. Registration on the LCA2011 website DOES NOT book
 your accommodation. For any queries about the Accommodation, please contact
 the Accommodation Providers directly.
-
-%endif
-%if c.person.country != 'NEW ZEALAND':
-Immigration/Entry Requirements
-==============================
-
-Please note, New Zealand is a country in its own right. Anyone who lives
-outside New Zealand (including Australia) will need a passport, and may
-require a visa, to gain entry into New Zealand. Please contact your local
-New Zealand Embassy department, well in advance of LCA2010, to determine
-your travel needs. 
 
 %endif
 %if c.registration.diet:
@@ -87,7 +76,7 @@ In registering, you have noted the following special requirements:
 
     ${c.registration.special}
 
-Please let us know you require any assistance at LCA2010 as a result of this.
+Please let us know you require any assistance at LCA2011 as a result of this.
 
 %endif
 %if c.infants:
@@ -121,23 +110,23 @@ Partners Programme
 ==================
 
 %if c.pp_children:
-Thank you for registering your Partner and children for the LCA2010 Partners
+Thank you for registering your Partner and children for the LCA2011 Partners
 Programme.  Your partner will be contacted by our Partner Programme Coordinator 
 on:
 %else:
-Thank you for registering your Partner for the LCA2010 Partners Programme.
+Thank you for registering your Partner for the LCA2011 Partners Programme.
 Your partner will be contacted by our Partner Programme Coordinator on:
 %endif
 
-     partners@lca2010.org.nz
+     partners@lca2011.linux.org.au
 
 %endif
 Open Day
 ========
 
-The Open Day will be held on Saturday 23 January 2010. If you have an awesome
+The Open Day will be held on Saturday 29 January 2011. If you have an awesome
 project, cool widgets or mind-blowing gadgets that will enthuse our attendees,
-please contact us about getting a stall at the Open Day: openday@lca2010.org.nz
+please contact us about getting a stall at the Open Day: openday@lca2011.linux.org.au
 
 We look forward to seeing you in Wellington!
 

@@ -279,7 +279,7 @@
          x="698.83887"
          y="303.01056"
          style="font-size:14px;font-weight:normal;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-         id="tspan2788">payments@lca2010.org.nz</svg:tspan><svg:tspan
+         id="tspan2788">payments@lca2011.linux.org.au</svg:tspan><svg:tspan
          sodipodi:role="line"
          x="698.83887"
          y="320.51056"

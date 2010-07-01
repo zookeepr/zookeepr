@@ -44,9 +44,9 @@
 <p><b>11:55-12:15</b><br/><a href="http://sysadmin.miniconf.org/presentations10.html#03">Going mad with MDADM</a><br/><i>by</i> Steven Ellis</p>
 </td>
       <td class="programme_room" align="center" valign="top">
-<p><b>10:30-11:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Why_Launchpad.3F">Why Launchpad?</a><br/><i>by</i> Jonathan Lange</p>
-<p><b>11:15-11:45</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Linking_with_external_bugtrackers">Linking with external bugtrackers</a><br/><i>by</i> Björn Tillenius</p>
-<p><b>11:45-12:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Working_with_translations">Working with translations</a><br/><i>by</i> Jeroen Vermeulen</p>
+<p><b>10:30-11:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#Why_Launchpad.3F">Why Launchpad?</a><br/><i>by</i> Jonathan Lange</p>
+<p><b>11:15-11:45</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#Linking_with_external_bugtrackers">Linking with external bugtrackers</a><br/><i>by</i> Björn Tillenius</p>
+<p><b>11:45-12:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#Working_with_translations">Working with translations</a><br/><i>by</i> Jeroen Vermeulen</p>
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>10:30–10:40</b><br/><a href="">The Intro</a><br/><i>by</i> Don Christie</p>
@@ -56,10 +56,10 @@
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>10:30-10:35</b><br/>Welcome and housekeeping</p>
-<p><b>10:35-10:55</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1a">The Open Source Secondary School</a><br/><i>by</i> Mark Osborne</p>
-<p><b>10:55-11:10</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2b">Art education and open source</a><br/><i>by</i> Maksim Lin</p>
-<p><b>11:10-11:30</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1c">Sugarlabs: A word from the founder</a><br/><i>by</i> Walter Bender</p>
-<p><b>11:30-12:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1d">OLPC and Sugarlabs - Improving education on a global scale</a><br/><i>by</i> NZ Volunteers group</p>
+<p><b>10:35-10:55</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_1a">The Open Source Secondary School</a><br/><i>by</i> Mark Osborne</p>
+<p><b>10:55-11:10</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_2b">Art education and open source</a><br/><i>by</i> Maksim Lin</p>
+<p><b>11:10-11:30</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_1c">Sugarlabs: A word from the founder</a><br/><i>by</i> Walter Bender</p>
+<p><b>11:30-12:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_1d">OLPC and Sugarlabs - Improving education on a global scale</a><br/><i>by</i> NZ Volunteers group</p>
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>10:30-10:35</b><br/><a href="http://miniconf.osda.asn.au/proposal/91/welcome-and-housekeeping">Welcome and Housekeeping</a><br/><i>by</i> Peter Lieverdink</p>
@@ -94,9 +94,9 @@
 <p><b>14:55-15:15</b><br/><a href="http://sysadmin.miniconf.org/presentations10.html#06">Being Lazy in a Large Organisation - Documentation by Wiki</a><br/><i>by</i> Mark Suter</p>
 </td>
       <td class="programme_room" align="center" valign="top">
-<p><b>13:30-14:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Ubuntu_Distributed_Development">Ubuntu Distributed Development</a><br/><i>by</i> James Westby</p>
-<p><b>13:15-14:45</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Building_packages_with_Launchpad">Building packages with Launchpad</a><br/><i>by</i> Muharem Hrnjadovic <i>and</i> Michael Hudson</p>
-<p><b>14:45-15:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#VCS_Imports.2C_code_reviews_and_patch_forwarding">VCS Imports, code reviews and patch forwarding</a><br/><i>by</i> Aaron Bentley <i>and</i> Jelmer Vernooij</p>
+<p><b>13:30-14:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#Ubuntu_Distributed_Development">Ubuntu Distributed Development</a><br/><i>by</i> James Westby</p>
+<p><b>13:15-14:45</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#Building_packages_with_Launchpad">Building packages with Launchpad</a><br/><i>by</i> Muharem Hrnjadovic <i>and</i> Michael Hudson</p>
+<p><b>14:45-15:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#VCS_Imports.2C_code_reviews_and_patch_forwarding">VCS Imports, code reviews and patch forwarding</a><br/><i>by</i> Aaron Bentley <i>and</i> Jelmer Vernooij</p>
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>13:30–14:00</b><br/><a href="">How can Govt procurement better support Open?</a><br/><i>by</i> Laurence Millar</p>
@@ -104,10 +104,10 @@
 <p><b>14:30–15:15</b><br/>Panel Discussion: <a href="">The Politics of Open</a></p>
 </td>
       <td class="programme_room" align="center" valign="top">
-<p><b>13:30-13:45</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2a">Koha - Nau te rourou, naku te rourou, ka ora ai te iwi</a><br/><i>by</i> Chris Cormack</p>
-<p><b>13:45-14:00</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_1b">Kidsmart Rollout: Early childhood project</a><br/><i>by</i> Carl Klitscher</p>
-<p><b>14:00-14:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2c">The use of FOSS in teaching Software Engineering</a><br/><i>by</i> Ashley Maher</p>
-<p><b>14:15-15:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_2d">Moodle features workshop</a><br/><i>by</i> Jonathan Newman, Stacey Walker <i>and</i> Jonathan Harker</p>
+<p><b>13:30-13:45</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_2a">Koha - Nau te rourou, naku te rourou, ka ora ai te iwi</a><br/><i>by</i> Chris Cormack</p>
+<p><b>13:45-14:00</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_1b">Kidsmart Rollout: Early childhood project</a><br/><i>by</i> Carl Klitscher</p>
+<p><b>14:00-14:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_2c">The use of FOSS in teaching Software Engineering</a><br/><i>by</i> Ashley Maher</p>
+<p><b>14:15-15:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_2d">Moodle features workshop</a><br/><i>by</i> Jonathan Newman, Stacey Walker <i>and</i> Jonathan Harker</p>
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>13:30-13:50</b><br/><a href="http://miniconf.osda.asn.au/proposal/71/how-create-fulltext-search-solution-mysql">How to create a fulltext search solution with mysql</a><br/><i>by</i> Alexander Rubin</p>
@@ -144,8 +144,8 @@
 <p><b>17:10-17:30</b><br/><a href="http://sysadmin.miniconf.org/presentations10.html#10">Developing and Managing Linux SOE Environments</a><br/><i>by</i> Matthew Lye</p>
 </td>
       <td class="programme_room" align="center" valign="top">
-<p><b>15:45-16:30</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Drizzle_-_an_upstream.27s_view">Drizzle - an upstream's view</a><br/><i>by</i> Monty Taylor</p>
-<p><b>16:45-17:30</b><br/><a href="http://www.lca2010.org.nz/wiki/Miniconfs/Bridging_the_gap#Ask_the_devs">Ask the devs</a></p>
+<p><b>15:45-16:30</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#Drizzle_-_an_upstream.27s_view">Drizzle - an upstream's view</a><br/><i>by</i> Monty Taylor</p>
+<p><b>16:45-17:30</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Miniconfs/Bridging_the_gap#Ask_the_devs">Ask the devs</a></p>
 </td>
       <td class="programme_room" align="center" valign="top">
 <p><b>15:45–16:30</b><br/><a href="">Implementing an authoritative repository of public sector Open Technologies for Government agencies</a><br/><i>by</i> Steven Schmid</p>
@@ -153,10 +153,10 @@
 <p><b>17:15–17:30</b><br/><a href="">The Outro</a><br/><i>by</i> Jason Ryan</p>
 </td>
       <td class="programme_room" align="center" valign="top">
-<p><b>15:45-16:45</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_3a">Mahara development workshop</a><br/><i>by</i> Penny Leach, Richard Mansfield <i>and</i> Evan Goldenberg</p>
-<p><b>16:45-17:00</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_3b">TBC</a></p>
-<p><b>17:00-17:15</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_3c">Structuring a multi-day technical training course</a><br/><i>by</i> Jacinta Richardson</p>
-<p><b>17:15-17:20</b><br/><a href="http://www.lca2010.org.nz/wiki/Education_talk_3d">Voice and vision interaction</a><br/><i>by</i> John Graves</p>
+<p><b>15:45-16:45</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_3a">Mahara development workshop</a><br/><i>by</i> Penny Leach, Richard Mansfield <i>and</i> Evan Goldenberg</p>
+<p><b>16:45-17:00</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_3b">TBC</a></p>
+<p><b>17:00-17:15</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_3c">Structuring a multi-day technical training course</a><br/><i>by</i> Jacinta Richardson</p>
+<p><b>17:15-17:20</b><br/><a href="http://www.lca2011.linux.org.au/wiki/Education_talk_3d">Voice and vision interaction</a><br/><i>by</i> John Graves</p>
 <p><b>17:20-17:30</b><br/>Closing</p>
 </td>
       <td class="programme_room" align="center" valign="top">

@@ -17,7 +17,7 @@
           </td>
           <td>
             <p>${ h.textarea('volunteer.other', cols="60", rows="4") }</p>
-            <p class="note">Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during LCA2010, and any special requirements (dietary or otherwise).</p>
+            <p class="note">Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during LCA2011, and any special requirements (dietary or otherwise).</p>
           </td>
         </tr>
 

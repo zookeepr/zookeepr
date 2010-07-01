@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <kml xmlns="http://earth.google.com/kml/2.2">
 <Document>
-  <name>LCA2010 - Wellington</name>
-  <description><![CDATA[Main reference points for LCA2010 in Wellington]]></description>
+  <name>LCA2011 - Brisbane</name>
+  <description><![CDATA[Main reference points for LCA2011 in Brisbane]]></description>
   <Style id="style12">
     <IconStyle>
       <Icon>
-        <href>http://www.lca2010.org.nz/images/LCA2010_Blu_map.jpg</href>
+        <href>http://www.lca2011.linux.org.au/images/LCA2010_Blu_map.jpg</href>
       </Icon>
     </IconStyle>
   </Style>
@@ -187,7 +187,7 @@
   </Style>
   <Placemark>
     <name>Wellington Convention Centre</name>
-    <description><![CDATA[<div dir="ltr">Conference Venue for LCA2010</div>]]></description>
+    <description><![CDATA[<div dir="ltr">Conference Venue for LCA2011</div>]]></description>
     <styleUrl>#style12</styleUrl>
     <Point>
       <coordinates>174.778076,-41.290115,0.000000</coordinates>
