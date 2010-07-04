@@ -8,24 +8,24 @@ lca_info = {
   'paymentgateway_secretkey' : '',
 
 # Contact email for the committee
-  'contact_email' : 'contact@lca2010.org.nz',
+  'contact_email' : 'contact@lca2011.linux.org.au',
 # All email sent by ZK will Bcc here:
-  'bcc_email' : 'bcc_archive@lca2010.org.nz',
-  'webmaster_email': 'webmaster@lca2010.org.nz',
+  'bcc_email' : 'archive@lca2011.linux.org.au',
+  'webmaster_email': 'webmaster@lca2011.linux.org.au',
 
 # Event information
   'event_parent_organisation' : 'Linux Australia',
   'event_parent_url' : 'http://www.linux.org.au/',
   'event_name' : 'linux.conf.au 2011',
-  'event_shortname' : 'lca2010',
-  'event_url' : 'http://www.lca2010.org.nz',
-  'event_permalink' : 'http://lca2010.linux.org.au',
-  'event_hashtag' : '#LCA2010',
-#  'event_tax_number' : 'ABN 56 987 117 479',
- 'event_tax_number' : 'NZ GST #90-792-369',
-  'event_postal_address' : 'PO Box 11-682, Manners St, Wellington, NEW ZEALAND 6142',
-  'event_fax_number' : '+64 4 802 0422',
-  'event_phone_number': '+64 4 802 0422',
+  'event_shortname' : 'lca2011',
+  'event_url' : 'http://lca2011.linux.org.au',
+  'event_permalink' : 'http://lca2011.linux.org.au',
+  'event_hashtag' : '#LCA2011',
+  'event_tax_number' : 'ABN 56 987 117 479',
+# 'event_tax_number' : 'NZ GST #90-792-369',
+  'event_postal_address' : 'PO BOX 2010 Keperra, Queensland, 4054',
+  'event_fax_number' : '',
+  'event_phone_number': '+61 7 3103 7998',
   'event_byline': 'linux.conf.au 2011 | 24 - 29 Jan | Follow the Flow',
   'event_pricing_disclaimer': 'All prices are in New Zealand dollars and include 12.5% New Zealand Goods and Services Tax.',
   'date' : datetime(2010, 1, 17, 9, 0, 00),
@@ -40,23 +40,23 @@ lca_info = {
   'cfp_status' : 'open',
   'cfmini_status' : 'open',
   'paper_editing' : 'open',
-  'funding_status' : 'open',
-  'funding_editing' : 'open',
+  'funding_status' : 'not_open',
+  'funding_editing' : 'not_open',
   'conference_status': 'not_open',
 # Mode
   'cfp_hide_assistance_info': 'no',
   'cfp_hide_scores': 'no',
 
   'emails': {
-     'presentation' : 'speakers@lca2010.org.nz',
-     'tutorial - 1 hour and 45 minutes'     : 'speakers@lca2010.org.nz',
-     'tutorial - 3 hours and 30 minutes'    : 'speakers@lca2010.org.nz',
-     'miniconf'     : 'miniconfs@lca2010.org.nz',
-     'funding'      : 'funding@lca2010.org.nz',
-     'poster' : 'speakers@lca2010.org.nz'
+     'presentation' : 'speakers@lca2011.linux.org.au',
+     'tutorial - 1 hour and 45 minutes'     : 'speakers@lca2011.linux.org.au',
+     'tutorial - 3 hours and 30 minutes'    : 'speakers@lca2011.linux.org.au',
+     'miniconf'     : 'miniconfs@lca2011.linux.org.au',
+     'funding'      : 'funding@lca2011.linux.org.au',
+     'poster' : 'speakers@lca2011.linux.org.au'
   },
 
-  'proposal_update_email': 'puck@lca2010.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
+  'proposal_update_email': 'puck@lca2011.linux.org.au', # recieve notifications when proposals are changed. Leave blank for none.
 
   'google_map_url': 'http://maps.google.com/maps/ms?ie=UTF8&hl=en&oe=UTF8&msa=0&msid=101517653478883872270.000465f8e2539e5281739',
   'google_map_latlng': '-41.288868, 174.781322',
@@ -150,18 +150,18 @@ lca_rego = {
 }
 
 file_paths = {
-  'zk_root' : '/home/zookeepr/zookeepr/lca2010',
-  'public_path': '/home/zookeepr/zookeepr/lca2010/zookeepr/public',
+  'zk_root' : '/home/zookeepr/zookeepr/lca2011',
+  'public_path': '/home/zookeepr/zookeepr/lca2011/zookeepr/public',
   'public_html': '',
-  'news_fileprefix': '/home/zookeepr/zookeepr/lca2010/zookeepr/public/featured',
+  'news_fileprefix': '/home/zookeepr/zookeepr/lca2011/zookeepr/public/featured',
   'news_htmlprefix': '/featured',
   # Points towards where the slides and other recordings are stored
-  'slides_path': '/home/zookeepr/zookeepr/lca2010/zookeepr/public/slides',
+  'slides_path': '/home/zookeepr/zookeepr/lca2011/zookeepr/public/slides',
   'slides_html': '/slides',
   'ogg_path': 'http://mirror.linux.org.au/lca10/videos/ogg',
-  'ogg_file_list': '/home/zookeepr/zookeepr/lca2010/zookeepr/config/data.txt',
+  'ogg_file_list': '/home/zookeepr/zookeepr/lca2011/zookeepr/config/data.txt',
   'speex_path': 'http://mirror.linux.org.au/lca10/videos/speex',
-  'speex_file_list': '/home/zookeepr/zookeepr/lca2010/zookeepr/config/data.txt',
+  'speex_file_list': '/home/zookeepr/zookeepr/lca2011/zookeepr/config/data.txt',
 }
 
 lca_menu = [
@@ -170,12 +170,12 @@ lca_menu = [
   ('Brisbane', '/brisbane/about', 'brisbane'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
   ('Programme', '/programme/about', 'programme'),
-  ('Register', '/register/prices', 'register'),
+  #('Register', '/register/prices', 'register'),
   #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 4
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
-  ('Planet', 'http://planet.lca2010.org.nz', 'planet'),
-  ('Wiki', '/wiki', 'wiki'),
+  #('Planet', 'http://planet.lca2011.linux.org.au', 'planet'),
+  #('Wiki', '/wiki', 'wiki'),
 ]
 
 lca_submenus = {
@@ -183,12 +183,12 @@ lca_submenus = {
   'wellington': ['About', 'Map', 'Sightseeing', 'Pre and Post' ],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
-  #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
+  'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
   #'programme': ['About', 'Keynotes', 'Miniconfs', 'Speakers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
-  'programme': ['About', 'Keynotes', 'Miniconfs', 'Schedule', 'Social Events', 'Open Day', 'Partners Programme'], # stage 3
+  #'programme': ['About', 'Keynotes', 'Miniconfs', 'Schedule', 'Social Events', 'Open Day', 'Partners Programme'], # stage 3
   #'programme': ['About', 'Keynotes', 'Miniconfs','Schedule','Social Events','Open Day', 'Partners Programme'], # stage 4?
-  'register': ['Prices', 'Funding', 'Accommodation', 'Terms and Conditions'],
+  #'register': ['Prices', 'Funding', 'Accommodation', 'Terms and Conditions'],
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
   'media': ['News','In the press','Graphics']
 }
