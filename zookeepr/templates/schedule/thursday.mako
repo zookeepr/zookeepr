@@ -20,7 +20,7 @@
 
   <tbody>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">8:00-8:45</th><td colspan="5" align="center" valign="middle"><a href="http://www.lca2010.org.nz/wiki/Yoga">Morning Yoga</a> (limit of 20 people)<br/><i>Frank Taplin Room</i></td>
+      <th class="programme_slot" align="center" valign="middle">8:00-8:45</th><td colspan="5" align="center" valign="middle"><a href="http://www.lca2011.linux.org.au/wiki/Yoga">Morning Yoga</a> (limit of 20 people)<br/><i>Frank Taplin Room</i></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
@@ -101,7 +101,7 @@
 
 <h3>Professional Delegates Networking Session</h3>
 
-<p>The Professional Delegates Networking Session is a special event where Speakers and Professional Delegates will be invited to network over drinks and nibbles at the <a href="http://www.stjames.co.nz/index.html">Opera House</a> on Thursday 21 January 2010.</p>
+<p>The Professional Delegates Networking Session is a special event where Speakers and Professional Delegates will be invited to network over drinks and nibbles at the <a href="http://www.stjames.co.nz/index.html">Opera House</a> on Thursday 21 January 2011.</p>
 
 <table>
   <tr class="odd">

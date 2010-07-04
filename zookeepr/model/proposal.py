@@ -28,6 +28,7 @@ def setup(meta):
             ProposalType(name='Miniconf'),
             ProposalType(name='Tutorial - 1 hour and 45 minutes'),
             ProposalType(name='Tutorial - 3 hours and 30 minutes'),
+            ProposalType(name='Poster'),
         ]
     )
     meta.Session.add_all(

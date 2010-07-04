@@ -13,7 +13,7 @@ for d in c.db_content_news_all:
 
 <!-- <img src = '/images/heightfix.png' class = 'heightfix' alt = ''> -->
 
-<h1>linux.conf.au 2010 in Wellington, New Zealand!</h1>
+<h1>linux.conf.au 2011 in Brisbane!</h1>
 
 <p>linux.conf.au is one of the world's best conferences for free and open source software!</p>
 <p>LCA2010 was held from Monday 18 January to Saturday 23 January 2010 at the <a href="/about/venue">Wellington Convention Centre</a> in <a href="/wellington/about">Wellington</a>, <a href="/about/new_zealand">New Zealand</a>, home of the little blue penguin or Kororā as they are called in Māori, New Zealand's indigenous language. What better place to bring the world's biggest gathering of Linux enthusiasts?</p>

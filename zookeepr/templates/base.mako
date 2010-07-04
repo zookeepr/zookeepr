@@ -38,7 +38,7 @@
   <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
   <link rel="stylesheet" media="print" href="/print.css" type="text/css">
   <script type="text/javascript" src="/jquery.min.js"></script>          
-  <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2010 News">
+  <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2011 News">
   <!--[if lt IE 7]>
   <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
   <![endif]-->
@@ -118,7 +118,7 @@ ${next.body()}
       <img src="/images/sign-and-pole.png" style="border: 0;" alt="Penguins Visiting" />
     </div>
     <div class = 'copyright'>
-  &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2010</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
+  &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2011</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
     </div>
   </div>
 <script src="/js/prototype.js" type="text/javascript"></script>
