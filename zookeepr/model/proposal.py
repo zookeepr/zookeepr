@@ -186,13 +186,13 @@ class Proposal(Base):
     technical_requirements = sa.Column(sa.types.Text)
 
     # type, enumerated in the proposal_type table
-    proposal_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_type.id'))
+    proposal_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_type.id'), nullable=False)
 
     # type, enumerated in the assistance_type table
-    travel_assistance_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('travel_assistance_type.id'))
-    accommodation_assistance_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('accommodation_assistance_type.id'))
-    status_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_status.id'))
-    target_audience_id = sa.Column(sa.types.Integer, sa.ForeignKey('target_audience.id'))
+    travel_assistance_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('travel_assistance_type.id'), nullable=False)
+    accommodation_assistance_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('accommodation_assistance_type.id'), nullable=False)
+    status_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_status.id'), nullable=False)
+    target_audience_id = sa.Column(sa.types.Integer, sa.ForeignKey('target_audience.id'), nullable=False)
 
     video_release = sa.Column(sa.types.Boolean)
     slides_release = sa.Column(sa.types.Boolean)

@@ -137,8 +137,9 @@ class ProposalController(BaseController):
         proposal_results = self.form_result['proposal']
         attachment_results = self.form_result['attachment']
 
+        proposal_results['status'] = ProposalStatus.find_by_name('Pending')
+
         c.proposal = Proposal(**proposal_results)
-        c.proposal.status = ProposalStatus.find_by_name('Pending')
         c.proposal.abstract = self.clean_abstract(c.proposal.abstract)
         meta.Session.add(c.proposal)
 
@@ -293,8 +294,8 @@ class ProposalController(BaseController):
 
         c.miniconf = (c.proposal.type.name == 'Miniconf')
         form = render('/proposal/edit.mako')
-	defaults['person_to_edit'] = c.person.id
-	defaults['name'] = c.person.firstname + " " + c.person.lastname
+        defaults['person_to_edit'] = c.person.id
+        defaults['name'] = c.person.firstname + " " + c.person.lastname
         return htmlfill.render(form, defaults)
 
 
@@ -443,7 +444,6 @@ class ProposalController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def latex(self):
         c.proposal_type = ProposalType.find_all()
-#        c.proposal_type = meta.Session.query(ProposalType).select_from(ProposalType, Proposal, ProposalStatus).order_by(ProposalType.name).order_by(Proposal.title).filter(ProposalStatus.name='Accepted').all()
 
         for type in c.proposal_type:
           print type
@@ -454,6 +454,6 @@ class ProposalController(BaseController):
 
     def clean_abstract(self, abstract):
         abs = h.html_clean(abstract)
-	if abs.startswith("<p>") and abs.endswith("</p>"):
-	    return abs[3:-4]
-	return abs
+        if abs.startswith("<p>") and abs.endswith("</p>"):
+            return abs[3:-4]
+        return abs

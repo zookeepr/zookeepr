@@ -75,8 +75,9 @@ class MiniconfProposalController(BaseController):
         proposal_results = self.form_result['proposal']
         attachment_results = self.form_result['attachment']
 
+        proposal_results['status'] = ProposalStatus.find_by_name('Pending')
+
         c.proposal = Proposal(**proposal_results)
-        c.proposal.status = ProposalStatus.find_by_name('Pending')
         meta.Session.add(c.proposal)
 
         if not h.signed_in_person():
