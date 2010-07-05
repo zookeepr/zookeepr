@@ -1,10 +1,6 @@
 <%page args="editing" />
-% for st in c.proposal_types:
-%    if st.name != 'Miniconf':
-<%        continue %>
-%    endif
 <div>
-<input type="hidden" name="proposal.type" value="${ st.id }" />
+<input type="hidden" name="proposal.type" />
 <input type="hidden" name="proposal.technical_requirements" value="" />
 <input type="hidden" name="proposal.accommodation_assistance" value="1" />
 <input type="hidden" name="proposal.travel_assistance" value="1" />
@@ -13,7 +9,6 @@
 <input type="hidden" name="proposal.abstract_video_url" value="" />
 <input type="hidden" name="proposal.project" value="" />
 </div>
-% endfor
 
     <p class="label"><span class="mandatory">*</span><label for="proposal.title">Title:</label></p>
     <p class="entries">${ h.text('proposal.title', size=60) }</p>
@@ -47,9 +42,9 @@
 
     <p><em>Note: These are common for all your papers: miniconfs, presentations and tutorials.</em></p>
 
-    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="name">Organiser's name:</label></p>
+    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="person.name">Organiser's name:</label></p>
     ${ h.hidden('person_to_edit', value=c.person.id) }
-    <p class="entries">${ h.text('name', value=c.person.firstname + " " + c.person.lastname, size=60, disabled=True) }</p>
+    <p class="entries">${ h.text('person.name', size=60, disabled=True) }</p>
     <p class="note">(Can't be changed here.)</p>
 
     <p class="label"><span class="mandatory">*</span><label for="person.mobile">Organiser's mobile phone number:</label></p>

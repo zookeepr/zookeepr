@@ -50,8 +50,17 @@ class MiniconfProposalController(BaseController):
         elif c.cfmini_status == 'not_open':
             return render("proposal/not_open_mini.mako")
 
+        c.proposal_type = ProposalType.find_by_name('Miniconf')
         c.person = h.signed_in_person()
+
         defaults = {
+            'proposal.type': c.proposal_type.id,
+            'proposal.technical_requirements': "",
+            'proposal.accommodation_assistance': 1,
+            'proposal.travel_assistance': 1,
+            'proposal.video_release': 0,
+            'proposal.slides_release': 0,
+            'person.name' : c.person.firstname + " " + c.person.lastname,
             'person.mobile' : c.person.mobile,
             'person.experience' : c.person.experience,
             'person.bio' : c.person.bio,

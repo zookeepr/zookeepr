@@ -116,6 +116,7 @@ class ProposalController(BaseController):
             'proposal.slides_release': 1,
             'proposal.travel_assistance' : 1,
             'proposal.accommodation_assistance' : 1,
+            'person.name': c.person.firstname + " " + c.person.lastname,
             'person.mobile': c.person.mobile,
             'person.experience': c.person.experience,
             'person.bio': c.person.bio,
@@ -279,6 +280,7 @@ class ProposalController(BaseController):
 
         defaults = h.object_to_defaults(c.proposal, 'proposal')
         defaults.update(h.object_to_defaults(c.person, 'person'))
+        defaults['person.name'] = c.person.firstname + " " + c.person.lastname
         # This is horrible, don't know a better way to do it
         if c.proposal.type:
             defaults['proposal.type'] = defaults['proposal.proposal_type_id']
