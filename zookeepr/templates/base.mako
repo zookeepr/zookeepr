@@ -299,9 +299,9 @@ ${self.extra_body()}
                     <div class="netv-footer-inner">
                         <a href="#" class="netv-rss-tag-icon" title="RSS"></a>
                         <div class="netv-footer-text">
-                            <p><a href="#">Contact Us</a> | <a href="#">Terms of Use</a> | <a href="#">Trademarks</a>
-                                | <a href="#">Privacy Statement</a><br />
-                                Copyright &copy; 2010 ---. All Rights Reserved.</p>
+  &copy; 2010 <a href="http://linux.conf.au/">linux.conf.au 2011</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
+    </div>
+
                         </div>
                     </div>
                     <div class="netv-footer-background"></div>
@@ -345,34 +345,14 @@ ${next.body()}
     <!-- end content -->
 
 
-##% if not h.url()().endswith('/sponsors/sponsors') and not h.url()().endswith('/media/news/61'):
-##         <div class='sponsors_footer'>
-##       <a href="/sponsors/sponsors"><img src="/sponsors/HP-front.png" alt="Hewlett-Packard Logo"></a>
-##       <a href="/sponsors/sponsors"><img src="/sponsors/IBM-front.png" alt="IBM Logo"></a>
-##         </div>
-##% #endif
     </div>
     <div id = "push"><br /><br /><br /><br /></div>
   </div>
 
-% if h.url_for() == '/':
-  <div id="sponsors">
-    <p>Thanks to our Emperor Penguin Sponsors:</p>
-    <p>
-      <a href="http://www.internetnz.org.nz"><img src="/images/sponsor-InternetNZ.png" alt="InternetNZ" title="Internet NZ works to keep the Internet open and uncaptureable, protecting and promoting the Internet for New Zealand." /></a>
-      <a style="padding-left: 10px;" href="http://www.google.com"><img src="/images/sponsor-google.gif" alt="Google" title="Google" /></a>
-      <a style="padding-left: 10px;" href="http://www.ibm.com"><img src="/images/sponsor-ibm.gif" alt="IBM" title="IBM" /></a>
-      <a style="padding-left: 10px;" href="http://www.hp.com"><img src="/images/sponsor-hp.gif" alt="HP" title="HP" /></a>
-    </p>
-  </div>
-% endif
 
   <div id = 'footer'>
     <div id = "footer_logo">
       <img src="/images/sign-and-pole.png" style="border: 0;" alt="Penguins Visiting" />
-    </div>
-    <div class = 'copyright'>
-  &copy; 2009 <a href="http://linux.conf.au/">linux.conf.au 2011</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
     </div>
   </div>
 <script src="/js/prototype.js" type="text/javascript"></script>
