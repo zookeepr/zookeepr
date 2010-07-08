@@ -59,6 +59,284 @@
 
 ${self.extra_body()}
 
+
+<div id="netv-main">
+        <div class="netv-sheet">
+            <div class="netv-sheet-tl"></div>
+            <div class="netv-sheet-tr"></div>
+            <div class="netv-sheet-bl"></div>
+            <div class="netv-sheet-br"></div>
+            <div class="netv-sheet-tc"></div>
+            <div class="netv-sheet-bc"></div>
+            <div class="netv-sheet-cl"></div>
+            <div class="netv-sheet-cr"></div>
+            <div class="netv-sheet-cc"></div>
+            <div class="netv-sheet-body">
+                <div class="netv-header">
+                    <div class="netv-header-jpeg"></div>
+                </div>
+                <div class="netv-nav">
+                	<div class="l"></div>
+                	<div class="r"></div>
+                	<ul class="netv-menu">
+                		<li>
+                			<a href="#" class="active"><span class="l"></span><span class="r"></span><span class="t">Home</span></a>                		</li>
+                		<li>
+                			<a href="#"><span class="l"></span><span class="r"></span><span class="t">Menu Item</span></a>                		</li>		
+                		<li>
+                			<a href="#"><span class="l"></span><span class="r"></span><span class="t">About</span></a>                		</li>
+                	</ul>
+                </div>
+                <div class="netv-content-layout">
+                    <div class="netv-content-layout-row">
+                        <div class="netv-layout-cell netv-sidebar1">
+                            <div class="netv-vmenublock">
+                                <div class="netv-vmenublock-tl"></div>
+                                <div class="netv-vmenublock-tr"></div>
+                                <div class="netv-vmenublock-bl"></div>
+                                <div class="netv-vmenublock-br"></div>
+                                <div class="netv-vmenublock-tc"></div>
+                                <div class="netv-vmenublock-bc"></div>
+                                <div class="netv-vmenublock-cl"></div>
+                                <div class="netv-vmenublock-cr"></div>
+                                <div class="netv-vmenublock-cc"></div>
+                                <div class="netv-vmenublock-body">
+                                            <div class="netv-vmenublockcontent">
+                                                <div class="netv-vmenublockcontent-body">
+                                            <!-- block-content -->
+                                                            <ul class="netv-vmenu">
+                                                            	<li>
+                                                            		<a href="page.html?i1"><span class="l"></span><span class="r"></span><span class="t">Home</span></a>                                                            	</li>
+                                                            	<li>
+                                                            		<a href="page.html?i2"><span class="l"></span><span class="r"></span><span class="t">News</span></a>                                                   			  </li>
+                                                            	<li class="active">
+                                                            		<a class="active" href="page.html?i3"><span class="l"></span><span class="r"></span><span class="t">Menu Item</span></a>                                                            	</li>
+                                                            	<li>
+                                                            		<a href="page.html?i4"><span class="l"></span><span class="r"></span><span class="t">Video</span></a>                                                            	</li>
+                                                            	<li>
+                                                            		<a href="page.html?i5"><span class="l"></span><span class="r"></span><span class="t">Archive</span></a>                                                            	</li>
+                                                            	<li>
+                                                            		<a href="page.html?i6"><span class="l"></span><span class="r"></span><span class="t">Forum</span></a>                                                            	</li>
+                                                            	<li>
+                                                            		<a href="page.html?i7"><span class="l"></span><span class="r"></span><span class="t">About</span></a>                                                            	</li>
+                                                            	<li>
+                                                            		<a href="page.html?i8"><span class="l"></span><span class="r"></span><span class="t">Contact</span></a>                                                            	</li>
+                                                            </ul>
+                                            <!-- /block-content -->
+                                            
+                                            		<div class="cleared"></div>
+                                                </div>
+                                            </div>
+                            		<div class="cleared"></div>
+                                </div>
+                            </div>
+                            <div class="netv-block">
+                                <div class="netv-block-tl"></div>
+                                <div class="netv-block-tr"></div>
+                                <div class="netv-block-bl"></div>
+                                <div class="netv-block-br"></div>
+                                <div class="netv-block-tc"></div>
+                                <div class="netv-block-bc"></div>
+                                <div class="netv-block-cl"></div>
+                                <div class="netv-block-cr"></div>
+                                <div class="netv-block-cc"></div>
+                                <div class="netv-block-body">
+                                            <div class="netv-blockheader">
+                                                <div class="l"></div>
+                                                <div class="r"></div>
+                                                 <div class="t">Newsletter</div>
+                                            </div>
+                                            <div class="netv-blockcontent">
+                                                <div class="netv-blockcontent-body">
+                                            <!-- block-content -->
+                                                            <div><form method="get" id="newsletterform" action="javascript:void(0)">
+                                                            <input type="text" value="" name="email" id="s" style="width: 95%;" />
+                                                            <span class="netv-button-wrapper">
+                                                            	<span class="l"> </span>
+                                                            	<span class="r"> </span>
+                                                            	<input class="netv-button" type="submit" name="search" value="Subscribe" />
+                                                            </span>
+                                                            
+                                                            </form></div>
+                                            <!-- /block-content -->
+                                            
+                                            		<div class="cleared"></div>
+                                                </div>
+                                            </div>
+                            		<div class="cleared"></div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="netv-layout-cell netv-content">
+                            <div class="netv-post">
+                                <div class="netv-post-tl"></div>
+                                <div class="netv-post-tr"></div>
+                                <div class="netv-post-bl"></div>
+                                <div class="netv-post-br"></div>
+                                <div class="netv-post-tc"></div>
+                                <div class="netv-post-bc"></div>
+                                <div class="netv-post-cl"></div>
+                                <div class="netv-post-cr"></div>
+                                <div class="netv-post-cc"></div>
+                                <div class="netv-post-body">
+                            <div class="netv-post-inner netv-article">
+                                            <h2 class="netv-postheader">
+                                                <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon" />
+                                                Welcome                                            </h2>
+                                            <div class="netv-postcontent">
+                                                <!-- article-content -->
+                                                
+                                                
+                                                <p>Lorem ipsum dolor sit amet,
+                                                <a href="#" title="link">link</a>, <a class="visited" href="#" title="visited link">visited link</a>,
+                                                 <a class="hover" href="#" title="hovered link">hovered link</a> consectetuer
+                                                adipiscing elit. Quisque sed felis. Aliquam sit amet felis. Mauris semper,
+                                                velit semper laoreet dictum, quam diam dictum urna, nec placerat elit nisl
+                                                in quam. Etiam augue pede, molestie eget, rhoncus at, convallis ut, eros.</p>
+                                                <p>
+                                                	<span class="netv-button-wrapper">
+                                                		<span class="l"> </span>
+                                                		<span class="r"> </span>
+                                                		<a class="netv-button" href="javascript:void(0)">Read more...</a>                                                	</span>                                                </p>
+                                                <div class="cleared"></div>
+                                                <div class="netv-content-layout overview-table">
+                                                	<div class="netv-content-layout-row">
+                                                		<div class="netv-layout-cell">
+                                                      <div class="overview-table-inner">
+                                                	      <h4>Support</h4>
+                                                						  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                                                						  Quisque sed felis. Aliquam sit amet felis. Mauris semper,
+                                                						  velit semper laoreet dictum, quam diam dictum urna. </p>
+                                                       </div>
+                                                		</div><!-- end cell -->
+                                                		<div class="netv-layout-cell">
+                                                    <div class="overview-table-inner">
+                                                		  <h4>Development</h4>
+                                                						  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                                                						  Quisque sed felis. Aliquam sit amet felis. Mauris semper,
+                                                						  velit semper laoreet dictum, quam diam dictum urna. </p>
+                                           				  </div>
+                                                		</div><!-- end cell -->
+                                                		<div class="netv-layout-cell">
+                                                    <div class="overview-table-inner">
+                                                		  <h4>Strategy</h4>
+                                                
+                                                						  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
+                                                						  Quisque sed felis. Aliquam sit amet felis. Mauris semper,
+                                                						  velit semper laoreet dictum, quam diam dictum urna. </p>
+                                                          </div>
+                                                		</div><!-- end cell -->
+                                                	</div><!-- end row -->
+                                                </div><!-- end table -->
+                                                    
+                                                <!-- /article-content -->
+                                            </div>
+                                            <div class="cleared"></div>
+                            </div>
+                            
+                            		<div class="cleared"></div>
+                                </div>
+                            </div>
+                            <div class="netv-post">
+                                <div class="netv-post-tl"></div>
+                                <div class="netv-post-tr"></div>
+                                <div class="netv-post-bl"></div>
+                                <div class="netv-post-br"></div>
+                                <div class="netv-post-tc"></div>
+                                <div class="netv-post-bc"></div>
+                                <div class="netv-post-cl"></div>
+                                <div class="netv-post-cr"></div>
+                                <div class="netv-post-cc"></div>
+                                <div class="netv-post-body">
+                            <div class="netv-post-inner netv-article">
+                                            <h2 class="netv-postheader">
+                                                <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon" />
+                                                Text, <a href="#" rel="bookmark" title="Permanent Link to this Post">Link</a>, <a class="visited" href="#" rel="bookmark" title="Visited Hyperlink">Visited</a>, <a class="hovered" href="#" rel="bookmark" title="Hovered Hyperlink">Hovered</a>                                            </h2>
+                                            <div class="netv-postcontent">
+                                                <!-- article-content -->
+                                                <p>Lorem <sup>superscript</sup> dolor <sub>subscript</sub> amet, consectetuer adipiscing elit, <a href="#" title="test link">test link</a>.
+                                                	Nullam dignissim convallis est. Quisque aliquam. <cite>cite</cite>.
+                                                	Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
+                                                	Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
+                                                	Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. <acronym title="National Basketball Association">NBA</acronym> Mauris a ante.
+                                                	Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc.
+                                                	Morbi imperdiet augue quis tellus.  <abbr title="Avenue">AVE</abbr></p>
+                                                
+                                                  <h1>Heading 1</h1>
+                                                  <h2>Heading 2</h2>
+                                                  <h3>Heading 3</h3>
+                                                  <h4>Heading 4</h4>
+                                                  <h5>Heading 5</h5>
+                                                  <h6>Heading 6</h6>
+                                                
+                                                    <blockquote>
+                                                        <p>
+                                                            &#8220;This stylesheet is going to help so freaking much.&#8221;
+                                                            <br />
+                                                            -Blockquote                                                        </p>
+                                                    </blockquote>
+                                                  <br />
+                                                  <table class="netv-article" border="0" cellspacing="0" cellpadding="0">
+                                                  <tbody>
+                                                    <tr>
+                                                      <th>Header</th>
+                                                      <th>Header</th>
+                                                      <th>Header</th>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Data</td>
+                                                      <td>Data</td>
+                                                      <td>Data</td>
+                                                    </tr>
+                                                    <tr class="even">
+                                                      <td>Data</td>
+                                                      <td>Data</td>
+                                                      <td>Data</td>
+                                                    </tr>
+                                                    <tr>
+                                                      <td>Data</td>
+                                                      <td>Data</td>
+                                                      <td>Data</td>
+                                                    </tr>
+                                                  </tbody></table>
+                                                
+                                                	<p>
+                                                		<span class="netv-button-wrapper">
+                                                			<span class="l"> </span>
+                                                			<span class="r"> </span>
+                                                			<a class="netv-button" href="javascript:void(0)">Join&nbsp;Now!</a>                                                		</span>                                                	</p>
+                                                    
+                                                <!-- /article-content -->
+                                            </div>
+                                            <div class="cleared"></div>
+                            </div>
+                            
+                            		<div class="cleared"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="cleared"></div><div class="netv-footer">
+                    <div class="netv-footer-inner">
+                        <a href="#" class="netv-rss-tag-icon" title="RSS"></a>
+                        <div class="netv-footer-text">
+                            <p><a href="#">Contact Us</a> | <a href="#">Terms of Use</a> | <a href="#">Trademarks</a>
+                                | <a href="#">Privacy Statement</a><br />
+                                Copyright &copy; 2010 ---. All Rights Reserved.</p>
+                        </div>
+                    </div>
+                    <div class="netv-footer-background"></div>
+                </div>
+        		<div class="cleared"></div>
+            </div>
+        </div>
+        <div class="cleared"></div>
+        <p class="netv-page-footer">&nbsp;</p>
+</div>
+    
+
+
   <div id = "container">
     <div id = "logo">
       <a href="/"><img src="/images/logo.png" style="border: 0;" alt="linux.conf.au" /></a>

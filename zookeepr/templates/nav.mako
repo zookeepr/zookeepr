@@ -22,8 +22,8 @@
             return 'class=""'
 %>
 
-
-      <ul id="primarynav">
+      <img src="images/header.jpg">
+      <ul class="primarynav">
 % for (t, u, c) in mm:
 %   if c == 'selected':
           <li>${ t |n }</li>
