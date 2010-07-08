@@ -78,14 +78,9 @@ ${self.extra_body()}
                 <div class="netv-nav">
                 	<div class="l"></div>
                 	<div class="r"></div>
-                	<ul class="netv-menu">
-                		<li>
-                			<a href="#" class="active"><span class="l"></span><span class="r"></span><span class="t">Home</span></a>                		</li>
-                		<li>
-                			<a href="#"><span class="l"></span><span class="r"></span><span class="t">Menu Item</span></a>                		</li>		
-                		<li>
-                			<a href="#"><span class="l"></span><span class="r"></span><span class="t">About</span></a>                		</li>
-                	</ul>
+
+			        <%include file="/nav.mako" />
+
                 </div>
                 <div class="netv-content-layout">
                     <div class="netv-content-layout-row">
@@ -104,26 +99,9 @@ ${self.extra_body()}
                                             <div class="netv-vmenublockcontent">
                                                 <div class="netv-vmenublockcontent-body">
                                             <!-- block-content -->
-                                                            <ul class="netv-vmenu">
-                                                            	<li>
-                                                            		<a href="page.html?i1"><span class="l"></span><span class="r"></span><span class="t">Home</span></a>                                                            	</li>
-                                                            	<li>
-                                                            		<a href="page.html?i2"><span class="l"></span><span class="r"></span><span class="t">News</span></a>                                                   			  </li>
-                                                            	<li class="active">
-                                                            		<a class="active" href="page.html?i3"><span class="l"></span><span class="r"></span><span class="t">Menu Item</span></a>                                                            	</li>
-                                                            	<li>
-                                                            		<a href="page.html?i4"><span class="l"></span><span class="r"></span><span class="t">Video</span></a>                                                            	</li>
-                                                            	<li>
-                                                            		<a href="page.html?i5"><span class="l"></span><span class="r"></span><span class="t">Archive</span></a>                                                            	</li>
-                                                            	<li>
-                                                            		<a href="page.html?i6"><span class="l"></span><span class="r"></span><span class="t">Forum</span></a>                                                            	</li>
-                                                            	<li>
-                                                            		<a href="page.html?i7"><span class="l"></span><span class="r"></span><span class="t">About</span></a>                                                            	</li>
-                                                            	<li>
-                                                            		<a href="page.html?i8"><span class="l"></span><span class="r"></span><span class="t">Contact</span></a>                                                            	</li>
-                                                            </ul>
-                                            <!-- /block-content -->
-                                            
+
+					    <%include file="/leftcol/toolbox.mako" args="parent=self" />
+							      
                                             		<div class="cleared"></div>
                                                 </div>
                                             </div>
@@ -342,7 +320,6 @@ ${self.extra_body()}
       <a href="/"><img src="/images/logo.png" style="border: 0;" alt="linux.conf.au" /></a>
     </div>
     <div id = 'main_menu'>
-      <%include file="/nav.mako" />
       <%include file="/subnav.mako" />
       <%include file="/subsubnav.mako" />
     </div>
@@ -356,7 +333,6 @@ ${self.extra_body()}
 % else:
     <%include file="/leftcol/contents.mako" args="parent=self" />
 % endif
-<%include file="/leftcol/toolbox.mako" args="parent=self" />
 % if h.url_for() != '/':
     <%include file="/leftcol/top_sponsors.mako" />
 % endif

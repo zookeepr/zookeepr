@@ -22,13 +22,12 @@
             return 'class=""'
 %>
 
-      <img src="images/header.jpg">
-      <ul class="primarynav">
+      <ul class="netv-menu">
 % for (t, u, c) in mm:
 %   if c == 'selected':
           <li>${ t |n }</li>
 %   else:
-          <li ${ cls(c) |n}><a href="${ u }">${ t }</a></li>
+          <li ${ cls(c) |n}><a href="${ u }"><span class="l"></span><span class="r"></span<span class="t">${ t }</span></a></li>
 %   endif
 
 % endfor
