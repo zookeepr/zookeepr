@@ -159,50 +159,16 @@ ${self.extra_body()}
                                 <div class="netv-post-body">
                             <div class="netv-post-inner netv-article">
                                             <h2 class="netv-postheader">
-                                                <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon" />
-                                                Welcome                                            </h2>
+                              <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon" />
+			      Welcome to linux.conf.au 2011!</h2>
+
+${next.body()}
                                             <div class="netv-postcontent">
                                                 <!-- article-content -->
-                                                
-                                                
-                                                <p>Lorem ipsum dolor sit amet,
-                                                <a href="#" title="link">link</a>, <a class="visited" href="#" title="visited link">visited link</a>,
-                                                 <a class="hover" href="#" title="hovered link">hovered link</a> consectetuer
-                                                adipiscing elit. Quisque sed felis. Aliquam sit amet felis. Mauris semper,
-                                                velit semper laoreet dictum, quam diam dictum urna, nec placerat elit nisl
-                                                in quam. Etiam augue pede, molestie eget, rhoncus at, convallis ut, eros.</p>
-                                                <p>
-                                                	<span class="netv-button-wrapper">
-                                                		<span class="l"> </span>
-                                                		<span class="r"> </span>
-                                                		<a class="netv-button" href="javascript:void(0)">Read more...</a>                                                	</span>                                                </p>
                                                 <div class="cleared"></div>
                                                 <div class="netv-content-layout overview-table">
                                                 	<div class="netv-content-layout-row">
                                                 		<div class="netv-layout-cell">
-                                                      <div class="overview-table-inner">
-                                                	      <h4>Support</h4>
-                                                						  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                                						  Quisque sed felis. Aliquam sit amet felis. Mauris semper,
-                                                						  velit semper laoreet dictum, quam diam dictum urna. </p>
-                                                       </div>
-                                                		</div><!-- end cell -->
-                                                		<div class="netv-layout-cell">
-                                                    <div class="overview-table-inner">
-                                                		  <h4>Development</h4>
-                                                						  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                                						  Quisque sed felis. Aliquam sit amet felis. Mauris semper,
-                                                						  velit semper laoreet dictum, quam diam dictum urna. </p>
-                                           				  </div>
-                                                		</div><!-- end cell -->
-                                                		<div class="netv-layout-cell">
-                                                    <div class="overview-table-inner">
-                                                		  <h4>Strategy</h4>
-                                                
-                                                						  <p>Lorem ipsum dolor sit amet, consectetuer adipiscing elit.
-                                                						  Quisque sed felis. Aliquam sit amet felis. Mauris semper,
-                                                						  velit semper laoreet dictum, quam diam dictum urna. </p>
-                                                          </div>
                                                 		</div><!-- end cell -->
                                                 	</div><!-- end row -->
                                                 </div><!-- end table -->
@@ -232,58 +198,6 @@ ${self.extra_body()}
                                                 Text, <a href="#" rel="bookmark" title="Permanent Link to this Post">Link</a>, <a class="visited" href="#" rel="bookmark" title="Visited Hyperlink">Visited</a>, <a class="hovered" href="#" rel="bookmark" title="Hovered Hyperlink">Hovered</a>                                            </h2>
                                             <div class="netv-postcontent">
                                                 <!-- article-content -->
-                                                <p>Lorem <sup>superscript</sup> dolor <sub>subscript</sub> amet, consectetuer adipiscing elit, <a href="#" title="test link">test link</a>.
-                                                	Nullam dignissim convallis est. Quisque aliquam. <cite>cite</cite>.
-                                                	Nunc iaculis suscipit dui. Nam sit amet sem. Aliquam libero nisi, imperdiet at, tincidunt nec, gravida vehicula, nisl.
-                                                	Praesent mattis, massa quis luctus fermentum, turpis mi volutpat justo, eu volutpat enim diam eget metus.
-                                                	Maecenas ornare tortor. Donec sed tellus eget sapien fringilla nonummy. <acronym title="National Basketball Association">NBA</acronym> Mauris a ante.
-                                                	Suspendisse quam sem, consequat at, commodo vitae, feugiat in, nunc.
-                                                	Morbi imperdiet augue quis tellus.  <abbr title="Avenue">AVE</abbr></p>
-                                                
-                                                  <h1>Heading 1</h1>
-                                                  <h2>Heading 2</h2>
-                                                  <h3>Heading 3</h3>
-                                                  <h4>Heading 4</h4>
-                                                  <h5>Heading 5</h5>
-                                                  <h6>Heading 6</h6>
-                                                
-                                                    <blockquote>
-                                                        <p>
-                                                            &#8220;This stylesheet is going to help so freaking much.&#8221;
-                                                            <br />
-                                                            -Blockquote                                                        </p>
-                                                    </blockquote>
-                                                  <br />
-                                                  <table class="netv-article" border="0" cellspacing="0" cellpadding="0">
-                                                  <tbody>
-                                                    <tr>
-                                                      <th>Header</th>
-                                                      <th>Header</th>
-                                                      <th>Header</th>
-                                                    </tr>
-                                                    <tr>
-                                                      <td>Data</td>
-                                                      <td>Data</td>
-                                                      <td>Data</td>
-                                                    </tr>
-                                                    <tr class="even">
-                                                      <td>Data</td>
-                                                      <td>Data</td>
-                                                      <td>Data</td>
-                                                    </tr>
-                                                    <tr>
-                                                      <td>Data</td>
-                                                      <td>Data</td>
-                                                      <td>Data</td>
-                                                    </tr>
-                                                  </tbody></table>
-                                                
-                                                	<p>
-                                                		<span class="netv-button-wrapper">
-                                                			<span class="l"> </span>
-                                                			<span class="r"> </span>
-                                                			<a class="netv-button" href="javascript:void(0)">Join&nbsp;Now!</a>                                                		</span>                                                	</p>
-                                                    
                                                 <!-- /article-content -->
                                             </div>
                                             <div class="cleared"></div>
@@ -313,17 +227,6 @@ ${self.extra_body()}
         <p class="netv-page-footer">&nbsp;</p>
 </div>
     
-
-
-  <div id = "container">
-    <div id = "logo">
-      <a href="/"><img src="/images/logo.png" style="border: 0;" alt="linux.conf.au" /></a>
-    </div>
-    <div id = 'main_menu'>
-      <%include file="/subnav.mako" />
-      <%include file="/subsubnav.mako" />
-    </div>
-    
     <!-- start content -->
     <div id="wrapper">
       <div id="leftcol">
@@ -333,14 +236,10 @@ ${self.extra_body()}
 % else:
     <%include file="/leftcol/contents.mako" args="parent=self" />
 % endif
-% if h.url_for() != '/':
-    <%include file="/leftcol/top_sponsors.mako" />
-% endif
       </div>
       <div id="content">
-<%include file="/flash.mako" />
 ${self.big_promotion()}
-${next.body()}
+
       </div>
     <!-- end content -->
 
@@ -349,12 +248,6 @@ ${next.body()}
     <div id = "push"><br /><br /><br /><br /></div>
   </div>
 
-
-  <div id = 'footer'>
-    <div id = "footer_logo">
-      <img src="/images/sign-and-pole.png" style="border: 0;" alt="Penguins Visiting" />
-    </div>
-  </div>
 <script src="/js/prototype.js" type="text/javascript"></script>
 <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
 <script src="/js/lightbox.js" type="text/javascript"></script>

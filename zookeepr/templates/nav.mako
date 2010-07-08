@@ -27,7 +27,7 @@
 %   if c == 'selected':
           <li>${ t |n }</li>
 %   else:
-          <li ${ cls(c) |n}><a href="${ u }"><span class="l"></span><span class="r"></span<span class="t">${ t }</span></a></li>
+          <li ${ cls(c) |n}><a href="${ u }"><span class="l"></span><span class="r"></span><span class="t">${ t }</span></a></li>
 %   endif
 
 % endfor
