@@ -31,9 +31,9 @@ This requires Python >=2.6.  Install latest pylons in a development directory:
 		wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
 		mkdir pylons
 		python go-pylons.py pylons
-		alias pylons="source `pwd`/bin/activate"
+		alias pylons="source `pwd`/pylons/bin/activate"
 		pylons
-		python setup.py develop --user
+		python setup.py develop
 
 ### Installing using Debian style package management ###
 
@@ -46,6 +46,13 @@ These instructions have been tested on:
 Some Lenny packages are too old.  So on Lenny only, install them from backports:
 
   - Add debian-backports to /etc/apt/sources.lst
+		sudo vim /etc/apt/sources.list
+
+		# add a line like:
+		deb http://www.backports.org/debian lenny-backports main contrib non-free
+
+		# save the file and exit, then
+		sudo apt-get update
 
 		aptitude -t lenny-backports install bzr debian-backports-keyring python-pylons
 
@@ -56,6 +63,15 @@ On all Debian derived distributions, do the following:
 		alias pylons="export PYTHONPATH=$PWD/setup-dir"
 		pylons
 		python setup.py develop --no-deps --install-dir=$PYTHONPATH
+
+		Note: on Lenny only it was found that the version of AuthKit supplied in package python-authkit
+		did not work with zookeepr dependencies.  If you see a stacktrace in authkit with the line
+		digest0 = md5.new -- built_in_function_or_method object has no attribute 'new' then the 
+		following fix may cure the issue by installing updated packages and dependencies in /usr/lib/site-python:
+
+		sudo easy_install --upgrade AuthKit>=0.4.3
+
+		This is not needed on unstable (Ubunut Lucid)
 
 ### PDF generation ###
 
