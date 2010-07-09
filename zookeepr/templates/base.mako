@@ -238,8 +238,8 @@ ${next.body()}
     </p></div>
 
                         </div>
-                    </div>
                     <div class="netv-footer-background"></div>
+		</div>
                 </div>
         		<div class="cleared"></div>
             </div>
