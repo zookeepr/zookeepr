@@ -179,9 +179,6 @@ ${self.extra_body()}
                                 <div class="netv-post-cc"></div>
                                 <div class="netv-post-body">
                             <div class="netv-post-inner netv-article">
-                                            <h2 class="netv-postheader">
-                              <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon" />
-			      Welcome to linux.conf.au 2011!</h2>
 
 ${next.body()}
                                             <div class="netv-postcontent">
@@ -194,31 +191,6 @@ ${next.body()}
                                                 	</div><!-- end row -->
                                                 </div><!-- end table -->
                                                     
-                                                <!-- /article-content -->
-                                            </div>
-                                            <div class="cleared"></div>
-                            </div>
-                            
-                            		<div class="cleared"></div>
-                                </div>
-                            </div>
-                            <div class="netv-post">
-                                <div class="netv-post-tl"></div>
-                                <div class="netv-post-tr"></div>
-                                <div class="netv-post-bl"></div>
-                                <div class="netv-post-br"></div>
-                                <div class="netv-post-tc"></div>
-                                <div class="netv-post-bc"></div>
-                                <div class="netv-post-cl"></div>
-                                <div class="netv-post-cr"></div>
-                                <div class="netv-post-cc"></div>
-                                <div class="netv-post-body">
-                            <div class="netv-post-inner netv-article">
-                                            <h2 class="netv-postheader">
-                                                <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon" />
-                                                Text, <a href="#" rel="bookmark" title="Permanent Link to this Post">Link</a>, <a class="visited" href="#" rel="bookmark" title="Visited Hyperlink">Visited</a>, <a class="hovered" href="#" rel="bookmark" title="Hovered Hyperlink">Hovered</a>                                            </h2>
-                                            <div class="netv-postcontent">
-                                                <!-- article-content -->
                                                 <!-- /article-content -->
                                             </div>
                                             <div class="cleared"></div>
