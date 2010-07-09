@@ -122,20 +122,12 @@ ${self.extra_body()}
                                             <div class="netv-blockheader">
                                                 <div class="l"></div>
                                                 <div class="r"></div>
-                                                 <div class="t">Newsletter</div>
+                                                 <div class="t">News</div>
                                             </div>
                                             <div class="netv-blockcontent">
                                                 <div class="netv-blockcontent-body">
                                             <!-- block-content -->
-                                                            <div><form method="get" id="newsletterform" action="javascript:void(0)">
-                                                            <input type="text" value="" name="email" id="s" style="width: 95%;" />
-                                                            <span class="netv-button-wrapper">
-                                                            	<span class="l"> </span>
-                                                            	<span class="r"> </span>
-                                                            	<input class="netv-button" type="submit" name="search" value="Subscribe" />
-                                                            </span>
-                                                            
-                                                            </form></div>
+                                            <%include file="/leftcol/news.mako" />
                                             <!-- /block-content -->
                                             
                                             		<div class="cleared"></div>
