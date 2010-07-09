@@ -1,6 +1,3 @@
-		<div class = 'yellowbox'>
-				<div class="boxheader">
-			<h1>News Elsewhere</h1>
 %if len(c.db_content_press) > 0:
 			<ul>
 %   for d in c.db_content_press:
@@ -11,5 +8,3 @@
 <p style="font-size: small;"><em>Currently no press...</em></p>
 %endif
 			<p class = 'more'><a href = '/media/in_the_press'>More items...</a></p>
-				</div>
-		</div>
