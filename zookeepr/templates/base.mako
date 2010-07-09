@@ -248,27 +248,6 @@ ${next.body()}
         <p class="netv-page-footer">&nbsp;</p>
 </div>
     
-    <!-- start content -->
-    <div id="wrapper">
-      <div id="leftcol">
-% if h.url_for() == '/':
-    <%include file="/leftcol/news.mako" />
-    <%include file="/leftcol/in_the_press.mako" />
-% else:
-    <%include file="/leftcol/contents.mako" args="parent=self" />
-% endif
-      </div>
-      <div id="content">
-${self.big_promotion()}
-
-      </div>
-    <!-- end content -->
-
-
-    </div>
-    <div id = "push"><br /><br /><br /><br /></div>
-  </div>
-
 <script src="/js/prototype.js" type="text/javascript"></script>
 <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
 <script src="/js/lightbox.js" type="text/javascript"></script>
