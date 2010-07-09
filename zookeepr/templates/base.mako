@@ -211,7 +211,7 @@ ${next.body()}
                 </div>
                 <div class="cleared"></div><div class="netv-footer">
                     <div class="netv-footer-inner">
-                        <a href="#" class="netv-rss-tag-icon" title="RSS"></a>
+                        <a href="/media/news/rss" class="netv-rss-tag-icon" title="RSS"></a>
                         <div class="netv-footer-text">
   &copy; 2010 <a href="http://linux.conf.au/">linux.conf.au 2011</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
     </div>
