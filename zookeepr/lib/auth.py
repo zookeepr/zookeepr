@@ -18,6 +18,7 @@ from zookeepr.lib.validators import BaseSchema
 from zookeepr.model import meta
 from zookeepr.model import Person, Role, Proposal, Invoice, Registration, Funding, URLHash
 
+from authkit import users
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
 from authkit.authorize import PermissionSetupError, middleware
 from authkit.authorize.pylons_adaptors import authorized
@@ -134,9 +135,9 @@ class HasZookeeprRole(HasAuthKitRole):
         otherwise. Raises an exception if the user doesn't exist.
         """
         if not self.user_exists(username.lower()):
-            raise AuthKitNoSuchUserError("No such user %r"%username.lower())
+            raise users.AuthKitNoSuchUserError("No such user %r"%username.lower())
         if not self.role_exists(role.lower()):
-            raise AuthKitNoSuchRoleError("No such role %r"%role.lower())
+            raise users.AuthKitNoSuchRoleError("No such role %r"%role.lower())
         person = Person.find_by_email(username)
         if person is None:
             return False
