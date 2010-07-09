@@ -165,7 +165,7 @@ file_paths = {
 }
 
 lca_menu = [
-  #('Home', '/home', 'home'),
+  ('Home', '/', 'home'),
   ('About', '/about/linux.conf.au', 'about'),
   ('Brisbane', '/brisbane/about', 'brisbane'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
