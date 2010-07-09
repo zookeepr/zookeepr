@@ -1597,3 +1597,10 @@ img.image
     padding:0;
     border:none;
 }
+
+.error-message
+{
+    background-color: inherit;
+    color: #ff0f0f;
+}
+
