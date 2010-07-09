@@ -93,7 +93,7 @@ ${ parent.toolbox_extra() }
       ${ make_link('My proposals', h.url_for(controller='proposal')) }
 %   endif
       ${ make_link('My profile', h.url_for(controller='person', action='view', id=h.signed_in_person().id)) }
-      ${ make_link('Sign out', h.url_for(controller='person', action='signout')) }
+      ${ make_link('Sign out', h.url_for('/person/signout')) }
 % else:
       ${ make_link('Sign in', "/person/signin") }
       ${ make_link('Create an account', "/person/new") }
