@@ -37,11 +37,11 @@ lca_info = {
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 30th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'not_open',
-  'cfmini_status' : 'not_open',
-  'paper_editing' : 'not_open',
-  'funding_status' : 'not_open',
-  'funding_editing' : 'not_open',
+  'cfp_status' : 'open',
+  'cfmini_status' : 'open',
+  'paper_editing' : 'open',
+  'funding_status' : 'open',
+  'funding_editing' : 'open',
   'conference_status': 'not_open',
 # Mode
   'cfp_hide_assistance_info': 'no',
@@ -53,6 +53,7 @@ lca_info = {
      'tutorial - 3 hours and 30 minutes'    : 'speakers@lca2010.org.nz',
      'miniconf'     : 'miniconfs@lca2010.org.nz',
      'funding'      : 'funding@lca2010.org.nz',
+     'poster' : 'speakers@lca2010.org.nz'
   },
 
   'proposal_update_email': 'puck@lca2010.org.nz', # recieve notifications when proposals are changed. Leave blank for none.
