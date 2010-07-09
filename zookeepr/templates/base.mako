@@ -246,7 +246,6 @@ ${next.body()}
         </div>
         <div class="cleared"></div>
         <p class="netv-page-footer">&nbsp;</p>
-</div>
     
 <script src="/js/prototype.js" type="text/javascript"></script>
 <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
