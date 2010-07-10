@@ -31,15 +31,16 @@
 <head>
   <title>${ self.title() }</title>
   <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-  <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
+  <!-- <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"> -->
+  <link rel="shortcut icon" href="/images/filledfoot-small.png" type="image/png">
   <link rel="stylesheet" media="screen" href="/brisbanecity.css" type="text/css">
   <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
   <link rel="stylesheet" media="print" href="/print.css" type="text/css">
   <script type="text/javascript" src="/jquery.min.js"></script>          
   <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2011 News">
-  <!--[if lt IE 7]>
-  <link rel="stylesheet" media="screen" href="/ie.css" type="text/css">
-  <![endif]-->
+  <!--[if IE 6]><link rel="stylesheet" href="brisbanecity.ie6.css" type="text/css" media="screen" /><![endif]-->
+  <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
+
   ${self.extra_head()}
   <script type="text/javascript">
      jQuery(document).ready(function() {
