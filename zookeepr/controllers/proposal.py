@@ -291,6 +291,8 @@ class ProposalController(BaseController):
 
         c.miniconf = (c.proposal.type.name == 'Miniconf')
         form = render('/proposal/edit.mako')
+	defaults['person_to_edit'] = c.person.id
+	defaults['name'] = c.person.firstname + " " + c.person.lastname
         return htmlfill.render(form, defaults)
 
 
@@ -313,7 +315,7 @@ class ProposalController(BaseController):
 
         c.proposal.abstract = self.clean_abstract(c.proposal.abstract)
 
-        c.person = Person.find_by_id(self.form_result['person_to_edit'])
+        c.person = self.form_result['person_to_edit']
         if (c.person.id == h.signed_in_person().id or
                              h.auth.authorized(h.auth.has_organiser_role)):
             for key in self.form_result['person']:
