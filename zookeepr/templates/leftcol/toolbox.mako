@@ -17,8 +17,8 @@
   
 <ul class="netv-vmenu">
 ## Toolbox links
-<span class="menu-header">Zookeepr Administration</span>
 % if h.auth.authorized(h.auth.has_organiser_role):
+<span class="menu-header">Zookeepr Administration</span>
     <ul class="netv-vmenu">
       ${ make_link('Admin', h.url_for(controller='admin')) }
       ${ make_link('Lookup', h.url_for(controller='admin', action='lookup')) }
