@@ -40,7 +40,7 @@ lca_info = {
   'paper_editing' : 'open',
   'funding_status' : 'not_open',
   'funding_editing' : 'not_open',
-  'conference_status': 'open',
+  'conference_status': 'not_open',
 # Mode
   'cfp_hide_assistance_info': 'no',
   'cfp_hide_scores': 'no',
