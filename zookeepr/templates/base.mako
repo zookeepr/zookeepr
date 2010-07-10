@@ -1,4 +1,3 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <%def name="title()">${ h.lca_info["event_byline"] }</%def>
 <%def name="short_title()">
    ## Defined in children
@@ -27,8 +26,7 @@
 <%def name="contents()">
     ## Defined in children
 </%def>
-
-
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en-us">
 <head>
   <title>${ self.title() }</title>
@@ -80,6 +78,7 @@ ${self.extra_body()}
                 	<div class="r"></div>
 
 			        <%include file="/nav.mako" />
+				<%include file="/subnav.mako" />
 		</div>
 		</div>
                 <div class="netv-content-layout">
