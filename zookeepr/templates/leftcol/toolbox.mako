@@ -17,6 +17,7 @@
   
 <ul class="netv-vmenu">
 ## Toolbox links
+<span class="menu-header">Zookeepr Administration</span>
 % if h.auth.authorized(h.auth.has_organiser_role):
     <ul class="netv-vmenu">
       ${ make_link('Admin', h.url_for(controller='admin')) }
@@ -31,7 +32,7 @@ ${ parent.toolbox_extra_admin() }
     </ul>
 % endif
 % if h.auth.authorized(h.auth.has_reviewer_role):
-    <h2>Paper Reviewer</h2>
+    <span class="menu-header">Paper Reviewer</span>
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra_reviewer() }
       ${ make_link('How to review', '/help/review') }
@@ -52,7 +53,7 @@ ${ parent.toolbox_extra_reviewer() }
     </ul>
 % endif
 % if h.auth.authorized(h.auth.has_funding_reviewer_role):
-    <h2>Funding Reviewer</h2>
+    <span class="menu-header">Funding Reviewer</span>
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra_funding_reviewer() }
       ${ make_link('How to review', '/help/funding_review') }
@@ -68,7 +69,7 @@ ${ parent.toolbox_extra_funding_reviewer() }
     </ul>
 % endif
 % if h.signed_in_person():
-    <h2>${ h.signed_in_person().firstname }</h2>
+    <span class="menu-header">${ h.signed_in_person().firstname }'s Profile</span>
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra() }
 %   if h.lca_info["cfp_status"] == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
@@ -104,6 +105,6 @@ ${ parent.toolbox_extra() }
 </div>
 % endif
 % if h.signed_in_person():
-    <p class = 'more'>${h.signed_in_person().email_address}</p>
+    <p style="font-style: italic; padding-left: 7px;">${h.signed_in_person().email_address}</p>
 % endif
 </ul>

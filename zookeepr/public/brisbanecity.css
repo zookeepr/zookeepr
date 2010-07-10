@@ -1618,3 +1618,10 @@ img.image
     margin-right: 5px;
 }
 
+.menu-header
+{
+    color: #3d91d6;
+    font-weight: bold;
+    padding: 7px;
+    display:block;
+}
