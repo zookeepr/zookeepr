@@ -138,7 +138,7 @@ class ProposalController(BaseController):
 
         c.proposal = Proposal(**proposal_results)
         c.proposal.status = ProposalStatus.find_by_name('Pending')
-        c.proposal.abstract = h.html_clean(c.proposal.abstract)
+        c.proposal.abstract = self.clean_abstract(c.proposal.abstract)
         meta.Session.add(c.proposal)
 
         if not h.signed_in_person():
@@ -311,7 +311,7 @@ class ProposalController(BaseController):
         for key in self.form_result['proposal']:
             setattr(c.proposal, key, self.form_result['proposal'][key])
 
-        c.proposal.abstract = h.html_clean(c.proposal.abstract)
+        c.proposal.abstract = self.clean_abstract(c.proposal.abstract)
 
         c.person = self.form_result['person_to_edit']
         if (c.person.id == h.signed_in_person().id or
@@ -447,3 +447,9 @@ class ProposalController(BaseController):
         response.headers['Content-type']='text/plain; charset=utf-8'
 
         return render('/proposal/latex.mako')
+
+    def clean_abstract(self, abstract):
+        abs = h.html_clean(abstract)
+	if abs.startswith("<p>") and abs.endswith("</p>"):
+	    return abs[3:-4]
+	return abs

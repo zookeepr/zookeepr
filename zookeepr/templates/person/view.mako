@@ -137,7 +137,7 @@ None
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ h.link_to("%s" % (s.title), url=h.url_for(controller='proposal', action='view', id=s.id)) }</td>
     <td>${ s.type.name }</td>
-    <td>${ h.truncate(h.util.html_escape(s.abstract)) | n}</td>
+    <td>${ h.truncate(s.abstract) | n}</td>
     <td>
 %     if s.status.name == 'Pending':
         <i>Undergoing review</i>
