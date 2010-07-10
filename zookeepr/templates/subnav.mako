@@ -29,9 +29,11 @@
 
 %>
 
+
 % if submenus.has_key(where):
   <!-- Secondary navigation -->
-  <ul id="secondarynav">
+  <div class="netv-nav">
+        <ul class="netv-menu">
 %   for sub in submenus[where]:
 <%
      link = sub.replace('/', '_').lower()
@@ -39,11 +41,10 @@
      link = link.replace(' ', '_')
 %>
 %     if current(link):
-    <li class="selected"><a href="${link}">${ sub }</a></li>
+      <li>${t |n}</li>
 %     else:
-    <li><a href="${link}">${ sub }</a></li>
+            <li ${ cls(c) |n}><a href="${ link }"><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
 %     endif
 %   endfor
-  </ul>
+       </ul>
 % endif
-

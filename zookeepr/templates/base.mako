@@ -80,8 +80,8 @@ ${self.extra_body()}
                 	<div class="r"></div>
 
 			        <%include file="/nav.mako" />
-
-                </div>
+		</div>
+		</div>
                 <div class="netv-content-layout">
                     <div class="netv-content-layout-row">
                         <div class="netv-layout-cell netv-sidebar1">
