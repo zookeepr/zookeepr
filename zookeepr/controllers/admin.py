@@ -662,44 +662,6 @@ class AdminController(BaseController):
         return sql_response(query)
 
     @authorize(h.auth.has_organiser_role)
-    def nzoss_signup(self):
-        """ People who ticked "I want to sign up for New Zealand Open Source Society
-        membership!" [Mailing Lists] """
-
-        c.text = """<p>People who ticked "I want to sign up for NZOSS membership!"
-        (whether or not they then went on to pay for the conference).</p>"""
-
-        query = """SELECT person.firstname, person.lastname, person.email_address,
-                    person.address1, person.address2, person.city, person.state, person.postcode, person.country,
-                    person.phone, person.mobile, person.company,
-                    registration.creation_timestamp
-                   FROM person
-                   LEFT JOIN registration ON (person.id = registration.person_id)
-                   WHERE registration.signup LIKE '%nzoss%'
-                """
-
-        return sql_response(query)
-
-    @authorize(h.auth.has_organiser_role)
-    def internetnz_signup(self):
-        """ People who ticked "I want to sign up for Internet NZ
-        membership!" [Mailing Lists] """
-
-        c.text = """<p>People who ticked "I want to sign up for Internet NZ membership!" 
-        (whether or not they then went on to pay for the conference).</p>"""
-
-        query = """SELECT person.firstname, person.lastname, person.email_address,
-                    person.address1, person.address2, person.city, person.state, person.postcode, person.country,
-                    person.phone, person.mobile, person.company,
-                    registration.creation_timestamp
-                   FROM person
-                   LEFT JOIN registration ON (person.id = registration.person_id)
-                   WHERE registration.signup LIKE '%internetnz%'
-                """
-
-        return sql_response(query)
-
-    @authorize(h.auth.has_organiser_role)
     def lca_announce_signup(self):
         """ People who ticked "I want to sign up to the low traffic conference announcement mailing list!" [Mailing Lists] """
 

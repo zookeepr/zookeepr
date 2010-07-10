@@ -9,9 +9,7 @@ from special_registration import SpecialRegistration
 def setup(meta):
     meta.Session.add_all(
         [
-            SpecialOffer(name='NZOSS', description='<p>Welcome to members of the New Zealand Open Source Society!</p><p>We are happy to invite you to register for LCA before we open registrations to the general public. To take advantage of this special offer, simply enter the username you use on the NZOSS website.</p>', id_name='NZOSS Account name', enabled=False),
             SpecialOffer(name='LinuxAustralia', description='<p>Welcome to Linux Australia members!</p><p>We are happy to invite you to register for LCA before we open registrations to the general public. To take advantage of this special offer, simply enter your LA member number (which you can see on your <a href="https://www.linux.org.au/membership/index.php?page=edit-member">details page</a> once you are logged in).</p>', id_name='LA member number', enabled=False),
-            SpecialOffer(name='NZCS', description='<p>Welcome to members of the New Zealand Computer Society!</p><p>We are happy to invite you to register for LCA before we open registrations to the general public. To take advantage of this special offer, simply enter your NZCS member number (which you can see on your <a href="http://www.nzcs.org.nz/members">details page</a>).</p>', id_name='NZCS member number', enabled=False),
         ]
     )
 
