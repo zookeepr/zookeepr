@@ -12,7 +12,7 @@ oddeven = oddeven()
 
 <table border="1">
 <tr>
-% for header in c.columns():
+% for header in c.columns:
   <th>${ header }</th>
 % endfor
 </tr>
