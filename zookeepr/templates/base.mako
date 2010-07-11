@@ -209,15 +209,14 @@ ${next.body()}
   <p>&copy; 2010 <a href="http://linux.conf.au/">linux.conf.au 2011</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid XHTML 1.0</a> | <a href="/sitemap">Sitemap</a>
     </p></div>
 
-                        </div>
-                    <div class="netv-footer-background"></div>
-		</div>
+                    <div class="netv-footer-background">
                 </div>
         		<div class="cleared"></div>
             </div>
         </div>
         <div class="cleared"></div>
         <p class="netv-page-footer">&nbsp;</p>
+	</div>
 </div>
     
 <script src="/js/prototype.js" type="text/javascript"></script>
