@@ -177,11 +177,11 @@ lca_menu = [
 ]
 
 lca_submenus = {
-  'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'Map', 'History', 'Linux/Open Source'],
-  'brisbane': ['About', 'Map', 'Sightseeing', 'Pre and Post' ],
+  'about': ['linux.conf.au', 'Capital Cabal', 'Venue', 'History', 'Linux/Open Source'],
+  'brisbane': ['About'],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
-  'programme': ['About', 'Keynotes', 'Miniconf Info', 'Presenter FAQ', 'Social Events', 'Open Day', 'Partners Programme'], # stage 1
+  'programme': ['About', 'Miniconfs', 'Presentations', 'Posters', 'Tutorials'], # stage 1
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
   #'programme': ['About', 'Keynotes', 'Miniconfs', 'Speakers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
   #'programme': ['About', 'Keynotes', 'Miniconfs', 'Schedule', 'Social Events', 'Open Day', 'Partners Programme'], # stage 3
