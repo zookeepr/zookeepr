@@ -56,8 +56,8 @@ lca_info = {
 
   'proposal_update_email': 'puck@lca2011.linux.org.au', # recieve notifications when proposals are changed. Leave blank for none.
 
-  'google_map_url': 'http://maps.google.com/maps/ms?ie=UTF8&hl=en&oe=UTF8&msa=0&msid=101517653478883872270.000465f8e2539e5281739',
-  'google_map_latlng': '-41.288868, 174.781322',
+  'google_map_url': 'http://maps.google.com/maps/ms?ie=UTF8&hl=en&msa=0&msid=117014168848232117270.00048b169407c904d6506',
+  'google_map_latlng': '-27.478216,153.019466',
 }
 
 lca_rego = {
