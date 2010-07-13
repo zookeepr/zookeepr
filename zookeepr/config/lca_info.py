@@ -177,7 +177,7 @@ lca_menu = [
 ]
 
 lca_submenus = {
-  'about': ['linux.conf.au', 'LCA2011 Ninjas', 'Venue', 'History', 'Linux/Open Source'],
+  'about': ['linux.conf.au', 'lca2011 Ninjas', 'Venue', 'History', 'Linux/Open Source'],
   'brisbane': ['About'],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
