@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 
-<h2>Submit a Paper</h2>
-<p>Please read the <a href="${ h.url_for("/programme/papers_info") }">Papers Info</a> page before submitting a paper.</p>
+<h2>Submit a Paper/Presentations</h2>
+<p>Please read the <a href="${ h.url_for("/programme/presentations") }">Papers/Presentations</a> page before submitting a paper/presetnation.</p>
 
 ${ h.form(h.url_for(), multipart=True) }
 <%include file="form.mako" args="editing=False" />
