@@ -25,7 +25,7 @@ to be held in Brisbane at QUT Gardens Point. We're about to release our call for
 
 <p>The linux.conf.au 2011 papers team now welcomes proposals of papers from all areas of the open source community, until Saturday 7th August 2010. In early September 2010, successful proposals will be notified.</p>
 
-<p>linux.conf.au 2011 is calling for paper submissions of different types:</p>
+<p>The papers submissions must be of the following types:</p>
 
 <table>
 <tr class="odd">
@@ -42,7 +42,7 @@ to be held in Brisbane at QUT Gardens Point. We're about to release our call for
 </tr>
 </table>
 
-<p>Presentations times include time for questions. For more information on the call for papers please refer to the respective headings under the <a href="/programme">Programme Menu</a></p>
+<p>Presentation times include time for questions. For more information on the call for papers please refer to the respective headings under the <a href="/programme">Programme Menu</a></p>
 
 <p>If you wish to submit a proposal for a one-day community organised mini-conference, see <a href="/programme/miniconfs">Miniconf Information</a>.</p>
 
