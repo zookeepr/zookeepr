@@ -42,7 +42,7 @@ to be held in Brisbane at QUT Gardens Point. We're about to release our call for
 </tr>
 </table>
 
-<p>Presentation times include time for questions. For more information on the call for papers please refer to the respective headings under the <a href="/programme">Programme Menu</a></p>
+<p>Presentation times include time for questions. For more information on the call for papers please refer to the respective headings under the <a href="/programme/about">Programme Menu</a></p>
 
 <p>If you wish to submit a proposal for a one-day community organised mini-conference, see <a href="/programme/miniconfs">Miniconf Information</a>.</p>
 
