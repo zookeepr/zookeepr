@@ -21,7 +21,7 @@ for d in c.db_content_news_all:
 <p>linux.conf.au is one of the world's best conferences for free and open source software. In 2011 lca is going
 to be held in Brisbane at QUT Gardens Point. We're about to release our call for papers, stay tuned.</p>
 
-<h3> Call for Papers, Miniconfs, Posters and Tutorials are now open <h3>
+<h3> Call for Papers, Miniconfs, Posters and Tutorials are now open </h3>
 
 <p>The linux.conf.au 2011 papers team now welcomes proposals of papers from all areas of the open source community, until Saturday 7th August 2010. In early September 2010, successful proposals will be notified.</p>
 
