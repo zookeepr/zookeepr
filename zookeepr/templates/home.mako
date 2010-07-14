@@ -19,7 +19,7 @@ for d in c.db_content_news_all:
 
 
 <p>linux.conf.au is one of the world's best conferences for free and open source software. In 2011 lca is going
-to be held in Brisbane at QUT Gardens Point. We're about to release our call for papers, stay tuned.</p>
+to be held in Brisbane at QUT Gardens Point. </p>
 
 <h3> Call for Papers, Miniconfs, Posters and Tutorials are now open </h3>
 
