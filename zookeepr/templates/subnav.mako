@@ -36,7 +36,7 @@
           <div class="l"></div>
       <div class="r"></div>
 
-        <ul class="netv-menu">
+        <ul class="netv-menu" style="background: #53761f !important">
 
 %   for sub in submenus[where]:
 <%
@@ -45,9 +45,9 @@
      link = link.replace(' ', '_')
 %>
 %     if current(link):
-            <li ${ cls(c) |n}><a href=""><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
+            <li class="selected" style="background: #caff7f !important"><a href=""><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
 %     else:
-            <li ${ cls(c) |n}><a href="${ link }"><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
+            <li><a href="${ link }"><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
 %     endif
 %   endfor
        </ul>
