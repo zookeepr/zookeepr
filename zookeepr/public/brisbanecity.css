@@ -1412,7 +1412,7 @@ li
 
 ul
 {
-  list-style-type: none;
+  /* list-style-type: none; */
 }
 
 ol
@@ -1590,14 +1590,20 @@ table.table
     table-layout:fixed;
     text-align:left;
     vertical-align:top;
+    padding:5px;
 }
 
 table.table, table.table tr, table.table td
 {
     border:none;
-    margin:0;
-    padding:0;
+    margin:5px;
+    padding:5px;
     background-color:Transparent;
+}
+
+table .odd td, table .odd th
+{
+    background-color:#f5f5ff;
 }
 
 img.image
