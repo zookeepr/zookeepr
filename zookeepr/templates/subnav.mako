@@ -45,7 +45,7 @@
      link = link.replace(' ', '_')
 %>
 %     if current(link):
-            <li class="selected" style="background: #99ff33 !important"><a href=""><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
+            <li class="selected" style="background: #caff7f !important"><a href=""><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
 %     else:
             <li><a href="${ link }"><span class="l"></span><span class="r"></span><span class="t">${ sub }</span></a></li>
 %     endif
