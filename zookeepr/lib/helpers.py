@@ -178,7 +178,7 @@ def host_name():
 
     Returns the fqdn for the website.
     """
-    return config['app_conf']['host_name']
+    return lca_info['event_url']
 
 def event_name():
     """ Name of the event
