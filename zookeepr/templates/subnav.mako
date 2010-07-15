@@ -36,7 +36,7 @@
           <div class="l"></div>
       <div class="r"></div>
 
-        <ul class="netv-menu" style="background: #53761f !important">
+        <ul class="netv-menu" style="background: #33cc33 !important">
 
 %   for sub in submenus[where]:
 <%
