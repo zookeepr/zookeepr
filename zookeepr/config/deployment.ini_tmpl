@@ -55,7 +55,9 @@ authkit.cookie.signoutpath = /person/signout
 authkit.setup.intercept = 401, 403
 authkit.cookie_enforce = True
 
-
+# IIS proxies apparently send an incorrect IP in their headers, which means people 
+# forced to come through those servers cannot log in.
+authkit.cookie.includeip = False 
 
 # Logging configuration
 [loggers]
