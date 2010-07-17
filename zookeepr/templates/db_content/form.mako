@@ -43,7 +43,7 @@ It is not mandatory supply a URL as content is still accessible via ID's. It is 
 </p><p class="entries">
 ${ h.textarea('db_content.body', cols="80", rows="40") }
 </p>
-<ul class="note"><li>The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate. Use &lt;h3&gt;'s to automatically create a "contents" section.</li>
+<ul class="note"><li>The HTML rendered body. Please surround by &lt;p&gt; tags when appropriate.</li>
 <li>For news articles you can place a &lt;!--break--&gt; statement to separate the entire body from the preview on the news page.</li>
 <li>For in the press this becomes the comment under the link.</li>
 <li>For "Redirect" the body is the URL to go to. The [Page] URL above is the URL to redirect from. This URL needs to include the full or relative path. e.g. /person/signin or http://www.linux.org.au</li>
