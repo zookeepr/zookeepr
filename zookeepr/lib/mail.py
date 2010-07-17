@@ -13,7 +13,7 @@ def email(recipients, body):
         s = smtplib.SMTP(config['smtp_server'])
         s.sendmail(
             lca_info['contact_email'],
-            recipients, body)
+            recipients, body.encode('UTF-8'))
         s.quit()
     except:
         raise
