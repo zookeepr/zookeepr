@@ -14,7 +14,7 @@ for d in c.db_content_news_all:
 <!-- <img src = '/images/heightfix.png' class = 'heightfix' alt = ''> -->
 
                                             <h2 class="netv-postheader">
-                              <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon" />
+                              <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon">
                               Welcome to linux.conf.au 2011!</h2>
 
 
@@ -38,7 +38,7 @@ to be held in Brisbane at QUT Gardens Point. </p>
   <td>Tutorials</td><td>3 hours and 30 minutes (long)</td>
 </tr>
 <tr class="even">
-  <td>Posters</td><td><a href="/programme/posters">Poster information<a></td>
+  <td>Posters</td><td><a href="/programme/posters">Poster information</a></td>
 </tr>
 </table>
 
