@@ -11,6 +11,7 @@ from formencode import validators, htmlfill, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.ssl_requirement import ssl_check
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
 from zookeepr.lib.validators import ProductQty, ProductMinMax, CheckAccomDates
 from zookeepr.lib.validators import PrevLCAValidator
