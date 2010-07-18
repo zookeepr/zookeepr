@@ -122,6 +122,8 @@ class ProposalController(BaseController):
             'person.bio': c.person.bio,
             'person.url': c.person.url,
         }
+        defaults['person_to_edit'] = c.person.id
+        defaults['name'] = c.person.firstname + " " + c.person.lastname
         form = render("proposal/new.mako")
         return htmlfill.render(form, defaults)
 
@@ -292,10 +294,10 @@ class ProposalController(BaseController):
         if c.proposal.audience:
             defaults['proposal.audience'] = defaults['proposal.target_audience_id']
 
-        c.miniconf = (c.proposal.type.name == 'Miniconf')
-        form = render('/proposal/edit.mako')
         defaults['person_to_edit'] = c.person.id
         defaults['name'] = c.person.firstname + " " + c.person.lastname
+        c.miniconf = (c.proposal.type.name == 'Miniconf')
+        form = render('/proposal/edit.mako')
         return htmlfill.render(form, defaults)
 
 
