@@ -53,7 +53,7 @@ class NewPersonSchema(BaseSchema):
 class _UpdatePersonSchema(BaseSchema):
     firstname = validators.String(not_empty=True)
     lastname = validators.String(not_empty=True)
-    email_address = validators.String()
+    email_address = validators.Email(not_empty=True)
     company = validators.String()
     phone = validators.String()
     mobile = validators.String()
