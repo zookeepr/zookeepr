@@ -55,7 +55,7 @@ lca_info = {
      'poster' : 'speakers@lca2011.linux.org.au'
   },
 
-  'proposal_update_email': 'puck@lca2011.linux.org.au', # recieve notifications when proposals are changed. Leave blank for none.
+  'proposal_update_email': 'archive@lca2011.linux.org.au', # recieve notifications when proposals are changed. Leave blank for none.
 
   'google_map_url': 'http://maps.google.com/maps/ms?ie=UTF8&hl=en&msa=0&msid=117014168848232117270.00048b169407c904d6506',
   'google_map_latlng': '-27.478216,153.019466',
