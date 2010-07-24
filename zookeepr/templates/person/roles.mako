@@ -1,7 +1,8 @@
+<%namespace name="toolbox" file="/leftcol/toolbox.mako"/>
 <%inherit file="/base.mako" />
 <%def name="toolbox_extra_admin()">
-  <li>${ h.link_to('Roles', url=h.url_for(controller='role')) }</li>
-  <li>${ h.link_to('Edit Person', url=h.url_for(controller='person', action='edit',id=c.person.id)) }</li>
+  ${ toolbox.make_link('Roles', url=h.url_for(controller='role')) }
+  ${ toolbox.make_link('Edit Person', url=h.url_for(controller='person', action='edit',id=c.person.id)) }
 </%def>
 
 <h2>Modify Roles</h2>
