@@ -1,3 +1,4 @@
+<%namespace name="toolbox" file="/leftcol/toolbox.mako"/>
 <%inherit file="view_base.mako" />
 <%
 # warning: this list must match the one in ../review/form.mako
@@ -23,7 +24,7 @@ miniconfs = (
 <%def name="toolbox_extra()">
   ${ parent.toolbox_extra() }
 % if c.next_review_id:
-  <li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li>
+  ${ toolbox.make_link('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }
 % endif
 </%def>
 
@@ -35,7 +36,7 @@ miniconfs = (
 ${ h.form(h.url_for()) }
 
 % if c.next_review_id:
-<ul><li>${ h.link_to('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }</li></ul>
+${ toolbox.make_link('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }
 % else:
 <ul><li><em>Can't skip - you have reviewed all the other ${c.proposal.type.name }s!</em></li></ul>
 % endif
