@@ -23,8 +23,11 @@
 <h2>${ self.heading() }</h2>
 
 
-<%include file="view_fragment.mako" />
-
+% if c.proposal.type.name == 'Miniconf':
+  <%include file="view_fragment_miniconf.mako" />
+% else:
+  <%include file="view_fragment.mako" />
+% endif
 
 % if h.auth.authorized(h.auth.has_organiser_role) or ((c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role)) and c.signed_in_person in c.proposal.people):
 ${ toolbox.make_link('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }
