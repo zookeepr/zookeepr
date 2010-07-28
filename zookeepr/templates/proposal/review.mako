@@ -4,20 +4,6 @@
 # warning: this list must match the one in ../review/form.mako
 miniconfs = (
   '(none)',
-  'Arduino',
-  'Business of Open Source',
-  'Data Storage and Retrieval',
-  'Education',
-  'Free Software Distributions',
-  'Free the Cloud!',
-  'Linuxchix/WIFLOSS/Haecksen',
-  'Mini Libre Graphics Meeting',
-  'Multicore and Parallel Programming',
-  'Multimedia',
-  'Open and the Public Sector',
-  'Open Programming Languages',
-  'System Administration',
-  'Wave Developers',
 )
 %>
 

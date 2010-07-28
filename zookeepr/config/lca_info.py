@@ -95,8 +95,8 @@ lca_rego = {
             {'name': 'Packout', 'description': 'Available to help pack-out of the venue on Saturday and Sunday.'},
         ),
   'miniconfs' : (
-              ('Monday',('Wave Developers', 'Open Programming Languages', 'Business of Open Source', 'Haecksen and Linuxchix', 'Libre Graphics Day', 'Arduino', 'Distro Summit')),
-              ('Tuesday',('Launchpad', 'System Administration', 'Open and the Public Sector', 'Education', 'Multimedia', 'Data Storage and Retrieval', 'Multicore and Parallel Computing'))
+              ('Monday',('Monday Miniconf TBA')),
+              ('Tuesday',('Tuesday Miniconf TBA'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'eclipse', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
