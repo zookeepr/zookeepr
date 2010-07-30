@@ -102,6 +102,10 @@ Found at /uml_graph.png (or .svg, .jpeg etc).
 		cd the-development-directory
 		pylons			# command created by the alias above
 
+ - Copy sample `lca_info.py` in place, edit it to turn on registrations, CFP etc.
+
+		cp zookeepr/config/lca_info.py.sample zookeepr/config.lca_info.py
+
  - Create a `config.ini`.
 
 		paster make-config zookeepr config.ini
