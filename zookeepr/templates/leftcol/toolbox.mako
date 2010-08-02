@@ -40,7 +40,7 @@ ${ parent.toolbox_extra_reviewer() }
       ${ make_link("Reviews you've made", h.url_for(controller='review', action='index')) }
       ${ make_link('Summary of reviewed proposals', h.url_for(controller='proposal', action='summary')) }
       ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary')) }
-      <li>List of proposals by:</li>
+      <span class="menu-header">List of proposals by:</span>
     <ul class="netv-vmenu">
     %if h.lca_info['cfp_hide_scores'] == 'no':
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank')) }
