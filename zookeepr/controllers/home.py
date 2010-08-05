@@ -33,5 +33,5 @@ class HomeController(BaseController):
 
         if 'signed_in_person_id' in session:
             c.signed_in_person = self.dbsession.query(Person).filter_by(id=session['signed_in_person_id']).one()
-
+        c.db_content = DbContent.find_by_url('/home', abort_404=False)
         return render('/home.mako')
