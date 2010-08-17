@@ -81,10 +81,10 @@ class AttachmentController(BaseController):
                 # Raise a no_auth error
                 h.auth.no_role()
 
-        response.headers['content-type'] = attachment.content_type
+        response.headers['content-type'] = attachment.content_type.encode('ascii','ignore')
         response.headers.add('content-transfer-encoding', 'binary')
         response.headers.add('content-length', len(attachment.content))
-        response.headers['content-disposition'] = 'attachment; filename="%s";' % attachment.filename
+        response.headers['content-disposition'] = 'attachment; filename="%s";' % attachment.filename.encode('ascii','ignore')
         response.headers.add('Pragma', 'cache')
         response.headers.add('Cache-Control', 'max-age=3600,public')
         return attachment.content
