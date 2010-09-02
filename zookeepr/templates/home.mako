@@ -17,7 +17,14 @@ for d in c.db_content_news_all:
                               <img src="images/postheadericon.png" width="26" height="26" alt="postheadericon">
                               Welcome to linux.conf.au 2011!</h2>
 
-${ c.db_content.body | n }
+% if c.db_content is not None:
+  ${ c.db_content.base | n }
+% else:
+  <p>
+    To put content here create a page with a URL of <u>/home</u> in the
+    <a href="${ h.url_for(controller='db_content', action='new') }">page database</a>.
+  </p>
+% endif
 
 <%def name="short_title()"><%
   return "Homepage"
