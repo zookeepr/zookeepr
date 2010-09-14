@@ -26,6 +26,9 @@
             ${ h.submit('submit', ('Grant', 'Revoke')[has]) }
             ${ h.end_form() }
         </td>
+        <td>
+            ${ role.comment }
+        </td>
     </tr>
 % endfor
 </table>
