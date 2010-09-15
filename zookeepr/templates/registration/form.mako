@@ -8,7 +8,11 @@
                          jQuery('#warningDiv').slideUp(1000);
                       }
                    }
-                </script>
+                   function showRocketWarning(){
+                     jQuery('#rocket_warning').slideDown(1000);
+                     jQuery("#rocket_see_note").show();
+                   }
+</script>
 
 <%
 import datetime
@@ -317,30 +321,7 @@ ${ h.hidden('person.mobile') }
           <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
 
-          <p class="label"><label for="registration.miniconfs">Preferred miniconfs:</label></p>
-          <p class="entries">
-            <table>
-              <tr>
-% for day, miniconfs in h.lca_rego['miniconfs']:
-                <th>${ day }</th>
-% endfor
-              </tr>
-              <tr>
-% for day, miniconfs in h.lca_rego['miniconfs']:
-                <td>
-%   for miniconf in miniconfs:
-        <% label = 'registration.miniconf.%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_')) %>
-                  <label>${ h.checkbox(label) } ${ miniconf }</label>
-                  <br>
-%   endfor
-                </td>
-% endfor
-              </tr>
-            </table>
-
-            <p class="note">Please check the <a href="${ h.lca_info['event_url']}/programme/miniconfs" target="_blank">Miniconfs page</a> for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
-
-            <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
+             <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
             <p class="entries">
             <table>
               <tr>
@@ -353,6 +334,64 @@ ${ h.hidden('person.mobile') }
               </tr>
             </table>
             </p>
+       </fieldset>
+
+        <fieldset>
+          <legend>&nbsp;</legend>
+          <h2>Miniconfs Registration of Interest</h2>
+
+          <p class="label"><label for="registration.miniconfs">Preferred miniconfs:</label></p>
+          <p class="entries">
+            <p>Rocket Miniconf: due to logistics and planning requirements for this unique miniconf,
+               you <span style="color:orange">must</span> check the box below to gain admission to this miniconf.</p>
+            <table>
+              <tr>
+% for day, miniconfs in h.lca_rego['miniconfs']:
+                <th>${ day }</th>
+% endfor
+              </tr>
+              <tr>
+% for day, miniconfs in h.lca_rego['miniconfs']:
+                <td>
+%   for miniconf in miniconfs:
+
+        <% label = 'registration.miniconf.%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_')) %>
+%       if miniconf == 'Rocket Miniconf':
+                  <label onclick="javascript: showRocketWarning()">${ h.checkbox(label) } ${ miniconf } <span class="note" id="rocket_see_note"># See note below</span> </label>
+%       else:
+                  <label>${ h.checkbox(label) } ${ miniconf } </label>
+%       endif
+                  <br>
+%   endfor
+                </td>
+% endfor
+              </tr>
+            </table>
+
+            <p class="note">
+            </p>
+            <div id="rocket_warning">
+               <div class="message message-information">
+                <p># Rocketry miniconf.  This miniconf will have a
+                practical component, including a field trip to a
+                rocketry launch site, and working with FOSS rocket
+                hardware.  Therefore attending this miniconf incurs
+                financial <b><span style="color:orange">commitment</span></b>
+                over and above your conference registration costs.</p>
+                <p style="color:orange">By leaving this box checked and submitting this form,
+                you acknowledge this commitment above, and agree to follow
+                the <a href="http://lca2011.linux.org.au/programme/rocket_miniconf">
+                Requirements for the Rocketry Miniconf as laid
+                out on the website.</a></p>
+              </div>
+            </div>
+          <script type="text/javascript">
+           jQuery("#rocket_warning").hide();
+           jQuery("#rocket_see_note").hide();
+          </script>
+
+            <p class="note">Please check the <a href="${ h.lca_info['event_url']}/programme/miniconfs" target="_blank">Miniconfs page</a> for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
+
           </fieldset>
 
           <fieldset>
