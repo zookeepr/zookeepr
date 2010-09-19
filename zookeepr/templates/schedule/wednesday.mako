@@ -98,3 +98,18 @@
     </tr>
   </tbody>
 </table>
+
+<h3>Professional Delegates Networking Session</h3>
+
+<p>The Professional Delegates Networking Session is a special event where Speakers and Professional Delegates will be invited to network over drinks and nibbles on Wednesday 26 January 2011.</p>
+
+<table>
+  <tr class="odd">
+    <td><b>Where</b></td><td>To Be Advised</td>
+  </tr>
+  <tr class="even">
+    <td><b>Time</b></td><td>To Be Advised</td>
+  </tr>
+</table>
+
+<p>For more information, please see: <a href="/programme/social_events#ProfessionalDelegatesNetworkingSession">Social Events</a>.</p>

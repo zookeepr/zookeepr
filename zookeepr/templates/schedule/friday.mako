@@ -2,11 +2,11 @@
   <thead>
     <tr>
       <th>&nbsp;</th>
-      <th class="programme_room" align="center" valign="top">Auditorium</th>
-      <th class="programme_room" align="center" valign="top">Ilott Theatre</th>
-      <th class="programme_room" align="center" valign="top">Renouf 1</th>
-      <th class="programme_room" align="center" valign="top">Renouf 2</th>
-      <th class="programme_room" align="center" valign="top">Civic&nbsp;Suites 1&2</th>
+      <th class="programme_room" align="center" valign="top">Room 1</th>
+      <th class="programme_room" align="center" valign="top">Room 2</th>
+      <th class="programme_room" align="center" valign="top">Room 3</th>
+      <th class="programme_room" align="center" valign="top">Room 4</th>
+      <th class="programme_room" align="center" valign="top">Room 5</th>
     </tr>
     <tr>
       <td class="programme_room_header">&nbsp;</td>
@@ -16,25 +16,17 @@
       <td class="programme_room programme_room_header" align="center" valign="top"><i>Presentations</i></td>
       <td class="programme_room programme_room_header" align="center" valign="top"><i>Tutorials</i></td>
     </tr>
-    <tr class="videoStreamLinks">
-      <th>&nbsp;</th>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/mfc">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/illott">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/renouf-2">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-      <td align="center">&raquo;&nbsp;<a href="/schedule/video/civic-1">Live&nbsp;Video</a>&nbsp;&laquo;</td>
-    </tr>
   </thead>
 
   <tbody>
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">8:00-8:45</th><td colspan="5" align="center" valign="middle"><a href="http://www.lca2010.org.nz/wiki/Yoga">Morning Yoga</a> (limit of 20 people)<br/><i>Frank Taplin Room</i></td>
+      <th class="programme_slot" align="center" valign="middle">8:00-8:45</th><td colspan="5" align="center" valign="middle">Registration</td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
       <td class="programme_keynote" colspan="5" align="center" valign="middle">
         <div class="programmeTalkId">50351</div>
-        <a href="/programme/keynotes#NathanTorkington">Keynote: Nathan Torkington & Lightning Talks</a><br><span style="font-weight: normal;">Auditorium</span>
+        <a href="/programme/keynotes">Keynote</a><br><span style="font-weight: normal;">Room 1</span>
       </td>
 
     </tr>
@@ -45,18 +37,19 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">10:30-11:15</th>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50091" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50230" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50145" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50296" /></td>
-      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=50125" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=107" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=197" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=155" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=161" /></td>
+      <td class="tutorial" align="center" valign="middle" rowspan="2">To Be Advised</td>
+##      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=50125" /></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">11:30-12:15</th>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50299" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50184" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50202" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50154" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=66" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=176" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=174" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=44" /></td>
 
     </tr>
 
@@ -67,18 +60,19 @@
 
    <tr class="odd">
       <th class="programme_slot" align="center" valign="top">13:30-14:15</th>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50062" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50210" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50102" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50286" /></td>
-      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=50003" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=193" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=172" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=146" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=173" /></td>
+        <td class="tutorial" align="center" valign="middle" rowspan="2">To Be Advised</td>
+##      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=" /></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">14:30-15:15</th>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50153" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50131" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50119" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50048" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=104" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=94" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=181" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=153" /></td>
 
     </tr>
 
@@ -89,11 +83,12 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">15:45-16:30</th>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50200" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50315" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50181" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50208" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=50168" /> <i>(Presentation)</i></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=95" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=142" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=31" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=229" /></td>
+      <td class="presentation" align="center" valign="top">Presentation: To Be Advised</td>
+##      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=" /> <i>(Presentation)</i></td>
     </tr>
 
     <tr class="even">
