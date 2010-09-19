@@ -28,6 +28,10 @@ ${ bookmark_submit.bookmark_submit(url, c.db_content.title) }
 <p class="submitted">
 Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n }
 </p>
+% else:
+<div style="float: right;">
+<%include file="/leftcol/contents.mako" args="parent=self" />
+</div>
 % endif
 
 
