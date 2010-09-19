@@ -106,4 +106,20 @@
   </tbody>
 </table>
 
+<h3>Penguin Dinner</h3>
 
+<p>The Penguin Dinner will be held at The Grand Hall, Brisbane Exhibition and Convention Centre on Thursday 27 January 2010.</p>
+
+<table>
+  <tr class="odd">
+    <td><b>Where</b></td><td>Grand Hall, Brisbane Exhibition and Convention Centre</td>
+  </tr>
+  <tr class="even">
+    <td><b>Date</b></td><td>Thursday 27 January 2010</td>
+  </tr>
+  <tr class="odd">
+    <td><b>Time</b></td><td>To Be Advised</td>
+  </tr>
+</table>
+
+<p>For more information, please see: <a href="/programme/social_events#PenguinDinner">Social Events</a>.</p>

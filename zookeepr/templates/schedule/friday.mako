@@ -98,20 +98,3 @@
   </tbody>
 </table>
 
-<h3>Penguin Dinner</h3>
-
-<p>The Grande Finale event is the Penguin Dinner, which will be held at the <a href="http://www.venueweb.co.nz/wcc_townhall/townhall_venues.htm">Wellington Town Hall</a> on Friday 22 January 2010.</p>
-
-<table>
-  <tr class="odd">
-    <td><b>Where</b></td><td>Wellington Town Hall (one of the two Wellington Convention Centre buildings)</td>
-  </tr>
-  <tr class="even">
-    <td><b>Date</b></td><td>Friday 22 January 2010</td>
-  </tr>
-  <tr class="odd">
-    <td><b>Time</b></td><td>Doors open at 6.30 pm, dinner served shortly after that</td>
-  </tr>
-</table>
-
-<p>For more information, please see: <a href="/programme/social_events#PenguinDinner">Social Events</a>.</p>

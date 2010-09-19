@@ -101,11 +101,14 @@
 
 <h3>Professional Delegates Networking Session</h3>
 
-<p>The Professional Delegates Networking Session is a special event where Speakers and Professional Delegates will be invited to network over drinks and nibbles on Wednesday 26 January 2011.</p>
+<p>The Professional Delegates Networking Session is a special event where Speakers and Professional Delegates will be invited to network over drinks and nibbles at the <a href="http://www.maritimemuseum.com.au/">Queensland Maritime Museum</a> on Wednesday 26 January 2011.</p>
 
 <table>
   <tr class="odd">
-    <td><b>Where</b></td><td>To Be Advised</td>
+    <td><b>Where</b></td><td><a href="http://www.maritimemuseum.com.au/">Queensland Maritime Museum</a></td>
+  </tr>
+  <tr class="even">
+    <td><b>Date</b></td><td>Wednesday 26 January 2010</td>
   </tr>
   <tr class="even">
     <td><b>Time</b></td><td>To Be Advised</td>
