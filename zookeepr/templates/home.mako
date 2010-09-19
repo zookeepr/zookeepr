@@ -18,7 +18,7 @@ for d in c.db_content_news_all:
                               Welcome to linux.conf.au 2011!</h2>
 
 % if c.db_content is not None:
-  ${ c.db_content.base | n }
+  ${ c.db_content.body | n }
 % else:
   <p>
     To put content here create a page with a URL of <u>/home</u> in the
