@@ -108,7 +108,7 @@ class ScheduleController(BaseController):
                 if self.day_dates[weekday] == datetime.today().date():
                     c.day = weekday
             if c.day == None:
-                c.day = 'monday'
+                c.day = 'all'
         else:
             c.day = day.lower()
 

@@ -2,19 +2,7 @@
 
 <p class="note"><i>Draft schedule - subject to change.</i></p>
 
-% if c.day == 'all':
-    <h2>Schedule</h2>
-    <h2>Monday</h2>
-    <%include file="monday.mako" />
-    <h2>Tuesday</h2>
-    <%include file="tuesday.mako" />
-    <h2>Wednesday</h2>
-    <%include file="wednesday.mako" />
-    <h2>Thursday</h2>
-    <%include file="thursday.mako" />
-    <h2>Friday</h2>
-    <%include file="friday.mako" />
-% elif c.day == 'monday':
+% if c.day == 'monday':
     <h2>Miniconf Schedule for Monday</h2>
     <%include file="monday.mako" />
 % elif c.day == 'tuesday':
@@ -29,6 +17,19 @@
 % elif c.day == 'friday':
     <h2>Schedule for Friday</h2>
     <%include file="friday.mako" />
+% else:
+    <h2>Schedule</h2>
+    <h2>Monday</h2>
+    <%include file="monday.mako" />
+    <h2>Tuesday</h2>
+    <%include file="tuesday.mako" />
+    <h2>Wednesday</h2>
+    <%include file="wednesday.mako" />
+    <h2>Thursday</h2>
+    <%include file="thursday.mako" />
+    <h2>Friday</h2>
+    <%include file="friday.mako" />
+
 % endif
 
 <p class="note"><i>Draft schedule - subject to change.</i></p>
