@@ -38,12 +38,12 @@ def get_directory_contents(directory):
 
 
 class ScheduleController(BaseController):
-    day_dates = {'monday':    date(2010,1,18),
-                 'tuesday':   date(2010,1,19),
-                 'wednesday': date(2010,1,20),
-                 'thursday':  date(2010,1,21),
-                 'friday':    date(2010,1,22),
-                 'saturday':  date(2010,1,23)}
+    day_dates = {'monday':    date(2011,1,24),
+                 'tuesday':   date(2011,1,25),
+                 'wednesday': date(2011,1,26),
+                 'thursday':  date(2011,1,27),
+                 'friday':    date(2011,1,28),
+                 'saturday':  date(2011,1,29)}
 
     # Use this to limit to organisers only.
     #@authorize(h.auth.has_organiser_role)
