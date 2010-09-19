@@ -1,5 +1,7 @@
 <%inherit file="/base.mako" />
 
+<p class="note"><i>Draft schedule - subject to change.</i></p>
+
 % if c.day == 'all':
     <h2>Schedule</h2>
     <h2>Monday</h2>
@@ -29,7 +31,7 @@
     <%include file="friday.mako" />
 % endif
 
-<p class="note"><i>Schedule is subject to change without notice.</i></p>
+<p class="note"><i>Draft schedule - subject to change.</i></p>
 
 <%def name="title()">
 Schedule - ${ parent.title() }
