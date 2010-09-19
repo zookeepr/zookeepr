@@ -1640,3 +1640,7 @@ img.image
     padding: 7px;
     display:block;
 }
+
+.programmeTalkId {
+      display:none;
+}
