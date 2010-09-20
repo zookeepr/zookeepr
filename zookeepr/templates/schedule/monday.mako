@@ -16,14 +16,14 @@
       <tr class="odd">
 
       <td>&nbsp;</td>
-      <td align="center"><i>Southern Plumbers</i></td>
-      <td align="center"><i><a href="http://haecksen.net/node/273">Haecksen</a></i></td>
-      <td align="center"><i><a href="http://www.annodex.org/events/lca2011_mmm/">Multimedia + Music</a></i></td>
-      <td align="center"><i>Arduino</i></td>
-      <td align="center"><i><a href="http://blogs.tucs.org.au/opm/">Open Programming</a></i></td>
-      <td align="center"><i><a href="https://fossbazaar.org/content/lca-business-open-source-brisbane-2011">Business of Open Source</a></i></td>
-      <td align="center"><i>Data Storage</i></td>
-      <td align="center"><i>Research &amp; Student Innovation</i></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=59" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=34" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=82" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=96" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=7" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=127" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=109" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=144" /></td>
     </tr>
   </thead>
 

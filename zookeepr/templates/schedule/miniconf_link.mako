@@ -1,22 +1,29 @@
+<%page args="miniconf_id, extra=''" />
 <% miniconf = c.get_talk(miniconf_id) %>
 <% speakers = [] %>
-% for person in miniconf.people:
+% if miniconf is not None:
+%   for person in miniconf.people:
 <%   speakers.append(person.firstname + ' ' + person.lastname) %>
-% endfor
-% if len(speakers) == 1: 
+%   endfor
+%   if len(speakers) == 1: 
 <%    speakers = speakers[0] %>
-% else: 
+%   else: 
 <%    speakers = '%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1]) %>
-% endif
+%   endif
 <% miniconf_url = h.url(controller='schedule', action='view_miniconf', id=miniconf.id) %>
 <% teaser = h.make_teaser(h.truncate(miniconf.abstract, length=400)) %>
 <% readmore = '' %>
-% if teaser[1] or len(miniconf.abstract) > 400:
+%   if teaser[1] or len(miniconf.abstract) > 400:
 <%   readmore = ' ' + h.link_to('read more', url=miniconf_url) %>
+%   endif
 % endif
 
+% if miniconf is not None:
 <a name="${ day }_${ h.computer_title(miniconf.title) }"></a>
-<h3>${ h.link_to(miniconf.title, url=miniconf_url) }</h3>
+<i>${ h.link_to(miniconf.title, url=miniconf_url) }</i>
 <blockquote>
 <p>${ h.line_break(h.url_to_link(teaser[0])) }${ readmore }</p>
 </blockquote>
+% else:
+<i>Miniconf ${ miniconf_id } Not Found</i>
+% endif

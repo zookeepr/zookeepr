@@ -13,13 +13,13 @@
 
     <tr class="odd">
       <td>&nbsp;</td>
-      <td align="center"><i><a href="http://multicorelca.wordpress.com/">Multicore and Parallel Computing</a></i></td>
-      <td align="center"><i>Rocketry</i></td>
-      <td align="center"><i><a href="http://sysadmin.miniconf.org/cfp11.html">System Administration</a></i></td>
-      <td align="center"><i>Open in the Public Sector</i></td>
-      <td align="center"><i><a href="http://mobilefoss.jamespurser.com.au/Call_For_Papers">Mobile FOSS</a></i></td>
-      <td align="center"><i><a href="http://freethecloud.net/">Freedom in the cloud</a></i></td>
-      <td align="center"><i><a href="http://libregraphicsday.org/">Libre Graphics Day</a></i></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=125" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=131" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=56" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=87" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=143" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=50" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=92" /></td>
     </tr>
   </thead>
 
