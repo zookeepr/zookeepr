@@ -21,7 +21,9 @@
         else:
             return 'class=""'
 %>
-
+<div class="netv-nav">
+<div class="l"></div>
+<div class="r"></div>
       <ul class="netv-menu">
 % for (t, u, c) in mm:
 %   if c == 'selected':
@@ -32,3 +34,4 @@
 
 % endfor
       </ul>
+</div>

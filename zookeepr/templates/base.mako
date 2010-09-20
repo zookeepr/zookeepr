@@ -70,13 +70,9 @@
                     <div class="netv-header">
                         <div class="netv-header-jpeg"></div>
                     </div>
-                    <div class="netv-nav">
-                        <div class="l"></div>
-                        <div class="r"></div>
                         <%include file="/nav.mako" />
                         <%include file="/subnav.mako" />
                         <%include file="/subsubnav.mako" />
-                    </div>
                 </div>
                 <div class="netv-content-layout">
                     <div class="netv-content-layout-row">
