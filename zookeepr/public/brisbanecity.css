@@ -1011,6 +1011,7 @@ ul.netv-vmenu a.active .t
   position: relative;
   z-index: 1;
   padding: 10px;
+  word-wrap: break-word;
 }
 
 
