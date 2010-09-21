@@ -37,8 +37,8 @@ lca_info = {
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 30th of October (unless earlybird tickets sell out earlier).',
 
 # Possible statuses not_open|open|closed
-  'cfp_status' : 'open',
-  'cfmini_status' : 'open',
+  'cfp_status' : 'closed',
+  'cfmini_status' : 'closed',
   'paper_editing' : 'open',
   'funding_status' : 'not_open',
   'funding_editing' : 'not_open',
@@ -185,10 +185,10 @@ lca_submenus = {
   'brisbane': ['About'],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
-  'programme': ['About', 'Papers', 'Miniconfs', 'Presentations', 'Posters', 'Tutorials'], # stage 1
+  #'programme': ['About', 'Papers', 'Miniconfs', 'Presentations', 'Posters', 'Tutorials'], # stage 1
   #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
   #'programme': ['About', 'Keynotes', 'Miniconfs', 'Speakers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
-  #'programme': ['About', 'Keynotes', 'Miniconfs', 'Schedule', 'Social Events', 'Open Day', 'Partners Programme'], # stage 3
+  'programme': ['About', 'Keynotes', 'Miniconfs', 'Schedule', 'Social Events', 'Open Day', 'Partners Programme'], # stage 3
   #'programme': ['About', 'Keynotes', 'Miniconfs','Schedule','Social Events','Open Day', 'Partners Programme'], # stage 4?
   #'register': ['Prices', 'Funding', 'Accommodation', 'Terms and Conditions'],
   #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
