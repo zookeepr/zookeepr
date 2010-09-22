@@ -18,8 +18,8 @@
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=56" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=87" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=143" /></td>
-      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=50" /></td>
-      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=92" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=109" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=144" /></td>
     </tr>
   </thead>
 

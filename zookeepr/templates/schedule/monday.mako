@@ -22,8 +22,8 @@
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=96" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=7" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=127" /></td>
-      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=109" /></td>
-      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=144" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=50" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=92" /></td>
     </tr>
   </thead>
 
