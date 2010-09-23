@@ -27,7 +27,9 @@ from webhelpers import paginate
 from pylons.controllers.util import abort
 
 from zookeepr.config.lca_info import file_paths
+
 import os
+import re
 
 log = logging.getLogger(__name__)
 
@@ -88,11 +90,12 @@ class DbContentController(BaseController):
             h.flash("This content is marked as unpublished and is only viewable by organisers.", 'Warning')
         if c.db_content.type.name == 'Redirect':
             redirect_to(c.db_content.body, _code=301)
+	c.html_headers, c.html_body, c.menu_contents = self.parse_dbpage(
+            c.db_content.body)
         return render('/db_content/view.mako')
 
     def page(self):
-        url = h.url_for()
-        if url[0]=='/': url=url[1:]
+        url = h.url_for().strip("/")
         c.db_content = DbContent.find_by_url(url, abort_404=False)
         if c.db_content is not None:
            if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
@@ -282,3 +285,44 @@ class DbContentController(BaseController):
         c.current_path = current_path
         c.download_path = download_path
         return render('/db_content/list_files.mako')
+
+    HEADER_RE = re.compile("""(?is)\s*<\s*head\s*>\s*(.*?)</\s*head\s*>\s*""")
+    FINDH3_RE = re.compile("""(?ism)(<h3>(.+?)</h3>)""")
+    NONALPHA_RE = re.compile("""(?s)(\W+)""")
+    SLIDESHOW_RE = re.compile("""({{slideshow:\s*(.*?)(,\s*(.*))?}})""")
+    @classmethod
+    def parse_dbpage(cls, html):
+        #
+        # Extract stuff at the start of the html between <head>..</head> so
+        # it can be hoisted to the page header.
+        #
+        header_match = cls.HEADER_RE.match(html)
+        if not header_match:
+            html_headers = ""
+            html_body = html
+        else:
+            html_headers = header_match.group(1)
+            html_body = html[header_match.end():]
+        #
+        # Find headings and make a menu out of them.
+        #
+        menu_contents = []
+        h3 = cls.FINDH3_RE.findall(html_body)
+        if h3.__len__() > 0:
+            for match in h3:
+                simple_title = cls.NONALPHA_RE.sub('', match[1])
+                a_element = r'<a name="%s"></a>\g<0>' % (simple_title,)
+                html_body = re.compile(match[0]).sub(a_element, html_body)
+                li_element = r'<li><a href="#%s">%s</a></li>' % (
+                    simple_title, match[1], )
+                menu_contents.append(li_element)
+        menu_contents = '\n'.join(menu_contents)
+        #
+        # Build up the slidshow.
+        #
+        slideshow = cls.SLIDESHOW_RE.findall(html_body)
+        if slideshow.__len__() > 0:
+            for match in slideshow:
+                slideshow_repl = h.slideshow(match[1], match[3])
+                html_body = re.compile(match[0]).sub(slideshow_repl, html_body)
+        return html_headers, html_body, menu_contents

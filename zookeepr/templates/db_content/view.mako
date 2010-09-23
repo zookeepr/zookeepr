@@ -1,22 +1,8 @@
 <%inherit file="/base.mako" />
 <%namespace file="../bookmark_submit.mako" name="bookmark_submit" inheritable="True"/>
-<%
-url=h.lca_info["event_permalink"] + h.url_for()
-import re
-findh3 = re.compile('(<h3>(.+?)</h3>)', re.IGNORECASE|re.DOTALL|re.MULTILINE)
-h3 = findh3.findall(c.db_content.body)
-body = c.db_content.body
-if h3.__len__() > 0:
-    simple_title = ''
-    for match in h3:
-        simple_title = re.compile('([^a-zA-Z0-9])').sub('', match[1])
-        body = re.compile(match[0]).sub(r'<a name="' + simple_title + '"></a>\g<0>', body)
 
-findslideshow = re.compile('({{slideshow:\s*(.*?)(,\s*(.*))?}})', re.DOTALL)
-slideshow = findslideshow.findall(c.db_content.body)
-if slideshow.__len__() > 0:
-   for match in slideshow:
-      body = re.compile(match[0]).sub(h.slideshow(match[1], match[3]), body)
+<%
+url = h.lca_info["event_permalink"] + h.url_for()
 %>
 
 <h2>${ c.db_content.title }</h2>
@@ -35,7 +21,7 @@ Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") 
 % endif
 
 
-${ body |n}
+${ c.html_body |n}
 
 
 <%def name="title()">
@@ -75,22 +61,11 @@ ${ c.db_content.title } -
 }
 </style>
 %endif
+${ c.html_headers |n}
 </%def>
 
 <%def name="contents()">
-<% 
-  menu = ''
-
-  import re
-
-  findh3 = re.compile('(<h3>(.+?)</h3>)', re.IGNORECASE|re.DOTALL|re.MULTILINE)
-  h3 = findh3.findall(c.db_content.body)
-  if h3.__len__() > 0:
-    simple_title = ''
-    for match in h3:
-        simple_title = re.compile('([^a-zA-Z0-9])').sub('', match[1])
-        menu += '<li><a href="#' + simple_title + '">' + match[1] + '</a></li>'
-    return menu
+<%
+  return c.menu_contents
 %>
 </%def>
-
