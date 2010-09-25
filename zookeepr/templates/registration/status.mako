@@ -56,10 +56,10 @@
     <p><b>Tentatively registered.</b></p>
 %   endif
 
-<%include file="volunteer.mako" />
+    <%include file="volunteer.mako" />
 
 %   if not c.person.paid():
-    <h3>Next step</h3>
+    <h3>Next steps</h3>
 
 %       if c.person.valid_invoice():
 %           if c.manual_invoice(c.person.invoices):
@@ -81,6 +81,7 @@
     <h3>Other options</h3>
 
     <p>
+    <a href="/accommodation/">Book Accommodation</a><br>
 %   if c.person.volunteer and (c.person.volunteer.accepted or c.person.volunteer.accepted is None):
     ${ h.link_to('Change volunteer areas of interest', h.url_for(controller='volunteer', action='edit', id=c.person.volunteer.id)) }<br>
 %   endif
@@ -137,11 +138,13 @@
 % if c.person:
     <p>${ h.yesno(c.registration != None) |n} Fill in registration form
     <br>${ h.yesno(c.person.valid_invoice()) |n} Generate invoice
+    <br>${ h.yesno(False) |n} Book Accommodation
     <br>${ h.yesno(c.person.paid()) |n} Pay
     <br>${ h.yesno(False) |n} Attend conference</p>
 % else:
     <p>${ h.yesno(False) |n} Fill in registration form
     <br>${ h.yesno(False) |n} Generate invoice
+    <br>${ h.yesno(False) |n} Book Accommodation
     <br>${ h.yesno(False) |n} Pay
     <br>${ h.yesno(False) |n} Attend conference</p>
 % endif

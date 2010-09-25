@@ -109,14 +109,15 @@ class RegistrationSchema(BaseSchema):
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    checkin = validators.Int(min=0, max=31)
-    checkout = validators.Int(min=0, max=31)
+    #checkin = validators.Int(min=0, max=31)
+    #checkout = validators.Int(min=0, max=31)
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
-    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
+    #chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
+    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
 
 class SpecialOfferSchema(BaseSchema):
     name = validators.String()
