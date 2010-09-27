@@ -212,13 +212,7 @@ ${ h.hidden('person.mobile') }
           </p>
 %       elif category.display == 'select':
 %         if (category.name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] == 'yes'):
-            <input type="hidden" name="products.category_${ category.name.replace('-','_') }"
-%             for product in products:
-%               if product.description == 'I will organise my own':
-                  value="${ product.id }"
-%               endif
-%             endfor
-             >
+            <input type="hidden" name="products.category_${ category.name.replace('-','_') }">
 %         else:
           <p class="entries">
             <select name="products.category_${ category.name.replace('-','_') }">

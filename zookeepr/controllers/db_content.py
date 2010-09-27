@@ -89,7 +89,7 @@ class DbContentController(BaseController):
         elif not c.db_content.published:
             h.flash("This content is marked as unpublished and is only viewable by organisers.", 'Warning')
         if c.db_content.type.name == 'Redirect':
-            redirect_to(c.db_content.body, _code=301)
+            redirect_to(c.db_content.body.encode("latin1"), _code=301)
 	c.html_headers, c.html_body, c.menu_contents = self.parse_dbpage(
             c.db_content.body)
         return render('/db_content/view.mako')
@@ -188,15 +188,15 @@ class DbContentController(BaseController):
                 directory += request.GET['folder']
                 c.current_folder = request.GET['folder']
         except KeyError:
-           directory = file_paths['public_path'] + "/"
-           c.current_folder = '/'
+            directory = file_paths['public_path'] + "/"
+            c.current_folder = '/'
 
-        file_data = request.POST['myfile'].value
-        fp = open(directory + request.POST['myfile'].filename,'wb')
-        fp.write(file_data)
-        fp.close()
-        
-        h.flash("File Uploaded.")        
+        if hasattr(request.POST['myfile'], 'value'):
+            file_data = request.POST['myfile'].value
+            fp = open(directory + request.POST['myfile'].filename,'wb')
+            fp.write(file_data)
+            fp.close()
+            h.flash("File Uploaded.")        
         redirect_to(action="list_files", folder=c.current_folder)
 
     @authorize(h.auth.has_organiser_role)

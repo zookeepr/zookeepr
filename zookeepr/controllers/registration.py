@@ -109,15 +109,14 @@ class RegistrationSchema(BaseSchema):
     voucher_code = validators.String(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    #checkin = validators.Int(min=0, max=31)
-    #checkout = validators.Int(min=0, max=31)
+    checkin = validators.Int(min=0, max=31)
+    checkout = validators.Int(min=0, max=31)
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     miniconf = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
-    #chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
-    chained_validators = [SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
+    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
 
 class SpecialOfferSchema(BaseSchema):
     name = validators.String()
@@ -314,6 +313,18 @@ class RegistrationController(BaseController):
         defaults['registration.signup.announce'] = 1
         defaults['registration.checkin'] = 17
         defaults['registration.checkout'] = 24
+
+        #
+        # Fugly hack.  If we aren't booking accommodation, then default the
+        # product bought for Accommodation to 'I will organise my own'.
+        #
+	if lca_rego['accommodation']['self_book'] == "yes":
+            category = ProductCategory.find_by_name("Accommodation")
+            for product in Product.find_by_category(category.id):
+                if 'i will organ' in product.description.lower():
+                    break
+            field_name = 'products.category_%s' % category.name.replace("-","_")
+	    defaults[field_name] = product.id
 
         # Hacker-proof silly_description field
         c.silly_description, checksum = h.silly_description()
