@@ -38,6 +38,10 @@ from sqlalchemy.orm.util import object_mapper
 import itertools, re, Image
 from glob import glob
 
+# This helper is provided to automatically pass the value=None parameter along, otherwise the checked attribute
+# is never set.
+def checkbox(name, value=None, *args, **kwds):
+    return webhelpers.html.tags.checkbox(name, value, *args, **kwds)
 
 def iterdict(items):
     return dict(items=items, iter=itertools.cycle(items))
