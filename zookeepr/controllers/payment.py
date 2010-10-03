@@ -37,6 +37,23 @@ class PaymentSchema(BaseSchema):
 class NewPaymentSchema(BaseSchema):
     payment = PaymentSchema()
 
+class SecurePayPingSchema(BaseSchema):
+    payment_id = validators.Int(not_empty=True)
+    invoice_id = validators.Int(not_empty=True)
+    summary_code = validators.String(not_empty=True)
+    response_amount = validators.Int(not_empty=True)
+    currency = validators.String(not_empty=True)
+    card_name = validators.String(not_empty=False)
+    card_type = validators.String(not_empty=False)
+    card_number = validators.String(not_empty=False)
+    card_expiry = validators.String(not_empty=False)
+    card_mac = validators.String(not_empty=False)
+    response_code = validators.String(not_empty=True)
+    bank_reference = validators.String(not_empty=True)
+    response_text = validators.String(not_empty=True)
+    remote_ip = validators.String(not_empty=True)
+    receipt_address = validators.String(not_empty=True)
+
 class PaymentController(BaseController):
     """This controller receives payment advice from the payment gateway.
 
@@ -79,11 +96,41 @@ class PaymentController(BaseController):
 
     # No authentication because it's called directly by the payment gateway
     def new(self):
+        schema = SecurePayPingSchema()
+        try:
+            form_result = schema.to_python(request.params)
+        except validators.Invalid, error:
+            return 'Invalid: %s' % error
+
         payment = None
         c.person = None
 
-        fields = dict(request.GET)
-        c.response, validation_errors = pxpay.process_response(fields)
+        fields = form_result
+        c.response = {
+            'payment_id': fields['payment_id'],
+            'invoice_id': fields['invoice_id'],
+            'success_code': fields['summary_code'],
+            'amount_paid': fields['response_amount'],
+            'currency_used': fields['currency'],
+            'card_name': fields['card_name'],
+            'card_type': fields['card_type'],
+            'card_number': fields['card_number'],
+            'card_expiry': fields['card_number'],
+            'card_mac': fields['card_mac'],
+            'auth_code': fields['response_code'],
+            'gateway_ref': fields['bank_reference'],
+            'response_text': fields['response_text'],
+            'client_ip_gateway': fields['remote_ip'],
+            'client_ip_zookeepr': request.environ.get('REMOTE_ADDR'),
+            'email_address': fields['receipt_address']
+       }
+
+       if 'Approved' in c.response['response_text']:
+               c.response['approved'] = True           
+       else:
+                c.response['approved'] = False
+
+       validation_errors = []
 
         if c.response is None:
             abort(500, ''.join(validation_errors))
@@ -111,8 +158,8 @@ class PaymentController(BaseController):
                 validation_errors.append('Mismatch between amounts paid and invoiced')
             if c.response['invoice_id'] != payment.invoice.id:
                 validation_errors.append('Mismatch between returned invoice ID and payment object')
-            if c.response['email_address'] != pxpay.munge_email(payment.invoice.person.email_address):
-                validation_errors.append('Mismatch between returned email address and invoice object')
+            #if c.response['email_address'] != pxpay.munge_email(payment.invoice.person.email_address):
+            #    validation_errors.append('Mismatch between returned email address and invoice object')
             if not c.person.is_from_common_country():
                 validation_errors.append('Uncommon country: ' + c.person.country)
 
