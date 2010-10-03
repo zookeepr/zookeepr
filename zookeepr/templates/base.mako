@@ -166,6 +166,7 @@
                                 <div class="netv-post-cc"></div>
                                 <div class="netv-post-body">
                                     <div class="netv-post-inner netv-article">
+                                       <%include file="/flash.mako" />
                                         ${next.body()}
                                         <div class="netv-postcontent">
                                             <!-- article-content -->

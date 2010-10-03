@@ -251,7 +251,7 @@ ${ h.hidden('person.mobile') }
 %       if category.name == 'Accommodation':
 %         if h.lca_rego['accommodation']['self_book'] == 'yes':
           <p class="note">Please see the
-          <a href="${ h.lca_info['event_url']}/register/accommodation" target="_blank">accommodation page</a>
+          <a href="/register/accommodation" target="_blank">accommodation page</a>
           for discounted rates for delegates. You <strong>must</strong> book
           your accommodation directly through the accommodation providers
           yourself. Registering for the conference <strong>does not</strong>
@@ -259,7 +259,7 @@ ${ h.hidden('person.mobile') }
           <input type="hidden" name="registration.checkin" value='2010/01/01'>
           <input type="hidden" name="registration.checkout" value='2010/01/01'>
 %         else:
-          <p>Please see the <a href="${ h.lca_info['event_url']}/register/accommodation" target="_blank">accommodation page</a> for prices and details.</p>
+          <p>Please see the <a href="/register/accommodation" target="_blank">accommodation page</a> for prices and details.</p>
           <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
           <p class="entries">
             <select name="registration.checkin">
@@ -384,7 +384,7 @@ ${ h.hidden('person.mobile') }
            jQuery("#rocket_see_note").hide();
           </script>
 
-            <p class="note">Please check the <a href="${ h.lca_info['event_url']}/programme/miniconfs" target="_blank">Miniconfs page</a> for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
+            <p class="note">Please check the <a href="/programme/miniconfs" target="_blank">Miniconfs page</a> for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
 
           </fieldset>
 

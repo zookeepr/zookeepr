@@ -14,6 +14,9 @@ class Event(Base):
     proposal_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal.id'), nullable=True )
     exclusive   = sa.Column(sa.types.Boolean, nullable=False  ) # No other event may be scheduled at the same 
                                                                 # time as this event.  There can be only one.
+    url                = sa.Column(sa.types.Text, nullable=True)
+    publish    = sa.Column(sa.types.Boolean, nullable=False, default=True)
+    sequence    = sa.Column(sa.types.Integer, nullable=False, default=1)
 
     # relations
 
