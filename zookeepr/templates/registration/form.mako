@@ -236,7 +236,7 @@ ${ h.hidden('person.mobile') }
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + product.description.replace('-','_')) }${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_')) }${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
@@ -336,8 +336,6 @@ ${ h.hidden('person.mobile') }
 
           <p class="label"><label for="registration.miniconfs">Preferred miniconfs:</label></p>
           <p class="entries">
-            <p>Rocket Miniconf: due to logistics and planning requirements for this unique miniconf,
-               you <span style="color:orange">must</span> check the box below to gain admission to this miniconf.</p>
             <table>
               <tr>
 % for day, miniconfs in h.lca_rego['miniconfs']:
@@ -364,25 +362,6 @@ ${ h.hidden('person.mobile') }
 
             <p class="note">
             </p>
-            <div id="rocket_warning">
-               <div class="message message-information">
-                <p># Rocketry miniconf.  This miniconf will have a
-                practical component, including a field trip to a
-                rocketry launch site, and working with FOSS rocket
-                hardware.  Therefore attending this miniconf incurs
-                financial <b><span style="color:orange">commitment</span></b>
-                over and above your conference registration costs.</p>
-                <p style="color:orange">By leaving this box checked and submitting this form,
-                you acknowledge this commitment above, and agree to follow
-                the <a href="http://lca2011.linux.org.au/programme/rocket_miniconf">
-                Requirements for the Rocketry Miniconf as laid
-                out on the website.</a></p>
-              </div>
-            </div>
-          <script type="text/javascript">
-           jQuery("#rocket_warning").hide();
-           jQuery("#rocket_see_note").hide();
-          </script>
 
             <p class="note">Please check the <a href="/programme/miniconfs" target="_blank">Miniconfs page</a> for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
 
