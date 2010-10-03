@@ -450,6 +450,11 @@ class RegistrationController(BaseController):
         c.special_offer = None
         self.save_details(result)
 
+        self.pay(c.registration.id, quiet=1)
+
+        h.flash("Thank you for updating your registration!")
+        if not c.person.paid():
+            h.flash("To complete the registration process, please pay your invoice.")
         redirect_to(action='status')
 
     def save_details(self, result):
