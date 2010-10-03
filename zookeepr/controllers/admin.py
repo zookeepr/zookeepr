@@ -379,7 +379,7 @@ class AdminController(BaseController):
 
     @authorize(h.auth.has_reviewer_role)
     def proposals_by_date(self):
-        """" List of proposals by date submitted [CFP] """
+        """ List of proposals by date submitted [CFP] """
         return sql_response("""
                 SELECT
                     proposal.id,
@@ -387,9 +387,7 @@ class AdminController(BaseController):
                     proposal_type.name AS "proposal type",
                     proposal.creation_timestamp AS "submitted"
                 FROM proposal
-                    LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
-                GROUP BY proposal.id, proposal.title, proposal_type.name
                 ORDER BY proposal.creation_timestamp ASC, proposal.id ASC
                 """)
 
