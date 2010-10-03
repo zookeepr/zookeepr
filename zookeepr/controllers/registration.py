@@ -398,7 +398,10 @@ class RegistrationController(BaseController):
         for rproduct in c.registration.products:
             product = rproduct.product
             category_name = product.category.clean_name()
-            defaults['products.category_' + category_name] = product.id
+            if product.category.display == "checkbox":
+                defaults['products.product_' + category_name] = product.id
+            else:
+                defaults['products.category_' + category_name] = product.id
             if rproduct.qty > 0:
                 defaults['products.product_' + category_name + '_' + product.clean_description() + '_qty'] = rproduct.qty
 
@@ -516,9 +519,8 @@ class RegistrationController(BaseController):
                     c.registration.products.append(rego_product)
             elif category.display == 'checkbox':
                 for product in category.products:
-                    clean_prod_desc = product.clean_description()
-
-                    if result['products']['product_' + clean_cat_name + '_' + clean_prod_desc] == True:
+                    clean_category_name = category.clean_name()
+                    if result['products']['product_' + clean_category_name] == True:
                         rego_product = RegistrationProduct()
                         rego_product.registration = c.registration
                         rego_product.product = product
