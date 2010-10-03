@@ -125,12 +125,12 @@ class PaymentController(BaseController):
             'email_address': fields['receipt_address']
        }
 
-       if 'Approved' in c.response['response_text']:
-               c.response['approved'] = True           
-       else:
-                c.response['approved'] = False
+        if 'Approved' in c.response['response_text']:
+            c.response['approved'] = True
+        else:
+            c.response['approved'] = False
 
-       validation_errors = []
+        validation_errors = []
 
         if c.response is None:
             abort(500, ''.join(validation_errors))
@@ -141,7 +141,7 @@ class PaymentController(BaseController):
 
             # Get the payment object associated with this transaction
             payment = Payment.find_by_id(c.response['payment_id'])
-        
+
         if payment is None:
             validation_errors.append('Invalid payment ID from the payment gateway')
         else:
