@@ -98,7 +98,7 @@ lca_rego = {
   'miniconfs' : (
               ('Monday',('Southern Plumbers', 'Haecksen','Multimedia + Music', 'Arduino', 'Open Programming',
                          'Business of Open Source', 'Freedom in the Cloud', 'Libre Graphics Day')),
-              ('Tuesday',('Multicore and Parallel Computing', 'Rocket Miniconf', 'System Administration',
+              ('Tuesday',('Multicore and Parallel Computing', 'System Administration',
                           'Open in the Public Sector', 'Mobile FOSS', 'Data Storage', 'Research & Student Innovation'))
              ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
