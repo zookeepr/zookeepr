@@ -63,6 +63,24 @@ class VolunteerController(BaseController):
         h.flash("Volunteer application submitted. Thank you for your interest.")
         redirect_to(action='view', id=c.volunteer.id)
 
+    @dispatch_on(POST="_edit") 
+    def edit(self, id):
+        # A person can only volunteer once
+        c.form = 'edit'
+        c.volunteer = Volunteer.find_by_id(id)
+        defaults = h.object_to_defaults(c.volunteer, 'volunteer')
+        form = render('/volunteer/edit.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=EditVolunteerSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
+    def _edit(self, id):
+        results = self.form_result['volunteer']
+        c.volunteer = Volunteer.find_by_id(id)
+        for key in self.form_result['volunteer']:
+            setattr(c.volunteer, key, self.form_result['volunteer'][key])
+        meta.Session.commit()
+        redirect_to(action='view', id=c.volunteer.id)
+
     def view(self, id):
         c.volunteer = Volunteer.find_by_id(id)
 
