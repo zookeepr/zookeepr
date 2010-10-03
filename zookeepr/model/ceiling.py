@@ -24,6 +24,7 @@ def setup(meta):
             Ceiling(name='earlybird', max_sold=200, available_from=None, available_until=earlybird_end),
             Ceiling(name='non-earlybird', max_sold=None, available_from=nonearlybird_start, available_until=None),
             Ceiling(name='uniaccom', max_sold=240, available_from=None, available_until=None),
+            Ceiling(name='rocketry', max_sold=24, available_from=None, available_until=None)
         ]
     )
 

@@ -15,6 +15,7 @@ def setup(meta):
     ceiling_earlybird = Ceiling.find_by_name('earlybird')
     ceiling_nonearlybird = Ceiling.find_by_name('non-earlybird')
     ceiling_uniaccom = Ceiling.find_by_name('uniaccom')
+    ceiling_rocketry = Ceiling.find_by_name('rocketry')
 
     # Tickets
     product = Product(category_id='1', active=True, description="Concession/Student Ticket",
@@ -75,7 +76,12 @@ def setup(meta):
     product = Product(category_id='1', active=True, description="Press Ticket",
                       cost="0", auth="self.is_press()", validate=None)
     product.ceilings.append(ceiling_all_conference)
-    meta.Session.add(product);
+    meta.Session.add(product)
+
+    product = Product(category_id='7', active=True, description="Rocketry Miniconf Ticket",
+                      cost="15000", auth=None, validate=None)
+    product.ceilings.append(ceiling_rocketry)
+    meta.Session.add(product)
 
     meta.Session.add_all(
         [
