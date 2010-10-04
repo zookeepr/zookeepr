@@ -30,6 +30,3 @@ View ${ h.link_to('invoice details', url=h.url_for(action='view')) } or ${
 h.link_to('registration status', url=h.url_for(controller='registration', action='status')) } before
 payment.
 </p>
-
-<p><img alt="[DPS logo]" style="margin-right: 0.5em" src="/images/paymentexpress.png"/>
-Hosted payment solution kindly provided by Payment Express</p>
