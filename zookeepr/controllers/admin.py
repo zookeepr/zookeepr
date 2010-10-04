@@ -19,6 +19,7 @@ from zookeepr.model import meta, Person, Product, Registration, ProductCategory
 from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice, Funding
 from zookeepr.model.funding_review import FundingReview
 from zookeepr.model.payment_received import PaymentReceived
+from zookeepr.model.invoice_item import InvoiceItem
 from zookeepr.model.rego_note import RegoNote
 from zookeepr.model.social_network import SocialNetwork
 from zookeepr.model.special_registration import SpecialRegistration
@@ -33,12 +34,10 @@ from sqlalchemy import and_, or_
 log = logging.getLogger(__name__)
 
 import re
+import types
 
 from datetime import datetime
 import os, random, re, urllib
-#from zookeepr.controllers.proposal import Proposal
-#from zookeepr.model import Invoice, PaymentReceived, Product, InvoiceItem
-#from zookeepr.model.registration import RegoNote
 
 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
@@ -1180,7 +1179,7 @@ class AdminController(BaseController):
                 ORDER BY number_proposals DESC, p.id
         """
         res = meta.Session.execute(query)
-        c.columns = res.keys
+        c.columns = get_column_names(res)
         c.data = []
         for r in res.fetchall():
             idlink = '<a href="/person/' + str(r[0]) + '/roles">' + str(r[0]) + '</a>'
@@ -1637,7 +1636,7 @@ def keysigning_pdf(keyid):
 
 def csv_response(sql):
     res = meta.Session.execute(sql)
-    c.columns = res.keys
+    c.columns = get_column_names(res)
     c.data = res.fetchall()
     c.sql = sql
 
@@ -1649,6 +1648,16 @@ def csv_response(sql):
     response.headers['Content-type']='text/plain; charset=utf-8'
     response.headers['Content-Disposition']='attachment; filename="table.csv"'
     return f.getvalue()
+
+#
+# Something changed between sqlalchmey 0.5.7 and 0.6.4.  ResultProxy.keys
+# was a list, in 0.6.3 it is a function that returns the same list.
+#
+def get_column_names(result_proxy):
+    try:
+        return list(result_proxy.keys)
+    except TypeError:
+        return result_proxy.keys()
 
 def sql_execute(sql):
     import zookeepr.model
@@ -1668,7 +1677,9 @@ def sql_response(sql):
     if request.GET.has_key('csv'):
         return csv_response(sql)
     res = meta.Session.execute(sql)
-    c.columns = res.keys
+    c.columns = get_column_names(res)
+    if hasattr(c.columns, "__call__"):	# work around for bug in sqlalchemy 0.5.7
+      c.columns = c.columns()
     c.data = res.fetchall()
     c.sql = sql
     return render('admin/sqltable.mako')
