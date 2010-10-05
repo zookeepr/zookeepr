@@ -1,7 +1,7 @@
 """The application's model objects"""
 import sqlalchemy as sa
 
-from zookeepr.model.proposal import ProposalType
+from zookeepr.model.schedule import Schedule
 
 from meta import Base
 
@@ -11,7 +11,9 @@ class TimeSlot(Base):
     id         = sa.Column(sa.types.Integer , primary_key = True )
     start_time = sa.Column(sa.types.DateTime, nullable    = False)
     end_time   = sa.Column(sa.types.DateTime, nullable    = False)
-    type       = sa.Column(sa.types.Text)
+
+    # relations
+    schedule = sa.orm.relation(Schedule, backref='time_slot')
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):

@@ -30,7 +30,7 @@ import funding_review
 import special_offer
 import special_registration
 import url_hash
-import event_time_slot_location_map
+import schedule
 
 from person import Person
 from role import Role
@@ -60,7 +60,9 @@ from registration_product import RegistrationProduct
 
 from location import Location
 from event    import Event
+from event_type import EventType
 from time_slot import TimeSlot
+from schedule import Schedule
 
 from voucher import Voucher, VoucherProduct
 
