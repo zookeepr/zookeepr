@@ -69,7 +69,8 @@ class Invoice(Base):
             return "Unpaid"
 
     def overdue(self):
-        return self.due_date < datetime.datetime.now()
+        yesterday = datetime.datetime.now() + datetime.timedelta(-1)
+        return self.due_date <= yesterday
 
     def __repr__(self):
         return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)

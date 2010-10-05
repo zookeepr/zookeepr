@@ -13,6 +13,13 @@ from zookeepr.config.lca_info import lca_info
 
 import cgi
 
+def check_product_availability(product, value, state):
+    if product.available():
+        return
+    elif product.available(stock=False):
+        raise Invalid(product.description + " has unfortunately sold out.", value, state)
+    else:
+        raise Invalid(product.description + " is not available.", value, state)
 
 class BaseSchema(formencode.Schema):
     allow_extra_fields = True
@@ -250,13 +257,8 @@ class ProductInCategory(validators.FancyValidator):
         p = Product.find_by_id(int(value))
         for product in Product.find_by_category(p.category.id):
             if product.id == int(value):
-                if product.available():
-                    return # All good!
-                elif product.available(stock=False):
-                    raise Invalid("The selected product, " + product.description + ", has unfortunately sold out.", value, state)
-                else:
-                    raise Invalid("The selected product, " + product.description + ", is not available.", value, state)
-
+                check_product_availability(product, value, state)
+                return # All good!
         raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
 
 class ProductQty(validators.Int):
@@ -272,9 +274,13 @@ class ProductQty(validators.Int):
             raise Invalid('Too large (maximum %d)'%self.max, value, state)
         if value<self.min:
             raise Invalid('Too small (minimum %d)'%self.min, value, state)
-        if not self.product.available() and int(value) != 0:
-            raise Invalid("The selected product, " + self.product.description + ", has unfortunately sold out.", value, state)
-        return
+        if int(value) != 0:
+            check_product_availability(self.product, value, state)
+
+class CheckboxQty(validators.Bool):
+    def validate_python(self, value, state):
+        if value:
+            check_product_availability(self.product, value, state)
 
 class PPDetails(validators.FancyValidator):
     # Check if a child in the PP has an adult with them

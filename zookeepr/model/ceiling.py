@@ -84,7 +84,6 @@ class Ceiling(Base):
     def soldout(self):
         if self.max_sold != None:
             return self.qty_invoiced() >= self.max_sold
-            #return self.qty_sold() >= self.max_sold
         return False
 
     def enough_left(self, qty):

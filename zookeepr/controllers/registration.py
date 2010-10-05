@@ -12,7 +12,7 @@ from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.ssl_requirement import ssl_check
-from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
+from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory, CheckboxQty
 from zookeepr.lib.validators import ProductQty, ProductMinMax
 
 # validators used from the database
@@ -236,9 +236,9 @@ class RegistrationController(BaseController):
                 product_fields = []
                 for product in category.products:
                     clean_prod_desc = product.clean_description()
-                    #if self._product_available(product):
-                    ProductSchema.add_field('product_' + clean_cat_name, validators.Bool(if_missing=False))
-                    product_fields.append('product_' + clean_cat_name)
+		    product_field_name = 'product_' + clean_cat_name
+                    ProductSchema.add_field(product_field_name, CheckboxQty(product=product, if_missing=False))
+                    product_fields.append(product_field_name)
                     if product.validate is not None:
                         validator = eval(product.validate)
                         validator.error_field_name = "error.%s" % category.clean_name()
