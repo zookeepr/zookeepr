@@ -7,7 +7,7 @@ Your payment was unsuccessful. The reason was:
     ${ c.pr.response_text }
 
 You can try again by visiting:
-  ${ h.lca_info['event_url'] }/registration/${ c.pr.invoice.person.registration.id }/pay
+  ${ h.url_for(qualified=True, controller='registration', id=c.pr.invoice.person.registration.id, action='pay') }
 %else:
 Subject: Successful payment for ${ h.lca_info['event_name'] }
 
@@ -17,7 +17,7 @@ Your receipt number is: PR${ c.pr.id }P${ c.pr.payment.id }
 
 %  if c.pr.invoice:
 You can view your invoice at
-  ${ h.lca_info['event_url'] }/invoice/${ c.pr.invoice.id }
+  ${ h.url_for(qualified=True, controller='invoice', id=c.pr.invoice.id) }
 
 %  endif
 Thanks again, and have a great day!

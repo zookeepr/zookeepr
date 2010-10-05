@@ -9,4 +9,4 @@ This is normally done when a payment was declined and the user decided to
 try again. It might be worth checking why their payment was declined though.
 
 More details can be seen here:
-  ${ h.lca_info['event_url'] }/invoice/${ c.invoice.id }
+  ${ h.url_for(qualified=True, controller='invoice', id=c.invoice.id) }

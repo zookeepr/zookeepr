@@ -16,4 +16,4 @@ occurred:
     ${ '\n    '.join(c.pr.validation_errors.split(';')) }
 
 More details can be seen here:
-  ${ h.lca_info['event_url'] }/payment/${ c.pr.payment.id }
+  ${ h.url_for(qualified=True, controller='payment', action='view', id=c.pr.payment.id) }

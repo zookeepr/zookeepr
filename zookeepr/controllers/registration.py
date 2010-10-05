@@ -219,7 +219,7 @@ class RegistrationController(BaseController):
         ProductSchema.add_field('partner_name', validators.String())
         ProductSchema.add_field('partner_email', validators.Email())
         ProductSchema.add_field('partner_mobile', validators.String())
-        
+
         # Go through each category and each product and add generic validation
         for category in c.product_categories:
             clean_cat_name = category.clean_name()
@@ -236,7 +236,7 @@ class RegistrationController(BaseController):
                 product_fields = []
                 for product in category.products:
                     clean_prod_desc = product.clean_description()
-		    product_field_name = 'product_' + clean_cat_name
+                    product_field_name = 'product_' + clean_cat_name
                     ProductSchema.add_field(product_field_name, CheckboxQty(product=product, if_missing=False))
                     product_fields.append(product_field_name)
                     if product.validate is not None:
@@ -250,7 +250,7 @@ class RegistrationController(BaseController):
                 product_fields = []
                 for product in category.products:
                     clean_prod_desc = product.clean_description()
-  
+
                     #if self._product_available(product):
                     ProductSchema.add_field('product_' + clean_cat_name + '_' + clean_prod_desc + '_qty', ProductQty(product=product, if_missing=None))
                     product_fields.append('product_' + clean_cat_name + '_' + clean_prod_desc+ '_qty')
@@ -265,16 +265,16 @@ class RegistrationController(BaseController):
 
     @classmethod
     def min_max_validator(cls, fields, category):
-	return ProductMinMax(
-                product_fields=fields,
-                min_qty=category.min_qty,
-                max_qty=category.max_qty,
-                category_name=category.name,
-                error_field_name="error.%s" % category.clean_name())
+        return ProductMinMax(
+            product_fields=fields,
+            min_qty=category.min_qty,
+            max_qty=category.max_qty,
+            category_name=category.name,
+            error_field_name="error.%s" % category.clean_name())
 
     def is_speaker(self):
         try:
-       	    return c.signed_in_person.is_speaker()
+            return c.signed_in_person.is_speaker()
         except:
             return False
 

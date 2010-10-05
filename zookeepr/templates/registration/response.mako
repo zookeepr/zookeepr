@@ -34,7 +34,7 @@ Invoice
 
 You can view your invoice for payment:
 
-    ${ h.lca_info['event_url'] + h.url_for(action='status') }
+    ${ h.url_for(qualified=True, controller='registration', action='status') }
 
 Registering for the conference DOES NOT HOLD YOUR TICKET until it has
 been paid in full. So to ensure that you secure your ticket, pay the
