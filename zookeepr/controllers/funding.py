@@ -13,7 +13,7 @@ from zookeepr.lib.validators import BaseSchema, DictSet, PersonValidator
 from zookeepr.lib.validators import ExistingPersonValidator
 from zookeepr.lib.validators import FundingValidator, FileUploadValidator
 from zookeepr.lib.validators import PersonSchema, FundingTypeValidator
-from zookeepr.lib.validators import FundingStatusValidator, PrevLCAValidator
+from zookeepr.lib.validators import FundingStatusValidator
 from zookeepr.lib.validators import FundingReviewSchema
 import zookeepr.lib.helpers as h
 
@@ -46,8 +46,6 @@ class FundingSchema(BaseSchema):
     diverse_groups = validators.String()
     supporting_information = validators.String()
     prevlca = DictSet(if_missing=None)
-
-    chained_validators = [PrevLCAValidator()]
 
 class NewFundingSchema(BaseSchema):
     funding = FundingSchema()

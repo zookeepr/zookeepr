@@ -13,8 +13,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.ssl_requirement import ssl_check
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory
-from zookeepr.lib.validators import ProductQty, ProductMinMax, CheckAccomDates
-from zookeepr.lib.validators import PrevLCAValidator
+from zookeepr.lib.validators import ProductQty, ProductMinMax
 
 # validators used from the database
 from zookeepr.lib.validators import ProDinner, PPDetails, PPChildrenAdult
@@ -41,42 +40,61 @@ log = logging.getLogger(__name__)
 
 import datetime
 
-class NotExistingRegistrationValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        rego = None
-        if 'signed_in_person_id' in session:
-            rego = state.query(model.Registration).filter_by(person_id=session['signed_in_person_id']).first()
-        if rego is not None and rego != c.registration:
-            raise Invalid("Thanks for your keenness, but you've already registered!", value, state)
+class CheckAccomDates(validators.FormValidator):
+    def __init__(self, checkin_name, checkout_name):
+        super(self.__class__, self).__init__()
+        self.checkin = checkin_name
+        self.checkout = checkout_name
+    def validate_python(self, values, state):
+        if values[self.checkin] >= values[self.checkout]:
+            error_dict = {
+                self.checkin:       "Your checkin date must be before your check out",
+                self.checkout:      "Your checkout date must be after your check in.",
+            }
+            raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
 
-class DuplicateVoucherValidator(validators.FancyValidator):
+class VoucherValidator(validators.FancyValidator):
     def validate_python(self, value, state):
-        voucher = Voucher.find_by_code(value['voucher_code'])
+        voucher = Voucher.find_by_code(value)
         if voucher != None:
             if voucher.registration:
                 if voucher.registration[0].person.id != h.signed_in_person().id:
                     raise Invalid("Voucher code already in use!", value, state)
-        elif value['voucher_code']:
+        elif value:
             raise Invalid("Unknown voucher code!", value, state)
 
-class SillyDescriptionChecksum(validators.FancyValidator):
-    def validate_python(self, value, state):
-        checksum = h.silly_description_checksum(value['silly_description'])
-        if value['silly_description_checksum'] != checksum:
-            raise Invalid("Smart enough to hack the silly description, not smart enough to hack the checksum.", value, state)
+class SillyDescriptionChecksum(validators.FormValidator):
+    def __init__(self, silly_name, checksum_name):
+        super(self.__class__, self).__init__()
+        self.__silly_name = silly_name
+        self.__checksum_name = checksum_name
+    def validate_python(self, values, state):
+        silly_description = values.get(self.__silly_name, None)
+        if silly_description is None:
+            return
+        checksum = h.silly_description_checksum(silly_description)
+        if values.get(self.__checksum_name, None) != checksum:
+            error_dict = {
+                self.__silly_name: "Smart enough to hack the silly description, not smart enough to hack the checksum.",
+            }
+            raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
 
-class IAgreeValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        if not value['i_agree']:
-            raise Invalid("You must read and accept the terms and conditions before you can register.", value, state)
+class IAgreeValidator(validators.FormValidator):
+    validate_partial_form = True
+    def __init__(self, field_name):
+        super(self.__class__, self).__init__()
+        self.__field_name = field_name
+    def validate_partial(self, values, state):
+        agree_value = values.get(self.__field_name, None)
+        if not agree_value:
+            error_dict = {
+                self.__field_name: "You must read and accept the terms and conditions before you can register.",
+            }
+            raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
 
-class PrevLCAValidator(validators.FancyValidator):
+class ShellValidator(validators.String):
     def validate_python(self, value, state):
-        if value['prevlca'] is not None and '00' in value['prevlca']:
-            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
-
-class ShellValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
+        super(self.__class__, self).validate_python(value, state)
         if value['shelltext'] is not None and value['shell'] == 'other':
             if value['shelltext'].lower() == 'cmd.exe' or value['shelltext'].lower() == 'command.com':
                 raise Invalid(value['shelltext'].lower() + ' -- Nice try!', value, state)
@@ -96,7 +114,7 @@ class RegistrationSchema(BaseSchema):
     over18 = validators.Int(min=0, max=1, not_empty=True)
     nick = validators.String()
     shell = validators.String()
-    shelltext = validators.String()
+    shelltext = ShellValidator()
     editor = validators.String()
     editortext = validators.String()
     distro = validators.String()
@@ -106,7 +124,7 @@ class RegistrationSchema(BaseSchema):
     if lca_rego['pgp_collection'] != 'no':
         keyid = validators.String()
     planetfeed = validators.String()
-    voucher_code = validators.String(if_empty=None)
+    voucher_code = VoucherValidator(if_empty=None)
     diet = validators.String()
     special = validators.String()
     checkin = validators.Int(min=0, max=31)
@@ -116,7 +134,11 @@ class RegistrationSchema(BaseSchema):
     miniconf = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
-    chained_validators = [CheckAccomDates(), SillyDescriptionChecksum(), DuplicateVoucherValidator(), IAgreeValidator(), PrevLCAValidator(), ShellValidator()]
+    chained_validators = [
+        CheckAccomDates("checkin", "checkout"),
+        SillyDescriptionChecksum("silly_description", "silly_description_checksum"),
+        IAgreeValidator("i_agree"),
+    ]
 
 class SpecialOfferSchema(BaseSchema):
     name = validators.String()
@@ -126,8 +148,6 @@ class NewRegistrationSchema(BaseSchema):
     person = ExistingPersonSchema()
     registration = RegistrationSchema()
     special_offer = SpecialOfferSchema()
-
-    chained_validators = [NotExistingRegistrationValidator()]
     pre_validators = [NestedVariables]
 
 class ProductUnavailable(Exception):
@@ -182,14 +202,17 @@ class RegistrationController(BaseController):
         # Thus, this function generates a dynamic schema to validate a given set of products.
         # 
         class ProductSchema(BaseSchema):
-            # This schema is used to validate the products submitted by the form.
-            # It is populated below
+            # This schema is used to validate the products submitted by the
+            # form.  It is populated below
             # EG:
             #   ProductSchema.add_field('count', validators.Int(min=1, max=100))
             # is the same as doing this inline:
             #   count = validators.Int(min=1, max=100)
-            
-            # 2009-05-07 Josh H: Not sure why, but there is a reason this class is declaired within this method and not earlier on like in the voucher controller. Or maybe I just did this poorly...
+            #
+            # 2009-05-07 Josh H: Not sure why, but there is a reason this
+	    # class is declaired within this method and not earlier on
+	    # like in the voucher controller. Or maybe I just did this
+	    # poorly...
             pass
 
         # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
@@ -206,19 +229,22 @@ class RegistrationController(BaseController):
                 ProductSchema.add_field('category_' + clean_cat_name, ProductInCategory(category=category, not_empty=True))
                 for product in category.products:
                     if product.validate is not None:
-                        exec("validator = " + product.validate)
-                        ProductSchema.add_pre_validator(validator)
+                        validator = eval(product.validate)
+                        validator.error_field_name = "error.%s" % category.clean_name()
+                        ProductSchema.add_chained_validator(validator)
             elif category.display == 'checkbox':
                 product_fields = []
                 for product in category.products:
                     clean_prod_desc = product.clean_description()
                     #if self._product_available(product):
-                    ProductSchema.add_field('product_' + clean_cat_name, validators.Bool(if_missing=False)) # TODO: checkbox available() not implemented. See lib.validators.ProductCheckbox.
+                    ProductSchema.add_field('product_' + clean_cat_name, validators.Bool(if_missing=False))
                     product_fields.append('product_' + clean_cat_name)
                     if product.validate is not None:
-                        exec("validator = " + product.validate)
-                        ProductSchema.add_pre_validator(validator)
-                ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
+                        validator = eval(product.validate)
+                        validator.error_field_name = "error.%s" % category.clean_name()
+                        ProductSchema.add_chained_validator(validator)
+                validator = self.min_max_validator(product_fields, category)
+                ProductSchema.add_chained_validator(validator)
             elif category.display == 'qty':
                 # qty
                 product_fields = []
@@ -229,12 +255,22 @@ class RegistrationController(BaseController):
                     ProductSchema.add_field('product_' + clean_cat_name + '_' + clean_prod_desc + '_qty', ProductQty(product=product, if_missing=None))
                     product_fields.append('product_' + clean_cat_name + '_' + clean_prod_desc+ '_qty')
                     if product.validate is not None:
-                        exec("validator = " + product.validate)
-                        ProductSchema.add_pre_validator(validator)
-
-                ProductSchema.add_pre_validator(ProductMinMax(product_fields=product_fields, min_qty=category.min_qty, max_qty=category.max_qty, category_name=category.name))
+                        validator = eval(product.validate)
+                        validator.error_field_name = "error.%s" % category.clean_name()
+                        ProductSchema.add_chained_validator(validator)
+                validator = self.min_max_validator(product_fields, category)
+                ProductSchema.add_chained_validator(validator)
 
         edit_schema.add_field('products', ProductSchema)
+
+    @classmethod
+    def min_max_validator(cls, fields, category):
+	return ProductMinMax(
+                product_fields=fields,
+                min_qty=category.min_qty,
+                max_qty=category.max_qty,
+                category_name=category.name,
+                error_field_name="error.%s" % category.clean_name())
 
     def is_speaker(self):
         try:
@@ -399,7 +435,7 @@ class RegistrationController(BaseController):
             product = rproduct.product
             category_name = product.category.clean_name()
             if product.category.display == "checkbox":
-                defaults['products.product_' + category_name] = product.id
+                defaults['products.product_' + category_name] = "1"
             else:
                 defaults['products.category_' + category_name] = product.id
             if rproduct.qty > 0:
@@ -520,7 +556,7 @@ class RegistrationController(BaseController):
             elif category.display == 'checkbox':
                 for product in category.products:
                     clean_category_name = category.clean_name()
-                    if result['products']['product_' + clean_category_name] == True:
+                    if result['products']['product_' + clean_category_name]:
                         rego_product = RegistrationProduct()
                         rego_product.registration = c.registration
                         rego_product.product = product

@@ -131,11 +131,6 @@ class FundingReviewSchema(BaseSchema):
     score = validators.OneOf(["-2", "-1", "+1", "+2", "null"])
     comment = validators.String()
 
-class PrevLCAValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        if value['prevlca'] != None and '98' in value['prevlca']:
-            raise Invalid("LCA in Auckland -- Yeah Right.", value, state)
-
 class ExistingRegistrationValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         registration = Registration.find_by_id(int(value), abort_404=False)
@@ -184,17 +179,17 @@ class ExistingPersonValidator_by_email(validators.FancyValidator):
             raise Invalid(msg, value, state, error_dict={'email_address': msg})
 
 class NotExistingPersonValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        person = Person.find_by_email(value['email_address'])
+    def validate_python(self, values, state):
+        person = Person.find_by_email(values['email_address'])
         if person is not None:
             msg = "A person with this email already exists. Please try signing in first."
-            raise Invalid(msg, value, state, error_dict={'email_address': msg})
+            raise Invalid(msg, values, state, error_dict={'email_address': msg})
 
 class SameEmailAddress(validators.FancyValidator):
-    def validate_python(self, value, state):
-        if value['email_address'] != value['email_address2']:
+    def validate_python(self, values, state):
+        if values['email_address'] != values['email_address2']:
             msg = 'Email addresses don\'t match'
-            raise Invalid(msg, value, state, error_dict={'email_address2': msg})
+            raise Invalid(msg, values, state, error_dict={'email_address2': msg})
 
 class PersonSchema(BaseSchema):
     #allow_extra_fields = False
@@ -227,36 +222,27 @@ class ProductMinMax(validators.FancyValidator):
         
         See zookeepr.registration.RegistrationController._generate_product_schema for examples        
     """
-    def validate_python(self, value, state):
+    def validate_python(self, values, state):
         total = 0
-        negative_products = False
+        error_dict = {}
         for field in self.product_fields:
             try:
-                if int(value[field]) < 0:
-                    negative_products = True
+                value = values.get(field, None)
+                if value is None:
+                    pass
+                elif value < 0:
+                    error_dict[field] = "Must be positive."
                 else:
-                    total += int(value[field])
+                    total += value
             except:
                 pass
-        if negative_products:
-            raise Invalid("You can not have negative products. Please correct your " + self.category_name, value, state)
         if total < self.min_qty:
-            raise Invalid("You must have at least " + str(self.min_qty) + ' ' + self.category_name, value, state)
+            error_dict[self.error_field_name] = "You must have at least %d %s" % (self.min_qty, self.category_name,)
         if total > self.max_qty:
-            raise Invalid("You can not order more than " + str(self.max_qty) + ' ' + self.category_name, value, state)
-
-class CheckAccomDates(validators.FancyValidator):
-    def __init__(self, *args, **kw):
-        validators.FancyValidator.__init__(self, *args, **kw)
-        if not hasattr(self, 'checkin') or self.checkin==None:
-            self.checkin = 'checkin'
-        if not hasattr(self, 'checkout') or self.checkout==None:
-            self.checkout = 'checkout'
-
-    def validate_python(self, value, state):
-        if value[self.checkin] >= value[self.checkout]:
-            raise Invalid("Your checkin date must be before your check out.", value, state)
-        return
+            error_dict[self.error_field_name] = "You can not order more than %d %s" % (self.max_qty, self.category_name,)
+        if error_dict:
+            error_message = "Quantities for %s are incorrect" % self.category_name 
+            raise Invalid(error_message, values, state, error_dict=error_dict)
 
 class ProductInCategory(validators.FancyValidator):
     """ Check to see if product is available """
@@ -272,12 +258,6 @@ class ProductInCategory(validators.FancyValidator):
                     raise Invalid("The selected product, " + product.description + ", is not available.", value, state)
 
         raise Invalid("Product " + value + " is not allowed in category " + self.category.name, value, state)
-
-#class ProductCheckbox(validators.FancyValidator):
-#    def validate_python(self, value, state):
-#        if int(value) == 1 and not self.product.available():
-#            raise Invalid("The selected product, " + self.product.description + ", has unfortunately sold out.", value, state)
-#        return
 
 class ProductQty(validators.Int):
     def __init__(self, *args, **kw):
@@ -300,60 +280,63 @@ class PPDetails(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes adult_field, email_field
 
-    def validate_python(self, value, state):
+    def validate_python(self, values, state):
+        error_dict = {}
         try:
-            adult_field = int(value[self.adult_field])
+            adult_field = int(values[self.adult_field])
         except:
             # no adult tickets = no tickets at all
             return
-        if adult_field > 0 and value[self.email_field] == '':
-            raise Invalid("You must supply a valid email address for the partners programme.", value, state)
-        if adult_field > 0 and value[self.name_field] == '':
-            raise Invalid("You must supply a valid name for the partners programme.", value, state)
-        if adult_field > 0 and value[self.mobile_field] == '':
-            raise Invalid("You must supply a valid mobile number for the partners programme.", value, state)
-        return
+        if adult_field > 0 and values[self.email_field] == '':
+            error_dict[self.email_field] = "You must supply a valid email address for the partners programme."
+        if adult_field > 0 and values[self.name_field] == '':
+            error_dict[self.name_field] = "You must supply a valid name for the partners programme."
+        if adult_field > 0 and values[self.mobile_field] == '':
+            error_dict[self.mobile_field] = "You must supply a valid mobile number for the partners programme."
+        if error_dict:
+            raise Invalid("Partners Program details are incorrect", values, state, error_dict=error_dict)
 
 class ProDinner(validators.FancyValidator):
     # If they select a professional ticket, force the dinner ticket
     # takes dinner_field, ticket_category and ticket_id list
 
-    def validate_python(self, value, state):
+    def validate_python(self, values, state):
         try:
-            ticket = int(value[self.ticket_category])
+            ticket = int(values[self.ticket_category])
         except:
-            #they haven't gotten a ticket yet
+            # they haven't gotten a ticket yet
             return
-        if not self.dinner_field in value:
+        if not self.dinner_field in values:
             # the Speakers Dinner field is not present for non-speakers
             return
-        if len(value[self.dinner_field]) == 0 and ticket in self.ticket_id:
-            raise Invalid("The ticket you have chosen includes one free dinner ticket, however you haven't enterered anything into the Speaker Dinner or Penguin Dinner tickets box. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself.", value, state)
-        return
+        error_dict = {}
+        if not values[self.dinner_field] and ticket in self.ticket_id:
+            error_dict[self.error_field_name] = "The ticket you have chosen includes one free dinner ticket. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself."
+        if error_dict:
+            raise Invalid("Dinners are incorrect", values, state, error_dict=error_dict)
 
 class PPChildrenAdult(validators.FancyValidator):
     # Check if a child in the PP has an adult with them
     # takes current_field, adult_field
 
-    def validate_python(self, value, state):
+    def validate_python(self, values, state):
         try:
-            current_field = int(value[self.current_field])
+            current_field = int(values[self.current_field])
         except:
             # they didn't order any of this field
             return
+        error_dict = {}
         try:
-            adult_field = int(value[self.adult_field])
+            adult_field = int(values[self.adult_field])
         except:
-            raise Invalid("Any children in the partners programme must be accompanied by an adult.", value, state)
-
-        # this if shouldn't actually be entered
-        if current_field > 0 and adult_field < 1:
-            raise Invalid("Any children in the partners programme must be accompanied by an adult.", value, state)
-        return
+            error_dict[self.adult_field] = "Any children in the partners programme must be accompanied by an adult."
+        else:
+            if current_field > 0 and adult_field < 1:
+                error_dict[self.adult_field] = "Any children in the partners programme must be accompanied by an adult."
+        if error_dict:
+            raise Invalid("Dinners are incorrect", values, state, error_dict=error_dict)
 
 class InvoiceItemProductDescription(validators.FancyValidator):
-    def validate_python(self, value, state):
-        if (value['product'] is None and value['description'] == "") or (value['product'] is not None and value['description'] != ""):
+    def validate_python(self, values, state):
+        if (values['product'] is None and values['description'] == "") or (values['product'] is not None and values['description'] != ""):
             raise Invalid("You must select a product OR enter a description, not both", value, state, error_dict={'description': 'Please fill in one'})
-        return
-

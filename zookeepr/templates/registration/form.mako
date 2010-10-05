@@ -131,6 +131,7 @@ ${ h.hidden('person.mobile') }
           <legend>&nbsp;</legend>
           <h2>${ category.name.title() }</h2>
           <p class="description">${ category.description |n}</p>
+          <input type="hidden" name="${'products.error.' + category.clean_name()}">
 ## Manual category display goes here:
 %       if category.display_mode == 'shirt':
 <%
