@@ -1620,6 +1620,11 @@ img.image
     color: #ff0f0f;
 }
 
+.message_degrade
+{
+    background: #fff;
+}
+
 .mandatory
 {
     color: #ff0000;
@@ -1644,4 +1649,28 @@ img.image
 
 .programmeTalkId {
       display:none;
+}
+
+#flash
+{
+    width:100%
+}
+
+#flash .message
+{
+    padding-top: 1em;
+    padding-left: 50px;
+    border: 1px solid #ccc;
+    margin: 1em;
+    background: #fffaaa url('/images/icons/emblem-note.png') no-repeat 10px 50%;
+}
+
+#flash .message-error
+{
+    background: #ff9999 url('/images/icons/dialog-error.png') no-repeat 10px 50%;
+}
+
+#flash .message-warning
+{
+    background: #ffcc88 url('/images/icons/dialog-warning.png') no-repeat 10px 50%;
 }
