@@ -36,7 +36,7 @@ class ProductCategorySchema(BaseSchema):
     description = validators.String(not_empty=True)
     note = validators.String()
     display = validators.String(not_empty=True)
-    display_grid = validators.Bool()
+    display_mode = validators.String()
     display_order = validators.Int(min=0, max=2000000, not_empty=True)
     min_qty = validators.Int(min=0, max=2000000)
     max_qty = validators.Int(min=0, max=2000000)

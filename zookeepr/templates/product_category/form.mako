@@ -10,13 +10,13 @@
 
         <p class="label"><span class="mandatory">*</span><label for="product_category.display">Display as:</label></p>
         <p class="entries">
-        ${ h.radio('product_category.display', 'radio', label="Radio button (single selection)") }
-        <br />
-        ${ h.radio('product_category.display', 'select', label="Drop down menu (single selection)") }
-        <br />
-        ${ h.radio('product_category.display', 'checkbox', label="Checkbox (multiple selection)") }
-        <br />
-        ${ h.radio('product_category.display', 'qty', label="Quantity (integer)") }
+          ${ h.radio('product_category.display', 'radio', label="Radio button (single selection)") }
+          <br />
+          ${ h.radio('product_category.display', 'select', label="Drop down menu (single selection)") }
+          <br />
+          ${ h.radio('product_category.display', 'checkbox', label="Checkbox (multiple selection)") }
+          <br />
+          ${ h.radio('product_category.display', 'qty', label="Quantity (integer)") }
         </p>
 
         <p class="label"><label for="product_category.display_mode">Display mode:</label></p>
