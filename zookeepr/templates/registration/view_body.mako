@@ -47,7 +47,7 @@
 %           endif
 %       endfor
 %   endfor
-%   if category.name == 'Accommodation' and not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0):
+%   if category.name == 'Accommodation' and not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
 
         <p class="label">Check in on:</p>
         <p>${ h.date(c.registration.checkin) }</p>
