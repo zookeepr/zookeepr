@@ -47,7 +47,6 @@
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
-      <td class="programme_room" align="center" valign="top">&nbsp;</td>
     </tr>
 
     <tr class="even">
@@ -64,7 +63,6 @@
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
-      <td class="programme_room" align="center" valign="top">&nbsp;</td>
     </tr>
 
     <tr class="even">
@@ -74,7 +72,6 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">15:45-17:30</th>
-      <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
