@@ -6,7 +6,7 @@ Dear ${ c.person.firstname },
 Thank you for creating a login to the ${ h.event_name() } website.
 Please validate your account by clicking on this URL:
 
-  ${ h.url_for(qualified=True, 'acct_confirm', confirm_hash=c.person.url_hash) }
+  ${ h.url_for(qualified=True, controller='person', action='confirm', confirm_hash=c.person.url_hash) }
 
 Once your account has been confirmed, you will be able to log into the web
 site with the password you provided.
