@@ -19,7 +19,7 @@
   </tr>
 %   for category in c.product_category_collection:
   <tr class="${ h.cycle('even', 'odd')}">
-    <td>${ h.link_to(category.name, url=h.url_for(action='view', id=category.id)) } <br /><sub>(${h.link_to('Statistics', url=h.url_for(action='stats'))})</sub></td>
+    <td>${ h.link_to(category.name, url=h.url_for(action='view', id=category.id)) } <br /><sub>(${h.link_to('Statistics', url=h.url_for(action='stats', id=category.id))})</sub></td>
     <td>${ category.description |n}</td>
     <td>${ category.note or "" |n}</td>
     <td>${ category.display }</td>
