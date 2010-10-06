@@ -23,7 +23,8 @@
     </ul><br>
 % endif
 
-<p>${ h.link_to('New category', url=h.url_for(controller='product', action='new')) }</p>
+<p>${ h.link_to('Manage Categories', url=h.url_for(controller='product_category', action='index')) }</p>
+<p>${ h.link_to('New Category', url=h.url_for(controller='product_category', action='new')) }</p>
 
 <%def name="title()">
 Products -

@@ -15,6 +15,7 @@
     <th>Max. Quantity</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
+    <th>&nbsp;</th>
   </tr>
 %   for category in c.product_category_collection:
   <tr class="${ h.cycle('even', 'odd')}">
@@ -27,7 +28,7 @@
     <td>${ category.min_qty }</td>
     <td>${ category.max_qty }</td>
 %       if c.can_edit:
-%           for action in ['edit', 'delete']:
+%           for action in ['edit', 'delete', 'stats']:
   <td>${ h.link_to(action, url=h.url_for(action=action, id=category.id)) }</td>
 %           endfor
 %       endif
