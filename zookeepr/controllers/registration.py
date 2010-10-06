@@ -92,12 +92,15 @@ class IAgreeValidator(validators.FormValidator):
             }
             raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
 
-class ShellValidator(validators.String):
+class OtherValidator(validators.String):
+    def __init__(self, list):
+        super(self.__class__, self).__init__()
+        self.__list = list
     def validate_python(self, value, state):
-        super(self.__class__, self).validate_python(value, state)
-        if value['shelltext'] is not None and value['shell'] == 'other':
-            if value['shelltext'].lower() == 'cmd.exe' or value['shelltext'].lower() == 'command.com':
-                raise Invalid(value['shelltext'].lower() + ' -- Nice try!', value, state)
+        if value is not None:
+            for bad in self.__list:
+                if bad in value.lower():
+                    raise Invalid(value + ' -- Nice try!', value, state)
 
 class ExistingPersonSchema(BaseSchema):
     company = validators.String()
@@ -114,11 +117,11 @@ class RegistrationSchema(BaseSchema):
     over18 = validators.Int(min=0, max=1, not_empty=True)
     nick = validators.String()
     shell = validators.String()
-    shelltext = ShellValidator()
+    shelltext = OtherValidator(list=('cmd', 'command'))
     editor = validators.String()
-    editortext = validators.String()
+    editortext = OtherValidator(list=('word', 'write'))
     distro = validators.String()
-    distrotext = validators.String()
+    distrotext = OtherValidator(list=('window', 'xp', 'vista'))
     silly_description = validators.String()
     silly_description_checksum = validators.String(strip=True)
     if lca_rego['pgp_collection'] != 'no':
@@ -136,7 +139,7 @@ class RegistrationSchema(BaseSchema):
     chained_validators = [
         CheckAccomDates("checkin", "checkout"),
         SillyDescriptionChecksum("silly_description", "silly_description_checksum"),
-        IAgreeValidator("i_agree"),
+        IAgreeValidator("i_agree")
     ]
 
 class SpecialOfferSchema(BaseSchema):
@@ -450,17 +453,19 @@ class RegistrationController(BaseController):
         else:
             defaults['registration.over18'] = 0
 
-        if c.registration.shell in lca_rego['shells']:
+        if c.registration.shell in lca_rego['shells'] or c.registration.shell == '':
             defaults['registration.shell'] = c.registration.shell
         else:
             defaults['registration.shell'] = 'other'
             defaults['registration.shelltext'] = c.registration.shell
-        if c.registration.editor in lca_rego['editors']:
+
+        if c.registration.editor in lca_rego['editors'] or c.registration.editor == '':
             defaults['registration.editor'] = c.registration.editor
         else:
             defaults['registration.editor'] = 'other'
             defaults['registration.editortext'] = c.registration.editor
-        if c.registration.distro in lca_rego['distros']:
+
+        if c.registration.distro in lca_rego['distros'] or c.registration.distro == '':
             defaults['registration.distro'] = c.registration.distro
         else:
             defaults['registration.distro'] = 'other'
