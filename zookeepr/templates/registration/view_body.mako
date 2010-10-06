@@ -81,27 +81,6 @@
 %if c.registration.special:
         <p class="label"><b>Other special requirements:</b> ${ c.registration.special }</p>
 %endif
-        <p class="label"><b>Preferred mini-confs:</b></p>
-        <p>
-          <table>
-            <tr>
-% for day, miniconfs in h.lca_rego['miniconfs']:
-              <th>${ day }</th>
-% endfor
-            </tr>
-            <tr>
-% for day, miniconfs in h.lca_rego['miniconfs']:
-              <td>
-%   for miniconf in miniconfs:
-<%       l = '%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_')) %>
-                ${ h.yesno(l in (c.registration.miniconf or [])) |n }
-                ${ miniconf }
-                <br>
-%   endfor
-              </td>
-% endfor
-            </tr>
-          </table>
 
           <p class="label"><label for="registration.prevlca"><b>Previous LCA attendance:</b></label></p>
           <p class="entries">
