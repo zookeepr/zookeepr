@@ -462,7 +462,7 @@ class AdminController(BaseController):
         """ CSV export of registrations for mail merges [Registrations] """
         c.data = []
         c.text = ''
-        c.columns = ('id', 'name', 'firstname', 'email_address', 'country', 'speaker', 'keynote', 'miniconf', 'dietary_requirements', 'special_requirements', 'paid')
+        c.columns = ('id', 'name', 'firstname', 'email_address', 'country', 'speaker', 'keynote', 'dietary_requirements', 'special_requirements', 'paid')
         c.noescape = True
         for r in meta.Session.query(Registration).all():
           # We only care about people that have valid invoices.
@@ -941,33 +941,6 @@ class AdminController(BaseController):
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
-    def miniconf_preferences(self):
-        """ Preferred miniconfs. All people - including unpaid [Statistics] """
-        registration_list = Registration.find_all()
-        c.columns = ['miniconf', 'People']
-        c.data = []
-        miniconfs = {}
-        for registration in registration_list:
-            if type(registration.miniconf) == list:
-                for miniconf in registration.miniconf:
-                    if miniconfs.has_key(miniconf):
-                        miniconfs[miniconf] += 1
-                    else:
-                        miniconfs[miniconf] = 1
-        for (miniconf, value) in miniconfs.iteritems():
-            c.data.append([miniconf, value])
-
-        c.text = '''
-          <img float="right" width="400" height="200"
-          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
-        ''' % (
-            ','.join([str(count) for (label, count) in c.data]),
-            '|'.join([label for (label, count) in c.data]),
-        )
-
-        return table_response()
-
-    @authorize(h.auth.has_organiser_role)
     def previous_years_stats(self):
         """ Details on how many people have come to previous years of LCA. All people - including unpaid [Statistics] """
         registration_list = meta.Session.query(Registration).all()
@@ -1202,7 +1175,7 @@ class AdminController(BaseController):
         for category in ProductCategory.find_all():
           name = category.name
           if name != 'Ticket':
-            if name != 'Accommodation' or (name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] != 'yes'):
+            if name != 'Accommodation' or not (name == 'Accommodation' and (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0))):
               categories.append(category.name)
         categories.sort()
 

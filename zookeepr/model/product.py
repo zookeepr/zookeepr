@@ -18,7 +18,7 @@ def setup(meta):
     ceiling_nonearlybird = Ceiling.find_by_name('conference-non-earlybird')
 
     # Tickets
-    ticket_student = Product(category=category_ticket, active=True, description="Concession/Student Ticket",
+    ticket_student = Product(category=category_ticket, active=True, description="Student Ticket",
                       cost="12500", auth=None, validate=None)
     ticket_student.ceilings.append(ceiling_conference)
     ticket_student.ceilings.append(ceiling_all_conference)
@@ -78,11 +78,13 @@ def setup(meta):
     ticket_volunteer_paid.ceilings.append(ceiling_all_conference)
     meta.Session.add(ticket_volunteer_paid);
 
-
     ticket_press = Product(category=category_ticket, active=True, description="Press Ticket",
-                      cost="0", auth="self.is_press()", validate=None)
+                      cost="0", auth="self.is_role('press')", validate=None)
     ticket_press.ceilings.append(ceiling_all_conference)
     meta.Session.add(ticket_press)
+
+    ticket_team = Product(category=category_ticket, active=True, description="Team Ticket",
+                      cost="0", auth="self.is_role('team')", validate=None)
 
     # Miniconfs
     category_miniconf = ProductCategory.find_by_name('Miniconfs')
@@ -275,7 +277,7 @@ def setup(meta):
 
     ceiling_penguin_all = Ceiling.find_by_name('penguindinner-all')
 
-    product = Product(category=category_penguin, active=True, description="Adult", cost="8000", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])")
+    product = Product(category=category_penguin, active=True, description="Adult", cost="8000", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[4,5,6,7,8,11,12])")
     product.ceilings.append(ceiling_penguin_all)
     meta.Session.add(product)
 
@@ -291,15 +293,15 @@ def setup(meta):
 
     ceiling_speakers_all = Ceiling.find_by_name('speakersdinner-all')
 
-    product = Product(category=category_speakers, active=True, description="Adult", cost="0", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8])", auth="self.is_speaker() or self.is_miniconf_org()")
+    product = Product(category=category_speakers, active=True, description="Adult", cost="0", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8,12])", auth="self.is_speaker() or self.is_miniconf_org() or self.is_role('team')")
     product.ceilings.append(ceiling_speakers_all)
     meta.Session.add(product)
 
-    product = Product(category=category_speakers, active=True, description="Child", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()")
+    product = Product(category=category_speakers, active=True, description="Child", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org() or self.is_role('team')")
     product.ceilings.append(ceiling_speakers_all)
     meta.Session.add(product)
 
-    product = Product(category=category_speakers, active=True, description="Infant", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()")
+    product = Product(category=category_speakers, active=True, description="Infant", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org() or self.is_role('team')")
     meta.Session.add(product)
 
     # Accommodation
@@ -316,15 +318,15 @@ def setup(meta):
     category_partners = ProductCategory.find_by_name('Partners Programme')
     ceiling_partners_all = Ceiling.find_by_name('partners-all')
 
-    partners_adult = Product(category=category_partners, active=True, description="Expression of Interest - Adult", cost="0", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')")
+    partners_adult = Product(category=category_partners, active=True, description="Adult", cost="23500", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')")
     partners_adult.ceilings.append(ceiling_partners_all)
     meta.Session.add(partners_adult);
 
-    product = Product(category=category_partners, active=True, description="Expression of Interest - Child (3-14 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')")
+    product = Product(category=category_partners, active=True, description="Child (3-14 years old)", cost="16500", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')")
     product.ceilings.append(ceiling_partners_all)
     meta.Session.add(product);
 
-    product = Product(category=category_partners, active=True, description="Expression of Interest - Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')")
+    product = Product(category=category_partners, active=True, description="Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')")
     product.ceilings.append(ceiling_partners_all)
     meta.Session.add(product);
 
@@ -332,29 +334,31 @@ def setup(meta):
     meta.Session.add_all(
         [
             # Include 1 Shirt in all registration types
-            ProductInclude(product=ticket_student, include_category=category_shirt, include_qty='1'), # Student
-            ProductInclude(product=ticket_hobbyist_eb, include_category=category_shirt, include_qty='1'), # Hobbyist EB
-            ProductInclude(product=ticket_hobbyist, include_category=category_shirt, include_qty='1'), # Hobbyist
-            ProductInclude(product=ticket_professional_eb, include_category=category_shirt, include_qty='1'), # Pro EB
-            ProductInclude(product=ticket_professional, include_category=category_shirt, include_qty='1'), # Pro
-            ProductInclude(product=ticket_fairy_penguin, include_category=category_shirt, include_qty='1'), # Fairy
-            ProductInclude(product=ticket_speaker, include_category=category_shirt, include_qty='1'), # Speaker
-            ProductInclude(product=ticket_miniconf, include_category=category_shirt, include_qty='1'), # Miniconf
-            ProductInclude(product=ticket_volunteer_free, include_category=category_shirt, include_qty='2'), # Volunteer
-            ProductInclude(product=ticket_volunteer_paid, include_category=category_shirt, include_qty='2'), # Volunteer
-            ProductInclude(product=ticket_press, include_category=category_shirt, include_qty='1'), # Press
-            #ProductInclude(product=partners_adult, include_category=category_shirt, include_qty='1'), # Partner's Programme get a t-shirt
+            ProductInclude(product=ticket_student, include_category=category_shirt, include_qty='1'),           # Student
+            ProductInclude(product=ticket_hobbyist_eb, include_category=category_shirt, include_qty='1'),       # Hobbyist EB
+            ProductInclude(product=ticket_hobbyist, include_category=category_shirt, include_qty='1'),          # Hobbyist
+            ProductInclude(product=ticket_professional_eb, include_category=category_shirt, include_qty='1'),   # Pro EB
+            ProductInclude(product=ticket_professional, include_category=category_shirt, include_qty='1'),      # Pro
+            ProductInclude(product=ticket_fairy_penguin, include_category=category_shirt, include_qty='1'),     # Fairy
+            ProductInclude(product=ticket_speaker, include_category=category_shirt, include_qty='1'),           # Speaker
+            ProductInclude(product=ticket_miniconf, include_category=category_shirt, include_qty='1'),          # Miniconf
+            ProductInclude(product=ticket_volunteer_free, include_category=category_shirt, include_qty='2'),    # Volunteer
+            ProductInclude(product=ticket_volunteer_paid, include_category=category_shirt, include_qty='2'),    # Volunteer
+            ProductInclude(product=ticket_press, include_category=category_shirt, include_qty='1'),             # Press
+            ProductInclude(product=ticket_team, include_category=category_shirt, include_qty='6'),              # Team
+            #ProductInclude(product=partners_adult, include_category=category_shirt, include_qty='1'),           # Partner's Programme get a t-shirt
 
             # Include 1 Dinner for Professional+miniconf and for Speaker registrations
             ProductInclude(product=ticket_professional_eb, include_category=category_penguin, include_qty='1'), # Pro EB
-            ProductInclude(product=ticket_professional, include_category=category_penguin, include_qty='1'), # Pro
-            ProductInclude(product=ticket_fairy_penguin, include_category=category_penguin, include_qty='1'), # Fairy
-            ProductInclude(product=ticket_speaker, include_category=category_penguin, include_qty='1'), # Speaker
-            ProductInclude(product=ticket_miniconf, include_category=category_penguin, include_qty='1'), # Miniconf
-            ProductInclude(product=ticket_press, include_category=category_penguin, include_qty='1'), # Press
+            ProductInclude(product=ticket_professional, include_category=category_penguin, include_qty='1'),    # Pro
+            ProductInclude(product=ticket_fairy_penguin, include_category=category_penguin, include_qty='1'),   # Fairy
+            ProductInclude(product=ticket_speaker, include_category=category_penguin, include_qty='1'),         # Speaker
+            ProductInclude(product=ticket_miniconf, include_category=category_penguin, include_qty='1'),        # Miniconf
+            ProductInclude(product=ticket_press, include_category=category_penguin, include_qty='1'),           # Press
+            ProductInclude(product=ticket_team, include_category=category_penguin, include_qty='2'),            # Team
 
-            # Include 5 partners in the partners program for speakers
-            ProductInclude(product=ticket_speaker, include_category=category_partners, include_qty='5'),
+            # Include 2 partners in the partners program for speakers
+            ProductInclude(product=ticket_speaker, include_category=category_partners, include_qty='2'),
         ]
     )
 
@@ -461,8 +465,11 @@ class Product(Base):
         if len(until) > 0:
             return max(until)
 
-    def clean_description(self):
-        return self.description.replace('-','_');
+    def clean_description(self, category=False):
+        if category == True:
+            return self.category.clean_name() + '_' + self.description.replace('-','_')
+        else:
+            return self.description.replace('-','_');
 
     def __repr__(self):
         return '<Product id=%r active=%r description=%r cost=%r auth=%r validate%r>' % (self.id, self.active, self.description, self.cost, self.auth, self.validate)

@@ -62,12 +62,15 @@ new_schema = NewVoucherSchema()
 
 # Only two categories need vouchers - hard coded yuck... FIXME: In theory this isn't necessary
 allowed_categories = ['Ticket']
-if h.lca_rego['accommodation']['self_book'] != 'yes':
-    allowed_categories.append('Accommodation')
 
 class VoucherController(BaseController):
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
+        category = ProductCategory.find_by_name('Accommodation')
+        if not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
+            allowed_categories.append('Accommodation')
+
+
         c.product_categories = ProductCategory.find_all()
         self._generate_product_schema()
 

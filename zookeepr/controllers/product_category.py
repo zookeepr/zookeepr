@@ -38,6 +38,7 @@ class ProductCategorySchema(BaseSchema):
     display = validators.String(not_empty=True)
     display_mode = validators.String()
     display_order = validators.Int(min=0, max=2000000, not_empty=True)
+    invoice_free_products = validators.Bool(if_missing=False)
     min_qty = validators.Int(min=0, max=2000000)
     max_qty = validators.Int(min=0, max=2000000)
     # TODO: check that min_qty <= max_qty
@@ -77,6 +78,7 @@ class ProductCategoryController(BaseController):
         return render('/product_category/view.mako')
 
     def stats(self, id):
+        c.can_edit = True
         c.product_category = ProductCategory.find_by_id(id)
         c.product_categories = ProductCategory.find_all()
         return render('/product_category/stats.mako')

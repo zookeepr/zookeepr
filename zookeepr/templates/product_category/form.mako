@@ -25,6 +25,9 @@
         <p class="label"><label for="product_category.display_order">Display Order:</label></p>
         <p class="entries">${ h.text('product_category.display_order') }</p>
 
+        <p class="label"><label for="product_category.invoice_free_products">Invoice Free Products:</label></p>
+        <p class="entries">${ h.checkbox('product_category.invoice_free_products', checked=True) }</p>
+
         <p class="label"><label for="product_category.min_qty">Min. Quantity:</label></p>
         <p class="entries">${ h.text('product_category.min_qty') }</p>
 

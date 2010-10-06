@@ -131,7 +131,6 @@ class RegistrationSchema(BaseSchema):
     checkout = validators.Int(min=0, max=31)
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
-    miniconf = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
     chained_validators = [
@@ -200,7 +199,7 @@ class RegistrationController(BaseController):
         # Since the form is arbitrarily defined by what product types there are, the validation
         #   (aka schema) also needs to be dynamic.
         # Thus, this function generates a dynamic schema to validate a given set of products.
-        # 
+        #
         class ProductSchema(BaseSchema):
             # This schema is used to validate the products submitted by the
             # form.  It is populated below
@@ -210,9 +209,9 @@ class RegistrationController(BaseController):
             #   count = validators.Int(min=1, max=100)
             #
             # 2009-05-07 Josh H: Not sure why, but there is a reason this
-	    # class is declaired within this method and not earlier on
-	    # like in the voucher controller. Or maybe I just did this
-	    # poorly...
+            # class is declaired within this method and not earlier on
+            # like in the voucher controller. Or maybe I just did this
+            # poorly...
             pass
 
         # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
@@ -291,15 +290,9 @@ class RegistrationController(BaseController):
         except:
             return False
 
-    def is_press(self):
+    def is_role(self, role):
         try:
-            return c.signed_in_person.has_role('press')
-        except:
-            return False
-
-    def is_miniconfs_only(self):
-        try:
-            return c.signed_in_person.has_role('miniconfsonly')
+            return c.signed_in_person.has_role(role)
         except:
             return False
 
@@ -355,13 +348,10 @@ class RegistrationController(BaseController):
         # Fugly hack.  If we aren't booking accommodation, then default the
         # product bought for Accommodation to 'I will organise my own'.
         #
-	if lca_rego['accommodation']['self_book'] == "yes":
-            category = ProductCategory.find_by_name("Accommodation")
-            for product in Product.find_by_category(category.id):
-                if 'i will organ' in product.description.lower():
-                    break
+        category = ProductCategory.find_by_name("Accommodation")
+        if category and (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
             field_name = 'products.category_%s' % category.name.replace("-","_")
-	    defaults[field_name] = product.id
+            defaults[field_name] = category.products[0].id
 
         # Hacker-proof silly_description field
         c.silly_description, checksum = h.silly_description()
@@ -383,7 +373,7 @@ class RegistrationController(BaseController):
             c.special_offer = SpecialOffer.find_by_name(result['special_offer']['name'])
             if c.special_offer is not None and not c.special_offer.enabled:
                 c.special_offer = None
-        
+
         if c.special_offer is None and lca_info['conference_status'] is not 'open':
             redirect_to(action='status')
 
@@ -507,7 +497,7 @@ class RegistrationController(BaseController):
                     setattr(c.registration, k, result['registration'][k])
             else:
                 setattr(c.registration, k, result['registration'][k])
-        
+
         if result['registration']['over18'] == 1:
             setattr(c.registration, 'over18', True)
         else:
@@ -721,7 +711,7 @@ class RegistrationController(BaseController):
             if ii.product and ii.product.category.id in included:
                 if ii.product.category.id not in prices:
                     prices[ii.product.category.id] = []
- 
+
                 if included[ii.product.category.id] >= ii.qty:
                     prices[ii.product.category.id].append(ii.qty * ii.product.cost)
                     ii.free_qty = ii.qty
@@ -775,7 +765,7 @@ class RegistrationController(BaseController):
                     meta.Session.add(discount_item)
                     invoice.items.append(discount_item)
                     break
-                    
+
     @authorize(h.auth.has_organiser_role)
     def index(self):
         per_page = 20
@@ -783,7 +773,7 @@ class RegistrationController(BaseController):
         #from zookeepr.model.registration import tables as registration_tables
         #from zookeepr.model.proposal import tables as proposal_tables
         from webhelpers import paginate #Upgrade to new paginate
-        
+
         filter = dict(request.GET)
         filter['role'] = []
         for key,value in request.GET.items():
@@ -867,7 +857,7 @@ class RegistrationController(BaseController):
         setattr(c, 'registration_pages', pagination)
         setattr(c, 'registration_collection', pagination.items)
         setattr(c, 'registration_request', filter)
-        
+
         setattr(c, 'roles', Role.find_all())
         setattr(c, 'product_categories', ProductCategory.find_all())
 
@@ -877,7 +867,7 @@ class RegistrationController(BaseController):
         columns = ['Rego', 'Name', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
-        
+
         data = []
         for registration in registration_list:
             products = []
@@ -887,7 +877,7 @@ class RegistrationController(BaseController):
                     invoices.append(str(invoice.id))
                     for item in invoice.items:
                         products.append(str(item.qty) + "x" + item.description)
-        
+
             data.append([registration.id,
                          registration.person.firstname + " " + registration.person.lastname,
                          registration.person.email_address,
@@ -906,7 +896,7 @@ class RegistrationController(BaseController):
                          registration.diet,
                          registration.special,
                        ])
-        
+
         import csv, StringIO
         f = StringIO.StringIO()
         w = csv.writer(f)
@@ -916,7 +906,7 @@ class RegistrationController(BaseController):
         res.headers['Content-type']='text/plain; charset=utf-8'
         res.headers['Content-Disposition']='attachment; filename="table.csv"'
         return res
-        
+
     @authorize(h.auth.has_organiser_role)
     def generate_badges(self):
         defaults = dict(request.POST)

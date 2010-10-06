@@ -45,7 +45,7 @@
         <th>Total (Inc. GST)</th>
       </tr></thead>
 % for item in c.invoice.items:
-%   if h.lca_rego['accommodation']['self_book'] != 'yes' or item.product is None or item.product.category.name != 'Accommodation':
+%   if not (item.cost == 0 and item.product and item.product.category.invoice_free_products == False):
       <tr class="${ h.cycle('even', 'odd') }">
         <td>${ item.description }</td>
         <td style="text-align:center">${ item.qty }</td>

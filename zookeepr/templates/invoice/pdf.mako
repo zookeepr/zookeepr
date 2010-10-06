@@ -43,7 +43,7 @@
     lines.append(c.invoice.person.city + ", " + c.invoice.person.postcode)
 
   lines.append(c.invoice.person.country)
-  
+
   line_count = 0
 %>
 
@@ -55,14 +55,14 @@
 
     <email>${ c.invoice.person.email_address | h }</email>
   </attn>
-   
+
   <event>${ h.event_name() }</event>
   <contact>${ h.lca_info['contact_email'] }</contact>
 
   <items>
 <% itemid = 0 %>
 % for item in c.invoice.items:
-%   if h.lca_rego['accommodation']['self_book'] != 'yes' or item.product is None or item.product.category.name != 'Accommodation':
+%   if not (item.cost == 0 and item.product and item.product.category.invoice_free_products == False):
 <%   itemid += 1 %>
     <item${ itemid }>
       <description>${ item.description }</description>

@@ -30,7 +30,7 @@
 
 <%  category_printed = False %>
 
-%if category.name != 'Accommodation' or h.lca_rego['accommodation']['self_book'] != 'yes':
+%if not (category.name != 'Accommodation' and len(category.products) == 0 and category.products[0].cost == 0):
 
 %   for product in category.products:
 %       for rproduct in c.registration.products:
@@ -47,7 +47,7 @@
 %           endif
 %       endfor
 %   endfor
-%   if category.name == 'Accommodation':
+%   if category.name == 'Accommodation' and not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0):
 
         <p class="label">Check in on:</p>
         <p>${ h.date(c.registration.checkin) }</p>

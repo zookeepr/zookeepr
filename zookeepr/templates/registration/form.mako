@@ -159,12 +159,12 @@ ${ h.hidden('person.mobile') }
 %             for (size, product) in fields[gender]:
 
 %               if not product.available():
-              <td><span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
+              <td><span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_qty', 0) }</td>
 %               else:
 %                 if category.display == 'qty':
-              <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
+              <td>${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2) }</td>
 %                 elif category.display == 'checkbox':
-              <td>${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') }</td>
+              <td>${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox') }</td>
 %                 endif
 %               endif
 %             endfor
@@ -195,12 +195,16 @@ ${ h.hidden('person.mobile') }
               <td>
 %           for (miniconf, product) in fields[day]:
 %             if not product.available():
-            <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }
+%               if product.display == 'qty':
+            <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_qty', 0) }
+%               elif product.display == 'checkbox':
+            <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_checkbox', 0) }
+%               endif
 %             else:
 %               if category.display == 'qty':
-            ${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) } ${ miniconf }
+            ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2, label=miniconf) }
 %               elif category.display == 'checkbox':
-            ${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') } ${ miniconf }
+            ${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=miniconf) }
 %               endif
 %             endif
 %             if product.cost != 0:
@@ -228,9 +232,9 @@ ${ h.hidden('person.mobile') }
   </tr>
 %           for product in products:
 %             if category.display == 'qty':
-    <td align="center">${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
+    <td align="center">${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2) }</td>
 %             elif category.display == 'checkbox':
-    <td align="center">${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') }</td>
+    <td align="center">${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox') }</td>
 %             endif
 %           endfor
 </table>
@@ -245,7 +249,7 @@ ${ h.hidden('person.mobile') }
 %> 
 
 %              if category.name == "Ticket":
-                <li> <label onclick="javascript: ticketWarning(' ${ product.description } ');"> ${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
+                <li> <label onclick="javascript: ticketWarning(' ${ product.description } ');"> ${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
 %                  if product.description.lower().find('student') > -1:
 
 <div id="warningDiv">
@@ -258,17 +262,17 @@ ${ h.hidden('person.mobile') }
           </script>
 %                 endif
 %              else:
-          <li> <label> ${ h.radio('products.category_' + category.name.replace('-','_'), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
+          <li> <label> ${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
 %              endif
 %         endfor
           </ul>
           </p>
 %       elif category.display == 'select':
-%         if (category.name == 'Accommodation' and h.lca_rego['accommodation']['self_book'] == 'yes'):
-            <input type="hidden" name="products.category_${ category.name.replace('-','_') }">
+%         if category.name == 'Accommodation' and (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
+            <input type="hidden" name="products.category_${ category.clean_name() }">
 %         else:
           <p class="entries">
-            <select name="products.category_${ category.name.replace('-','_') }">
+            <select name="products.category_${ category.clean_name() }">
               <option value=""> - </option>
 %           for product in products:
 <%
@@ -289,7 +293,7 @@ ${ h.hidden('person.mobile') }
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') }${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+         <p class="entries">${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=soldout + ' ' + product.description + ' - ' + h.number_to_currency(product.cost/100.0)) }</p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
@@ -298,11 +302,11 @@ ${ h.hidden('person.mobile') }
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-          <p>${ soldout |n}${ product.description } ${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
+          <p>${ soldout |n}${ product.description } ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
 %           endfor
 %       endif
 %       if category.name == 'Accommodation':
-%         if h.lca_rego['accommodation']['self_book'] == 'yes':
+%         if len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0):
           <p class="note">Please see the
           <a href="/register/accommodation" target="_blank">accommodation page</a>
           for discounted rates for delegates. You <strong>must</strong> book
@@ -356,8 +360,8 @@ ${ h.hidden('person.mobile') }
 
           <p class="label"><span class="mandatory">*</span> <label for="registration.over18">Are you over 18?</label></p>
           <p class="entries">
-            <label>${ h.radio('registration.over18', 1) } Yes</label><br />
-            <label>${ h.radio('registration.over18', 0) } No</label><br />
+            ${ h.radio('registration.over18', 1, label='Yes') }<br />
+            ${ h.radio('registration.over18', 0, label='No') } <br />
            </p>
           <p class="note">Being under 18 will not stop you from registering. We need to know whether you are over 18 to allow us to cater for you at venues that serve alcohol.</p>
 

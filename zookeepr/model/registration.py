@@ -35,7 +35,6 @@ class Registration(Base):
     checkin = sa.Column(sa.types.Integer)
     checkout = sa.Column(sa.types.Integer)
     prevlca = sa.Column(CommaList)
-    miniconf = sa.Column(CommaList)
     signup = sa.Column(CommaList)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False,
                                        default=sa.func.current_timestamp())
@@ -66,7 +65,7 @@ class Registration(Base):
     @classmethod
     def find_by_ids(cls, id_list):
         return Session.query(Registration).filter(Registration.id.in_(id_list)).all()
-        
+
     @classmethod
     def find_all(cls):
         return Session.query(Registration).order_by(Registration.id).all()

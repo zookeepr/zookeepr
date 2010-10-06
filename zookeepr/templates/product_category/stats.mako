@@ -157,6 +157,7 @@
 
 % endif
 
+<p>${ h.link_to('Manage Categories', url=h.url_for(action='index')) }</p>
 <p>${ h.link_to('New product', url=h.url_for('/product/new/%d'%category.id)) }</p>
 
 <p>${cat_menu |n}</p>

@@ -22,6 +22,9 @@
         <td><b>Display Order:</b></td><td>${ c.product_category.display_order }</td>
       </tr>
       <tr class="${h.cycle('odd','even')}">
+        <td><b>Invoice Free Products:</b></td><td>${ h.yesno(c.product_category.invoice_free_products) | n}</td>
+      </tr>
+      <tr class="${h.cycle('odd','even')}">
         <td><b>Min. Quantity:</b></td><td>${ c.product_category.min_qty }</td>
       </tr>
       <tr class="${h.cycle('odd','even')}">
