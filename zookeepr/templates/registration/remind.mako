@@ -4,7 +4,7 @@
 
 <blockquote>
 <p>You have not yet paid your registration</p>
-<p>Please go to ${ h.lca_info['event_url']}/profile/$profile_id to edit your registration and complete your payment.</p>
+<p>Please go to ${ h.url_for(qualified=True, controller='registration', action='status', id=None)} to edit your registration and complete your payment.</p>
 </blockquote>
 
 <p>

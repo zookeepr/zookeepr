@@ -6,14 +6,14 @@ Send emails as follows.<br>
 
 <blockquote>
 <p>You have not yet paid invoice $invoice_id</p>
-<p>Please go to ${ h.lca_info['event_url'] }/profile/$profile_id to edit your registration and complete your payment.</p>
+<p>Please go to ${ h.url_for(qualified=True, controller='registration', action='status', id=None)} to edit your registration and complete your payment.</p>
 </blockquote>
 
 <h2>NO_INVOICE:</h2>
 
 <blockquote>
 <p>You have not yet paid invoice $invoice_id</p>
-<p>Please go to ${ h.lca_info['event_url'] }/profile/$profile_id to edit your registration and complete your payment.</p>
+<p>Please go to ${ h.url_for(qualified=True, controller='registration', action='status', id=None)} to edit your registration and complete your payment.</p>
 </blockquote>
 
 <h2>INVALID:</h2>
@@ -25,7 +25,7 @@ Send emails as follows.<br>
 <h2>BAD_PAYMENT:</h2>
 <blockquote>
 <p>Your attempt to pay invoice $invoice_id, failed. Most likely a problem with your card.</p>
-<p>Please go to ${ h.lca_info['event_url'] }/profile/$profile_id to edit your registration and complete your payment.</p>
+<p>Please go to ${ h.url_for(qualified=True, controller='registration', action='status', id=None)} to edit your registration and complete your payment.</p>
 </blockquote>
 
 <p>

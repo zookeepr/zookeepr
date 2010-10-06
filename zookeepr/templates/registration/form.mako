@@ -195,9 +195,9 @@ ${ h.hidden('person.mobile') }
               <td>
 %           for (miniconf, product) in fields[day]:
 %             if not product.available():
-%               if product.display == 'qty':
+%               if category.display == 'qty':
             <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_qty', 0) }
-%               elif product.display == 'checkbox':
+%               elif category.display == 'checkbox':
             <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_checkbox', 0) }
 %               endif
 %             else:
