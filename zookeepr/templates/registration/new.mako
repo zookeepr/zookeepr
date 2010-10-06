@@ -2,7 +2,7 @@
 
 <% desc, descChecksum = h.silly_description() %>
 
-% if not 'conference' in c.ceilings or c.ceilings['conference'].available(): 
+% if not 'conference-paid' in c.ceilings or c.ceilings['conference-paid'].available(): 
 %   if c.special_offer is not None:
     <h2>Register for ${ h.event_name() } (${ c.special_offer.name } Special Offer)</h2>
     <div id="registration">

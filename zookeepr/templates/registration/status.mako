@@ -5,26 +5,26 @@
     <div class="notice-box">
 % if h.lca_info['conference_status'] == 'not_open':
       <b>Registrations</b> are <i>not</i> open<br><br>
-% elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference'].available():
+% elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference-paid'].available():
       <b>Registrations</b> are open<br><br>
 % else:
       <b>Registrations are closed</b><br><br>
 % endif
-      <div class = "graph-bar" style = "width:${ h.number_to_percentage(c.ceilings['conference'].percent_invoiced(), precision=0) }">&nbsp;</div>
-      <div class = "graph-bar-text">${ h.ticket_percentage_text(c.ceilings['conference'].percent_invoiced()) }</div><br>
-% if h.lca_info['conference_status'] == 'open' and c.ceilings['earlybird'].available() and c.ceilings['conference'].available():
+      <div class = "graph-bar" style = "width:${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced(), precision=0) }">&nbsp;</div>
+      <div class = "graph-bar-text">${ h.ticket_percentage_text(c.ceilings['conference-paid'].percent_invoiced()) }</div><br>
+% if h.lca_info['conference_status'] == 'open' and c.ceilings['conference-earlybird'].available() and c.ceilings['conference-paid'].available():
       <b>Earlybird</b> is available<br><br>
-      <div class = "graph-bar" style = "width:${ h.number_to_percentage(c.ceilings['earlybird'].percent_invoiced(), precision=0) }">&nbsp;</div>
-      <div class = "graph-bar-text">${ h.ticket_percentage_text(c.ceilings['earlybird'].percent_invoiced(), True) |h}</div><br>
+      <div class = "graph-bar" style = "width:${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced(), precision=0) }">&nbsp;</div>
+      <div class = "graph-bar-text">${ h.ticket_percentage_text(c.ceilings['conference-earlybird'].percent_invoiced(), True) |h}</div><br>
 % else:
       <b>Earlybird not available</b><br><br>${ c.ebtext |h}
 % endif
-      <b><%c.timeleft }</b>
+      <b>${ c.timeleft }</b>
     </div>
 """
 %>
 
-% if 'conference' not in c.ceilings or (c.registration is None and h.lca_info['conference_status'] == 'not_open'):
+% if 'conference-paid' not in c.ceilings or (c.registration is None and h.lca_info['conference_status'] == 'not_open'):
     <h2>Registrations are not open</h2>
     <p>Registrations are not yet open. Please come back soon!</p>
 % elif c.registration is None and h.lca_info['conference_status'] == 'closed':
@@ -32,7 +32,7 @@
     <p>Registrations are completely closed.</p>
 % else:
 
-% if not c.ceilings['conference'].available():
+% if not c.ceilings['conference-paid'].available():
     <h2>Registrations are closed</h2>
     <p>Registrations are now closed. You will only be able to register if you
     have an existing voucher code or if you're otherwise entitled to attend
