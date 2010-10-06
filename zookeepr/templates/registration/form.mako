@@ -148,25 +148,73 @@ ${ h.hidden('person.mobile') }
 %>
           <table>
 %           for gender in fields: 
-            <tr><th>&nbsp;</th>
-%              for (size, product) in fields[gender]:
-               <th>${ size }</th>
-%              endfor
-             </tr>
-             <tr>
-               <td>${ gender }</td>
-%              for (size, product) in fields[gender]:
+            <tr>
+              <th>&nbsp;</th>
+%             for (size, product) in fields[gender]:
+              <th>${ size }</th>
+%             endfor
+            </tr>
+            <tr>
+              <td>${ gender }</td>
+%             for (size, product) in fields[gender]:
 
 %               if not product.available():
-            <td><span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
+              <td><span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }</td>
 %               else:
-            <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
+%                 if category.display == 'qty':
+              <td>${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
+%                 elif category.display == 'checkbox':
+              <td>${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') }</td>
+%                 endif
 %               endif
 %             endfor
             </tr>
 %           endfor
           </table>
-%       elif category.display_mode == 'grid' and category.display == 'qty':
+%       elif category.display_mode == 'miniconf':
+<%
+          fields = dict()
+          for product in products:
+            results = re.match("^([a-zA-Z0-9']+)\s+(.*)$", product.description)
+            day = results.group(1)
+            miniconf = results.group(2)
+
+            if day not in fields:
+              fields[day] = []
+            fields[day].append((miniconf, product))
+          endfor
+%>
+          <table>
+            <tr>
+%         for day in fields: 
+              <th>${ day }</th>
+%         endfor
+            </tr>
+            <tr>
+%         for day in fields:
+              <td>
+%           for (miniconf, product) in fields[day]:
+%             if not product.available():
+            <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', 0) }
+%             else:
+%               if category.display == 'qty':
+            ${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) } ${ miniconf }
+%               elif category.display == 'checkbox':
+            ${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') } ${ miniconf }
+%               endif
+%             endif
+%             if product.cost != 0:
+            - ${ h.number_to_currency(product.cost/100.0) }
+%             endif
+            <br />
+%           endfor
+              </td>
+%        endfor
+            </tr>
+          </table>
+
+
+%       elif category.display_mode == 'grid':
 <table>
   <tr>
 %           for product in products:
@@ -179,7 +227,11 @@ ${ h.hidden('person.mobile') }
 %           endfor
   </tr>
 %           for product in products:
+%             if category.display == 'qty':
     <td align="center">${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) }</td>
+%             elif category.display == 'checkbox':
+    <td align="center">${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') }</td>
+%             endif
 %           endfor
 </table>
 %       elif category.display == 'radio':
@@ -237,7 +289,7 @@ ${ h.hidden('person.mobile') }
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_')) }${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
+         <p class="entries"><label>${ h.checkbox('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_checkbox') }${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label></p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
@@ -246,7 +298,7 @@ ${ h.hidden('person.mobile') }
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-          <p>${ soldout |n}${ product.description } ${ h.text('products.product_' + str(product.id) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
+          <p>${ soldout |n}${ product.description } ${ h.text('products.product_' + category.name.replace('-','_') + '_' + product.description.replace('-','_') + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
 %           endfor
 %       endif
 %       if category.name == 'Accommodation':
@@ -329,43 +381,6 @@ ${ h.hidden('person.mobile') }
               </tr>
             </table>
             </p>
-       </fieldset>
-
-        <fieldset>
-          <legend>&nbsp;</legend>
-          <h2>Miniconfs Registration of Interest</h2>
-
-          <p class="label"><label for="registration.miniconfs">Preferred miniconfs:</label></p>
-          <p class="entries">
-            <table>
-              <tr>
-% for day, miniconfs in h.lca_rego['miniconfs']:
-                <th>${ day }</th>
-% endfor
-              </tr>
-              <tr>
-% for day, miniconfs in h.lca_rego['miniconfs']:
-                <td>
-%   for miniconf in miniconfs:
-
-        <% label = 'registration.miniconf.%s_%s' % (day,miniconf.replace(' ', '_').replace('.', '_')) %>
-%       if miniconf == 'Rocket Miniconf':
-                  <label onclick="javascript: showRocketWarning()">${ h.checkbox(label) } ${ miniconf } <span class="note" id="rocket_see_note"># See note below</span> </label>
-%       else:
-                  <label>${ h.checkbox(label) } ${ miniconf } </label>
-%       endif
-                  <br>
-%   endfor
-                </td>
-% endfor
-              </tr>
-            </table>
-
-            <p class="note">
-            </p>
-
-            <p class="note">Please check the <a href="/programme/miniconfs" target="_blank">Miniconfs page</a> for details on each event. You can choose to attend multiple miniconfs in the one day, as the schedules will be published ahead of the conference for you to swap sessions.</p>
-
           </fieldset>
 
           <fieldset>

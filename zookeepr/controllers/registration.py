@@ -236,7 +236,8 @@ class RegistrationController(BaseController):
                 product_fields = []
                 for product in category.products:
                     clean_prod_desc = product.clean_description()
-                    product_field_name = 'product_' + clean_cat_name
+                    product_field_name = 'product_' + clean_cat_name + '_' + clean_prod_desc + '_checkbox'
+
                     ProductSchema.add_field(product_field_name, CheckboxQty(product=product, if_missing=False))
                     product_fields.append(product_field_name)
                     if product.validate is not None:
@@ -250,10 +251,10 @@ class RegistrationController(BaseController):
                 product_fields = []
                 for product in category.products:
                     clean_prod_desc = product.clean_description()
+                    product_field_name = 'product_' + clean_cat_name + '_' + clean_prod_desc + '_qty'
 
-                    #if self._product_available(product):
-                    ProductSchema.add_field('product_' + clean_cat_name + '_' + clean_prod_desc + '_qty', ProductQty(product=product, if_missing=None))
-                    product_fields.append('product_' + clean_cat_name + '_' + clean_prod_desc+ '_qty')
+                    ProductSchema.add_field(product_field_name, ProductQty(product=product, if_missing=None))
+                    product_fields.append(product_field_name)
                     if product.validate is not None:
                         validator = eval(product.validate)
                         validator.error_field_name = "error.%s" % category.clean_name()
@@ -435,7 +436,7 @@ class RegistrationController(BaseController):
             product = rproduct.product
             category_name = product.category.clean_name()
             if product.category.display == "checkbox":
-                defaults['products.product_' + category_name] = "1"
+                defaults['products.product_' + category_name + '_' + product.clean_description() + '_checkbox'] = "1"
             else:
                 defaults['products.category_' + category_name] = product.id
             if rproduct.qty > 0:
@@ -555,8 +556,9 @@ class RegistrationController(BaseController):
                     c.registration.products.append(rego_product)
             elif category.display == 'checkbox':
                 for product in category.products:
-                    clean_category_name = category.clean_name()
-                    if result['products']['product_' + clean_category_name]:
+                    clean_prod_desc = product.clean_description()
+
+                    if result['products']['product_' + clean_cat_name  + '_' + clean_prod_desc + '_checkbox']:
                         rego_product = RegistrationProduct()
                         rego_product.registration = c.registration
                         rego_product.product = product

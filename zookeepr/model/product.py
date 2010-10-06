@@ -10,159 +10,351 @@ from product_category import ProductCategory
 from product_ceiling_map import product_ceiling_map
 
 def setup(meta):
-    ceiling_conference = Ceiling.find_by_name('conference')
-    ceiling_all_conference = Ceiling.find_by_name('all-conference')
-    ceiling_earlybird = Ceiling.find_by_name('earlybird')
-    ceiling_nonearlybird = Ceiling.find_by_name('non-earlybird')
-    ceiling_uniaccom = Ceiling.find_by_name('uniaccom')
-    ceiling_rocketry = Ceiling.find_by_name('rocketry')
+    category_ticket = ProductCategory.find_by_name('Ticket')
+
+    ceiling_conference = Ceiling.find_by_name('conference-paid')
+    ceiling_all_conference = Ceiling.find_by_name('conference-all')
+    ceiling_earlybird = Ceiling.find_by_name('conference-earlybird')
+    ceiling_nonearlybird = Ceiling.find_by_name('conference-non-earlybird')
 
     # Tickets
-    product = Product(category_id='1', active=True, description="Concession/Student Ticket",
-                      cost="24900", auth=None, validate=None)
-    product.ceilings.append(ceiling_conference)
-    product.ceilings.append(ceiling_all_conference)
-    meta.Session.add(product);
+    ticket_student = Product(category=category_ticket, active=True, description="Concession/Student Ticket",
+                      cost="12500", auth=None, validate=None)
+    ticket_student.ceilings.append(ceiling_conference)
+    ticket_student.ceilings.append(ceiling_all_conference)
+    meta.Session.add(ticket_student);
 
-    product = Product(category_id='1', active=True, description="Earlybird Hobbyist Ticket",
-                      cost="39900", auth=None, validate=None)
-    product.ceilings.append(ceiling_conference)
-    product.ceilings.append(ceiling_all_conference)
-    product.ceilings.append(ceiling_earlybird)
-    meta.Session.add(product);
+    ticket_hobbyist_eb = Product(category=category_ticket, active=True, description="Earlybird Hobbyist Ticket",
+                      cost="29900", auth=None, validate=None)
+    ticket_hobbyist_eb.ceilings.append(ceiling_conference)
+    ticket_hobbyist_eb.ceilings.append(ceiling_all_conference)
+    ticket_hobbyist_eb.ceilings.append(ceiling_earlybird)
+    meta.Session.add(ticket_hobbyist_eb);
 
-    product = Product(category_id='1', active=True, description="Hobbyist Ticket",
-                      cost="49900", auth=None, validate=None)
-    product.ceilings.append(ceiling_conference)
-    product.ceilings.append(ceiling_all_conference)
-    product.ceilings.append(ceiling_nonearlybird)
-    meta.Session.add(product);
+    ticket_hobbyist = Product(category=category_ticket, active=True, description="Hobbyist Ticket",
+                      cost="37500", auth=None, validate=None)
+    ticket_hobbyist.ceilings.append(ceiling_conference)
+    ticket_hobbyist.ceilings.append(ceiling_all_conference)
+    ticket_hobbyist.ceilings.append(ceiling_nonearlybird)
+    meta.Session.add(ticket_hobbyist);
 
-    product = Product(category_id='1', active=True, description="Earlybird Professional Ticket",
-                      cost="79900", auth=None, validate=None)
-    product.ceilings.append(ceiling_conference)
-    product.ceilings.append(ceiling_all_conference)
-    product.ceilings.append(ceiling_earlybird)
-    meta.Session.add(product);
+    ticket_professional_eb = Product(category=category_ticket, active=True, description="Earlybird Professional Ticket",
+                      cost="63500", auth=None, validate=None)
+    ticket_professional_eb.ceilings.append(ceiling_conference)
+    ticket_professional_eb.ceilings.append(ceiling_all_conference)
+    ticket_professional_eb.ceilings.append(ceiling_earlybird)
+    meta.Session.add(ticket_professional_eb);
 
-    product = Product(category_id='1', active=True, description="Professional Ticket",
-                      cost="99900", auth=None, validate=None)
-    product.ceilings.append(ceiling_conference)
-    product.ceilings.append(ceiling_all_conference)
-    product.ceilings.append(ceiling_nonearlybird)
-    meta.Session.add(product);
+    ticket_professional = Product(category=category_ticket, active=True, description="Professional Ticket",
+                      cost="79500", auth=None, validate=None)
+    ticket_professional.ceilings.append(ceiling_conference)
+    ticket_professional.ceilings.append(ceiling_all_conference)
+    ticket_professional.ceilings.append(ceiling_nonearlybird)
+    meta.Session.add(ticket_professional);
 
-    product = Product(category_id='1', active=True, description="Korora Little Blue Penguin Sponsorship",
-                      cost="225000", auth=None, validate=None)
-    product.ceilings.append(ceiling_conference)
-    product.ceilings.append(ceiling_all_conference)
-    meta.Session.add(product);
+    ticket_fairy_penguin = Product(category=category_ticket, active=True, description="Fairy Penguin Sponsor",
+                      cost="150000", auth=None, validate=None)
+    ticket_fairy_penguin.ceilings.append(ceiling_conference)
+    ticket_fairy_penguin.ceilings.append(ceiling_all_conference)
+    meta.Session.add(ticket_fairy_penguin);
 
-    product = Product(category_id='1', active=True, description="Speaker Ticket",
+    ticket_speaker = Product(category=category_ticket, active=True, description="Speaker Ticket",
                       cost="0", auth="self.is_speaker()", validate=None)
-    product.ceilings.append(ceiling_all_conference)
-    meta.Session.add(product);
+    ticket_speaker.ceilings.append(ceiling_all_conference)
+    meta.Session.add(ticket_speaker);
 
-    product = Product(category_id='1', active=True, description="Miniconf Organiser Ticket",
+    ticket_miniconf = Product(category=category_ticket, active=True, description="Miniconf Organiser Ticket",
                       cost="0", auth="self.is_miniconf_org()", validate=None)
-    product.ceilings.append(ceiling_all_conference)
-    meta.Session.add(product);
+    ticket_miniconf.ceilings.append(ceiling_all_conference)
+    meta.Session.add(ticket_miniconf);
 
-    product = Product(category_id='1', active=True, description="Volunteer Ticket",
+    ticket_volunteer_free = Product(category=category_ticket, active=True, description="Volunteer Ticket",
                       cost="0", auth="self.is_volunteer()", validate=None)
-    product.ceilings.append(ceiling_all_conference)
-    meta.Session.add(product);
+    ticket_volunteer_free.ceilings.append(ceiling_all_conference)
+    meta.Session.add(ticket_volunteer_free);
 
-    product = Product(category_id='1', active=True, description="Press Ticket",
+    ticket_volunteer_paid = Product(category=category_ticket, active=True, description="Volunteer Ticket",
+                      cost="12500", auth="self.is_volunteer()", validate=None)
+    ticket_volunteer_paid.ceilings.append(ceiling_all_conference)
+    meta.Session.add(ticket_volunteer_paid);
+
+
+    ticket_press = Product(category=category_ticket, active=True, description="Press Ticket",
                       cost="0", auth="self.is_press()", validate=None)
-    product.ceilings.append(ceiling_all_conference)
+    ticket_press.ceilings.append(ceiling_all_conference)
+    meta.Session.add(ticket_press)
+
+    # Miniconfs
+    category_miniconf = ProductCategory.find_by_name('Miniconfs')
+
+    ceiling_miniconf_all = Ceiling.find_by_name('miniconf-all')
+    ceiling_miniconf_monday = Ceiling.find_by_name('miniconf-monday')
+    ceiling_miniconf_tuesday = Ceiling.find_by_name('miniconf-tuesday')
+    ceiling_rocketry = Ceiling.find_by_name('miniconf-rocketry')
+
+    product = Product(category=category_miniconf, active=True, description="Monday Southern Plumbers",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
     meta.Session.add(product)
 
-    product = Product(category_id='7', active=True, description="Rocketry Miniconf Ticket",
-                      cost="15000", auth=None, validate=None)
+    product = Product(category=category_miniconf, active=True, description="Monday Haecksen",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Monday Multimedia + Music",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Monday Arduino",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Monday Open Programming",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Monday The Business of Open Source",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Monday Freedom in the cloud",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Monday Libre Graphics Day",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Tuesday Multicore and Parallel Computing",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_tuesday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Tuesday Rocketry",
+                      cost="20000", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_tuesday)
     product.ceilings.append(ceiling_rocketry)
     meta.Session.add(product)
 
-    meta.Session.add_all(
-        [
-            # Shirts
-            Product(category_id='2', active=True, description="Men's Small", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's Medium", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's Large", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's XL", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's 2XL", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's 3XL", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's 5XL", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Men's 7XL", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 6", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 8", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 10", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 12", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 14", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 16", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 18", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 20", cost="2500", auth=None, validate=None),
-            Product(category_id='2', active=True, description="Women's Size 22", cost="2500", auth=None, validate=None),
+    product = Product(category=category_miniconf, active=True, description="Tuesday Systems Administration",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_tuesday)
+    meta.Session.add(product)
 
-            # Dinner
-            Product(category_id='3', active=True, description="Adult", cost="11500", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])"),
-            Product(category_id='3', active=True, description="Child", cost="2000", auth=None, validate=None),
-            Product(category_id='3', active=True, description="Infant", cost="0", auth=None, validate=None),
+    product = Product(category=category_miniconf, active=True, description="Tuesday Open in the public sector ",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_tuesday)
+    meta.Session.add(product)
 
-            # Speakers Dinner
-            Product(category_id='6', active=True, description="Adult", cost="0", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8])", auth="self.is_speaker() or self.is_miniconf_org()"),
-            Product(category_id='6', active=True, description="Child", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
-            Product(category_id='6', active=True, description="Infant", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()"),
-        ]
-    )
+    product = Product(category=category_miniconf, active=True, description="Tuesday Mobile FOSS",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_tuesday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Tuesday Data Storage",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_tuesday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Tuesday Research and Student Innovation",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_tuesday)
+    meta.Session.add(product)
+
+    # Shirts
+    category_shirt = ProductCategory.find_by_name('T-Shirt')
+
+    ceiling_shirt_all = Ceiling.find_by_name('shirt-all')
+    ceiling_shirt_men = Ceiling.find_by_name('shirt-men')
+    ceiling_shirt_women = Ceiling.find_by_name('shirt-women')
+
+    product = Product(category=category_shirt, active=True, description="Men's Small", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Men's Large", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Men's XL", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Men's 2XL", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Men's 3XL", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Men's 5XL", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Men's 7XL", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 6", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 8", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 10", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 12", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 14", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 16", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 18", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 20", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    product = Product(category=category_shirt, active=True, description="Women's Size 22", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_women)
+    meta.Session.add(product)
+
+    # Penguin Dinner
+    category_penguin = ProductCategory.find_by_name('Penguin Dinner Ticket')
+
+    ceiling_penguin_all = Ceiling.find_by_name('penguindinner-all')
+
+    product = Product(category=category_penguin, active=True, description="Adult", cost="8000", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[8,7,6,5,4])")
+    product.ceilings.append(ceiling_penguin_all)
+    meta.Session.add(product)
+
+    product = Product(category=category_penguin, active=True, description="Child", cost="2000", auth=None, validate=None)
+    product.ceilings.append(ceiling_penguin_all)
+    meta.Session.add(product)
+
+    Product(category=category_penguin, active=True, description="Infant", cost="0", auth=None, validate=None)
+    meta.Session.add(product)
+
+    # Speakers Dinner
+    category_speakers = ProductCategory.find_by_name('Speakers Dinner Ticket')
+
+    ceiling_speakers_all = Ceiling.find_by_name('speakersdinner-all')
+
+    product = Product(category=category_speakers, active=True, description="Adult", cost="0", validate="ProDinner(dinner_field='product_Speakers Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[7,8])", auth="self.is_speaker() or self.is_miniconf_org()")
+    product.ceilings.append(ceiling_speakers_all)
+    meta.Session.add(product)
+
+    product = Product(category=category_speakers, active=True, description="Child", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()")
+    product.ceilings.append(ceiling_speakers_all)
+    meta.Session.add(product)
+
+    product = Product(category=category_speakers, active=True, description="Infant", cost="0", validate=None , auth="self.is_speaker() or self.is_miniconf_org()")
+    meta.Session.add(product)
 
     # Accommodation
-    product = Product(category_id='4', active=True, description="I will organise my own",
+    category_accomodation = ProductCategory.find_by_name('Accommodation')
+    ceiling_accom_all = Ceiling.find_by_name('accomodation-all')
+    ceiling_accom_selfbook = Ceiling.find_by_name('accomodation-selfbook')
+    product = Product(category=category_accomodation, active=True, description="I will organise my own",
                       cost="0", auth=None, validate=None)
-    meta.Session.add(product);
-    product = Product(category_id='4', active=True, description="Wrest Point (Visit Accommodation page)",
-                      cost="0", auth=None, validate=None)
-    meta.Session.add(product);
-    product = Product(category_id='4', active=True, description="University Accommodation",
-                      cost="6000", auth=None, validate=None)
-    product.ceilings.append(ceiling_uniaccom)
+    product.ceilings.append(ceiling_accom_all)
+    product.ceilings.append(ceiling_accom_selfbook)
     meta.Session.add(product);
 
     # Partner's Programme
-    meta.Session.add_all(
-        [
-            Product(category_id='5', active=True, description="Adult", cost="28000", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')"),
-            Product(category_id='5', active=True, description="Child (3-14 years old)", cost="21000", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-            Product(category_id='5', active=True, description="Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')"),
-        ]
-    )
+    category_partners = ProductCategory.find_by_name('Partners Programme')
+    ceiling_partners_all = Ceiling.find_by_name('partners-all')
+
+    partners_adult = Product(category=category_partners, active=True, description="Expression of Interest - Adult", cost="0", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')")
+    partners_adult.ceilings.append(ceiling_partners_all)
+    meta.Session.add(partners_adult);
+
+    product = Product(category=category_partners, active=True, description="Expression of Interest - Child (3-14 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (3_14 years old)_qty',adult_field='product_Partners Programme_Adult_qty')")
+    product.ceilings.append(ceiling_partners_all)
+    meta.Session.add(product);
+
+    product = Product(category=category_partners, active=True, description="Expression of Interest - Infant (0-2 years old)", cost="0", auth=None, validate="PPChildrenAdult(current_field='product_Partners Programme_Child (0_2 years old)_qty',adult_field='product_Partners Programme_Adult_qty')")
+    product.ceilings.append(ceiling_partners_all)
+    meta.Session.add(product);
 
     # Product includes
     meta.Session.add_all(
         [
             # Include 1 Shirt in all registration types
-            ProductInclude(product_id='1', include_category_id='2', include_qty='1'), # Student
-            ProductInclude(product_id='2', include_category_id='2', include_qty='1'), # Hobbyist EB
-            ProductInclude(product_id='3', include_category_id='2', include_qty='1'), # Hobbyist
-            ProductInclude(product_id='4', include_category_id='2', include_qty='1'), # Pro EB
-            ProductInclude(product_id='5', include_category_id='2', include_qty='1'), # Pro
-            ProductInclude(product_id='6', include_category_id='2', include_qty='1'), # Fairy
-            ProductInclude(product_id='7', include_category_id='2', include_qty='1'), # Speaker
-            ProductInclude(product_id='8', include_category_id='2', include_qty='1'), # Miniconf
-            ProductInclude(product_id='9', include_category_id='2', include_qty='2'), # Volunteer
-            ProductInclude(product_id='10', include_category_id='2', include_qty='1'), # Press
-            ProductInclude(product_id='38', include_category_id='2', include_qty='1'), # Partner's Programme get a t-shirt
+            ProductInclude(product=ticket_student, include_category=category_shirt, include_qty='1'), # Student
+            ProductInclude(product=ticket_hobbyist_eb, include_category=category_shirt, include_qty='1'), # Hobbyist EB
+            ProductInclude(product=ticket_hobbyist, include_category=category_shirt, include_qty='1'), # Hobbyist
+            ProductInclude(product=ticket_professional_eb, include_category=category_shirt, include_qty='1'), # Pro EB
+            ProductInclude(product=ticket_professional, include_category=category_shirt, include_qty='1'), # Pro
+            ProductInclude(product=ticket_fairy_penguin, include_category=category_shirt, include_qty='1'), # Fairy
+            ProductInclude(product=ticket_speaker, include_category=category_shirt, include_qty='1'), # Speaker
+            ProductInclude(product=ticket_miniconf, include_category=category_shirt, include_qty='1'), # Miniconf
+            ProductInclude(product=ticket_volunteer_free, include_category=category_shirt, include_qty='2'), # Volunteer
+            ProductInclude(product=ticket_volunteer_paid, include_category=category_shirt, include_qty='2'), # Volunteer
+            ProductInclude(product=ticket_press, include_category=category_shirt, include_qty='1'), # Press
+            #ProductInclude(product=partners_adult, include_category=category_shirt, include_qty='1'), # Partner's Programme get a t-shirt
 
             # Include 1 Dinner for Professional+miniconf and for Speaker registrations
-            ProductInclude(product_id='4', include_category_id='3', include_qty='1'), # Pro EB
-            ProductInclude(product_id='5', include_category_id='3', include_qty='1'), # Pro
-            ProductInclude(product_id='6', include_category_id='3', include_qty='1'), # Fairy
-            ProductInclude(product_id='7', include_category_id='3', include_qty='1'), # Speaker
-            ProductInclude(product_id='8', include_category_id='3', include_qty='1'), # Miniconf
-            ProductInclude(product_id='10', include_category_id='3', include_qty='1'), # Press
+            ProductInclude(product=ticket_professional_eb, include_category=category_penguin, include_qty='1'), # Pro EB
+            ProductInclude(product=ticket_professional, include_category=category_penguin, include_qty='1'), # Pro
+            ProductInclude(product=ticket_fairy_penguin, include_category=category_penguin, include_qty='1'), # Fairy
+            ProductInclude(product=ticket_speaker, include_category=category_penguin, include_qty='1'), # Speaker
+            ProductInclude(product=ticket_miniconf, include_category=category_penguin, include_qty='1'), # Miniconf
+            ProductInclude(product=ticket_press, include_category=category_penguin, include_qty='1'), # Press
 
             # Include 5 partners in the partners program for speakers
-            ProductInclude(product_id='7', include_category_id='5', include_qty='5'),
+            ProductInclude(product=ticket_speaker, include_category=category_partners, include_qty='5'),
         ]
     )
 

@@ -95,12 +95,6 @@ lca_rego = {
             {'name': 'Week After', 'description': 'Available during the week after the conference (23-31 Jan).'},
             {'name': 'Packout', 'description': 'Available to help pack-out of the venue on Saturday and Sunday.'},
         ),
-  'miniconfs' : (
-              ('Monday',('Southern Plumbers', 'Haecksen','Multimedia + Music', 'Arduino', 'Open Programming',
-                         'Business of Open Source', 'Freedom in the Cloud', 'Libre Graphics Day')),
-              ('Tuesday',('Multicore and Parallel Computing', 'System Administration',
-                          'Open in the Public Sector', 'Mobile FOSS', 'Data Storage', 'Research & Student Innovation'))
-             ),
   'shells' : ['bash', 'busybox', 'csh', 'dash', 'emacs', 'ksh', 'sh', 'smrsh', 'tcsh', 'XTree Gold', 'zsh'],
   'editors' : ['bluefish', 'eclipse', 'emacs', 'gedit', 'jed', 'kate', 'nano', 'vi', 'vim', 'xemacs'],
   'distros' : ['Arch', 'Arch/Hurd', 'CentOS', 'Darwin', 'Debian', 'Fedora', 'FreeBSD', 'FreeDOS', 'Gentoo', 'Hurd', 'GNU Emacs','Haiku OS','kFreeBSD','L4', 'Mandriva', 'Minix', 'MeeGo', 'NetBSD', 'Nexenta', 'OpenBSD', 'OpenSolaris', 'OpenSuSE', 'SLES','Oracle Enterprise Linux', 'RHEL', 'Slackware', 'Ubuntu', 'Xandros'],

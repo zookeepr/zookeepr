@@ -19,12 +19,21 @@ def setup(meta):
 
     meta.Session.add_all(
         [
-            Ceiling(name='all-conference', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='conference', max_sold=750, available_from=None, available_until=None),
-            Ceiling(name='earlybird', max_sold=200, available_from=None, available_until=earlybird_end),
-            Ceiling(name='non-earlybird', max_sold=None, available_from=nonearlybird_start, available_until=None),
-            Ceiling(name='uniaccom', max_sold=240, available_from=None, available_until=None),
-            Ceiling(name='rocketry', max_sold=24, available_from=None, available_until=None)
+            Ceiling(name='conference-all', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='conference-paid', max_sold=750, available_from=None, available_until=None),
+            Ceiling(name='conference-earlybird', max_sold=200, available_from=None, available_until=earlybird_end),
+            Ceiling(name='conference-non-earlybird', max_sold=None, available_from=nonearlybird_start, available_until=None),
+            Ceiling(name='shirt-all', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='shirt-men', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='shirt-women', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='penguindinner-all', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='speakersdinner-all', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='accomodation-all', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='partners-all', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='miniconf-all', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='miniconf-monday', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='miniconf-tuesday', max_sold=None, available_from=None, available_until=None),
+            Ceiling(name='miniconf-rocketry', max_sold=24, available_from=None, available_until=None),
         ]
     )
 
