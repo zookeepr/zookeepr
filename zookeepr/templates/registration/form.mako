@@ -186,12 +186,12 @@ ${ h.hidden('person.mobile') }
 %>
           <table>
             <tr>
-%         for day in fields: 
+%         for day in sorted(fields): 
               <th>${ day }</th>
 %         endfor
             </tr>
             <tr>
-%         for day in fields:
+%         for day in sorted(fields):
               <td>
 %           for (miniconf, product) in fields[day]:
 %             if category.display == 'qty':
