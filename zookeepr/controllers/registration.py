@@ -425,12 +425,15 @@ class RegistrationController(BaseController):
         for rproduct in c.registration.products:
             product = rproduct.product
             category_name = product.category.clean_name()
-            if product.category.display == "checkbox":
-                defaults['products.product_' + category_name + '_' + product.clean_description() + '_checkbox'] = "1"
+            if product.category.display == 'checkbox':
+                if product.available():
+                    defaults['products.product_' + category_name + '_' + product.clean_description() + '_checkbox'] = '1'
+            elif product.category.display == 'qty':
+                if product.available() and rproduct.qty > 0:
+                    defaults['products.product_' + category_name + '_' + product.clean_description() + '_qty'] = rproduct.qty
             else:
-                defaults['products.category_' + category_name] = product.id
-            if rproduct.qty > 0:
-                defaults['products.product_' + category_name + '_' + product.clean_description() + '_qty'] = rproduct.qty
+                if product.available():
+                    defaults['products.category_' + category_name] = product.id
 
         # generate new silly description
         c.silly_description, checksum = h.silly_description()

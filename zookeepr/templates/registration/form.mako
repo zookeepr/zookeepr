@@ -173,7 +173,7 @@ ${ h.hidden('person.mobile') }
           </table>
 %       elif category.display_mode == 'miniconf':
 <%
-          fields = dict()
+          fields = {}
           for product in products:
             results = re.match("^([a-zA-Z0-9']+)\s+(.*)$", product.description)
             day = results.group(1)
@@ -194,26 +194,20 @@ ${ h.hidden('person.mobile') }
 %         for day in fields:
               <td>
 %           for (miniconf, product) in fields[day]:
+%             if category.display == 'qty':
+                ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2, disabled=not product.available()) + ' ' + miniconf} 
+%             elif category.display == 'checkbox':
+                ${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=miniconf, disabled=not product.available()) }
+%             endif
 %             if not product.available():
-%               if category.display == 'qty':
-            <span class="mandatory">SOLD&nbsp;OUT</span> ${miniconf} <br />${ h.hidden('products.product_' + product.clean_description(True) + '_qty', 0) }
-%               elif category.display == 'checkbox':
-            <span class="mandatory">SOLD&nbsp;OUT</span> ${miniconf} <br />${ h.hidden('products.product_' + product.clean_description(True) + '_checkbox', 0) }
-%               endif
-%             else:
-%               if category.display == 'qty':
-            ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2, label=miniconf) }
-%               elif category.display == 'checkbox':
-            ${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=miniconf) }
-%               endif
-%               if product.cost != 0:
-            - ${ h.number_to_currency(product.cost/100.0) }
-%               endif
+            <span class="mandatory">SOLD&nbsp;OUT</span>
+%             elif product.cost != 0:
+                - ${ h.number_to_currency(product.cost/100.0) }
 %             endif
             <br />
 %           endfor
               </td>
-%        endfor
+%         endfor
             </tr>
           </table>
 
