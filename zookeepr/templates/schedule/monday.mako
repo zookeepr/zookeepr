@@ -9,7 +9,6 @@
       <th class="programme_room" align="center" valign="top">Room 5</th>
       <th class="programme_room" align="center" valign="top">Room 6</th>
       <th class="programme_room" align="center" valign="top">Room 7</th>
-      <th class="programme_room" align="center" valign="top">Room 8</th>
     </tr>
     <tr>
 
@@ -23,7 +22,6 @@
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=7" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=127" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=50" /></td>
-      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=92" /></td>
     </tr>
   </thead>
 

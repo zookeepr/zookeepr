@@ -136,12 +136,6 @@ def setup(meta):
     product.ceilings.append(ceiling_miniconf_monday)
     meta.Session.add(product)
 
-    product = Product(category=category_miniconf, active=True, description="Monday Libre Graphics Day",
-                      cost="0", auth=None, validate=None)
-    product.ceilings.append(ceiling_miniconf_all)
-    product.ceilings.append(ceiling_miniconf_monday)
-    meta.Session.add(product)
-
     product = Product(category=category_miniconf, active=True, description="Tuesday Multicore and Parallel Computing",
                       cost="0", auth=None, validate=None)
     product.ceilings.append(ceiling_miniconf_all)
@@ -183,6 +177,12 @@ def setup(meta):
                       cost="0", auth=None, validate=None)
     product.ceilings.append(ceiling_miniconf_all)
     product.ceilings.append(ceiling_miniconf_tuesday)
+    meta.Session.add(product)
+
+    product = Product(category=category_miniconf, active=True, description="Tuesday Libre Graphics Day",
+                      cost="0", auth=None, validate=None)
+    product.ceilings.append(ceiling_miniconf_all)
+    product.ceilings.append(ceiling_miniconf_monday)
     meta.Session.add(product)
 
     # Shirts

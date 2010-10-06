@@ -9,6 +9,7 @@
       <th class="programme_room" align="center" valign="top">Room 5</th>
       <th class="programme_room" align="center" valign="top">Room 6</th>
       <th class="programme_room" align="center" valign="top">Room 7</th>
+      <th class="programme_room" align="center" valign="top">Room 8</th>
     </tr>
 
     <tr class="odd">
@@ -20,6 +21,7 @@
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=143" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=109" /></td>
       <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=144" /></td>
+      <td align="center"><%include file="miniconf_link.mako" args="miniconf_id=92" /></td>
     </tr>
   </thead>
 
@@ -45,6 +47,7 @@
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
+      <td class="programme_room" align="center" valign="top">&nbsp;</td>
     </tr>
 
     <tr class="even">
@@ -61,6 +64,7 @@
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
+      <td class="programme_room" align="center" valign="top">&nbsp;</td>
     </tr>
 
     <tr class="even">
@@ -70,6 +74,7 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">15:45-17:30</th>
+      <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
       <td class="programme_room" align="center" valign="top">&nbsp;</td>
