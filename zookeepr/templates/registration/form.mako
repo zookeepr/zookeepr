@@ -196,9 +196,9 @@ ${ h.hidden('person.mobile') }
 %           for (miniconf, product) in fields[day]:
 %             if not product.available():
 %               if category.display == 'qty':
-            <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_qty', 0) }
+            <span class="mandatory">SOLD&nbsp;OUT</span> ${miniconf} <br />${ h.hidden('products.product_' + product.clean_description(True) + '_qty', 0) }
 %               elif category.display == 'checkbox':
-            <span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_checkbox', 0) }
+            <span class="mandatory">SOLD&nbsp;OUT</span> ${miniconf} <br />${ h.hidden('products.product_' + product.clean_description(True) + '_checkbox', 0) }
 %               endif
 %             else:
 %               if category.display == 'qty':
@@ -206,9 +206,9 @@ ${ h.hidden('person.mobile') }
 %               elif category.display == 'checkbox':
             ${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=miniconf) }
 %               endif
-%             endif
-%             if product.cost != 0:
+%               if product.cost != 0:
             - ${ h.number_to_currency(product.cost/100.0) }
+%               endif
 %             endif
             <br />
 %           endfor
