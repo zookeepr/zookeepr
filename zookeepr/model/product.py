@@ -197,6 +197,12 @@ def setup(meta):
     product.ceilings.append(ceiling_shirt_men)
     meta.Session.add(product)
 
+    product = Product(category=category_shirt, active=True, description="Men's Medium", cost="2500", auth=None, validate=None)
+    product.ceilings.append(ceiling_shirt_all)
+    product.ceilings.append(ceiling_shirt_men)
+    meta.Session.add(product)
+
+
     product = Product(category=category_shirt, active=True, description="Men's Large", cost="2500", auth=None, validate=None)
     product.ceilings.append(ceiling_shirt_all)
     product.ceilings.append(ceiling_shirt_men)
