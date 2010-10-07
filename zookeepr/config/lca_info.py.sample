@@ -69,7 +69,7 @@ lca_rego = {
   },
 
   'accommodation': {
-      # Will delegates be force to organise their own accommodation?
+      # Will delegates be forced to organise their own accommodation?
       # set to yes to disable the accommodation questions.
       'self_book': 'no'
   },
