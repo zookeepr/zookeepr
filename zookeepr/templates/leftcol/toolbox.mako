@@ -17,6 +17,37 @@
   
 <ul class="netv-vmenu">
 ## Toolbox links
+% if h.signed_in_person():
+    <span class="menu-header">${ h.signed_in_person().firstname }'s Profile</span>
+    <ul class="netv-vmenu">
+${ parent.toolbox_extra() }
+%   if h.lca_info["cfp_status"] == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
+      ${ make_link('Submit a paper', h.url_for(controller='proposal', action='new', id=None)) }
+%   endif
+%   if h.lca_info["cfmini_status"] == 'open':
+      ${ make_link('Submit a miniconf', h.url_for(controller='miniconf_proposal', action='new', id=None)) }
+%   endif
+%   if h.lca_info["funding_status"] == 'open':
+      ${ make_link('Submit a Funding Application', h.url_for(controller='funding', action='new', id=None)) }
+%   endif
+%   if h.lca_info['conference_status'] == 'open' or h.signed_in_person().registration:
+      ${ make_link('Conference registration', '/register/status') }
+%   endif
+%   if h.signed_in_person().is_speaker():
+      ${ make_link('Speakers Info', '/programme/speakers_info') }
+%   endif
+%   if h.signed_in_person().is_miniconf_org():
+      ${ make_link('Miniconf Organiser Info', '/programme/miniconf_info') }
+%   endif
+%   if len(h.signed_in_person().proposals) > 0:
+      ${ make_link('My proposals', h.url_for(controller='proposal')) }
+%   endif
+      ${ make_link('My profile', h.url_for(controller='person', action='view', id=h.signed_in_person().id)) }
+      ${ make_link('Sign out', h.url_for('/person/signout')) }
+% else:
+      ${ make_link('Sign in', "/person/signin") }
+      ${ make_link('Create an account', "/person/new") }
+% endif
 % if h.auth.authorized(h.auth.has_organiser_role):
 <span class="menu-header">Zookeepr Administration</span>
     <ul class="netv-vmenu">
@@ -68,38 +99,6 @@ ${ parent.toolbox_extra_funding_reviewer() }
       </ul>
     </ul>
 % endif
-% if h.signed_in_person():
-    <span class="menu-header">${ h.signed_in_person().firstname }'s Profile</span>
-    <ul class="netv-vmenu">
-${ parent.toolbox_extra() }
-%   if h.lca_info["cfp_status"] == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
-      ${ make_link('Submit a paper', h.url_for(controller='proposal', action='new', id=None)) }
-%   endif
-%   if h.lca_info["cfmini_status"] == 'open':
-      ${ make_link('Submit a miniconf', h.url_for(controller='miniconf_proposal', action='new', id=None)) }
-%   endif
-%   if h.lca_info["funding_status"] == 'open':
-      ${ make_link('Submit a Funding Application', h.url_for(controller='funding', action='new', id=None)) }
-%   endif
-%   if h.lca_info['conference_status'] == 'open' or h.signed_in_person().registration:
-      ${ make_link('Conference registration', '/register/status') }
-%   endif
-%   if h.signed_in_person().is_speaker():
-      ${ make_link('Speakers Info', '/programme/speakers_info') }
-%   endif
-%   if h.signed_in_person().is_miniconf_org():
-      ${ make_link('Miniconf Organiser Info', '/programme/miniconf_info') }
-%   endif
-%   if len(h.signed_in_person().proposals) > 0:
-      ${ make_link('My proposals', h.url_for(controller='proposal')) }
-%   endif
-      ${ make_link('My profile', h.url_for(controller='person', action='view', id=h.signed_in_person().id)) }
-      ${ make_link('Sign out', h.url_for('/person/signout')) }
-% else:
-      ${ make_link('Sign in', "/person/signin") }
-      ${ make_link('Create an account', "/person/new") }
-% endif
-
 % if (c.db_content and not c.db_content.is_news()) or len(parent.short_title()) > 0:
 <div style="text-align:center;">
 </div>

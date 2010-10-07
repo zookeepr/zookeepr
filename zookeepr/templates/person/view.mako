@@ -19,61 +19,62 @@
     <tr>
         <td><b>Email:</b></p></td>
         <td>
-%if not c.person.activated:
-${ c.person.email_address }
-%  if h.auth.authorized(h.auth.has_organiser_role):
-(${ h.link_to('mark as verified', '/person/confirm/' + c.person.url_hash) })
-%  else:
-(not verified)
-%  endif
-%else:
+% if not c.person.activated:
+          ${ c.person.email_address }
+%   if h.auth.authorized(h.auth.has_organiser_role):
+          (${ h.link_to('mark as verified', '/person/confirm/' + c.person.url_hash) })
+%   else:
+          (not verified)
+%   endif
+% else:
 <a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a>
-%endif
+% endif
         </td>
     </tr>
-%if h.auth.authorized(h.auth.has_organiser_role):
+% if h.auth.authorized(h.auth.has_organiser_role):
     <tr>
         <td><b>Badge printed:</b></td>
-        <td>${ c.person.badge_printed }
-%  if c.person.badge_printed:
-(${ h.link_to('reprint badge', '/person/' + str(c.person.id) + '/reprint') })
-%  endif
+        <td>
+          ${ c.person.badge_printed }
+%   if c.person.badge_printed:
+          (${ h.link_to('reprint badge', '/person/' + str(c.person.id) + '/reprint') })
+%   endif
         </td>
     </tr>
-%endif
+% endif
 
-%if c.person.special_registration is not None:
-% for special_registration in c.person.special_registration:
+% if c.person.special_registration is not None:
+%   for special_registration in c.person.special_registration:
     <tr>
-        <td><b>${ special_registration.special_offer.id_name }:</b></p></td>
-        <td>${ special_registration.member_number }</td>
+      <td><b>${ special_registration.special_offer.id_name }:</b></p></td>
+      <td>${ special_registration.member_number }</td>
     </tr>
-% endfor
-%endif
+%   endfor
+% endif
 % if h.auth.authorized(h.auth.has_organiser_role):
     <tr>
       <td valign="top"><b>Roles:</b></td>
       <td>
-% if len(c.person.roles) > 0:
+%   if len(c.person.roles) > 0:
 <%  first = True %>
-%   for role in c.person.roles:
-%     if first:
-<%    first = False %>
-%     else:
+%     for role in c.person.roles:
+%       if first:
+<%      first = False %>
+%       else:
 <br />
-%     endif
+%       endif
 <%
-      if role.pretty_name is None or role.pretty_name == '':
-        role_name = role.name 
-      else:
-        role_name = role.pretty_name 
+        if role.pretty_name is None or role.pretty_name == '':
+          role_name = role.name 
+        else:
+          role_name = role.pretty_name 
 %>
-     ${ h.link_to(role_name, url=h.url_for(controller='role', action='view',id=role.id)) }
-%    endfor
-% else:
-None
-% endif
-      </p></td>
+        ${ h.link_to(role_name, url=h.url_for(controller='role', action='view',id=role.id)) }
+%     endfor
+%   else:
+        None
+%   endif
+      </td>
     </tr>
 % endif
 % if c.person.phone:
@@ -122,9 +123,10 @@ None
 % endfor
 </table>
 
+% if h.lca_info['cfp_status'] in ('open', 'closed') or h.lca_info['cfmini_status'] in ('open', 'closed'):
 <h2>Submitted Proposals</h2>
 
-% if len(c.person.proposals) > 0:
+%   if len(c.person.proposals) > 0:
 <table>
   <tr class="odd">
     <th>Title</th>
@@ -133,76 +135,79 @@ None
     <th>Status</th>
     <th>&nbsp;</th>
   </tr>
-%   for s in c.person.proposals:
+%     for s in c.person.proposals:
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ h.link_to("%s" % (s.title), url=h.url_for(controller='proposal', action='view', id=s.id)) }</td>
     <td>${ s.type.name }</td>
     <td>${ h.truncate(s.abstract) | n}</td>
     <td>
-%     if s.status.name == 'Pending':
+%       if s.status.name == 'Pending':
         <i>Undergoing review</i>
-%     elif s.accepted:
+%       elif s.accepted:
         Accepted
-%     elif s.status.name == 'Withdrawn':
+%       elif s.status.name == 'Withdrawn':
         Withdrawn
-%     else:
+%       else:
         Declined
-%     endif
+%       endif
     </td>
     <td>
-%if s.status.name == 'Pending' or s.accepted:
-%  if c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
-  ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
-%  endif
-${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }
+%       if s.status.name == 'Pending' or s.accepted:
+%         if c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
+      ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
+%         endif
+      ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }
     </td>
   </tr>
-%endif
-% endfor
+%       endif
+%     endfor
 </table>
-%else:
+%   else:
     <p>None submitted.</p>
-%endif
+%   endif
+% endif
 
+% if h.lca_info['funding_status'] in ('open', 'closed'):
 <h2>Submitted Funding Applications</h2>
 
-% if len(c.person.funding) > 0:
+%   if len(c.person.funding) > 0 and ('open', 'closed') in h.lca_info['funding_status']:
 <table>
   <tr class="odd">
     <th>Proposal Type</th>
     <th>Status</th>
     <th>&nbsp;</th>
   </tr>
-%   for s in c.person.funding:
+%     for s in c.person.funding:
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ s.type.name }</td>
     <td>
-%     if s.status.name == 'Pending':
-        <i>Undergoing review</i>
-%     elif s.status.name == 'Accepted':
-        Accepted</p>
-%     elif s.status.name == 'Withdrawn':
-        Withdrawn
-%     else:
-        Declined
-%     endif
+%       if s.status.name == 'Pending':
+      <i>Undergoing review</i>
+%       elif s.status.name == 'Accepted':
+      Accepted</p>
+%       elif s.status.name == 'Withdrawn':
+      Withdrawn
+%       else:
+      Declined
+%       endif
     </td>
     <td>
       ${ h.link_to("view", url=h.url_for(controller='funding', action='view', id=s.id)) }
-%if s.status.name == 'Pending' or s.status.name == 'Accepted':
-%  if h.lca_info['funding_editing'] == 'open':
-  ${ h.link_to("edit", url=h.url_for(controller='funding', action='edit', id=s.id)) }
-%  endif
-${ h.link_to("withdraw", url=h.url_for(controller='funding', action='withdraw', id=s.id)) }
+%       if s.status.name == 'Pending' or s.status.name == 'Accepted':
+%         if h.lca_info['funding_editing'] == 'open':
+      ${ h.link_to("edit", url=h.url_for(controller='funding', action='edit', id=s.id)) }
+%         endif
+      ${ h.link_to("withdraw", url=h.url_for(controller='funding', action='withdraw', id=s.id)) }
     </td>
   </tr>
-%endif
-% endfor
+%       endif
+%     endfor
 </table>
 
-%else:
+%   else:
     <p>None submitted.</p>
-%endif
+%   endif
+% endif
 
 % if h.auth.authorized(h.auth.has_organiser_role):
 <h2>Registration</h2>
@@ -247,45 +252,45 @@ This person hasn't registered yet.
     <th>Manual</th>
     <th>Payment(s)</th>
   </tr>
-%    for i in c.person.invoices:
+%     for i in c.person.invoices:
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ h.link_to(str(i.id), h.url_for(controller="invoice", action='view', id=i.id)) }</td>
     <td>${ i.creation_timestamp }</td>
     <td align="right">${ "$%.2f" % (i.total()/100.0) }</td>
     <td>${ i.status() }
-%   if i.status() == 'Unpaid' or i.total() == 0:
+%       if i.status() == 'Unpaid' or i.total() == 0:
             <span style="font-size: smaller;">(${ h.link_to('Void', h.url_for(controller="invoice", action="void", id=i.id)) })</span>
-%   endif
-%   if i.status() == 'Invalid':
+%       endif
+%       if i.status() == 'Invalid':
             <span style="font-size: smaller;">(${ h.link_to('Unvoid', h.url_for(controller="invoice", action="unvoid", id=i.id)) })</span>
-%   endif        
+%       endif
         </td>
         <td>${ h.yesno(i.manual) |n }</td>
         <td>
-%   if i.good_payments().count() > 0:
-%       for p in i.good_payments():
+%       if i.good_payments().count() > 0:
+%         for p in i.good_payments():
 %           if p.amount_paid != i.total():
           <b>mismatch!</b>
 %           endif
           ${ "$%.2f" % (p.amount_paid / 100.0) }
           <small>${ p.gateway_ref |h}</small>
-%       endfor
-%   elif i.bad_payments().count() > 0:
+%         endfor
+%       elif i.bad_payments().count() > 0:
         Bad payment(s)!
-%   else:
+%       else:
           -
-%   endif
+%       endif
         </td>
       </tr>
-% endfor
+%     endfor
     </table>
 
-%else:
+%   else:
     <p>None raised.</p>
-%endif
+%   endif
 <p>${ h.link_to('New manual invoice', url=h.url_for(controller='invoice', action='new', id=None, person_id=c.person.id)) }</p>
 
-%endif
+% endif
 
 
 
