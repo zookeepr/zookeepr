@@ -192,7 +192,7 @@ class PaymentController(BaseController):
             'payment.email_address': c.person.email_address,
             'payment.success_code': 'Received',
             'payment.amount_paid': c.payment.amount,
-            'payment.currency_used': 'NZD',
+            'payment.currency_used': 'AUD',
         }
 
         form = render('/payment/new.mako')
