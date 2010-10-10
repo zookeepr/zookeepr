@@ -329,7 +329,6 @@ div.netv-header-jpeg
   z-index: 10;
   left: 0;
   top: 0;
-  background: none;
 }
 
 .netv-menu li:hover>ul
@@ -540,6 +539,7 @@ div.netv-header-jpeg
   padding: 0;
   border: none;
   width: 974px;
+  margin: auto;
 }
 
 .netv-content-layout .netv-content-layout
@@ -561,6 +561,7 @@ div.netv-layout-cell div.netv-layout-cell
 div.netv-content-layout-row
 {
   display: table-row; 
+  margin-bottom: 7px;
 }
 
 .netv-content-layout
@@ -694,7 +695,7 @@ div.netv-content-layout-row
 
 .netv-vmenublock
 {
-  margin: 7px;
+  /*margin: 7px;*/
 }
 
 /* end Box, Block, VMenuBlock */
@@ -842,6 +843,7 @@ ul.netv-vmenu a.active .t
   margin: 0 auto;
   min-width: 19px;
   min-height: 19px;
+  margin: 7px 0;
 }
 
 .netv-block-body
@@ -941,11 +943,6 @@ ul.netv-vmenu a.active .t
   right: 13px;
   bottom: 13px;
   background-color: #EEEFE6;
-}
-
-.netv-block
-{
-  margin: 7px;
 }
 
 /* end Box, Block */
@@ -1277,7 +1274,7 @@ input, select, textarea, select
 
 .netv-post
 {
-  margin: 10px;
+  margin: 0 0 10px 10px;
 }
 
 a img
