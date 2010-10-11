@@ -27,7 +27,7 @@ log = logging.getLogger(__name__)
 def generate_code():
     res = os.popen('pwgen -BnA').read().strip()
     if len(res)<3:
-        raise "pwgen call failed"
+        raise StandardError("pwgen call failed")
     return res
 
 class NotExistingVoucherValidator(validators.FancyValidator):
