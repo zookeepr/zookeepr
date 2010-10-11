@@ -70,20 +70,20 @@ class UpdatePersonSchema(BaseSchema):
     pre_validators = [NestedVariables]
 
 class AuthPersonValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-
-        c.email = value['email_address']
+    def validate_python(self, values, state):
+        c.email = values['email_address']
         c.person = Person.find_by_email(c.email)
-
+        error_message = None
         if c.person is None:
-            msg = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
-            raise Invalid(msg, value, state, error_dict={'email_address': msg})
-
-        if not c.person.activated:
-            raise Invalid("You haven't yet confirmed your registration, please refer to your email for instructions on how to do so.", value, state)
-
-        if not c.person.check_password(value['password']):
-            raise Invalid("Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person.", value, state)
+            error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
+        elif not c.person.activated:
+            error_message = "You haven't yet confirmed your registration, please refer to your email for instructions on how to do so."
+        elif not c.person.check_password(values['password']):
+            error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
+        if error_message:
+            message = "Login failed"
+            error_dict = {'email_address': error_message}
+            raise Invalid(message, values, state, error_dict=error_dict)
 
 class LoginPersonSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)

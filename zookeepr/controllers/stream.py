@@ -25,10 +25,12 @@ from zookeepr.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class NotExistingStreamValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        stream = Stream.find_by_name(value['stream']['name'])
+    def validate_python(self, values, state):
+        stream = Stream.find_by_name(values['stream']['name'])
         if stream != None and stream != c.stream:
-           raise Invalid("Stream name already in use", value, state)
+            message = "Duplicate Stream name"
+            error_dict = {'stream.name': "Stream name already in use"}
+            raise Invalid(message, values, state, error_dict=error_dict)
 
 class StreamSchema(BaseSchema):
     name = validators.String(not_empty=True)

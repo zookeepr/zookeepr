@@ -26,10 +26,12 @@ from zookeepr.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class NotExistingCeilingValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        ceiling = Ceiling.find_by_name(value['ceiling']['name'])
+    def validate_python(self, values, state):
+        ceiling = Ceiling.find_by_name(values['ceiling']['name'])
         if ceiling != None and ceiling != c.ceiling:
-           raise Invalid("Ceiling name already in use", value, state)
+            message = "Duplicate Ceiling name"
+            error_dict = {'ceiling.name': "Ceiling name already in use"}
+	    raise Invalid(message, values, state, error_dict=error_dict)
 
 class CeilingSchema(BaseSchema):
     name = validators.String(not_empty=True)

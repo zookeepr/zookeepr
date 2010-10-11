@@ -26,10 +26,12 @@ from zookeepr.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class NotExistingProductCategoryValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        product_category = ProductCategory.find_by_name(value['product_category']['name'])
+    def validate_python(self, values, state):
+        product_category = ProductCategory.find_by_name(values['product_category']['name'])
         if product_category != None and product_category != c.product_category:
-           raise Invalid("Category name already in use", value, state)
+            message = "Duplicate product category name"
+            error_dict = {'product_category.name': "Category name already in use"}
+            raise Invalid(message, values, state, error_dict=error_dict)
 
 class ProductCategorySchema(BaseSchema):
     name = validators.String(not_empty=True)

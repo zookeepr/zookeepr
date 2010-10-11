@@ -10,7 +10,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, ProductValidator, InvoiceItemProductDescription, ExistingPersonValidator
+from zookeepr.lib.validators import BaseSchema, ProductValidator, ExistingPersonValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -27,12 +27,19 @@ import zookeepr.lib.pxpay as pxpay
 
 log = logging.getLogger(__name__)
 
+class InvoiceItemProductDescriptionValidator(validators.FancyValidator):
+    def validate_python(self, values, state):
+        if (values['product'] is None and values['description'] == "") or (values['product'] is not None and values['description'] != ""):
+            message = "You must select a product OR enter a description, not both"
+            error_dict = {'description': 'Description must not be blank'}
+            raise Invalid(message, values, state, error_dict=error_dict)
+
 class InvoiceItemValidator(BaseSchema):
     product = ProductValidator()
     qty = validators.Int(min=1)
     cost = validators.Int(min=0, max=2000000)
     description = validators.String(not_empty=False)
-    chained_validators = [InvoiceItemProductDescription()]
+    chained_validators = [InvoiceItemProductDescriptionValidator()]
 
 class InvoiceSchema(BaseSchema):
     person = ExistingPersonValidator(not_empty=True)

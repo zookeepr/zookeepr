@@ -119,8 +119,6 @@ class SocialNetworkValidator(validators.FancyValidator):
     def _from_python(self, value, state):
         return value.id
 
-
-
 class ProductCategoryValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return ProductCategory.find_by_id(value)
@@ -341,8 +339,3 @@ class PPChildrenAdult(validators.FancyValidator):
                 error_dict[self.adult_field] = "Any children in the partners programme must be accompanied by an adult."
         if error_dict:
             raise Invalid("Dinners are incorrect", values, state, error_dict=error_dict)
-
-class InvoiceItemProductDescription(validators.FancyValidator):
-    def validate_python(self, values, state):
-        if (values['product'] is None and values['description'] == "") or (values['product'] is not None and values['description'] != ""):
-            raise Invalid("You must select a product OR enter a description, not both", value, state, error_dict={'description': 'Please fill in one'})

@@ -25,11 +25,13 @@ from zookeepr.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class NotExistingSocialNetworkValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        name = value['social_network']['name']
+    def validate_python(self, values, state):
+        name = values['social_network']['name']
         social_network = SocialNetwork.find_by_name(name, abort_404=False)
         if social_network != None and social_network.name == name:
-           raise Invalid("Social Network name already in use", value, state)
+	    message = "Duplicate Social Network name"
+	    error_dict = {'social_network.name': "Social Network name already in use"}
+            raise Invalid(message, values, state, error_dict=error_dict)
 
 class SocialNetworkSchema(BaseSchema):
     name = validators.String(not_empty=True)

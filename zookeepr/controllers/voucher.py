@@ -31,10 +31,13 @@ def generate_code():
     return res
 
 class NotExistingVoucherValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        voucher = Voucher.find_by_code(value['code'])
+    def validate_python(self, values, state):
+        voucher = Voucher.find_by_code(values['voucher']['code'])
+	error_dict = {}
         if voucher is not None:
-            raise Invalid("Code already exists!", value, state)
+            message = "Duplicate Voucher Code"
+	    error_dict = {'voucher.code': "Code already exists!"}
+            raise Invalid(message, values, state, error_dict=error_dict)
 
 class ProductSchema(BaseSchema):
     # This schema is used to validate the products submitted by the form.
@@ -52,11 +55,10 @@ class VoucherSchema(BaseSchema):
     code = validators.String()
     comment = validators.String(not_empty=True)
 
-    chained_validators = [NotExistingVoucherValidator()]
-
 class NewVoucherSchema(BaseSchema):
     voucher = VoucherSchema()
     pre_validators = [NestedVariables]
+    chained_validators = [NotExistingVoucherValidator()]
 
 new_schema = NewVoucherSchema()
 

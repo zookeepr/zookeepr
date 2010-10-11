@@ -26,10 +26,12 @@ from zookeepr.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class NotExistingSpecialOfferValidator(validators.FancyValidator):
-    def validate_python(self, value, state):
-        special_offer = SpecialOffer.find_by_name(value['special_offer']['name'])
+    def validate_python(self, values, state):
+        special_offer = SpecialOffer.find_by_name(values['special_offer']['name'])
         if special_offer != None and special_offer != c.special_offer:
-           raise Invalid("Special Offer name already in use", value, state)
+	    message = "Duplicate Special Offer name"
+	    error_dict = {'special_offer.name': "Special Offer name already in use"}
+	    raise Invalid(message, values, state, error_dict=error_dict)
 
 class SpecialOfferSchema(BaseSchema):
     enabled = validators.Bool(if_empty=False)
