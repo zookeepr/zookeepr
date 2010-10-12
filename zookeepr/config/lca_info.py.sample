@@ -42,7 +42,7 @@ lca_info = {
   'paper_editing' : 'open',
   'funding_status' : 'not_open',
   'funding_editing' : 'not_open',
-  'conference_status': 'not_open',
+  'conference_status': 'open',
 # Mode
   'cfp_hide_assistance_info': 'no',
   'cfp_hide_scores': 'no',
@@ -160,12 +160,12 @@ lca_menu = [
   ('Brisbane', '/brisbane/about', 'brisbane'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
   ('Programme', '/programme/about', 'programme'),
-  #('Register', '/register/prices', 'register'),
-  #('Register', '/register/prices_ticket_types', 'register'), # -- Stage 4
+  ('Register', '/register/prices', 'register'),
+  #('Register', '/register/prices', 'register'), # -- Stage 4
   ('Media', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
   #('Planet', 'http://planet.lca2011.linux.org.au', 'planet'),
-  #('Wiki', '/wiki', 'wiki'),
+  ('Wiki', '/wiki', 'wiki'),
 ]
 
 lca_submenus = {

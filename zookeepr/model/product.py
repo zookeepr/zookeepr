@@ -283,7 +283,7 @@ def setup(meta):
 
     ceiling_penguin_all = Ceiling.find_by_name('penguindinner-all')
 
-    product = Product(category=category_penguin, active=True, description="Adult", cost="8000", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[4,5,6,7,8,11,12])")
+    product = Product(category=category_penguin, active=True, description="Adult", cost="9000", auth=None, validate="ProDinner(dinner_field='product_Penguin Dinner Ticket_Adult_qty',ticket_category='category_Ticket',ticket_id=[4,5,6,7,8,11,12])")
     product.ceilings.append(ceiling_penguin_all)
     meta.Session.add(product)
 
