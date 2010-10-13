@@ -39,7 +39,11 @@ def ssl_check(ssl_required=[], ssl_allowed=[], ssl_required_all=False, ssl_allow
 
     if request.method.upper() != 'POST':
         log.debug('Redirecting to %s, request: %s', protocol, request.path_info)
-        redirect_to(protocol=protocol)
+        host = config.get('ssl_host')
+        if host:
+            redirect_to(protocol=protocol, host=host)
+        else:
+            redirect_to(protocol=protocol)
     else:
         abort(405, headers=[('Allow', 'GET')]) # don't allow POSTs.
 
