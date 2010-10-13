@@ -7,7 +7,8 @@ Thank you for registering for ${ h.event_name()}!
 
 Your personal details are:
 
-    Address: ${ c.registration.person.address1 }
+    Address:
+             ${ c.registration.person.address1 }
 %if c.registration.person.address2:
              ${ c.registration.person.address2 }
 %endif
@@ -18,8 +19,10 @@ Your personal details are:
              ${ c.registration.person.city }, ${ c.registration.person.postcode }
 %endif
              ${ c.registration.person.country }
-      Phone: ${ c.registration.person.phone }
-    Company: ${ c.registration.person.company }
+      Phone:
+             ${ c.registration.person.phone }
+    Company:
+             ${ c.registration.person.company }
 
 If you wish to change your details, please log into the website.
 
