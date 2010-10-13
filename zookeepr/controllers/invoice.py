@@ -155,13 +155,10 @@ class InvoiceController(BaseController):
             c.payment = c.payment_received.payment
         return render('/invoice/view_printable.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def index(self):
-        if h.auth.has_organiser_role:
-            c.can_edit = True
-            c.invoice_collection = Invoice.find_all()
-        else:
-            c.can_edit = False
-            c.invoice_collection = Invoice.find_by_person(h.signed_in_person().id)
+        c.can_edit = True
+        c.invoice_collection = Invoice.find_all()
 
         return render('/invoice/list.mako')
 
