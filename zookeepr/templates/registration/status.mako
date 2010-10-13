@@ -81,7 +81,7 @@
     <h3>Other options</h3>
 
     <p>
-    <a href="/accommodation/">Book Accommodation</a><br>
+    ${ h.link_to('Book Accommodation', h.url_for('/register/accomodation', qualified=True)) }<br>
 %   if c.person.volunteer and (c.person.volunteer.accepted or c.person.volunteer.accepted is None):
     ${ h.link_to('Change volunteer areas of interest', h.url_for(controller='volunteer', action='edit', id=c.person.volunteer.id)) }<br>
 %   endif

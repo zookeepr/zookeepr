@@ -24,7 +24,7 @@ Your personal details are:
 If you wish to change your details, please log into the website.
 
 %if c.student_ticket:
-Please note, as part of the registration process, you may be required to present 
+Please note, as part of the registration process, you will be required to present 
 to the Registration Desk, either a student ID or proof of enrolment.
 
 %endif
@@ -45,12 +45,12 @@ registration invoice as soon as possible.
 Accommodation
 =============
 
-LCA2011 have negotiated discounts with some local accommodation providers:
+${ h.event_shortname() } have negotiated discounts with some local accommodation providers:
 
-    http://www.lca2011.linux.org.au/register/accommodation
+    ${ h.url_for('/register/accomodation', qualified=True) }
 
 Please note, you *must* book your accommodation directly through the
-accommodation providers. Registration on the LCA2011 website DOES NOT book
+accommodation providers. Registration on the ${ h.event_shortname() } website DOES NOT book
 your accommodation. For any queries about the Accommodation, please contact
 the Accommodation Providers directly.
 
@@ -63,9 +63,8 @@ In registering, you have noted a dietary requirement:
 
     ${c.registration.diet}
 
-For health and safety reasons, please let us know how you react when you eat
-the above foods, how severe the reaction is, and what medical attention you
-need, if any, should a reaction occur.
+Thank you for providing this information, we will be in contact with you if we
+need any further clarification.
 
 %endif
 %if c.registration.special:
@@ -76,9 +75,11 @@ In registering, you have noted the following special requirements:
 
     ${c.registration.special}
 
-Please let us know you require any assistance at LCA2011 as a result of this.
+Thank you for providing this information, we will be in contact with you if we
+need any further clarification.
 
 %endif
+<%doc>
 %if c.infants:
 Infants
 =======
@@ -96,6 +97,7 @@ needs solid food, please bring it along with you. If you require a high chair,
 please let us know so that we can reserve one for your baby to use.
 
 %endif
+</%doc>
 %if c.children:
 Children
 ========
@@ -110,11 +112,11 @@ Partners Programme
 ==================
 
 %if c.pp_children:
-Thank you for registering your Partner and children for the LCA2011 Partners
+Thank you for registering your Partner and children for the ${ h.event_shortname() } Partners
 Programme.  Your partner will be contacted by our Partner Programme Coordinator 
 on:
 %else:
-Thank you for registering your Partner for the LCA2011 Partners Programme.
+Thank you for registering your Partner for the ${ h.event_shortname() } Partners Programme.
 Your partner will be contacted by our Partner Programme Coordinator on:
 %endif
 
@@ -128,6 +130,7 @@ The Open Day will be held on Saturday 29 January 2011. If you have an awesome
 project, cool widgets or mind-blowing gadgets that will enthuse our attendees,
 please contact us about getting a stall at the Open Day: openday@lca2011.linux.org.au
 
-We look forward to seeing you in Wellington!
+
+We look forward to seeing you in Brisbane!
 
 The ${ h.event_name() } Organising Committee
