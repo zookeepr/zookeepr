@@ -186,6 +186,13 @@ def event_name():
     """
     return lca_info['event_name']
 
+def event_shortname():
+    """
+
+    Returns the short name of teh event we're running.
+    """
+    return lca_info['event_shortname']
+
 #def get_temperature():
 #    """ Fetch temperature from the BOM website.
 #
