@@ -623,14 +623,13 @@ class RegistrationController(BaseController):
                 if old_invoice != new_invoice and not old_invoice.manual and not old_invoice.is_void():
                     if self.invoices_identical(old_invoice, new_invoice):
                         invoice = old_invoice
-                        meta.Session.clear()
-
-                        if quiet: return
-                        redirect_to(controller='invoice', action='view', id=invoice.id)
-                    else:
-                        if old_invoice.due_date < new_invoice.due_date:
-                            new_invoice.due_date = old_invoice.due_date
-                        old_invoice.void = "Registration Change"
+                        if not quiet:
+                            redirect_to(controller='invoice', action='view', id=invoice.id)
+                        meta.Session.rollback()
+                        return
+                    if old_invoice.due_date < new_invoice.due_date:
+                        new_invoice.due_date = old_invoice.due_date
+                    old_invoice.void = "Registration Change"
 
             invoice.last_modification_timestamp = datetime.datetime.now()
             meta.Session.commit()
