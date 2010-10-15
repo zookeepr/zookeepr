@@ -50,7 +50,7 @@ Accommodation
 
 ${ h.event_shortname() } have negotiated discounts with some local accommodation providers:
 
-    ${ h.url_for('/register/accomodation', qualified=True) }
+    ${ h.url_for('/register/accommodation', qualified=True) }
 
 Please note, you *must* book your accommodation directly through the
 accommodation providers. Registration on the ${ h.event_shortname() } website DOES NOT book
