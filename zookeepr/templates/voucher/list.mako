@@ -49,15 +49,15 @@
 %   if voucher.registration:
         <td>
 %          if c.admin:
-           ${ h.link_to(voucher.registration[0].person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration[0].person.id)) }
+           ${ h.link_to(voucher.registration.person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration.person.id)) }
 %          else:
-           ${ voucher.registration[0].person.fullname() }
+           ${ voucher.registration.person.fullname() }
 %          endif
            <br />
-%          if voucher.registration[0].person.company:
-           ${ "(" + voucher.registration[0].person.company + ")"}<br />
+%          if voucher.registration.person.company:
+           ${ "(" + voucher.registration.person.company + ")"}<br />
 %          endif
-           &lt;${ voucher.registration[0].person.email_address }&gt;
+           &lt;${ voucher.registration.person.email_address }&gt;
         </td>
 %   else:
         <td><strong>Hasn't been used</strong></td>
