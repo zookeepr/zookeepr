@@ -58,7 +58,7 @@ class VoucherValidator(validators.FancyValidator):
         voucher = Voucher.find_by_code(value)
         if voucher != None:
             if voucher.registration:
-                if voucher.registration[0].person.id != h.signed_in_person().id:
+                if voucher.registration.person.id != h.signed_in_person().id:
                     raise Invalid("Voucher code already in use!", value, state)
         elif value:
             raise Invalid("Unknown voucher code!", value, state)
