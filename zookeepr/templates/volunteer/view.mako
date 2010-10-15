@@ -75,21 +75,23 @@ None
   </table>
 % endif
 
-
-
-
     <p>These are the areas that have been chosen:</p>
     <table>
-% for area in h.lca_rego['volunteer_areas']:
-<% code = area['name'].replace(' ', '_').replace('.', '_') %>
-      <tr class="${ h.cycle('even', 'odd') }">
-        <td valign="middle" align="center">${ h.yesno(code in c.volunteer.areas) |n }</td>
-        <td>${ area['name'] }
-%   if area.has_key('description'):
-          <p class="note"><small>${ area['description'] }</small></p>
-%   endif
-        </td>
-      </tr>
+% for category in h.lca_rego['volunteer']:
+        <tr>
+          <td colspan='2'><h3>${ category['title'] }</h3></td>
+        </tr>
+%   for area in category['questions']:
+<%    code = area['name'].replace(' ', '_').replace('.', '_') %>
+        <tr class="${ h.cycle('even', 'odd') }">
+          <td valign="middle" align="center">${ h.yesno(code in c.volunteer.areas) |n }</td>
+          <td>${ area['name'] }
+%     if area.has_key('description'):
+            <br><small>${ area['description'] }</small>
+%     endif
+          </td>
+        </tr>
+%   endfor
 % endfor
       <tr class="${ h.cycle('even', 'odd') }">
         <td>

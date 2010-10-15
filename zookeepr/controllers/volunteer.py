@@ -9,7 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, DictSet
+from zookeepr.lib.validators import BaseSchema, DictSet, ProductValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -18,6 +18,8 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
+from zookeepr.model import ProductCategory
+from zookeepr.model.product import Product
 from zookeepr.model.volunteer import Volunteer
 
 from zookeepr.config.lca_info import lca_info
@@ -36,6 +38,9 @@ class NewVolunteerSchema(BaseSchema):
 class EditVolunteerSchema(BaseSchema):
     volunteer = VolunteerSchema()
     pre_validators = [NestedVariables]
+
+class AcceptVolunteerSchema(BaseSchema):
+    ticket_type = ProductValidator()
 
 class VolunteerController(BaseController):
 
@@ -106,25 +111,47 @@ class VolunteerController(BaseController):
         return render('volunteer/list.mako')
 
     @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_accept")
     def accept(self, id):
         volunteer = Volunteer.find_by_id(id)
+        category = ProductCategory.find_by_name('Ticket')
+        products = Product.find_by_category(category.id)
+        defaults = {}
+        if volunteer.ticket_type:
+            defaults['ticket_type'] = volunteer.ticket_type.id
+        c.products_select = []
+        c.products_select.append(['', 'No Ticket'])
+        for p in products:
+            if 'Volunteer' in p.description:
+                c.products_select.append([p.id, p.description + ' - ' + h.number_to_currency(p.cost/100)])
+        form = render('volunteer/accept.mako') 
+        return htmlfill.render(form, defaults)
+
+    @authorize(h.auth.has_organiser_role)
+    @validate(schema=AcceptVolunteerSchema(), form='accept', post_only=True, on_get=True, variable_decode=True)
+    def _accept(self, id):
+        results = self.form_result
+        volunteer = Volunteer.find_by_id(id)
+        volunteer.ticket_type = results['ticket_type']
         volunteer.accepted = True
         meta.Session.commit()
         h.flash('Status Updated')
-        redirect_to(action='index')
+        redirect_to(action='index', id=None)
 
     @authorize(h.auth.has_organiser_role)
     def pending(self, id):
         volunteer = Volunteer.find_by_id(id)
         volunteer.accepted = None
+        volunteer.ticket_type = None
         meta.Session.commit()
         h.flash('Status Updated')
-        redirect_to(action='index')
+        redirect_to(action='index', id=None)
 
     @authorize(h.auth.has_organiser_role)
     def reject(self, id):
         volunteer = Volunteer.find_by_id(id)
         volunteer.accepted = False
+        volunteer.ticket_type = None
         meta.Session.commit()
         h.flash('Status Updated')
-        redirect_to(action='index')
+        redirect_to(action='index', id=None)

@@ -1,15 +1,25 @@
-      <p>Please choose what areas you think you'll be able to help with at the conference</p>
+      <p>${ h.event_shortname() } is a grass-roots conference and needs enthusiastic people like you to make it a success! This is a great opportunity to be seen by your peers and give back to the community.</p>
+
+      <p>Volunteers will be expected to attend a training course which will walk them thru tasks such as operating cameras, registering people, etc. Training courses will be held in mid-December, mid-January, and on the weekend before the conference.</p>
+
+      <p>Please use the check-boxes below to indicate your category, your availability, and areas that you are able to assist with. Please use the "Other:" and "Experience:" text boxes to let us know about any restrictions on your time or special skills you have that might help at the conference.</p>
+
       <table>
-% for area in h.lca_rego['volunteer_areas']:
-<% code = area['name'].replace(' ', '_').replace('.', '_') %>
+% for category in h.lca_rego['volunteer']:
+        <tr>
+          <td colspan='2'><h3>${ category['title'] }</h3></td>
+        </tr>
+%   for area in category['questions']:
+<%    code = area['name'].replace(' ', '_').replace('.', '_') %>
         <tr class="${ h.cycle('even', 'odd') }">
           <td valign="middle" align="center">${ h.checkbox('volunteer.areas.' + code) }</td>
           <td>${ area['name'] }
-%   if area.has_key('description'):
+%     if area.has_key('description'):
             <br><small>${ area['description'] }</small>
-%   endif
+%     endif
           </td>
         </tr>
+%   endfor
 % endfor
         <tr class="${ h.cycle('even', 'odd') }">
           <td valign="top">
@@ -17,7 +27,7 @@
           </td>
           <td>
             <p>${ h.textarea('volunteer.other', cols="60", rows="4") }</p>
-            <p class="note">Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during LCA2011, and any special requirements (dietary or otherwise).</p>
+            <p class="note">Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during ${ h.event_shortname() }, and any special requirements (dietary or otherwise).</p>
           </td>
         </tr>
 
@@ -27,7 +37,7 @@
           </td>
           <td>
             <p>${ h.textarea('volunteer.experience', cols="60", rows="4") }</p>
-            <p class="note">Please provide details of your involvement at previous LCAs. If you have selected either of the technical options above (i.e., A/V or networking), then please indicate your relevant experience and skills here.</p>
+            <p class="note">Please provide details of your involvement at previous conferences. If you have selected the technical option above (i.e., A/V), then please indicate your relevant experience and skills here.</p>
           </td>
         </tr>
       </table>

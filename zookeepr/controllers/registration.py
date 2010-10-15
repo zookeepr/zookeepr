@@ -287,9 +287,9 @@ class RegistrationController(BaseController):
         except:
             return False
 
-    def is_volunteer(self):
+    def is_volunteer(self,product):
         try:
-            return c.signed_in_person.is_volunteer()
+            return c.signed_in_person and c.signed_in_person.volunteer and c.signed_in_person.volunteer.accepted and c.signed_in_person.volunteer.ticket_type == product
         except:
             return False
 

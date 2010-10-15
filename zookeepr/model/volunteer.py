@@ -7,6 +7,7 @@ from zookeepr.model.meta import Session
 from zookeepr.lib.model import CommaList
 
 from person import Person
+from product import Product
 
 def setup(meta):
     pass
@@ -22,11 +23,13 @@ class Volunteer(Base):
     other = sa.Column(sa.types.Text, nullable=False)
     experience = sa.Column(sa.types.Text)
     accepted = sa.Column(sa.types.Boolean)
+    ticket_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('product.id'), nullable=True)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     # relations
     person = sa.orm.relation(Person, backref=sa.orm.backref('volunteer', cascade="all, delete-orphan", lazy=True, uselist=False))
+    ticket_type = sa.orm.relation(Product)
 
     def __init__(self, **kwargs):
         super(Volunteer, self).__init__(**kwargs)
