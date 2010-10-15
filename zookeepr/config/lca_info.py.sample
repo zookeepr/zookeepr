@@ -76,7 +76,7 @@ lca_rego = {
 
   'volunteer':
     (
-        {'title': 'Volunteer Category', 'questions': 
+        {'title': 'Volunteer Category', 'questions':
             (
                 {'name': 'Fulltime Student Volunteer', 'description': 'I am eligible to attend as a Student and am willing to donate 100% of my time to the conference. I understand that I will be able to attend for free.'},
                 {'name': 'Parttime Hobbyist Volunteer', 'description': 'I am eligible to attend as a Hobbyist and am willing to donate at least 50% of my time to the conference. I understand that I will be able to attend for the price of a student admission.'},
@@ -184,7 +184,7 @@ lca_menu = [
 
 lca_submenus = {
   'about': ['linux.conf.au', 'lca2011 Ninjas', 'Venue', 'History', 'Linux/Open Source'],
-  'brisbane': ['About'],
+  'brisbane': ['About', 'Sightseeing'],
   'sponsors': ['Sponsors', 'Why Sponsor'],
   #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
   #'programme': ['About', 'Papers', 'Miniconfs', 'Presentations', 'Posters', 'Tutorials'], # stage 1
