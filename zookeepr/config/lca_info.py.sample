@@ -78,18 +78,18 @@ lca_rego = {
     (
         {'title': 'Volunteer Category', 'questions':
             (
-                {'name': 'Fulltime Student Volunteer', 'description': 'I am eligible to attend as a Student and am willing to donate 100% of my time to the conference. I understand that I will be able to attend for free.'},
-                {'name': 'Parttime Hobbyist Volunteer', 'description': 'I am eligible to attend as a Hobbyist and am willing to donate at least 50% of my time to the conference. I understand that I will be able to attend for the price of a student admission.'},
-                {'name': 'Other Volunteer', 'description': 'I do not fit into the categories above or want to volunteer for a specific project or for less than the percentages above. Please provide details in the "Other:" section and we will try to contact you to discuss it further.'},
+                {'name': 'Student Volunteer', 'description': 'I am eligible to attend as a Student and am willing to donate 100% of my time to the conference. I understand that I will be able to attend for free.'},
+                {'name': 'Hobbyist Volunteer', 'description': 'I am eligible to attend as a Hobbyist and am willing to donate at least 50% of my time to the conference. I understand that I will be able to attend for the price of a student admission.'},
+                {'name': 'Other Volunteer', 'description': 'I do not fit into the categories above or want to volunteer for a specific project or for less than the percentages above. Please provide details in the "Other:" section.'},
             )
         },
         {'title': 'Availability', 'questions':
             (
-                {'name': 'Week Before', 'description': 'Available during the week before the conference (9-17 Jan).'},
                 {'name': 'Setup', 'description': 'I am available on the weekend prior to the conference (22 - 23 January) to help with setup.'},
-                {'name': 'During Conference', 'description': 'I am available for the full week of the conference (23 - 28 January).'},
-                {'name': 'Teardown', 'description': 'I am available on Friday 28 January to pack-up the conference.'},
-                {'name': 'Week After', 'description': 'Available during the week after the conference (23-31 Jan).'},
+                {'name': 'Sunday Registrations', 'description': 'I am available on the afternoon of Sunday 23 January to assist with pre-conference registrations.'},
+                {'name': 'Conference', 'description': 'I am available for the full week of the conference (24 - 28 January).'},
+                {'name': 'Teardown', 'description': 'I am available on the evening of Friday 28 January to pack-up the conference.'},
+                {'name': 'Other Dates', 'description': 'Please provide details in the "Other:" section.'},
             )
         },
         {'title': 'I am able and willing to help with ...', 'questions':
