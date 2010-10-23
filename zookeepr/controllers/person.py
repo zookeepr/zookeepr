@@ -100,7 +100,7 @@ class RoleSchema(BaseSchema):
 
 class PersonController(BaseController): #Read, Update, List
     def __before__(self, **kwargs):
-        ssl_check(ssl_required=['signin', 'new'])
+        ssl_check(ssl_required_all=True)
 
 
     @dispatch_on(POST="_signin") 

@@ -167,7 +167,7 @@ class RegistrationController(BaseController):
 
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
-        ssl_check(ssl_required=['index', 'new', 'edit', 'status',  'pay'])
+        ssl_check(ssl_required_all=True)
 
         c.product_categories = ProductCategory.find_all()
         c.ceilings = {}
