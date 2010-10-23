@@ -9,9 +9,9 @@ log = logging.getLogger(__name__)
 
 def current_protocol():
     if request.scheme.lower() == 'https':
-        return 'http'
+        return 'https'
 
-    if request.environ.get('HTTPS') == 'on':
+    if request.environ.get('HTTPS') in ('on', '1'):
         return 'https'
 
     if request.environ.get('HTTP_X_FORWARDED_PROTO') == 'https':
