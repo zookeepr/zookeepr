@@ -58,7 +58,7 @@ class PayInvoiceSchema(BaseSchema):
 class InvoiceController(BaseController):
     @authorize(h.auth.Or(h.auth.is_valid_user, h.auth.has_unique_key(h.url_for())))
     def __before__(self, **kwargs):
-        pass
+        ssl_check(ssl_required=['view', 'printable', 'pdf', 'index', 'pay', 'pay_manual'])
 
     @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new")
