@@ -112,20 +112,27 @@ None
           <p class="note"><small>Please provide details of your involvement at previous LCAs. If you have selected either of the technical options above (i.e., A/V or networking), then please indicate your relevant experience and skills here.</small></p>
         </td>
       </tr>
-% if h.auth.authorized(h.auth.has_organiser_role)
-%   if volunteer.accepted != True:
-          ${ h.link_to('accept', url=h.url_for(action='accept', id=volunteer.id)) }
+% if h.auth.authorized(h.auth.has_organiser_role):
+      <tr>
+        <td colspan='2'><h3>Acceptance</h3></td>
+      </tr>
+      <tr class="${ h.cycle('even', 'odd') }">
+        <td colspan='2'>
+%   if c.volunteer.accepted != True:
+          ${ h.link_to('accept', url=h.url_for(action='accept', id=c.volunteer.id)) }
 %   else:
-          ${ h.link_to('change ticket', url=h.url_for(action='accept', id=volunteer.id)) }
+          ${ h.link_to('change ticket', url=h.url_for(action='accept', id=c.volunteer.id)) }
 %   endif
-%   if volunteer.accepted is not None:
-          ${ h.link_to('pending', url=h.url_for(action='pending', id=volunteer.id)) }
+%   if c.volunteer.accepted is not None:
+          ${ h.link_to('pending', url=h.url_for(action='pending', id=c.volunteer.id)) }
 %   endif
-%   if volunteer.accepted != False:
-          ${ h.link_to('reject', url=h.url_for(action='reject', id=volunteer.id)) }
+%   if c.volunteer.accepted != False:
+          ${ h.link_to('reject', url=h.url_for(action='reject', id=c.volunteer.id)) }
 %   endif
+        </td>
+      </tr>
 % endif
-    </table>
+      </tr>
     </table>
     <p>
 % if c.can_edit:
