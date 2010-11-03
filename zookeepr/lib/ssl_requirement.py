@@ -47,4 +47,13 @@ def ssl_check(ssl_required=[], ssl_allowed=[], ssl_required_all=False, ssl_allow
     else:
         abort(405, headers=[('Allow', 'GET')]) # don't allow POSTs.
 
-
+def enforce_ssl(required=[], allowed=[], required_all=False, allowed_all=False):
+    """
+    This is a decorator which can be used to decorate a Pylons controller action.
+    It takes the definition of where ssl is required or allowed and passes it
+    through to the ssl_check function.
+    """
+    def enforce(func, self, *args, **kwargs):
+        ssl_check(ssl_required=required, ssl_allowed=allowed, ssl_required_all=required_all, ssl_allowed_all=allowed_all)
+        return func(self, *args, **kwargs)
+    return decorator(enforce)

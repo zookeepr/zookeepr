@@ -10,7 +10,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import ssl_check
+from zookeepr.lib.ssl_requirement import enforce_ssl
 from zookeepr.lib.validators import BaseSchema, ProductValidator, ExistingPersonValidator
 import zookeepr.lib.helpers as h
 
@@ -57,9 +57,10 @@ class PayInvoiceSchema(BaseSchema):
     payment_id = validators.Int(min=1)
 
 class InvoiceController(BaseController):
+    @enforce_ssl(required_all=True)
     @authorize(h.auth.Or(h.auth.is_valid_user, h.auth.has_unique_key()))
     def __before__(self, **kwargs):
-        ssl_check(ssl_required_all=True)
+        pass
 
     @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new")
