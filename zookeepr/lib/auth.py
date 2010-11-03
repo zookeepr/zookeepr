@@ -62,6 +62,7 @@ class ValidZookeeprUser(UserIn):
             raise NotAuthorizedError(
                 'You are not one of the users allowed to access this resource.'
             )
+
         return app(environ, start_response)
 
 class HasZookeeprRole(HasAuthKitRole):
@@ -350,10 +351,8 @@ class Or(Permission):
             try:
                 permission.check(app, environ, start_response)
                 return app(environ, start_response)
-            except:
+            except (NotAuthenticatedError, NotAuthorizedError):
                 pass
-            
-
 
         raise NotAuthorizedError(
                 'You are not one of the users allowed to access this resource.'
