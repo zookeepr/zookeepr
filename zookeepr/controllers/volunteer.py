@@ -66,7 +66,7 @@ class VolunteerController(BaseController):
         meta.Session.add(c.volunteer)
         meta.Session.commit()
 
-        h.flash("Volunteer application submitted. Thank you for your interest.")
+        h.flash("Thank you for volunteering. Please go ahead and add your self to the <a href=\"http://lists.followtheflow.org/mailman/listinfo/volunteers\">Volunteers Mailing List</a>.")
         redirect_to(action='view', id=c.volunteer.id)
 
     @dispatch_on(POST="_edit") 

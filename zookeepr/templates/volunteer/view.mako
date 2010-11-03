@@ -112,6 +112,19 @@ None
           <p class="note"><small>Please provide details of your involvement at previous LCAs. If you have selected either of the technical options above (i.e., A/V or networking), then please indicate your relevant experience and skills here.</small></p>
         </td>
       </tr>
+% if h.auth.authorized(h.auth.has_organiser_role)
+%   if volunteer.accepted != True:
+          ${ h.link_to('accept', url=h.url_for(action='accept', id=volunteer.id)) }
+%   else:
+          ${ h.link_to('change ticket', url=h.url_for(action='accept', id=volunteer.id)) }
+%   endif
+%   if volunteer.accepted is not None:
+          ${ h.link_to('pending', url=h.url_for(action='pending', id=volunteer.id)) }
+%   endif
+%   if volunteer.accepted != False:
+          ${ h.link_to('reject', url=h.url_for(action='reject', id=volunteer.id)) }
+%   endif
+% endif
     </table>
     </table>
     <p>
