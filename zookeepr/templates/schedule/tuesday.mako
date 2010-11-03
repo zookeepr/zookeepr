@@ -28,14 +28,14 @@
   <tbody>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">9:00-10:00</th>
-      <td class="programme_keynote" colspan="7" align="center" valign="middle">
+      <td class="programme_keynote" colspan="8" align="center" valign="middle">
       Keynote
       </td>
     </tr>
 
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">10:00-10:30</th>
-      <td class="morning_tea" colspan="7" align="center" valign="middle">Morning Tea</td>
+      <td class="morning_tea" colspan="8" align="center" valign="middle">Morning Tea</td>
     </tr>
 
     <tr class="odd">
@@ -52,7 +52,7 @@
 
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">12:15-13:30</th>
-      <td class="morning_tea" colspan="7" align="center" valign="middle">Lunch</td>
+      <td class="morning_tea" colspan="8" align="center" valign="middle">Lunch</td>
     </tr>
 
     <tr class="odd">
@@ -69,7 +69,7 @@
 
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:15-15:45</th>
-      <td class="morning_tea" colspan="7" align="center" valign="middle">Afternoon Tea</td>
+      <td class="morning_tea" colspan="8" align="center" valign="middle">Afternoon Tea</td>
     </tr>
 
     <tr class="odd">
