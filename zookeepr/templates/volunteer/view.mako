@@ -112,12 +112,13 @@ None
           <p class="note"><small>Please provide details of your involvement at previous LCAs. If you have selected either of the technical options above (i.e., A/V or networking), then please indicate your relevant experience and skills here.</small></p>
         </td>
       </tr>
+    </table>
+    <p>
+% if c.can_edit:
+      ${ h.link_to('Edit', url=h.url_for(action='edit',id=c.volunteer.id)) } |
+% endif
+      ${ h.link_to('Back', url=h.url_for(action='index', id=None)) }
 % if h.auth.authorized(h.auth.has_organiser_role):
-      <tr>
-        <td colspan='2'><h3>Acceptance</h3></td>
-      </tr>
-      <tr class="${ h.cycle('even', 'odd') }">
-        <td colspan='2'>
 %   if c.volunteer.accepted != True:
           ${ h.link_to('accept', url=h.url_for(action='accept', id=c.volunteer.id)) }
 %   else:
@@ -129,14 +130,6 @@ None
 %   if c.volunteer.accepted != False:
           ${ h.link_to('reject', url=h.url_for(action='reject', id=c.volunteer.id)) }
 %   endif
-        </td>
-      </tr>
 % endif
-      </tr>
-    </table>
-    <p>
-% if c.can_edit:
-      ${ h.link_to('Edit', url=h.url_for(action='edit',id=c.volunteer.id)) } |
-% endif
-      ${ h.link_to('Back', url=h.url_for(action='index', id=None)) }
     </p>
+
