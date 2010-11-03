@@ -120,15 +120,15 @@ None
       ${ h.link_to('Back', url=h.url_for(action='index', id=None)) }
 % if h.auth.authorized(h.auth.has_organiser_role):
 %   if c.volunteer.accepted != True:
-          ${ h.link_to('accept', url=h.url_for(action='accept', id=c.volunteer.id)) }
+        | ${ h.link_to('Accept', url=h.url_for(action='accept', id=c.volunteer.id)) }
 %   else:
-          ${ h.link_to('change ticket', url=h.url_for(action='accept', id=c.volunteer.id)) }
+        | ${ h.link_to('Change ticket', url=h.url_for(action='accept', id=c.volunteer.id)) }
 %   endif
 %   if c.volunteer.accepted is not None:
-          ${ h.link_to('pending', url=h.url_for(action='pending', id=c.volunteer.id)) }
+        | ${ h.link_to('Pending', url=h.url_for(action='pending', id=c.volunteer.id)) }
 %   endif
 %   if c.volunteer.accepted != False:
-          ${ h.link_to('reject', url=h.url_for(action='reject', id=c.volunteer.id)) }
+        | ${ h.link_to('Reject', url=h.url_for(action='reject', id=c.volunteer.id)) }
 %   endif
 % endif
     </p>
