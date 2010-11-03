@@ -106,7 +106,7 @@ class InvoiceController(BaseController):
         return redirect_to(action='view', id=c.invoice.id)
 
     def generate_hash(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -143,7 +143,7 @@ class InvoiceController(BaseController):
         return render('/invoice/view.mako')
 
     def printable(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -226,7 +226,7 @@ class InvoiceController(BaseController):
         c.invoice = payment.invoice
         person = c.invoice.person
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
