@@ -57,7 +57,7 @@ class PayInvoiceSchema(BaseSchema):
     payment_id = validators.Int(min=1)
 
 class InvoiceController(BaseController):
-    @authorize(h.auth.Or(h.auth.is_valid_user, h.auth.has_unique_key(h.url_for())))
+    @authorize(h.auth.Or(h.auth.is_valid_user, h.auth.has_unique_key()))
     def __before__(self, **kwargs):
         ssl_check(ssl_required_all=True)
 
@@ -129,7 +129,7 @@ class InvoiceController(BaseController):
 
 
     def view(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -203,7 +203,7 @@ class InvoiceController(BaseController):
         invoice = Invoice.find_by_id(id, True)
         person = invoice.person
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -276,7 +276,7 @@ class InvoiceController(BaseController):
 
 
     def pdf(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key(h.url_for()))):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 

@@ -282,21 +282,15 @@ class IsSameZookeeprAttendee(UserIn):
         return app(environ, start_response)
 
 class HasUniqueKey(Permission):
-    def __init__(self, url):
-        # unique_type is arbitrary so could be 'invoice', 'user', 'registration' etc so that the one table can be used to generate keys for multiple different things
-        # reference_id is unique to the
-        self.url = url
-
     def check(self, app, environ, start_response):
+        url = request.path
         fields = dict(request.GET)
         if fields.has_key('hash'):
             dburl = URLHash.find_by_hash(fields['hash']).url
             if dburl is not None:
-                if self.url.startswith(dburl):
+                if url.startswith(dburl):
                     return app(environ, start_response)
-        raise NotAuthorizedError(
-            "You are not authorised to view this page"
-        )
+        raise Exception("Requested URL: " + url + "Allowed URL: " + dburl)
 
 class IsSameZookeeprRegistration(UserIn):
     """
