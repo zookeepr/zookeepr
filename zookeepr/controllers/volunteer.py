@@ -9,7 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import ssl_check
+from zookeepr.lib.ssl_requirement import enforce_ssl
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductValidator
 import zookeepr.lib.helpers as h
 
@@ -45,9 +45,10 @@ class AcceptVolunteerSchema(BaseSchema):
 
 class VolunteerController(BaseController):
 
+    @enforce_ssl(required_all=True)
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
-        ssl_check(ssl_required_all=True)
+        pass
 
     @dispatch_on(POST="_new") 
     def new(self):

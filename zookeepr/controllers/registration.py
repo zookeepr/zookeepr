@@ -11,7 +11,7 @@ from formencode import validators, htmlfill, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import ssl_check
+from zookeepr.lib.ssl_requirement import enforce_ssl
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory, CheckboxQty
 from zookeepr.lib.validators import ProductQty, ProductMinMax
 
@@ -165,10 +165,9 @@ edit_schema = NewRegistrationSchema()
 
 class RegistrationController(BaseController):
 
+    @enforce_ssl(required_all=True)
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
-        ssl_check(ssl_required_all=True)
-
         c.product_categories = ProductCategory.find_all()
         c.ceilings = {}
         for ceiling in Ceiling.find_all():

@@ -1,6 +1,7 @@
 
 import logging
 
+from decorator import decorator
 from pylons.controllers.util import abort, redirect_to
 from pylons import request, config
 from paste.deploy.converters import asbool

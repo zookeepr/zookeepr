@@ -23,7 +23,7 @@ from zookeepr.model import SocialNetwork
 
 from zookeepr.config.lca_info import lca_info, lca_rego
 
-from zookeepr.lib.ssl_requirement import ssl_check
+from zookeepr.lib.ssl_requirement import enforce_ssl
 
 import datetime
 
@@ -99,9 +99,9 @@ class RoleSchema(BaseSchema):
     action = validators.OneOf(['Grant', 'Revoke'])
 
 class PersonController(BaseController): #Read, Update, List
+    @enforce_ssl(required_all=True)
     def __before__(self, **kwargs):
-        ssl_check(ssl_required_all=True)
-
+        pass
 
     @dispatch_on(POST="_signin") 
     def signin(self):

@@ -9,7 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import ssl_check
+from zookeepr.lib.ssl_requirement import enforce_ssl
 from zookeepr.lib.validators import BaseSchema, ExistingPersonValidator
 import zookeepr.lib.helpers as h
 
@@ -67,9 +67,9 @@ new_schema = NewVoucherSchema()
 allowed_categories = ['Ticket']
 
 class VoucherController(BaseController):
+    @enforce_ssl(required_all=True)
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
-        ssl_check(ssl_required_all=True)
         category = ProductCategory.find_by_name('Accommodation')
         if not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
             allowed_categories.append('Accommodation')

@@ -23,7 +23,6 @@ from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, N
 from authkit.authorize import PermissionSetupError, middleware
 from authkit.authorize.pylons_adaptors import authorized
 
-from zookeepr.lib.ssl_requirement import ssl_check
 from pylons import request, response, session
 
 
@@ -290,7 +289,9 @@ class HasUniqueKey(Permission):
             if dburl is not None:
                 if url.startswith(dburl):
                     return app(environ, start_response)
-        raise Exception("Requested URL: " + url + "Allowed URL: " + dburl)
+        raise NotAuthorizedError(
+            "You are not authorised to view this page"
+        )
 
 class IsSameZookeeprRegistration(UserIn):
     """

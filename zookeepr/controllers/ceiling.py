@@ -9,7 +9,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import ssl_check
+from zookeepr.lib.ssl_requirement import enforce_ssl
 from zookeepr.lib.validators import BaseSchema, ProductValidator
 import zookeepr.lib.helpers as h
 
@@ -52,9 +52,9 @@ class EditCeilingSchema(BaseSchema):
 
 class CeilingController(BaseController):
 
+    @enforce_ssl(required_all=True)
     @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
-        ssl_check(ssl_required_all=True)
         c.product_categories = ProductCategory.find_all()
 
     @dispatch_on(POST="_new")
