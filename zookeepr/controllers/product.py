@@ -9,6 +9,7 @@ from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.ssl_requirement import ssl_check
 from zookeepr.lib.validators import BaseSchema, ProductCategoryValidator, CeilingValidator
 import zookeepr.lib.helpers as h
 
@@ -45,6 +46,7 @@ class ProductController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
+        ssl_check(ssl_required_all=True)
         c.product_categories = ProductCategory.find_all()
         c.ceilings = Ceiling.find_all()
 

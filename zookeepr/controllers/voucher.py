@@ -9,6 +9,7 @@ from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.ssl_requirement import ssl_check
 from zookeepr.lib.validators import BaseSchema, ExistingPersonValidator
 import zookeepr.lib.helpers as h
 
@@ -33,10 +34,10 @@ def generate_code():
 class NotExistingVoucherValidator(validators.FancyValidator):
     def validate_python(self, values, state):
         voucher = Voucher.find_by_code(values['voucher']['code'])
-	error_dict = {}
+        error_dict = {}
         if voucher is not None:
             message = "Duplicate Voucher Code"
-	    error_dict = {'voucher.code': "Code already exists!"}
+            error_dict = {'voucher.code': "Code already exists!"}
             raise Invalid(message, values, state, error_dict=error_dict)
 
 class ProductSchema(BaseSchema):
@@ -68,6 +69,7 @@ allowed_categories = ['Ticket']
 class VoucherController(BaseController):
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
+        ssl_check(ssl_required_all=True)
         category = ProductCategory.find_by_name('Accommodation')
         if not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
             allowed_categories.append('Accommodation')
@@ -81,7 +83,7 @@ class VoucherController(BaseController):
         # Since the form is arbitrarily defined by what product types there are, the validation
         #   (aka schema) also needs to be dynamic.
         # Thus, this function generates a dynamic schema to validate a given set of products.
-        # 
+        #
         for category in c.product_categories:
             if category.name in allowed_categories:
                 # handle each form input type individually as the validation is unique.
@@ -176,7 +178,7 @@ class VoucherController(BaseController):
 
         return render('/voucher/list.mako')
 
-    @dispatch_on(POST="_delete") 
+    @dispatch_on(POST="_delete")
     @authorize(h.auth.has_organiser_role)
     def delete(self, id):
         """Delete the voucher

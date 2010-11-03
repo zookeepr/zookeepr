@@ -171,7 +171,7 @@ class PaymentController(BaseController):
         if len(validation_errors) > 0 and c.response['approved']:
             # Suspiciously approved transaction which needs to be checked manually
             email(lca_info['contact_email'], render('/payment/suspicious_payment.mako'))
-        
+
         if c.person is not None:
             email(c.person.email_address, render('/payment/response.mako'))
 
@@ -180,7 +180,7 @@ class PaymentController(BaseController):
         return redirect_to(action='view', id=payment.id)
 
     @authorize(h.auth.has_organiser_role)
-    @dispatch_on(POST="_new_manual") 
+    @dispatch_on(POST="_new_manual")
     def new_manual(self, id):
         c.payment = Payment.find_by_id(id)
         payment = None

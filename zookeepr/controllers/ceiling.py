@@ -9,6 +9,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
+from zookeepr.lib.ssl_requirement import ssl_check
 from zookeepr.lib.validators import BaseSchema, ProductValidator
 import zookeepr.lib.helpers as h
 
@@ -31,7 +32,7 @@ class NotExistingCeilingValidator(validators.FancyValidator):
         if ceiling != None and ceiling != c.ceiling:
             message = "Duplicate Ceiling name"
             error_dict = {'ceiling.name': "Ceiling name already in use"}
-	    raise Invalid(message, values, state, error_dict=error_dict)
+            raise Invalid(message, values, state, error_dict=error_dict)
 
 class CeilingSchema(BaseSchema):
     name = validators.String(not_empty=True)
@@ -53,9 +54,10 @@ class CeilingController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
+        ssl_check(ssl_required_all=True)
         c.product_categories = ProductCategory.find_all()
 
-    @dispatch_on(POST="_new") 
+    @dispatch_on(POST="_new")
     def new(self):
         return render('/ceiling/new.mako')
 
@@ -112,7 +114,7 @@ class CeilingController(BaseController):
         h.flash("The ceiling has been updated successfully.")
         redirect_to(action='view', id=id)
 
-    @dispatch_on(POST="_delete") 
+    @dispatch_on(POST="_delete")
     def delete(self, id):
         """Delete the ceiling
 
