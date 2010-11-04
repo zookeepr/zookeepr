@@ -93,6 +93,9 @@ None
         </tr>
 %   endfor
 % endfor
+      <tr>
+        <td colspan='2'><h3>Other Information</h3></td>
+      </tr>
       <tr class="${ h.cycle('even', 'odd') }">
         <td>
           <p class="entries">Other:</p>
