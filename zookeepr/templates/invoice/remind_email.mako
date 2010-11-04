@@ -6,7 +6,7 @@ Dear ${ c.recipient.firstname },
 
 This is a reminder that you haven't paid for your ${ h.lca_info['event_name'] }
 registration. Earlybird tickets are almost sold out and will not be
-available after midnight AEST tomorrow.
+available after midnight AEST tomorrow 8th Novemember 2010.
 
 You can view your registration and pay your outstanding invoice at 
 ${ h.url_for(qualified=True, controller='registration', action='status', id=None) }
