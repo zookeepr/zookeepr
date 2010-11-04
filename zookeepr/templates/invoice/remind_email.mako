@@ -11,8 +11,8 @@ available after midnight AEST tomorrow the 8th Novemember 2010.
 You can view your registration and pay your outstanding invoice at 
 ${ h.url_for(qualified=True, controller='registration', action='status', id=None) }
 
-If you have paid your invoice, and you think you're receiving this in error,
-please reply to this email with further information.
+If you have recieved this email and already paid your invoice please reply with
+further information.
 
 Regards,
 
