@@ -11,7 +11,7 @@ from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.ssl_requirement import enforce_ssl
-from zookeepr.lib.validators import BaseSchema, ProductValidator, ExistingPersonValidator
+from zookeepr.lib.validators import BaseSchema, ProductValidator, ExistingPersonValidator, ExistingInvoiceValidator
 import zookeepr.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -27,6 +27,20 @@ from zookeepr.config.lca_info import lca_info, file_paths
 import zookeepr.lib.pxpay as pxpay
 
 log = logging.getLogger(__name__)
+
+class RemindSchema(BaseSchema):
+#    message = validators.String(not_empty=True)
+    invoices = ForEach(ExistingInvoiceValidator())
+
+class ExistingInvoiceValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        invoice = Invoice.find_by_id(int(value), False)
+        if invoice is None:
+            raise Invalid("Unknown invoice ID.", value, state)
+        else:
+            return invoice
+    def _from_python(self, value, state):
+        return value.id
 
 class InvoiceItemProductDescriptionValidator(validators.FancyValidator):
     def validate_python(self, values, state):
@@ -165,9 +179,22 @@ class InvoiceController(BaseController):
         return render('/invoice/list.mako')
 
     @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_remind")
     def remind(self):
-        c.invoice_collection = Invoice.find_all();
+        c.invoice_collection = Invoice.find_all()
+        c.invoice = c.invoice_collection[0]
+        c.recipient = c.invoice.person
         return render('/invoice/remind.mako')
+
+    @validate(schema=RemindSchema(), form='remind', post_only=True, on_get=True, variable_decode=True)
+    def _remind(self):
+        results = self.form_result
+        for i in results['invoices']:
+            c.invoice = i
+            c.recipient = i.person
+            email(c.recipient.email_address, render('invoice/remind_email.mako'))
+            h.flash('Email sent to ' + c.recipient.firstname + ' ' + c.recipient.lastname + ' <' + c.recipient.email_address + '>')
+        redirect_to(action='remind')
 
     def _check_invoice(self, person, invoice, ignore_overdue = False):
         c.invoice = invoice
