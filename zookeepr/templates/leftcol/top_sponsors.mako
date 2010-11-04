@@ -1,9 +1,5 @@
   <!-- Sponsors on left column -->
-  <div class="whitebox">
-    <div class="boxheader">
-      <h1>Our Emperor Sponsors</h1>
       <ul>
-	<li>
+        <li><a href="http://ibm.com/"><img src="/logos/sponsor-ibm_190px.png" alt="IBM" /></a></li>
+        <li><a href="http://hp.com/go/opensource"><img src="/logos/sponsor-hp_190px.png" alt="HP" /></a></li>
       </ul>
-    </div>
-  </div>

@@ -98,6 +98,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
+% if h.url_for() == '/':
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -152,6 +153,35 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
+% else:
+                            <div class="netv-block">
+                                <div class="netv-block-tl"></div>
+                                <div class="netv-block-tr"></div>
+                                <div class="netv-block-bl"></div>
+                                <div class="netv-block-br"></div>
+                                <div class="netv-block-tc"></div>
+                                <div class="netv-block-bc"></div>
+                                <div class="netv-block-cl"></div>
+                                <div class="netv-block-cr"></div>
+                                <div class="netv-block-cc"></div>
+                                <div class="netv-block-body">
+                                    <div class="netv-blockheader">
+                                        <div class="l"></div>
+                                        <div class="r"></div>
+                                        <div class="t">Our Emperor Sponsors</div>
+                                    </div>
+                                    <div class="netv-blockcontent">
+                                        <div class="netv-blockcontent-body">
+                                            <!-- block-content -->
+                                            <%include file="/leftcol/top_sponsors.mako" />
+                                            <!-- /block-content -->
+                                            <div class="cleared"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cleared"></div>
+                                </div>
+                            </div>
+% endif
                         </div>
                         <div class="netv-layout-cell netv-content">
                             <div class="netv-post">
