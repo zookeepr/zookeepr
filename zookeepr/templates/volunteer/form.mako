@@ -21,6 +21,9 @@
         </tr>
 %   endfor
 % endfor
+        <tr>
+            <td colspan='2'><h3>Other Information</h3></td>
+        </tr>
         <tr class="${ h.cycle('even', 'odd') }">
           <td valign="top">
             <p class="entries">Other:</p>
