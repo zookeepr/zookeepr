@@ -1,6 +1,6 @@
 From: ${ h.lca_info['event_name'] } <${ h.lca_info['contact_email'] }>
 To: ${ c.recipient.firstname } ${ c.recipient.lastname } <${ c.recipient.email_address }>
-Subject: You still haven't paid for your ${ h.lca_info['event_name'] } registration
+Subject: You haven't paid for your ${ h.lca_info['event_name'] } registration
 
 Dear ${ c.recipient.firstname },
 
