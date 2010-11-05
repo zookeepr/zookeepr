@@ -38,6 +38,7 @@ class Invoice(Base):
     items = sa.orm.relation(InvoiceItem, backref='invoice', cascade="all, delete-orphan")
 
     def __init__(self, **kwargs):
+        self.due_date = datetime.datetime.now() + datetime.timedelta(+1)
         super(Invoice, self).__init__(**kwargs)
 
     def is_void(self):
@@ -69,8 +70,7 @@ class Invoice(Base):
             return "Unpaid"
 
     def overdue(self):
-        yesterday = datetime.datetime.now() + datetime.timedelta(-1)
-        return self.due_date <= yesterday
+        return self.due_date < datetime.datetime.now()
 
     def __repr__(self):
         return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)

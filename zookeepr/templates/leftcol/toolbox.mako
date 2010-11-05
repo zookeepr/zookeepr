@@ -34,10 +34,10 @@ ${ parent.toolbox_extra() }
       ${ make_link('Conference registration', '/register/status') }
 %   endif
 %   if h.signed_in_person().is_speaker():
-      ${ make_link('Speakers Info', '/programme/speakers_info') }
+      ${ make_link('Speakers Info', '/programme/presenter_faq') }
 %   endif
 %   if h.signed_in_person().is_miniconf_org():
-      ${ make_link('Miniconf Organiser Info', '/programme/miniconf_info') }
+      ${ make_link('Miniconf Organiser Info', '/programme/miniconf_information') }
 %   endif
 %   if len(h.signed_in_person().proposals) > 0:
       ${ make_link('My proposals', h.url_for(controller='proposal')) }
