@@ -50,8 +50,8 @@
         <th>Active</th>
         <th>Available</th>
         <th>Cost</th>
-        <th>Invoiced (inc. overdue)</th>
-        <th>Valid Invoices</th>
+        <th>Invoiced (Overdue)</th>
+        <th>Invoiced (Current)</th>
         <th>Sold</th>
         <th>Free</th>
         <th>Total</th>

@@ -16,8 +16,8 @@
 
     <h3>Product Totals</h3>
     <p><b>Note:</b> Totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
-    <p><b>Invoiced (inc. overdue):</b> ${ c.product.qty_invoiced(date = False) }</p>
-    <p><b>Invoiced:</b> ${ c.product.qty_invoiced() }</p>
+    <p><b>Invoiced (Overdue):</b> ${ c.product.qty_invoiced(date = False) }</p>
+    <p><b>Invoiced (Current)</b> ${ c.product.qty_invoiced() }</p>
     <p><b>Sold:</b> ${ c.product.qty_sold() }</p>
     <p><b>Total:</b> ${ h.number_to_currency((c.product.qty_sold() * c.product.cost)/100) }</p>
 
@@ -45,6 +45,7 @@
         <th>Available</th>
         <th>Invoiced</th>
         <th>Sold</th>
+        <th>Free</th>
       </tr></thead>
 %for ceiling in c.product.ceilings:
       <tr>
@@ -63,6 +64,7 @@
         <td>${ h.yesno(ceiling.available()) |n }</td>
         <td>${ ceiling.qty_invoiced() }</td>
         <td>${ ceiling.qty_sold() }</td>
+        <td>${ ceiling.qty_free() }</td>
       </tr>
 %endfor
     </table>

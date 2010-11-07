@@ -10,8 +10,8 @@
     <th>Available From</th>
     <th>Available Until</th>
     <th>Available</th>
-    <th>Invoiced (inc. overdue)</th>
-    <th>Valid Invoices</th>
+    <th>Invoiced (Overdue)</th>
+    <th>Invoiced (Current)</th>
     <th>Sold</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
