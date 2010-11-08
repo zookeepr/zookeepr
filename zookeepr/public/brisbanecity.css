@@ -1604,6 +1604,11 @@ table .odd td, table .odd th
     background-color:#cccccc;
 }
 
+table .even td, table .even th
+{
+    background-color:#ffffff;
+}
+
 img.image
 {
     margin:0;

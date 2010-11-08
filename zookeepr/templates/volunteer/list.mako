@@ -21,7 +21,7 @@
         </tr>
       </thead>
 %   for volunteer in c.volunteer_collection:
-      <tr>
+      <tr class="${ h.cycle("even", "odd") }">
         <td>${ h.link_to('id: ' + str(volunteer.id), url=h.url_for(action='view', id=volunteer.id)) }</td>
         <td>${ h.link_to('id: ' + str(volunteer.person.id), url=h.url_for(controller='person', action='view', id=volunteer.person.id)) }</td>
         <td>${ h.link_to(volunteer.person.firstname + ' ' + volunteer.person.lastname, h.url_for(controller='person', action='view', id=volunteer.person.id)) }</td>
