@@ -1163,6 +1163,18 @@ class AdminController(BaseController):
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
+    def rego_foreign(self):
+        people = [ r.person for r in Registration.find_all() ]
+        c.columns = ['Name', 'Country']
+        c.data = []
+        for person in people:
+            if person.country != 'AUSTRALIA' and person.paid():
+                row = [ "%s %s" % (person.firstname, person.lastname), person.country ]
+                c.data.append(row)
+        return table_response()
+
+
+    @authorize(h.auth.has_organiser_role)
     def rego_list(self):
         """ List of paid regos - for rego desk. [Registrations] """
         people = [
