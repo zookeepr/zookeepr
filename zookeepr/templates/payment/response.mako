@@ -17,7 +17,7 @@ Your receipt number is: PR${ c.pr.id }P${ c.pr.payment.id }
 
 %  if c.pr.invoice:
 You can view your invoice at
-  ${ h.url_for(qualified=True, controller='invoice', id=c.pr.invoice.id) }
+  ${ h.url_for(qualified=True, controller='invoice', id=c.pr.invoice.id, action='view') }
 
 %  endif
 Thanks again, and have a great day!
