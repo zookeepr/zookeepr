@@ -139,7 +139,8 @@ class VolunteerController(BaseController):
         volunteer.ticket_type = results['ticket_type']
         volunteer.accepted = True
         meta.Session.commit()
-        c.person = c.volunteer.person
+        c.volunteer = volunteer
+        c.person = volunteer.person
         email(c.person.email_address, render('volunteer/response.mako'))
         h.flash('Status Updated and Acceptance Email Sent')
         redirect_to(action='index', id=None)
@@ -159,7 +160,8 @@ class VolunteerController(BaseController):
         volunteer.accepted = False
         volunteer.ticket_type = None
         meta.Session.commit()
-        c.person = c.volunteer.person
+        c.volunteer = volunteer
+        c.person = volunteer.person
         email(c.person.email_address, render('volunteer/response.mako'))
         h.flash('Status Updated and Rejection Email Sent')
         redirect_to(action='index', id=None)
