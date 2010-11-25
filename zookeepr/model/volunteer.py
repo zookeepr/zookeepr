@@ -2,6 +2,8 @@ import sqlalchemy as sa
 
 from meta import Base
 
+from pylons.controllers.util import abort
+
 from zookeepr.model.meta import Session
 
 from zookeepr.lib.model import CommaList

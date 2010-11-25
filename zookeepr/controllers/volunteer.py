@@ -64,10 +64,12 @@ class VolunteerController(BaseController):
 
         c.volunteer = Volunteer(**results)
         c.volunteer.person = h.signed_in_person()
+        c.person = c.volunteer.person
         meta.Session.add(c.volunteer)
         meta.Session.commit()
 
-        h.flash("Thank you for volunteering. Please go ahead and add your self to the <a href=\"http://lists.followtheflow.org/mailman/listinfo/volunteers\">Volunteers Mailing List</a>.")
+        h.flash("Thank you for volunteering. We will contact you shortly regarding your application")
+        email(c.person.email_address, render('volunteer/response.mako'))
         redirect_to(action='view', id=c.volunteer.id)
 
     @dispatch_on(POST="_edit") 
@@ -137,7 +139,8 @@ class VolunteerController(BaseController):
         volunteer.ticket_type = results['ticket_type']
         volunteer.accepted = True
         meta.Session.commit()
-        h.flash('Status Updated')
+        email(c.person.email_address, render('volunteer/response.mako'))
+        h.flash('Status Updated and Acceptance Email Sent')
         redirect_to(action='index', id=None)
 
     @authorize(h.auth.has_organiser_role)
@@ -155,5 +158,6 @@ class VolunteerController(BaseController):
         volunteer.accepted = False
         volunteer.ticket_type = None
         meta.Session.commit()
-        h.flash('Status Updated')
+        email(c.person.email_address, render('volunteer/response.mako'))
+        h.flash('Status Updated and Rejection Email Sent')
         redirect_to(action='index', id=None)

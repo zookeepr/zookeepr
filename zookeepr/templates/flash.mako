@@ -4,11 +4,11 @@
 %   for (category, msgs) in messages.iteritems():
         <div class="message message-${ h.computer_title(category) }">
 %       if len(msgs) is 1:
-            <p>${ msgs[0] }</p>
+            <p>${ msgs[0] | n }</p>
 %       else:
             <ul>
 %          for msg in msgs:
-                <li>${ msg }</li>
+                <li>${ msg | n }</li>
 %          endfor
             </ul>
 %       endif
