@@ -1303,7 +1303,7 @@ a img
 
 .netv-article table, table.netv-article .netv-article tr, .netv-article th, .netv-article td
 {
-  background-color: Transparent;
+  background-color: #ffffff;
 }
 
 .netv-article th, .netv-article td
@@ -1602,11 +1602,6 @@ table.table, table.table tr, table.table td
 table .odd td, table .odd th
 {
     background-color:#cccccc;
-}
-
-table .even td, table .even th
-{
-    background-color:#ffffff;
 }
 
 img.image
