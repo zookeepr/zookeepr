@@ -22,8 +22,6 @@ already filled all positions that suit your availability or skills.
 
 Thank you again for your interest and we encourage you to volunteer for next year!
 %else:
-Please add your self to the mailing list at http://lists.followtheflow.org/mailman/listinfo/volunteers.
-
 We will be in contact shortly regarding your application.
 %endif
 
