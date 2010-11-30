@@ -25,7 +25,7 @@
     <%include file="tuesday.mako" />
     <h2>Wednesday</h2>
     <%include file="wednesday.mako" />
-    <h2>Thursday</h2>n
+    <h2>Thursday</h2>
     <%include file="thursday.mako" />
     <h2>Friday</h2>
     <%include file="friday.mako" />
