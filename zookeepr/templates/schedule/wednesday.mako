@@ -79,10 +79,9 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">15:45-16:30</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=139" /></td>
-      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=215" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=236" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=62" /></td>
-      <td class="presentation" align="center" valign="top">To Be Advised</td>
-##      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=215" /></td>
       <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=102" /> <i>(cont'd)</i></td>
     </tr>
     <tr class="odd">
