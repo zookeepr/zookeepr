@@ -40,8 +40,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=49" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=73" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=196" /></td>
-      <td class="tutorial" align="center" valign="middle" rowspan="2">To Be Advised</td>
-##      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=" /></td>
+      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=51" /></td>
     </tr>
 
     <tr class="odd">
@@ -64,8 +63,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=148" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=23" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=119" /></td>
-      <td class="tutorial" align="center" valign="middle" rowspan="2">To Be Advised</td>
-##      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=" /></td>
+      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=102" /></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">14:30-15:15</th>
@@ -86,8 +84,7 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=62" /></td>
       <td class="presentation" align="center" valign="top">To Be Advised</td>
 ##      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=" /></td>
-      <td class="tutorial" align="center" valign="middle" rowspan="2">To Be Advised</td>
-##      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=" /> <i>(cont'd)</i></td>
+      <td class="tutorial" align="center" valign="middle" rowspan="2"><%include file="talk_link.mako" args="talk_id=102" /> <i>(cont'd)</i></td>
     </tr>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">16:45-17:30</th>
@@ -112,7 +109,7 @@
     <td><b>Date</b></td><td>Wednesday 26 January 2010</td>
   </tr>
   <tr class="even">
-    <td><b>Time</b></td><td>To Be Advised</td>
+    <td><b>Time</b></td><td>18:30</td>
   </tr>
 </table>
 
