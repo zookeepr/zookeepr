@@ -53,11 +53,11 @@
         <strong>11:45 - 12:15</strong> Sander van Vugt<br> Setting up a HA cluster in 20 minutes + avoiding common errors (30 mins) </td>
       <td class="programme_room" align="center" valign="top">
         <strong>10:30 - 12:15</strong> Working Session </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <strong>10:30 - 10:35</strong> Welcome to the Miniconf<br> <strong>10:35 - 11:00</strong> James Purser<br> Planning Alerts AU<br> 
         <strong>11:00 - 11:30</strong> Mateu Batle<br> Meego Garage Client Infrastructure<br> 
         <strong>11:30 - 12:00</strong> Tony Wasserman<br> Cross-Platform Mobile Application Development Tool </td>
+      <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <strong>10:30</strong> Adam Harvey<br> Visualising Scientific Data with HTML5<br> 
         <strong>10:55</strong> Chris De Vries<br> Releasing Research as FOSS: Experiences from the K-Tree Project<br> 
@@ -87,13 +87,13 @@
         <strong>14:55 - 15:15</strong> Craig Askings<br> Defending voip on the internet (20 mins) </td>
       <td class="programme_room" align="center" valign="top">
         <strong>10:30 - 12:15</strong> Working Session </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <strong>13:00 - 13:30</strong> Alan Alpert<br> Qt Quick For Mobile UIs<br> 
         <strong>13:30 - 14:00</strong> Angus Lees<br> Writing Android Native C/C++ Apps<br> 
         <strong>14:00 - 14:30</strong> Lorn Potter<br> Linux Mobile Devices - A Potted History<br> 
         <strong>14:30 - 15:00</strong> TBA<br> 
         <strong>15:00 - 15:15</strong><br> Pimp Your Project </td>
+      <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <strong>13:30</strong> TBA<br> 
         <strong>13:55</strong> Lightning Talks<br> 
@@ -125,11 +125,11 @@
         <strong>17:15 - 17:30</strong> Lindsay Holmwood<br> En-Visage-ing system and instrumented statistics (15 mins)</td>
       <td class="programme_room" align="center" valign="top">
         <strong>10:30 - 12:15</strong> Working Session </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <strong>15:45 - 16:15</strong> Nick Hodge - MahTweets<br> 
         <strong>16:15 - 16:45</strong> TBA<br> 
         <strong>16:45 - 17:15</strong> TBA </td>
+      <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <strong>15:45</strong> Joel Stanley<br> Many-core Programming: A FPGA-based Quad-core Game Boy Emulator<br> 
         <strong>16:10</strong> John McCabe-Dansted<br> Can Monkey Testing Provide Better Bug Reports?<br> 

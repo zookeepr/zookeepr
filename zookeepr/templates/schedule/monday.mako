@@ -51,7 +51,10 @@
 	      <strong>10:30</strong> Jaime Schmidt &amp; Jan Schmidt<br>Editing video with Pitivi<br> 
 	      <strong>11:00</strong> - TBA<br> 
 	      <strong>11:30</strong> Jan Schmidt<br>Producing WebM content with GStreamer </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
+      <td class="programme_room" align="center" valign="top">
+	<strong>10:30-11:15</strong> Hardware assembly tutorial, part 1<br>
+	<strong>11:15-11:30</strong> break<br>
+	<strong>11:30-12:15</strong> Hardware assembly tutorial, part 2</td>
       <td class="programme_room" align="center" valign="top">
         <strong>10:30</strong> Andrew Gerrand<br> Practical Go Programming<br> 
         <strong>10:55</strong> Brian McKenna<br> Now Open: F#<br> 
@@ -85,7 +88,15 @@
         <strong>13:30-15:15</strong> <em>Audio/music session</em><br> 
         <strong>13:30</strong> Roderick Dornan<br> Adventures in Real Time Audio<br> 
         <strong>14:00</strong> - FFADO update (Jonathan Woithe)<br> <strong>14:30</strong> Roderick Dornan<br> Making Music </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
+      <td class="programme_room" align="center" valign="top">
+	<strong>13:30-13:50</strong> Joel Stanley &amp; Mark Jessop,<br>High Altitude Arduino: Horus<br>
+	<strong>13:50-13:55</strong> Switchover<br>
+	<strong>13:55-14:15</strong> Jonathan Oxer, <br>Shield Design: Do It Right!<br>
+	<strong>14:15-14:30</strong> Break<br>
+	<strong>14:30-14:50</strong> Andy Gelme,<br>Dragino + Arduino<br>
+	<strong>14:50-14:55</strong> Switchover<br>
+	<strong>14:55-15:15</strong> Luke Weston,<br>Lunar Numbat Board Design<br>
+      </td>
       <td class="programme_room" align="center" valign="top">
         <strong>13:30</strong> Jon A. Cruz<br> Avoiding Development Monoculture<br> 
         <strong>13:55</strong> Malcolm Locke<br> Outside in Development with Behaviour-Driven Development and Rails<br> 
@@ -116,7 +127,14 @@
       <td class="programme_room" align="center" valign="top">
         <strong>15:45</strong> Lightning talks<br> <strong>16:15</strong> - TBA<br> 
         <strong>16:45</strong> TBA </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
+      <td class="programme_room" align="center" valign="top">
+	<strong>15:45-16:05</strong> Bdale Garbee,<br>Greenhouse Control Using Arduino<br>
+	<strong>16:05-16:10</strong> Switchover<br>
+	<strong>16:10-16:30</strong> Jazz Yao-Tsung Wang,<br>Building Smart Outlets Using Arduino<br>
+	<strong>16:30-16:45</strong> Break<br>
+	<strong>16:45-17:05</strong> Aneesha Bakharia,<br>No REST For The Arduino<br>
+	<strong>17:05-17:10</strong> Switchover<br>
+	<strong>17:10-17:30</strong> Wrap up: thanks / prizes</td>
       <td class="programme_room" align="center" valign="top">
         <strong>15:45</strong> Adam Harvey<br> The State of PHP<br> 
         <strong>16:10</strong> TBA<br>
@@ -130,3 +148,5 @@
 
   </tbody>
 </table>
+
+
