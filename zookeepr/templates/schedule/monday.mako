@@ -79,7 +79,7 @@
       <th class="programme_slot" align="center" valign="middle">13:30-15:15</th>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
-        <strong>1:30</strong> Noirin Shirley<br> Open Source: Saving the World<br> 
+        <#include file="miniconf_talk_link" args="miniconf="haecksen", time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
         <strong>2:10</strong> Aeriana Lee<br> Over-complicating a home network the cheapskate way<br> 
         <strong>2:30</strong> Melissa Draper<br> Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy<br> 
         <strong>2:50</strong> Lightning Talks<br> Brianna Laugher <em>Neurosexism</em> and<br> Jean Hollis Weber <em>How I became a Linux chick at the age of 62</em>.<br> </td>
