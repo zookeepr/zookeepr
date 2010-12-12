@@ -42,15 +42,15 @@
       <th class="programme_slot" align="center" valign="middle">10:30-12:15</th>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30</strong> Lana Brindley - Welcome<br> 
-        <strong>10:35</strong> Pia Waugh<br>Applying martial arts to the workplace: your guide to kicking arse<br> 
-        <strong>11:15</strong> Joh Clarke<br>Gentle Measures in the Management and Administration of a Server<br> 
-        <strong>11:55</strong> Danielle Madeley<br>GNOME Womens Outreach Programme</td>
+      <%include file="miniconf_talk_link.mako" args="miniconf='haekson', time='10:30', speaker='Lana Brindley', title='Welcome'" />
+      <%include file="miniconf_talk_link.mako" args="miniconf='haekson', time='10:35', speaker='Pia Waugh', title='Applying martial arts to the workplace: your guide to kicking arse'" />
+      <%include file="miniconf_talk_link.mako" args="miniconf='haeksen', time='11:15', speaker='Joh Clarke', title='Gentle Measures in the Management and Administration of a Server'" />
+      <%include file="miniconf_talk_link.mako" args="miniconf='haeksen', time='11:55', speaker='Danielle Madeley', title='GNOME Womens Outreach Programme'" />
       <td class="programme_room" align="center" valign="top">
-	      <strong>10:30-12:15</strong> <em>Video session</em><br> 
-	      <strong>10:30</strong> Jaime Schmidt &amp; Jan Schmidt<br>Editing video with Pitivi<br> 
-	      <strong>11:00</strong> - TBA<br> 
-	      <strong>11:30</strong> Jan Schmidt<br>Producing WebM content with GStreamer </td>
+      	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='10:30-12:15', speaker='', title='Video session'" />
+	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='10:30', speaker='Jaime Schmidt &amp; Jan Schmidt', title='Editing video with Pitivi'" />
+	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:00', speaker='', title='TBA'" />
+	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:30', speaker='Jan Schmidt', title='Producing WebM content with GStreamer'" /></td>
       <td class="programme_room" align="center" valign="top">
 	<strong>10:30-11:15</strong> Hardware assembly tutorial, part 1<br>
 	<strong>11:15-11:30</strong> break<br>
@@ -82,8 +82,7 @@
         <strong>1:30</strong> Noirin Shirley<br> Open Source: Saving the World<br> 
         <strong>2:10</strong> Aeriana Lee<br> Over-complicating a home network the cheapskate way<br> 
         <strong>2:30</strong> Melissa Draper<br> Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy<br> 
-        <strong>2:50</strong> Lightning Talks<br> Brianna Laugher <em>Neurosexism</em> and<br> Jean Hollis Weber <em>How I became a Linux chick at the age of 62</em>.<br> 
-        Also, Your Talk Here. </td>
+        <strong>2:50</strong> Lightning Talks<br> Brianna Laugher <em>Neurosexism</em> and<br> Jean Hollis Weber <em>How I became a Linux chick at the age of 62</em>.<br> </td>
       <td class="programme_room" align="center" valign="top">
         <strong>13:30-15:15</strong> <em>Audio/music session</em><br> 
         <strong>13:30</strong> Roderick Dornan<br> Adventures in Real Time Audio<br> 
