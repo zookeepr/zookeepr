@@ -122,29 +122,29 @@
       <th class="programme_slot" align="center" valign="middle">15:45<br>17:30</th>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45</strong> Alison Young<br> Finding your feet without losing your head<br> 
-        <strong>4:05</strong> Donna Benjamin<br> We are here. We have always been here<br> 
-        <strong>4:25</strong> Panel discussion TBA </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='15:45', speaker='Alison Young', title='Finding your feet without losing your head'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='4:05', speaker='Donna Benjamin', title='We are here. We have always been here'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='4:25', speaker='', title='Panel discussion'" />
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45</strong> Lightning talks<br> <strong>16:15</strong> - TBA<br> 
-        <strong>16:45</strong> TBA </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='15:45 - 16:45', speaker='', title='Lightning talks'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='16:45', speaker='', title='TBA'" /> </td>
       <td class="programme_room" align="center" valign="top">
-	<strong>15:45-16:05</strong> Bdale Garbee,<br>Greenhouse Control Using Arduino<br>
-	<strong>16:05-16:10</strong> Switchover<br>
-	<strong>16:10-16:30</strong> Jazz Yao-Tsung Wang,<br>Building Smart Outlets Using Arduino<br>
-	<strong>16:30-16:45</strong> Break<br>
-	<strong>16:45-17:05</strong> Aneesha Bakharia,<br>No REST For The Arduino<br>
-	<strong>17:05-17:10</strong> Switchover<br>
-	<strong>17:10-17:30</strong> Wrap up: thanks / prizes</td>
+	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='15:45-16:05', speaker='Bdale Garbee', title='Greenhouse Control Using Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:05-16:10', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:10-16:30', speaker='Jazz Yao-Tsung Wang', title='Building Smart Outlets Using Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:30-16:45', speaker='', title='Break'
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:45-17:05', speaker='Aneesha Bakharia', title='No REST For The Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='17:05-17:10', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='17:10-17:30', speaker='', title='Wrap up: thanks / prizes'" /></td>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45</strong> Adam Harvey<br> The State of PHP<br> 
-        <strong>16:10</strong> TBA<br>
-        <strong>16:45</strong> Lightning Talks </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='15:45', speaker='Adam Harvey', title='The State of PHP'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='16:10', speaker='', title='TBA'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='16:45', speaker='', title='Lightning Talks'" /> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45 - 16:35</strong> TBA<br> 
-        <strong>16:40 - 17:30</strong> Kate Stewart<br> SPDX: evolution of the package facts proposal </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='business', time='15:45-16:35', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='business', time='16:40-17:30', speaker='Kate Stewart', title='SPDX: evolution of the package facts proposal'"/> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45</strong> Ian Grigg and Mark Lipscombe<br> CAcert Assurer Training Event (bring your ID!) </td> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='cloud', time='15:45', speaker='Ian Grigg &amp; Mark Lipscombe', title='CAcert Assurer Training Event (bring your ID!)'"/> </td> 
     </tr>
 
   </tbody>
