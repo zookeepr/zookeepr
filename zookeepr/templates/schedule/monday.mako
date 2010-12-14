@@ -27,19 +27,19 @@
 
   <tbody>
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="top">9:00-10:00</th>
+      <th class="programme_slot" align="center" valign="top">9:00<br>10:00</th>
       <td id="programme_intro" colspan="8" align="center" valign="middle">
         <b>Welcome to linux.conf.au 2011!</b>
       </td>
     </tr>
 
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">10:00-10:30</th>
+      <th class="programme_slot" align="center" valign="middle">10:00<br>10:30</th>
       <td class="morning_tea" colspan="8" align="center" valign="middle">Morning Tea</td>
     </tr>
 
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">10:30-12:15</th>
+      <th class="programme_slot" align="center" valign="middle">10:30<br>12:15</th>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
       <%include file="miniconf_talk_link.mako" args="miniconf='haekson', time='10:30', speaker='Lana Brindley', title='Welcome'" />
@@ -52,34 +52,34 @@
 	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:00', speaker='', title='TBA'" />
 	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:30', speaker='Jan Schmidt', title='Producing WebM content with GStreamer'" /></td>
       <td class="programme_room" align="center" valign="top">
-	<strong>10:30-11:15</strong> Hardware assembly tutorial, part 1<br>
-	<strong>11:15-11:30</strong> break<br>
-	<strong>11:30-12:15</strong> Hardware assembly tutorial, part 2</td>
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='10:30-11:15', speaker='', title='Hardware assembly tutorial, part 1'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='11:15-11:30', speaker='', title='break'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='11:30-12:15', speaker='', title='Hardware assembly tutorial, part 2'" /></td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30</strong> Andrew Gerrand<br> Practical Go Programming<br> 
-        <strong>10:55</strong> Brian McKenna<br> Now Open: F#<br> 
-        <strong>11:30</strong> Brianna Laugher<br> An Approach to Automatic Text Generation<br> 
-        <strong>11:55</strong> TBA</td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='10:30', speaker='Andrew Gerrand', title='Practical Go Programming'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='10:55', speaker='Brian McKenna', title='Now Open: F#'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='11:30', speaker='Brianna Laugher', title='An Approach to Automatic Text Generation'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='11:55', speaker='', title='TBA'" /></td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 - 11:20</strong> Jonathan Corbet<br> Lessons learned from 13 years of LWN<br> 
-        <strong>11:25 - 11:50</strong> Bob Waldie<br> Building successful and unsuccessful businesses on open source foundations <br> 
-        <strong>11:50 - 12:15</strong> Thomas Lee<br> Open Source in Big Business: A Consulting Perspective </td> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='10:30-11:20', speaker='Jonathan Corbet', title='Lessons learned from 13 years of LWN'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:25-11:50', speaker='Bob Waldie', title='Building successful and unsuccessful businesses on open source foundations'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:50-12:15', speaker='Thomas Lee', title='Open Source in Big Business: A Consulting Perspective'" /> </td> 
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30</strong> Lindsay Holmwood<br> Burn down the silos! Helping dev and ops gel on high availability websites<br> 
-        <strong>11:00</strong> David Jorm and Stephen Gordon<br> Deltacloud: abstracting for freedom<br> 
-        <strong>11:30</strong> Pia Waugh<br> Cloud computing: finding the silver lining for government</td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='10:30', speaker='Lindsay Holmwood', title='Burn down the silos! Helping dev and ops gel on high availability websites'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:00', speaker='David Jorm &amp; Stephen Gordon', title='Deltacloud: abstracting for freedom'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:30', speaker='Pia Waugh', title='Cloud computing: finding the silver lining for government'" /> </td>
     </tr>
 
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">12:15-13:30</th>
+      <th class="programme_slot" align="center" valign="middle">12:15<br>13:30</th>
       <td class="morning_tea" colspan="8" align="center" valign="middle">Lunch</td>
     </tr>
 
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">13:30-15:15</th>
+      <th class="programme_slot" align="center" valign="middle">13:30<br>15:15</th>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
-        <#include file="miniconf_talk_link" args="miniconf="haecksen", time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
         <strong>2:10</strong> Aeriana Lee<br> Over-complicating a home network the cheapskate way<br> 
         <strong>2:30</strong> Melissa Draper<br> Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy<br> 
         <strong>2:50</strong> Lightning Talks<br> Brianna Laugher <em>Neurosexism</em> and<br> Jean Hollis Weber <em>How I became a Linux chick at the age of 62</em>.<br> </td>
@@ -112,12 +112,12 @@
     </tr>
 
     <tr class="even">
-      <th class="programme_slot" align="center" valign="middle">15:15-15:45</th>
+      <th class="programme_slot" align="center" valign="middle">15:15<br>15:45</th>
       <td class="morning_tea" colspan="8" align="center" valign="middle">Afternoon Tea</td>
     </tr>
 
     <tr class="odd">
-      <th class="programme_slot" align="center" valign="middle">15:45-17:30</th>
+      <th class="programme_slot" align="center" valign="middle">15:45<br>17:30</th>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <strong>15:45</strong> Alison Young<br> Finding your feet without losing your head<br> 
