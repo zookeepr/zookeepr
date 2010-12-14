@@ -80,34 +80,36 @@
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
-        <strong>2:10</strong> Aeriana Lee<br> Over-complicating a home network the cheapskate way<br> 
-        <strong>2:30</strong> Melissa Draper<br> Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy<br> 
-        <strong>2:50</strong> Lightning Talks<br> Brianna Laugher <em>Neurosexism</em> and<br> Jean Hollis Weber <em>How I became a Linux chick at the age of 62</em>.<br> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:10', speaker='Aeriana Lee', title='Over-complicating a home network the cheapskate way'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:30', speaker='Melissa Draper', title='Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:50', speaker='Brianna Laugher', title='Neurosexism'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:55', speaker='Jean Hollis Weber', title='How I became a Linux chick at the age of 62'" /> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30-15:15</strong> <em>Audio/music session</em><br> 
-        <strong>13:30</strong> Roderick Dornan<br> Adventures in Real Time Audio<br> 
-        <strong>14:00</strong> - FFADO update (Jonathan Woithe)<br> <strong>14:30</strong> Roderick Dornan<br> Making Music </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='13:30-15:15', speaker='', title='Audio/music session'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='13:30', speaker='Roderick Dornan', title='Adventures in Real Time Audio'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='14:00', speaker='Jonathan Woithe', title='FFADO update'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='14:30', speaker='Roderick Dornan', title='Making Music'"/> </td>
       <td class="programme_room" align="center" valign="top">
-	<strong>13:30-13:50</strong> Joel Stanley &amp; Mark Jessop,<br>High Altitude Arduino: Horus<br>
-	<strong>13:50-13:55</strong> Switchover<br>
-	<strong>13:55-14:15</strong> Jonathan Oxer, <br>Shield Design: Do It Right!<br>
-	<strong>14:15-14:30</strong> Break<br>
-	<strong>14:30-14:50</strong> Andy Gelme,<br>Dragino + Arduino<br>
-	<strong>14:50-14:55</strong> Switchover<br>
-	<strong>14:55-15:15</strong> Luke Weston,<br>Lunar Numbat Board Design<br>
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='13:30-13:50', speaker='Joel Stanley &amp; Mark Jessop', title='High Altitude Arduino: Horus'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='13:50-13:55', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='13:55-14:15', speaker='Jonathan Oxer', title='Shield Design: Do It Right!'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:15-14:30', speaker='', title='Break'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:30-14:50', speaker='Andy Gelme', title='Dragino + Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:50-14:55', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:55-15:15', speaker='Luke Weston', title='Lunar Numbat Board Design'" />
       </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30</strong> Jon A. Cruz<br> Avoiding Development Monoculture<br> 
-        <strong>13:55</strong> Malcolm Locke<br> Outside in Development with Behaviour-Driven Development and Rails<br> 
-        <strong>14:30</strong> Jethro Carr<br> Indefero Code &amp; Project Management<br> 
-        <strong>14:55</strong> Thomas Lee<br> Open Source Compiler Construction for the JVM</td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='13:30', speaker='Jon A. Cruz', title='Avoiding Development Monoculture'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='13:55', speaker='Malcolm Locke', title='Outside in Development with Behaviour-Driven Development and Rails'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='14:30', speaker='Jethro Carr', title='Indefero Code &amp; Project Management'" /> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='14:55', speaker='Thomas Lee', title='Open Source Compiler Construction for the JVM'" /></td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30 - 14:20</strong> Arjen Lentz<br> Processes: Creating the Business you Want<br> 
-        <strong>14:25 - 15:15</strong> TBA
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='13:30-14:20', speaker='Arjen Lentz', title='Processes: Creating the Business you Want'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='14:25-15:15', speaker='', title='TBA'" />
         </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30</strong> Brianna Laugher<br> Distributed wikis<br> 
-        <strong>14:20</strong> Ian Grigg and Mark Lipscombe<br> Making SSL accessible to all: the CAcert project 
+        <%include file="miniconf_talk_link.mako" args="miniconf='cloud', time='13:30', speaker='Brianna Laugher', title='Distributed wikis'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='cloud', time='14:20', speaker='Ian Grigg &amp; Mark Lipscombe', title='Making SSL accessible to all: the CAcert project'" />
         </td>
     </tr>
 
