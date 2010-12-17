@@ -44,7 +44,12 @@
         <strong>10:30 – 11:00</strong> Paul McKenney – CTO Linux, IBM<br> Verifying Parallel Software: Can Theory Meet Practice?<br> 
         <strong>11:05 – 11:10</strong> Lightning Talk<br> How to speed up WordPress using Intel’s Threading Building Blocks (TBB) and Facebook’s HipHop<br> 
         <strong>11:10 – 12:10</strong> Vinton Cerf – Vice-President &amp; Chief Internet Evangelist, Google<br> In Search of Transmission Capacity – a Multicore Dilemma </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
+      <td class="programme_room" align="center" valign="top">
+        <strong>10:30 - 10:40</strong> TBA,<br> The Intro<br> 
+        <strong>10:40 - 11:05</strong> TBA,<br> Keynote<br> 
+        <strong>11:10 - 11:45</strong> TBA,<br> Keynote<br> 
+        <strong>11:45 - 12:15</strong> Dan McGarry,<br> Sometimes you have to destroy the document to save it: Exploring the limitations of traditional word processing software.
+      </td>
       <td class="programme_room" align="center" valign="top">
         <strong>10:30 - 10:35</strong> Conveners<br> Welcome and intro (5 mins)<br> 
         <strong>10:35 - 11:05</strong> Devdas Bhagat<br> Implementing DevOps in the real world (30 mins)<br> 
@@ -77,7 +82,11 @@
         <strong>13:30-15:15</strong> <strong>13:30 – 14:20</strong> Paul McKenney – CTO Linux, IBM<br> Is Parallel Programming Hard, And If So, Why?<br> 
         <strong>14:25 – 14:30</strong> Lightning Talk – How to build large scale applications using PHP<br> 
         <strong>14:30 – 15:15</strong> Lenz Gschwendtner – Team Leader, Open Parallel<br> Parallel Programming – an Overview of Non Mainstream Languages </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
+      <td class="programme_room" align="center" valign="top">
+        <strong>13:30-14:00</strong> Dale Baldwin,<br> Tourism Tasmania and the use of Open<br> 
+        <strong>14:00-14:30</strong> Steven Schmid,<br> The Open Technology Foundation<br> 
+        <strong>14:30-15:15</strong> Panel Discussion,<br> Topic: TDB
+      </td>
       <td class="programme_room" align="center" valign="top">
         <strong>13:30 - 13:45</strong> Peter Chubb IPv6 issues and experience (15 mins)<br> 
         <strong>13:45 - 14:05</strong> Ken Wilson<br> Centrally monitoring almost anything (20 mins)<br> 
@@ -115,7 +124,10 @@
         <strong>16:35 – 17:00</strong>  Wayne Kelly – Senior Lecturer, QUT<br> Discovering Inherent Parallelism in Sequential Programs<br> 
         <strong>17:00 – 17:20</strong> Moderator -Nicolás Erdödy<br> Panel - Which Industries / Applications Need Parallelization TODAY?<br> 
         <strong>17:20 – 17:30</strong> Birds of a Feather </td>
-      <td class="programme_room" align="center" valign="top">TBA</td>
+      <td class="programme_room" align="center" valign="top">
+        <strong>16:30 – 17:15</strong> Panel Discussion,<br> Topic: TBD<br> 
+        <strong>17:15 – 17:30</strong> The Outro (TBA)
+      </td>
       <td class="programme_room" align="center" valign="top">
         <strong>15:45 - 16:05</strong> Mark Suter<br> Lazy management of a secure gateway (20 mins)<br>
         <strong>16:05 - 16:25</strong> Jazz Wang<br> Bare metal recovery (20 mins)<br> 
