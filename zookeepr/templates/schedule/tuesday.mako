@@ -80,35 +80,35 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">13:30-15:15</th>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30-15:15</strong> <strong>13:30 – 14:20</strong> Paul McKenney – CTO Linux, IBM<br> Is Parallel Programming Hard, And If So, Why?<br> 
-        <strong>14:25 – 14:30</strong> Lightning Talk – How to build large scale applications using PHP<br> 
-        <strong>14:30 – 15:15</strong> Lenz Gschwendtner – Team Leader, Open Parallel<br> Parallel Programming – an Overview of Non Mainstream Languages </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='13:30 - 14:20', speaker='Paul McKenney - CTO Linux, IBM', title='Is Parallel Programming Hard, And If So, Why?'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='14:25 - 14:30', speaker='', title='Lightning Talk - How to build large scale applications using PHP'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='14:30 - 15:15', speaker='Lenz Gschwendtner - Team Leader, Open Parallel', title='Parallel Programming - an Overview of Non Mainstream Languages'"/> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30-14:00</strong> Dale Baldwin,<br> Tourism Tasmania and the use of Open<br> 
-        <strong>14:00-14:30</strong> Steven Schmid,<br> The Open Technology Foundation<br> 
-        <strong>14:30-15:15</strong> Panel Discussion,<br> Topic: TDB
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='13:30-14:00', speaker='Dale Baldwin', title='Tourism Tasmania and the use of Open'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='14:00-14:30', speaker='Steven Schmid', title='The Open Technology Foundation'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='14:30-15:15', speaker='', title='Panel Discussion'"/>
       </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30 - 13:45</strong> Peter Chubb IPv6 issues and experience (15 mins)<br> 
-        <strong>13:45 - 14:05</strong> Ken Wilson<br> Centrally monitoring almost anything (20 mins)<br> 
-        <strong>14:05 - 14:25</strong> Julien Goodwin<br> Backing up network devices (20 mins)<br> 
-        <strong>14:25 - 14:45</strong> Shyam Mani<br> DNSSEC at Mozilla (20 mins) <br> 
-        <strong>14:45 - 14:55</strong> Chris Richter<br> FileSender - Extremely large file uploading using open source (10 mins)<br> 
-        <strong>14:55 - 15:15</strong> Craig Askings<br> Defending voip on the internet (20 mins) </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='13:30 - 13:45', speaker='Peter Chubb', title='IPv6 issues and experience'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='13:45 - 14:05', speaker='Ken Wilson', title='Centrally monitoring almost anything'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:05 - 14:25', speaker='Julien Goodwin', title='Backing up network devices'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:25 - 14:45', speaker='Shyam Mani', title='DNSSEC at Mozilla'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:45 - 14:55', speaker='Chris Richter', title='FileSender - Extremely large file uploading using open source'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:55 - 15:15', speaker='Craig Askings', title='Defending voip on the internet'"/> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 - 12:15</strong> Working Session </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:00 - 13:30</strong> Alan Alpert<br> Qt Quick For Mobile UIs<br> 
-        <strong>13:30 - 14:00</strong> Angus Lees<br> Writing Android Native C/C++ Apps<br> 
-        <strong>14:00 - 14:30</strong> Lorn Potter<br> Linux Mobile Devices - A Potted History<br> 
-        <strong>14:30 - 15:00</strong> TBA<br> 
-        <strong>15:00 - 15:15</strong><br> Pimp Your Project </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='13:00 - 13:30', speaker='Alan Alpert', title='Qt Quick For Mobile UIs'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='13:30 - 14:00', speaker='Angus Lees', title='Writing Android Native C/C++ Apps'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='14:00 - 14:30', speaker='Lorn Potter', title='Linux Mobile Devices - A Potted History'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='14:30 - 15:00', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='15:00 - 15:15', speaker='', title='Pimp Your Project'"/> </td>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
-        <strong>13:30</strong> TBA<br> 
-        <strong>13:55</strong> Lightning Talks<br> 
-        <strong>14:30</strong> David Claridge<br> RoboCup - World-class Soccer Players Running Linux<br> 
-        <strong>14:55</strong> Shane Geddes, Andrew Hill &amp; Lekshmen Kannan<br> E-Learning with FLOSS</td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='13:30', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='13:55', speaker='', title='Lightning Talks'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='14:30', speaker='David Claridge', title='RoboCup - World-class Soccer Players Running Linux'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='14:55', speaker='Shane Geddes &amp; Andrew Hill &amp; Lekshmen Kannan', title='E-Learning with FLOSS'"/></td>
       <td class="programme_room" align="center" valign="top">TBA</td>
     </tr>
 
