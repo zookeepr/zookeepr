@@ -41,33 +41,34 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">10:30-12:15</th>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 – 11:00</strong> Paul McKenney – CTO Linux, IBM<br> Verifying Parallel Software: Can Theory Meet Practice?<br> 
-        <strong>11:05 – 11:10</strong> Lightning Talk<br> How to speed up WordPress using Intel’s Threading Building Blocks (TBB) and Facebook’s HipHop<br> 
-        <strong>11:10 – 12:10</strong> Vinton Cerf – Vice-President &amp; Chief Internet Evangelist, Google<br> In Search of Transmission Capacity – a Multicore Dilemma </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='10:30–11:00', speaker='Paul McKenney - CTO Linux, IBM', title='Verifying Parallel Software: Can Theory Meet Practice?'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='11:05 – 11:10', speaker='', title='How to speed up WordPress using Intel’s Threading Building Blocks (TBB) and Facebook’s HipHop'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='11:10 – 12:10', speaker='Vinton Cerf - Vice-President &amp; Chief Internet Evangelist, Google', title='In Search of Transmission Capacity – a Multicore Dilemma'"/>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 - 10:40</strong> TBA,<br> The Intro<br> 
-        <strong>10:40 - 11:05</strong> TBA,<br> Keynote<br> 
-        <strong>11:10 - 11:45</strong> TBA,<br> Keynote<br> 
-        <strong>11:45 - 12:15</strong> Dan McGarry,<br> Sometimes you have to destroy the document to save it: Exploring the limitations of traditional word processing software.
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='10:30 - 10:40', speaker='', title='Introduction'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='10:40 - 11:05', speaker='', title='Keynote'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='11:10 - 11:45', speaker='', title='Keynote'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='11:45 - 12:15', speaker='Dan McGarry', title='Sometimes you have to destroy the document to save it: Exploring the limitations of traditional word processing software.'" />
       </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 - 10:35</strong> Conveners<br> Welcome and intro (5 mins)<br> 
-        <strong>10:35 - 11:05</strong> Devdas Bhagat<br> Implementing DevOps in the real world (30 mins)<br> 
-        <strong>11:05 - 11:25</strong> Julien Goodwin<br> Brief history of time sync (20 mins)<br> 
-        <strong>11:25 - 11:45</strong> Anshul Gupta<br> Directory synchronization in a large environment (20 mins)<br> 
-        <strong>11:45 - 12:15</strong> Sander van Vugt<br> Setting up a HA cluster in 20 minutes + avoiding common errors (30 mins) </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='10:30 - 10:35', speaker='Conveners', title='Welcome and intro'"/><br> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='10:35 - 11:05', speaker='Devdas Bhagat', title='Implementing DevOps in the real world'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='11:05 - 11:25', speaker='Julien Goodwin', title='Brief history of time sync'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='11:25 - 11:45', speaker='Anshul Gupta', title='Directory synchronization in a large environment'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='11:45 - 12:15', speaker='Sander van Vugt', title='Setting up a HA cluster in 20 minutes + avoiding common errors'"/></td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 - 12:15</strong> Working Session </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 - 10:35</strong> Welcome to the Miniconf<br> <strong>10:35 - 11:00</strong> James Purser<br> Planning Alerts AU<br> 
-        <strong>11:00 - 11:30</strong> Mateu Batle<br> Meego Garage Client Infrastructure<br> 
-        <strong>11:30 - 12:00</strong> Tony Wasserman<br> Cross-Platform Mobile Application Development Tool </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='10:30 - 10:35', speaker='', title='Welcome to the Miniconf'"/>
+	<%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='10:35 - 11:00', speaker='James Purser', title='Planning Alerts AU'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='11:00 - 11:30', speaker='Mateu Batle', title='Meego Garage Client Infrastructure'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='11:30 - 12:00', speaker='Tony Wasserman', title='Cross-Platform Mobile Application Development Tool'"/> </td>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30</strong> Adam Harvey<br> Visualising Scientific Data with HTML5<br> 
-        <strong>10:55</strong> Chris De Vries<br> Releasing Research as FOSS: Experiences from the K-Tree Project<br> 
-        <strong>11:30</strong> Paul Gardner-Stephen<br> From Megalomania to Prototype in Four Months<br> 
-        <strong>11:55</strong> Paul Harvey<br> Title TBD</td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='10:30', speaker='Adam Harvey', title='Visualising Scientific Data with HTML5'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='10:55', speaker='Chris De Vries', title='Releasing Research as FOSS: Experiences from the K-Tree Project'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='11:30', speaker='Paul Gardner-Stephen', title='From Megalomania to Prototype in Four Months'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='11:55', speaker='Paul Harvey', title='TBD'"/></td>
       <td class="programme_room" align="center" valign="top">TBA</td>
     </tr>
 
