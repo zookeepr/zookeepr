@@ -120,34 +120,34 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">15:45-17:30</th>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45 – 16:10</strong> John Williams – CEO, PetaLogix and Lecturer, University of Queensland<br> Multicore vs FPGAs<br> 
-        <strong>16:10 – 16:35</strong> Tim Uckun – Solutions Architect, Enspiral<br> Painless Parallelization with Gearman<br> 
-        <strong>16:35 – 17:00</strong>  Wayne Kelly – Senior Lecturer, QUT<br> Discovering Inherent Parallelism in Sequential Programs<br> 
-        <strong>17:00 – 17:20</strong> Moderator -Nicolás Erdödy<br> Panel - Which Industries / Applications Need Parallelization TODAY?<br> 
-        <strong>17:20 – 17:30</strong> Birds of a Feather </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='15:45 - 16:10', speaker='John Williams - CEO, PetaLogix and Lecturer, University of Queensland', title='Multicore vs FPGAs'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='16:10 - 16:35', speaker='Tim Uckun - Solutions Architect, Enspiral', title='Painless Parallelization with Gearman'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='16:35 - 17:00', speaker='Wayne Kelly - Senior Lecturer, QUT', title='Discovering Inherent Parallelism in Sequential Programs'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='17:00 - 17:20', speaker='Nicolas Erdody', title='Panel - Which Industries / Applications Need Parallelization TODAY?'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='multicore', time='17:20 - 17:30', speaker='', title='Birds of a Feather'"/> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>16:30 – 17:15</strong> Panel Discussion,<br> Topic: TBD<br> 
-        <strong>17:15 – 17:30</strong> The Outro (TBA)
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='16:30 - 17:15', speaker='', title='Panel Discussion'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='17:15 - 17:30', speaker='', title='The Outro'"/>
       </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45 - 16:05</strong> Mark Suter<br> Lazy management of a secure gateway (20 mins)<br>
-        <strong>16:05 - 16:25</strong> Jazz Wang<br> Bare metal recovery (20 mins)<br> 
-        <strong>16:25 - 16:45</strong> Shoaib Mir<br> Tuning your postgresql server (20 mins)<br> 
-        <strong>16:45 - 17:00</strong> Steven Ellis<br> Resource allocation using cgroups (15 mins)<br> 
-        <strong>17:00 - 17:15</strong> Simon Lyall<br> Varnish and HTTP acceleration (15 mins)<br> 
-        <strong>17:15 - 17:30</strong> Lindsay Holmwood<br> En-Visage-ing system and instrumented statistics (15 mins)</td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='15:45 - 16:05', speaker='Mark Suter', title='Lazy management of a secure gateway'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='16:05 - 16:25', speaker='Jazz Wang', title='Bare metal recovery'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='16:25 - 16:45', speaker='Shoaib Mir', title='Tuning your postgresql server'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='16:45 - 17:00', speaker='Steven Ellis', title='Resource allocation using cgroups'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='17:00 - 17:15', speaker='Simon Lyall', title='Varnish and HTTP acceleration'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='17:15 - 17:30', speaker='Lindsay Holmwood', title='En-Visage-ing system and instrumented statistics'"/></td>
       <td class="programme_room" align="center" valign="top">
-        <strong>10:30 - 12:15</strong> Working Session </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45 - 16:15</strong> Nick Hodge - MahTweets<br> 
-        <strong>16:15 - 16:45</strong> TBA<br> 
-        <strong>16:45 - 17:15</strong> TBA </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='15:45 - 16:15', speaker='Nick Hodge', title='MahTweets'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='16:15 - 16:45', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='16:45 - 17:15', speaker='', title='TBA'"/></td>
       <td class="programme_room" align="center" valign="top">TBA</td>
       <td class="programme_room" align="center" valign="top">
-        <strong>15:45</strong> Joel Stanley<br> Many-core Programming: A FPGA-based Quad-core Game Boy Emulator<br> 
-        <strong>16:10</strong> John McCabe-Dansted<br> Can Monkey Testing Provide Better Bug Reports?<br> 
-        <strong>16:45</strong> TBA<br> 
-        <strong>17:10</strong> Lightning Talks</td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='15:45', speaker='Joel Stanley', title='Many-core Programming: A FPGA-based Quad-core Game Boy Emulator'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='16:10', speaker='John McCabe-Dansted', title='Can Monkey Testing Provide Better Bug Reports?'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='16:45', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='research', time='17:10', speaker='', title='Lightning Talks'"/></td>
       <td class="programme_room" align="center" valign="top">TBA</td>
     </tr>
 
