@@ -18,6 +18,15 @@ class TimeSlot(Base):
     # relations
     schedule = sa.orm.relation(Schedule, backref='time_slot')
 
+    def exclusive_event(self):
+        event = None
+        for schedule in self.schedule:
+            if event == None and schedule.event.exclusive:
+                event = schedule.event
+            elif event is not None and event != schedule.event:
+                return None
+        return event
+
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(TimeSlot).filter_by(id=id).first()
@@ -34,6 +43,13 @@ class TimeSlot(Base):
         start   = datetime.combine(date,time(0,0,0))
         end     = datetime.combine(date,time(23,59,59))
 
-        return Session.query(TimeSlot).filter("start_time BETWEEN :start_stamp AND :end_stamp").params(start_stamp=start, end_stamp=end).order_by(TimeSlot.start_time).all()
+        return Session.query(TimeSlot).filter(TimeSlot.start_time.between(start,end)).order_by(TimeSlot.start_time).all()
 
-
+    @classmethod
+    def find_scheduled_dates(cls):
+        scheduled_dates = []
+        time_slots = cls.find_all()
+        for time_slot in time_slots:
+            if time_slot.start_time.date() not in scheduled_dates:
+                scheduled_dates.append(time_slot.start_time.date())
+        return scheduled_dates
