@@ -2,6 +2,9 @@
 import sqlalchemy as sa
 
 from zookeepr.model.schedule import Schedule
+from zookeepr.model.meta import Session
+
+from datetime import date, time, datetime
 
 from meta import Base
 
@@ -25,3 +28,12 @@ class TimeSlot(Base):
     @classmethod
     def find_all(cls):
         return Session.query(TimeSlot).order_by(TimeSlot.start_time).all()
+
+    @classmethod
+    def find_by_date(cls, date):
+        start   = datetime.combine(date,time(0,0,0))
+        end     = datetime.combine(date,time(23,59,59))
+
+        return Session.query(TimeSlot).filter("start_time BETWEEN :start_stamp AND :end_stamp").params(start_stamp=start, end_stamp=end).order_by(TimeSlot.start_time).all()
+
+
