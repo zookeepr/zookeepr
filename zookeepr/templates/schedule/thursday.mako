@@ -69,7 +69,7 @@
       <th class="programme_slot" align="center" valign="top">14:30-15:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=108" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=184" /></td>
-      <td class="presentation" align="center" valign="top">To Be Advised</td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=237" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=68" /></td>
 
     </tr>
