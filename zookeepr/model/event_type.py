@@ -3,11 +3,17 @@ import sqlalchemy as sa
 
 from meta import Base
 
+from zookeepr.model.meta import Session
+
+"""Validation"""
+import formencode
+from formencode import validators, Invalid #, schema
+
 class EventType(Base):
     __tablename__ = 'event_type'
 
-    id           = sa.Column(sa.types.Integer, primary_key = True )
-    display_name = sa.Column(sa.types.Text,    nullable    = False)
+    id = sa.Column(sa.types.Integer, primary_key = True )
+    name = sa.Column(sa.types.Text, nullable = False)
 
 
     @classmethod
@@ -21,3 +27,10 @@ class EventType(Base):
     def find_all(cls):
         return Session.query(EventType).order_by(EventType.id).all()
 
+
+class EventTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return EventType.find_by_id(value)
+
+    def _from_python(self,value):
+        return value.id
