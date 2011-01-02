@@ -52,9 +52,9 @@
 	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:00', speaker='', title='TBA'" />
 	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:30', speaker='Jan Schmidt', title='Producing WebM content with GStreamer'" /></td>
       <td class="miniconf" align="center" valign="top">
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='10:30-11:15', speaker='', title='Hardware assembly tutorial, part 1'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='10:30-11:15', speaker='', title='Hardware assembly tutorial, part 1'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='11:15-11:30', speaker='', title='break'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='11:30-12:15', speaker='', title='Hardware assembly tutorial, part 2'" /></td>
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='11:30-12:15', speaker='', title='Hardware assembly tutorial, part 2'" /></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='10:30', speaker='Andrew Gerrand', title='Practical Go Programming'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='10:55', speaker='Brian McKenna', title='Now Open: F#'" />
@@ -90,13 +90,13 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='14:00', speaker='Jonathan Woithe', title='FFADO update'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='14:30', speaker='Roderick Dornan', title='Making Music'"/> </td>
       <td class="miniconf" align="center" valign="top">
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='13:30-13:50', speaker='Joel Stanley &amp; Mark Jessop', title='High Altitude Arduino: Horus'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='13:50-13:55', speaker='', title='Switchover'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='13:55-14:15', speaker='Jonathan Oxer', title='Shield Design: Do It Right!'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:15-14:30', speaker='', title='Break'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:30-14:50', speaker='Andy Gelme', title='Dragino + Arduino'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:50-14:55', speaker='', title='Switchover'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='14:55-15:15', speaker='Luke Weston', title='Lunar Numbat Board Design'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='13:30-13:50', speaker='Joel Stanley &amp; Mark Jessop', title='High Altitude Arduino: Horus'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='13:50-13:55', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='13:55-14:15', speaker='Jonathan Oxer', title='Shield Design: Do It Right!'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='14:15-14:30', speaker='', title='Break'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='14:30-14:50', speaker='Andy Gelme', title='Dragino + Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='14:50-14:55', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='14:55-15:15', speaker='Luke Weston', title='Lunar Numbat Board Design'" />
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='13:30', speaker='Jon A. Cruz', title='Avoiding Development Monoculture'" />
@@ -130,12 +130,12 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='16:45', speaker='', title='TBA'" /> </td>
       <td class="miniconf" align="center" valign="top">
 	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='15:45-16:05', speaker='Bdale Garbee', title='Greenhouse Control Using Arduino'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:05-16:10', speaker='', title='Switchover'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:10-16:30', speaker='Jazz Yao-Tsung Wang', title='Building Smart Outlets Using Arduino'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:30-16:45', speaker='', title='Break'
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='16:45-17:05', speaker='Aneesha Bakharia', title='No REST For The Arduino'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='17:05-17:10', speaker='', title='Switchover'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='17:10-17:30', speaker='', title='Wrap up: thanks / prizes'" /></td>
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:05-16:10', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:10-16:30', speaker='Jazz Yao-Tsung Wang', title='Building Smart Outlets Using Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:30-16:45', speaker='', title='Break'
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:45-17:05', speaker='Aneesha Bakharia', title='No REST For The Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='17:05-17:10', speaker='', title='Switchover'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='17:10-17:30', speaker='', title='Wrap up: thanks / prizes'" /></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='15:45', speaker='Adam Harvey', title='The State of PHP'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='16:10', speaker='Jethro Carr', title='Indefero Code & Project Management'" />
