@@ -59,10 +59,10 @@
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='10:30 - 10:35', speaker='', title='Welcome to the Miniconf'"/>
-	<%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='10:35 - 11:00', speaker='James Purser', title='Planning Alerts AU'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='11:00 - 11:30', speaker='Mateu Batle', title='Meego Garage Client Infrastructure'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='11:30 - 12:00', speaker='Tony Wasserman', title='Cross-Platform Mobile Application Development Tool'"/> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='10:30 - 10:35', speaker='', title='Welcome to the Miniconf'"/>
+	<%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='10:35 - 11:00', speaker='James Purser', title='Planning Alerts AU'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='11:00 - 11:30', speaker='Mateu Batle', title='Meego Garage Client Infrastructure'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='11:30 - 12:00', speaker='Tony Wasserman', title='Cross-Platform Mobile Application Development Tool'"/> </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='data', time='10:30 - 11:00', speaker='Arjen Lentz', title='Understanding Joins in half an hour'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='data', time='11:00 - 11:30', speaker='Maksim Lin', title='Redis - Quick and Simple'"/>
@@ -101,11 +101,11 @@
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='13:00 - 13:30', speaker='Alan Alpert', title='Qt Quick For Mobile UIs'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='13:30 - 14:00', speaker='Angus Lees', title='Writing Android Native C/C++ Apps'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='14:00 - 14:30', speaker='Lorn Potter', title='Linux Mobile Devices - A Potted History'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='14:30 - 15:00', speaker='', title='TBA'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='15:00 - 15:15', speaker='', title='Pimp Your Project'"/> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='13:00 - 13:30', speaker='Alan Alpert', title='Qt Quick For Mobile UIs'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='13:30 - 14:00', speaker='Angus Lees', title='Writing Android Native C/C++ Apps'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='14:00 - 14:30', speaker='Lorn Potter', title='Linux Mobile Devices - A Potted History'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='14:30 - 15:00', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='15:00 - 15:15', speaker='', title='Pimp Your Project'"/> </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='data', time='13:00', speaker='Monty Taylor', title='OpenStack Storage: Swift'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='data', time='13:30', speaker='Paul Harvey', title='Accidental wealth: liberating Information with MongoDB and Foswiki'"/>
@@ -145,9 +145,9 @@
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='15:45 - 16:15', speaker='Nick Hodge', title='MahTweets'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='16:15 - 16:45', speaker='', title='TBA'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='mobile', time='16:45 - 17:15', speaker='', title='TBA'"/></td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='15:45 - 16:15', speaker='Nick Hodge', title='MahTweets'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='16:15 - 16:45', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MobileFOSS', time='16:45 - 17:15', speaker='', title='TBA'"/></td>
       <td class="miniconf" align="center" valign="top">
       	<%include file="miniconf_talk_link.mako" args="miniconf='data', time='15:45', speaker='Arjen Lentz', title='MariaDB, or how MySQL didn\'t die with the Sun/Oracle take-overs.'"/>
       	<%include file="miniconf_talk_link.mako" args="miniconf='data', time='16:15', speaker='', title='Lightning talks'"/>
