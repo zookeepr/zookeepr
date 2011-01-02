@@ -108,8 +108,8 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='14:25-15:15', speaker='', title='TBA'" />
         </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='cloud', time='13:30', speaker='Brianna Laugher', title='Distributed wikis'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='cloud', time='14:20', speaker='Ian Grigg &amp; Mark Lipscombe', title='Making SSL accessible to all: the CAcert project'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='FreedomInTheCloud', time='13:30', speaker='Brianna Laugher', title='Distributed wikis'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='FreedomInTheCloud', time='14:20', speaker='Ian Grigg &amp; Mark Lipscombe', title='Making SSL accessible to all: the CAcert project'" />
         </td>
     </tr>
 
@@ -141,10 +141,10 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='16:10', speaker='Jethro Carr', title='Indefero Code & Project Management'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='16:45', speaker='', title='Lightning Talks'" /> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='business', time='15:45-16:35', speaker='', title='TBA'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='business', time='16:40-17:30', speaker='Kate Stewart', title='SPDX: evolution of the package facts proposal'"/> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='15:45-16:35', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='16:40-17:30', speaker='Kate Stewart', title='SPDX: evolution of the package facts proposal'"/> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='cloud', time='15:45', speaker='Ian Grigg &amp; Mark Lipscombe', title='CAcert Assurer Training Event (bring your ID!)'"/> </td> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='FreedomInTheCloud', time='15:45', speaker='Ian Grigg &amp; Mark Lipscombe', title='CAcert Assurer Training Event (bring your ID!)'"/> </td> 
     </tr>
 
   </tbody>
