@@ -61,13 +61,13 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='11:30', speaker='Brianna Laugher', title='An Approach to Automatic Text Generation'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='11:55', speaker='Michael G. Schwern', title='perl5i: Perl 5 Improved'" /></td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='10:30-11:20', speaker='Jonathan Corbet', title='Lessons learned from 13 years of LWN'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:25-11:50', speaker='Bob Waldie', title='Building successful and unsuccessful businesses on open source foundations'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:50-12:15', speaker='Thomas Lee', title='Open Source in Big Business: A Consulting Perspective'" /> </td> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='10:30-11:20', speaker='Jonathan Corbet', title='Lessons learned from 13 years of LWN'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:25-11:50', speaker='Bob Waldie', title='Building successful and unsuccessful businesses on open source foundations'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:50-12:15', speaker='Thomas Lee', title='Open Source in Big Business: A Consulting Perspective'" /> </td> 
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='10:30', speaker='Lindsay Holmwood', title='Burn down the silos! Helping dev and ops gel on high availability websites'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:00', speaker='David Jorm &amp; Stephen Gordon', title='Deltacloud: abstracting for freedom'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:30', speaker='Pia Waugh', title='Cloud computing: finding the silver lining for government'" /> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='10:30', speaker='Lindsay Holmwood', title='Burn down the silos! Helping dev and ops gel on high availability websites'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:00', speaker='David Jorm &amp; Stephen Gordon', title='Deltacloud: abstracting for freedom'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:30', speaker='Pia Waugh', title='Cloud computing: finding the silver lining for government'" /> </td>
     </tr>
 
     <tr class="even">
@@ -79,11 +79,11 @@
       <th class="programme_slot" align="center" valign="middle">13:30<br>15:15</th>
       <td class="miniconf" align="center" valign="top">TBA</td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:10', speaker='Aeriana Lee', title='Over-complicating a home network the cheapskate way'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:30', speaker='Melissa Draper', title='Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:50', speaker='Brianna Laugher', title='Neurosexism'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='2:55', speaker='Jean Hollis Weber', title='How I became a Linux chick at the age of 62'" /> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:10', speaker='Aeriana Lee', title='Over-complicating a home network the cheapskate way'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:30', speaker='Melissa Draper', title='Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:50', speaker='Brianna Laugher', title='Neurosexism'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:55', speaker='Jean Hollis Weber', title='How I became a Linux chick at the age of 62'" /> </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='13:30-15:15', speaker='', title='Audio/music session'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='13:30', speaker='Roderick Dornan', title='Adventures in Real Time Audio'" />
@@ -122,9 +122,9 @@
       <th class="programme_slot" align="center" valign="middle">15:45<br>17:30</th>
       <td class="miniconf" align="center" valign="top">TBA</td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='15:45', speaker='Alison Young', title='Finding your feet without losing your head'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='4:05', speaker='Donna Benjamin', title='We are here. We have always been here'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='haecksen', time='4:25', speaker='', title='Panel discussion'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='15:45', speaker='Alison Young', title='Finding your feet without losing your head'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='4:05', speaker='Donna Benjamin', title='We are here. We have always been here'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='4:25', speaker='', title='Panel discussion'" />
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='15:45 - 16:45', speaker='', title='Lightning talks'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='16:45', speaker='', title='TBA'" /> </td>
