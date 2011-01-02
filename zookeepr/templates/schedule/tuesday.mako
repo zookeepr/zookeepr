@@ -51,11 +51,11 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='11:45 - 12:15', speaker='Dan McGarry', title='Sometimes you have to destroy the document to save it: Exploring the limitations of traditional word processing software.'" />
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='10:30 - 10:35', speaker='Conveners', title='Welcome and intro'"/><br> 
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='10:35 - 11:05', speaker='Devdas Bhagat', title='Implementing DevOps in the real world'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='11:05 - 11:25', speaker='Julien Goodwin', title='Brief history of time sync'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='11:25 - 11:45', speaker='Anshul Gupta', title='Directory synchronization in a large environment'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='11:45 - 12:15', speaker='Sander van Vugt', title='Setting up a HA cluster in 20 minutes + avoiding common errors'"/></td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='10:30 - 10:35', speaker='Conveners', title='Welcome and intro'"/><br> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='10:35 - 11:05', speaker='Devdas Bhagat', title='Implementing DevOps in the real world'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='11:05 - 11:25', speaker='Julien Goodwin', title='Brief history of time sync'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='11:25 - 11:45', speaker='Anshul Gupta', title='Directory synchronization in a large environment'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='11:45 - 12:15', speaker='Sander van Vugt', title='Setting up a HA cluster in 20 minutes + avoiding common errors'"/></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="miniconf" align="center" valign="top">
@@ -92,12 +92,12 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='14:30-15:15', speaker='', title='Panel Discussion'"/>
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='13:30 - 13:45', speaker='Peter Chubb', title='IPv6 issues and experience'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='13:45 - 14:05', speaker='Ken Wilson', title='Centrally monitoring almost anything'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:05 - 14:25', speaker='Julien Goodwin', title='Backing up network devices'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:25 - 14:45', speaker='Shyam Mani', title='DNSSEC at Mozilla'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:45 - 14:55', speaker='Chris Richter', title='FileSender - Extremely large file uploading using open source'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='14:55 - 15:15', speaker='Craig Askings', title='Defending voip on the internet'"/> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='13:30 - 13:45', speaker='Peter Chubb', title='IPv6 issues and experience'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='13:45 - 14:05', speaker='Ken Wilson', title='Centrally monitoring almost anything'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='14:05 - 14:25', speaker='Julien Goodwin', title='Backing up network devices'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='14:25 - 14:45', speaker='Shyam Mani', title='DNSSEC at Mozilla'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='14:45 - 14:55', speaker='Chris Richter', title='FileSender - Extremely large file uploading using open source'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='14:55 - 15:15', speaker='Craig Askings', title='Defending voip on the internet'"/> </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="miniconf" align="center" valign="top">
@@ -136,12 +136,12 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='17:15 - 17:30', speaker='', title='The Outro'"/>
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='15:45 - 16:05', speaker='Mark Suter', title='Lazy management of a secure gateway'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='16:05 - 16:25', speaker='Jazz Wang', title='Bare metal recovery'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='16:25 - 16:45', speaker='Shoaib Mir', title='Tuning your postgresql server'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='16:45 - 17:00', speaker='Steven Ellis', title='Resource allocation using cgroups'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='17:00 - 17:15', speaker='Simon Lyall', title='Varnish and HTTP acceleration'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='sysadmin', time='17:15 - 17:30', speaker='Lindsay Holmwood', title='En-Visage-ing system and instrumented statistics'"/></td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='15:45 - 16:05', speaker='Mark Suter', title='Lazy management of a secure gateway'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='16:05 - 16:25', speaker='Jazz Wang', title='Bare metal recovery'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='16:25 - 16:45', speaker='Shoaib Mir', title='Tuning your postgresql server'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='16:45 - 17:00', speaker='Steven Ellis', title='Resource allocation using cgroups'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='17:00 - 17:15', speaker='Simon Lyall', title='Varnish and HTTP acceleration'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='17:15 - 17:30', speaker='Lindsay Holmwood', title='En-Visage-ing system and instrumented statistics'"/></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='rocketry', time='10:30 - 12:15', speaker='', title='Working Session'"/> </td>
       <td class="miniconf" align="center" valign="top">
