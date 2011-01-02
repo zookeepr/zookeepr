@@ -47,10 +47,10 @@
       <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='11:15', speaker='Joh Clarke', title='Gentle Measures in the Management and Administration of a Server'" />
       <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='11:55', speaker='Danielle Madeley', title='GNOME Womens Outreach Programme'" />
       <td class="miniconf" align="center" valign="top">
-      	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='10:30-12:15', speaker='', title='Video session'" />
-	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='10:30', speaker='Jaime Schmidt &amp; Jan Schmidt', title='Editing video with Pitivi'" />
-	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:00', speaker='', title='TBA'" />
-	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='11:30', speaker='Jan Schmidt', title='Producing WebM content with GStreamer'" /></td>
+      	      <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='10:30-12:15', speaker='', title='Video session'" />
+	      <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='10:30', speaker='Jaime Schmidt &amp; Jan Schmidt', title='Editing video with Pitivi'" />
+	      <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='11:00', speaker='', title='TBA'" />
+	      <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='11:30', speaker='Jan Schmidt', title='Producing WebM content with GStreamer'" /></td>
       <td class="miniconf" align="center" valign="top">
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='10:30-11:15', speaker='', title='Hardware assembly tutorial, part 1'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='11:15-11:30', speaker='', title='break'" />
@@ -85,10 +85,10 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:50', speaker='Brianna Laugher', title='Neurosexism'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:55', speaker='Jean Hollis Weber', title='How I became a Linux chick at the age of 62'" /> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='13:30-15:15', speaker='', title='Audio/music session'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='13:30', speaker='Roderick Dornan', title='Adventures in Real Time Audio'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='14:00', speaker='Jonathan Woithe', title='FFADO update'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='14:30', speaker='Roderick Dornan', title='Making Music'"/> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='13:30-15:15', speaker='', title='Audio/music session'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='13:30', speaker='Roderick Dornan', title='Adventures in Real Time Audio'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='14:00', speaker='Jonathan Woithe', title='FFADO update'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='14:30', speaker='Roderick Dornan', title='Making Music'"/> </td>
       <td class="miniconf" align="center" valign="top">
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='13:30-13:50', speaker='Joel Stanley &amp; Mark Jessop', title='High Altitude Arduino: Horus'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='13:50-13:55', speaker='', title='Switchover'" />
@@ -126,8 +126,8 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='4:05', speaker='Donna Benjamin', title='We are here. We have always been here'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='4:25', speaker='', title='Panel discussion'" />
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='15:45 - 16:45', speaker='', title='Lightning talks'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='16:45', speaker='', title='TBA'" /> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='15:45 - 16:45', speaker='', title='Lightning talks'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='16:45', speaker='', title='TBA'" /> </td>
       <td class="miniconf" align="center" valign="top">
 	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='15:45-16:05', speaker='Bdale Garbee', title='Greenhouse Control Using Arduino'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:05-16:10', speaker='', title='Switchover'" />
