@@ -53,7 +53,7 @@
 	      <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='11:30', speaker='Jan Schmidt', title='Producing WebM content with GStreamer'" /></td>
       <td class="miniconf" align="center" valign="top">
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='10:30-11:15', speaker='', title='Hardware assembly tutorial, part 1'" />
-	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='11:15-11:30', speaker='', title='break'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='11:15-11:30', speaker='', title='break'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='11:30-12:15', speaker='', title='Hardware assembly tutorial, part 2'" /></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='10:30', speaker='Andrew Gerrand', title='Practical Go Programming'" />
@@ -129,7 +129,7 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='15:45 - 16:45', speaker='', title='Lightning talks'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='16:45', speaker='', title='TBA'" /> </td>
       <td class="miniconf" align="center" valign="top">
-	<%include file="miniconf_talk_link.mako" args="miniconf='ardunio', time='15:45-16:05', speaker='Bdale Garbee', title='Greenhouse Control Using Arduino'" />
+	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='15:45-16:05', speaker='Bdale Garbee', title='Greenhouse Control Using Arduino'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:05-16:10', speaker='', title='Switchover'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:10-16:30', speaker='Jazz Yao-Tsung Wang', title='Building Smart Outlets Using Arduino'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='16:30-16:45', speaker='', title='Break'
