@@ -59,7 +59,7 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='10:30', speaker='Andrew Gerrand', title='Practical Go Programming'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='10:55', speaker='Brian McKenna', title='Now Open: F#'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='11:30', speaker='Brianna Laugher', title='An Approach to Automatic Text Generation'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='11:55', speaker='', title='TBA'" /></td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='11:55', speaker='Michael G. Schwern', title='perl5i: Perl 5 Improved'" /></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='10:30-11:20', speaker='Jonathan Corbet', title='Lessons learned from 13 years of LWN'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='open_business', time='11:25-11:50', speaker='Bob Waldie', title='Building successful and unsuccessful businesses on open source foundations'" />
@@ -101,7 +101,7 @@
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='13:30', speaker='Jon A. Cruz', title='Avoiding Development Monoculture'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='13:55', speaker='Malcolm Locke', title='Outside in Development with Behaviour-Driven Development and Rails'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='14:30', speaker='Jethro Carr', title='Indefero Code &amp; Project Management'" /> 
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='14:30', speaker='Steve Dalton', title='Java: Rumours of my demise are greatly exaggerated'" /> 
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='14:55', speaker='Thomas Lee', title='Open Source Compiler Construction for the JVM'" /></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='13:30-14:20', speaker='Arjen Lentz', title='Processes: Creating the Business you Want'" />
@@ -138,7 +138,7 @@
 	<%include file="miniconf_talk_link.mako" args="miniconf='arduino', time='17:10-17:30', speaker='', title='Wrap up: thanks / prizes'" /></td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='15:45', speaker='Adam Harvey', title='The State of PHP'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='16:10', speaker='', title='TBA'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='16:10', speaker='Jethro Carr', title='Indefero Code & Project Management'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='open_programming', time='16:45', speaker='', title='Lightning Talks'" /> </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='business', time='15:45-16:35', speaker='', title='TBA'"/>
