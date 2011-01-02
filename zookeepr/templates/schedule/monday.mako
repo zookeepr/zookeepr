@@ -42,10 +42,10 @@
       <th class="programme_slot" align="center" valign="middle">10:30<br>12:15</th>
       <td class="miniconf" align="center" valign="top">TBA</td>
       <td class="miniconf" align="center" valign="top">
-      <%include file="miniconf_talk_link.mako" args="miniconf='haekson', time='10:30', speaker='Lana Brindley', title='Welcome'" />
-      <%include file="miniconf_talk_link.mako" args="miniconf='haekson', time='10:35', speaker='Pia Waugh', title='Applying martial arts to the workplace: your guide to kicking arse'" />
-      <%include file="miniconf_talk_link.mako" args="miniconf='haeksen', time='11:15', speaker='Joh Clarke', title='Gentle Measures in the Management and Administration of a Server'" />
-      <%include file="miniconf_talk_link.mako" args="miniconf='haeksen', time='11:55', speaker='Danielle Madeley', title='GNOME Womens Outreach Programme'" />
+      <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='10:30', speaker='Lana Brindley', title='Welcome'" />
+      <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='10:35', speaker='Pia Waugh', title='Applying martial arts to the workplace: your guide to kicking arse'" />
+      <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='11:15', speaker='Joh Clarke', title='Gentle Measures in the Management and Administration of a Server'" />
+      <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='11:55', speaker='Danielle Madeley', title='GNOME Womens Outreach Programme'" />
       <td class="miniconf" align="center" valign="top">
       	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='10:30-12:15', speaker='', title='Video session'" />
 	      <%include file="miniconf_talk_link.mako" args="miniconf='multimedia', time='10:30', speaker='Jaime Schmidt &amp; Jan Schmidt', title='Editing video with Pitivi'" />
