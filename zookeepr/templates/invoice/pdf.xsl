@@ -32,8 +32,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.90509668"
-     inkscape:cx="509.93456"
-     inkscape:cy="966.24502"
+     inkscape:cx="559.98811"
+     inkscape:cy="837.686"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showguides="true"
@@ -258,7 +258,12 @@
          x="698.83887"
          y="187.74347"
          style="font-size:14px;font-weight:normal;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-         id="tspan3196">PO Box 2010</svg:tspan><svg:tspan
+         id="tspan3196">ABN: 56 987 117 479</svg:tspan><svg:tspan
+         sodipodi:role="line"
+         x="698.83887"
+         y="187.74347"
+         style="font-size:14px;font-weight:normal;text-align:end;text-anchor:end;font-family:DejaVu Sans"
+         id="tspan3195">PO Box 2010</svg:tspan><svg:tspan
          sodipodi:role="line"
          x="698.83887"
          y="205.24347"
@@ -275,7 +280,7 @@
          style="font-size:14px;font-weight:normal;text-align:end;text-anchor:end;font-family:DejaVu Sans"
          id="tspan3198" /><svg:tspan
          sodipodi:role="line"
-         x="698.83887"
+         x="703.2959"
          y="257.74347"
          style="font-size:14px;font-weight:normal;text-align:end;text-anchor:end;font-family:DejaVu Sans"
          id="tspan2800">+61 7 3103 7998 </svg:tspan><svg:tspan
