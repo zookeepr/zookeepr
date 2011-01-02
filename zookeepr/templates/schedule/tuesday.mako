@@ -45,10 +45,10 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='11:05 – 11:10', speaker='', title='How to speed up WordPress using Intel’s Threading Building Blocks (TBB) and Facebook’s HipHop'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='11:10 – 12:10', speaker='Vinton Cerf - Vice-President &amp; Chief Internet Evangelist, Google', title='In Search of Transmission Capacity – a Multicore Dilemma'"/>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='10:30 - 10:40', speaker='', title='Introduction'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='10:40 - 11:05', speaker='', title='Keynote'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='11:10 - 11:45', speaker='', title='Keynote'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='11:45 - 12:15', speaker='Dan McGarry', title='Sometimes you have to destroy the document to save it: Exploring the limitations of traditional word processing software.'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='10:30 - 10:40', speaker='', title='Introduction'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='10:40 - 11:05', speaker='', title='Keynote'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='11:10 - 11:45', speaker='', title='Keynote'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='11:45 - 12:15', speaker='Dan McGarry', title='Sometimes you have to destroy the document to save it: Exploring the limitations of traditional word processing software.'" />
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='10:30 - 10:35', speaker='Conveners', title='Welcome and intro'"/><br> 
@@ -87,9 +87,9 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='14:25 - 14:30', speaker='', title='Lightning Talk - How to build large scale applications using PHP'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='14:30 - 15:15', speaker='Lenz Gschwendtner - Team Leader, Open Parallel', title='Parallel Programming - an Overview of Non Mainstream Languages'"/> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='13:30-14:00', speaker='Dale Baldwin', title='Tourism Tasmania and the use of Open'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='14:00-14:30', speaker='Steven Schmid', title='The Open Technology Foundation'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='14:30-15:15', speaker='', title='Panel Discussion'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='13:30-14:00', speaker='Dale Baldwin', title='Tourism Tasmania and the use of Open'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='14:00-14:30', speaker='Steven Schmid', title='The Open Technology Foundation'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='14:30-15:15', speaker='', title='Panel Discussion'"/>
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='13:30 - 13:45', speaker='Peter Chubb', title='IPv6 issues and experience'"/>
@@ -132,8 +132,8 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='17:00 - 17:20', speaker='Nicolas Erdody', title='Panel - Which Industries / Applications Need Parallelization TODAY?'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='17:20 - 17:30', speaker='', title='Birds of a Feather'"/> </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='16:30 - 17:15', speaker='', title='Panel Discussion'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='public_sector', time='17:15 - 17:30', speaker='', title='The Outro'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='16:30 - 17:15', speaker='', title='Panel Discussion'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='17:15 - 17:30', speaker='', title='The Outro'"/>
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='SystemAdministration', time='15:45 - 16:05', speaker='Mark Suter', title='Lazy management of a secure gateway'"/>
