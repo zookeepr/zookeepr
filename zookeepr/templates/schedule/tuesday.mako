@@ -42,7 +42,7 @@
       <th class="programme_slot" align="center" valign="middle">10:30-12:15</th>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='10:30-11:00', speaker='Paul McKenney - CTO Linux, IBM', title='Verifying Parallel Software: Can Theory Meet Practice?'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='11:05-11:10', speaker='', title='How to speed up WordPress using Intel's Threading Building Blocks (TBB) and Facebook's HipHop'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='11:05-11:10', speaker='', title='How to speed up WordPress using Intel's Threading Building Blocks (TBB) and Facebook\'s HipHop'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='11:10-12:10', speaker='Vinton Cerf - Vice-President &amp; Chief Internet Evangelist, Google', title='In Search of Transmission Capacity - a Multicore Dilemma'"/>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='10:30 - 10:40', speaker='', title='Introduction'"/>
