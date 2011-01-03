@@ -44,6 +44,7 @@ def make_map():
     map.connect('/programme/schedule/video/{room}', controller='schedule', action='video_room', room=None)
     map.connect('/schedule/video/{room}', controller='schedule', action='video_room', room=None)
     map.connect('/schedule/{day}', controller='schedule', day=None)
+    map.connect('/event/new_proposals', controller='event', action='new_proposals')
 
     # Proposal submission
     map.connect('/programme/submit_a_miniconf', controller='miniconf_proposal', action='new')
