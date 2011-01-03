@@ -48,7 +48,7 @@ class EventController(BaseController):
     @enforce_ssl(required_all=True)
     @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
-        c.proposals = Proposal.find_all_accepted()
+        c.proposals = Proposal.find_all_accepted_without_event()
         c.event_types = EventType.find_all()
 
     @dispatch_on(POST="_new")
@@ -68,9 +68,8 @@ class EventController(BaseController):
 
     def new_proposals(self):
         for proposal in c.proposals:
-            if not proposal.event:
-                event = Event(type_id=1, proposal=proposal, publish=True, exclusive=False)
-                meta.Session.add(event)
+            event = Event(type_id=1, proposal=proposal, publish=True, exclusive=False)
+            meta.Session.add(event)
         meta.Session.commit()
 
         h.flash("Events successfully created from Proposals")

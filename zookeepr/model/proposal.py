@@ -300,6 +300,12 @@ class Proposal(Base):
         return result
 
     @classmethod
+    def find_all_accepted_without_event(cls):
+        status = ProposalStatus.find_by_name('Accepted')
+
+        return Session.query(Proposal).filter_by(status=status).filter_by(event=None)
+
+    @classmethod
     def find_accepted_by_id(cls, id):
         #status = ProposalStatus.find_by_name('Accepted')
         #result = Session.query(Proposal).filter_by(id=id,status_id=status.id)
