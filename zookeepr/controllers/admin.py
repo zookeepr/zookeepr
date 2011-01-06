@@ -583,6 +583,77 @@ class AdminController(BaseController):
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
+    def registered_volunteers(self):
+        """ Listing of volunteers and various stuff about them [Speakers] """
+        """ HACK: This code should be in the registration controller """
+        import re
+        shirt_totals = {}
+        c.data = []
+        c.noescape = True
+        volunteer_list = []
+        for p in meta.Session.query(Person).all():
+            if not p.is_volunteer(): continue
+            volunteer_list.append((p.lastname.lower()+' '+p.firstname, p))
+        volunteer_list.sort()
+
+        for (sortkey, p) in volunteer_list:
+            registration_link = ''
+            if p.registration:
+                registration_link = '<a href="/registration/%d">Details</a>, ' % (p.registration.id)
+            res = [
+      '<a href="/person/%d">%s %s</a> (%s<a href="mailto:%s">email</a>)'
+                  % (p.id, p.firstname, p.lastname, registration_link, p.email_address)
+            ]
+
+            if p.registration:
+              if p.invoices:
+                if p.valid_invoice() is None:
+                    res.append('Invalid Invoice')
+                else:
+                    if p.valid_invoice().paid():
+                      res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
+                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                    else:
+                      res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
+                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+
+                    shirt = ''
+                    for item in p.valid_invoice().items:
+                        if ((item.description.lower().find('shirt') is not -1) and (item.description.lower().find('discount') is -1)):
+                            shirt += item.description + ', '
+                            if shirt_totals.has_key(item.description):
+                                shirt_totals[item.description] += 1
+                            else:
+                                shirt_totals[item.description] = 1
+                    res.append(shirt)
+              else:
+                res.append('No Invoice')
+                res.append('-')
+
+              res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
+              if p.registration.diet:
+                  res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
+              if p.registration.special:
+                  res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
+            else:
+              res+=['Not Registered', '', '', '']
+            #res.append(`dir(p.registration)`)
+            c.data.append(res)
+
+        # sort by rego status (while that's important)
+        def my_cmp(a,b):
+            return cmp('OK' in a[4], 'OK' in b[4])
+        c.data.sort(my_cmp)
+
+        c.columns = ('Name', 'Status', 'Shirts', 'Notes')
+        c.text = "<p>Shirt Totals:"
+        for key, value in shirt_totals.items():
+            c.text += "<br>" + str(key) + ": " + str(value)
+        c.text += "</p>"
+        return table_response()
+
+
+    @authorize(h.auth.has_organiser_role)
     def reconcile(self):
         """ Reconcilliation between D1 and ZK; for now, compare the D1 data
         that have been placed in the fixed location in the filesystem and
