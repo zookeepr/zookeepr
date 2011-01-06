@@ -1,4 +1,4 @@
-<table id="programme" style="" summary="Programme" cellpadding="" cellspacing="">
+<table class="programme" style="" summary="Programme" cellpadding="" cellspacing="">
   <thead>
     <tr>
       <th>&nbsp;</th>
@@ -49,7 +49,6 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=118" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=213" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=58" /></td>
-
     </tr>
 
     <tr class="even">
@@ -71,7 +70,6 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=184" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=237" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=68" /></td>
-
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">15:15-15:45</th>
@@ -89,17 +87,18 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">16:45-17:30</th>
-        <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=186" /></td>
-        <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=65" /></td>
-        <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=161" /></td>
-        <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=234" /></td>
-##      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=" /></td>
-##      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=" /></td>
-##      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=" /></td>
-##      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=" /></td>
-
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=186" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=65" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=161" /></td>
+      <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=234" /></td>
     </tr>
 
+    <tr class="even">
+      <th class="programme_slot" align="center" valign="top">17:30-18:30</th>
+      <td class="programme_keynote" colspan="5" align="center" valign="middle">
+        Keysigning<br><span style="font-weight: normal;">Z-411</span>
+      </td>
+    </tr>
   </tbody>
 </table>
 

@@ -1,4 +1,4 @@
-<table id="programme" style="" summary="Programme" cellpadding="" cellspacing="">
+<table class="programme" style="" summary="Programme" cellpadding="" cellspacing="">
   <thead>
     <tr>
       <th>&nbsp;</th>
@@ -28,7 +28,6 @@
         <div class="programmeTalkId">50351</div>
         <a href="/programme/keynotes">Keynote</a><br><span style="font-weight: normal;">Room 1</span>
       </td>
-
     </tr>
     <tr class="even">
       <th class="programme_slot" align="center" valign="middle">10:00-10:30</th>
@@ -49,7 +48,6 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=176" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=174" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=44" /></td>
-
     </tr>
 
     <tr class="even">
@@ -57,7 +55,7 @@
       <td class="morning_tea" colspan="5" align="center" valign="middle">Lunch</td>
     </tr>
 
-   <tr class="odd">
+    <tr class="odd">
       <th class="programme_slot" align="center" valign="top">13:30-14:15</th>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=193" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=172" /></td>
@@ -71,7 +69,6 @@
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=94" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=181" /></td>
       <td class="presentation" align="center" valign="top"><%include file="talk_link.mako" args="talk_id=153" /></td>
-
     </tr>
 
     <tr class="even">
@@ -94,4 +91,3 @@
     </tr>
   </tbody>
 </table>
-
