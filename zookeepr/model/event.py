@@ -19,7 +19,7 @@ class Event(Base):
     publish     = sa.Column(sa.types.Boolean, nullable=False, default=True)
     exclusive   = sa.Column(sa.types.Boolean, nullable=False) # No other event may be scheduled at the same
                                                               # time as this event.  There can be only one.
-    sequence    = sa.Column(sa.types.Integer, nullable=False, default=1, onupdate='sequence+1')
+    sequence    = sa.Column(sa.types.Integer, nullable=False, default=1, onupdate='+1')
 
     # relations
     type     = sa.orm.relation(EventType, backref='events')

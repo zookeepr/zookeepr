@@ -572,7 +572,7 @@ class AdminController(BaseController):
 
         # sort by rego status (while that's important)
         def my_cmp(a,b):
-            return cmp('OK' in a[4], 'OK' in b[4])
+            return cmp(a[2], b[2])
         c.data.sort(my_cmp)
 
         c.columns = ('Name', 'Talk(s)', 'Status', 'Shirts', 'Concent', 'Notes')
@@ -642,7 +642,7 @@ class AdminController(BaseController):
 
         # sort by rego status (while that's important)
         def my_cmp(a,b):
-            return cmp('OK' in a[4], 'OK' in b[4])
+            return cmp(a[1], b[1])
         c.data.sort(my_cmp)
 
         c.columns = ('Name', 'Status', 'Shirts', 'Notes')
