@@ -131,7 +131,9 @@
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">15:45<br>17:30</th>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='15:45', speaker='Peter Chubb', title='Linux Kernel Perforamance and AIM7'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='15:45', speaker='Neil Brown', title='Using sysfs classes to achieve uniform creation and management of virtual devices'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='16:30', speaker='Peter Chubb', title='Linux Kernel Perforamance and AIM7'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='15:00', speaker='', title='Lightning talks'" />
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='15:45', speaker='Alison Young', title='Finding your feet without losing your head'" />
