@@ -2,13 +2,13 @@
   <thead>
     <tr>
       <th>&nbsp;</th>
-      <th class="programme_room" align="center" valign="top">Room 1</th>
-      <th class="programme_room" align="center" valign="top">Room 2</th>
-      <th class="programme_room" align="center" valign="top">Room 3</th>
-      <th class="programme_room" align="center" valign="top">Room 4</th>
-      <th class="programme_room" align="center" valign="top">Room 5</th>
-      <th class="programme_room" align="center" valign="top">Room 6</th>
-      <th class="programme_room" align="center" valign="top">Room 7</th>
+      <th class="programme_room" align="center" valign="top">D-101</th>
+      <th class="programme_room" align="center" valign="top">M-303</th>
+      <th class="programme_room" align="center" valign="top">C-405</th>
+      <th class="programme_room" align="center" valign="top">Z-503/504</th>
+      <th class="programme_room" align="center" valign="top">Z-411</th>
+      <th class="programme_room" align="center" valign="top">Z-406</th>
+      <th class="programme_room" align="center" valign="top">Z-401</th>
     </tr>
     <tr>
 
@@ -40,7 +40,9 @@
 
     <tr class="odd">
       <th class="programme_slot" align="center" valign="middle">10:30<br>12:15</th>
-      <td class="miniconf" align="center" valign="top">TBA</td>
+      <td class="miniconf" align="center" valign="top">
+      
+      </td>
       <td class="miniconf" align="center" valign="top">
       <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='10:30', speaker='Lana Brindley', title='Welcome'" />
       <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='10:35', speaker='Pia Waugh', title='Applying martial arts to the workplace: your guide to kicking arse'" />
@@ -83,7 +85,10 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:10', speaker='Aeriana Lee', title='Over-complicating a home network the cheapskate way'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:30', speaker='Melissa Draper', title='Our Sparkle Motion: Empowering the Geekocracy Against the Kyriarchy'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:50', speaker='Brianna Laugher', title='Neurosexism'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:55', speaker='Jean Hollis Weber', title='How I became a Linux chick at the age of 62'" /> </td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='2:55', speaker='Jean Hollis Weber', title='How I became a Linux chick at the age of 62'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='3:00', speaker='Andy Gelme', title='Hackerspaces'" />
+
+ </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='13:30-15:15', speaker='', title='Audio/music session'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='13:30', speaker='Roderick Dornan', title='Adventures in Real Time Audio'" />
@@ -124,7 +129,7 @@
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='15:45', speaker='Alison Young', title='Finding your feet without losing your head'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='4:05', speaker='Donna Benjamin', title='We are here. We have always been here'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='4:25', speaker='', title='Panel discussion'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='4:25', speaker='Valerie Aurora &amp; Donna Benjamin', title='Training Allies'" />
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='15:45 - 16:45', speaker='', title='Lightning talks'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='Multimedia', time='16:45', speaker='', title='TBA'" /> </td>
