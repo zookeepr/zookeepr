@@ -60,10 +60,12 @@
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='11:15-11:30', speaker='', title='break'" />
 	<%include file="miniconf_talk_link.mako" args="miniconf='Arduino', time='11:30-12:15', speaker='', title='Hardware assembly tutorial, part 2'" /></td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='10:30', speaker='Andrew Gerrand', title='Practical Go Programming'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='10:30', speaker='Michael G. Schwern', title='perl5i: Perl 5 Improved'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='10:55', speaker='Brian McKenna', title='Now Open: F#'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='11:30', speaker='Brianna Laugher', title='An Approach to Automatic Text Generation'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='11:55', speaker='Michael G. Schwern', title='perl5i: Perl 5 Improved'" /></td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='11:55', speaker='Andrew Gerrand', title='Practical Go Programming'" />
+</td>
+
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='10:30-11:20', speaker='Jonathan Corbet', title='Lessons learned from 13 years of LWN'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:25-11:50', speaker='Bob Waldie', title='Building successful and unsuccessful businesses on open source foundations'" />
