@@ -72,9 +72,12 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='10:55', speaker='Chris De Vries', title='Releasing Research as FOSS: Experiences from the K-Tree Project'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='11:30', speaker='Paul Gardner-Stephen', title='From Megalomania to Prototype in Four Months'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='11:55', speaker='Paul Harvey', title='Lonely Data vs Linked Data (with Foswiki)'"/>
-	
 	</td>
-      <td class="miniconf" align="center" valign="top">TBA</td>
+      <td class="miniconf" align="center" valign="top">
+        <%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='10:30', speaker='', title='Introducation and Welcome'"/>
+	<%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='10:45', speaker='Peter Hutterer', title='Earths are round, tablets are flat'"/>
+	<%include file='miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='11:45', speaker='Sébastien Lanteigne', title='Packaging Clipart as Openoffice.org/LibreOffice extension'"/>
+      </td>
     </tr>
 
     <tr class="even">
@@ -117,7 +120,10 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='13:55', speaker='', title='FOSS in Research Lightning Talks'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='14:30', speaker='David Claridge', title='RoboCup - World-class Soccer Players Running Linux'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='14:55', speaker='Shane Geddes &amp; Andrew Hill &amp; Lekshmen Kannan', title='E-Learning with FLOSS'"/></td>
-      <td class="miniconf" align="center" valign="top">TBA</td>
+      <td class="miniconf" align="center" valign="top">
+        <%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='13:30', speaker='Ruediger Landmann', title='Publican - an open source publishing toolchain'"/>
+	<%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='14:20', speaker='Owen Cook', title='Scribus'"/>
+      </td>
     </tr>
 
     <tr class="even">
