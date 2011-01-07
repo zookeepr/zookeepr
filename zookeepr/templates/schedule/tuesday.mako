@@ -71,7 +71,9 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='10:30', speaker='Adam Harvey', title='Visualising Scientific Data with HTML5'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='10:55', speaker='Chris De Vries', title='Releasing Research as FOSS: Experiences from the K-Tree Project'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='11:30', speaker='Paul Gardner-Stephen', title='From Megalomania to Prototype in Four Months'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='11:55', speaker='Paul Harvey', title='TBD'"/></td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='11:55', speaker='Paul Harvey', title='Lonely Data vs Linked Data (with Foswiki)'"/>
+	
+	</td>
       <td class="miniconf" align="center" valign="top">TBA</td>
     </tr>
 
@@ -111,7 +113,7 @@
 	<%include file="miniconf_talk_link.mako" args="miniconf='DataStorage', time='13:30', speaker='Paul Harvey', title='Accidental wealth: liberating Information with MongoDB and Foswiki'"/>
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='13:30', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='13:30', speaker='Julius Baxter', title='The OpenRISC Project'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='13:55', speaker='', title='Lightning Talks'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='14:30', speaker='David Claridge', title='RoboCup - World-class Soccer Players Running Linux'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='14:55', speaker='Shane Geddes &amp; Andrew Hill &amp; Lekshmen Kannan', title='E-Learning with FLOSS'"/></td>
@@ -155,7 +157,7 @@
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='15:45', speaker='Joel Stanley', title='Many-core Programming: A FPGA-based Quad-core Game Boy Emulator'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='16:10', speaker='John McCabe-Dansted', title='Can Monkey Testing Provide Better Bug Reports?'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='16:45', speaker='', title='TBA'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='16:45', speaker='Carol Smith', title='Google Summer of Code Update'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='17:10', speaker='', title='Lightning Talks'"/></td>
       <td class="miniconf" align="center" valign="top">TBA</td>
     </tr>
