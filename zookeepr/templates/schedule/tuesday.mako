@@ -114,7 +114,7 @@
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='13:30', speaker='Julius Baxter', title='The OpenRISC Project'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='13:55', speaker='', title='Lightning Talks'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='13:55', speaker='', title='FOSS in Research Lightning Talks'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='14:30', speaker='David Claridge', title='RoboCup - World-class Soccer Players Running Linux'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='14:55', speaker='Shane Geddes &amp; Andrew Hill &amp; Lekshmen Kannan', title='E-Learning with FLOSS'"/></td>
       <td class="miniconf" align="center" valign="top">TBA</td>
@@ -158,7 +158,7 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='15:45', speaker='Joel Stanley', title='Many-core Programming: A FPGA-based Quad-core Game Boy Emulator'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='16:10', speaker='John McCabe-Dansted', title='Can Monkey Testing Provide Better Bug Reports?'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='16:45', speaker='Carol Smith', title='Google Summer of Code Update'"/>
-        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='17:10', speaker='', title='Lightning Talks'"/></td>
+        <%include file="miniconf_talk_link.mako" args="miniconf='ResearchAndStudentInnovation', time='17:10', speaker='', title='Student Innovation Lightning Talks'"/></td>
       <td class="miniconf" align="center" valign="top">TBA</td>
     </tr>
 
