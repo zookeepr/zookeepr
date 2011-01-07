@@ -76,7 +76,7 @@
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='10:30', speaker='', title='Introducation and Welcome'"/>
 	<%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='10:45', speaker='Peter Hutterer', title='Earths are round, tablets are flat'"/>
-	<%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='11:45', speaker='Sébastien Lanteigne', title='Packaging Clipart as Openoffice.org/LibreOffice extension'"/>
+	<%include file="miniconf_talk_link.mako" args="miniconf='LibreGraphics', time='11:45', speaker='Sebastien Lanteigne', title='Packaging Clipart as Openoffice.org/LibreOffice extension'"/>
       </td>
     </tr>
 
