@@ -2,14 +2,14 @@
   <thead>
     <tr>
       <th>&nbsp;</th>
-      <th class="programme_room" align="center" valign="top">Room 1</th>
-      <th class="programme_room" align="center" valign="top">Room 2</th>
-      <th class="programme_room" align="center" valign="top">Room 3</th>
-      <th class="programme_room" align="center" valign="top">Room 4</th>
-      <th class="programme_room" align="center" valign="top">Room 5</th>
-      <th class="programme_room" align="center" valign="top">Room 6</th>
-      <th class="programme_room" align="center" valign="top">Room 7</th>
-      <th class="programme_room" align="center" valign="top">Room 8</th>
+      <th class="programme_room" align="center" valign="top">Z-401</th>
+      <th class="programme_room" align="center" valign="top">Z-504</th>
+      <th class="programme_room" align="center" valign="top">Z-411</th>
+      <th class="programme_room" align="center" valign="top">M-303</th>
+      <th class="programme_room" align="center" valign="top">D-101</th>
+      <th class="programme_room" align="center" valign="top">Z-406</th>
+      <th class="programme_room" align="center" valign="top">C-405</th>
+      <th class="programme_room" align="center" valign="top">M-306</th>
     </tr>
 
     <tr class="odd">
