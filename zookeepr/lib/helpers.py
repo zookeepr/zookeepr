@@ -411,8 +411,8 @@ def silly_description():
 
 def silly_description_checksum(desc):
     import hashlib
-    salted = desc + 'Use the source Luke'
-    return hashlib.sha1(salted).hexdigest()
+    salted = desc + unicode('Use the source Luke')
+    return hashlib.sha1(salted.encode('latin1')).hexdigest()
 
 #def ticket_percentage_text(percent, earlybird = False):
 #    if percent == 100:
