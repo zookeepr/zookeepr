@@ -26,7 +26,7 @@ class BaseSchema(formencode.Schema):
     filter_extra_fields = True
 
 class DictSet(validators.Set):
-    def _from_python(self, value):
+    def _from_python(self, value, state):
         value = super(DictSet, self)._from_python(value, state)
         return dict(zip(value, [1]*len(value)))
 
@@ -123,7 +123,7 @@ class ProductCategoryValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return ProductCategory.find_by_id(value)
 
-    def _from_python(self, value):
+    def _from_python(self, value, state):
         return value.id
 
 class ReviewSchema(BaseSchema):

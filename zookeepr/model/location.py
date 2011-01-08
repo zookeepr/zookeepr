@@ -9,6 +9,10 @@ from datetime import date, time, datetime
 
 from meta import Base
 
+"""Validation"""
+import formencode
+from formencode import validators, Invalid #, schema
+
 class Location(Base):
     __tablename__ = 'location'
 
@@ -41,3 +45,9 @@ class Location(Base):
         end     = datetime.combine(date,time(23,59,59))
         return Session.query(Location).join(Schedule).join(Event).join(TimeSlot).filter(Event.type==event_type).filter(TimeSlot.start_time.between(start, end)).all()
 
+class LocationValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Location.find_by_id(value)
+
+    def _from_python(self,value, state):
+        return value.id

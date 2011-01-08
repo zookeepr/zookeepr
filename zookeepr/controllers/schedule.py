@@ -5,6 +5,7 @@ from pylons.controllers.util import redirect_to, abort
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
+import formencode
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
@@ -15,12 +16,18 @@ import zookeepr.lib.helpers as h
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from datetime import date, datetime
+from datetime import date, datetime, timedelta
 
 from zookeepr.lib.mail import email
-from zookeepr.lib.sort import odict
+from zookeepr.lib.ordereddict import OrderedDict
 
-from zookeepr.model import meta, Proposal
+from zookeepr.model import meta
+from zookeepr.model.schedule import Schedule
+from zookeepr.model.proposal import Proposal
+from zookeepr.model.time_slot import TimeSlot, TimeSlotValidator
+from zookeepr.model.location import Location, LocationValidator
+from zookeepr.model.event import Event, EventValidator
+from zookeepr.model.event_type import EventType
 
 from zookeepr.config.lca_info import lca_info, file_paths
 
@@ -36,18 +43,35 @@ def get_directory_contents(directory):
                 files[filename.rsplit('.')[0]] = filename
     return files
 
+class NewScheduleFormSchema(BaseSchema):
+    time_slot = TimeSlotValidator(if_missing=None)
+    location = LocationValidator(if_missing=None)
+    event = EventValidator(if_missing=None)
+
+class ScheduleSchema(BaseSchema):
+    time_slot = TimeSlotValidator(not_empty=True)
+    location = LocationValidator(not_empty=True)
+    event = EventValidator(not_empty=True)
+
+class NewScheduleSchema(BaseSchema):
+    schedule = ScheduleSchema()
+    pre_validators = [NestedVariables]
+
+class EditScheduleSchema(BaseSchema):
+    schedule = ScheduleSchema()
+    pre_validators = [NestedVariables]
 
 class ScheduleController(BaseController):
-    day_dates = {'monday':    date(2011,1,24),
-                 'tuesday':   date(2011,1,25),
-                 'wednesday': date(2011,1,26),
-                 'thursday':  date(2011,1,27),
-                 'friday':    date(2011,1,28),
-                 'saturday':  date(2011,1,29)}
 
     # Use this to limit to organisers only.
     #@authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
+        c.can_edit = h.signed_in_person().has_role('organiser')
+
+        c.time_slots = TimeSlot.find_all()
+        c.locations = Location.find_all()
+        c.events = Event.find_all()
+
         c.get_talk = self._get_talk
 
         c.subsubmenu = []
@@ -60,15 +84,133 @@ class ScheduleController(BaseController):
 #        res = meta.Session.execute(query)
 #        for r in res.fetchall():
 #           c.subsubmenu.append(( '/programme/schedule/' + r[0].lower(), r[1] ))
-        c.subsubmenu = [
-          [ '/programme/sunday',             'Sunday' ],
-          [ '/programme/schedule/monday',    'Monday' ],
-          [ '/programme/schedule/tuesday',   'Tuesday' ],
-          [ '/programme/schedule/wednesday', 'Wednesday' ],
-          [ '/programme/schedule/thursday',  'Thursday' ],
-          [ '/programme/schedule/friday',    'Friday' ],
-          [ '/programme/open_day',           'Saturday' ],
-        ]
+        c.subsubmenu.append([ '/programme/sunday', 'Sunday' ])
+        c.scheduled_dates = TimeSlot.find_scheduled_dates()
+        for scheduled_date in c.scheduled_dates:
+            c.subsubmenu.append(['/programme/schedule/' + scheduled_date.strftime('%A').lower(), scheduled_date.strftime('%A')])
+
+        c.subsubmenu.append([ '/programme/open_day', 'Saturday' ])
+
+    def index(self, day=None):
+        display_date = None
+
+        available_days = {}
+        for scheduled_date in c.scheduled_dates:
+            available_days[scheduled_date.strftime('%A').lower()] = scheduled_date
+
+        if day in available_days:
+            display_date = available_days[day]
+
+        if display_date is None:
+            if date.today() in c.scheduled_dates:
+                display_date = date.today()
+            else:
+                display_date = c.scheduled_dates[0]
+
+        c.time_slots = TimeSlot.find_by_date(display_date)
+        c.primary_times = {}
+        for time_slot in TimeSlot.find_by_date(display_date, primary=True):
+            c.primary_times[time_slot.start_time] = time_slot
+        event_type = EventType.find_by_id(1)
+        c.locations = Location.find_scheduled_by_date_and_type(display_date, event_type)
+
+        c.time_increment = timedelta(minutes=5)
+        c.time_increment_exclusive = timedelta(minutes=4, seconds=59, microseconds=999999)
+
+        c.programme = OrderedDict()
+        for time_slot in c.time_slots:
+            time = time_slot.start_time
+            while time < time_slot.end_time:
+                schedules = Schedule.find_by_start_time(time, increment=c.time_increment_exclusive, exclusive=True)
+                if schedules:
+                    event = None
+                    for schedule in schedules:
+                        if event is None:
+                            event = schedule.event
+                        elif schedule.event != event:
+                            raise "Bad"
+                    c.programme[time] = {'exclusive': schedules}
+                else:
+                    schedules = []
+                    for location in c.locations:
+                        schedules.append(Schedule.find_by_start_time_and_location(time, location, increment=c.time_increment_exclusive))
+                    for schedule in schedules:
+                        if schedule is not None:
+                            c.programme[time] = {'location': schedules}
+                    if time not in c.programme:
+                        c.programme[time] = None
+                time = time + c.time_increment
+        return render('/schedule/list.mako')
+
+    @dispatch_on(POST="_new")
+    @validate(schema=NewScheduleFormSchema(), on_get=True, post_only=False, variable_decode=True)
+    def new(self):
+        form = render('/schedule/new.mako')
+        object = { 'schedule': self.form_result }
+        defaults = NewScheduleSchema().from_python(object)
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=NewScheduleSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
+    def _new(self):
+        results = self.form_result['schedule']
+
+        c.schedule = Schedule(**results)
+        meta.Session.add(c.schedule)
+        meta.Session.commit()
+
+        h.flash("Schedule created")
+        redirect_to(action='index', id=None)
+
+    @dispatch_on(POST="_edit")
+    def edit(self, id):
+        c.schedule = Schedule.find_by_id(id)
+        defaults = {}
+        defaults['schedule.time_slot'] = c.schedule.time_slot_id
+        defaults['schedule.location'] = c.schedule.location_id
+        defaults['schedule.event'] = c.schedule.event_id
+
+        form = render('/schedule/edit.mako')
+        return htmlfill.render(form, defaults)
+
+    @validate(schema=EditScheduleSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
+    def _edit(self, id):
+        schedule = Schedule.find_by_id(id)
+
+        for key in self.form_result['schedule']:
+            setattr(schedule, key, self.form_result['schedule'][key])
+
+        # update the objects with the validated form data
+        meta.Session.commit()
+        h.flash("The Schedule has been updated successfully.")
+        redirect_to(action='index', id=None)
+
+    @dispatch_on(POST="_delete")
+    def delete(self, id):
+        """Delete the schedule
+
+        GET will return a form asking for approval.
+
+        POST requests will delete the item.
+        """
+        c.schedule = Schedule.find_by_id(id)
+        return render('/schedule/confirm_delete.mako')
+
+    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
+    def _delete(self, id):
+        c.schedule = Schedule.find_by_id(id)
+        meta.Session.delete(c.schedule)
+        meta.Session.commit()
+
+        h.flash("Schedule has been deleted.")
+        redirect_to('index')
+
+# Old Controller Starts here
+    day_dates = {'monday':    date(2011,1,24),
+                 'tuesday':   date(2011,1,25),
+                 'wednesday': date(2011,1,26),
+                 'thursday':  date(2011,1,27),
+                 'friday':    date(2011,1,28),
+                 'saturday':  date(2011,1,29)}
 
     def _get_talk(self, talk_id):
         """ Return a proposal object """
@@ -102,16 +244,7 @@ class ScheduleController(BaseController):
 
         return render('/schedule/view_talk.mako')
 
-    def index(self, day=None):
-        if day == None:
-            for weekday in self.day_dates:
-                if self.day_dates[weekday] == datetime.today().date():
-                    c.day = weekday
-            if c.day == None:
-                c.day = 'all'
-        else:
-            c.day = day.lower()
-
+    def old_index(self):
         # get list of slides as dict
         c.slide_list = {}
         if file_paths.has_key('slides_path') and file_paths['slides_path'] != '':
@@ -130,19 +263,23 @@ class ScheduleController(BaseController):
         if c.day in self.day_dates:
             # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
             c.talks = c.talks.filter(Proposal.scheduled >= self.day_dates[c.day] and Proposal.scheduled < self.day_dates[c.day].replace(day=self.day_dates[c.day].day+1))
-        c.programme = odict()
+        c.programme = OrderedDict()
         c.talks.order_by(Proposal.scheduled.asc(), Proposal.finished.desc()).all()
         for talk in c.talks:
             if isinstance(talk.scheduled, date):
                 talk_day = talk.scheduled.strftime('%A')
                 if c.programme.has_key(talk_day) is not True:
-                    c.programme[talk_day] = odict()
+                    c.programme[talk_day] = OrderedDict()
                 if talk.building is not None:
                     if c.programme[talk_day].has_key(talk.building) is not True:
-                        c.programme[talk_day][talk.building] = odict()
+                        c.programme[talk_day][talk.building] = OrderedDict()
                     if c.programme[talk_day][talk.building].has_key(talk.theatre) is not True:
                         c.programme[talk_day][talk.building][talk.theatre] = []
                     c.programme[talk_day][talk.building][talk.theatre].append(talk)
+        if day is not None and os.path.isfile('zookeepr/templates/schedule/' + day + '.mako'):
+            c.day = day
+            return render('/schedule/list.mako')
+
         return render('/schedule/list.mako')
 
     _ROOMS = (

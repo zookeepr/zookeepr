@@ -39,12 +39,12 @@ def make_map():
     map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
 
     # Schedule
-    map.connect('/schedule/video', controller='schedule', action='video_room', room=None)
-    map.connect('/programme/schedule/video', controller='schedule', action='video_room', room=None)
-    map.connect('/programme/schedule/video/{room}', controller='schedule', action='video_room', room=None)
-    map.connect('/schedule/video/{room}', controller='schedule', action='video_room', room=None)
-    map.connect('/schedule/{day}', controller='schedule', day=None)
-    map.connect('/event/new_proposals', controller='event', action='new_proposals')
+    map.connect('/programme/schedule',                controller='schedule', action='index', day=None)
+    map.connect('/programme/schedule/{day}',          controller='schedule', action='index', day=None)
+    map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
+    map.connect('/programme/schedule/video',          controller='schedule', action='video_room', room=None)
+    map.connect('/programme/schedule/video/{room}',   controller='schedule', action='video_room', room=None)
+    map.connect('/event/new_proposals',               controller='event', action='new_proposals')
 
     # Proposal submission
     map.connect('/programme/submit_a_miniconf', controller='miniconf_proposal', action='new')
@@ -61,11 +61,6 @@ def make_map():
     map.connect('/funding/summary',      controller='funding', action='summary')
     map.connect('/funding/approve',      controller='funding', action='approve')
     map.connect('/funding_review/summary', controller='funding_review', action='summary')
-
-    # schedule routes
-    map.connect('/programme/schedule',                controller='schedule', action='index', day=None)
-    map.connect('/programme/schedule/{day}',          controller='schedule', action='index', day=None)
-    map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
 
     # registration and invoicing
     map.connect('/invoice/{id}/pdf',               controller='invoice', action='pdf', id=None)
