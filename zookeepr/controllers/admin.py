@@ -1661,10 +1661,10 @@ class AdminController(BaseController):
             c.r = c.p.registration; c.i = c.p.invoices
             return render('admin/lookup.mako')
         elif len(results)>1:
+	    kf = lambda r: (r[0].lastname + r[0].firstname).lower()
+	    cf = lambda f: lambda a,b: cmp(f(a), f(b))
             c.many = results
-            c.many.sort(lambda a, b:
-              cmp(a[0].lastname.lower(), b[0].lastname.lower()) or 
-              cmp(a[0].firstname.lower(), b[0].firstname.lower()))
+            c.many.sort(cf(kf))
             return render('admin/lookup.mako')
 
         c.error = 'Not found.'

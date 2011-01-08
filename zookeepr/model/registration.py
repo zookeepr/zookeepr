@@ -55,6 +55,12 @@ class Registration(Base):
     def __repr__(self):
         return '<Registration id=%r person_id=%r>' % (self.id, self.person_id)
 
+    def ticket_description(self):
+        for p in self.products:
+            if p.product.category.name.lower() == "ticket":
+                return p.product.description
+        return ""
+
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Registration).filter_by(id=id).first()

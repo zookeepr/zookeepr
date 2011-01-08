@@ -34,13 +34,13 @@ ${ c.error }
 <table>
 %   for p, typ in c.many:
   <tr class="${ oddeven1() }">
-    <td><a href="/admin/rego_lookup?p_id=${ p.id }" tabindex="2">${ p.firstname }
+    <td><a href="/admin/lookup?p_id=${ p.id }" tabindex="2">${ p.firstname }
 					       ${ p.lastname }</td>
     <td>(${ typ })
     <td>
 %     if p.registration:
 %       if p.invoices and p.invoices[0].paid():
-	  <b>${ p.registration.type }</b>
+	  <b>${ p.registration.ticket_description() }</b>
 %       else:
 	  not paid
 %       endif
@@ -72,7 +72,7 @@ ${ h.hidden('id', value=registration.id) }
 </p>
 ${ h.end_form() }
 %     if invoices and invoices[0].paid():
-<b>${ registration.type }</b> rego <a href="/registration/${registration.id}">${registration.id}</a>
+<b>${ registration.ticket_description() }</b> rego <a href="/registration/${registration.id}">${registration.id}</a>
 %     else:
 <b>Tentative</b> rego <a href="/registration/${registration.id}">${registration.id}</a>; <b>not paid</b>
 %     endif
