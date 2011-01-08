@@ -8,6 +8,10 @@ from zookeepr.model.meta import Session
 
 from meta import Base
 
+"""Validation"""
+import formencode
+from formencode import validators, Invalid #, schema
+
 class Event(Base):
     __tablename__ = 'event'
 
@@ -40,15 +44,15 @@ class Event(Base):
     # class methods
 
     @classmethod
+    def find_all(cls):
+        return Session.query(Event).order_by(Event.id).all()
+
+    @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Event).filter_by(id=id).first()
         if result is None and abort_404:
             abort(404, "No such Event")
         return result
-
-    @classmethod
-    def find_all(cls):
-        return Session.query(Event).order_by(Event.id).all()
 
     def find_all_published(cls):
         return Session.query(Event).filter(Event.publish==True).order_by(Event.id).all()
@@ -57,6 +61,9 @@ class Event(Base):
     def find_published_by_id(cls, id):
         return Session.query(Event).filter(Event.id==id).filter(Event.publish==True).first()
 
-    @classmethod
-    def find_by_location_and_time_slot(cls, location, time_slot):
-        return Session.query(Event).join(Schedule).filter(Schedule.location==location).filter(Schedule.time_slot==time_slot).one()
+class EventValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return Event.find_by_id(value)
+
+    def _from_python(self,value, state):
+        return value.id

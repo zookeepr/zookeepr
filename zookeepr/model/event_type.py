@@ -32,5 +32,5 @@ class EventTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return EventType.find_by_id(value)
 
-    def _from_python(self,value):
+    def _from_python(self,value, state):
         return value.id

@@ -75,6 +75,11 @@ class EventController(BaseController):
         h.flash("Events successfully created from Proposals")
         redirect_to(action='index', id=None)
 
+    def view(self, id):
+        c.can_edit = True
+        c.event = Event.find_by_id(id)
+        return render('/event/view.mako')
+
     def index(self):
         c.can_edit = True
         c.event_collection = Event.find_all()
