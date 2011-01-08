@@ -66,7 +66,10 @@ class ScheduleController(BaseController):
     # Use this to limit to organisers only.
     #@authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
-        c.can_edit = h.signed_in_person().has_role('organiser')
+        if h.signed_in_person():
+            c.can_edit = h.signed_in_person().has_role('organiser')
+        else:
+            c.can_edit = False
 
         c.time_slots = TimeSlot.find_all()
         c.locations = Location.find_all()
