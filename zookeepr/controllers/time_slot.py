@@ -32,6 +32,7 @@ class TimeSlotSchema(BaseSchema):
     start_time = validators.TimeConverter(use_datetime=True)
     end_date = validators.DateConverter(month_style='dd/mm/yyyy')
     end_time = validators.TimeConverter(use_datetime=True)
+    primary = validators.Bool()
 
 class NewTimeSlotSchema(BaseSchema):
     time_slot = TimeSlotSchema()
@@ -56,7 +57,7 @@ class TimeSlotController(BaseController):
     def _new(self):
         results = self.form_result['time_slot']
 
-        c.time_slot = TimeSlot(start_time=datetime.combine(results['start_date'], results['start_time']), end_time=datetime.combine(results['end_date'], results['end_time']))
+        c.time_slot = TimeSlot(start_time=datetime.combine(results['start_date'], results['start_time']), end_time=datetime.combine(results['end_date'], results['end_time']), primary=results['primary'])
         meta.Session.add(c.time_slot)
         meta.Session.commit()
 

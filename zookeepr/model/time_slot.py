@@ -8,12 +8,20 @@ from datetime import date, time, datetime
 
 from meta import Base
 
+"""Validation"""
+import formencode
+from formencode import validators, Invalid #, schema
+
 class TimeSlot(Base):
     __tablename__ = 'time_slot'
 
     id         = sa.Column(sa.types.Integer , primary_key = True )
     start_time = sa.Column(sa.types.DateTime, nullable    = False)
     end_time   = sa.Column(sa.types.DateTime, nullable    = False)
+    primary    = sa.Column(sa.types.Boolean,  nullable    = False)
+
+    # constraints
+    sa.UniqueConstraint('start_time', 'end_time')
 
     # relations
     schedule = sa.orm.relation(Schedule, backref='time_slot')
@@ -27,6 +35,10 @@ class TimeSlot(Base):
                 return None
         return event
 
+    @property
+    def description(self):
+        return str(self.start_time) + ' - ' + str(self.end_time)
+
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(TimeSlot).filter_by(id=id).first()
@@ -39,11 +51,14 @@ class TimeSlot(Base):
         return Session.query(TimeSlot).order_by(TimeSlot.start_time).all()
 
     @classmethod
-    def find_by_date(cls, date):
+    def find_by_date(cls, date, primary=False):
         start   = datetime.combine(date,time(0,0,0))
         end     = datetime.combine(date,time(23,59,59))
 
-        return Session.query(TimeSlot).filter(TimeSlot.start_time.between(start,end)).order_by(TimeSlot.start_time).all()
+        if primary == True:
+            return Session.query(TimeSlot).filter(TimeSlot.start_time.between(start,end)).filter(TimeSlot.primary==primary).order_by(TimeSlot.start_time).all()
+        else:
+            return Session.query(TimeSlot).filter(TimeSlot.start_time.between(start,end)).order_by(TimeSlot.start_time).all()
 
     @classmethod
     def find_scheduled_dates(cls):
@@ -53,3 +68,10 @@ class TimeSlot(Base):
             if time_slot.start_time.date() not in scheduled_dates:
                 scheduled_dates.append(time_slot.start_time.date())
         return scheduled_dates
+
+class TimeSlotValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        return TimeSlot.find_by_id(value)
+
+    def _from_python(self,value, state):
+        return value.id

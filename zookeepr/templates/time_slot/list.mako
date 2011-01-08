@@ -8,6 +8,7 @@
     <th>id</th>
     <th>Start Date/Time</th>
     <th>End Date/Time</th>
+    <th>Primary</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
@@ -16,6 +17,7 @@
     <td>${ time_slot.id }</td>
     <td>${ time_slot.start_time.strftime('%d/%m/%y %H:%M') }</td>
     <td>${ time_slot.end_time.strftime('%d/%m/%y %H:%M') }</td>
+    <td>${ h.yesno(time_slot.primary) |n}</td>
 %       if c.can_edit:
 %           for action in ['edit', 'delete']:
   <td>${ h.link_to(action, url=h.url_for(action=action, id=time_slot.id)) }</td>
