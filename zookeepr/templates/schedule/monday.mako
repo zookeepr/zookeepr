@@ -25,7 +25,7 @@
   <tbody>
     <tr class="odd">
       <th class="programme_slot" align="center" valign="top">9:00<br>10:00</th>
-      <td id="programme_intro" colspan="8" align="center" valign="middle">
+      <td class="programme_intro" colspan="8" align="center" valign="middle">
         <b>Welcome to linux.conf.au 2011!</b>
       </td>
     </tr>
