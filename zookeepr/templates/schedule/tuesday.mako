@@ -97,7 +97,7 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='MulticoreAndParallel', time='14:30 - 15:15', speaker='Lenz Gschwendtner - Team Leader, Open Parallel', title='Parallel Programming - an Overview of Non Mainstream Languages'"/>
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='13:30-14:00', speaker='Dale Baldwin', title='Tourism Tasmania and the use of Open'"/>
+        <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='13:30-14:00', speaker='Dale Baldwin', title='Tourism Tasmania and the use of Open Source in Industry Development.'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='14:00-14:30', speaker='Steven Schmid', title='The Open Technology Foundation'"/>
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenInThePublicSector', time='14:30-15:15', speaker='', title='Panel Discussion'"/>
       </td>
