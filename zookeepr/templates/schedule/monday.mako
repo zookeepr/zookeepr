@@ -39,7 +39,7 @@
       <th class="programme_slot" align="center" valign="middle">10:30<br>12:15</th>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='10:30', speaker='Dave Arlie', title='Introduction'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='10:35', speaker='Jonathan Corbet', title='The Kernel Report'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='10:35', speaker='Daniel Stone', title='Linux/X/Wayland Input Directions'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='11:30', speaker='Matthew Garret', title='Power Management'" />
       </td>
       <td class="miniconf" align="center" valign="top">
@@ -86,7 +86,7 @@
       <th class="programme_slot" align="center" valign="middle">13:30<br>15:15</th>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='1:30', speaker='Michael Hope', title='Linaro ARM toolchain development'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='2:30', speaker='Daniel Stone', title='Linux/X/Wayland Input Directions'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='2:30', speaker='Jonathan Corbet', title='The Kernel Report'" />
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
