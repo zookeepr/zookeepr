@@ -39,7 +39,8 @@
       <th class="programme_slot" align="center" valign="middle">10:30<br>12:15</th>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='10:30', speaker='Dave Arlie', title='Introduction'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='10:35', speaker='Daniel Stone', title='Linux/X/Wayland Input Directions'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='2:30', speaker='Jonathan Corbet', title='The Kernel Report'" />
+
         <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='11:30', speaker='Matthew Garret', title='Power Management'" />
       </td>
       <td class="miniconf" align="center" valign="top">
@@ -66,14 +67,14 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='11:55', speaker='Andrew Gerrand', title='Practical Go Programming'" />
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='10:30-11:20', speaker='Jonathan Corbet', title='Lessons learned from 13 years of LWN'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='10:30-11:20', speaker='', title='TBA'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:25-11:50', speaker='Bob Waldie', title='Building successful and unsuccessful businesses on open source foundations'" />
         <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:50-12:15', speaker='Thomas Lee', title='Open Source in Big Business: A Consulting Perspective'" />
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='10:30', speaker='Lindsay Holmwood', title='Burn down the silos! Helping dev and ops gel on high availability websites'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:00', speaker='David Jorm &amp; Stephen Gordon', title='Deltacloud: abstracting for freedom'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='11:30', speaker='Pia Waugh', title='Cloud computing: finding the silver lining for government'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='FreedomInTheCloud', time='10:30', speaker='Lindsay Holmwood', title='Burn down the silos! Helping dev and ops gel on high availability websites'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='FreedomInTheCloud', time='11:00', speaker='David Jorm &amp; Stephen Gordon', title='Deltacloud: abstracting for freedom'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='FreedomInTheCloud', time='11:30', speaker='Pia Waugh', title='Cloud computing: finding the silver lining for government'" />
       </td>
     </tr>
 
@@ -86,7 +87,7 @@
       <th class="programme_slot" align="center" valign="middle">13:30<br>15:15</th>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='1:30', speaker='Michael Hope', title='Linaro ARM toolchain development'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='2:30', speaker='Jonathan Corbet', title='The Kernel Report'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='SouthernPlumbers', time='2:30', speaker='Daniel Stone', title='Linux/X/Wayland Input Directions'" />
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='Haecksen', time='1:30', speaker='Noirin Shirley', title='Open Source: Saving the World'" />
@@ -118,8 +119,8 @@
         <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='14:55', speaker='Thomas Lee', title='Open Source Compiler Construction for the JVM'" />
       </td>
       <td class="miniconf" align="center" valign="top">
-        <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='13:30-14:20', speaker='Arjen Lentz', title='Processes: Creating the Business you Want'" />
-        <%include file="miniconf_talk_link.mako" args="miniconf='OpenProgramming', time='14:25-15:15', speaker='', title='TBA'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='13:30-14:20', speaker='Arjen Lentz', title='Processes: Creating the Business you Want'" />
+        <%include file="miniconf_talk_link.mako" args="miniconf='BusinessOfOpenSource', time='14:25-15:15', speaker='Jonathan Corbet', title='Lessons learned from 13 years of LWN'" />
       </td>
       <td class="miniconf" align="center" valign="top">
         <%include file="miniconf_talk_link.mako" args="miniconf='FreedomInTheCloud', time='13:30', speaker='Brianna Laugher', title='Distributed wikis'" />
