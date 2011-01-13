@@ -13,15 +13,16 @@ def setup(meta):
 
 class Schedule(Base):
     __tablename__ = 'schedule'
+    __table_args__ = (
+            # Only allow one Event to be scheduled in any TimeSlot and Location
+            sa.UniqueConstraint('time_slot_id', 'location_id'),
+            {}
+            )
 
     id           = sa.Column(sa.types.Integer, primary_key=True)
     time_slot_id = sa.Column(sa.types.Integer, sa.ForeignKey('time_slot.id'), nullable=False)
     location_id  = sa.Column(sa.types.Integer, sa.ForeignKey('location.id'), nullable=False)
-
-    # We do not allow multiple events to be scheduled at the same time and location
-    sa.UniqueConstraint('time_slot_id', 'location_id')
-
-    event_id     = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), nullable=False, index=True)
+    event_id     = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), nullable=False)
 
     @classmethod
     def find_all(cls):

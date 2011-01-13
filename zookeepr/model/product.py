@@ -373,6 +373,11 @@ class Product(Base):
     """
     # table
     __tablename__ = 'product'
+    __table_args__ = (
+            # Descriptions should be unique within a category
+            sa.UniqueConstraint('category_id', 'description'),
+            {}
+            )
 
     id = sa.Column(sa.types.Integer, primary_key=True)
     category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id'), nullable=False)
@@ -386,8 +391,6 @@ class Product(Base):
     ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
     category = sa.orm.relation(ProductCategory, lazy=True, backref='products')
 
-    # Descriptions should be unique within a category
-    sa.UniqueConstraint(category_id, description, name='category_description');
 
     def __init__(self, **kwargs):
         super(Product, self).__init__(**kwargs)

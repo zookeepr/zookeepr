@@ -18,12 +18,16 @@ class Review(Base):
     """Stores both account login details and personal information.
     """
     __tablename__ = 'review'
+    __table_args__ = (
+            # Only one Review of each Proposal for each Reviewer
+            sa.UniqueConstraint('proposal_id', 'reviewer_id', name='ux_review_proposal_reviewer'),
+            {}
+            )
 
     id = sa.Column(sa.types.Integer, primary_key=True)
 
     proposal_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal.id'), nullable=False)
     reviewer_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), nullable=False)
-    sa.UniqueConstraint('proposal_id', 'reviewer_id', name='ux_review_proposal_reviewer')
 
     score = sa.Column(sa.types.Integer)
 

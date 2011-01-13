@@ -18,12 +18,16 @@ class FundingReview(Base):
     """Stores reviews of funding applications
     """
     __tablename__ = 'funding_review'
+    __table_args__ = (
+            # Allow only one review for each funding application
+            sa.UniqueConstraint('funding_id', 'reviewer_id'),
+            {}
+            )
 
     id = sa.Column(sa.types.Integer, primary_key=True)
 
     funding_id = sa.Column(sa.types.Integer, sa.ForeignKey('funding.id'), nullable=False)
     reviewer_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), nullable=False)
-    sa.UniqueConstraint('funding_id', 'reviewer_id', name='ux_review_funding_reviewer')
 
     score = sa.Column(sa.types.Integer)
 
@@ -35,7 +39,6 @@ class FundingReview(Base):
     # relations
     funding = sa.orm.relation(Funding, lazy=True, backref='reviews')
     reviewer = sa.orm.relation(Person, lazy=True, backref='funding_reviews')
-
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation

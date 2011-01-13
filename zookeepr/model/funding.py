@@ -89,6 +89,11 @@ class FundingType(Base):
 
 class Funding(Base):
     __tablename__ = 'funding'
+    __table_args__ = (
+            # Only allow one application per person per funding type.
+            sa.UniqueConstraint('person_id', 'funding_type_id'),
+            {}
+            )
 
     id = sa.Column('id', sa.types.Integer, primary_key=True)
     person_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'))
@@ -114,10 +119,6 @@ class Funding(Base):
     type = sa.orm.relation(FundingType)
     status = sa.orm.relation(FundingStatus)
     attachments = sa.orm.relation(FundingAttachment, lazy=True, cascade='all, delete-orphan')
-
-    # Only allow one application per person per funding type.
-    sa.UniqueConstraint(person_id, funding_type_id, name='person_funding_type')
-
 
     def __init__(self, **kwargs):
         super(Funding, self).__init__(**kwargs)

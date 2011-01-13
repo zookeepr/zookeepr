@@ -16,14 +16,17 @@ from formencode import validators, Invalid #, schema
 
 class TimeSlot(Base):
     __tablename__ = 'time_slot'
+    __table_args__ = (
+            # No duplicate start_time and end_time combinations
+            sa.UniqueConstraint('start_time', 'end_time'),
+            sa.CheckConstraint('start_time < end_time'),
+            {}
+            )
 
     id         = sa.Column(sa.types.Integer , primary_key = True )
     start_time = sa.Column(sa.types.DateTime, nullable    = False)
     end_time   = sa.Column(sa.types.DateTime, nullable    = False)
     primary    = sa.Column(sa.types.Boolean,  nullable    = False)
-
-    # constraints
-    sa.UniqueConstraint('start_time', 'end_time')
 
     # relations
     schedule = sa.orm.relation(Schedule, backref='time_slot')
