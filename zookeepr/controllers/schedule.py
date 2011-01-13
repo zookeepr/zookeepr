@@ -75,6 +75,7 @@ class ScheduleController(BaseController):
     def table(self, day=None):
         if len(c.scheduled_dates) == 0:
             return render('/schedule/no_schedule_available.mako')
+
         c.display_date = None
 
         available_days = {}
@@ -94,35 +95,29 @@ class ScheduleController(BaseController):
         c.primary_times = {}
         for time_slot in TimeSlot.find_by_date(c.display_date, primary=True):
             c.primary_times[time_slot.start_time] = time_slot
+
         event_type = EventType.find_by_name('presentation')
         c.locations = Location.find_scheduled_by_date_and_type(c.display_date, event_type)
+        c.schedule_collection = Schedule.find_by_date(c.display_date)
 
         c.time_increment = timedelta(minutes=5)
-        c.time_increment_exclusive = timedelta(minutes=4, seconds=59, microseconds=999999)
 
         c.programme = OrderedDict()
+
         for time_slot in c.time_slots:
             time = time_slot.start_time
             while time < time_slot.end_time:
-                schedules = Schedule.find_by_start_time(time, increment=c.time_increment_exclusive, exclusive=True)
-                if schedules:
-                    event = None
-                    for schedule in schedules:
-                        if event is None:
-                            event = schedule.event
-                        elif schedule.event != event:
-                            raise "Bad"
-                    c.programme[time] = {'exclusive': schedules}
-                else:
-                    schedules = []
-                    for location in c.locations:
-                        schedules.append(Schedule.find_by_start_time_and_location(time, location, increment=c.time_increment_exclusive))
-                    for schedule in schedules:
-                        if schedule is not None:
-                            c.programme[time] = {'location': schedules}
-                    if time not in c.programme:
-                        c.programme[time] = None
+                c.programme[time] = {}
                 time = time + c.time_increment
+
+        for schedule in c.schedule_collection:
+            exclusive_event = schedule.time_slot.exclusive_event()
+            time = schedule.time_slot.start_time
+            if exclusive_event:
+                c.programme[time]['exclusive'] = exclusive_event
+            else:
+                c.programme[time][schedule.location] = schedule
+
         return render('/schedule/table.mako')
 
     def ical(self):

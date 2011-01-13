@@ -1,5 +1,5 @@
 """The application's model objects"""
-import datetime
+from datetime import datetime, date, time
 import sqlalchemy as sa
 
 from meta import Base
@@ -36,12 +36,9 @@ class Schedule(Base):
         return result
 
     @classmethod
-    def find_by_start_time(cls, start_time, increment=datetime.timedelta(0), exclusive=False):
+    def find_by_date(cls, date, primary=False):
         from zookeepr.model.time_slot import TimeSlot
-        from zookeepr.model.event import Event
-        return Session.query(Schedule).join(TimeSlot).join(Event).filter(TimeSlot.start_time.between(start_time, start_time + increment)).filter(Event.exclusive==exclusive).all()
+        start   = datetime.combine(date,time(0,0,0))
+        end     = datetime.combine(date,time(23,59,59))
 
-    @classmethod
-    def find_by_start_time_and_location(cls, start_time, location, increment=datetime.timedelta(0)):
-        from zookeepr.model.time_slot import TimeSlot
-        return Session.query(Schedule).join(TimeSlot).filter(TimeSlot.start_time.between(start_time, start_time + increment)).filter(Schedule.location==location).first()
+        return Session.query(Schedule).options(sa.orm.eagerload('time_slot'), sa.orm.eagerload('location'), sa.orm.eagerload('event', 'proposal', 'people')).join(TimeSlot).filter(TimeSlot.start_time.between(start,end)).order_by(TimeSlot.start_time).all()
