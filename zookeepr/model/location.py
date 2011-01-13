@@ -9,6 +9,8 @@ from datetime import date, time, datetime
 
 from meta import Base
 
+from pylons.controllers.util import abort
+
 """Validation"""
 import formencode
 from formencode import validators, Invalid #, schema
@@ -16,8 +18,10 @@ from formencode import validators, Invalid #, schema
 class Location(Base):
     __tablename__ = 'location'
 
-    id           = sa.Column(sa.types.Integer, primary_key = True )
-    display_name = sa.Column(sa.types.Text,    nullable    = False)
+    id            = sa.Column(sa.types.Integer, primary_key = True)
+    display_name  = sa.Column(sa.types.Text, nullable = False)
+    display_order = sa.Column(sa.types.Integer)
+    capacity      = sa.Column(sa.types.Integer)
 
     # relations
     schedule = sa.orm.relation(Schedule, backref='location')
@@ -43,7 +47,7 @@ class Location(Base):
 
         start   = datetime.combine(date,time(0,0,0))
         end     = datetime.combine(date,time(23,59,59))
-        return Session.query(Location).join(Schedule).join(Event).join(TimeSlot).filter(Event.type==event_type).filter(TimeSlot.start_time.between(start, end)).all()
+        return Session.query(Location).join(Schedule).join(Event).join(TimeSlot).filter(Event.type==event_type).filter(TimeSlot.start_time.between(start, end)).order_by(Location.display_order).all()
 
 class LocationValidator(validators.FancyValidator):
     def _to_python(self, value, state):

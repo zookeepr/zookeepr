@@ -51,6 +51,8 @@ class EventController(BaseController):
         c.proposals = Proposal.find_all_accepted_without_event()
         c.event_types = EventType.find_all()
 
+        c.can_edit = True
+
     @dispatch_on(POST="_new")
     def new(self):
         return render('/event/new.mako')
@@ -76,12 +78,10 @@ class EventController(BaseController):
         redirect_to(action='index', id=None)
 
     def view(self, id):
-        c.can_edit = True
         c.event = Event.find_by_id(id)
         return render('/event/view.mako')
 
     def index(self):
-        c.can_edit = True
         c.event_collection = Event.find_all()
         return render('/event/list.mako')
 

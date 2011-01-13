@@ -27,6 +27,8 @@ log = logging.getLogger(__name__)
 
 class LocationSchema(BaseSchema):
     display_name = validators.String(not_empty=True)
+    display_order = validators.Int()
+    capacity = validators.Int()
 
 class NewLocationSchema(BaseSchema):
     location = LocationSchema()
@@ -41,7 +43,7 @@ class LocationController(BaseController):
     @enforce_ssl(required_all=True)
     @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
-        pass
+        c.can_edit = True
 
     @dispatch_on(POST="_new")
     def new(self):
@@ -58,8 +60,11 @@ class LocationController(BaseController):
         h.flash("Location created")
         redirect_to(action='index', id=None)
 
+    def view(self, id):
+        c.location = Location.find_by_id(id)
+        return render('/location/view.mako')
+
     def index(self):
-        c.can_edit = True
         c.location_collection = Location.find_all()
         return render('/location/list.mako')
 

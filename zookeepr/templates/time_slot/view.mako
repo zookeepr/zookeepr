@@ -1,33 +1,29 @@
 <%inherit file="/base.mako" />
 
-    <h2>View Event</h2>
+    <h2>View Time Slot</h2>
 
-    <p><b>Event Type:</b> ${ c.event.type.name }<br></p>
-%if c.proposal:
-    <p><b>Proposal:</b> ${ c.event.proposal.title }<br></p>
-%endif
-    <p><b>Title:</b> ${ c.event.title }<br></p>
-    <p><b>URL:</b> ${ c.event.url }<br></p>
-    <p><b>Publish:</b> ${ h.yesno(c.event.publish) | n }<br></p>
-    <p><b>Exclusive:</b> ${ h.yesno(c.event.exclusive) | n }<br></p>
+    <p><b>id:</b> ${ c.time_slot.id }<br></p>
+    <p><b>Start Time:</b> ${ c.time_slot.start_time.strftime('%d/%m/%y %H:%M') }<br></p>
+    <p><b>End Time:</b> ${ c.time_slot.end_time.strftime('%d/%m/%y %H:%M') }<br></p>
+    <p><b>Primary:</b> ${ h.yesno(c.time_slot.primary) | n }<br></p>
 
-    <h3>This events schedule</h3>
+    <h3>This Time Slots schedule</h3>
     <table>
       <thead>
         <tr>
-          <th>Time Slot</th>
           <th>Location</th>
+          <th>Event</th>
 %if c.can_edit:
           <th></th>
           <th></th>
 %endif
         </tr>
       </thead>
-%for schedule in c.event.schedule:
+%for schedule in c.time_slot.schedule:
       <tbody>
         <tr>
-          <td>${ h.link_to(str(schedule.time_slot.start_time) + ' - ' + str(schedule.time_slot.end_time), url=h.url_for(controller='time_slot', action='view', id=schedule.time_slot.id)) }</td>
           <td>${ h.link_to(schedule.location.display_name, url=h.url_for(controller='location', action='view', id=schedule.location.id)) }</td>
+          <td>${ h.link_to(schedule.event.computed_title(), url=h.url_for(controller='event', action='view', id=schedule.event.id)) }</td>
 %if c.can_edit:
           <td>${ h.link_to('Edit', url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }</td>
           <td>${ h.link_to('Delete', url=h.url_for(controller='schedule', action='delete', id=schedule.id)) }</td>
@@ -37,10 +33,9 @@
 %endfor
       <tfoot>
         <tr>
-          <td colspan='4'>${ h.link_to('Add to schedule', url=h.url_for(controller='schedule', action='new', event=c.event.id)) }</td>
+          <td colspan='4'>${ h.link_to('Add to schedule', url=h.url_for(controller='schedule', action='new', time_slot=c.time_slot.id)) }</td>
       </tfoot>
     </table>
-
     <p>
 % if c.can_edit:
       ${ h.link_to('Edit', url=h.url_for(action='edit')) } |

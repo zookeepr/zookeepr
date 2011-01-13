@@ -47,7 +47,7 @@ class TimeSlotController(BaseController):
     @enforce_ssl(required_all=True)
     @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
-        pass
+        c.can_edit = True
 
     @dispatch_on(POST="_new") 
     def new(self):
@@ -64,8 +64,11 @@ class TimeSlotController(BaseController):
         h.flash("Time Slot created")
         redirect_to(action='index')
 
+    def view(self, id):
+        c.time_slot = TimeSlot.find_by_id(id)
+        return render('/time_slot/view.mako')
+
     def index(self):
-        c.can_edit = True
         c.time_slot_collection = TimeSlot.find_all()
         return render('/time_slot/list.mako')
 

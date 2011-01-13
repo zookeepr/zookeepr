@@ -8,6 +8,8 @@ from zookeepr.model.meta import Session
 
 from meta import Base
 
+from pylons.controllers.util import abort
+
 """Validation"""
 import formencode
 from formencode import validators, Invalid #, schema
@@ -52,7 +54,7 @@ class Event(Base):
         elif self.is_miniconf():
             return self.title.split('::')[1].split(',')
         else:
-            return None
+            return []
 
     def computed_abstract(self):
         if self.proposal:

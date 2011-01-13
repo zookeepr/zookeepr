@@ -36,16 +36,6 @@ from zookeepr.config.lca_info import lca_info, file_paths
 
 import os
 
-log = logging.getLogger(__name__)
-
-def get_directory_contents(directory):
-    files = {}
-    if os.path.isdir(directory):
-        for filename in os.listdir(directory):
-            if os.path.isfile(directory + "/" + filename):
-                files[filename.rsplit('.')[0]] = filename
-    return files
-
 class NewScheduleFormSchema(BaseSchema):
     time_slot = TimeSlotValidator(if_missing=None)
     location = LocationValidator(if_missing=None)
@@ -74,22 +64,7 @@ class ScheduleController(BaseController):
         else:
             c.can_edit = False
 
-        c.time_slots = TimeSlot.find_all()
-        c.locations = Location.find_all()
-        c.events = Event.find_all()
-
-        c.get_talk = self._get_talk
-
         c.subsubmenu = []
-#        query = """
-#  SELECT DISTINCT date(scheduled) AS date
-#  FROM proposal
-#  WHERE scheduled IS NOT NULL
-#  ORDER BY date;
-#"""
-#        res = meta.Session.execute(query)
-#        for r in res.fetchall():
-#           c.subsubmenu.append(( '/programme/schedule/' + r[0].lower(), r[1] ))
         c.subsubmenu.append([ '/programme/sunday', 'Sunday' ])
         c.scheduled_dates = TimeSlot.find_scheduled_dates()
         for scheduled_date in c.scheduled_dates:
@@ -97,30 +72,30 @@ class ScheduleController(BaseController):
 
         c.subsubmenu.append([ '/programme/open_day', 'Saturday' ])
 
-    def index(self, day=None):
+    def table(self, day=None):
         if len(c.scheduled_dates) == 0:
             return render('/schedule/no_schedule_available.mako')
-        display_date = None
+        c.display_date = None
 
         available_days = {}
         for scheduled_date in c.scheduled_dates:
             available_days[scheduled_date.strftime('%A').lower()] = scheduled_date
 
         if day in available_days:
-            display_date = available_days[day]
+            c.display_date = available_days[day]
 
-        if display_date is None:
+        if c.display_date is None:
             if date.today() in c.scheduled_dates:
-                display_date = date.today()
+                c.display_date = date.today()
             else:
-                display_date = c.scheduled_dates[0]
+                c.display_date = c.scheduled_dates[0]
 
-        c.time_slots = TimeSlot.find_by_date(display_date)
+        c.time_slots = TimeSlot.find_by_date(c.display_date)
         c.primary_times = {}
-        for time_slot in TimeSlot.find_by_date(display_date, primary=True):
+        for time_slot in TimeSlot.find_by_date(c.display_date, primary=True):
             c.primary_times[time_slot.start_time] = time_slot
-        event_type = EventType.find_by_id(1)
-        c.locations = Location.find_scheduled_by_date_and_type(display_date, event_type)
+        event_type = EventType.find_by_name('presentation')
+        c.locations = Location.find_scheduled_by_date_and_type(c.display_date, event_type)
 
         c.time_increment = timedelta(minutes=5)
         c.time_increment_exclusive = timedelta(minutes=4, seconds=59, microseconds=999999)
@@ -148,7 +123,7 @@ class ScheduleController(BaseController):
                     if time not in c.programme:
                         c.programme[time] = None
                 time = time + c.time_increment
-        return render('/schedule/list.mako')
+        return render('/schedule/table.mako')
 
     def ical(self):
         schedules = Schedule.find_all()
@@ -170,7 +145,8 @@ class ScheduleController(BaseController):
         for schedule in schedules:
             row = {}
             speakers = schedule.event.computed_speakers()
-            row['Id'] = schedule.event_id
+            row['Id'] = schedule.id
+            row['Event'] = schedule.event_id
             row['Title'] = schedule.event.computed_title()
             row['Room Name'] = schedule.location.display_name
             row['Start'] = str(schedule.time_slot.start_time)
@@ -181,12 +157,22 @@ class ScheduleController(BaseController):
             if schedule.event.proposal:
                 row['URL'] = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal_id)
             output.append(row)
-        return json.write(output)
 
+        response.charset = 'utf8'
+        response.headers['content-type'] = 'application/json; charset=utf8'
+        response.headers.add('content-transfer-encoding', 'binary')
+        response.headers.add('Pragma', 'cache')
+        response.headers.add('Cache-Control', 'max-age=3600,public')
+        return json.write(output)
 
     @dispatch_on(POST="_new")
     @validate(schema=NewScheduleFormSchema(), on_get=True, post_only=False, variable_decode=True)
     def new(self):
+        c.time_slots = TimeSlot.find_all()
+        c.locations = Location.find_all()
+        c.events = Event.find_all()
+
+
         form = render('/schedule/new.mako')
         object = { 'schedule': self.form_result }
         defaults = NewScheduleSchema().from_python(object)
@@ -203,9 +189,20 @@ class ScheduleController(BaseController):
         h.flash("Schedule created")
         redirect_to(action='new', id=None)
 
+    def view(self, id):
+        return redirect_to(action='edit')
+
+    def index(self):
+        c.schedule_collection = Schedule.find_all()
+        return render('/schedule/list.mako')
+
     @dispatch_on(POST="_edit")
     def edit(self, id):
+        c.time_slots = TimeSlot.find_all()
+        c.locations = Location.find_all()
+        c.events = Event.find_all()
         c.schedule = Schedule.find_by_id(id)
+
         defaults = {}
         defaults['schedule.time_slot'] = c.schedule.time_slot_id
         defaults['schedule.location'] = c.schedule.location_id

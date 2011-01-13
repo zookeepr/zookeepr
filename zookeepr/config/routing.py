@@ -39,10 +39,10 @@ def make_map():
     map.connect('/db_content/upload',        controller='db_content', action='upload', id=None)
 
     # Schedule
-    map.connect('/programme/schedule',                controller='schedule', action='index', day=None)
+    map.connect('/programme/schedule',                controller='schedule', action='table', day=None)
     map.connect('/programme/schedule/ical',           controller='schedule', action='ical')
     map.connect('/programme/schedule/json',           controller='schedule', action='json')
-    map.connect('/programme/schedule/{day}',          controller='schedule', action='index', day=None)
+    map.connect('/programme/schedule/{day}',          controller='schedule', action='table', day=None)
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
     map.connect('/programme/schedule/video',          controller='schedule', action='video_room', room=None)
     map.connect('/programme/schedule/video/{room}',   controller='schedule', action='video_room', room=None)
