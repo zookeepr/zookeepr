@@ -32,24 +32,46 @@
 <%
         event = schedules['exclusive'][0].event
         time_slot = schedules['exclusive'][0].time_slot
+        title = event.computed_title()
+        speakers = event.computed_speakers()
+        if event.proposal:
+          url = h.url_for(controller='schedule', action='view_talk', id=event.proposal.id)
+        elif event.is_miniconf():
+          url = '/wiki/Miniconfs/' + event.computed_miniconf() + 'Miniconf/' + h.wiki_link(event.computed_title())
+        else:
+          url = event.url
+
+        if speakers is None:
+          pass
+        elif len(speakers) == 1:
+          speakers = h.escape(speakers[0])
+        else:
+          speakers = h.escape('%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1]))
+        endif
 %>
       <td class="programme_${ event.type.name }" colspan="${ len(c.locations) }" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
 %       if event.url:
-        ${ h.link_to(event.title, url=event.url)}
+        ${ h.link_to(title, url=url)}
 %       else:
-        ${ event.title }
+        ${ title }
+%       endif
+%       if speakers:
+        <i>by</i> <span class="by_speaker">${ speakers | n }</span>
 %       endif
         <br />
 <%
-        locations = event.location_by_time_slot(time_slot)
+        schedules = event.schedule_by_time_slot(time_slot)
 %>
-%       if len(locations) == 1:
-        <i>${ locations[0].display_name }</i>
+%       if len(schedules) == 1:
+        <i>${ schedules[0].location.display_name }</i>
 %       else:
-        ${ '%s and %s' % (', '.join(location.display_name for location in locations[: -1] ), locations[-1].display_name) }</i>
+        ${ '%s and %s' % (', '.join(schedule.location.display_name for schedule in schedules[: -1] ), schedules[-1].location.display_name) }</i>
 %       endif
 %       if c.can_edit:
-        <br />${ h.link_to('Edit', url=h.url_for(controller='event', action='edit', id=event.id)) }
+        <br />${ h.link_to('Event Details', url=h.url_for(controller='event', action='view', id=event.id)) }
+%         for schedule in schedules:
+        <br />${ h.link_to('Edit Schedule for ' + schedule.location.display_name, url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }
+%         endfor
 %       endif
       </td>
 %     elif 'location' in schedules:
@@ -58,31 +80,38 @@
 <%
             event = schedule.event
             time_slot = schedule.time_slot
+            title = event.computed_title()
+            speakers = event.computed_speakers()
+            if event.proposal:
+              url = h.url_for(controller='schedule', action='view_talk', id=event.proposal.id)
+            elif event.is_miniconf():
+              url = '/wiki/Miniconfs/' + event.computed_miniconf() + 'Miniconf/' + h.wiki_link(event.computed_title())
+            else:
+              url = event.url
+
+            if speakers is None:
+              pass
+            elif len(speakers) == 1:
+              speakers = h.escape(speakers[0])
+            else:
+              speakers = h.escape('%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1]))
+            endif
 %>
       <td class="programme_${event.type.name}" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
 %           if not time_slot.primary:
         <b>${ time_slot.start_time.time().strftime('%H:%M') }</b>:
 %           endif
-
-%           if event.proposal is not None:
-        <%include file="talk_link.mako" args="talk_id=event.proposal_id" />
-%           elif '::' in event.title:
-<%
-              miniconf_talk = event.title.split('::')
-              miniconf = miniconf_talk[0]
-              title = miniconf_talk[1]
-              speaker = miniconf_talk[2]
-%>
-        <%include file="miniconf_talk_link.mako" args="miniconf=miniconf, title=title, speaker=speaker" />
+%           if url:
+        ${ h.link_to(title, url=url) }
 %           else:
-%             if event.url:
-        ${ h.link_to(event.title, url=event.url) }
-%             else:
-        ${ event.title }
-%             endif
+        ${ title }
 %           endif
+%       if speakers:
+        <i>by</i> <span class="by_speaker">${ speakers | n }</span>
+%       endif
 %       if c.can_edit:
-        <br />${ h.link_to('Edit', url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }
+        <br />${ h.link_to('Event Details', url=h.url_for(controller='event', action='view', id=event.id)) }
+        <br />${ h.link_to('Edit Schedule', url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }
 %       endif
       </td>
 %         endif

@@ -15,13 +15,13 @@ class Schedule(Base):
     __tablename__ = 'schedule'
 
     id           = sa.Column(sa.types.Integer, primary_key=True)
-    time_slot_id = sa.Column(sa.types.Integer, sa.ForeignKey('time_slot.id'))
-    location_id  = sa.Column(sa.types.Integer, sa.ForeignKey('location.id'))
+    time_slot_id = sa.Column(sa.types.Integer, sa.ForeignKey('time_slot.id'), nullable=False)
+    location_id  = sa.Column(sa.types.Integer, sa.ForeignKey('location.id'), nullable=False)
 
     # We do not allow multiple events to be scheduled at the same time and location
     sa.UniqueConstraint('time_slot_id', 'location_id')
 
-    event_id     = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), index=True)
+    event_id     = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), nullable=False, index=True)
 
     @classmethod
     def find_all(cls):

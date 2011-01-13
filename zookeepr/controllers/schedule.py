@@ -1,4 +1,6 @@
 import logging
+import vobject
+import json
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import redirect_to, abort
@@ -17,6 +19,7 @@ from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
 from datetime import date, datetime, timedelta
+from pytz import timezone
 
 from zookeepr.lib.mail import email
 from zookeepr.lib.ordereddict import OrderedDict
@@ -95,6 +98,8 @@ class ScheduleController(BaseController):
         c.subsubmenu.append([ '/programme/open_day', 'Saturday' ])
 
     def index(self, day=None):
+        if len(c.scheduled_dates) == 0:
+            return render('/schedule/no_schedule_available.mako')
         display_date = None
 
         available_days = {}
@@ -145,6 +150,40 @@ class ScheduleController(BaseController):
                 time = time + c.time_increment
         return render('/schedule/list.mako')
 
+    def ical(self):
+        schedules = Schedule.find_all()
+
+        ical = vobject.iCalendar()
+        for schedule in schedules:
+            event = ical.add('vevent')
+            event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
+            event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
+            event.add('location').value = schedule.location.display_name
+            event.add('summary').value = schedule.event.computed_title()
+            event.add('description').value = schedule.event.computed_abstract()
+        return ical.serialize()
+
+    def json(self):
+        schedules = Schedule.find_all()
+        output = []
+
+        for schedule in schedules:
+            row = {}
+            speakers = schedule.event.computed_speakers()
+            row['Id'] = schedule.event_id
+            row['Title'] = schedule.event.computed_title()
+            row['Room Name'] = schedule.location.display_name
+            row['Start'] = str(schedule.time_slot.start_time)
+            row['Duration'] = str(schedule.time_slot.end_time - schedule.time_slot.start_time)
+            if speakers:
+                row['Presenters'] = ','.join(speakers)
+            row['Description'] = schedule.event.computed_abstract()
+            if schedule.event.proposal:
+                row['URL'] = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal_id)
+            output.append(row)
+        return json.write(output)
+
+
     @dispatch_on(POST="_new")
     @validate(schema=NewScheduleFormSchema(), on_get=True, post_only=False, variable_decode=True)
     def new(self):
@@ -162,7 +201,7 @@ class ScheduleController(BaseController):
         meta.Session.commit()
 
         h.flash("Schedule created")
-        redirect_to(action='index', id=None)
+        redirect_to(action='new', id=None)
 
     @dispatch_on(POST="_edit")
     def edit(self, id):

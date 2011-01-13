@@ -18,9 +18,9 @@
     <td>${ h.link_to(event.id, h.url_for(action='view', id=event.id)) }</td>
     <td>${ h.link_to(event.type.name, h.url_for(controller='event_type', action='view', id=event.type.id)) }</td>
 %     if event.proposal:
-    <td>${ h.link_to(event.proposal.title, h.url_for(controller='proposal', action='view', id=event.proposal.id)) }</td>
+    <td>${ h.link_to(event.computed_title(), h.url_for(controller='proposal', action='view', id=event.proposal.id)) }</td>
 %     else:
-    <td>${ event.title }</td>
+    <td>${ event.computed_title() }</td>
 %     endif
     <td>${ h.yesno(event.publish) |n }</td>
     <td>${ h.yesno(event.exclusive) |n }</td>

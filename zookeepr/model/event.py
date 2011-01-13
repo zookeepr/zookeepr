@@ -31,15 +31,42 @@ class Event(Base):
     schedule = sa.orm.relation(Schedule, backref='event')
 
     # properties
+    def is_miniconf(self):
+        return self.title is not None and '::' in self.title
 
+    def computed_miniconf(self):
+        if self.is_miniconf():
+            return self.title and self.title.split('::')[0]
+
+    def computed_title(self):
+        if self.proposal:
+            return self.proposal.title
+        elif '::' in self.title:
+            return self.title.split('::')[2]
+        else:
+            return self.title
+
+    def computed_speakers(self):
+        if self.proposal:
+            return [person.fullname() for person in self.proposal.people]
+        elif self.is_miniconf():
+            return self.title.split('::')[1].split(',')
+        else:
+            return None
+
+    def computed_abstract(self):
+        if self.proposal:
+            return self.proposal.abstract
+        else:
+            return ''
 
     # object methods
     def increment_sequence(self):
         sequence += 1
 
-    def location_by_time_slot(self, time_slot):
+    def schedule_by_time_slot(self, time_slot):
         from zookeepr.model.location import Location
-        return Session.query(Location).join(Schedule).filter(Schedule.event==self).filter(Schedule.time_slot==time_slot).all()
+        return Session.query(Schedule).filter(Schedule.event==self).filter(Schedule.time_slot==time_slot).all()
 
     # class methods
 

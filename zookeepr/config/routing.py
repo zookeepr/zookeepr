@@ -40,6 +40,8 @@ def make_map():
 
     # Schedule
     map.connect('/programme/schedule',                controller='schedule', action='index', day=None)
+    map.connect('/programme/schedule/ical',           controller='schedule', action='ical')
+    map.connect('/programme/schedule/json',           controller='schedule', action='json')
     map.connect('/programme/schedule/{day}',          controller='schedule', action='index', day=None)
     map.connect('/programme/schedule/view_talk/{id}', controller='schedule', action='view_talk', id=None)
     map.connect('/programme/schedule/video',          controller='schedule', action='video_room', room=None)

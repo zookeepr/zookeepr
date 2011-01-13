@@ -8,5 +8,5 @@
       </p>
       <p>
         <label for="schedule.event">Event:</label>
-        ${ h.select('schedule.event', None, [(event.id, event.title) for event in c.events], prompt='None') }
+        ${ h.select('schedule.event', None, [(event.id, str(event.proposal_id or event.computed_miniconf()) + ' - ' + event.computed_title()) for event in c.events], prompt='None') }
       </p>
