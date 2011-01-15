@@ -24,9 +24,13 @@ class Schedule(Base):
     location_id  = sa.Column(sa.types.Integer, sa.ForeignKey('location.id'), nullable=False)
     event_id     = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), nullable=False)
 
+    video_url = sa.Column(sa.types.Text)
+    audio_url = sa.Column(sa.types.Text)
+    slide_url = sa.Column(sa.types.Text)
+
     @classmethod
     def find_all(cls):
-        return Session.query(Schedule).order_by(Schedule.time_slot_id).all()
+        return Session.query(Schedule).order_by(Schedule.id).all()
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
@@ -41,4 +45,4 @@ class Schedule(Base):
         start   = datetime.combine(date,time(0,0,0))
         end     = datetime.combine(date,time(23,59,59))
 
-        return Session.query(Schedule).options(sa.orm.eagerload('time_slot'), sa.orm.eagerload('location'), sa.orm.eagerload('event', 'proposal', 'people')).join(TimeSlot).filter(TimeSlot.start_time.between(start,end)).order_by(TimeSlot.start_time).all()
+        return Session.query(Schedule).options(sa.orm.eagerload_all('time_slot.schedule'), sa.orm.eagerload('location'), sa.orm.eagerload_all('event.proposal.people')).join(TimeSlot).filter(TimeSlot.start_time.between(start,end)).order_by(TimeSlot.start_time).all()

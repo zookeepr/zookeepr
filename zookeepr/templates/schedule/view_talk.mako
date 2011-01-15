@@ -11,34 +11,23 @@ import hashlib
 % endif 
 </%def>
 
-<p><a href="/programme/schedule/${ c.day }">&lt;-- Back to schedule</a></p>
+<p>${ h.link_to('<-- Back to schedule', url=h.url_for(controller='schedule', action='table', id=None, day=c.day)) }</p>
 
 <h2>${ c.talk.title | h }</h2>
 
 <table>
-% if c.talk.scheduled:
+% for schedule in  c.talk.event.schedule:
   <tr class="${ h.cycle('even', 'odd')}">
-    <td><strong>Time:</strong></td><td>${ c.talk.scheduled.strftime("%H:%M") } - ${ c.talk.finished.strftime("%H:%M") }</td>
+    <td><strong>Day:</strong></td><td>${ schedule.time_slot.start_time.strftime("%A %d %B %Y") }</td>
+    <td><strong>Time:</strong></td><td>${ schedule.time_slot.start_time.strftime("%H:%M") } - ${ schedule.time_slot.end_time.strftime("%H:%M") }</td>
+    <td><strong>Location:</strong></td><td>${ schedule.location.display_name }</td>
   </tr>
-  <tr class="${ h.cycle('even', 'odd')}">
-    <td><strong>Day:</strong></td><td>${ c.talk.scheduled.strftime("%A %d %B %Y") }</td>
-  </tr>
-% endif
-
-% if c.talk.theatre:
-  <tr class="${ h.cycle('even', 'odd')}">
-    <td><strong>Location:</strong></td><td>${ c.talk.theatre }
-%   if c.talk.building:
-  (${ c.talk.building })
-%   endif
-    </td>
-  </tr>
-% endif
+% endfor
 
 % if c.talk.project or c.talk.url:
   <tr class="${ h.cycle('even', 'odd')}">
     <td><strong>Project:</td>
-    <td>
+    <td colspan="5">
 %   if c.talk.url:
 ## FIXME: I reckon this should go into the helpers logic
 %     if '://' in c.talk.url:
@@ -62,7 +51,7 @@ ${ c.talk.url }
 % if c.talk.type.name.startswith('Tutorial'):
   <tr class="${ h.cycle('even', 'odd')}">
     <td><strong>Wiki Page:</td>
-    <td><a href="/wiki/Tutorials/${ c.talk.title }">${ c.talk.title }</a></td>
+    <td colspan="5"><a href="/wiki/Tutorials/${ c.talk.title }">${ c.talk.title }</a></td>
   </tr>
 % endif
 

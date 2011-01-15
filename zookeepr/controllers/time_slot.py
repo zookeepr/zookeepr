@@ -33,6 +33,7 @@ class TimeSlotSchema(BaseSchema):
     end_date = validators.DateConverter(month_style='dd/mm/yyyy')
     end_time = validators.TimeConverter(use_datetime=True)
     primary = validators.Bool()
+    heading = validators.Bool()
 
 class NewTimeSlotSchema(BaseSchema):
     time_slot = TimeSlotSchema()
@@ -56,8 +57,12 @@ class TimeSlotController(BaseController):
     @validate(schema=NewTimeSlotSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['time_slot']
+        results['start_time'] = datetime.combine(results['start_date'], results['start_time'])
+        results['end_time'] = datetime.combine(results['end_date'], results['end_time'])
+        del results['start_date']
+        del results['end_date']
 
-        c.time_slot = TimeSlot(start_time=datetime.combine(results['start_date'], results['start_time']), end_time=datetime.combine(results['end_date'], results['end_time']), primary=results['primary'])
+        c.time_slot = TimeSlot(**results)
         meta.Session.add(c.time_slot)
         meta.Session.commit()
 
@@ -78,9 +83,9 @@ class TimeSlotController(BaseController):
 
         defaults = h.object_to_defaults(c.time_slot, 'time_slot')
         defaults['time_slot.start_date'] = c.time_slot.start_time.strftime('%d/%m/%y')
-        defaults['time_slot.start_time'] = c.time_slot.start_time.strftime('%H:%M')
+        defaults['time_slot.start_time'] = c.time_slot.start_time.strftime('%H:%M:%S')
         defaults['time_slot.end_date'] = c.time_slot.end_time.strftime('%d/%m/%y')
-        defaults['time_slot.end_time'] = c.time_slot.end_time.strftime('%H:%M')
+        defaults['time_slot.end_time'] = c.time_slot.end_time.strftime('%H:%M:%S')
 
         form = render('/time_slot/edit.mako')
         return htmlfill.render(form, defaults)

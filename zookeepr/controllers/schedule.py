@@ -45,6 +45,9 @@ class ScheduleSchema(BaseSchema):
     time_slot = TimeSlotValidator(not_empty=True)
     location = LocationValidator(not_empty=True)
     event = EventValidator(not_empty=True)
+    video_url = validators.String(if_empty=None)
+    audio_url = validators.String(if_empty=None)
+    slide_url = validators.String(if_empty=None)
 
 class NewScheduleSchema(BaseSchema):
     schedule = ScheduleSchema()
@@ -121,16 +124,29 @@ class ScheduleController(BaseController):
         return render('/schedule/table.mako')
 
     def ical(self):
-        schedules = Schedule.find_all()
+        c.schedule_collection = Schedule.find_all()
 
         ical = vobject.iCalendar()
-        for schedule in schedules:
-            event = ical.add('vevent')
-            event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
-            event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
-            event.add('location').value = schedule.location.display_name
-            event.add('summary').value = schedule.event.computed_title()
-            event.add('description').value = schedule.event.computed_abstract()
+        for schedule in c.schedule_collection:
+            if not schedule.time_slot.heading:
+                event = ical.add('vevent')
+                event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('summary').value = schedule.event.computed_title()
+                event.add('description').value = schedule.event.computed_abstract()
+
+                concurrent_schedules = schedule.event.schedule_by_time_slot(schedule.time_slot)
+                if len(concurrent_schedules) > 1:
+                    for concurrent_schedule in concurrent_schedules:
+                        if concurrent_schedule != schedule:
+                            if concurrent_schedule in c.schedule_collection:
+                                c.schedule_collection.remove(concurrent_schedule)
+
+                    locations = [concurrent_schedule.location.display_name for concurrent_schedule in concurrent_schedules]
+                    event.add('location').value = '%s and %s' % (', '.join(locations[: -1] ), locations[-1])
+                else:
+                    event.add('location').value = schedule.location.display_name
+
         return ical.serialize()
 
     def json(self):
@@ -138,20 +154,21 @@ class ScheduleController(BaseController):
         output = []
 
         for schedule in schedules:
-            row = {}
-            speakers = schedule.event.computed_speakers()
-            row['Id'] = schedule.id
-            row['Event'] = schedule.event_id
-            row['Title'] = schedule.event.computed_title()
-            row['Room Name'] = schedule.location.display_name
-            row['Start'] = str(schedule.time_slot.start_time)
-            row['Duration'] = str(schedule.time_slot.end_time - schedule.time_slot.start_time)
-            if speakers:
-                row['Presenters'] = ','.join(speakers)
-            row['Description'] = schedule.event.computed_abstract()
-            if schedule.event.proposal:
-                row['URL'] = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal_id)
-            output.append(row)
+            if schedule.time_slot.heading:
+                row = {}
+                speakers = schedule.event.computed_speakers()
+                row['Id'] = schedule.id
+                row['Event'] = schedule.event_id
+                row['Title'] = schedule.event.computed_title()
+                row['Room Name'] = schedule.location.display_name
+                row['Start'] = str(schedule.time_slot.start_time)
+                row['Duration'] = str(schedule.time_slot.end_time - schedule.time_slot.start_time)
+                if speakers:
+                    row['Presenters'] = ','.join(speakers)
+                row['Description'] = schedule.event.computed_abstract()
+                if schedule.event.proposal:
+                    row['URL'] = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal_id)
+                output.append(row)
 
         response.charset = 'utf8'
         response.headers['content-type'] = 'application/json; charset=utf8'
@@ -198,7 +215,8 @@ class ScheduleController(BaseController):
         c.events = Event.find_all()
         c.schedule = Schedule.find_by_id(id)
 
-        defaults = {}
+
+        defaults = h.object_to_defaults(c.schedule, 'schedule')
         defaults['schedule.time_slot'] = c.schedule.time_slot_id
         defaults['schedule.location'] = c.schedule.location_id
         defaults['schedule.event'] = c.schedule.event_id

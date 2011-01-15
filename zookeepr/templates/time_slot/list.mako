@@ -9,20 +9,22 @@
     <th>Start Date/Time</th>
     <th>End Date/Time</th>
     <th>Primary</th>
+    <th>Heading</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
 %   for time_slot in c.time_slot_collection:
   <tr class="${ h.cycle('even', 'odd')}">
     <td>${ time_slot.id }</td>
-    <td>${ time_slot.start_time.strftime('%d/%m/%y %H:%M') }</td>
-    <td>${ time_slot.end_time.strftime('%d/%m/%y %H:%M') }</td>
+    <td>${ time_slot.start_time.strftime('%d/%m/%y %H:%M:%S') }</td>
+    <td>${ time_slot.end_time.strftime('%d/%m/%y %H:%M:%S') }</td>
     <td>${ h.yesno(time_slot.primary) |n}</td>
-%       if c.can_edit:
-%           for action in ['edit', 'delete']:
+    <td>${ h.yesno(time_slot.heading) |n}</td>
+%     if c.can_edit:
+%       for action in ['edit', 'delete']:
   <td>${ h.link_to(action, url=h.url_for(action=action, id=time_slot.id)) }</td>
-%           endfor
-%       endif
+%       endfor
+%     endif
 </tr>
 %   endfor
 </table>

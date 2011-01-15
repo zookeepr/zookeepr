@@ -88,6 +88,8 @@ class EventController(BaseController):
     @dispatch_on(POST="_edit")
     def edit(self, id):
         c.event = Event.find_by_id(id)
+        if c.event.proposal:
+            c.proposals.append(c.event.proposal)
 
         defaults = h.object_to_defaults(c.event, 'event')
         defaults['event.type'] = c.event.type_id

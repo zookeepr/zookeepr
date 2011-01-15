@@ -11,6 +11,7 @@ from person import Person
 from person_proposal_map import person_proposal_map
 from attachment import Attachment
 from review import Review
+from stream import Stream
 
 def setup(meta):
     meta.Session.add_all(
@@ -188,6 +189,9 @@ class Proposal(Base):
     # type, enumerated in the proposal_type table
     proposal_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_type.id'), nullable=False)
 
+    # allocated stream of talk
+    stream_id = sa.Column(sa.types.Integer, sa.ForeignKey('stream.id'))
+
     # type, enumerated in the assistance_type table
     travel_assistance_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('travel_assistance_type.id'), nullable=False)
     accommodation_assistance_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('accommodation_assistance_type.id'), nullable=False)
@@ -204,29 +208,18 @@ class Proposal(Base):
     # url to a short video
     abstract_video_url = sa.Column(sa.types.Text)
 
-    code = sa.Column(sa.types.Integer)
-
-    scheduled = sa.Column(sa.types.DateTime) # These will be removed after I've changed the code
-    finished = sa.Column(sa.types.DateTime)  # to make use of them.
-    theatre = sa.Column(sa.types.Text)
-    building = sa.Column(sa.types.Text)
-
-    recorded_ogg = sa.Column(sa.types.Text)
-    recorded_spx = sa.Column(sa.types.Text)
-    wiki_name = sa.Column(sa.types.Text)
-    slides_link = sa.Column(sa.types.Text)
-
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     # relations
-    type = sa.orm.relation(ProposalType, backref='proposals', lazy=True)
+    type = sa.orm.relation(ProposalType, backref='proposals')
+    stream = sa.orm.relation(Stream)
     accommodation_assistance = sa.orm.relation(AccommodationAssistanceType)
     travel_assistance = sa.orm.relation(TravelAssistanceType)
     status = sa.orm.relation(ProposalStatus)
     audience = sa.orm.relation(TargetAudience)
     people = sa.orm.relation(Person, secondary=person_proposal_map, backref='proposals')
-    attachments = sa.orm.relation(Attachment, lazy=True, cascade='all, delete-orphan')
+    attachments = sa.orm.relation(Attachment, cascade='all, delete-orphan')
     reviews = sa.orm.relation(Review, backref='proposal', cascade='all, delete-orphan')
 
 
@@ -234,16 +227,7 @@ class Proposal(Base):
         # remove the args that should never be set via creation
         super(Proposal, self).__init__(**kwargs)
 
-        self.code = None
-        self.scheduled = None
-        self.finished = None
-        self.theatre = None
-        self.building = None
-        self.recorded_ogg = None
-        self.recorded_spx = None
-        self.wiki_name = None
-        self.slides_link = None
-
+        stream_id = None
 
     def __repr__(self):
         return '<Proposal id="%r" title="%s">' % (self.id, self.title)
@@ -303,7 +287,7 @@ class Proposal(Base):
     def find_all_accepted_without_event(cls):
         status = ProposalStatus.find_by_name('Accepted')
 
-        return Session.query(Proposal).filter_by(status=status).filter_by(event=None)
+        return Session.query(Proposal).filter_by(status=status).filter_by(event=None).all()
 
     @classmethod
     def find_accepted_by_id(cls, id):

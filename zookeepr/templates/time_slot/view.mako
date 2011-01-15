@@ -3,8 +3,8 @@
     <h2>View Time Slot</h2>
 
     <p><b>id:</b> ${ c.time_slot.id }<br></p>
-    <p><b>Start Time:</b> ${ c.time_slot.start_time.strftime('%d/%m/%y %H:%M') }<br></p>
-    <p><b>End Time:</b> ${ c.time_slot.end_time.strftime('%d/%m/%y %H:%M') }<br></p>
+    <p><b>Start Time:</b> ${ c.time_slot.start_time.strftime('%d/%m/%y %H:%M:%S') }<br></p>
+    <p><b>End Time:</b> ${ c.time_slot.end_time.strftime('%d/%m/%y %H:%M:%S') }<br></p>
     <p><b>Primary:</b> ${ h.yesno(c.time_slot.primary) | n }<br></p>
 
     <h3>This Time Slots schedule</h3>
