@@ -174,7 +174,7 @@ if file_paths.get('zk_root', None) is None:
     file_paths['zk_root'] = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 for k in file_paths:
     while file_paths[k].startswith("$"):
-	file_paths[k] = file_paths[file_paths[k][1:].split('/')[0]] + "/" + file_paths[k].split("/",1)[1]
+        file_paths[k] = file_paths[file_paths[k][1:].split('/')[0]] + "/" + file_paths[k].split("/",1)[1]
 
 lca_menu = [
   ('Home', '/', 'home'),
