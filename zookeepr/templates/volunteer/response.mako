@@ -9,8 +9,10 @@ Thank you for your application to volunteer at ${ h.event_name() }.
 You have been accepted as a volunteer for ${ h.event_name() }. Please:
 
 1. Complete your registration by logging into the website and going to
-${ h.url_for(qualified=True, controller='registration', action='status', id=None) }. Please select
-${ c.volunteer.ticket_type.description } when choosing your ticket.
+${ h.url_for(qualified=True, controller='registration', action='status', id=None) }. 
+%  if c.volunteer.ticket_type:
+Please select ${ c.volunteer.ticket_type.description } when choosing your ticket.
+%  endif
 
 2. Join our Volunteers Mailing list at
 http://lists.followtheflow.org/mailman/listinfo/volunteers

@@ -314,7 +314,7 @@ class ProDinner(validators.FancyValidator):
             # the Speakers Dinner field is not present for non-speakers
             return
         error_dict = {}
-        if not values[self.dinner_field] and ticket in self.ticket_id:
+        if values[self.dinner_field] is None and ticket in self.ticket_id:
             error_dict[self.error_field_name] = "The ticket you have chosen includes one free dinner ticket. If you do not wish to attend the dinner please enter 0 into the field. Otherwise enter the number of tickets you would like, including yourself."
         if error_dict:
             raise Invalid("Dinners are incorrect", values, state, error_dict=error_dict)
