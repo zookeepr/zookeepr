@@ -1079,8 +1079,10 @@ class RegistrationController(BaseController):
                      'over18': registration.over18,
                      'silly': self._sanitise_badge_field(registration.silly_description)
             }
-            if lca_rego['pgp_collection'] != 'no':
-                data['gpg'] = self._sanitise_badge_field(registration.keyid)
+
+            # For some reason some keys are None even if pgp_collection is yes, should probably fix the real problem.
+            if lca_rego['pgp_collection'] != 'no' and registration.keyid:
+                    data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
         return {'ticket': '', 'firstname': '', 'lastname': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': ''}
 
