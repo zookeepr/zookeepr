@@ -885,6 +885,7 @@ class RegistrationController(BaseController):
                     for item in invoice.items:
                         products.append(str(item.qty) + "x" + item.description)
 
+            # registration.special should already be text.
             data.append([s.encode('utf-8') for s in [
                          registration.id,
                          registration.person.firstname,
@@ -903,7 +904,7 @@ class RegistrationController(BaseController):
                          registration.person.is_volunteer(),
                          ", ".join([role.name for role in registration.person.roles]),
                          registration.diet,
-                         registration.special]])
+                         unicode(registration.special)]])
 
 
         import csv, StringIO
