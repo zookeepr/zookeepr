@@ -893,7 +893,7 @@ class RegistrationController(BaseController):
                          registration.person.state.encode(),
                          registration.person.country.encode(),
                          ", ".join(invoices).encode(),
-                         ", ".join(products).encode()
+                         ", ".join(products).encode(),
                          registration.checkin,
                          registration.checkout,
                          registration.person.is_speaker(),
