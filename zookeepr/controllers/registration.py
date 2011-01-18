@@ -885,25 +885,23 @@ class RegistrationController(BaseController):
                     for item in invoice.items:
                         products.append(str(item.qty) + "x" + item.description)
 
-            data.append([s.encode('utf-8') for s in [
-                         unicode(registration.id),
-                         registration.person.firstname,
-                         registration.person.lastname,
-                         registration.person.email_address,
-                         registration.person.company,
-                         registration.person.state,
-                         registration.person.country,
-                         ", ".join(invoices),
-                         ", ".join(products),
-                         unicode(registration.checkin),
-                         unicode(registration.checkout),
+            data.append([registration.id,
+                         registration.person.firstname.encode()
+                         registration.person.lastname.encode(),
+                         registration.person.email_address.encode(),
+                         registration.person.company.encode(),
+                         registration.person.state.encode(),
+                         registration.person.country.encode(),
+                         ", ".join(invoices).encode(),
+                         ", ".join(products).encode()
+                         registration.checkin,
+                         registration.checkout,
                          registration.person.is_speaker(),
                          registration.person.is_miniconf_org(),
                          registration.person.is_volunteer(),
                          ", ".join([role.name for role in registration.person.roles]),
-                         registration.diet,
-                         registration.special]])
-
+                         registration.diet.encode(),
+                         registration.special.encode()])
 
         import csv, StringIO
         f = StringIO.StringIO()
