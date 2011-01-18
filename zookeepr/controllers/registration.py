@@ -871,7 +871,7 @@ class RegistrationController(BaseController):
         return render('/registration/list.mako')
 
     def _export_list(self, registration_list):
-        columns = ['Rego', 'Name', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
+        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'days (checkout-checkin: should be same as accom qty.)', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
 
@@ -886,7 +886,8 @@ class RegistrationController(BaseController):
                         products.append(str(item.qty) + "x" + item.description)
 
             data.append([registration.id,
-                         registration.person.firstname + " " + registration.person.lastname,
+                         registration.person.firstname,
+                         registration.person.lastname,
                          registration.person.email_address,
                          registration.person.company,
                          registration.person.state,
