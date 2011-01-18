@@ -886,7 +886,7 @@ class RegistrationController(BaseController):
                         products.append(str(item.qty) + "x" + item.description)
 
             data.append([registration.id,
-                         registration.person.firstname.encode()
+                         registration.person.firstname.encode(),
                          registration.person.lastname.encode(),
                          registration.person.email_address.encode(),
                          registration.person.company.encode(),
