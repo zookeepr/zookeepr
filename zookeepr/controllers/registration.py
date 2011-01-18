@@ -885,7 +885,8 @@ class RegistrationController(BaseController):
                     for item in invoice.items:
                         products.append(str(item.qty) + "x" + item.description)
 
-            data.append([registration.id,
+            data.append([str.encode('utf-8') for str in [
+                         registration.id,
                          registration.person.firstname,
                          registration.person.lastname,
                          registration.person.email_address,
@@ -902,8 +903,8 @@ class RegistrationController(BaseController):
                          registration.person.is_volunteer(),
                          ", ".join([role.name for role in registration.person.roles]),
                          registration.diet,
-                         registration.special,
-                       ])
+                         registration.special]])
+
 
         import csv, StringIO
         f = StringIO.StringIO()
