@@ -886,22 +886,22 @@ class RegistrationController(BaseController):
                         products.append(str(item.qty) + "x" + item.description)
 
             data.append([registration.id,
-                         registration.person.firstname.encode(),
-                         registration.person.lastname.encode(),
-                         registration.person.email_address.encode(),
-                         registration.person.company.encode(),
-                         registration.person.state.encode(),
-                         registration.person.country.encode(),
-                         ", ".join(invoices).encode(),
-                         ", ".join(products).encode(),
+                         registration.person.firstname.encode('utf-8'),
+                         registration.person.lastname.encode('utf-8'),
+                         registration.person.email_address.encode('utf-8'),
+                         registration.person.company.encode('utf-8'),
+                         registration.person.state.encode('utf-8'),
+                         registration.person.country.encode('utf-8'),
+                         ", ".join(invoices).encode('utf-8'),
+                         ", ".join(products).encode('utf-8'),
                          registration.checkin,
                          registration.checkout,
                          registration.person.is_speaker(),
                          registration.person.is_miniconf_org(),
                          registration.person.is_volunteer(),
                          ", ".join([role.name for role in registration.person.roles]),
-                         registration.diet.encode(),
-                         registration.special.encode()])
+                         registration.diet.encode('utf-8'),
+                         registration.special.encode('utf-8')])
 
         import csv, StringIO
         f = StringIO.StringIO()
