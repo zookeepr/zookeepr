@@ -885,7 +885,7 @@ class RegistrationController(BaseController):
                     for item in invoice.items:
                         products.append(str(item.qty) + "x" + item.description)
 
-            data.append([str.encode('utf-8') for str in [
+            data.append([s.encode('utf-8') for s in [
                          registration.id,
                          registration.person.firstname,
                          registration.person.lastname,
