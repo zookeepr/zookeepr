@@ -871,7 +871,7 @@ class RegistrationController(BaseController):
         return render('/registration/list.mako')
 
     def _export_list(self, registration_list):
-        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs']
+        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Nick', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs', 'Silly Description', 'Over 18']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
 
@@ -889,6 +889,7 @@ class RegistrationController(BaseController):
                          registration.person.firstname.encode('utf-8'),
                          registration.person.lastname.encode('utf-8'),
                          registration.person.email_address.encode('utf-8'),
+                         registration.person.nick.encode('utf-8'),
                          registration.person.company.encode('utf-8'),
                          registration.person.state.encode('utf-8'),
                          registration.person.country.encode('utf-8'),
@@ -901,7 +902,9 @@ class RegistrationController(BaseController):
                          registration.person.is_volunteer(),
                          ", ".join([role.name for role in registration.person.roles]),
                          registration.diet.encode('utf-8'),
-                         registration.special.encode('utf-8')])
+                         registration.special.encode('utf-8'),
+                         registration.silly_description.encode('utf-8'),
+                         registration.over18])
 
         import csv, StringIO
         f = StringIO.StringIO()
