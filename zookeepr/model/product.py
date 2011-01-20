@@ -68,12 +68,12 @@ def setup(meta):
     ticket_miniconf.ceilings.append(ceiling_all_conference)
     meta.Session.add(ticket_miniconf);
 
-    ticket_volunteer_free = Product(category=category_ticket, active=True, description="Volunteer Ticket",
+    ticket_volunteer_free = Product(category=category_ticket, active=True, description="Volunteer Ticket (Free)",
                       cost="0", auth="self.is_volunteer(product)", validate=None)
     ticket_volunteer_free.ceilings.append(ceiling_all_conference)
     meta.Session.add(ticket_volunteer_free);
 
-    ticket_volunteer_paid = Product(category=category_ticket, active=True, description="Volunteer Ticket",
+    ticket_volunteer_paid = Product(category=category_ticket, active=True, description="Volunteer Ticket (paid)",
                       cost="12500", auth="self.is_volunteer(product)", validate=None)
     ticket_volunteer_paid.ceilings.append(ceiling_all_conference)
     meta.Session.add(ticket_volunteer_paid);
