@@ -15,7 +15,7 @@
     <p><b>Validate code:</b> ${ c.product.validate | h }<br></p>
 
     <h3>Product Totals</h3>
-    <p><b>Note:</b> Totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.</p>
+    <p><b>Note:</b> Totals are not necessarily accurate as vouchers are not taken into account. They are simply paid items times cost.</p>
     <p><b>Invoiced (Overdue):</b> ${ c.product.qty_invoiced(date = False) }</p>
     <p><b>Invoiced (Current)</b> ${ c.product.qty_invoiced() }</p>
     <p><b>Sold:</b> ${ c.product.qty_sold() }</p>

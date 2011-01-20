@@ -42,7 +42,7 @@
       </tr>
       <tr>
         <td colspan="11" align="left">
-    <b>Note:</b> Money totals are not necessarily accurate as they do not take into account for vouchers. They are simply paid items times cost.
+    <b>Note:</b> Money totals are not necessarily accurate as vouchers are not taken into account. They are simply paid items times cost.
         </td>
       </tr>
       <tr>
