@@ -154,7 +154,7 @@ class ScheduleController(BaseController):
         output = []
 
         for schedule in schedules:
-            if schedule.time_slot.heading:
+            if not schedule.time_slot.heading:
                 row = {}
                 speakers = schedule.event.computed_speakers()
                 row['Id'] = schedule.id
