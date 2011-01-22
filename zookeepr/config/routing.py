@@ -95,7 +95,12 @@ def make_map():
     map.connect('/admin/{action}', controller='admin')
 
     # route rego_notes with ID's
-    map.connect('registration/{rego_id}/new_note', controller='rego_note', action='new', id=None)
+    map.connect('/registration/{rego_id}/new_note', controller='rego_note', action='new', id=None)
+
+    # photocomp
+    map.connect('/photocomp/edit', controller='photocomp', action='edit', id=None)
+    map.connect('/photocomp/', controller='photocomp', action='index')
+    map.connect('/photocomp/photo/{filename}', controller='photocomp', action='photo')
 
     # UML Graphs
     map.connect('/uml_graph.{format}',

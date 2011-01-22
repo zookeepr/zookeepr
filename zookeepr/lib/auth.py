@@ -1,6 +1,7 @@
 # Zookeepr driver for AuthKit
 #
-# This module allows us to use the authkit infrastructure but using the Zookeepr models to do so
+# This module allows us to use the authkit infrastructure but using the
+# Zookeepr models to do so
 #  * We don't support groups
 #  * We don't support the creation methods as zookeepr does that already
 #

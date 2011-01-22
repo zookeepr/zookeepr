@@ -18,5 +18,6 @@ zookeepr.egg-info
 zookeepr.egg-info/*
 zookeepr.egg-link
 zookeepr/public/att-data
+zookeepr/public/photocomp/*
 zookeepr.wsgi
 test.ini
