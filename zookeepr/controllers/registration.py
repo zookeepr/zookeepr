@@ -889,7 +889,7 @@ class RegistrationController(BaseController):
                          registration.person.firstname.encode('utf-8'),
                          registration.person.lastname.encode('utf-8'),
                          registration.person.email_address.encode('utf-8'),
-                         registration.person.nick.encode('utf-8'),
+                         registration..nick.encode('utf-8'),
                          registration.person.company.encode('utf-8'),
                          registration.person.state.encode('utf-8'),
                          registration.person.country.encode('utf-8'),
