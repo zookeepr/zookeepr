@@ -39,6 +39,8 @@ class Event(Base):
     def computed_miniconf(self):
         if self.is_miniconf():
             return self.title and self.title.split('::')[0]
+        else:
+            return ''
 
     def computed_title(self):
         if self.proposal:

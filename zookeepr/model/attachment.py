@@ -18,7 +18,7 @@ class Attachment(Base):
 
     id = sa.Column(sa.types.Integer, primary_key=True)
 
-    proposal_id =  sa.Column(sa.types.Integer, sa.ForeignKey('proposal.id'))
+    proposal_id =  sa.Column(sa.types.Integer, sa.ForeignKey('proposal.id'), nullable=False)
     filename = sa.Column(sa.types.Text, key='_filename', nullable=False, default='attachment')
     content_type = sa.Column(sa.types.Text, key='_content_type', nullable=False, default='application/octet-stream')
 

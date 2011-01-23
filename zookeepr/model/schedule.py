@@ -24,9 +24,13 @@ class Schedule(Base):
     location_id  = sa.Column(sa.types.Integer, sa.ForeignKey('location.id'), nullable=False)
     event_id     = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), nullable=False)
 
+    overflow  = sa.Column(sa.types.Boolean, nullable=False)
     video_url = sa.Column(sa.types.Text)
     audio_url = sa.Column(sa.types.Text)
     slide_url = sa.Column(sa.types.Text)
+
+    creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
+    last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     @classmethod
     def find_all(cls):

@@ -130,10 +130,27 @@ class ScheduleController(BaseController):
         for schedule in c.schedule_collection:
             if not schedule.time_slot.heading:
                 event = ical.add('vevent')
+                event.add('uid').value = str(schedule.id) + '@' + h.lca_info['event_host']
+                # Created
+                event.add('created').value = schedule.creation_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
+                # Last Modified
+                event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
+                # Start Time
                 event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
                 event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
+                # Title and Author (need to add Author here)
                 event.add('summary').value = schedule.event.computed_title()
+                # Abstract, if we have one
                 event.add('description').value = schedule.event.computed_abstract()
+                # Add a URL
+                if schedule.event.proposal:
+                    event.add('url').value = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal.id)
+                elif not (schedule.event.url is None or schedule.event.url == ''):
+                    if schedule.event.url.startswith('https://') or schedule.event.url.startswith('http://'):
+                        event.add('url').value = h.url_for(str(schedule.event.url))
+                    else:
+                        event.add('url').value = h.url_for(str(schedule.event.url), qualified=True)
 
                 concurrent_schedules = schedule.event.schedule_by_time_slot(schedule.time_slot)
                 if len(concurrent_schedules) > 1:
@@ -147,6 +164,11 @@ class ScheduleController(BaseController):
                 else:
                     event.add('location').value = schedule.location.display_name
 
+        response.charset = 'utf8'
+        response.headers['content-type'] = 'text/calendar; charset=utf8'
+        response.headers.add('content-transfer-encoding', 'binary')
+        response.headers.add('Pragma', 'cache')
+        response.headers.add('Cache-Control', 'max-age=3600,public')
         return ical.serialize()
 
     def json(self):
