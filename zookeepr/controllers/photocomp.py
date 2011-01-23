@@ -194,7 +194,7 @@ class PhotocompController(BaseController):
             for days in photo_db.values()
             for entries in days
             for photo in entries
-            if photo is not None]
+            if photo is not None and photo.day < days_open]
         c.no_photos = not photos
         day_filter = request.GET.get('day', 'All')
         if day_filter and day_filter != 'All':
