@@ -44,6 +44,7 @@ lca_info = {
   'funding_status' : 'not_open',
   'funding_editing' : 'not_open',
   'conference_status': 'open',
+  'account_creation': True,
 # Mode
   'cfp_hide_assistance_info': 'no',
   'cfp_hide_scores': 'no',

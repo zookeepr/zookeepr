@@ -316,50 +316,58 @@ class PersonController(BaseController): #Read, Update, List
 
     @dispatch_on(POST="_new") 
     def new(self):
-        """Create a new person form.
-        """
-        if h.signed_in_person():
-            h.flash("You're already logged in")
-            redirect_to('home')
+        # Do we allow account creation?
+        if lca_info['account_creation']:
+            """Create a new person form.
+            """
+            if h.signed_in_person():
+                h.flash("You're already logged in")
+                redirect_to('home')
 
-        defaults = {
-            'person.country': 'AUSTRALIA',
-        }
-        if h.lca_rego['personal_info']['home_address'] == 'no':
-            defaults['person.address1'] = 'not available'
-            defaults['person.city'] = 'not available'
-            defaults['person.postcode'] = 'not available'
+            defaults = {
+                'person.country': 'AUSTRALIA',
+            }
+            if h.lca_rego['personal_info']['home_address'] == 'no':
+                defaults['person.address1'] = 'not available'
+                defaults['person.city'] = 'not available'
+                defaults['person.postcode'] = 'not available'
 
-        c.social_networks = SocialNetwork.find_all()
+            c.social_networks = SocialNetwork.find_all()
 
-        form = render('/person/new.mako')
-        return htmlfill.render(form, defaults)
+            form = render('/person/new.mako')
+            return htmlfill.render(form, defaults)
+        else:
+            return render('/not_allowed.mako')
 
     @validate(schema=NewPersonSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
-        """Create a new person submit.
-        """
+        # Do we allow account creation?
+        if lca_info['account_creation']:
+            """Create a new person submit.
+            """
 
-        # Remove fields not in class
-        results = self.form_result['person']
-        del results['password_confirm']
-        del results['email_address2']
-        c.person = Person(**results)
-        c.person.email_address = c.person.email_address.lower()
-        meta.Session.add(c.person)
+            # Remove fields not in class
+            results = self.form_result['person']
+            del results['password_confirm']
+            del results['email_address2']
+            c.person = Person(**results)
+            c.person.email_address = c.person.email_address.lower()
+            meta.Session.add(c.person)
 
-        #for sn in self.form_result['social_network']:
-        #   network = SocialNetwork.find_by_name(sn['name'])
-        #   if sn['account_name']:
-        #       c.person.social_networks[network] = sn['account_name']
+            #for sn in self.form_result['social_network']:
+            #   network = SocialNetwork.find_by_name(sn['name'])
+            #   if sn['account_name']:
+            #       c.person.social_networks[network] = sn['account_name']
 
-        meta.Session.commit()
+            meta.Session.commit()
 
-        if lca_rego['confirm_email_address'] == 'no':
-            redirect_to(controller='person', action='confirm', confirm_hash=c.person.url_hash)
+            if lca_rego['confirm_email_address'] == 'no':
+                redirect_to(controller='person', action='confirm', confirm_hash=c.person.url_hash)
+            else:
+                email(c.person.email_address, render('/person/new_person_email.mako'))
+                return render('/person/thankyou.mako')
         else:
-            email(c.person.email_address, render('/person/new_person_email.mako'))
-            return render('/person/thankyou.mako')
+            return render('/not_allowed.mako')
 
     @authorize(h.auth.has_organiser_role)
     def index(self):
