@@ -123,6 +123,10 @@ class ScheduleController(BaseController):
 
         return render('/schedule/table.mako')
 
+    def table_view(self, id):
+        c.schedlue = Schedule.find_by_id(id)
+        return render('/schedule/table_view.mako')
+
     def ical(self):
         c.schedule_collection = Schedule.find_all()
 
@@ -136,11 +140,11 @@ class ScheduleController(BaseController):
                 # Last Modified
                 event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
                 event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
-                # Start Time
+                # Start and End Time
                 event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
                 event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
                 # Title and Author (need to add Author here)
-                event.add('summary').value = schedule.event.computed_title()
+                event.add('summary').value = schedule.event.computed_title() + ' by ' + h.list_to_string(schedule.event.computed_speakers())
                 # Abstract, if we have one
                 event.add('description').value = schedule.event.computed_abstract()
                 # Add a URL
@@ -153,16 +157,13 @@ class ScheduleController(BaseController):
                         event.add('url').value = h.url_for(str(schedule.event.url), qualified=True)
 
                 concurrent_schedules = schedule.event.schedule_by_time_slot(schedule.time_slot)
-                if len(concurrent_schedules) > 1:
-                    for concurrent_schedule in concurrent_schedules:
-                        if concurrent_schedule != schedule:
-                            if concurrent_schedule in c.schedule_collection:
-                                c.schedule_collection.remove(concurrent_schedule)
+                for concurrent_schedule in concurrent_schedules:
+                    if concurrent_schedule != schedule:
+                        if concurrent_schedule in c.schedule_collection:
+                            c.schedule_collection.remove(concurrent_schedule)
 
-                    locations = [concurrent_schedule.location.display_name for concurrent_schedule in concurrent_schedules]
-                    event.add('location').value = '%s and %s' % (', '.join(locations[: -1] ), locations[-1])
-                else:
-                    event.add('location').value = schedule.location.display_name
+                locations = [concurrent_schedule.location.display_name for concurrent_schedule in concurrent_schedules]
+                event.add('location').value = h.list_to_string(locations)
 
         response.charset = 'utf8'
         response.headers['content-type'] = 'text/calendar; charset=utf8'
@@ -277,113 +278,3 @@ class ScheduleController(BaseController):
 
         h.flash("Schedule has been deleted.")
         redirect_to('index')
-
-# Old Controller Starts here
-    day_dates = {'monday':    date(2011,1,24),
-                 'tuesday':   date(2011,1,25),
-                 'wednesday': date(2011,1,26),
-                 'thursday':  date(2011,1,27),
-                 'friday':    date(2011,1,28),
-                 'saturday':  date(2011,1,29)}
-
-    def _get_talk(self, talk_id):
-        """ Return a proposal object """
-        return Proposal.find_by_id(id=talk_id, abort_404=False)
-
-    def view_miniconf(self, id):
-        try:
-            c.day = request.GET['day']
-        except:
-            c.day = 'all'
-        try:
-            c.talk = Proposal.find_accepted_by_id(id)
-        except:
-            c.talk_id = id
-            c.webmaster_email = lca_info['webmaster_email']
-            return render('/schedule/invalid_talkid.mako')
-
-        return render('/schedule/view_miniconf.mako')
-
-    def view_talk(self, id):
-        try:
-            c.day = request.GET['day']
-        except:
-            c.day = 'all'
-        try:
-            c.talk = Proposal.find_accepted_by_id(id)
-        except:
-            c.talk_id = id
-            c.webmaster_email = lca_info['webmaster_email']
-            return render('/schedule/invalid_talkid.mako')
-
-        return render('/schedule/view_talk.mako')
-
-    def old_index(self):
-        # get list of slides as dict
-        c.slide_list = {}
-        if file_paths.has_key('slides_path') and file_paths['slides_path'] != '':
-            c.slide_list = get_directory_contents(file_paths['slides_path'])
-            c.download_path = file_paths['slides_html']
-
-        c.ogg_list = {} # TODO: fill these in
-        if file_paths.has_key('ogg_path') and file_paths['ogg_path'] != '':
-            c.ogg_path = file_paths['ogg_path']
-
-        c.speex_list = {} # TODO: fill these in
-        if file_paths.has_key('speex_path') and file_paths['speex_path'] != '':
-            c.speex_path =  file_paths['speex_path']
-
-        c.talks = Proposal.find_all_accepted()
-        if c.day in self.day_dates:
-            # this won't work across months as we add a day to get a 24 hour range period and that day can overflow from Jan. (we're fine for 09!)
-            c.talks = c.talks.filter(Proposal.scheduled >= self.day_dates[c.day] and Proposal.scheduled < self.day_dates[c.day].replace(day=self.day_dates[c.day].day+1))
-        c.programme = OrderedDict()
-        c.talks.order_by(Proposal.scheduled.asc(), Proposal.finished.desc()).all()
-        for talk in c.talks:
-            if isinstance(talk.scheduled, date):
-                talk_day = talk.scheduled.strftime('%A')
-                if c.programme.has_key(talk_day) is not True:
-                    c.programme[talk_day] = OrderedDict()
-                if talk.building is not None:
-                    if c.programme[talk_day].has_key(talk.building) is not True:
-                        c.programme[talk_day][talk.building] = OrderedDict()
-                    if c.programme[talk_day][talk.building].has_key(talk.theatre) is not True:
-                        c.programme[talk_day][talk.building][talk.theatre] = []
-                    c.programme[talk_day][talk.building][talk.theatre].append(talk)
-        if day is not None and os.path.isfile('zookeepr/templates/schedule/' + day + '.mako'):
-            c.day = day
-            return render('/schedule/list.mako')
-
-        return render('/schedule/list.mako')
-
-    _ROOMS = (
-        ('mfc', 'Auditorium', None),
-        ('_mfc_384', 'Auditorium', 'r2-stream-1'),
-        ('_mfc_128', 'Auditorium', 'r2-stream-2'),
-        ('_mfc_56', 'Auditorium', 'r2-stream-3'),
-        ('_mfc_28a', 'Auditorium', 'r2-stream-4'),
-        #('_mfc_mfc-slides', 'Auditorium', ''),
-        ('illott', 'Ilott Theatre', 'r2-stream-16'),
-        ('renouf-1', 'Renouf 1', 'r2-stream-11'),
-        ('renouf-2', 'Renouf 2', 'r2-stream-12'),
-        ('civic-1', 'Civic Suites 1 & 2', 'r2-stream-14'),
-        ('ftaplin', 'Frank Taplin', 'r2-stream-13'),
-        ('civic-3', 'Civic Suite 3', 'r2-stream-15'),
-    )
-    _ROOMS_D = dict([(r[0], (r[1], r[2])) for r in _ROOMS])
-
-    def video_room(self, room=None):
-        c.all_rooms = self._ROOMS
-
-        if room in self._ROOMS_D:
-            c.room_id = room
-            c.room_name = self._ROOMS_D[room][0]
-            c.room_stream_id = self._ROOMS_D[room][1]
-            if room.startswith('_'):
-                c.room_id = c.room_id.split('_')[2]
-        else:
-            c.room_id = None
-            c.room_name = None
-            c.room_stream_id = None
-
-        return render('/schedule/video_room.mako')

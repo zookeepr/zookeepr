@@ -37,8 +37,12 @@ class Schedule(Base):
         return Session.query(Schedule).order_by(Schedule.id).all()
 
     @classmethod
-    def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(Schedule).filter_by(id=id).first()
+    def find_by_id(cls, id, abort_404 = True, published = True):
+        if published:
+            result = Session.query(Schedule).filter_by(id=id).filter_by(published=published).first()
+        else:
+            result = Session.query(Schedule).filter_by(id=id).first()
+
         if result is None and abort_404:
             abort(404, "No such Schedule")
         return result

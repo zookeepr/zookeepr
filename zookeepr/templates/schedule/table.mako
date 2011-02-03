@@ -41,9 +41,7 @@
 <%
     event = events['exclusive']
     title = event.computed_title()
-    speakers = []
-    for speaker in event.computed_speakers():
-      speakers.append(h.escape(speaker))
+    speakers = h.list_to_string(event.computed_speakers(), html=True)
 
     if event.proposal:
       url = h.url_for(controller='schedule', action='view_talk', id=event.proposal.id)
@@ -51,14 +49,6 @@
       url = '/wiki/Miniconfs/' + event.computed_miniconf() + 'Miniconf/' + h.wiki_link(event.computed_title())
     else:
       url = event.url
-
-    if len(speakers) == 0:
-      pass
-    elif len(speakers) == 1:
-      speakers = speakers[0]
-    else:
-      speakers = '%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1])
-    endif
 %>
       <td class="programme_${ event.type.name }" colspan="${ len(c.locations) }" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
 %   if event.url:
@@ -95,9 +85,7 @@
       event = schedule.event
       time_slot = schedule.time_slot
       title = event.computed_title()
-      speakers = []
-      for speaker in event.computed_speakers():
-        speakers.append(h.escape(speaker))
+      speakers = h.list_to_string(event.computed_speakers(), html=True)
 
       if event.proposal:
         url = h.url_for(controller='schedule', action='view_talk', id=event.proposal.id)
@@ -105,14 +93,6 @@
         url = '/wiki/Miniconfs/' + event.computed_miniconf() + 'Miniconf/' + h.wiki_link(event.computed_title())
       else:
         url = event.url
-
-      if len(speakers) == 0:
-        pass
-      elif len(speakers) == 1:
-        speakers = speakers[0]
-      else:
-        speakers = '%s <i>and</i> %s' % (', '.join(speakers[: -1]), speakers[-1])
-      endif
 %>
 %     if time_slot.heading:
       <th>
