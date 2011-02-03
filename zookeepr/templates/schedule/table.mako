@@ -62,13 +62,10 @@
         <br />
 <%
     schedules = event.schedule_by_time_slot(time_slot)
+    locations = [schedule.location.display_name for schedule in schedules]
 %>
-%   if len(schedules) == 0:
-
-%   elif len(schedules) == 1:
-        <i>${ schedules[0].location.display_name }</i>
-%   else:
-        ${ '%s and %s' % (', '.join(schedule.location.display_name for schedule in schedules[: -1] ), schedules[-1].location.display_name) }</i>
+%   if locations:
+        <i>${ h.list_to_string(locations) }</i>
 %   endif
 %   if c.can_edit:
         <br />${ h.link_to('Event Details', url=h.url_for(controller='event', action='view', id=event.id)) }
@@ -142,4 +139,3 @@
 <%def name="title()">
 Schedule - ${ parent.title() }
 </%def>
-
