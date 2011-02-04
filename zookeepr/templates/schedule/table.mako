@@ -41,7 +41,7 @@
 <%
     event = events['exclusive']
     title = event.computed_title()
-    speakers = h.list_to_string(event.computed_speakers(), html=True)
+    speakers = h.list_to_string(event.computed_speakers(), primary_join='%s <i>and</i> %s', html=True)
 
     if event.proposal:
       url = h.url_for(controller='schedule', action='view_talk', id=event.proposal.id)
@@ -82,7 +82,7 @@
       event = schedule.event
       time_slot = schedule.time_slot
       title = event.computed_title()
-      speakers = h.list_to_string(event.computed_speakers(), html=True)
+      speakers = h.list_to_string(event.computed_speakers(), primary_join='%s <i>and</i> %s', html=True)
 
       if event.proposal:
         url = h.url_for(controller='schedule', action='view_talk', id=event.proposal.id)

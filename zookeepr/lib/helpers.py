@@ -550,7 +550,7 @@ def url_for(*args, **kwargs):
         extra='?hash=' + fields['hash']
     return pylons_url_for(*args, **kwargs) + extra
 
-def list_to_string(list, html = False):
+def list_to_string(list, primary_join='%s and %s', secondary_join=', ', html = False):
     if html:
         list = [escape(item) for item in list]
     if len(list) == 0:
@@ -558,8 +558,5 @@ def list_to_string(list, html = False):
     elif len(list) == 1:
         list = list[0]
     else:
-        if html:
-            list = '%s <i>and</i> %s' % (', '.join(list[: -1]), list[-1])
-        else:
-            list = '%s and %s' % (', '.join(list[: -1]), list[-1])
+        list = primary_join % (secondary_join.join(list[: -1]), list[-1])
     return list
