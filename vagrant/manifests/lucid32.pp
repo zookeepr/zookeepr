@@ -49,16 +49,21 @@ class zookeepr {
     command => "/bin/cp /vagrant/zookeepr/config/lca_info.py.sample /vagrant/zookeepr/config/lca_info.py",
   }
 
+  file { "/vagrant/setup-dir":
+    ensure => directory,
+  }
+
   exec { "zookeepr_python":
     creates     => '/vagrant/setup-dir/zookeepr.egg-link',
-    environment => 'PYHTONPATH=/vagrant/setup-dir',
+    environment => 'PYTHONPATH=/vagrant/setup-dir',
     command     => '/usr/bin/python setup.py develop --no-deps --install-dir=/vagrant/setup-dir',
     cwd         => '/vagrant',
+    require     => File["/vagrant/setup-dir"],
   }
 
   exec { "zookeepr_config":
     creates     => '/vagrant/config.ini',
-    environment => 'PYHTONPATH=/vagrant/setup-dir',
+    environment => 'PYTHONPATH=/vagrant/setup-dir',
     command     => '/usr/bin/paster make-config zookeepr config.ini',
     cwd         => '/vagrant',
     require     => Exec['zookeepr_python'],
@@ -66,7 +71,7 @@ class zookeepr {
 
   exec { "zookeepr_setup":
     creates     => '/vagrant/development.db',
-    environment => 'PYHTONPATH=/vagrant/setup-dir',
+    environment => 'PYTHONPATH=/vagrant/setup-dir',
     command     => '/usr/bin/paster setup-app config.ini',
     cwd         => '/vagrant',
     require     => Exec['zookeepr_config'],
