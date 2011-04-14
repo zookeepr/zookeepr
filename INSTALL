@@ -61,6 +61,7 @@ On all Debian derived distributions, do the following:
 		aptitude install python-authkit python-dnspython python-imaging python-pastedeploy python-pylons python-setuptools
 		cd the-development-directory
 		alias pylons="export PYTHONPATH=$PWD/setup-dir"
+		mkdir `pwd`/setup-dir
 		pylons
 		python setup.py develop --no-deps --install-dir=$PYTHONPATH
 
@@ -104,7 +105,7 @@ Found at /uml_graph.png (or .svg, .jpeg etc).
 
  - Copy sample `lca_info.py` in place, edit it to turn on registrations, CFP etc.
 
-		cp zookeepr/config/lca_info.py.sample zookeepr/config.lca_info.py
+		cp zookeepr/config/lca_info.py.sample zookeepr/config/lca_info.py
 
  - Create a `config.ini`.
 
