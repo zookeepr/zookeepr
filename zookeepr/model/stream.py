@@ -5,13 +5,6 @@ from meta import Base
 
 from zookeepr.model.meta import Session
 
-def setup(meta):
-    meta.Session.add_all(
-        [
-            Stream(name='Free Love and Open Sensual Stimulation'),
-        ]
-    )
-
 class Stream(Base):
     __tablename__ = 'stream'
 
