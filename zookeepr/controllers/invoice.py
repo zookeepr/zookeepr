@@ -23,7 +23,7 @@ from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCate
 from zookeepr.model.payment import Payment
 
 from zookeepr.config.lca_info import lca_info
-from zookeepr.config.zookeepr import file_paths
+from zookeepr.config.zookeepr_config import file_paths
 
 import zookeepr.lib.pxpay as pxpay
 

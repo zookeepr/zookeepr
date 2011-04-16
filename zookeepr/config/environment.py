@@ -13,7 +13,7 @@ from zookeepr.config.routing import make_map
 from zookeepr.model import init_model
 
 from zookeepr.config.lca_info import lca_info
-from zookeepr.config import zookeepr as zookeepr_config
+from zookeepr.config import zookeepr_config
 
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config``

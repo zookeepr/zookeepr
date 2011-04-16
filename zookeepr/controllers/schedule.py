@@ -33,7 +33,7 @@ from zookeepr.model.event import Event, EventValidator
 from zookeepr.model.event_type import EventType
 
 from zookeepr.config.lca_info import lca_info
-from zookeepr.config.zookeepr import file_paths
+from zookeepr.config.zookeepr_config import file_paths
 
 import os
 
