@@ -24,11 +24,11 @@
     <div class="netv-nav">
         <div class="l"></div>
         <div class="r"></div>
-        <ul class="netv-menu" style="background: #ccc !important">
+        <ul class="netv-menu" style="background: #99ff33 !important">
 
 %   for (link, name) in submenus:
 %     if current(link):
-            <li class="selected" style="background: #fff !important"><a href=""><span class="l"></span><span class="r"></span><span class="t">${ name }</span></a></li>
+            <li class="selected" style="background: #7DB12F !important"><a href=""><span class="l"></span><span class="r"></span><span class="t">${ name }</span></a></li>
 %     else:
             <li><a href="${ link }"><span class="l"></span><span class="r"></span><span class="t">${ name }</span></a></li>
 %     endif
