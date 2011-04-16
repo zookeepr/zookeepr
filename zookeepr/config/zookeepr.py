@@ -1,5 +1,7 @@
 # File for configuration specific to zookeepr
 
+import os
+
 base_theme = 'default'
 theme = 'lca2011'
 
