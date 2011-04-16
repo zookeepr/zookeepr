@@ -13,9 +13,9 @@ from zookeepr.model import meta
 def render(*args, **kargs):
     if args[0].startswith('/'):
         # assuming we are looking for a template file to render
-        template_file = '/lca2011' + args[0]
-        print template_file
-        return render_mako(template_file)
+        template_file = 'lca2011' + args[0]
+        #print template_file
+        #return render_mako(template_file)
     return render_mako(*args, **kargs)
 
 class BaseController(WSGIController):
