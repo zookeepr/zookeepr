@@ -24,12 +24,11 @@ ${ h.radio('review.score', '+2', label="+2 (strong accept) I want this proposal 
 
 <div id="q2">
 <p>
-<span class="mandatory">*</span><b>What stream do you think this talk is most suitable for?</b>
+<b>What stream do you think this talk is most suitable for?</b>
 </p>
 
 <p>
-${ h.select('review.stream', None, [ (stream.id, stream.name) for stream in
-c.streams] ) }
+${ h.select('review.stream', None, c.streams ) }
 
 </p>
 </div>
