@@ -22,6 +22,7 @@ ${ h.radio('review.score', '+2', label="+2 (strong accept) I want this proposal 
 </p>
 </div>
 
+% if len(c.streams) > 1:
 <div id="q2">
 <p>
 <b>What stream do you think this talk is most suitable for?</b>
@@ -32,8 +33,11 @@ ${ h.select('review.stream', None, c.streams ) }
 
 </p>
 </div>
+% else:
+${ h.hidden('review.stream') }
+% endif
 
-% if c.proposal.proposal_type_id is not 2:
+% if len(miniconfs) > 1 and c.proposal.proposal_type_id is not 2:
 <div id="q3">
 <p class="label">
 <b>What miniconf would this talk be most suitable for, if it's not accepted?</b>
