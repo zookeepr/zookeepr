@@ -49,6 +49,8 @@ lca_info = {
   'cfp_hide_assistance_info': 'no',
   'cfp_hide_scores': 'no',
 
+  'cfp_miniconf_list' : ["(none)", "Sysadmin", "Business", "Haecksen"],
+
   'emails': {
      'presentation' : 'speakers@lca2011.linux.org.au',
      'tutorial - 1 hour and 45 minutes'     : 'speakers@lca2011.linux.org.au',

@@ -1,11 +1,5 @@
 <%namespace name="toolbox" file="/leftcol/toolbox.mako"/>
 <%inherit file="view_base.mako" />
-<%
-# warning: this list must match the one in ../review/form.mako
-miniconfs = (
-  '(none)',
-)
-%>
 
 <%def name="toolbox_extra()">
   ${ parent.toolbox_extra() }
@@ -69,14 +63,14 @@ ${ h.select('review.stream', None, c.streams ) }
 ${ h.hidden('review.stream') }
 % endif
 
-% if len(miniconfs) > 1 and c.proposal.proposal_type_id is not 2:
+% if len(h.lca_info['cfp_miniconf_list']) > 1 and c.proposal.proposal_type_id is not 2:
 <div id="q3">
 <p class="label">
 <b>What miniconf would this talk be most suitable for, if it's not accepted?</b>
 </p>
 
 <p>
-${ h.select('review.miniconf', None, [ (mc, mc) for mc in miniconfs] ) }
+${ h.select('review.miniconf', None, [ (mc, mc) for mc in h.lca_info['cfp_miniconf_list']] ) }
 </p>
 </div>
 % else:
