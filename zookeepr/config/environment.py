@@ -13,7 +13,7 @@ from zookeepr.config.routing import make_map
 from zookeepr.model import init_model
 
 from zookeepr.config.lca_info import lca_info
-from zookeepr.config import zookeepr_config
+from zookeepr.config.zookeepr_config import file_paths
 
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config``
@@ -23,10 +23,10 @@ def load_environment(global_conf, app_conf):
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     paths = dict(root=root,
                  controllers=os.path.join(root, 'controllers'),
-                 static_files=[os.path.join(root, 'templates/lca2011/public'), os.path.join(root, 'templates/default/public'), os.path.join(root, 'public')],
+                 static_files=[file_paths['enabled_theme'] + '/' + file_paths['theme_public_folder'], file_paths['base_theme'] + '/' + file_paths['theme_public_folder'], file_paths['public_path']],
                  templates=[os.path.join(root, 'templates')],           # apparently pylons still wants this and as a list
-                 default_theme=os.path.join(root, 'templates', zookeepr_config.base_theme),
-                 enabled_theme=os.path.join(root, 'templates', zookeepr_config.theme))
+                 default_theme=file_paths['base_theme'],
+                 enabled_theme=file_paths['enabled_theme'])
 
     # Initialize config with the basic options
     config.init_app(global_conf, app_conf, package='zookeepr', paths=paths)

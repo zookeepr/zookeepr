@@ -2,13 +2,14 @@
 
 import os
 
-base_theme = 'default'
-theme = 'lca2011'
-
 # File system paths that start with $xxx/ have file_paths['xxx'] prepended
 # to them.
 file_paths = {
   'zk_root' :           None,
+  'theme_root' :        '$zk_root/zookeepr/templates',
+  'base_theme' :        '$theme_root/default',
+  'enabled_theme':      '$theme_root/lca2011',
+  'theme_public_folder':'public',
   'public_path':        '$zk_root/zookeepr/public',
   'public_html':        '',
   'news_fileprefix':    '$public_path/featured',
@@ -21,6 +22,8 @@ file_paths = {
   'ogg_path':           'http://mirror.linux.org.au/lca10/videos/ogg',
   'speex_path':         'http://mirror.linux.org.au/lca10/videos/speex',
 }
+
+
 if file_paths.get('zk_root', None) is None:
     file_paths['zk_root'] = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 for k in file_paths:
