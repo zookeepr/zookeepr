@@ -471,7 +471,7 @@ class RegistrationController(BaseController):
         else:
             defaults['registration.distro'] = 'other'
             defaults['registration.distrotext'] = c.registration.distro
-        if c.registration.vcs in lca_rego['vcss']:
+        if c.registration.vcs in lca_rego['vcses']:
             defaults['registration.vcs'] = c.registration.vcs
         else:
             defaults['registration.vcs'] = 'other'

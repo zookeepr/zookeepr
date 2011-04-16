@@ -456,14 +456,14 @@ ${ h.hidden('person.mobile') }
             <p class="entries">
               <select id="registration.vcs" name="registration.vcs" onchange="toggle_select_hidden(this.id, 'vcs_other')">
                 <option value="">(please select)</option>
-% for s in h.lca_rego['vcss']:
+% for s in h.lca_rego['vcses']:
                 <option value="${s}">${ s }</option>
 % endfor
                 <option value="other">other</option>
               </select>
             </p>
 
-% if not c.registration or c.registration.vcs in h.lca_rego['vcss'] or c.registration.vcs == '':
+% if not c.registration or c.registration.vcs in h.lca_rego['vcses'] or c.registration.vcs == '':
 <span id="vcs_other" style="display: none">
 % else:
 <span id="vcs_other" style="display: inline">
