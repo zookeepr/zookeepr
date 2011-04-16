@@ -141,7 +141,13 @@ ${ h.link_to(h.util.html_escape(a.filename), url=h.url_for(controller='attachmen
 </td>
 
 <td>
-${ len(a.content)/1024/1024 }MB
+%if len(a.content) >= (1024*1024):
+${ round(len(a.content)/1024.0/1024.0, 1) } MB
+%elif len(a.content) >= (1024):
+${ round(len(a.content)/1024.0, 1) } kB
+%else:
+${ len(a.content) } B
+%endif
 </td>
 
 <td>
