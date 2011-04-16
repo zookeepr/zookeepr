@@ -25,7 +25,13 @@ ${ c.review.stream.name | h }
 % endif
 </p>
 % if c.review.proposal.proposal_type_id is not 2:
-<p><b>Recommended Miniconf:</b> ${ c.review.miniconf | h }</p>
+<p><b>Recommended Miniconf:</b>
+% if c.review.miniconf:
+${ c.review.miniconf | h }
+% else:
+(none)
+% endif
+</p>
 % endif
 
 <p><b>Reviewer Comment:</b></p>
