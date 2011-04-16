@@ -456,7 +456,7 @@ ${ h.hidden('person.mobile') }
             <p class="entries">
               <select id="registration.vcs" name="registration.vcs" onchange="toggle_select_hidden(this.id, 'vcs_other')">
                 <option value="">(please select)</option>
-% for s in h.lca_rego['vcs']:
+% for s in h.lca_rego['vcss']:
                 <option value="${s}">${ s }</option>
 % endfor
                 <option value="other">other</option>
