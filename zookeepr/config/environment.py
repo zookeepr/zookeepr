@@ -2,6 +2,7 @@
 import os
 
 from mako.lookup import TemplateLookup
+#from zookeepr.lib.template import ZookeeprTemplateLookup as TemplateLookup
 from pylons import config
 from pylons.error import handle_mako_error
 from sqlalchemy import engine_from_config

@@ -22,7 +22,8 @@ from zookeepr.lib.mail import email
 from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
 from zookeepr.model.payment import Payment
 
-from zookeepr.config.lca_info import lca_info, file_paths
+from zookeepr.config.lca_info import lca_info
+from zookeepr.config.zookeepr import file_paths
 
 import zookeepr.lib.pxpay as pxpay
 
