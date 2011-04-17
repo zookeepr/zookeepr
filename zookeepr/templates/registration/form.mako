@@ -390,6 +390,7 @@ ${ h.hidden('person.mobile') }
   <th>Your favourite shell</th>
   <th>Your favourite editor</th>
   <th>Your favourite distro</th>
+  <th>Your favourite vcs</th>
 </tr>
 <tr>
   <td>
@@ -449,6 +450,25 @@ ${ h.hidden('person.mobile') }
 <span id="distro_other" style="display: inline">
 % endif
   <p class="entries">${ h.text('registration.distrotext', size=12) }</entries></p>
+</span>
+  </td>
+  <td>
+            <p class="entries">
+              <select id="registration.vcs" name="registration.vcs" onchange="toggle_select_hidden(this.id, 'vcs_other')">
+                <option value="">(please select)</option>
+% for s in h.lca_rego['vcses']:
+                <option value="${s}">${ s }</option>
+% endfor
+                <option value="other">other</option>
+              </select>
+            </p>
+
+% if not c.registration or c.registration.vcs in h.lca_rego['vcses'] or c.registration.vcs == '':
+<span id="vcs_other" style="display: none">
+% else:
+<span id="vcs_other" style="display: inline">
+% endif
+  <p class="entries">${ h.text('registration.vcstext', size=12) }</entries></p>
 </span>
   </td>
 </tr>

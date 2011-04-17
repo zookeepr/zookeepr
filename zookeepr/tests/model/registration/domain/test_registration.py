@@ -16,6 +16,8 @@ class TestRegistration(CRUDModelTest):
                     editortext='editortext1',
                     distro='distro1',
                     distrotext='distrotext1',
+                    vcs='vcs1',
+                    vcstext='vcstext1',
                     type='type1',
                     voucher_code='voucher_code1',
                     teesize='teesize1',
