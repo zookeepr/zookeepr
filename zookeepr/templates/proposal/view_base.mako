@@ -53,7 +53,7 @@ ${ h.link_to('Review this proposal', url=h.url_for(action='review')) }
 %   for r in c.proposal.reviews:
 <tr class="${ h.cycle('even', 'odd') }">
 <td style="vertical-align: top;">
-${ h.link_to("%s - %s" % (r.id, r.reviewer.firstname), url=h.url_for(controller='review', id=r.id, action='view')) }
+${ h.link_to("%s - %s %s" % (r.id, r.reviewer.firstname, r.reviewer.lastname), url=h.url_for(controller='review', id=r.id, action='view')) }
 </td>
 
 <td style="vertical-align: top;">
