@@ -17,6 +17,7 @@
 
 <br />
 <p><b>Score:</b> ${ c.review.score | h }</p>
+%if len(c.streams) > 1:
 <p><b>Recommended Stream:</b>
 % if c.review.stream is not None:
 ${ c.review.stream.name | h }
@@ -24,9 +25,17 @@ ${ c.review.stream.name | h }
 (none)
 % endif
 </p>
-% if c.review.proposal.proposal_type_id is not 2:
-<p><b>Recommended Miniconf:</b> ${ c.review.miniconf | h }</p>
+%endif
+
+%if len(h.lca_info['cfp_miniconf_list']) > 1 and c.review.proposal.proposal_type_id is not 2:
+<p><b>Recommended Miniconf:</b>
+% if c.review.miniconf:
+${ c.review.miniconf | h }
+% else:
+(none)
 % endif
+</p>
+%endif
 
 <p><b>Reviewer Comment:</b></p>
 <blockquote>

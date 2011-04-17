@@ -31,7 +31,7 @@ class EditReviewSchema(BaseSchema):
 class ReviewController(BaseController):
     @authorize(h.auth.has_reviewer_role)
     def __before__(self, **kwargs):
-        c.streams = Stream.find_all()
+        c.streams = Stream.select_values()
 
     def _is_reviewer(self):
         if not h.signed_in_person() is c.review.reviewer:

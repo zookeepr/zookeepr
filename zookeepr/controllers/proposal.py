@@ -170,7 +170,7 @@ class ProposalController(BaseController):
     @dispatch_on(POST="_review")
     @authorize(h.auth.has_reviewer_role)
     def review(self, id):
-        c.streams = Stream.find_all()
+        c.streams = Stream.select_values()
         c.proposal = Proposal.find_by_id(id)
         c.signed_in_person = h.signed_in_person()
 

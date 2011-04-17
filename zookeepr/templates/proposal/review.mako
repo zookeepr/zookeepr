@@ -1,11 +1,5 @@
 <%namespace name="toolbox" file="/leftcol/toolbox.mako"/>
 <%inherit file="view_base.mako" />
-<%
-# warning: this list must match the one in ../review/form.mako
-miniconfs = (
-  '(none)',
-)
-%>
 
 <%def name="toolbox_extra()">
   ${ parent.toolbox_extra() }
@@ -55,24 +49,28 @@ ${ h.radio('review.score', '+2', label="+2 (strong accept) I want this proposal 
 </p>
 </div>
 
+% if len(c.streams) > 1:
 <div id="q2">
 <p class="label">
-<span class="mandatory">*</span><b>What stream do you think this talk is most suitable for?</b>
+<b>What stream do you think this talk is most suitable for?</b>
 </p>
 
 <p>
-${ h.select('review.stream', None, [ (stream.id, stream.name) for stream in c.streams] ) }
+${ h.select('review.stream', None, c.streams ) }
 </p>
 </div>
+% else:
+${ h.hidden('review.stream') }
+% endif
 
-% if c.proposal.proposal_type_id is not 2:
+% if len(h.lca_info['cfp_miniconf_list']) > 1 and c.proposal.proposal_type_id is not 2:
 <div id="q3">
 <p class="label">
 <b>What miniconf would this talk be most suitable for, if it's not accepted?</b>
 </p>
 
 <p>
-${ h.select('review.miniconf', None, [ (mc, mc) for mc in miniconfs] ) }
+${ h.select('review.miniconf', None, [ (mc, mc) for mc in h.lca_info['cfp_miniconf_list']] ) }
 </p>
 </div>
 % else:
