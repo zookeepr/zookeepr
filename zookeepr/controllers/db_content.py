@@ -26,7 +26,7 @@ from not_found import NotFoundController
 from webhelpers import paginate
 from pylons.controllers.util import abort
 
-from zookeepr.config.lca_info import file_paths
+from zookeepr.config.zookeepr_config import file_paths
 
 import os
 import re

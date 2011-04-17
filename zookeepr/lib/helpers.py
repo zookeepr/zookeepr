@@ -31,7 +31,8 @@ from zookeepr.lib import auth
 
 from zookeepr.model import Person
 
-from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus, file_paths
+from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus
+from zookeepr.config.zookeepr_config import file_paths
 
 from sqlalchemy.orm.util import object_mapper
 
