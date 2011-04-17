@@ -64,7 +64,9 @@
       </tr>
     </table>
 % if c.invoice.is_void():
+%   if c.invoice.person.registration:
         <p class="pay_button">This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</p>
+%   endif
 % elif c.invoice.paid():
         <p class="pay_button">Invoice has been <b>paid</b>.
 %   if c.invoice.total() > 0:
