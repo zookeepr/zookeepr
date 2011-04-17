@@ -23,6 +23,7 @@ class Registration(Base):
     shell = sa.Column(sa.types.Text)
     editor = sa.Column(sa.types.Text)
     distro = sa.Column(sa.types.Text)
+    vcs = sa.Column(sa.types.Text)
     silly_description = sa.Column(sa.types.Text)
     keyid = sa.Column(sa.types.Text)
     planetfeed = sa.Column(sa.types.Text)

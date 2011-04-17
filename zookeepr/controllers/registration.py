@@ -122,6 +122,8 @@ class RegistrationSchema(BaseSchema):
     editortext = OtherValidator(list=('word', 'write'))
     distro = validators.String()
     distrotext = OtherValidator(list=('window', 'xp', 'vista'))
+    vcs = validators.String()
+    vcstext = OtherValidator(list=('visual sourcesafe', 'bitkeeper'))
     silly_description = validators.String()
     silly_description_checksum = validators.String(strip=True)
     if lca_rego['pgp_collection'] != 'no':
@@ -469,6 +471,11 @@ class RegistrationController(BaseController):
         else:
             defaults['registration.distro'] = 'other'
             defaults['registration.distrotext'] = c.registration.distro
+        if c.registration.vcs in lca_rego['vcses']:
+            defaults['registration.vcs'] = c.registration.vcs
+        else:
+            defaults['registration.vcs'] = 'other'
+            defaults['registration.vcstext'] = c.registration.vcs
 
         defaults['registration.i_agree'] = 1
 

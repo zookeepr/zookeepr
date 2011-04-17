@@ -1095,6 +1095,24 @@ class AdminController(BaseController):
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
+    def favourite_vcs(self):
+        """ Statistics on favourite vcs. All people - including unpaid [Statistics] """
+        data = {}
+        for registration in meta.Session.query(Registration).all():
+            vcs = registration.vcs.capitalize()
+            data[vcs] = data.get(vcs, 0) + 1
+        c.data = data.items()
+        c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
+        c.text = '''
+          <img float="right" width="400" height="200"
+          src="http://chart.apis.google.com/chart?cht=p&chs=400x200&chd=t:%s&chl=%s">
+        ''' % (
+            ','.join([str(count) for (label, count) in c.data]),
+            '|'.join([label for (label, count) in c.data]),
+        )
+        return table_response()
+
+    @authorize(h.auth.has_organiser_role)
     def email_registration_reminder(self):
         """ Send all attendees a confirmation email of their registration details. [Registrations]"""
         c.text = 'Emailed the following attendees:'

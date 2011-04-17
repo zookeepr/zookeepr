@@ -5,13 +5,6 @@ from meta import Base
 
 from zookeepr.model.meta import Session
 
-def setup(meta):
-    meta.Session.add_all(
-        [
-            Stream(name='Free Love and Open Sensual Stimulation'),
-        ]
-    )
-
 class Stream(Base):
     __tablename__ = 'stream'
 
@@ -32,6 +25,15 @@ class Stream(Base):
     @classmethod
     def find_all(self):
         return Session.query(Stream).order_by(Stream.name).all()
+
+    @classmethod
+    def select_values(self):
+        streams = Session.query(Stream).order_by(Stream.name).all()
+        values = [ (None, '(none)') ]
+        for stream in streams:
+            v = (stream.id, stream.name)
+            values.append(v)
+        return values
 
     def __repr__(self):
         return '<Stream name=%r>' % self.name

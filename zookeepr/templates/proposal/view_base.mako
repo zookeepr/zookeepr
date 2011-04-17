@@ -46,20 +46,23 @@ ${ h.link_to('Review this proposal', url=h.url_for(action='review')) }
 <tr>
 <th># - Reviewer</th>
 <th>Score</th>
+%if len(c.streams) > 1:
 <th>Rec. Stream</th>
+%endif
 <th>Comment</th>
 </tr>
 
 %   for r in c.proposal.reviews:
 <tr class="${ h.cycle('even', 'odd') }">
 <td style="vertical-align: top;">
-${ h.link_to("%s - %s" % (r.id, r.reviewer.firstname), url=h.url_for(controller='review', id=r.id, action='view')) }
+${ h.link_to("%s - %s %s" % (r.id, r.reviewer.firstname, r.reviewer.lastname), url=h.url_for(controller='review', id=r.id, action='view')) }
 </td>
 
 <td style="vertical-align: top;">
 ${ r.score | h }
 </td>
 
+%if len(c.streams) > 1:
 <td style="vertical-align: top;">
 % if r.stream is not None:
 ${ r.stream.name | h }
@@ -67,6 +70,7 @@ ${ r.stream.name | h }
 (none)
 % endif
 </td>
+%endif
 
 <td style="vertical-align: top;">
 ${ h.line_break(h.util.html_escape(r.comment)) | n}

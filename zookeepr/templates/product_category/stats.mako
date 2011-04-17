@@ -129,6 +129,7 @@
     </table>
 
 <script type="text/javascript">
+% if category.products:
 %       if sales_d1 == '[]':
     $("#sales${simple_title }").hide()
 %       else:
@@ -149,6 +150,7 @@
         },
       }
     );
+%       endif:
 %       endif:
 </script>
 

@@ -28,7 +28,7 @@ log = logging.getLogger(__name__)
 
 class PaymentSchema(BaseSchema):
     approved = validators.Int(min=0, max=1, not_empty=True)
-    amount_paid = validators.Int(min=0, max=2000000)
+    amount_paid = validators.Int(max=2000000)
     currency_used = validators.String()
     gateway_ref = validators.String()
     email_address = validators.String(not_empty=False)
