@@ -23,7 +23,7 @@ def load_environment(global_conf, app_conf):
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     paths = dict(root=root,
                  controllers=os.path.join(root, 'controllers'),
-                 static_files=[file_paths['enabled_theme'] + '/' + file_paths['theme_public_folder'], file_paths['base_theme'] + '/' + file_paths['theme_public_folder'], file_paths['public_path']],
+                 static_files=[file_paths['theme_public'], file_paths['public_path']],
                  templates=[os.path.join(root, 'templates')],           # apparently pylons still wants this and as a list
                  default_theme=file_paths['base_theme'],
                  enabled_theme=file_paths['enabled_theme'])
