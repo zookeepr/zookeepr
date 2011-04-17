@@ -1,0 +1,21 @@
+config.ini
+*.db
+logs
+setup-dir
+zookeepr.egg-info
+zookeepr/config/lca_info.py
+.vagrant
+data
+*.pyc
+
+# OLD Stuff may not be needed any longer
+#.coverage
+#dist
+#easy-install.pth
+#./lib
+#setup-dir/*
+#site.py
+#zookeepr/public/att-data
+#zookeepr/public/photocomp/*
+#zookeepr.wsgi
+#test.ini

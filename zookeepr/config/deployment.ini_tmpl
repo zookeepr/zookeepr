@@ -22,6 +22,10 @@ use = egg:Paste#http
 host = 0.0.0.0
 port = 5000
 
+[server:fastcgi]
+use = egg:Flup#fcgi_thread
+socket = /tmp/fastcgi.socket
+
 [app:main]
 use = egg:zookeepr
 full_stack = true
