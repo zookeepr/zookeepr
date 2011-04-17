@@ -78,8 +78,10 @@ def  make_app(global_conf, full_stack=True, static_files=True, **app_conf):
 
     if asbool(static_files):
         # Serve static files
-        static_app = StaticURLParser(config['pylons.paths']['static_files'])
-        app = Cascade([static_app, app])
-
+        static_app = []
+        for static_files_dir in config['pylons.paths']['static_files']:
+            static_app.append(StaticURLParser(static_files_dir))
+        static_apps = Cascade(static_app, catch=(404,))
+        app = Cascade([static_apps, app])
     return app
 

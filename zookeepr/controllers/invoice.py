@@ -22,7 +22,8 @@ from zookeepr.lib.mail import email
 from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
 from zookeepr.model.payment import Payment
 
-from zookeepr.config.lca_info import lca_info, file_paths
+from zookeepr.config.lca_info import lca_info
+from zookeepr.config.zookeepr_config import file_paths
 
 import zookeepr.lib.pxpay as pxpay
 
@@ -69,6 +70,11 @@ class NewInvoiceSchema(BaseSchema):
 
 class PayInvoiceSchema(BaseSchema):
     payment_id = validators.Int(min=1)
+
+class FakePerson():
+    firstname = "John"
+    lastname = "Doe"
+    email_address = "john.doe@example.com"
 
 class InvoiceController(BaseController):
     @enforce_ssl(required_all=True)
@@ -182,8 +188,10 @@ class InvoiceController(BaseController):
     @dispatch_on(POST="_remind")
     def remind(self):
         c.invoice_collection = Invoice.find_all()
-        c.invoice = c.invoice_collection[0]
-        c.recipient = c.invoice.person
+        #c.invoice = c.invoice_collection[0]
+        #c.recipient = c.invoice.person
+        # create dummy person for example:
+        c.recipient = FakePerson()
         return render('/invoice/remind.mako')
 
     @validate(schema=RemindSchema(), form='remind', post_only=True, on_get=True, variable_decode=True)

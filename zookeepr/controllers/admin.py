@@ -41,17 +41,6 @@ import os, random, re, urllib
 
 now = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
 
-# Used by the acc_papers_xml template
-def release_yesno(b):
-    if b==False:
-        return 'no'
-    elif b==True:
-        return 'yes'
-    elif b is None:
-        return 'unknown'
-    else:
-        return "(can't happen)"
-
 class AdminController(BaseController):
     """ Miscellaneous admin tasks. """
 
@@ -92,7 +81,7 @@ class AdminController(BaseController):
           ('/invoice/remind', ''' Payment reminders [Invoicing] '''),
           #('/registration', ''' Summary of registrations, including summary of accommodation [rego,accom] '''),
           #('/invoice', ''' List of invoices (that is, registrations). This is probably the best place to check whether a given person has or hasn't registered and/or paid. [rego] '''),
-          ('/pony', ''' OMG! Ponies!!! [ZK]'''),
+          #('/pony', ''' OMG! Ponies!!! [ZK]'''),
 
           ('/review/help', ''' Information on how to get started reviewing [CFP] '''),
           ('/proposal/review_index', ''' To see what you need to reveiw [CFP] '''),
@@ -176,23 +165,7 @@ class AdminController(BaseController):
             ORDER BY miniconf, proposal_type.name ASC
         """)
 
-    def papers_by_room(self, latex=False):
-        """ Papers by room for use by the room MC. [Schedule] """
-
-        c.papers = meta.Session.query(Proposal).order_by(Proposal.building).order_by(Proposal.theatre).order_by(Proposal.scheduled).filter(and_(ProposalType.name != 'Miniconf', ProposalStatus.name == 'Accepted', Proposal.scheduled != None)).all()
-
-        if latex:
-          response.headers['Content-type']='text/plain; charset=utf-8'
-          return render('admin/papers_by_room_latex.mako')
-        else:
-          return render('admin/papers_by_room.mako')
-
-    def papers_by_room_latex(self):
-        """ Papers by room for use by the room MC as LaTeX. [Schedule] """
-
-        return self.papers_by_room(True)
-
-    def collect_garbage(self):
+    def _collect_garbage(self):
         """
         Invoke the garbage collector. [ZK]
         """
@@ -215,7 +188,7 @@ class AdminController(BaseController):
         ))
 
     @authorize(h.auth.has_organiser_role)
-    def known_objects(self):
+    def _known_objects(self):
         """
         List known objects by type. (Invokes GC first.) [ZK]
         """
@@ -235,9 +208,6 @@ class AdminController(BaseController):
         c.text = "Total: %d" % total
         return table_response()
 
-    def tuz(self):
-      return render("admin/tuz.mako")
-
     @authorize(h.auth.has_organiser_role)
     def list_attachments(self):
         """ List of attachments [CFP] """
@@ -245,13 +215,8 @@ class AdminController(BaseController):
         select title, filename from attachment, proposal where proposal.id=proposal_id;
 
         ''')
-    @authorize(h.auth.has_organiser_role)
-    def person_creation(self):
-        """ When did people create their accounts? [Accounts] """
-        return sql_response("""select person.id, firstname || ' ' ||
-        lastname as name, creation_timestamp as created from person
-        order by person.id;
-        """)
+
+
     @authorize(h.auth.has_organiser_role)
     def auth_users(self):
         """ List of users that are authorised for some role [Accounts] """
@@ -451,7 +416,7 @@ class AdminController(BaseController):
                 """)
 
     @authorize(h.auth.has_organiser_role)
-    def countdown(self):
+    def _countdown(self):
         """ How many days until conference opens """
         timeleft = lca_info['date'] - datetime.now()
         c.text = "%.1f days" % (timeleft.days +
@@ -793,33 +758,6 @@ class AdminController(BaseController):
 
         return table_response()
 
-
-    @authorize(h.auth.has_organiser_role)
-    def accom_wp_registers(self):
-        """ People who selected "Wrest Point" as their accommodation option. (Includes un-paid invoices!) [Accommodation] """
-        query = """SELECT person.firstname || ' ' || person.lastname as name, person.email_address, invoice.id AS "Invoice ID" FROM person
-                    LEFT JOIN invoice ON (invoice.person_id = person.id)
-                    LEFT JOIN invoice_item ON (invoice_item.invoice_id = invoice.id)
-                    WHERE invoice_item.product_id = 28 AND invoice.void = NULL"""
-        return sql_response(query)
-
-    @authorize(h.auth.has_organiser_role)
-    def accom_uni_registers(self):
-        """ People who selected any form as university accommodation. (Paid only) [Accommodation] """
-        uni_list = meta.Session.query(Product).filter(Product.description.like('University Accommodation %')).all()
-        c.columns = ['Room Type', 'Name', 'e-mail', 'Checkin', 'Checkout']
-        c.data = []
-        for item in uni_list:
-            for invoice_item in item.invoice_items:
-                if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
-                    c.data.append([item.description,
-                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname,
-                                   invoice_item.invoice.person.email_address,
-                                   invoice_item.invoice.person.registration.checkin,
-                                   invoice_item.invoice.person.registration.checkout
-                                 ])
-        return table_response()
-
     @authorize(h.auth.has_organiser_role)
     def speakers_partners(self):
         """ Listing of speakers and their partner details [Speakers] """
@@ -927,7 +865,7 @@ class AdminController(BaseController):
         return sql_response(query)
 
     @authorize(h.auth.Or(h.auth.has_keysigning_role, h.auth.has_organiser_role))
-    def keysigning_participants_list(self):
+    def _keysigning_participants_list(self):
         """ Generate a list of all current key id's [Keysigning] """
         from pylons import response
         response.headers['Content-type'] = 'text/plain'
@@ -936,7 +874,7 @@ class AdminController(BaseController):
         return response
 
     @authorize(h.auth.Or(h.auth.has_keysigning_role, h.auth.has_organiser_role))
-    def keysigning_single(self):
+    def _keysigning_single(self):
         """ Generate an A4 page of key fingerprints given a keyid [Keysigning] """
         if request.POST:
             keyid = request.POST['keyid']
@@ -951,7 +889,7 @@ class AdminController(BaseController):
             return render('/admin/keysigning_single.mako')
 
     @authorize(h.auth.Or(h.auth.has_keysigning_role, h.auth.has_organiser_role))
-    def keysigning_conference(self):
+    def _keysigning_conference(self):
         """ Generate an A4 page of key fingerprints for everyone who has provided their fingerprint [Keysigning] """
         import os, tempfile
         (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
@@ -967,7 +905,7 @@ class AdminController(BaseController):
         pdf_f.close()
 
     @authorize(h.auth.has_organiser_role)
-    def keysigning_participants(self):
+    def _keysigning_participants(self):
         registration_list = meta.Session.query(Registration).join('person').filter(Registration.keyid != None).filter(Registration.keyid != '').order_by(Person.lastname).all()
         key_list = list()
         for registration in registration_list:
@@ -1044,15 +982,6 @@ class AdminController(BaseController):
         )
         c.text += "Veterans: " + ", ".join(veterans) + "<br><br>Veterans of LCA (excluding CALU): " + ", ".join(veterans_lca)
         return table_response()
-
-    @authorize(h.auth.has_organiser_role)
-    def acc_papers_xml(self):
-        """ An XML file with titles and speakers of accepted talks, for use
-        in AV splash screens [AV] """
-        c.talks = meta.Session.query(Proposal).filter_by(accepted=True).all()
-
-        response.headers['Content-type']='text/plain; charset=utf-8'
-        return render('admin/acc_papers_xml.mako', fragment=True)
 
     @authorize(h.auth.has_organiser_role)
     def people_by_country(self):
@@ -1356,7 +1285,7 @@ class AdminController(BaseController):
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
-    def volunteer_grid(self):
+    def _volunteer_grid(self):
         """ List of volunteers for exporting to mgmt DB. [Registrations] """
         c.data = []
         c.noescape = True
@@ -1527,7 +1456,7 @@ class AdminController(BaseController):
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
-    def destroy_personal_information(self):
+    def _destroy_personal_information(self):
         """ Remove personal information from the database (HIGHLY DESTRUCTIVE!) [Other] """
         return 'Disabled in controllers/admin.py. <br>Go enable it there if you really need it (i.e. LCA is well over and you have a <b>backup of the database</b>).<br><font color="#FF0000">You have been warned!</font>'
         people = Person().find_all()
@@ -1689,7 +1618,7 @@ class AdminController(BaseController):
         return render('admin/lookup.mako')
 
 
-def keysigning_pdf(keyid):
+def _keysigning_pdf(keyid):
     import os, tempfile, subprocess
     max_length = 66
     (txt_fd, txt) = tempfile.mkstemp('.txt')

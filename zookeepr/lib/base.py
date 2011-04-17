@@ -3,12 +3,20 @@
 Provides the BaseController class for subclassing.
 """
 from pylons.controllers import WSGIController
-from pylons.templating import render_mako as render
+from pylons.templating import render_mako
 from pylons import request, response, session, tmpl_context as c
 
 from zookeepr.model.db_content import DbContent, DbContentType
 from zookeepr.model import meta
 
+# Redefine the render function to allow for theming
+def render(*args, **kargs):
+    if args[0].startswith('/'):
+        # assuming we are looking for a template file to render
+        template_file = 'lca2011' + args[0]
+        #print template_file
+        #return render_mako(template_file)
+    return render_mako(*args, **kargs)
 
 class BaseController(WSGIController):
 
