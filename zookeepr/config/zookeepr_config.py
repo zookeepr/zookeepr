@@ -8,7 +8,7 @@ file_paths = {
   'zk_root' :           None,
   'theme_root' :        '$zk_root/zookeepr/themes',
   'base_theme' :        '$zk_root/zookeepr/templates',
-  'enabled_theme':      '$theme_root/zookeepr',
+  'enabled_theme':      '$theme_root/lca2012',
   'theme_templates':    '$enabled_theme/templates',
   'theme_public':       '$enabled_theme/public',
   'public_path':        '$zk_root/zookeepr/public',
