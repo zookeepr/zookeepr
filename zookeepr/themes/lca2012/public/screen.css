@@ -7,8 +7,7 @@ body
   background-color: #000000;
   background-image: url('images/ballarat.jpg');
   background-repeat: repeat-x;
-  background-height: 100%;
-  background-attachment: fixed;
+  background-attachment: scroll;
   background-position: top left;
   font-family: "Century Gothic",Arial, Helvetica, Sans-Serif;
   font-size: 13px;
@@ -44,12 +43,12 @@ a:link
 a:visited, a.visited
 {
   text-decoration: underline;
-  color: #8899aa;
+  color: #686C47;
 }
 
 a:hover, a.hover
 {
-  color: #818F00;
+  color: #03008f;
 }
 
 h1, h1 a, h1 a:link, h1 a:visited, h1 a:hover
@@ -67,7 +66,7 @@ h2, h2 a, h2 a:link, h2 a:visited, h2 a:hover
 h3, h3 a, h3 a:link, h3 a:visited, h3 a:hover
 {
   font-size: 19px;
-  color: #8899aa;
+  color: #686C47;
 }
 
 h4, h4 a, h4 a:link, h4 a:visited, h4 a:hover
@@ -380,7 +379,7 @@ div.netv-header-jpeg
   float: left;
   position: relative;
   z-index: 5;
-  background: #3d91d6;
+  background: #e7e6ef;
 
 }
 
@@ -498,17 +497,17 @@ div.netv-header-jpeg
 }
 .netv-menu a:hover .t
 {
-  color: #F4F5F0;
+  color: #f0f0f5;
 }
 
 .netv-menu li:hover a .t
 {
-  color: #F4F5F0;
+  color: #f0f0f5;
 }
 
 .netv-menu li:hover>a .t
 {
-  color: #F4F5F0;
+  color: #f0f0f5;
 }
 
 
@@ -519,7 +518,7 @@ div.netv-header-jpeg
 
 .netv-menu a.active .t
 {
-  color: #F2F3EC;
+  color: #ecedf3;
 }
 /* end MenuItem */
 
@@ -691,7 +690,7 @@ div.netv-content-layout-row
   left: 7px;
   right: 7px;
   bottom: 7px;
-  background-color: #EEEFE6;
+  background-color: #e7e6ef;
 }
 
 .netv-vmenublock
@@ -806,7 +805,7 @@ ul.netv-vmenu a .t
 {
   display: block;
   line-height: 30px;
-  color: #OOOOOO;
+  color: #3e4060;
   padding: 0 11px 0 21px;
   font-style: normal;
   font-weight: bold;
@@ -822,7 +821,7 @@ ul.netv-vmenu a:hover .l, ul.netv-vmenu a:hover .r
 
 ul.netv-vmenu a:hover .t
 {
-  color: #e1e5e9;
+  color: #bbd3ed;
 }
 
 ul.netv-vmenu a.active .l, ul.netv-vmenu a.active .r
@@ -832,7 +831,7 @@ ul.netv-vmenu a.active .l, ul.netv-vmenu a.active .r
 
 ul.netv-vmenu a.active .t
 {
-  color: #1E1F14;
+  color: #14141f;
 }
 /* end VMenuItem */
 
@@ -943,7 +942,7 @@ ul.netv-vmenu a.active .t
   left: 13px;
   right: 13px;
   bottom: 13px;
-  background-color: #EEEFE6;
+  background-color: #FFFFFF;
 }
 
 /* end Box, Block */
@@ -1015,7 +1014,7 @@ ul.netv-vmenu a.active .t
 
 .netv-blockcontent-body
 {
-  color: #15160E;
+  color: #0e0e16;
   font-size: 13px;
 }
 
@@ -1027,13 +1026,13 @@ ul.netv-vmenu a.active .t
 
 .netv-blockcontent-body a:visited, .netv-blockcontent-body a.visited
 {
-  color: #444c55;
+  color: #3e4060;
   text-decoration: none;
 }
 
 .netv-blockcontent-body a:hover, .netv-blockcontent-body a.hover
 {
-  color: #555566;
+  color: #BA4B1C;
   text-decoration: none;
 }
 
@@ -1115,13 +1114,13 @@ input, select, textarea, select
 
 .netv-button-wrapper.hover .netv-button, .netv-button:hover
 {
-  color: #363824 !important;
+  color: #292438 !important;
   text-decoration: none !important;
 }
 
 .netv-button-wrapper.active .netv-button
 {
-  color: #F4FAEB !important;
+  color: #ebecfa !important;
 }
 
 .netv-button-wrapper .l, .netv-button-wrapper .r
@@ -1310,7 +1309,7 @@ a img
 .netv-article th, .netv-article td
 {
   padding: 2px;
-  border: solid 2px #B5B893;
+  border: solid 2px #9493b8;
   vertical-align: top;
   text-align: left;
 }
@@ -1364,13 +1363,13 @@ pre
 .netv-postheader a:visited, .netv-postheader a.visited
 {
 
-  color: #595D3C;
+  color: #3c405d;
 }
 
 .netv-postheader a:hover, .netv-postheader a.hovered
 {
 
-  color: #818F00;
+  color: #03008f;
 }
 /* end PostHeader */
 
@@ -1429,17 +1428,17 @@ blockquote,
 blockquote p,
 .netv-postcontent blockquote p
 {
-  color: #15160E;
+  color: #0e0e16;
 
 }
 
 blockquote,
 .netv-postcontent blockquote
 {
-  border: solid 1px #CED1B8;
+  border: solid 1px #b9b8d1;
   margin: 10px 10px 10px 50px;
   padding: 5px 5px 5px 41px;
-  background-color: #EEEFE6;
+  background-color: #FFFFFF;
   background-image: url('images/postquote.png');
   background-position: left top;
   background-repeat: no-repeat;
@@ -1502,7 +1501,7 @@ blockquote,
 .netv-footer .netv-footer-text
 {
   display: inline-block;
-  color: #EAEBE0;
+  color: #e1e0eb;
 
 }
 
@@ -1516,14 +1515,14 @@ blockquote,
 .netv-footer .netv-footer-text a:visited
 {
   text-decoration: none;
-  color: #BFC3A2;
+  color: #a4a2c3;
 
 }
 
 .netv-footer .netv-footer-text a:hover
 {
   text-decoration: none;
-  color: #555566;
+  color: #BA4B1C;
 
 }
 /* end Footer */
@@ -1546,7 +1545,7 @@ blockquote,
   margin: 1em;
   text-align: center;
   text-decoration: none;
-  color: #C6C9AC;
+  color: #afacc9;
 }
 /* end PageFooter */
 
