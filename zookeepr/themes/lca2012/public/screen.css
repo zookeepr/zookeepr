@@ -7,7 +7,7 @@ body
   background-color: #000000;
   background-image: url('images/ballarat.jpg');
   background-repeat: repeat-x;
-  background-attachment: scroll;
+  background-attachment: fixed;
   background-position: top left;
   font-family: "Century Gothic",Arial, Helvetica, Sans-Serif;
   font-size: 13px;
