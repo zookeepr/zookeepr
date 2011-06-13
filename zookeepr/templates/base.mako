@@ -37,7 +37,7 @@
         <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
         <link rel="stylesheet" media="print" href="/print.css" type="text/css">
         <script type="text/javascript" src="/jquery.min.js"></script>
-        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2011 News">
+        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2012 News">
         <!--[if IE 6]><link rel="stylesheet" href="brisbanecity.ie6.css" type="text/css" media="screen" /><![endif]-->
         <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
 
@@ -173,6 +173,7 @@
                                 </div>
                             </div>
 % else:
+% if False:
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -200,6 +201,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
+% endif
 % endif
                         </div>
                         <div class="netv-layout-cell netv-content">
