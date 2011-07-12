@@ -52,6 +52,8 @@ host_name = localhost
 # SQLAlchemy database URL
 sqlalchemy.url = sqlite:///%(here)s/development.db
 sqlalchemy.convert_unicode = true
+sqlalchemy.use_native_unicode=False
+
 
 # WARNING: *THE LINE BELOW MUST BE UNCOMMENTED ON A PRODUCTION ENVIRONMENT*
 # Debug mode will enable the interactive debugging tool, allowing ANYONE to
