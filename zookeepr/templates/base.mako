@@ -173,7 +173,6 @@
                                 </div>
                             </div>
 % else:
-% if False:
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -201,7 +200,6 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-% endif
 % endif
                         </div>
                         <div class="netv-layout-cell netv-content">
