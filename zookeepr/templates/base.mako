@@ -117,7 +117,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-% if h.url_for() == '/':
+## % if h.url_for() == '/': #Un/comment to enable/disable the sponsor box on the main page
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -172,7 +172,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-% else:
+## % else:
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -200,7 +200,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-% endif
+##% endif
                         </div>
                         <div class="netv-layout-cell netv-content">
                             <div class="netv-post">
