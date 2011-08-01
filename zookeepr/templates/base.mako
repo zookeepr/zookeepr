@@ -41,12 +41,11 @@
         <!--[if IE 6]><link rel="stylesheet" href="brisbanecity.ie6.css" type="text/css" media="screen" /><![endif]-->
         <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
 
-%if h.debug():
         <script type="text/javascript">
 
         var _gaq = _gaq || [];
         _gaq.push(['_setAccount', 'UA-1446075-7']);
-        _gaq.push(['_setDomainName', 'none']);
+        _gaq.push(['_setDomainName', 'lcaunderthestars.org.au']);
         _gaq.push(['_setAllowLinker', true]);
         _gaq.push(['_trackPageview']);
 
@@ -57,7 +56,6 @@
         })();
                             
         </script>
-%endif
 
 
         ${self.extra_head()}
