@@ -16,7 +16,7 @@ miniconfs = (
 
 
 <%def name="heading()">
-  Proposal Review - #${ c.proposal.id } - ${ c.proposal.title | h }
+  Proposal Review - #${ c.proposal.id } - ${ c.proposal.title }
 </%def>
 
 ${ h.form(h.url_for()) }
@@ -31,7 +31,7 @@ ${ toolbox.make_link('Skip!', url=h.url_for(controller='proposal', action='revie
   <% reviewed_already = False %>
 % for x in c.proposal.reviews:
 %   if x.reviewer == c.signed_in_person:
-<p>You have already reviewered this proposal. To modify your review, ${ h.link_to('click here', url=h.url_for(controller='review', action='edit', id=x.id)) }.</p>
+<p>You have already reviewed this proposal. To modify your review, ${ h.link_to('click here', url=h.url_for(controller='review', action='edit', id=x.id)) }.</p>
         <% reviewed_already = True %>
         <% break %>
 %   endif
