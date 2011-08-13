@@ -175,8 +175,8 @@ ${ h.hidden('person.mobile') }
 <%
           fields = {}
           for product in products:
-            results = re.match("^([a-zA-Z0-9']+)\s+(.*)$", product.description)
-            day = results.group(1)
+            results = re.match("^([a-zA-Z0-9'_]+)\s+(.*)$", product.description)
+            day = results.group(1).replace('_',' ')
             miniconf = results.group(2)
 
             if day not in fields:
@@ -307,28 +307,9 @@ ${ h.hidden('person.mobile') }
           your accommodation directly through the accommodation providers
           yourself. Registering for the conference <strong>does not</strong>
           book your accommodation.</p>
-          <input type="hidden" name="registration.checkin" value='2010/01/01'>
-          <input type="hidden" name="registration.checkout" value='2010/01/01'>
 %         else:
           <p>Please see the <a href="/register/accommodation" target="_blank">accommodation page</a> for prices and details.</p>
-          <p class="label"><span class="mandatory">*</span><label for="registration.checkin">Check in on:</label></p>
-          <p class="entries">
-            <select name="registration.checkin">
-         <% dates = [(d, 1) for d in range(17,25)] %>
-%           for (day, month) in dates[:-1]:
-              <option value="${ day }">${ datetime.datetime(2010, month, day).strftime('%A, %e %b') }</option>
-%           endfor
-            </select>
-          </p>
 
-          <p class="label"><span class="mandatory">*</span><label for="registation.checkout">Check out on:</label></p>
-          <p class="entries">
-            <select name="registration.checkout">
-%           for (day, month) in dates[1:]:
-              <option value="${ day }" >${ datetime.datetime(2010, month, day).strftime('%A, %e %b') }</option>
-%           endfor
-            </select>
-          </p>
 %         endif
 %       elif category.name == "Partners Programme":
           <p class="label"><span class="mandatory">#</span><label for="registration.partner_name">Your partner's name:</label></p>

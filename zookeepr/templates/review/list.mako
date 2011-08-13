@@ -1,8 +1,9 @@
 <%inherit file="/base.mako" />
-
+<script type="text/javascript" src="/jquery.tablesorter.min.js"></script>
+      
 <h2>Your reviews</h2>
-
-<table>
+<table id="myReviews">
+<thead>
 <tr>
 <th>Proposal title</th>
 <th>Score</th>
@@ -10,6 +11,8 @@
 <th>Comment</th>
 <th>Edit</th>
 </tr>
+</thead>
+<tbody>
 % for r in c.review_collection:
 %	if r.reviewer == h.signed_in_person():
 
@@ -42,8 +45,11 @@ ${ h.link_to("edit", url=h.url_for(controller='review', action='edit', id=r.id))
 
 % 	endif
 % endfor
+</tbody>
 </table>
-
+<script>
+jQuery("#myReviews").tablesorter();
+</script>
 <%def name="title()" >
 Reviews - ${ parent.title() }
 </%def>

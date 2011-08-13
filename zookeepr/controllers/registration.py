@@ -132,14 +132,11 @@ class RegistrationSchema(BaseSchema):
     voucher_code = VoucherValidator(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    checkin = validators.Int(min=0, max=31)
-    checkout = validators.Int(min=0, max=31)
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
     chained_validators = [
-        CheckAccomDates("checkin", "checkout"),
         SillyDescriptionChecksum("silly_description", "silly_description_checksum"),
         IAgreeValidator("i_agree")
     ]
