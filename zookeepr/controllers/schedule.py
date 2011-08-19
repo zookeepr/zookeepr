@@ -46,6 +46,7 @@ class ScheduleSchema(BaseSchema):
     time_slot = TimeSlotValidator(not_empty=True)
     location = LocationValidator(not_empty=True)
     event = EventValidator(not_empty=True)
+    overflow = validators.Bool()
     video_url = validators.String(if_empty=None)
     audio_url = validators.String(if_empty=None)
     slide_url = validators.String(if_empty=None)
