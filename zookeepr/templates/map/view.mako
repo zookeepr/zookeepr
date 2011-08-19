@@ -20,7 +20,7 @@ function detectBrowser() {
 function map_load() {
     var myLatlng = new google.maps.LatLng(${ h.lca_info['google_map_latlng'] });
     var myOptions = {
-      zoom: 16,
+      zoom: 11,
       center: myLatlng,
       mapTypeId: google.maps.MapTypeId.ROADMAP
     }
