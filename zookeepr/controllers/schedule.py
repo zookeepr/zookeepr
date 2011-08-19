@@ -103,6 +103,9 @@ class ScheduleController(BaseController):
 
         event_type = EventType.find_by_name('presentation')
         c.locations = Location.find_scheduled_by_date_and_type(c.display_date, event_type)
+        event_type = EventType.find_by_name('mini-conf')
+        c.locations = c.locations + Location.find_scheduled_by_date_and_type(c.display_date, event_type)
+
         c.schedule_collection = Schedule.find_by_date(c.display_date)
 
         c.time_increment = timedelta(minutes=5)
