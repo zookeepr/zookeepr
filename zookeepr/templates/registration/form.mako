@@ -1,4 +1,4 @@
-                <script type="text/javascript">
+﻿<script type="text/javascript">
                    function ticketWarning(tickettype){
                    var str=/student/i;
                       if(tickettype.match(str)){
@@ -193,7 +193,7 @@ ${ h.hidden('person.mobile') }
             <tr>
 %         for day in sorted(fields):
               <td>
-%           for (miniconf, product) in fields[day]:
+%           for (miniconf, product) in sorted(fields[day]):
 %             if category.display == 'qty':
                 ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2, disabled=not product.available()) + ' ' + miniconf} 
 %             elif category.display == 'checkbox':
@@ -204,13 +204,90 @@ ${ h.hidden('person.mobile') }
 %             elif product.cost != 0:
                 - ${ h.number_to_currency(product.cost/100.0) }
 %             endif
-            <br />
+            <br/>
 %           endfor
               </td>
 %         endfor
             </tr>
           </table>
 
+		  
+		  
+		  
+		  
+		  %       elif category.display_mode == 'accommodation':
+<%
+          fields = {}
+          for product in products:
+            results = re.match("^([a-zA-Z0-9'_]+)\s+(.*)$", product.description)
+            day = results.group(1).replace('_',' ')
+            accom = results.group(2)
+
+            if day not in fields:
+              fields[day] = []
+            fields[day].append((accom, product))
+          endfor
+%>
+          <table>
+            <tr>
+%         for day in sorted(fields): 
+              <th>${ day }</th>
+%         endfor
+            </tr>
+            <tr>
+%         for day in sorted(fields):
+              <td>
+%           for (accom, product) in sorted(fields[day]):
+<div id="${ product.clean_description(True).replace(' ','_') + '_div'}">
+%             if category.display == 'qty':
+                ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2, disabled=not product.available()) + ' ' + accom} 
+%             elif category.display == 'checkbox':
+                ${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=accom, disabled=not product.available()) }
+%             endif
+%             if not product.available():
+            <span class="mandatory">SOLD&nbsp;OUT</span>
+%             elif product.cost != 0:
+                - ${ h.number_to_currency(product.cost/100.0) }
+%             endif
+            <br /></div>
+%           endfor
+              </td>
+%         endfor
+            </tr>
+          </table>
+<script> 
+$('div[id$="double_div"]').hide();
+$('div[id$="double_breakfast_div"]').hide();
+$('div[id$="single_breakfast_div"]').hide();
+function accommdisplay() {
+if (jQuery('input[id="breaky_accomm_option"]').attr('checked')) 
+    {
+    jQuery('div[id$="breakfast_div"]').show();
+    jQuery('div[id$="double_div"]').hide();
+    jQuery('div[id$="single_div"]').hide();
+    }
+else {
+    jQuery('div[id$="breakfast_div"]').hide();
+    jQuery('div[id$="double_div"]').show();
+    jQuery('div[id$="single_div"]').show();
+     }
+if (jQuery('input[id="double_accomm_option"]').attr('checked'))
+    {
+    jQuery('div[id*="_single_"]').hide();
+    }
+  else
+    {
+    jQuery('div[id*="_double_"]').hide();
+    }
+ jQuery('input[id*="_accommodation_"]').attr('checked', false);
+}
+$('input[id$="accomm_option"]').change( function() {
+accommdisplay();
+});
+</script>
+		  
+		  
+		  
 
 %       elif category.display_mode == 'grid':
 <table>
@@ -507,3 +584,4 @@ ${ h.hidden('person.mobile') }
             preference that you let us know.</p>
           </fieldset>
 % endif
+
