@@ -129,7 +129,7 @@ class ScheduleController(BaseController):
         return render('/schedule/table.mako')
 
     def table_view(self, id):
-        c.schedlue = Schedule.find_by_id(id)
+        c.schedule = Schedule.find_by_id(id)
         return render('/schedule/table_view.mako')
 
     def ical(self):
@@ -283,3 +283,16 @@ class ScheduleController(BaseController):
 
         h.flash("Schedule has been deleted.")
         redirect_to('index')
+
+    def view_talk(self, id):
+        try:
+            c.day = request.GET['day']
+        except:
+            c.day = 'all'
+        try:
+            c.talk = Proposal.find_accepted_by_id(id)
+        except:
+            c.talk_id = id
+            c.webmaster_email = lca_info['webmaster_email']	
+            return render('/schedule/invalid_talkid.mako')
+        return render('/schedule/table_view.mako')

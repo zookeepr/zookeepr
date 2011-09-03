@@ -16,7 +16,8 @@ import hashlib
 <h2>${ c.talk.title | h }</h2>
 
 <table>
-% for schedule in  c.talk.event.schedule:
+##% for schedule in  c.talk.event.schedule:
+% for schedule in  c.schedule:
   <tr class="${ h.cycle('even', 'odd')}">
     <td><strong>Day:</strong></td><td>${ schedule.time_slot.start_time.strftime("%A %d %B %Y") }</td>
     <td><strong>Time:</strong></td><td>${ schedule.time_slot.start_time.strftime("%H:%M") } - ${ schedule.time_slot.end_time.strftime("%H:%M") }</td>
@@ -83,6 +84,4 @@ ${ h.line_break(h.url_to_link(person.bio)) | n  }
 
 </div>
 
-<%def name="title()">
-${ h.truncate(c.talk.title) } - ${ parent.title() }
-</%def>
+
