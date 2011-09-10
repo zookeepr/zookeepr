@@ -268,7 +268,7 @@
          x="698.83887"
          y="205.24347"
          style="font-size:14px;font-weight:normal;text-align:end;text-anchor:end;font-family:DejaVu Sans"
-         id="tspan3200">Mt Clear QLD 3350</svg:tspan><svg:tspan
+         id="tspan3200">Mt Clear VIC 3350</svg:tspan><svg:tspan
          sodipodi:role="line"
          x="698.83887"
          y="222.74347"
