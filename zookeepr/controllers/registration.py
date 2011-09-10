@@ -382,7 +382,13 @@ class RegistrationController(BaseController):
                 c.special_offer = None
 
         if c.special_offer is None and lca_info['conference_status'] is not 'open':
-            redirect_to(action='status')
+            if not h.auth.authorized(h.auth.has_organiser_role):
+                redirect_to(action='status')
+            else:
+                # User is an organiser, so if the status is also 'debug' then they can register
+                if lca_info['conference_status'] is not 'debug':
+                    redirect_to(action='status')
+
 
         # A blank registration
         c.registration = Registration()
