@@ -75,7 +75,7 @@ class ScheduleController(BaseController):
         for scheduled_date in c.scheduled_dates:
             c.subsubmenu.append(['/programme/schedule/' + scheduled_date.strftime('%A').lower(), scheduled_date.strftime('%A')])
 
-        c.subsubmenu.append([ '/programme/open_day', 'Saturday' ])
+        c.subsubmenu.append([ '/programme/saturday', 'Saturday' ])
 
     def table(self, day=None):
         if len(c.scheduled_dates) == 0:
