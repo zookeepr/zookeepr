@@ -10,19 +10,32 @@
 % else:
       <b>Registrations are closed</b><br><br>
 % endif
-      <div class = "graph-bar" style = "width:${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced(), precision=0) }">&nbsp;</div>
-      <div class = "graph-bar-text">${ h.ticket_percentage_text(c.ceilings['conference-paid'].percent_invoiced()) }</div><br>
-% if h.lca_info['conference_status'] == 'open' and c.ceilings['conference-earlybird'].available() and c.ceilings['conference-paid'].available():
-      <b>Earlybird</b> is available<br><br>
-      <div class = "graph-bar" style = "width:${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced(), precision=0) }">&nbsp;</div>
-      <div class = "graph-bar-text">${ h.ticket_percentage_text(c.ceilings['conference-earlybird'].percent_invoiced(), True) |h}</div><br>
-% else:
-      <b>Earlybird not available</b><br><br>${ c.ebtext |h}
-% endif
-      <b>${ c.timeleft }</b>
     </div>
 """
 %>
+      <h3>Conference Status</h3>
+% if h.lca_info['conference_status'] == 'open' and c.ceilings['conference-earlybird'].available() and c.ceilings['conference-paid'].available():
+      <b>Earlybird</b> registrations are currently available! Only a limited number of Earlybird registrations are available however so be sure to pay before they're all gone.<br />
+      Earlybird sales status:<br />
+      
+      <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())}; text-align:center">
+% if c.ceilings['conference-earlybird'].percent_invoiced() > 10: #Only display the Sold text if there is enough room
+      Sold (${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced()) })
+% endif
+      </div>
+
+      <div class="graph-bar-available" style = "width:${ h.number_to_percentage(100-c.ceilings['conference-earlybird'].percent_invoiced()) }; text-align:center">Available (${ h.number_to_percentage(100-c.ceilings['conference-earlybird'].percent_invoiced()) })</div>
+% elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference-paid'].available() and not c.ceilings['conference-earlybird'].available():
+      
+      <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-all'].percent_invoiced())}; text-align:center">
+% if c.ceilings['conference-all'].percent_invoiced() > 10: #Only display the Sold text if there is enough room
+      Sold (${ h.number_to_percentage(c.ceilings['conference-all'].percent_invoiced()) })
+% endif
+      </div>
+
+      <div class="graph-bar-available" style = "width:${ h.number_to_percentage(100-c.ceilings['conference-all'].percent_invoiced()) }; text-align:center">Available (${ h.number_to_percentage(100-c.ceilings['conference-all'].percent_invoiced()) })</div>
+
+% endif
 
 % if 'conference-paid' not in c.ceilings or (c.registration is None and h.lca_info['conference_status'] == 'not_open'):
     <h2>Registrations are not open</h2>
@@ -38,6 +51,7 @@
     have an existing voucher code or if you're otherwise entitled to attend
     for free (eg speakers).</p>
 % endif
+    <br />
     <h3>Your registration status</h3>
 
 % if c.registration is None:
@@ -81,7 +95,6 @@
     <h3>Other options</h3>
 
     <p>
-    ${ h.link_to('Book Accommodation', h.url_for('/register/accomodation', qualified=True)) }<br>
 %   if c.person.volunteer and (c.person.volunteer.accepted or c.person.volunteer.accepted is None):
     ${ h.link_to('Change volunteer areas of interest', h.url_for(controller='volunteer', action='edit', id=c.person.volunteer.id)) }<br>
 %   endif
@@ -138,13 +151,11 @@
 % if c.person:
     <p>${ h.yesno(c.registration != None) |n} Fill in registration form
     <br>${ h.yesno(c.person.valid_invoice()) |n} Generate invoice
-    <br>${ h.yesno(False) |n} Book Accommodation
     <br>${ h.yesno(c.person.paid()) |n} Pay
     <br>${ h.yesno(False) |n} Attend conference</p>
 % else:
     <p>${ h.yesno(False) |n} Fill in registration form
     <br>${ h.yesno(False) |n} Generate invoice
-    <br>${ h.yesno(False) |n} Book Accommodation
     <br>${ h.yesno(False) |n} Pay
     <br>${ h.yesno(False) |n} Attend conference</p>
 % endif

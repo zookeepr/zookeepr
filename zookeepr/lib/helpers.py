@@ -450,19 +450,19 @@ def silly_description_checksum(desc):
     salted = desc + haiku+eval(false+chr(0x5B)+chr(0x31)+chr(0x5D)).encode(rot_26)
     return  hashlib.sha1(salted.encode('latin1')).hexdigest()
 
-#def ticket_percentage_text(percent, earlybird = False):
-#    if percent == 100:
-#        return 'All tickets gone.'
-#    elif percent >= 97.5:
-#        if earlybird:
-#            return "Earlybird almost soldout."
-#        else:
-#            return "Almost all tickets gone."
-#    else:
-#        if earlybird:
-#            return "%d%% earlybird sold." % percent
-#        else:
-#            return "%d%% tickets sold." % percent
+def ticket_percentage_text(percent, earlybird = False):
+    if percent == 100:
+        return 'All tickets gone.'
+    elif percent >= 97.5:
+        if earlybird:
+            return "Earlybird almost soldout."
+        else:
+            return "Almost all tickets gone."
+    else:
+        if earlybird:
+            return "%d%% earlybird sold." % percent
+        else:
+            return "%d%% tickets sold." % percent
 
 link_re = re.compile(r'\[url\=((http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})([^ \t\n]+))\](.*)\[\/url\]')
 def url_to_link(body):

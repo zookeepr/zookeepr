@@ -365,21 +365,6 @@ tt {
                 background-color: #ffffff;
         }
         
-        .graph-bar
-        {
-                background-color: #efefff;
-                line-height: 1.2em;
-                height: 1.2em;
-        }
-        
-        .graph-bar-text
-        {
-                margin-top: -1.2em;
-                line-height: 1.2em;
-                height: 1.2em;
-                border: 1px solid #a0a0a0;
-        }
-
         .mandatory
         {
                 color: #ff0000;
