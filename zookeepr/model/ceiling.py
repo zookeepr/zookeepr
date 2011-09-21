@@ -79,13 +79,15 @@ class Ceiling(Base):
         if self.max_sold == None:
             return 0
         else:
-            return self.qty_sold() / self.max_sold * 100
+            percent = float(self.qty_sold()) / float(self.max_sold)
+            return int(percent * 100)
 
     def percent_invoiced(self):
         if self.max_sold == None:
             return 0
         else:
-            return self.qty_invoiced() / self.max_sold * 100
+            percent = float(self.qty_invoiced()) / float(self.max_sold)
+            return int(percent * 100)
 
     def remaining(self):
         return self.max_sold - self.qty_sold()

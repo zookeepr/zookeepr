@@ -1325,8 +1325,7 @@ a img
 .graph-bar-sold
 {
   background-color: #FF2233;
-  line-height: 1.2em;
-  height: 1.2em;
+  height: 20px;
   float: left;
 }
          

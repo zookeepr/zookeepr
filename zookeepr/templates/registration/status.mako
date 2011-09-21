@@ -23,8 +23,8 @@
       Sold (${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced()) })
 % endif
       </div>
-
       <div class="graph-bar-available" style = "width:${ h.number_to_percentage(100-c.ceilings['conference-earlybird'].percent_invoiced()) }; text-align:center">Available (${ h.number_to_percentage(100-c.ceilings['conference-earlybird'].percent_invoiced()) })</div>
+
 % elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference-paid'].available() and not c.ceilings['conference-earlybird'].available():
       
       <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-all'].percent_invoiced())}; text-align:center">
