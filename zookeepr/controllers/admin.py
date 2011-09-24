@@ -641,7 +641,7 @@ class AdminController(BaseController):
           # We only want the i value so strip the rest off
           t = t.strip("lca2012 i")
           t = t.strip("-")
-          t = t.split(" ")[0]
+          t = int(t.split(" ")[0])
 
           amt = row[amt_offs]
           if amt[-3]=='.':
@@ -666,7 +666,7 @@ class AdminController(BaseController):
           else:
             zk[t] = [p]
 
-        zk_fields =  ('invoice_id', 'payment_id', 'amount_paid', 'auth_code', 'success_code')
+        zk_fields =  ('invoice_id', 'payment_id', 'amount_paid', 'response_text', 'success_code')
         all = all.keys()
         all.sort()
         c.data = []
