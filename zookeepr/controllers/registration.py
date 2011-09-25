@@ -887,7 +887,7 @@ class RegistrationController(BaseController):
         return render('/registration/list.mako')
 
     def _export_list(self, registration_list):
-        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Nick', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'Accommodation', 'checkout', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs', 'Silly Description', 'Over 18']
+        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Nick', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'Accommodation', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs', 'Silly Description', 'Over 18']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
 
@@ -899,7 +899,7 @@ class RegistrationController(BaseController):
 
             for product in registration.products:
                 if product.product.category.name.lower() == "accommodation":
-                    accommodation.append(product.product.description + "\n")
+                    accommodation.append(product.product.description)
 
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.is_void():
