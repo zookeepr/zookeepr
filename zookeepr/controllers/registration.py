@@ -887,7 +887,7 @@ class RegistrationController(BaseController):
         return render('/registration/list.mako')
 
     def _export_list(self, registration_list):
-        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Nick', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs', 'Silly Description', 'Over 18']
+        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Nick', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'Accommodation', 'checkout', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs', 'Silly Description', 'Over 18']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
 
@@ -895,6 +895,12 @@ class RegistrationController(BaseController):
         for registration in registration_list:
             products = []
             invoices = []
+            accommodation = []
+
+            for product in registration.products:
+                if product.product.category.name.lower() == "accommodation":
+                    accommodation.append(product.product.description + "\n")
+
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.is_void():
                     invoices.append(str(invoice.id))
@@ -911,8 +917,9 @@ class RegistrationController(BaseController):
                          registration.person.country.encode('utf-8'),
                          ", ".join(invoices).encode('utf-8'),
                          ", ".join(products).encode('utf-8'),
-                         registration.checkin,
-                         registration.checkout,
+                         ", ".join(accommodation).encode('utf-8'),
+                         #registration.checkin,
+                         #registration.checkout,
                          registration.person.is_speaker(),
                          registration.person.is_miniconf_org(),
                          registration.person.is_volunteer(),
@@ -921,6 +928,7 @@ class RegistrationController(BaseController):
                          registration.special.encode('utf-8'),
                          registration.silly_description.encode('utf-8'),
                          registration.over18])
+
 
         import csv, StringIO
         f = StringIO.StringIO()
