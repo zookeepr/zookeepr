@@ -72,7 +72,7 @@ On all Debian derived distributions, do the following:
 
 		sudo easy_install --upgrade AuthKit>=0.4.3
 
-		This is not needed on unstable (Ubunut Lucid)
+		This is not needed on unstable (Ubuntu Lucid)
 
 ### PDF generation ###
 
