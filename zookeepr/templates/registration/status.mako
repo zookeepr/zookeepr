@@ -32,13 +32,21 @@
 
 % elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference-paid'].available() and not c.ceilings['conference-earlybird'].available():
       
-      <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-all'].percent_invoiced())}; text-align:center">
-% if c.ceilings['conference-all'].percent_invoiced() > 10: #Only display the Sold text if there is enough room
-      Sold (${ h.number_to_percentage(c.ceilings['conference-all'].percent_invoiced()) })
+      <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}; text-align:center">
+% if c.ceilings['conference-paid'].percent_invoiced() > 10: #Only display the Sold text if there is enough room
+      Sold (${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced()) })
 % endif
       </div>
 
-      <div class="graph-bar-available" style = "width:${ h.number_to_percentage(100-c.ceilings['conference-all'].percent_invoiced()) }; text-align:center">Available (${ h.number_to_percentage(100-c.ceilings['conference-all'].percent_invoiced()) })</div>
+     <div class="graph-bar-available" style = "width:${ h.number_to_percentage(100-c.ceilings['conference-paid'].percent_invoiced()) }; text-align:center">
+% if c.ceilings['conference-paid'].percent_invoiced() < 85: #Only display the Available text if there is room
+      Available
+% endif
+% if c.ceilings['conference-paid'].percent_invoiced() < 95: #Only display the Available text if there is room
+      (${ h.number_to_percentage(100-c.ceilings['conference-paid'].percent_invoiced()) })
+% endif
+      </div>
+
 
 % endif
 
