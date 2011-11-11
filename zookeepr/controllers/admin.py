@@ -831,7 +831,8 @@ class AdminController(BaseController):
         """ List of partners programme contacts [Partners Programme] """
         partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners Programme')).all()
         c.text = "*Checkin and checkout dates aren't an accurate source."
-        c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile', 'Checkin*', 'Checkout*']
+        #c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile', 'Checkin*', 'Checkout*']
+        c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile']
         c.data = []
         for item in partners_list:
             for invoice_item in item.invoice_items:
@@ -843,8 +844,8 @@ class AdminController(BaseController):
                                    invoice_item.invoice.person.registration.partner_name,
                                    invoice_item.invoice.person.registration.partner_email,
                                    invoice_item.invoice.person.registration.partner_mobile,
-                                   invoice_item.invoice.person.registration.checkin,
-                                   invoice_item.invoice.person.registration.checkout
+                                   #invoice_item.invoice.person.registration.checkin,
+                                   #invoice_item.invoice.person.registration.checkout
                                  ])
         return table_response()
 
