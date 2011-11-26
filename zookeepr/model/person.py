@@ -132,6 +132,8 @@ class Person(Base):
         return False
 
     def is_speaker(self):
+        # Check is they have the 'copresenter' role, this means they are not a 'real' speaker
+        if self.has_role("copresenter"): return False
         return reduce(lambda a, b: a or (b.accepted and b.type.name != 'Miniconf'), self.proposals, False) or False
         # note: the "or False" at the end converts a None into a False
 
