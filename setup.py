@@ -13,13 +13,16 @@ setup(
     author_email='zookeepr-core@zookeepr.org',
     url='http://zookeepr.org',
     install_requires=[
+        "WebOb==0.9.8",
         "Pylons>=0.9.7",
-        "SQLAlchemy>=0.5",
+        "SQLAlchemy==0.5.8",
         "AuthKit>=0.4.0",
         # FormEncode used to do form input validation
         "FormEncode>=0.6",
         # DNS for email address validation
         "dnspython",
+        "vobject",
+        "pytz",
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),
