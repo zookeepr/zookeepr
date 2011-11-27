@@ -262,4 +262,4 @@ class Person(Base):
         return result
 
     def avatar_url(self):
-        return libravatar_url(email=self.email_address, https=True, default='404')
+        return libravatar_url(email=self.email_address, https=True, default='mm')
