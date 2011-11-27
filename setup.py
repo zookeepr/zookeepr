@@ -20,6 +20,7 @@ setup(
         "FormEncode>=0.6",
         # DNS for email address validation
         "dnspython",
+        "pylibravatar",
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),
