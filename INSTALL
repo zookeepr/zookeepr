@@ -58,7 +58,8 @@ Some Lenny packages are too old.  So on Lenny only, install them from backports:
 
 On all Debian derived distributions, do the following:
 
-		aptitude install python-authkit python-dnspython python-imaging python-pastedeploy python-pylons python-setuptools
+		aptitude install python-authkit python-dnspython python-imaging \
+			python-pastedeploy python-pylons python-setuptools pwgen
 		cd the-development-directory
 		alias pylons="export PYTHONPATH=$PWD/setup-dir"
 		mkdir `pwd`/setup-dir
@@ -79,6 +80,9 @@ On all Debian derived distributions, do the following:
 You need to install the following package for PDF generation to work, e. g.:
 
 		aptitude install inkscape
+
+		Note: This will pull in a base X11 install with client libraries, as well as GTK+
+		and cairo. It will not install the X server.
 
 ### Keysigning code ###
 
