@@ -23,10 +23,10 @@ def load_environment(global_conf, app_conf):
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     paths = dict(root=root,
                  controllers=os.path.join(root, 'controllers'),
-                 static_files=[file_paths['theme_public'], file_paths['public_path']],
-                 templates=[os.path.join(root, 'templates')],           # apparently pylons still wants this and as a list
-                 default_theme=file_paths['base_theme'],
-                 enabled_theme=file_paths['enabled_theme'])
+                 static_files=[file_paths['theme_public'], file_paths['base_public']],
+                 templates=[file_paths['base_templates']],           # apparently pylons still wants this and as a list
+                 base_templates=file_paths['base_templates'],
+                 theme_templates=file_paths['theme_templates'])
 
     # Initialize config with the basic options
     config.init_app(global_conf, app_conf, package='zookeepr', paths=paths)
@@ -37,7 +37,7 @@ def load_environment(global_conf, app_conf):
 
     # Create the Mako TemplateLookup, with the default auto-escaping
     config['pylons.app_globals'].mako_lookup = TemplateLookup(
-        directories=[paths['enabled_theme'], paths['default_theme']],
+        directories=[paths['theme_templates'], paths['base_templates']],
         error_handler=handle_mako_error,
         module_directory=os.path.join(app_conf['cache_dir'], 'templates'),
         input_encoding='utf-8', default_filters=['escape'],
