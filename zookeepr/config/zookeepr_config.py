@@ -6,20 +6,21 @@ import os
 # to them.
 file_paths = {
   'zk_root' :           None,
+  'base_templates' :    '$zk_root/zookeepr/templates',
+  'base_public':        '$zk_root/zookeepr/public',
   'theme_root' :        '$zk_root/zookeepr/themes',
   'base_theme' :        '$zk_root/zookeepr/templates',
   'enabled_theme':      '$theme_root/lca2012',
   'theme_templates':    '$enabled_theme/templates',
   'theme_public':       '$enabled_theme/public',
-  'public_path':        '$zk_root/zookeepr/public',
   'public_html':        '',
-  'news_fileprefix':    '$public_path/featured',
+  'news_fileprefix':    '$base_public/featured',
   'news_htmlprefix':    '/featured',
   # Points towards where the slides and other recordings are stored
-  'slides_path':        '$public_path/slides',
+  'slides_path':        '$base_public/slides',
   'slides_html':        '/slides',
   # Where photo competition entries are stored.
-  'photocomp_path':     '$public_path/photocomp',
+  'photocomp_path':     '$base_public/photocomp',
   'ogg_path':           'http://mirror.linux.org.au/lca10/videos/ogg',
   'speex_path':         'http://mirror.linux.org.au/lca10/videos/speex',
 }
