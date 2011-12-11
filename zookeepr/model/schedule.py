@@ -24,7 +24,7 @@ class Schedule(Base):
     location_id  = sa.Column(sa.types.Integer, sa.ForeignKey('location.id'), nullable=False)
     event_id     = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), nullable=False)
 
-    overflow  = sa.Column(sa.types.Boolean, nullable=True)
+    overflow  = sa.Column(sa.types.Boolean, nullable=False)
     video_url = sa.Column(sa.types.Text)
     audio_url = sa.Column(sa.types.Text)
     slide_url = sa.Column(sa.types.Text)
@@ -44,8 +44,6 @@ class Schedule(Base):
             result = Session.query(Schedule).filter_by(id=id).first()
         else:
             result = Session.query(Schedule).filter_by(id=id).first()
-    def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(Schedule).filter_by(id=id).first()
 
         if result is None and abort_404:
             abort(404, "No such Schedule")
