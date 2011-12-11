@@ -18,7 +18,6 @@ from zookeepr.model.meta import Session
 import datetime
 import hashlib
 import random
-from libravatar import libravatar_url
 
 def setup(meta):
     person = Person(
@@ -262,6 +261,3 @@ class Person(Base):
         if result is None and abort_404:
             abort(404, "No such person object")
         return result
-
-    def avatar_url(self):
-        return libravatar_url(email=self.email_address, https=True, default='mm')
