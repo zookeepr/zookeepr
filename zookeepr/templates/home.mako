@@ -15,7 +15,7 @@ for d in c.db_content_news_all:
 
                                             <h2 class="netv-postheader">
                               <img src="/images/postheadericon.png" width="26" height="26" alt="postheadericon">
-                              Welcome to linux.conf.au 2011!</h2>
+                              Welcome to zookeepr!</h2>
 
 % if c.db_content is not None:
   ${ c.db_content.body | n }
