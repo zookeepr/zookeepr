@@ -7,6 +7,7 @@ zookeepr/config/lca_info.py
 .vagrant
 data
 *.pyc
+*~
 
 # OLD Stuff may not be needed any longer
 #.coverage
