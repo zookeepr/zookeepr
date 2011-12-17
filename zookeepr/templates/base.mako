@@ -63,7 +63,7 @@
       <div>
       </div>
       <div id="page-title">${ h.lca_info['event_name'] }</div>
-      <div id="page-subtitle">${ h.lca_info['event_parent_organisation'] } Conference Management</div>
+      <div id="page-subtitle">A ${ h.lca_info['event_parent_organisation'] } Conference</div>
 
     </div>
 
