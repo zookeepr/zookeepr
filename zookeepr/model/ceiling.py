@@ -4,6 +4,7 @@ import sqlalchemy as sa
 from meta import Base
 
 from pylons.controllers.util import abort
+from beaker.cache import CacheManager
 
 from role import Role
 from person_role_map import person_role_map
@@ -48,6 +49,7 @@ class Ceiling(Base):
     max_sold = sa.Column(sa.types.Integer, nullable=True)
     available_from = sa.Column(sa.types.DateTime, nullable=True)
     available_until = sa.Column(sa.types.DateTime, nullable=True)
+    cache = CacheManager()
 
     def __init__(self, name=None, max_sold=None, available_from=None, available_until=None, products=[]):
         self.name = name
@@ -64,10 +66,16 @@ class Ceiling(Base):
 
     def qty_invoiced(self, date=True):
         # date: bool? only count items that are not overdue
-        qty = 0
-        for p in self.products:
-            qty += p.qty_invoiced(date)
-        return qty
+
+        @self.cache.cache(self.id, expire=600)
+        def cached(self, date=True):
+            qty = 0
+
+            for p in self.products:
+                qty += p.qty_invoiced(date)
+            return qty
+
+        return cached(self, date)
 
     def qty_free(self):
         qty = 0
