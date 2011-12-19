@@ -4,8 +4,6 @@ import sqlalchemy as sa
 from meta import Base
 
 from pylons.controllers.util import abort
-from pylons.decorators.cache import beaker_cache
-
 
 from role import Role
 from person_role_map import person_role_map
@@ -64,7 +62,6 @@ class Ceiling(Base):
             qty += p.qty_sold()
         return qty
 
-    @beaker_cache(expire=600, type='memory')
     def qty_invoiced(self, date=True):
         # date: bool? only count items that are not overdue
         qty = 0
