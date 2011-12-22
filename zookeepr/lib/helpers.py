@@ -211,6 +211,7 @@ def event_shortname():
 #        b.append( a.pop( j ) )
 #    return b
 #
+rot_26 = "rot_13" #used for being sneaky in the tag hashing for LCA2012
 #def random_pic(subdir):
 #    """Mel8ourne random pic code.
 #    """
@@ -411,23 +412,57 @@ def silly_description():
     return desc, descChecksum
 
 def silly_description_checksum(desc):
-    import hashlib
-    salted = desc + unicode('Use the source Luke')
-    return hashlib.sha1(salted.encode('latin1')).hexdigest()
+    import hashlib, math
+    haiku = "Come to Ballarat"\
+        "LCA Under the stars"\
+        "Comets is landing..."
 
-#def ticket_percentage_text(percent, earlybird = False):
-#    if percent == 100:
-#        return 'All tickets gone.'
-#    elif percent >= 97.5:
-#        if earlybird:
-#            return "Earlybird almost soldout."
-#        else:
-#            return "Almost all tickets gone."
-#    else:
-#        if earlybird:
-#            return "%d%% earlybird sold." % percent
-#        else:
-#            return "%d%% tickets sold." % percent
+    #This is meant to be difficult to read, no telling me its indistinguishable from my normal code - Josh
+    def fun(cion):
+        e = 0.0
+        a = 4.1963944517268459E+00
+        b = -5.5753297516829114E+00
+        c = 2.7916995626938470E+00
+        d = -6.5696680861318413E-01
+        f = 7.2840990594877031E-02
+        g = -3.0390408978587477E-03
+
+        e = g
+        e = e * cion + f
+        e = e * cion + d
+        e = e * cion + c
+        e = e * cion + b
+        e = e * cion + a
+        e = 1.0 / e   
+        return e   
+
+    false = ""
+    true = False
+    for ny in range(1,9):
+        if (ny == 5) or (ny == 8):
+            false=false+(haiku[int(math.floor(fun(ny)+1))],haiku[int(math.ceil(fun(ny)+1))])[true]
+        else:
+            false=false+(haiku[int(math.floor(fun(ny)))],haiku[int(math.ceil(fun(ny)))])[true]
+        true = not true                                                                        
+    false=false.lower()+"("+")"
+
+    # Some assistance provided here. All we're doing is taking the silly input string and hashing it with some mysterious salt. Mmmmmm salt
+    salted = desc + haiku+eval(false+chr(0x5B)+chr(0x31)+chr(0x5D)).encode(rot_26)
+    return  hashlib.sha1(salted.encode('latin1')).hexdigest()
+
+def ticket_percentage_text(percent, earlybird = False):
+    if percent == 100:
+        return 'All tickets gone.'
+    elif percent >= 97.5:
+        if earlybird:
+            return "Earlybird almost soldout."
+        else:
+            return "Almost all tickets gone."
+    else:
+        if earlybird:
+            return "%d%% earlybird sold." % percent
+        else:
+            return "%d%% tickets sold." % percent
 
 link_re = re.compile(r'\[url\=((http:\/\/|ftp:\/\/)?(([a-z]+[a-z0-9]*[\.|\-]?[a-z]+[a-z0-9]*[a-z0-9]+){1,4}\.[a-z]{2,4})([^ \t\n]+))\](.*)\[\/url\]')
 def url_to_link(body):

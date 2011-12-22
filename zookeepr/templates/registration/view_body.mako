@@ -55,11 +55,6 @@
 %   endfor
 %   if category.name == 'Accommodation' and not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
 
-        <p class="label">Check in on:</p>
-        <p>${ h.date(c.registration.checkin) }</p>
-
-        <p class="label">Check out on:</p>
-        <p>${ h.date(c.registration.checkout) }</p>
 %   elif category.name == 'Partners Programme':
 %     if c.registration.partner_name:
         <p class="label"><b>Your partner's name:</b> ${ c.registration.partner_name }</p>

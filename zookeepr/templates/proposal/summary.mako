@@ -65,7 +65,7 @@ function toggleDiv(id,flagit) {
 <a name="${ simple_title }"></a>
 <h2>${ pt.name }s </h2>
 
-<table>
+<table id="${ pt.name }">
 <tr>
 <th>&nbsp;</th>
 <th>#</th>

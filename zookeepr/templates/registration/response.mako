@@ -44,20 +44,7 @@ been paid in full. So to ensure that you secure your ticket, pay the
 registration invoice as soon as possible.
 
 %endif
-%if not c.person.is_speaker():
-Accommodation
-=============
 
-${ h.event_shortname() } have negotiated discounts with some local accommodation providers:
-
-    ${ h.url_for('/register/accommodation', qualified=True) }
-
-Please note, you *must* book your accommodation directly through the
-accommodation providers. Registration on the ${ h.event_shortname() } website DOES NOT book
-your accommodation. For any queries about the Accommodation, please contact
-the Accommodation Providers directly.
-
-%endif
 %if c.registration.diet:
 Dietary Requirements
 ====================
@@ -123,17 +110,11 @@ Thank you for registering your Partner for the ${ h.event_shortname() } Partners
 Your partner will be contacted by our Partner Programme Coordinator on:
 %endif
 
-     partners@lca2011.linux.org.au
+     partners@lcaunderthestars.org.au
 
 %endif
-Open Day
-========
-
-The Open Day will be held on Saturday 29 January 2011. If you have an awesome
-project, cool widgets or mind-blowing gadgets that will enthuse our attendees,
-please contact us about getting a stall at the Open Day: openday@lca2011.linux.org.au
 
 
-We look forward to seeing you in Brisbane!
+We look forward to seeing you in Ballarat!
 
 The ${ h.event_name() } Organising Committee

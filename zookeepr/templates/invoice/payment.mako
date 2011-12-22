@@ -24,9 +24,10 @@ ${ h.hidden('return_link_text', 'Return to ' + h.lca_info['event_name']) }
 ${ h.hidden('return_link_url', h.url_for(qualified=True, controller='invoice', action='view', id=c.payment.invoice.id)) }
 ${ h.hidden('reply_link_url', h.url_for(protocol='http', qualified=True, controller='payment', action='new', id=c.payment.id) + '?payment_id=' + str(c.payment.id) + '&invoice_id=' + str(c.payment.invoice.id) + '&summary_code=&response_amount=&currency=&card_name=&card_type=&card_number=&card_expiry=&card_mac=&response_code=&bank_reference=&response_text=&remote_ip=&receipt_address=') }
 
-<a href="http://forms.securepay.com.au/contact_us_sales.php?ref=linuxmovieoffer"><img src="/logos/Linux-Movie-Referral-banner-blue.gif" alt="Secure Pay" /></a>
-
 <p>${ h.submit('submit', 'Pay through SecurePay') }
+
+<p>Payment gateway kindly provided by:<br/>
+<img src="/images/securepay.jpg"></p>
 
 <p>
 View ${ h.link_to('invoice details', url=h.url_for(action='view')) } or ${

@@ -33,8 +33,8 @@ class Registration(Base):
     partner_name = sa.Column(sa.types.Text)
     partner_email = sa.Column(sa.types.Text)
     partner_mobile = sa.Column(sa.types.Text)
-    checkin = sa.Column(sa.types.Integer)
-    checkout = sa.Column(sa.types.Integer)
+#    checkin = sa.Column(sa.types.Integer)
+#    checkout = sa.Column(sa.types.Integer)
     prevlca = sa.Column(CommaList)
     signup = sa.Column(CommaList)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False,

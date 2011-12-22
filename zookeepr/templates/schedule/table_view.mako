@@ -2,6 +2,7 @@
 
 <%
 import hashlib
+import urllib
 %>
 
 <%def name="toolbox_extra_admin()">
@@ -14,9 +15,16 @@ import hashlib
 <p>${ h.link_to('<-- Back to schedule', url=h.url_for(controller='schedule', action='table', id=None, day=c.day)) }</p>
 
 <h2>${ c.talk.title | h }</h2>
+	
+% if False:
+    <h3><a href="/vote/new?event_id=${ c.talk.id  }">VOTE AND COMMENT<br/>
+    <img src="http://chart.apis.google.com/chart?cht=qr&chs=350x350&chld=L&choe=UTF-8&chl=http%3A%2F%2F173.255.254.160%3A5000%2Fvote%2Fnew%3Fevent_id%3D${ c.talk.id  }" height="250" width="250"/>
+    </a></h3>
+% endif
 
 <table>
-% for schedule in  c.talk.event.schedule:
+##% for schedule in  c.talk.event.schedule:
+% for schedule in  c.schedule:
   <tr class="${ h.cycle('even', 'odd')}">
     <td><strong>Day:</strong></td><td>${ schedule.time_slot.start_time.strftime("%A %d %B %Y") }</td>
     <td><strong>Time:</strong></td><td>${ schedule.time_slot.start_time.strftime("%H:%M") } - ${ schedule.time_slot.end_time.strftime("%H:%M") }</td>
@@ -51,7 +59,7 @@ ${ c.talk.url }
 % if c.talk.type.name.startswith('Tutorial'):
   <tr class="${ h.cycle('even', 'odd')}">
     <td><strong>Wiki Page:</td>
-    <td colspan="5"><a href="/wiki/Tutorials/${ c.talk.title }">${ c.talk.title }</a></td>
+    <td colspan="5"><a href="/wiki/index.php/Tutorials/${ urllib.quote(c.talk.title.replace(" ", "_")) }">${ c.talk.title }</a></td>
   </tr>
 % endif
 
@@ -83,6 +91,4 @@ ${ h.line_break(h.url_to_link(person.bio)) | n  }
 
 </div>
 
-<%def name="title()">
-${ h.truncate(c.talk.title) } - ${ parent.title() }
-</%def>
+
