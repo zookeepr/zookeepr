@@ -8,6 +8,8 @@ zookeepr/config/lca_info.py
 data
 *.pyc
 *~
+go-pylons.py
+pylons
 
 # OLD Stuff may not be needed any longer
 #.coverage
