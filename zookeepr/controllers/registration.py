@@ -1017,15 +1017,15 @@ class RegistrationController(BaseController):
                 files.append(svg)
                 c.index += 4
 
-            (tar_fd, tar) = tempfile.mkstemp('.tar')
+            (tar_fd, tar) = tempfile.mkstemp('.tar.gz')
             os.close(tar_fd)
-            os.system('tar -cvf %s %s' % (tar, " ".join(files)))
+            os.system('tar -zcvf %s %s' % (tar, " ".join(files)))
 
             tar_f = file(tar)
             res = Response(tar_f.read())
             tar_f.close()
             res.headers['Content-type'] = 'application/octet-stream'
-            res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar' )
+            res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar.gz' )
             return res
         return render('registration/generate_badges.mako')
 
@@ -1033,6 +1033,7 @@ class RegistrationController(BaseController):
         if registration:
             dinner_tickets = 0
             speakers_tickets = 0
+            breakfast = 0
             pdns_ticket = False
             ticket = ''
             for invoice in registration.person.invoices:
@@ -1057,6 +1058,8 @@ class RegistrationController(BaseController):
                             pdns_ticket = True
                         elif item.description.find('Miniconfs Only') > -1 or item.description.find('Minconfs Only') > -1:
                             ticket = 'Miniconfs Only'
+                        elif item.description.find('reakfast') > -1:
+                            breakfast += item.qty
             if registration.person.has_role('core_team'):
                 ticket = 'Organiser'
             elif registration.person.is_speaker():
@@ -1103,14 +1106,16 @@ class RegistrationController(BaseController):
                      'speakers_tickets': speakers_tickets,
                      'pdns_ticket' : pdns_ticket,
                      'over18': registration.over18,
-                     'silly': self._sanitise_badge_field(registration.silly_description)
+                     'silly': self._sanitise_badge_field(registration.silly_description),
+                     'breakfast': breakfast
+
             }
 
             # For some reason some keys are None even if pgp_collection is yes, should probably fix the real problem.
             if lca_rego['pgp_collection'] != 'no' and registration.keyid:
                     data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
-        return {'ticket': '', 'firstname': '', 'lastname': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': ''}
+        return {'ticket': '', 'firstname': '', 'lastname': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': '','breakfast': 0}
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')
