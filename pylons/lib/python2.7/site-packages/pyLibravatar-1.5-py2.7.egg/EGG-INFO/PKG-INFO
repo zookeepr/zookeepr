@@ -1,0 +1,26 @@
+Metadata-Version: 1.1
+Name: pyLibravatar
+Version: 1.5
+Summary: Python module for Libravatar
+Home-page: https://launchpad.net/pylibravatar
+Author: Francois Marier
+Author-email: francois@libravatar.org
+License: MIT
+Description: PyLibravatar is an easy way to make use of the federated `Libravatar`_
+        avatar hosting service from within your Python applications.
+        
+        See the `project page`_ to file bugs or ask questions.
+        
+        .. _Libravatar: https://www.libravatar.org/
+        .. _project page: https://launchpad.net/pylibravatar
+        
+Keywords: libravatar,avatars,autonomous,social,federated
+Platform: UNKNOWN
+Classifier: Programming Language :: Python
+Classifier: Development Status :: 5 - Production/Stable
+Classifier: Environment :: Web Environment
+Classifier: Intended Audience :: Developers
+Classifier: License :: OSI Approved :: MIT License
+Classifier: Operating System :: OS Independent
+Classifier: Topic :: Software Development :: Libraries :: Python Modules
+Requires: pydns
