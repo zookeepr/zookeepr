@@ -631,10 +631,18 @@ class AdminController(BaseController):
         all = {}
 
         t_offs = d1_cols.index('payment_id')
+        t_offs = d1_cols.index('invoice_reference')
         amt_offs = d1_cols.index('payment_amount')
         d1 = {}
+        x=1
         for row in d1_data:
           t = row[t_offs]
+          # The invoice reference (t) takes the form "lca2012 i-18 p-11"
+          # We only want the i value so strip the rest off
+          t = t.strip("lca2012 i")
+          t = t.strip("-")
+          t = int(t.split(" ")[0])
+
           amt = row[amt_offs]
           if amt[-3]=='.':
             # remove the decimal point
@@ -645,26 +653,27 @@ class AdminController(BaseController):
             d1[t].append(row)
           else:
             d1[t] = [row]
+          x = x + 1
+        #c.data = d1
 
         zk = {}
         for p in meta.Session.query(PaymentReceived).all():
-          t = p.TransID
+          t = p.payment_id
+          t = p.invoice_id
           all[t] = 1
           if zk.has_key(t):
             zk[t].append(p)
           else:
             zk[t] = [p]
 
-        zk_fields =  ('InvoiceID', 'TransID', 'Amount', 'AuthNum',
-                                'Status', 'result', 'HTTP_X_FORWARDED_FOR')
-
+        zk_fields =  ('invoice_id', 'payment_id', 'amount_paid', 'response_text', 'success_code')
         all = all.keys()
         all.sort()
         c.data = []
         for t in all:
           zk_t = zk.get(t, []); d1_t = d1.get(t, [])
           if len(zk_t)==1 and len(d1_t)==1:
-            if str(zk_t[0].Amount) == d1_t[0][-1]:
+            if str(zk_t[0].amount_paid) == d1_t[0][-1]:
               continue
           c.data.append((
             '; '.join([', '.join([str(getattr(z, f)) for f in zk_fields])
@@ -822,7 +831,8 @@ class AdminController(BaseController):
         """ List of partners programme contacts [Partners Programme] """
         partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners Programme')).all()
         c.text = "*Checkin and checkout dates aren't an accurate source."
-        c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile', 'Checkin*', 'Checkout*']
+        #c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile', 'Checkin*', 'Checkout*']
+        c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile']
         c.data = []
         for item in partners_list:
             for invoice_item in item.invoice_items:
@@ -834,8 +844,8 @@ class AdminController(BaseController):
                                    invoice_item.invoice.person.registration.partner_name,
                                    invoice_item.invoice.person.registration.partner_email,
                                    invoice_item.invoice.person.registration.partner_mobile,
-                                   invoice_item.invoice.person.registration.checkin,
-                                   invoice_item.invoice.person.registration.checkout
+                                   #invoice_item.invoice.person.registration.checkin,
+                                   #invoice_item.invoice.person.registration.checkout
                                  ])
         return table_response()
 

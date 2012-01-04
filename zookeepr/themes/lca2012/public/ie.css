@@ -1,0 +1,37 @@
+	ul li
+	{
+		background-image: url(/images/bullet.gif);
+		margin-left: 40px;
+	}
+	.contents ul li
+	{
+		background-image: url(/images/bullet.gif);
+	}
+	.menu
+	{
+		background-image: url(/images/menu_shadow_ie.png);
+	}
+	.main_menu li a:hover, .main_menu li .now /*.main_menu li span*/
+	{
+		background-image: url(/images/menu_arrow.gif);
+	}
+	.feedicon
+	{
+		margin-left: 5px;
+	}
+	* html img,
+	* html .png
+	{
+		position:relative;
+		behavior: expression((this.runtimeStyle.behavior="none")&&(this.pngSet?this.pngSet=true:(this.nodeName == "IMG" && this.src.toLowerCase().indexOf('.png')>-1?(this.runtimeStyle.backgroundImage = "none",
+			this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.src + "', sizingMethod='image')",
+			this.src = "/transparent.gif"):(this.origBg = this.origBg? this.origBg :this.currentStyle.backgroundImage.toString().replace('url("','').replace('")',''),
+			this.runtimeStyle.filter = "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='" + this.origBg + "', sizingMethod='crop')",
+			this.runtimeStyle.backgroundImage = "none")),this.pngSet=true)
+		);
+	}
+	
+	.home_news
+	{
+		padding-left: 0;
+	}

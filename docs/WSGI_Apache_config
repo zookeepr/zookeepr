@@ -1,0 +1,13 @@
+<VirtualHost *:80>
+
+        WSGIDaemonProcess linux.conf.au processes=2 threads=25
+        WSGIProcessGroup linux.conf.au
+        #WSGIApplicationGroup %{GLOBAL}
+        WSGIScriptAlias / /var/zookeepr/zookeepr/zookeepr.wsgi
+
+        <Directory /var/zookeepr/zookeepr>
+                Order deny,allow
+                Allow from all
+        </Directory>
+
+</VirtualHost>

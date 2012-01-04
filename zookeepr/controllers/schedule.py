@@ -46,6 +46,7 @@ class ScheduleSchema(BaseSchema):
     time_slot = TimeSlotValidator(not_empty=True)
     location = LocationValidator(not_empty=True)
     event = EventValidator(not_empty=True)
+    overflow = validators.Bool()
     video_url = validators.String(if_empty=None)
     audio_url = validators.String(if_empty=None)
     slide_url = validators.String(if_empty=None)
@@ -74,7 +75,7 @@ class ScheduleController(BaseController):
         for scheduled_date in c.scheduled_dates:
             c.subsubmenu.append(['/programme/schedule/' + scheduled_date.strftime('%A').lower(), scheduled_date.strftime('%A')])
 
-        c.subsubmenu.append([ '/programme/open_day', 'Saturday' ])
+        c.subsubmenu.append([ '/programme/saturday', 'Saturday' ])
 
     def table(self, day=None):
         if len(c.scheduled_dates) == 0:
@@ -102,6 +103,9 @@ class ScheduleController(BaseController):
 
         event_type = EventType.find_by_name('presentation')
         c.locations = Location.find_scheduled_by_date_and_type(c.display_date, event_type)
+        event_type = EventType.find_by_name('mini-conf')
+        c.locations = c.locations + Location.find_scheduled_by_date_and_type(c.display_date, event_type)
+
         c.schedule_collection = Schedule.find_by_date(c.display_date)
 
         c.time_increment = timedelta(minutes=5)
@@ -125,7 +129,7 @@ class ScheduleController(BaseController):
         return render('/schedule/table.mako')
 
     def table_view(self, id):
-        c.schedlue = Schedule.find_by_id(id)
+        c.schedule = Schedule.find_by_id(id)
         return render('/schedule/table_view.mako')
 
     def ical(self):
@@ -279,3 +283,16 @@ class ScheduleController(BaseController):
 
         h.flash("Schedule has been deleted.")
         redirect_to('index')
+
+    def view_talk(self, id):
+        try:
+            c.day = request.GET['day']
+        except:
+            c.day = 'all'
+        try:
+            c.talk = Proposal.find_accepted_by_id(id)
+        except:
+            c.talk_id = id
+            c.webmaster_email = lca_info['webmaster_email']	
+            return render('/schedule/invalid_talkid.mako')
+        return render('/schedule/table_view.mako')

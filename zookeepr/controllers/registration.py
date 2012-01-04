@@ -132,14 +132,11 @@ class RegistrationSchema(BaseSchema):
     voucher_code = VoucherValidator(if_empty=None)
     diet = validators.String()
     special = validators.String()
-    checkin = validators.Int(min=0, max=31)
-    checkout = validators.Int(min=0, max=31)
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
     i_agree = validators.Bool(if_missing=False)
 
     chained_validators = [
-        CheckAccomDates("checkin", "checkout"),
         SillyDescriptionChecksum("silly_description", "silly_description_checksum"),
         IAgreeValidator("i_agree")
     ]
@@ -330,7 +327,13 @@ class RegistrationController(BaseController):
                 c.special_offer = c.signed_in_person.special_registration[0].special_offer
 
         if c.special_offer is None and lca_info['conference_status'] is not 'open':
-            redirect_to(action='status')
+            if not h.auth.authorized(h.auth.has_organiser_role):
+                redirect_to(action='status')
+            else:
+                # User is an organiser, so if the status is also 'debug' then they can register 
+                if lca_info['conference_status'] is not 'debug':
+                    redirect_to(action='status')
+
 
         defaults = {}
         if h.lca_rego['personal_info']['home_address'] == 'no':
@@ -379,7 +382,13 @@ class RegistrationController(BaseController):
                 c.special_offer = None
 
         if c.special_offer is None and lca_info['conference_status'] is not 'open':
-            redirect_to(action='status')
+            if not h.auth.authorized(h.auth.has_organiser_role):
+                redirect_to(action='status')
+            else:
+                # User is an organiser, so if the status is also 'debug' then they can register
+                if lca_info['conference_status'] is not 'debug':
+                    redirect_to(action='status')
+
 
         # A blank registration
         c.registration = Registration()
@@ -878,7 +887,7 @@ class RegistrationController(BaseController):
         return render('/registration/list.mako')
 
     def _export_list(self, registration_list):
-        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Nick', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'checkin', 'checkout', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs', 'Silly Description', 'Over 18']
+        columns = ['Rego', 'Firstname', 'Lastname', 'Email', 'Nick', 'Company', 'State', 'Country', 'Valid Invoices', 'Paid for Products', 'Accommodation', 'Speaker', 'Miniconf Org', 'Volunteer', 'Role(s)', 'Diet', 'Special Needs', 'Silly Description', 'Over 18']
         if type(registration_list) is not list:
             registration_list = registration_list.all()
 
@@ -886,6 +895,12 @@ class RegistrationController(BaseController):
         for registration in registration_list:
             products = []
             invoices = []
+            accommodation = []
+
+            for product in registration.products:
+                if product.product.category.name.lower() == "accommodation":
+                    accommodation.append(product.product.description)
+
             for invoice in registration.person.invoices:
                 if invoice.paid() and not invoice.is_void():
                     invoices.append(str(invoice.id))
@@ -902,8 +917,9 @@ class RegistrationController(BaseController):
                          registration.person.country.encode('utf-8'),
                          ", ".join(invoices).encode('utf-8'),
                          ", ".join(products).encode('utf-8'),
-                         registration.checkin,
-                         registration.checkout,
+                         ", ".join(accommodation).encode('utf-8'),
+                         #registration.checkin,
+                         #registration.checkout,
                          registration.person.is_speaker(),
                          registration.person.is_miniconf_org(),
                          registration.person.is_volunteer(),
@@ -912,6 +928,7 @@ class RegistrationController(BaseController):
                          registration.special.encode('utf-8'),
                          registration.silly_description.encode('utf-8'),
                          registration.over18])
+
 
         import csv, StringIO
         f = StringIO.StringIO()
@@ -1000,15 +1017,15 @@ class RegistrationController(BaseController):
                 files.append(svg)
                 c.index += 4
 
-            (tar_fd, tar) = tempfile.mkstemp('.tar')
+            (tar_fd, tar) = tempfile.mkstemp('.tar.gz')
             os.close(tar_fd)
-            os.system('tar -cvf %s %s' % (tar, " ".join(files)))
+            os.system('tar -zcvf %s %s' % (tar, " ".join(files)))
 
             tar_f = file(tar)
             res = Response(tar_f.read())
             tar_f.close()
             res.headers['Content-type'] = 'application/octet-stream'
-            res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar' )
+            res.headers['Content-Disposition'] = ( 'attachment; filename=badges.tar.gz' )
             return res
         return render('registration/generate_badges.mako')
 
@@ -1016,6 +1033,7 @@ class RegistrationController(BaseController):
         if registration:
             dinner_tickets = 0
             speakers_tickets = 0
+            breakfast = 0
             pdns_ticket = False
             ticket = ''
             for invoice in registration.person.invoices:
@@ -1040,6 +1058,8 @@ class RegistrationController(BaseController):
                             pdns_ticket = True
                         elif item.description.find('Miniconfs Only') > -1 or item.description.find('Minconfs Only') > -1:
                             ticket = 'Miniconfs Only'
+                        elif item.description.find('reakfast') > -1:
+                            breakfast += item.qty
             if registration.person.has_role('core_team'):
                 ticket = 'Organiser'
             elif registration.person.is_speaker():
@@ -1086,14 +1106,16 @@ class RegistrationController(BaseController):
                      'speakers_tickets': speakers_tickets,
                      'pdns_ticket' : pdns_ticket,
                      'over18': registration.over18,
-                     'silly': self._sanitise_badge_field(registration.silly_description)
+                     'silly': self._sanitise_badge_field(registration.silly_description),
+                     'breakfast': breakfast
+
             }
 
             # For some reason some keys are None even if pgp_collection is yes, should probably fix the real problem.
             if lca_rego['pgp_collection'] != 'no' and registration.keyid:
                     data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
-        return {'ticket': '', 'firstname': '', 'lastname': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': ''}
+        return {'ticket': '', 'firstname': '', 'lastname': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': '','breakfast': 0}
 
     def _sanitise_badge_field(self, field):
         disallowed_chars = re.compile(r'(\n|\r\n|\t)')

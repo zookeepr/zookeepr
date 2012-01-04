@@ -200,7 +200,7 @@ class PersonSchema(BaseSchema):
     #allow_extra_fields = False
 
     firstname = validators.String(not_empty=True)
-    lastname = validators.String(not_empty=True)
+    # lastname = validators.String(not_empty=True)
     company = validators.String()
     email_address = validators.Email(not_empty=True)
     email_address2 = validators.Email(not_empty=True)

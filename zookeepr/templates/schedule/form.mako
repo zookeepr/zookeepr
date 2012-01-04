@@ -27,3 +27,7 @@
         <label for="schedule.slides_url">Slides URL:</label>
         ${ h.text('schedule.slide_url') }
       </p>
+      <p>
+        ${ h.checkbox('schedule.overflow', label='Is overflow event (Should not be ticked in most cases)') }
+      </p>
+
