@@ -22,7 +22,7 @@ from authkit.authorize.pylons_adaptors import authorize
 from webhelpers import paginate
 
 from zookeepr.config import lca_info as lca_info
-from zookeepr.config import zookeepr as zookeepr_config
+#from zookeepr.config import zookeepr as zookeepr_config
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib import helpers as h
 from zookeepr.model import Person
@@ -171,7 +171,7 @@ class PhotoCompEntry(object):
     from_filename = classmethod(from_filename)
 
     def get_db_dir(cls):
-        db_dir = zookeepr_config.file_paths['photocomp_path']
+        db_dir = '/var/photocomp/' #zookeepr_config.file_paths['photocomp_path']
         if not os.path.exists(db_dir):
             os.mkdir(db_dir, 0777)
         return db_dir
@@ -187,7 +187,7 @@ class PhotocompController(BaseController):
 
     def index(self):
         c.DAYS_OPEN = DAYS_OPEN
-        c.open_date = lca_info.lca_info['date']
+        c.open_date =  lca_info.lca_info['date']
         days_open = (datetime.date.today() - c.open_date.date()).days
         photo_db = PhotoCompEntry.read_db()
         photos = [
