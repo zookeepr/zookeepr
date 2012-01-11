@@ -20,16 +20,14 @@ class Vote(Base):
     __tablename__ = 'vote'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
-    rego_id = sa.Column(sa.types.Integer, sa.ForeignKey('registration.id'))
+    rego_id = sa.Column(sa.types.Integer)
     vote_value = sa.Column(sa.types.Integer)
     comment = sa.Column(sa.types.Text)
-    event_id = sa.Column(sa.types.Integer, sa.ForeignKey('event.id'), nullable=False)
+    event_id = sa.Column(sa.types.Integer)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     # relations
-    event = sa.orm.relation(Event, backref=sa.orm.backref('votes_cast', cascade="all, delete-orphan", lazy=True))
-    rego = sa.orm.relation(Registration, backref=sa.orm.backref('votes', cascade="all, delete-orphan", lazy=True))
 
     def __init__(self, **kwargs):
         super(Vote, self).__init__(**kwargs)
@@ -40,10 +38,20 @@ class Vote(Base):
         if result is None and abort_404:
             abort(404, "No such vote object")
         return result
+
+    @classmethod
+    def find_by_event_rego(cls,event,rego):
+        result = Session.query(Vote).filter_by(event_id=event,rego_id=rego).first()
+        return result
         
     @classmethod
     def find_by_event(cls,id):
         result = Session.query(Vote).filter_by(event_id=id)
+        return result
+
+    @classmethod
+    def find_by_rego(cls,id):
+        result = Session.query(Vote).filter_by(rego_id=id)
         return result
     
     @classmethod

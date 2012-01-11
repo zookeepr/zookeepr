@@ -43,26 +43,39 @@ class UpdateVoteSchema(BaseSchema):
     pre_validators = [NestedVariables]
 
 class VoteController(BaseController):
-    @enforce_ssl(required_all=True)
-    @authorize(h.auth.has_organiser_role)
+    @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
         pass
 
     @dispatch_on(POST="_new") 
     def new(self):
+        c.signed_in_person = h.signed_in_person()
         c.events = Event.find_all()
         c.schedule = Schedule.find_all()
         c.time_slot = TimeSlot.find_all()
+        if not c.signed_in_person.registration:
+          return render('/vote/no_rego.mako')
+        c.votes = Vote.find_by_rego(c.signed_in_person.registration.id)
         defaults = {
             'vote.vote_value': 1 
         }
-        raw_params = request.params
-        if 'rego_id' in raw_params:
-            c.rego_id = int(raw_params['rego_id'])
-            defaults['vote.rego_id'] = c.rego_id
-        if 'event_id' in raw_params:
-            c.event_id = int(raw_params['event_id'])
-            defaults['vote.event_id'] = c.event_id
+        args = request.GET
+        eventid = args.get('eventid',0)
+        revoke = args.get('revoke',0)
+        c.eventid = eventid
+        if int(eventid) != 0 and c.votes.count() < 4 and revoke == 0:
+            c.vote = Vote()
+            c.vote.rego_id = c.signed_in_person.registration.id
+            c.vote.vote_value = 1
+            c.vote.event_id = eventid
+            meta.Session.add(c.vote)
+            meta.Session.commit()
+        if int(eventid) != 0 and int(revoke) != 0:
+            c.vote = Vote.find_by_event_rego(eventid,c.signed_in_person.registration.id)
+            meta.Session.delete(c.vote)
+            meta.Session.commit()
+            redirect_to('new')
+  
 
         form = render('/vote/new.mako')
         return htmlfill.render(form, defaults)
@@ -78,13 +91,17 @@ class VoteController(BaseController):
         h.flash("Vote created")
         redirect_to(action='view', id=c.vote.id)
 
-    def view(self, id):
-        c.vote = Vote.find_by_id(id)
-        return render('vote/view.mako')
+#    def view(self, id):
+ #       args = request.GET
+ #       eventid = int(args.get('eventid',0))
+ #       c.signed_in_person = h.signed_in_person()
+ #       c.vote = Vote.find_by_event_rego(eventid,c.signed_in_person.registration.id)
+ #       return render('vote/view.mako')
 
     def index(self):
         c.vote_collection = Vote.find_all()
-        return render('vote/list.mako')
+        # return render('vote/list.mako')
+        redirect_to(action='new')
 
     @dispatch_on(POST="_edit")
     def edit(self, id):
@@ -107,22 +124,32 @@ class VoteController(BaseController):
         h.flash("The note has been updated successfully.")
         redirect_to(action='view', id=id)
 
-    @dispatch_on(POST="_delete") 
-    def delete(self, id):
+    @dispatch_on(POST="_revoke") 
+    def revoke(self):
         """Delete the rego note
 
         GET will return a form asking for approval.
 
         POST requests will delete the item.
         """
-        c.vote = Vote.find_by_id(id)
-        return render('vote/confirm_delete.mako')
-
-    @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
-    def _delete(self, id):
-        c.vote = Vote.find_by_id(id)
+        args = request.GET
+        eventid = int(args.get('eventid',0))
+        c.signed_in_person = h.signed_in_person()
+        c.vote = Vote.find_by_event_rego(eventid,c.signed_in_person.registration.id)
         meta.Session.delete(c.vote)
         meta.Session.commit()
+        form = render('/vote/delete.mako')
+        return htmlfill.render(form, defaults)
+        redirect_to('new')
 
-        h.flash("Vote has been deleted.")
-        redirect_to('index')
+    @validate(schema=None, form='revoke', post_only=True, on_get=True, variable_decode=True)
+    def _revoke(self):
+        args = request.GET
+        eventid = int(args.get('eventid',0))
+        c.signed_in_person = h.signed_in_person()
+        c.vote = Vote.find_by_event_rego(eventid,c.signed_in_person.registration.id)
+        meta.Session.delete(c.vote)
+        meta.Session.commit()
+        redirect_to('new')
+
+
