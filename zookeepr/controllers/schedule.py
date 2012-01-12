@@ -149,7 +149,7 @@ class ScheduleController(BaseController):
                 event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
                 event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
                 # Title and Author (need to add Author here)
-                event.add('summary').value = schedule.event.computed_title() + ' by ' + h.list_to_string(schedule.event.computed_speakers())
+                event.add('summary').value = schedule.event.computed_title() + '. ' + h.list_to_string(schedule.event.computed_speakers())
                 # Abstract, if we have one
                 event.add('description').value = schedule.event.computed_abstract()
                 # Add a URL
