@@ -801,14 +801,14 @@ class AdminController(BaseController):
     def talks(self):
         """ List of talks for use in programme printing [Schedule] """
         c.text = "Talks with multiple speakers will appear twice."
-        query = """SELECT proposal_type.name AS type, proposal.scheduled, proposal.title, proposal.abstract, person.firstname || ' ' || person.lastname as speaker, person.bio
+        query = """SELECT proposal_type.name AS type, proposal.title, proposal.abstract, person.firstname || ' ' || person.lastname as speaker, person.bio
                     FROM proposal
                     LEFT JOIN person_proposal_map ON (person_proposal_map.proposal_id = proposal.id)
                     LEFT JOIN person ON (person_proposal_map.person_id = person.id)
                     LEFT JOIN proposal_type ON (proposal_type.id = proposal.proposal_type_id)
                     LEFT JOIN proposal_status ON (proposal_status.id = proposal.status_id)
                     WHERE proposal_status.name = 'Accepted'
-                    ORDER BY proposal_type.name, proposal.scheduled, proposal.title
+                    ORDER BY proposal_type.name, proposal.title
         """
         return sql_response(query)
 
