@@ -36,7 +36,8 @@
         <link rel="stylesheet" media="screen" href="/screen.css" type="text/css">
         <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
         <link rel="stylesheet" media="print" href="/print.css" type="text/css">
-        <script type="text/javascript" src="/jquery.min.js"></script>
+        <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.cross-slide.min.js"></script>
         <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2012 News">
         <!--[if IE 6]><link rel="stylesheet" href="brisbanecity.ie6.css" type="text/css" media="screen" /><![endif]-->
         <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
@@ -69,7 +70,34 @@
                jQuery(this).fadeTo(250, 0.3);
              });
            });
+
         </script>  
+<script type="text/javascript"> 
+//<!--
+jQuery(function($) { 
+ jQuery('#sponsorsother').crossSlide({
+                                                      sleep: 5,
+                                                      fade: 1,
+                                                      shuffle: 1
+                                                    }, [
+{ src: '/images/sponsor_logos/fades/fifteen_trees_logo_RGB_full_colour-1.jpg' },
+{ src: '/images/sponsor_logos/fades/sponsor-anchor_200px.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-brt.jpg' },
+{ src: '/images/sponsor_logos/fades/sponsor-bulletproof.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-canonical_200px.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-catalyst-it.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-dsd.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-freetronics.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-google.gif' },
+{ src: '/images/sponsor_logos/fades/sponsor-intel_200px.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-linuxmagazine.gif' },
+{ src: '/images/sponsor_logos/fades/sponsor-lnm.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-xirrus.png' },
+{ src: '/images/sponsor_logos/fades/sponsor-yum_200px.jpg' }
+                                                ]);
+});
+// --> 
+</script>
     </head>
     ${self.extra_body()}
         <div id="netv-main">
@@ -198,6 +226,34 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
+                            <div class="netv-block">
+                                <div class="netv-block-tl"></div>
+                                <div class="netv-block-tr"></div>
+                                <div class="netv-block-bl"></div>
+                                <div class="netv-block-br"></div>
+                                <div class="netv-block-tc"></div>
+                                <div class="netv-block-bc"></div>
+                                <div class="netv-block-cl"></div>
+                                <div class="netv-block-cr"></div>
+                                <div class="netv-block-cc"></div>
+                                <div class="netv-block-body">
+                                    <div class="netv-blockheader">
+                                        <div class="l"></div>
+                                        <div class="r"></div>
+                                        <div class="t">Other Sponsors</div>
+                                    </div>
+                                    <div class="netv-blockcontent">
+                                        <div class="netv-blockcontent-body">
+                                            <div id="sponsorsother" style="width: 200px; height:200px; margin:5px;">
+                                                <img src="/images/sponsor_logos/fades/sponsor-catalyst-it.png">
+                                            </div>
+                                            <div class="cleared"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cleared"></div>
+                                </div>
+                            </div>
+
 ##% endif
                         </div>
                         <div class="netv-layout-cell netv-content">
