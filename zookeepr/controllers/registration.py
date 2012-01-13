@@ -1056,8 +1056,10 @@ class RegistrationController(BaseController):
                         elif item.description.startswith('Organiser'):
                             ticket = 'Organiser'
                             pdns_ticket = True
-                        elif item.description.find('Miniconfs Only') > -1 or item.description.find('Minconfs Only') > -1:
+                        elif item.description.find('Miniconf-Only') > -1 or item.description.find('Minconf-Only') > -1:
                             ticket = 'Miniconfs Only'
+                        elif item.description.find('Fairy Penguin Sponsor') > -1 or item.description.find('Fairy Penguin Sponsor') > -1:
+                            ticket = 'Sponsor'
                         elif item.description.find('reakfast') > -1:
                             breakfast += item.qty
             if registration.person.has_role('core_team'):
