@@ -164,7 +164,7 @@ lca_menu = [
   ('About', '/about/pyconau', 'about'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
 #  ('Media', '/media/news', 'media'),
-  ('News', '/media/news'),
+  ('News', '/media/news', 'media'),
   ('Contact', '/contact', 'contact'),
 ]
 
