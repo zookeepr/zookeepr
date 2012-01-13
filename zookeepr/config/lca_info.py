@@ -158,16 +158,19 @@ lca_rego = {
     }
 }
 
+# ('Link title', 'link path', 'sub-menu key')
 lca_menu = [
   ('Home', '/', 'home'),
-  ('About', '/about', 'about'),
+  ('About', '/about/pyconau', 'about'),
   ('Sponsors', '/sponsors/sponsors', 'sponsors'),
-  ('Media', '/media/news', 'media'),
+#  ('Media', '/media/news', 'media'),
+  ('News', '/media/news'),
   ('Contact', '/contact', 'contact'),
 ]
 
 lca_submenus = {
+  'about': ['PyCon AU', 'Hobart', 'Venue'],
   'sponsors': ['Sponsors', 'Why Sponsor'],
-  'media': ['News','In the press','Graphics']
+#  'media': ['News','In the press','Graphics']
 }
 
