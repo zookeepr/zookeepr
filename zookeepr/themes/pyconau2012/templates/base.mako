@@ -81,11 +81,6 @@
             <%include file="/leftcol/news.mako" />
             <!-- /block-content -->
 
-          <h3>In the press</h3>
-            <!-- block-content -->
-            <%include file="/leftcol/in_the_press.mako" />
-            <!-- /block-content -->
-
           <h3>Sponsors</h3>
             <!-- block-content -->
             <%include file="/leftcol/top_sponsors.mako" />
