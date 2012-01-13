@@ -146,13 +146,13 @@ class ScheduleController(BaseController):
                 event = ical.add('vevent')
                 event.add('uid').value = str(schedule.id) + '@' + h.lca_info['event_host']
                 # Created
-                event.add('created').value = schedule.creation_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('created').value = schedule.creation_timestamp.replace(tzinfo=timezone('Australia/Melbourne'))
                 # Last Modified
-                event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
-                event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Melbourne'))
+                event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Melbourne'))
                 # Start and End Time
-                event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
-                event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Melbourne'))
+                event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Melbourne'))
                 # Title and Author (need to add Author here)
                 event.add('summary').value = schedule.event.computed_title() + '. ' + h.list_to_string(schedule.event.computed_speakers())
                 # Abstract, if we have one
