@@ -9,7 +9,6 @@
     </head>
 
 <body>
-testing should appear!!
 <style type="text/css">
 body { background: white !important; }
 
@@ -27,7 +26,7 @@ td {border: 1px solid black; }
 </style>
 <div class="netv-post">
 <h2>${ c.display_date.strftime('%A %d %B %Y') }</h2>
-<table id="programme" style="background-color:white;border: 1px solid black !important" summary="Programme" cellpadding="" cellspacing="">
+<table id="programme" style="background-color:white;border: 1px solid black !important" summary="Programme" cellpadding="" cellspacing="" width="100%">
   <thead>
     <tr>
       <th>&nbsp;</th>
