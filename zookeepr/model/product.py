@@ -380,7 +380,7 @@ class Product(Base):
             )
 
     id = sa.Column(sa.types.Integer, primary_key=True)
-    category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id'), nullable=False)
+    category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     active = sa.Column(sa.types.Boolean, nullable=False)
     description = sa.Column(sa.types.Text, nullable=False)
     cost = sa.Column(sa.types.Integer, nullable=False)
