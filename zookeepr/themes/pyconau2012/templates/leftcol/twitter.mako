@@ -4,10 +4,10 @@
 new TWTR.Widget({
   version: 2,
   type: 'search',
-  search: '#pycon-au',
-  interval: 30000,
+  search: 'pyconau',
+  interval: 10000,
   title: '',
-  subject: '#pycon-au',
+  subject: '#pyconau',
   width: 'auto',
   height: 300,
   theme: {
@@ -23,9 +23,9 @@ new TWTR.Widget({
   },
   features: {
     scrollbar: true,
-    loop: true,
+    loop: false,
     live: true,
-    behavior: 'default'
+    behavior: 'all'
   }
 }).render().start();
 </script></div>
