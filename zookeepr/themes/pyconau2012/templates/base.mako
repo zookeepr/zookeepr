@@ -34,13 +34,18 @@
         <!-- <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"> -->
         <link rel="shortcut icon" href="/images/filledfoot-small.png" type="image/png">
         <link rel="stylesheet" media="screen" href="/screen.css" type="text/css">
-        <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
         <link rel="stylesheet" media="print" href="/print.css" type="text/css">
         <script type="text/javascript" src="/jquery.min.js"></script>
+	<link rel="stylesheet" href="/prettyPhoto/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
+	<script src="/prettyPhoto/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
         <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2012 News">
         <!--[if IE 6]><link rel="stylesheet" href="brisbanecity.ie6.css" type="text/css" media="screen" /><![endif]-->
         <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
-
+	<script type="text/javascript" charset="utf-8">
+	  $(document).ready(function(){
+	    $("a[rel^='lightbox']").prettyPhoto();
+	  });
+	</script>
         <script type="text/javascript">
 
         var _gaq = _gaq || [];
@@ -211,7 +216,7 @@
                     <div class="netv-footer-inner">
                         <a href="/media/news/rss" class="netv-rss-tag-icon" title="RSS"></a>
                         <div class="netv-footer-text">
-                            <p>&copy; 2012 <a href="http://pycon-au.org/">PyCon Australia</a> and <a href="http://www.linux.org.au">Linux Australia</a> | Linux is a registered trademark of Linus Torvalds | <a href="http://validator.w3.org/check?uri=referer">Valid HTML 4.01</a> | <a href="/sitemap">Sitemap</a></p>
+                            <p>&copy; 2012 <a href="http://pycon-au.org/">PyCon Australia</a> and <a href="http://www.linux.org.au">Linux Australia</a> | <a href="http://validator.w3.org/check?uri=referer">Valid HTML 4.01</a> | <a href="/sitemap">Sitemap</a></p>
                         </div>
                         <div class="netv-footer-background"></div>
                         <div class="cleared"></div>
@@ -221,8 +226,5 @@
                 <p class="netv-page-footer">&nbsp;</p>
             </div>
         </div>
-        <script src="/js/prototype.js" type="text/javascript"></script>
-        <script src="/js/scriptaculous.js?load=effects,builder" type="text/javascript"></script>
-        <script src="/js/lightbox.js" type="text/javascript"></script>
     </body>
 </html>
