@@ -38,7 +38,7 @@ It is not mandatory supply a URL as content is still accessible via ID's. It is 
 <li>For "Redirect" this is the URL you are coming from, and the body is the URL to go to.</li>
 </ul>
 
-<p style="float: right;"><a href="/db_content/list_files?iframe=true&width=800&height=600" rel="lightbox">Launch file manager</a></p>
+<p style="float: right;"><a href="/db_content/list_files?no_theme=true&iframe=true&width=800&height=600" rel="lightbox">Launch file manager</a></p>
 <p class="label">
 <label for="db_content.body">Body:</label>
 </p><p class="entries">

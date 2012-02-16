@@ -6,7 +6,11 @@
     ## Defined in children
 </%def>
 <%def name="extra_body()">
+% if c.no_theme:
+  <body style="background-color: #f8f8f8">
+% else:
   <body>
+% endif
 </%def>
 <%def name="big_promotion()">
     ## Defined in children
@@ -43,7 +47,7 @@
         <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
 	<script type="text/javascript" charset="utf-8">
 	  $(document).ready(function(){
-	    $("a[rel^='lightbox']").prettyPhoto();
+	    $("a[rel^='lightbox']").prettyPhoto({social_tools: ''});
 	  });
 	</script>
         <script type="text/javascript">
@@ -77,6 +81,7 @@
         </script>  
     </head>
     ${self.extra_body()}
+% if not c.no_theme:
         <div id="netv-main">
             <div class="netv-sheet">
                 <div class="netv-sheet-tl"></div>
@@ -191,8 +196,10 @@
                                 <div class="netv-post-cc"></div>
                                 <div class="netv-post-body">
                                     <div class="netv-post-inner netv-article">
+% endif
                                        <%include file="/flash.mako" />
                                         ${next.body()}
+% if not c.no_theme:
                                         <div class="netv-postcontent">
                                             <!-- article-content -->
                                             <div class="cleared"></div>
@@ -226,5 +233,6 @@
                 <p class="netv-page-footer">&nbsp;</p>
             </div>
         </div>
+% endif
     </body>
 </html>

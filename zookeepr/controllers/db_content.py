@@ -205,8 +205,12 @@ class DbContentController(BaseController):
             fp = open(directory + request.POST['myfile'].filename,'wb')
             fp.write(file_data)
             fp.close()
-            h.flash("File Uploaded.")        
-        redirect_to(action="list_files", folder=c.current_folder)
+            h.flash("File Uploaded.")
+        c.no_theme = 'false'
+        if request.GET.has_key('no_theme'):
+            if request.GET['no_theme'] == 'true':
+                c.no_theme = 'true'
+        redirect_to(action="list_files", folder=c.current_folder, no_theme=c.no_theme)
 
     @authorize(h.auth.has_organiser_role)
     def delete_folder(self):
@@ -220,13 +224,21 @@ class DbContentController(BaseController):
         directory = file_paths['public_path']
         defaults = dict(request.POST)
         if defaults:
+            c.no_theme = 'false'
+            if request.GET.has_key('no_theme'):
+                if request.GET['no_theme'] == 'true':
+                    c.no_theme = 'true'
             try:
                 os.rmdir(directory + c.folder)
             except OSError:
                 h.flash("Can not delete. The folder contains items.", 'error')
-                redirect_to(action="list_files", folder=c.current_folder)
+                redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
             h.flash("Folder deleted.")
-            redirect_to(action="list_files", folder=c.current_folder)
+            redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
+        c.no_theme = False
+        if request.GET.has_key('no_theme'):
+            if request.GET['no_theme'] == 'true':
+                c.no_theme = True
         return render('/db_content/delete_folder.mako')
 
     @authorize(h.auth.has_organiser_role)
@@ -243,7 +255,15 @@ class DbContentController(BaseController):
         if defaults:
             os.remove(directory + c.file)
             h.flash("File Removed")
-            redirect_to(action="list_files", folder=c.current_folder)
+            c.no_theme = 'false'
+            if request.GET.has_key('no_theme'):
+                if request.GET['no_theme'] == 'true':
+                    c.no_theme = 'true'
+            redirect_to(action="list_files", folder=c.current_folder, no_theme = c.no_theme)
+        c.no_theme = False
+        if request.GET.has_key('no_theme'):
+            if request.GET['no_theme'] == 'true':
+                c.no_theme = True
         return render('/db_content/delete_file.mako')
 
     @authorize(h.auth.has_organiser_role)
@@ -293,6 +313,10 @@ class DbContentController(BaseController):
         c.folder_list = caseinsensitive_sort(folders)
         c.current_path = current_path
         c.download_path = download_path
+        c.no_theme = False
+        if request.GET.has_key('no_theme'):
+            if request.GET['no_theme'] == 'true':
+                c.no_theme = True
         return render('/db_content/list_files.mako')
 
     HEADER_RE = re.compile("""(?is)\s*<\s*head\s*>\s*(.*?)</\s*head\s*>\s*""")
