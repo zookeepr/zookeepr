@@ -125,7 +125,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-## % if h.url_for() == '/': #Un/comment to enable/disable the sponsor box on the main page
+
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -153,7 +153,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-## % else:
+
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -181,7 +181,32 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-##% endif
+
+                            <div class="netv-block">
+                                <div class="netv-block-tl"></div>
+                                <div class="netv-block-tr"></div>
+                                <div class="netv-block-bl"></div>
+                                <div class="netv-block-br"></div>
+                                <div class="netv-block-tc"></div>
+                                <div class="netv-block-bc"></div>
+                                <div class="netv-block-cl"></div>
+                                <div class="netv-block-cr"></div>
+                                <div class="netv-block-cc"></div>
+                                <div class="netv-block-body" style="padding: 0px;">
+                                    <div class="netv-blockcontent" style="padding: 0px;">
+                                        <div class="netv-blockcontent-body" style="padding: 0px;">
+                                            <!-- block-content -->
+                                            <%include file="/leftcol/twitter.mako" />
+                                            <!-- /block-content -->
+                                            <div class="cleared"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cleared"></div>
+                                </div>
+                            </div>
+
+
+
                         </div>
                         <div class="netv-layout-cell netv-content">
                             <div class="netv-post">
