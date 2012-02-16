@@ -49,7 +49,7 @@ ${ h.textarea('db_content.body', cols="80", rows="40") }
 <li>For in the press this becomes the comment under the link.</li>
 <li>For "Redirect" the body is the URL to go to. The [Page] URL above is the URL to redirect from. This URL needs to include the full or relative path. e.g. /person/signin or http://www.linux.org.au</li>
 <li>Content at the top and listed within &lt;head&gt;..&lt/head&gt; will be moved to the pages HTML HEAD element.</li>
-<li>A menu is constructed using the &lt;h3&gt;..&lt/h3&gt; elements.</li>
+<li>A menu is constructed using the &lt;h3&gt;..&lt/h3&gt; elements placed inline of <em>!contents_box</em>.</li>
 <li>To include a slideshow of images, or an image using a lightbox then:</li>
 <ul>
   <li>upload the images to <tt>public/images/&lt;set name&gt;</tt></li>
