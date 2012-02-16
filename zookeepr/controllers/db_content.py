@@ -67,7 +67,16 @@ class DbContentController(BaseController):
             h.flash("Configuration Error: Please make sure the 'News' content type exists for full functionality.", 'error')
         if DbContentType.find_by_name("In the press") is None:
             h.flash("Configuration Error: Please make sure the 'In the press' content type exists for full functionality.", 'error')
-        return render('/db_content/new.mako')
+        c.db_content = DbContent()
+        defaults = h.object_to_defaults(c.db_content, 'db_content')
+        if request.GET.has_key('url'):
+            defaults['db_content.type'] = 1 # This is bad... we're assuming we have #1 as new page
+            if request.GET['url'].startswith('/'):
+                defaults['db_content.url'] = str(request.GET['url'])[1:]
+            else:
+                defaults['db_content.url'] = request.GET['url']
+        form = render('/db_content/new.mako')
+        return htmlfill.render(form, defaults)
 
     @validate(schema=NewDbContentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):

@@ -56,8 +56,10 @@ ${ parent.toolbox_extra() }
       ${ make_link('View People', h.url_for(controller='person')) }
       ${ make_link('Manage Pages', h.url_for(controller='db_content')) }
       ${ make_link('Manage files', h.url_for('/db_content/list_files')) }
-%   if c.db_content and not h.url_for().endswith('/edit'):
+%   if c.db_content and not (h.url_for().endswith('/edit') or h.url_for().endswith('/new')):
       ${ make_link('Edit Page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
+%   elif c.not_found:
+      ${ make_link('Create page here', h.url_for(controller='db_content', action='new')) }
 %   endif
 ${ parent.toolbox_extra_admin() }
     </ul>
