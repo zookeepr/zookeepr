@@ -3,8 +3,9 @@
 <script>
 new TWTR.Widget({
   version: 2,
-  type: 'search',
+  type: 'profile',
   search: 'pyconau',
+  rpp: 4,
   interval: 10000,
   title: '',
   subject: '#pyconau',
@@ -27,5 +28,5 @@ new TWTR.Widget({
     live: true,
     behavior: 'all'
   }
-}).render().start();
+}).render().setUser('pyconau').start();
 </script></div>
