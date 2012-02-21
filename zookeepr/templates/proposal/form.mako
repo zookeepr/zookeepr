@@ -52,6 +52,7 @@
     <p class="entries">${ h.link_to('Add an attachment', url=h.url_for(action='attach')) } ${ h.hidden('attachment', size=60) }<span class="note">You can attach multiple files by following this link.</span></p>
 % endif
 
+% if h.lca_info['cfp_hide_assistance_options'] is 'no':
     <h2>Travel &amp; Accommodation Assistance</h2>
     <p class="note" style="margin-top: 0em">linux.conf.au has some funds available to provide travel and accommodation for selected speakers, both from the local region and internationally.</p>
 
@@ -77,10 +78,21 @@
     ${ aa.name |h }</label><br>
 % endfor
     </p>
+% else:
+    ${ h.hidden('proposal.travel_assistance') }
+    ${ h.hidden('proposal.accommodation_assistance') }
+% endif
+
+% if h.lca_info['cfp_hide_assistance_options'] is 'by_email': 
+    <h2>Travel &amp; Accommodation Assistance</h2>
+    <p class="note" style="margin-top: 0em">Please note that <b>free admission</b> to the full conference is offered to all speakers.</p>
+    <p class="note" style="margin-top: 0em">Travel &amp; accommodation assistance <em>may</em> be available in circumstances where it is absolutely necessary. To find out more please e-mail <em>${ h.lca_info['contact_email'] }</em>.</p>
+% endif
+
 
     <h2>About yourself</h2>
 
-    <p><em>Note: These are common for all your papers: presentations, tutorials and miniconfs.</em></p>
+    <p><em>Note: These are common for all your proposals: presentations and tutorials.</em></p>
 
     <p>If two or more people are presenting together, this information should for the primary speaker; mention the other speakers in the Abstract, eg. "(with Bob Vaxhacker and Eve Duo)".</p>
 
