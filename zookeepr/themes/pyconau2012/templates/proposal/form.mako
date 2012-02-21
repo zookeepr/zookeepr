@@ -24,7 +24,7 @@
     <p class="note">If there is something you wish to add to your abstract that only the proposal reviewers may see, please enter it here.</p>
 
 
-    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target audience:</label></p>
+    <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Target Skill Level:</label></p>
     <p class="entries">
 % for at in c.target_audiences:
     <label>${ h.radio('proposal.audience', at.id) }

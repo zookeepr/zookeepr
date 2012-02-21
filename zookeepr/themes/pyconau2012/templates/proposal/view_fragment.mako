@@ -42,7 +42,7 @@ ${ c.proposal.type.name }
 
 % if c.proposal.audience.name:
 <p class="url">
-<em>Target Audience:</em>
+<em>Target Skill Level:</em>
 ${ c.proposal.audience.name }
 </p>
 % endif
