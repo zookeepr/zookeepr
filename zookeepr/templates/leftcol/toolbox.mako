@@ -22,7 +22,7 @@
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra() }
 %   if h.lca_info["cfp_status"] == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
-      ${ make_link('Submit a paper', h.url_for(controller='proposal', action='new', id=None)) }
+      ${ make_link('Submit a proposal', h.url_for(controller='proposal', action='new', id=None)) }
 %   endif
 %   if h.lca_info["cfmini_status"] == 'open':
       ${ make_link('Submit a miniconf', h.url_for(controller='miniconf_proposal', action='new', id=None)) }
