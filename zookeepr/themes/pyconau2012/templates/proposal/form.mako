@@ -86,7 +86,7 @@
 % if h.lca_info['cfp_hide_assistance_options'] is 'by_email': 
     <h2>Travel &amp; Accommodation Assistance</h2>
     <p class="note" style="margin-top: 0em">Please note that <b>free admission</b> to the full conference is offered to all speakers.</p>
-    <p class="note" style="margin-top: 0em">Travel &amp; accommodation assistance <em>may</em> be available in circumstances where it is absolutely necessary. To find out more please e-mail <em>${ h.lca_info['contact_email'] }</em>.</p>
+    <p class="note" style="margin-top: 0em">Travel &amp; accommodation assistance <em>may</em> be available in circumstances where it is absolutely necessary. To find out more please e-mail <em>${ h.contact_email() }</em>.</p>
 % endif
 
 
