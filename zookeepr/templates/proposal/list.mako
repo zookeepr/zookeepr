@@ -111,7 +111,7 @@ ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw',
 
 <p><ul>
 %  if c.cfp_status == 'open':
-<li>${ h.link_to('New paper proposal', url=h.url_for(controller='proposal', action='new')) }</li>
+<li>${ h.link_to('New proposal', url=h.url_for(controller='proposal', action='new')) }</li>
 %  endif
 %  if c.cfmini_status == 'open':
 <li>${ h.link_to('New miniconf proposal', url=h.url_for(controller='miniconf_proposal', action='new')) }</li>
