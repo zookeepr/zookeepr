@@ -13,6 +13,8 @@ ${ h.radio('review.score', '-1', label="-1 (reject) I want this proposal to be r
 ${ h.radio('review.score', '+1', label="+1 (accept) I want this proposal to be accepted") }
 <br>
 ${ h.radio('review.score', '+2', label="+2 (strong accept) I want this proposal to be accepted, and if asked to I will advocate for it to be accepted.") }
+<br>
+${ h.radio('review.score', '', label="I do not want to see this proposal again, and I don't want to score it") }
 </p>
 </div>
 
