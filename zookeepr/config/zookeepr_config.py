@@ -13,6 +13,7 @@ file_paths = {
   'theme_templates':    '$enabled_theme/templates',
   'theme_public':       '$enabled_theme/public',
   'public_html':        '',
+  'public_path':        '$enabled_theme/public',                # this is for uploadable content... 
   'news_fileprefix':    '$base_public/featured',
   'news_htmlprefix':    '/featured',
   # Points towards where the slides and other recordings are stored
