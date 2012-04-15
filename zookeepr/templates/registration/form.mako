@@ -325,7 +325,7 @@ accommdisplay();
 
 <div id="warningDiv">
          <div class="message message-information">
-          <p>Your student Id will be validated at the registration desk. Your card must be current or at least expired December of the previous year.</p>
+          <p>Your student Id will be validated at the registration desk. Your card must be current or at least expired at the end of the previous term/semester.</p>
          </div>
 </div>
           <script type="text/javascript">
@@ -423,22 +423,23 @@ accommdisplay();
           <p class="label"><label for="registration.special">Other special requirements:</label></p>
           <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
-
+% if h.lca_rego['ask_past_confs']:
              <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
             <p class="entries">
             <table>
               <tr>
                 <td>
-% for (year, desc) in h.lca_rego['past_confs']:
-   <% label = 'registration.prevlca.%s' % year %>
+%     for (year, desc) in h.lca_rego['past_confs']:
+       <% label = 'registration.prevlca.%s' % year %>
                 <label>${ h.checkbox(label) } ${ desc }</label><br />
-% endfor
+%     endfor
                 </td>
               </tr>
             </table>
             </p>
+% endif
           </fieldset>
-
+% if h.lca_rego['lca_optional_stuff']:
           <fieldset>
             <legend>&nbsp;</legend>
             <h2>Optional</h2>
@@ -553,6 +554,7 @@ accommdisplay();
             <p class="note">This is a randomly chosen description for your name badge</p>
 
           </fieldset>
+% endif
           <fieldset>
             <legend>&nbsp;</legend>
             <h2>Subscriptions</h2>
