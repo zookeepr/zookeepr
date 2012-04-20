@@ -133,13 +133,13 @@ class ProductCategoryController(BaseController):
             # We also delete all of the productincludes for the products
             for include in ProductInclude.find_by_product(product.id):
                 meta.Session.delete(include)
-                meta.Session.commit()
-            meta.Session.delete(product)
             meta.Session.commit()
+            meta.Session.delete(product)
+        meta.Session.commit()
         # Also delete any includes of the category
         for include in ProductInclude.find_by_category(id):
             meta.Session.delete(include)
-            meta.Session.commit()
+        meta.Session.commit()
         meta.Session.delete(c.product_category)
         meta.Session.commit()
 
