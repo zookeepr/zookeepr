@@ -58,6 +58,15 @@ class Event(Base):
         else:
             return []
 
+    def computed_speaker_emails(self):
+        if self.proposal:
+            return [person.email_address for person in self.proposal.people]
+        elif self.is_miniconf():
+            return self.title.split('::')[1].split(',')
+        else:
+            return []
+
+
     def computed_abstract(self):
         if self.proposal:
             return self.proposal.abstract

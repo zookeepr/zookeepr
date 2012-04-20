@@ -78,6 +78,8 @@ class ScheduleController(BaseController):
         c.subsubmenu.append([ '/programme/saturday', 'Saturday' ])
 
     def table(self, day=None):
+        filter = dict(request.GET)
+
         if len(c.scheduled_dates) == 0:
             return render('/schedule/no_schedule_available.mako')
 
@@ -126,7 +128,10 @@ class ScheduleController(BaseController):
             else:
                 c.programme[time][schedule.location] = schedule
 
-        return render('/schedule/table.mako')
+        if filter.has_key('raw'):
+            return render('/schedule/table_raw.mako')
+        else:
+            return render('/schedule/table.mako')
 
     def table_view(self, id):
         c.schedule = Schedule.find_by_id(id)
@@ -141,15 +146,15 @@ class ScheduleController(BaseController):
                 event = ical.add('vevent')
                 event.add('uid').value = str(schedule.id) + '@' + h.lca_info['event_host']
                 # Created
-                event.add('created').value = schedule.creation_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('created').value = schedule.creation_timestamp.replace(tzinfo=timezone('Australia/Melbourne'))
                 # Last Modified
-                event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
-                event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Melbourne'))
+                event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=timezone('Australia/Melbourne'))
                 # Start and End Time
-                event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Brisbane'))
-                event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Brisbane'))
+                event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=timezone('Australia/Melbourne'))
+                event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=timezone('Australia/Melbourne'))
                 # Title and Author (need to add Author here)
-                event.add('summary').value = schedule.event.computed_title() + ' by ' + h.list_to_string(schedule.event.computed_speakers())
+                event.add('summary').value = schedule.event.computed_title() + '. ' + h.list_to_string(schedule.event.computed_speakers())
                 # Abstract, if we have one
                 event.add('description').value = schedule.event.computed_abstract()
                 # Add a URL
@@ -185,6 +190,7 @@ class ScheduleController(BaseController):
             if not schedule.time_slot.heading:
                 row = {}
                 speakers = schedule.event.computed_speakers()
+                speaker_emails = schedule.event.computed_speaker_emails()
                 row['Id'] = schedule.id
                 row['Event'] = schedule.event_id
                 row['Title'] = schedule.event.computed_title()
@@ -193,6 +199,8 @@ class ScheduleController(BaseController):
                 row['Duration'] = str(schedule.time_slot.end_time - schedule.time_slot.start_time)
                 if speakers:
                     row['Presenters'] = ','.join(speakers)
+                if speaker_emails:
+                    row['Presenter_emails'] = ','.join(speaker_emails)
                 row['Description'] = schedule.event.computed_abstract()
                 if schedule.event.proposal:
                     row['URL'] = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal_id)

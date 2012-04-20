@@ -32,6 +32,7 @@ import special_offer
 import special_registration
 import url_hash
 import schedule
+import vote
 
 from person import Person
 from role import Role
