@@ -59,7 +59,8 @@ Some Lenny packages are too old.  So on Lenny only, install them from backports:
 On all Debian derived distributions, do the following:
 
 		aptitude install python-authkit python-dnspython python-imaging \
-			python-pastedeploy python-pylons python-setuptools pwgen
+			python-pastedeploy python-pylons python-setuptools \
+			pwgen python-psycopg2
 		cd the-development-directory
 		alias pylons="export PYTHONPATH=$PWD/setup-dir"
 		mkdir `pwd`/setup-dir
