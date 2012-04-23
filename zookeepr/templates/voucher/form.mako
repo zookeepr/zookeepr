@@ -41,7 +41,7 @@
 <%
             soldout = ''
             if not product.available():
-                soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
+                soldout = ' <span class="mandatory">SOLD&nbsp;OUT or UNAVAILABLE</span> '
 %>
 
             <tr>
