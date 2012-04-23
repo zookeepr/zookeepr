@@ -71,7 +71,7 @@ class VoucherController(BaseController):
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
         category = ProductCategory.find_by_name('Accommodation')
-        if not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
+        if category and not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
             allowed_categories.append('Accommodation')
 
 
