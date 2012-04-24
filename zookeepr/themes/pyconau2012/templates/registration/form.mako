@@ -424,7 +424,7 @@ accommdisplay();
           <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
 % if h.lca_rego['ask_past_confs']:
-             <p class="label"><label for="registration.prevlca">Have you attended linux.conf.au before?</label></p>
+             <p class="label"><label for="registration.prevlca">Have you attended any Python conferences before?</label></p>
             <p class="entries">
             <table>
               <tr>
