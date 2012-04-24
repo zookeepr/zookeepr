@@ -257,7 +257,7 @@ def slideshow(set, small=None):
         for file in files:
             if os.path.isfile(file):
                 short_file = os.path.basename(file)
-                if file == 'captions':
+                if short_file == 'captions':
                     continue
 
                 output += "<a href=\"" + file_paths["public_html"] + "/images/" + set + "/" + short_file + "\" rel=\"lightbox[" + set + "]\""
