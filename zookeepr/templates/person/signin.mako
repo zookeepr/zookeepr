@@ -26,6 +26,6 @@ If you have lost your log in details, please contact ${ h.webmaster_email() }.
 
 
 <p>Note: this login is for the ${h.event_name()} website; we have not
-carried over any earlier linux.conf.au login information, so you will need
+carried over any earlier login information, so you will need
 to register anew.</p>
 
