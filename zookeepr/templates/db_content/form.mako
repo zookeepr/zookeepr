@@ -6,7 +6,7 @@
 </p><p class="entries">
 ${ h.text('db_content.title', size=60) }
 </p>
-<ul class="note"><li>To feature news items simply place (via FTP) a png image in the /featured/ folder with the same name as the title in computer friendly form. For example "Welcome to LCA!" will look for "/featured/welcome_to_lca.png" and if it exists the item will appear down the side of the home page.</li>
+<ul class="note"><li>To feature news items simply place (via FTP or the file manager) a png image in the /featured/ folder with the same name as the title in computer friendly form. For example "Welcome to LCA!" will look for "/featured/welcome_to_lca.png" and if it exists the item will appear down the side of the home page.</li>
 <li>To make a news item a major feature (i.e above the menu bar), create a folder in /featured/ with parts 1.png, 2.png and 3.png. Using the above example the images would go into "/featured/welcome_to_lca/1.png"</li>
 % if isinstance(c.db_content.title, str): 
 <li>Computer friendly form for this page: ${ h.computer_title(c.db_content.title) }</li>
@@ -38,6 +38,7 @@ It is not mandatory supply a URL as content is still accessible via ID's. It is 
 <li>For "Redirect" this is the URL you are coming from, and the body is the URL to go to.</li>
 </ul>
 
+<p style="float: right;"><a href="/db_content/list_files?no_theme=true&iframe=true&width=800&height=600" rel="lightbox">Launch file manager</a></p>
 <p class="label">
 <label for="db_content.body">Body:</label>
 </p><p class="entries">
@@ -49,7 +50,7 @@ ${ h.textarea('db_content.body', cols="80", rows="40") }
 <li>For in the press this becomes the comment under the link.</li>
 <li>For "Redirect" the body is the URL to go to. The [Page] URL above is the URL to redirect from. This URL needs to include the full or relative path. e.g. /person/signin or http://www.linux.org.au</li>
 <li>Content at the top and listed within &lt;head&gt;..&lt/head&gt; will be moved to the pages HTML HEAD element.</li>
-<li>A menu is constructed using the &lt;h3&gt;..&lt/h3&gt; elements.</li>
+<li>A menu is constructed using the &lt;h3&gt;..&lt/h3&gt; elements placed inline of <em>!contents_box</em>.</li>
 <li>To include a slideshow of images, or an image using a lightbox then:</li>
 <ul>
   <li>upload the images to <tt>public/images/&lt;set name&gt;</tt></li>
@@ -64,4 +65,3 @@ ${ h.textarea('db_content.body', cols="80", rows="40") }
 ${ h.submit("submit", "Save",) }
 </p>
 </fieldset>
-

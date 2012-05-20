@@ -19,7 +19,7 @@ from authkit.permissions import ValidAuthKitUser
 from zookeepr.lib.mail import email
 
 from zookeepr.model import meta
-from zookeepr.model.product import Product
+from zookeepr.model.product import Product, ProductInclude
 from zookeepr.model.product_category import ProductCategory
 
 from zookeepr.config.lca_info import lca_info
@@ -127,6 +127,19 @@ class ProductCategoryController(BaseController):
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.product_category = ProductCategory.find_by_id(id)
+        # For some reason cascading isn't working for me. Likely I just don't understand SA so I'll do it this way:
+        # first delete all of the products
+        for product in c.product_category.products:
+            # We also delete all of the productincludes for the products
+            for include in ProductInclude.find_by_product(product.id):
+                meta.Session.delete(include)
+            meta.Session.commit()
+            meta.Session.delete(product)
+        meta.Session.commit()
+        # Also delete any includes of the category
+        for include in ProductInclude.find_by_category(id):
+            meta.Session.delete(include)
+        meta.Session.commit()
         meta.Session.delete(c.product_category)
         meta.Session.commit()
 

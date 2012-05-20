@@ -497,3 +497,11 @@ class ProductInclude(Base):
 
     def __init__(self, **kwargs):
         super(ProductInclude, self).__init__(**kwargs)
+
+    @classmethod
+    def find_by_category(cls, id):
+        return Session.query(ProductInclude).filter_by(include_category_id=id)
+
+    @classmethod
+    def find_by_product(cls, id):
+        return Session.query(ProductInclude).filter_by(product_id=id)

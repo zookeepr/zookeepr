@@ -2,6 +2,40 @@
 <%namespace file="../bookmark_submit.mako" name="bookmark_submit" inheritable="True"/>
 
 <%
+
+
+contents = '''<div style="float: right;">
+                            <div class="netv-block">
+                                <div class="netv-block-tl"></div>
+                                <div class="netv-block-tr"></div>
+                                <div class="netv-block-bl"></div>
+                                <div class="netv-block-br"></div>
+                                <div class="netv-block-tc"></div>
+                                <div class="netv-block-bc"></div>
+                                <div class="netv-block-cl"></div>
+                                <div class="netv-block-cr"></div>
+                                <div class="netv-block-cc"></div>
+                                <div class="netv-block-body">
+                                    <div class="netv-blockheader">
+                                        <div class="l"></div>
+                                        <div class="r"></div>
+                                        <div class="t">Contents</div>
+                                    </div>
+                                    <div class="netv-blockcontent">
+                                        <div class="netv-blockcontent-body">
+                                            <ul class="netv-vmenu">
+                                                ''' + c.menu_contents + '''
+                                            </ul>
+                                            <div class="cleared"></div>
+                                        </div>
+                                    </div>
+                                    <div class="cleared"></div>
+                                </div>
+                            </div>
+</div>'''
+
+
+
 url = h.lca_info["event_permalink"] + h.url_for()
 %>
 
@@ -14,14 +48,13 @@ ${ bookmark_submit.bookmark_submit(url, c.db_content.title) }
 <p class="submitted">
 Submitted on ${ c.db_content.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n }
 </p>
-% else:
-<div style="float: right;">
-<%include file="/leftcol/contents.mako" args="parent=self" />
-</div>
 % endif
 
-
-${ c.html_body |n}
+<%
+body = c.html_body
+body = body.replace('!contents_box', contents)
+%>
+${ body |n}
 
 
 <%def name="title()">
@@ -64,8 +97,3 @@ ${ c.db_content.title } -
 ${ c.html_headers |n}
 </%def>
 
-<%def name="contents()">
-<%
-  return c.menu_contents
-%>
-</%def>

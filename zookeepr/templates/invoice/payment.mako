@@ -14,7 +14,7 @@ ${ h.number_to_currency(c.payment.amount/100.0) }
 ${ h.form('https://vault.safepay.com.au/cgi-bin/test_payment.pl') }
 ${ h.hidden('payment_reference', h.lca_info['event_shortname'] + ' i-' + str(c.payment.invoice.id) + ' p-' + str(c.payment.id)) }
 ${ h.hidden('vendor_name', 'linux') }
-${ h.hidden('cards_accepted', 'VISA,MASTERCARD') }
+${ h.hidden('cards_accepted', 'VISA,MASTERCARD,AMEX') }
 ${ h.hidden('gst_rate', '10') }
 ${ h.hidden('gst_added', 'TRUE') }
 ${ h.hidden(h.lca_info['event_name'] + ' Registration', c.payment.amount / 100.0) }

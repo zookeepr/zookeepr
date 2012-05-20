@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 
 from zookeepr.model import meta
 from zookeepr.model.ceiling import Ceiling
-from zookeepr.model.product import Product
+from zookeepr.model.product import Product, ProductInclude
 from zookeepr.model.product_category import ProductCategory
 
 from zookeepr.config.lca_info import lca_info
@@ -120,6 +120,9 @@ class ProductController(BaseController):
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.product = Product.find_by_id(id)
+        for include in ProductInclude.find_by_product(id):
+            meta.Session.delete(include)
+        meta.Session.commit()
         meta.Session.delete(c.product)
         meta.Session.commit()
 

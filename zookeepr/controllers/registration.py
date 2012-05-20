@@ -93,8 +93,8 @@ class IAgreeValidator(validators.FormValidator):
             raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
 
 class OtherValidator(validators.String):
-    def __init__(self, list):
-        super(self.__class__, self).__init__()
+    def __init__(self, list, if_missing=None):
+        super(self.__class__, self).__init__(if_missing=if_missing)
         self.__list = list
     def validate_python(self, value, state):
         if value is not None:
@@ -115,20 +115,20 @@ class ExistingPersonSchema(BaseSchema):
 
 class RegistrationSchema(BaseSchema):
     over18 = validators.Int(min=0, max=1, not_empty=True)
-    nick = validators.String()
-    shell = validators.String()
-    shelltext = OtherValidator(list=('cmd', 'command'))
-    editor = validators.String()
-    editortext = OtherValidator(list=('word', 'write'))
-    distro = validators.String()
-    distrotext = OtherValidator(list=('window', 'xp', 'vista'))
-    vcs = validators.String()
-    vcstext = OtherValidator(list=('visual sourcesafe', 'bitkeeper'))
-    silly_description = validators.String()
-    silly_description_checksum = validators.String(strip=True)
+    nick = validators.String(if_missing=None)
+    shell = validators.String(if_missing=None)
+    shelltext = OtherValidator(if_missing=None, list=('cmd', 'command'))
+    editor = validators.String(if_missing=None)
+    editortext = OtherValidator(if_missing=None, list=('word', 'write'))
+    distro = validators.String(if_missing=None)
+    distrotext = OtherValidator(if_missing=None, list=('window', 'xp', 'vista'))
+    vcs = validators.String(if_missing=None)
+    vcstext = OtherValidator(if_missing=None, list=('visual sourcesafe', 'bitkeeper'))
+    silly_description = validators.String(if_missing=None)
+    silly_description_checksum = validators.String(if_missing=None, strip=True)
     if lca_rego['pgp_collection'] != 'no':
         keyid = validators.String()
-    planetfeed = validators.String()
+    planetfeed = validators.String(if_missing=None)
     voucher_code = VoucherValidator(if_empty=None)
     diet = validators.String()
     special = validators.String()
@@ -216,9 +216,9 @@ class RegistrationController(BaseController):
             pass
 
         # placed here so prevalidator can refer to it. This means we need a hacky method to save it :S
-        ProductSchema.add_field('partner_name', validators.String())
-        ProductSchema.add_field('partner_email', validators.Email())
-        ProductSchema.add_field('partner_mobile', validators.String())
+        ProductSchema.add_field('partner_name', validators.String(if_missing=None))
+        ProductSchema.add_field('partner_email', validators.Email(if_missing=None))
+        ProductSchema.add_field('partner_mobile', validators.String(if_missing=None))
 
         # Go through each category and each product and add generic validation
         for category in c.product_categories:
@@ -1056,8 +1056,10 @@ class RegistrationController(BaseController):
                         elif item.description.startswith('Organiser'):
                             ticket = 'Organiser'
                             pdns_ticket = True
-                        elif item.description.find('Miniconfs Only') > -1 or item.description.find('Minconfs Only') > -1:
+                        elif item.description.find('Miniconf-Only') > -1 or item.description.find('Minconf-Only') > -1:
                             ticket = 'Miniconfs Only'
+                        elif item.description.find('Fairy Penguin Sponsor') > -1 or item.description.find('Fairy Penguin Sponsor') > -1:
+                            ticket = 'Sponsor'
                         elif item.description.find('reakfast') > -1:
                             breakfast += item.qty
             if registration.person.has_role('core_team'):

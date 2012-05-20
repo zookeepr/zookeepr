@@ -50,7 +50,7 @@ def make_map():
 
     # Proposal submission
     map.connect('/programme/submit_a_miniconf', controller='miniconf_proposal', action='new')
-    map.connect('/programme/submit_a_paper',    controller='proposal', action='new')
+    map.connect('/programme/submit_a_proposal',    controller='proposal', action='new')
 
     # Review
     map.connect('/proposal/review_index', controller='proposal', action='review_index')

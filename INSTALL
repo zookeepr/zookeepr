@@ -75,6 +75,19 @@ On all Debian derived distributions, do the following:
 
 		This is not needed on unstable (Ubuntu Lucid)
 
+### Installing using RPM style package management ###
+
+These instructions have been tested on:
+
+  - Fedora 14
+
+Do the following:
+
+	sudo yum install python-pylons pwgen pytz python-vobject python-dns python-sqlalchemy
+	sudo easy_install pylibravatar AuthKit
+	git clone https://github.com/zookeepr/zookeepr.git
+	cd zookeepr
+	
 ### PDF generation ###
 
 You need to install the following package for PDF generation to work, e. g.:
