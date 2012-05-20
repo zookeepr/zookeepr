@@ -59,8 +59,7 @@ Some Lenny packages are too old.  So on Lenny only, install them from backports:
 On all Debian derived distributions, do the following:
 
 		aptitude install python-authkit python-dnspython python-imaging \
-			python-pastedeploy python-pylons python-setuptools \
-			pwgen python-psycopg2
+			python-pastedeploy python-pylons python-setuptools pwgen
 		cd the-development-directory
 		alias pylons="export PYTHONPATH=$PWD/setup-dir"
 		mkdir `pwd`/setup-dir
@@ -76,6 +75,19 @@ On all Debian derived distributions, do the following:
 
 		This is not needed on unstable (Ubuntu Lucid)
 
+### Installing using RPM style package management ###
+
+These instructions have been tested on:
+
+  - Fedora 14
+
+Do the following:
+
+	sudo yum install python-pylons pwgen pytz python-vobject python-dns python-sqlalchemy
+	sudo easy_install pylibravatar AuthKit
+	git clone https://github.com/zookeepr/zookeepr.git
+	cd zookeepr
+	
 ### PDF generation ###
 
 You need to install the following package for PDF generation to work, e. g.:
