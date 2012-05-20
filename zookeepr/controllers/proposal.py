@@ -71,9 +71,8 @@ class ExistingProposalSchema(BaseSchema):
     pre_validators = [NestedVariables]
     person_to_edit = PersonValidator()
 
-class NewReviewSchema(BaseSchema):
+class NewEditReviewSchema(BaseSchema):
     pre_validators = [NestedVariables]
-
     review = ReviewSchema()
 
 class NewAttachmentSchema(BaseSchema):
@@ -173,19 +172,19 @@ class ProposalController(BaseController):
         c.streams = Stream.select_values()
         c.proposal = Proposal.find_by_id(id)
         c.signed_in_person = h.signed_in_person()
-
-        # TODO: currently not enough (see TODOs in model/proposal.py)
-        #if not h.auth.authorized(h.auth.has_organiser_role):
-        #    # You can't review your own proposal
-        #    for person in c.proposal.people:
-        #        if person.id == c.signed_in_person.id:
-        #            h.auth.no_role()
-
         c.next_review_id = Proposal.find_next_proposal(c.proposal.id, c.proposal.type.id, c.signed_in_person.id)
 
-        return render('/proposal/review.mako')
+        c.review = Review.find_by_proposal_reviewer(id, c.signed_in_person.id, abort_404=False)
+        if c.review:
+            c.form = 'edit'
+            defaults = h.object_to_defaults(c.review, 'review')
+            form = render('/review/edit.mako')
+            return htmlfill.render(form, defaults)
+        else:
+            c.form = 'new'
+            return render('/review/new.mako')
 
-    @validate(schema=NewReviewSchema(), form='review', post_only=True, on_get=True, variable_decode=True)
+    @validate(schema=NewEditReviewSchema(), form='review', post_only=True, on_get=True, variable_decode=True)
     @authorize(h.auth.has_reviewer_role)
     def _review(self, id):
         """Review a proposal.
@@ -194,27 +193,26 @@ class ProposalController(BaseController):
         c.signed_in_person = h.signed_in_person()
         c.next_review_id = Proposal.find_next_proposal(c.proposal.id, c.proposal.type.id, c.signed_in_person.id)
 
-        # TODO: currently not enough (see TODOs in model/proposal.py)
-        #if not h.auth.authorized(h.auth.has_organiser_role):
-        #    # You can't review your own proposal
-        #    for person in c.proposal.people:
-        #        if person.id == c.signed_in_person.id:
-        #            h.auth.no_role()
+        c.review = Review.find_by_proposal_reviewer(id, c.signed_in_person.id, abort_404=False)
+        if c.review:
+            for key in self.form_result['review']:
+                setattr(c.review, key, self.form_result['review'][key])
 
-        person = c.signed_in_person
-        if person in [ review.reviewer for review in c.proposal.reviews]:
-            h.flash('Already reviewed')
-            return redirect_to(action='review', id=c.next_review_id)
+            # update the objects with the validated form data
+            meta.Session.commit()
+            h.flash("Review Updated Successfully")
 
-        results = self.form_result['review']
-        review = Review(**results)
+        else:
+            results = self.form_result['review']
+            review = Review(**results)
 
-        meta.Session.add(review)
-        c.proposal.reviews.append(review)
+            meta.Session.add(review)
+            c.proposal.reviews.append(review)
 
-        review.reviewer = person
+            review.reviewer = person
 
-        meta.Session.commit()
+            meta.Session.commit()
+            h.flash("Review Added Successfully")
 
         if c.next_review_id:
             return redirect_to(action='review', id=c.next_review_id)
@@ -222,7 +220,6 @@ class ProposalController(BaseController):
         h.flash("No more papers to review")
 
         return redirect_to(action='review_index')
-
 
     @dispatch_on(POST="_attach")
     def attach(self, id):

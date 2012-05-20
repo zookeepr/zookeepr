@@ -55,7 +55,17 @@ class Review(Base):
         return Session.query(Review).filter_by(id=id).first()
 
     @classmethod
+    def find_by_proposal_reviewer(cls, proposal_id, reviewer_id, abort_404 = True):
+        result = Session.query(Review).filter_by(proposal_id=proposal_id).filter_by(reviewer_id=reviewer_id).first()
+        if result is None and abort_404:
+            abort(404, "No such review object")
+        return result
+
+    @classmethod
     def find_all(cls):
         return Session.query(Review).order_by(Review.id).all()
 
-
+    @classmethod
+    def find_summary(cls):
+        from zookeepr.model.person import Person
+        return Session.query(Person).join(cls).add_columns(sa.func.count(1).label('count'), sa.func.avg(cls.score).label('average')).group_by(Person)

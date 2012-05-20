@@ -24,10 +24,6 @@ from zookeepr.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
-class EditReviewSchema(BaseSchema):
-    review = ReviewSchema()
-    pre_validators = [NestedVariables]
-
 class ReviewController(BaseController):
     @authorize(h.auth.has_reviewer_role)
     def __before__(self, **kwargs):
@@ -45,8 +41,6 @@ class ReviewController(BaseController):
 
         c.proposal = c.review.proposal
         defaults = h.object_to_defaults(c.review, 'review')
-        if defaults['review.score'] == 1 or defaults['review.score'] == 2:
-            defaults['review.score'] = '+%s'  % defaults['review.score']
 
         c.signed_in_person = h.signed_in_person()
         form = render('/review/edit.mako')
@@ -69,7 +63,7 @@ class ReviewController(BaseController):
     @dispatch_on(POST="_delete")
     def delete(self, id):
         c.review = Review.find_by_id(id)
-        
+
         if c.review.reviewer.id != h.signed_in_person().id:
             # Raise a no_auth error
             h.auth.no_role()
@@ -91,7 +85,7 @@ class ReviewController(BaseController):
         redirect_to(controller='review', action='index')
 
     def summary(self):
-        c.review_collection=Review.find_all()
+        c.summary = Review.find_summary().all()
         return render('review/summary.mako')
 
     def index(self):
