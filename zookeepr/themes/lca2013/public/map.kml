@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://earth.google.com/kml/2.2">
+<Document>
+  <name>LCA 2012</name>
+  <description><![CDATA[]]></description>
+  <Style id="style5">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/blue-dot.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style13">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/blue-dot.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style3">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/blue-dot.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style4">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/mapfiles/ms2/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style1">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/mapfiles/ms2/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style8">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style10">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/rail.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style9">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/plane.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style2">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/bus.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style6">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/blue-dot.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style11">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/intl/en_ALL/mapfiles/ms/micons/plane.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style7">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/mapfiles/ms2/micons/movies.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Style id="style12">
+    <IconStyle>
+      <Icon>
+        <href>http://maps.gstatic.com/mapfiles/ms2/micons/lodging.png</href>
+      </Icon>
+    </IconStyle>
+  </Style>
+  <Placemark>
+    <name>Ballarat VIC</name>
+    <description><![CDATA[Australia<br><a 
+href="http://maps.google.com/maps/place?ftid=0x6ad1445430931879:0x40579a430a0b720&amp;q=Ballarat,+Victoria,+Australia&amp;hl=en&amp;cad=src:ppiwlink&amp;ei=joEzTdrvCIWAvQOi7bHJAQ&amp;dtab=5"><img 
+src="http://cbk0.google.com/cbk?output=thumbnail&amp;w=90&amp;h=68&amp;ll=-37.562107,143.856149&amp;thumb=0"></a>]]></description>
+    <styleUrl>#style5</styleUrl>
+    <Point>
+      <coordinates>143.856155,-37.562107,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>University of Ballarat</name>
+    <description><![CDATA[<div dir="ltr">Venue for linux.conf.au 2012<br><br><a 
+href="http://www.lcaunderthestars.org.au">www.lcaunderthestars.org.au</a><br>&nbsp;</div>]]></description>
+    <styleUrl>#style13</styleUrl>
+    <Point>
+      <coordinates>143.891205,-37.626537,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Melbourne</name>
+    <description><![CDATA[<br>]]></description>
+    <styleUrl>#style3</styleUrl>
+    <Point>
+      <coordinates>144.950867,-37.831478,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Sovereign Hill</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style4</styleUrl>
+    <Point>
+      <coordinates>143.866486,-37.574924,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Mercure Ballarat</name>
+    <description><![CDATA[<br>]]></description>
+    <styleUrl>#style1</styleUrl>
+    <Point>
+      <coordinates>143.868591,-37.579292,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Accommodation</name>
+    <description><![CDATA[<br>]]></description>
+    <styleUrl>#style8</styleUrl>
+    <Point>
+      <coordinates>143.892410,-37.624043,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Ballarat Train Station</name>
+    <description><![CDATA[<div dir="ltr">Trains from Melbourne&#39;s Southern Cross Station, as well as the airport shuttle service, arrive here. 
+</div>]]></description>
+    <styleUrl>#style10</styleUrl>
+    <Point>
+      <coordinates>143.858795,-37.557983,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Tullamarine Airport</name>
+    <description><![CDATA[<div dir="ltr">Melbourne&#39;s International airport</div>]]></description>
+    <styleUrl>#style9</styleUrl>
+    <Point>
+      <coordinates>144.844955,-37.669147,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Southern Cross train station</name>
+    <description><![CDATA[<div dir="ltr">Trains from Melbourne to Ballarat depart from here.</div>]]></description>
+    <styleUrl>#style2</styleUrl>
+    <Point>
+      <coordinates>144.953156,-37.818226,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Art Gallery of Ballarat</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style6</styleUrl>
+    <Point>
+      <coordinates>143.858185,-37.560543,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Avalon Airport</name>
+    <description><![CDATA[]]></description>
+    <styleUrl>#style11</styleUrl>
+    <Point>
+      <coordinates>144.472961,-38.026459,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>University of Ballarat Mt Helen Campus</name>
+    <styleUrl>#style7</styleUrl>
+    <Point>
+      <coordinates>143.891357,-37.626438,0.000000</coordinates>
+    </Point>
+  </Placemark>
+  <Placemark>
+    <name>Sovereign Park Motor Inn</name>
+    <description><![CDATA[<div dir="ltr">Accommodation Option for LCA2012</div>]]></description>
+    <styleUrl>#style12</styleUrl>
+    <Point>
+      <coordinates>143.870651,-37.569611,0.000000</coordinates>
+    </Point>
+  </Placemark>
+</Document>
+</kml>
+

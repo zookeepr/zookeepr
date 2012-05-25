@@ -15,6 +15,8 @@ env
 zk.egg-info
 paster_data
 
+.DS_store
+.gitignore
 # OLD Stuff may not be needed any longer
 #.coverage
 #dist
