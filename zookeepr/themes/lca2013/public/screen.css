@@ -8,7 +8,7 @@ body
   background-image: url('images/balloons.jpg');
   background-repeat: repeat-x;
   background-attachment: fixed;
-  background-position: top left;
+  background-position: top center;
   font-family: "Century Gothic",Arial, Helvetica, Sans-Serif;
   font-size: 13px;
   color: #181910;
