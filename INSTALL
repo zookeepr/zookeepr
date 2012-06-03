@@ -28,9 +28,8 @@ setup.py against what you have installed.
 This requires Python >=2.6.  Install latest pylons in a development directory: 
 
 		cd the-development-directory
-		wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
 		mkdir pylons
-		python go-pylons.py pylons
+		python ./go-pylons.py pylons
 		alias pylons="source `pwd`/pylons/bin/activate"
 		pylons
 		python setup.py develop
