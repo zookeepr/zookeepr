@@ -2,10 +2,16 @@
 
 <h2 class="pop">Sign in</h2>
 
-<p>Don't have an account? ${ h.link_to('Sign up', url=h.url_for(controller='person', action='new')) } now!</p>
 % if c.auth_failure == 'NO_ROLE':
     <span class="error-message">You don't have the appropriate permissions to access this resource. Please login as a different user.</span>
 % endif
+
+<p>Don't want yet another single-use username/password?
+
+<p><img src="/images/persona-login.png" alt="Sign in with Persona"></p>
+
+<p>Otherwise enter your credentials in the following form.</p>
+
 ${ h.form(h.url_for(), method='post') }
 
     <p class="label"><label for="person.email_address">Email address:</label></p>
@@ -18,6 +24,7 @@ ${ h.form(h.url_for(), method='post') }
 
 ${ h.end_form() }
 
+<p>Don't have an account? ${ h.link_to('Sign up', url=h.url_for(controller='person', action='new')) } now!</p>
 
 <p>
 ${ h.link_to('Forgotten your password?', url=h.url_for(controller='person', action='forgotten_password', id=None)) }<br />
