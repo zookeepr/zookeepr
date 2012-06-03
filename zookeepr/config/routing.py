@@ -82,6 +82,7 @@ def make_map():
     map.connect('/person/signout_confirm',           controller='person', action='signout_confirm')
     map.connect('/person/forgotten_password',        controller='person', action='forgotten_password')
     map.connect('/person/reset_password/{url_hash}', controller='person', action='reset_password')
+    map.connect('/person/persona_login',             controller='person', action='persona_login')
 
     # booklet
     map.connect('/registration/professionals_latex', controller='registration', action='professionals_latex')

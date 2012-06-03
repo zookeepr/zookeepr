@@ -26,6 +26,9 @@ from zookeepr.config.lca_info import lca_info, lca_rego
 from zookeepr.lib.ssl_requirement import enforce_ssl
 
 import datetime
+import json
+import urllib
+import urllib2
 
 log = logging.getLogger(__name__)
 
@@ -85,6 +88,31 @@ class AuthPersonValidator(validators.FancyValidator):
             error_dict = {'email_address': error_message}
             raise Invalid(message, values, state, error_dict=error_dict)
 
+class PersonaValidator(validators.FancyValidator):
+    def validate_python(self, values, state):
+        assertion = values['assertion']
+        audience = h.url_for(qualified=True, controller='home').strip("/")
+
+        page = urllib2.urlopen('https://browserid.org/verify',
+                               urllib.urlencode({ "assertion": assertion,
+                                                  "audience": audience}))
+        data = json.load(page)
+        if data['status'] == 'okay':
+            c.email = data['email']
+            c.person = Person.find_by_email(c.email)
+
+        if c.person is None:
+            error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
+            message = "Login failed"
+            error_dict = {'email_address': error_message}
+            raise Invalid(message, values, state, error_dict=error_dict)
+
+        if not c.person.activated:
+            # Persona returns verified emails only, so might as well confirm this one...
+            c.person.activated = True
+            meta.Session.commit()
+
+
 class LoginPersonSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)
     password = validators.String(not_empty=True)
@@ -93,6 +121,10 @@ class LoginPersonSchema(BaseSchema):
 class LoginSchema(BaseSchema):
     person = LoginPersonSchema()
     pre_validators = [NestedVariables]
+
+class PersonaLoginSchema(BaseSchema):
+    assertion = validators.String(not_empty=True)
+    chained_validators = [PersonaValidator()]
 
 class RoleSchema(BaseSchema):
     role = validators.String(not_empty=True)
@@ -115,11 +147,9 @@ class PersonController(BaseController): #Read, Update, List
 
         return render('/person/signin.mako')
 
-    @validate(schema=LoginSchema(), form='signin', post_only=True, on_get=False, variable_decode=True)
-    def _signin(self):
-
+    def finish_login(self, email):
         # Tell authkit we authenticated them
-        request.environ['paste.auth_tkt.set_user'](c.email)
+        request.environ['paste.auth_tkt.set_user'](email)
 
         h.flash('You have signed in')
 
@@ -132,6 +162,13 @@ class PersonController(BaseController): #Read, Update, List
 
         redirect_to('home')
 
+    @validate(schema=LoginSchema(), form='signin', post_only=True, on_get=False, variable_decode=True)
+    def _signin(self):
+        self.finish_login(c.email)
+
+    @validate(schema=PersonaLoginSchema(), form='persona_login', post_only=True, on_get=False, variable_decode=True)
+    def persona_login(self):
+        self.finish_login(c.email)
 
     def signout_confirm(self, id=None):
         """ Confirm user wants to sign out

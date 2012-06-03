@@ -6,9 +6,28 @@
     <span class="error-message">You don't have the appropriate permissions to access this resource. Please login as a different user.</span>
 % endif
 
+<script src="https://browserid.org/include.js"></script>
+<script>
+function login() {
+    navigator.id.get(function (assertion) {
+      if (assertion) {
+        var assertion_field = document.getElementById("assertion");
+        assertion_field.value = assertion;
+
+        var login_form = document.getElementById("persona-form");
+        login_form.submit();
+      }
+    });
+}
+</script>
+
 <p>Don't want yet another single-use username/password?
 
-<p><img src="/images/persona-login.png" alt="Sign in with Persona"></p>
+<p><a href="javascript:login()"><img border="0" src="/images/persona-login.png" alt="Sign in with Persona"></a></p>
+
+${ h.form('/person/persona_login', method='post', id='persona-form') }
+${ h.hidden('assertion', '') }
+${ h.end_form() }
 
 <p>Otherwise enter your credentials in the following form.</p>
 
