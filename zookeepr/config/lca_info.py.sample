@@ -47,6 +47,7 @@ lca_info = {
   'account_creation': True,
 # Mode
   'cfp_hide_assistance_info': 'no',
+  'cfp_hide_assistance_options' : 'no',
   'cfp_hide_scores': 'no',
 
   'cfp_miniconf_list' : ["(none)", "Sysadmin", "Business", "Haecksen"],
@@ -77,6 +78,9 @@ lca_rego = {
 
   # Set to no once the conference starts to speed things up
   'confirm_email_address' : 'yes',
+
+  'ask_past_confs' : 'yes',
+  'lca_optional_stuff' : 'yes',
 
   'volunteer':
     (
