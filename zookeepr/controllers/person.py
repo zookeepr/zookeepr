@@ -102,10 +102,18 @@ class PersonaValidator(validators.FancyValidator):
             c.person = Person.find_by_email(c.email)
 
         if c.person is None:
-            error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
-            message = "Login failed"
-            error_dict = {'email_address': error_message}
-            raise Invalid(message, values, state, error_dict=error_dict)
+            if not lca_info['account_creation']:
+                error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below."
+                message = "Login failed"
+                error_dict = {'email_address': error_message}
+                raise Invalid(message, values, state, error_dict=error_dict)
+
+            # Create a new account for this email address
+            c.person = Person()
+            c.person.email_address = data['email']
+            c.person.activated = True
+            meta.Session.add(c.person)
+            meta.Session.commit()
 
         if not c.person.activated:
             # Persona returns verified emails only, so might as well confirm this one...
@@ -150,6 +158,10 @@ class PersonController(BaseController): #Read, Update, List
     def finish_login(self, email):
         # Tell authkit we authenticated them
         request.environ['paste.auth_tkt.set_user'](email)
+
+        if not c.person.firstname or not c.person.lastname:
+            h.flash('We need a bit more information about you.')
+            redirect_to(controller='person', action='edit', id=c.person.id)
 
         h.flash('You have signed in')
 
@@ -313,6 +325,8 @@ class PersonController(BaseController): #Read, Update, List
 
         defaults = h.object_to_defaults(c.person, 'person')
         defaults['person.email_address2'] = c.person.email_address
+        if not defaults['person.country']:
+            defaults['person.country'] = 'AUSTRALIA'
 
         form = render('/person/edit.mako')
         return htmlfill.render(form, defaults)
