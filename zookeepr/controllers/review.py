@@ -24,10 +24,6 @@ from zookeepr.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
-class EditReviewSchema(BaseSchema):
-    review = ReviewSchema()
-    pre_validators = [NestedVariables]
-
 class ReviewController(BaseController):
     @authorize(h.auth.has_reviewer_role)
     def __before__(self, **kwargs):
@@ -39,37 +35,14 @@ class ReviewController(BaseController):
 
     @dispatch_on(POST="_edit") 
     def edit(self, id):
-        c.form = 'edit'
         c.review = Review.find_by_id(id)
-        self._is_reviewer()
 
-        c.proposal = c.review.proposal
-        defaults = h.object_to_defaults(c.review, 'review')
-        if defaults['review.score'] == 1 or defaults['review.score'] == 2:
-            defaults['review.score'] = '+%s'  % defaults['review.score']
-
-        c.signed_in_person = h.signed_in_person()
-        form = render('/review/edit.mako')
-        return htmlfill.render(form, defaults)
-
-    @validate(schema=EditReviewSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
-    def _edit(self, id):
-        c.review = Review.find_by_id(id)
-        self._is_reviewer()
-
-        for key in self.form_result['review']:
-            setattr(c.review, key, self.form_result['review'][key])
-
-        # update the objects with the validated form data
-        meta.Session.commit()
-
-        h.flash("Review has been edited!")
-        redirect_to(action='view', id=id)
+        redirect_to(h.url_for(controller='proposal', id=c.review.proposal.id, action='review'))
 
     @dispatch_on(POST="_delete")
     def delete(self, id):
         c.review = Review.find_by_id(id)
-        
+
         if c.review.reviewer.id != h.signed_in_person().id:
             # Raise a no_auth error
             h.auth.no_role()
@@ -91,7 +64,7 @@ class ReviewController(BaseController):
         redirect_to(controller='review', action='index')
 
     def summary(self):
-        c.review_collection=Review.find_all()
+        c.summary = Review.find_summary().all()
         return render('review/summary.mako')
 
     def index(self):

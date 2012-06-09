@@ -2,44 +2,26 @@
 
 <h2>Summary of Reviewers</h2>
 
-<%
-review_summary = {}
-for r in c.review_collection:
-    if r.reviewer in review_summary:
-        review_summary[r.reviewer]['num_reviews'] += 1
-        review_summary[r.reviewer]['total_score'] += r.score
-    else:
-        review_summary[r.reviewer] = {}
-        review_summary[r.reviewer]['num_reviews'] = 1
-        review_summary[r.reviewer]['total_score'] = r.score
-%>
-
 <table>
-<tr>
-<th>Reviewer</th>
-<th>Number of Reviews</th>
+  <tr>
+    <th>Reviewer</th>
+    <th>Number of Reviews</th>
 % if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_papers_chair_role)):
-<th>Avg Score</th>
+    <th>Avg Score</th>
 % endif
-</tr>
-% for reviewer in review_summary:
-<tr class="${ h.cycle('even', 'odd') }">
-<td>
-${ reviewer.firstname }
-${ reviewer.lastname }
-</td>
-
-<td>
-${ review_summary[reviewer]['num_reviews'] }
-</td>
-
+  </tr>
+% for reviewer in c.summary:
+  <tr class="${ h.cycle('even', 'odd') }">
+    <td>${ reviewer[0].firstname } ${ reviewer[0].lastname }</td>
+    <td>${ reviewer.count }</td>
 %   if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_papers_chair_role)):
-<td>
-<% avg = review_summary[reviewer]['total_score']*1.0/review_summary[reviewer]['num_reviews'] %>
-${ "%#.*f" % (2, avg) }
-</td>
+%     if reviewer.average is None:
+    <td>No Average</td>
+%     else:
+    <td>${ "%#.*f" % (2, reviewer.average) }</td>
+%     endif
 %   endif
-
+  </tr>
 % endfor
 </table>
 

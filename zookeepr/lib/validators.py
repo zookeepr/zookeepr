@@ -96,7 +96,13 @@ class FundingValidator(validators.FancyValidator):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        return Stream.find_by_id(value)
+        if value in ("", None):
+            return Stream.find_by_id(value)
+        else:
+            return None
+
+    def _from_python(self, value, state):
+        return value.id
 
 class ProductValidator(validators.FancyValidator):
     def _to_python(self, value, state):
@@ -127,7 +133,7 @@ class ProductCategoryValidator(validators.FancyValidator):
         return value.id
 
 class ReviewSchema(BaseSchema):
-    score = validators.OneOf(["-2", "-1", "+1", "+2", "null"])
+    score = validators.OneOf(["-2", "-1", "1", "2"], if_missing=None)
     stream = StreamValidator()
     miniconf = validators.String()
     comment = validators.String()
