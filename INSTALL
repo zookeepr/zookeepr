@@ -133,6 +133,11 @@ Found at /uml_graph.png (or .svg, .jpeg etc).
 
 		paster make-config zookeepr config.ini
 
+If the make-config step complains that a package version - e.g. SQLAlchemy -
+is incorrect, and you change setup.py to make it work, you have to run the
+setup.py develop step again (see the Installing and setting up Zookeepr
+section).
+
  - The default `config.ini` uses sqlite, which is fine for development.  To use a different SQL backend edit `dburi`.
 
  - Generate an empty database:
