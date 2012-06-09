@@ -45,6 +45,7 @@ ${ h.text('db_content.url', size=60) }
 It is not mandatory supply a URL as content is still accessible via ID's. It is recommended not to create a URL alias for news items.</li>
 <li>For "In the press" this is the URL you want the item to link to.</li>
 <li>For "Redirect" this is the URL you are coming from, and the body is the URL to go to.</li>
+<li>If multiple pages with the same URL exist, the latest <em>published</em> one is served at this URL.</li>
 </ul>
 
 <p style="float: right;"><a href="/db_content/list_files?no_theme=true&iframe=true&width=800&height=600" rel="lightbox">Launch file manager</a></p>
