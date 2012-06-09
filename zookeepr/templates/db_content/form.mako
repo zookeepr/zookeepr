@@ -18,11 +18,11 @@ ${ h.text('db_content.title', size=60) }
 <p class="label">
 <label for="db_content.creation_date">Date:</label>
 </p><p class="entries">
-${ h.text('db_content.creation_date', size=60) }
+${ h.text('db_content.creation_date', size=60) } (dd/mm/yyyy)
 </p>
 <label for="db_content.creation_time">Time:</label>
 </p><p class="entries">
-${ h.text('db_content.creation_time', size=60) }
+${ h.text('db_content.creation_time', size=60) } (hh:mm:ss)
 </p>
 <ul class="note">
     <li>Set the date for the creation timestamp or leave blank for today.</li>
