@@ -1,7 +1,7 @@
 <%page args="editing" />
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="proposal.title">Title:</label></p>
     <p class="entries">${ h.text('proposal.title', size=60) }</p>
-    <p class="note">The name of your paper.</p>
+    <p class="note">The name of your proposal.</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Type:</label></p>
     <p class="entries">
@@ -13,11 +13,11 @@
     <label>${ h.radio('proposal.type', st.id) } ${ st.name |h }</label><br>
 % endfor
     </p>
-    <p class="note" style="margin-top: 0em">The type of your paper. If in doubt, choose "Presentation".</p>
+    <p class="note" style="margin-top: 0em">The type of your proposal. If in doubt, choose "Presentation".</p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="proposal.abstract">Abstract:</label></p>
     <p class="entries">${ h.textarea('proposal.abstract', cols=70, rows=10) }</p>
-    <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the paper is accepted, but it should reasonably reflect what you will be presenting, and in any case it will appear as-is on the website in the draft programme. Up to about 500 words.</p>
+    <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the proposal is accepted, but it should reasonably reflect what you will be presenting, and in any case it will appear as-is on the website in the draft programme. Up to about 500 words.</p>
 
     <p class="label"><label for="proposal.technical_requirements">Non-standard technical requirements:</label></p>
     <p class="entries">${ h.textarea('proposal.technical_requirements', cols=70, rows=3) }</p>
@@ -39,11 +39,11 @@
     <p class="label"><span class="publishable">&#8224;</span><label for="proposal.url">Project homepage:</label></p>
     <p class="entries">${ h.text('proposal.url', size=60) }</p>
 
-    <p class="note">If your project has a webpage, specify the URL here so the committee can find out more about your paper.</p>
+    <p class="note">If your project has a webpage, specify the URL here so the committee can find out more about your proposal.</p>
 
     <p class="label"><label for="proposal.abstract_video_url">Video abstract:</label></p>
     <p class="entries">${ h.text('proposal.abstract_video_url', size=60) }</p>
-    <p class="note">URL for a short "elevator pitch" (20s - 3min) video about your paper, your project or yourself (eg: YouTube link).</p>
+    <p class="note">URL for a short "elevator pitch" (20s - 3min) video about your proposal, your project or yourself (eg: YouTube link).</p>
 % if not editing:
     <p class="label"><label for="attachment">Attach file:</label></p>
     <p class="entries">${ h.file('attachment', size=50) }</p>
@@ -104,7 +104,7 @@
     <p class="label"><span class="mandatory">*</span><label for="person.mobile">Speaker's mobile phone:</label></p>
     <p class="entries">${ h.text('person.mobile', size=60) }</p>
     <p class="note">Your mobile phone.</p>
-
+    <p class="note">The conference team will need this to contact you during the conference week. If you don't have one, or do not wish to provide it, then enter NONE in this field</p>
 
     <p class="label"><span class="publishable">&#8224;</span><label for="person.url">Speaker's homepage:</label></p>
     <p class="entries">${ h.text('person.url', size=60) }</p>
@@ -116,7 +116,7 @@
 
     <p class="label"><span class="mandatory">*</span><label for="person.experience">Relevant experience:</label></p>
     <p class="entries">${ h.textarea('person.experience', cols="70", rows="6") }</p>
-    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your paper.</p>
+    <p class="note">Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your proposal.</p>
 
     <p class="entries">
       ${ h.checkbox('proposal.video_release') }
@@ -132,6 +132,6 @@
 
     <p>&nbsp;</p>
     <p class="note"><span class="mandatory">*</span> - Mandatory field</p>
-    <p class="note"><span class="publishable">&#8224;</span> - Will be published (if your paper is accepted)</p>
+    <p class="note"><span class="publishable">&#8224;</span> - Will be published (if your proposal is accepted)</p>
 
-    <p>We reserve the right to forward papers (accepted or not) to the miniconf organisers for possible inclusion in the miniconf programme.</p>
+    <p>We reserve the right to forward proposals (accepted or not) to the miniconf organisers for possible inclusion in the miniconf programme.</p>

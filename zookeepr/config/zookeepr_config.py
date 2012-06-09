@@ -9,7 +9,7 @@ file_paths = {
   'base_templates' :    '$zk_root/zookeepr/templates',
   'base_public':        '$zk_root/zookeepr/public',
   'theme_root' :        '$zk_root/zookeepr/themes',
-  'enabled_theme':      '$theme_root/pyconau2012',
+  'enabled_theme':      '$theme_root/zookeepr',
   'theme_templates':    '$enabled_theme/templates',
   'theme_public':       '$enabled_theme/public',
   'public_html':        '',
