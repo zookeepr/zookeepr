@@ -52,6 +52,7 @@ class MiniconfProposalController(BaseController):
 
         c.proposal_type = ProposalType.find_by_name('Miniconf')
         c.person = h.signed_in_person()
+        h.check_for_incomplete_profile(c.person)
 
         defaults = {
             'proposal.type': c.proposal_type.id,

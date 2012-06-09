@@ -11,6 +11,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema
 import zookeepr.lib.helpers as h
+from zookeepr.lib.helpers import check_for_incomplete_profile
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
@@ -159,8 +160,7 @@ class PersonController(BaseController): #Read, Update, List
         # Tell authkit we authenticated them
         request.environ['paste.auth_tkt.set_user'](email)
 
-        if not c.person.firstname or not c.person.lastname or (lca_rego['personal_info']['home_address'] == 'yes' and (not c.person.address1 or not c.person.city or not c.person.postcode)):
-            redirect_to(controller='person', action='finish_signup', id=c.person.id)
+        h.check_for_incomplete_profile(c.person)
 
         h.flash('You have signed in')
 

@@ -303,6 +303,8 @@ class RegistrationController(BaseController):
     @dispatch_on(POST="_new")
     def new(self):
         c.signed_in_person = h.signed_in_person()
+        h.check_for_incomplete_profile(c.signed_in_person)
+
         if c.signed_in_person and c.signed_in_person.registration:
             redirect_to(action='edit', id=c.signed_in_person.registration.id)
 

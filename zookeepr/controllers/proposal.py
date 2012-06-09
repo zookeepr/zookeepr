@@ -109,6 +109,7 @@ class ProposalController(BaseController):
            return render("proposal/not_open.mako")
 
         c.person = h.signed_in_person()
+        h.check_for_incomplete_profile(c.person)
 
         defaults = {
             'proposal.type': 1,
