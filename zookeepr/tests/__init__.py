@@ -20,7 +20,8 @@ import pylons.test
 __all__ = ['environ', 'url', 'TestController']
 
 # Invoke websetup with the current config file
-SetupCommand('setup-app').run([config['__file__']])
+#SetupCommand('setup-app').run([config['__file__']])
+SetupCommand('setup-app').run([pylons.test.pylonsapp.config['__file__']])
 
 environ = {}
 

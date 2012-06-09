@@ -15,6 +15,8 @@ from zookeepr.model import init_model
 from zookeepr.config.lca_info import lca_info
 from zookeepr.config.zookeepr_config import file_paths
 
+from pylons.configuration import PylonsConfig
+
 def load_environment(global_conf, app_conf):
     """Configure the Pylons environment via the ``pylons.config``
     object
@@ -31,10 +33,14 @@ def load_environment(global_conf, app_conf):
     # Initialize config with the basic options
     config.init_app(global_conf, app_conf, package='zookeepr', paths=paths)
 
-    config['routes.map'] = make_map()
-    config['pylons.app_globals'] = app_globals.Globals()
+    config['routes.map'] = make_map(config)
+    config['pylons.app_globals'] = app_globals.Globals(config)
+    
     config['pylons.h'] = zookeepr.lib.helpers
+    config['pylons.strict_tmpl_context'] = False
 
+    config['pylons.package'] = 'zookeepr'
+    
     # Create the Mako TemplateLookup, with the default auto-escaping
     config['pylons.app_globals'].mako_lookup = TemplateLookup(
         directories=[paths['theme_templates'], paths['base_templates']],
@@ -49,3 +55,7 @@ def load_environment(global_conf, app_conf):
 
     # CONFIGURATION OPTIONS HERE (note: all config options will override
     # any Pylons config options)
+    
+    return config
+
+config = PylonsConfig()
