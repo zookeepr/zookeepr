@@ -84,7 +84,12 @@ class DbContentController(BaseController):
     @validate(schema=NewDbContentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['db_content']
-        results['creation_timestamp'] = datetime.combine(results['creation_date'], results['creation_time'])
+        if results['creation_time'] is None:
+            results['creation_time'] = datetime.time(datetime.now())
+        if results['creation_date'] is not None:
+            results['creation_timestamp'] = datetime.combine(results['creation_date'], results['creation_time'])
+        else:
+            results['creation_timestamp'] = None
         del results['creation_date']
         del results['creation_time']
         
@@ -150,9 +155,16 @@ class DbContentController(BaseController):
             if ( not key in ['creation_date', 'creation_time'] ):
                 setattr(c.db_content, key, self.form_result['db_content'][key])
 
-        c.db_content.creation_timestamp = \
-                datetime.combine(self.form_result['db_content']['creation_date'], \
-                                self.form_result['db_content']['creation_time'])
+        if self.form_result['db_content']['creation_time'] is None:
+            self.form_result['db_content']['creation_time'] = datetime.time(datetime.now())
+
+        if self.form_result['db_content']['creation_date'] is not None:
+            c.db_content.creation_timestamp = \
+                    datetime.combine(self.form_result['db_content']['creation_date'], \
+                                    self.form_result['db_content']['creation_time'])
+        else:
+            c.db_content.creation_timestamp = datetime.now()
+
 
         # update the objects with the validated form data
         meta.Session.commit()
