@@ -11,6 +11,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema
 import zookeepr.lib.helpers as h
+from zookeepr.lib.helpers import check_for_incomplete_profile
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
@@ -159,9 +160,7 @@ class PersonController(BaseController): #Read, Update, List
         # Tell authkit we authenticated them
         request.environ['paste.auth_tkt.set_user'](email)
 
-        if not c.person.firstname or not c.person.lastname:
-            h.flash('We need a bit more information about you.')
-            redirect_to(controller='person', action='edit', id=c.person.id)
+        h.check_for_incomplete_profile(c.person)
 
         h.flash('You have signed in')
 
@@ -310,6 +309,50 @@ class PersonController(BaseController): #Read, Update, List
         meta.Session.commit()
 
         return render('person/success.mako')
+
+
+    @authorize(h.auth.is_valid_user)
+    @dispatch_on(POST="_finish_signup")
+    def finish_signup(self):
+        c.form = 'finish_signup'
+
+        c.person = h.signed_in_person()
+        c.social_networks = SocialNetwork.find_all()
+        c.person.fetch_social_networks()
+
+        defaults = h.object_to_defaults(c.person, 'person')
+        defaults['person.email_address2'] = c.person.email_address
+        if not defaults['person.country']:
+            defaults['person.country'] = 'AUSTRALIA'
+
+        form = render('/person/finish_signup.mako')
+        return htmlfill.render(form, defaults)
+
+
+    @authorize(h.auth.is_valid_user)
+    @validate(schema=UpdatePersonSchema(), form='finish_signup', post_only=True, on_get=True, variable_decode=True)
+    def _finish_signup(self):
+        c.person = h.signed_in_person()
+
+        for key in self.form_result['person']:
+            setattr(c.person, key, self.form_result['person'][key])
+
+        for sn in self.form_result['social_network']:
+           network = SocialNetwork.find_by_name(sn['name'])
+           if sn['account_name']:
+               c.person.social_networks[network] = sn['account_name']
+           elif network in c.person.social_networks:
+               del c.person.social_networks[network]
+
+        # update the objects with the validated form data
+        meta.Session.commit()
+
+        redirect_location = session.pop('redirect_to', None)
+        if redirect_location:
+            redirect_to(str(redirect_location))
+        else:
+            redirect_to('home')
+
 
     @authorize(h.auth.is_valid_user)
     @dispatch_on(POST="_edit") 

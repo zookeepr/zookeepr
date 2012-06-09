@@ -24,6 +24,7 @@ from routes import request_config
 from routes.util import url_for as pylons_url_for
 
 from pylons import config, request, session
+from pylons.controllers.util import redirect_to
 
 import os.path, random, array
 
@@ -596,3 +597,10 @@ def list_to_string(list, primary_join='%s and %s', secondary_join=', ', html = F
     else:
         list = primary_join % (secondary_join.join(list[: -1]), list[-1])
     return list
+
+def check_for_incomplete_profile(person):
+    if not person.firstname or not person.lastname or (lca_rego['personal_info']['home_address'] == 'yes' and (not person.address1 or not person.city or not person.postcode)):
+        if not session.get('redirect_to', None):
+            session['redirect_to'] =  request.path_info
+            session.save()
+        redirect_to(controller='person', action='finish_signup', id=person.id)
