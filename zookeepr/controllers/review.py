@@ -37,7 +37,7 @@ class ReviewController(BaseController):
     def edit(self, id):
         c.review = Review.find_by_id(id)
 
-        redirect_to(h.url_for(controller='proposal', id=c.review.proposal.id, action='edit'))
+        redirect_to(h.url_for(controller='proposal', id=c.review.proposal.id, action='review'))
 
     @dispatch_on(POST="_delete")
     def delete(self, id):

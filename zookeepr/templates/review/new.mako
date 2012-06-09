@@ -8,18 +8,17 @@
 % endif
 </%def>
 
-
 <%def name="heading()">
   Proposal Review - #${ c.proposal.id } - ${ c.proposal.title }
 </%def>
-
-${ h.form(h.url_for()) }
 
 % if c.next_review_id:
 ${ toolbox.make_link('Skip!', url=h.url_for(controller='proposal', action='review', id=c.next_review_id)) }
 % else:
 <ul><li><em>Can't skip - you have reviewed all the other ${c.proposal.type.name }s!</em></li></ul>
 % endif
+
+${ h.form(h.url_for()) }
 
 <%include file="form.mako" />
 

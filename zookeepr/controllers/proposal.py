@@ -178,6 +178,9 @@ class ProposalController(BaseController):
         if c.review:
             c.form = 'edit'
             defaults = h.object_to_defaults(c.review, 'review')
+            if c.review.score == None:
+                defaults['review.score'] = ''
+
             form = render('/review/edit.mako')
             return htmlfill.render(form, defaults)
         else:
@@ -201,15 +204,15 @@ class ProposalController(BaseController):
             # update the objects with the validated form data
             meta.Session.commit()
             h.flash("Review Updated Successfully")
+            return redirect_to(controller='review', action='view', id=c.review.id)
 
         else:
             results = self.form_result['review']
             review = Review(**results)
 
             meta.Session.add(review)
-            c.proposal.reviews.append(review)
-
-            review.reviewer = person
+            review.proposal = c.proposal
+            review.reviewer = c.signed_in_person
 
             meta.Session.commit()
             h.flash("Review Added Successfully")
