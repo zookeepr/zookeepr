@@ -69,8 +69,9 @@ class DbContent(Base):
     published = sa.Column(sa.types.Boolean)
 
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
+    publish_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
-    
+
     #relations
     type = sa.orm.relation(DbContentType)
 
@@ -95,35 +96,35 @@ class DbContent(Base):
 
     @classmethod
     def find_by_title(cls, name, about_404 = True):
-        result = Session.query(DbContent).filter_by(title=title).first()
+        result = Session.query(DbContent).filter_by(title=title).filter(DbContent.publish_timestamp <= datetime.datetime.now()).order_by(DbContent.publish_timestamp.desc()).first()
         if result is None and abort_404:
             abort(404, "No such db_content object")
         return result
         
     @classmethod
     def find_by_url(cls, url, abort_404 = True):
-        result = Session.query(DbContent).filter_by(url=url).first()
+        result = Session.query(DbContent).filter_by(url=url).filter(DbContent.publish_timestamp <= datetime.datetime.now()).order_by(DbContent.publish_timestamp.desc()).first()
         if result is None and abort_404:
             abort(404, "No such db_content object")
         return result
 
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
-        result = Session.query(DbContent).filter_by(id=id).first()
+        result = Session.query(DbContent).filter_by(id=id).order_by(DbContent.publish_timestamp.desc()).first()
         if result is None and abort_404:
             abort(404, "No such db_content object")
         return result
 
     @classmethod
     def find_all_by_type_id(cls, type_id, abort_404 = True):
-        result = Session.query(DbContent).filter_by(type_id=type_id,published=True).filter(DbContent.creation_timestamp >= datetime.datetime.now()).order_by(creation_timestamp.desc()).all()
+        result = Session.query(DbContent).filter_by(type_id=type_id).filter(DbContent.publish_timestamp <= datetime.datetime.now()).order_by(DbContent.publish_timestamp.desc()).all()
         if result is None and abort_404:
             abort(404, "No such db_content object")
         return result
 
     @classmethod
     def find_all_by_type(cls, type, abort_404 = True):
-        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type, abort_404 = abort_404).id,published=True).filter(DbContent.creation_timestamp >= datetime.datetime.now()).order_by(DbContent.creation_timestamp.desc()).all()
+        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type, abort_404 = abort_404).id).filter(DbContent.publish_timestamp <= datetime.datetime.now()).order_by(DbContent.publish_timestamp.desc()).all()
         if result is None and abort_404:
             abort(404, "No such db_content object")
         return result

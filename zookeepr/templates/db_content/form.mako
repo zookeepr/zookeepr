@@ -16,16 +16,16 @@ ${ h.text('db_content.title', size=60) }
 </ul>
 
 <p class="label">
-<label for="db_content.creation_date">Date:</label>
+<label for="db_content.publish_date">Publish Date:</label>
 </p><p class="entries">
-${ h.text('db_content.creation_date', size=60) }
+${ h.text('db_content.publish_date', size=60) } (dd/mm/yy)
 </p>
-<label for="db_content.creation_time">Time:</label>
+<label for="db_content.publish_time">Publish Time:</label>
 </p><p class="entries">
-${ h.text('db_content.creation_time', size=60) }
+${ h.text('db_content.publish_time', size=60) } (hh:mm:ss)
 </p>
 <ul class="note">
-    <li>Set the date for the creation timestamp or leave blank for today.</li>
+    <li>Set the date for when to publish the article.</li>
     <li>If set into the future the content will not be available before then.</li>
 </ul>
 
@@ -36,11 +36,6 @@ ${ h.text('db_content.creation_time', size=60) }
 % endfor
 </p>
 
-<p class="entries">
-<label>${ h.checkbox('db_content.published') } Published</label>
-</p>
-<ul class="note"><li>Should this page be published?</li></ul>
-
 <p class="label">
 <label for="db_content.url">URL:</label>
 </p><p class="entries">
@@ -50,6 +45,7 @@ ${ h.text('db_content.url', size=60) }
 It is not mandatory supply a URL as content is still accessible via ID's. It is recommended not to create a URL alias for news items.</li>
 <li>For "In the press" this is the URL you want the item to link to.</li>
 <li>For "Redirect" this is the URL you are coming from, and the body is the URL to go to.</li>
+<li>If multiple pages with the same URL exist, the latest <em>published</em> one is served at this URL.</li>
 </ul>
 
 <p style="float: right;"><a href="/db_content/list_files?no_theme=true&iframe=true&width=800&height=600" rel="lightbox">Launch file manager</a></p>

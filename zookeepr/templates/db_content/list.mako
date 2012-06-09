@@ -6,9 +6,9 @@
         <th>ID/Edit</th>
         <th>Title</th>
         <th>Type</th>
-        <th>Pub</th>
         <th>URL</th>
-        <th>Created (/publish on)</th>
+        <th>Created On</th>
+        <th>Published</th>
         <th>Last updated</th>
         <th>Delete</th>
     </tr>
@@ -22,7 +22,6 @@
         <td>${ d.title }</td>
 %   endif
         <td>${ d.type.name }</td>
-        <td>${ d.published }</td>
 %   if '://' in d.url:
         <td>${ h.link_to(d.url, url=d.url) }</td>
 %   elif d.url != '':
@@ -31,6 +30,7 @@
         <td>N/A</td>
 %   endif
         <td>${ d.creation_timestamp.strftime("%Y-%m-%d %H:%M") }</td>
+        <td>${ h.yesno(d.publish_timestamp <= h.datetime.now()) |n } ${ d.publish_timestamp.strftime("%Y-%m-%d %H:%M") }</td>
         <td>${ d.last_modification_timestamp.strftime("%Y-%m-%d %H:%M") }</td>
         <td>${ h.link_to('X (delete)', url=h.url_for(controller='db_content', action='delete', id=d.id)) }</td>
     </tr>
