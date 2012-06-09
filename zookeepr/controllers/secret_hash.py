@@ -5,7 +5,7 @@ from pylons import config
 import logging
 import zookeepr.lib.helpers as h
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
+from zookeepr.lib.helpers import redirect_to
 from pylons.util import class_name_from_module_name
 
 from zookeepr.model import meta

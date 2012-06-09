@@ -1,7 +1,6 @@
 import logging
 import zookeepr.lib.helpers as h
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
 
 from zookeepr.model import meta
 

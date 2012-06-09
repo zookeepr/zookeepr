@@ -10,8 +10,9 @@ import time
 import PIL.Image
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import abort, redirect_to
-from pylons.decorators import validate
+from pylons.controllers.util import abort
+from zookeepr.lib.helpers import redirect_to
+from pylons.decorators import validate1
 from pylons.decorators.rest import dispatch_on
 
 from formencode import htmlfill, validators

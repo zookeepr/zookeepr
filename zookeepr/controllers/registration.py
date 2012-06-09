@@ -3,7 +3,8 @@ import logging
 import re
 
 from pylons import request, response, session, tmpl_context as c
-from pylons.controllers.util import redirect_to, Response
+from zookeepr.lib.helpers import redirect_to
+from pylons.controllers.util import Response
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
