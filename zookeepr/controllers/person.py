@@ -26,6 +26,9 @@ from zookeepr.config.lca_info import lca_info, lca_rego
 from zookeepr.lib.ssl_requirement import enforce_ssl
 
 import datetime
+import json
+import urllib
+import urllib2
 
 log = logging.getLogger(__name__)
 
@@ -85,6 +88,39 @@ class AuthPersonValidator(validators.FancyValidator):
             error_dict = {'email_address': error_message}
             raise Invalid(message, values, state, error_dict=error_dict)
 
+class PersonaValidator(validators.FancyValidator):
+    def validate_python(self, values, state):
+        assertion = values['assertion']
+        audience = h.url_for(qualified=True, controller='home').strip("/")
+
+        page = urllib2.urlopen('https://browserid.org/verify',
+                               urllib.urlencode({ "assertion": assertion,
+                                                  "audience": audience}))
+        data = json.load(page)
+        if data['status'] == 'okay':
+            c.email = data['email']
+            c.person = Person.find_by_email(c.email)
+
+        if c.person is None:
+            if not lca_info['account_creation']:
+                error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below."
+                message = "Login failed"
+                error_dict = {'email_address': error_message}
+                raise Invalid(message, values, state, error_dict=error_dict)
+
+            # Create a new account for this email address
+            c.person = Person()
+            c.person.email_address = data['email']
+            c.person.activated = True
+            meta.Session.add(c.person)
+            meta.Session.commit()
+
+        if not c.person.activated:
+            # Persona returns verified emails only, so might as well confirm this one...
+            c.person.activated = True
+            meta.Session.commit()
+
+
 class LoginPersonSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)
     password = validators.String(not_empty=True)
@@ -93,6 +129,10 @@ class LoginPersonSchema(BaseSchema):
 class LoginSchema(BaseSchema):
     person = LoginPersonSchema()
     pre_validators = [NestedVariables]
+
+class PersonaLoginSchema(BaseSchema):
+    assertion = validators.String(not_empty=True)
+    chained_validators = [PersonaValidator()]
 
 class RoleSchema(BaseSchema):
     role = validators.String(not_empty=True)
@@ -115,11 +155,13 @@ class PersonController(BaseController): #Read, Update, List
 
         return render('/person/signin.mako')
 
-    @validate(schema=LoginSchema(), form='signin', post_only=True, on_get=False, variable_decode=True)
-    def _signin(self):
-
+    def finish_login(self, email):
         # Tell authkit we authenticated them
-        request.environ['paste.auth_tkt.set_user'](c.email)
+        request.environ['paste.auth_tkt.set_user'](email)
+
+        if not c.person.firstname or not c.person.lastname:
+            h.flash('We need a bit more information about you.')
+            redirect_to(controller='person', action='edit', id=c.person.id)
 
         h.flash('You have signed in')
 
@@ -132,6 +174,13 @@ class PersonController(BaseController): #Read, Update, List
 
         redirect_to('home')
 
+    @validate(schema=LoginSchema(), form='signin', post_only=True, on_get=False, variable_decode=True)
+    def _signin(self):
+        self.finish_login(c.email)
+
+    @validate(schema=PersonaLoginSchema(), form='persona_login', post_only=True, on_get=False, variable_decode=True)
+    def persona_login(self):
+        self.finish_login(c.email)
 
     def signout_confirm(self, id=None):
         """ Confirm user wants to sign out
@@ -276,6 +325,8 @@ class PersonController(BaseController): #Read, Update, List
 
         defaults = h.object_to_defaults(c.person, 'person')
         defaults['person.email_address2'] = c.person.email_address
+        if not defaults['person.country']:
+            defaults['person.country'] = 'AUSTRALIA'
 
         form = render('/person/edit.mako')
         return htmlfill.render(form, defaults)
