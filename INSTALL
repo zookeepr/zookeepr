@@ -28,9 +28,8 @@ setup.py against what you have installed.
 This requires Python >=2.6.  Install latest pylons in a development directory: 
 
 		cd the-development-directory
-		wget http://www.pylonshq.com/download/0.9.7/go-pylons.py
 		mkdir pylons
-		python go-pylons.py pylons
+		python ./go-pylons.py pylons
 		alias pylons="source `pwd`/pylons/bin/activate"
 		pylons
 		python setup.py develop
@@ -61,10 +60,6 @@ On all Debian derived distributions, do the following:
 		aptitude install python-authkit python-dnspython python-imaging \
 			python-pastedeploy python-pylons python-setuptools pwgen
 		cd the-development-directory
-		alias pylons="export PYTHONPATH=$PWD/setup-dir"
-		mkdir `pwd`/setup-dir
-		pylons
-		python setup.py develop --no-deps --install-dir=$PYTHONPATH
 
 		Note: on Lenny only it was found that the version of AuthKit supplied in package python-authkit
 		did not work with zookeepr dependencies.  If you see a stacktrace in authkit with the line
@@ -87,7 +82,7 @@ Do the following:
 	sudo easy_install pylibravatar AuthKit
 	git clone https://github.com/zookeepr/zookeepr.git
 	cd zookeepr
-	
+
 ### PDF generation ###
 
 You need to install the following package for PDF generation to work, e. g.:
@@ -115,7 +110,17 @@ Found at /uml_graph.png (or .svg, .jpeg etc).
 
 ## Installing and setting up Zookeepr ##
 
- - Set up the development environment:
+ - Set up the Pylons environment:
+
+	alias pylons="export PYTHONPATH=$PWD/setup-dir"
+	mkdir $PYTHONPATH
+	pylons
+	python setup.py develop --no-deps --install-dir=$PYTHONPATH
+	cd zookeepr
+
+### Set up the development environment ###
+
+ - Set up the environment:
 
 		cd the-development-directory
 		pylons			# command created by the alias above
@@ -127,6 +132,11 @@ Found at /uml_graph.png (or .svg, .jpeg etc).
  - Create a `config.ini`.
 
 		paster make-config zookeepr config.ini
+
+If the make-config step complains that a package version - e.g. SQLAlchemy -
+is incorrect, and you change setup.py to make it work, you have to run the
+setup.py develop step again (see the Installing and setting up Zookeepr
+section).
 
  - The default `config.ini` uses sqlite, which is fine for development.  To use a different SQL backend edit `dburi`.
 
@@ -140,7 +150,7 @@ Found at /uml_graph.png (or .svg, .jpeg etc).
  
 ## Running Zookeepr ##
 
- - Set up the development environment:
+ - Set up the environment:
 
 		cd the-development-directory
 		pylons			# command created by the alias above
