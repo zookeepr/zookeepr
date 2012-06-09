@@ -455,6 +455,8 @@ class ProposalController(BaseController):
         return render('/proposal/latex.mako')
 
     def clean_abstract(self, abstract):
+        return abstract
+        # why are we cleaning the abstract here? shouldn't the template engine take care of this?
         abs = h.html_clean(abstract)
         if abs.startswith("<p>") and abs.endswith("</p>"):
             return abs[3:-4]
