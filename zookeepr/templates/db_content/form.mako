@@ -15,6 +15,20 @@ ${ h.text('db_content.title', size=60) }
 % endif
 </ul>
 
+<p class="label">
+<label for="db_content.creation_date">Date:</label>
+</p><p class="entries">
+${ h.text('db_content.creation_date', size=60) }
+</p>
+<label for="db_content.creation_time">Time:</label>
+</p><p class="entries">
+${ h.text('db_content.creation_time', size=60) }
+</p>
+<ul class="note">
+    <li>Set the date for the creation timestamp or leave blank for today.</li>
+    <li>If set into the future the content will not be available before then.</li>
+</ul>
+
 <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label>Content Type:</label></p>
 <p class="entries">
 % for st in c.db_content_types:

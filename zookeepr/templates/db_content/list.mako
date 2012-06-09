@@ -8,7 +8,7 @@
         <th>Type</th>
         <th>Pub</th>
         <th>URL</th>
-        <th>Created</th>
+        <th>Created (/publish on)</th>
         <th>Last updated</th>
         <th>Delete</th>
     </tr>

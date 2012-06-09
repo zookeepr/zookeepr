@@ -116,14 +116,14 @@ class DbContent(Base):
 
     @classmethod
     def find_all_by_type_id(cls, type_id, abort_404 = True):
-        result = Session.query(DbContent).filter_by(type_id=type_id,published=True).order_by(DbContent.creation_timestamp.desc()).all()
+        result = Session.query(DbContent).filter_by(type_id=type_id,published=True).filter(DbContent.creation_timestamp >= datetime.datetime.now()).order_by(creation_timestamp.desc()).all()
         if result is None and abort_404:
             abort(404, "No such db_content object")
         return result
 
     @classmethod
     def find_all_by_type(cls, type, abort_404 = True):
-        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type, abort_404 = abort_404).id,published=True).order_by(DbContent.creation_timestamp.desc()).all()
+        result = Session.query(DbContent).filter_by(type_id=DbContentType.find_by_name(type, abort_404 = abort_404).id,published=True).filter(DbContent.creation_timestamp >= datetime.datetime.now()).order_by(DbContent.creation_timestamp.desc()).all()
         if result is None and abort_404:
             abort(404, "No such db_content object")
         return result

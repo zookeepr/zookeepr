@@ -11,6 +11,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.validators import BaseSchema, DbContentTypeValidator
 import zookeepr.lib.helpers as h
+from datetime import datetime, timedelta
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
@@ -39,6 +40,8 @@ class DbContentSchema(BaseSchema):
     url = validators.String()
     body = validators.String()
     published = validators.Bool()
+    creation_date = validators.DateConverter(month_style='dd/mm/yyyy')
+    creation_time = validators.TimeConverter(use_datetime=True)
 
 class NewDbContentSchema(BaseSchema):
     db_content = DbContentSchema()
@@ -81,6 +84,10 @@ class DbContentController(BaseController):
     @validate(schema=NewDbContentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['db_content']
+        results['creation_timestamp'] = datetime.combine(results['creation_date'], results['creation_time'])
+        del results['creation_date']
+        del results['creation_time']
+        
         c.db_content = DbContent(**results)
         meta.Session.add(c.db_content)
         meta.Session.commit()
@@ -92,6 +99,12 @@ class DbContentController(BaseController):
     # organiser, suppress the page.
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
+        if c.db_content.creation_timestamp < datetime.now() and not h.auth.authorized(h.auth.has_organiser_role):
+            c.db_content = None
+            return NotFoundController().view()
+        elif c.db_content.creation_timestamp < datetime.now():
+            h.flash(("This content is marked to be published on %s and will not be visiable to public until then." % c.db_content.creation_timestamp), 'Warning')
+
         if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
             c.db_content = None
             return NotFoundController().view()
@@ -122,7 +135,10 @@ class DbContentController(BaseController):
         # This is horrible, don't know a better way to do it
         if c.db_content.type:
             defaults['db_content.type'] = defaults['db_content.type_id']
-        
+
+        defaults['db_content.creation_date'] = c.db_content.creation_timestamp.strftime('%d/%m/%y')
+        defaults['db_content.creation_time'] = c.db_content.creation_timestamp.strftime('%H:%M:%S')
+
         form = render('/db_content/edit.mako')
         return htmlfill.render(form, defaults)
 
@@ -131,7 +147,12 @@ class DbContentController(BaseController):
         c.db_content = DbContent.find_by_id(id)
 
         for key in self.form_result['db_content']:
-            setattr(c.db_content, key, self.form_result['db_content'][key])
+            if ( not key in ['creation_date', 'creation_time'] ):
+                setattr(c.db_content, key, self.form_result['db_content'][key])
+
+        c.db_content.creation_timestamp = \
+                datetime.combine(self.form_result['db_content']['creation_date'], \
+                                self.form_result['db_content']['creation_time'])
 
         # update the objects with the validated form data
         meta.Session.commit()
@@ -185,7 +206,7 @@ class DbContentController(BaseController):
         news_id = DbContentType.find_by_name("News")
         c.db_content_collection = []
         if news_id is not None: 
-            c.db_content_collection = meta.Session.query(DbContent).filter_by(published='t',type_id=news_id.id).order_by(DbContent.creation_timestamp.desc()).limit(20).all()
+            c.db_content_collection = meta.Session.query(DbContent).filter_by(published='t',type_id=news_id.id).filter_by(creation_timestamp >= datetime.now()).order_by(DbContent.creation_timestamp.desc()).limit(20).all()
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
         return render('/db_content/rss_news.mako')
 
