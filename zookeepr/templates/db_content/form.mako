@@ -16,16 +16,16 @@ ${ h.text('db_content.title', size=60) }
 </ul>
 
 <p class="label">
-<label for="db_content.creation_date">Date:</label>
+<label for="db_content.publish_date">Publish Date:</label>
 </p><p class="entries">
-${ h.text('db_content.creation_date', size=60) } (dd/mm/yyyy)
+${ h.text('db_content.publish_date', size=60) } (dd/mm/yy)
 </p>
-<label for="db_content.creation_time">Time:</label>
+<label for="db_content.publish_time">Publish Time:</label>
 </p><p class="entries">
-${ h.text('db_content.creation_time', size=60) } (hh:mm:ss)
+${ h.text('db_content.publish_time', size=60) } (hh:mm:ss)
 </p>
 <ul class="note">
-    <li>Set the date for the creation timestamp or leave blank for today.</li>
+    <li>Set the date for when to publish the article.</li>
     <li>If set into the future the content will not be available before then.</li>
 </ul>
 
@@ -35,11 +35,6 @@ ${ h.text('db_content.creation_time', size=60) } (hh:mm:ss)
 <label>${ h.radio('db_content.type', st.id) } ${ st.name |h }</label><br>
 % endfor
 </p>
-
-<p class="entries">
-<label>${ h.checkbox('db_content.published') } Published</label>
-</p>
-<ul class="note"><li>Should this page be published?</li></ul>
 
 <p class="label">
 <label for="db_content.url">URL:</label>

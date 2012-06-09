@@ -39,9 +39,8 @@ class DbContentSchema(BaseSchema):
     type = DbContentTypeValidator()
     url = validators.String()
     body = validators.String()
-    published = validators.Bool()
-    creation_date = validators.DateConverter(month_style='dd/mm/yyyy')
-    creation_time = validators.TimeConverter(use_datetime=True)
+    publish_date = validators.DateConverter(month_style='dd/mm/yyyy')
+    publish_time = validators.TimeConverter(use_datetime=True)
 
 class NewDbContentSchema(BaseSchema):
     db_content = DbContentSchema()
@@ -84,14 +83,14 @@ class DbContentController(BaseController):
     @validate(schema=NewDbContentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['db_content']
-        if results['creation_time'] is None:
-            results['creation_time'] = datetime.time(datetime.now())
-        if results['creation_date'] is not None:
-            results['creation_timestamp'] = datetime.combine(results['creation_date'], results['creation_time'])
+        if results['publish_time'] is None:
+            results['publish_time'] = datetime.time(datetime.now())
+        if results['publish_date'] is not None:
+            results['publish_timestamp'] = datetime.combine(results['publish_date'], results['publish_time'])
         else:
-            results['creation_timestamp'] = None
-        del results['creation_date']
-        del results['creation_time']
+            results['publish_timestamp'] = None
+        del results['publish_date']
+        del results['publish_time']
         
         c.db_content = DbContent(**results)
         meta.Session.add(c.db_content)
@@ -104,17 +103,12 @@ class DbContentController(BaseController):
     # organiser, suppress the page.
     def view(self, id):
         c.db_content = DbContent.find_by_id(id)
-        if c.db_content.creation_timestamp < datetime.now() and not h.auth.authorized(h.auth.has_organiser_role):
+        if c.db_content.publish_timestamp > datetime.now() and not h.auth.authorized(h.auth.has_organiser_role):
             c.db_content = None
             return NotFoundController().view()
-        elif c.db_content.creation_timestamp < datetime.now():
-            h.flash(("This content is marked to be published on %s and will not be visiable to public until then." % c.db_content.creation_timestamp), 'Warning')
+        elif c.db_content.publish_timestamp > datetime.now():
+            h.flash(("This content is marked to be published on %s and will not be visiable to public until then." % c.db_content.publish_timestamp), 'Warning')
 
-        if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
-            c.db_content = None
-            return NotFoundController().view()
-        elif not c.db_content.published:
-            h.flash("This content is marked as unpublished and is only viewable by organisers.", 'Warning')
         if c.db_content.type.name == 'Redirect':
             redirect_to(c.db_content.body.encode("latin1"), _code=301)
 	c.html_headers, c.html_body, c.menu_contents = self.parse_dbpage(
@@ -125,9 +119,6 @@ class DbContentController(BaseController):
         url = h.url_for().strip("/")
         c.db_content = DbContent.find_by_url(url, abort_404=False)
         if c.db_content is not None:
-           if not c.db_content.published and not h.auth.authorized(h.auth.has_organiser_role):
-              c.db_content = None
-              return NotFoundController().view()
            return self.view(c.db_content.id)
         return NotFoundController().view()
 
@@ -141,8 +132,8 @@ class DbContentController(BaseController):
         if c.db_content.type:
             defaults['db_content.type'] = defaults['db_content.type_id']
 
-        defaults['db_content.creation_date'] = c.db_content.creation_timestamp.strftime('%d/%m/%y')
-        defaults['db_content.creation_time'] = c.db_content.creation_timestamp.strftime('%H:%M:%S')
+        defaults['db_content.publish_date'] = c.db_content.publish_timestamp.strftime('%d/%m/%y')
+        defaults['db_content.publish_time'] = c.db_content.publish_timestamp.strftime('%H:%M:%S')
 
         form = render('/db_content/edit.mako')
         return htmlfill.render(form, defaults)
@@ -152,18 +143,18 @@ class DbContentController(BaseController):
         c.db_content = DbContent.find_by_id(id)
 
         for key in self.form_result['db_content']:
-            if ( not key in ['creation_date', 'creation_time'] ):
+            if ( not key in ['publish_date', 'publish_time'] ):
                 setattr(c.db_content, key, self.form_result['db_content'][key])
 
-        if self.form_result['db_content']['creation_time'] is None:
-            self.form_result['db_content']['creation_time'] = datetime.time(datetime.now())
+        if self.form_result['db_content']['publish_time'] is None:
+            self.form_result['db_content']['publish_time'] = datetime.time(datetime.now())
 
-        if self.form_result['db_content']['creation_date'] is not None:
-            c.db_content.creation_timestamp = \
-                    datetime.combine(self.form_result['db_content']['creation_date'], \
-                                    self.form_result['db_content']['creation_time'])
+        if self.form_result['db_content']['publish_date'] is not None:
+            c.db_content.publish_timestamp = \
+                    datetime.combine(self.form_result['db_content']['publish_date'], \
+                                    self.form_result['db_content']['publish_time'])
         else:
-            c.db_content.creation_timestamp = datetime.now()
+            c.db_content.publish_timestamp = datetime.now()
 
 
         # update the objects with the validated form data
@@ -218,7 +209,7 @@ class DbContentController(BaseController):
         news_id = DbContentType.find_by_name("News")
         c.db_content_collection = []
         if news_id is not None: 
-            c.db_content_collection = meta.Session.query(DbContent).filter_by(published='t',type_id=news_id.id).filter_by(creation_timestamp >= datetime.now()).order_by(DbContent.creation_timestamp.desc()).limit(20).all()
+            c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id.id).filter_by(publish_timestamp <= datetime.now()).order_by(DbContent.publish_timestamp.desc()).limit(20).all()
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
         return render('/db_content/rss_news.mako')
 
