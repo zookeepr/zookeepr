@@ -36,8 +36,13 @@
 % endif
 
   <div id="q4">
-    <p class="label"><b>Comments</b> (optional, readable by other reviewers, will not be shown to the submitter)</p>
+    <p class="label"><b>Comments</b> (optional, readable by other reviewers and may be given to the submitter)</p>
     ${ h.textarea('review.comment', cols="80", rows="10") }
+  </div>
+
+  <div id="q5">
+    <p class="label"><b>Private Comments</b> (optional, readable only by other reviewers, will not be shown to the submitter)</p>
+    ${ h.textarea('review.private_comment', cols="80", rows="10") }
   </div>
 </fieldset>
 

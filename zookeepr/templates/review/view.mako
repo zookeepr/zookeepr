@@ -42,5 +42,11 @@ ${ c.review.miniconf | h }
 <p>${ c.review.comment | h}</p>
 </blockquote>
 
+<p><b>Reviewer Private Comment:</b></p>
+<blockquote>
+<p>${ c.review.private_comment | h}</p>
+</blockquote>
+
+
 ${ h.link_to('Edit', url=h.url_for(action='edit')) } - ${ h.link_to('Delete', url=h.url_for(action='delete')) }
 
