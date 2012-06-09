@@ -68,4 +68,4 @@ class Review(Base):
     @classmethod
     def find_summary(cls):
         from zookeepr.model.person import Person
-        return Session.query(Person).join(cls).add_columns(sa.func.count(1).label('count'), sa.func.avg(cls.score).label('average')).group_by(Person)
+        return Session.query(Person).join(cls).add_columns(sa.func.count(cls.score).label('reviews'), (sa.func.count(1)-sa.func.count(cls.score)).label('declined'), sa.func.avg(cls.score).label('average')).group_by(Person)

@@ -5,15 +5,17 @@
 <table>
   <tr>
     <th>Reviewer</th>
-    <th>Number of Reviews</th>
+    <th>Reviews</th>
+    <th>Declined</th>
 % if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_papers_chair_role)):
     <th>Avg Score</th>
 % endif
   </tr>
 % for reviewer in c.summary:
   <tr class="${ h.cycle('even', 'odd') }">
-    <td>${ reviewer[0].firstname } ${ reviewer[0].lastname }</td>
-    <td>${ reviewer.count }</td>
+    <td>${ reviewer.Person.firstname } ${ reviewer.Person.lastname }</td>
+    <td>${ reviewer.reviews }</td>
+    <td>${ reviewer.declined }</td>
 %   if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_papers_chair_role)):
 %     if reviewer.average is None:
     <td>No Average</td>

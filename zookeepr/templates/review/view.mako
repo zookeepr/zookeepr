@@ -16,7 +16,14 @@
 </blockquote>
 
 <br />
-<p><b>Score:</b> ${ c.review.score | h }</p>
+<p><b>Score:</b> 
+% if c.review.score:
+${ c.review.score | h }
+% else:
+Not Scored
+% endif
+</p>
+
 %if len(c.streams) > 1:
 <p><b>Recommended Stream:</b>
 % if c.review.stream is not None:
