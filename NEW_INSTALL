@@ -1,7 +1,6 @@
 virtualenv env
-#./env/bin/easy_install pyramid
 
 
 ./env/bin/python setup.py develop
-./env/bin/initialise_zk_db
+./env/bin/initialise_zk_db development.ini
 ./env/bin/pserve development.ini
