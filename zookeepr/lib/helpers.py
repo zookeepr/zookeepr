@@ -26,7 +26,6 @@ from routes.util import url_for as pylons_url_for
 from pylons import url
 
 from pylons import config, request, session
-from pylons.controllers.util import redirect_to
 
 import os.path, random, array
 
