@@ -29,6 +29,7 @@ from zookeepr.config.lca_info import lca_info
 from zookeepr.config.zookeepr_config import file_paths
 
 import zookeepr.lib.pxpay as pxpay
+import zookeepr.lib.pdfgen as pdfgen
 
 log = logging.getLogger(__name__)
 
@@ -319,43 +320,14 @@ class InvoiceController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
-        import os, tempfile, libxml2, libxslt
-
         c.invoice = Invoice.find_by_id(id, True)
-
         xml_s = render('/invoice/pdf.mako')
-
         xsl_f = file_paths['zk_root'] + '/zookeepr/templates/invoice/pdf.xsl'
-        xsl_s = libxml2.parseFile(xsl_f)
-        xsl = libxslt.parseStylesheetDoc(xsl_s)
-
-        xml = libxml2.parseDoc(xml_s)
-        svg_s = xsl.applyStylesheet(xml, None)
-
-        (svg_fd, svg) = tempfile.mkstemp('.svg')
-        xsl.saveResultToFilename(svg, svg_s, 0)
-
-        xsl.freeStylesheet()
-        xml.freeDoc()
-        svg_s.freeDoc()
-
-        (pdf_fd, pdf) = tempfile.mkstemp('.pdf')
-
-        os.close(svg_fd); os.close(pdf_fd)
-
-        os.system('inkscape -z -f %s -A %s' % (svg, pdf))
-
-        pdf_f = file(pdf)
-        res = Response(pdf_f.read())
-        pdf_f.close()
-        res.headers['Content-type']='application/pdf'
-        #res.headers['Content-type']='application/octet-stream'
-        #res.headers['Content-type']='text/plain; charset=utf-8'
+        pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
+        
         filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'
-        res.headers['Content-Disposition']=( 'attachment; filename=%s' % filename )
+        return pdfgen.wrap_pdf_response(pdf_data, filename)
 
-        # We should really remove the pdf file, shouldn't we.
-        return res
 
     def void(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
