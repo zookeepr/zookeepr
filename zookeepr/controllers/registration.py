@@ -100,6 +100,8 @@ class ExistingPersonSchema(BaseSchema):
     state = validators.String()
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
+    i_agree = validators.Bool(if_missing=False)
+    chained_validators = [IAgreeValidator("i_agree")]
 
 class RegistrationSchema(BaseSchema):
     over18 = validators.Int(min=0, max=1, not_empty=True)
@@ -122,11 +124,9 @@ class RegistrationSchema(BaseSchema):
     special = validators.String()
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
-    i_agree = validators.Bool(if_missing=False)
 
     chained_validators = [
         SillyDescriptionChecksum("silly_description", "silly_description_checksum"),
-        IAgreeValidator("i_agree")
     ]
 
 class SpecialOfferSchema(BaseSchema):
@@ -475,8 +475,6 @@ class RegistrationController(BaseController):
         else:
             defaults['registration.vcs'] = 'other'
             defaults['registration.vcstext'] = c.registration.vcs
-
-        defaults['registration.i_agree'] = 1
 
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)
