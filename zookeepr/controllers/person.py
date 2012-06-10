@@ -333,19 +333,7 @@ class PersonController(BaseController): #Read, Update, List
     @validate(schema=UpdatePersonSchema(), form='finish_signup', post_only=True, on_get=True, variable_decode=True)
     def _finish_signup(self):
         c.person = h.signed_in_person()
-
-        for key in self.form_result['person']:
-            setattr(c.person, key, self.form_result['person'][key])
-
-        for sn in self.form_result['social_network']:
-           network = SocialNetwork.find_by_name(sn['name'])
-           if sn['account_name']:
-               c.person.social_networks[network] = sn['account_name']
-           elif network in c.person.social_networks:
-               del c.person.social_networks[network]
-
-        # update the objects with the validated form data
-        meta.Session.commit()
+        self.finish_edit(c.person)
 
         redirect_location = session.pop('redirect_to', None)
         if redirect_location:
@@ -353,6 +341,19 @@ class PersonController(BaseController): #Read, Update, List
         else:
             redirect_to('home')
 
+    def finish_edit(self, person):
+        for key in self.form_result['person']:
+            setattr(person, key, self.form_result['person'][key])
+
+        for sn in self.form_result['social_network']:
+           network = SocialNetwork.find_by_name(sn['name'])
+           if sn['account_name']:
+               person.social_networks[network] = sn['account_name']
+           elif network in person.social_networks:
+               del person.social_networks[network]
+
+        # update the objects with the validated form data
+        meta.Session.commit()
 
     @authorize(h.auth.is_valid_user)
     @dispatch_on(POST="_edit") 
@@ -385,19 +386,7 @@ class PersonController(BaseController): #Read, Update, List
             h.auth.no_role()
 
         c.person = Person.find_by_id(id)
-
-        for key in self.form_result['person']:
-            setattr(c.person, key, self.form_result['person'][key])
-
-        for sn in self.form_result['social_network']:
-           network = SocialNetwork.find_by_name(sn['name'])
-           if sn['account_name']:
-               c.person.social_networks[network] = sn['account_name']
-           elif network in c.person.social_networks:
-               del c.person.social_networks[network]
-
-        # update the objects with the validated form data
-        meta.Session.commit()
+        self.finish_edit(c.person)
 
         redirect_to(action='view', id=id)
 
