@@ -17,7 +17,7 @@ ${ h.form(h.url_for()) }
 <%include file="form.mako" />
         ${ h.hidden('special_offer.name', '') }
         ${ h.hidden('special_offer.member_number', '') }
-        ${ h.hidden('registration.i_agree', True) }
+        ${ h.hidden('person.i_agree', True) }
         <p class="submit">${ h.submit('submit','Update') } ${ h.link_to('back', url=h.url_for(action='status', id=None)) }</p>
       ${ h.end_form() }
 

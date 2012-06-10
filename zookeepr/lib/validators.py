@@ -34,6 +34,19 @@ class DictSet(validators.Set):
         value = value.keys()
         return super(DictSet, self)._to_python(value, state)
 
+class IAgreeValidator(validators.FormValidator):
+    validate_partial_form = True
+    def __init__(self, field_name):
+        super(self.__class__, self).__init__()
+        self.__field_name = field_name
+    def validate_partial(self, values, state):
+        agree_value = values.get(self.__field_name, None)
+        if not agree_value:
+            error_dict = {
+                self.__field_name: "You must read and accept the terms and conditions before you can register.",
+            }
+            raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
+
 class PersonValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return Person.find_by_id(int(value))
@@ -221,9 +234,9 @@ class PersonSchema(BaseSchema):
     state = validators.String()
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
+    i_agree = validators.Bool(if_missing=False)
 
-    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm'), SameEmailAddress()]
-
+    chained_validators = [NotExistingPersonValidator(), validators.FieldsMatch('password', 'password_confirm'), SameEmailAddress(), IAgreeValidator("i_agree")]
 
 
 class ProductMinMax(validators.FancyValidator):

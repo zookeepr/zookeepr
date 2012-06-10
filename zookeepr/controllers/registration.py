@@ -14,7 +14,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.ssl_requirement import enforce_ssl
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory, CheckboxQty
-from zookeepr.lib.validators import ProductQty, ProductMinMax
+from zookeepr.lib.validators import ProductQty, ProductMinMax, IAgreeValidator
 
 # validators used from the database
 from zookeepr.lib.validators import ProDinner, PPDetails, PPChildrenAdult
@@ -80,19 +80,6 @@ class SillyDescriptionChecksum(validators.FormValidator):
             }
             raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
 
-class IAgreeValidator(validators.FormValidator):
-    validate_partial_form = True
-    def __init__(self, field_name):
-        super(self.__class__, self).__init__()
-        self.__field_name = field_name
-    def validate_partial(self, values, state):
-        agree_value = values.get(self.__field_name, None)
-        if not agree_value:
-            error_dict = {
-                self.__field_name: "You must read and accept the terms and conditions before you can register.",
-            }
-            raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
-
 class OtherValidator(validators.String):
     def __init__(self, list, if_missing=None):
         super(self.__class__, self).__init__(if_missing=if_missing)
@@ -113,6 +100,8 @@ class ExistingPersonSchema(BaseSchema):
     state = validators.String()
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
+    i_agree = validators.Bool(if_missing=False)
+    chained_validators = [IAgreeValidator("i_agree")]
 
 class RegistrationSchema(BaseSchema):
     over18 = validators.Int(min=0, max=1, not_empty=True)
@@ -135,11 +124,9 @@ class RegistrationSchema(BaseSchema):
     special = validators.String()
     signup = DictSet(if_missing=None)
     prevlca = DictSet(if_missing=None)
-    i_agree = validators.Bool(if_missing=False)
 
     chained_validators = [
         SillyDescriptionChecksum("silly_description", "silly_description_checksum"),
-        IAgreeValidator("i_agree")
     ]
 
 class SpecialOfferSchema(BaseSchema):
@@ -488,8 +475,6 @@ class RegistrationController(BaseController):
         else:
             defaults['registration.vcs'] = 'other'
             defaults['registration.vcstext'] = c.registration.vcs
-
-        defaults['registration.i_agree'] = 1
 
         form = render('/registration/edit.mako')
         return htmlfill.render(form, defaults)

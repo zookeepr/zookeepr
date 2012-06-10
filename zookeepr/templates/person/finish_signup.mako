@@ -66,6 +66,12 @@ ${ h.select('person.country', None, h.countries()) }
 ${ h.hidden('person.country') }
 %endif
 
+%if not c.person.i_agree:
+<p>${ h.checkbox('person.i_agree') } <label for="personi_agree">I agree to the</label> <a href="/cor/terms_and_conditions" target="_blank">conditions of registration</a></p>
+%else:
+${ h.hidden('person.i_agree') }
+%endif
+
 <p>${ h.submit('update', 'Save') }</p>
 
 ${ h.end_form() }

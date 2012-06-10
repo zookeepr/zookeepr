@@ -610,7 +610,7 @@ def list_to_string(list, primary_join='%s and %s', secondary_join=', ', html = F
     return list
 
 def check_for_incomplete_profile(person):
-    if not person.firstname or not person.lastname or (lca_rego['personal_info']['home_address'] == 'yes' and (not person.address1 or not person.city or not person.postcode)):
+    if not person.firstname or not person.lastname or not person.i_agree or (lca_rego['personal_info']['home_address'] == 'yes' and (not person.address1 or not person.city or not person.postcode)):
         if not session.get('redirect_to', None):
             session['redirect_to'] =  request.path_info
             session.save()
