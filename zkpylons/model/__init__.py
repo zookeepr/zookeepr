@@ -3,8 +3,6 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.exc import IntegrityError
 
-from import meta
-
 import person
 import role
 import person_role_map

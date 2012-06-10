@@ -26,4 +26,5 @@ def main(argv=sys.argv):
     engine = engine_from_config(settings, 'sqlalchemy.')
     
     model.init_model(engine)
+    meta.Base.metadata.create_all(engine)
     model.setup(meta)
