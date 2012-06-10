@@ -2,7 +2,7 @@ from pyramid.config import Configurator
 from sqlalchemy import engine_from_config
 
 from .models import DBSession
-from legacy_view import LegacyView
+from controllers.legacy_view import LegacyView
 
 def main(global_config, **settings):
     """ This function returns a Pyramid WSGI application.

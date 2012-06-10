@@ -1,4 +1,4 @@
-from zookeepr.config.middleware import make_app
+from zkpylons.config.middleware import make_app
 
 class LegacyView(object):
     def __init__(self, global_config, **settings):
