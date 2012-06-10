@@ -362,10 +362,9 @@ class ProposalController(BaseController):
 
     @authorize(h.auth.has_reviewer_role)
     def summary(self):
-        for pt in c.proposal_types:
-            stuff = Proposal.find_all_by_proposal_type_id(pt.id, include_withdrawn=False)
-            stuff.sort(self._score_sort)
-            setattr(c, '%s_collection' % pt.name, stuff)
+        c.proposal = {}
+        for proposal_type in c.proposal_types:
+            c.proposal[proposal_type] = Proposal.find_review_summary().filter(Proposal.type==proposal_type).filter(Proposal.status==ProposalStatus.find_by_name('Withdrawn')).order_by('average').all()
         for aat in c.accommodation_assistance_types:
             stuff = Proposal.find_all_by_accommodation_assistance_type_id(aat.id)
             setattr(c, '%s_collection' % aat.name, stuff)
@@ -374,20 +373,6 @@ class ProposalController(BaseController):
             setattr(c, '%s_collection' % tat.name, stuff)
 
         return render('proposal/summary.mako')
-
-    def _score_sort(self, proposal1, proposal2):
-        return cmp(self._review_avg_score(proposal2), self._review_avg_score(proposal1))
-
-    def _review_avg_score(self,proposal):
-        total_score = 0
-        num_reviewers = 0
-        for review in proposal.reviews:
-            if review.score is not None:
-                num_reviewers += 1
-                total_score += review.score
-        if num_reviewers == 0:
-            return 0
-        return total_score*1.0/num_reviewers
 
     def index(self):
         c.person = h.signed_in_person()

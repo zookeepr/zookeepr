@@ -55,19 +55,13 @@ function toggleDiv(id,flagit) {
 </ul>
 
 
-<% import re %>
-% for pt in c.proposal_types:
-    <% collection = getattr(c, '%s_collection' % pt.name) %>
-    <% i = 1 %>
+% for (proposal_type, proposal_list) in c.proposal.items():
 
-    <% simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name) %>
+<a name="${ proposal_type.name }"></a>
+<h2>${ proposal_type.name }s </h2>
 
-<a name="${ simple_title }"></a>
-<h2>${ pt.name }s </h2>
-
-<table id="${ pt.name }">
+<table id="${ proposal_type.name }">
 <tr>
-<th>&nbsp;</th>
 <th>#</th>
 <th>Proposal</th>
 <th>Submitters</th>
@@ -76,16 +70,13 @@ function toggleDiv(id,flagit) {
 <th>Winning Stream</th>
 </tr>
 
-% for proposal in collection:
+% for proposal_result in proposal_list:
+<% proposal = proposal_result.Proposal %>
 %    if not proposal.reviews:
         <% continue %>
 %    endif
 
 <tr class="${ h.cycle('even', 'odd') }">
-
-<td>${ i }</td>
-<% i = i + 1 %>
-
 
 <td>
 <div onMouseOver="toggleDiv('${ "assistance%s" % proposal.id | h}',1)" onMouseOut="toggleDiv('${ "assistance%s" % proposal.id | h}',0)">
@@ -107,8 +98,7 @@ ${ h.link_to(proposal.title, url=h.url_for(controller='proposal', action='review
 <td>
 %       for person in proposal.people:
 <div onMouseOver="toggleDiv('${ "bio%s" % person.id | h}',1)" onMouseOut="toggleDiv('${ "bio%s" % person.id | h}',0)">
-${ person.firstname }
-${ person.lastname }, 
+${ person.fullname() }, 
 </div>
 <div id="${ "bio%s" % person.id | h}" class="biodiv">${ person.firstname + " " + person.lastname |h}<br><strong>Bio:</strong><p>${ person.bio |h }</p><strong>Experience:</strong><p> ${person.experience |h}</p></div>
 %       endfor
@@ -200,9 +190,9 @@ Reviews - ${ parent.title() }
 
   import re
 
-  for pt in c.proposal_types:
-    simple_title = re.compile('([^a-zA-Z0-9])').sub('', pt.name)
-    menu += '<li><a href="#' + simple_title + '">' + pt.name + ' proposals</a></li>'
+  for proposal_type in c.proposal_types:
+    proposal_type.name = re.compile('([^a-zA-Z0-9])').sub('', proposal_type.name)
+    menu += '<li><a href="#' + proposal_type.name + '">' + proposal_type.name + ' proposals</a></li>'
   return menu
 %>
 </%def>
