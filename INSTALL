@@ -59,7 +59,7 @@ Some Lenny packages are too old.  So on Lenny only, install them from backports:
 On all Debian derived distributions, do the following:
 
 		aptitude install python-authkit python-dnspython python-imaging python-pip \
-			python-pastedeploy python-pylons python-setuptools pwgen
+			python-pastedeploy python-pylons python-setuptools python-vobject pwgen
 		cd the-development-directory
 		sudo pip install pytz
 
