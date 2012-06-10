@@ -3,17 +3,11 @@ import sys
 import transaction
 
 from sqlalchemy import engine_from_config
-from model import meta
+from zk.model import meta
 
 from pyramid.paster import (
     get_appsettings,
     setup_logging,
-    )
-
-from ..models import (
-    DBSession,
-    MyModel,
-    Base,
     )
 
 def usage(argv):
