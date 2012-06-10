@@ -7,18 +7,20 @@ except ImportError:
 
 setup(
     name='zookeepr',
-    version='0.4.0',
+    version='1.0.0',
     description='A conference management system',
     author='Zookeep Core Team',
     author_email='zookeepr-core@zookeepr.org',
     url='http://zookeepr.org',
     install_requires=[
-        "WebOb==0.9.8",
-        "Pylons>=0.9.7",
-        "SQLAlchemy>=0.5.8",
-        "AuthKit>=0.4.0",
+        "WebOb",
+        "Pylons",
+        "SQLAlchemy",
+        "AuthKit",
         # FormEncode used to do form input validation
-        "FormEncode>=0.6",
+        "FormEncode",
+        "WebTest",
+        "pastescript",
         # DNS for email address validation
         "dnspython",
         "pylibravatar",

@@ -25,14 +25,15 @@ setup.py against what you have installed.
 
 ### Installing without using a distro's package management ###
 
-This requires Python >=2.6.  Install latest pylons in a development directory: 
+This requires Python >=2.6 and virtualenv.  Install latest pylons in a development directory: 
 
 		cd the-development-directory
-		mkdir pylons
-		python ./go-pylons.py pylons
+		virtualenv pylons
 		alias pylons="source `pwd`/pylons/bin/activate"
 		pylons
 		python setup.py develop
+		
+		(when using paster you may require using ./pylons/bin/paster)
 
 ### Installing using Debian style package management ###
 
