@@ -550,10 +550,11 @@ class RegistrationController(BaseController):
                     rego_product = RegistrationProduct()
                     rego_product.registration = c.registration
                     rego_product.product = product
-                    if product.category.name == 'Accommodation':
-                        rego_product.qty = c.registration.checkout - c.registration.checkin
-                    else:
-                        rego_product.qty = 1
+                    #if product.category.name == 'Accommodation':
+                    #    rego_product.qty = c.registration.checkout - c.registration.checkin
+                    #else:
+                    #    rego_product.qty = 1
+                    rego_product.qty = 1
                     c.registration.products.append(rego_product)
             elif category.display == 'checkbox':
                 for product in category.products:
