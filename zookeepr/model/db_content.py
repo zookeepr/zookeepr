@@ -66,7 +66,6 @@ class DbContent(Base):
     type_id = sa.Column(sa.types.Integer, sa.ForeignKey('db_content_type.id'))
     url = sa.Column(sa.types.Text)
     body = sa.Column(sa.types.Text)
-    published = sa.Column(sa.types.Boolean)
 
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     publish_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
