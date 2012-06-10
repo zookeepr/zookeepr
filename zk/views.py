@@ -5,7 +5,7 @@ from sqlalchemy.exc import DBAPIError
 
 @view_config(route_name='home', renderer='templates/mytemplate.pt')
 def my_view(request):
-    return {'one':1, 'project':'MyPyramid'}
+    return {'one':1, 'project':'zookeepr'}
 
 conn_err_msg = """\
 Pyramid is having a problem using your SQL database.  The problem

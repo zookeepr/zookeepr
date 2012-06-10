@@ -83,6 +83,5 @@ def  make_app(global_conf, full_stack=True, static_files=True, **app_conf):
             static_app.append(StaticURLParser(static_files_dir))
         static_apps = Cascade(static_app, catch=(404,))
         app = Cascade([static_apps, app])
-        
     app.config = config
     return app
