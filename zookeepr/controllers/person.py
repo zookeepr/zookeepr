@@ -307,20 +307,21 @@ class PersonController(BaseController): #Read, Update, List
             meta.Session.commit()
             return render('person/expired.mako')
 
-        person = Person.find_by_email(c.conf_rec.email_address)
-        if person is None:
+        c.person = Person.find_by_email(c.conf_rec.email_address)
+        if c.person is None:
             raise RuntimeError, "Person doesn't exist %s" % c.conf_rec.email_address
 
         # set the password
-        person.password = self.form_result['password']
+        c.person.password = self.form_result['password']
         # also make sure the person is activated
-        person.activated = True
+        c.person.activated = True
 
         # delete the conf rec
         meta.Session.delete(c.conf_rec)
         meta.Session.commit()
 
-        return render('person/success.mako')
+        h.flash('Your password has been updated!')
+        self.finish_login(c.person.email_address)
 
 
     @authorize(h.auth.is_valid_user)
