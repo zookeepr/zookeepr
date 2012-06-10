@@ -14,7 +14,7 @@ from formencode.variabledecode import NestedVariables
 from zookeepr.lib.base import BaseController, render
 from zookeepr.lib.ssl_requirement import enforce_ssl
 from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory, CheckboxQty
-from zookeepr.lib.validators import ProductQty, ProductMinMax
+from zookeepr.lib.validators import ProductQty, ProductMinMax, IAgreeValidator
 
 # validators used from the database
 from zookeepr.lib.validators import ProDinner, PPDetails, PPChildrenAdult
@@ -77,19 +77,6 @@ class SillyDescriptionChecksum(validators.FormValidator):
         if values.get(self.__checksum_name, None) != checksum:
             error_dict = {
                 self.__silly_name: "Smart enough to hack the silly description, not smart enough to hack the checksum.",
-            }
-            raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
-
-class IAgreeValidator(validators.FormValidator):
-    validate_partial_form = True
-    def __init__(self, field_name):
-        super(self.__class__, self).__init__()
-        self.__field_name = field_name
-    def validate_partial(self, values, state):
-        agree_value = values.get(self.__field_name, None)
-        if not agree_value:
-            error_dict = {
-                self.__field_name: "You must read and accept the terms and conditions before you can register.",
             }
             raise Invalid(self.__class__.__name__, values, state, error_dict=error_dict)
 

@@ -76,6 +76,7 @@ class Person(Base):
     bio = sa.Column(sa.types.Text)
 
     badge_printed = sa.Column(sa.types.Boolean, default='False')
+    i_agree = sa.Column(sa.types.Boolean, nullable=False, default=False)
 
     def _create_social_network_map(network, account_name):
        """Constructs SocialNetworkMaps from the SocialNetowkr and the

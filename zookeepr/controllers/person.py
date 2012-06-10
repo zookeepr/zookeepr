@@ -9,7 +9,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema
+from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator
 import zookeepr.lib.helpers as h
 from zookeepr.lib.helpers import check_for_incomplete_profile
 
@@ -67,6 +67,9 @@ class _UpdatePersonSchema(BaseSchema):
     state = validators.String()
     postcode = validators.String(not_empty=True)
     country = validators.String(not_empty=True)
+    i_agree = validators.Bool(if_missing=False)
+
+    chained_validators = [IAgreeValidator("i_agree")]
 
 class UpdatePersonSchema(BaseSchema):
     person = _UpdatePersonSchema()
