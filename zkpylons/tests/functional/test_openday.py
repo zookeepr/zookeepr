@@ -1,4 +1,4 @@
-from zookeepr.tests.functional import *
+from zkpylons.tests.functional import *
 
 class TestOpendayController(CRUDControllerTest):
     model = model.openday.Openday

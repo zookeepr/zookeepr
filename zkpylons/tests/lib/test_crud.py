@@ -1,6 +1,6 @@
 from unittest import TestCase
 
-from zookeepr.lib.crud import Create
+from zkpylons.lib.crud import Create
 
 # class TestCRUD(TestCase):
 #     def test_create(self):

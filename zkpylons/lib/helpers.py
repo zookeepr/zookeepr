@@ -29,12 +29,12 @@ from pylons import config, request, session
 
 import os.path, random, array
 
-from zookeepr.lib import auth
+from zkpylons.lib import auth
 
-from zookeepr.model import Person
+from zkpylons.model import Person
 
-from zookeepr.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus
-from zookeepr.config.zookeepr_config import file_paths
+from zkpylons.config.lca_info import lca_info, lca_rego, lca_menu, lca_submenus
+from zkpylons.config.zkpylons_config import file_paths
 
 from sqlalchemy.orm.util import object_mapper
 
@@ -42,7 +42,7 @@ import itertools, re, Image
 from glob import glob
 
 from pylons.controllers.util import redirect
-from zookeepr.model import meta
+from zkpylons.model import meta
 
 def iterdict(items):
     return dict(items=items, iter=itertools.cycle(items))
@@ -220,7 +220,7 @@ rot_26 = "rot_13" #used for being sneaky in the tag hashing for LCA2012
 #def random_pic(subdir):
 #    """Mel8ourne random pic code.
 #    """
-#    fileprefix = '/srv/zookeepr/zookeepr/public/random-pix/'
+#    fileprefix = '/srv/zkpylons/zkpylons/public/random-pix/'
 #    htmlprefix = '/random-pix/'
 #    try:
 #        file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
@@ -526,7 +526,7 @@ def flash(msg, category="information"):
     session.save()
 
 def zk_root():
-    """ Helper function to return the root directory of zookeepr,
+    """ Helper function to return the root directory of zkpylons,
     this allows completely relevant URL's """
     pass #TODO
 

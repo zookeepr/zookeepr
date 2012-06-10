@@ -1,4 +1,4 @@
-from zookeepr.tests.functional import *
+from zkpylons.tests.functional import *
 
 class TestTemplateController(ControllerTest):
     """Tests the Template controller and wiki integration."""

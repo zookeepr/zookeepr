@@ -1,4 +1,4 @@
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestAttachmentTable(TableTest):
     """Test the ``attachment`` table.

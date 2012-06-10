@@ -1,32 +1,32 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, DictSet, PersonValidator
-from zookeepr.lib.validators import ExistingPersonValidator
-from zookeepr.lib.validators import FundingValidator, FileUploadValidator
-from zookeepr.lib.validators import PersonSchema, FundingTypeValidator
-from zookeepr.lib.validators import FundingStatusValidator
-from zookeepr.lib.validators import FundingReviewSchema
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.validators import BaseSchema, DictSet, PersonValidator
+from zkpylons.lib.validators import ExistingPersonValidator
+from zkpylons.lib.validators import FundingValidator, FileUploadValidator
+from zkpylons.lib.validators import PersonSchema, FundingTypeValidator
+from zkpylons.lib.validators import FundingStatusValidator
+from zkpylons.lib.validators import FundingReviewSchema
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model import Funding, FundingType, FundingStatus, Role
-from zookeepr.model import FundingAttachment, FundingReview, Person
+from zkpylons.model import meta
+from zkpylons.model import Funding, FundingType, FundingStatus, Role
+from zkpylons.model import FundingAttachment, FundingReview, Person
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
@@ -150,7 +150,7 @@ class FundingController(BaseController):
         """Attach a file to the funding.
         """
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_funding_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -169,7 +169,7 @@ class FundingController(BaseController):
 
     def view(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(id), h.auth.has_organiser_role, h.auth.has_funding_reviewer_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_funding_submitter(id), h.auth.has_organiser_role, h.auth.has_funding_reviewer_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -180,7 +180,7 @@ class FundingController(BaseController):
     @dispatch_on(POST="_edit")
     def edit(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_funding_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -209,7 +209,7 @@ class FundingController(BaseController):
     @validate(schema=ExistingFundingSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_funding_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -265,7 +265,7 @@ class FundingController(BaseController):
 
     @dispatch_on(POST="_withdraw")
     def withdraw(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_funding_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -274,7 +274,7 @@ class FundingController(BaseController):
 
     @validate(schema=ApproveSchema(), form='withdraw', post_only=True, on_get=True, variable_decode=True)
     def _withdraw(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_funding_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_funding_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 

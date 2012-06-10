@@ -1,6 +1,6 @@
 # import md5
 
-# from zookeepr.tests.functional import *
+# from zkpylons.tests.functional import *
 
 # class TestPerson(SignedInCRUDControllerTest):
 #     model = model.Person

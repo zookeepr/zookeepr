@@ -2,7 +2,7 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.tests.functional import *
+from zkpylons.tests.functional import *
 
 class TestRegistrationController(CRUDControllerTest):
     model = model.registration.Registration

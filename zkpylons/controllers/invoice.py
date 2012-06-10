@@ -2,7 +2,7 @@ import datetime
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 
 from pylons.controllers.util import Response, redirect
 
@@ -12,24 +12,24 @@ from pylons.decorators.rest import dispatch_on
 from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import enforce_ssl
-from zookeepr.lib.validators import BaseSchema, ProductValidator, ExistingPersonValidator, ExistingInvoiceValidator
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.ssl_requirement import enforce_ssl
+from zkpylons.lib.validators import BaseSchema, ProductValidator, ExistingPersonValidator, ExistingInvoiceValidator
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
-from zookeepr.model.payment import Payment
+from zkpylons.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
+from zkpylons.model.payment import Payment
 
-from zookeepr.config.lca_info import lca_info
-from zookeepr.config.zookeepr_config import file_paths
+from zkpylons.config.lca_info import lca_info
+from zkpylons.config.zkpylons_config import file_paths
 
-import zookeepr.lib.pxpay as pxpay
-import zookeepr.lib.pdfgen as pdfgen
+import zkpylons.lib.pdfgen as pdfgen
+import zkpylons.lib.pxpay as pxpay
 
 log = logging.getLogger(__name__)
 
@@ -131,7 +131,7 @@ class InvoiceController(BaseController):
         return redirect_to(action='view', id=c.invoice.id)
 
     def generate_hash(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -154,7 +154,7 @@ class InvoiceController(BaseController):
 
 
     def view(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -168,7 +168,7 @@ class InvoiceController(BaseController):
         return render('/invoice/view.mako')
 
     def printable(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -243,7 +243,7 @@ class InvoiceController(BaseController):
         invoice = Invoice.find_by_id(id, True)
         person = invoice.person
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -266,7 +266,7 @@ class InvoiceController(BaseController):
         c.invoice = payment.invoice
         person = c.invoice.person
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -316,21 +316,22 @@ class InvoiceController(BaseController):
 
 
     def pdf(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
             # Raise a no_auth error
             h.auth.no_role()
 
         c.invoice = Invoice.find_by_id(id, True)
         xml_s = render('/invoice/pdf.mako')
-        xsl_f = file_paths['zk_root'] + '/zookeepr/templates/invoice/pdf.xsl'
+
+        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/invoice/pdf.xsl'
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
-        
+
         filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'
         return pdfgen.wrap_pdf_response(pdf_data, filename)
 
 
     def void(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_attendee(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_attendee(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 

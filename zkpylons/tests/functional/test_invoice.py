@@ -1,6 +1,6 @@
 import datetime
 
-from zookeepr.tests.functional import *
+from zkpylons.tests.functional import *
 
 class TestInvoiceController(SignedInCRUDControllerTest):
     def setUp(self):

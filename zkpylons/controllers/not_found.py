@@ -1,4 +1,4 @@
-from zookeepr.lib.base import *
+from zkpylons.lib.base import *
 
 class NotFoundController(BaseController):
     def view(self):

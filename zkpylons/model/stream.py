@@ -3,7 +3,7 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zookeepr.model.meta import Session
+from zkpylons.model.meta import Session
 
 class Stream(Base):
     __tablename__ = 'stream'

@@ -1,6 +1,6 @@
 import unittest
 
-from zookeepr.lib.validators import *
+from zkpylons.lib.validators import *
 
 class TestEmailAddressValidator(unittest.TestCase):
 

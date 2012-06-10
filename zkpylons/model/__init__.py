@@ -3,7 +3,7 @@ import sqlalchemy as sa
 from sqlalchemy import orm
 from sqlalchemy.exc import IntegrityError
 
-from zookeepr.model import meta
+from zkpylons.model import meta
 
 import person
 import role

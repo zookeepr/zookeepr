@@ -3,7 +3,7 @@ import vobject
 import json
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.controllers.util import abort
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
@@ -12,9 +12,9 @@ import formencode
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.validators import BaseSchema
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
@@ -22,19 +22,19 @@ from authkit.permissions import ValidAuthKitUser
 from datetime import date, datetime, timedelta
 from pytz import timezone
 
-from zookeepr.lib.mail import email
-from zookeepr.lib.ordereddict import OrderedDict
+from zkpylons.lib.mail import email
+from zkpylons.lib.ordereddict import OrderedDict
 
-from zookeepr.model import meta
-from zookeepr.model.schedule import Schedule
-from zookeepr.model.proposal import Proposal
-from zookeepr.model.time_slot import TimeSlot, TimeSlotValidator
-from zookeepr.model.location import Location, LocationValidator
-from zookeepr.model.event import Event, EventValidator
-from zookeepr.model.event_type import EventType
+from zkpylons.model import meta
+from zkpylons.model.schedule import Schedule
+from zkpylons.model.proposal import Proposal
+from zkpylons.model.time_slot import TimeSlot, TimeSlotValidator
+from zkpylons.model.location import Location, LocationValidator
+from zkpylons.model.event import Event, EventValidator
+from zkpylons.model.event_type import EventType
 
-from zookeepr.config.lca_info import lca_info
-from zookeepr.config.zookeepr_config import file_paths
+from zkpylons.config.lca_info import lca_info
+from zkpylons.config.zkpylons_config import file_paths
 
 import os
 

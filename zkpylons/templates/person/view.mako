@@ -296,7 +296,7 @@ This person hasn't registered yet.
 
 <hr>
 
-% if h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.person.id), h.auth.has_organiser_role)):
+% if h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(c.person.id), h.auth.has_organiser_role)):
 ${ toolbox.make_link('Edit', url=h.url_for(action='edit',id=c.person.id)) }
 % endif
 % if h.auth.authorized(h.auth.has_organiser_role):

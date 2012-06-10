@@ -1,30 +1,30 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator, SameEmailAddress
-import zookeepr.lib.helpers as h
-from zookeepr.lib.helpers import check_for_incomplete_profile
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator, SameEmailAddress
+import zkpylons.lib.helpers as h
+from zkpylons.lib.helpers import check_for_incomplete_profile
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model import Person, PasswordResetConfirmation, Role
-from zookeepr.model import SocialNetwork
+from zkpylons.model import meta
+from zkpylons.model import Person, PasswordResetConfirmation, Role
+from zkpylons.model import SocialNetwork
 
-from zookeepr.config.lca_info import lca_info, lca_rego
+from zkpylons.config.lca_info import lca_info, lca_rego
 
-from zookeepr.lib.ssl_requirement import enforce_ssl
+from zkpylons.lib.ssl_requirement import enforce_ssl
 
 import datetime
 import json
@@ -372,7 +372,7 @@ class PersonController(BaseController): #Read, Update, List
     @dispatch_on(POST="_edit") 
     def edit(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
         c.form = 'edit'
@@ -394,7 +394,7 @@ class PersonController(BaseController): #Read, Update, List
     def _edit(self, id):
         """UPDATE PERSON"""
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -488,7 +488,7 @@ class PersonController(BaseController): #Read, Update, List
     @authorize(h.auth.is_valid_user)
     def view(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_reviewer_role, h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_reviewer_role, h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 

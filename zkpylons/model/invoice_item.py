@@ -6,7 +6,7 @@ from pylons.controllers.util import abort
 
 from product import Product
 
-from zookeepr.model.meta import Session
+from zkpylons.model.meta import Session
 
 def setup(meta):
     pass

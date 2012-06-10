@@ -3,8 +3,8 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model import Person, Proposal, ProposalType, Attachment
-from zookeepr.tests.functional import *
+from zkpylons.model import Person, Proposal, ProposalType, Attachment
+from zkpylons.tests.functional import *
 
 
 #class TestCFPController(ControllerTest):

@@ -1,6 +1,6 @@
 import urllib2
 from xml.dom import minidom
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 pxpay_url = 'https://www.paymentexpress.com/pxpay/pxaccess.aspx'
 currency  = 'NZD'
@@ -79,7 +79,7 @@ def process_response(fields):
         'response_text' : get_node_value(response_node, 'ResponseText'),
         'currency_used' : get_node_value(response_node, 'CurrencySettlement'),
         'invoice_id' : get_node_value(response_node, 'MerchantReference'),
-        'client_ip_zookeepr' : get_node_value(response_node, 'TxnData1'),
+        'client_ip_zkpylons' : get_node_value(response_node, 'TxnData1'),
         'client_ip_gateway' : get_node_value(response_node, 'ClientInfo'),
         'payment_id' : get_node_value(response_node, 'TxnId'),
         'email_address' : get_node_value(response_node, 'TxnData2'),
@@ -87,7 +87,7 @@ def process_response(fields):
 
     validation_errors = []
 
-    # Reformat a few fields for zookeepr
+    # Reformat a few fields for zkpylons
     if response['amount_paid'] is not None:
         response['amount_paid'] = int(float(response['amount_paid']) * 100)
     if response['payment_id'] is not None:

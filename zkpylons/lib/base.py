@@ -6,8 +6,8 @@ from pylons.controllers import WSGIController
 from pylons.templating import render_mako
 from pylons import request, response, session, tmpl_context as c
 
-from zookeepr.model.db_content import DbContent, DbContentType
-from zookeepr.model import meta
+from zkpylons.model.db_content import DbContent, DbContentType
+from zkpylons.model import meta
 import datetime
 
 # Redefine the render function to allow for theming

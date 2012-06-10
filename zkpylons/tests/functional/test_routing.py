@@ -1,7 +1,7 @@
 import unittest
 
-from zookeepr.config.routing import make_map
-from zookeepr.tests.functional import url_for
+from zkpylons.config.routing import make_map
+from zkpylons.tests.functional import url_for
 
 class TestRouting(unittest.TestCase):
     def setUp(self):

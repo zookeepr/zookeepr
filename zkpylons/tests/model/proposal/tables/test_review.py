@@ -1,4 +1,4 @@
-from zookeepr.tests.model import TableTest, model
+from zkpylons.tests.model import TableTest, model
 
 class TestReviewTable(TableTest):
     table = model.proposal.tables.review

@@ -9,7 +9,7 @@ from beaker.cache import CacheManager
 from role import Role
 from person_role_map import person_role_map
 
-from zookeepr.model.meta import Session
+from zkpylons.model.meta import Session
 
 import datetime
 import random

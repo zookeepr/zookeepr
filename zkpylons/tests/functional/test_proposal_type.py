@@ -1,5 +1,5 @@
-# from zookeepr.model import ProposalType, Role
-# from zookeepr.tests.functional import *
+# from zkpylons.model import ProposalType, Role
+# from zkpylons.tests.functional import *
 
 # class TestProposalType(CRUDControllerTest):
 #     model = ProposalType

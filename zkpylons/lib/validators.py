@@ -1,15 +1,15 @@
 import formencode
 from formencode import validators, Invalid #, schema
 
-from zookeepr.model import Person, Proposal, ProposalType, TargetAudience
-from zookeepr.model import ProposalStatus, Stream, AccommodationAssistanceType
-from zookeepr.model import TravelAssistanceType, DbContentType, Registration
-from zookeepr.model import Product, ProductCategory, Ceiling, FundingType
-from zookeepr.model import FundingStatus, Funding
-from zookeepr.model import Invoice, Payment
-from zookeepr.model import SocialNetwork
+from zkpylons.model import Person, Proposal, ProposalType, TargetAudience
+from zkpylons.model import ProposalStatus, Stream, AccommodationAssistanceType
+from zkpylons.model import TravelAssistanceType, DbContentType, Registration
+from zkpylons.model import Product, ProductCategory, Ceiling, FundingType
+from zkpylons.model import FundingStatus, Funding
+from zkpylons.model import Invoice, Payment
+from zkpylons.model import SocialNetwork
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 import cgi
 
@@ -245,7 +245,7 @@ class ProductMinMax(validators.FancyValidator):
         self.min_qty is the minimum total (generally category.min)
         self.max_qty is the maximum total (generally category.max)
         
-        See zookeepr.registration.RegistrationController._generate_product_schema for examples        
+        See zkpylons.registration.RegistrationController._generate_product_schema for examples        
     """
     def validate_python(self, values, state):
         total = 0

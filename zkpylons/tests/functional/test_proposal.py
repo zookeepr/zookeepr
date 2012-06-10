@@ -1,6 +1,6 @@
 import pprint
 
-from zookeepr.tests.functional import *
+from zkpylons.tests.functional import *
 
 # class TestProposalBase(object):
 #     """Base class that sets up proposal objects for experimenting with.

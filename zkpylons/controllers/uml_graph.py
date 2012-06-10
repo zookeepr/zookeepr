@@ -3,10 +3,10 @@
 
 import sqlalchemy as sa
 from pylons import request, response, tmpl_context as c
-from zookeepr.lib.base import BaseController, render
-import zookeepr.model as model
-from zookeepr.model import *
-from zookeepr.model.meta import Base
+from zkpylons.lib.base import BaseController, render
+import zkpylons.model as model
+from zkpylons.model import *
+from zkpylons.model.meta import Base
 
 import inspect
 from sqlalchemy.orm.attributes import InstrumentedAttribute

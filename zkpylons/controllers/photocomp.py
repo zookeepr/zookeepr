@@ -11,7 +11,7 @@ import PIL.Image
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate1
 from pylons.decorators.rest import dispatch_on
 
@@ -22,11 +22,11 @@ from authkit.authorize.pylons_adaptors import authorize
 
 from webhelpers import paginate
 
-from zookeepr.config import lca_info as lca_info
-#from zookeepr.config import zookeepr as zookeepr_config
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib import helpers as h
-from zookeepr.model import Person
+from zkpylons.config import lca_info as lca_info
+#from zkpylons.config import zkpylons as zkpylons_config
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib import helpers as h
+from zkpylons.model import Person
 
 log = logging.getLogger(__name__)
 
@@ -172,7 +172,7 @@ class PhotoCompEntry(object):
     from_filename = classmethod(from_filename)
 
     def get_db_dir(cls):
-        db_dir = '/var/photocomp/' #zookeepr_config.file_paths['photocomp_path']
+        db_dir = '/var/photocomp/' #zkpylons_config.file_paths['photocomp_path']
         if not os.path.exists(db_dir):
             os.mkdir(db_dir, 0777)
         return db_dir
@@ -251,7 +251,7 @@ class PhotocompController(BaseController):
         #
         # Only an organiser can edit someone elses photos.
         #
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
             h.auth.no_role()
         person_id = int(id, 10)
         c.open_date = lca_info.lca_info['date']
@@ -268,7 +268,7 @@ class PhotocompController(BaseController):
         #
         # Only an organiser can upload someone elses photos.
         #
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
             h.auth.no_role()
         open_date = lca_info.lca_info['date']
         days_open = (datetime.date.today() - open_date.date()).days
@@ -343,7 +343,7 @@ class PhotocompController(BaseController):
         #
         id_str = str(photo.person_id)
         if days_open <= photo.day:
-            if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(photo.person_id), h.auth.has_organiser_role)):
+            if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(photo.person_id), h.auth.has_organiser_role)):
                 abort(403)
         #
         # They can have it.

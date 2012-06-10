@@ -2,7 +2,7 @@ import logging
 import datetime
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.controllers.util import abort
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
@@ -10,20 +10,20 @@ from pylons.decorators.rest import dispatch_on
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, ExistingPaymentValidator
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.validators import BaseSchema, ExistingPaymentValidator
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta, Payment, PaymentReceived, Invoice
+from zkpylons.model import meta, Payment, PaymentReceived, Invoice
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
-import zookeepr.lib.pxpay as pxpay
+import zkpylons.lib.pxpay as pxpay
 
 log = logging.getLogger(__name__)
 
@@ -72,7 +72,7 @@ class PaymentController(BaseController):
         payment = Payment.find_by_id(id, abort_404=True)
         c.person = payment.invoice.person
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.person.id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(c.person.id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -122,7 +122,7 @@ class PaymentController(BaseController):
             'gateway_ref': fields['bank_reference'],
             'response_text': fields['response_text'],
             'client_ip_gateway': fields['remote_ip'],
-            'client_ip_zookeepr': request.environ.get('REMOTE_ADDR'),
+            'client_ip_zkpylons': request.environ.get('REMOTE_ADDR'),
             'email_address': fields['receipt_address']
        }
 
@@ -136,9 +136,9 @@ class PaymentController(BaseController):
         if c.response is None:
             abort(500, ''.join(validation_errors))
         else:
-            # Make sure the same browser created the zookeepr payment object and paid by credit card
-            #if c.response['client_ip_gateway'] != c.response['client_ip_zookeepr']:
-                #validation_errors.append('Mismatch in IP addresses: zookeepr=' + c.response['client_ip_zookeepr'] + ' gateway=' + c.response['client_ip_gateway'])
+            # Make sure the same browser created the zkpylons payment object and paid by credit card
+            #if c.response['client_ip_gateway'] != c.response['client_ip_zkpylons']:
+                #validation_errors.append('Mismatch in IP addresses: zkpylons=' + c.response['client_ip_zkpylons'] + ' gateway=' + c.response['client_ip_gateway'])
 
             # Get the payment object associated with this transaction
             payment = Payment.find_by_id(c.response['payment_id'])
@@ -218,7 +218,7 @@ class PaymentController(BaseController):
             client_ip = request.environ['HTTP_X_FORWARDED_FOR']
 
         results['response_text'] = 'Manual payment processed by ' + h.signed_in_person().fullname()
-        results['client_ip_zookeepr'] = client_ip
+        results['client_ip_zkpylons'] = client_ip
         results['client_ip_gateway'] = client_ip
         results['payment'] = payment
 

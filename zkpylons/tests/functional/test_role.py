@@ -1,4 +1,4 @@
-from zookeepr.tests.functional import *
+from zkpylons.tests.functional import *
 
 # class TestRole(CRUDControllerTest):
 #     def test_index(self):

@@ -1,10 +1,10 @@
 """The application's model objects"""
 import sqlalchemy as sa
 
-from zookeepr.model.proposal import Proposal
-from zookeepr.model.event_type import EventType
-from zookeepr.model.schedule import Schedule
-from zookeepr.model.meta import Session
+from zkpylons.model.proposal import Proposal
+from zkpylons.model.event_type import EventType
+from zkpylons.model.schedule import Schedule
+from zkpylons.model.meta import Session
 
 from meta import Base
 
@@ -78,7 +78,7 @@ class Event(Base):
         sequence += 1
 
     def schedule_by_time_slot(self, time_slot):
-        from zookeepr.model.location import Location
+        from zkpylons.model.location import Location
         return Session.query(Schedule).filter(Schedule.event==self).filter(Schedule.time_slot==time_slot).all()
 
     # class methods

@@ -44,7 +44,7 @@ class TestController(TestCase):
 #    except OSError:
 #        pass
 #
-#    from zookeepr.model import create_all
+#    from zkpylons.model import create_all
 #    create_all({'dburi': 'sqlite:///test.db',
 #                'echo_queries': 'true'})
 

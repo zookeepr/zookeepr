@@ -2,18 +2,18 @@
 import os
 
 from mako.lookup import TemplateLookup
-#from zookeepr.lib.template import ZookeeprTemplateLookup as TemplateLookup
+#from zkpylons.lib.template import ZookeeprTemplateLookup as TemplateLookup
 from pylons import config
 from pylons.error import handle_mako_error
 from sqlalchemy import engine_from_config
 
-import zookeepr.lib.app_globals as app_globals
-import zookeepr.lib.helpers
-from zookeepr.config.routing import make_map
-from zookeepr.model import init_model
+import zkpylons.lib.app_globals as app_globals
+import zkpylons.lib.helpers
+from zkpylons.config.routing import make_map
+from zkpylons.model import init_model
 
-from zookeepr.config.lca_info import lca_info
-from zookeepr.config.zookeepr_config import file_paths
+from zkpylons.config.lca_info import lca_info
+from zkpylons.config.zkpylons_config import file_paths
 
 from pylons.configuration import PylonsConfig
 
@@ -31,15 +31,15 @@ def load_environment(global_conf, app_conf):
                  theme_templates=file_paths['theme_templates'])
 
     # Initialize config with the basic options
-    config.init_app(global_conf, app_conf, package='zookeepr', paths=paths)
+    config.init_app(global_conf, app_conf, package='zkpylons', paths=paths)
 
     config['routes.map'] = make_map(config)
     config['pylons.app_globals'] = app_globals.Globals(config)
     
-    config['pylons.h'] = zookeepr.lib.helpers
+    config['pylons.h'] = zkpylons.lib.helpers
     config['pylons.strict_tmpl_context'] = False
 
-    config['pylons.package'] = 'zookeepr'
+    config['pylons.package'] = 'zkpylons'
     
     # Create the Mako TemplateLookup, with the default auto-escaping
     config['pylons.app_globals'].mako_lookup = TemplateLookup(

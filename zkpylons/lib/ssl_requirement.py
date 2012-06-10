@@ -2,7 +2,7 @@
 import logging
 
 from decorator import decorator
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.controllers.util import abort
 from pylons import request, config
 from paste.deploy.converters import asbool

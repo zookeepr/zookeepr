@@ -4,8 +4,8 @@ import re
 
 from paste.fixture import Dummy_smtplib
 
-from zookeepr.model import Person, PasswordResetConfirmation
-from zookeepr.tests.functional import *
+from zkpylons.model import Person, PasswordResetConfirmation
+from zkpylons.tests.functional import *
 
 class TestPersonController(ControllerTest):
 

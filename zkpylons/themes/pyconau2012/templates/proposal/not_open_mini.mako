@@ -2,7 +2,7 @@
 <h2>Nice Try!</h2>
 
 <p>
-Yes PyCon Australia are using <a href="http://zookeepr.org">zookeepr</a> which was built for <a href="http://linux.conf.au">linux.conf.au</a> and yes there is a lot of bad code left over, but we did tie up some loose ends. Sorry to disappoint but we won't be having miniconfs at PyCon Australia.
+Yes PyCon Australia are using <a href="http://zkpylons.org">zkpylons</a> which was built for <a href="http://linux.conf.au">linux.conf.au</a> and yes there is a lot of bad code left over, but we did tie up some loose ends. Sorry to disappoint but we won't be having miniconfs at PyCon Australia.
 </p>
 
 <p>

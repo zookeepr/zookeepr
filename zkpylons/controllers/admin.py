@@ -1,33 +1,33 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
-import zookeepr.lib.helpers as h
+import zkpylons.lib.helpers as h
 
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.validators import BaseSchema
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.model import meta, Person, Product, Registration, ProductCategory
-from zookeepr.model import Proposal, ProposalType, ProposalStatus, Invoice, Funding
-from zookeepr.model.funding_review import FundingReview
-from zookeepr.model.payment_received import PaymentReceived
-from zookeepr.model.invoice_item import InvoiceItem
-from zookeepr.model.rego_note import RegoNote
-from zookeepr.model.social_network import SocialNetwork
-from zookeepr.model.special_registration import SpecialRegistration
-from zookeepr.model.volunteer import Volunteer
+from zkpylons.model import meta, Person, Product, Registration, ProductCategory
+from zkpylons.model import Proposal, ProposalType, ProposalStatus, Invoice, Funding
+from zkpylons.model.funding_review import FundingReview
+from zkpylons.model.payment_received import PaymentReceived
+from zkpylons.model.invoice_item import InvoiceItem
+from zkpylons.model.rego_note import RegoNote
+from zkpylons.model.social_network import SocialNetwork
+from zkpylons.model.special_registration import SpecialRegistration
+from zkpylons.model.volunteer import Volunteer
 
-from zookeepr.config.lca_info import lca_info, lca_rego
+from zkpylons.config.lca_info import lca_info, lca_rego
 
-from zookeepr.lib.ssl_requirement import enforce_ssl
+from zkpylons.lib.ssl_requirement import enforce_ssl
 
 from sqlalchemy import and_, or_
 
@@ -62,10 +62,10 @@ class AdminController(BaseController):
         funcs += [
           ('/db_content', '''Edit HTML pages that are stored in the database. [Content]'''),
           ('/db_content/list_files', '''List and upload files for use on the site. [Content]'''),
-          ('/person', '''List of people signed up to the webpage (with option to view/change their zookeepr roles) [Accounts]'''),
+          ('/person', '''List of people signed up to the webpage (with option to view/change their zkpylons roles) [Accounts]'''),
           ('/social_network', '''List social networks that people can indicate they are members of [Accounts]'''),
-          ('/product', '''Manage all of zookeeprs products. [Inventory]'''),
-          ('/product_category', '''Manage all of zookeeprs product categories. [Inventory]'''),
+          ('/product', '''Manage all of zkpylonss products. [Inventory]'''),
+          ('/product_category', '''Manage all of zkpylonss product categories. [Inventory]'''),
           ('/voucher', '''Manage vouchers to give to delegates. [Inventory]'''),
           ('/ceiling', '''Manage ceilings and available inventory. [Inventory]'''),
           ('/registration', '''View registrations and delegate details. [Registrations]'''),
@@ -624,7 +624,7 @@ class AdminController(BaseController):
         that have been placed in the fixed location in the filesystem and
         work from there... [Invoicing] """
         import csv
-        d1_data = csv.reader(file('/srv/zookeepr/reconcile.d1'))
+        d1_data = csv.reader(file('/srv/zkpylons/reconcile.d1'))
         d1_cols = d1_data.next()
         d1_cols = [s.strip() for s in d1_cols]
 
@@ -813,7 +813,7 @@ class AdminController(BaseController):
         return sql_response(query)
 
     @authorize(h.auth.has_organiser_role)
-    def zookeepr_sales(self):
+    def zkpylons_sales(self):
         """ List of products and qty sold. [Inventory] """
         item_list = meta.Session.query(InvoiceItem).all()
         total = 0
@@ -926,8 +926,8 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def rego_desk_list(self):
         """ List of people who have not checked in (see checkins table). [Registrations] """
-        import zookeepr.model
-        checkedin = zookeepr.model.metadata.bind.execute("SELECT person_id FROM checkins WHERE conference IS NOT NULL");
+        import zkpylons.model
+        checkedin = zkpylons.model.metadata.bind.execute("SELECT person_id FROM checkins WHERE conference IS NOT NULL");
         checkedin_list = checkedin.fetchall()
         registration_list = meta.Session.query(Registration).all()
         c.columns = ['ID', 'Name', 'Type', 'Shirts', 'Dinner Tickets', 'Partners Programme']
@@ -1674,8 +1674,8 @@ def get_column_names(result_proxy):
         return result_proxy.keys()
 
 def sql_execute(sql):
-    import zookeepr.model
-    res = zookeepr.model.metadata.bind.execute(sql)
+    import zkpylons.model
+    res = zkpylons.model.metadata.bind.execute(sql)
     return res
 
 def sql_response(sql):
@@ -1704,8 +1704,8 @@ def sql_data(sql):
 
     Ideally, of course, it should never be used.
     """
-    import zookeepr.model
-    return zookeepr.model.metadata.bind.execute(sql).fetchall();
+    import zkpylons.model
+    return zkpylons.model.metadata.bind.execute(sql).fetchall();
 
 def table_response():
     """ Display a table of data, possible jumping off to CSV. """

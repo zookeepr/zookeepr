@@ -1,26 +1,26 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, ReviewSchema
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.validators import BaseSchema, ReviewSchema
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model import Review, Stream
+from zkpylons.model import meta
+from zkpylons.model import Review, Stream
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 

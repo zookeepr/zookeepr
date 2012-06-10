@@ -1,8 +1,8 @@
 """The application's model objects"""
 import sqlalchemy as sa
 
-from zookeepr.model.schedule import Schedule
-from zookeepr.model.meta import Session
+from zkpylons.model.schedule import Schedule
+from zkpylons.model.meta import Session
 
 from datetime import date, time, datetime
 

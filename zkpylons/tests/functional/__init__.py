@@ -10,9 +10,9 @@
 #from routes import url_for
 #from sqlalchemy.orm import create_session
 #
-#from zookeepr import model
-#from zookeepr.config.routing import make_map
-#from zookeepr.tests import TestBase, monkeypatch
+#from zkpylons import model
+#from zkpylons.config.routing import make_map
+#from zkpylons.tests import TestBase, monkeypatch
 #
 #here_dir = os.path.dirname(__file__)
 #conf_dir = os.path.dirname(os.path.dirname(os.path.dirname(here_dir)))

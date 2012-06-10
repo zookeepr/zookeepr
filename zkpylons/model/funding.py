@@ -3,8 +3,8 @@ import sqlalchemy as sa
 
 from meta import Base
 from pylons.controllers.util import abort
-from zookeepr.model.meta import Session
-from zookeepr.lib.model import CommaList
+from zkpylons.model.meta import Session
+from zkpylons.lib.model import CommaList
 
 from person import Person
 from funding_attachment import FundingAttachment

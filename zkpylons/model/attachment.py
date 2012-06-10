@@ -3,9 +3,9 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zookeepr.model.person_role_map import person_role_map
+from zkpylons.model.person_role_map import person_role_map
 
-from zookeepr.model.meta import Session
+from zkpylons.model.meta import Session
 
 #import datetime
 #import random

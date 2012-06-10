@@ -3,7 +3,7 @@ import logging
 import re
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.controllers.util import Response
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
@@ -11,31 +11,31 @@ from pylons.decorators.rest import dispatch_on
 from formencode import validators, htmlfill, Invalid
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import enforce_ssl
-from zookeepr.lib.validators import BaseSchema, DictSet, ProductInCategory, CheckboxQty
-from zookeepr.lib.validators import ProductQty, ProductMinMax, IAgreeValidator
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.ssl_requirement import enforce_ssl
+from zkpylons.lib.validators import BaseSchema, DictSet, ProductInCategory, CheckboxQty
+from zkpylons.lib.validators import ProductQty, ProductMinMax, IAgreeValidator
 
 # validators used from the database
-from zookeepr.lib.validators import ProDinner, PPDetails, PPChildrenAdult
+from zkpylons.lib.validators import ProDinner, PPDetails, PPChildrenAdult
 
-import zookeepr.lib.helpers as h
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model import Registration, Role, RegistrationProduct, Person
-from zookeepr.model import ProductCategory, Product, Voucher, Ceiling
-from zookeepr.model import Invoice, InvoiceItem
-from zookeepr.model.special_offer import SpecialOffer
-from zookeepr.model.special_registration import SpecialRegistration
+from zkpylons.model import meta
+from zkpylons.model import Registration, Role, RegistrationProduct, Person
+from zkpylons.model import ProductCategory, Product, Voucher, Ceiling
+from zkpylons.model import Invoice, InvoiceItem
+from zkpylons.model.special_offer import SpecialOffer
+from zkpylons.model.special_registration import SpecialRegistration
 
-from zookeepr.config.lca_info import lca_info, lca_rego
+from zkpylons.config.lca_info import lca_info, lca_rego
 
-from zookeepr.controllers.person import PersonSchema
+from zkpylons.controllers.person import PersonSchema
 
 log = logging.getLogger(__name__)
 
@@ -781,9 +781,9 @@ class RegistrationController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def index(self):
         per_page = 20
-        #from zookeepr.model.core import tables as core_tables
-        #from zookeepr.model.registration import tables as registration_tables
-        #from zookeepr.model.proposal import tables as proposal_tables
+        #from zkpylons.model.core import tables as core_tables
+        #from zkpylons.model.registration import tables as registration_tables
+        #from zkpylons.model.proposal import tables as proposal_tables
         from webhelpers import paginate #Upgrade to new paginate
 
         filter = dict(request.GET)

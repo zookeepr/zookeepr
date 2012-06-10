@@ -1,4 +1,4 @@
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestRoleModel(CRUDModelTest):
      domain = model.core.Role

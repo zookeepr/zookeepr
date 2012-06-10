@@ -66,7 +66,7 @@
 <td>${ c.payment.email_address }</td></tr>
 
 <tr><td valign="top"><b>Client IP:</b></td>
-<td>${ c.payment.client_ip_zookeepr } (zookeepr)<br>
+<td>${ c.payment.client_ip_zkpylons } (zkpylons)<br>
 ${ c.payment.client_ip_gateway } (gateway)</td></tr>
 
 <tr><td valign="top"><b>Timestamp:</b></td>

@@ -1,6 +1,6 @@
 import sqlalchemy.exceptions
 
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestReviewModel(CRUDModelTest):
     domain = model.Review

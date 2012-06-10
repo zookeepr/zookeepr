@@ -3,7 +3,7 @@
 # This module allows us to use the authkit infrastructure but using the
 # Zookeepr models to do so
 #  * We don't support groups
-#  * We don't support the creation methods as zookeepr does that already
+#  * We don't support the creation methods as zkpylons does that already
 #
 
 
@@ -14,10 +14,10 @@ from pylons import tmpl_context as c
 from pylons import request
 
 from formencode import validators, htmlfill, Invalid
-from zookeepr.lib.validators import BaseSchema
+from zkpylons.lib.validators import BaseSchema
 
-from zookeepr.model import meta
-from zookeepr.model import Person, Role, Proposal, Invoice, Registration, Funding, URLHash
+from zkpylons.model import meta
+from zkpylons.model import Person, Role, Proposal, Invoice, Registration, Funding, URLHash
 
 from authkit import users
 from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
@@ -371,9 +371,9 @@ has_late_submitter_role = HasZookeeprRole('late_submitter')
 has_planetfeed_role = HasZookeeprRole('planetfeed')
 has_keysigning_role = HasZookeeprRole('keysigning')
 is_valid_user = ValidZookeeprUser()
-is_same_zookeepr_user = IsSameZookeeprUser
-is_same_zookeepr_submitter = IsSameZookeeprSubmitter
-is_same_zookeepr_attendee = IsSameZookeeprAttendee
+is_same_zkpylons_user = IsSameZookeeprUser
+is_same_zkpylons_submitter = IsSameZookeeprSubmitter
+is_same_zkpylons_attendee = IsSameZookeeprAttendee
 is_same_zookeepr_registration = IsSameZookeeprRegistration
-is_same_zookeepr_funding_submitter = IsSameZookeeprFundingSubmitter
+is_same_zkpylons_funding_submitter = IsSameZookeeprFundingSubmitter
 has_unique_key = HasUniqueKey

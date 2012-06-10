@@ -1,4 +1,4 @@
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestInvoiceItemTable(TableTest):
     """Test the ``invoice_item`` table.

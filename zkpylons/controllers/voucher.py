@@ -1,27 +1,27 @@
 import logging, os
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import enforce_ssl
-from zookeepr.lib.validators import BaseSchema, ExistingPersonValidator
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.ssl_requirement import enforce_ssl
+from zkpylons.lib.validators import BaseSchema, ExistingPersonValidator
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model import Voucher, VoucherProduct, ProductCategory, Product
+from zkpylons.model import meta
+from zkpylons.model import Voucher, VoucherProduct, ProductCategory, Product
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
@@ -79,7 +79,7 @@ class VoucherController(BaseController):
         self._generate_product_schema()
 
     def _generate_product_schema(self):
-        # This function is similar to zookeepr.registration.RegistrationController._generate_product_schema
+        # This function is similar to zkpylons.registration.RegistrationController._generate_product_schema
         # Since the form is arbitrarily defined by what product types there are, the validation
         #   (aka schema) also needs to be dynamic.
         # Thus, this function generates a dynamic schema to validate a given set of products.

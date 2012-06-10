@@ -5,7 +5,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 
 from meta import Base
 from pylons.controllers.util import abort
-from zookeepr.model.meta import Session
+from zkpylons.model.meta import Session
 from person_social_network_map import PersonSocialNetworkMap
 
 def setup(meta):

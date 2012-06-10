@@ -4,7 +4,7 @@ import email.utils as email_utils
 import smtplib
 import string
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 from pylons import config
 
 def is_7bit(s):

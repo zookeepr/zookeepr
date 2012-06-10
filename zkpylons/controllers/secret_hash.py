@@ -3,16 +3,16 @@ import sys
 import inspect
 from pylons import config
 import logging
-import zookeepr.lib.helpers as h
+import zkpylons.lib.helpers as h
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.util import class_name_from_module_name
 
-from zookeepr.model import meta
+from zkpylons.model import meta
 from pylons.controllers.util import abort
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.model import URLHash
+from zkpylons.lib.base import BaseController, render
+from zkpylons.model import URLHash
 
 log = logging.getLogger(__name__)
 

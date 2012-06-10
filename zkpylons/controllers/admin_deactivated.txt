@@ -194,7 +194,7 @@
         c.text = render('admin/table.mako', fragment=True)
 
         c.text += '<h2>Organiser T-shirts</h2>'
-        c.text += '''(Based on the 'organiser' role in zookeepr.)'''
+        c.text += '''(Based on the 'organiser' role in zkpylons.)'''
         c.columns = 'M/F', 'style', 'size', 'count'
         c.data = [s.split('_') + [cnt] for (s, cnt) in organiser.items()]
         c.data.sort()
@@ -313,7 +313,7 @@
         c.columns = ('rego', 'name / email', 'rego type', 's', 'ED', 'diet', 'special reqs')
         return render('admin/table.mako')
     def payments_received(self):
-        """ Payments received, as known by zookeepr [rego] """
+        """ Payments received, as known by zkpylons [rego] """
         return sql_response("""
           select invoice_id, trans_id, amount, auth_num, status, result, ip_address, to_char(creation_timestamp, 'YYYY-MM-DD') as date
           from payment_received
@@ -321,7 +321,7 @@
         """)
 
     def payments_received_daily(self):
-        """ Payments received, as known by zookeepr, daily total [rego] """
+        """ Payments received, as known by zkpylons, daily total [rego] """
         return sql_response("""
           select sum(amount) as "daily total",
                  to_char(creation_timestamp, 'YYYY-MM-DD') as date

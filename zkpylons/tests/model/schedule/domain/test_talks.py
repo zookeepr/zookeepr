@@ -1,4 +1,4 @@
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestTalkDomainModel(ModelTest):
     def test_accepted_talk(self):

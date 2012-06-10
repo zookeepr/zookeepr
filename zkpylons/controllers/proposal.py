@@ -1,28 +1,28 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, PersonValidator, ProposalValidator, FileUploadValidator, PersonSchema, ProposalTypeValidator, TargetAudienceValidator, ProposalStatusValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.validators import BaseSchema, PersonValidator, ProposalValidator, FileUploadValidator, PersonSchema, ProposalTypeValidator, TargetAudienceValidator, ProposalStatusValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model import Proposal, ProposalType, ProposalStatus, TargetAudience, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType, Person
+from zkpylons.model import meta
+from zkpylons.model import Proposal, ProposalType, ProposalStatus, TargetAudience, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType, Person
 
-from zookeepr.lib.validators import ReviewSchema
+from zkpylons.lib.validators import ReviewSchema
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
@@ -237,7 +237,7 @@ class ProposalController(BaseController):
         """Attach a file to the proposal.
         """
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -256,7 +256,7 @@ class ProposalController(BaseController):
 
     def view(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_submitter(id), h.auth.has_organiser_role, h.auth.has_reviewer_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -267,7 +267,7 @@ class ProposalController(BaseController):
     @dispatch_on(POST="_edit")
     def edit(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -307,7 +307,7 @@ class ProposalController(BaseController):
     @validate(schema=ExistingProposalSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -419,7 +419,7 @@ class ProposalController(BaseController):
 
     @dispatch_on(POST="_withdraw")
     def withdraw(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
@@ -428,7 +428,7 @@ class ProposalController(BaseController):
 
     @validate(schema=ApproveSchema(), form='withdraw', post_only=True, on_get=True, variable_decode=True)
     def _withdraw(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_submitter(id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_submitter(id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 

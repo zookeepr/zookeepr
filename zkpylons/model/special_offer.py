@@ -2,7 +2,7 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zookeepr.model.meta import Session
+from zkpylons.model.meta import Session
 
 from special_registration import SpecialRegistration
 

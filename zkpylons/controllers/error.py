@@ -6,7 +6,7 @@ from pylons.controllers.util import forward
 from pylons.middleware import error_document_template
 from webhelpers.html.builder import literal
 
-from zookeepr.lib.base import BaseController, render
+from zkpylons.lib.base import BaseController, render
 
 class ErrorController(BaseController):
 

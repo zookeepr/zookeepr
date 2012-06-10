@@ -5,8 +5,8 @@ from meta import Base
 
 from person import Person
 
-from zookeepr.model.meta import Session
-from zookeepr.model.stream import Stream
+from zkpylons.model.meta import Session
+from zkpylons.model.stream import Stream
 
 import datetime
 import random
@@ -67,5 +67,5 @@ class Review(Base):
 
     @classmethod
     def find_summary(cls):
-        from zookeepr.model.person import Person
+        from zkpylons.model.person import Person
         return Session.query(Person).join(cls).add_columns(sa.func.count(cls.score).label('reviews'), (sa.func.count(1)-sa.func.count(cls.score)).label('declined'), sa.func.avg(cls.score).label('average')).group_by(Person)

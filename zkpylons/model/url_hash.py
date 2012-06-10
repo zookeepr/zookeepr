@@ -3,7 +3,7 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zookeepr.model.meta import Session
+from zkpylons.model.meta import Session
 
 import hashlib
 import datetime

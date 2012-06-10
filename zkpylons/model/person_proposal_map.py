@@ -1,7 +1,7 @@
 """The application's model objects"""
 import sqlalchemy as sa
 
-from zookeepr.model.meta import metadata
+from zkpylons.model.meta import metadata
 
 def setup(meta):
     pass

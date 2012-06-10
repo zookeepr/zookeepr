@@ -1,7 +1,7 @@
 import datetime
 import md5
 
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestPersonTable(TableTest):
     """Test the `person` table.

@@ -1,7 +1,7 @@
 import datetime
 import md5
 
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestPasswordResetConfirmationTable(TableTest):
     """Test the password_reset_confirmation table.

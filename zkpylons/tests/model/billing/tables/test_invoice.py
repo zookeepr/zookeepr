@@ -1,6 +1,6 @@
 import datetime
 
-from zookeepr.tests.model import *
+from zkpylons.tests.model import *
 
 class TestInvoiceTable(TableTest):
     """Test the ``invoice`` table.

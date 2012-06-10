@@ -2,29 +2,29 @@ import logging
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import enforce_ssl
-from zookeepr.lib.validators import BaseSchema, DictSet, ProductValidator
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.ssl_requirement import enforce_ssl
+from zkpylons.lib.validators import BaseSchema, DictSet, ProductValidator
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model import ProductCategory
-from zookeepr.model.product import Product
-from zookeepr.model.volunteer import Volunteer
+from zkpylons.model import meta
+from zkpylons.model import ProductCategory
+from zkpylons.model.product import Product
+from zkpylons.model.volunteer import Volunteer
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
@@ -95,11 +95,11 @@ class VolunteerController(BaseController):
         c.volunteer = Volunteer.find_by_id(id)
 
         # We need to recheck auth in here so we can pass in the id
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zookeepr_user(c.volunteer.person.id), h.auth.has_organiser_role)):
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(c.volunteer.person.id), h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
 
-        c.can_edit = h.auth.is_same_zookeepr_user(c.volunteer.person.id)
+        c.can_edit = h.auth.is_same_zkpylons_user(c.volunteer.person.id)
 
         c.volunteer = Volunteer.find_by_id(id)
         if c.volunteer is None:

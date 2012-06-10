@@ -3,8 +3,8 @@ import warnings
 from sqlalchemy.orm import create_session
 from sqlalchemy import select, func
 
-from zookeepr import model
-from zookeepr.tests import TestBase, monkeypatch
+from zkpylons import model
+from zkpylons.tests import TestBase, monkeypatch
 
 class ModelTest(TestBase):
     """Base class for all data model domain object tests.
@@ -208,7 +208,7 @@ class TableTest(TestBase):
     Derived classes should set the following attributes:
 
     ``table`` is a string containing the name of the table being tested,
-    scoped relative to the module ``zookeepr.model``.
+    scoped relative to the module ``zkpylons.model``.
 
     ``samples`` is a list of dictionaries of columns and their values to use
     when inserting a row into the table.

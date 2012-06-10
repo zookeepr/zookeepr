@@ -1,7 +1,7 @@
 import logging
 
 from pylons import request, response, session, tmpl_context as c
-from zookeepr.lib.helpers import redirect_to
+from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
@@ -10,24 +10,24 @@ import datetime
 from formencode import validators, htmlfill
 from formencode.variabledecode import NestedVariables
 
-from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.ssl_requirement import enforce_ssl
-from zookeepr.lib.validators import BaseSchema, ExistingRegistrationValidator, ExistingPersonValidator
-import zookeepr.lib.helpers as h
+from zkpylons.lib.base import BaseController, render
+from zkpylons.lib.ssl_requirement import enforce_ssl
+from zkpylons.lib.validators import BaseSchema, ExistingRegistrationValidator, ExistingPersonValidator
+import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zookeepr.lib.mail import email
+from zkpylons.lib.mail import email
 
-from zookeepr.model import meta
-from zookeepr.model.vote import Vote, Person
-from zookeepr.model.event import Event, EventValidator
-from zookeepr.model.event_type import EventType
-from zookeepr.model.schedule import Schedule
-from zookeepr.model.time_slot import TimeSlot
+from zkpylons.model import meta
+from zkpylons.model.vote import Vote, Person
+from zkpylons.model.event import Event, EventValidator
+from zkpylons.model.event_type import EventType
+from zkpylons.model.schedule import Schedule
+from zkpylons.model.time_slot import TimeSlot
 
-from zookeepr.config.lca_info import lca_info
+from zkpylons.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
