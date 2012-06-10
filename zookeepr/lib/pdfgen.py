@@ -1,33 +1,33 @@
 
-import libxml2, libxslt
 import os
 import tempfile
 
+from lxml import etree
 from pylons.controllers.util import Response, redirect
+
+
 
 def generate_pdf(xml_s, xsl_f):
     '''given xml as a string and a path to xsl style sheet, create a pdf file
     and return the data. '''
 
-    xsl_s = libxml2.parseFile(xsl_f)
-    xsl = libxslt.parseStylesheetDoc(xsl_s)
+    styledoc = etree.parse(xsl_f)
+    transform = etree.XSLT(styledoc)
+    doc = etree.fromstring(xml_s)
+    result = transform(doc)
 
-    xml = libxml2.parseDoc(xml_s)
-    svg_s = xsl.applyStylesheet(xml, None)
-
-    (svg_fd, svg) = tempfile.mkstemp('.svg')
-    xsl.saveResultToFilename(svg, svg_s, 0)
-
-    xsl.freeStylesheet()
-    xml.freeDoc()
-    svg_s.freeDoc()
+    (svg_fd, svg_path) = tempfile.mkstemp('.svg')
+    os.write(svg_fd, result)
+    os.close(svg_fd)
 
     (pdf_fd, pdf_path) = tempfile.mkstemp('.pdf')
+    os.close(pdf_fd)
 
-    os.close(svg_fd); os.close(pdf_fd)
-
-    os.system('inkscape -z -f %s -A %s' % (svg, pdf_path))
-
+    os.system('inkscape -z -f %s -A %s' % (svg_path, pdf_path))
+    #os.system('/Applications/Inkscape.app/Contents/Resources/bin/inkscape -z -f %s -A %s' % (svg_path, pdf_path))
+    #os.system('svg2pdf %s %s'%(svg_path, pdf_path)) # segmentation fault on osx
+    #os.system('rsvg-convert -f pdf -o %s %s'%(pdf_path, svg_path))  # black boxes everywhere
+    
     pdf_f = file(pdf_path)
     pdf_data = pdf_f.read()
     pdf_f.close()
