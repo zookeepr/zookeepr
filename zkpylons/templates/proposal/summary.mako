@@ -152,8 +152,11 @@ ${ avg_score |h }
 link_to doesn't let us pass javascript tags
 -->
 %           if review.comment:
-<a href="/review/${review.id}" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.firstname + " " + review.reviewer.lastname | h}</a>, 
-<div id="${ "%s%s" % (review.id, review.reviewer.id) | h}" class="commentdiv">${ review.reviewer.firstname + " " + review.reviewer.lastname + " Comments: " + review.comment + review.private_comment |h }</div>
+<a href="/review/${review.id}" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) |h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.fullname() | h}</a>, 
+<div id="${ "%s%s" % (review.id, review.reviewer.id) | h}" class="commentdiv">
+<b>${ review.reviewer.fullname() |h } Comments:</b> ${ review.comment |h }
+<br /><br />
+<b>${ review.reviewer.fullname() |h } Private Comments:</b> ${ review.private_comment |h }</div>
 %           else:
 ${ h.link_to(review.reviewer.firstname + " " + review.reviewer.lastname, url=h.url_for(controller='review', action='view', id=review.id)) }, 
 %           endif
