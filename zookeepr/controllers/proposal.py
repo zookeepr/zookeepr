@@ -181,6 +181,8 @@ class ProposalController(BaseController):
             defaults = h.object_to_defaults(c.review, 'review')
             if c.review.score == None:
                 defaults['review.score'] = ''
+            if c.review.stream_id:
+                defaults['review.stream'] = c.review.stream_id
 
             form = render('/review/edit.mako')
             return htmlfill.render(form, defaults)
