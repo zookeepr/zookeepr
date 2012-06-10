@@ -163,7 +163,7 @@ def webmaster_email(text=None):
     """
     email = lca_info['webmaster_email']
     if text == None:
-      text = email
+        text = email
     return link_to(text, 'mailto:' + email)
 
 def contact_email(text=None):
@@ -249,14 +249,14 @@ def slideshow(set, small=None):
         caption = dict()
         caption_file = file_paths['public_path'] + "/images/" + set + "/captions"
         if os.path.exists(caption_file):
-          file = open(caption_file, 'r')
-          captions = file.readlines()
+            file = open(caption_file, 'r')
+            captions = file.readlines()
 
-          # Assign captions to a lookup table
-          for cap in captions:
-             str = cap.partition(':')
-             caption[str[0]] = str[2]
-    
+            # Assign captions to a lookup table
+            for cap in captions:
+                str = cap.partition(':')
+                caption[str[0]] = str[2]
+
         # Load up all the images in the set directory.
         files = glob(file_paths['public_path'] + "/images/" + set + '/*')
         for file in files:
@@ -274,15 +274,15 @@ def slideshow(set, small=None):
                 # it as well.
                 if short_file == small:
                     output += "<img src=\"" +  file_paths["public_html"] + "/images/" + set + "/small/" + short_file + "\">"
-    
+
                     # If there are more than one image in the slideshow
                     # then also display "more...".
                     if files.__len__() > 1:
-                       output += '<div class="more">More images...</div>'
+                        output += '<div class="more">More images...</div>'
                 output += "</a>\n";
         output += "</div>\n"
         return output
-               
+
     except IndexError:
         return "no images found"
 
@@ -419,8 +419,8 @@ def silly_description():
 def silly_description_checksum(desc):
     import hashlib, math
     haiku = "Come to Ballarat"\
-        "LCA Under the stars"\
-        "Comets is landing..."
+          "LCA Under the stars"\
+          "Comets is landing..."
 
     #This is meant to be difficult to read, no telling me its indistinguishable from my normal code - Josh
     def fun(cion):
@@ -540,12 +540,12 @@ def number_to_percentage(number):
 def sales_tax(amount):
     """ Calculate the sales tax that for the supplied amount. """
     if 'sales_tax_multiplier' in lca_info:
-      sales_tax = int(amount * lca_info['sales_tax_multiplier'])
+        sales_tax = int(amount * lca_info['sales_tax_multiplier'])
     elif 'sales_tax_divisor' in lca_info:
-      sales_tax = int(amount / lca_info['sales_tax_divisor'])
+        sales_tax = int(amount / lca_info['sales_tax_divisor'])
     else:
-      # wtf?
-      sales_tax = 0
+        # wtf?
+        sales_tax = 0
 
     return sales_tax
 
@@ -581,15 +581,15 @@ def html_clean(str):
     """ Clean up HTML to be safe """
     cleaner = Cleaner(safe_attrs_only=True)
     return cleaner.clean_html(str)
-    
-    
-    
+
+
+
 def redirect_to(*args, **kargs):
-	if 'is_active' in dir(meta.Session):
-		meta.Session.flush()
-		meta.Session.close()
-				
-	return redirect(url.current(*args, **kargs))
+    if 'is_active' in dir(meta.Session):
+        meta.Session.flush()
+        meta.Session.close()
+
+    return redirect(url.current(*args, **kargs))
 
 def url_for(*args, **kwargs):
     fields = dict(request.GET)
