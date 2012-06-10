@@ -9,7 +9,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zookeepr.lib.base import BaseController, render
-from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator
+from zookeepr.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator, SameEmailAddress
 import zookeepr.lib.helpers as h
 from zookeepr.lib.helpers import check_for_incomplete_profile
 
@@ -47,6 +47,15 @@ class PasswordResetSchema(BaseSchema):
 class _SocialNetworkSchema(BaseSchema):
    name = validators.String()
    account_name = validators.String()
+
+class IncompletePersonSchema(BaseSchema):
+    email_address = validators.Email(not_empty=True)
+    email_address2 = validators.Email(not_empty=True)
+    chained_validators = [NotExistingPersonValidator(), SameEmailAddress()]
+
+class NewIncompletePersonSchema(BaseSchema):
+    pre_validators = [NestedVariables]
+    person = IncompletePersonSchema()
 
 class NewPersonSchema(BaseSchema):
     pre_validators = [NestedVariables]
@@ -454,6 +463,21 @@ class PersonController(BaseController): #Read, Update, List
                 return render('/person/thankyou.mako')
         else:
             return render('/not_allowed.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_new_incomplete")
+    def new_incomplete(self):
+        return render('/person/new_incomplete.mako')
+
+    @validate(schema=NewIncompletePersonSchema(), form='new_incomplete', post_only=True, on_get=True, variable_decode=True)
+    def _new_incomplete(self):
+        results = self.form_result['person']
+        del results['email_address2']
+        c.person = Person(**results)
+        c.person.email_address = c.person.email_address.lower()
+        meta.Session.add(c.person)
+        meta.Session.commit()
+        redirect_to(controller='person', action='index')
 
     @authorize(h.auth.has_organiser_role)
     def index(self):

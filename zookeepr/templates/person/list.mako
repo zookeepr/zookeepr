@@ -35,6 +35,8 @@
 % endfor
 </table>
 
+<p><a href="${ h.url_for(controller='person', action='new_incomplete') }">Create a new account</a></p>
+
 <%def name="title()">
 People -
  ${ parent.title() }
