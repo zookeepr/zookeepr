@@ -23,9 +23,12 @@ setup(
         "pastescript",
         # DNS for email address validation
         "dnspython",
+        "PIL",
         "pylibravatar",
         "vobject",
         "pytz",
+        "lxml",
+        "pydns",
     ],
     setup_requires=["PasteScript>=1.6.3"],
     packages=find_packages(exclude=['ez_setup']),
