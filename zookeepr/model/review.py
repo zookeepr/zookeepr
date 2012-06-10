@@ -28,12 +28,12 @@ class Review(Base):
 
     proposal_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal.id'), nullable=False)
     reviewer_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), nullable=False)
-
-    score = sa.Column(sa.types.Integer)
-
     stream_id = sa.Column(sa.types.Integer, sa.ForeignKey('stream.id'))
-    miniconf = sa.Column(sa.types.Text)
-    comment = sa.Column(sa.types.Text)
+
+    miniconf = sa.Column(sa.types.Text, nullable=False)
+    score = sa.Column(sa.types.Integer)
+    comment = sa.Column(sa.types.Text, nullable=False)
+    private_comment = sa.Column(sa.types.Text, nullable=False)
 
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())

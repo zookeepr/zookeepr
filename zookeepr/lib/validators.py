@@ -137,6 +137,7 @@ class ReviewSchema(BaseSchema):
     stream = StreamValidator()
     miniconf = validators.String()
     comment = validators.String()
+    private_comment = validators.String()
 
 class FundingReviewSchema(BaseSchema):
     score = validators.OneOf(["-2", "-1", "+1", "+2", "null"])
