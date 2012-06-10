@@ -5,7 +5,7 @@ from meta import Base
 
 from pylons.controllers.util import abort
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 from person import Person
 from person_proposal_map import person_proposal_map

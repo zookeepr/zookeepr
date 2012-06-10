@@ -8,7 +8,7 @@ from pylons.controllers.util import abort
 from person import Person
 from product import Product
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 def setup(meta):
     pass

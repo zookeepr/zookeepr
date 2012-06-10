@@ -79,7 +79,7 @@ def process_response(fields):
         'response_text' : get_node_value(response_node, 'ResponseText'),
         'currency_used' : get_node_value(response_node, 'CurrencySettlement'),
         'invoice_id' : get_node_value(response_node, 'MerchantReference'),
-        'client_ip_zkpylons' : get_node_value(response_node, 'TxnData1'),
+        'client_ip_zookeepr' : get_node_value(response_node, 'TxnData1'),
         'client_ip_gateway' : get_node_value(response_node, 'ClientInfo'),
         'payment_id' : get_node_value(response_node, 'TxnId'),
         'email_address' : get_node_value(response_node, 'TxnData2'),

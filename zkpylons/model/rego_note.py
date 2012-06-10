@@ -2,9 +2,9 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zkpylons.model.meta import Session
+from meta import Session
 
-from zkpylons.lib.model import CommaList
+from lib.model import CommaList
 
 from person import Person
 from registration import Registration

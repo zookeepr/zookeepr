@@ -3,7 +3,7 @@ import sqlalchemy as sa
 
 from meta import Base
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 from ceiling import Ceiling
 from product_category import ProductCategory

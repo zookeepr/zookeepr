@@ -6,7 +6,7 @@ from meta import Base
 
 from pylons.controllers.util import abort
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 def setup(meta):
     pass
@@ -52,7 +52,7 @@ class Schedule(Base):
 
     @classmethod
     def find_by_date(cls, date, primary=False):
-        from zkpylons.model.time_slot import TimeSlot
+        from time_slot import TimeSlot
         start   = datetime.combine(date,time(0,0,0))
         end     = datetime.combine(date,time(23,59,59))
 

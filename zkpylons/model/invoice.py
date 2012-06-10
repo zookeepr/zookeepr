@@ -9,7 +9,7 @@ from invoice_item import InvoiceItem
 from payment import Payment
 from payment_received import PaymentReceived
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 import datetime
 

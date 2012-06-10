@@ -1,9 +1,9 @@
 """The application's model objects"""
 import sqlalchemy as sa
 
-from zkpylons.model.time_slot import TimeSlot
-from zkpylons.model.schedule import Schedule
-from zkpylons.model.meta import Session
+from time_slot import TimeSlot
+from schedule import Schedule
+from meta import Session
 
 from datetime import date, time, datetime
 
@@ -41,9 +41,9 @@ class Location(Base):
     # The purpose is to produce columns in the schedule for the rooms
     @classmethod
     def find_scheduled_by_date_and_type(cls, date, event_type):
-        from zkpylons.model.schedule import Schedule
-        from zkpylons.model.event import Event
-        from zkpylons.model.time_slot import TimeSlot
+        from schedule import Schedule
+        from event import Event
+        from time_slot import TimeSlot
 
         start   = datetime.combine(date,time(0,0,0))
         end     = datetime.combine(date,time(23,59,59))

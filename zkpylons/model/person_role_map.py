@@ -1,7 +1,7 @@
 """The application's model objects"""
 import sqlalchemy as sa
 
-from zkpylons.model.meta import metadata
+from meta import metadata
 
 def setup(meta):
     pass

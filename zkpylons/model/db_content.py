@@ -8,7 +8,7 @@ from pylons.controllers.util import abort
 from role import Role
 from person_role_map import person_role_map
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 import datetime
 import random

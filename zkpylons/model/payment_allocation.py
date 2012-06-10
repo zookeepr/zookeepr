@@ -6,7 +6,7 @@ from pylons.controllers.util import abort
 
 from invoice_item import InvoiceItem
 from payment import Payment
-from zkpylons.model.meta import Session
+from meta import Session
 
 def setup(meta):
     pass

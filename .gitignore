@@ -9,6 +9,8 @@ data
 *.pyc
 *~
 pylons
+env
+zk.egg-info
 
 # OLD Stuff may not be needed any longer
 #.coverage

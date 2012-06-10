@@ -60,9 +60,9 @@
 <p class="entries">${ h.text('payment.email_address', size=40) }</p>
 
 ##<p class="label"><span class="mandatory">*</span>
-##<label for="payment.client_ip_zkpylons">Client IP (Zookeepr):</label>
+##<label for="payment.client_ip_zookeepr">Client IP (Zookeepr):</label>
 ##</p>
-##<p class="entries">${ h.text('payment.client_ip_zkpylons', size=40) }</p>
+##<p class="entries">${ h.text('payment.client_ip_zookeepr', size=40) }</p>
 
 ##<p class="label"><span class="mandatory">*</span>
 ##<label for="payment.client_ip_gatway">Client IP (Gateway):</label>

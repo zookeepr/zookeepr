@@ -122,7 +122,7 @@ class PaymentController(BaseController):
             'gateway_ref': fields['bank_reference'],
             'response_text': fields['response_text'],
             'client_ip_gateway': fields['remote_ip'],
-            'client_ip_zkpylons': request.environ.get('REMOTE_ADDR'),
+            'client_ip_zookeepr': request.environ.get('REMOTE_ADDR'),
             'email_address': fields['receipt_address']
        }
 
@@ -137,8 +137,8 @@ class PaymentController(BaseController):
             abort(500, ''.join(validation_errors))
         else:
             # Make sure the same browser created the zkpylons payment object and paid by credit card
-            #if c.response['client_ip_gateway'] != c.response['client_ip_zkpylons']:
-                #validation_errors.append('Mismatch in IP addresses: zkpylons=' + c.response['client_ip_zkpylons'] + ' gateway=' + c.response['client_ip_gateway'])
+            #if c.response['client_ip_gateway'] != c.response['client_ip_zookeepr']:
+                #validation_errors.append('Mismatch in IP addresses: zkpylons=' + c.response['client_ip_zookeepr'] + ' gateway=' + c.response['client_ip_gateway'])
 
             # Get the payment object associated with this transaction
             payment = Payment.find_by_id(c.response['payment_id'])
@@ -218,7 +218,7 @@ class PaymentController(BaseController):
             client_ip = request.environ['HTTP_X_FORWARDED_FOR']
 
         results['response_text'] = 'Manual payment processed by ' + h.signed_in_person().fullname()
-        results['client_ip_zkpylons'] = client_ip
+        results['client_ip_zookeepr'] = client_ip
         results['client_ip_gateway'] = client_ip
         results['payment'] = payment
 

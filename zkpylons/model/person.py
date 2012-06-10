@@ -13,7 +13,7 @@ from social_network import SocialNetwork
 from person_social_network_map import PersonSocialNetworkMap
 from special_registration import SpecialRegistration
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 import datetime
 import hashlib
@@ -22,7 +22,7 @@ from libravatar import libravatar_url
 
 def setup(meta):
     person = Person(
-        email_address="admin@zkpylons.org",
+        email_address="admin@zookeepr.org",
         activated=True,
         firstname="Admin",
         lastname="User"

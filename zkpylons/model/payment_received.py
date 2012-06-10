@@ -6,7 +6,7 @@ from pylons.controllers.util import abort
 
 from payment import Payment
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 def setup(meta):
     pass
@@ -34,7 +34,7 @@ class PaymentReceived(Base):
     card_mac = sa.Column(sa.types.String, nullable=True)
     gateway_ref = sa.Column(sa.types.String, nullable=True)
     response_text = sa.Column(sa.types.String, nullable=False)
-    client_ip_zkpylons = sa.Column(sa.types.String, nullable=False)
+    client_ip_zookeepr = sa.Column(sa.types.String, nullable=False)
     client_ip_gateway = sa.Column(sa.types.String, nullable=False)
     email_address = sa.Column(sa.types.String, nullable=False)
 

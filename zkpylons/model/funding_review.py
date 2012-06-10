@@ -6,7 +6,7 @@ from meta import Base
 from person import Person
 from funding import Funding
 
-from zkpylons.model.meta import Session
+from meta import Session
 
 import datetime
 import random

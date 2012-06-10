@@ -3,7 +3,7 @@ import sqlalchemy as sa
 import re
 
 from meta import Base
-from zkpylons.model.meta import metadata
+from meta import metadata
 #from social_network import SocialNetwork
 
 def setup(meta):

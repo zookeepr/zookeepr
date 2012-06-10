@@ -4,6 +4,7 @@ import transaction
 
 from sqlalchemy import engine_from_config
 from zk.model import meta
+from zk import model
 
 from pyramid.paster import (
     get_appsettings,

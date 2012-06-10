@@ -3,7 +3,7 @@ import sqlalchemy as sa
 
 from meta import Base
 from pylons.controllers.util import abort
-from zkpylons.model.meta import Session
+from meta import Session
 
 def setup(meta):
     meta.Session.add_all(

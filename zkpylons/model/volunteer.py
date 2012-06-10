@@ -4,9 +4,9 @@ from meta import Base
 
 from pylons.controllers.util import abort
 
-from zkpylons.model.meta import Session
+from meta import Session
 
-from zkpylons.lib.model import CommaList
+from lib.model import CommaList
 
 from person import Person
 from product import Product
