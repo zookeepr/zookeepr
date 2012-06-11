@@ -329,6 +329,10 @@ def debug():
 
 teaser_re = re.compile(r'(\<\!\-\-break\-\-\>)')
 def make_teaser(body):
+    """
+    Split an article into a 'teaser' line and the rest of the article,
+    on the <!--break--> in the body.  Used in lists of news items.
+    """
     if teaser_re.search(body):
         parts = teaser_re.split(body)
         return parts[0], True
@@ -336,6 +340,9 @@ def make_teaser(body):
         return body, False
 
 def remove_teaser_break(body):
+    """
+        Remove the <!--break--> 'teaser' line from an article body.
+    """
     if teaser_re.search(body):
         return teaser_re.sub('', body)
     else:
