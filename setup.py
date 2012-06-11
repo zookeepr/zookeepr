@@ -13,9 +13,12 @@ requires = [
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
-    'PIL',
-    'pydns',
-    'psycopg2',
+    "lxml",
+    "alembic==0.3.4",
+    "dnspython==1.1.0",
+    "pydns",
+    "psycopg2",
+    "PIL",
     #### LEGACY (zkpylon) requirements:
     "pylons",
     "AuthKit>=0.4.0",
@@ -25,8 +28,7 @@ requires = [
     "dnspython",
     "pylibravatar",
     "vobject",
-    "pytz",
-    "lxml",
+    "pytz"
     ]
 
 setup(name='zk',

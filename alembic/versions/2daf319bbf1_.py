@@ -269,6 +269,7 @@ def upgrade():
             url = sa.Column(sa.types.Text)
             experience = sa.Column(sa.types.Text)
             bio = sa.Column(sa.types.Text)        
+            i_agree = sa.Column(sa.types.Boolean, nullable=False, default=False)
             badge_printed = sa.Column(sa.types.Boolean, default='False')
             roles = sa.orm.relation(Role, secondary=person_role_map, backref='people', order_by=Role.name)
 
@@ -897,6 +898,7 @@ def upgrade():
         sa.Column('experience', sa.Text(), nullable=True),
         sa.Column('bio', sa.Text(), nullable=True),
         sa.Column('badge_printed', sa.Boolean(), nullable=True),
+        sa.Column('i_agree', sa.types.Boolean, nullable=False, default=False),
         #sa.CheckConstraint('TODO'),
         #sa.CheckConstraint('TODO'),
         sa.PrimaryKeyConstraint('id'),
@@ -1063,7 +1065,6 @@ def upgrade():
         sa.Column('type_id', sa.Integer(), nullable=True),
         sa.Column('url', sa.Text(), nullable=True),
         sa.Column('body', sa.Text(), nullable=True),
-        sa.Column('published', sa.Boolean(), nullable=True),
         sa.Column('creation_timestamp', sa.DateTime(), nullable=False),
         sa.Column('publish_timestamp', sa.DateTime(), nullable=False),
         sa.Column('last_modification_timestamp', sa.DateTime(), nullable=False),
@@ -1075,10 +1076,11 @@ def upgrade():
         sa.Column('id', sa.Integer(), nullable=False),
         sa.Column('proposal_id', sa.Integer(), nullable=False),
         sa.Column('reviewer_id', sa.Integer(), nullable=False),
-        sa.Column('score', sa.Integer(), nullable=True),
         sa.Column('stream_id', sa.Integer(), nullable=True),
-        sa.Column('miniconf', sa.Text(), nullable=True),
-        sa.Column('comment', sa.Text(), nullable=True),
+        sa.Column('miniconf', sa.Text(), nullable=False),
+        sa.Column('score', sa.Integer(), nullable=True),
+        sa.Column('comment', sa.Text(), nullable=False),
+        sa.Column('private_comment', sa.Text(), nullable=False),
         sa.Column('creation_timestamp', sa.DateTime(), nullable=False),
         sa.Column('last_modification_timestamp', sa.DateTime(), nullable=False),
         sa.ForeignKeyConstraint(['proposal_id'], ['proposal.id'], ),
