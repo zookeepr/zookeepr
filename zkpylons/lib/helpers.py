@@ -45,6 +45,12 @@ from pylons.controllers.util import redirect
 from zkpylons.model import meta
 
 def iterdict(items):
+    """
+    Create a dictionary having a list of items and an iterator to cycle
+    through them.
+    
+    This is a helper function for cycle() (below).
+    """
     return dict(items=items, iter=itertools.cycle(items))
 
 def cycle(*args, **kargs):
