@@ -1,4 +1,5 @@
 config.ini
+development.ini
 *.db
 logs
 setup-dir
