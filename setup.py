@@ -24,6 +24,9 @@ requires = [
     "vobject",
     "pytz",
     "lxml",
+    "pydns",
+    "PIL",
+    "psycopg2",
     ]
 
 setup(name='zk',
