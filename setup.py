@@ -16,6 +16,8 @@ requires = [
     'PIL',
     'pydns',
     'psycopg2',
+    "reportlab",
+    "svglib",
     #### LEGACY (zkpylon) requirements:
     "pylons",
     "AuthKit>=0.4.0",
