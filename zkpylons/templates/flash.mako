@@ -26,7 +26,7 @@
 %  else:
   ${ field }
 %endif
-: ${ c.form_errors[field] }</li>
+: ${ c.form_errors[field] | n }</li>
 %       endfor
         </ul>
         </div>
