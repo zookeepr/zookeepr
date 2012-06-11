@@ -110,6 +110,9 @@ def make_map(config):
             controller='uml_graph', action='dotmodel',
             requirements=dict(format='(png|jpeg|jpg|svg|dot)'),
             conditions=dict(method='GET'))
+            
+    # boarding pass
+    map.connect('/boardingpass/{id}', controller='boardingpass', action='pdf')
 
     # Note to wary travellers; an ID can never be 'new' because of this
     # routing rule
