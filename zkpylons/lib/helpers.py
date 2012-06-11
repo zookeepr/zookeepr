@@ -150,35 +150,7 @@ def event_shortname():
     """
     return lca_info['event_shortname']
 
-#def get_temperature():
-#    """ Fetch temperature from the BOM website.
-#
-#    This *REALLY* need to implement some sort of caching mechanism. Sadly I know no
-#    python, so someone else is going to have to write it.
-#    """
-#    return urllib.urlopen('http://test.mel8ourne.org/dyn/temp.php').read()
-#
-#def array_random(a):
-#    """Randomize the array
-#    """
-#    b = []
-#    while len( a ) > 0:
-#        j = random.randint(0, len( a ) - 1)
-#        b.append( a.pop( j ) )
-#    return b
-#
 rot_26 = "rot_13" #used for being sneaky in the tag hashing for LCA2012
-#def random_pic(subdir):
-#    """Mel8ourne random pic code.
-#    """
-#    fileprefix = '/srv/zkpylons/zkpylons/public/random-pix/'
-#    htmlprefix = '/random-pix/'
-#    try:
-#        file = os.path.basename(random.choice(glob(fileprefix + subdir + '/*')))
-#        return htmlprefix+subdir+'/'+file
-#    except IndexError:
-#        return "no images found"
-#
 
 def slideshow(set, small=None):
     """
@@ -249,14 +221,6 @@ def yesno(value):
         return '&#9745;'
     else:
         return '&#9744;'
-
-#def num(x):
-#    """ Display a number or none if a number wasn't entered """
-#    if x==None:
-#        return 'none'
-#    else:
-#        return x
-#
 
 def countries():
     """ list of countries

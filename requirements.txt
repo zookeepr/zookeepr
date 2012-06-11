@@ -1,3 +1,4 @@
+alembic==0.3.4
 AuthKit==0.4.5
 Beaker==1.6.3
 FormEncode==1.2.4
