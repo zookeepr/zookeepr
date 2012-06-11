@@ -1,0 +1,6 @@
+virtualenv env
+
+
+./env/bin/python setup.py develop
+./env/bin/initialise_zk_db development.ini
+./env/bin/pserve development.ini
