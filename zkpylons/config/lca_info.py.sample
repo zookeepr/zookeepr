@@ -1,5 +1,6 @@
 # File for holding configuration relative to the current LCA
 # This could be dberised sometimes
+from pytz import timezone
 from datetime import datetime
 import os
 
@@ -34,6 +35,7 @@ lca_info = {
   'media_license_url'  : 'http://creativecommons.org/licenses/by-sa/3.0/',
   #'sales_tax_multiplier' : 0.125,
   'sales_tax_divisor'    : 11,
+  'time_zone'   : timezone('Australia/Melbourne'),
 
   'invoice_message' : 'To qualify for the earlybird discount you must have registered and paid by the 8th of November (unless earlybird tickets sell out earlier).',
 
