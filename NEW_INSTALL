@@ -1,6 +1,15 @@
-virtualenv env
 
 
-./env/bin/python setup.py develop
-./env/bin/initialise_zk_db development.ini
-./env/bin/pserve development.ini
+# using only virtualenv
+virtualenv env --no-site-packages
+. ./env/bin/activate
+
+# using virtualenwrapper
+mkvirtualenv zookeepr # --no-site-packages is default
+workon zookeepr  
+
+# install
+cp zkpylons/config/lca_info.py.sample zkpylons/config/lca_info.py
+python setup.py develop
+initialise_zk_db development.ini
+pserve development.ini
