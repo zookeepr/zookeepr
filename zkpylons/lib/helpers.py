@@ -44,6 +44,9 @@ from glob import glob
 from pylons.controllers.util import redirect
 from zkpylons.model import meta
 
+# Use locale to provide comma grouped currency values
+import locale
+
 def iterdict(items):
     return dict(items=items, iter=itertools.cycle(items))
 
@@ -531,8 +534,10 @@ def zk_root():
     pass #TODO
 
 def number_to_currency(number, unit='$', precision=2):
-    # TODO: use commas to separate thousands
-    return unit + "%#.*f" % (precision, number)
+    "Provide an Australian currency version of your number"
+    locale.setlocale(locale.LC_ALL, 'en_AU')
+    format_string = "%%.%dd" % precision
+    return unit + locale.format(format_string, number, grouping=True)
 
 def number_to_percentage(number):
     return str(number) + '%'
