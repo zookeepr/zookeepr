@@ -48,8 +48,6 @@ setup(name='zk',
       entry_points="""\
       [paste.app_factory]
       main = zk:main
-      [console_scripts]
-      initialise_zk_db = zk.scripts.initialisedb:main
       """,
       )
 
