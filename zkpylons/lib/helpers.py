@@ -288,13 +288,13 @@ def slideshow(set, small=None):
 
 
 break_re = re.compile(r'(\n|\r\n)(?!\s*<(li|ul|ol)>)')
-def line_break(s):
+def line_break(text):
     """ Turn line breaks into <br>'s """
-    return break_re.sub('<br />', s)
+    return break_re.sub('<br />', text)
 
-def yesno(bool):
+def yesno(value):
     """ Display a read-only checkbox for the value provided """
-    if bool:
+    if value:
         return '&#9745;'
     else:
         return '&#9744;'
@@ -489,18 +489,18 @@ def object_to_defaults(object, prefix):
         value = getattr(object, key)
         if type(value) == list:
             for code in value:
-                defaults['.'.join((prefix,key,code))] = 1
-            defaults['.'.join((prefix,key))] = ','.join(value)
+                defaults['.'.join((prefix, key, code))] = 1
+            defaults['.'.join((prefix, key))] = ','.join(value)
         elif value == True:
-            defaults['.'.join((prefix,key))] = 1
+            defaults['.'.join((prefix, key))] = 1
         else:
-            defaults['.'.join((prefix,key))] = value
+            defaults['.'.join((prefix, key))] = value
 
     return defaults
 
 def check_flash():
-    # If the session data isn't of the particular format python has trouble.
-    # So we check that it is a dict.
+    """If the session data isn't of the particular format python has trouble.
+    So we check that it is a dict."""
     if session.has_key('flash'):
         if type(session['flash']) != dict:
             del session['flash']
