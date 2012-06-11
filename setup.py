@@ -13,6 +13,9 @@ requires = [
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
+    'PIL',
+    'pydns',
+    'psycopg2',
     #### LEGACY (zkpylon) requirements:
     "pylons",
     "AuthKit>=0.4.0",
