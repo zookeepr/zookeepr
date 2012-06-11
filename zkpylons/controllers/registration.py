@@ -332,7 +332,7 @@ class RegistrationController(BaseController):
             defaults['person.postcode'] = 'not available'
 
         if c.signed_in_person:
-            for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company']:
+            for k in ['address1', 'address2', 'city', 'state', 'postcode', 'country', 'phone', 'mobile', 'company', 'i_agree']:
                 v = getattr(c.signed_in_person, k)
                 if v is not None:
                     defaults['person.' + k] = getattr(c.signed_in_person, k)
