@@ -78,7 +78,7 @@ Receipt number: <code>PR${ c.payment_received.id }P${ c.payment.id }</code>
 % else:
         <p class="pay_button">${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</p>
 % endif    
-    <p>Further information on your registration is available at: ${ h.link_to(h.url_for(qualified=True, controller='registration', action='status'), h.url_for(qualified=True, controller='registration', action='status')) }</p>
+    <p>Further information on your registration is available at: ${ h.link_to(h.url_for(qualified=True, controller='registration', action='status', id=c.invoice.person.registration.id), h.url_for(qualified=True, controller='registration', action='status', id=c.invoice.person.registration.id)) }</p>
     <p>
       Enquiries may be emailed to the organisers:
 % if c.printable:
