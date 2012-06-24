@@ -364,14 +364,13 @@ class ProposalController(BaseController):
     def summary(self):
         c.proposal = {}
         for proposal_type in c.proposal_types:
-            c.proposal[proposal_type] = Proposal.find_review_summary().filter(Proposal.type==proposal_type).filter(Proposal.status==ProposalStatus.find_by_name('Withdrawn')).order_by('average').all()
+            c.proposal[proposal_type] = Proposal.find_review_summary().filter(Proposal.type==proposal_type).filter(Proposal.status!=ProposalStatus.find_by_name('Withdrawn')).order_by('average').all()
         for aat in c.accommodation_assistance_types:
             stuff = Proposal.find_all_by_accommodation_assistance_type_id(aat.id)
             setattr(c, '%s_collection' % aat.name, stuff)
         for tat in c.travel_assistance_types:
             stuff = Proposal.find_all_by_travel_assistance_type_id(tat.id)
             setattr(c, '%s_collection' % tat.name, stuff)
-
         return render('proposal/summary.mako')
 
     def index(self):
