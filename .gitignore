@@ -3,8 +3,6 @@ development.ini
 *.db
 logs
 setup-dir
-zookeepr.egg-info
-zookeepr/config/lca_info.py
 zkpylons/config/lca_info.py
 .vagrant
 data
@@ -15,8 +13,6 @@ env
 zk.egg-info
 paster_data
 
-.DS_store
-.gitignore
 # OLD Stuff may not be needed any longer
 #.coverage
 #dist
