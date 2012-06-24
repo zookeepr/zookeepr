@@ -178,7 +178,7 @@ def upgrade():
         )
     def add_ceilings(session):
         import datetime
-        from zookeepr.model.ceiling import Ceiling
+        from zk.model.ceiling import Ceiling
         
         # Ceiling 
         earlybird_end = datetime.datetime(2010, 10, 28, 23, 59, 59);
@@ -205,7 +205,7 @@ def upgrade():
         )
 
     def add_roles(session):
-        from zookeepr.model.role import Role
+        from zk.model.role import Role
         for r in [
               Role(name='organiser', pretty_name='Organizer', comment='Has full access to management pages'),
               Role(name='team', pretty_name='Core Team', comment='Member of core team'),
@@ -303,7 +303,7 @@ def upgrade():
             
             
         person = Person(
-            email_address="admin@zookeepr.org",
+            email_address="admin@zk.org",
             activated=True,
             firstname="Admin",
             lastname="User"
@@ -319,9 +319,9 @@ def upgrade():
         session.add(person)
         
     def add_products(session):
-        from zookeepr.model.ceiling import Ceiling
-        from zookeepr.model.product_category import ProductCategory
-        from zookeepr.model.product import Product, ProductInclude
+        from zk.model.ceiling import Ceiling
+        from zk.model.product_category import ProductCategory
+        from zk.model.product import Product, ProductInclude
         
         def product_category_by_name(name):
             return session.query(ProductCategory).filter_by(name=name).first()
@@ -1264,7 +1264,7 @@ def upgrade():
         sa.Column('card_mac', sa.String(), nullable=True),
         sa.Column('gateway_ref', sa.String(), nullable=True),
         sa.Column('response_text', sa.String(), nullable=False),
-        sa.Column('client_ip_zookeepr', sa.String(), nullable=False),
+        sa.Column('client_ip_zk', sa.String(), nullable=False),
         sa.Column('client_ip_gateway', sa.String(), nullable=False),
         sa.Column('email_address', sa.String(), nullable=False),
         sa.Column('creation_timestamp', sa.DateTime(), nullable=False),

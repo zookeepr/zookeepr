@@ -15,7 +15,7 @@ requires = [
     'waitress',
     "lxml",
     "alembic==0.3.4",
-    "dnspython==1.1.0",
+    "dnspython>=1.1.0",
     "pydns",
     "psycopg2",
     "PIL",
