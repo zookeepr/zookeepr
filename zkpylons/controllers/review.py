@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zkpylons.lib.mail import email
 
 from zkpylons.model import meta
-from zkpylons.model import Review, Stream
+from zkpylons.model import Review, Stream, Person
 
 from zkpylons.config.lca_info import lca_info
 
@@ -64,7 +64,7 @@ class ReviewController(BaseController):
         redirect_to(controller='review', action='index')
 
     def summary(self):
-        c.summary = Review.find_summary().all()
+        c.summary = Person.find_review_summary().all()
         return render('review/summary.mako')
 
     def index(self):

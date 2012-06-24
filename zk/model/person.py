@@ -266,3 +266,8 @@ class Person(Base):
 
     def avatar_url(self):
         return libravatar_url(email=self.email_address, https=True, default='mm')
+
+    @classmethod
+    def find_review_summary(cls):
+        from review import Review
+        return Review.review_stats().join(cls).add_entity(cls).group_by(cls)

@@ -329,3 +329,8 @@ class Proposal(Base):
         else:
             # looks like you've reviewed everything!
             return None
+
+    @classmethod
+    def find_review_summary(cls):
+        from review import Review
+        return Review.review_stats().join(cls).add_entity(cls).group_by(cls)

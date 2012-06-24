@@ -66,6 +66,5 @@ class Review(Base):
         return Session.query(Review).order_by(Review.id).all()
 
     @classmethod
-    def find_summary(cls):
-        from person import Person
-        return Session.query(Person).join(cls).add_columns(sa.func.count(cls.score).label('reviews'), (sa.func.count(1)-sa.func.count(cls.score)).label('declined'), sa.func.avg(cls.score).label('average')).group_by(Person)
+    def review_stats(cls):
+        return Session.query(sa.func.count(cls.score).label('reviews'), (sa.func.count(1)-sa.func.count(cls.score)).label('declined'), sa.func.avg(cls.score).label('average'))
