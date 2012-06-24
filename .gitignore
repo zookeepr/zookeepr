@@ -3,8 +3,6 @@ development.ini
 *.db
 logs
 setup-dir
-zookeepr.egg-info
-zookeepr/config/lca_info.py
 zkpylons/config/lca_info.py
 .vagrant
 data
