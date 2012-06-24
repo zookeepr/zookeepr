@@ -29,6 +29,15 @@ ${ c.proposal.type.name }
 </blockquote>
 </div>
 
+<div class="private_abstract">
+<p>
+<em>Private Abstract:</em>
+</p>
+<blockquote>
+<p>${ h.line_break(h.util.html_escape(c.proposal.private_abstract)) | n}</p>
+</blockquote>
+</div>
+
 % if c.proposal.technical_requirements:
 <div class="technical_requirements">
 <p>

@@ -181,10 +181,11 @@ class Proposal(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
 
     # title of proposal
-    title = sa.Column(sa.types.Text)
+    title = sa.Column(sa.types.Text, nullable=False)
     # abstract or description
-    abstract = sa.Column(sa.types.Text)
-    technical_requirements = sa.Column(sa.types.Text)
+    abstract = sa.Column(sa.types.Text, nullable=False)
+    private_abstract = sa.Column(sa.types.Text, nullable=False)
+    technical_requirements = sa.Column(sa.types.Text, nullable=False)
 
     # type, enumerated in the proposal_type table
     proposal_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_type.id'), nullable=False)
@@ -198,15 +199,15 @@ class Proposal(Base):
     status_id = sa.Column(sa.types.Integer, sa.ForeignKey('proposal_status.id'), nullable=False)
     target_audience_id = sa.Column(sa.types.Integer, sa.ForeignKey('target_audience.id'), nullable=False)
 
-    video_release = sa.Column(sa.types.Boolean)
-    slides_release = sa.Column(sa.types.Boolean)
+    video_release = sa.Column(sa.types.Boolean, nullable=False)
+    slides_release = sa.Column(sa.types.Boolean, nullable=False)
 
     # name and url of the project
-    project = sa.Column(sa.types.Text)
-    url = sa.Column(sa.types.Text)
+    project = sa.Column(sa.types.Text, nullable=False)
+    url = sa.Column(sa.types.Text, nullable=False)
 
     # url to a short video
-    abstract_video_url = sa.Column(sa.types.Text)
+    abstract_video_url = sa.Column(sa.types.Text, nullable=False)
 
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
