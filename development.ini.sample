@@ -12,7 +12,7 @@ pyramid.includes =
 
 sqlalchemy.url = postgresql://zookeepr:zookeepr@localhost/zk
 
-cache_dir = %(here)s/paster_data
+cache_dir = %(here)s/data
 beaker.session.key = zookeepr
 beaker.session.secret = x5SzRj+SDFJOWE89sdf8sdf9
 app_instance_uuid = {51baaa53-4fef-4bb5-8c4b-4d0696b03c36}
