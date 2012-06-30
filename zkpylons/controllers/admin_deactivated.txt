@@ -19,8 +19,8 @@
         """)
         
        
-    def acc_papers(self):
-        """ Accepted papers (for miniconf organisers)
+    def acc_proposals(self):
+        """ Accepted proposals (for miniconf organisers)
         [CFP,miniconf,speaker,AV]"""
         # note: for AV purposes, this has been made to include tutorials
         return sql_response("""
@@ -38,8 +38,8 @@
             person.firstname, person.lastname, assistance_type.name
           ORDER BY proposal.title ASC;
         """)
-    def acc_papers_by_theatre(self):
-        """ Accepted papers by theatre [AV]"""
+    def acc_proposals_by_theatre(self):
+        """ Accepted proposals by theatre [AV]"""
         # note: for AV purposes, this has been made to include tutorials
         c.data = sql_data("""
           SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
@@ -70,7 +70,7 @@
         return render('admin/table.mako')
 
     def theatre_running_sheet(self):
-        """ Accepted papers by theatre, with abstracts and bios [AV]"""
+        """ Accepted proposals by theatre, with abstracts and bios [AV]"""
         # note: for AV purposes, this has been made to include tutorials
         c.data = sql_data("""
           SELECT theatre, to_char(scheduled, 'Dy HH24:MI') as start,
@@ -105,8 +105,8 @@
                         'speaker', 'bio', 'record?', 'publish?', 'slides?')
         return render('admin/table.mako')
 
-    def acc_papers_details(self):
-        """ Accepted papers with bios and abstracts [CFP] """
+    def acc_proposals_details(self):
+        """ Accepted proposals with bios and abstracts [CFP] """
         return sql_response("""
           SELECT proposal.id, proposal.title,
             person.firstname || ' ' || person.lastname as name,
@@ -124,8 +124,8 @@
             proposal.abstract, person.bio
           ORDER BY proposal.id ASC;
         """)
-    def acc_papers_tutes(self):
-        """ Accepted papers/tutes with type and travel assistance status
+    def acc_proposals_tutes(self):
+        """ Accepted proposals/tutes with type and travel assistance status
         [CFP,speaker]"""
         return sql_response("""
           SELECT proposal.id, proposal.title,
@@ -538,13 +538,13 @@
                                                           'out', 'comment')
         return render('admin/table.mako')
 
-    def acc_papers_xml(self):
+    def acc_proposals_xml(self):
         """ An XML file with titles and speakers of accepted talks, for use
         in AV splash screens [CFP,AV] """
         c.talks = self.dbsession.query(Proposal).filter_by(accepted=True).all()
         c.talks += self.dbsession.query(Proposal).filter_by(proposal_type_id=4).all()
 
-        res = Response(render('admin/acc_papers_xml.mako', fragment=True))
+        res = Response(render('admin/acc_proposals_xml.mako', fragment=True))
         res.headers['Content-type']='text/plain; charset=utf-8'
         return res
     def paid_summary(self):

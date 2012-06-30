@@ -7,7 +7,7 @@
     <th>Reviewer</th>
     <th>Reviews</th>
     <th>Declined</th>
-% if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_papers_chair_role)):
+% if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_proposals_chair_role)):
     <th>Avg Score</th>
 % endif
   </tr>
@@ -16,7 +16,7 @@
     <td>${ reviewer.Person.firstname } ${ reviewer.Person.lastname }</td>
     <td>${ reviewer.reviews }</td>
     <td>${ reviewer.declined }</td>
-%   if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_papers_chair_role)):
+%   if h.auth.authorized(h.auth.Or(h.auth.has_organiser_role, h.auth.has_proposals_chair_role)):
 %     if reviewer.average is None:
     <td>No Average</td>
 %     else:

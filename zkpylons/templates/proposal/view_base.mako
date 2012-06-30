@@ -2,7 +2,7 @@
 <%inherit file="/base.mako" />
 <% c.signed_in_person = h.signed_in_person() %>
 <%def name="toolbox_extra()">
-% if h.auth.authorized(h.auth.has_organiser_role) or ((c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role)) and c.signed_in_person in c.proposal.people):
+% if h.auth.authorized(h.auth.has_organiser_role) or ((c.proposal_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role)) and c.signed_in_person in c.proposal.people):
   ${ toolbox.make_link('Edit Proposal', url=h.url_for(controller='proposal', action='edit', id=c.proposal.id)) }
 % endif 
 </%def>
@@ -29,7 +29,7 @@
   <%include file="view_fragment.mako" />
 % endif
 
-% if h.auth.authorized(h.auth.has_organiser_role) or ((c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role)) and c.signed_in_person in c.proposal.people):
+% if h.auth.authorized(h.auth.has_organiser_role) or ((c.proposal_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role)) and c.signed_in_person in c.proposal.people):
 ${ toolbox.make_link('Edit Proposal', url=h.url_for(controller='proposal', action='edit',id=c.proposal.id)) }
 % endif
 

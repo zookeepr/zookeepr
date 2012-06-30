@@ -40,7 +40,7 @@
 
     <h2>About yourself</h2>
 
-    <p><em>Note: These are common for all your papers: miniconfs, presentations and tutorials.</em></p>
+    <p><em>Note: These are common for all your proposals: miniconfs, presentations and tutorials.</em></p>
 
     <p class="label"><span class="mandatory">*</span><span class="publishable">&#8224;</span><label for="person.name">Organiser's name:</label></p>
     ${ h.hidden('person_to_edit', value=c.person.id) }

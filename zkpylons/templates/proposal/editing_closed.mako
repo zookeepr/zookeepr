@@ -2,7 +2,7 @@
 <h2>Closed!</h2>
 
 <p>
-<p>Editing has been disabled while proposals are reviewed. If your paper is successful in its submission, you will be able to update your details later when the schedule is finalised.</p>
+<p>Editing has been disabled while proposals are reviewed. If your proposal is successful in its submission, you will be able to update your details later when the schedule is finalised.</p>
 </p>
 
 <p>
