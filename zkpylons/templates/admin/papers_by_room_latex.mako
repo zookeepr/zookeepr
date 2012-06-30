@@ -1,5 +1,5 @@
 <% theatre = '' %>
-% for p in c.papers:
+% for p in c.proposals:
 %   if p.theatre != theatre:
 <%     theatre = p.theatre %>
 <%     day = '' %>

@@ -19,7 +19,7 @@ class TestReviewController(SignedInCRUDControllerTest):
         super(TestReviewController, self).setUp()
 
         model.proposal.tables.proposal_type.insert().execute(
-            {'id': 1, 'name': 'paper'}
+            {'id': 1, 'name': 'presentation'}
             )
         model.core.tables.role.insert().execute(
             {'id': 1, 'name': 'reviewer'}

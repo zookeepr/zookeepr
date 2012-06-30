@@ -2,7 +2,7 @@
 <h2>Closed!</h2>
 
 <p>
-The call for papers is now closed!
+The call for proposals is now closed!
 </p>
 
 <p>

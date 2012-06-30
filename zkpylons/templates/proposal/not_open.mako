@@ -3,7 +3,7 @@
 <h2>Coming soon!</h2>
 
 <p>
-The call for papers has not opened yet. Please visit back later.
+The call for proposals has not opened yet. Please visit back later.
 </p>
 
 <p>

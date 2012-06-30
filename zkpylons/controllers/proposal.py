@@ -89,7 +89,7 @@ class ProposalController(BaseController):
     def __init__(self, *args):
         c.cfp_status = lca_info['cfp_status']
         c.cfmini_status = lca_info['cfmini_status']
-        c.paper_editing = lca_info['paper_editing']
+        c.proposal_editing = lca_info['proposal_editing']
         c.cfp_hide_assistance_info = lca_info['cfp_hide_assistance_info']
         c.cfp_hide_scores = lca_info['cfp_hide_scores']
 
@@ -224,7 +224,7 @@ class ProposalController(BaseController):
         if c.next_review_id:
             return redirect_to(action='review', id=c.next_review_id)
 
-        h.flash("No more papers to review")
+        h.flash("No more proposals to review")
 
         return redirect_to(action='review_index')
 
@@ -273,9 +273,9 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         if not h.auth.authorized(h.auth.has_organiser_role):
-            if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
+            if c.proposal_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
                 return render("proposal/editing_closed.mako")
-            elif c.paper_editing == 'not_open':
+            elif c.proposal_editing == 'not_open':
                 return render("proposal/editing_not_open.mako")
 
         c.proposal = Proposal.find_by_id(id)
@@ -313,9 +313,9 @@ class ProposalController(BaseController):
             h.auth.no_role()
 
         if not h.auth.authorized(h.auth.has_organiser_role):
-            if c.paper_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
+            if c.proposal_editing == 'closed' and not h.auth.authorized(h.auth.has_late_submitter_role):
                 return render("proposal/editing_closed.mako")
-            elif c.paper_editing == 'not_open':
+            elif c.proposal_editing == 'not_open':
                 return render("proposal/editing_not_open.mako")
 
         c.proposal = Proposal.find_by_id(id)

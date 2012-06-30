@@ -33,7 +33,7 @@ class MiniconfProposalController(BaseController):
     def __init__(self, *args):
         c.cfp_status = lca_info['cfp_status']
         c.cfmini_status = lca_info['cfmini_status']
-        c.paper_editing = lca_info['paper_editing']
+        c.proposal_editing = lca_info['proposal_editing']
 
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):

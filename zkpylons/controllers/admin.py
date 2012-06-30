@@ -86,9 +86,9 @@ class AdminController(BaseController):
           ('/review/help', ''' Information on how to get started reviewing [CFP] '''),
           ('/proposal/review_index', ''' To see what you need to reveiw [CFP] '''),
           ('/review', ''' To see what you have reviewed [CFP]'''),
-          ('/proposal/summary', ''' Summary of the reviewed papers [CFP] '''),
+          ('/proposal/summary', ''' Summary of the reviewed proposals [CFP] '''),
           ('/review/summary', ''' List of reviewers and scores [CFP] '''),
-          ('/proposal/approve', ''' Change proposal status for papers [CFP] '''),
+          ('/proposal/approve', ''' Change proposal status for proposals [CFP] '''),
           ('/funding/review_index', ''' To see what you need to reveiw [Funding] '''),
           ('/funding_type', ''' Manage Funding Types [Funding] '''),
           ('/funding/approve', ''' Change proposal status for funding applications [Funding] '''),
@@ -132,8 +132,8 @@ class AdminController(BaseController):
         return render('admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
-    def rej_papers_abstracts(self):
-        """ Rejected papers, with abstracts (for the miniconf organisers) [Schedule] """
+    def rej_proposals_abstracts(self):
+        """ Rejected proposals, with abstracts (for the miniconf organisers) [Schedule] """
         return sql_response("""
             SELECT
                 proposal.id,
@@ -227,8 +227,8 @@ class AdminController(BaseController):
         order by role, lastname, firstname""")
 
     @authorize(h.auth.has_organiser_role)
-    def paper_list(self):
-        """ Large table of all the paper proposals. [CFP] """
+    def proposal_list(self):
+        """ Large table of all the proposal proposals. [CFP] """
         return sql_response("""
           SELECT proposal.id, proposal.title, proposal.creation_timestamp AS ctime, proposal.last_modification_timestamp AS mtime, proposal_status.name AS status,
             person.firstname || ' ' || person.lastname as name, person.email_address
@@ -1168,7 +1168,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def late_submitters(self):
         """ List of people who are allowed to submit and edit their proposals after the CFP has closed. [CFP]"""
-        c.text = '<p>List of people who are allowed to submit and edit their proposals after the CFP has closed.</p><p><b>The role should be REMOVED once they have submitted their paper.</b></p>'
+        c.text = '<p>List of people who are allowed to submit and edit their proposals after the CFP has closed.</p><p><b>The role should be REMOVED once they have submitted their proposal.</b></p>'
 
         query = """SELECT p.id, p.firstname || ' ' || p.lastname as name, p.email_address,
                           (SELECT count(*)

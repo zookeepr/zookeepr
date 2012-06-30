@@ -20,7 +20,7 @@
   fn_share+= "gain the maximum benefit from your talk!"
 %>
 
-%  if c.paper_editing == 'closed':
+%  if c.proposal_editing == 'closed':
 <p>Proposal editing has been disabled while the review committee assess your proposals. Editing will be available later for updating details on your accepted presentations.</p>
 %  endif
 <p>Below is a list of proposals you have submitted. To view one click on the title; or to edit, click on the edit link.</p>
@@ -91,7 +91,7 @@
     </td>
     <td>
 %if s.status.name == 'Pending' or s.accepted:
-%  if c.paper_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
+%  if c.proposal_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
   ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
 %  endif
 ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }
