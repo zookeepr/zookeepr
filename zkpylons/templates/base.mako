@@ -69,11 +69,10 @@
                     jQuery(this).fadeTo(250, 0.3);
                 });
             });
-
-        </script>  
+        </script>
 %if len(h.lca_info['sponsors']['slideshow']):
-        <script type="text/javascript"> 
-            jQuery(function($) { 
+        <script type="text/javascript">
+            jQuery(function($) {
                 jQuery('#sponsorsother').crossSlide({
                     sleep: 5,
                     fade: 1,
