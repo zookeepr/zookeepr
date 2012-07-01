@@ -54,50 +54,39 @@
                 ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
                 var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
         })();
-                            
+
         </script>
 
 
         ${self.extra_head()}
         <script type="text/javascript">
-           jQuery(document).ready(function() {
-             jQuery("#flash > div").hide().fadeIn(3500);
-             jQuery("#flash > div").fadeTo(3000, 0.3);
-             jQuery("#flash > div").hover(function() {
-               jQuery(this).fadeTo(250, 1);
-             },function(){
-               jQuery(this).fadeTo(250, 0.3);
-             });
-           });
+            jQuery(document).ready(function() {
+                jQuery("#flash > div").hide().fadeIn(3500);
+                jQuery("#flash > div").fadeTo(3000, 0.3);
+                jQuery("#flash > div").hover(function() {
+                    jQuery(this).fadeTo(250, 1);
+                },function(){
+                    jQuery(this).fadeTo(250, 0.3);
+                });
+            });
 
         </script>  
-<script type="text/javascript"> 
-//<!--
-jQuery(function($) { 
- jQuery('#sponsorsother').crossSlide({
-                                                      sleep: 5,
-                                                      fade: 1,
-                                                      shuffle: 1
-                                                    }, [
-{ src: '/images/sponsor_logos/fades/fifteen_trees_logo_RGB_full_colour-1.jpg' },
-{ src: '/images/sponsor_logos/fades/sponsor-anchor_200px.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-brt.jpg' },
-{ src: '/images/sponsor_logos/fades/sponsor-bulletproof.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-canonical_200px.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-catalyst-it.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-dsd.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-freetronics.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-google.gif' },
-{ src: '/images/sponsor_logos/fades/sponsor-intel_200px.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-linuxmagazine.gif' },
-{ src: '/images/sponsor_logos/fades/sponsor-lnm.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-xirrus.png' },
-{ src: '/images/sponsor_logos/fades/sponsor-yum_200px.jpg' }
-                                                ]);
-});
-// --> 
-</script>
-    </head>
+%if len(h.lca_info['sponsors']['slideshow']):
+        <script type="text/javascript"> 
+            jQuery(function($) { 
+                jQuery('#sponsorsother').crossSlide({
+                    sleep: 5,
+                    fade: 1,
+                    shuffle: 1
+                }, [
+%  for sponsor in h.lca_info['sponsors']['slideshow']:
+                    { src: '${ sponsor['src'] }', alt: '${ sponsor['name'] }' },
+%  endfor
+                ]);
+            });
+        </script>
+%endif
+      </head>
     ${self.extra_body()}
         <div id="netv-main">
             <div class="netv-sheet">
@@ -142,7 +131,6 @@ jQuery(function($) {
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-## % if h.url_for() == '/': #Un/comment to enable/disable the sponsor box on the main page
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -197,7 +185,7 @@ jQuery(function($) {
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-## % else:
+%if len(h.lca_info['sponsors']['top']):
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -216,15 +204,19 @@ jQuery(function($) {
                                     </div>
                                     <div class="netv-blockcontent">
                                         <div class="netv-blockcontent-body">
-                                            <!-- block-content -->
-                                            <%include file="/leftcol/top_sponsors.mako" />
-                                            <!-- /block-content -->
+                                            <ul>
+% for sponsor in h.lca_info['sponsors']['top']:
+                                            <li><a href="${ sponsor['url'] }"><img src="${ sponsor['src'] }" alt="${ sponsor['name'] }"></a></li>
+% endfor
+                                            </ul>
                                             <div class="cleared"></div>
                                         </div>
                                     </div>
                                     <div class="cleared"></div>
                                 </div>
                             </div>
+%endif
+%if len(h.lca_info['sponsors']['slideshow']):
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -244,7 +236,7 @@ jQuery(function($) {
                                     <div class="netv-blockcontent">
                                         <div class="netv-blockcontent-body">
                                             <div id="sponsorsother" style="width: 200px; height:200px; margin:5px;">
-                                                <img src="/images/sponsor_logos/fades/sponsor-catalyst-it.png">
+                                                <img src="${ h.lca_info['sponsors']['slideshow'][0]['src'] }" alt="${ h.lca_info['sponsors']['slideshow'][0]['name'] }">
                                             </div>
                                             <div class="cleared"></div>
                                         </div>
@@ -253,7 +245,7 @@ jQuery(function($) {
                                 </div>
                             </div>
 
-##% endif
+%endif
                         </div>
                         <div class="netv-layout-cell netv-content">
                             <div class="netv-post">
