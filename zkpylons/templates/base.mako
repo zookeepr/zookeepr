@@ -31,16 +31,15 @@
     <head>
         <title>${ self.title() }</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-        <!-- <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"> -->
-        <link rel="shortcut icon" href="/images/filledfoot-small.png" type="image/png">
+        <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" media="screen" href="/screen.css" type="text/css">
         <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css">
         <link rel="stylesheet" media="print" href="/print.css" type="text/css">
         <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/js/jquery.cross-slide.min.js"></script>
-        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2012 News">
-        <!--[if IE 6]><link rel="stylesheet" href="brisbanecity.ie6.css" type="text/css" media="screen" /><![endif]-->
-        <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
+        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="${ h.lca_info['event_shortname'] } News">
+        <!--[if IE 6]><link rel="stylesheet" href="ie6.css" type="text/css" media="screen" /><![endif]-->
+        <!--[if IE 7]><link rel="stylesheet" href="ie7.css" type="text/css" media="screen" /><![endif]-->
 
         <script type="text/javascript">
 
