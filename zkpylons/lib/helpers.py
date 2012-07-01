@@ -150,6 +150,20 @@ def event_shortname():
     """
     return lca_info['event_shortname']
 
+def event_link():
+    """
+
+    Returns a link to the event website
+    """
+    return link_to(lca_info['event_name'], lca_info['event_url'])
+
+def event_parent_org_link():
+    """
+
+    Returns a link to the parent organisation
+    """
+    return link_to(lca_info['event_parent_organisation'], lca_info['event_parent_url'])
+
 rot_26 = "rot_13" #used for being sneaky in the tag hashing for LCA2012
 
 def slideshow(set, small=None):
