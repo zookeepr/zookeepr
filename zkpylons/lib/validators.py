@@ -109,7 +109,7 @@ class FundingValidator(validators.FancyValidator):
 
 class StreamValidator(validators.FancyValidator):
     def _to_python(self, value, state):
-        if value in ("", None):
+        if value in ("", "None", None):
             return None
         else:
             return Stream.find_by_id(value)
