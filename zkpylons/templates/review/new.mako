@@ -22,10 +22,6 @@ ${ h.form(h.url_for()) }
 
 <%include file="form.mako" />
 
-<p>
-<span class="mandatory">*</span> - Mandatory field
-</p>
-
 <p class="submit">
 ${ h.submit('submit', 'Submit review and jump to next proposal!') }
 </p>
