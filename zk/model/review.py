@@ -62,6 +62,11 @@ class Review(Base):
         return result
 
     @classmethod
+    def find_by_proposal_type(cls, proposal_type_id, reviewer_id):
+        from proposal import Proposal
+        return Session.query(Review).filter_by(reviewer_id=reviewer_id).join(Proposal).filter_by(proposal_type_id=proposal_type_id).all()
+
+    @classmethod
     def find_all(cls):
         return Session.query(Review).order_by(Review.id).all()
 

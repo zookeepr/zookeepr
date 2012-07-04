@@ -18,7 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zkpylons.lib.mail import email
 
 from zkpylons.model import meta
-from zkpylons.model import Review, Stream, Person
+from zkpylons.model import Review, Stream, Person, ProposalType
 
 from zkpylons.config.lca_info import lca_info
 
@@ -68,7 +68,10 @@ class ReviewController(BaseController):
         return render('review/summary.mako')
 
     def index(self):
-        c.review_collection = Review.find_all()
+        c.proposal_type_collection = ProposalType.find_all()
+        c.review_collection = {}
+        for proposal_type in c.proposal_type_collection:
+            c.review_collection[proposal_type] = Review.find_by_proposal_type(proposal_type.id, h.signed_in_person().id)
         return render('/review/list.mako')
 
     def view(self, id):
