@@ -271,7 +271,7 @@ class AdminController(BaseController):
                                 FROM review as review2
                                 WHERE review2.proposal_id = proposal.id
                             ) AS float(8)
-                        ) AS float(8)
+                        ) AS numeric(8,2)
                     ) AS "#reviewers at this score / #total reviews %%"
                 FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
