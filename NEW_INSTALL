@@ -1,27 +1,40 @@
-External dependencies:
-    postgresql
+Zookeepr Installation Instructions
+==================================
+
+External dependencies
+---------------------
+
+ * postgresql
+     
     
-Create a postgresql database for your ZooKeepr instance.
+Creating a development environment
+----------------------------------
 
-Create a virtualenv for your ZooKeepr instance.
-    # using only virtualenv
-    virtualenv env --no-site-packages
-    . ./env/bin/activate
+1. Create a postgresql database for your ZooKeepr instance.
 
-    # using virtualenwrapper
-    mkvirtualenv zookeepr # --no-site-packages is default
-    workon zookeepr  
+2. Create a virtualenv for your ZooKeepr instance.
 
-    # install
-    cp zkpylons/config/lca_info.py.sample zkpylons/config/lca_info.py
-    python setup.py develop
+        \# using only virtualenv
+        virtualenv env --no-site-packages
+        . ./env/bin/activate
 
-Edit development.ini to set sqlachemy.url to match your postgresql database.
-Note: You must set sqlachemy.url in both the [app:main] and [alembic] sections
+        \# using virtualenwrapper
+        mkvirtualenv zookeepr # --no-site-packages is default
+        workon zookeepr  
 
-Run alembic to create and populate the initial database.
+3. Configure.
 
-    alembic --config development.ini upgrade head
-    pserve development.ini
+        cp zkpylons/config/lca_info.py.sample zkpylons/config/lca_info.py
+        cp development.ini.sample development.ini
+        python setup.py develop
 
+    Edit development.ini to set sqlachemy.url to match your postgresql database.
+    Note: You must set sqlachemy.url in both the [app:main] and [alembic] sections
 
+4. Populate database. Run alembic to create and populate the initial database.
+
+        alembic --config development.ini upgrade head
+    
+5. Run development server.
+
+        pserve --reload development.ini
