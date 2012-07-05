@@ -150,7 +150,7 @@ class AdminController(BaseController):
                 (SELECT review2.miniconf FROM review review2 WHERE review2.proposal_id = proposal.id GROUP BY review2.miniconf ORDER BY count(review2.miniconf) DESC LIMIT 1) AS miniconf,
                 MAX(review.score) as max,
                 MIN(review.score) as min,
-                AVG(review.score) as avg
+                ROUND(AVG(review.score),2) as avg
             FROM proposal
                 LEFT JOIN review ON (proposal.id=review.proposal_id)
                 LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
@@ -271,7 +271,7 @@ class AdminController(BaseController):
                                 FROM review as review2
                                 WHERE review2.proposal_id = proposal.id
                             ) AS float(8)
-                        ) AS float(8)
+                        ) AS numeric(8,2)
                     ) AS "#reviewers at this score / #total reviews %%"
                 FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
@@ -297,7 +297,7 @@ class AdminController(BaseController):
                     proposal_type.name AS "proposal type",
                     MAX(review.score) AS max,
                     MIN(review.score) AS min,
-                    AVG(review.score) AS avg
+                    ROUND(AVG(review.score),2) AS avg
                 FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
@@ -316,7 +316,7 @@ class AdminController(BaseController):
                     stream.name AS stream,
                     MAX(review.score) AS max,
                     MIN(review.score) AS min,
-                    AVG(review.score) AS avg
+                    ROUND(AVG(review.score),2) AS avg
                 FROM proposal
                     LEFT JOIN review ON (proposal.id=review.proposal_id)
                     LEFT JOIN proposal_type ON (proposal.proposal_type_id=proposal_type.id)
@@ -406,7 +406,7 @@ class AdminController(BaseController):
                     funding_type.name AS "funding type",
                     MAX(funding_review.score) AS max,
                     MIN(funding_review.score) AS min,
-                    AVG(funding_review.score) AS avg
+                    ROUND(AVG(funding_review.score),2) AS avg
                 FROM funding
                     LEFT JOIN funding_review ON (funding.id=funding_review.funding_id)
                     LEFT JOIN funding_type ON (funding.funding_type_id=funding_type.id)
