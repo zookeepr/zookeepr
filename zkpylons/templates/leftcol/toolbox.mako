@@ -69,19 +69,19 @@ ${ parent.toolbox_extra_admin() }
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra_reviewer() }
       ${ make_link('How to review', '/help/review') }
-      ${ make_link('Proposals to review', h.url_for(controller='proposal', action='review_index')) }
-      ${ make_link("Reviews you've made", h.url_for(controller='review', action='index')) }
-      ${ make_link('Summary of reviewed proposals', h.url_for(controller='proposal', action='summary')) }
-      ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary')) }
+      ${ make_link('Proposals to review', h.url_for(controller='proposal', action='review_index', id=None)) }
+      ${ make_link("Reviews you've made", h.url_for(controller='review', action='index', id=None)) }
+      ${ make_link('Summary of reviewed proposals', h.url_for(controller='proposal', action='summary', id=None)) }
+      ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary', id=None)) }
       <span class="menu-header">List of proposals by:</span>
     <ul class="netv-vmenu">
     %if h.lca_info['cfp_hide_scores'] == 'no':
-        ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank')) }
-        ${ make_link('max score, min score then average', h.url_for(controller='admin', action='proposals_by_max_rank')) }
-        ${ make_link('stream and score', h.url_for(controller='admin', action='proposals_by_stream')) }
+        ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank', id=None)) }
+        ${ make_link('max score, min score then average', h.url_for(controller='admin', action='proposals_by_max_rank', id=None)) }
+        ${ make_link('stream and score', h.url_for(controller='admin', action='proposals_by_stream', id=None)) }
     %endif
-        ${ make_link('number of reviewers', h.url_for(controller='admin', action='proposals_by_number_of_reviewers')) }
-        ${ make_link('submission date', h.url_for(controller='admin', action='proposals_by_date')) }
+        ${ make_link('number of reviewers', h.url_for(controller='admin', action='proposals_by_number_of_reviewers', id=None)) }
+        ${ make_link('submission date', h.url_for(controller='admin', action='proposals_by_date', id=None)) }
       </ul>
     </ul>
 % endif

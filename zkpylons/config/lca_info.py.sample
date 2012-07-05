@@ -30,6 +30,7 @@ lca_info = {
   'event_phone_number': '+61 7 3103 7998',
   'event_byline': 'linux.conf.au 2011 | 24 - 29 Jan | Follow the Flow',
   'event_pricing_disclaimer': 'All prices are in Australian dollars and include 10% GST.',
+  'event_trademark_notice': 'Linux is a registered trademark of Linus Torvalds',
   'date' : datetime(2011, 1, 24, 9, 0, 00),
   'media_license_name' : 'Creative Commons Attribution-Share Alike License',
   'media_license_url'  : 'http://creativecommons.org/licenses/by-sa/3.0/',
@@ -61,6 +62,16 @@ lca_info = {
      'miniconf'     : 'miniconfs@lca2011.linux.org.au',
      'funding'      : 'funding@lca2011.linux.org.au',
      'poster' : 'speakers@lca2011.linux.org.au'
+  },
+  'sponsors': {
+    'top': [
+      {'name': 'lca2007', 'src': '/images/history/lca2007-logo.png', 'url': 'http://lca2007.linux.org.au/'},
+      {'name': 'lca2006', 'src': '/images/history/lca2006-logo.png', 'url': 'http://lca2006.linux.org.au/'},
+    ],
+    'slideshow': [
+      {'name': 'lca2008', 'src': '/images/history/lca2008-logo.png'},
+      {'name': 'lca2009', 'src': '/images/history/lca2009-logo.png'},
+    ],
   },
 
   'proposal_update_email': 'archive@lca2011.linux.org.au', # recieve notifications when proposals are changed. Leave blank for none.
