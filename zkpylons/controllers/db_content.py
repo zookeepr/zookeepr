@@ -209,7 +209,7 @@ class DbContentController(BaseController):
         news_id = DbContentType.find_by_name("News")
         c.db_content_collection = []
         if news_id is not None: 
-            c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id.id).filter_by(publish_timestamp <= datetime.now()).order_by(DbContent.publish_timestamp.desc()).limit(20).all()
+            c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id.id).filter(DbContent.publish_timestamp <= datetime.now()).order_by(DbContent.publish_timestamp.desc()).limit(20).all()
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
         return render('/db_content/rss_news.mako')
 
