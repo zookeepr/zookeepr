@@ -56,14 +56,6 @@ lca_info = {
 
   'cfp_miniconf_list' : ["(none)", "Sysadmin", "Business", "Haecksen"],
 
-  'emails': {
-     'presentation' : 'speakers@lca2011.linux.org.au',
-     'tutorial - 1 hour and 45 minutes'     : 'speakers@lca2011.linux.org.au',
-     'tutorial - 3 hours and 30 minutes'    : 'speakers@lca2011.linux.org.au',
-     'miniconf'     : 'miniconfs@lca2011.linux.org.au',
-     'funding'      : 'funding@lca2011.linux.org.au',
-     'poster' : 'speakers@lca2011.linux.org.au'
-  },
   'sponsors': {
     'top': [
       {'name': 'lca2007', 'src': '/images/history/lca2007-logo.png', 'url': 'http://lca2007.linux.org.au/'},

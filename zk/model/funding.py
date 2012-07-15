@@ -63,6 +63,7 @@ class FundingType(Base):
     # title of type
     name = sa.Column(sa.types.String(40), unique=True, nullable=False)
     note = sa.Column(sa.types.String())
+    notify_email = sa.Column(sa.types.String(), nullable=True)
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation

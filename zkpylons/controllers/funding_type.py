@@ -26,6 +26,7 @@ log = logging.getLogger(__name__)
 class FundingTypeSchema(BaseSchema):
     name = validators.String(not_empty=True)
     active = validators.Bool(not_empty=True)
+    notify_email = validators.String(if_empty=None)
 
 class NewFundingTypeSchema(BaseSchema):
     funding_type = FundingTypeSchema()

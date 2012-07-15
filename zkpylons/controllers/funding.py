@@ -286,7 +286,7 @@ class FundingController(BaseController):
         c.person = h.signed_in_person()
 
         # Make sure the organisers are notified of this
-        c.email_address = h.lca_info['emails']['funding']
+        c.email_address = c.funding.type.notify_email
         email(c.email_address, render('/funding/withdraw_email.mako'))
 
         h.flash("Funding withdrawn. The organisers have been notified.")

@@ -7,7 +7,7 @@ Dear ${ c.person.firstname },
 Thank you for submitting a ${ c.funding.type.name } requestfor ${ h.lca_info['event_name'] }.
 
 If you have any queries about your funding request ${ c.funding.type.name },
-please email ${ h.lca_info['emails']['funding'] }
+please email ${ c.funding.type.notify_email }
 
 Should you need to update the details of this request, please use the following
 URL:
