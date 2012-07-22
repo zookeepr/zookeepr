@@ -70,8 +70,8 @@ class Review(Base):
         return Session.query(Review).order_by(Review.id)
 
     @classmethod
-    def by_reviewer(cls, reviewer_id):
-        return cls.query().filter_by(reviewer_id=reviewer_id)
+    def by_reviewer(cls, reviewer):
+        return cls.query().filter_by(reviewer=reviewer)
 
     @classmethod
     def stats_query(cls):
