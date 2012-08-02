@@ -14,7 +14,7 @@ from formencode.variabledecode import NestedVariables
 from zkpylons.lib.base import BaseController, render
 from zkpylons.lib.ssl_requirement import enforce_ssl
 from zkpylons.lib.validators import BaseSchema, DictSet, ProductInCategory, CheckboxQty
-from zkpylons.lib.validators import ProductQty, ProductMinMax, IAgreeValidator
+from zkpylons.lib.validators import ProductQty, ProductMinMax, IAgreeValidator, CountryValidator
 
 # validators used from the database
 from zkpylons.lib.validators import ProDinner, PPDetails, PPChildrenAdult
@@ -98,8 +98,8 @@ class ExistingPersonSchema(BaseSchema):
     address2 = validators.String()
     city = validators.String(not_empty=True)
     state = validators.String()
-    postcode = validators.String(not_empty=True)
-    country = validators.String(not_empty=True)
+    postcode = validators.String(not_empty=True, min=3, max=10)
+    country = CountryValidator(not_empty=True)
     i_agree = validators.Bool(if_missing=False)
     chained_validators = [IAgreeValidator("i_agree")]
 
@@ -320,7 +320,7 @@ class RegistrationController(BaseController):
             if not h.auth.authorized(h.auth.has_organiser_role):
                 redirect_to(action='status')
             else:
-                # User is an organiser, so if the status is also 'debug' then they can register 
+                # User is an organiser, so if the status is also 'debug' then they can register
                 if lca_info['conference_status'] is not 'debug':
                     redirect_to(action='status')
 

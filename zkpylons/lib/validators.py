@@ -51,6 +51,13 @@ class PersonValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return Person.find_by_id(int(value))
 
+class CountryValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        from zkpylons.lib.helpers import countries
+        if value not in countries():
+            raise Invalid('Not a valid country', value, state)
+        return value
+
 class DbContentTypeValidator(validators.FancyValidator):
     def _to_python(self, value, state):
         return DbContentType.find_by_id(value)
@@ -244,8 +251,8 @@ class ProductMinMax(validators.FancyValidator):
         self.product_fields is a [list] of products (generally category.products)
         self.min_qty is the minimum total (generally category.min)
         self.max_qty is the maximum total (generally category.max)
-        
-        See zkpylons.registration.RegistrationController._generate_product_schema for examples        
+
+        See zkpylons.registration.RegistrationController._generate_product_schema for examples
     """
     def validate_python(self, values, state):
         total = 0
@@ -266,7 +273,7 @@ class ProductMinMax(validators.FancyValidator):
         if total > self.max_qty:
             error_dict[self.error_field_name] = "You can not order more than %d %s" % (self.max_qty, self.category_name,)
         if error_dict:
-            error_message = "Quantities for %s are incorrect" % self.category_name 
+            error_message = "Quantities for %s are incorrect" % self.category_name
             raise Invalid(error_message, values, state, error_dict=error_dict)
 
 class ProductInCategory(validators.FancyValidator):
