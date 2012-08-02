@@ -36,7 +36,7 @@ class NotExistingSocialNetworkValidator(validators.FancyValidator):
 class SocialNetworkSchema(BaseSchema):
     name = validators.String(not_empty=True)
     logo = validators.String(not_empty=True)
-    url = validators.String()
+    url = validators.URL(add_http=True, check_exists=False)
 
 class NewSocialNetworkSchema(BaseSchema):
     social_network = SocialNetworkSchema()
@@ -53,7 +53,7 @@ class SocialNetworkController(BaseController):
     def __before__(self, **kwargs):
         pass
 
-    @dispatch_on(POST="_new") 
+    @dispatch_on(POST="_new")
     def new(self):
         return render('/social_network/new.mako')
 
@@ -100,7 +100,7 @@ class SocialNetworkController(BaseController):
         h.flash("The social_network has been updated successfully.")
         redirect_to(action='view', id=id)
 
-    @dispatch_on(POST="_delete") 
+    @dispatch_on(POST="_delete")
     def delete(self, id):
         """Delete the social_network
 

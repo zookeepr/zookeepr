@@ -48,9 +48,9 @@ class ScheduleSchema(BaseSchema):
     location = LocationValidator(not_empty=True)
     event = EventValidator(not_empty=True)
     overflow = validators.Bool()
-    video_url = validators.String(if_empty=None)
-    audio_url = validators.String(if_empty=None)
-    slide_url = validators.String(if_empty=None)
+    video_url = validators.URL(add_http=True, check_exists=False, if_empty=None)
+    audio_url = validators.URL(add_http=True, check_exists=False, if_empty=None)
+    slide_url = validators.URL(add_http=True, check_exists=False, if_empty=None)
 
 class NewScheduleSchema(BaseSchema):
     schedule = ScheduleSchema()
@@ -297,6 +297,6 @@ class ScheduleController(BaseController):
             c.talk = Proposal.find_accepted_by_id(id)
         except:
             c.talk_id = id
-            c.webmaster_email = lca_info['webmaster_email']	
+            c.webmaster_email = lca_info['webmaster_email']
             return render('/schedule/invalid_talkid.mako')
         return render('/schedule/table_view.mako')
