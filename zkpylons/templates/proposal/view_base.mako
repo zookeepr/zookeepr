@@ -50,6 +50,7 @@ ${ h.link_to('Review this proposal', url=h.url_for(action='review')) }
 <th>Rec. Stream</th>
 %endif
 <th>Comment</th>
+<th>Private Comment</th>
 </tr>
 
 %   for r in c.proposal.reviews:
@@ -74,6 +75,10 @@ ${ r.stream.name | h }
 
 <td style="vertical-align: top;">
 ${ h.line_break(h.util.html_escape(r.comment)) | n}
+</td>
+
+<td style="vertical-align: top;">
+${ h.line_break(h.util.html_escape(r.private_comment)) | n}
 </td>
 
 </tr>
