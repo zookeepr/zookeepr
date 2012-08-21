@@ -27,7 +27,7 @@ Forgotten Password? -
  ${ parent.title() }
 </%def>
 
-<script src="https://browserid.org/include.js"></script>
+<script src="https://login.persona.org/include.js"></script>
 <script>
 function login() {
     navigator.id.get(function (assertion) {

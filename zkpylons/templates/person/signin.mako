@@ -40,7 +40,7 @@ If you have lost your log in details, please contact ${ h.webmaster_email() }.
 carried over any earlier login information, so you will need
 to register anew.</p>
 
-<script src="https://browserid.org/include.js"></script>
+<script src="https://login.persona.org/include.js"></script>
 <script>
 function login() {
     navigator.id.get(function (assertion) {
