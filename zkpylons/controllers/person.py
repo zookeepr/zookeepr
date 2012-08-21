@@ -106,7 +106,7 @@ class PersonaValidator(validators.FancyValidator):
         assertion = values['assertion']
         audience = h.url_for(qualified=True, controller='home').strip("/")
 
-        page = urllib2.urlopen('https://browserid.org/verify',
+        page = urllib2.urlopen('https://verifier.login.persona.org/verify',
                                urllib.urlencode({ "assertion": assertion,
                                                   "audience": audience}))
         data = json.load(page)

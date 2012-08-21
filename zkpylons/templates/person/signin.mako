@@ -6,17 +6,15 @@
     <span class="error-message">You don't have the appropriate permissions to access this resource. Please login as a different user.</span>
 % endif
 
-<div id="persona-div" style="display: none">
 <p>Don't want yet another single-use username/password?
 
-<p><a href="javascript:login()"><img border="0" src="/images/persona-login.png" alt="Sign in with Persona"></a></p>
+<p><a class="persona-button" href="javascript:login()"><span>Sign in with Persona</span></a></p>
 
 ${ h.form('/person/persona_login', method='post', id='persona-form') }
 ${ h.hidden('assertion', '') }
 ${ h.end_form() }
 
 <p>Otherwise enter your credentials in the following form.</p>
-</div>
 
 ${ h.form(h.url_for(), method='post') }
 
@@ -42,11 +40,8 @@ If you have lost your log in details, please contact ${ h.webmaster_email() }.
 carried over any earlier login information, so you will need
 to register anew.</p>
 
-<script src="https://browserid.org/include.js"></script>
+<script src="https://login.persona.org/include.js"></script>
 <script>
-var persona_div = document.getElementById("persona-div");
-persona_div.style.display = 'inline';
-
 function login() {
     navigator.id.get(function (assertion) {
       if (assertion) {
@@ -59,3 +54,6 @@ function login() {
     });
 }
 </script>
+<%def name="extra_head()">
+<link rel="stylesheet" href="/css/persona.css" type="text/css">
+</%def>

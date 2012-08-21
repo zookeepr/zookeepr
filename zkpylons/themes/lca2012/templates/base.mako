@@ -31,6 +31,7 @@
     <head>
         <title>${ self.title() }</title>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+        <link rel="prefetch" href="https://login.persona.org/include.js">
         <!-- <link rel="shortcut icon" href="/images/favicon.ico" type="image/x-icon"> -->
         <link rel="shortcut icon" href="/images/filledfoot-small.png" type="image/png">
         <link rel="stylesheet" media="screen" href="/screen.css" type="text/css">
