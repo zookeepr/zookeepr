@@ -16,3 +16,9 @@ Session = scoped_session(sessionmaker(autocommit=False))
 
 metadata = MetaData()
 Base = declarative_base(metadata=metadata)
+
+@classmethod
+def query(cls):
+    return Session.query(cls).order_by(id)
+
+Base.query = query

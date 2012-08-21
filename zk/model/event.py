@@ -79,7 +79,7 @@ class Event(Base):
 
     def schedule_by_time_slot(self, time_slot):
         from location import Location
-        return Session.query(Schedule).filter(Schedule.event==self).filter(Schedule.time_slot==time_slot).all()
+        return Session.query(Schedule).filter(Schedule.event==self).filter(Schedule.time_slot==time_slot).order_by(Schedule.overflow).all()
 
     # class methods
 
@@ -96,10 +96,6 @@ class Event(Base):
 
     def find_all_published(cls):
         return Session.query(Event).filter(Event.publish==True).order_by(Event.id).all()
-
-    @classmethod
-    def find_published_by_id(cls, id):
-        return Session.query(Event).filter(Event.id==id).filter(Event.publish==True).first()
 
 class EventValidator(validators.FancyValidator):
     def _to_python(self, value, state):

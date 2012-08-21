@@ -1,4 +1,13 @@
-<%inherit file="/base.mako" />
+<%!
+def inherit(context):
+    c = context.get('c', UNDEFINED)
+    if c.raw:
+        return '/raw.mako'
+    else:
+        return '/base.mako'
+%>
+<%inherit file="${inherit(context)}"/>
+
 <h2>${ c.display_date.strftime('%A %d %B %Y') }</h2>
 
 <p class="note"><i>Schedule is subject to change without notice.</i></p>
@@ -8,7 +17,12 @@
     <tr>
       <th>&nbsp;</th>
 %for location in c.locations:
-      <th class="programme_room">${ location.display_name }</th>
+      <th class="programme_room">
+        ${ location.display_name }
+%     if c.can_edit:
+        <br />${ h.link_to('Edit', url=h.url_for(controller='location', action='edit', id=location.id)) }
+%     endif
+      </th>
 %endfor
     </tr>
   </thead>
@@ -51,27 +65,38 @@
       url = event.url
 %>
       <td class="programme_${ event.type.name }" colspan="${ len(c.locations) }" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
-%   if event.url:
+%   if event.publish or c.can_edit:
+%     if event.url:
         ${ h.link_to(title, url=url)}
-%   else:
+%     else:
         ${ title }
-%   endif
-%   if speakers:
+%     endif
+%     if speakers:
         <i>by</i> <span class="by_speaker">${ speakers | n }</span>
-%   endif
+%     endif
         <br />
-<%
-    schedules = event.schedule_by_time_slot(time_slot)
-    locations = [schedule.location.display_name for schedule in schedules]
-%>
-%   if locations:
-        <i>${ h.list_to_string(locations) }</i>
-%   endif
-%   if c.can_edit:
-        <br />${ h.link_to('Event Details', url=h.url_for(controller='event', action='view', id=event.id)) }
-%     for schedule in schedules:
-        <br />${ h.link_to('Edit Schedule for ' + schedule.location.display_name, url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }
+%     for schedule in event.schedule_by_time_slot(time_slot):
+          <i>${ schedule.location.display_name }</i>
+%       if schedule.video_url or schedule.audio_url or schedule.slide_url or c.can_edit:
+        <span style="font-size: 8pt;">[
+%         if schedule.video_url:
+          <a href="${ schedule.video_url }">Video</a> 
+%         endif
+%         if schedule.audio_url:
+          <a href="${ schedule.audio_url }">Audio</a> 
+%         endif
+%         if schedule.slide_url:
+          <a href="${ schedule.slide_url }">Slides</a> 
+%         endif
+%         if c.can_edit:
+          ${ h.link_to('Edit Schedule for ' + schedule.location.display_name, url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }
+%         endif
+        ]</span>
+%       endif
 %     endfor
+%     if c.can_edit:
+        <br />${ h.link_to('Event Details', url=h.url_for(controller='event', action='view', id=event.id)) }
+%     endif
 %   endif
       </td>
 % endif
@@ -92,19 +117,11 @@
         url = event.url
 %>
 %     if time_slot.heading:
-      <th>
-%       if url:
-        ${ h.link_to(title, url=url) }
-%       else:
-        ${ title }
-%       endif
-%       if c.can_edit:
-        <br />${ h.link_to('Event Details', url=h.url_for(controller='event', action='view', id=event.id)) }
-        <br />${ h.link_to('Edit Schedule', url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }
-%       endif
-      </th>
+      <th class="programme_${event.type.name}" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
 %     else:
       <td class="programme_${event.type.name}" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
+%     endif
+%     if event.publish or c.can_edit:
 %       if not time_slot.primary:
         <b>${ time_slot.start_time.time().strftime('%H:%M') }</b>:
 %       endif
@@ -113,13 +130,30 @@
 %       else:
         ${ title }
 %       endif
-%       if speakers:
+%       if speakers and not time_slot.heading:
         <i>by</i> <span class="by_speaker">${ speakers | n }</span>
 %       endif
-%       if c.can_edit:
+%       if schedule.video_url or schedule.audio_url or schedule.slide_url:
+        <span style="font-size: 8pt;">[
+%         if schedule.video_url:
+          <a href="${ schedule.video_url }">Video</a> 
+%         endif
+%         if schedule.audio_url:
+          <a href="${ schedule.audio_url }">Audio</a> 
+%         endif
+%         if schedule.slide_url:
+          <a href="${ schedule.slide_url }">Slides</a> 
+%         endif
+        ]</span>
+%       endif
+%     endif
+%     if c.can_edit:
         <br />${ h.link_to('Event Details', url=h.url_for(controller='event', action='view', id=event.id)) }
         <br />${ h.link_to('Edit Schedule', url=h.url_for(controller='schedule', action='edit', id=schedule.id)) }
-%       endif
+%     endif
+%     if time_slot.heading:
+      </th>
+%     else:
       </td>
 %     endif
 %   endif
@@ -128,7 +162,7 @@
 %endfor
 %if c.can_edit:
   <tr>
-    <td>${ h.link_to('New TimeSlot', url=h.url_for(controller='time_slot', action='new', id=None)) }</td>
+    <td>${ h.link_to('New TimeSlot', url=h.url_for(controller='time_slot', action='new', id=None)) } ${ h.link_to('New Location', url=h.url_for(controller='location', action='new', id=None)) }</td>
     <td colspan="${ len(c.locations) }">${ h.link_to('Add Event to Schedule', url=h.url_for(controller='schedule', action='new', id=None)) }</td>
   </tr>
 %endif
