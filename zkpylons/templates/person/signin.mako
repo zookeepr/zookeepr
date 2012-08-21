@@ -8,7 +8,7 @@
 
 <p>Don't want yet another single-use username/password?
 
-<p><a href="javascript:login()"><img border="0" src="/images/persona-login.png" alt="Sign in with Persona"></a></p>
+<p><a class="persona-button" href="javascript:login()"><span>Sign in with Persona</span></a></p>
 
 ${ h.form('/person/persona_login', method='post', id='persona-form') }
 ${ h.hidden('assertion', '') }
@@ -54,3 +54,6 @@ function login() {
     });
 }
 </script>
+<%def name="extra_head()">
+<link rel="stylesheet" href="/css/persona.css" type="text/css">
+</%def>

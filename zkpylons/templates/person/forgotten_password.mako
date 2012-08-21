@@ -3,7 +3,8 @@
 
 <p>If you don't want to have to remember a password just for this site, you can simply login with Persona and forget about resetting your forgotten password.</p>
 
-<p><a href="javascript:login()"><img border="0" src="/images/persona-login.png" alt="Sign in with Persona"></a></p>
+<p><a class="persona-button" href="javascript:login()"><span>Sign in with Persona</span
+></a></p>
 
 ${ h.form('/person/persona_login', method='post', id='persona-form') }
 ${ h.hidden('assertion', '') }
@@ -41,3 +42,6 @@ function login() {
     });
 }
 </script>
+<%def name="extra_head()">
+<link rel="stylesheet" href="/css/persona.css" type="text/css">
+</%def>
