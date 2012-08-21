@@ -53,7 +53,7 @@ class Schedule(Base):
     @classmethod
     def find_by_date(cls, date, primary=False):
         from time_slot import TimeSlot
-        start   = datetime.combine(date,time(0,0,0))
-        end     = datetime.combine(date,time(23,59,59))
+        start   = datetime.combine(date,time.min)
+        end     = datetime.combine(date,time.max)
 
         return Session.query(Schedule).options(sa.orm.eagerload_all('time_slot.schedule'), sa.orm.eagerload('location'), sa.orm.eagerload_all('event.proposal.people')).join(TimeSlot).filter(TimeSlot.start_time.between(start,end)).order_by(TimeSlot.start_time).all()

@@ -58,8 +58,8 @@ class TimeSlot(Base):
 
     @classmethod
     def find_by_date(cls, date, primary=False):
-        start   = datetime.combine(date,time(0,0,0))
-        end     = datetime.combine(date,time(23,59,59))
+        start   = datetime.combine(date, time.min)
+        end     = datetime.combine(date, time.max)
 
         if primary == True:
             return Session.query(TimeSlot).filter(TimeSlot.start_time.between(start,end)).filter(TimeSlot.primary==primary).order_by(TimeSlot.start_time).all()
@@ -68,8 +68,9 @@ class TimeSlot(Base):
 
     @classmethod
     def find_scheduled_dates(cls):
-        scheduled_dates = []
         time_slots = cls.find_all()
+
+        scheduled_dates = []
         for time_slot in time_slots:
             if time_slot.start_time.date() not in scheduled_dates:
                 scheduled_dates.append(time_slot.start_time.date())

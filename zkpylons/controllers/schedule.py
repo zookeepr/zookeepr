@@ -19,7 +19,7 @@ import zkpylons.lib.helpers as h
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from datetime import date, datetime, timedelta
+from datetime import date, time, datetime, timedelta
 from pytz import timezone
 
 from zkpylons.lib.mail import email
@@ -79,17 +79,13 @@ class ScheduleController(BaseController):
         c.subsubmenu.append([ '/programme/saturday', 'Saturday' ])
 
     def table(self, day=None):
-        filter = dict(request.GET)
-
+        # Check if we have any schedule information to display and tell people if we don't
         if len(c.scheduled_dates) == 0:
             return render('/schedule/no_schedule_available.mako')
 
+        # Which day should we be showing now?
         c.display_date = None
-
-        available_days = {}
-        for scheduled_date in c.scheduled_dates:
-            available_days[scheduled_date.strftime('%A').lower()] = scheduled_date
-
+        available_days = { scheduled_date.strftime('%A').lower(): scheduled_date for scheduled_date in c.scheduled_dates }
         if day in available_days:
             c.display_date = available_days[day]
 
@@ -99,40 +95,39 @@ class ScheduleController(BaseController):
             else:
                 c.display_date = c.scheduled_dates[0]
 
+        # Work out which times we should be displaying on the left hand time scale
         c.time_slots = TimeSlot.find_by_date(c.display_date)
-        c.primary_times = {}
-        for time_slot in TimeSlot.find_by_date(c.display_date, primary=True):
-            c.primary_times[time_slot.start_time] = time_slot
+        c.primary_times = { time_slot.start_time: time_slot  for time_slot in TimeSlot.find_by_date(c.display_date, primary=True) }
 
-        event_type = EventType.find_by_name('presentation')
-        c.locations = Location.find_scheduled_by_date_and_type(c.display_date, event_type)
-        event_type = EventType.find_by_name('mini-conf')
-        c.locations = c.locations + Location.find_scheduled_by_date_and_type(c.display_date, event_type)
+        # Find all locations that have non-exclusive events
+        start = datetime.combine(c.display_date, time.min)
+        end   = datetime.combine(c.display_date, time.max)
+        c.locations = Location.query().join(Schedule).join(Event).join(TimeSlot).filter(TimeSlot.start_time.between(start, end)).filter(Event.exclusive != True).all()
 
+        # Find the list of scheduled items for the required date
         c.schedule_collection = Schedule.find_by_date(c.display_date)
 
+        # What time period will we break the time scale on the left into
         c.time_increment = timedelta(minutes=5)
 
+        # Build up the programme for the requested day
         c.programme = OrderedDict()
-
         for time_slot in c.time_slots:
-            time = time_slot.start_time
-            while time < time_slot.end_time:
-                c.programme[time] = {}
-                time = time + c.time_increment
-
+            mytime = time_slot.start_time
+            while mytime < time_slot.end_time:
+                c.programme[mytime] = {}
+                mytime = mytime + c.time_increment
         for schedule in c.schedule_collection:
             exclusive_event = schedule.time_slot.exclusive_event()
-            time = schedule.time_slot.start_time
+            mytime = schedule.time_slot.start_time
             if exclusive_event:
-                c.programme[time]['exclusive'] = exclusive_event
+                c.programme[mytime]['exclusive'] = exclusive_event
             else:
-                c.programme[time][schedule.location] = schedule
+                c.programme[mytime][schedule.location] = schedule
 
-        if filter.has_key('raw'):
-            return render('/schedule/table_raw.mako')
-        else:
-            return render('/schedule/table.mako')
+        if 'raw' in request.GET:
+            c.raw = True
+        return render('/schedule/table.mako')
 
     def table_view(self, id):
         c.schedule = Schedule.find_by_id(id)
