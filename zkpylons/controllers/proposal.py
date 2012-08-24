@@ -31,7 +31,7 @@ class NewPersonSchema(BaseSchema):
 
     experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
-    url = validators.String()
+    url = validators.URL(add_http=True, check_exists=False, not_empty=False)
     mobile = validators.String(not_empty=True)
 
 class ExistingPersonSchema(BaseSchema):
@@ -39,7 +39,7 @@ class ExistingPersonSchema(BaseSchema):
 
     experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
-    url = validators.String()
+    url = validators.URL(add_http=True, check_exists=False, not_empty=False)
     mobile = validators.String(not_empty=True)
 
 class ProposalSchema(BaseSchema):
@@ -54,8 +54,8 @@ class ProposalSchema(BaseSchema):
     accommodation_assistance = AccommodationAssistanceTypeValidator()
     travel_assistance = TravelAssistanceTypeValidator()
     project = validators.String()
-    url = validators.String()
-    abstract_video_url = validators.String()
+    url = validators.URL(add_http=True, check_exists=False, not_empty=False)
+    abstract_video_url = validators.URL(add_http=True, check_exists=False, not_empty=False)
     video_release = validators.Bool()
     slides_release = validators.Bool()
 

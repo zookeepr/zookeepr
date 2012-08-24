@@ -14,7 +14,7 @@
       <li${cls | n}><a href="${url}"><span class="l"></span><span class="r"></span><span class="t">${title}</span></a>
 </%def>
 
-  
+
 <ul class="netv-vmenu">
 ## Toolbox links
 % if h.signed_in_person():
@@ -55,7 +55,7 @@ ${ parent.toolbox_extra() }
       ${ make_link('Lookup', h.url_for(controller='admin', action='lookup')) }
       ${ make_link('View People', h.url_for(controller='person')) }
       ${ make_link('Manage Pages', h.url_for(controller='db_content')) }
-      ${ make_link('Manage files', h.url_for('/db_content/list_files')) }
+      ${ make_link('Manage Files', h.url_for('/db_content/list_files')) }
 %   if c.db_content and not (h.url_for().endswith('/edit') or h.url_for().endswith('/new')):
       ${ make_link('Edit Page', h.url_for(controller='db_content', action='edit', id=c.db_content.id)) }
 %   elif c.not_found:
@@ -93,7 +93,7 @@ ${ parent.toolbox_extra_funding_reviewer() }
       ${ make_link('Proposals to review', h.url_for(controller='funding', action='review_index')) }
       ${ make_link("Reviews you've made", h.url_for(controller='funding_review', action='index')) }
       ${ make_link('Summary of reviewed proposals', h.url_for(controller='funding', action='summary')) }
-      ${ make_link('Reviewer summary', h.url_for(controller='funding_review', action='summary')) } 
+      ${ make_link('Reviewer summary', h.url_for(controller='funding_review', action='summary')) }
       <li>List of requests by:</li>
       <ul class="indent">
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='funding_requests_by_strong_rank')) }

@@ -95,6 +95,7 @@ h6, h6 a, h6 a:link, h6 a:visited, h6 a:hover
   cursor:default;
 }
 
+fieldset {margin: 8px 0;}
 
 
 #netv-page-background-gradient
@@ -559,7 +560,7 @@ div.netv-layout-cell div.netv-layout-cell
 
 div.netv-content-layout-row
 {
-  display: table-row; 
+  display: table-row;
   margin-bottom: 7px;
 }
 
@@ -965,7 +966,7 @@ ul.netv-vmenu a.active .t
   margin:0;
   padding: 0 11px 0 11px;
   white-space: nowrap;
-  line-height: 37px;	
+  line-height: 37px;
 }
 
 .netv-blockheader .l, .netv-blockheader .r
@@ -1106,7 +1107,7 @@ input, select, textarea, select
   font-size: 13px;
 }
 
-.netv-block select 
+.netv-block select
 {
     width:96%;
 }
@@ -1320,14 +1321,14 @@ a img
   padding: 7px;
 }
 
- 
+
 .graph-bar-sold
 {
   background-color: #FF2233;
   height: 20px;
   float: left;
 }
-         
+
 .graph-bar-available
 {
   background-color: #BBDD99;
@@ -1598,7 +1599,7 @@ blockquote,
 }
 
 
-.overview-table-inner 
+.overview-table-inner
 {
     margin:10px;
 }

@@ -42,6 +42,7 @@ script_location = alembic
 # revision_environment = false
 
 sqlalchemy.url = postgresql://zookeepr:zookeepr@localhost/zk
+sqlalchemy.convert_unicode = true
 
 # Begin logging configuration
 

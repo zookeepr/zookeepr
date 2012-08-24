@@ -9,7 +9,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zkpylons.lib.base import BaseController, render
-from zkpylons.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator, SameEmailAddress
+from zkpylons.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator, SameEmailAddress, CountryValidator
 import zkpylons.lib.helpers as h
 from zkpylons.lib.helpers import check_for_incomplete_profile
 
@@ -75,7 +75,7 @@ class _UpdatePersonSchema(BaseSchema):
     city = validators.String(not_empty=True)
     state = validators.String()
     postcode = validators.String(not_empty=True)
-    country = validators.String(not_empty=True)
+    country = CountryValidator(not_empty=True)
     i_agree = validators.Bool(if_missing=False)
 
     chained_validators = [IAgreeValidator("i_agree")]
@@ -156,7 +156,7 @@ class PersonController(BaseController): #Read, Update, List
     def __before__(self, **kwargs):
         pass
 
-    @dispatch_on(POST="_signin") 
+    @dispatch_on(POST="_signin")
     def signin(self):
 
         role_error = session.pop('role_error', None)
@@ -228,7 +228,7 @@ class PersonController(BaseController): #Read, Update, List
 
         return render('person/confirmed.mako')
 
-    @dispatch_on(POST="_forgotten_password") 
+    @dispatch_on(POST="_forgotten_password")
     def forgotten_password(self):
         return render('/person/forgotten_password.mako')
 
@@ -266,7 +266,7 @@ class PersonController(BaseController): #Read, Update, List
 
         return render('person/password_confirmation_sent.mako')
 
-    @dispatch_on(POST="_reset_password") 
+    @dispatch_on(POST="_reset_password")
     def reset_password(self, url_hash):
         c.conf_rec = PasswordResetConfirmation.find_by_url_hash(url_hash)
 
@@ -369,7 +369,7 @@ class PersonController(BaseController): #Read, Update, List
         meta.Session.commit()
 
     @authorize(h.auth.is_valid_user)
-    @dispatch_on(POST="_edit") 
+    @dispatch_on(POST="_edit")
     def edit(self, id):
         # We need to recheck auth in here so we can pass in the id
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
@@ -410,7 +410,7 @@ class PersonController(BaseController): #Read, Update, List
         meta.Session.commit()
         redirect_to(action='view', id=id)
 
-    @dispatch_on(POST="_new") 
+    @dispatch_on(POST="_new")
     def new(self):
         # Do we allow account creation?
         if lca_info['account_creation']:
@@ -497,7 +497,7 @@ class PersonController(BaseController): #Read, Update, List
 
         return render('person/view.mako')
 
-    @dispatch_on(POST="_roles") 
+    @dispatch_on(POST="_roles")
     @authorize(h.auth.has_organiser_role)
     def roles(self, id):
 
