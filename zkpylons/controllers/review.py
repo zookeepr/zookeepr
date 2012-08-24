@@ -72,7 +72,7 @@ class ReviewController(BaseController):
 
         c.review_collection_by_type = {}
         for proposal_type in c.proposal_type_collection:
-            query = Review.by_reviewer(h.signed_in_person().id).join(Proposal).filter_by(proposal_type_id=proposal_type.id)
+            query = Review.by_reviewer(h.signed_in_person()).join(Proposal).filter_by(proposal_type_id=proposal_type.id)
             c.review_collection_by_type[proposal_type] = query.all()
         return render('/review/list.mako')
 
