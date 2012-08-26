@@ -24,6 +24,19 @@ authkit.cookie.signoutpath = /person/signout
 authkit.setup.intercept = 401, 403
 authkit.cookie_enforce = True
 
+# Should be changed to false in production
+debug = True
+
+# Enable SSL checking in the code
+enable_ssl_requirement = false
+
+# Use this host instead of the current website
+#ssl_host =
+
+# Uncomment and replace with the address which should receive any error reports
+#email_to = you@yourdomain.com
+smtp_server = localhost
+error_email_from = zookeepr@localhost
 
 [server:main]
 use = egg:waitress#main

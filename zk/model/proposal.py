@@ -204,10 +204,10 @@ class Proposal(Base):
 
     # name and url of the project
     project = sa.Column(sa.types.Text, nullable=False)
-    url = sa.Column(sa.types.Text, nullable=False)
+    url = sa.Column(sa.types.Text, nullable=True)
 
     # url to a short video
-    abstract_video_url = sa.Column(sa.types.Text, nullable=False)
+    abstract_video_url = sa.Column(sa.types.Text, nullable=True)
 
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
