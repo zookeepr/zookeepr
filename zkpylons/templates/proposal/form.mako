@@ -19,7 +19,7 @@
     <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the proposal is accepted, but it should reasonably reflect what you will be presenting, and in any case it will appear as-is on the website in the draft programme. Up to about 500 words.</p>
     <p class="entries">${ h.textarea('proposal.abstract', cols=70, rows=10) }</p>
 
-    <p class="label"><span class="mandatory">*</span><label for="proposal.private_abstract">Private Abstract:</label></p>
+    <p class="label"><label for="proposal.private_abstract">Private Abstract:</label></p>
     <p class="note">This will only be shown to organisers and reviewers. You should provide any details about your proposal that you don't want to be public here.</p>
     <p class="entries">${ h.textarea('proposal.private_abstract', cols=70, rows=10) }</p>
 

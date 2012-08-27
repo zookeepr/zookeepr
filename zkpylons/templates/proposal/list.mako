@@ -79,25 +79,22 @@
     ${ ' and '.join(cons) } release${ fns |n}
     </td>
     <td>
-%     if s.status.name == 'Pending':
-        <p><i>Undergoing review</i></p>
-%     elif s.accepted:
-        <p>Accepted</p>
-%     elif s.status.name == 'Withdrawn':
-        <p>Withdrawn</p>
-%     else:
-        <p>Declined<sup>[${ fn_mark(fn_declined) }]</sup></p>
+      <p>
+        ${ s.proposer_status }
+%     if s.declined:
+        <sup>[${ fn_mark(fn_declined) }]</sup>
 %     endif
+      </p>
     </td>
     <td>
-%if s.status.name == 'Pending' or s.accepted:
 %  if c.proposal_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
-  ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
+      ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
 %  endif
-${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }
+%  if not (s.accepted or s.declined or s.withdrawn):
+      ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }
+%  endif
     </td>
   </tr>
-%endif
 % endfor
 </table>
 

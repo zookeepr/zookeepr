@@ -18,7 +18,7 @@
     <p class="entries">${ h.textarea('proposal.abstract', cols=70, rows=10) }</p>
     <p class="note">This will appear in the conference programme. You will have an opportunity to update it once the proposal is accepted, but it should reasonably reflect what your miniconf is about, and in any case it will appear as-is on the website in the draft programme.</p>
 
-    <p class="label"><span class="mandatory">*</span><label for="proposal.private_abstract">Private summary:</label></p>
+    <p class="label"><label for="proposal.private_abstract">Private summary:</label></p>
     <p class="entries">${ h.textarea('proposal.private_abstract', cols=70, rows=10) }</p>
     <p class="note">This will only be shown to organisers and reviewers. You should provide any details about your miniconf that you don't want to be public here. Please indicate any special requirements your miniconf may have (e.g. facilities required) and anticipated number of attendees, if possible.</p>
 

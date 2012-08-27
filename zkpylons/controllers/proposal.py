@@ -140,7 +140,7 @@ class ProposalController(BaseController):
         proposal_results = self.form_result['proposal']
         attachment_results = self.form_result['attachment']
 
-        proposal_results['status'] = ProposalStatus.find_by_name('Pending')
+        proposal_results['status'] = ProposalStatus.find_by_name('Pending Review')
 
         c.proposal = Proposal(**proposal_results)
         c.proposal.abstract = self.clean_abstract(c.proposal.abstract)

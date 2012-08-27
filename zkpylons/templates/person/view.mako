@@ -140,26 +140,16 @@
     <td>${ h.link_to("%s" % (s.title), url=h.url_for(controller='proposal', action='view', id=s.id)) }</td>
     <td>${ s.type.name }</td>
     <td>${ h.truncate(s.abstract) | n}</td>
+    <td>${ s.proposer_status }</td>
     <td>
-%       if s.status.name == 'Pending':
-        <i>Undergoing review</i>
-%       elif s.accepted:
-        Accepted
-%       elif s.status.name == 'Withdrawn':
-        Withdrawn
-%       else:
-        Declined
-%       endif
-    </td>
-    <td>
-%       if s.status.name == 'Pending' or s.accepted:
-%         if c.proposal_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
+%       if c.proposal_editing == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
       ${ h.link_to("edit", url=h.url_for(controller='proposal', action='edit', id=s.id)) }
-%         endif
+%       endif
+%       if not (s.accepted or s.withdrawn or s.declined):
       ${ h.link_to("withdraw", url=h.url_for(controller='proposal', action='withdraw', id=s.id)) }
+%       endif
     </td>
   </tr>
-%       endif
 %     endfor
 </table>
 %   else:
