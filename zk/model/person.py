@@ -91,6 +91,11 @@ class Person(Base):
     social_networks = association_proxy('by_social_network', 'account_name', creator=_create_social_network_map)
     special_registration = sa.orm.relation(SpecialRegistration, backref='person')
 
+    def _get_proposal_offers(self):
+        from proposal import Proposal, ProposalStatus, person_proposal_map
+        return Session.query(Proposal).join(person_proposal_map).join(Person).join(ProposalStatus).filter(Person.id == self.id).filter(ProposalStatus.name == 'Offered').all()
+    proposal_offers = property(_get_proposal_offers)
+
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation
         super(Person, self).__init__(**kwargs)
