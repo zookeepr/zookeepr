@@ -569,22 +569,26 @@ class PersonController(BaseController): #Read, Update, List
 
         # What status are we moving all proposals to?
         if self.form_result['status'] == 'accept':
-            status = ProposalStatus.find_by_name('Accepted')
+            c.status = ProposalStatus.find_by_name('Accepted')
         elif self.form_result['status'] == 'withdraw':
-            status = ProposalStatus.find_by_name('Withdrawn')
+            c.status = ProposalStatus.find_by_name('Withdrawn')
         elif self.form_result['status'] == 'contact':
-            status = ProposalStatus.find_by_name('Contact')
+            c.status = ProposalStatus.find_by_name('Contact')
         else:
-            status = None
+            c.status = None
 
         for offer in c.person.proposal_offers:
-            offer.status = status
+            offer.status = c.status
 
-        if c.travel_assistance:
+        if c.travel_assistance and not c.person.travel:
             self.form_result['travel']['flight_details'] = ''
             travel = Travel(**self.form_result['travel'])
             meta.Session.add(travel)
             c.person.travel = travel
+        if c.status == 'accept':
+            email(c.person.email_address, render('/person/offer_email.mako'))
+        else:
+            email([c.person.email_address, h.lca_info['emails']['presentation']], render('/person/offer_email.mako'))
 
         # update the objects with the validated form data
         meta.Session.commit()
