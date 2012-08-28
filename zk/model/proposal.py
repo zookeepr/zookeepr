@@ -17,8 +17,8 @@ def setup(meta):
     meta.Session.add_all(
         [
             ProposalStatus(name='Accepted'),
-            ProposalStatus(name='Rejected'),
-            ProposalStatus(name='Pending'),
+            ProposalStatus(name='Declined'),
+            ProposalStatus(name='Pending Review'),
             ProposalStatus(name='Withdrawn'),
             ProposalStatus(name='Backup'),
         ]
@@ -237,6 +237,21 @@ class Proposal(Base):
         return self.status.name == 'Accepted'
     accepted = property(_get_accepted)
 
+    def _get_withdrawn(self):
+        return self.status.name == 'Withdrawn'
+    withdrawn = property(_get_withdrawn)
+
+    def _get_declined(self):
+        return self.status.name == 'Declined'
+    declined = property(_get_declined)
+
+    def _get_proposer_status(self):
+        if self.accepted or self.withdrawn or self.declined:
+            return self.status.name
+        else:
+            return "Under Review"
+    proposer_status = property(_get_proposer_status)
+
     @classmethod
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(Proposal).filter_by(id=id).first()
@@ -277,12 +292,7 @@ class Proposal(Base):
 
     @classmethod
     def find_all_accepted(cls):
-        #status = ProposalStatus.find_by_name('Accepted')
-        #result = Session.query(Proposal).filter_by(status_id=status.id)
-
-        # Optimisation: assume that ProposalStatus of ID=1 is Accepted
-        result = Session.query(Proposal).filter_by(status_id=1)
-        return result
+        return Session.query(Proposal).filter(ProposalStatus.name=='Accepted')
 
     @classmethod
     def find_all_accepted_without_event(cls):

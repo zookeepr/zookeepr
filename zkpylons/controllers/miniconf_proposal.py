@@ -76,7 +76,7 @@ class MiniconfProposalController(BaseController):
         proposal_results = self.form_result['proposal']
         attachment_results = self.form_result['attachment']
 
-        proposal_results['status'] = ProposalStatus.find_by_name('Pending')
+        proposal_results['status'] = ProposalStatus.find_by_name('Pending Review')
 
         c.proposal = Proposal(**proposal_results)
         meta.Session.add(c.proposal)

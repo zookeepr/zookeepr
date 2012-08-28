@@ -531,3 +531,22 @@ class PersonController(BaseController): #Read, Update, List
         meta.Session.commit()
 
         return render('person/roles.mako')
+
+    @dispatch_on(POST="_offer")
+    @authorize(h.auth.is_valid_user)
+    def offer(self, id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_reviewer_role, h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+        c.person = Person.find_by_id(id)
+        return render('person/offer.mako')
+
+    @authorize(h.auth.is_valid_user)
+    @validate(schema=OfferSchema, form='offer', post_only=True, on_get=True, variable_decode=True)
+    def _offer(self,id):
+        # We need to recheck auth in here so we can pass in the id
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_reviewer_role, h.auth.has_organiser_role)):
+            # Raise a no_auth error
+            h.auth.no_role()
+        return render('person/offer.mako')
