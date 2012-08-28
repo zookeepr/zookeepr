@@ -23,7 +23,7 @@ ${ h.form(h.url_for(), method='post') }
 </table>
 
 <p>Please indicate below what you would like to do with these proposals:</p>
-${ h.select('status', 'accept', [('accept', 'I Accept these offers to present at ' + h.event_name()), ('withdraw', 'I Withdraw my proposals'), ('contact', 'I require further contact with the conference organisers')]) }
+${ h.select('status', 'accept', [('accept', 'I accept these offers to present at ' + h.event_name()), ('withdraw', 'I withdraw my proposals'), ('contact', 'I require further contact with the conference organisers')]) }
 
 <%include file='travel_form.mako' />
 
