@@ -7,6 +7,6 @@
 <label for="person.destination_airport">Destination City or Airport:</label></p>
 <p class="entries">${ h.text('travel.destination_airport') }</p>
 %else:
-${ h.hidden('travel.source_city', None) }
-${ h.hidden('travel.destination_city', None) }
+${ h.hidden('travel.origin_airport', None) }
+${ h.hidden('travel.destination_airport', None) }
 %endif
