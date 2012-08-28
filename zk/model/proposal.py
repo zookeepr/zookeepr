@@ -21,6 +21,8 @@ def setup(meta):
             ProposalStatus(name='Pending Review'),
             ProposalStatus(name='Withdrawn'),
             ProposalStatus(name='Backup'),
+            ProposalStatus(name='Offered'),
+            ProposalStatus(name='Contact'),
         ]
     )
     meta.Session.add_all(
@@ -237,6 +239,10 @@ class Proposal(Base):
         return self.status.name == 'Accepted'
     accepted = property(_get_accepted)
 
+    def _get_offered(self):
+        return self.status.name == 'Offered'
+    offered = property(_get_offered)
+
     def _get_withdrawn(self):
         return self.status.name == 'Withdrawn'
     withdrawn = property(_get_withdrawn)
@@ -246,7 +252,7 @@ class Proposal(Base):
     declined = property(_get_declined)
 
     def _get_proposer_status(self):
-        if self.accepted or self.withdrawn or self.declined:
+        if self.accepted or self.withdrawn or self.declined or self.offered:
             return self.status.name
         else:
             return "Under Review"

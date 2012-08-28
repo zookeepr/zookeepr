@@ -20,7 +20,9 @@ from zkpylons.lib.mail import email
 
 from zkpylons.model import meta
 from zkpylons.model import Person, PasswordResetConfirmation, Role
+from zkpylons.model import ProposalStatus
 from zkpylons.model import SocialNetwork
+from zkpylons.model import Travel
 
 from zkpylons.config.lca_info import lca_info, lca_rego
 
@@ -150,6 +152,16 @@ class PersonaLoginSchema(BaseSchema):
 class RoleSchema(BaseSchema):
     role = validators.String(not_empty=True)
     action = validators.OneOf(['Grant', 'Revoke'])
+
+class TravelSchema(BaseSchema):
+    origin_airport = validators.String()
+    destination_airport = validators.String()
+    pre_validators = [NestedVariables]
+
+class OfferSchema(BaseSchema):
+    status = validators.OneOf(['accept', 'withdraw', 'contact'])
+    travel = TravelSchema()
+    pre_validators = [NestedVariables]
 
 class PersonController(BaseController): #Read, Update, List
     @enforce_ssl(required_all=True)
@@ -540,6 +552,8 @@ class PersonController(BaseController): #Read, Update, List
             # Raise a no_auth error
             h.auth.no_role()
         c.person = Person.find_by_id(id)
+        c.offers = c.person.proposal_offers
+        c.travel_assistance = reduce(lambda a, b: a or (b.travel_assistance.name == 'linux.conf.au will book and pay for air travel.'), c.offers, False) or False 
         return render('person/offer.mako')
 
     @authorize(h.auth.is_valid_user)
@@ -549,4 +563,29 @@ class PersonController(BaseController): #Read, Update, List
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_reviewer_role, h.auth.has_organiser_role)):
             # Raise a no_auth error
             h.auth.no_role()
+        c.person = Person.find_by_id(id)
+        c.offers = c.person.proposal_offers
+        c.travel_assistance = reduce(lambda a, b: a or (b.travel_assistance.name == 'linux.conf.au will book and pay for air travel.'), c.offers, False) or False 
+
+        # What status are we moving all proposals to?
+        if self.form_result['status'] == 'accept':
+            status = ProposalStatus.find_by_name('Accepted')
+        elif self.form_result['status'] == 'withdraw':
+            status = ProposalStatus.find_by_name('Withdrawn')
+        elif self.form_result['status'] == 'contact':
+            status = ProposalStatus.find_by_name('Contact')
+        else:
+            status = None
+
+        for offer in c.person.proposal_offers:
+            offer.status = status
+
+        if c.travel_assistance:
+            self.form_result['travel']['flight_details'] = ''
+            travel = Travel(**self.form_result['travel'])
+            meta.Session.add(travel)
+            c.person.travel = travel
+
+        # update the objects with the validated form data
+        meta.Session.commit()
         return render('person/offer.mako')

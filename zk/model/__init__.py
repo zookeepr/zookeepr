@@ -22,6 +22,7 @@ import product
 import product_ceiling_map
 import rego_note
 import social_network
+import travel
 import person_social_network_map
 import funding
 import funding_attachment
@@ -41,6 +42,7 @@ from social_network import SocialNetwork
 from proposal import Proposal, ProposalStatus, ProposalType, TravelAssistanceType, AccommodationAssistanceType, TargetAudience
 from attachment import Attachment
 from review import Review, Stream
+from travel import Travel
 from funding import Funding, FundingType, FundingStatus
 from funding_attachment import FundingAttachment
 from funding_review import FundingReview
