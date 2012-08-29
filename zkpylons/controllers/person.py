@@ -601,7 +601,7 @@ class PersonController(BaseController): #Read, Update, List
                 for key in self.form_result['travel']:
                     setattr(c.person.travel, key, self.form_result['travel'][key])
 
-        if c.status == 'accept':
+        if c.status.name == 'Accepted':
             email(c.person.email_address, render('/person/offer_email.mako'))
         else:
             email([c.person.email_address, h.lca_info['emails']['presentation']], render('/person/offer_email.mako'))
