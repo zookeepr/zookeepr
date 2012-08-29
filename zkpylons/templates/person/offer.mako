@@ -29,7 +29,7 @@ ${ h.select('status', 'accept', [('accept', 'I accept these offers to present at
 <p>You have been offered Accommodation Assistance and further details of this will be provided to you closer to the event.</p>
 %elif c.travel_assistance:
 <p>You have been offered Travel Assistance and we require some additional details from you so that we can book your travel:</p>
-%else
+%else:
 <p>You have not been offered any assistance to attend the conference.</p>
 %endif
 
