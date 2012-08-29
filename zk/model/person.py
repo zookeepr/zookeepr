@@ -93,7 +93,7 @@ class Person(Base):
 
     def _get_proposal_offers(self):
         from proposal import Proposal, ProposalStatus, person_proposal_map
-        return Session.query(Proposal).join(person_proposal_map).join(Person).join(ProposalStatus).filter(Person.id == self.id).filter(ProposalStatus.name == 'Offered').all()
+        return Session.query(Proposal).join(person_proposal_map).join(Person).join(ProposalStatus).filter(Person.id == self.id).filter(ProposalStatus.name.like('%Offered%')).all()
     proposal_offers = property(_get_proposal_offers)
 
     def __init__(self, **kwargs):
