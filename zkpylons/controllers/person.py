@@ -154,13 +154,13 @@ class RoleSchema(BaseSchema):
     action = validators.OneOf(['Grant', 'Revoke'])
 
 class TravelSchema(BaseSchema):
-    origin_airport = validators.String()
-    destination_airport = validators.String()
+    origin_airport = validators.String(not_empty=True)
+    destination_airport = validators.String(not_empty=True)
     pre_validators = [NestedVariables]
 
 class OfferSchema(BaseSchema):
     status = validators.OneOf(['accept', 'withdraw', 'contact'])
-    travel = TravelSchema()
+    travel = TravelSchema(if_missing=None)
     pre_validators = [NestedVariables]
 
 class PersonController(BaseController): #Read, Update, List
@@ -554,7 +554,16 @@ class PersonController(BaseController): #Read, Update, List
         c.person = Person.find_by_id(id)
         c.offers = c.person.proposal_offers
         c.travel_assistance = reduce(lambda a, b: a or (b.travel_assistance.name == 'linux.conf.au will book and pay for air travel.'), c.offers, False) or False 
-        return render('person/offer.mako')
+
+        # Set initial form defaults
+        defaults = {
+            'status': 'accept',
+            }
+        if c.person.travel:
+            defaults.update(h.object_to_defaults(c.person.travel, 'travel'))
+
+        form = render('person/offer.mako')
+        return htmlfill.render(form, defaults)
 
     @authorize(h.auth.is_valid_user)
     @validate(schema=OfferSchema, form='offer', post_only=True, on_get=True, variable_decode=True)
@@ -580,11 +589,16 @@ class PersonController(BaseController): #Read, Update, List
         for offer in c.person.proposal_offers:
             offer.status = c.status
 
-        if c.travel_assistance and not c.person.travel:
-            self.form_result['travel']['flight_details'] = ''
-            travel = Travel(**self.form_result['travel'])
-            meta.Session.add(travel)
-            c.person.travel = travel
+        if c.travel_assistance:
+            if not c.person.travel:
+                self.form_result['travel']['flight_details'] = ''
+                travel = Travel(**self.form_result['travel'])
+                meta.Session.add(travel)
+                c.person.travel = travel
+            else:
+                for key in self.form_result['travel']:
+                    setattr(c.person.travel, key, self.form_result['travel'][key])
+
         if c.status == 'accept':
             email(c.person.email_address, render('/person/offer_email.mako'))
         else:

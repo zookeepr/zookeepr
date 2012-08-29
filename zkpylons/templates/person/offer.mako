@@ -25,7 +25,15 @@ ${ h.form(h.url_for(), method='post') }
 <p>Please indicate below what you would like to do with these proposals:</p>
 ${ h.select('status', 'accept', [('accept', 'I accept these offers to present at ' + h.event_name()), ('withdraw', 'I withdraw my proposals'), ('contact', 'I require further contact with the conference organisers')]) }
 
-<%include file='travel_form.mako' />
+%if c.travel_assistance:
+<p>As you have been offered Travel Assistance we require some additional details from you:</p>
+
+<label for="person.origin_airport">Source City or Airport:</label></p>
+<p class="entries">${ h.text('travel.origin_airport') }</p>
+
+<label for="person.destination_airport">Destination City or Airport:</label></p>
+<p class="entries">${ h.text('travel.destination_airport') }</p>
+%endif
 
 <p class="submit">${ h.submit("submit", "Submit",) }</p>
 
