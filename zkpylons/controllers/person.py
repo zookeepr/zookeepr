@@ -553,7 +553,8 @@ class PersonController(BaseController): #Read, Update, List
             h.auth.no_role()
         c.person = Person.find_by_id(id)
         c.offers = c.person.proposal_offers
-        c.travel_assistance = reduce(lambda a, b: a or (b.travel_assistance.name == 'linux.conf.au will book and pay for air travel.'), c.offers, False) or False 
+        c.travel_assistance = reduce(lambda a, b: a or ('Travel' in b.status.name), c.offers, False) or False 
+        c.accommodation_assistance = reduce(lambda a, b: a or ('Accommodation' in b.status.name), c.offers, False) or False 
 
         # Set initial form defaults
         defaults = {
@@ -574,7 +575,8 @@ class PersonController(BaseController): #Read, Update, List
             h.auth.no_role()
         c.person = Person.find_by_id(id)
         c.offers = c.person.proposal_offers
-        c.travel_assistance = reduce(lambda a, b: a or (b.travel_assistance.name == 'linux.conf.au will book and pay for air travel.'), c.offers, False) or False 
+        c.travel_assistance = reduce(lambda a, b: a or ('Travel' in b.status.name), c.offers, False) or False 
+        c.accommodation_assistance = reduce(lambda a, b: a or ('Accommodation' in b.status.name), c.offers, False) or False 
 
         # What status are we moving all proposals to?
         if self.form_result['status'] == 'accept':

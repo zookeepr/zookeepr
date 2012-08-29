@@ -22,6 +22,9 @@ def setup(meta):
             ProposalStatus(name='Withdrawn'),
             ProposalStatus(name='Backup'),
             ProposalStatus(name='Offered'),
+            ProposalStatus(name='Offered Travel'),
+            ProposalStatus(name='Offered Accommodation'),
+            ProposalStatus(name='Offered Travel Accommodation'),
             ProposalStatus(name='Contact'),
         ]
     )
@@ -240,7 +243,7 @@ class Proposal(Base):
     accepted = property(_get_accepted)
 
     def _get_offered(self):
-        return self.status.name == 'Offered'
+        return 'Offered' in self.status.name
     offered = property(_get_offered)
 
     def _get_withdrawn(self):
