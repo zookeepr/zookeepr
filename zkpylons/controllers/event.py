@@ -31,7 +31,7 @@ class EventSchema(BaseSchema):
     type = EventTypeValidator(not_empty=True)
     proposal = ProposalValidator()
     title = validators.String()
-    url = validators.validators.URL(add_http=True, check_exists=False)
+    url = validators.URL(add_http=True, check_exists=False)
     publish = validators.Bool()
     exclusive = validators.Bool()
 
