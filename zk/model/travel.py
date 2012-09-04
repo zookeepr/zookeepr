@@ -19,8 +19,7 @@ class Travel(Base):
     __tablename__ = 'travel'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
-    person_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'),
-                                                               unique=True)
+    person_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), unique=True, nullable=False)
     origin_airport = sa.Column(sa.types.Text, nullable=False)
     destination_airport = sa.Column(sa.types.Text, nullable=False)
     flight_details = sa.Column(sa.types.Text, nullable=False)
