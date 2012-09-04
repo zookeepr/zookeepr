@@ -34,11 +34,7 @@ ${ h.select('status', 'accept', [('accept', 'I accept these offers to present at
 %endif
 
 % if c.travel_assistance:
-<label for="person.origin_airport">Source City or Airport Code:</label></p>
-<p class="entries">${ h.text('travel.origin_airport') }</p>
-
-<label for="person.destination_airport">Destination City or Airport Code:</label></p>
-<p class="entries">${ h.text('travel.destination_airport') }</p>
+<%include file="/travel/form.mako" />
 %endif
 
 <p class="submit">${ h.submit("submit", "Submit",) }</p>

@@ -34,3 +34,11 @@ class Travel(Base):
 
     def __repr__(self):
         return '<Travel id=%r person=%s origin_airport=%s destination_airport=%s' % (self.id, self.person, self.origin_airport, self.destination_airport)
+
+    @classmethod
+    def find_all(self):
+        return Session.query(Travel).all()
+
+    @classmethod
+    def find_by_id(self, id):
+        return Session.query(Travel).get(id)
