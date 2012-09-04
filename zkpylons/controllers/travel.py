@@ -26,7 +26,9 @@ from zkpylons.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class TravelSchema(BaseSchema):
-    name = validators.String(not_empty=True)
+    origin_airport = validators.String(not_empty=True)
+    destination_airport = validators.String(not_empty=True)
+    flight_details = validators.String(if_missing="")
 
 class NewTravelSchema(BaseSchema):
     travel = TravelSchema()
@@ -55,7 +57,7 @@ class TravelController(BaseController):
         meta.Session.add(c.travel)
         meta.Session.commit()
 
-        h.flash("Proposal Status created")
+        h.flash("Travel created")
         redirect_to(action='index', id=None)
 
     def view(self, id):
@@ -84,7 +86,7 @@ class TravelController(BaseController):
 
         # update the objects with the validated form data
         meta.Session.commit()
-        h.flash("The Proposal Status has been updated successfully.")
+        h.flash("The Travel has been updated successfully.")
         redirect_to(action='index', id=None)
 
     @dispatch_on(POST="_delete")
@@ -104,5 +106,5 @@ class TravelController(BaseController):
         meta.Session.delete(c.travel)
         meta.Session.commit()
 
-        h.flash("Proposal Status has been deleted.")
+        h.flash("Travel has been deleted.")
         redirect_to('index')
