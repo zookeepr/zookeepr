@@ -222,7 +222,7 @@ class Proposal(Base):
     stream = sa.orm.relation(Stream)
     accommodation_assistance = sa.orm.relation(AccommodationAssistanceType)
     travel_assistance = sa.orm.relation(TravelAssistanceType)
-    status = sa.orm.relation(ProposalStatus)
+    status = sa.orm.relation(ProposalStatus, backref='proposals')
     audience = sa.orm.relation(TargetAudience)
     people = sa.orm.relation(Person, secondary=person_proposal_map, backref='proposals')
     attachments = sa.orm.relation(Attachment, cascade='all, delete-orphan')
