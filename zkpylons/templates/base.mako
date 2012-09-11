@@ -61,8 +61,12 @@
                     shuffle: 1
                 }, [
 %  for sponsor in h.lca_info['sponsors']['slideshow']:
-                    { src: '${ sponsor['src'] }', alt: '${ sponsor['name'] }' },
+                    { src: '${ sponsor['src'] }', alt: '${ sponsor['name'] }' }\
+%    if not loop.last:
+,
+%    endif
 %  endfor
+
                 ]);
             });
         </script>
