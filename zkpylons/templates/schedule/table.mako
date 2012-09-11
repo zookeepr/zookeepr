@@ -117,7 +117,7 @@ def inherit(context):
         url = event.url
 %>
 %     if time_slot.heading:
-      <th class="programme_${event.type.name}" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
+      <th class="programme_${event.type.name}">
 %     else:
       <td class="programme_${event.type.name}" rowspan="${ (time_slot.end_time - time_slot.start_time).seconds/60/5 }">
 %     endif
