@@ -93,6 +93,7 @@ class ProposalType(Base):
 
     # title of proposal
     name = sa.Column(sa.types.String(40), unique=True, nullable=False)
+    notify_email = sa.Column(sa.types.Text, nullable=True)
 
     def __init__(self, **kwargs):
         # remove the args that should never be set via creation

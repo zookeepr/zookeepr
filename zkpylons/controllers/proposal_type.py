@@ -25,6 +25,7 @@ log = logging.getLogger(__name__)
 
 class ProposalTypeSchema(BaseSchema):
     name = validators.String(not_empty=True)
+    notify_email = validators.String(if_empty=None)
 
 class NewProposalTypeSchema(BaseSchema):
     proposal_type = ProposalTypeSchema()

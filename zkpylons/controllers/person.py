@@ -588,8 +588,11 @@ class PersonController(BaseController): #Read, Update, List
         else:
             c.status = None
 
-        for offer in c.person.proposal_offers:
+        emails = [c.person.email_address]
+        for offer in c.offers:
             offer.status = c.status
+            if offer.type.notify_email and offer.type.notify_email not in emails:
+                emails.append(offer.type.notify_email)
 
         if c.travel_assistance:
             if not c.person.travel:
@@ -604,7 +607,7 @@ class PersonController(BaseController): #Read, Update, List
         if c.status.name == 'Accepted':
             email(c.person.email_address, render('/person/offer_email.mako'))
         else:
-            email([c.person.email_address, h.lca_info['emails']['presentation']], render('/person/offer_email.mako'))
+            email(emails, render('/person/offer_email.mako'))
 
         # update the objects with the validated form data
         meta.Session.commit()

@@ -425,7 +425,7 @@ class ProposalController(BaseController):
         c.person = h.signed_in_person()
 
         # Make sure the organisers are notified of this
-        c.email_address = h.lca_info['emails'][c.proposal.type.name.lower()]
+        c.email_address = c.proposal.type.notify_email.lower()
         email(c.email_address, render('/proposal/withdraw_email.mako'))
 
         h.flash("Proposal withdrawn. The organisers have been notified.")

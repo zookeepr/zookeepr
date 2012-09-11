@@ -7,7 +7,7 @@ Dear ${ c.person.firstname },
 Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ h.lca_info['event_name'] }.
 
 If you have any queries about your proposed ${ c.proposal.type.name.lower() }, please email
-${ h.lca_info['emails'][c.proposal.type.name.lower()] }
+${ c.proposal.type.notify_email.lower() }
 
 Title:       ${ c.proposal.title }
 URL:         ${ c.proposal.url }
