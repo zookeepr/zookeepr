@@ -454,7 +454,7 @@ def zk_root():
 
 def number_to_currency(number, unit='$', precision=2):
     "Provide an Australian currency version of your number"
-    locale.setlocale(locale.LC_ALL, 'en_AU')
+    locale.setlocale(locale.LC_ALL, '')
     format_string = "%%.%dd" % precision
     return unit + locale.format(format_string, number, grouping=True)
 

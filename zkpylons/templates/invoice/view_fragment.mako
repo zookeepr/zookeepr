@@ -14,7 +14,7 @@
     <p><strong>Invoice Status:</strong> ${ c.invoice.status() }
 % if c.invoice.is_void():
 <span style="font-size: 22px; color: #F00"> - ${ c.invoice.void }</span>
-% endif    
+% endif
     </p>
     <p><strong>Issue Date:</strong> ${ c.invoice.issue_date.strftime("%d %b %Y") }</p>
     <p><strong>Due Date:</strong> ${ c.invoice.due_date.strftime("%d %b %Y") }</p>
@@ -77,8 +77,10 @@ Receipt number: <code>PR${ c.payment_received.id }P${ c.payment.id }</code>
         <p class="pay_button">Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></p>
 % else:
         <p class="pay_button">${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</p>
-% endif    
+% endif
+% if c.invoice.person.registration:
     <p>Further information on your registration is available at: ${ h.link_to(h.url_for(qualified=True, controller='registration', action='status', id=c.invoice.person.registration.id), h.url_for(qualified=True, controller='registration', action='status', id=c.invoice.person.registration.id)) }</p>
+% endif
     <p>
       Enquiries may be emailed to the organisers:
 % if c.printable:
