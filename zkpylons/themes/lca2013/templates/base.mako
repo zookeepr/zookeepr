@@ -78,15 +78,8 @@
                     sleep: 5,
                     fade: 1,
                     shuffle: 1
-                }, [
-%  for sponsor in h.lca_info['sponsors']['slideshow']:
-                    { src: '${ sponsor['src'] }', alt: '${ sponsor['name'] }' }\
-%    if not loop.last:
-,
-%    endif
-%  endfor
-
-                ]);
+                }, ${ h.json.dumps(h.lca_info['sponsors']['slideshow']) |n }
+                );
             });
         </script>
 %endif
@@ -210,7 +203,7 @@
                                         <div class="netv-blockcontent-body">
                                             <ul>
 % for sponsor in h.lca_info['sponsors']['top']:
-                                            <li><a href="${ sponsor['url'] }"><img src="${ sponsor['src'] }" alt="${ sponsor['name'] }"></a></li>
+                                            <li><a href="${ sponsor['href'] }"><img src="${ sponsor['src'] }" alt="${ sponsor['name'] }"></a></li>
 % endfor
                                             </ul>
                                             <div class="cleared"></div>
