@@ -203,7 +203,7 @@
                                         <div class="netv-blockcontent-body">
                                             <ul>
 % for sponsor in h.lca_info['sponsors']['top']:
-                                            <li><a href="${ sponsor['href'] }"><img src="${ sponsor['src'] }" alt="${ sponsor['name'] }"></a></li>
+                                            <li>${ h.link_to(h.image(sponsor['src'], alt=sponsor['alt']), sponsor['href']) }</li>
 % endfor
                                             </ul>
                                             <div class="cleared"></div>
@@ -233,7 +233,8 @@
                                     <div class="netv-blockcontent">
                                         <div class="netv-blockcontent-body">
                                             <div id="sponsorsother" style="width: 200px; height:200px; margin:5px;">
-                                                <img src="${ h.lca_info['sponsors']['slideshow'][0]['src'] }" alt="${ h.lca_info['sponsors']['slideshow'][0]['name'] }">
+<% sponsor = h.random.choice(h.lca_info['sponsors']['slideshow']) %>
+                                                ${ h.link_to(h.image(sponsor['src'], alt=sponsor['alt']), sponsor['href']) }
                                             </div>
                                             <div class="cleared"></div>
                                         </div>
