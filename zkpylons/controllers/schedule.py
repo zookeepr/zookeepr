@@ -1,11 +1,10 @@
 import logging
 import vobject
-import json
 
 from pylons import request, response, session, tmpl_context as c
 from zkpylons.lib.helpers import redirect_to
 from pylons.controllers.util import abort
-from pylons.decorators import validate
+from pylons.decorators import validate, jsonify
 from pylons.decorators.rest import dispatch_on
 
 import formencode
@@ -178,6 +177,7 @@ class ScheduleController(BaseController):
         response.headers.add('Cache-Control', 'max-age=3600,public')
         return ical.serialize()
 
+    @jsonify
     def json(self):
         schedules = Schedule.find_all()
         output = []
@@ -202,12 +202,9 @@ class ScheduleController(BaseController):
                     row['URL'] = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal_id)
                 output.append(row)
 
-        response.charset = 'utf8'
-        response.headers['content-type'] = 'application/json; charset=utf8'
-        response.headers.add('content-transfer-encoding', 'binary')
         response.headers.add('Pragma', 'cache')
         response.headers.add('Cache-Control', 'max-age=3600,public')
-        return json.write(output)
+        return output
 
     @dispatch_on(POST="_new")
     @validate(schema=NewScheduleFormSchema(), on_get=True, post_only=False, variable_decode=True)
