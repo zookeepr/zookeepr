@@ -11,6 +11,7 @@ from webhelpers.html.tags import *
 from webhelpers.text import *
 import webhelpers.constants
 from datetime import datetime
+import simplejson as json
 
 try:
     from webhelpers.pylonslib import secure_form
