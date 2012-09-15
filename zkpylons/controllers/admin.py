@@ -493,12 +493,12 @@ class AdminController(BaseController):
                 if p.valid_invoice() is None:
                     res.append('Invalid Invoice')
                 else:
-                    if p.valid_invoice().paid():
+                    if p.valid_invoice().is_paid:
                       res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
                     else:
                       res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
 
                     shirt = ''
                     for item in p.valid_invoice().items:
@@ -575,12 +575,12 @@ class AdminController(BaseController):
                 if p.valid_invoice() is None:
                     res.append('Invalid Invoice')
                 else:
-                    if p.valid_invoice().paid():
+                    if p.valid_invoice().is_paid:
                       res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
                     else:
                       res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total()/100.0) )
+                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
 
                     shirt = ''
                     for item in p.valid_invoice().items:
@@ -753,7 +753,7 @@ class AdminController(BaseController):
 
         for item in partners_list:
             for invoice_item in item.invoice_items:
-                if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
+                if invoice_item.invoice.is_paid and not invoice_item.invoice.is_void:
                     r = invoice_item.invoice.person.registration
                     if r.partner_email is not None:
                         c.text += r.partner_name + " &lt;" + r.partner_email + "&gt;\n"
@@ -820,9 +820,9 @@ class AdminController(BaseController):
         c.columns = ['Item', 'Price', 'Qty', 'Amount']
         c.data = []
         for item in item_list:
-            if item.invoice.paid() and not item.invoice.is_void():
-                c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total()/100)])
-                total += item.total()
+            if item.invoice.is_paid and not item.invoice.is_void:
+                c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total/100)])
+                total += item.total
         c.data.append(['','','Total:', h.number_to_currency(total/100)])
         return table_response()
 
@@ -836,7 +836,7 @@ class AdminController(BaseController):
         c.data = []
         for item in partners_list:
             for invoice_item in item.invoice_items:
-                if invoice_item.invoice.paid() and not invoice_item.invoice.is_void():
+                if invoice_item.invoice.is_paid and not invoice_item.invoice.is_void:
                     c.data.append([item.description,
                                    invoice_item.qty,
                                    invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname,
@@ -939,7 +939,7 @@ class AdminController(BaseController):
                 ticket_types = []
                 partners_programme = []
                 for invoice in registration.person.invoices:
-                    if invoice.paid() and not invoice.is_void():
+                    if invoice.is_paid and not invoice.is_void:
                         for item in invoice.items:
                             if item.description.lower().startswith("discount"):
                                 pass
@@ -1272,14 +1272,14 @@ class AdminController(BaseController):
             products[category] = []
 
           for invoice in person.invoices:
-            if not invoice.is_void():
+            if not invoice.is_void:
               valid_invoices = True
               for ii in invoice.items:
                 if ii.product is not None and ii.product.category is not None:
                   if ii.product.category.name in products:
                     text = "%s x %s" % (ii.qty, ii.product.description)
                     text = text.replace(' years old', '')
-#                    if not invoice.paid():
+#                    if not invoice.is_paid:
 #                      text += " (Not paid)"
                     products[ii.product.category.name].append(text)
 
@@ -1330,7 +1330,7 @@ class AdminController(BaseController):
             type = 'Not Registered'
 
             for invoice in v.person.invoices:
-              if invoice.paid() and not invoice.is_void():
+              if invoice.is_paid and not invoice.is_void:
                 for item in invoice.items:
                   if item.description.find('Volunteer') > -1:
                     type = 'Volunteer'
@@ -1360,11 +1360,11 @@ class AdminController(BaseController):
 
         payments_count = dict()
         for i in invoices:
-          if i.paid() and not i.is_void():
-            if i.total() == 0:
+          if i.is_paid and not i.is_void:
+            if i.total == 0:
               date = i.creation_timestamp.date()
             else:
-              date = i.good_payments()[0].creation_timestamp.date()
+              date = i.good_payments[0].creation_timestamp.date()
 
             if date not in payments_count:
               payments_count[date] = 0

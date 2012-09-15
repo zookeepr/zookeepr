@@ -31,53 +31,43 @@ class Invoice(Base):
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
+    # mapped attributes
+    total_query = sa.select([sa.case([(sa.func.count(InvoiceItem.id) == 0, 0)], else_=sa.func.sum(InvoiceItem.total))]).where(InvoiceItem.invoice_id==id)
+    payment_query = sa.select([sa.case([(sa.func.count(PaymentReceived.id) == 0, 0)], else_=sa.func.sum(PaymentReceived.amount_paid))]).where(sa.and_(PaymentReceived.invoice_id==id, PaymentReceived.approved==True))
+
+    total = sa.orm.column_property(total_query)
+    payment = sa.orm.column_property(payment_query)
+    is_void = sa.orm.column_property(void != None)
+    is_paid = sa.orm.column_property(sa.and_(void == None, total_query.as_scalar() == payment_query.as_scalar()))
+    is_overdue = sa.orm.column_property(due_date < datetime.datetime.now())
+
     # relations
-    payment_received = sa.orm.relation(PaymentReceived, backref='invoice')
-    payments = sa.orm.relation(Payment, backref='invoice')
-    person = sa.orm.relation(Person,lazy=True,backref=sa.orm.backref('invoices', cascade="all, delete-orphan"))
-    items = sa.orm.relation(InvoiceItem, backref='invoice', cascade="all, delete-orphan")
+    payment_received = sa.orm.relation(PaymentReceived, lazy='subquery', backref='invoice')
+    good_payments = sa.orm.relation(PaymentReceived, lazy='subquery', primaryjoin=sa.and_(PaymentReceived.invoice_id == id, PaymentReceived.approved == True))
+    bad_payments = sa.orm.relation(PaymentReceived, lazy='subquery', primaryjoin=sa.and_(PaymentReceived.invoice_id == id, PaymentReceived.approved == False))
+    payments = sa.orm.relation(Payment, lazy='subquery', backref='invoice')
+    person = sa.orm.relation(Person, lazy='subquery', backref=sa.orm.backref('invoices', cascade="all, delete-orphan"))
+    items = sa.orm.relation(InvoiceItem, lazy='subquery', backref=sa.orm.backref('invoice', lazy='subquery'), cascade="all, delete-orphan")
 
     def __init__(self, **kwargs):
         self.due_date = datetime.datetime.now() + datetime.timedelta(+1)
         super(Invoice, self).__init__(**kwargs)
 
-    def is_void(self):
-        return (self.void is not None)
-
-    def total(self):
-        """Return the total value of this invoice"""
-        t = 0
-        for ii in self.items:
-            t += ii.total()
-        return t
-
-    def good_payments(self):
-        return Session.query(PaymentReceived).filter_by(approved=True, invoice_id=self.id)
-
-    def bad_payments(self):
-        return Session.query(PaymentReceived).filter_by(approved=False, invoice_id=self.id)
-
-    def paid(self):
-        """Return whether the invoice is paid (or zero-balance) """
-        return bool(not self.is_void() and (self.good_payments().count() > 0 or self.total()==0))
-
+    @property
     def status(self):
-        if self.is_void() == True:
+        if self.is_void:
             return "Invalid"
-        elif self.paid():
+        elif self.is_paid:
             return "Paid"
         else:
             return "Unpaid"
-
-    def overdue(self):
-        return self.due_date < datetime.datetime.now()
 
     def __repr__(self):
         return '<Invoice id=%r void=%r person=%r>' % (self.id, self.void, self.person_id)
 
     @classmethod
     def find_all(cls):
-        return Session.query(Invoice).order_by(Invoice.id).all()
+        return Session.query(Invoice).order_by(Invoice.id).options(sa.orm.subqueryload('person.registration')).all()
 
     @classmethod
     def find_by_id(cls, id, do_abort=False):

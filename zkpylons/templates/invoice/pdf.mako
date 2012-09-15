@@ -5,24 +5,24 @@
   <issued>${ c.invoice.issue_date.strftime(date_format) |n}</issued>
   <due>${ c.invoice.due_date.strftime(date_format) |n}</due>
 
-<% amt = c.invoice.total() %>
+<% amt = c.invoice.total %>
   <amount cents="${ amt }">${ h.number_to_currency(amt/100.0) }</amount>
-% if c.invoice.good_payments().count() > 0:
+% if c.invoice.good_payments.count() > 0:
   <paid>
 <% pp = [] %>
-%   for p in c.invoice.good_payments():
+%   for p in c.invoice.good_payments:
 <%     pp.append(str(p.gateway_ref)) %>
 %   endfor
     <transaction>${ '-'.join(pp) }</transaction>
   </paid>
   <owed cents="0">0.00</owed>
-% elif c.invoice.total() == 0:
+% elif c.invoice.total == 0:
   <owed cents="0">0.00</owed>
   <zero/>
 % else:
   <owed cents="${ amt }">${ h.number_to_currency(amt/100.0) }</owed>
 % endif
-% if c.invoice.bad_payments().count() > 0:
+% if c.invoice.bad_payments.count() > 0:
   <badpayments/>
 % endif
 
@@ -68,14 +68,14 @@
       <description>${ item.description }</description>
       <qty>${ item.qty }</qty>
       <each cents="${ item.cost }">${ h.number_to_currency(item.cost/100.0) }</each>
-      <subtotal cents="${ item.total() }">${ h.number_to_currency(item.total()/100.0) }</subtotal>
+      <subtotal cents="${ item.total }">${ h.number_to_currency(item.total/100.0) }</subtotal>
     </item${ itemid }>
 %   endif
 % endfor
   </items>
 
   <itemcount>${ itemid }</itemcount>
-<% gst = h.sales_tax(c.invoice.total()) %>
+<% gst = h.sales_tax(c.invoice.total) %>
   <gst cents="${ gst }">${ h.number_to_currency(gst/100.0) }</gst>
 
 </invoice>
