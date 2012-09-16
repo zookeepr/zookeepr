@@ -129,7 +129,7 @@
       <tr>
         <td>${ h.link_to(invoice.id, h.url_for(controller='invoice', action='view', id=invoice.id)) }</td>
         <td>${ invoice.status }</td>
-        <td>${ h.number_to_currency(invoice.total / 100) }</td>
+        <td>${ h.integer_to_currency(invoice.total) }</td>
         <td>
           ${ h.link_to('View', h.url_for(controller='invoice', action='view', id=invoice.id)) } - Print
           ${ h.link_to('html', h.url_for(controller='invoice', action='printable', id=invoice.id)) }

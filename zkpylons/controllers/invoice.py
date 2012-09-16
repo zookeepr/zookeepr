@@ -281,7 +281,7 @@ class InvoiceController(BaseController):
         # Prepare fields for PxPay
         params = {
             'payment_id': payment.id,
-            'amount': "%#.*f" % (2, payment.amount / 100.0),
+            'amount': h.integer_to_currency(payment.amount),
             'invoice_id': payment.invoice.id,
             'email_address': payment.invoice.person.email_address,
             'client_ip' : client_ip,

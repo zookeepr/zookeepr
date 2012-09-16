@@ -36,7 +36,7 @@
         <td>Rejected</td>
 %       endif
 %       if volunteer.ticket_type:
-        <td>${ h.number_to_currency(volunteer.ticket_type.cost/100) }</td>
+        <td>${ h.integer_to_currency(volunteer.ticket_type.cost) }</td>
 %       else:
         <td>No Ticket</td>
 %       endif

@@ -8,7 +8,7 @@ ${ c.payment.invoice.id }
 
 <p>
 <strong>Amount:</strong>
-${ h.number_to_currency(c.payment.amount/100.0) }
+${ h.integer_to_currency(c.payment.amount) }
 </p>
 
 ${ h.form('https://vault.safepay.com.au/cgi-bin/test_payment.pl') }
@@ -17,7 +17,7 @@ ${ h.hidden('vendor_name', 'linux') }
 ${ h.hidden('cards_accepted', 'VISA,MASTERCARD,AMEX') }
 ${ h.hidden('gst_rate', '10') }
 ${ h.hidden('gst_added', 'TRUE') }
-${ h.hidden(h.lca_info['event_name'] + ' Registration', c.payment.amount / 100.0) }
+${ h.hidden(h.lca_info['event_name'] + ' Registration', h.integer_to_currency(c.payment.amount, unit='' )) }
 ${ h.hidden('hidden_fields', 'submit') }
 ${ h.hidden('receipt_address', c.payment.invoice.person.email_address) }
 ${ h.hidden('return_link_text', 'Return to ' + h.lca_info['event_name']) }

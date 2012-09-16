@@ -23,7 +23,7 @@
 % elif c.invoice.total == 0:
     <p><strong>No Payment Required</strong></p>
 % else:
-    <p><strong>Amount Due:</strong> ${ h.number_to_currency(c.invoice.total/100.0) }</p>
+    <p><strong>Amount Due:</strong> ${ h.integer_to_currency(c.invoice.total) }</p>
 % endif
 
     <p>
@@ -49,18 +49,18 @@
       <tr class="${ h.cycle('even', 'odd') }">
         <td>${ item.description }</td>
         <td style="text-align:center">${ item.qty }</td>
-        <td style="text-align:right">${ h.number_to_currency(item.cost/100.0) }</td>
-        <td style="text-align:right">${ h.number_to_currency(item.total/100.0) }</td>
+        <td style="text-align:right">${ h.integer_to_currency(item.cost) }</td>
+        <td style="text-align:right">${ h.integer_to_currency(item.total) }</td>
       </tr>
 %   endif
 % endfor
       <tr>
         <td style="text-align: right" colspan="3"><strong>Total</strong></td>
-        <td style="text-align: right"><strong>${ h.number_to_currency(c.invoice.total/100.0) }</strong></td>
+        <td style="text-align: right"><strong>${ h.integer_to_currency(c.invoice.total) }</strong></td>
       </tr>
       <tr>
         <td style="text-align: right" colspan="3">(Includes AU GST</td>
-        <td style="text-align: right">${ h.number_to_currency(h.sales_tax(c.invoice.total)/100.0) })</td>
+        <td style="text-align: right">${ h.integer_to_currency(h.sales_tax(c.invoice.total)) })</td>
       </tr>
     </table>
 % if c.invoice.is_void:

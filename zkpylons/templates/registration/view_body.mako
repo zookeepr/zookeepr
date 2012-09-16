@@ -40,15 +40,15 @@
 <%                category_printed = True %>
 %               endif
 %               if category.display == 'qty':
-        <p>${ rproduct.qty } x ${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</p>
+        <p>${ rproduct.qty } x ${ product.description } - ${ h.integer_to_currency(product.cost) }</p>
 %               elif category.display == 'checkbox':
           ${ h.yesno(rproduct.qty) + ' ' + product.description |n}
 %                   if product.cost != 0:
-          - ${ h.number_to_currency(product.cost/100.0) }
+          - ${ h.integer_to_currency(product.cost) }
 %                   endif
         <br />
 %               else:
-        <p>${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</p>
+        <p>${ product.description } - ${ h.integer_to_currency(product.cost) }</p>
 %               endif
 %           endif
 %       endfor

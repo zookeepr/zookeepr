@@ -80,12 +80,12 @@
         <td>${ h.link_to(product.description, url=h.url_for(controller='product', action='view', id=product.id)) }</td>
         <td>${ h.yesno(product.active) |n }</td>
         <td>${ h.yesno(product.available()) |n }</td>
-        <td>${ h.number_to_currency(product.cost/100.0) | h }</td>
+        <td>${ h.integer_to_currency(product.cost) | h }</td>
         <td>${ product.qty_invoiced(date = False) }</td>
         <td>${ product.qty_invoiced() }</td>
         <td>${ product.qty_sold() }</td>
         <td>${ product.qty_free() }</td>
-        <td>${ h.number_to_currency((product.qty_sold() * product.cost)/100) }</td>
+        <td>${ h.integer_to_currency(product.qty_sold() * product.cost) }</td>
 %               if c.can_edit:
 %                   for action in ['edit', 'delete']:
         <td>${ h.link_to(action, url=h.url_for(controller='product', action=action, id=product.id)) }</td>
@@ -117,13 +117,13 @@
             <td>${ valid_invoices_total }</td>
             <td>${ sold_total }</td>
             <td>${ free_total }</td>
-            <td colspan="3">${ h.number_to_currency(cat_total/100) }</td>
+            <td colspan="3">${ h.integer_to_currency(cat_total) }</td>
         </tr>
 %       endif
 %       if count == len(c.product_categories):
         <tr>
             <td colspan="8" style="font-weight: bold; text-align: right;">Grand Total:</td>
-            <td colspan="3">${ h.number_to_currency(grand_total/100) }</td>
+            <td colspan="3">${ h.integer_to_currency(grand_total) }</td>
         </tr>
 %       endif
     </table>

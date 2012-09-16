@@ -348,7 +348,7 @@
             if r.creation_timestamp.day<3 or r.creation_timestamp.month!=1:
               continue
             if p.invoices:
-              amt = "$%.2f" % (p.invoices[0].total/100.0)
+              amt = h.integer_to_currency(p.invoices[0].total)
             else:
               amt = '-'
             if r.voucher_code:
@@ -575,9 +575,9 @@
                     if kw in desc:
                         add(u'\u2211 '+kw, amt, ii.qty)
         c.columns = 'description', 'count', 'Inc GST', 'Ex GST', 'GST'
-        c.data = [(desc, qty, h.number_to_currency(amt),
-                   h.number_to_currency(amt * 10/11.),
-                   h.number_to_currency(amt / 11.))
+        c.data = [(desc, qty, h.integer_to_currency(amt),
+                   h.integer_to_currency(amt * 10/11.),
+                   h.integer_to_currency(amt / 11.))
                                    for (desc, (qty, amt)) in total.items()]
         c.data.sort()
         c.text = "Summary of paid invoices."
@@ -675,8 +675,8 @@
               if p.invoices[0].is_paid:
                 row.append('<a href="/invoice/%d">OK</a>'%p.invoices[0].id)
               else:
-                row.append('<a href="/invoice/%d">owes $%.2f</a>'%(
-                         p.invoices[0].id, p.invoices[0].total/100.0) )
+                row.append(h.link_to('Owes ' + h.integer_to_currency(p.invoices[0].total),
+                                           h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
             else:
               row.append('no invoice')
             c.data.append(row)

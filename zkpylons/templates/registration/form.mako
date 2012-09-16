@@ -199,7 +199,7 @@ ${ h.hidden('person.mobile') }
 %             if not product.available():
             <span class="mandatory">SOLD&nbsp;OUT</span>
 %             elif product.cost != 0:
-                - ${ h.number_to_currency(product.cost/100.0) }
+                - ${ h.integer_to_currency(product.cost) }
 %             endif
             <br/>
 %           endfor
@@ -244,7 +244,7 @@ ${ h.hidden('person.mobile') }
 %             if not product.available():
             <span class="mandatory">SOLD&nbsp;OUT</span>
 %             elif product.cost != 0:
-                - ${ h.number_to_currency(product.cost/100.0) }
+                - ${ h.integer_to_currency(product.cost) }
 %             endif
             <br /></div>
 %           endfor
@@ -295,7 +295,7 @@ accommdisplay();
                if not product.available():
                    soldout = '<span class="mandatory">SOLD&nbsp;OUT</span><br />'
 %>
-    <th>${ product.description }<br />${ soldout | n}(${ h.number_to_currency(product.cost/100.0) })</th>
+    <th>${ product.description }<br />${ soldout | n}(${ h.integer_to_currency(product.cost) })</th>
 %           endfor
   </tr>
 %           for product in products:
@@ -317,7 +317,7 @@ accommdisplay();
 %>
 
 %              if category.name == "Ticket":
-                <li> <label onclick="javascript: ticketWarning(' ${ product.description } ');"> ${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
+                <li> <label onclick="javascript: ticketWarning(' ${ product.description } ');"> ${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.integer_to_currency(product.cost) }</label><br />
 %                  if product.description.lower().find('student') > -1:
 
 <div id="warningDiv">
@@ -330,7 +330,7 @@ accommdisplay();
           </script>
 %                 endif
 %              else:
-          <li> <label> ${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</label><br />
+          <li> <label> ${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.integer_to_currency(product.cost) }</label><br />
 %              endif
 %         endfor
           </ul>
@@ -349,7 +349,7 @@ accommdisplay();
                    soldout = ' SOLD&nbsp;OUT '
                endif
 %>
-              <option value="${ product.id }"> ${ soldout |n}${ product.description } - ${ h.number_to_currency(product.cost/100.0) }</option>
+              <option value="${ product.id }"> ${ soldout |n}${ product.description } - ${ h.integer_to_currency(product.cost) }</option>
 %           endfor
             </select>
           </p>
@@ -361,7 +361,7 @@ accommdisplay();
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-         <p class="entries">${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=soldout + ' ' + product.description + ' - ' + h.number_to_currency(product.cost/100.0)) }</p>
+         <p class="entries">${ h.checkbox('products.product_' + product.clean_description(True) + '_checkbox', label=soldout + ' ' + product.description + ' - ' + h.integer_to_currency(product.cost)) }</p>
 %           endfor
 %       elif category.display == 'qty':
 %           for product in products:
@@ -370,7 +370,7 @@ accommdisplay();
                if not product.available():
                    soldout = ' <span class="mandatory">SOLD&nbsp;OUT</span> '
 %>
-          <p>${ soldout |n}${ product.description } ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2) } x ${ h.number_to_currency(product.cost/100.0) }</p>
+          <p>${ soldout |n}${ product.description } ${ h.text('products.product_' + product.clean_description(True) + '_qty', size=2) } x ${ h.integer_to_currency(product.cost) }</p>
 %           endfor
 %       endif
 %       if category.name == 'Accommodation':
