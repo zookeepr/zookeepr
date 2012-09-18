@@ -11,26 +11,26 @@
         <li>${ h.link_to('PDF version', url=h.url_for(action='pdf')) }</li>
         <li>${ h.link_to('Generate access URL', url=h.url_for(action='generate_hash')) }</li>
 % if h.auth.authorized(h.auth.has_organiser_role):
-%   if c.invoice.is_void():
+%   if c.invoice.is_void:
         <li>${ h.link_to('Unvoid this invoice', url = h.url_for(action='unvoid')) }</li>
          <ul><li>Unvoiding invoices marks them as manual.</li></ul>
 %   else:
         <li>${ h.link_to('Void this invoice', url = h.url_for(action='void')) }</li>
 %   endif
 % endif
-% if c.invoice.is_void() and c.invoice.person.registration:
+% if c.invoice.is_void and c.invoice.person.registration:
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>${  h.link_to('Generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
 %   else:
         <li>This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</li>
 %   endif
-% elif c.invoice.paid():
+% elif c.invoice.is_paid:
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>Invoice was paid by ${ c.invoice.person.email_address }.</li>
 %   else:
         <li>Invoice has been paid.</li>
 %   endif
-% elif c.invoice.bad_payments().count() > 0:
+% elif len(c.invoice.bad_payments) > 0:
         <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></li>
 % else:
 %   if h.auth.authorized(h.auth.has_organiser_role):
@@ -64,7 +64,7 @@
 %     for payment in c.invoice.payments:
             <li>
               Payment ${ h.link_to(str(payment.id), url=h.url_for(controller='payment', action='view', id=payment.id)) } (${ payment.invoice.person.email_address })
-%       if not payment.invoice.paid():
+%       if not payment.invoice.is_paid:
               ${ h.link_to("Add Payment", url=h.url_for(controller='payment', action='new_manual', id=payment.id)) }
 %       endif
             </li>
@@ -72,7 +72,7 @@
         </ul>
 %endif
       </ul>
-%   if 'invoice_message' in h.lca_info and (c.invoice.is_void() or not c.invoice.paid()):
+%   if 'invoice_message' in h.lca_info and (c.invoice.is_void or not c.invoice.is_paid):
           <p style="note"><strong>Please Note:</strong> ${ h.lca_info['invoice_message'] }</p>
 %   endif
     </div>

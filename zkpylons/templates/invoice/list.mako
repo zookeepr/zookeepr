@@ -27,26 +27,26 @@
         <td>${ i.creation_timestamp |h }</td>
         </td>
         <td>${ h.link_to(i.person.firstname + ' ' + i.person.lastname, h.url_for(controller='person', action='view', id=i.person.id)) }</td>
-        <td align="right">${ "$%.2f" % (i.total()/100.0) }</td>
-        <td>${ i.status() }
-%   if i.status() == 'Unpaid' or i.total() == 0:
+        <td align="right">${ "$%.2f" % (i.total/100.0) }</td>
+        <td>${ i.status }
+%   if i.status == 'Unpaid' or i.total == 0:
             <span style="font-size: smaller;">(${ h.link_to('Void', h.url_for(action="void", id=i.id)) })</span>
 %   endif
-%   if i.status() == 'Invalid':
+%   if i.status == 'Invalid':
             <span style="font-size: smaller;">(${ h.link_to('Unvoid', h.url_for(action="unvoid", id=i.id)) })</span>
-%   endif        
+%   endif
         </td>
         <td>${ h.yesno(i.manual) |n }</td>
         <td>
-%   if i.good_payments().count() > 0:
-%       for p in i.good_payments():
-%           if p.amount_paid != i.total():
+%   if len(i.good_payments) > 0:
+%       for p in i.good_payments:
+%           if p.amount_paid != i.total:
           <b>mismatch!</b>
 %           endif
           ${ "$%.2f" % (p.amount_paid / 100.0) }
           <small>${ p.gateway_ref |h}</small>
 %       endfor
-%   elif i.bad_payments().count() > 0:
+%   elif len(i.bad_payments) > 0:
         Bad payment(s)!
 %   else:
           -

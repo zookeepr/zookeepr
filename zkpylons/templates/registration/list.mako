@@ -183,14 +183,14 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 %       else:
             <br><br>
 %       endif
-        ${ h.link_to(rinvoice.id, h.url_for(controller='invoice', action='view', id=rinvoice.id)) } - <small>${ rinvoice.status() }</small>
+        ${ h.link_to(rinvoice.id, h.url_for(controller='invoice', action='view', id=rinvoice.id)) } - <small>${ rinvoice.status }</small>
 %       if rinvoice.manual is True:
             <i>(manual)</i>
 %       endif
         <small><a href="#" onclick="return display_toggle('products_${ rinvoice.id }')">+</a></small>
 <%
        display = "display: none;"
-       #if rinvoice.is_void() is not True: display=""
+       #if rinvoice. is not True: display=""
 %>
         <div id="products_${ rinvoice.id }" style="${ display } background: #ddd;">
 %       for rproduct in rinvoice.items:

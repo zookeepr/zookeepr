@@ -28,15 +28,14 @@ class InvoiceItem(Base):
                                             default=sa.func.current_timestamp(),
                                             onupdate=sa.func.current_timestamp())
 
+    # mapped attributes
+    total = sa.orm.column_property(cost * qty)
+
     # relation
     product = sa.orm.relation(Product, lazy=True, backref='invoice_items')
 
     def __init__(self, **kwargs):
         super(InvoiceItem, self).__init__(**kwargs)
-
-    def total(self):
-        """Return the total cost of this item"""
-        return (self.cost or 0) * self.qty
 
     def __repr__(self):
         return '<InvoiceItem id=%r description=%r qty=%r cost=%r>' % (self.id, self.description, self.qty, self.cost)

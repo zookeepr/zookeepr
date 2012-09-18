@@ -171,7 +171,7 @@
         normal = {}; organiser = {}; extra = []
         total_n = 0; total_o = 0; total_e = 0
         for r in self.dbsession.query(Registration).all():
-            paid = r.person.invoices and r.person.invoices[0].paid()
+            paid = r.person.invoices and r.person.invoices[0].is_paid
             if paid or r.person.is_speaker():
                 if r.type in ("Monday pass", "Tuesday pass"):
                     pass # sorry, had to say it :-)
@@ -223,7 +223,7 @@
         [rego] """
         c.data = []
         for r in self.dbsession.query(Registration).all():
-            paid = r.person.invoices and r.person.invoices[0].paid()
+            paid = r.person.invoices and r.person.invoices[0].is_paid
             if paid or r.person.is_speaker():
                 if r.type in ("Monday pass", "Tuesday pass"):
                     pass # sorry, had to say it :-)
@@ -293,7 +293,7 @@
         """):
           r = self.dbsession.query(Registration).get(r_id)
           p = r.person
-          if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+          if (p.invoices and p.invoices[0].is_paid) or p.is_speaker():
             if p.is_speaker():
               speaker = 's'
             else:
@@ -341,14 +341,14 @@
             if r.type in ('Monday only', 'Tuesday only', 'Volunteer'):
               continue
             p = r.person
-            if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+            if (p.invoices and p.invoices[0].is_paid) or p.is_speaker():
               continue
             if 'miniconf' in [rl.name for rl in p.roles]:
               continue
             if r.creation_timestamp.day<3 or r.creation_timestamp.month!=1:
               continue
             if p.invoices:
-              amt = "$%.2f" % (p.invoices[0].total()/100.0)
+              amt = "$%.2f" % (p.invoices[0].total/100.0)
             else:
               amt = '-'
             if r.voucher_code:
@@ -394,7 +394,7 @@
                     comment = ' (speaker)'
                 else:
                     comment = ''
-            elif p.invoices and p.invoices[0].paid():
+            elif p.invoices and p.invoices[0].is_paid:
                 comment = ''
             else:
                 continue
@@ -427,7 +427,7 @@
             p = r.person
             if p.is_speaker():
                 comments += ['speaker partner']
-            elif p.invoices and p.invoices[0].paid():
+            elif p.invoices and p.invoices[0].is_paid:
                 pass
             else:
                 continue
@@ -464,7 +464,7 @@
         d = {}
         for r in self.dbsession.query(Registration).all():
             p = r.person
-            if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
+            if not ((p.invoices and p.invoices[0].is_paid) or p.is_speaker()):
               continue
             if not r.accommodation: continue
             if not d.has_key(r.accommodation.name):
@@ -506,7 +506,7 @@
         d = {}
         for r in self.dbsession.query(Registration).all():
             p = r.person
-            if not ((p.invoices and p.invoices[0].paid()) or p.is_speaker()):
+            if not ((p.invoices and p.invoices[0].is_paid) or p.is_speaker()):
               continue
             if not r.accommodation: continue
             comments = []
@@ -564,11 +564,11 @@
         total = {}
 
         for i in self.dbsession.query(Invoice).all():
-            if not i.paid():
+            if not i.is_paid:
                 continue
             for ii in i.items:
                 desc = ii.description
-                amt = ii.total()
+                amt = ii.total
                 add(desc, amt, ii.qty)
                 add(u'\u2211', amt, ii.qty)
                 for kw in keywords:
@@ -672,11 +672,11 @@
             else:
               row.append('invalid')
             if p.invoices:
-              if p.invoices[0].paid():
+              if p.invoices[0].is_paid:
                 row.append('<a href="/invoice/%d">OK</a>'%p.invoices[0].id)
               else:
                 row.append('<a href="/invoice/%d">owes $%.2f</a>'%(
-                         p.invoices[0].id, p.invoices[0].total()/100.0) )
+                         p.invoices[0].id, p.invoices[0].total/100.0) )
             else:
               row.append('no invoice')
             c.data.append(row)
@@ -890,7 +890,7 @@
             r = self.dbsession.query(Registration).filter_by(id=id).one()
             p = r.person
             t = r.type
-            if (p.invoices and p.invoices[0].paid()):
+            if (p.invoices and p.invoices[0].is_paid):
                 pass
             elif p.is_speaker():
                 t += ' (speaker)'
@@ -1466,5 +1466,5 @@
 def paid_regos(self):
     for r in self.dbsession.query(Registration).all():
         p = r.person
-        if (p.invoices and p.invoices[0].paid()) or p.is_speaker():
+        if (p.invoices and p.invoices[0].is_paid) or p.is_speaker():
             yield r

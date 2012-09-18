@@ -17,18 +17,18 @@ ${ h.form(h.url_for()) }
     <th>Status</th>
   </tr>
 % for i in c.invoice_collection:
-%   if i.is_void() or i.person.paid():
+%   if i. or i.person.paid():
 <%    continue %>
 %   endif
   <tr>
     <td>${ h.checkbox('invoices', value=i.id, checked=True) }</td>
     <td>${ h.link_to(i.person.firstname + ' ' + i.person.lastname, url=h.url_for(controller='person', action='view', id=i.person.id)) }</td>
-    <td>${ h.link_to(h.number_to_currency(i.total()/100), url=h.url_for(action='view', id=i.id)) }
+    <td>${ h.link_to(h.number_to_currency(i.total/100), url=h.url_for(action='view', id=i.id)) }
     <td>${ i.person.email_address }</td>
     <td>
 %   if not i.payments:
       Not Paid
-%   elif i.bad_payments().count() > 0:
+%   elif i.bad_payments.count() > 0:
       Incomplete Payments
 %   else:
       Unknown

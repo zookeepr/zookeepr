@@ -40,7 +40,7 @@ ${ under18(paid = False) }
   <tbody>
 % for product in c.ceiling.products:
 %   for invoice_item in product.invoice_items:
-%     if not invoice_item.invoice.status() == 'Invalid' and ((paid and invoice_item.invoice.paid()) or not (paid or invoice_item.invoice.paid())):
+%     if not invoice_item.invoice.status == 'Invalid' and ((paid and invoice_item.invoice.is_paid) or not (paid or invoice_item.invoice.is_paid)):
 <%       rego = invoice_item.invoice.person.registration %>
 %       if rego.diet is not '' or rego.special is not '':
   <tr>
@@ -75,7 +75,7 @@ ${ under18(paid = False) }
   diet = {}
   for product in c.ceiling.products:
     for invoice_item in product.invoice_items:
-      if not invoice_item.invoice.status() == 'Invalid' and ((paid and invoice_item.invoice.paid()) or not (paid or invoice_item.invoice.paid())):
+      if not invoice_item.invoice.status == 'Invalid' and ((paid and invoice_item.invoice.is_paid) or not (paid or invoice_item.invoice.is_paid)):
         rego = invoice_item.invoice.person.registration 
         if rego.diet is not '':
           if rego.diet not in diet:
@@ -115,7 +115,7 @@ ${ under18(paid = False) }
   <tbody>
 % for product in c.ceiling.products:
 %   for invoice_item in product.invoice_items:
-%     if not invoice_item.invoice.status() == 'Invalid' and ((paid and invoice_item.invoice.paid()) or not (paid or invoice_item.invoice.paid())):
+%     if not invoice_item.invoice.status == 'Invalid' and ((paid and invoice_item.invoice.is_paid) or not (paid or invoice_item.invoice.is_paid)):
 <%       rego = invoice_item.invoice.person.registration %>
 %       if not rego.over18:
   <tr>

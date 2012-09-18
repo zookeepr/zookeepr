@@ -1,6 +1,6 @@
     <h1>Tax Invoice/Statement</h1>
 
-% if c.invoice.is_void():
+% if c.invoice.is_void:
 <%   invalid = " invoice_invalid" %>
 % else:
 <%   invalid = "" %>
@@ -11,19 +11,19 @@
       <p>${ h.lca_info['event_tax_number'] }</p>
     </div>
     <p><strong>Invoice Number:</strong> ${ c.invoice.id }</p>
-    <p><strong>Invoice Status:</strong> ${ c.invoice.status() }
-% if c.invoice.is_void():
+    <p><strong>Invoice Status:</strong> ${ c.invoice.status }
+% if c.invoice.is_void:
 <span style="font-size: 22px; color: #F00"> - ${ c.invoice.void }</span>
 % endif
     </p>
     <p><strong>Issue Date:</strong> ${ c.invoice.issue_date.strftime("%d %b %Y") }</p>
     <p><strong>Due Date:</strong> ${ c.invoice.due_date.strftime("%d %b %Y") }</p>
-% if c.invoice.paid():
+% if c.invoice.is_paid:
     <p><strong>Invoice Paid</strong></p>
-% elif c.invoice.total() == 0:
+% elif c.invoice.total == 0:
     <p><strong>No Payment Required</strong></p>
 % else:
-    <p><strong>Amount Due:</strong> ${ h.number_to_currency(c.invoice.total()/100.0) }</p>
+    <p><strong>Amount Due:</strong> ${ h.number_to_currency(c.invoice.total/100.0) }</p>
 % endif
 
     <p>
@@ -50,30 +50,30 @@
         <td>${ item.description }</td>
         <td style="text-align:center">${ item.qty }</td>
         <td style="text-align:right">${ h.number_to_currency(item.cost/100.0) }</td>
-        <td style="text-align:right">${ h.number_to_currency(item.total()/100.0) }</td>
+        <td style="text-align:right">${ h.number_to_currency(item.total/100.0) }</td>
       </tr>
 %   endif
 % endfor
       <tr>
         <td style="text-align: right" colspan="3"><strong>Total</strong></td>
-        <td style="text-align: right"><strong>${ h.number_to_currency(c.invoice.total()/100.0) }</strong></td>
+        <td style="text-align: right"><strong>${ h.number_to_currency(c.invoice.total/100.0) }</strong></td>
       </tr>
       <tr>
         <td style="text-align: right" colspan="3">(Includes AU GST</td>
-        <td style="text-align: right">${ h.number_to_currency(h.sales_tax(c.invoice.total())/100.0) })</td>
+        <td style="text-align: right">${ h.number_to_currency(h.sales_tax(c.invoice.total)/100.0) })</td>
       </tr>
     </table>
-% if c.invoice.is_void():
+% if c.invoice.is_void:
 %   if c.invoice.person.registration:
         <p class="pay_button">This invoice has been cancelled. You must now ${ h.link_to('generate a new invoice', url=h.url_for(controller='registration', action='pay', id=c.invoice.person.registration.id)) }</p>
 %   endif
-% elif c.invoice.paid():
+% elif c.invoice.is_paid:
         <p class="pay_button">Invoice has been <b>paid</b>.
-%   if c.invoice.total() > 0:
+%   if c.invoice.total > 0:
 Receipt number: <code>PR${ c.payment_received.id }P${ c.payment.id }</code>
 %   endif
 </p>
-% elif c.invoice.bad_payments().count() > 0:
+% elif len(c.invoice.bad_payments) > 0:
         <p class="pay_button">Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></p>
 % else:
         <p class="pay_button">${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</p>

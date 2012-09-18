@@ -36,7 +36,7 @@
 <td><font color="red">None found</font></td>
 %else:
 <td>${ h.link_to(c.payment.invoice.id, url=h.url_for(controller='invoice', action='view', id=c.payment.invoice.id)) }
-(${ c.payment.invoice.status() })
+(${ c.payment.invoice.status })
 %  if c.payment.payment not in c.payment.invoice.payments:
 <font color="red">(INVALID)</font>
 %  endif

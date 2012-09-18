@@ -112,7 +112,7 @@
     ${ h.link_to('Change volunteer areas of interest', h.url_for(controller='volunteer', action='edit', id=c.person.volunteer.id)) }<br>
 %   endif
     ${ h.link_to('Edit details', h.url_for(action='edit', id=c.registration.id)) }<br>
-%   if c.person.valid_invoice() and c.person.valid_invoice().paid():
+%   if c.person.valid_invoice() and c.person.valid_invoice().is_paid:
     ${ h.link_to('View invoice', h.url_for(controller='invoice', action='view', id=c.person.valid_invoice().id)) }<br>
 %   else:
     ${ h.link_to('Pay invoice', h.url_for(action='pay', id=c.registration.id)) }<br>
@@ -128,8 +128,8 @@
 %   for invoice in c.person.invoices:
       <tr>
         <td>${ h.link_to(invoice.id, h.url_for(controller='invoice', action='view', id=invoice.id)) }</td>
-        <td>${ invoice.status() }</td>
-        <td>${ h.number_to_currency(invoice.total() / 100) }</td>
+        <td>${ invoice.status }</td>
+        <td>${ h.number_to_currency(invoice.total / 100) }</td>
         <td>
           ${ h.link_to('View', h.url_for(controller='invoice', action='view', id=invoice.id)) } - Print
           ${ h.link_to('html', h.url_for(controller='invoice', action='printable', id=invoice.id)) },
@@ -139,7 +139,7 @@
 %   endfor
     </table>
 
-% elif False and c.person.invoices[0].bad_payments().count() > 0:
+% elif False and c.person.invoices[0].bad_payments.count() > 0:
     <p><b>Tentatively registered and tried to pay.</b></p>
 
     <p>Unfortunately, there was some sort of problem with your payment.</p>

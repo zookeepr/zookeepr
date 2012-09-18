@@ -48,12 +48,12 @@ Volunteer
   products['Partners Programme'] = []
 
   for invoice in r.person.invoices:
-    if not invoice.is_void():
+    if not invoice.is_void:
       for ii in invoice.items:
         if ii.product is not None and ii.product.category is not None:
           if ii.product.category.name in products:
             text = "%s x %s" % (ii.qty, ii.product.description)
-            if not invoice.paid():
+            if not invoice.is_paid:
               text += " (Not paid)"
             products[ii.product.category.name].append(text)
 %>

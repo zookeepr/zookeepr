@@ -162,8 +162,8 @@ class InvoiceController(BaseController):
         c.invoice = Invoice.find_by_id(id, True)
         c.payment_received = None
         c.payment = None
-        if c.invoice.paid() and c.invoice.total() > 0:
-            c.payment_received = c.invoice.good_payments()[0]
+        if c.invoice.is_paid and c.invoice.total > 0:
+            c.payment_received = c.invoice.good_payments[0]
             c.payment = c.payment_received.payment
         return render('/invoice/view.mako')
 
@@ -176,8 +176,8 @@ class InvoiceController(BaseController):
         c.invoice = Invoice.find_by_id(id, True)
         c.payment_received = None
         c.payment = None
-        if c.invoice.paid() and c.invoice.total() > 0:
-            c.payment_received = c.invoice.good_payments()[0]
+        if c.invoice.is_paid and c.invoice.total > 0:
+            c.payment_received = c.invoice.good_payments[0]
             c.payment = c.payment_received.payment
         return render('/invoice/view_printable.mako')
 
@@ -211,25 +211,25 @@ class InvoiceController(BaseController):
     def _check_invoice(self, person, invoice, ignore_overdue = False):
         c.invoice = invoice
         if person.invoices:
-            if invoice.paid() or invoice.bad_payments().count() > 0:
+            if invoice.is_paid or invoice.bad_payments.count() > 0:
                 c.status = []
-                if invoice.total()==0:
+                if invoice.total==0:
                   c.status.append('zero balance')
-                if invoice.good_payments().count() > 0:
+                if invoice.good_payments.count() > 0:
                   c.status.append('paid')
-                  if invoice.good_payments().count()>1:
-                    c.status[-1] += ' (%d times)' % invoice.good_payments().count()
-                if invoice.bad_payments().count() > 0:
+                  if invoice.good_payments.count()>1:
+                    c.status[-1] += ' (%d times)' % invoice.good_payments.count()
+                if invoice.bad_payments.count() > 0:
                   c.status.append('tried to pay')
-                  if invoice.bad_payments().count()>1:
-                    c.status[-1] += ' (%d times)' % invoice.bad_payments().count()
+                  if invoice.bad_payments.count()>1:
+                    c.status[-1] += ' (%d times)' % invoice.bad_payments.count()
                 c.status = ' and '.join(c.status)
                 return render('/invoice/already.mako')
 
-        if invoice.is_void():
+        if invoice.is_void:
             c.signed_in_person = h.signed_in_person()
             return render('/invoice/invalid.mako')
-        if not ignore_overdue and invoice.overdue():
+        if not ignore_overdue and invoice.is_overdue:
             for ii in invoice.items:
                 if ii.product and not ii.product.available():
                     return render('/invoice/expired.mako')
@@ -254,7 +254,7 @@ class InvoiceController(BaseController):
             return error
 
         c.payment = Payment()
-        c.payment.amount = invoice.total()
+        c.payment.amount = invoice.total
         c.payment.invoice = invoice
 
         meta.Session.commit()
@@ -308,7 +308,7 @@ class InvoiceController(BaseController):
             return error
 
         c.payment = Payment()
-        c.payment.amount = invoice.total()
+        c.payment.amount = invoice.total
         c.payment.invoice = invoice
 
         meta.Session.commit()
@@ -336,7 +336,7 @@ class InvoiceController(BaseController):
             h.auth.no_role()
 
         c.invoice = Invoice.find_by_id(id, True)
-        if c.invoice.is_void():
+        if c.invoice.is_void:
             h.flash("Invoice was already voided.")
             return redirect_to(action='view', id=c.invoice.id)
 
@@ -346,7 +346,7 @@ class InvoiceController(BaseController):
             h.flash("Invoice was voided.")
             return redirect_to(action='view', id=c.invoice.id)
         else:
-            if c.invoice.paid():
+            if c.invoice.is_paid:
                 h.flash("Cannot void a paid invoice.")
                 return redirect_to(action='view', id=c.invoice.id)
             c.invoice.void = "User cancellation"
