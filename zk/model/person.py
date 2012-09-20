@@ -170,7 +170,7 @@ class Person(Base):
                             'estonia', 'greece', 'hong kong', 'israel', 'luxembourg', 
                             'monaco', 'netherlands', 'portugal', 'south africa']
 
-        if self.country.strip().lower() in common_countries:
+        if self.country and self.country.strip().lower() in common_countries:
             return True
         else:
             return False
