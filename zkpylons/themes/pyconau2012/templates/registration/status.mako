@@ -138,7 +138,7 @@
 %   endfor
     </table>
 
-% elif False and c.person.invoices[0].bad_payments.count() > 0:
+% elif False and len(c.person.invoices[0].bad_payments) > 0:
     <p><b>Tentatively registered and tried to pay.</b></p>
 
     <p>Unfortunately, there was some sort of problem with your payment.</p>

@@ -257,7 +257,7 @@ This person hasn't registered yet.
         </td>
         <td>${ h.yesno(i.manual) |n }</td>
         <td>
-%       if i.good_payments.count() > 0:
+%       if len(i.good_payments) > 0:
 %         for p in i.good_payments:
 %           if p.amount_paid != i.total:
           <b>mismatch!</b>
@@ -265,7 +265,7 @@ This person hasn't registered yet.
           ${ "$%.2f" % (p.amount_paid / 100.0) }
           <small>${ p.gateway_ref |h}</small>
 %         endfor
-%       elif i.bad_payments.count() > 0:
+%       elif len(i.bad_payments) > 0:
         Bad payment(s)!
 %       else:
           -
