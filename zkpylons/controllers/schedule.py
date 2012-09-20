@@ -69,13 +69,8 @@ class ScheduleController(BaseController):
         else:
             c.can_edit = False
 
-        c.subsubmenu = []
-        c.subsubmenu.append([ '/programme/sunday', 'Sunday' ])
         c.scheduled_dates = TimeSlot.find_scheduled_dates()
-        for scheduled_date in c.scheduled_dates:
-            c.subsubmenu.append(['/programme/schedule/' + scheduled_date.strftime('%A').lower(), scheduled_date.strftime('%A')])
-
-        c.subsubmenu.append([ '/programme/saturday', 'Saturday' ])
+        c.subsubmenu = [['/programme/schedule/' + scheduled_date.strftime('%A').lower(), scheduled_date.strftime('%A')] for scheduled_date in c.scheduled_dates]
 
     def table(self, day=None):
         # Check if we have any schedule information to display and tell people if we don't
