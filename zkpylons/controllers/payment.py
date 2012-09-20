@@ -165,7 +165,7 @@ class PaymentController(BaseController):
                 if c.person.country:
                     validation_errors.append('Uncommon country: ' + c.person.country)
                 else:
-                    validation_errors.append('Unknown country'
+                    validation_errors.append('Unknown country')
 
         c.pr = PaymentReceived(**c.response)
         c.pr.validation_errors = ';'.join(validation_errors)
