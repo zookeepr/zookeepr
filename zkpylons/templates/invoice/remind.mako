@@ -28,7 +28,7 @@ ${ h.form(h.url_for()) }
     <td>
 %   if not i.payments:
       Not Paid
-%   elif i.bad_payments.count() > 0:
+%   elif len(i.bad_payments) > 0:
       Incomplete Payments
 %   else:
       Unknown

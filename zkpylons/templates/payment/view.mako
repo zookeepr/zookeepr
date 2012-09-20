@@ -94,7 +94,7 @@ ${ c.payment.client_ip_gateway } (gateway)</td></tr>
 
 %if c.is_organiser:
 
-%  if c.related_payments.count() > 0:
+%  if len(c.related_payments) > 0:
 <p>Related payments:
 <ul>
 %    for pr in c.related_payments:

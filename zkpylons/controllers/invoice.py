@@ -211,18 +211,18 @@ class InvoiceController(BaseController):
     def _check_invoice(self, person, invoice, ignore_overdue = False):
         c.invoice = invoice
         if person.invoices:
-            if invoice.is_paid or invoice.bad_payments.count() > 0:
+            if invoice.is_paid or len(invoice.bad_payments) > 0:
                 c.status = []
                 if invoice.total==0:
                   c.status.append('zero balance')
-                if invoice.good_payments.count() > 0:
+                if len(invoice.good_payments) > 0:
                   c.status.append('paid')
-                  if invoice.good_payments.count()>1:
-                    c.status[-1] += ' (%d times)' % invoice.good_payments.count()
-                if invoice.bad_payments.count() > 0:
+                  if len(invoice.good_payments)>1:
+                    c.status[-1] += ' (%d times)' % len(invoice.good_payments)
+                if len(invoice.bad_payments) > 0:
                   c.status.append('tried to pay')
-                  if invoice.bad_payments.count()>1:
-                    c.status[-1] += ' (%d times)' % invoice.bad_payments.count()
+                  if len(invoice.bad_payments)>1:
+                    c.status[-1] += ' (%d times)' % len(invoice.bad_payments)
                 c.status = ' and '.join(c.status)
                 return render('/invoice/already.mako')
 

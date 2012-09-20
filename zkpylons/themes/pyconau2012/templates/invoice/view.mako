@@ -29,7 +29,7 @@
 %   else:
         <li>Invoice has been paid.</li>
 %   endif
-% elif c.invoice.bad_payments.count() > 0:
+% elif len(c.invoice.bad_payments) > 0:
         <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></li>
 % else:
 %   if h.auth.authorized(h.auth.has_organiser_role):

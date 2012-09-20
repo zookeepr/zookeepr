@@ -7,7 +7,7 @@
 
 <% amt = c.invoice.total %>
   <amount cents="${ amt }">${ h.number_to_currency(amt/100.0) }</amount>
-% if c.invoice.good_payments.count() > 0:
+% if len(c.invoice.good_payments) > 0:
   <paid>
 <% pp = [] %>
 %   for p in c.invoice.good_payments:
@@ -22,7 +22,7 @@
 % else:
   <owed cents="${ amt }">${ h.number_to_currency(amt/100.0) }</owed>
 % endif
-% if c.invoice.bad_payments.count() > 0:
+% if len(c.invoice.bad_payments) > 0:
   <badpayments/>
 % endif
 
