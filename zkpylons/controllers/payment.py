@@ -162,7 +162,10 @@ class PaymentController(BaseController):
             #if c.response['email_address'] != pxpay.munge_email(payment.invoice.person.email_address):
             #    validation_errors.append('Mismatch between returned email address and invoice object')
             if not c.person.is_from_common_country():
-                validation_errors.append('Uncommon country: ' + c.person.country)
+                if c.person.country:
+                    validation_errors.append('Uncommon country: ' + c.person.country)
+                else:
+                    validation_errors.append('Unknown country'
 
         c.pr = PaymentReceived(**c.response)
         c.pr.validation_errors = ';'.join(validation_errors)
