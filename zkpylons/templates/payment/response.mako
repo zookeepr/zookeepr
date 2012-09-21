@@ -11,7 +11,7 @@ You can try again by visiting:
 %else:
 Subject: Successful payment for ${ h.lca_info['event_name'] }
 
-Your payment for ${ h.number_to_currency(c.response['amount_paid'] / 100.0) } was successful.
+Your payment for ${ h.integer_to_currency(c.response['amount_paid']) } was successful.
 
 Your receipt number is: PR${ c.pr.id }P${ c.pr.payment.id }
 

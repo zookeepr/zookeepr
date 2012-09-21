@@ -62,12 +62,12 @@
         <td>${ h.link_to(product.description, url=h.url_for(controller='product', action='view', id=product.id)) }</td>
         <td>${ product.category.name }</td>
         <td>${ h.yesno(product.active) | n }</td>
-        <td>${ h.number_to_currency(product.cost/100.0) }</td>
+        <td>${ h.integer_to_currency(product.cost) }</td>
         <td>${ product.qty_invoiced(date=False) }</td>
         <td>${ product.qty_invoiced() }</td>
         <td>${ product.qty_sold() }</td>
         <td>${ product.qty_free() }</td>
-        <td>${ h.number_to_currency((product.qty_sold() * product.cost)/100) }</td>
+        <td>${ h.integer_to_currency(product.qty_sold() * product.cost) }</td>
       </tr>
 <%
   graph_invoiced_sales[product.description] = product.qty_invoiced(date=False)
@@ -79,7 +79,7 @@
         <td>${ c.ceiling.qty_invoiced()  }</td>
         <td>${ c.ceiling.qty_sold()  }</td>
         <td>${ c.ceiling.qty_free()  }</td>
-        <td>${ h.number_to_currency(ceiling_total/100) }</td>
+        <td>${ h.integer_to_currency(ceiling_total) }</td>
     </table>
 <script type="text/javascript">
 <%

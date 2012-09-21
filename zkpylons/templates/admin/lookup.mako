@@ -88,7 +88,7 @@ not registered
 <p>
 %   if invoices:
 %     for i in invoices:
-invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.number_to_currency(i.total/100.0) } ${ if_then_else(i.paid(), 'paid', 'not paid')})
+invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.integer_to_currency(i.total) } ${ if_then_else(i.paid(), 'paid', 'not paid')})
 %     endfor
 %   endif
 </p>
@@ -108,8 +108,8 @@ invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.number_to_currency(i.tota
     <td align="center">${ i.id }${ if_then_else(i.paid(), '', ' (unpaid)')}</td>
     <td>${ ii.description }</td>
     <td align="center">${ ii.qty }</td>
-    <td align="right">${ h.number_to_currency(ii.cost/100.0) }</td>
-    <td align="right">${ h.number_to_currency(ii.total/100.0) }</td>
+    <td align="right">${ h.integer_to_currency(ii.cost) }</td>
+    <td align="right">${ h.integer_to_currency(ii.total) }</td>
   </tr>
 %     endfor
 %   endfor

@@ -246,7 +246,7 @@ This person hasn't registered yet.
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ h.link_to(str(i.id), h.url_for(controller="invoice", action='view', id=i.id)) }</td>
     <td>${ i.creation_timestamp }</td>
-    <td align="right">${ "$%.2f" % (i.total/100.0) }</td>
+    <td align="right">${ h.integer_to_currency(i.total) }</td>
     <td>${ i.status }
 %       if i.status == 'Unpaid' or i.total == 0:
             <span style="font-size: smaller;">(${ h.link_to('Void', h.url_for(controller="invoice", action="void", id=i.id)) })</span>
@@ -262,7 +262,7 @@ This person hasn't registered yet.
 %           if p.amount_paid != i.total:
           <b>mismatch!</b>
 %           endif
-          ${ "$%.2f" % (p.amount_paid / 100.0) }
+          ${ h.integer_to_currency(p.amount_paid) }
           <small>${ p.gateway_ref |h}</small>
 %         endfor
 %       elif len(i.bad_payments) > 0:

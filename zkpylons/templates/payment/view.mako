@@ -44,7 +44,7 @@
 %endif
 
 <tr><td valign="top"><b>Amount paid:</b></td>
-<td>${ h.number_to_currency(c.payment.amount_paid / 100.0) } (charged in ${ c.payment.currency_used })</td></tr>
+<td>${ h.integer_to_currency(c.payment.amount_paid) } (charged in ${ c.payment.currency_used })</td></tr>
 
 <tr><td valign="top"><b>Payment gateway:</b></td>
 <td>Auth: ${ c.payment.auth_code }

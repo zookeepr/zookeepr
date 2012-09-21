@@ -128,7 +128,7 @@ class VolunteerController(BaseController):
         c.products_select.append(['', 'No Ticket'])
         for p in products:
             if 'Volunteer' in p.description:
-                c.products_select.append([p.id, p.description + ' - ' + h.number_to_currency(p.cost/100)])
+                c.products_select.append([p.id, p.description + ' - ' + h.integer_to_currency(p.cost)])
         form = render('volunteer/accept.mako') 
         return htmlfill.render(form, defaults)
 

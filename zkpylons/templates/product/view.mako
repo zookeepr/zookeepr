@@ -10,7 +10,7 @@
     <p><b>Description:</b> ${ c.product.description | h }<br></p>
     <p><b>Category:</b> ${ c.product.category.name }<br></p>
     <p><b>Active:</b> ${ h.yesno(c.product.active) |n }<br></p>
-    <p><b>Cost:</b> ${ h.number_to_currency(c.product.cost/100.0) | h }<br></p>
+    <p><b>Cost:</b> ${ h.integer_to_currency(c.product.cost) | h }<br></p>
     <p><b>Auth code:</b> ${ c.product.auth | h }<br></p>
     <p><b>Validate code:</b> ${ c.product.validate | h }<br></p>
 
@@ -19,7 +19,7 @@
     <p><b>Invoiced (Overdue):</b> ${ c.product.qty_invoiced(date = False) }</p>
     <p><b>Invoiced (Current)</b> ${ c.product.qty_invoiced() }</p>
     <p><b>Sold:</b> ${ c.product.qty_sold() }</p>
-    <p><b>Total:</b> ${ h.number_to_currency((c.product.qty_sold() * c.product.cost)/100) }</p>
+    <p><b>Total:</b> ${ h.integer_to_currency(c.product.qty_sold() * c.product.cost) }</p>
 
     <h3>Included Products</h3>
     <table>

@@ -494,11 +494,11 @@ class AdminController(BaseController):
                     res.append('Invalid Invoice')
                 else:
                     if p.valid_invoice().is_paid:
-                      res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
+                      res.append(h.link_to('Paid ' + h.integer_to_currency(p.valid_invoice().total),
+                                           h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
                     else:
-                      res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
+                      res.append(h.link_to('Owes ' + h.integer_to_currency(p.valid_invoice().total),
+                                           h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
 
                     shirt = ''
                     for item in p.valid_invoice().items:
@@ -576,11 +576,11 @@ class AdminController(BaseController):
                     res.append('Invalid Invoice')
                 else:
                     if p.valid_invoice().is_paid:
-                      res.append('<a href="/invoice/%d">Paid $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
+                      res.append(h.link_to('Paid ' + h.integer_to_currency(p.valid_invoice().total),
+                                           h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
                     else:
-                      res.append('<a href="/invoice/%d">Owes $%.2f</a>'%(
-                               p.valid_invoice().id, p.valid_invoice().total/100.0) )
+                      res.append(h.link_to('Owes ' + h.integer_to_currency(p.valid_invoice().total),
+                                           h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
 
                     shirt = ''
                     for item in p.valid_invoice().items:
@@ -821,9 +821,9 @@ class AdminController(BaseController):
         c.data = []
         for item in item_list:
             if item.invoice.is_paid and not item.invoice.is_void:
-                c.data.append([item.description, h.number_to_currency(item.cost/100), item.qty, h.number_to_currency(item.total/100)])
+                c.data.append([item.description, h.integer_to_currency(item.cost), item.qty, h.integer_to_currency(item.total)])
                 total += item.total
-        c.data.append(['','','Total:', h.number_to_currency(total/100)])
+        c.data.append(['','','Total:', h.integer_to_currency(total)])
         return table_response()
 
     @authorize(h.auth.has_organiser_role)
