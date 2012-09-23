@@ -134,7 +134,7 @@ class Ceiling(Base):
 
     @classmethod
     def find_all(cls):
-        return Session.query(Ceiling).order_by(Ceiling.id).all()
+        return Session.query(Ceiling).order_by(Ceiling.name).all()
 
     @classmethod
     def find_by_id(cls, id):

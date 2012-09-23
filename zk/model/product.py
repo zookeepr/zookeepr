@@ -390,7 +390,7 @@ class Product(Base):
 
     # relations
     category = sa.orm.relation(ProductCategory, lazy=True, backref=sa.orm.backref('products', order_by=lambda: [Product.display_order, Product.cost]))
-    ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
+    ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, order_by=Ceiling.name, backref='products')
 
 
     def __init__(self, **kwargs):
