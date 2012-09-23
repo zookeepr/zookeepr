@@ -27,6 +27,7 @@ log = logging.getLogger(__name__)
 
 class ProductSchema(BaseSchema):
     category = ProductCategoryValidator()
+    display_order = validators.Int(not_empty=True)
     active = validators.Bool()
     description = validators.String(not_empty=True)
     cost = validators.Int(min=0, max=20000000)

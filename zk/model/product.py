@@ -389,7 +389,7 @@ class Product(Base):
     validate = sa.Column(sa.types.Text, nullable=True)
 
     # relations
-    category = sa.orm.relation(ProductCategory, lazy=True, backref='products')
+    category = sa.orm.relation(ProductCategory, lazy=True, backref=sa.orm.backref('products', order_by=lambda: [Product.display_order, Product.cost]))
     ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
 
 
