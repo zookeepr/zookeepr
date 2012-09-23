@@ -47,6 +47,7 @@
       </tr>
       <tr>
         <th>Description</th>
+        <th>Display Order</th>
         <th>Active</th>
         <th>Available</th>
         <th>Cost</th>
@@ -78,6 +79,7 @@
 
       <tr class="${ h.cycle('odd', 'even') }">
         <td>${ h.link_to(product.description, url=h.url_for(controller='product', action='view', id=product.id)) }</td>
+        <td>${ product.display_order }</td>
         <td>${ h.yesno(product.active) |n }</td>
         <td>${ h.yesno(product.available()) |n }</td>
         <td>${ h.integer_to_currency(product.cost) | h }</td>

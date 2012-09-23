@@ -381,16 +381,16 @@ class Product(Base):
 
     id = sa.Column(sa.types.Integer, primary_key=True)
     category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
+    display_order = sa.Column(sa.types.Integer, nullable=False)
     active = sa.Column(sa.types.Boolean, nullable=False)
     description = sa.Column(sa.types.Text, nullable=False)
     cost = sa.Column(sa.types.Integer, nullable=False)
     auth = sa.Column(sa.types.Text, nullable=True)
     validate = sa.Column(sa.types.Text, nullable=True)
 
-
     # relations
-    ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
     category = sa.orm.relation(ProductCategory, lazy=True, backref='products')
+    ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, backref='products')
 
 
     def __init__(self, **kwargs):
@@ -398,7 +398,7 @@ class Product(Base):
 
     @classmethod
     def find_all(self):
-        return Session.query(Product).order_by(Product.cost).all()
+        return Session.query(Product).order_by(Product.display_order).order_by(Product.cost).all()
 
     @classmethod
     def find_by_id(cls, id):
@@ -406,7 +406,7 @@ class Product(Base):
 
     @classmethod
     def find_by_category(cls, id):
-        return Session.query(Product).filter_by(category_id=id)
+        return Session.query(Product).filter_by(category_id=id).order_by(Product.display_order).order_by(Product.cost)
 
     def qty_free(self):
         qty = 0
