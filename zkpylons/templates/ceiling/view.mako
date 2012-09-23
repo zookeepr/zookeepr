@@ -10,6 +10,9 @@
     <h2>View ceiling</h2>
 
     <p><b>Name:</b> ${ c.ceiling.name } - ${ h.link_to('Special cases', url=h.url_for(action='special_cases')) }</p>
+% if c.ceiling.parent:
+    <p><b>Parent:</b> ${ h.link_to(c.ceiling.parent.name, h.url_for(id=c.ceiling.parent.id)) } (This ceiling will not become available until the parent is not available)
+% endif
     <p><b>Limit:</b> ${ c.ceiling.max_sold | h }<br></p>
     <p>
       <b>Available From:</b>

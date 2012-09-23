@@ -45,13 +45,18 @@ class Ceiling(Base):
     __tablename__ = 'ceiling'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
+    parent_id = sa.Column(sa.types.Integer, sa.ForeignKey('ceiling.id'), nullable=True)
     name = sa.Column(sa.types.Text, nullable=False, unique=True)
     max_sold = sa.Column(sa.types.Integer, nullable=True)
     available_from = sa.Column(sa.types.DateTime, nullable=True)
     available_until = sa.Column(sa.types.DateTime, nullable=True)
     cache = CacheManager()
 
-    def __init__(self, name=None, max_sold=None, available_from=None, available_until=None, products=[]):
+    # relations
+    parent = sa.orm.relation(lambda: Ceiling, backref='children', remote_side=[id])
+
+    def __init__(self, parent=None, name=None, max_sold=None, available_from=None, available_until=None, products=[]):
+        self.parent = parent
         self.name = name
         self.max_sold = max_sold
         self.available_from = available_from
@@ -119,6 +124,8 @@ class Ceiling(Base):
         elif self.available_from is not None and self.available_from >= datetime.datetime.now():
             return False
         elif self.available_until is not None and self.available_until <= datetime.datetime.now():
+            return False
+        elif self.parent is not None and self.parent != self and self.parent.available():
             return False
         else:
             return True
