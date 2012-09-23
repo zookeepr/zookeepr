@@ -11,6 +11,11 @@
       </p>
 
       <p>
+        <label for="product.display_order">Display Order:</label>
+        ${ h.text('product.display_order') }
+      </p>
+
+      <p>
         <label for="product.active">Active:</label>
         ${ h.checkbox('product.active') }
       </p>
