@@ -34,14 +34,14 @@
 
     <table>
       <thead>
-        <td colspan="11" align="left">
+        <td colspan="12" align="left">
     <b>Pie charts:</b> Show invoiced product counts (including overdue).
         </td>
       <tr>
-        <td colspan="11" align="center"><div id="sales${ simple_title }" style="width:600px;height:300px;"></div></td>
+        <td colspan="12" align="center"><div id="sales${ simple_title }" style="width:600px;height:300px;"></div></td>
       </tr>
       <tr>
-        <td colspan="11" align="left">
+        <td colspan="12" align="left">
     <b>Note:</b> Money totals are not necessarily accurate as vouchers are not taken into account. They are simply paid items times cost.
         </td>
       </tr>
