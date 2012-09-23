@@ -14,7 +14,7 @@ requires = [
     'zope.sqlalchemy',
     'waitress',
     "lxml",
-    "alembic==0.3.4",
+    "alembic>=0.3.6",
     "dnspython>=1.1.0",
     "pydns",
     "psycopg2",

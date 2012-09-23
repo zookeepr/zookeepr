@@ -10,7 +10,7 @@ from formencode.variabledecode import NestedVariables
 
 from zkpylons.lib.base import BaseController, render
 from zkpylons.lib.ssl_requirement import enforce_ssl
-from zkpylons.lib.validators import BaseSchema, ProductValidator
+from zkpylons.lib.validators import BaseSchema, ProductValidator, CeilingValidator
 import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -35,6 +35,7 @@ class NotExistingCeilingValidator(validators.FancyValidator):
             raise Invalid(message, values, state, error_dict=error_dict)
 
 class CeilingSchema(BaseSchema):
+    parent = CeilingValidator()
     name = validators.String(not_empty=True)
     max_sold = validators.Int(min=0, max=2000000)
     available_from = validators.DateConverter(month_style='dd/mm/yyyy')
@@ -59,6 +60,7 @@ class CeilingController(BaseController):
 
     @dispatch_on(POST="_new")
     def new(self):
+        c.ceilings = Ceiling.find_all()
         return render('/ceiling/new.mako')
 
     @validate(schema=NewCeilingSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
@@ -87,9 +89,13 @@ class CeilingController(BaseController):
 
     @dispatch_on(POST="_edit")
     def edit(self, id):
+        c.ceilings = Ceiling.find_all()
         c.ceiling = Ceiling.find_by_id(id)
 
         defaults = h.object_to_defaults(c.ceiling, 'ceiling')
+
+        if c.ceiling.parent:
+            defaults['ceiling.parent'] = c.ceiling.parent.id
 
         defaults['ceiling.products'] = []
         for product in c.ceiling.products:

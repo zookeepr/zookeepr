@@ -6,6 +6,7 @@
 <table>
   <tr>
     <th>Name</th>
+    <th>Parent</th>
     <th>Limit</th>
     <th>Available From</th>
     <th>Available Until</th>
@@ -19,6 +20,11 @@
 %   for ceiling in c.ceiling_collection:
   <tr class="${ h.cycle('even', 'odd')}">
     <td>${ h.link_to(ceiling.name, url=h.url_for(action='view', id=ceiling.id)) }</td>
+    <td>\
+%     if ceiling.parent:
+${ h.link_to(ceiling.parent.name, h.url_for(action='view', id=ceiling.parent.id)) }\
+%     endif
+</td>
     <td>${ ceiling.max_sold }</td>
 %       if ceiling.available_from:
     <td>${ ceiling.available_from.strftime('%d/%m/%y') }</td>

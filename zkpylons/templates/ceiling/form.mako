@@ -1,4 +1,8 @@
       <p>
+        <label for="ceiling.parent">Parent Ceiling:</label>
+        ${ h.select('ceiling.parent', None, [(ceiling.id, ceiling.name) for ceiling in c.ceilings], prompt="None") }
+        (This ceiling will not become available until the parent is not available)
+      <p>
         <label for="ceiling.name">Name:</label>
         ${ h.text('ceiling.name') }
       </p>
