@@ -320,8 +320,8 @@ def setup(meta):
     product.ceilings.append(ceiling_accom_selfbook)
     meta.Session.add(product);
 
-    # Partner's Programme
-    category_partners = ProductCategory.find_by_name('Partners Programme')
+    # Partners' Programme
+    category_partners = ProductCategory.find_by_name('Partners\' Programme')
     ceiling_partners_all = Ceiling.find_by_name('partners-all')
 
     partners_adult = Product(category=category_partners, active=True, description="Adult", cost="23500", auth=None, validate="PPDetails(adult_field='product_Partners Programme_Adult_qty', email_field='partner_email', name_field='partner_name', mobile_field='partner_mobile')")
