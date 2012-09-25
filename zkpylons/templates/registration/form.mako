@@ -385,14 +385,14 @@ accommdisplay();
           <p>Please see the <a href="/register/accommodation" target="_blank">accommodation page</a> for prices and details.</p>
 
 %         endif
-%       elif category.name == "Partners Programme":
+%       elif category.name == "Partners' Programme":
           <p class="label"><span class="mandatory">#</span><label for="registration.partner_name">Your partner's name:</label></p>
           <p class="entries">${ h.text('products.partner_name', size=50) }</p>
           <p class="note">#If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
           <p class="label"><span class="mandatory">#</span><label for="registration.partner_email">Your partner's email address:</label></p>
           <p class="entries">${ h.text('products.partner_email', size=50) }</p>
           <p class="note">#If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
-          <p class="label"><span class="mandatory">#</span><label for="registration.partner_mobile">Your partner's mobile (if known, in international format, otherwise enter "<b>unknown</b>"):</label></p>
+          <p class="label"><span class="mandatory">#</span><label for="registration.partner_mobile">enter number in international format. If you don't know the number, type "unknown".:</label></p>
           <p class="entries">${ h.text('products.partner_mobile', size=50) }</p>
           <p class="note">A Partners Programme shirt is included with every adult partner ticket. Please indicate the appropriate number and sizes in the T-Shirt Section (above).</p>
 %       endif
