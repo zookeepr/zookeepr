@@ -477,9 +477,9 @@ class Product(Base):
 
     def clean_description(self, category=False):
         if category == True:
-            return self.category.clean_name() + '_' + self.description.replace('-','_')
+            return self.category.clean_name() + '_' + self.description.replace('-','_').replace("'",'')
         else:
-            return self.description.replace('-','_');
+            return self.description.replace('-','_').replace("'",'');
 
     def __repr__(self):
         return '<Product id=%r active=%r description=%r cost=%r auth=%r validate%r>' % (self.id, self.active, self.description, self.cost, self.auth, self.validate)
