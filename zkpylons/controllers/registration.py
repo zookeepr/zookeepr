@@ -504,7 +504,7 @@ class RegistrationController(BaseController):
     def save_details(self, result):
         # Store Registration details
         for k in result['registration']:
-            if k in ('shell', 'editor', 'distro'):
+            if k in ('shell', 'editor', 'distro', 'vcs'):
                 if result['registration'][k] == 'other':
                     setattr(c.registration, k, result['registration'][k + 'text'])
                 else:
