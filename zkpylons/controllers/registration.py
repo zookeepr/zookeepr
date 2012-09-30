@@ -477,7 +477,10 @@ class RegistrationController(BaseController):
             defaults['registration.vcstext'] = c.registration.vcs
 
         form = render('/registration/edit.mako')
-        return htmlfill.render(form, defaults)
+        if c.form_errors:
+            return form
+        else:
+            return htmlfill.render(form, defaults)
 
     @validate(schema=edit_schema, form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
