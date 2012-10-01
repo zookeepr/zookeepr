@@ -84,7 +84,7 @@ class ProductCategory(Base):
             return False
 
     def clean_name(self):
-        return self.name.replace('-','_')
+        return self.name.replace('-','_').replace("'",'')
 
     def __repr__(self):
         return '<ProductCategory id=%r name=%r description=%r note=%r display_order=%r display=%r invoice_free_products=%r min_qty=%r max_qty=%r>' % (self.id, self.name, self.description, self.note, self.display_order, self.display, self.invoice_free_products, self.min_qty, self.max_qty)
