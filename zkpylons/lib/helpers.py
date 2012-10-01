@@ -521,10 +521,9 @@ def redirect_to(*args, **kargs):
 
 def url_for(*args, **kwargs):
     fields = dict(request.GET)
-    extra = ''
-    if fields.has_key('hash'):
-        extra='?hash=' + fields['hash']
-    return pylons_url_for(*args, **kwargs) + extra
+    if fields.has_key('hash') and 'hash' not in kwargs:
+        kwargs['hash'] = fields['hash']
+    return pylons_url_for(*args, **kwargs)
 
 def list_to_string(list, primary_join='%s and %s', secondary_join=', ', html = False):
     if html:
