@@ -53,7 +53,7 @@ class SecurePayPingSchema(BaseSchema):
     bank_reference = validators.String(not_empty=True)
     response_text = validators.String(not_empty=True)
     remote_ip = validators.String(not_empty=True)
-    receipt_address = validators.String(not_empty=True)
+    receipt_address = validators.String(not_empty=False, if_empty="")
 
 class PaymentController(BaseController):
     """This controller receives payment advice from the payment gateway.
