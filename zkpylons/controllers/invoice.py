@@ -57,7 +57,7 @@ class InvoiceItemProductDescriptionValidator(validators.FancyValidator):
 class InvoiceItemValidator(BaseSchema):
     product = ProductValidator()
     qty = validators.Int() 
-    cost = validators.Int(min=0, max=2000000)
+    cost = validators.Int(min=-2000000, max=2000000)
     description = validators.String(not_empty=False)
     chained_validators = [InvoiceItemProductDescriptionValidator()]
 
