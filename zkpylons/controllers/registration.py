@@ -784,9 +784,6 @@ class RegistrationController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def index(self):
         per_page = 20
-        #from zkpylons.model.core import tables as core_tables
-        #from zkpylons.model.registration import tables as registration_tables
-        #from zkpylons.model.proposal import tables as proposal_tables
         from webhelpers import paginate #Upgrade to new paginate
 
         filter = dict(request.GET)
@@ -843,6 +840,8 @@ class RegistrationController(BaseController):
                 elif filter.has_key('voucher') and filter['voucher'] == 'true' and not registration.voucher:
                     registration_list.remove(registration)
                 elif filter.has_key('manual_invoice') and filter['manual_invoice'] == 'true' and not (True in [invoice.manual for invoice in registration.person.invoices]):
+                    registration_list.remove(registration)
+                elif filter.has_key('not_australian') and filter['not_australian'] == 'true' and registration.person.country == "AUSTRALIA":
                     registration_list.remove(registration)
                 elif len(filter['product']) > 0 and 'all' not in filter['product']:
                     # has to be done last as it is an OR not an AND
