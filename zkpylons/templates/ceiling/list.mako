@@ -14,6 +14,7 @@
     <th>Invoiced (Overdue)</th>
     <th>Invoiced (Current)</th>
     <th>Sold</th>
+    <th>Free</th>
     <th>&nbsp;</th>
     <th>&nbsp;</th>
   </tr>
@@ -26,20 +27,21 @@ ${ h.link_to(ceiling.parent.name, h.url_for(action='view', id=ceiling.parent.id)
 %     endif
 </td>
     <td>${ ceiling.max_sold }</td>
+    <td>\
 %       if ceiling.available_from:
-    <td>${ ceiling.available_from.strftime('%d/%m/%y') }</td>
-%       else:
-    <td></td>
+${ ceiling.available_from.strftime('%d/%m/%y') }\
 %       endif
+</td>
+    <td>\
 %       if ceiling.available_until:
-    <td>${ ceiling.available_until.strftime('%d/%m/%y') }</td>
-%       else:
-    <td></td>
+${ ceiling.available_until.strftime('%d/%m/%y') }\
 %       endif
+</td>
     <td>${ h.yesno(ceiling.available()) | n }</td>
     <td>${ ceiling.qty_invoiced(date=False) }</td>
     <td>${ ceiling.qty_invoiced() }</td>
     <td>${ ceiling.qty_sold() }</td>
+    <td>${ ceiling.qty_free() }</td>
 %       if c.can_edit:
 %           for action in ['edit', 'delete']:
   <td>${ h.link_to(action, url=h.url_for(action=action, id=ceiling.id)) }</td>
