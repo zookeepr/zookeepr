@@ -32,15 +32,9 @@ class Invoice(Base):
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
 
     # mapped attributes
-    total_query = sa.select([sa.case([(sa.func.count(InvoiceItem.id) == 0, 0)], else_=sa.func.sum(InvoiceItem.total))]).where(InvoiceItem.invoice_id==id)
-    payment_query = sa.select([sa.case([(sa.func.count(PaymentReceived.id) == 0, 0)], else_=sa.func.sum(PaymentReceived.amount_paid))]).where(sa.and_(PaymentReceived.invoice_id==id, PaymentReceived.approved==True))
-
-    total = sa.orm.column_property(total_query)
-    payment = sa.orm.column_property(payment_query)
-    is_void = sa.orm.column_property(void != None)
-    is_paid = sa.orm.column_property(sa.and_(void == None, total_query.as_scalar() == payment_query.as_scalar()))
-    is_overdue = sa.orm.column_property(due_date < datetime.datetime.now())
-
+    """
+    These are currently defined outside of the class because correlate(Invoice) will not work within the class. SQL Alchemy 0.8 is supposed to add a new correlate_except() function which will get around this issue
+    """
     # relations
     payment_received = sa.orm.relation(PaymentReceived, lazy='subquery', backref='invoice')
     good_payments = sa.orm.relation(PaymentReceived, lazy='subquery', primaryjoin=sa.and_(PaymentReceived.invoice_id == id, PaymentReceived.approved == True))
@@ -79,3 +73,12 @@ class Invoice(Base):
     @classmethod
     def find_by_person(cls, person_id):
         return Session.query(Invoice).filter_by(person_id=person_id).first()
+
+total_query = sa.select([sa.case([(sa.func.count(InvoiceItem.id) == 0, 0)], else_=sa.func.sum(InvoiceItem.total))]).where(InvoiceItem.invoice_id==Invoice.id).correlate(Invoice.__table__)
+payment_query = sa.select([sa.case([(sa.func.count(PaymentReceived.id) == 0, 0)], else_=sa.func.sum(PaymentReceived.amount_paid))]).where(sa.and_(PaymentReceived.invoice_id==Invoice.id, PaymentReceived.approved==True)).correlate(Invoice.__table__)
+
+Invoice.total = sa.orm.column_property(total_query)
+Invoice.payment = sa.orm.column_property(payment_query)
+Invoice.is_void = sa.orm.column_property(Invoice.void != None)
+Invoice.is_paid = sa.orm.column_property(sa.and_(Invoice.void == None, total_query.as_scalar() == payment_query.as_scalar()))
+Invoice.is_overdue = sa.orm.column_property(Invoice.due_date < datetime.datetime.now())

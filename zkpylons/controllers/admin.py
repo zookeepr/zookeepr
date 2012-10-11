@@ -29,7 +29,7 @@ from zkpylons.config.lca_info import lca_info, lca_rego
 
 from zkpylons.lib.ssl_requirement import enforce_ssl
 
-from sqlalchemy import and_, or_
+from sqlalchemy import and_, or_, func
 
 log = logging.getLogger(__name__)
 
@@ -996,12 +996,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def people_by_country(self):
         """ Registered and paid people by country [Statistics] """
-        data = {}
-        for registration in meta.Session.query(Registration).all():
-            if registration.person.has_paid_ticket():
-                country = registration.person.country.capitalize()
-                data[country] = data.get(country, 0) + 1
-        c.data = data.items()
+        c.data = meta.Session.query(func.initcap(Person.country), func.count(Person.id)).join(Invoice).join(InvoiceItem).join(Product).join(ProductCateory).filter(Invoice.is_paid == True).filter(ProductCategory.name == "Ticket").group_by(func.initcap(Person.country)).order_by(func.initcap(Person.country)).all()
         c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
         c.text = '''
           <img float="right" width="400" height="200"
@@ -1034,12 +1029,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def people_by_state(self):
         """ Registered and paid people by state - Australia Only [Statistics] """
-        data = {}
-        for registration in meta.Session.query(Registration).all():
-            if registration.person.has_paid_ticket() and registration.person.country == "Australia":
-                state = registration.person.state.capitalize()
-                data[state] = data.get(state, 0) + 1
-        c.data = data.items()
+        c.data = meta.Session.query(func.initcap(Person.state), func.count(Person.id)).join(Invoice).join(InvoiceItem).join(Product).join(ProductCategory).filter(func.initcap(Person.country) == "Australia").filter(Invoice.is_paid == True).filter(ProductCategory.name == "Ticket").group_by(func.initcap(Person.state)).order_by(func.initcap(Person.state)).all()
         c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
         c.text = '''
           <img float="right" width="400" height="200"
