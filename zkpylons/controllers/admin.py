@@ -996,7 +996,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def people_by_country(self):
         """ Registered and paid people by country [Statistics] """
-        c.data = meta.Session.query(func.initcap(Person.country), func.count(Person.id)).join(Invoice).join(InvoiceItem).join(Product).join(ProductCateory).filter(Invoice.is_paid == True).filter(ProductCategory.name == "Ticket").group_by(func.initcap(Person.country)).order_by(func.initcap(Person.country)).all()
+        c.data = meta.Session.query(func.initcap(Person.country), func.count(Person.id)).join(Invoice).join(InvoiceItem).join(Product).join(ProductCategory).filter(Invoice.is_paid == True).filter(ProductCategory.name == "Ticket").group_by(func.initcap(Person.country)).order_by(func.initcap(Person.country)).all()
         c.data.sort(lambda a,b: cmp(b[-1], a[-1]) or cmp(a, b))
         c.text = '''
           <img float="right" width="400" height="200"
