@@ -364,3 +364,13 @@ class InvoiceController(BaseController):
         meta.Session.commit()
         h.flash("Invoice was un-voided.")
         return redirect_to(action='view', id=c.invoice.id)
+
+    @authorize(h.auth.has_organiser_role)
+    def extend(self, id):
+        c.invoice = Invoice.find_by_id(id, True)
+        if c.invoice.is_overdue:
+            c.invoice.due_date = datetime.datetime.now() + datetime.timedelta(days=1)
+        else:
+            c.invoice.due_date = c.invoice.due_date + ((c.invoice.due_date - datetime.datetime.now()) * 2)
+        meta.Session.commit()
+        return redirect_to(action='view')

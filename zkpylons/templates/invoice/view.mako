@@ -36,6 +36,7 @@
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>${ h.link_to('Pay this invoice manually', url = h.url_for(action='pay_manual')) }</li>
          <ul><li>Use this if the person has paid via direct credit to the bank account or similar</li></ul>
+        <li>${ h.link_to('Extend due date', h.url_for(action='extend')) }</li>
 %   endif
         <li>${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</li>
 %   if c.invoice.person.registration:
