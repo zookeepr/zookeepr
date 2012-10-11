@@ -137,6 +137,13 @@ if "manual_invoice" in c.registration_request and c.registration_request['manual
 %>
     <label for="manual_invoice"><input type="checkbox" name="manual_invoice" id="manual_invoice" value="true"${ selected } /> Has Manual Invoice</label>
     <br>
+<%
+selected = ''
+if "not_australian" in c.registration_request and c.registration_request['not_australian'] == 'true':
+   selected = ' checked="checked"'
+%>
+    <label for="not_australian"><input type="checkbox" name="not_australian" id="not_australian" value="true"${ selected } /> Is not Australian</label>
+    <br>
     <input type="submit" value="Update" />
     </p>
     </form>
