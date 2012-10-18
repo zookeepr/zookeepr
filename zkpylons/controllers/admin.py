@@ -503,7 +503,7 @@ class AdminController(BaseController):
                     res.append('-')
 
             else:
-                res+=['Not Registered', '', '', '']
+                res+=['Not Registered', '', '']
 
             consents = []
             talks = [talk for talk in p.proposals if talk.accepted]
@@ -523,6 +523,8 @@ class AdminController(BaseController):
                     res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
                 if p.registration.special:
                     res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
+            else:
+                res.append('')
 
             c.data.append(res)
 
