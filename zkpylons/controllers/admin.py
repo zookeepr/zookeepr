@@ -469,70 +469,61 @@ class AdminController(BaseController):
         c.data = []
         c.noescape = True
         cons_list = ('video_release', 'slides_release')
-        speaker_list = []
-        for p in meta.Session.query(Person).all():
-            if not p.is_speaker(): continue
-            speaker_list.append((p.lastname.lower()+' '+p.firstname, p))
-        speaker_list.sort()
+        speaker_list = [p for p in meta.Session.query(Person).order_by(Person.lastname, Person.firstname).all() if p.is_speaker() or p.is_miniconf_org()]
 
-        for (sortkey, p) in speaker_list:
-            registration_link = ''
+        for p in speaker_list:
+            res = []
+            res.append(h.link_to(p.fullname(), url=h.url_for(controller='person', action='view', id=p.id)))
+            res.append(h.link_to(p.email_address, url='mailto:' + p.email_address))
+            res.append('; '.join([h.link_to(h.truncate(t.title), url=h.url_for(controller='schedule', action='view_talk', id=t.id)) for t in p.proposals if t.accepted]))
             if p.registration:
-                registration_link = '<a href="/registration/%d">Details</a>, ' % (p.registration.id)
-            res = [
-      '<a href="/person/%d">%s %s</a> (%s<a href="mailto:%s">email</a>)'
-                  % (p.id, p.firstname, p.lastname, registration_link, p.email_address)
-            ]
-
-            talks = [talk for talk in p.proposals if talk.accepted]
-            res.append('; '.join([
-                '<a href="/programme/schedule/view_talk/%d">%s</a>'
-                                % (t.id, h.truncate(t.title)) for t in talks]))
-            if p.registration:
-              if p.invoices:
-                if p.valid_invoice() is None:
-                    res.append('Invalid Invoice')
-                else:
-                    if p.valid_invoice().is_paid:
-                      res.append(h.link_to('Paid ' + h.integer_to_currency(p.valid_invoice().total),
-                                           h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
+                res.append(h.link_to(p.registration.id, url=h.url_for(controller='registration', action='view', id=p.registration.id)))
+                if p.invoices:
+                    if p.valid_invoice() is None:
+                        res.append('Invalid Invoice')
                     else:
-                      res.append(h.link_to('Owes ' + h.integer_to_currency(p.valid_invoice().total),
-                                           h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
+                        if p.valid_invoice().is_paid:
+                            res.append(h.link_to('Paid ' + h.integer_to_currency(p.valid_invoice().total),
+                                           url=h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
+                        else:
+                            res.append(h.link_to('Owes ' + h.integer_to_currency(p.valid_invoice().total),
+                                           url=h.url_for(controller='invoice', action='view', id=p.valid_invoice().id)))
 
-                    shirt = ''
-                    for item in p.valid_invoice().items:
-                        if ((item.description.lower().find('shirt') is not -1) and (item.description.lower().find('discount') is -1)):
-                            shirt += item.description + ', '
-                            if shirt_totals.has_key(item.description):
-                                shirt_totals[item.description] += 1
-                            else:
-                                shirt_totals[item.description] = 1
-                    res.append(shirt)
-              else:
-                res.append('No Invoice')
-                res.append('-')
+                        shirt = ''
+                        for item in p.valid_invoice().items:
+                            if ((item.description.lower().find('shirt') is not -1) and (item.description.lower().find('discount') is -1)):
+                                shirt += item.description + ', '
+                                if shirt_totals.has_key(item.description):
+                                    shirt_totals[item.description] += 1
+                                else:
+                                    shirt_totals[item.description] = 1
+                        res.append(shirt)
+                else:
+                    res.append('No Invoice')
+                    res.append('-')
 
-              consents = []
-              for t in talks:
-                  cons = [con.replace('_', ' ') for con in cons_list
-                                               if getattr(t, con)]
-                  if len(cons)==len(cons_list):
-                    consents.append('Release All')
-                  elif len(cons)==0:
-                    consents.append('None')
-                  else:
-                    consents.append(' and '.join(cons))
-              res.append(';'.join(consents))
-
-              res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
-              if p.registration.diet:
-                  res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
-              if p.registration.special:
-                  res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
             else:
-              res+=['Not Registered', '', '', '']
-            #res.append(`dir(p.registration)`)
+                res+=['Not Registered', '', '', '']
+
+            consents = []
+            talks = [talk for talk in p.proposals if talk.accepted]
+            for t in talks:
+                cons = [con.replace('_', ' ') for con in cons_list if getattr(t, con)]
+                if len(cons)==len(cons_list):
+                    consents.append('Release All')
+                elif len(cons)==0:
+                    consents.append('None')
+                else:
+                    consents.append(' and '.join(cons))
+            res.append(';'.join(consents))
+
+            if p.registration:
+                res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
+                if p.registration.diet:
+                    res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
+                if p.registration.special:
+                    res[-1] += '<br><br><b>Special Needs:</b> %s' % (p.registration.special)
+
             c.data.append(res)
 
         # sort by rego status (while that's important)
@@ -540,7 +531,7 @@ class AdminController(BaseController):
             return cmp(a[2], b[2])
         c.data.sort(my_cmp)
 
-        c.columns = ('Name', 'Talk(s)', 'Status', 'Shirts', 'Concent', 'Notes')
+        c.columns = ('Name', 'Email', 'Talk(s)', 'Registration', 'Status', 'Shirts', 'Concent', 'Notes')
         c.text = "<p>Shirt Totals:"
         for key, value in shirt_totals.items():
             c.text += "<br>" + str(key) + ": " + str(value)
