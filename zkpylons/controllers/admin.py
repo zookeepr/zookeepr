@@ -17,6 +17,7 @@ from authkit.permissions import ValidAuthKitUser
 
 from zkpylons.model import meta, Person, Product, Registration, ProductCategory
 from zkpylons.model import Proposal, ProposalType, ProposalStatus, Invoice, Funding
+from zkpylons.model import Event, Schedule, TimeSlot, Location
 from zkpylons.model.funding_review import FundingReview
 from zkpylons.model.payment_received import PaymentReceived
 from zkpylons.model.invoice_item import InvoiceItem
@@ -1395,9 +1396,9 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def av_technical_requirements(self):
         """ Technical requirements list [AV] """
-        talk_list = Proposal.find_all_accepted().filter(Proposal.technical_requirements > '').order_by(Proposal.scheduled)
+        talk_list = Proposal.find_all_accepted().filter(Proposal.technical_requirements > '').join(ProposalStatus).filter(ProposalStatus.name == 'Accepted').join(Event).join(Schedule).join(TimeSlot).order_by(TimeSlot.start_time)
 
-        c.columns = ['Talk', 'Title', 'Who', 'When', 'Requirements']
+        c.columns = ['Talk', 'Title', 'Who', 'Where', 'When', 'Requirements']
         c.data = []
         for t in talk_list:
             c.data.append(['<a href="/programme/schedule/view_talk/%d">%d</a>' % (t.id, t.id),
@@ -1410,7 +1411,8 @@ class AdminController(BaseController):
                                     h.util.html_escape(p.email_address)
                                 ) for p in t.people
                            ]),
-                           h.util.html_escape(t.scheduled),
+                           h.util.html_escape(h.list_to_string([schedule.location.display_name for schedule in t.event.schedule])),
+                           h.util.html_escape(h.list_to_string([str(schedule.time_slot.start_time) + ' - ' + str(schedule.time_slot.end_time) for schedule in t.event.schedule])),
                            h.util.html_escape(t.technical_requirements),
             ])
         c.noescape = True
