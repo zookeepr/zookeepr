@@ -191,9 +191,7 @@ class InvoiceController(BaseController):
     @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_remind")
     def remind(self):
-        c.invoice_collection = Invoice.find_all()
-        #c.invoice = c.invoice_collection[0]
-        #c.recipient = c.invoice.person
+        c.invoice_collection = meta.Session.query(Invoice).filter(Invoice.is_paid==False).filter(Invoice.is_void==False).all()
         # create dummy person for example:
         c.recipient = FakePerson()
         return render('/invoice/remind.mako')
