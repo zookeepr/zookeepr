@@ -294,6 +294,35 @@ class InvoiceController(BaseController):
             redirect(uri)
 
     @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_new")
+    def refund(self, id):
+        invoice = Invoice.find_by_id(id)
+        try:
+            c.invoice_person = invoice.person.id
+        except:
+            c.invoice_person = ''
+
+        c.due_date = datetime.date.today().strftime("%d/%y/%Y")
+
+        c.product_categories = ProductCategory.find_all()
+        # The form adds one to the count by default, so we need to decrement it
+        c.item_count = len(invoice.items) - 1
+
+        defaults = dict()
+        defaults['invoice.person' ] = c.invoice_person
+        defaults['invoice.due_date'] = c.due_date
+        for i in range(len(invoice.items)):
+            item = invoice.items[i]
+            if item.product:
+                defaults['invoice.items-' + str(i) + '.product'] = item.product.id
+            else:
+                defaults['invoice.items-' + str(i) + '.description'] = item.description
+            defaults['invoice.items-' + str(i) + '.qty'] = -item.qty
+            defaults['invoice.items-' + str(i) + '.cost'] = item.cost
+        form = render("/invoice/new.mako")
+        return htmlfill.render(form, defaults, use_all_keys=True)
+
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_pay_manual")
     def pay_manual(self, id):
         """Request confirmation from user
@@ -336,6 +365,10 @@ class InvoiceController(BaseController):
         c.invoice = Invoice.find_by_id(id, True)
         if c.invoice.is_void:
             h.flash("Invoice was already voided.")
+            return redirect_to(action='view', id=c.invoice.id)
+
+        if c.invoice.is_paid:
+            h.flash("Invoice has been paid, do you want to " + h.link_to('Refund', h.url_for(action='refund')) + " instead")
             return redirect_to(action='view', id=c.invoice.id)
 
         if h.auth.authorized(h.auth.has_organiser_role):
