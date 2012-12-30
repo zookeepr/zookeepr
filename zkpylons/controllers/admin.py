@@ -426,10 +426,11 @@ class AdminController(BaseController):
 
     @authorize(h.auth.has_organiser_role)
     def silly_description_checksum(self):
-        """ Generate the checksum for a given silly_description [Registration] """
+        """ Generate the checksum for a given silly_description [Registrations] """
         if request.GET:
             if request.GET['silly_description']:
-                c.silly_description_checksum = h.silly_description_checksum(request.GET['silly_description'])
+                c.silly_description = request.GET['silly_description']
+                c.silly_description_checksum = h.silly_description_checksum(c.silly_description)
         return render('/admin/silly_description_checksum.mako')
 
     @authorize(h.auth.has_organiser_role)
