@@ -425,6 +425,14 @@ class AdminController(BaseController):
         return render('/admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
+    def silly_description_checksum(self):
+        """ Generate the checksum for a given silly_description [Registration] """
+        if request.GET:
+            if request.GET['silly_description']:
+                c.silly_description_checksum = h.silly_description_checksum(request.GET['silly_description'])
+        return render('/admin/silly_description_checksum.mako')
+
+    @authorize(h.auth.has_organiser_role)
     def registered_followup(self):
         """ CSV export of registrations for mail merges [Registrations] """
         c.data = []
@@ -1603,8 +1611,8 @@ class AdminController(BaseController):
             c.r = c.p.registration; c.i = c.p.invoices
             return render('admin/lookup.mako')
         elif len(results)>1:
-	    kf = lambda r: (r[0].lastname + r[0].firstname).lower()
-	    cf = lambda f: lambda a,b: cmp(f(a), f(b))
+            kf = lambda r: (r[0].lastname + r[0].firstname).lower()
+            cf = lambda f: lambda a,b: cmp(f(a), f(b))
             c.many = results
             c.many.sort(cf(kf))
             return render('admin/lookup.mako')
@@ -1677,7 +1685,7 @@ def sql_response(sql):
         return csv_response(sql)
     res = meta.Session.execute(sql)
     c.columns = get_column_names(res)
-    if hasattr(c.columns, "__call__"):	# work around for bug in sqlalchemy 0.5.7
+    if hasattr(c.columns, "__call__"):        # work around for bug in sqlalchemy 0.5.7
       c.columns = c.columns()
     c.data = res.fetchall()
     c.sql = sql
