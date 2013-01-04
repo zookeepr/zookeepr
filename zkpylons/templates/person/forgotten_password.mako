@@ -11,7 +11,7 @@ ${ h.hidden('assertion', '') }
 ${ h.end_form() }
 
         <p>Otherwise, here's how the password reset works.</p>
-<form method="post" action="${ h.url_for() }" >
+${ h.form( h.url_for(), method='post') }
         <p>
             Enter your email address and an email will be sent to you allowing you to
             select a new password.
@@ -21,7 +21,7 @@ ${ h.end_form() }
             <p class="entries">${ h.text('email_address', size=60) }</p>
             <p class="submit">${ h.submit('submit', 'Set a new password') }</p>
         </div>
-</form>
+${ h.end_form() }
 
 <%def name="title()">
 Forgotten Password? -

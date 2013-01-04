@@ -9,15 +9,15 @@
 
 <table>
     <tr>
-        <td><b>First name:</b></p></td>
+        <td><b>First name:</b></td>
         <td>${ c.person.firstname }</td>
     </tr>
     <tr>
-        <td><b>Last name:</b></p></td>
+        <td><b>Last name:</b></td>
         <td>${ c.person.lastname }</td>
     </tr>
     <tr>
-        <td><b>Email:</b></p></td>
+        <td><b>Email:</b></td>
         <td>
 % if not c.person.activated:
           ${ c.person.email_address }
@@ -27,10 +27,21 @@
           (not verified)
 %   endif
 % else:
-<a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a>
+          <a href="mailto:${ c.person.email_address }">${ c.person.email_address }</a>
 % endif
         </td>
     </tr>
+% if h.auth.authorized(h.auth.has_organiser_role):
+    <tr>
+        <td><b>Password:</b></td>
+        <td>
+            ${ h.form( h.url_for(action='forgotten_password', id=None), method='post') }
+                ${ h.hidden('email_address', size=60, value=c.person.email_address) }
+                ${ h.submit('submit', 'Send password reset email') }
+            ${ h.end_form() }
+        </td>
+    </tr>
+% endif
 % if h.auth.authorized(h.auth.has_organiser_role):
     <tr>
         <td><b>Badge printed:</b></td>
@@ -46,7 +57,7 @@
 % if c.person.special_registration is not None:
 %   for special_registration in c.person.special_registration:
     <tr>
-      <td><b>${ special_registration.special_offer.id_name }:</b></p></td>
+      <td><b>${ special_registration.special_offer.id_name }:</b></td>
       <td>${ special_registration.member_number }</td>
     </tr>
 %   endfor
