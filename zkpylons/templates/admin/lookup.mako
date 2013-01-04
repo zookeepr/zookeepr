@@ -39,7 +39,7 @@ ${ c.error }
     <td>(${ typ })
     <td>
 %     if p.registration:
-%       if p.invoices and p.invoices[0].paid():
+%       if p.invoices and p.invoices[0].is_paid:
 	  <b>${ p.registration.ticket_description() }</b>
 %       else:
 	  not paid
@@ -71,7 +71,7 @@ ${ h.text('note', size=30, tabindex=2, value='Here!') }
 ${ h.hidden('id', value=registration.id) }
 </p>
 ${ h.end_form() }
-%     if invoices and invoices[0].paid():
+%     if invoices and invoices[0].is_paid:
 <b>${ registration.ticket_description() }</b> rego <a href="/registration/${registration.id}">${registration.id}</a>
 %     else:
 <b>Tentative</b> rego <a href="/registration/${registration.id}">${registration.id}</a>; <b>not paid</b>
@@ -88,7 +88,7 @@ not registered
 <p>
 %   if invoices:
 %     for i in invoices:
-invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.integer_to_currency(i.total) } ${ if_then_else(i.paid(), 'paid', 'not paid')})
+invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.integer_to_currency(i.total) } ${ if_then_else(i.is_paid, 'paid', 'not paid')})
 %     endfor
 %   endif
 </p>
@@ -105,7 +105,7 @@ invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.integer_to_currency(i.tot
 %   for i in invoices:
 %     for ii in i.items:
   <tr class="${ oddeven1() }">
-    <td align="center">${ i.id }${ if_then_else(i.paid(), '', ' (unpaid)')}</td>
+    <td align="center">${ i.id }${ if_then_else(i.is_paid, '', ' (unpaid)')}</td>
     <td>${ ii.description }</td>
     <td align="center">${ ii.qty }</td>
     <td align="right">${ h.integer_to_currency(ii.cost) }</td>
