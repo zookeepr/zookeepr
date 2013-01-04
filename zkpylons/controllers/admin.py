@@ -620,6 +620,79 @@ class AdminController(BaseController):
         c.text += "</p>"
         return table_response()
 
+    def registered_parking(self):
+        """ List of people with parking requested [Registration] """
+        return sql_response("""
+            SELECT
+                person.id AS person_id,
+                person.firstname,
+                person.lastname,
+                person.email_address,
+                ceiling.name AS ceiling,
+                invoice_item.description,
+                SUM(invoice_item.qty) AS qty
+            FROM person
+            JOIN invoice ON (person.id=invoice.person_id)
+            JOIN invoice_item ON (invoice.id=invoice_item.invoice_id)
+            JOIN product ON (invoice_item.product_id=product.id)
+            JOIN product_ceiling_map ON (product.id=product_ceiling_map.product_id)
+            JOIN ceiling ON (product_ceiling_map.ceiling_id=ceiling.id)
+            WHERE (
+                (
+                    invoice.void IS NULL AND (
+                        SELECT CASE WHEN (count(invoice_item.id) = 0) THEN 0 ELSE sum(invoice_item.cost * invoice_item.qty) END AS anon_7 
+                        FROM invoice_item 
+                        WHERE invoice_item.invoice_id = invoice.id
+                    ) = (
+                        SELECT CASE WHEN (count(payment_received.id) = 0) THEN 0 ELSE sum(payment_received.amount_paid) END AS anon_8 
+                        FROM payment_received 
+                        WHERE payment_received.invoice_id = invoice.id AND payment_received.approved = '1'
+                    )
+                ) = 't'
+            )
+            AND ceiling.name = 'parking-all'
+            GROUP BY person.id, person.firstname, person.lastname, person.email_address, invoice_item.description, ceiling.name
+            HAVING SUM(invoice_item.qty) != 0
+            ORDER BY ceiling.name, invoice_item.description;
+        """)
+
+    def registered_accommodation(self):
+        """ List of people with accommodation requested [Registration] """
+        return sql_response("""
+            SELECT
+                person.id AS person_id,
+                person.firstname,
+                person.lastname,
+                person.email_address,
+                ceiling.name AS ceiling,
+                invoice_item.description,
+                SUM(invoice_item.qty) AS qty
+            FROM person
+            JOIN invoice ON (person.id=invoice.person_id)
+            JOIN invoice_item ON (invoice.id=invoice_item.invoice_id)
+            JOIN product ON (invoice_item.product_id=product.id)
+            JOIN product_ceiling_map ON (product.id=product_ceiling_map.product_id)
+            JOIN ceiling ON (product_ceiling_map.ceiling_id=ceiling.id)
+            WHERE (
+                (
+                    invoice.void IS NULL AND (
+                        SELECT CASE WHEN (count(invoice_item.id) = 0) THEN 0 ELSE sum(invoice_item.cost * invoice_item.qty) END AS anon_7 
+                        FROM invoice_item 
+                        WHERE invoice_item.invoice_id = invoice.id
+                    ) = (
+                        SELECT CASE WHEN (count(payment_received.id) = 0) THEN 0 ELSE sum(payment_received.amount_paid) END AS anon_8 
+                        FROM payment_received 
+                        WHERE payment_received.invoice_id = invoice.id AND payment_received.approved = '1'
+                    )
+                ) = 't'
+            )
+            AND ceiling.name = 'accom-all'
+            GROUP BY person.id, person.firstname, person.lastname, person.email_address, invoice_item.description, ceiling.name
+            HAVING SUM(invoice_item.qty) != 0
+            ORDER BY ceiling.name, invoice_item.description;
+        """)
+
+
 
     @authorize(h.auth.has_organiser_role)
     def reconcile(self):
