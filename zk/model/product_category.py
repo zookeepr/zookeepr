@@ -61,6 +61,16 @@ class ProductCategory(Base):
     def find_by_name(cls, name):
         return Session.query(ProductCategory).filter_by(name=name).first()
 
+    @classmethod
+    def find_nonfree(cls):
+        from product import Product
+        return Session.query(ProductCategory).filter(ProductCategory.id.in_(Session.query(Product.category_id).filter(Product.cost != 0).as_scalar()))
+
+    @property
+    def products_nonfree(self):
+        from product import Product
+        return Session.query(Product).filter(Product.category_id == self.id, Product.cost != 0)
+
     def available_products(self, person, stock=True):
         # bool stock: care about if the product is in stock (ie sold out?)
         products = []
