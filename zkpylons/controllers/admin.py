@@ -1805,6 +1805,9 @@ def csv_response(sql):
     c.data = res.fetchall()
     c.sql = sql
 
+    # Convert to utf-8 so that csv writer can handle the strings
+    c.data = [[unicode(s).encode("utf-8") for s in row] for row in c.data]
+
     import csv, StringIO
     f = StringIO.StringIO()
     w = csv.writer(f)
