@@ -25,10 +25,11 @@
           <table>
 % for category in c.product_categories:
             <tr>
-              <td colspan="3" align="center"><h3>${ category.name |h }</h3></td>
+              <td colspan="4" align="center"><h3>${ category.name |h }</h3></td>
             </tr>
             <tr>
               <th>Product</th>
+              <th>Price</th>
 %       if category.display == 'radio':
               <th></th>
 %       else:
@@ -45,6 +46,7 @@
 
             <tr>
               <td><label for="products.product_${ product.id }">${ soldout | n}${ product.description }</label></td>
+              <td>${ h.integer_to_currency(product.cost) }</td>
 %           if category.display == 'radio':
               <td>${ h.radio('products.category_' + str(category.id), product.id) }
 ## TODO: Add other display options here later, not adding select because we want accom to include a qty
