@@ -620,6 +620,7 @@ class AdminController(BaseController):
         c.text += "</p>"
         return table_response()
 
+    @authorize(h.auth.has_organiser_role)
     def registered_parking(self):
         """ List of people with parking requested [Registration] """
         return sql_response("""
@@ -656,6 +657,7 @@ class AdminController(BaseController):
             ORDER BY ceiling.name, invoice_item.description;
         """)
 
+    @authorize(h.auth.has_organiser_role)
     def registered_accommodation(self):
         """ List of people with accommodation requested [Registration] """
         return sql_response("""
@@ -692,7 +694,26 @@ class AdminController(BaseController):
             ORDER BY ceiling.name, invoice_item.description;
         """)
 
-
+    @authorize(h.auth.has_organiser_role)
+    def registered_without_accom(self):
+        """ List of people with accommodation requested [Registration] """
+        return sql_response("""
+            SELECT person.id, person.firstname, person.lastname, person.email_address, person.country, person.state
+            FROM person
+            JOIN registration ON (person.id=registration.person_id)
+            WHERE (
+                (country = 'AUSTRALIA' AND state != 'ACT')
+                OR country != 'AUSTRALIA'
+            ) AND (
+                person.id NOT IN (
+                    SELECT person_id
+                    FROM invoice
+                    JOIN invoice_item ON (invoice.id=invoice_item.invoice_id)
+                    JOIN product_ceiling_map ON (invoice_item.product_id = product_ceiling_map.product_id)
+                    WHERE product_ceiling_map.ceiling_id = 19
+               )
+            );
+        """)
 
     @authorize(h.auth.has_organiser_role)
     def reconcile(self):
@@ -1449,6 +1470,69 @@ class AdminController(BaseController):
             c.data.append(row)
 
         return table_response()
+
+    @authorize(h.auth.has_organiser_role)
+    def paid_product_by_date(self):
+        """ Number of paid (actual payments only) invoices per ceiling by date. [Registrations] """
+        return sql_response("""
+            SELECT
+                DATE(payment_received.creation_timestamp) AS date,
+                product_category.name,
+                product.description AS product,
+                SUM(invoice_item.qty - invoice_item.free_qty) AS qty,
+                SUM(invoice_item.cost * (invoice_item.qty - invoice_item.free_qty)) / 100 AS total
+            FROM payment_received
+            JOIN invoice ON (payment_received.invoice_id=invoice.id)
+            JOIN invoice_item ON (invoice.id=invoice_item.invoice_id)
+            JOIN product ON (invoice_item.product_id = product.id)
+            JOIN product_category ON (product.category_id=product_category.id)
+            WHERE payment_received.approved = 't'
+            GROUP BY product_category.name, product_category.display_order, product.display_order, product.description, DATE(payment_received.creation_timestamp)
+            HAVING SUM(invoice_item.qty - invoice_item.free_qty) != 0 AND SUM(invoice_item.cost * (invoice_item.qty - invoice_item.free_qty)) != 0
+            ORDER BY product_category.display_order, DATE(payment_received.creation_timestamp), product.display_order;
+        """)
+
+    @authorize(h.auth.has_organiser_role)
+    def paid_ticket_by_date(self):
+        """ Number of paid (actual payments only) invoices per ceiling by date. [Registrations] """
+        return sql_response("""
+            SELECT
+                DATE(payment_received.creation_timestamp) AS date,
+                product.description AS product,
+                SUM(invoice_item.qty - invoice_item.free_qty) AS qty,
+                SUM(invoice_item.cost * (invoice_item.qty - invoice_item.free_qty)) / 100 AS total
+            FROM payment_received
+            JOIN invoice ON (payment_received.invoice_id=invoice.id)
+            JOIN invoice_item ON (invoice.id=invoice_item.invoice_id)
+            JOIN product ON (invoice_item.product_id = product.id)
+            JOIN product_category ON (product.category_id=product_category.id)
+            WHERE payment_received.approved = 't'
+            AND product_category.name = 'Ticket'
+            GROUP BY product_category.name, product_category.display_order, product.display_order, product.description, DATE(payment_received.creation_timestamp)
+            HAVING SUM(invoice_item.qty - invoice_item.free_qty) != 0 AND SUM(invoice_item.cost * (invoice_item.qty - invoice_item.free_qty)) != 0
+            ORDER BY product_category.display_order, DATE(payment_received.creation_timestamp), product.display_order;
+        """)
+
+    @authorize(h.auth.has_organiser_role)
+    def paid_accom_by_date(self):
+        """ Number of paid (actual payments only) invoices per ceiling by date. [Registrations] """
+        return sql_response("""
+            SELECT
+                DATE(payment_received.creation_timestamp) AS date,
+                product.description AS product,
+                SUM(invoice_item.qty - invoice_item.free_qty) AS qty,
+                SUM(invoice_item.cost * (invoice_item.qty - invoice_item.free_qty)) / 100 AS total
+            FROM payment_received
+            JOIN invoice ON (payment_received.invoice_id=invoice.id)
+            JOIN invoice_item ON (invoice.id=invoice_item.invoice_id)
+            JOIN product ON (invoice_item.product_id = product.id)
+            JOIN product_category ON (product.category_id=product_category.id)
+            WHERE payment_received.approved = 't'
+            AND product_category.name = 'Accommodation'
+            GROUP BY product_category.name, product_category.display_order, product.display_order, product.description, DATE(payment_received.creation_timestamp)
+            HAVING SUM(invoice_item.qty - invoice_item.free_qty) != 0 AND SUM(invoice_item.cost * (invoice_item.qty - invoice_item.free_qty)) != 0
+            ORDER BY product_category.display_order, DATE(payment_received.creation_timestamp), product.display_order;
+        """)
 
     @authorize(h.auth.has_organiser_role)
     def av_norelease(self):
