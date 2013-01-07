@@ -1,100 +1,111 @@
 <%inherit file="/base.mako" />
 
-<%
-
-def if_then_else(cond, yes, no):
-  if cond:
-    return yes
-  else:
-    return no
-
-def oddeven():
-  while 1:
-    yield "odd"
-    yield "even"
-oddeven1 = oddeven().next
-oddeven2 = oddeven().next
-
-registration = c.r
-person = c.p
-invoices = c.i
-
-%>
-
 ${ h.form(h.url_for(), method='get') }
-<p class="entries" style="float: right">ID or name: ${ h.text('id', size=10, tabindex=1) }</p>
+<p class="entries" style="float: right">ID or name: ${ h.text('q', size=10, tabindex=1) }</p>
 ${ h.end_form() }
+
 % if c.error:
-%   if c.id:
-Error looking up ${ c.id |h }:
+%   if c.query:
+Erroy looking up ${ c.query |h }:
 %   endif
+
 ${ c.error }
+
 % elif c.many:
-<p>Looked up: ${ c.id } and found ${ len(c.many) }</p>
+<p>Looked up: ${ c.query } and found ${ len(c.many) }</p>
 <table>
-%   for p, typ in c.many:
-  <tr class="${ oddeven1() }">
-    <td><a href="/admin/lookup?p_id=${ p.id }" tabindex="2">${ p.firstname }
-					       ${ p.lastname }</td>
-    <td>(${ typ })
+%   for person in c.many:
+  <tr class="${ h.cycle("odd", "even") }">
+    <td>${ h.link_to(person.fullname(), h.url_for(p=person.id)) }</td>
     <td>
-%     if p.registration:
-%       if p.invoices and p.invoices[0].is_paid:
-	  <b>${ p.registration.ticket_description() }</b>
+%     if person.registration:
+%       if person.paid():
+      <b>${ person.registration.ticket_description() }</b>
 %       else:
-	  not paid
+      not paid
 %       endif
 %     else:
-	no rego
+      no rego
 %     endif
+    </td>
   </tr>
 %   endfor
 </table>
-% else:
-<p>Looked up: ${ c.id } (${ c.id_type })</p>
 
-<p><b>${ person.firstname } ${ person.lastname }</b>
-&lt;<a href="mailto:${ person.email_address }">${ person.email_address }</a>&gt; (<a href="/person/${ person.id }">${ person.id }</a>)
-<br>${ person.company }</p>
+% else:
+<p>Looked up: ${ c.query }</p>
+
+<p><b>${ c.person.firstname } ${ c.person.lastname }</b>
+&lt;${ h.link_to(c.person.email_address) }&gt; (${ h.link_to(c.person.id, h.url_for(controller='person', action='view', id=c.person.id)) })
+<br>${ c.person.company }</p>
 
 <p>
-%   if person.is_speaker():
+%   if c.person.is_speaker():
 <strong>speaker</strong><br>
 %   endif
-%   if person.roles:
-<strong>${ ', '.join([role.name for role in person.roles]) }</strong><br>
+%   if c.person.roles:
+<strong>${ ', '.join([role.name for role in c.person.roles]) }</strong><br>
 %   endif
-%   if registration:
-${ h.form(h.url_for(), method='post') }
-<p class="entries" style="float: right">Add note:
-${ h.text('note', size=30, tabindex=2, value='Here!') }
-${ h.hidden('id', value=registration.id) }
-</p>
-${ h.end_form() }
-%     if invoices and invoices[0].is_paid:
-<b>${ registration.ticket_description() }</b> rego <a href="/registration/${registration.id}">${registration.id}</a>
+
+%   if c.person.registration:
+<div style="float: right">
+  ${ h.form(h.url_for(controller='rego_note', action='new', id=None), method='post') }
+    ${ h.hidden('rego_note.rego', value=c.person.registration.id) }
+    <table>
+      <tr>
+        <th>when</td>
+        <th>note</td>
+        <th>by</td>
+      </tr>
+%     for n in c.person.registration.notes:
+      <tr class="${ h.cycle("odd", "even") }">
+        <td>${ n.creation_timestamp.strftime('%Y-%m-%d %a %H:%M:%S') }</td>
+        <td>${ n.note }</td>
+        <td>${ n.by.firstname } ${ n.by.lastname }</td>
+      </tr>
+%     endfor
+      <tr>
+        <td>${ h.submit('submit', 'Add Note') }</td>
+        <td>${ h.text('rego_note.note', size=30, tabindex=2, value='Here!') }</td>
+        <td>${ h.text('rego_note.by', size=6, value=c.signed_in_person.id) }</td>
+      </tr>
+    </table>
+  ${ h.end_form() }
+</div>
+
+%     if c.person.paid():
+<b>${ c.person.registration.ticket_description() }</b> rego ${ h.link_to(c.person.registration.id, h.url_for(controller='registration', action='view', id=c.person.registration.id)) }
 %     else:
-<b>Tentative</b> rego <a href="/registration/${registration.id}">${registration.id}</a>; <b>not paid</b>
+<b>Tentative</b> rego ${ h.link_to(registration.id, h.url_for(controller='registration', action='view', id=c.person.registration.id)) }; <b>not paid</b>
 %     endif
 %   else:
 not registered
 %   endif
 </p>
 
-%   if person.phone:
-<p>Phone: ${ person.phone }</p>
+%   if c.person.phone:
+<p>Phone: ${ c.person.phone }</p>
 %   endif
 
-<p>
-%   if invoices:
-%     for i in invoices:
-invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.integer_to_currency(i.total) } ${ if_then_else(i.is_paid, 'paid', 'not paid')})
+<h2>Invoices</h2>
+<p>${ h.link_to('New Manual Invoice', h.url_for(controller='invoice', action='new', id=None, person_id=c.person.id))}</p>
+%   if c.person.invoices:
+<table>
+  <tr>
+    <th>Invoice #</th>
+    <th>Total</th>
+    <th>Status</th>
+  </tr>
+%     for i in c.person.invoices:
+  <tr class="${ h.cycle("odd", "even") }">
+    <td>${ h.link_to(i.id, h.url_for(controller='invoice', action='view', id=i.id)) }</td>
+    <td style="text-align: right">${ h.integer_to_currency(i.total) }</td>
+    <td style="text-align: center">${ i.status }</td>
+  </tr>
 %     endfor
-%   endif
-</p>
-
-% if invoices:
-<table width="100%">
+</table>
+<br />
+<table>
   <tr>
     <th>Invoice</td>
     <th>Description</td>
@@ -102,40 +113,30 @@ invoice <a href="/invoice/${i.id}">${ i.id }</a> (${ h.integer_to_currency(i.tot
     <th>Cost</td>
     <th>Total</td>
   </tr>
-%   for i in invoices:
-%     for ii in i.items:
-  <tr class="${ oddeven1() }">
-    <td align="center">${ i.id }${ if_then_else(i.is_paid, '', ' (unpaid)')}</td>
+%   for i in c.person.invoices:
+%     if not i.is_void:
+%       for ii in i.items:
+  <tr class="${ h.cycle("odd", "even") }">
+%         if ii == i.items[0]:
+    <td style="text-align: center" rowspan="${ len(i.items)}">
+      ${ h.link_to(i.id, h.url_for(controller='invoice', action='view', id=i.id)) }<br />
+      ${ i.status }
+    </td>
+%         endif
     <td>${ ii.description }</td>
-    <td align="center">${ ii.qty }</td>
-    <td align="right">${ h.integer_to_currency(ii.cost) }</td>
-    <td align="right">${ h.integer_to_currency(ii.total) }</td>
+    <td style="text-align: center">${ ii.qty }</td>
+    <td style="text-align: right">${ h.integer_to_currency(ii.cost) }</td>
+    <td style="text-align: right">${ h.integer_to_currency(ii.total) }</td>
   </tr>
-%     endfor
+%       endfor
+%     endif
 %   endfor
 </table>
 % endif
 
-% if registration and registration.notes:
-<table width="100%">
-  <tr>
-    <th>when</td>
-    <th>note</td>
-    <th>by</td>
-  </tr>
-%   for n in registration.notes:
-  <tr class="${ oddeven2() }">
-    <td align="left">${ n.entered.strftime('%Y-%m-%d %a %H:%M:%S') }</td>
-    <td align="left">${ n.note }</td>
-    <td align="left">${ n.by.firstname } ${ n.by.lastname }</td>
-  </tr>
-%   endfor
-</table>
-% endif
-
+%   if c.person.registration:
 <h2>Registration</h2>
-%   if registration:
-<% c.registration = registration %>
+<% c.registration = c.person.registration %>
 <%include file="../registration/view_body.mako"/>
 %   endif
 % endif
