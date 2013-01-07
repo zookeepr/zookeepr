@@ -381,6 +381,7 @@ class Product(Base):
 
     id = sa.Column(sa.types.Integer, primary_key=True)
     category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
+    fulfilment_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('fulfilment_type.id'), nullable=True)
     display_order = sa.Column(sa.types.Integer, nullable=False)
     active = sa.Column(sa.types.Boolean, nullable=False)
     description = sa.Column(sa.types.Text, nullable=False)
@@ -391,6 +392,7 @@ class Product(Base):
     # relations
     category = sa.orm.relation(ProductCategory, lazy=True, backref=sa.orm.backref('products', order_by=lambda: [Product.display_order, Product.cost]))
     ceilings = sa.orm.relation(Ceiling, secondary=product_ceiling_map, lazy=True, order_by=Ceiling.name, backref='products')
+    fulfilment_type = sa.orm.relation('FulfilmentType')
 
 
     def __init__(self, **kwargs):

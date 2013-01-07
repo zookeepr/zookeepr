@@ -18,6 +18,7 @@ import invoice
 import invoice_item
 import payment
 import ceiling
+import fulfilment
 import product
 import product_ceiling_map
 import rego_note
@@ -56,6 +57,8 @@ from invoice import Invoice
 from invoice_item import InvoiceItem
 from payment import Payment
 from payment_received import PaymentReceived
+
+from fulfilment import Fulfilment, FulfilmentItem, FulfilmentType, FulfilmentStatus, FulfilmentGroup
 
 from registration import Registration
 from registration_product import RegistrationProduct

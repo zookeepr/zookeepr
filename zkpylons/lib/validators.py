@@ -8,6 +8,7 @@ from zkpylons.model import Product, ProductCategory, Ceiling, FundingType
 from zkpylons.model import FundingStatus, Funding
 from zkpylons.model import Invoice, Payment
 from zkpylons.model import SocialNetwork
+from zkpylons.model import FulfilmentType, FulfilmentStatus
 
 from zkpylons.config.lca_info import lca_info
 
@@ -151,6 +152,35 @@ class ProductCategoryValidator(validators.FancyValidator):
 
     def _from_python(self, value, state):
         return value.id
+
+class FulfilmentTypeValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        value = FulfilmentType.find_by_id(value, abort_404=False)
+        if value is None:
+            raise Invalid("Type not found")
+        else:
+            return value
+
+    def _from_python(self, value, state):
+        return value.id
+
+class FulfilmentStatusValidator(validators.FancyValidator):
+    def _to_python(self, value, state):
+        value = FulfilmentStatus.find_by_id(value, abort_404=False)
+        if value is None:
+            raise Invalid('Status not found')
+        else:
+            return value
+
+    def _from_python(self, value, state):
+        return value.id
+
+class FulfilmentTypeStatusValidator(validators.FancyValidator):
+    def validate_python(self, values, state):
+        status = values.get(self.status)
+        type = values.get(self.type)
+        if status not in type.status:
+            raise Invalid("This status is not allowed with this Fulfilment Type", values, state)
 
 class ReviewSchema(BaseSchema):
     score = validators.OneOf(["-2", "-1", "1", "2"], if_missing=None)

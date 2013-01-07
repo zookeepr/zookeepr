@@ -18,6 +18,7 @@ from authkit.permissions import ValidAuthKitUser
 from zkpylons.model import meta, Person, Product, Registration, ProductCategory
 from zkpylons.model import Proposal, ProposalType, ProposalStatus, Invoice, Funding
 from zkpylons.model import Event, Schedule, TimeSlot, Location
+from zkpylons.model import Fulfilment, FulfilmentItem, FulfilmentType, FulfilmentStatus, FulfilmentGroup
 from zkpylons.model.funding_review import FundingReview
 from zkpylons.model.payment_received import PaymentReceived
 from zkpylons.model.invoice_item import InvoiceItem
@@ -1739,6 +1740,59 @@ class AdminController(BaseController):
             c.error = 'Enter an ID or name in the box on right.'
 
         return render('admin/lookup.mako')
+
+    def generate_fulfilment(self):
+        """ Based on currently paid invoices, generate fulfilment records
+            [Registration,Invoicing] """
+
+        # Find all people who have things we could possibly fulfil
+        paid_people = meta.Session.query(Person).join(Invoice).join(InvoiceItem).join(Product).filter(Invoice.is_paid == True, Product.fulfilment_type != None)
+        fulfilment_types = FulfilmentType.find_all()
+        codes = {}
+        for person in paid_people.all():
+            # Find existing FulfilmentGroup or generate a new one
+            try:
+                fulfilment_group = meta.Session.query(FulfilmentGroup).filter(FulfilmentGroup.person == person).one()
+            except:
+                code = generate_code()
+                while code in codes:
+                    code = generate_code()
+                codes[code] = None
+                fulfilment_group = FulfilmentGroup(person=person, code=code)
+                meta.Session.add(fulfilment_group)
+
+            # Create/Update Fulfilment records for each FulfilmentType
+            for fulfilment_type in fulfilment_types:
+                # Check if we have a fulfilment of the the right type we can use already
+                try:
+                    fulfilment = meta.Session.query(Fulfilment).filter(Fulfilment.person == person, Fulfilment.type == fulfilment_type, Fulfilment.can_edit == True).one()
+                except:
+                    fulfilment = Fulfilment(person=person, type=fulfilment_type)
+                    fulfilment_group.fulfilments.append(fulfilment)
+                    meta.Session.add(fulfilment)
+
+                # Find products that still need to be fulfilled
+                product_qty = meta.Session.query(
+                    Product,
+                    func.sum(InvoiceItem.qty).label('qty')
+                ).join(InvoiceItem).join(Invoice).filter(Product.fulfilment_type == fulfilment_type, Invoice.person == person, Invoice.is_paid == True).group_by(Product)
+                for result in product_qty.all():
+                    try:
+                        item = meta.Session.query(FulfilmentItem).filter(FulfilmentItem.fulfilment == fulfilment, FulfilmentItem.product == result.Product)
+                        item.qty += result.qty
+                    except:
+                        item = FulfilmentItem(fulfilment=fulfilment, product=result.Product, qty=result.qty)
+                        meta.Session.add(item)
+            meta.Session.commit()
+#        c.columns = ['Person', 'Product', 'Qty']
+#        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.qty] for result in query.all()]
+        return "Completed"
+
+def generate_code():
+    res = os.popen('pwgen 7 -BnA').read().strip()
+    if len(res)<3:
+        raise StandardError("pwgen call failed")
+    return res
 
 def _keysigning_pdf(keyid):
     import os, tempfile, subprocess
