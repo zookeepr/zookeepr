@@ -24,20 +24,19 @@
           <p class="entries">
           <table>
 % for category in c.product_categories:
-%   if category.name in c.allowed_categories:
             <tr>
               <td colspan="3" align="center"><h3>${ category.name |h }</h3></td>
             </tr>
             <tr>
               <th>Product</th>
-%       if category.name == 'Ticket':
+%       if category.display == 'radio':
               <th></th>
 %       else:
               <th>Qty</th>
 %       endif
               <th>% Discount</th>
             </tr>
-%       for product in category.products:
+%       for product in category.products_nonfree:
 <%
             soldout = ''
             if not product.available():
@@ -52,8 +51,8 @@
 %           else:
               <td>${ h.text('products.product_' + str(product.id) + '_qty', size=3) }</td>
 %           endif
-%           if category.display == 'radio' and category.products[0] == product:
-              <td rowspan="${ len(category.products) }">${ h.text('products.category_' + str(category.id) + '_percentage', size=3) }</td>
+%           if category.display == 'radio' and category.products_nonfree[0] == product:
+              <td rowspan="${ len(category.products_nonfree.all()) }">${ h.text('products.category_' + str(category.id) + '_percentage', size=3) }</td>
 %           elif category.display == 'radio':
               <!-- pass -->
 %           else:
@@ -61,7 +60,6 @@
 %           endif
             </tr>
 %       endfor
-%   endif
 % endfor
           </table>
           </p>

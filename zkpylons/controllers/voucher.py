@@ -63,19 +63,11 @@ class NewVoucherSchema(BaseSchema):
 
 new_schema = NewVoucherSchema()
 
-# Only two categories need vouchers - hard coded yuck... FIXME: In theory this isn't necessary
-allowed_categories = ['Ticket']
-
 class VoucherController(BaseController):
     @enforce_ssl(required_all=True)
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
-        category = ProductCategory.find_by_name('Accommodation')
-        if category and not (len(category.products) == 0 or (len(category.products) == 1 and category.products[0].cost == 0)):
-            allowed_categories.append('Accommodation')
-
-
-        c.product_categories = ProductCategory.find_all()
+        c.product_categories = ProductCategory.find_nonfree()
         self._generate_product_schema()
 
     def _generate_product_schema(self):
@@ -85,27 +77,24 @@ class VoucherController(BaseController):
         # Thus, this function generates a dynamic schema to validate a given set of products.
         #
         for category in c.product_categories:
-            if category.name in allowed_categories:
-                # handle each form input type individually as the validation is unique.
-                if category.display == 'radio':
-                    # min/max can't be calculated on this form. You should only have 1 selected.
-                    ProductSchema.add_field('category_' + str(category.id), validators.Int())
-                    ProductSchema.add_field('category_' + str(category.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
-                elif category.display == 'checkbox':
-                    for product in category.products:
-                        ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
-                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
-                elif category.display in ('select', 'qty'):
-                    for product in category.products:
-                        ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0, max=100, if_empty=0))
-                        ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
+            # handle each form input type individually as the validation is unique.
+            if category.display == 'radio':
+                # min/max can't be calculated on this form. You should only have 1 selected.
+                ProductSchema.add_field('category_' + str(category.id), validators.Int(if_missing=None))
+                ProductSchema.add_field('category_' + str(category.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
+            elif category.display == 'checkbox':
+                for product in category.products_nonfree:
+                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
+                    ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
+            elif category.display in ('select', 'qty'):
+                for product in category.products_nonfree:
+                    ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0, max=100, if_empty=0))
+                    ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
         new_schema.add_field('products', ProductSchema)
 
     @dispatch_on(POST="_new")
     @authorize(h.auth.has_organiser_role)
     def new(self):
-        c.allowed_categories = allowed_categories
-
         defaults = {
             'voucher.count': '1',
         }
@@ -131,39 +120,28 @@ class VoucherController(BaseController):
             results['products'] = self.form_result['products']
 
             for category in c.product_categories:
-                if category.name in allowed_categories:
-                    # depending on "display" type of product, handle the input appropriately
-                    if category.display == 'radio':
-                        if 'category_' + str(category.id) in results['products']:
-                            product = Product.find_by_id(results['products']['category_' + str(category.id)])
-                            vproduct = VoucherProduct()
-                            vproduct.voucher = c.voucher
-                            vproduct.product = product
-                            vproduct.qty = 1
-                            vproduct.percentage = results['products']['category_' + str(category.id) + '_percentage']
-                            meta.Session.add(vproduct) # Save product to DB
-                            c.voucher.products.append(vproduct) # Assign individual product discount to voucher
-                    elif category.display == 'checkbox':
-                        for product in category.products:
-                            if 'product_' + str(product.id) in results['products']:
+                # depending on "display" type of product, handle the input appropriately
+                if category.display == 'radio':
+                    if 'category_' + str(category.id) in results['products'] and results['products']['category_' + str(category.id)] != None:
+                        product = Product.find_by_id(results['products']['category_' + str(category.id)])
+                        vproduct = VoucherProduct()
+                        vproduct.voucher = c.voucher
+                        vproduct.product = product
+                        vproduct.qty = 1
+                        vproduct.percentage = results['products']['category_' + str(category.id) + '_percentage']
+                        meta.Session.add(vproduct) # Save product to DB
+                        c.voucher.products.append(vproduct) # Assign individual product discount to voucher
+                else:
+                    for product in category.products_nonfree:
+                        if 'product_' + str(product.id) + '_qty' in results['products']:
+                            if results['products']['product_' + str(product.id) + '_qty'] not in (0, None):
                                 vproduct = VoucherProduct()
                                 vproduct.voucher = c.voucher
                                 vproduct.product = product
-                                vproduct.qty = 1
+                                vproduct.qty = results['products']['product_' + str(product.id) + '_qty']
                                 vproduct.percentage = results['products']['product_' + str(product.id) + '_percentage']
                                 meta.Session.add(vproduct)
                                 c.voucher.products.append(vproduct)
-                    else:
-                        for product in category.products:
-                            if 'product_' + str(product.id) + '_qty' in results['products']:
-                                if results['products']['product_' + str(product.id) + '_qty'] not in (0, None):
-                                    vproduct = VoucherProduct()
-                                    vproduct.voucher = c.voucher
-                                    vproduct.product = product
-                                    vproduct.qty = results['products']['product_' + str(product.id) + '_qty']
-                                    vproduct.percentage = results['products']['product_' + str(product.id) + '_percentage']
-                                    meta.Session.add(vproduct)
-                                    c.voucher.products.append(vproduct)
 
         meta.Session.commit() #save all updates
         h.flash("Voucher created")
