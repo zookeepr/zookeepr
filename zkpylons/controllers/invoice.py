@@ -94,7 +94,7 @@ class InvoiceController(BaseController):
         except:
             c.invoice_person = ''
 
-        c.due_date = datetime.date.today().strftime("%d/%y/%Y")
+        c.due_date = datetime.date.today().strftime("%d/%m/%Y")
 
         c.product_categories = ProductCategory.find_all()
         c.item_count = 0;
