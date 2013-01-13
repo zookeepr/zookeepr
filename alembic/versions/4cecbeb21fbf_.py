@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * SET NOT NULL for person_id on travel
 
 Revision ID: 4cecbeb21fbf
 Revises: 209af87cb54

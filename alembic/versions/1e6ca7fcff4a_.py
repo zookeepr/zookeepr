@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * Add display_order to Product
 
 Revision ID: 1e6ca7fcff4a
 Revises: 30c8c19bec13

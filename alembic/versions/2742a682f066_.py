@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * Add Travel table
 
 Revision ID: 2742a682f066
 Revises: 29790706ec34
