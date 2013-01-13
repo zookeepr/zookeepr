@@ -1,4 +1,7 @@
-"""empty message
+"""
+ * Add private_abstract to Proposal
+ * Rename client_ip_zk back to it's original name on PaymentReceived
+ * Set NOT NULL for technical_requirements, url, abstract, title, project, abstract_video_url, slides_release and video_release on Proposal
 
 Revision ID: 29790706ec34
 Revises: 2daf319bbf1

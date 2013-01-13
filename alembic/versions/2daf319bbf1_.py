@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * Initial import of zookeepr tables
 
 Revision ID: 2daf319bbf1
 Revises: None

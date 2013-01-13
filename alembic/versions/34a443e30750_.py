@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * Rename Pending and Rejected Status' in ProposalStatus
 
 Revision ID: 34a443e30750
 Revises: 50a794ece403

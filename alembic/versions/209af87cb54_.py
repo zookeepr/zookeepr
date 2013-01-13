@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * Add new Offered Status' to ProposalStatus
 
 Revision ID: 209af87cb54
 Revises: 2742a682f066

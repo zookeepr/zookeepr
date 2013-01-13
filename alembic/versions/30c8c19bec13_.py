@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * Add notify_email field to FundingType and ProposalType
 
 Revision ID: 30c8c19bec13
 Revises: 4cecbeb21fbf

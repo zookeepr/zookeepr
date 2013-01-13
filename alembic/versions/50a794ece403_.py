@@ -1,4 +1,6 @@
-"""empty message
+"""
+ * Partial reversion of 29790706ec34
+ * Allow NULL for url and abstract_video_url on Proposal
 
 Revision ID: 50a794ece403
 Revises: 29790706ec34
