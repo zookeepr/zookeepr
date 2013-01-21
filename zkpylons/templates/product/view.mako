@@ -9,6 +9,9 @@
 
     <p><b>Description:</b> ${ c.product.description | h }<br></p>
     <p><b>Category:</b> ${ c.product.category.name }<br></p>
+%if c.product.fulfilment_type:
+    <p><b>Fulfilment Type:</b> ${ c.product.fulfilment_type.name }<br></p>
+%endif
     <p><b>Display Order:</b> ${ c.product.display_order }<br></p>
     <p><b>Active:</b> ${ h.yesno(c.product.active) |n }<br></p>
     <p><b>Cost:</b> ${ h.integer_to_currency(c.product.cost) | h }<br></p>

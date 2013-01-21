@@ -10,13 +10,13 @@ from formencode.variabledecode import NestedVariables
 
 from zkpylons.lib.base import BaseController, render
 from zkpylons.lib.ssl_requirement import enforce_ssl
-from zkpylons.lib.validators import BaseSchema, ProductCategoryValidator, CeilingValidator
+from zkpylons.lib.validators import BaseSchema, ProductCategoryValidator, CeilingValidator, FulfilmentTypeValidator
 import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
-from zkpylons.model import meta
+from zkpylons.model import meta, FulfilmentType
 from zkpylons.model.ceiling import Ceiling
 from zkpylons.model.product import Product, ProductInclude
 from zkpylons.model.product_category import ProductCategory
@@ -26,7 +26,8 @@ from zkpylons.config.lca_info import lca_info
 log = logging.getLogger(__name__)
 
 class ProductSchema(BaseSchema):
-    category = ProductCategoryValidator()
+    category = ProductCategoryValidator(not_empty=True)
+    fulfilment_type = FulfilmentTypeValidator(not_empty=False)
     display_order = validators.Int(not_empty=True)
     active = validators.Bool()
     description = validators.String(not_empty=True)
@@ -49,6 +50,7 @@ class ProductController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
         c.product_categories = ProductCategory.find_all()
+        c.fulfilment_types = FulfilmentType.find_all()
         c.ceilings = Ceiling.find_all()
 
     @dispatch_on(POST="_new") 
@@ -87,6 +89,8 @@ class ProductController(BaseController):
 
         defaults = h.object_to_defaults(c.product, 'product')
         defaults['product.category'] = c.product.category.id
+        if c.product.fulfilment_type:
+            defaults['product.fulfilment_type'] = c.product.fulfilment_type.id
 
         defaults['product.ceilings'] = []
         for ceiling in c.product.ceilings:

@@ -7,14 +7,14 @@ README = open(os.path.join(here, 'README')).read()
 
 requires = [
     'pyramid',
-    'SQLAlchemy',
+    'SQLAlchemy>=0.8.0b2',
     'transaction',
     'pyramid_tm',
     'pyramid_debugtoolbar',
     'zope.sqlalchemy',
     'waitress',
     "lxml",
-    "alembic>=0.3.6",
+    "alembic>=0.4.2",
     "dnspython>=1.1.0",
     "pydns",
     "psycopg2",
