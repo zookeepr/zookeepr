@@ -1788,6 +1788,30 @@ class AdminController(BaseController):
 #        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.qty] for result in query.all()]
         return "Completed"
 
+    def generate_boardingpass(self):
+        """ For every fulfilment group, generate a boarding pass
+            [Registration,Invoicing] """
+        from zkpylons.lib import pdfgen
+        from zkpylons.config.zkpylons_config import file_paths
+        groups = FulfilmentGroup.find_all()
+        for group in groups:
+            c.fulfilment_group = group
+            xml_s = render('/fulfilment/boardingpass.mako')
+
+            xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment/boardingpass.xsl'
+            pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
+
+            if c.fulfilment_group.person:
+                filename = c.fulfilment_group.person.email_address + '.pdf'
+            else:
+                filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
+            pdf = open(file_paths['zk_root'] + '/boardingpass/' + filename, 'w')
+            pdf.write(pdf_data)
+            pdf.close()
+        return "Completed"
+
+
+
 def generate_code():
     res = os.popen('pwgen 7 -BnA').read().strip()
     if len(res)<3:
