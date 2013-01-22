@@ -667,10 +667,13 @@ class AdminController(BaseController):
                 person.firstname,
                 person.lastname,
                 person.email_address,
+               registration.special,
+               registration.diet,
                 ceiling.name AS ceiling,
                 invoice_item.description,
                 SUM(invoice_item.qty) AS qty
             FROM person
+            LEFT OUTER JOIN registration ON (person.id=registration.person_id)
             JOIN invoice ON (person.id=invoice.person_id)
             JOIN invoice_item ON (invoice.id=invoice_item.invoice_id)
             JOIN product ON (invoice_item.product_id=product.id)
@@ -690,7 +693,7 @@ class AdminController(BaseController):
                 ) = 't'
             )
             AND ceiling.name = 'accom-all'
-            GROUP BY person.id, person.firstname, person.lastname, person.email_address, invoice_item.description, ceiling.name
+            GROUP BY person.id, person.firstname, person.lastname, person.email_address, invoice_item.description, ceiling.name, registration.special, registration.diet
             HAVING SUM(invoice_item.qty) != 0
             ORDER BY ceiling.name, invoice_item.description;
         """)
@@ -847,7 +850,7 @@ class AdminController(BaseController):
         <p><textarea cols="100" rows="25">"""
 
         count = 0
-        partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners Programme')).all()
+        partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners\' Programme')).all()
 
         for item in partners_list:
             for invoice_item in item.invoice_items:
@@ -868,7 +871,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def speakers_partners(self):
         """ Listing of speakers and their partner details [Speakers] """
-        c.columns = ['Speaker', 'e-mail', 'Partner Programme', 'Penguin Dinner']
+        c.columns = ['Speaker', 'e-mail', 'Partners\' Programme', 'Penguin Dinner']
         c.data = []
 
         total_partners = 0
@@ -881,7 +884,7 @@ class AdminController(BaseController):
                 for invoice in person.invoices:
                     for item in invoice.items:
                         if item.product is not None:
-                            if item.product.category.name == "Partners Programme":
+                            if item.product.category.name == "Partners' Programme":
                                 partners.append(item.description + " x" + str(item.qty))
                                 total_partners += item.qty
                             if item.product.category.name == "Penguin Dinner":
@@ -927,7 +930,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def partners_programme(self):
         """ List of partners programme contacts [Partners Programme] """
-        partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners Programme')).all()
+        partners_list = meta.Session.query(Product).filter(Product.category.has(name = 'Partners\' Programme')).all()
         c.text = "*Checkin and checkout dates aren't an accurate source."
         #c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile', 'Checkin*', 'Checkout*']
         c.columns = ['Partner Type', 'Qty', 'Registration Name', 'Registration e-mail', 'Partners name', 'Partners e-mail', 'Partners mobile']
