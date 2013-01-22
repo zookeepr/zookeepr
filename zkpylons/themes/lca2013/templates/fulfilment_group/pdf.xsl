@@ -1726,7 +1726,7 @@
          sodipodi:role="line"
          id="tspan3830-7-4-2"
          x="614.22937"
-         y="674.11609">Manning Clarke Center</tspan></text>
+         y="674.11609">Manning Clarke Centre</tspan></text>
     <text
        transform="scale(0.97980514,1.0206111)"
        xml:space="preserve"
@@ -1738,11 +1738,11 @@
          sodipodi:role="line"
          x="25.667614"
          y="584.45941"
-         id="tspan3649-8">Registration will be at John XXIII between 2pm and 6pm on Sunday 27 January. Keynotes are at Llewllyn Hall. Registration at other</tspan><tspan
+         id="tspan3649-8">Registration will be at John XXIII between 2pm and 6pm on Sunday 27 January. Keynotes are at Llewellyn Hall. Registration at other</tspan><tspan
          sodipodi:role="line"
          x="25.667614"
          y="596.70697"
-         id="tspan4215">times is at the Manning Clarke Center, which is the main conference venue. If you need urgent assistance, please call our oncall</tspan><tspan
+         id="tspan4215">times is at the Manning Clarke Centre, which is the main conference venue. If you need urgent assistance, please call our oncall</tspan><tspan
          sodipodi:role="line"
          x="25.667614"
          y="608.95453"
