@@ -413,7 +413,8 @@ class Product(Base):
     def qty_free(self):
         qty = 0
         for ii in self.invoice_items:
-            qty += ii.free_qty
+            if not ii.invoice.void and ii.invoice.is_paid:
+               qty += ii.free_qty
         return qty
 
     def qty_sold(self):
