@@ -414,7 +414,7 @@ class Product(Base):
         qty = 0
         for ii in self.invoice_items:
             if not ii.invoice.void and ii.invoice.is_paid:
-               qty += ii.free_qty
+                qty += ii.free_qty
         return qty
 
     def qty_sold(self):
