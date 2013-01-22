@@ -21,6 +21,10 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta, FulfilmentGroup, FulfilmentType
 
 from zkpylons.config.lca_info import lca_info
+from zkpylons.config.zkpylons_config import file_paths
+
+import zkpylons.lib.pdfgen as pdfgen
+
 
 log = logging.getLogger(__name__)
 
@@ -62,6 +66,16 @@ class FulfilmentGroupController(BaseController):
     def view(self, id):
         c.fulfilment_group = FulfilmentGroup.find_by_id(id)
         return render('/fulfilment_group/view.mako')
+
+    def pdf(self, id):
+        c.fulfilment_group = FulfilmentGroup.find_by_id(id, True)
+
+        xml_s = render('/fulfilment_group/pdf.mako')
+        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment_group/pdf.xsl'
+        pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
+
+        filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
+        return pdfgen.wrap_pdf_response(pdf_data, filename)
 
     def index(self):
         c.fulfilment_group_collection = FulfilmentGroup.find_all()

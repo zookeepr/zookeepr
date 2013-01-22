@@ -21,9 +21,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta, Fulfilment, FulfilmentType, FulfilmentStatus, FulfilmentGroup, Person
 
 from zkpylons.config.lca_info import lca_info
-from zkpylons.config.zkpylons_config import file_paths
-
-import zkpylons.lib.pdfgen as pdfgen
 
 log = logging.getLogger(__name__)
 
@@ -73,29 +70,6 @@ class FulfilmentController(BaseController):
     def person(self, id):
         c.person = Person.find_by_id(id)
         return render('/fulfilment/person.mako')
-
-    def group(self, id):
-        c.fulfilment_group = FulfilmentGroup.find_by_id(id)
-        return render('/fulfilment/group.mako')
-
-    def pdf(self, id):
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
-            # Raise a no_auth error
-            h.auth.no_role()
-
-        c.fulfilment_group = FulfilmentGroup.find_by_id(id, True)
-        xml_s = render('/fulfilment/boardingpass.mako')
-
-        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment/boardingpass.xsl'
-        pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
-
-        if c.fulfilment_group.person:
-            filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.person_id) + '.pdf'
-        else:
-            filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
-        return pdfgen.wrap_pdf_response(pdf_data, filename)
-
-
 
     def index(self):
         c.fulfilment_collection = Fulfilment.find_all()

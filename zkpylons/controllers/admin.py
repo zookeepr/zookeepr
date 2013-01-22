@@ -1777,12 +1777,13 @@ class AdminController(BaseController):
                     func.sum(InvoiceItem.qty).label('qty')
                 ).join(InvoiceItem).join(Invoice).filter(Product.fulfilment_type == fulfilment_type, Invoice.person == person, Invoice.is_paid == True).group_by(Product)
                 for result in product_qty.all():
-                    try:
-                        item = meta.Session.query(FulfilmentItem).filter(FulfilmentItem.fulfilment == fulfilment, FulfilmentItem.product == result.Product)
-                        item.qty += result.qty
-                    except:
-                        item = FulfilmentItem(fulfilment=fulfilment, product=result.Product, qty=result.qty)
-                        meta.Session.add(item)
+                    if result.qty != 0:
+                        try:
+                            item = meta.Session.query(FulfilmentItem).filter(FulfilmentItem.fulfilment == fulfilment, FulfilmentItem.product == result.Product)
+                            item.qty += result.qty
+                        except:
+                            item = FulfilmentItem(fulfilment=fulfilment, product=result.Product, qty=result.qty)
+                            meta.Session.add(item)
             meta.Session.commit()
 #        c.columns = ['Person', 'Product', 'Qty']
 #        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.qty] for result in query.all()]
@@ -1796,9 +1797,9 @@ class AdminController(BaseController):
         groups = FulfilmentGroup.find_all()
         for group in groups:
             c.fulfilment_group = group
-            xml_s = render('/fulfilment/boardingpass.mako')
+            xml_s = render('/fulfilment_group/pdf.mako')
 
-            xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment/boardingpass.xsl'
+            xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment_group/pdf.xsl'
             pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
             if c.fulfilment_group.person:

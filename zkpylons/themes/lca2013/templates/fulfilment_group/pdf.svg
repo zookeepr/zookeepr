@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!-- Created with Inkscape (http://www.inkscape.org/) -->
-<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
-<xsl:template match="/boardingpass">
-<xsl:comment>
-  Zookeepr boarding pass template
-</xsl:comment>
+
 <svg
    xmlns:dc="http://purl.org/dc/elements/1.1/"
    xmlns:cc="http://creativecommons.org/ns#"
@@ -28,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="1"
-     inkscape:cx="373.84913"
-     inkscape:cy="655.41279"
+     inkscape:cx="197.84913"
+     inkscape:cy="735.41279"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1267,7 +1263,7 @@
        xlink:href="#linearGradient8690-4"
        id="linearGradient9100"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.55365852,0,0,0.55813953,486.15854,129.11353)"
+       gradientTransform="matrix(0.84146339,0,0,0.55813953,358.96342,129.11353)"
        x1="25"
        y1="297.86218"
        x2="435"
@@ -1291,7 +1287,7 @@
        x2="244"
        y2="296.04666"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.0225225,0,0,1,-2.4954955,-0.684479)" />
+       gradientTransform="matrix(1.554054,0,0,1,-14.189189,-0.684479)" />
     <linearGradient
        inkscape:collect="always"
        xlink:href="#linearGradient8690-0"
@@ -1307,7 +1303,7 @@
        xlink:href="#linearGradient8690-4-8"
        id="linearGradient9100-0"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(0.55365852,0,0,0.55813953,486.15854,279.11355)"
+       gradientTransform="matrix(0.84146339,0,0,0.55813953,358.96342,279.11355)"
        x1="25"
        y1="297.86218"
        x2="435"
@@ -1353,7 +1349,7 @@
        x2="244"
        y2="296.04666"
        gradientUnits="userSpaceOnUse"
-       gradientTransform="matrix(1.0225225,0,0,1,-2.4955002,149.31554)" />
+       gradientTransform="matrix(1.554054,0,0,1,-14.189201,149.31554)" />
     <linearGradient
        id="linearGradient9526-4">
       <stop
@@ -1418,30 +1414,6 @@
            id="use3913" />
       </g>
     </g>
-    <text
-       xml:space="preserve"
-       style="font-size:16px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:IDAutomationHC39M;-inkscape-font-specification:IDAutomationHC39M"
-       x="-187.45044"
-       y="785.87604"
-       id="text116033"
-       sodipodi:linespacing="125%"
-       transform="matrix(0,-1.0821082,0.92412201,0,0,0)"><tspan
-         sodipodi:role="line"
-         id="tspan116035"
-         x="-187.45044"
-         y="785.87604">*<xsl:value-of select="code" />*</tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Impact;-inkscape-font-specification:Impact Condensed"
-       x="371.69568"
-       y="222.34543"
-       id="text3639"
-       sodipodi:linespacing="125%"><tspan
-         sodipodi:role="line"
-         x="371.69568"
-         y="222.34543"
-         id="tspan4844"
-         style="font-size:32px"><xsl:value-of select="fullname" /></tspan></text>
     <text
        xml:space="preserve"
        style="font-size:10px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Black;-inkscape-font-specification:'Arial Black,'"
@@ -1722,59 +1694,17 @@
     <rect
        style="opacity:0.92000002;fill:url(#linearGradient9532);fill-opacity:1;stroke:none"
        id="rect7912"
-       width="227"
+       width="345"
        height="24"
        x="20"
        y="283.36218" />
-  <xsl:for-each select="fulfilments/fulfilment">
-    <xsl:variable name="x" select="(ceiling(((position() - 1) mod 3) * 240))" />
-    <xsl:variable name="y" select="(floor((position() - 1) div 3)) * 150" />
-    <text
-       xml:space="preserve"
-       style="font-size:18px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;opacity:0.92000002;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Black;-inkscape-font-specification:'Arial Black,'"
-       x="29.147461"
-       y="302.13367"
-       id="text8698"
-       sodipodi:linespacing="125%"><xsl:attribute name="x"><xsl:value-of select="30 + $x" /></xsl:attribute><xsl:attribute name="y"><xsl:value-of select="300 + $y" /></xsl:attribute><tspan
-         sodipodi:role="line"
-         id="tspan8700"
-         x="29.147461"
-         y="302.13367"><xsl:attribute name="x"><xsl:value-of select="31 + $x" /></xsl:attribute><xsl:value-of select="type" /></tspan></text>
-    <xsl:for-each select="items/item">
-      <xsl:variable name="y-inner" select="$y + ((position() - 1) * 20)" />
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;line-height:125%;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="23.822266"
-       y="322.19226"
-       id="text4814"
-       sodipodi:linespacing="125%"><xsl:attribute name="x"><xsl:value-of select="24 + $x" /></xsl:attribute><xsl:attribute name="y"><xsl:value-of select="325 + $y-inner" /></xsl:attribute><tspan
-         sodipodi:role="line"
-         x="23.822266"
-         y="322.19226"
-         id="tspan4838"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;writing-mode:lr-tb;text-anchor:start;font-family:Sans;-inkscape-font-specification:Sans"><xsl:attribute name="x"><xsl:value-of select="24 + $x" /></xsl:attribute><xsl:value-of select="description" /></tspan></text>
-    <text
-       xml:space="preserve"
-       style="font-size:40px;font-style:normal;font-weight:normal;text-align:end;line-height:125%;letter-spacing:0px;word-spacing:0px;text-anchor:end;fill:#000000;fill-opacity:1;stroke:none;font-family:Sans"
-       x="243.44336"
-       y="320.81531"
-       id="text4814-0"
-       sodipodi:linespacing="125%"><xsl:attribute name="x"><xsl:value-of select="241 + $x" /></xsl:attribute><xsl:attribute name="y"><xsl:value-of select="325 + $y-inner" /></xsl:attribute><tspan
-         sodipodi:role="line"
-         x="243.44336"
-         y="320.81531"
-         id="tspan4838-9"
-         style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:end;line-height:125%;writing-mode:lr-tb;text-anchor:end;font-family:Sans;-inkscape-font-specification:Sans"><xsl:attribute name="x"><xsl:value-of select="241 + $x" /></xsl:attribute><xsl:value-of select="qty" /></tspan></text>
-    </xsl:for-each>
-  </xsl:for-each>
     <rect
-       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.10567153;stroke-opacity:1"
+       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.36244512;stroke-opacity:1"
        id="rect8706"
-       width="225.89433"
-       height="137.89433"
-       x="20.552837"
-       y="283.91501" />
+       width="343.63754"
+       height="137.63756"
+       x="20.681223"
+       y="284.0434" />
     <rect
        style="opacity:0.92000002;fill:none"
        id="rect8702-8"
@@ -1782,20 +1712,6 @@
        height="222"
        x="351.31189"
        y="282.26529" />
-    <rect
-       style="opacity:0.92000002;fill:url(#linearGradient3974);fill-opacity:1"
-       id="rect7912-8"
-       width="227"
-       height="24"
-       x="260"
-       y="283.36218" />
-    <rect
-       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.10567153;stroke-opacity:1"
-       id="rect8706-6"
-       width="225.89433"
-       height="137.89433"
-       x="260.55283"
-       y="283.91501" />
     <rect
        style="fill:none"
        id="rect8702-4"
@@ -1806,17 +1722,17 @@
     <rect
        style="opacity:0.92000002;fill:url(#linearGradient9100);fill-opacity:1"
        id="rect7912-9"
-       width="227"
+       width="345"
        height="24"
-       x="500"
+       x="380"
        y="283.36218" />
     <rect
-       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.10567153;stroke-opacity:1"
+       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.36244512;stroke-opacity:1"
        id="rect8706-9"
-       width="225.89433"
-       height="137.89433"
-       x="500.55286"
-       y="283.91501" />
+       width="343.63754"
+       height="137.63756"
+       x="380.68121"
+       y="284.0434" />
     <text
        xml:space="preserve"
        style="font-size:40px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:condensed;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Impact;-inkscape-font-specification:Impact Condensed"
@@ -1831,46 +1747,30 @@
     <rect
        style="opacity:0.92000002;fill:url(#linearGradient9532-7);fill-opacity:1;stroke:none"
        id="rect7912-86"
-       width="227"
+       width="345"
        height="24"
        x="20.00001"
        y="433.36218" />
     <rect
-       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.10567153;stroke-opacity:1"
+       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.36244524;stroke-opacity:1"
        id="rect8706-7"
-       width="225.89433"
-       height="137.89433"
-       x="20.552835"
-       y="433.91501" />
-    <rect
-       style="opacity:0.92000002;fill:url(#linearGradient3974-0);fill-opacity:1"
-       id="rect7912-8-0"
-       width="227"
-       height="24"
-       x="260"
-       y="433.36218" />
-    <rect
-       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.10567153;stroke-opacity:1"
-       id="rect8706-6-7"
-       width="225.89433"
-       height="137.89433"
-       x="260.5528"
-       y="433.91501" />
+       width="343.63754"
+       height="137.63756"
+       x="20.681223"
+       y="434.0434" />
     <rect
        style="opacity:0.92000002;fill:url(#linearGradient9100-0);fill-opacity:1"
        id="rect7912-9-9"
-       width="227"
+       width="345"
        height="24"
-       x="500"
+       x="380"
        y="433.36218" />
     <rect
-       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.10567153;stroke-opacity:1"
+       style="opacity:0.92000002;fill:none;stroke:#000000;stroke-width:1.36244524;stroke-opacity:1"
        id="rect8706-9-2"
-       width="225.89433"
-       height="137.89433"
-       x="500.55286"
-       y="433.91501" />
+       width="343.63754"
+       height="137.63756"
+       x="380.68121"
+       y="434.0434" />
   </g>
 </svg>
-</xsl:template>
-</xsl:stylesheet>
