@@ -7,12 +7,12 @@ import re
 import sys
 import time
 
-import PIL.Image
+import Image
 
 from pylons import request, response, session, tmpl_context as c
 from pylons.controllers.util import abort
 from zkpylons.lib.helpers import redirect_to
-from pylons.decorators import validate1
+from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
 
 from formencode import htmlfill, validators
@@ -23,7 +23,7 @@ from authkit.authorize.pylons_adaptors import authorize
 from webhelpers import paginate
 
 from zkpylons.config import lca_info as lca_info
-#from zkpylons.config import zkpylons as zkpylons_config
+from zkpylons.config import zkpylons_config
 from zkpylons.lib.base import BaseController, render
 from zkpylons.lib import helpers as h
 from zkpylons.model import Person
@@ -172,7 +172,7 @@ class PhotoCompEntry(object):
     from_filename = classmethod(from_filename)
 
     def get_db_dir(cls):
-        db_dir = '/var/photocomp/' #zkpylons_config.file_paths['photocomp_path']
+        db_dir = zkpylons_config.file_paths['photocomp_path']
         if not os.path.exists(db_dir):
             os.mkdir(db_dir, 0777)
         return db_dir
