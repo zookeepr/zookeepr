@@ -70,8 +70,8 @@ class FulfilmentGroupController(BaseController):
     def pdf(self, id):
         c.fulfilment_group = FulfilmentGroup.find_by_id(id, True)
 
-        xml_s = render('/fulfilment_group/boardingpass.mako')
-        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment_group/boardingpass.xsl'
+        xml_s = render('/fulfilment_group/pdf.mako')
+        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment_group/pdf.xsl'
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
         filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
