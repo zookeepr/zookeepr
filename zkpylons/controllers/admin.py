@@ -667,8 +667,8 @@ class AdminController(BaseController):
                 person.firstname,
                 person.lastname,
                 person.email_address,
-               registration.special,
-               registration.diet,
+                registration.special,
+                registration.diet,
                 ceiling.name AS ceiling,
                 invoice_item.description,
                 SUM(invoice_item.qty) AS qty
