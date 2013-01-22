@@ -96,7 +96,7 @@
        x="353.44336"
        y="320.81531"
        id="text4814-0"
-       sodipodi:linespacing="125%"><xsl:attribute name="x"><xsl:value-of select="350 + $x" /></xsl:attribute><xsl:attribute name="y"><xsl:value-of select="325 + $y-inner" /></xsl:attribute><tspan
+       sodipodi:linespacing="125%"><xsl:attribute name="x"><xsl:value-of select="360 + $x" /></xsl:attribute><xsl:attribute name="y"><xsl:value-of select="325 + $y-inner" /></xsl:attribute><tspan
          sodipodi:role="line"
          x="353.44336"
          y="320.81531"
