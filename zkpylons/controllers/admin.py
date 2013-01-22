@@ -1,6 +1,6 @@
 import logging
 
-from pylons import request, response, session, tmpl_context as c
+from pylons import request, response, session, tmpl_context as c, app_globals
 from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
@@ -1797,9 +1797,9 @@ class AdminController(BaseController):
         groups = FulfilmentGroup.find_all()
         for group in groups:
             c.fulfilment_group = group
-            xml_s = render('/fulfilment_group/pdf.mako')
 
-            xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment_group/pdf.xsl'
+            xml_s = render('/fulfilment_group/pdf.mako')
+            xsl_f = app_globals.mako_lookup.get_template('/fulfilment_group/pdf.xsl').filename
             pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
             if c.fulfilment_group.person:
