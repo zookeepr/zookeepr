@@ -1,6 +1,6 @@
 import logging
 
-from pylons import request, response, session, tmpl_context as c
+from pylons import request, response, session, tmpl_context as c, app_globals
 from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
@@ -21,10 +21,8 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta, FulfilmentGroup, FulfilmentType
 
 from zkpylons.config.lca_info import lca_info
-from zkpylons.config.zkpylons_config import file_paths
 
 import zkpylons.lib.pdfgen as pdfgen
-
 
 log = logging.getLogger(__name__)
 
@@ -71,7 +69,7 @@ class FulfilmentGroupController(BaseController):
         c.fulfilment_group = FulfilmentGroup.find_by_id(id, True)
 
         xml_s = render('/fulfilment_group/pdf.mako')
-        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/fulfilment_group/pdf.xsl'
+        xsl_f = app_globals.mako_lookup.get_template('/fulfilment_group/pdf.xsl').filename
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
         filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
