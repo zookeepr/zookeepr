@@ -84,7 +84,7 @@ class PhotoCompEntry(object):
         self.scales -= unwanted_scales
         if self.scales == self.SCALES:
             return
-        image = PIL.Image.open(self.pathname("orig"))
+        image = Image.open(self.pathname("orig"))
         scales = list(self.SCALES - self.scales)
         scales.sort(key=lambda s: -int(s.split("x")[0],10))
         for scale in scales:
@@ -97,7 +97,7 @@ class PhotoCompEntry(object):
                     new_size = (int(x / y_scale), max_y)
                 else:
                     new_size = (max_x, int(y / x_scale))
-                image = image.resize(new_size, PIL.Image.ANTIALIAS)
+                image = image.resize(new_size, Image.ANTIALIAS)
             image.save(self.pathname(scale))
             self.scales.add(scale)
 
@@ -305,7 +305,7 @@ class PhotocompController(BaseController):
                         continue
                     image_file = cStringIO.StringIO(image_data)
                     try:
-                        image = PIL.Image.open(image_file)
+                        image = Image.open(image_file)
                         image.load()
                     except:
                         h.flash("%s doesn't look like a valid image" % image_name)
