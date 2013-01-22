@@ -1498,7 +1498,7 @@
          sodipodi:role="line"
          x="54.151733"
          y="264.84543"
-         id="tspan10050">the details on this boarding pass before coming to the conference. Report errors to contact@lca2013.linux.org.au</tspan></text>
+         id="tspan10050">the details on this boarding pass before coming to the conference. Report errors to departures@lca2013.linux.org.au</tspan></text>
     <g
        id="g10006"
        transform="translate(25,8)">
