@@ -25,7 +25,7 @@ ${ c.error }
       not paid
 %       endif
 %     else:
-      no rego
+      no registration
 %     endif
     </td>
   </tr>
@@ -74,9 +74,9 @@ ${ c.error }
 </div>
 
 %     if c.person.paid():
-<b>${ c.person.registration.ticket_description() }</b> rego ${ h.link_to(c.person.registration.id, h.url_for(controller='registration', action='view', id=c.person.registration.id)) }
+<b>${ c.person.registration.ticket_description() }</b> registration ${ h.link_to(c.person.registration.id, h.url_for(controller='registration', action='view', id=c.person.registration.id)) }
 %     else:
-<b>Tentative</b> rego ${ h.link_to(registration.id, h.url_for(controller='registration', action='view', id=c.person.registration.id)) }; <b>not paid</b>
+<b>Tentative</b> registration ${ h.link_to(c.person.registration.id, h.url_for(controller='registration', action='view', id=c.person.registration.id)) }; <b>not paid</b>
 %     endif
 %   else:
 not registered
