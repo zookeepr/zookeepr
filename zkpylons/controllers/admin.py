@@ -1747,50 +1747,50 @@ class AdminController(BaseController):
     def generate_fulfilment(self):
         """ Based on currently paid invoices, generate fulfilment records
             [Registration,Invoicing] """
+        invoice_query = meta.Session.query(Invoice.person_id.label('person_id'), InvoiceItem.product_id.label('product_id'), func.sum(InvoiceItem.qty).label('qty')).join(InvoiceItem).join(Product).filter(Product.fulfilment_type != None, Invoice.is_paid == True).group_by(Invoice.person_id, InvoiceItem.product_id)
+        fulfilment_query = meta.Session.query(Fulfilment.person_id.label('person_id'), FulfilmentItem.product_id.label('product_id'), -func.sum(FulfilmentItem.qty).label('qty')).join(FulfilmentItem).join(FulfilmentStatus).filter(FulfilmentStatus.void == False).group_by(Fulfilment.person_id, FulfilmentItem.product_id)
+        union_query = invoice_query.union(fulfilment_query)
+        qty = union_query.column_descriptions[2]['expr']
+        outstanding_query = union_query.with_entities(Person, Product, func.sum(qty).label('qty')).join(Person).join(Product).group_by(Person, Product).having(func.sum(qty) != 0)
+        outstanding = outstanding_query.all()
 
-        # Find all people who have things we could possibly fulfil
-        paid_people = meta.Session.query(Person).join(Invoice).join(InvoiceItem).join(Product).filter(Invoice.is_paid == True, Product.fulfilment_type != None)
-        fulfilment_types = FulfilmentType.find_all()
+        # Variable to use voucher codes we've already used in this run
         codes = {}
-        for person in paid_people.all():
+
+        for outstanding_item in outstanding():
             # Find existing FulfilmentGroup or generate a new one
             try:
-                fulfilment_group = meta.Session.query(FulfilmentGroup).filter(FulfilmentGroup.person == person).one()
+                fulfilment_group = meta.Session.query(FulfilmentGroup).filter(FulfilmentGroup.person == outstanding_item.Person).one()
             except:
                 code = generate_code()
                 while code in codes:
                     code = generate_code()
                 codes[code] = None
-                fulfilment_group = FulfilmentGroup(person=person, code=code)
+                fulfilment_group = FulfilmentGroup(person=outstanding_item.Person, code=code)
                 meta.Session.add(fulfilment_group)
 
-            # Create/Update Fulfilment records for each FulfilmentType
-            for fulfilment_type in fulfilment_types:
-                # Check if we have a fulfilment of the the right type we can use already
-                try:
-                    fulfilment = meta.Session.query(Fulfilment).filter(Fulfilment.person == person, Fulfilment.type == fulfilment_type, Fulfilment.can_edit == True).one()
-                except:
-                    fulfilment = Fulfilment(person=person, type=fulfilment_type)
-                    fulfilment_group.fulfilments.append(fulfilment)
-                    meta.Session.add(fulfilment)
+            # Find the Fulfilment this item should belong to where it is still editable or create a new one
+            try:
+                fulfilment = meta.Session.query(Fulfilment).filter(Fulfilment.person == outstanding_item.Person, Fulfilment.type == outstanding_item.Product.fulfilment_type, Fulfilment.can_edit == True).one()
+            except:
+                fulfilment = Fulfilment(person=outstanding_item.Person, type=outstanding_item.Product.fulfilment_type)
+                fulfilment_group.fulfilments.append(fulfilment)
+                meta.Session.add(fulfilment)
 
-                # Find products that still need to be fulfilled
-                product_qty = meta.Session.query(
-                    Product,
-                    func.sum(InvoiceItem.qty).label('qty')
-                ).join(InvoiceItem).join(Invoice).filter(Product.fulfilment_type == fulfilment_type, Invoice.person == person, Invoice.is_paid == True).group_by(Product)
-                for result in product_qty.all():
-                    if result.qty != 0:
-                        try:
-                            item = meta.Session.query(FulfilmentItem).filter(FulfilmentItem.fulfilment == fulfilment, FulfilmentItem.product == result.Product)
-                            item.qty += result.qty
-                        except:
-                            item = FulfilmentItem(fulfilment=fulfilment, product=result.Product, qty=result.qty)
-                            meta.Session.add(item)
+            # Find fulfilment item record for this person/product. Make it part of the correct fulfilment and update the qty. Otherwise create a new one
+            try:
+                fulfilment_item = meta.Session.query(FulfilmentItem).join(Fulfilment).filter(Fulfilment.person == outstanding_item.Person, FulfilmentItem.product == outstanding_item.Product, Fulfilment.can_edit == True).one()
+                fulfilment_item.fulfilment = fulfilment
+                fulfilment_item.qty += outstanding_item.qty
+            except:
+                fulfilment_item = FulfilmentItem(fulfilment=fulfilment, product=outstanding_item.Product, qty=outstanding_item.qty)
+                meta.Session.add(fulfilment_item)
+
             meta.Session.commit()
-#        c.columns = ['Person', 'Product', 'Qty']
-#        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.qty] for result in query.all()]
-        return "Completed"
+
+        c.columns = ['Person', 'Product', 'Qty']
+        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.Product.fulfilment_type.name, result.qty] for result in outstanding]
+        return table_response()
 
     def generate_boardingpass(self):
         """ For every fulfilment group, generate a boarding pass
