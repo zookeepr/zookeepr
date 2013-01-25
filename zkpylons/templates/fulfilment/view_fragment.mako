@@ -22,7 +22,7 @@
     </table>
     <p>
 % if c.can_edit:
-      ${ h.link_to('Edit', url=h.url_for(action='edit')) } |
+      ${ h.link_to('Edit', url=h.url_for(controller='fulfilment', action='edit', id=fulfilment.id)) } |
 % endif
-      ${ h.link_to('Back', url=h.url_for(action='index', id=None)) }
+      ${ h.link_to('Back', url=h.url_for(controller='fulfilment', action='index', id=fulfilment.id)) }
     </p>

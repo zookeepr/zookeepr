@@ -1747,17 +1747,16 @@ class AdminController(BaseController):
     def generate_fulfilment(self):
         """ Based on currently paid invoices, generate fulfilment records
             [Registration,Invoicing] """
-        invoice_query = meta.Session.query(Invoice.person_id.label('person_id'), InvoiceItem.product_id.label('product_id'), func.sum(InvoiceItem.qty).label('qty')).join(InvoiceItem).join(Product).filter(Product.fulfilment_type != None, Invoice.is_paid == True).group_by(Invoice.person_id, InvoiceItem.product_id)
-        fulfilment_query = meta.Session.query(Fulfilment.person_id.label('person_id'), FulfilmentItem.product_id.label('product_id'), -func.sum(FulfilmentItem.qty).label('qty')).join(FulfilmentItem).join(FulfilmentStatus).filter(FulfilmentStatus.void == False).group_by(Fulfilment.person_id, FulfilmentItem.product_id)
+        invoice_query = meta.Session.query(Invoice.person_id, InvoiceItem.product_id, Product.fulfilment_type_id, func.sum(InvoiceItem.qty).label('qty')).join(InvoiceItem).join(Product).filter(Product.fulfilment_type != None, Invoice.is_paid == True).group_by(Invoice.person_id, InvoiceItem.product_id, Product.fulfilment_type_id)
+        fulfilment_query = meta.Session.query(Fulfilment.person_id, FulfilmentItem.product_id, Fulfilment.type_id, -func.sum(FulfilmentItem.qty).label('qty')).join(FulfilmentItem).join(FulfilmentStatus).filter(FulfilmentStatus.void == False).group_by(Fulfilment.person_id, FulfilmentItem.product_id, Fulfilment.type_id)
         union_query = invoice_query.union(fulfilment_query)
-        qty = union_query.column_descriptions[2]['expr']
-        outstanding_query = union_query.with_entities(Person, Product, func.sum(qty).label('qty')).join(Person).join(Product).group_by(Person, Product).having(func.sum(qty) != 0)
+        columns = { d['name']: d['expr']  for d in union_query.column_descriptions }
+        outstanding_query = union_query.with_entities(Person, Product, FulfilmentType, func.sum(columns['qty']).label('qty')).join(Person).join(Product).join(FulfilmentType, columns['fulfilment_type_id'] == FulfilmentType.id).group_by(Person, Product, FulfilmentType).having(func.sum(columns['qty']) != 0)
         outstanding = outstanding_query.all()
 
         # Variable to use voucher codes we've already used in this run
         codes = {}
-
-        for outstanding_item in outstanding():
+        for outstanding_item in outstanding:
             # Find existing FulfilmentGroup or generate a new one
             try:
                 fulfilment_group = meta.Session.query(FulfilmentGroup).filter(FulfilmentGroup.person == outstanding_item.Person).one()
@@ -1771,25 +1770,26 @@ class AdminController(BaseController):
 
             # Find the Fulfilment this item should belong to where it is still editable or create a new one
             try:
-                fulfilment = meta.Session.query(Fulfilment).filter(Fulfilment.person == outstanding_item.Person, Fulfilment.type == outstanding_item.Product.fulfilment_type, Fulfilment.can_edit == True).one()
+                fulfilment = meta.Session.query(Fulfilment).filter(Fulfilment.person == outstanding_item.Person, Fulfilment.type == outstanding_item.FulfilmentType, Fulfilment.can_edit == True).one()
             except:
-                fulfilment = Fulfilment(person=outstanding_item.Person, type=outstanding_item.Product.fulfilment_type)
+                fulfilment = Fulfilment(person=outstanding_item.Person, type=outstanding_item.FulfilmentType)
                 fulfilment_group.fulfilments.append(fulfilment)
                 meta.Session.add(fulfilment)
 
             # Find fulfilment item record for this person/product. Make it part of the correct fulfilment and update the qty. Otherwise create a new one
             try:
-                fulfilment_item = meta.Session.query(FulfilmentItem).join(Fulfilment).filter(Fulfilment.person == outstanding_item.Person, FulfilmentItem.product == outstanding_item.Product, Fulfilment.can_edit == True).one()
+                fulfilment_item = meta.Session.query(FulfilmentItem).join(Fulfilment).filter(Fulfilment.person == outstanding_item.Person, Fulfilment.type == outstanding_item.FulfilmentType, FulfilmentItem.product == outstanding_item.Product, Fulfilment.can_edit == True).one()
                 fulfilment_item.fulfilment = fulfilment
                 fulfilment_item.qty += outstanding_item.qty
+                if fulfilment_item.qty == 0:
+                    meta.Session.delete(fulfilment_item)
             except:
                 fulfilment_item = FulfilmentItem(fulfilment=fulfilment, product=outstanding_item.Product, qty=outstanding_item.qty)
                 meta.Session.add(fulfilment_item)
 
             meta.Session.commit()
-
-        c.columns = ['Person', 'Product', 'Qty']
-        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.Product.fulfilment_type.name, result.qty] for result in outstanding]
+        c.columns = ['Person', 'Product', 'FulfilmentType', 'Qty']
+        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.FulfilmentType.name, result.qty] for result in outstanding]
         return table_response()
 
     def generate_boardingpass(self):
