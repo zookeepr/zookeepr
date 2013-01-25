@@ -1,5 +1,5 @@
 Subject: ${ h.event_name() } Proposal Offer Confirmation
-To: ${ c.person.fullname() } <${ c.person.email_address }>
+To: ${ c.person.fullname } <${ c.person.email_address }>
 
 Dear ${ c.person.firstname },
 

@@ -220,7 +220,7 @@ class PaymentController(BaseController):
         if 'HTTP_X_FORWARDED_FOR' in request.environ:
             client_ip = request.environ['HTTP_X_FORWARDED_FOR']
 
-        results['response_text'] = 'Manual payment processed by ' + h.signed_in_person().fullname()
+        results['response_text'] = 'Manual payment processed by ' + h.signed_in_person().fullname
         results['client_ip_zookeepr'] = client_ip
         results['client_ip_gateway'] = client_ip
         results['payment'] = payment

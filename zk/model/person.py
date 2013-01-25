@@ -59,6 +59,7 @@ class Person(Base):
     # the lengths of the fields are chosen arbitrarily
     firstname = sa.Column(sa.types.Text)
     lastname = sa.Column(sa.types.Text)
+    fullname = sa.orm.column_property(firstname + " " + lastname)
     address1 = sa.Column(sa.types.Text)
     address2 = sa.Column(sa.types.Text)
     city = sa.Column(sa.types.Text)
@@ -237,9 +238,6 @@ class Person(Base):
         for sn in SocialNetwork.find_all():
             if sn.name not in self.social_network:
                 self.social_network[sn.name] = ''
-
-    def fullname(self):
-        return "%s %s" % (self.firstname, self.lastname)
 
     def __repr__(self):
         return '<Person id="%s" email="%s">' % (self.id, self.email_address)

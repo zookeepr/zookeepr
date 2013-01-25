@@ -3,7 +3,7 @@
 <% speakers = [] %>
 % if talk is not None:
 %   for person in talk.people:
-<%   speakers.append(h.escape(person.fullname())) %>
+<%   speakers.append(h.escape(person.fullname)) %>
 %   endfor
 %   if len(speakers) == 1:
 <%    speakers = speakers[0] %>

@@ -8,7 +8,7 @@
 <table>
     <tr>
         <td><b>Name:</b></td>
-        <td>${ h.link_to(c.volunteer.person.fullname(), url=h.url_for(controller='person', id=c.volunteer.person.id)) }</td>
+        <td>${ h.link_to(c.volunteer.person.fullname, url=h.url_for(controller='person', id=c.volunteer.person.id)) }</td>
     </tr>
     <tr>
         <td><b>Email:</b></td>

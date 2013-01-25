@@ -93,6 +93,8 @@ def make_map(config):
     # product
     map.connect('/product/new/{cat_id}', controller='product', action='new')
 
+    # checkin
+    map.connect('/checkin/{action}', controller='checkin')
 
     # admin controller
     map.connect('/admin/{action}', controller='admin')

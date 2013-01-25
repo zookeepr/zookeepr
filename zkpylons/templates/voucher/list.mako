@@ -49,9 +49,9 @@
 %   if voucher.registration:
         <td>
 %          if c.admin:
-           ${ h.link_to(voucher.registration.person.fullname(), url=h.url_for(controller="person", action="view", id=voucher.registration.person.id)) }
+           ${ h.link_to(voucher.registration.person.fullname, url=h.url_for(controller="person", action="view", id=voucher.registration.person.id)) }
 %          else:
-           ${ voucher.registration.person.fullname() }
+           ${ voucher.registration.person.fullname }
 %          endif
            <br />
 %          if voucher.registration.person.company:

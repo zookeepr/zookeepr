@@ -8,10 +8,10 @@
           if lastname not in talks_by_person:
             talks_by_person[lastname] = dict()
 
-          if t.people[0].fullname() not in talks_by_person[lastname]:
-            talks_by_person[lastname][t.people[0].fullname()] = []
+          if t.people[0].fullname not in talks_by_person[lastname]:
+            talks_by_person[lastname][t.people[0].fullname] = []
 
-          talks_by_person[lastname][t.people[0].fullname()].append(t)
+          talks_by_person[lastname][t.people[0].fullname].append(t)
 %>
 
 %     if len(talks_by_person) > 0:
@@ -36,7 +36,7 @@
 <%
   presenters = []
   for person in t.people:
-    presenters.append(person.fullname())
+    presenters.append(person.fullname)
 
   if len(presenters) == 1:
     presenters = presenters[0]

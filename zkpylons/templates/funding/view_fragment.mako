@@ -4,7 +4,7 @@
 Funding request for a
 ${ c.funding.type.name } 
 submitted by
-${ c.funding.person.fullname() }
+${ c.funding.person.fullname }
 &lt;${ c.funding.person.email_address }&gt;
 at
 ${ c.funding.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />
@@ -12,14 +12,14 @@ ${ c.funding.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") | n}<br />
 
 %   if h.url_for().endswith('review') is True and ('funding_reviewer' in [x.name for x in c.signed_in_person.roles]) or ('organiser' in [x.name for x in c.signed_in_person.roles]):
 <p class="submitted">
-${ c.funding.person.fullname() } &lt;${ c.funding.person.email_address }&gt;
+${ c.funding.person.fullname } &lt;${ c.funding.person.email_address }&gt;
 %if c.funding.person.url and len(c.funding.person.url) > 0:
 <a href="${ c.funding.person.url}">Submitters Homepage</a>
 %endif
 <br>
 ${ h.link_to('(view details)', url=h.url_for(controller='person', action='view', id=c.funding.person.id)) }
-${ h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (c.funding.person.fullname(), c.funding.person.email_address)) }
-${ h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (c.funding.person.fullname(), c.funding.person.email_address)) }
+${ h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (c.funding.person.fullname, c.funding.person.email_address)) }
+${ h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (c.funding.person.fullname, c.funding.person.email_address)) }
 ${ h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % c.funding.person.email_address) }
 </p>
 %   endif

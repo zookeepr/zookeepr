@@ -20,7 +20,7 @@ Huh? No scheduled time for talk ${ p.id }.
 <p>${ h.line_break(h.url_to_link(p.abstract)) | n}</p>
 
 %     for person in p.people:
-<h4>${ person.fullname() }</h2>
+<h4>${ person.fullname }</h2>
 <div class="bio">
 <p>
 %        if person.bio:

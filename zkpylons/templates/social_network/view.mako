@@ -26,7 +26,7 @@
     <th>Username</th>
 %   for person in c.social_network.people:
   <tr>
-    <td>${ h.link_to(person.fullname(), url=h.url_for(controller='person', action='view', id=person.id)) }</td>
+    <td>${ h.link_to(person.fullname, url=h.url_for(controller='person', action='view', id=person.id)) }</td>
     <td>${ c.social_network.people[person] }</td>
   </tr>
 %   endfor

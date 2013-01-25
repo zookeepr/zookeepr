@@ -9,7 +9,7 @@
 
 
 <%def name="heading()">
-  Funding Application Review - #${ c.funding.id } - ${ c.funding.person.fullname() } - ${ c.funding.type.name }
+  Funding Application Review - #${ c.funding.id } - ${ c.funding.person.fullname } - ${ c.funding.type.name }
 </%def>
 
 ${ h.form(h.url_for()) }

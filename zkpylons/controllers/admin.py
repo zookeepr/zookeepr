@@ -448,7 +448,7 @@ class AdminController(BaseController):
 
           row = []
           row.append(str(r.person.id))
-          row.append(r.person.fullname())
+          row.append(r.person.fullname)
           row.append(r.person.firstname)
           row.append(r.person.email_address)
           row.append(r.person.country)
@@ -484,7 +484,7 @@ class AdminController(BaseController):
 
         for p in speaker_list:
             res = []
-            res.append(h.link_to(p.fullname(), url=h.url_for(controller='person', action='view', id=p.id)))
+            res.append(h.link_to(p.fullname, url=h.url_for(controller='person', action='view', id=p.id)))
             res.append(h.link_to(p.email_address, url='mailto:' + p.email_address))
             res.append('; '.join([h.link_to(h.truncate(t.title), url=h.url_for(controller='schedule', action='view_talk', id=t.id)) for t in p.proposals if t.accepted]))
             if p.registration:
@@ -861,7 +861,7 @@ class AdminController(BaseController):
                     elif r.partner_name is not None:
                         c.text += r.partner_name + " &lt;" + r.person.email_address + "&gt;\n"
                     else:
-                        c.text += r.person.fullname() + " &lt;" + r.person.email_address + "&gt;\n"
+                        c.text += r.person.fullname + " &lt;" + r.person.email_address + "&gt;\n"
                     count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
@@ -890,7 +890,7 @@ class AdminController(BaseController):
                             if item.product.category.name == "Penguin Dinner":
                                 dinner_tickets += item.qty
                                 total_dinner += item.qty
-                c.data.append([person.fullname(),
+                c.data.append([person.fullname,
                                person.email_address,
                                ", ".join(partners),
                                str(dinner_tickets)])
@@ -1400,7 +1400,7 @@ class AdminController(BaseController):
         for v in volunteer_collection:
           row = [str(v.person.id)]
           row.append(str(v.id))
-          row.append(h.link_to(v.person.fullname(), url=h.url_for(controller="person", action='view', id=v.person.id)))
+          row.append(h.link_to(v.person.fullname, url=h.url_for(controller="person", action='view', id=v.person.id)))
           row.append(h.link_to(v.person.email_address, url="mailto:" + v.person.email_address))
           row.append(v.person.country)
           row.append(v.person.city)
@@ -1551,7 +1551,7 @@ class AdminController(BaseController):
                            '<br/>'.join([
                                 '<a href="/person/%d">%s</a> (<a href="mailto:%s">%s</a>)' % (
                                     p.id,
-                                    h.util.html_escape(p.fullname()),
+                                    h.util.html_escape(p.fullname),
                                     h.util.html_escape(p.email_address),
                                     h.util.html_escape(p.email_address)
                                 ) for p in t.people
@@ -1576,7 +1576,7 @@ class AdminController(BaseController):
                            '<br/>'.join([
                                 '<a href="/person/%d">%s</a> (<a href="mailto:%s">%s</a>)' % (
                                     p.id,
-                                    h.util.html_escape(p.fullname()),
+                                    h.util.html_escape(p.fullname),
                                     h.util.html_escape(p.email_address),
                                     h.util.html_escape(p.email_address)
                                 ) for p in t.people

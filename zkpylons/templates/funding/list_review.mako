@@ -49,7 +49,7 @@
 <tr class="${ h.cycle('even', 'odd') }">
 	<td>${ h.link_to("%s" % (s.id), url=h.url_for(action='view', id=s.id)) }</td>
 	<td>
-${ h.link_to( s.person.fullname(), url=h.url_for(controller='person', action='view', id=s.person.id)) }
+${ h.link_to( s.person.fullname, url=h.url_for(controller='person', action='view', id=s.person.id)) }
         </td>
 <td>
 ${ s.creation_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") |n}

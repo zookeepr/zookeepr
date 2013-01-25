@@ -227,7 +227,7 @@ This person hasn't registered yet.
   </tr>
 %       for n in c.person.registration.notes:
   <tr class="${ h.cycle('even', 'odd') }">
-    <td valign="top">${ n.by.fullname() } <i>${ n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp; %H:%M") | n}</i></td>
+    <td valign="top">${ n.by.fullname } <i>${ n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp; %H:%M") | n}</i></td>
     <td valign="top">${ h.line_break(n.note) }</td>
     <td valign="top">${ h.link_to("edit", h.url_for(controller='rego_note', action='edit', id=n.id)) }
     ${ h.link_to("view", h.url_for(controller='rego_note', action='view', id=n.id)) }</td>

@@ -89,7 +89,7 @@ function toggleDiv(id,flagit) {
       <td>
 %     for person in proposal.people:
         <div onMouseOver="toggleDiv('${ "bio%s" % person.id | h}',1)" onMouseOut="toggleDiv('${ "bio%s" % person.id | h}',0)">
-          ${ person.fullname() }, 
+          ${ person.fullname }, 
         </div>
         <div id="${ "bio%s" % person.id | h}" class="biodiv">${ person.firstname + " " + person.lastname |h}<br><strong>Bio:</strong><p>${ person.bio |h }</p><strong>Experience:</strong><p> ${person.experience |h}</p></div>
 %     endfor
@@ -104,7 +104,7 @@ function toggleDiv(id,flagit) {
         </div>
         <div id="${ "score%s" % proposal.id | h}" class="commentdiv">
 %     for review in proposal.reviews:
-          ${ review.reviewer.fullname() }:  ${ review.score }<br />
+          ${ review.reviewer.fullname }:  ${ review.score }<br />
 %     endfor
         </div>
       </td>
@@ -114,14 +114,14 @@ function toggleDiv(id,flagit) {
       <!--
       link_to doesn't let us pass javascript tags
       -->
-        <a href="${ h.url_for(controller='review', action='view', id=review.id) }" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) |h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.fullname() | h}</a>, 
+        <a href="${ h.url_for(controller='review', action='view', id=review.id) }" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) |h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.fullname | h}</a>, 
         <div id="${ "%s%s" % (review.id, review.reviewer.id) | h}" class="commentdiv">
-          <b>${ review.reviewer.fullname() |h } Comments:</b> ${ review.comment |h }<br />
+          <b>${ review.reviewer.fullname |h } Comments:</b> ${ review.comment |h }<br />
           <br />
-          <b>${ review.reviewer.fullname() |h } Private Comments:</b> ${ review.private_comment |h }
+          <b>${ review.reviewer.fullname |h } Private Comments:</b> ${ review.private_comment |h }
         </div>
 %       else:
-        ${ h.link_to(review.reviewer.fullname() , url=h.url_for(controller='review', action='view', id=review.id)) }, 
+        ${ h.link_to(review.reviewer.fullname , url=h.url_for(controller='review', action='view', id=review.id)) }, 
 %       endif
 %     endfor
       </td>

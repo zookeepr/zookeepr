@@ -2,12 +2,12 @@
 
 <h1>Funding Review ${ c.review.id }</h1>
 
-<h2>${ c.review.funding.id } - ${ c.review.funding.person.fullname() } - ${ c.review.funding.type.name }</h2>
+<h2>${ c.review.funding.id } - ${ c.review.funding.person.fullname } - ${ c.review.funding.type.name }</h2>
 
 <p>${ h.link_to("Funding application", url=h.url_for(controller='funding', id=c.review.funding.id, action='view' )) }</p>
 
 <p>
-<b>Review by:</b> ${ c.review.reviewer.fullname() }
+<b>Review by:</b> ${ c.review.reviewer.fullname }
 </p>
 
 <br />

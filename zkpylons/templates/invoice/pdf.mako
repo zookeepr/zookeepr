@@ -28,7 +28,7 @@
 
 <%
   lines = []
-  lines.append(c.invoice.person.fullname())
+  lines.append(c.invoice.person.fullname)
   if c.invoice.person.company:
     lines.append(c.invoice.person.company)
 

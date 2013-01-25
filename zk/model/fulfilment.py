@@ -149,6 +149,7 @@ class Fulfilment(Base):
         nullable=False)
     status_id = sa.Column(sa.types.Integer, sa.ForeignKey('fulfilment_status.id'),
         nullable=False)
+    code = sa.Column(sa.types.Text, unique=True)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False,
         default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False,

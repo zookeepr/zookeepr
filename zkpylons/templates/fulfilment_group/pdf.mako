@@ -2,7 +2,7 @@
   <id>${ c.fulfilment_group.id }</id>
   <code>${ c.fulfilment_group.code }</code>
 %if c.fulfilment_group.person:
-  <fullname>${ c.fulfilment_group.person.fullname() }</fullname>
+  <fullname>${ c.fulfilment_group.person.fullname }</fullname>
 %endif
   <fulfilments>
 %for fulfilment in c.fulfilment_group.fulfilments:

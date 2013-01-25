@@ -91,7 +91,7 @@ ${ h.link_to("%s (view)" % funding.id, url=h.url_for(controller='funding', actio
 
 
 <td>
-${ h.link_to(funding.person.fullname(), url=h.url_for(controller='person', action='view', id=funding.person.id)) }
+${ h.link_to(funding.person.fullname, url=h.url_for(controller='person', action='view', id=funding.person.id)) }
 </td>
 
 <%
@@ -102,9 +102,9 @@ ${ h.link_to(funding.person.fullname(), url=h.url_for(controller='person', actio
             if review.score is not None:
                 num_reviewers += 1
                 total_score += review.score
-                scores += review.reviewer.fullname() + ": %s " % review.score + "<br>"
+                scores += review.reviewer.fullname + ": %s " % review.score + "<br>"
             else:
-                scores += review.reviewer.fullname() + ": Abstain<br>"
+                scores += review.reviewer.fullname + ": Abstain<br>"
 
         if num_reviewers == 0:
             avg_score = "No Reviews"
@@ -128,10 +128,10 @@ ${ avg_score |h }
 link_to doesn't let us pass javascript tags
 -->
 %           if review.comment:
-<a href="/funding_review/${review.id}" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.fullname() | h}</a>, 
-<div id="${ "%s%s" % (review.id, review.reviewer.id) | h}" class="commentdiv">${ review.reviewer.fullname() + ": " + review.comment |h}</div>
+<a href="/funding_review/${review.id}" onMouseOver="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',1)" onMouseOut="toggleDiv('${ "%s%s" % (review.id, review.reviewer.id) | h}',0)">${ review.reviewer.fullname | h}</a>, 
+<div id="${ "%s%s" % (review.id, review.reviewer.id) | h}" class="commentdiv">${ review.reviewer.fullname + ": " + review.comment |h}</div>
 %           else:
-${ h.link_to(review.reviewer.fullname(), url=h.url_for(controller='funding_review', action='view', id=review.id)) }, 
+${ h.link_to(review.reviewer.fullname, url=h.url_for(controller='funding_review', action='view', id=review.id)) }, 
 %           endif
 %       endfor
 </td>
