@@ -16,7 +16,7 @@ ${ c.error }
 <table>
 %   for person in c.many:
   <tr class="${ h.cycle("odd", "even") }">
-    <td>${ h.link_to(person.fullname(), h.url_for(p=person.id)) }</td>
+    <td>${ h.link_to(person.fullname, h.url_for(p=person.id)) }</td>
     <td>
 %     if person.registration:
 %       if person.paid():

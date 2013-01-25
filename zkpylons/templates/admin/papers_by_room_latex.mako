@@ -21,7 +21,7 @@ Huh? No scheduled time for talk ${ p.id }.
 ${ h.latex_clean(p.abstract) | n}
 %     for person in p.people:
 
-{\bf ${ person.fullname() }}
+{\bf ${ person.fullname }}
 
 %        if person.bio:
 ${ h.latex_clean(person.bio) | n  }

@@ -44,7 +44,7 @@ ${ under18(paid = False) }
 <%       rego = invoice_item.invoice.person.registration %>
 %       if rego.diet is not '' or rego.special is not '':
   <tr>
-    <td>${ h.link_to(invoice_item.invoice.person.fullname(), h.url_for(controller='person', action='view', id=invoice_item.invoice.person.id)) }</td>
+    <td>${ h.link_to(invoice_item.invoice.person.fullname, h.url_for(controller='person', action='view', id=invoice_item.invoice.person.id)) }</td>
     <td>${ h.link_to('rego id: ' + str(rego.id), url=h.url_for(controller='registration', action='view', id=rego.id)) }</td>
     <td>${ invoice_item.description }</td>
     <td>${ rego.diet }</td>
@@ -94,7 +94,7 @@ ${ under18(paid = False) }
     names = []
     for surname in surnames:
       for rego in diet[d][surname]:
-        names.append(h.link_to(rego.person.fullname(), h.url_for(controller='person', action='view', id=rego.person.id)))
+        names.append(h.link_to(rego.person.fullname, h.url_for(controller='person', action='view', id=rego.person.id)))
 %>
   <tr>
     <td>${ d }</td>

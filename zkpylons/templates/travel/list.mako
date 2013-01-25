@@ -15,7 +15,7 @@
 %   for travel in c.travel_collection:
   <tr class="${ h.cycle('even', 'odd')}">
     <td>${ h.link_to(travel.id, url=h.url_for(action='view', id=travel.id)) }</td>
-    <td>${ h.link_to(travel.person.fullname(), h.url_for(controller='person', action='view', id=travel.person.id)) }</td>
+    <td>${ h.link_to(travel.person.fullname, h.url_for(controller='person', action='view', id=travel.person.id)) }</td>
     <td>${ travel.origin_airport }</td>
     <td>${ travel.destination_airport }</td>
 %       if c.can_edit:

@@ -1,4 +1,5 @@
-"""empty message
+"""
+ * Add code field to fulfilment for barcode storage
 
 Revision ID: 108bc71e0757
 Revises: f690787df65

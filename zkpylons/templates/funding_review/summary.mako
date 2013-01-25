@@ -26,7 +26,7 @@ for r in c.review_collection:
 % for reviewer in review_summary:
 <tr class="${ h.cycle('even', 'odd') }">
 <td>
-${ reviewer.fullname() }
+${ reviewer.fullname }
 </td>
 
 <td>

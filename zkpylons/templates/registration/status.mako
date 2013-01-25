@@ -175,6 +175,6 @@
 % endif
 
 <%def name="title()" >
-Registration Status - ${ c.person.fullname() } - ${ parent.title() }
+Registration Status - ${ c.person.fullname } - ${ parent.title() }
 </%def>
 

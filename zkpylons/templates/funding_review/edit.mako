@@ -15,6 +15,6 @@ ${ h.end_form() }
 </div>
 
 <%def name="title()" >
-Review of <% c.funding.person.fullname() %>'s <% h.truncate(c.funding.type.name) %> - ${ parent.title() }
+Review of <% c.funding.person.fullname %>'s <% h.truncate(c.funding.type.name) %> - ${ parent.title() }
 </%def>
 

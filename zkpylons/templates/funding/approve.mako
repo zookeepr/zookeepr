@@ -14,7 +14,7 @@ ${ h.form(h.url_for()) }
 %   for s in c.requests:
   <tr class="${ h.cycle('even', 'odd') }">
     <td>${ h.link_to("%d" % s.id, url=h.url_for(action='view', id=s.id)) }</td>
-    <td>${ h.link_to(s.person.fullname(), url=h.url_for(controller='person', action='view', id=s.person.id)) }</td>
+    <td>${ h.link_to(s.person.fullname, url=h.url_for(controller='person', action='view', id=s.person.id)) }</td>
     <td>${ s.type.name }</td>
     <td>
 %     if s.id in c.highlight:

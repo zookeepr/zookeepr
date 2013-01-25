@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 
 %if c.fulfilment_group.person:
-<h2>${ c.fulfilment_group.person.fullname() }</h2>
+<h2>${ c.fulfilment_group.person.fullname }</h2>
 <p>Person ID: ${ c.fulfilment_group.person_id }</p>
 %endif
 

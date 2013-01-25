@@ -1,4 +1,4 @@
-<p>Generate a manual payment for ${ c.person.fullname() }.</p>
+<p>Generate a manual payment for ${ c.person.fullname }.</p>
 
 <p class="label"><span class="mandatory">*</span>
 <label for="payment.approved">Approved</label>
