@@ -52,7 +52,7 @@ class Event(Base):
 
     def computed_speakers(self):
         if self.proposal:
-            return [person.fullname() for person in self.proposal.people]
+            return [person.fullname for person in self.proposal.people]
         elif self.is_miniconf():
             return self.title.split('::')[1].split(',')
         else:
