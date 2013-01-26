@@ -1,6 +1,9 @@
       <p><label for="product.description">Description:</label><br>
       ${ h.text('product.description') }</p>
 
+      <p><label for="product.badge_text">Badge Text:</label><br>
+      ${ h.text('product.badge_text') }</p>
+
       <p>
         <label for="product.category">Category</label>
         ${ h.select('product.category', None, [(category.id, category.name) for category in c.product_categories], prompt='Select a category') }

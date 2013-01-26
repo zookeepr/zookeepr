@@ -8,6 +8,7 @@
     <h2>View product</h2>
 
     <p><b>Description:</b> ${ c.product.description | h }<br></p>
+    <p><b>Badge Text:</b> ${ c.product.badge_text | h }<br></p>
     <p><b>Category:</b> ${ c.product.category.name }<br></p>
 %if c.product.fulfilment_type:
     <p><b>Fulfilment Type:</b> ${ c.product.fulfilment_type.name }<br></p>

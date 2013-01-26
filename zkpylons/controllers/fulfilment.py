@@ -1,8 +1,10 @@
 import logging
+import os
+import tempfile
 
-from pylons import request, response, session, tmpl_context as c
+from pylons import request, response, session, tmpl_context as c, app_globals
 from zkpylons.lib.helpers import redirect_to
-from pylons.decorators import validate
+from pylons.decorators import validate, jsonify
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill, ForEach, Invalid
@@ -21,6 +23,8 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta, Fulfilment, FulfilmentType, FulfilmentStatus, FulfilmentGroup, Person
 
 from zkpylons.config.lca_info import lca_info
+
+import zkpylons.lib.pdfgen as pdfgen
 
 log = logging.getLogger(__name__)
 
@@ -118,3 +122,29 @@ class FulfilmentController(BaseController):
 
         h.flash("Fulfilment has been deleted.")
         redirect_to('index', id=None)
+
+    def _badge(self, id):
+        c.fulfilment = Fulfilment.find_by_id(id)
+
+        xml_s = render('/fulfilment/badge.mako')
+        xsl_f = app_globals.mako_lookup.get_template('/fulfilment/badge.xsl').filename
+        pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
+        return pdf_data
+
+    def badge_pdf(self, id):
+        pdf_data = self._badge(id)
+        filename = lca_info['event_shortname'] + '_' + str(c.fulfilment.id) + '.pdf'
+        return pdfgen.wrap_pdf_response(pdf_data, filename)
+
+    @jsonify
+    def badge_print(self, id):
+        pdf_data = self._badge(id)
+        (output_fd, output_path) = tempfile.mkstemp('.pdf')
+        os.write(output_fd, pdf_data)
+        os.close(output_fd)
+
+        #os.system('lpr' + output_path)
+        if os.path.exists(output_path):
+            os.remove(output_path)
+
+        return { 'status': 'Printing' }

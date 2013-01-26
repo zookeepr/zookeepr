@@ -129,14 +129,14 @@ class Person(Base):
     def is_professional(self):
         """We treat speakers, miniconf orgs, Little Blue sponsors and
            professionals as professionals."""
-        for invoice in self.invoices:
-            if invoice.is_paid and not invoice.is_void:
-                if self.is_speaker() or self.is_miniconf_org():
-                    return True
-                else:
-                    for item in invoice.items:
-                        if (item.description.find('Professional') > -1 or item.description.find('Little Blue') > -1):
-                            return True
+        if self.is_speaker() or self.is_miniconf_org():
+            return True
+        else:
+            for invoice in self.invoices:
+                if invoice.is_paid and not invoice.is_void:
+                        for item in invoice.items:
+                            if (item.description.find('Professional') > -1 or item.description.find('Little Blue') > -1):
+                                return True
         return False
 
     def is_speaker(self):

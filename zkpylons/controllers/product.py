@@ -31,6 +31,7 @@ class ProductSchema(BaseSchema):
     display_order = validators.Int(not_empty=True)
     active = validators.Bool()
     description = validators.String(not_empty=True)
+    badge_text = validators.String(not_empty=False, if_empty=None)
     cost = validators.Int(min=0, max=20000000)
     auth = validators.String(if_empty=None)
     validate = validators.String(if_empty=None)

@@ -385,6 +385,7 @@ class Product(Base):
     display_order = sa.Column(sa.types.Integer, nullable=False)
     active = sa.Column(sa.types.Boolean, nullable=False)
     description = sa.Column(sa.types.Text, nullable=False)
+    badge_text = sa.Column(sa.types.Text, nullable=True)
     cost = sa.Column(sa.types.Integer, nullable=False)
     auth = sa.Column(sa.types.Text, nullable=True)
     validate = sa.Column(sa.types.Text, nullable=True)
