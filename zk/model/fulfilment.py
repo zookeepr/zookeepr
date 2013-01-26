@@ -116,7 +116,7 @@ class FulfilmentGroup(Base):
     code = sa.Column(sa.types.Text, unique=True)
 
     # relations
-    person = sa.orm.relation(Person, backref='fulfilment_groups')
+    person = sa.orm.relation(Person, backref='fulfilment_groups', lazy='subquery')
 
     # methods
     @classmethod
@@ -178,7 +178,7 @@ class Fulfilment(Base):
     )
 
     # relations
-    person = sa.orm.relation(Person, backref='fulfilments')
+    person = sa.orm.relation(Person, backref='fulfilments', lazy='subquery')
     type = sa.orm.relation(FulfilmentType)
     status = sa.orm.relation(FulfilmentStatus)
     groups = sa.orm.relation(FulfilmentGroup, secondary=fulfilment_group_map, backref='fulfilments')

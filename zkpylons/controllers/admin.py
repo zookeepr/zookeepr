@@ -1754,17 +1754,12 @@ class AdminController(BaseController):
         outstanding_query = union_query.with_entities(Person, Product, FulfilmentType, func.sum(columns['qty']).label('qty')).join(Person).join(Product).join(FulfilmentType, columns['fulfilment_type_id'] == FulfilmentType.id).group_by(Person, Product, FulfilmentType).having(func.sum(columns['qty']) != 0)
         outstanding = outstanding_query.all()
 
-        # Variable to use voucher codes we've already used in this run
-        codes = {}
         for outstanding_item in outstanding:
             # Find existing FulfilmentGroup or generate a new one
             try:
                 fulfilment_group = meta.Session.query(FulfilmentGroup).filter(FulfilmentGroup.person == outstanding_item.Person).one()
             except:
-                code = generate_code()
-                while code in codes:
-                    code = generate_code()
-                codes[code] = None
+                code = generate_code(7, meta.Session.query(FulfilmentGroup.code))
                 fulfilment_group = FulfilmentGroup(person=outstanding_item.Person, code=code)
                 meta.Session.add(fulfilment_group)
 
@@ -1772,7 +1767,8 @@ class AdminController(BaseController):
             try:
                 fulfilment = meta.Session.query(Fulfilment).filter(Fulfilment.person == outstanding_item.Person, Fulfilment.type == outstanding_item.FulfilmentType, Fulfilment.can_edit == True).one()
             except:
-                fulfilment = Fulfilment(person=outstanding_item.Person, type=outstanding_item.FulfilmentType)
+                code = generate_code(5, meta.Session.query(Fulfilment.code))
+                fulfilment = Fulfilment(person=outstanding_item.Person, type=outstanding_item.FulfilmentType, code=code)
                 fulfilment_group.fulfilments.append(fulfilment)
                 meta.Session.add(fulfilment)
 
@@ -1789,7 +1785,7 @@ class AdminController(BaseController):
 
             meta.Session.commit()
         c.columns = ['Person', 'Product', 'FulfilmentType', 'Qty']
-        c.data = [[result.Person.fullname(), result.Product.category.name + ' - ' + result.Product.description, result.FulfilmentType.name, result.qty] for result in outstanding]
+        c.data = [[result.Person.fullname, result.Product.category.name + ' - ' + result.Product.description, result.FulfilmentType.name, result.qty] for result in outstanding]
         return table_response()
 
     def generate_boardingpass(self):
@@ -1816,10 +1812,13 @@ class AdminController(BaseController):
 
 
 
-def generate_code():
-    res = os.popen('pwgen 7 -BnA').read().strip()
-    if len(res)<3:
-        raise StandardError("pwgen call failed")
+def generate_code(length=7, selectable=None):
+    while True:
+        res = os.popen('pwgen ' + str(length) + ' -BnA').read().strip()
+        if len(res)<length:
+            raise StandardError("pwgen call failed")
+        if selectable and res not in [row[0] for row in selectable.all()]:
+            break
     return res
 
 def _keysigning_pdf(keyid):
