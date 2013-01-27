@@ -28,6 +28,7 @@ log = logging.getLogger(__name__)
 class RegoNoteSchema(BaseSchema):
     rego = ExistingRegistrationValidator(not_empty=True)
     note = validators.String(not_empty=True)
+    block = validators.Bool(if_empty=False)
     by = ExistingPersonValidator(not_empty=True)
 
 class NewNoteSchema(BaseSchema):
