@@ -188,7 +188,7 @@ class Fulfilment(Base):
     def find_by_id(cls, id, abort_404 = True):
         result = Session.query(cls).get(id)
         if result is None and abort_404:
-            abort(404, "No such person object")
+            abort(404, "No such fulfilment object")
         return result
 
     @classmethod
@@ -221,3 +221,12 @@ class FulfilmentItem(Base):
     fulfilment = sa.orm.relation(Fulfilment,
         backref=sa.orm.backref('items', cascade="all, delete-orphan"))
     product = sa.orm.relation(Product, backref='fulfilment_items')
+
+    # methods
+    @classmethod
+    def find_by_id(cls, id, abort_404 = True):
+        result = Session.query(cls).get(id)
+        if result is None and abort_404:
+            abort(404, "No such fulfilment item object")
+        return result
+
