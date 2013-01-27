@@ -21,6 +21,7 @@ class RegoNote(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
     rego_id = sa.Column(sa.types.Integer, sa.ForeignKey('registration.id'))
     note = sa.Column(sa.types.Text)
+    block = sa.Column(sa.types.Boolean, nullable=False)
     by_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), nullable=False)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
@@ -38,7 +39,7 @@ class RegoNote(Base):
         if result is None and abort_404:
             abort(404, "No such rego note object")
         return result
-        
+
     @classmethod
     def find_all(cls):
         return Session.query(RegoNote).order_by(RegoNote.id).all()
