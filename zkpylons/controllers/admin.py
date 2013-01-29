@@ -1788,6 +1788,29 @@ class AdminController(BaseController):
         c.data = [[result.Person.fullname, result.Product.category.name + ' - ' + result.Product.description, result.FulfilmentType.name, result.qty] for result in outstanding]
         return table_response()
 
+    def fulfilment_report(self):
+        return sql_response("""
+                select description,
+                       sum(completed) as completed,
+                       sum(non_completed) as non_completed
+                from (
+                       select pc.name || ' => ' || p.description as description,
+                             case when fs.name = 'Completed' then fi.qty else 0 end as completed,
+                             case when fs.name <> 'Completed' then fi.qty else 0 end as non_completed
+                      from fulfilment f,
+                            fulfilment_item fi,
+                            product p,
+                            product_category pc,
+                            fulfilment_status fs
+                       where fi.fulfilment_id = f.id
+                         and fi.product_id = p.id
+                         and pc.id = p.category_id
+                         and f.status_id = fs.id
+                         and not fs.void
+                     ) data
+                group by description
+                order by description
+            """)
     def generate_boardingpass(self):
         """ For every fulfilment group, generate a boarding pass
             [Registration,Invoicing] """
