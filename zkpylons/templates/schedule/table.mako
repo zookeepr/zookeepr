@@ -171,5 +171,5 @@ def inherit(context):
 <p class="note"><i>Schedule is subject to change without notice.</i></p>
 
 <%def name="title()">
-Schedule - ${ parent.title() }
+${ c.display_date.strftime('%A') } Schedule - ${ parent.title() }
 </%def>
