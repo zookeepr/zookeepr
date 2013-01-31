@@ -132,6 +132,34 @@ not registered
 %     endif
 %   endfor
 </table>
+%   if c.person.fulfilments:
+<h2>Fulfilments</h2>
+<table>
+  <tr>
+    <th>Fulfilment</th>
+    <th>Product</th>
+    <th>Qty</th>
+  </tr>
+%     for f in c.person.fulfilments:
+%       if not f.is_void:
+%         for item in f.items:
+  <tr class="${ h.cycle("odd", "even") }">
+%           if item == f.items[0]:
+    <td style="text-align: center" rowspan="${ len(f.items) }">
+      ${ h.link_to(f.id, h.url_for(controller='fulfilment', action='view', id=f.id)) } - 
+      ${ h.link_to('(edit)', h.url_for(controller='fulfilment', action='view', id=f.id)) }<br />
+      ${ f.type.name } - ${ f.status.name }
+    </td>
+%           endif
+    <td>${ item.product.category.name } - ${ item.product.description }</td>
+    <td>${ item.qty }</td>
+  </tr>
+%         endfor
+%       endif
+%     endfor
+</table>
+%   endif
+
 % endif
 
 %   if c.person.registration:
