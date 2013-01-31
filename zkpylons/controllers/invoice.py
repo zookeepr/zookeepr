@@ -24,6 +24,7 @@ from zkpylons.lib.mail import email
 
 from zkpylons.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
 from zkpylons.model.payment import Payment
+from zkpylons.model.payment_received import PaymentReceived
 
 from zkpylons.config.lca_info import lca_info
 from zkpylons.config.zkpylons_config import file_paths
@@ -87,18 +88,42 @@ class InvoiceController(BaseController):
         pass
 
     @authorize(h.auth.has_organiser_role)
-    @dispatch_on(POST="_new")
     def new(self):
-        try:
-            c.invoice_person = request.GET['person_id']
-        except:
-            c.invoice_person = ''
-
-        c.due_date = datetime.date.today().strftime("%d/%m/%Y")
-
         c.product_categories = ProductCategory.find_all()
-        c.item_count = 0;
         return render("/invoice/new.mako")
+
+    def save_new_invoice(self):
+        """
+        """
+        import json
+        debug = ""
+        data = request.params['invoice']
+        data = json.loads(data)
+
+        person_id = int(data['person_id'],10)
+        due_date = datetime.datetime.strptime(data['due_date'], '%d/%m/%Y')
+
+        invoice = Invoice(person_id=person_id, due_date=due_date, manual=True, void=None)
+        for invoice_item in data['invoice_items']:
+            item = InvoiceItem()
+
+            if invoice_item.has_key('description') and invoice_item['description']:
+                item.description = invoice_item['description']
+            else:
+                product = Product.find_by_id(invoice_item['product_id'])
+                category = product.category
+                item.product = product
+                item.description = product.category.name + ' - ' + product.description
+
+            item.cost = float(invoice_item['cost'])
+            item.qty = int(invoice_item['qty'],10)
+            invoice.items.append(item)
+
+        meta.Session.add(invoice)
+        meta.Session.commit()
+
+        debug += str(invoice.id)
+        return debug
 
     @validate(schema=NewInvoiceSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
@@ -257,6 +282,50 @@ class InvoiceController(BaseController):
 
         meta.Session.commit()
         return render("/invoice/payment.mako")
+
+    def pay_invoice(self):
+        """
+        Pay an invoice via the new angular.js interface
+
+        Expects: and invoice_id. Assumes total amount is to be paid.
+
+        TODO: Validation??
+        """
+        invoice_id = int(request.params['invoice'],10)
+        invoice = Invoice.find_by_id(invoice_id, True)
+        person = invoice.person
+
+        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        error = self._check_invoice(person, invoice)
+        if error is not None:
+            raise Exception(error)
+
+        payment = Payment()
+        payment.amount = invoice.total
+        payment.invoice = invoice
+
+        payment_received = PaymentReceived(
+                                    approved=True,
+                                    payment=payment,
+                                    invoice_id=invoice.id,
+                                    success_code='0',
+                                    amount_paid=payment.amount,
+                                    currency_used='AUD',
+                                    response_text='Approved',
+                                    client_ip_zookeepr='127.1.0.1',
+                                    client_ip_gateway='127.0.0.1',
+                                    email_address=person.email_address,
+                                    gateway_ref='Rego Desk Cash'
+                    )
+
+        meta.Session.add(payment)
+        meta.Session.add(payment_received)
+        meta.Session.commit()
+
+        return "Payment recorded"
 
     @validate(schema=PayInvoiceSchema(), form='pay', post_only=True, on_get=True, variable_decode=True)
     def _pay(self, id):

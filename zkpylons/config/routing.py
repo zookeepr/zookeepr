@@ -67,6 +67,8 @@ def make_map(config):
     # registration and invoicing
     map.connect('/invoice/{id}/pdf',               controller='invoice', action='pdf', id=None)
     map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
+    map.connect('/invoice/save_new_invoice',       controller='invoice', action='save_new_invoice', id=None)
+    map.connect('/invoice/pay_invoice',            controller='invoice', action='pay_invoice', id=None)
     map.connect('/registration/remind',            controller='registration', action='remind', id=None)
     map.connect('/register/status',                controller='registration', action='status')
     map.connect('/registration/silly_description', controller='registration', action='silly_description')
