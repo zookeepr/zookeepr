@@ -52,11 +52,11 @@ class CheckinController(BaseController):
         )
 
         boarding_query = meta.Session.query(FulfilmentGroup.person_id, FulfilmentGroup.code.label("pretty")).filter( 
-            FulfilmentGroup.code.like(q + '%')
+            FulfilmentGroup.code.ilike(q + '%')
         )
 
         badge_query = meta.Session.query(Fulfilment.person_id, Fulfilment.code.label("pretty")).filter( 
-            Fulfilment.code.like(q + '%')
+            Fulfilment.code.ilike(q + '%')
         )
 
         union_query = person_query.union(personid_query, boarding_query, badge_query).order_by("pretty").limit(5)
