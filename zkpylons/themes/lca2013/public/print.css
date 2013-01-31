@@ -717,4 +717,14 @@ blockquote.entries {
 .videoStreamLinks {
   display: none;
 }
+.netv-content-layout .netv-sidebar1 {
+display: none;
+}
 
+.netv-menu {
+display: none;
+}
+
+netv-nav {
+display: none;
+}
