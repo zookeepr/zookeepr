@@ -20,35 +20,12 @@
             var speaker_dinner_ids = [48, 49, 50];
             var partner_program_ids = [52, 53, 54];
 
-            var data = {
-                // "block": "Clarify disability",
-                "block": "",
-                "fulfilments": [
-                    {
-                            "code": null,
-                            "status_id": 2,
-                            "last_modification_timestamp": "22/01/2013",
-                            "type_id": 4,
-                            "fulfilment_items": [
-                                    {
-                                            "fulfilment_id": 80603,
-                                            "description": "Men's 3XL",
-                                            "qty": 2,
-                                            "product_text": null,
-                                            "id": 683,
-                                            "product_id": 33
-                                    }
-                            ],
-                            "person_id": 10214,
-                            "fulfilment_status": "Pending Bag Drop",
-                            "fulfilment_type": "Swag",
-                            "creation_timestamp": "22/01/2013",
-                            "id": 80603,
-                    },
-                ],
-                               "notes": [],
-            };
+            var data = {};
 
+      $.urlParam = function(name){
+        var result = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+        return result && result[1] || null;
+      }
 
             function RegoCtrl($scope) {
                 $scope.data = data;
@@ -73,24 +50,24 @@
                             if(f.id == fulfilment.id) {
                                 data["fulfilments"][i]["fulfilment_status"] = print_response.status;
                                 $scope.data["fulfilments"][i]["fulfilment_status"] = print_response.status;
-                                                               data["fulfilments"][i]["status_id"] = 6;
+                                data["fulfilments"][i]["status_id"] = 6;
                 $scope.data["fulfilments"][i]["status_id"] = 6; 
                 angular.element(document).scope().$apply(); // Required for history to update too
                 angular.element($('body')).scope().$apply();    
                             }
-                                                       $.post('/checkin/update_fulfilments', {data: JSON.stringify(data)}, function(incoming) {
+                            $.post('/checkin/update_fulfilments', {data: JSON.stringify(data)}, function(incoming) {
                 // Reload all data                              
                 load_person(data.id, data.firstname + ' ' + data.lastname); // TODO: Don't want to push to the history                                                   
               });
               // TODO "Loading"   
-                                                       // TODO: Failure
+                            // TODO: Failure
                         }
                     });
                     // TODO "Loading"
                     // TODO Handle failure
                 }
                 $scope.update_data = function() {
-                    console.log(data);
+                    console.log("new data", data);
                     for (var i = 0; i < data["fulfilments"].length; i++) {
                         var f = data["fulfilments"][i];
                         if(f.fulfilment_type == 'Badge') {
@@ -111,7 +88,6 @@
                         }
                         if(f.fulfilment_type == "Partners' Programme") {
                             for (var j = 0; j < f["fulfilment_items"].length; j++) {
-                                                               var fi = f["fulfilment_items"][j];
                                 if($.inArray(fi.product_id, partner_program_ids) > -1) {
                                     data["fulfilments"][i]["fulfilment_items"][j].description = "Partner Programme " + 
                                         data["fulfilments"][i]["fulfilment_items"][j].description;
@@ -140,15 +116,15 @@
                 $.post('/checkin/person_data', { id: id }, function(incoming) {
                     data = incoming;
 
-                                       console.log(data);
-                                       for (var i = 0; i < data["notes"].length; i++) {
-                                               console.log("block", data["notes"][i]);
-                                               if(data["notes"][i].block) {
-                                                       $("#block_rego_msg").text(data["notes"][i]["note"]);
-                                                       $("#block_rego").modal("show");
-                                                       return; // Don't load new data
-                                               }
-                                       }
+                    console.log("incoming data", data);
+                    for (var i = 0; i < data["notes"].length; i++) {
+                        console.log("block", data["notes"][i]);
+                        if(data["notes"][i].block) {
+                            $("#block_rego_msg").text(data["notes"][i]["note"]);
+                            $("#block_rego").modal("show");
+                            return; // Don't load new data
+                        }
+                    }
 
                     $('#search_box').val("");
                     $("#search_box").focus();
@@ -162,7 +138,10 @@
             }
 
             $(window).load(function(){
-                load_person("10473", "Adam Baxter - voltagex@voltagex.org");
+        console.log($.urlParam('id'));
+        if($.urlParam('id')) {
+          load_person($.urlParam('id'), "URL");
+        }
 
                 $("#search_box").focus();
 
@@ -299,13 +278,13 @@
         <!-- Rego tablets are 800x1232, but can rotate -->
         <div id="block_rego" class="modal hide fade" style="display: none; width: 50%; height: 50%;">
             <h1 style="text-align: center;">Registration Blocked</h1>
-                       <p id="block_rego_msg" style="margin-left: 20px; margin-top: 4em; font-size: 2em;">
+            <p id="block_rego_msg" style="margin-left: 20px; margin-top: 4em; font-size: 2em;">
             </p>
             <a onclick='$("#block_rego").modal("hide")' class="btn" style="position: absolute; right: 20px; bottom: 20px;">Close</a>
         </div>
         <div id="top_bar">
             <div style="float: left; margin-left: 5px; margin-right: 100px;">
-                <button id="new_invoice" type="submit" class="btn">New Invoice</button>
+                <a id="new_invoice" ng-click="new_invoice()" class="btn" href="/invoice/new?id={{data.id}}">New Invoice</a>
             </div>
             <div style="float: left;" class="dropdown">
                 <a id="history_btn" role="button" class="dropdown-toggle btn" data-toggle="dropdown" href="#">History<b class="caret"></b></a>
@@ -413,3 +392,4 @@
         </div>
     </body>
 </html>
+<!-- vim: set ts=2 sw=2: -->

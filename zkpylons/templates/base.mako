@@ -8,6 +8,7 @@
 <%def name="extra_body()">
   <body>
 </%def>
+<%def name="body_property()"></%def>
 <%def name="big_promotion()">
     ## Defined in children
 </%def>
@@ -36,11 +37,11 @@
         <link rel="stylesheet" media="screen, projection" href="/screen.css" type="text/css" />
         <link rel="stylesheet" media="screen" href="/css/lightbox.css" type="text/css" />
         <link rel="stylesheet" media="print" href="/print.css" type="text/css" />
-        <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
-        <script type="text/javascript" src="/js/jquery.cross-slide.min.js"></script>
         <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2011 News">
 
         ${self.extra_head()}
+        <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
+        <script type="text/javascript" src="/js/jquery.cross-slide.min.js"></script>
         <script type="text/javascript">
             jQuery(document).ready(function() {
                 jQuery("#flash > div").hide().fadeIn(3500);
@@ -65,7 +66,7 @@
         </script>
 %endif
     </head>
-<body>
+<body ${ self.body_property() } >
   ${self.extra_body()}
   <div id="wrapper">
     <div id="head">
