@@ -1833,7 +1833,12 @@ class AdminController(BaseController):
             pdf.close()
         return "Completed"
 
-
+    def generate_fulfilment_codes(self):
+        for fulfilment in meta.Session.query(Fulfilment).all():
+            if not fulfilment.code:
+                fulfilment.code = generate_code(5, meta.Session.query(Fulfilment.code))
+        meta.Session.commit()
+        return 'Completed'
 
 def generate_code(length=7, selectable=None):
     while True:
