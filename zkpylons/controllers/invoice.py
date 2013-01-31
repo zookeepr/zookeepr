@@ -299,10 +299,6 @@ class InvoiceController(BaseController):
             # Raise a no_auth error
             h.auth.no_role()
 
-        error = self._check_invoice(person, invoice)
-        if error is not None:
-            raise Exception(error)
-
         payment = Payment()
         payment.amount = invoice.total
         payment.invoice = invoice
