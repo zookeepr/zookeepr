@@ -73,7 +73,7 @@
            style="-inkscape-font-specification:'Arial Black,';font-family:Arial Black;font-weight:normal;font-style:normal;font-stretch:normal;font-variant:normal;font-size:40px;text-anchor:start;text-align:start;writing-mode:lr;line-height:125%" /></flowRegion><flowPara
          id="flowPara12571" /></flowRoot>    <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
        x="184.88086"
        y="902.24298"
        id="text3540"
@@ -135,17 +135,17 @@
     <text
        xml:space="preserve"
        style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Black;-inkscape-font-specification:'Arial Black,'"
-       x="434.67334"
+       x="420.00000"
        y="962.55933"
        id="text12573-8-9"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan12575-3-2"
-         x="434.67334"
+         x="420.00000"
          y="962.55933"><xsl:value-of select="items/item[product_category='Ticket']/product_text" /></tspan></text>
     <text
        xml:space="preserve"
-       style="font-size:12px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
+       style="font-size:9px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:center;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial;-inkscape-font-specification:Arial"
        x="558.80615"
        y="902.24292"
        id="text3540-5"
@@ -434,13 +434,13 @@
     <text
        xml:space="preserve"
        style="font-size:30px;font-style:normal;font-variant:normal;font-weight:normal;font-stretch:normal;text-align:start;line-height:125%;letter-spacing:0px;word-spacing:0px;writing-mode:lr-tb;text-anchor:start;fill:#000000;fill-opacity:1;stroke:none;font-family:Arial Black;-inkscape-font-specification:'Arial Black,'"
-       x="60.748047"
+       x="40.00000"
        y="962.55939"
        id="text12573-8"
        sodipodi:linespacing="125%"><tspan
          sodipodi:role="line"
          id="tspan12575-3"
-         x="60.748047"
+         x="40.00000"
          y="962.55939"><xsl:value-of select="items/item[product_category='Ticket']/product_text" /></tspan></text>
     <text
        xml:space="preserve"

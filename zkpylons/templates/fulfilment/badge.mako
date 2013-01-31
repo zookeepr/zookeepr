@@ -5,7 +5,7 @@
   <firstname>${ c.fulfilment.person.firstname }</firstname>
   <lastname>${ c.fulfilment.person.lastname }</lastname>
   <company>${ c.fulfilment.person.company }</company>
-% if reduce(lambda a, b: a or (b.product_id in [4,5,6,7,8,11,12,55]), c.fulfilment.items, False) or False:
+% if reduce(lambda a, b: a or (b.product_id in [4,5,6,7,8,11,12,80,81]), c.fulfilment.items, False) or False:
   <pdns>1</pdns>
 % else:
   <pdns>0</pdns>
