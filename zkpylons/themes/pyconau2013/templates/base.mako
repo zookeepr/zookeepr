@@ -43,7 +43,7 @@
         <script type="text/javascript" src="/jquery.min.js"></script>
 	<link rel="stylesheet" href="/prettyPhoto/css/prettyPhoto.css" type="text/css" media="screen" charset="utf-8" />
 	<script src="/prettyPhoto/js/jquery.prettyPhoto.js" type="text/javascript" charset="utf-8"></script>
-        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="LCA2012 News">
+        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="PyConAU 2013 News">
         <!--[if IE 6]><link rel="stylesheet" href="brisbanecity.ie6.css" type="text/css" media="screen" /><![endif]-->
         <!--[if IE 7]><link rel="stylesheet" href="brisbanecity.ie7.css" type="text/css" media="screen" /><![endif]-->
 	<script type="text/javascript" charset="utf-8">
@@ -249,7 +249,7 @@
                     <div class="netv-footer-inner">
                         <a href="/media/news/rss" class="netv-rss-tag-icon" title="RSS"></a>
                         <div class="netv-footer-text">
-                            <p>&copy; 2012 <a href="http://pycon-au.org/">PyCon Australia</a> and <a href="http://www.linux.org.au">Linux Australia</a> | <a href="http://validator.w3.org/check?uri=referer">Valid HTML 4.01</a> | <a href="/sitemap">Sitemap</a></p>
+                            <p>&copy; 2013 <a href="http://pycon-au.org/">PyCon Australia</a> and <a href="http://www.linux.org.au">Linux Australia</a> | <a href="http://validator.w3.org/check?uri=referer">Valid HTML 4.01</a> | <a href="/sitemap">Sitemap</a></p>
                         </div>
                         <div class="netv-footer-background"></div>
                         <div class="cleared"></div>
