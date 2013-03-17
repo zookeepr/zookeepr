@@ -18,6 +18,7 @@ lca_info = {
 # Event information
   'event_parent_organisation' : 'Linux Australia',
   'event_parent_url' : 'http://www.linux.org.au/',
+  'event_generic_name' : 'linux.conf.au',
   'event_name' : 'linux.conf.au 2011',
   'event_shortname' : 'lca2011',
   'event_host' : 'lca2011.linux.org.au',

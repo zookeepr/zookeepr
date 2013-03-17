@@ -82,7 +82,7 @@ Not specified
 ${ h.line_break(h.util.html_escape(c.funding.why_attend)) | n}
 </blockquote></p>
 
-<p class="label">Have you attended linux.conf.au before?</p>
+<p class="label">Have you attended ${ h.lca_info['event_generic_name'] } before?</p>
 <p class="entries">
 <table>
   <tr>

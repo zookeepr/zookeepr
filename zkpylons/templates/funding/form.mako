@@ -61,7 +61,7 @@
     <p class="note">Please describe why you would like to attend ${ h.event_name() } and indicate the talks that particularly interest you. Up to about 500 words.</p>
 
 
-    <p class="label"><label for="funding.prevlca">Have you attended linux.conf.au before?</label></p>
+    <p class="label"><label for="funding.prevlca">Have you attended ${ h.lca_info['event_generic_name'] } before?</label></p>
     <p class="entries">
     <table>
       <tr>

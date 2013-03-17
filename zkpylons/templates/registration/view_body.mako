@@ -83,7 +83,7 @@
         <p class="label"><b>Other special requirements:</b> ${ c.registration.special }</p>
 %endif
 
-          <p class="label"><label for="registration.prevlca"><b>Previous LCA attendance:</b></label></p>
+          <p class="label"><label for="registration.prevlca"><b>Previous ${ h.lca_info['event_generic_name'] } attendance:</b></label></p>
           <p class="entries">
 % for (year, desc) in h.lca_rego['past_confs']:
             <br>
