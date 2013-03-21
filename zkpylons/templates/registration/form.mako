@@ -435,7 +435,7 @@ accommdisplay();
             </p>
 % endif
           </fieldset>
-% if h.lca_rego['lca_optional_stuff']:
+% if h.lca_rego['lca_optional_stuff'] == 'yes':
           <fieldset>
               <h2>Optional</h2>
 <script src="/silly.js"></script>
