@@ -115,6 +115,6 @@ Your partner will be contacted by our Partner Programme Coordinator on:
 %endif
 
 
-We look forward to seeing you in Ballarat!
+We look forward to seeing you in ${ h.lca_info['event_city'] }!
 
 The ${ h.event_name() } Organising Committee

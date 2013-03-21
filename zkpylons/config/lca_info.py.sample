@@ -21,6 +21,7 @@ lca_info = {
   'event_generic_name' : 'linux.conf.au',
   'event_name' : 'linux.conf.au 2011',
   'event_shortname' : 'lca2011',
+  'event_city' : 'Hobart',
   'event_host' : 'lca2011.linux.org.au',
   'event_url' : 'http://lca2011.linux.org.au',
   'event_permalink' : 'http://lca2011.linux.org.au',
