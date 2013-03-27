@@ -126,7 +126,7 @@ class PaymentController(BaseController):
             'email_address': fields['receipt_address']
        }
 
-        if 'Approved' in c.response['response_text']:
+        if 'Approved' in c.response['response_text'] or 'success' in c.response['response_text']:
             c.response['approved'] = True
         else:
             c.response['approved'] = False
