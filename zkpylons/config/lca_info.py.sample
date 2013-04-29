@@ -73,6 +73,11 @@ lca_info = {
 
   'google_map_url': 'http://maps.google.com/maps/ms?ie=UTF8&hl=en&msa=0&msid=117014168848232117270.00048b169407c904d6506',
   'google_map_latlng': '-27.478216,153.019466',
+# mailing lists
+  'mailing_list_announce_url': 'http://lists.linux.org.au/listinfo/lca-announce',
+  'mailing_list_announce_addr': 'lca-announce@linux.org.au',
+  'mailing_list_chat_url': 'http://lists.lca2011.linux.org.au/lca2011-chat',
+  'mailing_list_chat_addr': 'lca2011-chat@lists.lca2011.linux.org.au',
 }
 
 lca_rego = {
