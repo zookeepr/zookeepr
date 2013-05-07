@@ -84,7 +84,9 @@ class VoucherController(BaseController):
                 ProductSchema.add_field('category_' + str(category.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
             elif category.display == 'checkbox':
                 for product in category.products_nonfree:
-                    ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
+                    #ProductSchema.add_field('product_' + str(product.id), validators.Bool(if_missing=False))
+                    # Checkbox products are handled the same as select and qty products
+                    ProductSchema.add_field('product_' + str(product.id) + '_qty', validators.Int(min=0, max=100, if_empty=0))
                     ProductSchema.add_field('product_' + str(product.id) + '_percentage', validators.Int(min=0, max=100, if_empty=0))
             elif category.display in ('select', 'qty'):
                 for product in category.products_nonfree:
