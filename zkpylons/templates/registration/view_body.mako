@@ -110,9 +110,10 @@
 %if c.registration.planetfeed:
           <p class="label"><b>Planet Feed:</b> ${ c.registration.planetfeed }</p>
 %endif
+% if c.registration.silly_description:
           <p class="label"><label for="registration.silly_description"><b>Description:</b> ${ c.registration.silly_description }</p>
           <p class="note">This is a randomly chosen description for your name badge</p>
-
+% endif
           <h2>Subscriptions</h2>
 
           <p>${ h.yesno('linuxaustralia' in (c.registration.signup or [])) |n } I want to sign up for (free) Linux Australia membership!</p>
