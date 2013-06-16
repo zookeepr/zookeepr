@@ -898,6 +898,10 @@ class RegistrationController(BaseController):
                     for item in invoice.items:
                         products.append(str(item.qty) + "x" + item.description)
 
+            # Hack to fix mising nick
+            if not registration.nick:
+                registration.nick = ''
+
             data.append([registration.id,
                          registration.person.firstname.encode('utf-8'),
                          registration.person.lastname.encode('utf-8'),
