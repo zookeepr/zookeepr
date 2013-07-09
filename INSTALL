@@ -12,6 +12,10 @@ Creating a development environment
 
 1. Create a postgresql database for your ZooKeepr instance.
 
+        sudo -u postgres createuser --no-createdb --no-createrole --no-superuser zookeepr
+        sudo -u postgres createdb -O zookeepr zk
+        sudo -u postgres psql --command "ALTER USER zookeepr with PASSWORD 'zookeepr'"
+
 2. Create a virtualenv for your ZooKeepr instance.
 
         \# using only virtualenv
@@ -44,6 +48,12 @@ Creating a development environment
             cherry-picked, commit c3812eb0 from
             https://github.com/iseppi/zookeepr.git on the nasty-db-import-fix
             branch.
+
+            git remote add alembicfix https://github.com/iseppi/zookeepr.git
+            git fetch alembicfix nasty-db-import-fix
+            git cherry-pick 46550d030045c3030ec48c64f968e01cc3812eb0
+            alembic --config development.ini upgrade head
+            git reset --hard HEAD^
 
             To verify the fix, use the alembic history command and check that the
             head revision is "This revision is a lie and should always be head".
