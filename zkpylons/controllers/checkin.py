@@ -45,17 +45,18 @@ class CheckinController(BaseController):
             Person.lastname.ilike(q + '%'),
             Person.fullname.ilike(q + '%'),
             Person.email_address.ilike(q + '%'),
+            Person.email_address.ilike('%@' + q + '%'),
         ))
 
-        personid_query = meta.Session.query(Person.id, cast(Person.id, sa.String).label("pretty")).filter(
+        personid_query = meta.Session.query(Person.id, sa.func.concat(cast(Person.id, sa.String), " - ", Person.fullname).label("pretty")).filter(
             cast(Person.id, sa.String).like(q + '%'),
         )
 
-        boarding_query = meta.Session.query(FulfilmentGroup.person_id, FulfilmentGroup.code.label("pretty")).filter( 
+        boarding_query = meta.Session.query(Person.id, sa.func.concat(FulfilmentGroup.code, " - ", Person.fullname).label("pretty")).join(FulfilmentGroup).filter(
             FulfilmentGroup.code.ilike(q + '%')
         )
 
-        badge_query = meta.Session.query(Fulfilment.person_id, Fulfilment.code.label("pretty")).filter( 
+        badge_query = meta.Session.query(Person.id, sa.func.concat(Fulfilment.code, " - ", Person.fullname).label("pretty")).join(Fulfilment).filter(
             Fulfilment.code.ilike(q + '%')
         )
 

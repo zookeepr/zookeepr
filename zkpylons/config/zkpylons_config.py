@@ -5,7 +5,8 @@ import os
 # File system paths that start with $xxx/ have file_paths['xxx'] prepended
 # to them.
 file_paths = {
-  'zk_root' :           None,  				# None will use the folder 2 above this one
+  # None will use the folder 2 above this one
+  'zk_root' :           None,
   'base_templates' :    '$zk_root/zkpylons/templates',
   'base_public':        '$zk_root/zkpylons/public',
   'theme_root' :        '$zk_root/zkpylons/themes',
@@ -13,7 +14,8 @@ file_paths = {
   'theme_templates':    '$enabled_theme/templates',
   'theme_public':       '$enabled_theme/public',
   'public_html':        '',
-  'public_path':        '$enabled_theme/public',                # this is for uploadable content... 
+   # this is for uploadable content
+  'public_path':        '$enabled_theme/public',
   'news_fileprefix':    '$base_public/featured',
   'news_htmlprefix':    '/featured',
   # Points towards where the slides and other recordings are stored

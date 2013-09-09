@@ -1,12 +1,13 @@
 import datetime
 import logging
+import json
 
 from pylons import request, response, session, tmpl_context as c
 from zkpylons.lib.helpers import redirect_to
 
 from pylons.controllers.util import Response, redirect
 
-from pylons.decorators import validate
+from pylons.decorators import validate, jsonify
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill, ForEach, Invalid
@@ -48,31 +49,6 @@ class ExistingInvoiceValidator(validators.FancyValidator):
     def _from_python(self, value, state):
         return value.id
 
-class InvoiceItemProductDescriptionValidator(validators.FancyValidator):
-    def validate_python(self, values, state):
-        if (values['product'] is None and values['description'] == "") or (values['product'] is not None and values['description'] != ""):
-            message = "You must select a product OR enter a description, not both"
-            error_dict = {'description': 'Description must not be blank'}
-            raise Invalid(message, values, state, error_dict=error_dict)
-
-class InvoiceItemValidator(BaseSchema):
-    product = ProductValidator()
-    qty = validators.Int() 
-    cost = validators.Int(min=-2000000, max=2000000)
-    description = validators.String(not_empty=False)
-    chained_validators = [InvoiceItemProductDescriptionValidator()]
-
-class InvoiceSchema(BaseSchema):
-    person = ExistingPersonValidator(not_empty=True)
-    due_date = validators.DateConverter(month_style='dd/mm/yyyy')
-    items = ForEach(InvoiceItemValidator())
-
-    item_count = validators.Int(min=0) # no max, doesn't hit database
-
-class NewInvoiceSchema(BaseSchema):
-    invoice = InvoiceSchema()
-    pre_validators = [NestedVariables]
-
 class PayInvoiceSchema(BaseSchema):
     payment_id = validators.Int(min=1)
 
@@ -88,72 +64,36 @@ class InvoiceController(BaseController):
         pass
 
     @authorize(h.auth.has_organiser_role)
+    @dispatch_on(POST="_new")
     def new(self):
         c.product_categories = ProductCategory.find_all()
         return render("/invoice/new.mako")
 
-    def save_new_invoice(self):
-        """
-        """
-        import json
-        debug = ""
-        data = request.params['invoice']
-        data = json.loads(data)
+    @jsonify
+    def _new(self):
+        data = json.loads(request.params['invoice'])
 
-        person_id = int(data['person_id'],10)
+        person_id = int(data['person_id'])
         due_date = datetime.datetime.strptime(data['due_date'], '%d/%m/%Y')
 
         invoice = Invoice(person_id=person_id, due_date=due_date, manual=True, void=None)
-        for invoice_item in data['invoice_items']:
-            item = InvoiceItem()
-
-            if invoice_item.has_key('description') and invoice_item['description']:
-                item.description = invoice_item['description']
-            else:
-                product = Product.find_by_id(invoice_item['product_id'])
+        for item in data['items']:
+            invoice_item = InvoiceItem()
+            if item.has_key('product_id') and item['product_id']:
+                product = Product.find_by_id(item['product_id'])
                 category = product.category
-                item.product = product
-                item.description = product.category.name + ' - ' + product.description
-
-            item.cost = float(invoice_item['cost'])
-            item.qty = int(invoice_item['qty'],10)
-            invoice.items.append(item)
+                invoice_item.product = product
+                invoice_item.description = product.category.name + ' - ' + product.description
+            else:
+                invoice_item.description = item['description']
+            invoice_item.cost = int(item['cost'])
+            invoice_item.qty = int(item['qty'])
+            invoice.items.append(invoice_item)
 
         meta.Session.add(invoice)
         meta.Session.commit()
 
-        debug += str(invoice.id)
-        return debug
-
-    @validate(schema=NewInvoiceSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
-    def _new(self):
-        results = self.form_result['invoice']
-        del(results['item_count'])
-
-        items = results['items']
-        results['items'] = []
-        c.invoice = Invoice(**results)
-
-        for i in items:
-            item = InvoiceItem()
-            if i['description'] != "":
-                item.description = i['description']
-            else:
-                product = Product.find_by_id(i['product'].id)
-                category = product.category
-                item.product = i['product']
-                item.description = product.category.name + ' - ' + product.description
-            item.cost = i['cost']
-            item.qty = i['qty']
-            c.invoice.items.append(item)
-
-        c.invoice.manual = True
-        c.invoice.void = None
-        meta.Session.add(c.invoice)
-        meta.Session.commit()
-
-        h.flash("Manual invoice created")
-        return redirect_to(action='view', id=c.invoice.id)
+        return dict(r=dict(invoice_id=invoice.id))
 
     def generate_hash(self, id):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_attendee(id), h.auth.has_organiser_role, h.auth.has_unique_key())):
@@ -283,45 +223,68 @@ class InvoiceController(BaseController):
         meta.Session.commit()
         return render("/invoice/payment.mako")
 
-    def pay_invoice(self):
+    @authorize(h.auth.has_organiser_role)
+    @jsonify
+    def get_invoice(self, id):
+        """
+        Returns a JSON representation of an existing invoice
+        """
+        invoice = Invoice.find_by_id(id, True)
+        obj = { 
+            'id': invoice.id,
+            'person_id': invoice.person_id,
+            'manual': invoice.manual,
+            'void': invoice.void,
+            'issue_date': invoice.issue_date.strftime('%d/%m/%Y'),
+            'due_date': invoice.due_date.strftime('%d/%m/%Y'),
+            'items': [
+                {
+                'product_id': item.product_id,
+                'description': item.description,
+                'qty': item.qty,
+                'cost': item.cost,
+                } for item in invoice.items],
+        }
+        return dict(r=dict(invoice=obj))
+
+    @authorize(h.auth.has_organiser_role)
+    @jsonify
+    def pay_invoice(self, id):
         """
         Pay an invoice via the new angular.js interface
 
-        Expects: and invoice_id. Assumes total amount is to be paid.
+        Expects: invoice_id. Assumes total amount is to be paid.
 
         TODO: Validation??
         """
-        invoice_id = int(request.params['invoice'],10)
-        invoice = Invoice.find_by_id(invoice_id, True)
+        invoice = Invoice.find_by_id(id, True)
         person = invoice.person
+        if not invoice.is_paid:
+            payment = Payment()
+            payment.amount = invoice.total
+            payment.invoice = invoice
 
-        if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(person.id), h.auth.has_organiser_role, h.auth.has_unique_key())):
-            # Raise a no_auth error
-            h.auth.no_role()
+            payment_received = PaymentReceived(
+                                        approved=True,
+                                        payment=payment,
+                                        invoice_id=invoice.id,
+                                        success_code='0',
+                                        amount_paid=payment.amount,
+                                        currency_used='AUD',
+                                        response_text='Approved',
+                                        client_ip_zookeepr='127.1.0.1',
+                                        client_ip_gateway='127.0.0.1',
+                                        email_address=person.email_address,
+                                        gateway_ref='Rego Desk Cash'
+                        )
 
-        payment = Payment()
-        payment.amount = invoice.total
-        payment.invoice = invoice
+            meta.Session.add(payment)
+            meta.Session.add(payment_received)
+            meta.Session.commit()
 
-        payment_received = PaymentReceived(
-                                    approved=True,
-                                    payment=payment,
-                                    invoice_id=invoice.id,
-                                    success_code='0',
-                                    amount_paid=payment.amount,
-                                    currency_used='AUD',
-                                    response_text='Approved',
-                                    client_ip_zookeepr='127.1.0.1',
-                                    client_ip_gateway='127.0.0.1',
-                                    email_address=person.email_address,
-                                    gateway_ref='Rego Desk Cash'
-                    )
-
-        meta.Session.add(payment)
-        meta.Session.add(payment_received)
-        meta.Session.commit()
-
-        return "Payment recorded"
+            return dict(r=dict(message="Payment recorded"))
+        else:
+            return dict(r=dict(message="A payment has already been recorded for this invoice"))
 
     @validate(schema=PayInvoiceSchema(), form='pay', post_only=True, on_get=True, variable_decode=True)
     def _pay(self, id):
