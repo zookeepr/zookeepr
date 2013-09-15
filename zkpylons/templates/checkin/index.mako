@@ -10,9 +10,6 @@
         <script src="bootstrap/js/bootstrap.js"></script>
         <script type="text/javascript">
             var history = [
-                { "id": "10473", "pretty": "Adam Baxter - voltagex@voltagex.org" },
-                { "id": "10134", "pretty": "Jacinta Richardson - jarich@perltraining.com.au" },
-                { "id": "10702", "pretty": "10702" },
             ];
 
             var ticket_product_ids = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 55, 80, 81, 84, 87];
@@ -22,10 +19,10 @@
 
             var data = {};
 
-      $.urlParam = function(name){
-        var result = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
-        return result && result[1] || null;
-      }
+            $.urlParam = function(name){
+                var result = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+                return result && result[1] || null;
+            }
 
             function RegoCtrl($scope) {
                 $scope.data = data;
@@ -56,8 +53,8 @@
                 angular.element($('body')).scope().$apply();    
                             }
                             $.post('/checkin/update_fulfilments', {data: JSON.stringify(data)}, function(incoming) {
-                // Reload all data                              
-                load_person(data.id, data.firstname + ' ' + data.lastname); // TODO: Don't want to push to the history                                                   
+                // Reload all data
+                load_person(data.id, data.firstname + ' ' + data.lastname); // TODO: Don't want to push to the history
               });
               // TODO "Loading"   
                             // TODO: Failure
@@ -284,7 +281,7 @@
         </div>
         <div id="top_bar">
             <div style="float: left; margin-left: 5px; margin-right: 100px;">
-                <a id="new_invoice" ng-click="new_invoice()" class="btn" href="/invoice/new?id={{data.id}}">New Invoice</a>
+                <a id="new_invoice" ng-click="new_invoice()" class="btn" href="/invoice/new?person_id={{data.id}}">New Invoice</a>
             </div>
             <div style="float: left;" class="dropdown">
                 <a id="history_btn" role="button" class="dropdown-toggle btn" data-toggle="dropdown" href="#">History<b class="caret"></b></a>

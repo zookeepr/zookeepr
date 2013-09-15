@@ -27,7 +27,7 @@
 % elif c.invoice.is_paid:
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>Invoice was paid by ${ c.invoice.person.email_address }.</li>
-        <li>${ h.link_to('Refund Invoice', url = h.url_for(action='refund')) }</li>
+        <li>${ h.link_to('Refund Invoice', url = h.url_for(action='new', id=None, refund_invoice_id=c.invoice.id)) }</li>
 %   else:
         <li>Invoice has been paid.</li>
 %   endif
