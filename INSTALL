@@ -51,7 +51,7 @@ Creating a development environment
 
             git remote add alembicfix https://github.com/iseppi/zookeepr.git
             git fetch alembicfix nasty-db-import-fix
-            git cherry-pick 46550d030045c3030ec48c64f968e01cc3812eb0
+            git cherry-pick a641643758d88238e4ada43f873d7b021238debe
             alembic --config development.ini upgrade head
             git reset --hard HEAD^
 
