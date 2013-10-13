@@ -313,11 +313,9 @@ def setup(meta):
     # Accommodation
     category_accomodation = ProductCategory.find_by_name('Accommodation')
     ceiling_accom_all = Ceiling.find_by_name('accomodation-all')
-    ceiling_accom_selfbook = Ceiling.find_by_name('accomodation-selfbook')
     product = Product(category=category_accomodation, active=True, description="I will organise my own",
                       cost="0", auth=None, validate=None)
     product.ceilings.append(ceiling_accom_all)
-    product.ceilings.append(ceiling_accom_selfbook)
     meta.Session.add(product);
 
     # Partners' Programme
@@ -382,7 +380,7 @@ class Product(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
     category_id = sa.Column(sa.types.Integer, sa.ForeignKey('product_category.id', ondelete='CASCADE', onupdate='CASCADE'), nullable=True)
     fulfilment_type_id = sa.Column(sa.types.Integer, sa.ForeignKey('fulfilment_type.id'), nullable=True)
-    display_order = sa.Column(sa.types.Integer, nullable=False)
+    display_order = sa.Column(sa.types.Integer, nullable=False, default=10)
     active = sa.Column(sa.types.Boolean, nullable=False)
     description = sa.Column(sa.types.Text, nullable=False)
     badge_text = sa.Column(sa.types.Text, nullable=True)
