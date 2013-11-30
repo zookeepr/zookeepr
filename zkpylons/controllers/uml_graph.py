@@ -35,9 +35,8 @@ class UmlGraphController(BaseController):
             #manytomanys = [f for f in c._descriptor.relationships
             #                if f.__class__ == elixir.relationships.ManyToMany]
 
-
             # SQLAlchemy makes this too hard to work out the exact relations. Just put everything as manytoones
-            manytoones = [f._get_target().class_ for f in c.__mapper__._init_properties.itervalues()
+            manytoones = [f.target for f in c.__mapper__._init_properties.itervalues()
                             if f.__class__ == sa.orm.properties.RelationProperty]
             onetomanys = []
             onetoones = []
@@ -52,7 +51,7 @@ class UmlGraphController(BaseController):
             relstr = ''.join(
                 ['<tr class="relstr">' + \
                  '<td align="left" port="%s">%s</td></tr>\n' % \
-                    (f.__name__, f.__name__) 
+                    (f.name, f.name) 
                         for f in manytoones + onetomanys + \
                                  onetoones + manytomanys])
             if relstr == '':
@@ -63,23 +62,23 @@ class UmlGraphController(BaseController):
 <td border="1" bgcolor="lightblue"><font face="Courier">%s</font></td></tr> \
 <tr><td> <table border="0" cellborder="0" >%s</table> </td></tr> \
 <tr><td> <table border="0" cellborder="0" >%s</table> </td></tr> \
-</table>>];\n' % (c.__name__, c.__name__, fieldstr, relstr)
+</table>>];\n' % (c.__tablename__, c.__tablename__, fieldstr, relstr)
             
             for c2 in manytoones:
                 op += '%s : %s -> %s [headlabel="%s" taillabel="%s"]\n'% \
-                                (c.__name__, c2.__name__ ,  c2.__name__, '', '') # TODO: add '*', '1'
+                                (c.__tablename__, c2.name ,  c2.name, '', '') # TODO: add '*', '1'
             for c2 in onetomanys:
                 op += '%s : %s -> %s [headlabel="%s" taillabel="%s"]\n' % \
-                                (c.__name__, c2.__name__ ,  c2.__name__, '*', '1')
+                                (c.__tablename__, c2.name ,  c2.name, '*', '1')
             for c2 in onetoones:
                 op += '%s : %s -> %s [headlabel="%s" taillabel="%s"]\n' % \
-                                (c.__name__, c2.__name__ ,  c2.__name__, '1', '1')
+                                (c.__tablename__, c2.name ,  c2.name, '1', '1')
             for c2 in manytomanys:
                 op += '%s : %s -> %s [headlabel="%s" taillabel="%s"]\n'% \
-                                (c.__name__, c2.__name__ ,  c2.__name__, '*', '*')
+                                (c.__tablename__, c2.name ,  c2.name, '*', '*')
             for c2 in inheritsfrom:
                 op += '%s -> %s [headlabel="%s" taillabel="%s"]\n' % \
-                                (c.__name__, c2.__name__, '1', '1')
+                                (c.__tablename__, c2.name, '1', '1')
         op += '}\n'
         # Render dot graph with /usr/bin/dot or return it directly
         if format == 'dot':
