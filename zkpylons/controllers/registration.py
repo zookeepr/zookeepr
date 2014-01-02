@@ -763,7 +763,7 @@ class RegistrationController(BaseController):
         for vproduct in voucher.products:
             for ii in invoice.items:
                 # if we have a category match
-                if ii.product.category == vproduct.product.category:
+                if ii.product and ii.product.category == vproduct.product.category:
                     # The qty we will give
                     if ii.qty < vproduct.qty:
                         qty = ii.qty
