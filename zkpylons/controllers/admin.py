@@ -842,6 +842,24 @@ class AdminController(BaseController):
 
         return render('admin/text.mako')
 
+    def volunteer_signup(self):
+        """ People who should be added to the volunteers mailing list" [Mailing Lists] """
+
+        c.text = """<p>People who should be added to the volunteers mailing list (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        for r in meta.Session.query(Registration).all():
+            if r.person.is_volunteer():
+                p = r.person
+                c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+                count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render('admin/text.mako')
+
     @authorize(h.auth.has_organiser_role)
     def partners_programme_signup(self):
         """ List of partners programme people for mailing list [Mailing Lists] """
