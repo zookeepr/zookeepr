@@ -718,6 +718,84 @@ class AdminController(BaseController):
                )
             );
         """)
+    @authorize(h.auth.has_organiser_role)
+    def registered_bagdrop(self):
+        """ List of people and swag for bag drop
+        """
+        return sql_response("""
+            SELECT person_id, name, string_agg(CONCAT(qty, 'x ', description), E'\n') as items
+            FROM (
+                SELECT
+                    person.id as person_id, concat(person.firstname, ' ', person.lastname) as name,
+                    fulfilment_item.qty, product.description
+                FROM fulfilment
+                LEFT JOIN person
+                    ON person.id = fulfilment.person_id
+                LEFT JOIN fulfilment_item
+                    ON fulfilment_item.fulfilment_id = fulfilment.id
+                LEFT JOIN product
+                    ON product.id = fulfilment_item.product_id
+                WHERE person_id NOT IN (
+                    SELECT DISTINCT(person_id)
+                    FROM fulfilment
+                    LEFT JOIN fulfilment_item
+                        ON fulfilment_id = fulfilment.id
+                    LEFT JOIN product_ceiling_map
+                        USING (product_id)
+                    WHERE
+                        ceiling_id = '86' -- B&G Accom All
+                        OR ceiling_id = '87' -- John Accom All
+                )
+                AND product.category_id = 2 -- Swag
+                AND product.id NOT IN (85, 82, 83, 51, 86) -- Ditch early accom & Handle own accom
+                AND fulfilment.status_id = 2 -- Pending Bag Drop (for swag only)
+                ORDER BY person.id, product.category_id DESC
+            ) as force_aggregation_to_be_ordered
+            GROUP BY person_id, name
+            ORDER BY person_id
+        """)
+
+    @authorize(h.auth.has_organiser_role)
+    def registered_prestuff(self):
+        """ List of people and swag for bag stuffing
+        """
+        return sql_response("""
+            SELECT person_id, name, string_agg(CONCAT(qty, 'x ', description), E'\n') as items
+            FROM (
+                SELECT
+                    person.id as person_id, concat(person.firstname, ' ', person.lastname) as name,
+                    fulfilment_item.qty, product.description
+                FROM fulfilment
+                LEFT JOIN person
+                    ON person.id = fulfilment.person_id
+                LEFT JOIN fulfilment_item
+                    ON fulfilment_item.fulfilment_id = fulfilment.id
+                LEFT JOIN product
+                    ON product.id = fulfilment_item.product_id
+                WHERE person_id NOT IN (
+                    SELECT DISTINCT(person_id)
+                    FROM fulfilment
+                    LEFT JOIN fulfilment_item
+                        ON fulfilment_id = fulfilment.id
+                    LEFT JOIN product_ceiling_map
+                        USING (product_id)
+                    WHERE
+                        ceiling_id IN(86, 87) -- B&G Accom All, John Accom All
+                ) AND (
+                    (
+                        fulfilment.status_id = 2 -- Pending Bag Drop
+                        AND product.category_id = 2 -- Swag
+                    )
+                    OR product.category_id = 5 -- Accommodation
+                )
+                AND product.id NOT IN (SELECT product_id FROM product WHERE category_id = 5) -- Ditch all accom
+                ORDER BY person.id, product.category_id DESC
+            ) as force_aggregation_to_be_ordered
+            GROUP BY person_id, name
+            ORDER BY person_id
+        """)
+
+
 
     @authorize(h.auth.has_organiser_role)
     def reconcile(self):
@@ -1559,25 +1637,19 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def av_norelease(self):
         """ A list of proposals without releases for video/slides [AV] """
-        talk_list = Proposal.find_all_accepted().filter(or_(Proposal.video_release==False, Proposal.slides_release==False)).order_by(Proposal.scheduled)
+        schedule_list = meta.Session.query(Schedule).join(Event).join(TimeSlot).join(Location).join(Proposal).filter(or_(Proposal.video_release==False, Proposal.slides_release==False)).order_by(TimeSlot.start_time)
 
         c.columns = ['Talk', 'Title', 'Who', 'When', 'Video?', 'Slides?']
         c.data = []
-        for t in talk_list:
-            c.data.append(['<a href="/programme/schedule/view_talk/%d">%d</a>' % (t.id, t.id),
-                           h.util.html_escape(t.title),
-                           '<br/>'.join([
-                                '<a href="/person/%d">%s</a> (<a href="mailto:%s">%s</a>)' % (
-                                    p.id,
-                                    h.util.html_escape(p.fullname),
-                                    h.util.html_escape(p.email_address),
-                                    h.util.html_escape(p.email_address)
-                                ) for p in t.people
-                           ]),
-                           h.util.html_escape(t.scheduled),
-                           h.util.html_escape(t.video_release),
-                           h.util.html_escape(t.slides_release),
-            ])
+        for s in schedule_list:
+            if s.event.proposal:
+                c.data.append([h.link_to(s.event.proposal.id, h.url_for(controller='schedule', action='view_talk', id=s.event.proposal.id)),
+                    h.util.html_escape(s.event.computed_title()),
+                    '<br/>'.join(['%s (%s)' % (h.link_to(p.fullname, h.url_for(controller='person', action='view', id=p.id)), h.link_to(p.email_address, url='mailto:' + p.email_address)) for p in s.event.proposal.people]),
+                    h.util.html_escape(s.time_slot.start_time),
+                    h.util.html_escape(s.event.proposal.video_release),
+                    h.util.html_escape(s.event.proposal.slides_release),
+                ])
         c.noescape = True
         return table_response()
 
