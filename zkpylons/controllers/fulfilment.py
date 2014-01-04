@@ -136,7 +136,6 @@ class FulfilmentController(BaseController):
         filename = lca_info['event_shortname'] + '_' + str(c.fulfilment.id) + '.pdf'
         return pdfgen.wrap_pdf_response(pdf_data, filename)
 
-    @jsonify
     def badge_print(self, id):
         pdf_data = self._badge(id)
         (output_fd, output_path) = tempfile.mkstemp('.pdf')
@@ -147,4 +146,10 @@ class FulfilmentController(BaseController):
         if os.path.exists(output_path):
             os.remove(output_path)
 
-        return { 'status': 'Printing' }
+        c.fulfilment.status_id = 5
+        meta.Session.commit()
+
+    def swag_give(self, id):
+        c.fulfilment = Fulfilment.find_by_id(id)
+        c.fulfilment.status_id = 6
+        meta.Session.commit()
