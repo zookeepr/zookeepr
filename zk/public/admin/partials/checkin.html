@@ -1,0 +1,83 @@
+<br>
+<div class="row">
+  <div class="col-sm-8">
+    <div>
+      <small>
+        <strong style="display: inline; margin-right: 5px;">
+          Recent:
+        </strong>
+        <ul style="display: inline-block;" class="list-inline" ng-if="history.length">
+          <li ng-repeat="person in history">
+            <a ng-click="loadPerson(person.id)">{{ person.pretty }}</a>
+          </li>
+        </ul>
+      </small>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <input class="pull-right form-control" type="text" size="30" autofocus ng-model="search_input" placeholder="Search" typeahead="person as person.pretty for person in findPerson($viewValue)" typeahead-on-select="search_select()" />
+  </div>
+</div>
+<hr>
+
+<div id="body_holder" ng-if="person.id">
+  <a class="btn btn-primary pull-right" href="#/invoice/new?person_id={{person.id}}">New Invoice</a>
+  <h2>
+    {{person.firstname}} {{person.lastname}}
+    <small>
+      {{person.email_address}}
+    </small>
+  </h2>
+  <div class="row">
+    <div class="col-sm-8">
+      <div ng-repeat="fulfilment in person.fulfilments" ng-if="fulfilment.fulfilment_items.length">
+        <div class="pull-right">
+          <span ng-if="fulfilment.fulfilment_type == 'Badge' && ['Print', 'Print - Boarding Pass'].indexOf(fulfilment.fulfilment_status) !== -1" class="pull-right">
+            <a class="btn btn-xs btn-primary" ng-click="badge_action($event, fulfilment)">{{fulfilment.fulfilment_status}}</a>
+          </span>
+          <span ng-if="fulfilment.fulfilment_type == 'Swag' && ['Give out', 'Give out - Boarding Pass'].indexOf(fulfilment.fulfilment_status) !== -1" class="pull-right">
+            <a class="btn btn-xs btn-primary" ng-click="swag_action($event, fulfilment)">{{fulfilment.fulfilment_status}}</a>
+          </span>
+        </div>
+        <h3>
+          {{ fulfilment.fulfilment_type }}
+          <small>
+            {{ fulfilment.fulfilment_status }}
+          </small>
+        </h3>
+        <table class="table table-striped table-bordered">
+          <thead>
+            <th style="width:80%">
+              Title
+            </th>
+            <th style="width:20%"  class="text-center">
+              Quantity
+            </th>
+          </thead>
+          <tbody ng-repeat="fulfilment in person.fulfilments | filter:{'fulfilment_type':fulfilment.fulfilment_type}">
+            <tr ng-repeat="item in fulfilment.fulfilment_items | orderBy:'description'">
+              <td>{{item.description}}</td>
+              <td class="text-center">
+                <small>{{item.qty}}</small>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="col-sm-4">
+      <div class="panel panel-default">
+        <div class="panel-heading">
+          Notes:
+        </div>
+        <div class="panel-body">
+          <small>
+            <p ng-repeat="note in person.notes | orderBy:id">
+              {{note.note}}
+            </p>
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

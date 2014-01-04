@@ -1,0 +1,11 @@
+<div class="modal-header">
+  <h3>Check-in for {{ person.firstname }} {{ person.lastname }} Blocked!</h3>
+</div>
+<div class="modal-body">
+  <ul>
+    <li ng-repeat="block in blocks">{{ block.note }}</li>
+  </ul>
+</div>
+<div class="modal-footer">
+  <button class="btn btn-warning" ng-click="close()">Close</button>
+</div>

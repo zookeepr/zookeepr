@@ -1,0 +1,46 @@
+<!doctype html>
+<html lang="en" ng-app="zk.admin">
+<head>
+  <meta charset="utf-8">
+  <title>Zookeepr Administration</title>
+  <link rel="stylesheet" href="css/app.css">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <link rel="stylesheet" href="css/bootstrap-theme.min.css">
+</head>
+<body>
+  <div class="container">
+    <br>
+    <div class="tabbable" ng-controller="TabCtrl">
+      <ul class="nav nav-tabs ">
+        <li ng-class="active(tab.url)" ng-repeat="tab in tabs">
+          <a href="#{{ tab.url }}">{{ tab.heading }}</a>
+        </li>
+      </ul>
+    </div>
+    <div ng-view></div>
+  </div>
+  <hr>
+  <div class="container"><span app-name></span>: v<span app-version></span></div>
+
+  <!-- In production use:
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-route.min.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular-resource.min.js"></script>
+  <script src="lib/angular-ui/ui-bootstrap-tpls.min.js"></script>
+  -->
+  <!-- In development use: -->
+  <script src="lib/jquery/jquery.js"></script>
+  <script src="lib/angular/angular.js"></script>
+  <script src="lib/angular/angular-route.js"></script>
+  <script src="lib/angular/angular-resource.js"></script>
+  <script src="lib/angular-ui/ui-bootstrap-tpls.js"></script>
+
+  <!-- Application specific: -->
+  <script src="js/app.js"></script>
+  <script src="js/services.js"></script>
+  <script src="js/controllers.js"></script>
+  <script src="js/filters.js"></script>
+  <script src="js/directives.js"></script>
+</body>
+</html>

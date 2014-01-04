@@ -1,0 +1,6 @@
+/* app css stylesheet */
+
+/* required for compatability with ui-bootstrap and native bootstrap CSS */
+.nav, .pagination, .carousel a { cursor: pointer; }
+
+/* App specific CSS */

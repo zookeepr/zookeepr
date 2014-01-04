@@ -97,11 +97,13 @@ class CheckinController(BaseController):
                   """ % id
 
         fulfilment_items_qry = """
-                       select fi.*, p.description
+                       select fi.*, CONCAT(c.name, ' - ', p.description) AS description
                        from fulfilment_item fi,
-                            product p
+                            product p,
+                            product_category c
                        where fulfilment_id = %d
                          and fi.product_id = p.id
+                         and p.category_id = c.id
                        """ 
 
         person_qry = sa.sql.text(person_qry_text)
