@@ -4,3 +4,8 @@
 .nav, .pagination, .carousel a { cursor: pointer; }
 
 /* App specific CSS */
+
+/* Add spacing for submit on inline forms. */
+.form-inline .btn-bottom {
+   vertical-align: bottom;
+}

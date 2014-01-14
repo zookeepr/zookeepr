@@ -370,6 +370,7 @@ has_proposals_chair_role = HasZookeeprRole('proposals_chair')
 has_late_submitter_role = HasZookeeprRole('late_submitter')
 has_planetfeed_role = HasZookeeprRole('planetfeed')
 has_keysigning_role = HasZookeeprRole('keysigning')
+has_checkin_role = HasZookeeprRole('checkin')
 is_valid_user = ValidZookeeprUser()
 is_same_zkpylons_user = IsSameZookeeprUser
 is_same_zkpylons_submitter = IsSameZookeeprSubmitter

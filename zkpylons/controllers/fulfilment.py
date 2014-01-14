@@ -45,17 +45,18 @@ class EditFulfilmentSchema(BaseSchema):
 class FulfilmentController(BaseController):
 
     @enforce_ssl(required_all=True)
-    @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
         c.can_edit = True
 
         c.fulfilment_type = FulfilmentType.find_all()
         c.fulfilment_status = FulfilmentStatus.find_all()
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new")
     def new(self):
         return render('/fulfilment/new.mako')
 
+    @authorize(h.auth.has_organiser_role)
     @validate(schema=NewFulfilmentSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['fulfilment']
@@ -67,18 +68,22 @@ class FulfilmentController(BaseController):
         h.flash("Fulfilment created")
         redirect_to(action='index', id=None)
 
+    @authorize(h.auth.has_organiser_role)
     def view(self, id):
         c.fulfilment = Fulfilment.find_by_id(id)
         return render('/fulfilment/view.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def person(self, id):
         c.person = Person.find_by_id(id)
         return render('/fulfilment/person.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         c.fulfilment_collection = Fulfilment.find_all()
         return render('/fulfilment/list.mako')
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_edit")
     def edit(self, id):
         c.fulfilment = Fulfilment.find_by_id(id)
@@ -91,6 +96,7 @@ class FulfilmentController(BaseController):
         form = render('/fulfilment/edit.mako')
         return htmlfill.render(form, defaults)
 
+    @authorize(h.auth.has_organiser_role)
     @validate(schema=EditFulfilmentSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         fulfilment = Fulfilment.find_by_id(id)
@@ -103,6 +109,7 @@ class FulfilmentController(BaseController):
         h.flash("The Fulfilment has been updated successfully.")
         redirect_to(action='index', id=None)
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_delete")
     def delete(self, id):
         """Delete the fulfilment
@@ -114,6 +121,7 @@ class FulfilmentController(BaseController):
         c.fulfilment = Fulfilment.find_by_id(id)
         return render('/fulfilment/confirm_delete.mako')
 
+    @authorize(h.auth.has_organiser_role)
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.fulfilment = Fulfilment.find_by_id(id)
@@ -123,6 +131,7 @@ class FulfilmentController(BaseController):
         h.flash("Fulfilment has been deleted.")
         redirect_to('index', id=None)
 
+    @authorize(h.auth.has_checkin_role)
     def _badge(self, id):
         c.fulfilment = Fulfilment.find_by_id(id)
 
@@ -131,11 +140,13 @@ class FulfilmentController(BaseController):
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
         return pdf_data
 
+    @authorize(h.auth.has_organiser_role)
     def badge_pdf(self, id):
         pdf_data = self._badge(id)
         filename = lca_info['event_shortname'] + '_' + str(c.fulfilment.id) + '.pdf'
         return pdfgen.wrap_pdf_response(pdf_data, filename)
 
+    @authorize(h.auth.has_checkin_role)
     def badge_print(self, id):
         pdf_data = self._badge(id)
         (output_fd, output_path) = tempfile.mkstemp('.pdf')
@@ -149,6 +160,7 @@ class FulfilmentController(BaseController):
         c.fulfilment.status_id = 5
         meta.Session.commit()
 
+    @authorize(h.auth.has_checkin_role)
     def swag_give(self, id):
         c.fulfilment = Fulfilment.find_by_id(id)
         c.fulfilment.status_id = 6

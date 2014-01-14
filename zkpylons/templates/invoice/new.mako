@@ -253,7 +253,7 @@ function InvoiceCtrl($scope, $filter) {
       // Response in an invoice id
       console.log("response", response);
       // They have to pay by card... all done
-      window.location.href = '/checkin?id=' + $scope.invoice.person_id;
+      window.location.href = '/admin/#/checkin?id=' + $scope.invoice.person_id;
     };
     return $scope.submit_invoice($event, callback)
   };
@@ -266,7 +266,7 @@ function InvoiceCtrl($scope, $filter) {
       callback = function(response) {
         $scope.processing = false;
         console.log("response", response);
-        window.location.href = '/checkin?id=' + $scope.invoice.person_id;
+        window.location.href = '/admin/#/checkin?id=' + $scope.invoice.person_id;
       };
       return $scope.submit_payment($event, callback, response['r']['invoice_id']);
     };
