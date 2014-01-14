@@ -33,9 +33,6 @@ class CheckinController(BaseController):
     def __before__(self, **kwargs):
         pass
 
-    def index(self):
-        return render('/checkin/index.mako')
-
     @jsonify
     def lookup(self):
         q = request.params['q']
