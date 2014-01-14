@@ -15,13 +15,13 @@
     </div>
   </div>
   <div class="col-sm-4">
-    <input class="pull-right form-control" type="text" size="30" autofocus ng-model="search_input" placeholder="Search" typeahead="person as person.pretty for person in findPerson($viewValue)" typeahead-on-select="search_select()" />
+    <input id='search' class="pull-right form-control" type="text" size="30" autofocus ng-model="search_input" placeholder="Search" typeahead="person as person.pretty for person in findPerson($viewValue)" typeahead-on-select="search_select()" typeahead-on-loaded="search_loaded
   </div>
 </div>
 <hr>
 
 <div id="body_holder" ng-if="person.id">
-  <a class="btn btn-primary pull-right" href="#/invoice/new?person_id={{person.id}}">New Invoice</a>
+  <a class="btn btn-primary pull-right" href="/invoice/new?person_id={{person.id}}">New Invoice</a>
   <h2>
     {{person.firstname}} {{person.lastname}}
     <small>
@@ -54,7 +54,7 @@
               Quantity
             </th>
           </thead>
-          <tbody ng-repeat="fulfilment in person.fulfilments | filter:{'fulfilment_type':fulfilment.fulfilment_type}">
+          <tbody>
             <tr ng-repeat="item in fulfilment.fulfilment_items | orderBy:'description'">
               <td>{{item.description}}</td>
               <td class="text-center">

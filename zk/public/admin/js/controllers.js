@@ -16,7 +16,15 @@ angular.module('zk.admin.controllers', []).
   controller('PersonDetailCtrl', function($scope) {
 
   }).
-  controller('CheckinCtrl', function($scope, $http, $modal) {
+  controller('CheckinCtrl', function($scope, $http, $modal, $routeParams) {
+    $("body").on('keyup', '#search', function() { 
+       setTimeout( function() { 
+               if ($("#search").next().find('li').length == 1) { 
+                       $($("#search").next().find('li')[0]).click() 
+               } 
+       }, 1000) 
+    })
+    
     $scope.search_select = function() {
         var person = $scope.search_input;
         $scope.loadPerson(person.id);
@@ -44,17 +52,19 @@ angular.module('zk.admin.controllers', []).
     };
 
     $scope.loadPerson = function(personId) {
-      $http.get('/checkin/person_data', { params: { id: personId } })
-        .then(function(response) {
-          $scope.person = response.data;
-          $scope.blocks = response.data.notes.filter(function(element, index) {
-            return element.block;
-          })
-          if ($scope.blocks.length) {
-            $scope.block();
-            $scope.person = {};
-          }
-        });
+      $http.get('/admin/generate_fulfilment').success(function() {
+        $http.get('/checkin/person_data', { params: { id: personId } })
+          .then(function(response) {
+            $scope.person = response.data;
+            $scope.blocks = response.data.notes.filter(function(element, index) {
+              return element.block;
+            })
+            if ($scope.blocks.length) {
+              $scope.block();
+              $scope.person = {};
+            }
+          });
+      });
     };
 
     $scope.block = function() {
@@ -79,6 +89,11 @@ angular.module('zk.admin.controllers', []).
         $scope.loadPerson($scope.person.id);
       });
     }
+
+    if($routeParams.id) {
+       $scope.loadPerson($routeParams.id);
+    }
+
   }).
   controller('CheckinBlockCtrl', function($scope, $modalInstance, person, blocks) {
     $scope.person = person;

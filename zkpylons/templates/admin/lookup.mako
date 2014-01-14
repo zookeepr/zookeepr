@@ -147,7 +147,7 @@ not registered
 %           if item == f.items[0]:
     <td style="text-align: center" rowspan="${ len(f.items) }">
       ${ h.link_to(f.id, h.url_for(controller='fulfilment', action='view', id=f.id)) } - 
-      ${ h.link_to('(edit)', h.url_for(controller='fulfilment', action='view', id=f.id)) }<br />
+      ${ h.link_to('(edit)', h.url_for(controller='fulfilment', action='edit', id=f.id)) }<br />
       ${ f.type.name } - ${ f.status.name }
     </td>
 %           endif
