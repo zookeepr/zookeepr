@@ -911,6 +911,42 @@ class AdminController(BaseController):
 
         return render('admin/text.mako')
 
+    def speaker_signup(self):
+        """ People who should be added to the speakers mailing list" [Mailing Lists] """
+
+        c.text = """<p>People who should be added to the speakers mailing list (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        for r in meta.Session.query(Registration).all():
+            if r.person.is_speaker():
+                p = r.person
+                c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+                count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render('admin/text.mako')
+
+    def miniconf_org_signup(self):
+        """ People who should be added to the miniconf organisers mailing list" [Mailing Lists] """
+
+        c.text = """<p>People who should be added to the miniconf organisers mailing list (whether or not they then went on to pay for
+        the conference).</p><p>Copy and paste the following into mailman</p>
+        <p><textarea cols="100" rows="25">"""
+
+        count = 0
+        for r in meta.Session.query(Registration).all():
+            if r.person.is_miniconf_org():
+                p = r.person
+                c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+                count += 1
+        c.text += "</textarea></p>"
+        c.text += "<p>Total addresses: " + str(count) + "</p>"
+
+        return render('admin/text.mako')
+
     @authorize(h.auth.has_organiser_role)
     def partners_programme_signup(self):
         """ List of partners programme people for mailing list [Mailing Lists] """
@@ -1655,23 +1691,25 @@ class AdminController(BaseController):
     def random_delegates(self):
         """ Select 20 random (paid, non-volunteer, non-organiser, non-speaker, non-media) delegates for prize draws """
 
+        delegate_list = Registration.find_all()
+        random.shuffle(delegate_list)
         filtered_list = []
 
-        for r in Registration.find_all():
+        for r in delegate_list:
+            if len(filtered_list) >= 20:
+                continue
             p = r.person
-            if p.is_speaker() or p.is_volunteer():
+            if p.is_speaker() or p.is_miniconf_org() or p.is_volunteer():
                 continue
-            if len(filter(lambda r: r.name in ('core_team', 'miniconfsonly', 'press', 'team', 'organiser', 'miniconf'), p.roles)):
+            if self._random_delegates_excluded(p):
                 continue
-            if p.paid() and p.has_paid_ticket():
+            if p.has_paid_ticket():
                 filtered_list.append(r)
-
-        random.shuffle(filtered_list)
 
         c.columns = ['Who', 'From', 'Email', 'Shell', 'Nick', 'Twitter', 'Previous LCAs']
         c.data = []
         sn_twitter = SocialNetwork.find_by_name("Twitter")
-        for r in filtered_list[:20]:
+        for r in filtered_list:
             c.data.append([
                 "%s %s (%d)" % (r.person.firstname, r.person.lastname, r.person.id),
                 "%s, %s" % (r.person.city, r.person.country),
@@ -1682,6 +1720,13 @@ class AdminController(BaseController):
                 ','.join(r.prevlca or []),
             ])
         return table_response()
+
+    def _random_delegates_excluded(self, person):
+       for invoice in person.invoices:
+           for invoice_item in invoice.items:
+               if invoice_item.product and invoice_item.product.badge_text in ['Media', 'Miniconf Only', 'Miniconf Organiser', 'Organiser', 'Speaker', 'Volunteer']:
+                   return True
+       return False
 
     @authorize(h.auth.has_organiser_role)
     def _destroy_personal_information(self):
