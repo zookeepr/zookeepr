@@ -20,7 +20,6 @@ ${ h.hidden('person.lastname') }
 %endif
 
 ${ h.hidden('person.email_address') }
-${ h.hidden('person.email_address2', '') }
 ${ h.hidden('person.company') }
 
 %if not c.person.mobile and c.mobile_is_mandatory:

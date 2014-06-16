@@ -9,16 +9,11 @@ ${ h.hidden('person.company', value='') }</p>
 % if c.form is not 'edit' or h.auth.authorized(h.auth.has_organiser_role):
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>
 <p class="entries">${ h.text('person.email_address', size=40) }</p>
-%   if c.form is not 'edit':
-<p class="label"><span class="mandatory">*</span><label for="person.email_address2">Confirm your email address:</label></p>
-<p class="entries">${ h.text('person.email_address2', size=40) }</p>
-%   endif
 % else:
 <p>
 <p class="label"><label for="person.email_address">Email address:</label></p>
 <p class="entries">${ h.text('person.email_address', size=40, readonly=True) }</p>
 If you wish to change your email address please contact the organisers.
-${ h.hidden('person.email_address2', '') }
 </p>
 % endif
 

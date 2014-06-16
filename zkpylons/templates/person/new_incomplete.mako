@@ -13,9 +13,6 @@ ${ h.form(h.url_for(), method='post') }
 <p class="label"><span class="mandatory">*</span><label for="person.email_address">Email address:</label></p>
 <p class="entries">${ h.text('person.email_address', size=40) }</p>
 
-<p class="label"><span class="mandatory">*</span><label for="person.email_address2">Confirm the email address:</label></p>
-<p class="entries">${ h.text('person.email_address2', size=40) }</p>
-
 <p class="submit">${ h.submit("submit", "Create a new account",) }</p>
 
 ${ h.end_form() }
