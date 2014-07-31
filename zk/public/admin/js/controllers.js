@@ -18,11 +18,11 @@ angular.module('zk.admin.controllers', []).
   }).
   controller('CheckinCtrl', function($scope, $http, $modal, $routeParams) {
     $("body").on('keyup', '#search', function() { 
-       setTimeout( function() { 
-               if ($("#search").next().find('li').length == 1) { 
-                       $($("#search").next().find('li')[0]).click() 
-               } 
-       }, 1000) 
+	setTimeout( function() { 
+		if ($("#search").next().find('li').length == 1) { 
+			$($("#search").next().find('li')[0]).click() 
+		} 
+	}, 1000) 
     })
     
     $scope.search_select = function() {
