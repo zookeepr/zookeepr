@@ -1903,8 +1903,8 @@ class AdminController(BaseController):
                        sum(non_completed) as non_completed
                 from (
                        select pc.name || ' => ' || p.description as description,
-                             case when fs.name = 'Completed' then fi.qty else 0 end as completed,
-                             case when fs.name <> 'Completed' then fi.qty else 0 end as non_completed
+                             case when fs.completed then fi.qty else 0 end as completed,
+                             case when not fs.completed then fi.qty else 0 end as non_completed
                       from fulfilment f,
                             fulfilment_item fi,
                             product p,

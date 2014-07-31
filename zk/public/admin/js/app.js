@@ -19,7 +19,14 @@ var navRouting = [
     templateUrl: 'partials/invoice.html',
     controller: 'InvoiceCtrl',
     url: '/invoice',
-    routes: []
+    routes: [
+      {
+        templateUrl: 'partials/invoice_new.html',
+        controller: 'NewInvoiceCtrl',
+        url: '/invoice/new',
+        routes: []
+      }
+    ]
   },
   {
     heading: 'Fulfilment',
@@ -81,6 +88,7 @@ angular.module('zk.admin', [
   'zk.admin.services',
   'zk.admin.directives',
   'zk.admin.controllers',
+  'zk.admin.invoice',
 ]).
 config([
   '$routeProvider',

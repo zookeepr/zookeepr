@@ -2,7 +2,7 @@ import logging
 
 from pylons import request, response, session, tmpl_context as c
 from zkpylons.lib.helpers import redirect_to
-from pylons.decorators import validate
+from pylons.decorators import validate, jsonify
 from pylons.decorators.rest import dispatch_on
 
 from formencode import validators, htmlfill, ForEach
@@ -48,12 +48,12 @@ class EditProductSchema(BaseSchema):
 class ProductController(BaseController):
 
     @enforce_ssl(required_all=True)
-    @authorize(h.auth.has_organiser_role)
     def __before__(self, **kwargs):
         c.product_categories = ProductCategory.find_all()
         c.fulfilment_types = FulfilmentType.find_all()
         c.ceilings = Ceiling.find_all()
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new") 
     def new(self, cat_id=None):
         form=render('/product/new.mako')
@@ -64,6 +64,7 @@ class ProductController(BaseController):
                 'product.category': cat_id,
                 'product.category_id': cat_id})
 
+    @authorize(h.auth.has_organiser_role)
     @validate(schema=NewProductSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         results = self.form_result['product']
@@ -75,15 +76,18 @@ class ProductController(BaseController):
         h.flash("Product created")
         redirect_to(action='view', id=c.product.id)
 
+    @authorize(h.auth.has_organiser_role)
     def view(self, id):
         c.can_edit = True
         c.product = Product.find_by_id(id)
         return render('/product/view.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def index(self):
         c.can_edit = True
         return render('/product/list.mako')
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_edit") 
     def edit(self, id):
         c.product = Product.find_by_id(id)
@@ -100,6 +104,7 @@ class ProductController(BaseController):
         form = render('/product/edit.mako')
         return htmlfill.render(form, defaults)
 
+    @authorize(h.auth.has_organiser_role)
     @validate(schema=EditProductSchema(), form='edit', post_only=True, on_get=True, variable_decode=True)
     def _edit(self, id):
         product = Product.find_by_id(id)
@@ -112,6 +117,7 @@ class ProductController(BaseController):
         h.flash("The product has been updated successfully.")
         redirect_to(action='view', id=id)
 
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_delete") 
     def delete(self, id):
         """Delete the product
@@ -123,6 +129,7 @@ class ProductController(BaseController):
         c.product = Product.find_by_id(id)
         return render('/product/confirm_delete.mako')
 
+    @authorize(h.auth.has_organiser_role)
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
         c.product = Product.find_by_id(id)
@@ -134,3 +141,21 @@ class ProductController(BaseController):
 
         h.flash("Product has been deleted.")
         redirect_to('index')
+
+    @authorize(h.auth.Or(h.auth.has_organiser_role, h.auth.has_checkin_role))
+    @jsonify
+    def json(self):
+        c.product_categories = ProductCategory.find_all()
+        result = []
+        for category in c.product_categories:
+            for product in category.products:
+                product_dict = {
+                    'id': product.id,
+                     'category': category.name,
+                     'category_order': category.display_order,
+                     'product_order': product.display_order,
+                     'cost': product.cost,
+                     'description': product.description
+                }
+                result.append(product_dict)
+        return { 'r': result }
