@@ -41,3 +41,8 @@ In order to schedule an event you require a Time Slot, a Location and and Event.
  - http://linux.conf.au/time_slot
  - http://linux.conf.au/location
 
+Once an intial schedule has been built entries can be modified via the various days in the calendar
+ - https://linux.conf.au/programme/schedule/wednesday
+ - https://linux.conf.au/programme/schedule/thursday
+ - https://linux.conf.au/programme/schedule/friday
+
