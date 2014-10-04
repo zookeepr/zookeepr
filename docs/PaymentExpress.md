@@ -41,3 +41,22 @@ Only pre-approved 'test card' numbers provided by DPS can be used for testing, w
  - 36000000000008 for Diners.
 
 These can be used with any current expiry, and are suitable only for DPS test accounts.
+
+DPS and payment_id_seq
+----------------------
+
+Note that the DPS field TxnId needs to be unique which causes issues with out testing.
+
+Hence we need to set a different sequence id for payments for each of our environments
+
+Without this change we get clashing invoices with the wrong values.
+
+-- Sandbox Environment
+ALTER SEQUENCE payment_id_seq RESTART WITH 5100000;
+-- DEV Environment
+ALTER SEQUENCE payment_id_seq RESTART WITH 5200000;
+-- UAT Environment
+ALTER SEQUENCE payment_id_seq RESTART WITH 5300000;
+-- PROD Environment
+ALTER SEQUENCE payment_id_seq RESTART WITH 5400000;
+
