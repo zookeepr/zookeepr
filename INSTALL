@@ -4,6 +4,10 @@ Zookeepr Installation Instructions
 External dependencies
 ---------------------
 
+ * libpq-dev
+ * libpython-dev
+ * libxslt1-dev
+ * libxml2-dev
  * postgresql
      
     
