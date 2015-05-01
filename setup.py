@@ -19,7 +19,7 @@ requires = [
     "pydns",
     "psycopg2",
     "PIL",
-    #### LEGACY (zkpylon) requirements:
+    # LEGACY (zkpylon) requirements:
     "pylons",
     "AuthKit>=0.4.0",
     # FormEncode used to do form input validation
@@ -50,4 +50,3 @@ setup(name='zk',
       main = zk:main
       """,
       )
-
