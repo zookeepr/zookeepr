@@ -4,3 +4,4 @@ unittest2
 testrepository
 testtools
 test
+pbr
