@@ -893,6 +893,7 @@ class AdminController(BaseController):
 
         return render('admin/text.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def volunteer_signup(self):
         """ People who should be added to the volunteers mailing list" [Mailing Lists] """
 
@@ -911,6 +912,7 @@ class AdminController(BaseController):
 
         return render('admin/text.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def speaker_signup(self):
         """ People who should be added to the speakers mailing list" [Mailing Lists] """
 
@@ -929,6 +931,7 @@ class AdminController(BaseController):
 
         return render('admin/text.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def miniconf_org_signup(self):
         """ People who should be added to the miniconf organisers mailing list" [Mailing Lists] """
 
@@ -1852,6 +1855,7 @@ class AdminController(BaseController):
 
         return render('admin/lookup.mako')
 
+    @authorize(h.auth.has_organiser_role)
     def generate_fulfilment(self):
         """ Based on currently paid invoices, generate fulfilment records
             [Registration,Invoicing] """
@@ -1896,6 +1900,7 @@ class AdminController(BaseController):
         c.data = [[result.Person.fullname, result.Product.category.name + ' - ' + result.Product.description, result.FulfilmentType.name, result.qty] for result in outstanding]
         return table_response()
 
+    @authorize(h.auth.has_organiser_role)
     def fulfilment_report(self):
         return sql_response("""
                 select description,
@@ -1919,6 +1924,8 @@ class AdminController(BaseController):
                 group by description
                 order by description
             """)
+
+    @authorize(h.auth.has_organiser_role)
     def generate_boardingpass(self):
         """ For every fulfilment group, generate a boarding pass
             [Registration,Invoicing] """
@@ -1941,6 +1948,7 @@ class AdminController(BaseController):
             pdf.close()
         return "Completed"
 
+    @authorize(h.auth.has_organiser_role)
     def generate_fulfilment_codes(self):
         for fulfilment in meta.Session.query(Fulfilment).all():
             if not fulfilment.code:
