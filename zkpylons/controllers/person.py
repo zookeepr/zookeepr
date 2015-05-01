@@ -52,8 +52,7 @@ class _SocialNetworkSchema(BaseSchema):
 
 class IncompletePersonSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)
-    email_address2 = validators.Email(not_empty=True)
-    chained_validators = [NotExistingPersonValidator(), SameEmailAddress()]
+    chained_validators = [NotExistingPersonValidator()]
 
 class NewIncompletePersonSchema(BaseSchema):
     pre_validators = [NestedVariables]
@@ -346,7 +345,6 @@ class PersonController(BaseController): #Read, Update, List
         c.person.fetch_social_networks()
 
         defaults = h.object_to_defaults(c.person, 'person')
-        defaults['person.email_address2'] = c.person.email_address
         if not defaults['person.country']:
             defaults['person.country'] = 'AUSTRALIA'
 
@@ -393,7 +391,6 @@ class PersonController(BaseController): #Read, Update, List
         c.person.fetch_social_networks()
 
         defaults = h.object_to_defaults(c.person, 'person')
-        defaults['person.email_address2'] = c.person.email_address
         if not defaults['person.country']:
             defaults['person.country'] = 'AUSTRALIA'
 
@@ -457,7 +454,6 @@ class PersonController(BaseController): #Read, Update, List
             # Remove fields not in class
             results = self.form_result['person']
             del results['password_confirm']
-            del results['email_address2']
             c.person = Person(**results)
             c.person.email_address = c.person.email_address.lower()
             meta.Session.add(c.person)
@@ -485,7 +481,6 @@ class PersonController(BaseController): #Read, Update, List
     @validate(schema=NewIncompletePersonSchema(), form='new_incomplete', post_only=True, on_get=True, variable_decode=True)
     def _new_incomplete(self):
         results = self.form_result['person']
-        del results['email_address2']
         c.person = Person(**results)
         c.person.email_address = c.person.email_address.lower()
         meta.Session.add(c.person)
@@ -553,8 +548,8 @@ class PersonController(BaseController): #Read, Update, List
             h.auth.no_role()
         c.person = Person.find_by_id(id)
         c.offers = c.person.proposal_offers
-        c.travel_assistance = reduce(lambda a, b: a or ('Travel' in b.status.name), c.offers, False) or False 
-        c.accommodation_assistance = reduce(lambda a, b: a or ('Accommodation' in b.status.name), c.offers, False) or False 
+        c.travel_assistance = reduce(lambda a, b: a or ('Travel' in b.status.name), c.offers, False) or False
+        c.accommodation_assistance = reduce(lambda a, b: a or ('Accommodation' in b.status.name), c.offers, False) or False
 
         # Set initial form defaults
         defaults = {
@@ -575,8 +570,8 @@ class PersonController(BaseController): #Read, Update, List
             h.auth.no_role()
         c.person = Person.find_by_id(id)
         c.offers = c.person.proposal_offers
-        c.travel_assistance = reduce(lambda a, b: a or ('Travel' in b.status.name), c.offers, False) or False 
-        c.accommodation_assistance = reduce(lambda a, b: a or ('Accommodation' in b.status.name), c.offers, False) or False 
+        c.travel_assistance = reduce(lambda a, b: a or ('Travel' in b.status.name), c.offers, False) or False
+        c.accommodation_assistance = reduce(lambda a, b: a or ('Accommodation' in b.status.name), c.offers, False) or False
 
         # What status are we moving all proposals to?
         if self.form_result['status'] == 'accept':
