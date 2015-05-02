@@ -242,6 +242,7 @@ class PhotocompController(BaseController):
         return htmlfill.render(html, field_values)
 
     @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.is_activated_user)
     def edit(self, id=None):
         #
         # Helpfully redirect to the correct URL.
@@ -264,6 +265,7 @@ class PhotocompController(BaseController):
         return render('/photocomp/edit.mako')
 
     @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.is_activated_user)
     def upload(self, id=None):
         #
         # Only an organiser can upload someone elses photos.

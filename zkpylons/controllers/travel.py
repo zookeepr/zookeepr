@@ -42,6 +42,7 @@ class TravelController(BaseController):
 
     @enforce_ssl(required_all=True)
     @authorize(h.auth.has_organiser_role)
+    @authorize(h.auth.has_funding_reviewer_role)
     def __before__(self, **kwargs):
         c.can_edit = True
 
