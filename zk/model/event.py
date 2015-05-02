@@ -50,6 +50,15 @@ class Event(Base):
         else:
             return self.title
 
+    def video_release(self):
+        if self.proposal:
+            if self.proposal.video_release:
+		return "True"
+	    else:
+		return "False"
+        else:
+		return "False"
+
     def computed_speakers(self):
         if self.proposal:
             return [person.fullname for person in self.proposal.people]

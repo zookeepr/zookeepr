@@ -182,6 +182,7 @@ class ScheduleController(BaseController):
                 row = {}
                 speakers = schedule.event.computed_speakers()
                 speaker_emails = schedule.event.computed_speaker_emails()
+                video_release = schedule.event.video_release()
                 row['Id'] = schedule.id
                 row['Event'] = schedule.event_id
                 row['Title'] = schedule.event.computed_title()
@@ -195,6 +196,7 @@ class ScheduleController(BaseController):
                 row['Description'] = schedule.event.computed_abstract()
                 if schedule.event.proposal:
                     row['URL'] = h.url_for(qualified=True, controller='schedule', action='view_talk', id=schedule.event.proposal_id)
+                    row['video_release'] = video_release
                 output.append(row)
 
         response.headers.add('Pragma', 'cache')
