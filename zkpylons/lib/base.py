@@ -8,6 +8,7 @@ from pylons import request, response, session, tmpl_context as c
 
 from zkpylons.model.db_content import DbContent, DbContentType
 from zkpylons.model import meta
+import zkpylons.lib.helpers as h
 import datetime
 
 class BaseController(WSGIController):
@@ -18,6 +19,12 @@ class BaseController(WSGIController):
         # the request is routed to. This routing information is
         # available in environ['pylons.routes_dict']
 
+        person = h.signed_in_person()
+        if person and not person.activated:
+            msg = ("Your account (%s) hasn't been confirmed. Check your email"
+                   " for activation instructions. %s" %
+                   (person.email_address, 'link-to-reset'))
+            h.flash(msg, category="warning")
 
         # Moved here from index controller so that all views that import the news.mako template
         # have access to c.db_content_news and c.db_content_press

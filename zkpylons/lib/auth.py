@@ -388,7 +388,6 @@ def no_role():
             )
 
 
-
 # Role shortcuts to save db work
 has_organiser_role = HasZookeeprRole('organiser')
 has_reviewer_role = HasZookeeprRole('reviewer')

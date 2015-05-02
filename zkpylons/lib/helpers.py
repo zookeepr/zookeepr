@@ -445,7 +445,10 @@ def flash(msg, category="information"):
         session['flash'] = {}
     if not session['flash'].has_key(category):
         session['flash'][category] = []
-    session['flash'][category].append(msg)
+    # If we are redirected we may flash this more than once. Check
+    # the message hasn't already been set by looking in the session
+    if msg not in session['flash'][category]:
+        session['flash'][category].append(msg)
     session.save()
 
 def zk_root():
