@@ -36,9 +36,9 @@ import urllib2
 log = logging.getLogger(__name__)
 
 
-
 class ForgottenPasswordSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)
+
 
 class PasswordResetSchema(BaseSchema):
     password = validators.String(not_empty=True)
@@ -46,23 +46,28 @@ class PasswordResetSchema(BaseSchema):
 
     chained_validators = [validators.FieldsMatch('password', 'password_confirm')]
 
+
 class _SocialNetworkSchema(BaseSchema):
    name = validators.String()
    account_name = validators.String()
+
 
 class IncompletePersonSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)
     chained_validators = [NotExistingPersonValidator()]
 
+
 class NewIncompletePersonSchema(BaseSchema):
     pre_validators = [NestedVariables]
     person = IncompletePersonSchema()
+
 
 class NewPersonSchema(BaseSchema):
     pre_validators = [NestedVariables]
 
     person = PersonSchema()
     social_network = ForEach(_SocialNetworkSchema())
+
 
 class _UpdatePersonSchema(BaseSchema):
     firstname = validators.String(not_empty=True)
@@ -81,26 +86,26 @@ class _UpdatePersonSchema(BaseSchema):
 
     chained_validators = [IAgreeValidator("i_agree")]
 
+
 class UpdatePersonSchema(BaseSchema):
     person = _UpdatePersonSchema()
     social_network = ForEach(_SocialNetworkSchema())
     pre_validators = [NestedVariables]
+
 
 class AuthPersonValidator(validators.FancyValidator):
     def validate_python(self, values, state):
         c.email = values['email_address']
         c.person = Person.find_by_email(c.email)
         error_message = None
-        if c.person is None:
-            error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
-        elif not c.person.activated:
-            error_message = "You haven't yet confirmed your registration, please refer to your email for instructions on how to do so."
-        elif not c.person.check_password(values['password']):
-            error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below or sign up for a new person."
-        if error_message:
+        if c.person is None or not c.person.check_password(values['password']):
+            error_message = ("Your sign-in details are incorrect; try the"
+                             " 'Forgotten your password' link below or sign up"
+                             " for a new person.")
             message = "Login failed"
             error_dict = {'email_address': error_message}
             raise Invalid(message, values, state, error_dict=error_dict)
+
 
 class PersonaValidator(validators.FancyValidator):
     def validate_python(self, values, state):
@@ -140,27 +145,33 @@ class LoginPersonSchema(BaseSchema):
     password = validators.String(not_empty=True)
     chained_validators = [AuthPersonValidator()]
 
+
 class LoginSchema(BaseSchema):
     person = LoginPersonSchema()
     pre_validators = [NestedVariables]
+
 
 class PersonaLoginSchema(BaseSchema):
     assertion = validators.String(not_empty=True)
     chained_validators = [PersonaValidator()]
 
+
 class RoleSchema(BaseSchema):
     role = validators.String(not_empty=True)
     action = validators.OneOf(['Grant', 'Revoke'])
+
 
 class TravelSchema(BaseSchema):
     origin_airport = validators.String(not_empty=True)
     destination_airport = validators.String(not_empty=True)
     pre_validators = [NestedVariables]
 
+
 class OfferSchema(BaseSchema):
     status = validators.OneOf(['accept', 'withdraw', 'contact'])
     travel = TravelSchema(if_missing=None)
     pre_validators = [NestedVariables]
+
 
 class PersonController(BaseController): #Read, Update, List
     @enforce_ssl(required_all=True)
@@ -220,6 +231,9 @@ class PersonController(BaseController): #Read, Update, List
         # return home
         h.flash('You have signed out')
         redirect_to('home')
+
+    def activate(self):
+        return render('/person/activate.mako')
 
     def confirm(self, confirm_hash):
         """Confirm a registration with the given ID.
@@ -510,6 +524,12 @@ class PersonController(BaseController): #Read, Update, List
 
         c.person = Person.find_by_id(id)
         c.roles = Role.find_all()
+        if not c.person.activated:
+            h.flash(
+                "NOTICE: This user hasn't confirmed their email address yet."
+                " Granting them access may be dangerous. Please get them to"
+                " visit %s" % h.full_url_for('person/activate'),
+                category='warning')
         return render('person/roles.mako')
 
 

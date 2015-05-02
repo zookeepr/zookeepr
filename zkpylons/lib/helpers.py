@@ -525,6 +525,11 @@ def url_for(*args, **kwargs):
         kwargs['hash'] = fields['hash']
     return pylons_url_for(*args, **kwargs)
 
+
+def full_url_for(*args, **kwargs):
+    return os.path.join(lca_info['event_permalink'], url_for(*args, **kwargs))
+
+
 def list_to_string(list, primary_join='%s and %s', secondary_join=', ', html = False):
     if html:
         list = [escape(item) for item in list]

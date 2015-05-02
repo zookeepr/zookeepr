@@ -94,6 +94,7 @@ class ProposalController(BaseController):
         c.cfp_hide_scores = lca_info['cfp_hide_scores']
 
     @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.is_activated_user)
     def __before__(self, **kwargs):
         c.proposal_types = ProposalType.find_all()
         c.target_audiences = TargetAudience.find_all()

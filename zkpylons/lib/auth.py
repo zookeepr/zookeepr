@@ -25,7 +25,8 @@ from authkit.authorize import PermissionSetupError, middleware
 from authkit.authorize.pylons_adaptors import authorized
 
 from pylons import request, response, session
-
+from pylons.controllers.util import redirect
+from pylons import url
 
 import hashlib
 
@@ -148,6 +149,7 @@ class HasZookeeprRole(HasAuthKitRole):
                 return True
         return False
 
+
 class IsSameZookeeprUser(UserIn):
     """
     Checks that the signed in user is one of the users specified when setting up
@@ -176,6 +178,37 @@ class IsSameZookeeprUser(UserIn):
             )
 
         return app(environ, start_response)
+
+
+class IsActivatedZookeeprUser(UserIn):
+    """
+    Checks that the signed in user is activated
+    """
+
+    def __init__(self):
+        pass
+
+    def check(self, app, environ, start_response):
+        set_redirect()
+        if not environ.get('REMOTE_USER'):
+            raise NotAuthenticatedError('Not Authenticated')
+
+        person = Person.find_by_email(environ['REMOTE_USER'])
+        if person is None:
+            environ['auth_failure'] = 'NO_USER'
+            raise NotAuthorizedError(
+                'You are not one of the users allowed to access this resource.'
+            )
+
+        if not person.activated:
+            if 'is_active' in dir(meta.Session):
+                meta.Session.flush()
+                meta.Session.close()
+
+            redirect(url(controller="person", action="activate"))
+
+        return app(environ, start_response)
+
 
 class IsSameZookeeprSubmitter(UserIn):
     """
@@ -372,6 +405,7 @@ has_planetfeed_role = HasZookeeprRole('planetfeed')
 has_keysigning_role = HasZookeeprRole('keysigning')
 has_checkin_role = HasZookeeprRole('checkin')
 is_valid_user = ValidZookeeprUser()
+is_activated_user = IsActivatedZookeeprUser()
 is_same_zkpylons_user = IsSameZookeeprUser
 is_same_zkpylons_submitter = IsSameZookeeprSubmitter
 is_same_zkpylons_attendee = IsSameZookeeprAttendee
