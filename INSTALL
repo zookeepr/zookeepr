@@ -9,8 +9,8 @@ External dependencies
  * libxslt1-dev
  * libxml2-dev
  * postgresql
-     
-    
+
+
 Creating a development environment
 ----------------------------------
 
@@ -28,7 +28,7 @@ Creating a development environment
 
         \# using virtualenwrapper
         mkvirtualenv zookeepr # --no-site-packages is default
-        workon zookeepr  
+        workon zookeepr
 
 3. Configure.
 
@@ -66,3 +66,7 @@ Creating a development environment
 5. Run development server.
 
         pserve --reload development.ini
+
+6. The default admin account is:
+        email: admin@zookeepr.org
+        password: password
