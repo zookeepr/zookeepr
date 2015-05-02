@@ -6,6 +6,9 @@ import os
 
 
 lca_info = {
+  'password_salt' : 'changeme',
+  'password_iterations' : 400000,
+
   'paymentgateway_userid' : '',
   'paymentgateway_secretkey' : '',
 

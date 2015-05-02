@@ -6,6 +6,7 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from meta import Base
 
 from pylons.controllers.util import abort
+from zkpylons.config.lca_info import lca_info
 
 from role import Role
 from person_role_map import person_role_map
@@ -15,6 +16,7 @@ from special_registration import SpecialRegistration
 
 from meta import Session
 
+import binascii
 import datetime
 import hashlib
 import random
@@ -43,12 +45,12 @@ class Person(Base):
     id = sa.Column(sa.types.Integer, primary_key=True)
 
     email_address = sa.Column(sa.types.Text, nullable=False, unique=True)
-    password_hash = sa.Column(sa.types.Text)
+    password_hash = sa.Column(sa.types.String(64))
 
     # creation timestamp of the registration
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_modification_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
-    url_hash = sa.Column(sa.types.String(32), nullable=False, index=True)
+    url_hash = sa.Column(sa.types.String(64), nullable=False, index=True)
 
 
     # flag that the account has been activated by the user
@@ -109,9 +111,9 @@ class Person(Base):
         self._update_url_hash()
 
     def gen_password(self, value):
-        m = hashlib.md5()
-        m.update(value)
-        return m.hexdigest()
+        salt = lca_info['password_salt']
+        dk = hashlib.pbkdf2_hmac('sha256', value, salt, lca_info['password_iterations'])
+        return binascii.hexlify(dk)
 
     def _set_password(self, value):
         if value is not None:

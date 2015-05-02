@@ -49,19 +49,16 @@ Creating a development environment
             * Zookeepr is using alembic in a rather unusual way, which leads to
             problems. James has a work-around for this, but it is not currently in
             master and should never be committed to master. The work-around can be
-            cherry-picked, commit c3812eb0 from
-            https://github.com/iseppi/zookeepr.git on the nasty-db-import-fix
-            branch.
+            cherry-picked, commit 7631b73ea4c6df7d219ba1758a72ea779664e8b6 from
+            the nasty-db-import-fix branch.
 
-            git remote add alembicfix https://github.com/iseppi/zookeepr.git
-            git fetch alembicfix nasty-db-import-fix
-            git cherry-pick a641643758d88238e4ada43f873d7b021238debe
+            git cherry-pick 7631b73ea4c6df7d219ba1758a72ea779664e8b6
             alembic --config development.ini upgrade head
             git reset --hard HEAD^
 
             To verify the fix, use the alembic history command and check that the
             head revision is "This revision is a lie and should always be head".
-            $ alembic --config development.ini history
+            alembic --config development.ini history
 
 5. Run development server.
 
