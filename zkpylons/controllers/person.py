@@ -9,7 +9,7 @@ from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
 
 from zkpylons.lib.base import BaseController, render
-from zkpylons.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator, SameEmailAddress, CountryValidator
+from zkpylons.lib.validators import BaseSchema, NotExistingPersonValidator, ExistingPersonValidator, PersonSchema, IAgreeValidator, CountryValidator
 import zkpylons.lib.helpers as h
 from zkpylons.lib.helpers import check_for_incomplete_profile
 
