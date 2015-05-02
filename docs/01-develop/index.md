@@ -28,7 +28,7 @@ In order to develop on ZooKeepr, you will need the following tools and prelimina
 
 ### Environments
 
-@TODO
+Refer to the INSTALL file at the root level of the ZooKeepr repository. This file walks you through how to install a test ZooKeepr environment. 
 
 ### Revision control
 
@@ -44,3 +44,5 @@ https://github.com/your-github-username/zookeepr
 Your pull request should look something like the below, with your username and the name of the branch you are working on.
 
 ![Example of comparing branches](../images/pull-request-compare-branches.png)
+
+6. A ZooKeepr administrator will then inspect your pull request, and if valid, merge with the master branch. She or he may contact you to discuss the pull request if there are issues.
