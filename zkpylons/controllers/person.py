@@ -203,7 +203,9 @@ class PersonController(BaseController): #Read, Update, List
             redirect_to(str(redirect_location))
 
         if lca_info['conference_status'] == 'open':
-            redirect_to(controller='registration', action='status')
+            redirect_to(controller='registration', action='new')
+        elif lca_info['cfp_status'] == 'open':
+            redirect_to(controller='proposal')
 
         redirect_to('home')
 
@@ -483,7 +485,8 @@ class PersonController(BaseController): #Read, Update, List
                 redirect_to(controller='person', action='confirm', confirm_hash=c.person.url_hash)
             else:
                 email(c.person.email_address, render('/person/new_person_email.mako'))
-                return render('/person/thankyou.mako')
+                # return render('/person/thankyou.mako')
+                return self.finish_login(c.person.email_address)
         else:
             return render('/not_allowed.mako')
 
@@ -527,8 +530,8 @@ class PersonController(BaseController): #Read, Update, List
         if not c.person.activated:
             h.flash(
                 "NOTICE: This user hasn't confirmed their email address yet."
-                " Granting them access may be dangerous. Please get them to"
-                " visit %s" % h.full_url_for('person/activate'),
+                " Please get them to visit"
+                " %s" % h.full_url_for('person/activate'),
                 category='warning')
         return render('person/roles.mako')
 
