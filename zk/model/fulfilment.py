@@ -158,22 +158,22 @@ class Fulfilment(Base):
     # mapped attributes
     is_void = sa.orm.column_property(
         sa.select([FulfilmentStatus.void]).\
-        where('fulfilment.status_id = fulfilment_status.id').\
+        where(sa.text('fulfilment.status_id = fulfilment_status.id')).\
         correlate_except(FulfilmentStatus)
     )
     is_completed = sa.orm.column_property(
         sa.select([FulfilmentStatus.completed]).\
-        where('fulfilment.status_id = fulfilment_status.id').\
+        where(sa.text('fulfilment.status_id = fulfilment_status.id')).\
         correlate_except(FulfilmentStatus)
     )
     is_locked = sa.orm.column_property(
         sa.select([FulfilmentStatus.locked]).\
-        where('fulfilment.status_id = fulfilment_status.id').\
+        where(sa.text('fulfilment.status_id = fulfilment_status.id')).\
         correlate_except(FulfilmentStatus)
     )
     can_edit = sa.orm.column_property(
         sa.select([sa.not_(sa.or_(FulfilmentStatus.completed, FulfilmentStatus.void, FulfilmentStatus.locked))]).\
-        where('fulfilment.status_id = fulfilment_status.id').\
+        where(sa.text('fulfilment.status_id = fulfilment_status.id')).\
         correlate_except(FulfilmentStatus)
     )
 
