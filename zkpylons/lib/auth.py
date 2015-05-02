@@ -20,12 +20,12 @@ from zkpylons.model import meta
 from zkpylons.model import Person, Role, Proposal, Invoice, Registration, Funding, URLHash
 
 from authkit import users
-from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission
+from authkit.permissions import HasAuthKitRole, UserIn, NotAuthenticatedError, NotAuthorizedError, Permission, PermissionError
 from authkit.authorize import PermissionSetupError, middleware
 from authkit.authorize.pylons_adaptors import authorized
 
 from pylons import request, response, session
-from pylons.controllers.util import redirect
+from pylons.controllers.util import redirect, abort
 from pylons import url
 
 import hashlib
@@ -85,9 +85,20 @@ class HasZookeeprRole(HasAuthKitRole):
            if not self.role_exists(role):
                raise Exception("No such role %r exists"%role)
 
+        person = Person.find_by_email(environ['REMOTE_USER'])
+        if person is None:
+            raise users.AuthKitNoSuchUserError(
+                "No such user %r" % environ['REMOTE_USER'])
+
+        if not person.activated:
+            #set_role('User account must be activated')
+            raise NotAuthorizedError(
+                    "User account must be activated"
+                )
+
         if self.all:
             for role in self.roles:
-                if not self.user_has_role(environ['REMOTE_USER'], role):
+                if not self.user_has_role(person, role):
                     if self.error:
                         raise self.error
                     else:
@@ -98,7 +109,7 @@ class HasZookeeprRole(HasAuthKitRole):
             return app(environ, start_response)
         else:
             for role in self.roles:
-                if self.user_has_role(environ['REMOTE_USER'], role):
+                if self.user_has_role(person, role):
                     return app(environ, start_response)
             if self.error:
                 raise self.error
@@ -107,18 +118,6 @@ class HasZookeeprRole(HasAuthKitRole):
                 raise NotAuthorizedError(
                     "User doesn't have any of the specified roles"
                 )
-
-    def user_exists(self, username):
-        """
-        Returns ``True`` if the user exists, ``False`` otherwise. Users are
-        case insensitive.
-        """
-
-        person = Person.find_by_email(username)
-
-        if person is not None:
-            return True
-        return False
 
     def role_exists(self, role):
         """
@@ -131,18 +130,13 @@ class HasZookeeprRole(HasAuthKitRole):
             return True
         return False
 
-    def user_has_role(self, username, role):
+    def user_has_role(self, person, role):
         """
         Returns ``True`` if the user has the role specified, ``False``
         otherwise. Raises an exception if the user doesn't exist.
         """
-        if not self.user_exists(username.lower()):
-            raise users.AuthKitNoSuchUserError("No such user %r"%username.lower())
         if not self.role_exists(role.lower()):
             raise users.AuthKitNoSuchRoleError("No such role %r"%role.lower())
-        person = Person.find_by_email(username)
-        if person is None:
-            return False
 
         for role_ in person.roles:
             if role_.name == role.lower():
