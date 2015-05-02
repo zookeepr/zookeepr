@@ -6,7 +6,7 @@ data
 *.pyc
 *~
 env
-zk.egg-info
+*.egg*
 zkpylons/public/att-data
 zkpylons/public/photocomp
 .testrepository
