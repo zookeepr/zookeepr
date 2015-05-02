@@ -27,7 +27,7 @@ def upgrade():
     sa.PrimaryKeyConstraint('id'),
     sa.UniqueConstraint('person_id')
     )
-    op.execute("INSERT INTO proposal_status (name) VALUES ('Offered'), ('Contact')")
+#    op.execute("INSERT INTO proposal_status (name) VALUES ('Offered'), ('Contact')")
     ### end Alembic commands ###
 
 
