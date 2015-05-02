@@ -9,3 +9,5 @@ env
 zk.egg-info
 zkpylons/public/att-data
 zkpylons/public/photocomp
+.testrepository
+.tox
