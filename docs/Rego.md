@@ -9,7 +9,7 @@ Key areas regarding fullfillment are
  * Accommodation
  * Partner Program
 
-Tablet friends Rego Interface can be found at 
+Tablet friendly Rego Interface can be found at 
  * http://zookeepr:6543/admin/#/checkin
 
 SWAG
