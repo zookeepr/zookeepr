@@ -1,7 +1,7 @@
 paste<2.0
 WebOb<1.4
 alembic>=0.4.2
-dnspython>=1.1.0
+pydns
 lxml
 PIL
 psycopg2
