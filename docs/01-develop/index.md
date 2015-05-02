@@ -31,3 +31,12 @@ In order to develop on ZooKeepr, you will need the following tools and prelimina
 @TODO
 
 ### Revision control
+
+1. First, you need to ensure that you have a [GitHub account](http://www.github.com)
+2. Next, [fork](https://help.github.com/articles/fork-a-repo/) the [ZooKeepr Repository](https://github.com/zookeepr/zookeepr) into your own repository. You should now have a repository in your GitHub account called
+
+```
+https://github.com/your-github-username/zookeepr
+```
+3. Now, you need to [clone](https://help.github.com/articles/which-remote-url-should-i-use/) the repository you've just forked to your local development environment. We won't go into detail here - if you're on Linux, Mac or Windows, you will need to use the Git client or Git commands appropriate to your system.
+4. 
