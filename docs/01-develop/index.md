@@ -28,7 +28,7 @@ In order to develop on ZooKeepr, you will need the following tools and prelimina
 
 ### Environments
 
-@TODO
+Refer to the INSTALL file at the root level of the ZooKeepr repository. This file walks you through how to install a test ZooKeepr environment. 
 
 ### Revision control
 
@@ -39,4 +39,10 @@ In order to develop on ZooKeepr, you will need the following tools and prelimina
 https://github.com/your-github-username/zookeepr
 ```
 3. Now, you need to [clone](https://help.github.com/articles/which-remote-url-should-i-use/) the repository you've just forked to your local development environment. We won't go into detail here - if you're on Linux, Mac or Windows, you will need to use the Git client or Git commands appropriate to your system.
-4. 
+4. Create a new [branch](http://git-scm.com/book/en/v2/Git-Branching-Basic-Branching-and-Merging) in your local repository. You will undertake development in this branch. If you're working on several new features for ZooKeepr, you may wish to have a branch for every feature. You will need to [push changes](http://git-scm.com/book/en/v2/Git-Basics-Working-with-Remotes) from your local repository (and branch) to your remote repository (the one you forked in Step 2) and branch.
+5. Next, to have your changes merged with the ZooKeepr master branch, you will need to [issue a pull request](https://help.github.com/articles/using-pull-requests/) from your GitHub feature branch. We are using a fork and pull model for ZooKeepr development.
+Your pull request should look something like the below, with your username and the name of the branch you are working on.
+
+![Example of comparing branches](../images/pull-request-compare-branches.png)
+
+6. A ZooKeepr administrator will then inspect your pull request, and if valid, merge with the master branch. She or he may contact you to discuss the pull request if there are issues.
