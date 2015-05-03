@@ -23,14 +23,15 @@ function check_password($email, $password) {
     $dbconn = pg_connect("host=$DBHOST dbname=$DBNAME user=$DBUSER password=$DBPASS")
         or die('Could not connect: ' . pg_last_error());
 
-    pg_prepare($dbconn, "pwcheck", 'SELECT password_hash FROM person WHERE email_address = $1');
+    pg_prepare($dbconn, "pwcheck", 'SELECT password_hash, password_salt FROM person WHERE email_address = $1');
     $result = pg_execute($dbconn, "pwcheck", array($email));
     $expectedhash = pg_fetch_result($result, 0, 'password_hash');
+    $usersalt = pg_fetch_result($result, 0, 'password_salt');
     pg_free_result($result);
     pg_close($dbconn);
     print "\t ZK:\t" . $expectedhash . "\n";
 
-    $computedhash = hash_pbkdf2('sha256', $password, $ZKSALT, $ZKITERATIONS);
+    $computedhash = hash_pbkdf2('sha256', $password, $ZKSALT . $usersalt, $ZKITERATIONS);
     print "\t PHP:\t" . $computedhash . "\n";
 
     return $expectedhash === $computedhash;

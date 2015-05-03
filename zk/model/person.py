@@ -20,6 +20,7 @@ import binascii
 import datetime
 import hashlib
 import random
+import os
 from libravatar import libravatar_url
 
 def setup(meta):
@@ -46,6 +47,7 @@ class Person(Base):
 
     email_address = sa.Column(sa.types.Text, nullable=False, unique=True)
     password_hash = sa.Column(sa.types.String(64))
+    password_salt = sa.Column(sa.types.String(64))
 
     # creation timestamp of the registration
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
@@ -111,7 +113,12 @@ class Person(Base):
         self._update_url_hash()
 
     def gen_password(self, value):
-        salt = lca_info['password_salt']
+        if not self.password_salt:
+            salt = hashlib.new('sha256')
+            salt.update(os.urandom(32))
+            self.password_salt = salt.hexdigest()
+
+        salt = lca_info['password_salt'] + self.password_salt
         dk = hashlib.pbkdf2_hmac('sha256', value, salt, lca_info['password_iterations'])
         return binascii.hexlify(dk)
 
