@@ -7,7 +7,6 @@ pyramid.debug_notfound = false
 pyramid.debug_routematch = false
 pyramid.default_locale_name = en
 pyramid.includes =
-    pyramid_debugtoolbar
     pyramid_tm
 
 sqlalchemy.url = postgresql://zookeepr:zookeepr@localhost/zookeepr
@@ -26,10 +25,10 @@ authkit.setup.intercept = 401, 403
 authkit.cookie_enforce = true
 
 # Should be changed to false in production
-debug = true
+debug = false
 
 # Enable SSL checking in the code
-enable_ssl_requirement = false
+enable_ssl_requirement = true
 
 # Use this host instead of the current website
 #ssl_host =
