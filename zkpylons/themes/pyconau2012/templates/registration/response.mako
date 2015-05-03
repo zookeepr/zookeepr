@@ -1,9 +1,9 @@
-Subject: Confirmation of your registration to ${ h.event_name() }
+Subject: Confirmation of your registration to ${ c.config.get('event_name') }
 To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
 
 Dear ${ c.person.firstname },
 
-Thank you for registering for ${ h.event_name()}!
+Thank you for registering for ${ c.config.get('event_name')}!
 
 Your personal details are:
 
@@ -81,4 +81,4 @@ http://2012.pycon-au.org/register/accommodation
 
 We look forward to seeing you in Hobart!
 
-The ${ h.event_name() } Organising Committee
+The ${ c.config.get('event_name') } Organising Committee

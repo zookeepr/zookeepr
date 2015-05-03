@@ -18,7 +18,7 @@ function detectBrowser() {
   }
 }
 function map_load() {
-    var myLatlng = new google.maps.LatLng(${ h.lca_info['google_map_latlng'] });
+    var myLatlng = new google.maps.LatLng(${ c.config.get('google_map_latlng') });
     var myOptions = {
       zoom: 11,
       center: myLatlng,
@@ -39,6 +39,6 @@ function map_load() {
 
 <h2>Venue Map</h2>
 
-<p>View this map on <a href="${ h.lca_info['google_map_url'] }">Google Maps</a>, download the <a href="${ h.lca_info['google_map_url'] }&output=kml">KML file</a>.</p>
+<p>View this map on <a href="${ c.config.get('google_map_url') }">Google Maps</a>, download the <a href="${ c.config.get('google_map_url') }&output=kml">KML file</a>.</p>
 
 <div id="map_canvas" style="width:680px; height:500px"></div>

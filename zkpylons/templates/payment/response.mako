@@ -1,6 +1,6 @@
 To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
 %if not c.response['approved']:
-Subject: Rejected payment attempt for ${ h.lca_info['event_name'] }
+Subject: Rejected payment attempt for ${ c.config.get('event_name') }
 
 Your payment was unsuccessful. The reason was:
 
@@ -9,7 +9,7 @@ Your payment was unsuccessful. The reason was:
 You can try again by visiting:
   ${ h.url_for(qualified=True, controller='registration', id=c.pr.invoice.person.registration.id, action='pay') }
 %else:
-Subject: Successful payment for ${ h.lca_info['event_name'] }
+Subject: Successful payment for ${ c.config.get('event_name') }
 
 Your payment for ${ h.integer_to_currency(c.response['amount_paid']) } was successful.
 
@@ -23,4 +23,4 @@ You can view your invoice at
 Thanks again, and have a great day!
 %endif
 
-The ${ h.lca_info['event_name'] } Organising Committee
+The ${ c.config.get('event_name') } Organising Committee

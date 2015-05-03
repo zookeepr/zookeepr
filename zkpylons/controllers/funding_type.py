@@ -19,8 +19,6 @@ from zkpylons.lib.mail import email
 
 from zkpylons.model import meta, FundingType
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class FundingTypeSchema(BaseSchema):

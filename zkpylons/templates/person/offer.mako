@@ -3,7 +3,7 @@
 
 %if c.person.proposals:
 %  if c.person.proposal_offers:
-<p>The following proposals that you submitted have been accepted by the ${ h.event_name() } proposal review committee:
+<p>The following proposals that you submitted have been accepted by the ${ c.config.get('event_name') } proposal review committee:
 ${ h.form(h.url_for(), method='post') }
 <table>
   <tr>
@@ -19,7 +19,7 @@ ${ h.form(h.url_for(), method='post') }
 </table>
 
 <p>Please indicate below what you would like to do with these proposals:</p>
-${ h.select('status', 'accept', [('accept', 'I accept these offers to present at ' + h.event_name()), ('withdraw', 'I withdraw my proposals'), ('contact', 'I require further contact with the conference organisers')]) }
+${ h.select('status', 'accept', [('accept', 'I accept these offers to present at ' + c.config.get('event_name')), ('withdraw', 'I withdraw my proposals'), ('contact', 'I require further contact with the conference organisers')]) }
 
 <p>If you will be travelling to the conference from overseas please refer to the <a href="http://www.immi.gov.au/visitors/event-organisers-participants/participants.htm">Australian Immigration Department</a> website about the Visa requirements to visit Australia</p>
 

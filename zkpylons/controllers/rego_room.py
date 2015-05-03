@@ -22,8 +22,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model.rego_room import RegoRoom
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class RegoRoomSchema(BaseSchema):

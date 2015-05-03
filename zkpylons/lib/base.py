@@ -7,6 +7,7 @@ from pylons.templating import render_mako as render
 from pylons import request, response, session, tmpl_context as c
 
 from zkpylons.model.db_content import DbContent, DbContentType
+from zkpylons.model.config import Config
 from zkpylons.model import meta
 import zkpylons.lib.helpers as h
 import datetime
@@ -41,6 +42,9 @@ class BaseController(WSGIController):
         if banner:
                 c.db_content_banner = meta.Session.query(DbContent).filter_by(type_id=banner.id).order_by(DbContent.creation_timestamp.desc()).filter(DbContent.publish_timestamp <= datetime.datetime.now()).limit(5).all()
 
+        # Allow direct model query by view using c.config.get("key")
+        # This is because with have huge numbers of parameters which can be fetched
+        c.config = Config
 
         try:
             return WSGIController.__call__(self, environ, start_response)

@@ -75,19 +75,19 @@ Not specified
 % endif
 </blockquote></p>
 
-<h2>${ h.event_name() } Information</h2>
+<h2>${ c.config.get('event_name') } Information</h2>
 
-<p class="label">Why would you like to attend ${ h.event_name() }</p>
+<p class="label">Why would you like to attend ${ c.config.get('event_name') }</p>
 <p><blockquote>
 ${ h.line_break(h.util.html_escape(c.funding.why_attend)) | n}
 </blockquote></p>
 
-<p class="label">Have you attended ${ h.lca_info['event_generic_name'] } before?</p>
+<p class="label">Have you attended ${ c.config.get('event_generic_name') } before?</p>
 <p class="entries">
 <table>
   <tr>
     <td>
-% for (year, desc) in h.lca_rego['past_confs']:
+% for (year, desc) in c.config.get('rego', 'past_confs'):
 ${ h.yesno(year in (c.funding.prevlca or [])) |n }
 ${ desc }<br />
 % endfor

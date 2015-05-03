@@ -6,7 +6,7 @@ There was an unexpected error.
 </p>
 
 <p>
-If you think that's a problem, you can ${ h.webmaster_email("send us an email") } and we'll attend to the problem.
+If you think that's a problem, you can ${ h.email_link_to(c.config.get('webmaster_email'), "send us an email") } and we'll attend to the problem.
 </p>
 
 <%def name="title()">

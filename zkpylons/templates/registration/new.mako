@@ -4,13 +4,13 @@
 
 % if not 'conference-paid' in c.ceilings or c.ceilings['conference-paid'].available(): 
 %   if c.special_offer is not None:
-    <h2>Register for ${ h.event_name() } (${ c.special_offer.name } Special Offer)</h2>
+    <h2>Register for ${ c.config.get('event_name') } (${ c.special_offer.name } Special Offer)</h2>
     <div id="registration">
 ${ c.special_offer.description | n }
 %   else:
-    <h2>Register for ${ h.event_name() }</h2>
+    <h2>Register for ${ c.config.get('event_name') }</h2>
     <div id="registration">
-      <p>Welcome to the registration form for ${ h.event_name() }. Please fill in the form as best you can.</p>
+      <p>Welcome to the registration form for ${ c.config.get('event_name') }. Please fill in the form as best you can.</p>
 %   endif
 % else:
       <p class="error-message"><i>Registration is closed.</i></p>
@@ -53,7 +53,7 @@ ${ c.special_offer.description | n }
         ${ h.hidden('person.i_agree', True) }
 %endif
         <p class="submit">${ h.submit("submit", "Register me!") }</p>
-        <p><span class="fielddesc">If you encounter any problems signing up please email ${ h.contact_email() }.</span></p>
+        <p><span class="fielddesc">If you encounter any problems signing up please email ${ h.email_link_to(c.config.get('contact_email')) }.</span></p>
 
       ${ h.end_form() }
       </div>

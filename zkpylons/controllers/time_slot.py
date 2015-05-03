@@ -21,8 +21,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model.time_slot import TimeSlot
 
-from zkpylons.config.lca_info import lca_info
-
 from datetime import datetime
 
 log = logging.getLogger(__name__)

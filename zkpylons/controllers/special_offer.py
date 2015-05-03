@@ -21,8 +21,6 @@ from zkpylons.model import meta
 from zkpylons.model.special_offer import SpecialOffer
 from zkpylons.model.special_registration import SpecialRegistration
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class NotExistingSpecialOfferValidator(validators.FancyValidator):

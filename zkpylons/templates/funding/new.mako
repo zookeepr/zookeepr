@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<h2>${ h.event_name() } Funding Application</h2>
+<h2>${ c.config.get('event_name') } Funding Application</h2>
 <p>Please read the <a href="${ h.url_for("/register/funding") }">Funding Info</a> page before submitting a funding application.</p>
 
 ${ h.form(h.url_for(), multipart=True) }

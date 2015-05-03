@@ -8,7 +8,7 @@
 % else:
 <p>We haven't received anything back from the payment gateway.</p>
 
-<p>Please ${ h.link_to('try again', url=h.url_for(controller='registration', action='pay', id=c.person.registration.id)) }. If you still run into problems, email us at ${ h.contact_email() }</p>
+<p>Please ${ h.link_to('try again', url=h.url_for(controller='registration', action='pay', id=c.person.registration.id)) }. If you still run into problems, email us at ${ h.email_link_to(c.config.get('contact_email')) }</p>
 % endif
 
 %elif c.is_organiser:
@@ -87,7 +87,7 @@ ${ c.payment.client_ip_gateway } (gateway)</td></tr>
 <blockquote>${ c.payment.response_text }</blockquote>
 </p>
 
-<p>Please ${ h.link_to('try again', url=h.url_for(controller='registration', action='pay', id=c.person.registration.id)) }. If you still run into problems, email us at ${ h.contact_email() }</p>
+<p>Please ${ h.link_to('try again', url=h.url_for(controller='registration', action='pay', id=c.person.registration.id)) }. If you still run into problems, email us at ${ h.email_link_to(c.config.get('contact_email')) }</p>
 % endif
 
 %endif

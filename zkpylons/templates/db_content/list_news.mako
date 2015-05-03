@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 <%namespace file="../bookmark_submit.mako" name="bookmark_submit" inheritable="True"/>
-<h1>${ h.lca_info['event_name'] } News</h1>
+<h1>${ c.config.get('event_name') } News</h1>
 
 %if len(c.db_content_collection) is 0:
 <p>Sorry, there are currently no news posts.</p>
@@ -10,7 +10,7 @@
 <h2>${ h.link_to(d.title, url=h.url_for(action="view", id=d.id)) }</h2>
 <div style="float: right;">
 <%
-    url=h.lca_info["event_permalink"] + h.url_for(action="view", id=d.id)
+    url=c.config.get("event_permalink") + h.url_for(action="view", id=d.id)
 %>
 ${ bookmark_submit.bookmark_submit(url, d.title) }
 </div>

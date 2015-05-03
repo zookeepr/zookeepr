@@ -1,7 +1,7 @@
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en-us">
 <head>
-<title>Tax Invoice/Statement - ${ h.lca_info['event_name'] }</title>
+<title>Tax Invoice/Statement - ${ c.config.get('event_name') }</title>
 <link rel="icon" type="image/png" href="/images/favicon.ico">
 <style type="text/css">
  .invoice_invalid {

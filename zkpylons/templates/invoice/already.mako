@@ -3,6 +3,6 @@
 
 <p>The invoice is marked as ${ c.status }. Please go to the <a
 href="/register/status">registration status page</a> or
-${ h.contact_email('contact the committee') } to clear up the
+${ h.email_link_to(c.config.get('contact_email'), 'contact the committee') } to clear up the
 situation.</p>
 

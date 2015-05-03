@@ -19,21 +19,20 @@ from zkpylons.lib.mail import email
 
 from zkpylons.model import meta
 from zkpylons.model import Proposal, ProposalType, ProposalStatus, TargetAudience, Attachment, Stream, Review, Role, AccommodationAssistanceType, TravelAssistanceType, Person
+from zkpylons.model.config import Config
 
 from zkpylons.controllers.proposal import NewProposalSchema
 
 from zkpylons.lib.validators import ReviewSchema
-
-from zkpylons.config.lca_info import lca_info
 
 log = logging.getLogger(__name__)
 
 class MiniconfProposalController(BaseController):
 
     def __init__(self, *args):
-        c.cfp_status = lca_info['cfp_status']
-        c.cfmini_status = lca_info['cfmini_status']
-        c.proposal_editing = lca_info['proposal_editing']
+        c.cfp_status       = Config.get('cfp_status')
+        c.cfmini_status    = Config.get('cfmini_status')
+        c.proposal_editing = Config.get('proposal_editing')
 
     @authorize(h.auth.is_valid_user)
     @authorize(h.auth.is_activated_user)

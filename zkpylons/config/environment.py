@@ -11,7 +11,6 @@ import zkpylons.lib.helpers
 from zkpylons.config.routing import make_map
 from zkpylons.model import init_model
 
-from zkpylons.config.lca_info import lca_info
 from zkpylons.config.zkpylons_config import file_paths
 
 from pylons.configuration import PylonsConfig

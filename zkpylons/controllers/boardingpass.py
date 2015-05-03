@@ -21,8 +21,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model import Role
 
-from zkpylons.config.lca_info import lca_info
-
 from reportlab.lib.units import mm
 from reportlab.graphics.barcode import createBarcodeDrawing
 from reportlab.graphics.shapes import Drawing, String

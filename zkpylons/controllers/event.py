@@ -23,8 +23,6 @@ from zkpylons.model.event import Event
 from zkpylons.model.event_type import EventType, EventTypeValidator
 from zkpylons.model.proposal import Proposal
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class EventSchema(BaseSchema):

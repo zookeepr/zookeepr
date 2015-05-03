@@ -1,7 +1,7 @@
         <blockquote>
         <p>
         ${ c.registration.person.firstname } ${ c.registration.person.lastname }
-%if h.lca_rego['personal_info']['home_address'] == 'yes':
+%if c.config.get('rego', 'personal_info')['home_address'] == 'yes':
         <br/>${ c.registration.person.address1 }
 % if c.registration.person.address2:
         <br/>${ c.registration.person.address2 }
@@ -83,9 +83,9 @@
         <p class="label"><b>Other special requirements:</b> ${ c.registration.special }</p>
 %endif
 
-          <p class="label"><label for="registration.prevlca"><b>Previous ${ h.lca_info['event_generic_name'] } attendance:</b></label></p>
+          <p class="label"><label for="registration.prevlca"><b>Previous ${ c.config.get('event_generic_name') } attendance:</b></label></p>
           <p class="entries">
-% for (year, desc) in h.lca_rego['past_confs']:
+% for (year, desc) in c.config.get('rego', 'past_confs'):
             <br>
             ${ h.yesno(year in (c.registration.prevlca or [])) |n }
             ${ desc }
@@ -104,7 +104,7 @@
 %if c.registration.nick:
           <p class="label"><b>Superhero name:</b> ${ c.registration.nick }</p>
 %endif
-%if h.lca_rego['pgp_collection'] != 'no' and c.registration.keyid:
+%if c.config.get('rego', 'pgp_collection') != 'no' and c.registration.keyid:
           <p class="label"><b>GnuPG/PGP Keyid:</b> ${ c.registration.keyid }</p>
 %endif
 %if c.registration.planetfeed:

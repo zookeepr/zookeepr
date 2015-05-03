@@ -32,7 +32,7 @@
         <li>Invoice has been paid.</li>
 %   endif
 % elif len(c.invoice.bad_payments) > 0:
-        <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></li>
+        <li>Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.email_link_to(c.config.get('contact_email'), 'the organising committee') }</a></li>
 % else:
 %   if h.auth.authorized(h.auth.has_organiser_role):
         <li>${ h.link_to('Pay this invoice manually', url = h.url_for(action='pay_manual')) }</li>
@@ -74,8 +74,8 @@
         </ul>
 %endif
       </ul>
-%   if 'invoice_message' in h.lca_info and (c.invoice.is_void or not c.invoice.is_paid):
-          <p style="note"><strong>Please Note:</strong> ${ h.lca_info['invoice_message'] }</p>
+%   if c.config.get('invoice_message') and (c.invoice.is_void or not c.invoice.is_paid):
+          <p style="note"><strong>Please Note:</strong> ${ c.config.get('invoice_message') }</p>
 %   endif
     </div>
 

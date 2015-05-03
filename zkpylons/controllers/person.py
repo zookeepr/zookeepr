@@ -23,8 +23,7 @@ from zkpylons.model import Person, PasswordResetConfirmation, Role
 from zkpylons.model import ProposalStatus
 from zkpylons.model import SocialNetwork
 from zkpylons.model import Travel
-
-from zkpylons.config.lca_info import lca_info, lca_rego
+from zkpylons.model.config import Config
 
 from zkpylons.lib.ssl_requirement import enforce_ssl
 
@@ -121,7 +120,7 @@ class PersonaValidator(validators.FancyValidator):
             c.person = Person.find_by_email(c.email)
 
         if c.person is None:
-            if not lca_info['account_creation']:
+            if not Config.get('account_creation'):
                 error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below."
                 message = "Login failed"
                 error_dict = {'email_address': error_message}
@@ -206,9 +205,9 @@ class PersonController(BaseController): #Read, Update, List
             session.save()
             redirect_to(str(redirect_location))
 
-        if lca_info['conference_status'] == 'open':
+        if  Config.get('conference_status') == 'open':
             redirect_to(controller='registration', action='new')
-        elif lca_info['cfp_status'] == 'open':
+        elif Config.get('cfp_status') == 'open':
             redirect_to(controller='proposal')
 
         redirect_to('home')
@@ -447,7 +446,7 @@ class PersonController(BaseController): #Read, Update, List
     @dispatch_on(POST="_new")
     def new(self):
         # Do we allow account creation?
-        if lca_info['account_creation']:
+        if Config.get('account_creation'):
             """Create a new person form.
             """
             if h.signed_in_person():
@@ -457,7 +456,7 @@ class PersonController(BaseController): #Read, Update, List
             defaults = {
                 'person.country': 'AUSTRALIA',
             }
-            if h.lca_rego['personal_info']['home_address'] == 'no':
+            if Config.get('rego', 'personal_info')['home_address'] == 'no':
                 defaults['person.address1'] = 'not available'
                 defaults['person.city'] = 'not available'
                 defaults['person.postcode'] = 'not available'
@@ -472,7 +471,7 @@ class PersonController(BaseController): #Read, Update, List
     @validate(schema=NewPersonSchema(), form='new', post_only=True, on_get=True, variable_decode=True)
     def _new(self):
         # Do we allow account creation?
-        if lca_info['account_creation']:
+        if Config.get('account_creation'):
             """Create a new person submit.
             """
 
@@ -490,7 +489,7 @@ class PersonController(BaseController): #Read, Update, List
 
             meta.Session.commit()
 
-            if lca_rego['confirm_email_address'] == 'no':
+            if Config.get('rego', 'confirm_email_address') == 'no':
                 redirect_to(controller='person', action='confirm', confirm_hash=c.person.url_hash)
             else:
                 email(c.person.email_address, render('/person/new_person_email.mako'))

@@ -32,7 +32,7 @@ ${ h.hidden('person.mobile') }
 
 ${ h.hidden('person.phone') }
 
-%if (not c.person.address1 or not c.person.city or not c.person.postcode) and h.lca_rego['personal_info']['home_address'] == 'yes':
+%if (not c.person.address1 or not c.person.city or not c.person.postcode) and c.config.get('rego', 'personal_info')['home_address'] == 'yes':
 <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
 <p class="entries">
 ${ h.text('person.address1', size=40) }

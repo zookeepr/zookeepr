@@ -1,17 +1,17 @@
 # File for configuration specific to zkpylons
 
 import os
-from lca_info import lca_info
 
 # File system paths that start with $xxx/ have file_paths['xxx'] prepended
 # to them.
+# Can't use DB config table as the models are not loaded yet
 file_paths = {
   # None will use the folder 2 above this one
   'zk_root' :           None,
   'base_templates' :    '$zk_root/zkpylons/templates',
   'base_public':        '$zk_root/zkpylons/public',
   'theme_root' :        '$zk_root/zkpylons/themes',
-  'enabled_theme':      '$theme_root/' + lca_info['zk_enabled_theme'],
+  'enabled_theme':      '$theme_root/zkpylons',
   'theme_templates':    '$enabled_theme/templates',
   'theme_public':       '$enabled_theme/public',
   'public_html':        '',

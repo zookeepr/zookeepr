@@ -77,7 +77,7 @@ None
 
     <p>These are the areas that have been chosen:</p>
     <table>
-% for category in h.lca_rego['volunteer']:
+% for category in c.config.get('rego', 'volunteer'):
         <tr>
           <td colspan='2'><h3>${ category['title'] }</h3></td>
         </tr>

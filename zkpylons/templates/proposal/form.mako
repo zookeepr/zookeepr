@@ -57,7 +57,7 @@
     <p class="entries">${ h.link_to('Add an attachment', url=h.url_for(action='attach')) } ${ h.hidden('attachment', size=60) }<span class="note">You can attach multiple files by following this link.</span></p>
 % endif
 
-% if h.lca_info['cfp_hide_assistance_options'] is 'no':
+% if c.config.get('cfp_hide_assistance_options') is 'no':
     <h2>Travel &amp; Accommodation Assistance</h2>
     <p class="note" style="margin-top: 0em">linux.conf.au has some funds available to provide travel and accommodation for selected speakers, both from the local region and internationally.</p>
 
@@ -88,10 +88,10 @@
     ${ h.hidden('proposal.accommodation_assistance') }
 % endif
 
-% if h.lca_info['cfp_hide_assistance_options'] is 'by_email': 
+% if c.config.get('cfp_hide_assistance_options') is 'by_email': 
     <h2>Travel &amp; Accommodation Assistance</h2>
     <p class="note" style="margin-top: 0em">Please note that <b>free admission</b> to the full conference is offered to all speakers.</p>
-    <p class="note" style="margin-top: 0em">Travel &amp; accommodation assistance <em>may</em> be available in circumstances where it is absolutely necessary. To find out more please e-mail <em>${ h.lca_info['contact_email'] }</em>.</p>
+    <p class="note" style="margin-top: 0em">Travel &amp; accommodation assistance <em>may</em> be available in circumstances where it is absolutely necessary. To find out more please e-mail <em>${ c.config.get('contact_email') }</em>.</p>
 % endif
 
 
@@ -124,13 +124,13 @@
 
     <p class="entries">
       ${ h.checkbox('proposal.video_release') }
-      <label for="proposal.video_release">I allow ${ h.lca_info["event_parent_organisation"] } to
-      release any recordings of my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></label>
+      <label for="proposal.video_release">I allow ${ c.config.get("event_parent_organisation") } to
+      release any recordings of my presentations, tutorials and minconfs under the <a href="${ c.config.get("media_license_url") }">${ c.config.get("media_license_name") }</a></label>
     </p>
 
     <p class="entries">
       ${ h.checkbox('proposal.slides_release') }
-      <label for="proposal.slides_release">I allow ${ h.lca_info["event_parent_organisation"] } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ h.lca_info["media_license_url"] }">${ h.lca_info["media_license_name"] }</a></label>
+      <label for="proposal.slides_release">I allow ${ c.config.get("event_parent_organisation") } to release any other material (such as slides) from my presentations, tutorials and minconfs under the <a href="${ c.config.get("media_license_url") }">${ c.config.get("media_license_name") }</a></label>
     </p>
 
 

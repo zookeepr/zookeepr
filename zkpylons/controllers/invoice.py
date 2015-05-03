@@ -26,8 +26,8 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
 from zkpylons.model.payment import Payment
 from zkpylons.model.payment_received import PaymentReceived
+from zkpylons.model.config import Config
 
-from zkpylons.config.lca_info import lca_info
 from zkpylons.config.zkpylons_config import file_paths
 
 import zkpylons.lib.pdfgen as pdfgen
@@ -381,7 +381,7 @@ class InvoiceController(BaseController):
         xsl_f = file_paths['zk_root'] + '/zkpylons/templates/invoice/pdf.xsl'
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
-        filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'
+        filename = Config.get('event_shortname') + '_' + str(c.invoice.id) + '.pdf'
         return pdfgen.wrap_pdf_response(pdf_data, filename)
 
 
@@ -409,7 +409,7 @@ class InvoiceController(BaseController):
             c.invoice.void = "User cancellation"
             c.person = c.invoice.person
             meta.Session.commit()
-            email(lca_info['contact_email'], render('/invoice/user_voided.mako'))
+            email(Config.get('contact_email'), render('/invoice/user_voided.mako'))
             h.flash("Previous invoice was voided.")
             return redirect_to(controller='registration', action='pay', id=c.person.registration.id)
 

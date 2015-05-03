@@ -1,9 +1,9 @@
-Subject: ${ h.event_name() } New Account Confirmation
+Subject: ${ c.config.get('event_name') } New Account Confirmation
 To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
 
 Dear ${ c.person.firstname },
 
-Thank you for creating a login to the ${ h.event_name() } website.
+Thank you for creating a login to the ${ c.config.get('event_name') } website.
 Please validate your account by clicking on this URL:
 
   ${ h.url_for(qualified=True, controller='person', action='confirm', confirm_hash=c.person.url_hash) }
@@ -13,4 +13,4 @@ site with the password you provided.
 
 Thanks and have a great day!
 
-The ${ h.event_name() } team
+The ${ c.config.get('event_name') } team

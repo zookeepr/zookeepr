@@ -34,7 +34,7 @@ ${ c.review.stream.name | h }
 </p>
 %endif
 
-%if len(h.lca_info['cfp_miniconf_list']) > 1 and c.review.proposal.proposal_type_id is not 2:
+%if len(c.config.get('cfp_miniconf_list')) > 1 and c.review.proposal.proposal_type_id is not 2:
 <p><b>Recommended Miniconf:</b>
 % if c.review.miniconf:
 ${ c.review.miniconf | h }

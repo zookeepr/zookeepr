@@ -26,8 +26,7 @@ from zkpylons.model.rego_note import RegoNote
 from zkpylons.model.social_network import SocialNetwork
 from zkpylons.model.special_registration import SpecialRegistration
 from zkpylons.model.volunteer import Volunteer
-
-from zkpylons.config.lca_info import lca_info, lca_rego
+from zkpylons.model.config import Config
 
 from zkpylons.lib.ssl_requirement import enforce_ssl
 
@@ -420,9 +419,10 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def _countdown(self):
         """ How many days until conference opens """
-        timeleft = lca_info['date'] - datetime.now()
-        c.text = "%.1f days" % (timeleft.days +
-                                               timeleft.seconds / (3600*24.))
+        # Date is stored in ISO format, datetime doesn't provide a nice importer
+        start_datetime = datetime.strptime(Config.get('date'), "%Y-%m-%dT%H:%M:%S")
+        timeleft = start_datetime - datetime.now()
+        c.text = "%.1f days" % (timeleft.days + timeleft.seconds / (3600*24.))
         return render('/admin/text.mako')
 
     @authorize(h.auth.has_organiser_role)
@@ -1185,9 +1185,9 @@ class AdminController(BaseController):
                         years[year] += 1
                     else:
                         years[year] = 1
-                if len(registration.prevlca) == len(lca_rego['past_confs']):
+                if len(registration.prevlca) == len(Config.get('rego', 'past_confs')):
                     veterans.append(registration.person.firstname + " " + registration.person.lastname)
-                elif len(registration.prevlca) == (len(lca_rego['past_confs']) - 1):
+                elif len(registration.prevlca) == (len(Config.get('rego', 'past_confs')) - 1):
                     veterans_lca.append(registration.person.firstname + " " + registration.person.lastname)
         for (year, value) in years.iteritems():
             c.data.append([year, value])
@@ -1499,7 +1499,7 @@ class AdminController(BaseController):
         c.data = []
         c.noescape = True
         c.columns = ['ID', 'Vol ID', 'Name', 'Email', 'Country', 'City', 'Status', 'Type']
-        for area in h.lca_rego['volunteer_areas']:
+        for area in Config.get('rego', 'volunteer_areas'):
           c.columns.append(area['name'])
         c.columns.append('Other')
         c.columns.append('Experience')
@@ -1538,7 +1538,7 @@ class AdminController(BaseController):
 
           row.append(type)
 
-          for area in h.lca_rego['volunteer_areas']:
+          for area in Config.get('rego', 'volunteer_areas'):
             code = area['name'].replace(' ', '_').replace('.', '_')
             if code in v.areas:
               row.append('Yes')
@@ -1942,7 +1942,7 @@ class AdminController(BaseController):
             if c.fulfilment_group.person:
                 filename = c.fulfilment_group.person.email_address + '.pdf'
             else:
-                filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
+                filename = Config.get('event_shortname') + '_' + str(c.fulfilment_group.id) + '.pdf'
             pdf = open(file_paths['zk_root'] + '/boardingpass/' + filename, 'w')
             pdf.write(pdf_data)
             pdf.close()

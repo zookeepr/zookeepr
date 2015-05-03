@@ -1,4 +1,4 @@
-To: ${ h.lca_info['contact_email'] }
+To: ${ c.config.get('contact_email') }
 Subject: Suspicious payment from ${ c.person.firstname } ${ c.person.lastname }
 
 Payment:         ${ c.pr.payment.id }

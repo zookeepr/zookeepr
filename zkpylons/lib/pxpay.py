@@ -1,6 +1,6 @@
 import urllib2
 from xml.dom import minidom
-from zkpylons.config.lca_info import lca_info
+from zkpylons.model.config import Config
 
 pxpay_url = 'https://www.paymentexpress.com/pxpay/pxaccess.aspx'
 currency  = 'NZD'
@@ -21,8 +21,8 @@ def get_node_value(parent_node, node_name):
 
 def generate_request(fields):
     xml_request = "<GenerateRequest>"
-    xml_request += "<PxPayUserId>" + lca_info['paymentgateway_userid'] + "</PxPayUserId>"
-    xml_request += "<PxPayKey>" + lca_info['paymentgateway_secretkey'] + "</PxPayKey>"
+    xml_request += "<PxPayUserId>" + Config.get('paymentgateway_userid') + "</PxPayUserId>"
+    xml_request += "<PxPayKey>" + Config.get('paymentgateway_secretkey') + "</PxPayKey>"
     xml_request += "<AmountInput>" + fields['amount'] + "</AmountInput>"
     xml_request += "<CurrencyInput>" + currency + "</CurrencyInput>"
     xml_request += "<MerchantReference>INV" + str(fields['invoice_id']) + "</MerchantReference>"
@@ -45,12 +45,12 @@ def generate_request(fields):
     return valid, get_node_value(request_node, 'URI')
 
 def process_response(fields):
-    if fields['userid'] != lca_info['paymentgateway_userid']:
+    if fields['userid'] != Config.get('paymentgateway_userid'):
         return None, ['Invalid userid in redirect from payment gateway: ' + fields['userid'] ]
 
     xml_request = "<ProcessResponse>"
-    xml_request += "<PxPayUserId>" + lca_info['paymentgateway_userid'] + "</PxPayUserId>"
-    xml_request += "<PxPayKey>" + lca_info['paymentgateway_secretkey'] + "</PxPayKey>"
+    xml_request += "<PxPayUserId>" + Config.get('paymentgateway_userid') + "</PxPayUserId>"
+    xml_request += "<PxPayKey>" + Config.get('paymentgateway_secretkey') + "</PxPayKey>"
     xml_request += "<Response>" + fields['result'] + "</Response>"
     xml_request += "</ProcessResponse>"
 

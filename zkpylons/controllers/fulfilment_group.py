@@ -19,8 +19,7 @@ from authkit.permissions import ValidAuthKitUser
 from zkpylons.lib.mail import email
 
 from zkpylons.model import meta, FulfilmentGroup, FulfilmentType
-
-from zkpylons.config.lca_info import lca_info
+from zkpylons.model.config import Config
 
 import zkpylons.lib.pdfgen as pdfgen
 
@@ -72,7 +71,7 @@ class FulfilmentGroupController(BaseController):
         xsl_f = app_globals.mako_lookup.get_template('/fulfilment_group/pdf.xsl').filename
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
-        filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
+        filename = Config.get('event_shortname') + '_' + str(c.fulfilment_group.id) + '.pdf'
         return pdfgen.wrap_pdf_response(pdf_data, filename)
 
     def index(self):

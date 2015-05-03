@@ -24,8 +24,6 @@ from zkpylons.model import ProductCategory
 from zkpylons.model.product import Product
 from zkpylons.model.volunteer import Volunteer
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class VolunteerSchema(BaseSchema):
