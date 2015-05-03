@@ -119,8 +119,12 @@ class Person(Base):
             self.password_salt = salt.hexdigest()
 
         salt = lca_info['password_salt'] + self.password_salt
-        dk = hashlib.pbkdf2_hmac('sha256', value, salt, lca_info['password_iterations'])
-        return binascii.hexlify(dk)
+        # FIXME: switch back to PBKDF2 once Python 2.7.8 is in Ubuntu LTS (16.04)
+        #dk = hashlib.pbkdf2_hmac('sha256', value, salt, lca_info['password_iterations'])
+        #return binascii.hexlify(dk)
+        h = hashlib.new('sha256')
+        h.update(value + salt)
+        return h.hexdigest()
 
     def _set_password(self, value):
         if value is not None:
