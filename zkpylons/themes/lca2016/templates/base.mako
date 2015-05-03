@@ -161,6 +161,7 @@
       </a>
     </div><!-- /.carousel -->
 
+  <div id="wrapper"><!-- Main wrapper for the sidebar -->
     <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -172,7 +173,8 @@
     <!-- Marketing messaging and featurettes
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
-    <div id="page-content-wrapper">
+    <div id="page-content-wrapper" class="toggled">
+    <a href="#menu-toggle" class="btn btn-default btn-xs" id="menu-toggle" style="margin-top: -140px; margin-left: -13px;">Toggle Menu</a>
       <div class="container marketing">
     <!-- START THE FEATURETTES -->
       <div class="row featurette">
@@ -251,6 +253,7 @@
       </footer>
 
     </div><!-- /.container page-content-wrapping-->
+  </div><!--/.container wrapper -->
 
 
     <!-- Bootstrap core JavaScript
