@@ -31,7 +31,10 @@ function check_password($email, $password) {
     pg_close($dbconn);
     print "\t ZK:\t" . $expectedhash . "\n";
 
-    $computedhash = hash_pbkdf2('sha256', $password, $ZKSALT . $usersalt, $ZKITERATIONS);
+    $salt = $ZKSALT . $usersalt;
+    // FIXME: switch back to PBKDF2 once Python 2.7.8 is in Ubuntu LTS (16.04)
+    //$computedhash = hash_pbkdf2('sha256', $password, $salt, $ZKITERATIONS);
+    $computedhash = hash('sha256', $password . $salt);
     print "\t PHP:\t" . $computedhash . "\n";
 
     return $expectedhash === $computedhash;
