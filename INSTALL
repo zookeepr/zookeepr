@@ -49,10 +49,10 @@ Creating a development environment
             * Zookeepr is using alembic in a rather unusual way, which leads to
             problems. James has a work-around for this, but it is not currently in
             master and should never be committed to master. The work-around can be
-            cherry-picked, commit 7631b73ea4c6df7d219ba1758a72ea779664e8b6 from
+            cherry-picked, commit daa1702ec4522a991c5f75b17cb27e15375d2631 from
             the nasty-db-import-fix branch.
 
-            git cherry-pick 7631b73ea4c6df7d219ba1758a72ea779664e8b6
+            git cherry-pick daa1702ec4522a991c5f75b17cb27e15375d2631
             alembic --config development.ini upgrade head
             git reset --hard HEAD^
 
