@@ -183,18 +183,20 @@ class IsActivatedZookeeprUser(UserIn):
         pass
 
     def check(self, app, environ, start_response):
-        set_redirect()
         if not environ.get('REMOTE_USER'):
+            set_redirect()
             raise NotAuthenticatedError('Not Authenticated')
 
         person = Person.find_by_email(environ['REMOTE_USER'])
         if person is None:
+            set_redirect()
             environ['auth_failure'] = 'NO_USER'
             raise NotAuthorizedError(
                 'You are not one of the users allowed to access this resource.'
             )
 
         if not person.activated:
+            set_redirect()
             if 'is_active' in dir(meta.Session):
                 meta.Session.flush()
                 meta.Session.close()

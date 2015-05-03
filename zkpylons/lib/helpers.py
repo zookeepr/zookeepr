@@ -514,7 +514,6 @@ def html_clean(str):
     return cleaner.clean_html(str)
 
 
-
 def redirect_to(*args, **kargs):
     if 'is_active' in dir(meta.Session):
         meta.Session.flush()

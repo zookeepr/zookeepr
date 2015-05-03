@@ -197,9 +197,13 @@ class PersonController(BaseController): #Read, Update, List
         h.check_for_incomplete_profile(c.person)
 
         h.flash('You have signed in')
+        self._redirect_user_optimally()
 
-        redirect_location = session.pop('redirect_to', None)
+    def _redirect_user_optimally(self):
+        redirect_location = session.get('redirect_to', None)
         if redirect_location:
+            del session['redirect_to']
+            session.save()
             redirect_to(str(redirect_location))
 
         if lca_info['conference_status'] == 'open':
@@ -235,6 +239,11 @@ class PersonController(BaseController): #Read, Update, List
         redirect_to('home')
 
     def activate(self):
+        c.person = h.signed_in_person()
+        if c.person.activated:
+            # We've since activated, lets go back to where we were
+            self._redirect_user_optimally()
+
         return render('/person/activate.mako')
 
     def confirm(self, confirm_hash):
