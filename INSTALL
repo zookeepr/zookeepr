@@ -9,12 +9,13 @@ External dependencies
  * libxslt1-dev
  * libxml2-dev
  * postgresql
+ * python-virtualenv
 
 
 Creating a development environment
 ----------------------------------
 
-1. Create a postgresql database for your ZooKeepr instance.
+1. Create a postgresql database for your ZooKeepr instance. The first command creates the database user, the second the database itself, with the zookeepr user as the admin user, and the third assigns a password to the zookeepr user.
 
         sudo -u postgres createuser --no-createdb --no-createrole --no-superuser zookeepr
         sudo -u postgres createdb -O zookeepr zk
@@ -30,16 +31,16 @@ Creating a development environment
         mkvirtualenv zookeepr # --no-site-packages is default
         workon zookeepr
 
-3. Configure.
+3. Configure the virtual environment.
 
         cp zkpylons/config/lca_info.py.sample zkpylons/config/lca_info.py
         cp development.ini.sample development.ini
         python setup.py develop
 
     Edit development.ini to set sqlachemy.url to match your postgresql database.
-    Note: You must set sqlachemy.url in both the [app:main] and [alembic] sections
+    _Note: You must set sqlachemy.url in both the [app:main] and [alembic] sections_
 
-4. Populate database. Run alembic to create and populate the initial database.
+4. Now we populate the database. Run alembic to create and populate the initial database.
 
         alembic --config development.ini upgrade head
 
@@ -67,7 +68,7 @@ Creating a development environment
             The phrase 'This revision is a lie' should *no longer* be present.
 
 
-5. Run development server.
+5. Run the development server.
 ```
         pserve --reload development.ini
 ```
@@ -80,6 +81,6 @@ Creating a development environment
 
 You should now have a development instance of ZooKeepr up and running.
 
-Access it at: http://0.0.0.0:6543
+Access it at: <http://0.0.0.0:6543>
 
 *Congratulations*
