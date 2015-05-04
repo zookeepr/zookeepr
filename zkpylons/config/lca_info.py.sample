@@ -6,6 +6,9 @@ import os
 
 
 lca_info = {
+  'password_salt' : 'changeme',
+  'password_iterations' : 400000,
+
   'paymentgateway_userid' : '',
   'paymentgateway_secretkey' : '',
 
@@ -78,6 +81,7 @@ lca_info = {
   'mailing_list_announce_addr': 'lca-announce@linux.org.au',
   'mailing_list_chat_url': 'http://lists.lca2011.linux.org.au/lca2011-chat',
   'mailing_list_chat_addr': 'lca2011-chat@lists.lca2011.linux.org.au',
+  'zk_enabled_theme': 'zkpylons',
 }
 
 lca_rego = {

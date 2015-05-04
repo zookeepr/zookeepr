@@ -73,6 +73,7 @@ class FundingController(BaseController):
         c.funding_editing = lca_info['funding_editing']
 
     @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.is_activated_user)
     def __before__(self, **kwargs):
         c.funding_types = FundingType.find_all()
         c.form_fields = {
@@ -352,6 +353,7 @@ class FundingController(BaseController):
 
         return render('funding/list_review.mako')
 
+    @authorize(h.auth.has_funding_reviewer_role)
     def summary(self):
         for ft in c.funding_types:
             stuff = Funding.find_all_by_funding_type_id(ft.id, include_withdrawn=False)
@@ -373,4 +375,3 @@ class FundingController(BaseController):
         if num_reviewers == 0:
             return 0
         return total_score*1.0/num_reviewers
-

@@ -153,6 +153,7 @@ edit_schema = NewRegistrationSchema()
 class RegistrationController(BaseController):
 
     @enforce_ssl(required_all=True)
+    @authorize(h.auth.is_activated_user)
     @authorize(h.auth.is_valid_user)
     def __before__(self, **kwargs):
         c.product_categories = ProductCategory.find_all()

@@ -445,7 +445,10 @@ def flash(msg, category="information"):
         session['flash'] = {}
     if not session['flash'].has_key(category):
         session['flash'][category] = []
-    session['flash'][category].append(msg)
+    # If we are redirected we may flash this more than once. Check
+    # the message hasn't already been set by looking in the session
+    if msg not in session['flash'][category]:
+        session['flash'][category].append(msg)
     session.save()
 
 def zk_root():
@@ -511,7 +514,6 @@ def html_clean(str):
     return cleaner.clean_html(str)
 
 
-
 def redirect_to(*args, **kargs):
     if 'is_active' in dir(meta.Session):
         meta.Session.flush()
@@ -524,6 +526,11 @@ def url_for(*args, **kwargs):
     if fields.has_key('hash') and 'hash' not in kwargs:
         kwargs['hash'] = fields['hash']
     return pylons_url_for(*args, **kwargs)
+
+
+def full_url_for(*args, **kwargs):
+    return os.path.join(lca_info['event_permalink'], url_for(*args, **kwargs))
+
 
 def list_to_string(list, primary_join='%s and %s', secondary_join=', ', html = False):
     if html:

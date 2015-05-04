@@ -26,6 +26,7 @@ log = logging.getLogger(__name__)
 
 class FundingAttachmentController(BaseController):
     @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.is_activated_user)
     def __before__(self, **kwargs):
         pass
 

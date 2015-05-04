@@ -20,6 +20,7 @@ ${ h.text('db_content.title', size=60) }
 </p><p class="entries">
 ${ h.text('db_content.publish_date', size=60) } (dd/mm/yy)
 </p>
+<p class="label">
 <label for="db_content.publish_time">Publish Time:</label>
 </p><p class="entries">
 ${ h.text('db_content.publish_time', size=60) } (hh:mm:ss)

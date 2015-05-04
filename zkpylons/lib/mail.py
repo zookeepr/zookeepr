@@ -3,8 +3,10 @@ import email.parser as email_parser
 import email.utils as email_utils
 import smtplib
 import string
+import traceback
 
 from zkpylons.config.lca_info import lca_info
+import zkpylons.lib.helpers as h
 from pylons import config
 
 def is_7bit(s):
@@ -87,6 +89,14 @@ def email(recipients, body):
     if lca_info['bcc_email']:
         recipients.append(lca_info['bcc_email'])
     # send the email using smtp
-    s = smtplib.SMTP(config['smtp_server'])
-    s.sendmail(lca_info['contact_email'], recipients, message.as_string())
-    s.quit()
+    try:
+        s = smtplib.SMTP(config['smtp_server'])
+        s.sendmail(lca_info['contact_email'], recipients, message.as_string())
+        s.quit()
+    except Exception as e:
+        h.flash(
+            'Unable to send email. '
+            'Please contact %s' % lca_info['webmaster_email'],
+            'error'
+        )
+        traceback.print_exc()

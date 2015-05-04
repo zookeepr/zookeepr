@@ -48,6 +48,7 @@ class VolunteerController(BaseController):
 
     @enforce_ssl(required_all=True)
     @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.is_activated_user)
     def __before__(self, **kwargs):
         pass
 

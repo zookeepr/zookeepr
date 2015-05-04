@@ -36,6 +36,7 @@ class MiniconfProposalController(BaseController):
         c.proposal_editing = lca_info['proposal_editing']
 
     @authorize(h.auth.is_valid_user)
+    @authorize(h.auth.is_activated_user)
     def __before__(self, **kwargs):
         c.proposal_types = ProposalType.find_all()
         c.target_audiences = TargetAudience.find_all()

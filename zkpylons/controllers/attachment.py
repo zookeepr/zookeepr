@@ -30,6 +30,7 @@ class AttachmentController(BaseController):
         pass
 
     @dispatch_on(POST="_delete")
+    @authorize(h.auth.is_activated_user)
     def delete(self, id):
         c.attachment = Attachment.find_by_id(id)
         c.proposal = Proposal.find_by_id(c.attachment.proposal_id)
