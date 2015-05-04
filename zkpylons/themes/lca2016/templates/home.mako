@@ -9,12 +9,7 @@ for d in c.db_content_news_all:
         featured.append(d)
         count += 1
 %>
-
-
-<!-- <img src = '/images/heightfix.png' class = 'heightfix' alt = ''> -->
-
                                             <h2 class="featurette-heading">
-                              <!-- <img src="/images/postheadericon.png" width="26" height="26" alt="postheadericon">-->
                               Welcome to ${ h.event_name() }!</h2>
 
 % if c.db_content is not None:

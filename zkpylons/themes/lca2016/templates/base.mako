@@ -161,6 +161,7 @@
       </a>
     </div><!-- /.carousel -->
 
+  <div id="wrapper"><!-- Main wrapper for the sidebar -->
     <!-- Sidebar -->
         <div id="sidebar-wrapper">
             <ul class="sidebar-nav">
@@ -172,13 +173,18 @@
     <!-- Marketing messaging and featurettes
     ================================================== -->
     <!-- Wrap the rest of the page in another container to center all the content. -->
-    <div id="page-content-wrapper">
-      <div class="container marketing">
+    <div id="page-content-wrapper" class="toggled">
+    <a href="#menu-toggle" class="btn btn-default btn-xs" id="menu-toggle" style="margin-left: -13px;">Toggle Menu</a>
+    
+    <div class="container marketing">
     <!-- START THE FEATURETTES -->
       <div class="row featurette">
-        <div class="col-md-7 col-md-push-5">
+        <div class="col-md-7 col-md-push-1">
           <%include file="/flash.mako" />
           ${next.body()}
+        </div>
+       <div class="col-md-7 col-md-push-1">
+          <img class="featurette-image img-responsive center-block" src="/img/Geelong-Wave-Gradient-greyscale-small.png" alt="Ge long 2016">
         </div>
       </div>
 
@@ -186,9 +192,6 @@
         <div class="col-md-7">
           <h2 class="featurette-heading">First featurette heading. <span class="text-muted">It'll blow your mind.</span></h2>
           <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
-        </div>
-        <div class="col-md-5">
-          <img class="featurette-image img-responsive center-block" data-src="holder.js/500x500/auto" alt="Generic placeholder image">
         </div>
       </div>
 
@@ -251,6 +254,7 @@
       </footer>
 
     </div><!-- /.container page-content-wrapping-->
+  </div><!--/.container wrapper -->
 
 
     <!-- Bootstrap core JavaScript
@@ -258,6 +262,7 @@
     <!-- Placed at the end of the document so the pages load faster -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/validator.min.js"></script>
     <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
     <script src="../../assets/js/ie10-viewport-bug-workaround.js"></script>
     
