@@ -164,6 +164,7 @@
   <div id="wrapper"><!-- Main wrapper for the sidebar -->
     <!-- Sidebar -->
         <div id="sidebar-wrapper">
+            <div id="background-image-disabled"></div>
             <ul class="sidebar-nav">
                 <%include file="/leftcol/toolbox.mako" args="parent=self" />
             </ul>
