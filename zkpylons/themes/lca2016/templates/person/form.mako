@@ -1,6 +1,6 @@
     <div class="form-group">
       <div class="input-group">
-        <input type="text" id="personfirstname" class="form-control" placeholder="First Name" name="person.firstname" required />
+        <input type="text" id="personfirstname" class="form-control" placeholder="First Name" name="person.firstname" />
         <span class="input-group-addon" id="basic-addon2">required</span>
       </div>
     </div>
@@ -41,7 +41,7 @@ ${ h.hidden('person.company', value='') }</p>
 
     <div class="form-group">
       <div class="input-group">
-        <input type="password" id="personpassword_confirm" class="form-control" placeholder="Confirm" name="person.password_confirm" data-match="#inputPassword" data-match-error="Whoops, these don't match" required/>
+        <input type="password" id="personpassword_confirm" class="form-control" placeholder="Confirm" name="person.password_confirm" data-match="#personpassword" data-match-error="Whoops, these don't match" required/>
         <span class="input-group-addon" id="basic-addon2">Must Match</span>
       </div>
       <div class="help-block with-errors"></div>
@@ -133,7 +133,7 @@ ${ h.hidden('person.postcode') }
   <div class="form-group">
     <div class="checkbox">
       <label>
-        <input type="checkbox" id="personi_agree" data-error="An account cannot be created if you don't agree with the T&Cs" required>
+        <input type="checkbox" name="person.i_agree" id="personi_agree" data-error="An account cannot be created if you don't agree with the T&Cs" required>
         I agree to the <a href="/cor/terms_and_conditions" target="_blank">conditions of registration</a>
       </label>
       <div class="help-block with-errors"></div>
