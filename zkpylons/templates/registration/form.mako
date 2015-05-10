@@ -49,7 +49,7 @@ import array
 % endif
           </p>
 
-%if c.config.get('rego', 'personal_info')['home_address'] == 'yes':
+%if c.config.get('personal_info', category='rego')['home_address'] == 'yes':
           <p class="label"><span class="mandatory">*</span><label for="person.address">Address:</label></p>
           <p class="entries">
             ${ h.text('person.address1', size=40) }
@@ -86,7 +86,7 @@ ${ h.hidden('person.postcode') }
   is_speaker = c.signed_in_person.is_speaker()
 %>
 
-%if c.config.get('rego', 'personal_info')['phone'] == 'yes':
+%if c.config.get('personal_info', category='rego')['phone'] == 'yes':
           <p class="label"><label for="person.mobile">Phone number (International Format):</label></p>
           <p class="entries">${ h.text('person.phone') }</p>
 
@@ -419,13 +419,13 @@ accommdisplay();
           <p class="label"><label for="registration.special">Other special requirements:</label></p>
           <p class="entries">${ h.text('registration.special', size=60) }</p>
           <p class="note">Please enter any requirements if necessary; access requirements, etc.</p>
-% if c.config.get('rego', 'ask_past_confs'):
+% if c.config.get('ask_past_confs', category='rego'):
              <p class="label"><label for="registration.prevlca">Have you attended ${ c.config.get('event_generic_name') } before?</label></p>
             <p class="entries">
             <table>
               <tr>
                 <td>
-%     for (year, desc) in c.config.get('rego', 'past_confs'):
+%     for (year, desc) in c.config.get('past_confs', category='rego'):
        <% label = 'registration.prevlca.%s' % year %>
                 <label>${ h.checkbox(label) } ${ desc }</label><br />
 %     endfor
@@ -435,7 +435,7 @@ accommdisplay();
             </p>
 % endif
           </fieldset>
-% if c.config.get('rego', 'lca_optional_stuff') == 'yes':
+% if c.config.get('lca_optional_stuff', category='rego') == 'yes':
           <fieldset>
               <h2>Optional</h2>
 <script src="/silly.js"></script>
@@ -451,14 +451,14 @@ accommdisplay();
             <p class="entries">
               <select id="registration.shell" name="registration.shell" onchange="toggle_select_hidden(this.id, 'shell_other')">
                 <option value="">(please select)</option>
-% for s in c.config.get('rego', 'shells'):
+% for s in c.config.get('shells', category='rego'):
                 <option value="${s}">${ s }</option>
 % endfor
                 <option value="other">other</option>
               </select>
             </p>
 
-% if not c.registration or c.registration.shell in c.config.get('rego', 'shells') or c.registration.shell == '':
+% if not c.registration or c.registration.shell in c.config.get('shells', category='rego') or c.registration.shell == '':
 <span id="shell_other" style="display: none">
 % else:
 <span id="shell_other" style="display: inline">
@@ -471,14 +471,14 @@ accommdisplay();
             <p class="entries">
               <select id="registration.editor" name="registration.editor" onchange="toggle_select_hidden(this.id, 'editor_other')">
                 <option value="">(please select)</option>
-% for e in c.config.get('rego', 'editors'):
+% for e in c.config.get('editors', category='rego'):
                 <option value="${ e }">${ e }</option>
 % endfor
                 <option value="other">other</option>
               </select>
             </p>
 
-% if not c.registration or c.registration.editor in c.config.get('rego', 'editors') or c.registration.editor == '':
+% if not c.registration or c.registration.editor in c.config.get('editors', category='rego') or c.registration.editor == '':
 <span id="editor_other" style="display: none">
 % else:
 <span id="editor_other" style="display: inline">
@@ -491,14 +491,14 @@ accommdisplay();
             <p class="entries">
               <select id="registration.distro" name="registration.distro" onchange="toggle_select_hidden(this.id, 'distro_other')">
                 <option value="">(please select)</option>
-% for d in c.config.get('rego', 'distros'):
+% for d in c.config.get('distros', category='rego'):
                 <option value="${ d }">${ d }</option>
 % endfor
                 <option value="other">other</option>
               </select>
             </p>
 
-% if not c.registration or c.registration.distro in c.config.get('rego', 'distros') or c.registration.distro == '':
+% if not c.registration or c.registration.distro in c.config.get('distros', category='rego') or c.registration.distro == '':
 <span id="distro_other" style="display: none">
 % else:
 <span id="distro_other" style="display: inline">
@@ -510,14 +510,14 @@ accommdisplay();
             <p class="entries">
               <select id="registration.vcs" name="registration.vcs" onchange="toggle_select_hidden(this.id, 'vcs_other')">
                 <option value="">(please select)</option>
-% for s in c.config.get('rego', 'vcses'):
+% for s in c.config.get('vcses', category='rego'):
                 <option value="${s}">${ s }</option>
 % endfor
                 <option value="other">other</option>
               </select>
             </p>
 
-% if not c.registration or c.registration.vcs in c.config.get('rego', 'vcses') or c.registration.vcs == '':
+% if not c.registration or c.registration.vcs in c.config.get('vcses', category='rego') or c.registration.vcs == '':
 <span id="vcs_other" style="display: none">
 % else:
 <span id="vcs_other" style="display: inline">
@@ -532,7 +532,7 @@ accommdisplay();
             <p class="entries">${ h.text('registration.nick', size=30) }</p>
             <p class="note">Your IRC nick or other handle you go by.</p>
 
-% if c.config.get('rego', 'pgp_collection') != 'no':
+% if c.config.get('pgp_collection', category='rego') != 'no':
             <p class="label"><label for="registration.keyid">GnuPG/PGP Keyid:</label></p>
             <p class="entries">${ h.text('registration.keyid', size=10) }</p>
             <p class="note">If you have a GnuPG or PGP key then please enter its short key id here and we will print it on your badge.</p>

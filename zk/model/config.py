@@ -15,22 +15,13 @@ class Config(Base):
     # NOTE: Non-postgresql requires the use of a decorator
 
     @classmethod
-    def get(cls, category, key=None):
-        """ Get an entry from the config key store
-
-        Calling form:
-        get(category, key) - Fetches the specified value from the database
-        get(key) - Fetches the value from the database with the general category
-        """
-
-        if key is None:
-            key = category
-            category = 'general'
+    def get(cls, key, category='general'):
+        """ Get an entry from the config key store. """
 
         fetch = Session.query(cls).get((category, key))
 
         if (not fetch):
-            log.info("Config request for missing key: %s, %s", category, key)
+            log.warning("Config request for missing key: %s, %s", category, key)
 
         # Missing entries are returned as an empty string
         # This is the least obvious when directly exposed to the user

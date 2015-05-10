@@ -281,10 +281,10 @@ def extension(name):
     return name.split('.')[-1]
 
 def silly_description():
-    adverb = random.choice(c.config.get('rego', 'silly_description')['adverbs'])
-    adjective = random.choice(c.config.get('rego', 'silly_description')['adjectives'])
-    noun = random.choice(c.config.get('rego', 'silly_description')['nouns'])
-    start = random.choice(c.config.get('rego', 'silly_description')['starts'])
+    adverb    = random.choice(c.config.get('silly_description', category='rego')['adverbs'])
+    adjective = random.choice(c.config.get('silly_description', category='rego')['adjectives'])
+    noun      = random.choice(c.config.get('silly_description', category='rego')['nouns'])
+    start     = random.choice(c.config.get('silly_description', category='rego')['starts'])
     if start == 'a' and adverb[0] in ['a', 'e', 'i', 'o', 'u']:
         start = 'an'
     desc = '%s %s %s %s' % (start, adverb, adjective, noun)
@@ -496,7 +496,7 @@ def list_to_string(list, primary_join='%s and %s', secondary_join=', ', html = F
     return list
 
 def check_for_incomplete_profile(person):
-    if not person.firstname or not person.lastname or not person.i_agree or (c.config.get('rego', 'personal_info')['home_address'] == 'yes' and (not person.address1 or not person.city or not person.postcode)):
+    if not person.firstname or not person.lastname or not person.i_agree or (c.config.get('personal_info', category='rego')['home_address'] == 'yes' and (not person.address1 or not person.city or not person.postcode)):
         if not session.get('redirect_to', None):
             session['redirect_to'] =  request.path_info
             session.save()

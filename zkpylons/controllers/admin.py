@@ -1185,9 +1185,9 @@ class AdminController(BaseController):
                         years[year] += 1
                     else:
                         years[year] = 1
-                if len(registration.prevlca) == len(Config.get('rego', 'past_confs')):
+                if len(registration.prevlca) == len(Config.get('past_confs', category='rego')):
                     veterans.append(registration.person.firstname + " " + registration.person.lastname)
-                elif len(registration.prevlca) == (len(Config.get('rego', 'past_confs')) - 1):
+                elif len(registration.prevlca) == (len(Config.get('past_confs', category='rego')) - 1):
                     veterans_lca.append(registration.person.firstname + " " + registration.person.lastname)
         for (year, value) in years.iteritems():
             c.data.append([year, value])
@@ -1499,7 +1499,7 @@ class AdminController(BaseController):
         c.data = []
         c.noescape = True
         c.columns = ['ID', 'Vol ID', 'Name', 'Email', 'Country', 'City', 'Status', 'Type']
-        for area in Config.get('rego', 'volunteer_areas'):
+        for area in Config.get('volunteer_areas', category='rego'):
           c.columns.append(area['name'])
         c.columns.append('Other')
         c.columns.append('Experience')
@@ -1538,7 +1538,7 @@ class AdminController(BaseController):
 
           row.append(type)
 
-          for area in Config.get('rego', 'volunteer_areas'):
+          for area in Config.get('volunteer_areas', category='rego'):
             code = area['name'].replace(' ', '_').replace('.', '_')
             if code in v.areas:
               row.append('Yes')

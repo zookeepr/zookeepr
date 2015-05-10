@@ -66,7 +66,7 @@
     <table>
       <tr>
         <td>
-% for (year, desc) in c.config.get('rego', 'past_confs'):
+% for (year, desc) in c.config.get('past_confs', category='rego'):
          <% label = 'funding.prevlca.%s' % year %>
 <label>${ h.checkbox(label) } ${ desc }</label><br />
 % endfor

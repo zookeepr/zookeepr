@@ -87,7 +87,7 @@ ${ h.line_break(h.util.html_escape(c.funding.why_attend)) | n}
 <table>
   <tr>
     <td>
-% for (year, desc) in c.config.get('rego', 'past_confs'):
+% for (year, desc) in c.config.get('past_confs', category='rego'):
 ${ h.yesno(year in (c.funding.prevlca or [])) |n }
 ${ desc }<br />
 % endfor

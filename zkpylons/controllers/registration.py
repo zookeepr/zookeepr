@@ -115,7 +115,7 @@ class RegistrationSchema(BaseSchema):
     vcstext = OtherValidator(if_missing=None, list=('visual sourcesafe', 'bitkeeper'))
     silly_description = validators.String(if_missing=None)
     silly_description_checksum = validators.String(if_missing=None, strip=True)
-    if Config.get('rego', 'pgp_collection') != 'no':
+    if Config.get('pgp_collection', category='rego') != 'no':
         keyid = validators.String()
     planetfeed = validators.String(if_missing=None)
     voucher_code = VoucherValidator(if_empty=None)
@@ -326,7 +326,7 @@ class RegistrationController(BaseController):
 
 
         defaults = {}
-        if Config.get('rego', 'personal_info')['home_address'] == 'no':
+        if Config.get('personal_info', category='rego')['home_address'] == 'no':
             defaults['person.address1'] = 'not available'
             defaults['person.city'] = 'not available'
             defaults['person.postcode'] = 'not available'
@@ -453,24 +453,24 @@ class RegistrationController(BaseController):
         else:
             defaults['registration.over18'] = 0
 
-        if c.registration.shell in Config.get('rego', 'shells') or c.registration.shell == '':
+        if c.registration.shell in Config.get('shells', category='rego') or c.registration.shell == '':
             defaults['registration.shell'] = c.registration.shell
         else:
             defaults['registration.shell'] = 'other'
             defaults['registration.shelltext'] = c.registration.shell
 
-        if c.registration.editor in Config.get('rego', 'editors') or c.registration.editor == '':
+        if c.registration.editor in Config.get('editors', category='rego') or c.registration.editor == '':
             defaults['registration.editor'] = c.registration.editor
         else:
             defaults['registration.editor'] = 'other'
             defaults['registration.editortext'] = c.registration.editor
 
-        if c.registration.distro in Config.get('rego', 'distros') or c.registration.distro == '':
+        if c.registration.distro in Config.get('distros', category='rego') or c.registration.distro == '':
             defaults['registration.distro'] = c.registration.distro
         else:
             defaults['registration.distro'] = 'other'
             defaults['registration.distrotext'] = c.registration.distro
-        if c.registration.vcs in Config.get('rego', 'vcses'):
+        if c.registration.vcs in Config.get('vcses', category='rego'):
             defaults['registration.vcs'] = c.registration.vcs
         else:
             defaults['registration.vcs'] = 'other'
@@ -1112,7 +1112,7 @@ class RegistrationController(BaseController):
             }
 
             # For some reason some keys are None even if pgp_collection is yes, should probably fix the real problem.
-            if Config.get('rego', 'pgp_collection') != 'no' and registration.keyid:
+            if Config.get('pgp_collection', category='rego') != 'no' and registration.keyid:
                     data['gpg'] = self._sanitise_badge_field(registration.keyid)
             return data
         return {'ticket': '', 'firstname': '', 'lastname': '', 'nickname': '', 'company': '', 'favourites': '', 'gpg': '', 'region': '', 'dinner_tickets': 0, 'speakers_tickets': 0, 'pdns_ticket' : False, 'over18': True, 'silly': '','breakfast': 0}

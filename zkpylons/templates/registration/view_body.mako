@@ -1,7 +1,7 @@
         <blockquote>
         <p>
         ${ c.registration.person.firstname } ${ c.registration.person.lastname }
-%if c.config.get('rego', 'personal_info')['home_address'] == 'yes':
+%if c.config.get('personal_info', category='rego')['home_address'] == 'yes':
         <br/>${ c.registration.person.address1 }
 % if c.registration.person.address2:
         <br/>${ c.registration.person.address2 }
@@ -85,7 +85,7 @@
 
           <p class="label"><label for="registration.prevlca"><b>Previous ${ c.config.get('event_generic_name') } attendance:</b></label></p>
           <p class="entries">
-% for (year, desc) in c.config.get('rego', 'past_confs'):
+% for (year, desc) in c.config.get('past_confs', category='rego'):
             <br>
             ${ h.yesno(year in (c.registration.prevlca or [])) |n }
             ${ desc }
@@ -104,7 +104,7 @@
 %if c.registration.nick:
           <p class="label"><b>Superhero name:</b> ${ c.registration.nick }</p>
 %endif
-%if c.config.get('rego', 'pgp_collection') != 'no' and c.registration.keyid:
+%if c.config.get('pgp_collection', category='rego') != 'no' and c.registration.keyid:
           <p class="label"><b>GnuPG/PGP Keyid:</b> ${ c.registration.keyid }</p>
 %endif
 %if c.registration.planetfeed:

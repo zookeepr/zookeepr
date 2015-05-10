@@ -456,7 +456,7 @@ class PersonController(BaseController): #Read, Update, List
             defaults = {
                 'person.country': 'AUSTRALIA',
             }
-            if Config.get('rego', 'personal_info')['home_address'] == 'no':
+            if Config.get('personal_info', category='rego')['home_address'] == 'no':
                 defaults['person.address1'] = 'not available'
                 defaults['person.city'] = 'not available'
                 defaults['person.postcode'] = 'not available'
@@ -489,7 +489,7 @@ class PersonController(BaseController): #Read, Update, List
 
             meta.Session.commit()
 
-            if Config.get('rego', 'confirm_email_address') == 'no':
+            if Config.get('confirm_email_address', category='rego') == 'no':
                 redirect_to(controller='person', action='confirm', confirm_hash=c.person.url_hash)
             else:
                 email(c.person.email_address, render('/person/new_person_email.mako'))
