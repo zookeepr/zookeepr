@@ -1,0 +1,36 @@
+<style type="text/css">
+.hidden-input:not(:hover):not(:focus) {
+	/* Hide form styling until somebody shows an interest */
+	border: medium none;
+	box-shadow: none;
+	background: none;
+	margin: 0 1px; /* Compensates for border none */
+}
+</style>
+
+<table class="table table-striped">
+	<!-- Specify width preference, prevents jumping when showing description. -->
+	<colgroup>
+		<col></col>
+		<col></col>
+		<col style="width: 100%"></col>
+	</colgroup>
+	<tr>
+		<th>Category</th>
+		<th>Key</th>
+		<th>Value</th>
+	</tr>
+	<tr ng-repeat-start="row in data">
+		<td>{{ row.category }}</td>
+		<td>{{ row.key }}</td>
+		<td>
+			<div class="has-feedback">
+				<input class="form-control hidden-input" ng-focus="row.show_description=1" ng-blur="row.show_description=0" ng-model="row.value" json-text ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }">
+				<span ng-class="{'glyphicon glyphicon-ok':row.response=='success', 'glyphicon glyphicon-remove':row.response=='error'}" class="form-control-feedback"></span>
+			</div>
+		</td>
+	<tr ng-if="row.description" ng-show="row.show_description" class="info" ng-repeat-end>
+		<td colspan="3">{{ row.description }}</td>
+	</tr>
+	</tr>
+</table>
