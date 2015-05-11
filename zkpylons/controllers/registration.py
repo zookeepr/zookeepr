@@ -316,12 +316,12 @@ class RegistrationController(BaseController):
             if c.signed_in_person.special_registration:
                 c.special_offer = c.signed_in_person.special_registration[0].special_offer
 
-        if c.special_offer is None and Config.get('conference_status') is not 'open':
+        if c.special_offer is None and Config.get('conference_status') != 'open':
             if not h.auth.authorized(h.auth.has_organiser_role):
                 redirect_to(action='status')
             else:
                 # User is an organiser, so if the status is also 'debug' then they can register
-                if Config.get('conference_status') is not 'debug':
+                if Config.get('conference_status') != 'debug':
                     redirect_to(action='status')
 
 
@@ -371,12 +371,12 @@ class RegistrationController(BaseController):
             if c.special_offer is not None and not c.special_offer.enabled:
                 c.special_offer = None
 
-        if c.special_offer is None and Config.get('conference_status') is not 'open':
+        if c.special_offer is None and Config.get('conference_status') != 'open':
             if not h.auth.authorized(h.auth.has_organiser_role):
                 redirect_to(action='status')
             else:
                 # User is an organiser, so if the status is also 'debug' then they can register
-                if Config.get('conference_status') is not 'debug':
+                if Config.get('conference_status') != 'debug':
                     redirect_to(action='status')
 
 
