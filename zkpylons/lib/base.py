@@ -22,8 +22,8 @@ class BaseController(WSGIController):
         person = h.signed_in_person()
         if person and not person.activated:
             msg = ("Your account (%s) hasn't been confirmed. Check your email"
-                   " for activation instructions. %s" %
-                   (person.email_address, 'link-to-reset'))
+                   " for activation instructions." %
+                   (person.email_address))
             h.flash(msg, category="warning")
 
         # Moved here from index controller so that all views that import the news.mako template

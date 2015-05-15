@@ -257,7 +257,7 @@ class PersonSchema(BaseSchema):
     password = validators.String(not_empty=True)
     password_confirm = validators.String(not_empty=True)
     phone = validators.String()
-    mobile = validators.String()
+    # mobile = validators.String()
     address1 = validators.String(not_empty=True)
     address2 = validators.String()
     city = validators.String(not_empty=True)

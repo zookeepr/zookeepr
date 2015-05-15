@@ -32,7 +32,7 @@ class NewPersonSchema(BaseSchema):
     experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
     url = validators.URL(add_http=True, check_exists=False, not_empty=False)
-    mobile = validators.String(not_empty=True)
+    phone = validators.String(not_empty=True)
 
 class ExistingPersonSchema(BaseSchema):
     allow_extra_fields = False
@@ -40,7 +40,7 @@ class ExistingPersonSchema(BaseSchema):
     experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
     url = validators.URL(add_http=True, check_exists=False, not_empty=False)
-    mobile = validators.String(not_empty=True)
+    phone = validators.String(not_empty=True)
 
 class ProposalSchema(BaseSchema):
     allow_extra_fields = False
@@ -119,7 +119,7 @@ class ProposalController(BaseController):
             'proposal.travel_assistance' : 1,
             'proposal.accommodation_assistance' : 1,
             'person.name': c.person.firstname + " " + c.person.lastname,
-            'person.mobile': c.person.mobile,
+            'person.phone': c.person.phone,
             'person.experience': c.person.experience,
             'person.bio': c.person.bio,
             'person.url': c.person.url,

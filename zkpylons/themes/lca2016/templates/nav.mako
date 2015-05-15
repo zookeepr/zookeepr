@@ -37,8 +37,9 @@
               <ul class="dropdown-menu" role="menu">
 %       for sub in submenus[c]:
           <%
-          link = sub.replace('/', '_').lower()
-          link = '/'+where+'/'+link
+          link = sub.replace('/', '_')
+          link = '/'+t+'/'+link
+          link = link.lower()
           link = link.replace(' ', '_')
           %>
                   <li><a href="${ link }">${ sub }</a></li>
