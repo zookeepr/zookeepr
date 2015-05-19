@@ -3,7 +3,7 @@
 <h2>Approve/disapprove funding</h2>
 
 ${ h.form(h.url_for()) }
-<table>
+<table class="table sortable">
   <tr>
     <th>#</th>
     <th>Name</th>

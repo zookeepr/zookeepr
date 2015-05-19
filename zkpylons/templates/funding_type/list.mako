@@ -2,7 +2,7 @@
 
 <h2>List funding types</h2>
 
-<table>
+<table class="table sortable">
 
 % if len(c.funding_type_collection) > 0:
   <tr>

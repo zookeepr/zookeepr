@@ -13,7 +13,7 @@ ${ c.error }
 
 % elif c.many:
 <p>Looked up: ${ c.query } and found ${ len(c.many) }</p>
-<table>
+<table class="table sortable">
 %   for person in c.many:
   <tr class="${ h.cycle("odd", "even") }">
     <td>${ h.link_to(person.fullname, h.url_for(p=person.id)) }</td>
@@ -51,7 +51,7 @@ ${ c.error }
 <div style="float: right">
   ${ h.form(h.url_for(controller='rego_note', action='new', id=None), method='post') }
     ${ h.hidden('rego_note.rego', value=c.person.registration.id) }
-    <table>
+    <table class="table sortable">
       <tr>
         <th>when</td>
         <th>note</td>
@@ -90,7 +90,7 @@ not registered
 <h2>Invoices</h2>
 <p>${ h.link_to('New Manual Invoice', h.url_for(controller='invoice', action='new', id=None, person_id=c.person.id))}</p>
 %   if c.person.invoices:
-<table>
+<table class="table sortable">
   <tr>
     <th>Invoice #</th>
     <th>Total</th>
@@ -105,7 +105,7 @@ not registered
 %     endfor
 </table>
 <br />
-<table>
+<table class="table sortable">
   <tr>
     <th>Invoice</td>
     <th>Description</td>
@@ -134,7 +134,7 @@ not registered
 </table>
 %   if c.person.fulfilments:
 <h2>Fulfilments</h2>
-<table>
+<table class="table sortable">
   <tr>
     <th>Fulfilment</th>
     <th>Product</th>

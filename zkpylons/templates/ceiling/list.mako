@@ -3,7 +3,7 @@
 <h2>List ceilings</h2>
 
 % if len(c.ceiling_collection) > 0:
-<table>
+<table class="table sortable">
   <tr>
     <th>Name</th>
     <th>Parent</th>

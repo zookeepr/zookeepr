@@ -1,6 +1,6 @@
 <%inherit file="/base.mako" />
 
-<table>
+<table class="table sortable">
   <tr>
     <th>Name</th>
     <th>&nbsp;</th>
