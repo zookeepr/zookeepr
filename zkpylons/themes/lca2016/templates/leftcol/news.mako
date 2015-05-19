@@ -11,7 +11,8 @@
             <div class="carousel-caption">
 	          <h1>${ d.title } </h1>
 	          <p>${ d.creation_timestamp.strftime("%Y-%m-%d") } </p>
-	          <p>${ d.body } </p>
+                  <% (teaser, read_more) = h.make_teaser(d.body) %>
+	          <p>${ teaser } </p>
 	          <p><a class="btn btn-lg btn-primary" href="/media/news" role="button">More News</a></p>
 	        </div>
 	      </div>
