@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 <h2>List of DB pages</h2>
 
-<table>
+<table class="table">
     <tr>
         <th>ID/Edit</th>
         <th>Title</th>

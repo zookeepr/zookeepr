@@ -9,7 +9,13 @@
 
 <p><b> ${ c.person.firstname } ${ c.person.lastname } </b></p>
 <br>
-<table>
+<table class="table sortable">
+    <tr>
+        <th>Is/Is not</th>
+        <th>Role</th>
+        <th>Grant/Revoke</th>
+        <th>Description</th>
+    </tr>
 % for role in c.roles:
     <tr class="${ h.cycle('even', 'odd') }">
         <td valign="middle">

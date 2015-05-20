@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 
 <h2>People</h2>
-<table>
+<table class="table sortable">
 
 % if len(c.person_collection) > 0:
   <tr>

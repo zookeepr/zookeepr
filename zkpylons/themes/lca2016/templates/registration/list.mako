@@ -150,7 +150,7 @@ if "not_australian" in c.registration_request and c.registration_request['not_au
     
     <p>${ h.link_to('Export as CSV', url=attribs + "&export=true") }</p>
     
-    <table> 
+    <table class="table sortable"> 
       <thead><tr>
         <th>Rego</th>
         <th>Name / Email</th>

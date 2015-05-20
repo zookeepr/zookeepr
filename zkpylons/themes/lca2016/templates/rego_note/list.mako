@@ -2,7 +2,7 @@
 
 <h2>List of Registration Notes</h2>
 
-<table>
+<table class="table sortable">
     <tr>
         <th>ID/Edit</th>
         <th>For person</th>

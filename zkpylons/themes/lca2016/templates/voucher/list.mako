@@ -11,7 +11,7 @@
 %   endif
 % endif
 
-    <table>
+    <table class="table sortable">
       <tr>
         <th>Code</th>
         <th>Products</th>

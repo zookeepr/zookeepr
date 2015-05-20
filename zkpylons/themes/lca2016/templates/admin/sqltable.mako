@@ -10,7 +10,7 @@ oddeven = oddeven()
 <h1>${ h.url_for().split('/')[-1].replace('_', ' ').title() }</h1>
 <p><a href="?csv=true">Export as CSV</a></p>
 
-<table border="1">
+<table class="table sortable">
 <tr>
 % for header in c.columns:
   <th>${ header }</th>
