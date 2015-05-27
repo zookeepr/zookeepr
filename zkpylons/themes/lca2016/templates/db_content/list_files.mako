@@ -8,7 +8,7 @@ no_theme = 'true' if c.no_theme else 'false'
 
 <h3>Current folder: ${ c.current_path }</h3>
 
-<table>
+<table class="table">
     <tr>
         <th>Icon/type</th>
         <th>Path</th>

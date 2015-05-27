@@ -10,7 +10,7 @@
 <a href="?latex=true">Export as LaTeX table</a>
 </p>
 
-<table class="table sortable">
+<table>
 <tr>
 % for header in c.columns:
   <th>${ header }</th>

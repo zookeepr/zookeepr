@@ -3,7 +3,7 @@
 <h2>List of Volunteers</h2>
 % if len(c.volunteer_collection) > 0:
 
-    <table>
+    <table class="table sortable">
       <thead>
         <tr>
           <th>Volunteer</th>

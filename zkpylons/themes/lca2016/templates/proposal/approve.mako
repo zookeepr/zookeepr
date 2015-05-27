@@ -3,7 +3,7 @@
 <h2>Approve/disapprove talks</h2>
 
 ${ h.form(h.url_for()) }
-<table>
+<table class="table sortable">
   <tr>
     <th>#</th>
     <th>Title</th>

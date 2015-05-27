@@ -2,7 +2,7 @@
 
 <h2>List proposal types</h2>
 
-<table>
+<table class="table sortable">
 
 % if len(c.proposal_type_collection) > 0:
   <tr>

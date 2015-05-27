@@ -4,7 +4,7 @@
     <p>${ h.link_to('Create new (manual) Invoice', h.url_for(action='new')) }</p>
 % endif
     <p style="font-size: smaller;">Unvoiding invoices marks them as manual.</p>
-    <table>
+    <table class="table sortable">
       <tr>
         <th>rego</th>
         <th>invoice</th>

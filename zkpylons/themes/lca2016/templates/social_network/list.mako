@@ -3,7 +3,7 @@
 <h2>List of Social Networks</h2>
 
 % if len(c.social_networks) > 0:
-<table>
+<table class="table sortable">
   <tr>
     <th>Name</th>
     <th>Image</th>

@@ -8,7 +8,7 @@ ${ h.form(h.url_for()) }
 <%include file="remind_email.mako" />
 </pre>
 
-<table>
+<table class="table sortable">
   <tr>
     <th>Remind</th>
     <th>Name</th>

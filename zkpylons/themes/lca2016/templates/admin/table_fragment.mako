@@ -3,7 +3,7 @@
 %>
 
 <p> ${ c.text | n } </p>
-<table>
+<table class="table table-bordered">
 <tr>
 % for header in c.columns:
   <th>${ header }</th>

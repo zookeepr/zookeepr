@@ -3,7 +3,7 @@
 <h2>List of categories</h2>
 
 % if len(c.product_category_collection) > 0:
-<table>
+<table class="table sortable">
   <tr>
     <th>Name</th>
     <th>Description</th>

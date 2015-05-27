@@ -2,7 +2,7 @@
 
 <h1>List roles</h1>
 
-<table>
+<table class="table sortable">
 
 % if len(c.role_collection) > 0:
 <tr>
