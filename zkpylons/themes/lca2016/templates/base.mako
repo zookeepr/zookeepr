@@ -35,9 +35,9 @@
     <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="../../favicon.ico">
+    <link rel="icon" type="image/x-icon" href="/favicon.ico">
 
-    <title>Carousel Template for Bootstrap</title>
+    <title>${ self.title() }</title>
 
     <!-- Bootstrap core CSS -->
     <link href="/css/bootstrap.css" rel="stylesheet">
@@ -98,26 +98,8 @@
 
     <!-- Carousel
     ================================================== -->
-    <div id="myCarousel" class="carousel slide" data-ride="carousel">
-      <!-- Indicators -->
-      <ol class="carousel-indicators">
-        <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
-        <li data-target="#myCarousel" data-slide-to="1"></li>
-        <li data-target="#myCarousel" data-slide-to="2"></li>
-        <li data-target="#myCarousel" data-slide-to="3"></li>
-      </ol>
-      <div class="carousel-inner" role="listbox">
       <%include file="/leftcol/banner.mako" />
-      </div>
-      <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
-        <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-        <span class="sr-only">Previous</span>
-      </a>
-      <a class="right carousel-control" href="#myCarousel" role="button" data-slide="next">
-        <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-        <span class="sr-only">Next</span>
-      </a>
-    </div><!-- /.carousel -->
+    <!-- /.carousel -->
 
   <div id="wrapper"><!-- Main wrapper for the sidebar -->
     <!-- Sidebar -->
@@ -138,12 +120,13 @@
     <div class="container-fluid marketing">
     <!-- START THE FEATURETTES -->
       <div class="row featurette">
-        <div class="col-md-7 col-md-push-1">
+        <div class="col-md-8 col-md-offset-2">
           <%include file="/flash.mako" />
           ${next.body()}
         </div>
-       <div class="col-md-7 col-md-push-1">
-          <img class="featurette-image img-responsive center-block" src="/img/Geelong-Wave-Gradient-greyscale-small.png" alt="Ge long 2016">
+       <div class="col-md-8 col-md-offset-2">
+          <br />
+          <img class="featurette-image img-responsive center-block" src="/img/Geelong-Wave-Gradient-greyscale-small.png" alt="Geelong 2016">
         </div>
       </div>
 <%doc>
@@ -191,19 +174,19 @@
           <img class="img-circle" src="/img/bollards2.jpg" alt="Geelong" width="140" height="140">
           <h2>About Geelong</h2>
           <p>Geelong is Victoria's second largest city, located on Corio Bay, and within a short drive from popular beach-front communities on the Bellarine Peninsula as well as being the gateway to the famous Great Ocean Road</p>
-          <p><a class="btn btn-default" href="/geelong/about" role="button">More Info &raquo;</a></p>
+          <p><a class="btn btn-default" href="/about/geelong" role="button">More Info &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-          <h2>Heading</h2>
-          <p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh.</p>
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <img class="img-circle" src="/img/Tux-simple.svg" alt="linux.conf.au" width="140" height="140">
+          <h2>linux.conf.au</h2>
+          <p>linux.conf.au is widely regarded by delegates as one of the best community run Linux conferences worldwide and is the largest Linux and Open Source Software conference in the Asia-Pacific.</p>
+          <p><a class="btn btn-default" href="/about/linux.conf.au" role="button">Read More &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
-          <img class="img-circle" src="data:image/gif;base64,R0lGODlhAQABAIAAAHd3dwAAACH5BAAAAAAALAAAAAABAAEAAAICRAEAOw==" alt="Generic placeholder image" width="140" height="140">
-          <h2>Heading</h2>
-          <p>Donec sed odio dui. Cras justo odio, dapibus ac facilisis in, egestas eget quam. Vestibulum id ligula porta felis euismod semper. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa ju$
-          <p><a class="btn btn-default" href="#" role="button">View details &raquo;</a></p>
+          <img class="img-circle" src="/img/ThePier-Crop.png" alt="Sponsorship" width="140" height="140">
+          <h2>Sponsorship</h2>
+          <p>Our Sponsors help make linux.conf.au become the awesome conference everyone comes back to year after year. Come see who's on board this year, or find out how to get in contact with us</p>
+          <p><a class="btn btn-default" href="/sponsors/sponsors" role="button">Sponsorship &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div><!-- /.row -->
     </div><!-- /.container marketing -->

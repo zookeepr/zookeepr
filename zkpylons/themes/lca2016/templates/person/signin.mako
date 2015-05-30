@@ -6,32 +6,34 @@
     <span class="error-message">You don't have the appropriate permissions to access this resource. Please login as a different user.</span>
 % endif
 
-<p>Don't want yet another single-use username/password?
-
-<p><a class="persona-button" href="javascript:login()"><span>Sign in with Persona</span></a></p>
-
 ${ h.form('/person/persona_login', method='post', id='persona-form') }
 ${ h.hidden('assertion', '') }
 ${ h.end_form() }
 
-<p>Otherwise enter your credentials in the following form.</p>
-
-${ h.form(h.url_for(), method='post') }
-
-    <p class="label"><label for="person.email_address">Email address:</label></p>
-    <p class="entries">${ h.text('person.email_address', size=40) }</p>
-
-    <p class="label"><label for="person.password">Password:</label></p>
-    <p class="entries">${ h.password('person.password') }</p>
-
-    <p class="submit">${ h.submit('Sign in', 'Sign in') }</p>
-
-${ h.end_form() }
-
-<p>Don't have an account? ${ h.link_to('Sign up', url=h.url_for(controller='person', action='new')) } now!</p>
+<form novalidate="true" action="/person/signin" method="post" data-toggle="validator">
+    <div class="form-group">
+        <label for="personemail_address">Email</label>
+      <div class="input-group">
+        <input id="personemail_address" class="form-control" placeholder="Email Address" name="person.email_address" data-error="Uh Oh, that email address doesn't look right" value="" type="email">
+        <span class="input-group-addon" id="basic-addon2">required</span>
+      </div>
+      <div class="help-block with-errors"></div>
+    </div>
+    <div class="form-group">
+        <label for="personpassword">Password</label> <a href="/person/forgotten_password">(forgot password)</a>
+      <div class="input-group">
+        <input id="personpassword" class="form-control" placeholder="Password" name="person.password" value="" type="password">
+        <span class="input-group-addon" id="basic-addon2">Min. 8 Char</span>
+      </div>
+    </div>
+  <div class="form-group">
+    <button style="pointer-events: all; cursor: pointer;" type="submit" class="btn btn-primary disabled">Sign in</button>
+    <a class="btn btn-default" role="button" href="/person/new">Sign up</a>
+    <a class="btn btn-link persona-button" role="button" href="javascript:login()">Sign in with Persona</a>
+  </div>
+</form>
 
 <p>
-${ h.link_to('Forgotten your password?', url=h.url_for(controller='person', action='forgotten_password', id=None)) }<br />
 If you have lost your log in details, please contact ${ h.webmaster_email() }.
 </p>
 
