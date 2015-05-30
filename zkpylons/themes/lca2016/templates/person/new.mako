@@ -2,7 +2,7 @@
 <%
     c.form = 'new'
 %>
-<h2 class="featurette-heading">New user account creation</h2>
+<h1>New user account creation</h1>
 
 <p class="lead">Enter your name, and email address, and password, and we'll email you with a confirmation to create your account.</p>
 
