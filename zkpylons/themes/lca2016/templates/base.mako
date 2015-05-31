@@ -194,7 +194,7 @@
 
       <!-- FOOTER -->
       <footer>
-        <p style="text-align: center;">&copy; 2015 linux.conf.au 2016 and <a href="http://linux.org.au">Linux Australia</a> &middot; Linux is a registered trademark of Linus Torvalds &middot; <a href="sitemap">Sitemap</a></p>
+        <p style="text-align: center;">&copy; 2015 linux.conf.au 2016 and <a href="http://linux.org.au">Linux Australia</a> &middot; Linux is a registered trademark of Linus Torvalds &middot; <a href="/sitemap">Sitemap</a></p>
         <p class="pull-right"><a href="#">Back to top</a></p>
       </footer>
 
