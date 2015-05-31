@@ -194,7 +194,7 @@
 
       <!-- FOOTER -->
       <footer>
-        <p style="text-align: center;">&copy; 2015 linux.conf.au 2016 and <a href="http://linux.org.au">Linux Australia</a> &middot; Linux is a registered trademark of Linus Torvalds &middot; <a href="sitemap">Sitemap</a></p>
+        <p style="text-align: center;">&copy; 2015 linux.conf.au 2016 and <a href="http://linux.org.au">Linux Australia</a> &middot; Linux is a registered trademark of Linus Torvalds &middot; <a href="/sitemap">Sitemap</a></p>
         <p class="pull-right"><a href="#">Back to top</a></p>
       </footer>
 
@@ -218,6 +218,16 @@
         e.preventDefault();
         $("#wrapper").toggleClass("toggled");
     });
+    </script>
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+
+      ga('create', 'UA-63600300-1', 'auto');
+      ga('send', 'pageview');
+
     </script>
   </body>
 </html>
