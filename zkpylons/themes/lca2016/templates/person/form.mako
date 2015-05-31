@@ -105,7 +105,11 @@ ${ h.hidden('person.postcode') }
       <div class="input-group">
         <select id="personcountry" class="form-control" placeholder="Country" name="person.country">
 %for country in h.countries():
-          <option>${ country }</option>
+% if country == 'australia':
+          <option selected="selected" value="${ country }">${ country }</option>
+% else:
+          <option value="${ country }">${ country }</option>
+% endif
 %endfor
         </select>
       </div>
@@ -134,7 +138,7 @@ ${ h.hidden('person.postcode') }
     <div class="checkbox">
       <label>
         <input type="checkbox" name="person.i_agree" id="personi_agree" data-error="An account cannot be created if you don't agree with the T&Cs" required>
-        I agree to the <a href="/cor/terms_and_conditions" target="_blank">conditions of registration</a>
+        I agree to the <a href="/cor/terms_and_conditions" target="_blank">terms and conditions</a>
       </label>
       <div class="help-block with-errors"></div>
     </div>
