@@ -391,7 +391,10 @@ class PersonController(BaseController): #Read, Update, List
 
     def finish_edit(self, person):
         for key in self.form_result['person']:
-            setattr(person, key, self.form_result['person'][key])
+            if not key == "email_address":
+                setattr(person, key, self.form_result['person'][key])
+            elif h.auth.has_organiser_role:
+                setattr(person, key, self.form_result['person'][key])
 
         for sn in self.form_result['social_network']:
            network = SocialNetwork.find_by_name(sn['name'])
