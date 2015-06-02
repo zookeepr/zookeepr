@@ -25,8 +25,11 @@ ${ h.hidden('person.company', value='') }</p>
 % else:
     <div class="form-group">
       <div class="input-group">
-        <input type="email" id="personemail_address" class="form-control" placeholder="If you wish to change your email address please contact the organisers." name="person.email_address" disabled/>
-        <span class="input-group-addon" id="basic-addon2">required</span>
+        <div class="input-group">
+          <input type="email" id="personemail_address" class="form-control" name="person.email_address" readonly />
+          <span class="input-group-addon" id="basic-addon2">required</span>
+        </div>
+        <p class="help-block">We would like to avoid the changing of email addresses, however if you require your account email address to be updated, please email <a href="mailto:contact@lcabythebay.org.au">contact@lcabythebay.org.au</a></p>
       </div>
     </div>
 % endif
