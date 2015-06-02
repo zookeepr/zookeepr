@@ -75,7 +75,7 @@ class _UpdatePersonSchema(BaseSchema):
     email_address = validators.Email(not_empty=True)
     company = validators.String()
     phone = validators.String()
-    mobile = validators.String()
+    # mobile = validators.String()
     address1 = validators.String(not_empty=True)
     address2 = validators.String()
     city = validators.String(not_empty=True)
