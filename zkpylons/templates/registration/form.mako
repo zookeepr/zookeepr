@@ -134,26 +134,26 @@ ${ h.hidden('person.mobile') }
 <%
            fields = dict()
            for product in products:
-             results = re.match("^([a-zA-Z0-9']+)\s+(.*)$", product.description)
-             gender = results.group(1)
+             results = re.match("^(.*?)\s(([Ss]ize )?[a-zA-Z0-9]+)$", product.description)
+             style = results.group(1)
              size = results.group(2)
 
-             if gender not in fields:
-               fields[gender] = []
-             fields[gender].append((size, product))
+             if style not in fields:
+               fields[style] = []
+             fields[style].append((size, product))
            endfor
 %>
           <table>
-%           for gender in fields:
+%           for style in fields:
             <tr>
               <th>&nbsp;</th>
-%             for (size, product) in fields[gender]:
+%             for (size, product) in fields[style]:
               <th>${ size }</th>
 %             endfor
             </tr>
             <tr>
-              <td>${ gender }</td>
-%             for (size, product) in fields[gender]:
+              <td>${ style }</td>
+%             for (size, product) in fields[style]:
 
 %               if not product.available():
               <td><span class="mandatory">SOLD&nbsp;OUT</span><br />${ h.hidden('products.product_' + product.clean_description(True) + '_qty', 0) }</td>
@@ -394,7 +394,7 @@ accommdisplay();
           <p class="note">#If your partner will be participating in the programme, then this field is required so that our Partners Programme manager can contact them.</p>
           <p class="label"><span class="mandatory">#</span><label for="registration.partner_mobile">enter number in international format. If you don't know the number, type "unknown".:</label></p>
           <p class="entries">${ h.text('products.partner_mobile', size=50) }</p>
-          <p class="note">A Partners Programme shirt is included with every adult partner ticket. Please indicate the appropriate number and sizes in the T-Shirt Section (above).</p>
+          <p class="note">A Partners Programme style is included with every adult partner ticket. Please indicate the appropriate number and sizes in the T-Shirt Section (above).</p>
 %       endif
 %     if category.note:
         <p class="note">${ category.note | n }</p>
