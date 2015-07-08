@@ -9,7 +9,7 @@ from formencode import validators, htmlfill, ForEach
 from formencode.variabledecode import NestedVariables
 
 from zkpylons.lib.base import BaseController, render
-from zkpylons.lib.validators import BaseSchema, PersonValidator, ProposalValidator, FileUploadValidator, PersonSchema, ProposalTypeValidator, TargetAudienceValidator, ProposalStatusValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator
+from zkpylons.lib.validators import BaseSchema, PersonValidator, ProposalValidator, FileUploadValidator, PersonSchema, ProposalTypeValidator, TargetAudienceValidator, ProposalStatusValidator, AccommodationAssistanceTypeValidator, TravelAssistanceTypeValidator, ExistingPersonValidator
 import zkpylons.lib.helpers as h
 
 from authkit.authorize.pylons_adaptors import authorize
@@ -69,7 +69,7 @@ class ExistingProposalSchema(BaseSchema):
     person = ExistingPersonSchema()
     proposal = ProposalSchema()
     pre_validators = [NestedVariables]
-    person_to_edit = PersonValidator()
+    #person_to_edit = ExistingPersonValidator()
 
 class NewEditReviewSchema(BaseSchema):
     pre_validators = [NestedVariables]
@@ -324,14 +324,17 @@ class ProposalController(BaseController):
 
         c.proposal.abstract = self.clean_abstract(c.proposal.abstract)
 
-        c.person = self.form_result['person_to_edit']
-        if (c.person.id == h.signed_in_person().id or
-                             h.auth.authorized(h.auth.has_organiser_role)):
+        c.person = c.proposal.people[0]
+        for person in c.proposal.people:
+            if h.signed_in_person() == person:
+                c.person = person
+
+        if (c.person.id == h.signed_in_person().id or h.auth.authorized(h.auth.has_organiser_role)):
             for key in self.form_result['person']:
                 setattr(c.person, key, self.form_result['person'][key])
-            p_edit = "and author"
+            p_edit = "and author "
         else:
-            p_edit = "(but not author)"
+            p_edit = ""
 
         meta.Session.commit()
 
@@ -339,7 +342,7 @@ class ProposalController(BaseController):
             body = "Subject: %s Proposal Updated\n\nID:    %d\nTitle: %s\nType:  %s\nURL:   %s" % (h.lca_info['event_name'], c.proposal.id, c.proposal.title, c.proposal.type.name.lower(), "http://" + h.host_name() + h.url_for(action="view"))
             email(lca_info['proposal_update_email'], body)
 
-        h.flash("Proposal %s edited!"%p_edit)
+        h.flash("Proposal %sedited!" % p_edit)
         return redirect_to('/proposal')
 
     @authorize(h.auth.has_reviewer_role)
