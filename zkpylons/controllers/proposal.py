@@ -68,7 +68,6 @@ class NewProposalSchema(BaseSchema):
 class ExistingProposalSchema(BaseSchema):
     person = ExistingPersonSchema()
     proposal = ProposalSchema()
-    attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
     person_to_edit = PersonValidator()
 
