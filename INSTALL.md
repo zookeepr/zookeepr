@@ -50,32 +50,9 @@ Creating a development environment
         alembic --config development.ini upgrade head
         ```
 
-        WARNING: On a vanilla trunk this does not currently work but there
-        is a workaround:
-
-            * Zookeepr is using alembic in a rather unusual way, which leads to
-            problems. James has a work-around for this, but it is not currently in
-            master and should never be committed to master. The work-around can be
-            cherry-picked, commit daa1702ec4522a991c5f75b17cb27e15375d2631 from
-            the nasty-db-import-fix branch.
-
-            ```
-            git cherry-pick daa1702ec4522a991c5f75b17cb27e15375d2631
-            alembic --config development.ini upgrade head
-            ```
-
-            To verify the fix, use the alembic history command and check that the
-            head revision is "This revision is a lie and should always be head".
-            `alembic --config development.ini history`
-
-            ```
-            git reset --hard HEAD^
-            ```
-
-            Now, we verify that the revision is no longer present, using the command;
-            `alembic --config development.ini history`
-
-            The phrase 'This revision is a lie' should *no longer* be present.
+        ```
+        initialise_data development.ini
+        ```
 
 5. Run the development server.
         ```
