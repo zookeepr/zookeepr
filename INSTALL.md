@@ -19,7 +19,7 @@ Creating a development environment
 
     ```
     sudo -u postgres createuser --no-createdb --no-createrole --no-superuser zookeepr
-    sudo -u postgres createdb -O zookeepr zk
+    sudo -u postgres createdb -O zookeepr zookeepr
     sudo -u postgres psql --command "ALTER USER zookeepr with PASSWORD 'zookeepr'"
     ```
 
