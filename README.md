@@ -3,7 +3,7 @@ zookeepr conference management
 
 [![Build Status](https://travis-ci.org/zookeepr/zookeepr.svg)](https://travis-ci.org/zookeepr/zookeepr)
 
-Zookeepr Readme
+zookeepr Readme
 ---------------
 
 This document details how running zookeepr, how to run tests, and where to start hacking.
@@ -15,7 +15,6 @@ Running zookeepr
 
 See [INSTALL.md](INSTALL.md)
 
-From within zookeepr/
  * Run `paster serve -v --reload development.ini`
  * Point your browser to http://localhost:5000/
 
