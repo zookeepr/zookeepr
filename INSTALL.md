@@ -4,6 +4,8 @@ Zookeepr Installation Instructions
 External dependencies
 ---------------------
 
+Install these with your favourite package manager (eg apt-get).
+
  * libpq-dev
  * libpython-dev
  * libxslt1-dev
