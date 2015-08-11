@@ -22,7 +22,7 @@ def upgrade():
     op.add_column('proposal', sa.Column('private_abstract', sa.Text(), nullable=False))
     op.alter_column('payment_received', u'client_ip_zk', 
                existing_type=sa.String(), 
-               name=u'client_ip_zookeepr')
+               new_column_name=u'client_ip_zookeepr')
     op.alter_column('proposal', u'technical_requirements', 
                existing_type=sa.TEXT(), 
                nullable=False)
@@ -79,6 +79,6 @@ def downgrade():
     op.alter_column('payment_received', 'client_ip_zookeepr', 
                existing_type=sa.String(), 
                nullable=False,
-               name=u'client_ip_zk')
+               new_column_name=u'client_ip_zk')
     op.drop_column('proposal', 'private_abstract')
     ### end Alembic commands ###
