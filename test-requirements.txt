@@ -5,3 +5,5 @@ testrepository
 testtools
 test
 pbr
+factory_boy
+pytest
