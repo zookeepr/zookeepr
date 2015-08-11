@@ -13,7 +13,7 @@ It assumes that you have the necessary dependencies installed and the developmen
 Running zookeepr
 ----------------
 
-See [INSTALL.md](install.md)
+See [INSTALL.md](INSTALL.md)
 
 From within zookeepr/
  * Run `paster serve -v --reload development.ini`
