@@ -31,7 +31,6 @@ Creating a development environment
 
         \# using virtualenwrapper
         mkvirtualenv zookeepr # --no-site-packages is default
-        workon zookeepr
         ```
 
 3. Configure the virtual environment.
@@ -48,10 +47,6 @@ Creating a development environment
 4. Now we populate the database. Run alembic to create and populate the initial database.
         ```
         alembic --config development.ini upgrade head
-        ```
-
-        ```
-        initialise_data development.ini
         ```
 
 5. Run the development server.
