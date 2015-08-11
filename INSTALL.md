@@ -26,41 +26,44 @@ Creating a development environment
     ```
 
 2. Create a virtualenv for your ZooKeepr instance.
-        ```
-        \# using only virtualenv
-        virtualenv env --no-site-packages
-        . ./env/bin/activate
+   ```
+   # using only virtualenv
+   virtualenv env --no-site-packages
+   . ./env/bin/activate
 
-        \# using virtualenwrapper
-        mkvirtualenv zookeepr # --no-site-packages is default
-        ```
+   # using virtualenwrapper
+   mkvirtualenv zookeepr # --no-site-packages is default
+   ```
 
 3. Configure the virtual environment.
 
-        ```
-        cp zkpylons/config/lca_info.py.sample zkpylons/config/lca_info.py
-        cp development.ini.sample development.ini
-        python setup.py develop
-        ```
+   ```
+   cp zkpylons/config/lca_info.py.sample zkpylons/config/lca_info.py
+   cp development.ini.sample development.ini
+   python setup.py develop
+   ```
 
     Edit development.ini to set sqlachemy.url to match your postgresql database.
     _Note: You must set sqlachemy.url in both the [app:main] and [alembic] sections_
 
 4. Now we populate the database. Run alembic to create and populate the initial database.
-        ```
-        alembic --config development.ini upgrade head
-        ```
+
+   ```
+   alembic --config development.ini upgrade head
+   ```
 
 5. Run the development server.
-        ```
-        pserve --reload development.ini
-        ```
+
+   ```
+   pserve --reload development.ini
+   ```
 
 6. The default admin account is:
-        ```
-        email: admin@zookeepr.org
-        password: password
-        ```
+
+   ```
+   email: admin@zookeepr.org
+   password: password
+   ```
 
 You should now have a development instance of ZooKeepr up and running.
 
