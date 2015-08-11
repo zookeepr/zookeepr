@@ -20,7 +20,7 @@ def app_config():
 def db_session(app_config):
     # Set up SQLAlchemy to provide DB access
     # TODO: engine config should be from config file
-    engine = create_engine('postgresql://zktest:zktest@localhost/zktest')
+    engine = create_engine('postgresql://postgres@localhost/zktest')
     Session.configure(bind=engine)
     Base.metadata.create_all(engine)
 

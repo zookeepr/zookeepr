@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.org/zookeepr/zookeepr.svg)](https://travis-ci.org/zookeepr/zookeepr)
+
 ====== Zookeepr Readme ======
 
 This document details how running zookeepr, how to run tests, and where to start hacking.
