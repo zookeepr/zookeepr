@@ -40,7 +40,7 @@ ${ h.hidden('person.mobile') }
 
 ${ h.hidden('person.phone') }
 
-%if (not c.person.address1 or not c.person.city or not c.person.postcode) and h.lca_rego['personal_info']['home_address'] == 'yes':
+%if (not c.person.address1 or not c.person.city or not c.person.postcode) and c.config.get('personal_info', category='rego')['home_address'] == 'yes':
     <div class="form-group">
       <div class="input-group">
         <input type="text" id="personaddress1" class="form-control" placeholder="Address" name="person.address1" required />
