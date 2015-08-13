@@ -3,7 +3,7 @@ import sqlalchemy as sa
 from sqlalchemy.ext.associationproxy import association_proxy 
 from sqlalchemy.orm.collections import attribute_mapped_collection
 
-from meta import Base
+from meta import Base, Session
 
 from pylons.controllers.util import abort
 from zkpylons.model.config import Config
@@ -13,8 +13,6 @@ from person_role_map import person_role_map
 from social_network import SocialNetwork
 from person_social_network_map import PersonSocialNetworkMap
 from special_registration import SpecialRegistration
-
-from meta import Session
 
 import binascii
 import datetime
@@ -103,7 +101,7 @@ class Person(Base):
             salt.update(os.urandom(32))
             self.password_salt = salt.hexdigest()
 
-        salt = Config.get('password_salt') + self.password_salt
+        salt = str(Config.get('password_salt')) + self.password_salt
         # FIXME: switch back to PBKDF2 once Python 2.7.8 is in Ubuntu LTS (16.04)
         #dk = hashlib.pbkdf2_hmac('sha256', value, salt, Config.get('password_iterations'))
         #return binascii.hexlify(dk)

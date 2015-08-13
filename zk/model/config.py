@@ -1,8 +1,7 @@
 """ Configuration key store, elements such as event_city or contact_email """
 import sqlalchemy as sa
-from sqlalchemy import orm
 from sqlalchemy.dialects.postgresql import JSON # Required - unsure why
-from meta import Base, Session, metadata
+from meta import Session, Base
 
 import logging
 log = logging.getLogger(__name__)

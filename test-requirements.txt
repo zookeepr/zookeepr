@@ -7,3 +7,4 @@ test
 pbr
 factory_boy
 pytest
+fake-factory
