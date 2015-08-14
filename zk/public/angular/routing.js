@@ -96,7 +96,7 @@ var request = window.location.href.substr(document.baseURI.length);
 
 require.config({
 	baseUrl : "/angular",
-	enforceDefine: true,
+	// enforceDefine: true, /* TODO: ngSanitize not working, doesn't export anything */
 	waitSeconds: 0, // Disable loading timeout - server is sometimes slow
 	paths : {
 		"jquery"  : [
@@ -111,12 +111,17 @@ require.config({
 			"https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular.min",
 			"https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular.min",
 		],
+		"ngSanitize" : [
+			'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-sanitize',
+			"https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize",
+			'https://ajax.googleapis.com/ajax/libs/angularjs/1.3.15/angular-sanitize.min',
+			"https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.3.15/angular-sanitize.min",
+		],
 	},
 	shim : {
-		"angular" : {
-			deps : [ "jquery" ],
-			exports : "angular"
-		}
+		"jquery"    : { exports: '$'},
+		"angular"   : { exports: "angular",    deps: ["jquery" ] },
+		"ngSanitize": { exports: 'ngSanitize', deps: ['angular'] },
 	}
 });
 

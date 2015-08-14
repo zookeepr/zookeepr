@@ -8,7 +8,7 @@ define(['angular'], function (angular) {
 			require: 'ngModel',
 			link: function (scope, elem, attrs, ngModel) {
 				var toView = function (val) {
-					return typeof val == 'string' ? val : angular.toJson(val);
+					return typeof val == 'string' ? val : angular.toJson(val,2);
 				};
 				
 				var toModel = function (val) {
@@ -24,10 +24,10 @@ define(['angular'], function (angular) {
 						return val;
 					}
 				};
-				
+
 				// Note: We must be the first parser, stringify will bork us
-				ngModel.$formatters.push(toView);
 				ngModel.$parsers.push(toModel);
+				ngModel.$formatters.unshift(toView);
 			}
 		};
 	}]);

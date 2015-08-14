@@ -1,12 +1,11 @@
 // 'use strict';
 
-define([ 'angular', 'json_text' ], function (angular, JsonTextDirective) {
+define([ 'angular', 'contenteditable', 'json_text' ], function (angular, ContenteditableDirective, JsonTextDirective) {
 	var module_name = 'change_config';
-	angular.module(module_name, [JsonTextDirective])
-	.controller(module_name, ['$scope', '$http', function($scope, $http) {
+	angular.module(module_name, [ContenteditableDirective, JsonTextDirective])
+	.controller(module_name, ['$scope', '$http', '$sce', function($scope, $http, $sce) {
 		$scope.contentLoaded = false;
 		$scope.data = [];
-		$scope.inside_value = "An inside value string";
 
 		$http.get('/admin/config').then(function(response) {
 			$scope.data = response.data;
