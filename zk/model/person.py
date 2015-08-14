@@ -6,8 +6,8 @@ from sqlalchemy.orm.collections import attribute_mapped_collection
 from meta import Base, Session
 
 from pylons.controllers.util import abort
-from zkpylons.model.config import Config
 
+from config import Config
 from role import Role
 from person_role_map import person_role_map
 from social_network import SocialNetwork
