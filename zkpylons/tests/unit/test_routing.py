@@ -1,11 +1,15 @@
 import unittest
 
 from zkpylons.config.routing import make_map
-from zkpylons.tests.functional import url_for
+from routes import url_for
 
 class TestRouting(unittest.TestCase):
     def setUp(self):
-        self.map = make_map()
+        config = {
+            'pylons.paths' : { 'controllers' : None },
+            'debug' : True,
+        }
+        self.map = make_map(config)
 
     def test_default_controller_url(self):
         self.assertEqual('/c',

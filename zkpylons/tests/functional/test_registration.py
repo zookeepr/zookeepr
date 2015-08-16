@@ -23,7 +23,6 @@ class TestRegistrationController(CRUDControllerTest):
                                       voucher_code='voucher_code1',
                                       diet='diet1',
                                       special='special1',
-                                      opendaydrag=1,
                                       partner_email='partner@example.org',
                                       kids_0_3=1,
                                       kids_4_6=1,

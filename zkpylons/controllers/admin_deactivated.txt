@@ -1430,13 +1430,6 @@
         c.columns = 'id', 'title', 'emails', 'firstnames', 'consents'
         return render('admin/table.mako')
 
-    def total_opendaydrag(self):
-        """ Total of the open day drag entries. """
-        res = 0
-        for r in paid_regos(self):
-            res += (r.opendaydrag or 0)
-        c.data = [[res]]
-        return render('admin/table.mako')
     def olpc_lookup(self):
         """ look up people who got the OLPC laptop... """
         names = """
