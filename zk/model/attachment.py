@@ -13,16 +13,17 @@ from meta import Session
 class Attachment(Base):
     __tablename__ = 'attachment'
 
+    # columns
     id = sa.Column(sa.types.Integer, primary_key=True)
-
     proposal_id =  sa.Column(sa.types.Integer, sa.ForeignKey('proposal.id'), nullable=False)
     filename = sa.Column(sa.types.Text, key='_filename', nullable=False, default='attachment')
     content_type = sa.Column(sa.types.Text, key='_content_type', nullable=False, default='application/octet-stream')
-
     content = sa.Column(sa.types.Binary, nullable=False)
-
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp())
     last_creation_timestamp = sa.Column(sa.types.DateTime, nullable=False, default=sa.func.current_timestamp(), onupdate=sa.func.current_timestamp())
+
+    # relations
+    proposal = sa.orm.relation('Proposal')
 
 
     def __init__(self, **kwargs):

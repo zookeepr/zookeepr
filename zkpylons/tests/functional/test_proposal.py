@@ -1,455 +1,254 @@
-import pprint
+import pytest
+from routes import url_for
 
-from zkpylons.tests.functional import *
+from zk.model.attachment import Attachment
+from zk.model.proposal import Proposal, ProposalType
+from zk.model.person import Person
+from zk.model.review import Review
 
-# class TestProposalBase(object):
-#     """Base class that sets up proposal objects for experimenting with.
-#     """
-#     def setUp(self):
-#         super(TestProposalBase, self).setUp()
-        
-#         self.proposal1 = model.Proposal(title='proposal1')
-#         self.proposal2 = model.Proposal(title='proposal2')
-#         self.dbsession.save(self.proposal1)
-#         self.dbsession.save(self.proposal2)
-#         self.dbsession.flush()
+from webtest.forms import Upload
 
-#     def tearDown(self):
-#         self.dbsession.delete(self.proposal2)
-#         self.dbsession.delete(self.proposal1)
-#         self.dbsession.flush()
-        
-#         super(TestProposalBase, self).tearDown()
+from .fixtures import PersonFactory, ProposalFactory, AttachmentFactory, RoleFactory, StreamFactory, ProposalStatusFactory, ProposalTypeFactory, TravelAssistanceTypeFactory, AccommodationAssistanceTypeFactory, TargetAudienceFactory
+from .utils import do_login
 
-class TestProposal(SignedInCRUDControllerTest):
-    model = model.Proposal
-    name = 'proposal'
-    url = '/proposal'
-    samples = [dict(title='test',
-                    abstract='abstract 1',
-                    url='http://example.org',
-                    ),
-               dict(title='not a test',
-                    abstract='abstract 2',
-                    url='http://lca2007.linux.org.au',
-                    ),
-               ]
+class TestProposal(object):
 
-    def additional(self, obj):
-        obj.people.append(self.person)
-        obj.type = self.dbsession.query(model.ProposalType).get(1)
-        return obj
-    
-    def setUp(self):
-        super(TestProposal, self).setUp()
-        model.proposal.tables.proposal_type.insert().execute(
-            dict(id=1, name='Paper'),
-            )
-        model.proposal.tables.proposal_type.insert().execute(
-            dict(id=2, name='Presentation'),
-            )
-        model.proposal.tables.proposal_type.insert().execute(
-            dict(id=3, name='Miniconf'),
-            )
-        model.proposal.tables.accommodation_assistance_type.insert().execute(
-            dict(id=1, name='Need Assisatance'),
-            )
-        model.proposal.tables.accommodation_assistance_type.insert().execute(
-            dict(id=2, name='Don\'t Need Assistance'),
-            )
-        model.proposal.tables.accommodation_assistance_type.insert().execute(
-            dict(id=3, name='Don\'t Need Assistance maybe'),
-            )
-        model.proposal.tables.accommodation_assistance_type.insert().execute(
-            dict(id=4, name='Don\'t Need Assistance employer'),
-            )
-        model.proposal.tables.travel_assistance_type.insert().execute(
-            dict(id=1, name='Need Assisatance'),
-            )
-        model.proposal.tables.travel_assistance_type.insert().execute(
-            dict(id=2, name='Don\'t Need Assistance'),
-            )
-        model.proposal.tables.travel_assistance_type.insert().execute(
-            dict(id=3, name='Don\'t Need Assistance maybe'),
-            )
-        model.proposal.tables.travel_assistance_type.insert().execute(
-            dict(id=4, name='Don\'t Need Assistance employer'),
-            )
+    def test_proposal_view_lockdown(self, app, db_session):
+        prop = ProposalFactory()
+        pers1 = PersonFactory(proposals = [prop])
+        pers2 = PersonFactory()
+        db_session.commit()
 
-    def tearDown(self):
-        model.proposal.tables.proposal_type.delete().execute()
-        model.proposal.tables.assistance_type.delete().execute()
-        super(TestProposal, self).tearDown()
+        # try to view the proposal as the other person
+        do_login(app, pers2)
+        resp = app.get(url_for(controller='proposal', action='edit', id=prop.id), status=403)
+        resp = app.get(url_for(controller='proposal', action='view', id=prop.id), status=403)
 
-    def test_selected_radio_button_in_edit(self):
-        # Test that a radio button is checked when editing a proposal
-        s = model.Proposal(id=1,
-                       type=self.dbsession.get(model.ProposalType, 3),
-                       title='foo',
-                       abstract='bar',
-                       url='')
-        self.dbsession.save(s)
-        
-        self.person.proposals.append(s)
-        
-        self.dbsession.flush()
 
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='edit',
-                                    id=s.id))
+    def test_proposal_edit_lockdown(self, app, db_session):
+        prop = ProposalFactory()
+        pers1 = PersonFactory(proposals = [prop])
+        pers2 = PersonFactory()
+        db_session.commit()
 
-        print resp.session
+        # try to edit the proposal as the other person
+        do_login(app, pers2)
+        resp = app.get(url_for(controller='proposal', action='edit', id=prop.id), status=403)
+        resp = app.post(url_for(controller='proposal', action='edit', id=prop.id), params={}, status=403)
 
+
+    def test_proposal_withdraw_lockdown(self, app, db_session):
+        prop = ProposalFactory()
+        pers1 = PersonFactory(proposals = [prop])
+        pers2 = PersonFactory()
+        db_session.commit()
+
+        # try to delete the proposal as the other person
+        do_login(app, pers2)
+        resp = app.get(url_for(controller='proposal', action='withdraw', id=prop.id), status=403)
+        resp = app.post(url_for(controller='proposal', action='withdraw', id=prop.id), params={}, status=403)
+
+    def test_proposal_list_lockdown(self, app, db_session):
+        prop = ProposalFactory()
+        pers1 = PersonFactory(proposals = [prop])
+        pers2 = PersonFactory()
+        db_session.commit()
+
+        # try to view the proposal as the other person
+        do_login(app, pers2)
+        resp = app.get(url_for(controller='proposal', action='index'))
+        assert prop.title not in unicode(resp.body, 'utf-8')
+        assert "You haven't submitted any proposals" in unicode(resp.body, 'utf-8')
+
+    def test_submit_another(self, app, db_session, smtplib):
+        # created guy and proposal
+        pers = PersonFactory(
+                # Set detail to avoid incomplete profile flag
+                firstname = 'Testguy',
+                lastname  = 'Testguy',
+                i_agree   = True,
+                activated = True,
+                address1  = 'Somewhere',
+                city      = 'Over the rainbow',
+                postcode  = 'Way up high',
+                )
+        prop = ProposalFactory(title='sub one', people=[pers])
+        type = ProposalTypeFactory()
+        stat = ProposalStatusFactory(name = 'Pending Review') # Required by code
+        trav = TravelAssistanceTypeFactory()
+        accm = AccommodationAssistanceTypeFactory()
+        audc = TargetAudienceFactory()
+        db_session.commit()
+
+        # now go to list, click on the submit another link, and do so
+        do_login(app, pers)
+        resp = app.get(url_for(controller='proposal', action='index'))
+        assert prop.title in unicode(resp.body, 'utf-8')
+        assert "You haven't submitted any proposals" not in unicode(resp.body, 'utf-8')
+
+        resp = resp.click(description='New proposal')
+        resp = resp.maybe_follow()
         f = resp.form
-
-        print "response:"
         print resp
-        print "f.fields:"
-        pprint.pprint(f.fields)
-
-        # the value being returned is a string, from the form defaults
-        self.assertEqual('3', f.fields['proposal.type'][0].value)
-
-        # clean up
-        self.dbsession.delete(s)
-        self.dbsession.flush()
-
-
-    def test_proposal_view_lockdown(self):
-        # we got one person already with login
-        # create a sceond
-        p2 = model.Person(email_address='test2@example.org',
-                    password='test',
-		    handle='test')
-        self.dbsession.save(p2)
-        # create a proposal
-        s = model.Proposal(title='foo')
-        self.dbsession.save(s)
-        p2.proposals.append(s)
-        self.dbsession.flush()
-        p2id = p2.id
-        sid = s.id
-        # try to view the proposal as the other person
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='view',
-                                    id=s.id),
-                            status=403)
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
-        self.dbsession.flush()
-
-
-    def test_proposal_edit_lockdown(self):
-        # we got one person already with login
-        # create a sceond
-        p2 = model.Person(email_address='test2@example.org',
-                    password='test',
-		    handle='test')
-        self.dbsession.save(p2)
-        # create a proposal
-        s = model.Proposal(title='foo')
-        self.dbsession.save(s)
-        p2.proposals.append(s)
-        self.dbsession.flush()
-        p2id = p2.id
-        sid = s.id
-        # try to view the proposal as the other person
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='edit',
-                                    id=sid),
-                            status=403)
-
-        # also try to post to it
-        resp = self.app.post(url_for(controller='proposal',
-                                     action='edit',
-                                     id=sid),
-                             params={},
-                             status=403)
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
-        self.dbsession.flush()
-
-
-    def test_proposal_delete_lockdown(self):
-        # we got one person already with login
-        # create a sceond
-        p2 = model.Person(email_address='test2@example.org',
-                    password='test',
-		    handle='test')
-        self.dbsession.save(p2)
-        self.dbsession.flush()
-        p2id = p2.id
-        # create a proposal
-        s = model.Proposal(title='foo')
-        self.dbsession.save(s)
-        p2.proposals.append(s)
-        self.dbsession.flush()
-        sid = s.id
-        # try to view the proposal as the other person
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='delete',
-                                    id=sid),
-                            status=403)
-
-        # also try to post to it
-        resp = self.app.post(url_for(controller='proposal',
-                                     action='delete',
-                                     id=sid),
-                             params={},
-                             status=403)
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
-        self.dbsession.flush()
-
-
-    def test_proposal_list_lockdown(self):
-        # we got one person already with login
-        # create a sceond
-        p2 = model.Person(email_address='test2@example.org',
-                    password='test',
-		    handle='test')
-        self.dbsession.save(p2)
-        # create a proposal
-        s = model.Proposal(title='foo')
-        self.dbsession.save(s)
-        p2.proposals.append(s)
-        self.dbsession.flush()
-        p2id = p2.id
-        sid = s.id
-        # try to view the proposal as the other person
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='index'),
-                            status=403)
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(sid))
-        self.dbsession.flush()
-
-
-    def test_submit_another(self):
-        # created guy with login
-        # and a proposal
-        s1 = model.Proposal(title='sub one')
-        self.dbsession.save(s1)
-        self.dbsession.flush()
-        s1id = s1.id
-
-        # now go home, click on the submit another link, and do so
-        resp = self.app.get('/')
-        print resp
-        resp = resp.click(description='submit another')
-        #print resp
-        f = resp.form
-        f['proposal.title'] = 'sub two'
-        f['proposal.type'] = 1
+        print f
+        f['proposal.title']    = 'sub two'
+        f['proposal.type']     = type.id
         f['proposal.abstract'] = "cubist"
+        f['proposal.accommodation_assistance'] = accm.id
+        f['proposal.travel_assistance'] = trav.id
+        f['proposal.audience'] = audc.id
         f['person.experience'] = "n"
-        f['attachment'] = "foo"
-        print f.submit_fields()
+        f['attachment']        = "foo"
+        f['person.mobile']     = "NONE"
+        f['person.bio']        = "Jim isn't real Dave, he never was"
         resp = f.submit()
-        print resp
-        resp = resp.follow()
+        resp.status_code = 302 # Failure suggests form didn't submit cleanly
+
+        pers_id = pers.id
+        db_session.expunge_all()
 
         # does it exist?
-        s2 = self.dbsession.query(model.Proposal).get_by(title='sub two')
-        self.failIfEqual(None, s2)
+        s2 = Proposal.find_by_title('sub two')
+        assert len(s2) == 1
+        s2 = s2[0]
+        assert Person.find_by_id(pers_id) in s2.people # Attached to correct person
+        assert len(s2.attachments) == 1 # With attachment
 
-        # is it attached to our guy?
-        self.failUnless(s2 in self.person.proposals, "s2 not in p.proposals (currently %r)" % self.person.proposals)
+        # Ensure that confirmation email was sent
+        assert smtplib.existing is not None
+        assert "Thank you for proposing" in smtplib.existing.message
 
-        # do we have an attachment?
-        self.failIfEqual([], s2.attachments)
-        
-        # clean up
-        self.dbsession.delete(s2)
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(s1id))
-        self.dbsession.flush()
+    def test_proposal_list_normals_denied(self, app, db_session):
+        pers = PersonFactory()
+        prop = ProposalFactory()
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        db_session.commit()
 
-    def test_proposal_list(self):
         # we're logged in but still can't see it
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='index'),
-                            status=403)
+        do_login(app, pers)
+        resp = app.get(url_for(controller='proposal', action='review_index'), status=403)
 
-    def test_proposal_list_reviewer(self):
+    def test_proposal_list_reviewer(self, app, db_session):
+        role = RoleFactory(name = 'reviewer')
+        pers = PersonFactory(roles = [role])
+        prop = ProposalFactory()
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        db_session.commit()
+
         # we're logged in and we're a reviewer
-        r = model.Role('reviewer')
-        self.person.roles.append(r)
-        self.dbsession.save(r)
-        self.dbsession.flush()
+        do_login(app, pers)
+        resp = app.get(url_for(controller='proposal', action='review_index'))
 
-        self.failUnless('reviewer' in [x.name for x in self.person.roles])
-
-        rid = r.id
-
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='index'))
-
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Role).get(rid))
-        self.dbsession.flush()
-
-    def test_proposal_view(self):
-        p = model.Proposal(title='test view')
-        self.dbsession.save(p)
-        self.dbsession.flush()
-        pid = p.id
+    def test_proposal_view(self, app, db_session):
+        pers = PersonFactory()
+        prop = ProposalFactory()
+        db_session.commit()
         
         # we're logged in but this isn't our proposal..
         # should 403
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='view',
-                                    id=p.id),
-                            status=403)
+        do_login(app, pers)
+        resp = app.get(url_for(controller='proposal', action='view', id=prop.id), status=403)
                             
-        # clean up
-        self.dbsession.delete(p)
-        self.dbsession.flush()
-
-    def test_proposal_view_ours(self):
-        p = model.Proposal(title='test view',
-                     abstract='abs',
-                     type=self.dbsession.get(model.ProposalType, 3))
-        self.dbsession.save(p)
-        self.person.proposals.append(p)
-        self.dbsession.flush()
-        pid = p.id
+    def test_proposal_view_ours(self, app, db_session):
+        prop = ProposalFactory()
+        pers = PersonFactory(proposals = [prop])
+        db_session.commit()
         
         # we're logged in and this is ours
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='view',
-                                    id=pid))
+        do_login(app, pers)
+        resp = app.get(url_for(controller='proposal', action='view', id=prop.id))
 
-        # clean up
-        self.dbsession.delete(p)
-        self.dbsession.flush()
+    def test_proposal_view_as_reviewer(self, app, db_session):
+        prop = ProposalFactory()
+        role = RoleFactory(name = 'reviewer')
+        pers = PersonFactory(roles = [role])
+        strm = StreamFactory() # need a stream
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        db_session.commit()
 
-    def test_proposal_view_as_reviewer(self):
-        p = model.Proposal(title='test view',
-                     abstract='abs',
-                     type=self.dbsession.get(model.ProposalType, 3))
-        self.dbsession.save(p)
+        do_login(app, pers)
 
-        r = model.Role('reviewer')
-        self.dbsession.save(r)
-        self.person.roles.append(r)
-        # need a stream
-        s = model.Stream(name='stream')
-        self.dbsession.save(s)
-        self.dbsession.flush()
-        pid = p.id
-        rid = r.id
-        sid = s.id
-        self.dbsession.clear()
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='view',
-                                    id=p.id))
         # reviewers can review a proposal
-        resp = resp.click('Review this proposal')
+        resp = app.get(url_for(controller='proposal', action='view', id=prop.id))
+        resp = resp.click('Review this proposal', index=0)
 
         # get the form and start reviewing!
         f = resp.form
-
-        print f.fields
-
         f['review.score'] = 1
-        f['review.stream'] = 1
+        f['review.stream'] = strm.id
         f['review.comment'] = "snuh"
-
         f.submit()
 
+        db_session.expunge_all()
+
         # test that we have a review
-        reviews = self.dbsession.query(model.Review).select()
-        self.failIfEqual([], reviews)
-        self.assertEqual(1, len(reviews))
-        self.assertEqual("snuh", reviews[0].comment)
+        reviews = Review.find_all()
+        assert len(reviews) == 1
+        assert reviews[0].comment == "snuh"
                                                             
         
-        # clean up
-        self.dbsession.delete(reviews[0])
-        self.dbsession.delete(self.dbsession.query(model.Stream).get(sid))
-        self.dbsession.delete(self.dbsession.query(model.Role).get(rid))
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
-        self.dbsession.flush()
-
-
-    def test_proposal_attach_more(self):
-        p = model.Proposal(title='test view',
-                     abstract='abs',
-                     type=self.dbsession.query(model.ProposalType).get(3))
-        self.dbsession.save(p)
-        self.person.proposals.append(p)
-        self.dbsession.flush()
-        pid = p.id
-        self.dbsession.clear()
+    def test_proposal_attach_more(self, app, db_session):
+        pers = PersonFactory()
+        prop = ProposalFactory(people = [pers])
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        db_session.commit()
         
         # we're logged in and this is ours
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='view',
-                                    id=pid))
+        do_login(app, pers)
+        resp = app.get(url_for(controller='proposal', action='view', id=prop.id))
         resp = resp.click('Add an attachment')
 
         f = resp.form
-        f['attachment'] = "attachment"
+        f['attachment'] = Upload("test.ini")
         resp = f.submit()
         resp = resp.follow()
 
-        atts = self.dbsession.query(model.Attachment).select()
-        self.failIfEqual([], atts)
-        self.assertEqual("attachment", str(atts[0].content))
+        db_session.expunge_all()
+
+        atts = Attachment.find_all();
+        assert len(atts) == 1
+        assert '[app:main]' in atts[0].content
 
         
-        # clean up
-        self.dbsession.delete(atts[0])
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
-        self.dbsession.flush()
-
-
-    def test_proposal_delete_attachment(self):
-        p = model.Proposal(title='test view',
-                     abstract='abs',
-                     type=self.dbsession.query(model.ProposalType).get(3))
-        self.dbsession.save(p)
-        self.person.proposals.append(p)
-        a = model.Attachment(content="foo")
-        self.dbsession.save(a)
-        p.attachments.append(a)
-        self.dbsession.flush()
-        pid = p.id
-        aid = a.id
-        self.dbsession.clear()
+    def test_proposal_delete_attachment(self, app, db_session):
+        pers = PersonFactory()
+        prop = ProposalFactory()
+        pers.proposals.append(prop)
+        atta = AttachmentFactory(proposal=prop)
+        db_session.commit()
         
         # we're logged in and this is ours
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='view',
-                                    id=pid))
+        do_login(app, pers)
+        resp = app.get(url_for(controller='proposal', action='view', id=prop.id))
         resp = resp.click('delete')
 
-        print resp.request.url
         f = resp.form
-        print f.fields
         resp = f.submit()
 
         resp = resp.follow()
 
-        atts = self.dbsession.query(model.Attachment).select()
-        self.assertEqual([], atts)
+        assert resp.request.path == url_for(controller='proposal', action='view', id=prop.id)
 
-        
-        self.assertEqual(url_for(controller='proposal',
-                                 action='view',
-                                 id=pid),
-                         resp.request.url)
+        db_session.expunge_all()
 
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
-        self.dbsession.flush()
+        atts = Attachment.find_all();
+        assert atts == []
 
+
+@pytest.mark.xfail # TODO: Need a way to set cfp_status at run time
+class TestCFPStates(object):
+
+    def test_not_open(self, app):
+        lca_info['cfp_status'] = 'not_open'
+        resp = app.get('/programme/submit_a_proposal')
+        assert "is not open!" in unicode(resp.body, 'utf-8')
+
+    def test_open(self, app):
+        lca_info['cfp_status'] = 'open'
+        resp = app.get('/programme/submit_a_proposal')
+        assert "is open!" in unicode(resp.body, 'utf-8')
+
+    def test_closed(self, app):
+        lca_info['cfp_status'] = 'open'
+        resp = app.get('/programme/submit_a_proposal')
+        assert "is closed!" in unicode(resp.body, 'utf-8')

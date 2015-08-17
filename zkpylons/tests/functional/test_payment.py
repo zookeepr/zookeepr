@@ -1,43 +1,31 @@
 import hmac
 import sha
+import pytest
 
-from paste.fixture import Dummy_smtplib
+def fake_payment_params():
+    return dict(
+            invoice_id      = 1,
+            payment_amount  = 69001,
+            bank_reference  = 5261,
+            payment_number  = 'SimProxy 54021550',
+            card_mac        = 'fake',
+            card_name       = 'joe',
+            card_number     = '1234',
+            card_type       = 'TestCard',
+            card_expiry     = '1/1/1',
+            currency        = 'USD',
+            payment_id      = '23',
+            receipt_address = 'here',
+            remote_ip       = '127.0.0.1',
+            response_amount = '55',
+            response_code   = 'HELP',
+            response_text   = 'Approved',
+            summary_code    = 'a test entry',
+            )
 
-from zkpylons.tests.functional import *
 
-class TestPaymentController(ControllerTest):
-    """Test that when we pump data into the payment, it does the right thing.
-    """
-
-    def setUp(self):
-        super(TestPaymentController, self).setUp()
-        Dummy_smtplib.install()
-        print Dummy_smtplib.existing
-
-        self.params = dict(invoice_id=1,
-                           payment_amount=69001,
-                           bank_reference=5261,
-                           payment_number='SimProxy 54021550')
-
-    def tearDown(self):
-        if Dummy_smtplib.existing:
-            Dummy_smtplib.existing.reset()
-
-        self.dbsession.delete(self.dbsession.query(model.PaymentReceived).select()[0])
-        self.dbsession.flush()
-
-        super(TestPaymentController, self).tearDown()
-
-#    def test_no_payment(self):
-        # a random hit on the page
-
-        # FIXME fi this test once code gets fixed
-        #resp = self.app.get('/payment/new', params=self.params)
-
-        #print resp
-        #self.failUnless("Invalid HMAC" in  Dummy_smtplib.existing.message)
-
-        #self.assertEqual('/Errors/InvalidPayment', resp.header('location'))
+class TestPaymentController(object):
+    """Test that when we pump data into the payment, it does the right thing.  """
 
     def gen_mac(self, fields):
         """Generate a HMAC for the fields"""
@@ -48,30 +36,29 @@ class TestPaymentController(ControllerTest):
         fields['MAC'] = mac
         return fields
 
-    #def test_valid_hmac_no_payment(self):
-        # form has a valid HMAC but nonexistent payment
+    @pytest.mark.xfail # Reported as #415
+    def test_no_payment(self, app, smtplib):
+        """ a random hit on the page """
 
-        #resp = self.app.get('/payment/new', params=self.gen_mac(self.params))
+        resp = app.get('/payment/new', params=fake_payment_params(), extra_environ=dict(REMOTE_ADDR='0.0.0.0'))
 
-        #print resp
+        print resp
+        assert "Invalid HMAC" in smtplib.existing.message
 
-        #print Dummy_smtplib.existing.message
-
-        #self.failUnless("Nonexistent Payment" in Dummy_smtplib.existing.message)
-        #self.assertEqual("/Errors/MissingPayment", resp.header('location'))
+        assert resp.header('location') == '/Errors/InvalidPayment'
 
 
-#     def test_valid_payment_wrong_invoice(self):
-#         invoice = model.Invoice()
-#         self.dbsession.save(invoice)
-#         ii = model.InvoiceItem('foo', 1, 100)
-#         self.dbsession.save(ii)
-        
-#         invoice.items.append(ii)
+    @pytest.mark.xfail # Reported as #415
+    def test_valid_hmac_no_payment(self, app, smtplib):
+        """ form has a valid HMAC but nonexistent payment """
 
-#         # do stuff
-        
-#         self.fail("not really")
-        
-        
-        
+        resp = app.get('/payment/new', params=self.gen_mac(fake_payment_params()), extra_environ=dict(REMOTE_ADDR='0.0.0.0'))
+
+        print resp
+
+        print smtplib.existing.message
+
+        assert "Nonexistent Payment" in smtplib.existing.message
+        assert resp.header('location') == "/Errors/MissingPayment"
+
+
