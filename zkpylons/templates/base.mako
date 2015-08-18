@@ -5,10 +5,10 @@
 <%def name="extra_head()">
     ## Defined in children
 </%def>
-<%def name="extra_body()">
-  <body>
-</%def>
 <%def name="body_property()"></%def>
+<%def name="extra_body()">
+<body ${ self.body_property() } >
+</%def>
 <%def name="big_promotion()">
     ## Defined in children
 </%def>
@@ -66,7 +66,6 @@
         </script>
 %endif
     </head>
-<body ${ self.body_property() } >
   ${self.extra_body()}
   <div id="wrapper">
     <div id="head">

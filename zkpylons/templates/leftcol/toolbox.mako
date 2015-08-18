@@ -18,7 +18,7 @@
 <ul class="netv-vmenu">
 ## Toolbox links
 % if h.signed_in_person():
-    <span class="menu-header">${ h.signed_in_person().firstname }'s Profile</span>
+    <li><span class="menu-header">${ h.signed_in_person().firstname }'s Profile</span>
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra() }
 %   if c.config.get("cfp_status") == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
@@ -44,12 +44,13 @@ ${ parent.toolbox_extra() }
 %   endif
       ${ make_link('My profile', h.url_for(controller='person', action='view', id=h.signed_in_person().id)) }
       ${ make_link('Sign out', h.url_for('/person/signout')) }
+	</ul></li>
 % else:
       ${ make_link('Sign in', "/person/signin") }
       ${ make_link('Create an account', "/person/new") }
 % endif
 % if h.auth.authorized(h.auth.has_organiser_role):
-<span class="menu-header">Zookeepr Administration</span>
+    <li><span class="menu-header">Zookeepr Administration</span>
     <ul class="netv-vmenu">
       ${ make_link('Admin', h.url_for(controller='admin')) }
       ${ make_link('Lookup', h.url_for(controller='admin', action='lookup')) }
@@ -62,10 +63,10 @@ ${ parent.toolbox_extra() }
       ${ make_link('Create page here', h.url_for(controller='db_content', action='new')) }
 %   endif
 ${ parent.toolbox_extra_admin() }
-    </ul>
+    </ul></li>
 % endif
 % if h.auth.authorized(h.auth.has_reviewer_role):
-    <span class="menu-header">Paper Reviewer</span>
+    <li><span class="menu-header">Paper Reviewer</span>
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra_reviewer() }
       ${ make_link('How to review', '/help/review') }
@@ -73,7 +74,8 @@ ${ parent.toolbox_extra_reviewer() }
       ${ make_link("Reviews you've made", h.url_for(controller='review', action='index', id=None)) }
       ${ make_link('Summary of reviewed proposals', h.url_for(controller='proposal', action='summary', id=None)) }
       ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary', id=None)) }
-      <span class="menu-header">List of proposals by:</span>
+	</ul></li>
+    <li><span class="menu-header">List of proposals by:</span>
     <ul class="netv-vmenu">
     %if c.config.get('cfp_hide_scores') == 'no':
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank', id=None)) }
@@ -82,11 +84,10 @@ ${ parent.toolbox_extra_reviewer() }
     %endif
         ${ make_link('number of reviewers', h.url_for(controller='admin', action='proposals_by_number_of_reviewers', id=None)) }
         ${ make_link('submission date', h.url_for(controller='admin', action='proposals_by_date', id=None)) }
-      </ul>
-    </ul>
+      </ul></li>
 % endif
 % if h.auth.authorized(h.auth.has_funding_reviewer_role):
-    <span class="menu-header">Funding Reviewer</span>
+    <li><span class="menu-header">Funding Reviewer</span>
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra_funding_reviewer() }
       ${ make_link('How to review', '/help/funding_review') }
@@ -94,18 +95,17 @@ ${ parent.toolbox_extra_funding_reviewer() }
       ${ make_link("Reviews you've made", h.url_for(controller='funding_review', action='index')) }
       ${ make_link('Summary of reviewed proposals', h.url_for(controller='funding', action='summary')) }
       ${ make_link('Reviewer summary', h.url_for(controller='funding_review', action='summary')) }
-      <li>List of requests by:</li>
+      <li>List of requests by:
       <ul class="indent">
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='funding_requests_by_strong_rank')) }
         ${ make_link('max score, min score then average', h.url_for(controller='admin', action='funding_requests_by_max_rank')) }
-      </ul>
-    </ul>
+      </ul></li>
 % endif
 % if (c.db_content and not c.db_content.is_news()) or len(parent.short_title()) > 0:
-<div style="text-align:center;">
-</div>
+<li><div style="text-align:center;">
+</div></li>
 % endif
 % if h.signed_in_person():
-    <p style="font-style: italic; padding-left: 7px;">${h.signed_in_person().email_address}</p>
+    <li><p style="font-style: italic; padding-left: 7px;">${h.signed_in_person().email_address}</p></li>
 % endif
 </ul>
