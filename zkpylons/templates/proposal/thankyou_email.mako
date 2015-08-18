@@ -6,8 +6,10 @@ Dear ${ c.person.firstname },
 
 Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ c.config.get('event_name') }.
 
+% if c.proposal.type.notify_email:
 If you have any queries about your proposed ${ c.proposal.type.name.lower()},
 please email ${ c.proposal.type.notify_email.lower() }
+% endif
 
 Title:             ${ c.proposal.title |n }
 Target audience:   ${ c.proposal.audience.name }
