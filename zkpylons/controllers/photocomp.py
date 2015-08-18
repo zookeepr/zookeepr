@@ -220,7 +220,7 @@ class PhotocompController(BaseController):
             person = Person.find_by_id(person_id)
             person_map[person_id] = person
             c.all_person.append(person)
-        c.all_person.sort(key=lambda person: (person.firstname + " " + person.lastname).lower())
+        c.all_person.sort(key=lambda person: person.fullname.lower())
         c.photos = photos
         def photo_title(photo):
             return "%s %s, %s entry %s, %s" % (

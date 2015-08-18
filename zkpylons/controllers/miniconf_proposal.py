@@ -61,7 +61,7 @@ class MiniconfProposalController(BaseController):
             'proposal.travel_assistance': 1,
             'proposal.video_release': 0,
             'proposal.slides_release': 0,
-            'person.name' : c.person.firstname + " " + c.person.lastname,
+            'person.name' : c.person.fullname,
             'person.mobile' : c.person.mobile,
             'person.experience' : c.person.experience,
             'person.bio' : c.person.bio,

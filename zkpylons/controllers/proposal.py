@@ -117,14 +117,14 @@ class ProposalController(BaseController):
             'proposal.slides_release': 1,
             'proposal.travel_assistance' : 1,
             'proposal.accommodation_assistance' : 1,
-            'person.name': c.person.firstname + " " + c.person.lastname,
+            'person.name': c.person.fullname,
             'person.phone': c.person.phone,
             'person.experience': c.person.experience,
             'person.bio': c.person.bio,
             'person.url': c.person.url,
         }
         defaults['person_to_edit'] = c.person.id
-        defaults['name'] = c.person.firstname + " " + c.person.lastname
+        defaults['name'] = c.person.fullname
         form = render("proposal/new.mako")
         return htmlfill.render(form, defaults)
 
@@ -287,7 +287,7 @@ class ProposalController(BaseController):
 
         defaults = h.object_to_defaults(c.proposal, 'proposal')
         defaults.update(h.object_to_defaults(c.person, 'person'))
-        defaults['person.name'] = c.person.firstname + " " + c.person.lastname
+        defaults['person.name'] = c.person.fullname
         # This is horrible, don't know a better way to do it
         if c.proposal.type:
             defaults['proposal.type'] = defaults['proposal.proposal_type_id']
@@ -299,7 +299,7 @@ class ProposalController(BaseController):
             defaults['proposal.audience'] = defaults['proposal.target_audience_id']
 
         defaults['person_to_edit'] = c.person.id
-        defaults['name'] = c.person.firstname + " " + c.person.lastname
+        defaults['name'] = c.person.fullname
         c.miniconf = (c.proposal.type.name == 'Miniconf')
         form = render('/proposal/edit.mako')
         return htmlfill.render(form, defaults)

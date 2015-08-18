@@ -98,8 +98,8 @@ ${ person.firstname | h } ${ person.lastname | h } &lt;${ person.email_address }
 %endif
 <br>
 ${ h.link_to('(view details)', url=h.url_for(controller='person', action='view', id=person.id)) }
-${ h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) }
-${ h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.firstname + " " + person.lastname, person.email_address)) }
+${ h.link_to('(stalk on Google)', url='http://google.com/search?q=%s+%s' % (person.fullname, person.email_address)) }
+${ h.link_to('(linux specific stalk)', url='http://google.com/linux?q=%s+%s' % (person.fullname, person.email_address)) }
 ${ h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' % person.email_address) }
 </p>
 %   endif

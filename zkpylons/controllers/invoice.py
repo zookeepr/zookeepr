@@ -193,7 +193,7 @@ class InvoiceController(BaseController):
             c.invoice = i
             c.recipient = i.person
             email(c.recipient.email_address, render('invoice/remind_email.mako'))
-            h.flash('Email sent to ' + c.recipient.firstname + ' ' + c.recipient.lastname + ' <' + c.recipient.email_address + '>')
+            h.flash('Email sent to ' + c.recipient.fullname + ' <' + c.recipient.email_address + '>')
         redirect_to(action='remind')
 
     def _check_invoice(self, person, invoice, ignore_overdue = False):
