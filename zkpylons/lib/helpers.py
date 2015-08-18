@@ -468,7 +468,10 @@ def html_clean(str):
 def redirect_to(*args, **kargs):
     if 'is_active' in dir(meta.Session):
         meta.Session.flush()
-        meta.Session.close()
+        # Close causes issues if we are running under a test harness
+        # Not ideal to change behaviour under test but can't see a way around it
+        if meta.Session.get_bind().url.database != 'zktest':
+            meta.Session.close()
 
     return redirect(url.current(*args, **kargs))
 
