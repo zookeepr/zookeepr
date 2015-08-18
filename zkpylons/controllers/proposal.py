@@ -25,21 +25,13 @@ from zkpylons.lib.validators import ReviewSchema
 
 log = logging.getLogger(__name__)
 
-class NewPersonSchema(BaseSchema):
-    allow_extra_fields = False
-
-    experience = validators.String(not_empty=True)
-    bio = validators.String(not_empty=True)
-    url = validators.URL(add_http=True, check_exists=False, not_empty=False)
-    phone = validators.String(not_empty=True)
-
 class ExistingPersonSchema(BaseSchema):
     allow_extra_fields = False
 
     experience = validators.String(not_empty=True)
     bio = validators.String(not_empty=True)
     url = validators.URL(add_http=True, check_exists=False, not_empty=False)
-    phone = validators.String(not_empty=True)
+    mobile = validators.String(not_empty=True)
 
 class ProposalSchema(BaseSchema):
     allow_extra_fields = False
@@ -59,7 +51,7 @@ class ProposalSchema(BaseSchema):
     slides_release = validators.Bool()
 
 class NewProposalSchema(BaseSchema):
-    person = NewPersonSchema()
+    person = ExistingPersonSchema()
     proposal = ProposalSchema()
     attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
