@@ -13,6 +13,7 @@ ${ h.end_form() }
 <form novalidate="true" action="/person/signin" method="post" data-toggle="validator">
     <div class="form-group">
         <label for="personemail_address">Email</label>
+        <input type="hidden" name="person.email_address_error" />
       <div class="input-group">
         <input id="personemail_address" class="form-control" placeholder="Email Address" name="person.email_address" data-error="Uh Oh, that email address doesn't look right" value="" type="email">
         <span class="input-group-addon" id="basic-addon2">required</span>
