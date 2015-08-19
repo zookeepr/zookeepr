@@ -24,6 +24,7 @@
         <label for="proposalabstract" class="col-sm-2 control-label">Miniconf summary</label>
         <div class="input-group col-sm-10">
             <textarea class="form-control" id="proposalabstract" placeholder="This will appear in the conference programme. You will have an opportunity to update it once the proposal is accepted, but it should reasonably reflect what your miniconf is about, and in any case it will appear as-is on the website in the draft programme." name="proposal.abstract" rows="10" cols="80" required></textarea>
+            <span class="input-group-addon" id="basic-addon2">required</span>
         </div>
       </div>
     </div>
@@ -33,6 +34,7 @@
         <label for="proposalpriveate_abstract" class="col-sm-2 control-label">Private summary</label>
         <div class="input-group col-sm-10">
             <textarea class="form-control" id="proposalprivate_abstract" placeholder="This will only be shown to organisers and reviewers. You should provide any details about your miniconf that you don't want to be public here. Please indicate any special requirements your miniconf may have (e.g. facilities required) and anticipated number of attendees, if possible." name="proposal.private_abstract" rows="10" cols="80" required></textarea>
+            <span class="input-group-addon" id="basic-addon2">required</span>
         </div>
       </div>
     </div>
@@ -122,7 +124,10 @@ ${ len(a.content) } B
     <div class="row form-group"> 
       <label for="name" class="col-sm-2 control-label">Organisers phone</label>
       <div class="input-group col-sm-10">
+       <div class="input-group">
         <input class="form-control" id="personphone" name="person.phone" required></input>
+        <span class="input-group-addon" id="basic-addon2">required</span>
+       </div>
       <p class="help-block">The conference team will need this to contact you during the conference week. If you don't have one, or do not wish to provide it, then enter NONE in this field</p>
       </div>
     </div>
@@ -139,6 +144,7 @@ ${ len(a.content) } B
         <label for="personbio" class="col-sm-2 control-label">Biography</label>
         <div class="input-group col-sm-10">
             <textarea class="form-control" id="personbio" placeholder="Please write in the third person, eg Alice is a KVM hacker..., 150-200 words." name="person.bio" rows="10" cols="80" required></textarea>
+            <span class="input-group-addon" id="basic-addon2">required</span>
         </div>
       </div>
     </div>
@@ -148,6 +154,7 @@ ${ len(a.content) } B
         <label for="personexperience" class="col-sm-2 control-label">Relevant Experience</label>
         <div class="input-group col-sm-10">
             <textarea class="form-control" id="personexperience" placeholder="Have you had any experience presenting elsewhere? If so, we'd like to know. Anything you put here will only be seen by the organisers and reviewers; use it to convince them why they should accept your miniconf." name="person.experience" rows="10" cols="80" required></textarea>
+            <span class="input-group-addon" id="basic-addon2">required</span>
         </div>
       </div>
     </div>
