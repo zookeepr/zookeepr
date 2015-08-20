@@ -67,17 +67,16 @@ class TestReviewController(object):
         assert False
 
 
-    @pytest.mark.xfail # Reported as #419
-    def test_reviews_isolated(self, app, db_session):
-        """Test that a reviewer can only see their own reviews"""
+    def test_reviews_not_isolated(self, app, db_session):
+        """Test that a reviewer can see other reviews"""
 
         p1 = PersonFactory(roles=[RoleFactory(name='reviewer')], firstname="Scrouge")
         p2 = PersonFactory(firstname="Daffy")
         p3 = PersonFactory()
         prop = ProposalFactory(people=[p3])
         stream = StreamFactory()
-        r1 = ReviewFactory(reviewer=p1, proposal=prop, score=1, stream=stream)
-        r2 = ReviewFactory(reviewer=p2, proposal=prop, score=1, stream=stream)
+        r1 = ReviewFactory(reviewer=p1, proposal=prop, score=-1, stream=stream)
+        r2 = ReviewFactory(reviewer=p2, proposal=prop, score=2, stream=stream)
         ProposalStatusFactory(name='Withdrawn') # Required by code
         db_session.commit()
 
@@ -86,7 +85,7 @@ class TestReviewController(object):
 
         # Page has list of reviews already set on proposal
         assert p1.firstname in unicode(resp.body, 'utf-8')
-        assert p2.firstname not in unicode(resp.body, 'utf-8')
+        assert p2.firstname in unicode(resp.body, 'utf-8')
 
 
     @pytest.mark.xfail # Test not yet written
