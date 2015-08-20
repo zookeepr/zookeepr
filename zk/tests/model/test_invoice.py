@@ -6,9 +6,9 @@ from zk.model.invoice_item import InvoiceItem
 
 class TestInvoice(object):
     def test_item_add(self, db_session):
-        invoice = InvoiceFactory()
         invoice_item = InvoiceItemFactory()
-        invoice.items.append(invoice_item) # invoice_item must be attached to invoice before flush
+        invoice = InvoiceFactory(items=[invoice_item])
+
         db_session.flush()
 
         assert invoice_item in db_session.query(InvoiceItem).all()
