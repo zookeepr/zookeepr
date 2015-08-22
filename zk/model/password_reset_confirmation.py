@@ -9,9 +9,6 @@ import hashlib
 import datetime
 import random
 
-def setup(meta):
-    pass
-
 class PasswordResetConfirmation(Base):
     """Stores both account login details and personal information.
     """

@@ -80,42 +80,6 @@ def init_model(engine):
     meta.Session.configure(bind=engine)
     meta.engine = engine
 
-def setup(meta):
-    """Setup any data in the tables"""
-    try:
-        role.setup(meta)
-        person_role_map.setup(meta)
-        person.setup(meta)
-
-        social_network.setup(meta)
-        person_social_network_map.setup(map)
-
-        product_category.setup(meta)
-        ceiling.setup(meta)
-        product.setup(meta)
-
-        proposal.setup(meta)
-        person_proposal_map.setup(meta)
-        attachment.setup(meta)
-        review.setup(meta)
-        voucher.setup(meta)
-
-        db_content.setup(meta)
-        volunteer.setup(meta)
-
-        payment.setup(meta)
-        payment_received.setup(meta)
-
-        funding.setup(meta)
-        funding_attachment.setup(meta)
-
-        special_offer.setup(meta)
-        special_registration.setup(meta)
-
-        meta.Session.commit()
-    except IntegrityError, inst:
-        print inst
-
 ## Non-reflected tables may be defined and mapped at module level
 #foo_table = sa.Table("Foo", meta.metadata,
 #    sa.Column("id", sa.types.Integer, primary_key=True),

@@ -8,9 +8,6 @@ from product import Product
 
 from meta import Session
 
-def setup(meta):
-    pass
-
 class InvoiceItem(Base):
     """Stores the line items for an invoice
     """

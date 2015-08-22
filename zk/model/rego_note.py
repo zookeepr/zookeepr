@@ -10,9 +10,6 @@ from person import Person
 from registration import Registration
 from registration_product import RegistrationProduct
 
-def setup(meta):
-    pass
-
 class RegoNote(Base):
     """Misc notes from the organising team on a person
     """

@@ -7,9 +7,6 @@ from pylons.controllers.util import abort
 from product import Product
 from person import Person
 
-def setup(meta):
-    pass
-
 # for doing n-n mappings of FulfilmentType and FulfilmentStatus
 fulfilment_type_status_map = sa.Table('fulfilment_type_status_map', metadata,
         sa.Column(

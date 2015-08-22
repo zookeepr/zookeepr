@@ -14,30 +14,6 @@ from meta import Session
 import datetime
 import random
 
-def setup(meta):
-    earlybird_end = datetime.datetime(2010, 10, 28, 23, 59, 59);
-    nonearlybird_start = datetime.datetime(2010, 10, 29, 0, 0, 0,);
-
-    meta.Session.add_all(
-        [
-            Ceiling(name='conference-all', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='conference-paid', max_sold=750, available_from=None, available_until=None),
-            Ceiling(name='conference-earlybird', max_sold=200, available_from=None, available_until=earlybird_end),
-            Ceiling(name='conference-non-earlybird', max_sold=None, available_from=nonearlybird_start, available_until=None),
-            Ceiling(name='shirt-all', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='shirt-men', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='shirt-women', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='penguindinner-all', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='speakersdinner-all', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='accomodation-all', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='partners-all', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='miniconf-all', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='miniconf-monday', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='miniconf-tuesday', max_sold=None, available_from=None, available_until=None),
-            Ceiling(name='miniconf-rocketry', max_sold=24, available_from=None, available_until=None),
-        ]
-    )
-
 class Ceiling(Base):
     """Stores the details of product ceilings which are used to control the sale of itmes with a limited stock
     """

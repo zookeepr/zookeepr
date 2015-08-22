@@ -13,51 +13,6 @@ from attachment import Attachment
 from review import Review
 from stream import Stream
 
-def setup(meta):
-    meta.Session.add_all(
-        [
-            ProposalStatus(name='Accepted'),
-            ProposalStatus(name='Declined'),
-            ProposalStatus(name='Pending Review'),
-            ProposalStatus(name='Withdrawn'),
-            ProposalStatus(name='Backup'),
-            ProposalStatus(name='Offered'),
-            ProposalStatus(name='Offered Travel'),
-            ProposalStatus(name='Offered Accommodation'),
-            ProposalStatus(name='Offered Travel Accommodation'),
-            ProposalStatus(name='Contact'),
-        ]
-    )
-    meta.Session.add_all(
-        [
-            ProposalType(name='Presentation'),
-            ProposalType(name='Miniconf'),
-            ProposalType(name='Tutorial - 1 hour and 45 minutes'),
-            ProposalType(name='Tutorial - 3 hours and 30 minutes'),
-            ProposalType(name='Poster'),
-        ]
-    )
-    meta.Session.add_all(
-        [
-            TravelAssistanceType(name='I do not require travel assistance.'),
-            TravelAssistanceType(name='I request that linux.conf.au book and pay for air travel.'),
-        ]
-    )
-    meta.Session.add_all(
-        [
-            TargetAudience(name='Community'),
-            TargetAudience(name='User'),
-            TargetAudience(name='Developer'),
-            TargetAudience(name='Business'),
-        ]
-    )
-    meta.Session.add_all(
-        [
-            AccommodationAssistanceType(name='I do not require accommodation assistance.'),
-            AccommodationAssistanceType(name='I request that linux.conf.au provide student-style single room accommodation for the duration of the conference.'),
-        ]
-    )
-
 class ProposalStatus(Base):
     """Stores both account login details and personal information.
     """

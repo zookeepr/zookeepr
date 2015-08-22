@@ -10,9 +10,6 @@ from meta import Session
 #import datetime
 #import random
 
-def setup(meta):
-    pass
-
 class FundingAttachment(Base):
     __tablename__ = 'funding_attachment'
 

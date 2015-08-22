@@ -9,23 +9,6 @@ from lib.model import CommaList
 from person import Person
 from funding_attachment import FundingAttachment
 
-def setup(meta):
-   meta.Session.add_all(
-        [
-            FundingStatus(name='Accepted'),
-            FundingStatus(name='Declined'),
-            FundingStatus(name='Pending'),
-            FundingStatus(name='Withdrawn'),
-        ]
-   )
-   meta.Session.add_all(
-        [
-            FundingType(name='Google Diversity Programme',
-              note='Assists people from diverse groups, including females in IT and disabled people', active=True),
-        ]
-    )
-
-
 class FundingStatus(Base):
     """Stores funding status
     """

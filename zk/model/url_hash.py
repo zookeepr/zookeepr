@@ -9,9 +9,6 @@ import hashlib
 import datetime
 import random
 
-def setup(meta):
-    pass
-
 class URLHash(Base):
     """ Stores a unique has for various access """
     __tablename__ = 'url_hash'

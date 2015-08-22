@@ -13,16 +13,6 @@ from meta import Session
 import datetime
 import random
 
-def setup(meta):
-    meta.Session.add_all(
-        [
-            DbContentType(name='Page'),
-            DbContentType(name='News'),
-            DbContentType(name='In the press'),
-            DbContentType(name='Redirect'),
-        ]
-    )
-
 class DbContentType(Base):
     """Stores both account login details and personal information.
     """

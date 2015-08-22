@@ -6,13 +6,6 @@ from meta import Session
 
 from special_registration import SpecialRegistration
 
-def setup(meta):
-    meta.Session.add_all(
-        [
-            SpecialOffer(name='LinuxAustralia', description='<p>Welcome to Linux Australia members!</p><p>We are happy to invite you to register for LCA before we open registrations to the general public. To take advantage of this special offer, simply enter your LA member number (which you can see on your <a href="https://www.linux.org.au/membership/index.php?page=edit-member">details page</a> once you are logged in).</p>', id_name='LA member number', enabled=False),
-        ]
-    )
-
 class SpecialOffer(Base):
     """Stores details about a special offer for pre-registration
     """

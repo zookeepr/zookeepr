@@ -8,18 +8,6 @@ from pylons.controllers.util import abort
 from meta import Session
 from person_social_network_map import PersonSocialNetworkMap
 
-def setup(meta):
-    meta.Session.add_all(
-        [
-            SocialNetwork(name='Twitter', url='http://twitter.com/USER',
-                          logo='tag_twitter.png'),
-            SocialNetwork(name='Identi.ca', url='http://identi.ca/USER',
-                          logo='tag_identica.png'),
-            SocialNetwork(name='Flickr', url='http://www.flickr.com/photos/USER',
-                          logo='tag_flickr.png'),
-        ]
-    )
-
 class SocialNetwork(Base):
     """Stores the social networks that people might be members of
     """

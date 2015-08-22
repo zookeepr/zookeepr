@@ -11,9 +11,6 @@ from stream import Stream
 import datetime
 import random
 
-def setup(meta):
-    pass
-
 class Review(Base):
     """Stores both account login details and personal information.
     """

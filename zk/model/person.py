@@ -23,21 +23,6 @@ import random
 import os
 from libravatar import libravatar_url
 
-def setup(meta):
-    person = Person(
-        email_address="admin@zookeepr.org",
-        activated=True,
-        firstname="Admin",
-        lastname="User"
-    )
-    person.password = 'password'
-    person.activated = True
-
-    role = Role.find_by_name('organiser')
-    person.roles.append(role)
-
-    meta.Session.add(person)
-
 class Person(Base):
     """Stores both account login details and personal information.
     """

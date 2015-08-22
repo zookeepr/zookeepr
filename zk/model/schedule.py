@@ -8,9 +8,6 @@ from pylons.controllers.util import abort
 
 from meta import Session
 
-def setup(meta):
-    pass
-
 class Schedule(Base):
     __tablename__ = 'schedule'
     __table_args__ = (
