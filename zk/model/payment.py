@@ -6,9 +6,6 @@ from pylons.controllers.util import abort
 
 from meta import Session
 
-def setup(meta):
-    pass
-
 class Payment(Base):
     """Stores details of payments made against invoices
     """

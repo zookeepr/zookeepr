@@ -9,9 +9,6 @@ from lib.model import CommaList
 from person import Person
 from voucher import Voucher
 
-def setup(meta):
-    pass
-
 class Registration(Base):
     __tablename__ = 'registration'
 

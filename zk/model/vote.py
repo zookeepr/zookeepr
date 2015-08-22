@@ -11,9 +11,6 @@ from registration import Registration
 from registration_product import RegistrationProduct
 from event import Event
 
-def setup(meta):
-    pass
-
 class Vote(Base):
     """Votes from registered delegates on events
     """

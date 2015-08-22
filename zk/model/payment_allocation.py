@@ -8,9 +8,6 @@ from invoice_item import InvoiceItem
 from payment import Payment
 from meta import Session
 
-def setup(meta):
-    pass
-
 class PaymentAllocation(Base):
     """Stores details of payments made against invoices
     """

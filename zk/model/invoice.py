@@ -13,9 +13,6 @@ from meta import Session
 
 import datetime
 
-def setup(meta):
-    pass
-
 class Invoice(Base):
     """Stores both account login details and personal information.
     """

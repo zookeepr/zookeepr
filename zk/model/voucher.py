@@ -10,9 +10,6 @@ from product import Product
 
 from meta import Session
 
-def setup(meta):
-    pass
-
 class Voucher(Base):
     __tablename__ = 'voucher'
 

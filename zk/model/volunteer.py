@@ -11,9 +11,6 @@ from lib.model import CommaList
 from person import Person
 from product import Product
 
-def setup(meta):
-    pass
-
 class Volunteer(Base):
     """Information about a potential volunteer
     """

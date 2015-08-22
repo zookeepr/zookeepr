@@ -8,9 +8,6 @@ from meta import Session
 from registration import Registration
 from product import Product
 
-def setup(meta):
-    pass
-
 class RegistrationProduct(Base):
     __tablename__ = 'registration_product_map'
 

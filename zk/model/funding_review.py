@@ -11,9 +11,6 @@ from meta import Session
 import datetime
 import random
 
-def setup(meta):
-    pass
-
 class FundingReview(Base):
     """Stores reviews of funding applications
     """

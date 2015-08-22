@@ -6,9 +6,6 @@ from meta import Base
 from meta import metadata
 #from social_network import SocialNetwork
 
-def setup(meta):
-    pass
-
 class PersonSocialNetworkMap(Base):
     """Stores both account login details and personal information.
     """

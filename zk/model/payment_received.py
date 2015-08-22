@@ -8,9 +8,6 @@ from payment import Payment
 
 from meta import Session
 
-def setup(meta):
-    pass
-
 class PaymentReceived(Base):
     """Stores details of payments as returned by the payment gateway
     """

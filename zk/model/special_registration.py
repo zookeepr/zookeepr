@@ -4,9 +4,6 @@ from meta import Base
 
 from meta import Session
 
-def setup(meta):
-    pass
-
 class SpecialRegistration(Base):
     """Stores details of a person who used a special offer to register early
     """

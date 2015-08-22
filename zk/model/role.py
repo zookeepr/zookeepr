@@ -5,21 +5,6 @@ from meta import Base
 from pylons.controllers.util import abort
 from meta import Session
 
-def setup(meta):
-    meta.Session.add_all(
-        [
-            Role(name='organiser', pretty_name='Organizer', comment='Has full access to management pages'),
-            Role(name='team', pretty_name='Core Team', comment='Member of core team'),
-            Role(name='reviewer', pretty_name='Paper Reviewer', comment='Has access to the proposal review system'),
-            Role(name='miniconf', pretty_name='Miniconf Organiser', comment='Is a miniconference organiser'),
-            Role(name='proposals_chair', pretty_name='Papers Chair', comment='Has access to proposal review system management functions'),
-            Role(name='late_submitter', pretty_name='Late Submitter', comment='Is allowed to submit late proposals'),
-            Role(name='funding_reviewer', pretty_name='Funding Reviewer', comment='Has access to the funding review system'),
-            Role(name='press', pretty_name='Press Pass', comment='Members of the press and media who can receive a press ticket'),
-            Role(name='miniconfsonly', pretty_name='Miniconfs Only', comment='Only gives access to Monday and Tuesday'),
-        ]
-    )
-
 class Role(Base):
     """Stores the roles used for authorisation
     """
