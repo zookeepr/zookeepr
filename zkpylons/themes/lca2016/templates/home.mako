@@ -9,8 +9,8 @@ for d in c.db_content_news_all:
         featured.append(d)
         count += 1
 %>
-                                            <h2 class="featurette-heading">
-                              Welcome to ${ h.event_name() }!</h2>
+                                            <h1>
+                              Welcome to ${ h.event_name() }!</h1>
 
 % if c.db_content is not None:
   <p class="lead">

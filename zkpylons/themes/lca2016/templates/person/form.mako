@@ -25,8 +25,11 @@ ${ h.hidden('person.company', value='') }</p>
 % else:
     <div class="form-group">
       <div class="input-group">
-        <input type="email" id="personemail_address" class="form-control" placeholder="If you wish to change your email address please contact the organisers." name="person.email_address" disabled/>
-        <span class="input-group-addon" id="basic-addon2">required</span>
+        <div class="input-group">
+          <input type="email" id="personemail_address" class="form-control" name="person.email_address" readonly />
+          <span class="input-group-addon" id="basic-addon2">required</span>
+        </div>
+        <p class="help-block">We would like to avoid the changing of email addresses, however if you require your account email address to be updated, please email <a href="mailto:contact@lcabythebay.org.au">contact@lcabythebay.org.au</a></p>
       </div>
     </div>
 % endif
@@ -105,7 +108,11 @@ ${ h.hidden('person.postcode') }
       <div class="input-group">
         <select id="personcountry" class="form-control" placeholder="Country" name="person.country">
 %for country in h.countries():
-          <option>${ country }</option>
+% if country == 'australia':
+          <option selected="selected" value="${ country }">${ country }</option>
+% else:
+          <option value="${ country }">${ country }</option>
+% endif
 %endfor
         </select>
       </div>
@@ -134,7 +141,7 @@ ${ h.hidden('person.postcode') }
     <div class="checkbox">
       <label>
         <input type="checkbox" name="person.i_agree" id="personi_agree" data-error="An account cannot be created if you don't agree with the T&Cs" required>
-        I agree to the <a href="/cor/terms_and_conditions" target="_blank">conditions of registration</a>
+        I agree to the <a href="/cor/terms_and_conditions" target="_blank">terms and conditions</a>
       </label>
       <div class="help-block with-errors"></div>
     </div>
