@@ -34,11 +34,11 @@ ${ h.end_form() }
 </form>
 
 <p>
-If you have lost your log in details, please contact ${ h.webmaster_email() }.
+If you have lost your log in details, please contact ${ h.email_link_to(c.config.get('webmaster_email')) }.
 </p>
 
 
-<p>Note: this login is for the ${h.event_name()} website; we have not
+<p>Note: this login is for the ${ c.config.get('event_name') } website; we have not
 carried over any earlier login information, so you will need
 to register anew.</p>
 
