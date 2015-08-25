@@ -30,8 +30,6 @@ def make_map(config):
     map.connect('/about/map',          controller='map')
     map.connect('/brisbane/map',       controller='map')
 
-    map.connect('/sitemap',            controller='sitemap', action='view')
-
     # DB content
     map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
     map.connect('/db_content/delete_file',   controller='db_content', action='delete_file', id=None)
