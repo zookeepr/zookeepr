@@ -35,7 +35,6 @@ from zkpylons.lib import auth
 from zkpylons.model import Person
 from zkpylons.model.config import Config
 
-from zkpylons.config.menu import lca_menu, lca_submenus
 from zkpylons.config.zkpylons_config import file_paths
 
 from sqlalchemy.orm.util import object_mapper
