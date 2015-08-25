@@ -38,7 +38,6 @@ Creating a development environment
 3. Configure the virtual environment.
 
    ```
-   cp development.ini.sample development.ini
    python setup.py develop
    ```
 
