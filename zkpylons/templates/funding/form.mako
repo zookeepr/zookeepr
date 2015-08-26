@@ -45,7 +45,7 @@
 
     <p class="label"><span class="mandatory">*</span><label for="funding.financial_circumstance">What are your financial circumstances?</label></p>
     <p class="entries">${ h.textarea('funding.financial_circumstances', cols=70, rows=10) }</p>
-    <p class="note">Please describe the financial circumstances that are stopping you from otherwise attending ${ h.event_name() }.</p>
+    <p class="note">Please describe the financial circumstances that are stopping you from otherwise attending ${ c.config.get('event_name') }.</p>
 
     <p class="label"><label for="funding.supporting_information">Any other supporting information?</label></p>
     <p class="entries">${ h.textarea('funding.supporting_information', cols=70, rows=10) }</p>
@@ -54,19 +54,19 @@
 
    <fieldset id="prev_info">
     <legend>&nbsp;</legend>
-    <h2>${ h.event_name() } Information</h2>
+    <h2>${ c.config.get('event_name') } Information</h2>
 
-    <p class="label"><span class="mandatory">*</span><label for="funding.why_attend">Why would you like to attend ${ h.event_name() }?</label></p>
+    <p class="label"><span class="mandatory">*</span><label for="funding.why_attend">Why would you like to attend ${ c.config.get('event_name') }?</label></p>
     <p class="entries">${ h.textarea('funding.why_attend', cols=70, rows=10) }</p>
-    <p class="note">Please describe why you would like to attend ${ h.event_name() } and indicate the talks that particularly interest you. Up to about 500 words.</p>
+    <p class="note">Please describe why you would like to attend ${ c.config.get('event_name') } and indicate the talks that particularly interest you. Up to about 500 words.</p>
 
 
-    <p class="label"><label for="funding.prevlca">Have you attended ${ h.lca_info['event_generic_name'] } before?</label></p>
+    <p class="label"><label for="funding.prevlca">Have you attended ${ c.config.get('event_generic_name') } before?</label></p>
     <p class="entries">
     <table>
       <tr>
         <td>
-% for (year, desc) in h.lca_rego['past_confs']:
+% for (year, desc) in c.config.get('past_confs', category='rego'):
          <% label = 'funding.prevlca.%s' % year %>
 <label>${ h.checkbox(label) } ${ desc }</label><br />
 % endfor

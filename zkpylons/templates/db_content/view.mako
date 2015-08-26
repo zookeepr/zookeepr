@@ -36,7 +36,7 @@ contents = '''<div style="float: right;">
 
 
 
-url = h.lca_info["event_permalink"] + h.url_for()
+url = c.config.get("event_permalink") + h.url_for()
 %>
 
 <h2>${ c.db_content.title }</h2>

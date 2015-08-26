@@ -1,4 +1,4 @@
-<%def name="title()">${ h.lca_info["event_byline"] }</%def>
+<%def name="title()">${ c.config.get("event_byline") }</%def>
 <%def name="short_title()">
    ## Defined in children
 </%def>
@@ -66,7 +66,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="#">${ h.event_name() }</a>
+              <a class="navbar-brand" href="#">${ c.config.get('event_name') }</a>
             </div>
 	    <%include file="nav.mako" />
             <div id="navbar" class="navbar-collapse collapse">

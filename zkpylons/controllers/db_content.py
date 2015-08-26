@@ -21,7 +21,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model import DbContent, DbContentType
 
-from zkpylons.config.lca_info import lca_info
 from not_found import NotFoundController
 
 from webhelpers import paginate

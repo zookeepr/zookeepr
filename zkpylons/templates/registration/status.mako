@@ -3,9 +3,9 @@
 <%
 """
     <div class="notice-box">
-% if h.lca_info['conference_status'] == 'not_open':
+% if c.config.get('conference_status') == 'not_open':
       <b>Registrations</b> are <i>not</i> open<br><br>
-% elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference-paid'].available():
+% elif c.config.get('conference_status') == 'open' and c.ceilings['conference-paid'].available():
       <b>Registrations</b> are open<br><br>
 % else:
       <b>Registrations are closed</b><br><br>
@@ -14,7 +14,7 @@
 """
 %>
       <h3>Conference Status</h3>
-% if h.lca_info['conference_status'] == 'open' and c.ceilings['conference-earlybird'].available() and c.ceilings['conference-paid'].available():
+% if c.config.get('conference_status') == 'open' and c.ceilings['conference-earlybird'].available() and c.ceilings['conference-paid'].available():
       <b>Earlybird</b> registrations are currently available! Only a limited number of Earlybird registrations are available however so be sure to pay before they're all gone.<br />
       Earlybird sales status:<br />
 
@@ -30,7 +30,7 @@
       (${ h.number_to_percentage(100-c.ceilings['conference-earlybird'].percent_invoiced()) })
       </div>
 
-% elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference-paid'].available() and not c.ceilings['conference-earlybird'].available():
+% elif c.config.get('conference_status') == 'open' and c.ceilings['conference-paid'].available() and not c.ceilings['conference-earlybird'].available():
 
       <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}; text-align:center">
 % if c.ceilings['conference-paid'].percent_invoiced() > 10: #Only display the Sold text if there is enough room
@@ -50,10 +50,10 @@
 
 % endif
 
-% if 'conference-paid' not in c.ceilings or (c.registration is None and h.lca_info['conference_status'] == 'not_open'):
+% if 'conference-paid' not in c.ceilings or (c.registration is None and c.config.get('conference_status') == 'not_open'):
     <h2>Registrations are not open</h2>
     <p>Registrations are not yet open. Please come back soon!</p>
-% elif c.registration is None and h.lca_info['conference_status'] == 'closed':
+% elif c.registration is None and c.config.get('conference_status') == 'closed':
     <h2>Registrations are closed</h2>
     <p>Registrations are completely closed.</p>
 % else:
@@ -146,7 +146,7 @@
 
     <h3>Next step</h3>
 
-    <p>${ h.contact_email("Contact the committee") }</p>
+    <p>${ h.email_link_to(c.config.get('contact_email'), "Contact the committee") }</p>
 
     <p>Your details are:
     person ${ c.person.id },

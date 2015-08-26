@@ -21,8 +21,7 @@ from authkit.permissions import ValidAuthKitUser
 from zkpylons.lib.mail import email
 
 from zkpylons.model import meta, Fulfilment, FulfilmentType, FulfilmentStatus, FulfilmentGroup, Person
-
-from zkpylons.config.lca_info import lca_info
+from zkpylons.model.config import Config
 
 import zkpylons.lib.pdfgen as pdfgen
 
@@ -143,7 +142,7 @@ class FulfilmentController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def badge_pdf(self, id):
         pdf_data = self._badge(id)
-        filename = lca_info['event_shortname'] + '_' + str(c.fulfilment.id) + '.pdf'
+        filename = Config.get('event_shortname') + '_' + str(c.fulfilment.id) + '.pdf'
         return pdfgen.wrap_pdf_response(pdf_data, filename)
 
     @authorize(h.auth.has_checkin_role)

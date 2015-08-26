@@ -1,4 +1,4 @@
-From: ${ h.lca_info['event_name'] } <${ h.lca_info['contact_email'] }>
+From: ${ c.config.get('event_name') } <${ c.config.get('contact_email') }>
 To: ${ c.email_address }
 Subject: WITHDRAWAL of a ${ c.funding.type.name } proposal
 

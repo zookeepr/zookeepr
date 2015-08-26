@@ -1,7 +1,7 @@
 <%inherit file="/base.mako" />
 <%namespace file="../bookmark_submit.mako" name="bookmark_submit" inheritable="True"/>
 
-<h2>${ h.lca_info['event_name'] } in the press</h2>
+<h2>${ c.config.get('event_name') } in the press</h2>
 
 %if len(c.db_content_collection) is 0:
 <p>Sorry, there are currently no recorded items in the press.</p>

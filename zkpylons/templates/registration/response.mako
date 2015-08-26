@@ -1,9 +1,9 @@
-Subject: Confirmation of your registration to ${ h.event_name() }
+Subject: Confirmation of your registration to ${ c.config.get('event_name') }
 To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
 
 Dear ${ c.person.firstname },
 
-Thank you for registering for ${ h.event_name()}!
+Thank you for registering for ${ c.config.get('event_name')}!
 
 Your personal details are:
 
@@ -102,11 +102,11 @@ Partners Programme
 ==================
 
 %if c.pp_children:
-Thank you for registering your Partner and children for the ${ h.event_shortname() } Partners
+Thank you for registering your Partner and children for the ${ c.config.get('event_shortname') } Partners
 Programme.  Your partner will be contacted by our Partner Programme Coordinator 
 on:
 %else:
-Thank you for registering your Partner for the ${ h.event_shortname() } Partners Programme.
+Thank you for registering your Partner for the ${ c.config.get('event_shortname') } Partners Programme.
 Your partner will be contacted by our Partner Programme Coordinator on:
 %endif
 
@@ -115,6 +115,6 @@ Your partner will be contacted by our Partner Programme Coordinator on:
 %endif
 
 
-We look forward to seeing you in ${ h.lca_info['event_city'] }!
+We look forward to seeing you in ${ c.config.get('event_city') }!
 
-The ${ h.event_name() } Organising Committee
+The ${ c.config.get('event_name') } Organising Committee

@@ -5,9 +5,8 @@
 <p>Could not find the talk/miniconf you asked for:
 <span class="error-message">talk_id=${ c.talk_id }</span></p>
 
-<p>Please <a href="mailto:${ c.webmaster_email }">email
-us</a> with a copy of this page if you think that this should not
-happen.</p>
+<p>Please ${ h.email_link_to(c.config.get('webmaster_email'), "email us") }
+with a copy of this page if you think that this should not happen.</p>
 
 <p>
 % if c.day is None:

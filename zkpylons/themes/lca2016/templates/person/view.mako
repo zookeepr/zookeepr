@@ -134,7 +134,7 @@
 % endfor
 </table>
 
-% if h.lca_info['cfp_status'] in ('open', 'closed') or h.lca_info['cfmini_status'] in ('open', 'closed'):
+% if c.config.get('cfp_status') in ('open', 'closed') or c.config.get('cfmini_status') in ('open', 'closed'):
 <h2>Submitted Proposals</h2>
 
 %   if len(c.person.proposals) > 0:
@@ -168,10 +168,10 @@
 %   endif
 % endif
 
-% if h.lca_info['funding_status'] in ('open', 'closed'):
+% if c.config.get('funding_status') in ('open', 'closed'):
 <h2>Submitted Funding Applications</h2>
 
-%   if len(c.person.funding) > 0 and ('open', 'closed') in h.lca_info['funding_status']:
+%   if len(c.person.funding) > 0 and ('open', 'closed') in c.config.get('funding_status'):
 <table class="table sortable">
   <tr class="odd">
     <th>Proposal Type</th>
@@ -195,7 +195,7 @@
     <td>
       ${ h.link_to("view", url=h.url_for(controller='funding', action='view', id=s.id)) }
 %       if s.status.name == 'Pending' or s.status.name == 'Accepted':
-%         if h.lca_info['funding_editing'] == 'open':
+%         if c.config.get('funding_editing') == 'open':
       ${ h.link_to("edit", url=h.url_for(controller='funding', action='edit', id=s.id)) }
 %         endif
       ${ h.link_to("withdraw", url=h.url_for(controller='funding', action='withdraw', id=s.id)) }

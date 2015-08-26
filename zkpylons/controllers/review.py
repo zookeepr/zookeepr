@@ -20,8 +20,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model import Review, Stream, Person, ProposalType, Proposal
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class ReviewController(BaseController):

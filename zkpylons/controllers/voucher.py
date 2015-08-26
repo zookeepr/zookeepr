@@ -21,8 +21,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model import Voucher, VoucherProduct, ProductCategory, Product
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 def generate_code():

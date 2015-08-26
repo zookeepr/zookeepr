@@ -1,7 +1,7 @@
         <blockquote>
         <p>
         ${ c.registration.person.firstname } ${ c.registration.person.lastname }
-%if h.lca_rego['personal_info']['home_address'] == 'yes':
+%if c.config.get('personal_info', category='rego')['home_address'] == 'yes':
         <br/>${ c.registration.person.address1 }
 % if c.registration.person.address2:
         <br/>${ c.registration.person.address2 }
@@ -97,7 +97,7 @@
 %if c.registration.nick:
           <p class="label"><b>Superhero name:</b> ${ c.registration.nick }</p>
 %endif
-%if h.lca_rego['pgp_collection'] != 'no' and c.registration.keyid:
+%if c.config.get('pgp_collection', category='rego') != 'no' and c.registration.keyid:
           <p class="label"><b>GnuPG/PGP Keyid:</b> ${ c.registration.keyid }</p>
 %endif
 %if c.registration.planetfeed:

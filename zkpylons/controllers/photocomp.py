@@ -22,11 +22,11 @@ from authkit.authorize.pylons_adaptors import authorize
 
 from webhelpers import paginate
 
-from zkpylons.config import lca_info as lca_info
 from zkpylons.config import zkpylons_config
 from zkpylons.lib.base import BaseController, render
 from zkpylons.lib import helpers as h
 from zkpylons.model import Person
+from zkpylons.model.config import Config
 
 log = logging.getLogger(__name__)
 
@@ -57,7 +57,8 @@ class PhotoCompEntry(object):
         self.scales = set()
 
     def filename(self, scale):
-        date_day = lca_info.lca_info['date'] + datetime.timedelta(self.day)
+        start_timestamp = datetime.strptime(Config.get("date"), "%Y-%m-%dT%H:%M:%S")
+        date_day = start_timestamp + datetime.timedelta(self.day)
         date_str = date_day.strftime("%Y%m%d")
         return "%s-%08d-%d-%s-%s" % (date_str, self.person_id, self.entry_id, scale, self.image_name)
 
@@ -160,7 +161,7 @@ class PhotoCompEntry(object):
 
     def from_filename(cls, filename):
         toks = filename.split("-", 4)
-        open_date = lca_info.lca_info['date']
+        open_date = datetime.strptime(Config.get("date"), "%Y-%m-%dT%H:%M:%S")
         photo_date = datetime.datetime(*time.strptime(toks[0], "%Y%m%d")[:3])
         day = (photo_date.date() - open_date.date()).days
         person_id = int(toks[1], 10)
@@ -188,7 +189,7 @@ class PhotocompController(BaseController):
 
     def index(self):
         c.DAYS_OPEN = DAYS_OPEN
-        c.open_date =  lca_info.lca_info['date']
+        open_date = datetime.strptime(Config.get("date"), "%Y-%m-%dT%H:%M:%S")
         days_open = (datetime.date.today() - c.open_date.date()).days
         photo_db = PhotoCompEntry.read_db()
         photos = [
@@ -255,7 +256,7 @@ class PhotocompController(BaseController):
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
             h.auth.no_role()
         person_id = int(id, 10)
-        c.open_date = lca_info.lca_info['date']
+        c.open_date = datetime.strptime(Config.get("date"), "%Y-%m-%dT%H:%M:%S")
         c.days_open = (datetime.date.today() - c.open_date.date()).days
         photo_db = PhotoCompEntry.read_db()
         c.photo = lambda day, entry: PhotoCompEntry.get(photo_db, person_id, day, entry)
@@ -272,7 +273,7 @@ class PhotocompController(BaseController):
         #
         if not h.auth.authorized(h.auth.Or(h.auth.is_same_zkpylons_user(id), h.auth.has_organiser_role)):
             h.auth.no_role()
-        open_date = lca_info.lca_info['date']
+        open_date = datetime.strptime(Config.get("date"), "%Y-%m-%dT%H:%M:%S")
         days_open = (datetime.date.today() - open_date.date()).days
         photo_db = PhotoCompEntry.read_db()
         if len(VALID_EXTENSIONS) == 1:
@@ -334,7 +335,7 @@ class PhotocompController(BaseController):
             abort(404)
         if "/" in filename or filename.startswith("."):
             abort(403)
-        open_date = lca_info.lca_info['date']
+        open_date = datetime.strptime(Config.get("date"), "%Y-%m-%dT%H:%M:%S")
         days_open = (datetime.date.today() - open_date.date()).days
         photo = PhotoCompEntry.from_filename(filename)
         #

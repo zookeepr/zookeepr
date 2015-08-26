@@ -1,7 +1,6 @@
 production.ini
 development.ini
 *.db
-zkpylons/config/lca_info.py
 data
 *.pyc
 *~

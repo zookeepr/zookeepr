@@ -26,8 +26,8 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta, Invoice, InvoiceItem, Registration, ProductCategory, Product, URLHash
 from zkpylons.model.payment import Payment
 from zkpylons.model.payment_received import PaymentReceived
+from zkpylons.model.config import Config
 
-from zkpylons.config.lca_info import lca_info
 from zkpylons.config.zkpylons_config import file_paths
 
 import zkpylons.lib.pdfgen as pdfgen
@@ -64,10 +64,35 @@ class InvoiceController(BaseController):
         pass
 
     @authorize(h.auth.has_organiser_role)
+    @jsonify
+    def product_list(self):
+        print ProductCategory.find_all()
+        print ProductCategory.find_all()[0].products
+        print ProductCategory.find_all()[0].products[0]
+        print ProductCategory.find_all()[0].products[0].__dict__
+
+        raw = []
+        for r in ProductCategory.find_all():
+            products = [{"id":p.id, "active":p.active, "description":p.description, "cost":p.cost} for p in r.products]
+            raw.append({
+                "id": r.id,
+                "name":r.name,
+                "description":r.description,
+                "note":r.note,
+                "display_order":r.display_order,
+                "display":r.display,
+                "display_mode":r.display_mode,
+                "invoice_free_products":r.invoice_free_products,
+                "min_qty":r.min_qty,
+                "max_qty":r.max_qty,
+                "products":products
+            })
+        return raw
+
+    @authorize(h.auth.has_organiser_role)
     @dispatch_on(POST="_new")
     def new(self):
-        c.product_categories = ProductCategory.find_all()
-        return render("/invoice/new.mako")
+        return render("/angular.mako")
 
     @jsonify
     def _new(self):
@@ -381,7 +406,7 @@ class InvoiceController(BaseController):
         xsl_f = file_paths['zk_root'] + '/zkpylons/templates/invoice/pdf.xsl'
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
-        filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'
+        filename = Config.get('event_shortname') + '_' + str(c.invoice.id) + '.pdf'
         return pdfgen.wrap_pdf_response(pdf_data, filename)
 
 
@@ -409,7 +434,7 @@ class InvoiceController(BaseController):
             c.invoice.void = "User cancellation"
             c.person = c.invoice.person
             meta.Session.commit()
-            email(lca_info['contact_email'], render('/invoice/user_voided.mako'))
+            email(Config.get('contact_email'), render('/invoice/user_voided.mako'))
             h.flash("Previous invoice was voided.")
             return redirect_to(controller='registration', action='pay', id=c.person.registration.id)
 

@@ -20,8 +20,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model import FundingReview
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class EditFundingReviewSchema(BaseSchema):

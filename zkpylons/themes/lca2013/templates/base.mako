@@ -1,4 +1,4 @@
-<%def name="title()">${ h.lca_info["event_byline"] }</%def>
+<%def name="title()">${ c.config.get("event_byline") }</%def>
 <%def name="short_title()">
    ## Defined in children
 </%def>
@@ -38,7 +38,7 @@
         <link rel="stylesheet" media="print" href="/print.css" type="text/css">
         <script type="text/javascript" src="/jquery-1.7.1.min.js"></script>
         <script type="text/javascript" src="/js/jquery.cross-slide.min.js"></script>
-        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="${ h.lca_info['event_shortname'] } News">
+        <link href="/media/news/rss" rel="alternate" type="application/rss+xml" title="${ c.config.get('event_shortname') } News">
         <!--[if IE 6]><link rel="stylesheet" href="ie6.css" type="text/css" media="screen" /><![endif]-->
         <!--[if IE 7]><link rel="stylesheet" href="ie7.css" type="text/css" media="screen" /><![endif]-->
 
@@ -71,14 +71,14 @@
                 });
             });
         </script>
-%if len(h.lca_info['sponsors']['slideshow']):
+%if len(c.config.get('sponsors')['slideshow']):
         <script type="text/javascript">
             jQuery(function($) {
                 jQuery('#sponsorsother').crossSlide({
                     sleep: 5,
                     fade: 1,
                     shuffle: 1
-                }, ${ h.json.dumps(h.lca_info['sponsors']['slideshow']) |n }
+                }, ${ h.json.dumps(c.config.get('sponsors')['slideshow']) |n }
                 );
             });
         </script>
@@ -182,7 +182,7 @@
                                     <div class="cleared"></div>
                                 </div>
                             </div>
-%if len(h.lca_info['sponsors']['top']):
+%if len(c.config.get('sponsors')['top']):
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -202,7 +202,7 @@
                                     <div class="netv-blockcontent">
                                         <div class="netv-blockcontent-body">
                                             <ul>
-% for sponsor in h.lca_info['sponsors']['top']:
+% for sponsor in c.config.get('sponsors')['top']:
                                             <li>${ h.link_to(h.image(sponsor['src'], alt=sponsor['alt']), sponsor['href']) }</li>
 % endfor
                                             </ul>
@@ -213,7 +213,7 @@
                                 </div>
                             </div>
 %endif
-%if len(h.lca_info['sponsors']['slideshow']):
+%if len(c.config.get('sponsors')['slideshow']):
                             <div class="netv-block">
                                 <div class="netv-block-tl"></div>
                                 <div class="netv-block-tr"></div>
@@ -233,7 +233,7 @@
                                     <div class="netv-blockcontent">
                                         <div class="netv-blockcontent-body">
                                             <div id="sponsorsother" style="width: 200px; height:200px; margin:5px;">
-<% sponsor = h.random.choice(h.lca_info['sponsors']['slideshow']) %>
+<% sponsor = h.random.choice(c.config.get('sponsors')['slideshow']) %>
                                                 ${ h.link_to(h.image(sponsor['src'], alt=sponsor['alt']), sponsor['href']) }
                                             </div>
                                             <div class="cleared"></div>
@@ -283,7 +283,7 @@
                     <div class="netv-footer-inner">
                         <a href="/media/news/rss" class="netv-rss-tag-icon" title="RSS"></a>
                         <div class="netv-footer-text">
-                            <p>&copy; 2012 ${ h.event_link() } and ${ h.event_parent_org_link() } | ${ h.lca_info['event_trademark_notice'] } | <a href="http://validator.w3.org/check?uri=referer">Valid HTML 4.01</a> | <a href="/sitemap">Sitemap</a></p>
+                            <p>&copy; 2012 ${ h.link_to(c.config.get('event_name'), c.config.get('event_url')) } and ${ h.link_to(c.config.get('event_parent_organisation'), c.config.get('event_parent_url')) } | ${ c.config.get('event_trademark_notice') } | <a href="http://validator.w3.org/check?uri=referer">Valid HTML 4.01</a> | <a href="/sitemap">Sitemap</a></p>
                         </div>
                         <div class="netv-footer-background"></div>
                         <div class="cleared"></div>

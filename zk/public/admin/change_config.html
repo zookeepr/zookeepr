@@ -1,0 +1,50 @@
+<style type="text/css">
+.hidden-input:not(:hover):not(:focus) {
+	/* Hide form styling until somebody shows an interest */
+	border: medium none;
+	box-shadow: none;
+	background: none;
+	margin: 0 1px; /* Compensates for border none */
+}
+.hidden-input:not(:hover):not(:focus) {
+	/* Hide excess text until somebody shows an interest */
+	overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
+}
+.hidden-input:hover, .hidden-input:focus {
+	/* Display JSON content nicely - multiline & show whitespace */
+	height: auto;
+	white-space: pre-wrap;
+}
+</style>
+
+<table class="table table-striped" style="table-layout:fixed">
+	<!-- Specify width preference, prevents jumping when showing description. -->
+	<!-- Fixed width on cols allows table-layout=fixed, which keeps contenteditable in line -->
+	<!-- TODO: Remove fixed (px) values off column, find another way to fix layout -->
+	<colgroup>
+		<col width="60px"></col>
+		<col width="165px"></col>
+		<col style="width: 100%"></col>
+	</colgroup>
+	<tr>
+		<th>Category</th>
+		<th>Key</th>
+		<th>Value</th>
+	</tr>
+	<tr ng-if="!contentLoaded"><td colspan="3"><b>Loading...</b></td></tr>
+	<tr ng-repeat-start="row in data">
+		<td>{{ row.category }}</td>
+		<td>{{ row.key }}</td>
+		<td>
+			<div class="has-feedback">
+				<span contenteditable content-editable json-text class="form-control hidden-input" ng-focus="row.show_description=1" ng-blur="row.show_description=0" ng-model="row.value" ng-model-options="{ updateOn: 'default blur', debounce: {'default': 1000, 'blur': 0} }">{{row.value}}</span>
+				<span ng-class="{'glyphicon glyphicon-ok':row.response=='success', 'glyphicon glyphicon-remove':row.response=='error'}" class="form-control-feedback"></span>
+			</div>
+		</td>
+	<tr ng-if="row.description" ng-show="row.show_description" class="info" ng-repeat-end>
+		<td colspan="3">{{ row.description }}</td>
+	</tr>
+	</tr>
+</table>

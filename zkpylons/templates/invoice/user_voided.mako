@@ -1,4 +1,4 @@
-To: ${ h.lca_info['contact_email'] }
+To: ${ c.config.get('contact_email') }
 Subject: Invoice voided by ${ c.person.firstname } ${ c.person.lastname }
 
 Invoice:  ${ c.invoice.id }

@@ -1,8 +1,9 @@
 import logging
+import json
 
 from pylons import request, response, session, tmpl_context as c, app_globals
 from zkpylons.lib.helpers import redirect_to
-from pylons.decorators import validate
+from pylons.decorators import validate, jsonify
 from pylons.decorators.rest import dispatch_on
 import zkpylons.lib.helpers as h
 
@@ -26,8 +27,7 @@ from zkpylons.model.rego_note import RegoNote
 from zkpylons.model.social_network import SocialNetwork
 from zkpylons.model.special_registration import SpecialRegistration
 from zkpylons.model.volunteer import Volunteer
-
-from zkpylons.config.lca_info import lca_info, lca_rego
+from zkpylons.model.config import Config
 
 from zkpylons.lib.ssl_requirement import enforce_ssl
 
@@ -53,7 +53,7 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def index(self):
         res = dir(self)
-        exceptions = ['check_permissions', 'dbsession',
+        exceptions = ['check_permissions', 'dbsession', 'config',
                      'index', 'logged_in', 'permissions', 'start_response']
 
         # get the ones in this controller by introspection.
@@ -420,10 +420,88 @@ class AdminController(BaseController):
     @authorize(h.auth.has_organiser_role)
     def _countdown(self):
         """ How many days until conference opens """
-        timeleft = lca_info['date'] - datetime.now()
-        c.text = "%.1f days" % (timeleft.days +
-                                               timeleft.seconds / (3600*24.))
+        # Date is stored in ISO format, datetime doesn't provide a nice importer
+        start_datetime = datetime.strptime(Config.get('date'), "%Y-%m-%dT%H:%M:%S")
+        timeleft = start_datetime - datetime.now()
+        c.text = "%.1f days" % (timeleft.days + timeleft.seconds / (3600*24.))
         return render('/admin/text.mako')
+
+    @authorize(h.auth.has_organiser_role)
+    def change_config(self):
+        """ Update Zookeepr site configuration values """
+        return render('/angular.mako')
+
+    # TODO: Unauthorised access gives 200 response, which is read as good
+    @authorize(h.auth.has_organiser_role)
+    @jsonify
+    @dispatch_on(PUT="_put_config", GET="_get_config")
+    def config(self):
+        """ REST API entry point - not to be used directly
+
+        REST API for config supports:
+            GET returns a JSON array of objects
+                GET(category, key) -- Fetch single entry
+                GET(key)           -- Uses default category to fetch single entry
+                GET(category)      -- Fetches all entries in the category
+                GET()              -- Fetches all entries
+
+            PUT alters the values of configuration parameters
+                PUT(category, key, value)
+                PUT() + JSON {category, key, value}
+
+            Config variables are tightly coupled to the Zookeepr code.
+            For this reason creation and removal API is not provided.
+            The config variable should be added to the database as part of
+            the patch which introduces its use.
+        """
+        response.status = '400 Bad Request'
+        return {'message': 'Invalid access method'}
+
+
+    def _get_config(self):
+        if 'category' in request.params and 'key' in request.params:
+            res = Config.find_by_pk((request.params['category'], request.params['key']))
+        elif 'category' in request.params: # No key
+            res = Config.find_by_category(request.params['category'])
+        elif 'key' in request.params: # Default category
+            res = Config.find_by_pk((Config.default_category, request.params['key']))
+        else: # No filtering args provided
+            res = Config.find_all()
+
+        if res is None:
+            # TODO: This gets rewritten with HTML crap
+            response.status = '404 Not Found'
+            return {'message': 'no value matched provided filter'}
+        elif not hasattr(res, '__iter__'):
+            res = [res] # Single entry returned
+
+        return [{'key': r.key, 'category': r.category, 'value': r.value, 'description': r.description} for r in res]
+
+    def _put_config(self):
+        try:
+            json_body = request.json_body
+        except:
+            json_body = {}
+
+        if all(k in request.params for k in ('category', 'key', 'value')):
+            params = request.params
+        elif all(k in json_body for k in ('category', 'key', 'value')):
+            params = json_body
+        else:
+            response.status = '400 Bad Request'
+            # TODO: This gets wrapped in html crap
+            return {'message': 'category, key and value are all required'}
+
+        try:
+            r = Config.find_by_pk((params['category'], params['key']))
+            r.value = params['value']
+            meta.Session.commit()
+        except Exception as e:
+            meta.Session.rollback()
+            response.status = '500 Internal Server Error'
+            return {'message': 'update failed', 'exception': str(e)}
+
+        return {'message': 'success'}
 
     @authorize(h.auth.has_organiser_role)
     def silly_description_checksum(self):
@@ -1185,9 +1263,9 @@ class AdminController(BaseController):
                         years[year] += 1
                     else:
                         years[year] = 1
-                if len(registration.prevlca) == len(lca_rego['past_confs']):
+                if len(registration.prevlca) == len(Config.get('past_confs', category='rego')):
                     veterans.append(registration.person.firstname + " " + registration.person.lastname)
-                elif len(registration.prevlca) == (len(lca_rego['past_confs']) - 1):
+                elif len(registration.prevlca) == (len(Config.get('past_confs', category='rego')) - 1):
                     veterans_lca.append(registration.person.firstname + " " + registration.person.lastname)
         for (year, value) in years.iteritems():
             c.data.append([year, value])
@@ -1499,7 +1577,7 @@ class AdminController(BaseController):
         c.data = []
         c.noescape = True
         c.columns = ['ID', 'Vol ID', 'Name', 'Email', 'Country', 'City', 'Status', 'Type']
-        for area in h.lca_rego['volunteer_areas']:
+        for area in Config.get('volunteer_areas', category='rego'):
           c.columns.append(area['name'])
         c.columns.append('Other')
         c.columns.append('Experience')
@@ -1538,7 +1616,7 @@ class AdminController(BaseController):
 
           row.append(type)
 
-          for area in h.lca_rego['volunteer_areas']:
+          for area in Config.get('volunteer_areas', category='rego'):
             code = area['name'].replace(' ', '_').replace('.', '_')
             if code in v.areas:
               row.append('Yes')
@@ -1942,7 +2020,7 @@ class AdminController(BaseController):
             if c.fulfilment_group.person:
                 filename = c.fulfilment_group.person.email_address + '.pdf'
             else:
-                filename = lca_info['event_shortname'] + '_' + str(c.fulfilment_group.id) + '.pdf'
+                filename = Config.get('event_shortname') + '_' + str(c.fulfilment_group.id) + '.pdf'
             pdf = open(file_paths['zk_root'] + '/boardingpass/' + filename, 'w')
             pdf.write(pdf_data)
             pdf.close()

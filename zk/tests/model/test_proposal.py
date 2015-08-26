@@ -7,6 +7,9 @@ from zk.model.person import Person
 from zk.model.attachment import Attachment
 from zk.model.review import Review
 
+import zk.model.meta as meta
+import zkpylons.model.meta as pymeta
+
 class TestProposal(object):
     def test_create(self, db_session):
         person_id = 1
@@ -103,15 +106,16 @@ class TestProposal(object):
         attachment = Attachment.find_by_id(attachment.id)
         assert proposal.attachments[0] == attachment
 
-
     def test_reviewed_proposal(self, db_session):
         person1  = PersonFactory()
         person2  = PersonFactory()
         proposal = ProposalFactory()
         review   = ReviewFactory(reviewer=person2)
 
-        person1.proposals.append(proposal)
-        proposal.reviews.append(review) # Must be done before flush
+        with meta.Session.no_autoflush:
+            with pymeta.Session.no_autoflush:
+                person1.proposals.append(proposal)
+                proposal.reviews.append(review) # Must be done before flush
         db_session.flush()
 
         assert proposal in person1.proposals

@@ -26,10 +26,10 @@
   ${ h.hidden('review.stream') }
 % endif
 
-% if len(h.lca_info['cfp_miniconf_list']) > 1 and c.proposal.proposal_type_id is not 2:
+% if len(c.config.get('cfp_miniconf_list')) > 1 and c.proposal.proposal_type_id is not 2:
   <div id="q3">
     <p class="label"><b>What miniconf would this talk be most suitable for, if it's not accepted?</b></p>
-    <p class="entries">${ h.select('review.miniconf', None, [ (mc, mc) for mc in h.lca_info['cfp_miniconf_list']] ) }</p>
+    <p class="entries">${ h.select('review.miniconf', None, [ (mc, mc) for mc in c.config.get('cfp_miniconf_list')] ) }</p>
   </div>
 % else:
   ${ h.hidden('review.miniconf') }

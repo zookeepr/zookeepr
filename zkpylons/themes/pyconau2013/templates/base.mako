@@ -1,4 +1,4 @@
-<%def name="title()">${ h.lca_info["event_byline"] }</%def>
+<%def name="title()">${ c.config.get("event_byline") }</%def>
 <%def name="short_title()">
    ## Defined in children
 </%def>

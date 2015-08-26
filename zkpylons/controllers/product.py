@@ -21,8 +21,6 @@ from zkpylons.model.ceiling import Ceiling
 from zkpylons.model.product import Product, ProductInclude
 from zkpylons.model.product_category import ProductCategory
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class ProductSchema(BaseSchema):

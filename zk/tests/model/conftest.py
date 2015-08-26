@@ -6,7 +6,8 @@ import logging
 
 from pyramid import testing
 from sqlalchemy import create_engine
-from zk.model.meta import Session, engine, Base
+import zk.model.meta as meta
+import zkpylons.model.meta as pymeta
 
 @pytest.yield_fixture
 def app_config():
@@ -20,13 +21,19 @@ def app_config():
 def db_session(app_config):
     # Set up SQLAlchemy to provide DB access
     # TODO: engine config should be from config file
-    engine = create_engine('postgresql://postgres@localhost/zktest')
-    Session.configure(bind=engine)
-    Base.metadata.create_all(engine)
+    meta.engine = create_engine('postgresql://postgres@localhost/zktest')
+    meta.Session.configure(bind=meta.engine)
+    meta.Session.configure(autoflush=True)
+    meta.Base.metadata.create_all(meta.engine)
+
+    # Also need to set zkpylons version of meta, hours of fun if you don't
+    pymeta.engine = meta.engine
+    pymeta.Session.configure(bind=meta.engine)
+    pymeta.Session.configure(autoflush=True)
 
     # Run the actual test
-    yield Session
+    yield meta.Session
 
     # Throw away any DB changes that the test may have done
-    Session.rollback()
-    Session.close()
+    meta.Session.rollback()
+    meta.Session.close()

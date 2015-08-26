@@ -7,8 +7,8 @@
 % endif
 <div class="invoice${ invalid }">
     <div style="text-align:center">
-      <h2>${ h.lca_info['event_parent_organisation'] }</h2>
-      <p>${ h.lca_info['event_tax_number'] }</p>
+      <h2>${ c.config.get('event_parent_organisation') }</h2>
+      <p>${ c.config.get('event_tax_number') }</p>
     </div>
     <p><strong>Invoice Number:</strong> ${ c.invoice.id }</p>
     <p><strong>Invoice Status:</strong> ${ c.invoice.status }
@@ -33,9 +33,9 @@
 % endif
     </p>
 
-    <p><strong>Regarding:</strong> ${ h.event_name() }</p>
+    <p><strong>Regarding:</strong> ${ c.config.get('event_name') }</p>
 
-    <p>This invoice has been issued as a result of an application to attend ${ h.event_name() }.</p>
+    <p>This invoice has been issued as a result of an application to attend ${ c.config.get('event_name') }.</p>
 
     <table style="width: 100%">
       <thead><tr>
@@ -74,7 +74,7 @@ Receipt number: <code>PR${ c.payment_received.id }P${ c.payment.id }</code>
 %   endif
 </p>
 % elif len(c.invoice.bad_payments) > 0:
-        <p class="pay_button">Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.contact_email('the organising committee') }</a></p>
+        <p class="pay_button">Invalid payments have been applied to this invoice, please ${ h.link_to('try again', url=h.url_for(action='void', id=c.invoice.id)) } or email ${ h.email_link_to(c.config.get('contact_email'), 'the organising committee') }</a></p>
 % else:
         <p class="pay_button">${ h.link_to('Pay this invoice', url = h.url_for(action='pay')) }</p>
 % endif
@@ -84,19 +84,19 @@ Receipt number: <code>PR${ c.payment_received.id }P${ c.payment.id }</code>
     <p>
       Enquiries may be emailed to the organisers:
 % if c.printable:
-      ${ h.contact_email() }.
+      ${ h.email_link_to(c.config.get('contact_email')) }.
 % else:
-      ${ h.contact_email('contact email') }.
+      ${ h.email_link_to(c.config.get('contact_email'), 'contact email') }.
 % endif
     </p>
 
     <div style="text-align:center">
-      <p>${ h.link_to(h.lca_info['event_name'], url=h.lca_info['event_url']) } is a project of ${ h.link_to(h.lca_info['event_parent_organisation'], url=h.lca_info['event_parent_url']) }.</p>
+      <p>${ h.link_to(c.config.get('event_name'), url=c.config.get('event_url')) } is a project of ${ h.link_to(c.config.get('event_parent_organisation'), url=c.config.get('event_parent_url')) }.</p>
       <p>
-        ${ h.lca_info['event_postal_address'] }<br>
-        ${ h.lca_info['event_tax_number'] }<br>
-        Phone: ${ h.lca_info['event_phone_number'] }<br>
-        Fax: ${ h.lca_info['event_fax_number'] }<br>
+        ${ c.config.get('event_postal_address') }<br>
+        ${ c.config.get('event_tax_number') }<br>
+        Phone: ${ c.config.get('event_phone_number') }<br>
+        Fax: ${ c.config.get('event_fax_number') }<br>
       </p>
     </div>
 </div>

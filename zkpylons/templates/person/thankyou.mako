@@ -9,7 +9,7 @@ Please follow the instructions in that message.
 </p>
 
 <p>
-If you do not receive this message in a reasonable timeframe, please contact us at ${ h.contact_email() }
+If you do not receive this message in a reasonable timeframe, please contact us at ${ h.email_link_to(c.config.get('contact_email')) }
 </p>
 
 <p>

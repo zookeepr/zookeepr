@@ -1,6 +1,22 @@
 <%
-    # Edit the list of submenus here :-)
-    submenus = h.lca_submenus
+    # OVERRIDE THE MENUS BY OVERRIDING THIS FILE IN YOUR THEME
+    # ========================================================
+
+    submenus = {
+        'about': ['linux.conf.au', 'lca2011 Ninjas', 'Venue', 'History', 'Linux/Open Source', 'Harassment'],
+        'brisbane': ['About', 'Sightseeing'],
+        'sponsors': ['Sponsors', 'Why Sponsor'],
+        #'programme': ['About', 'Social Events', 'Open Day', 'Partners Programme'], # stage 0
+        #'programme': ['About', 'Papers', 'Miniconfs', 'Presentations', 'Posters', 'Tutorials'], # stage 1
+        #'programme': ['About', 'Keynotes', 'Miniconf Info', 'Papers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2
+        #'programme': ['About', 'Keynotes', 'Miniconfs', 'Speakers Info', 'Social Events', 'Open Day', 'Partners Programme'], # stage 2a
+        'programme': ['About', 'Keynotes', 'Miniconfs', 'Schedule', 'Social Events', 'Open Day', 'Partners Programme'], # stage 3
+        #'programme': ['About', 'Keynotes', 'Miniconfs','Schedule','Social Events','Open Day', 'Partners Programme'], # stage 4?
+        'register': ['Prices', 'Accommodation', 'Terms and Conditions'],
+        #'register': ['Prices', 'Funding', 'Accommodation', 'Terms and Conditions'],
+        #'register': ['Prices/Ticket types','Terms and Conditions','Accommodation','Partners programme'], # stage 4
+        'media': ['News','In the press','Graphics']
+    }
 
     # The current URL can be accessed as h.url()()
     url = h.url_for()
@@ -8,12 +24,7 @@
     if url.startswith('/schedule'):
         url = '/programme' + url
 
-    where = ''
-    map = h.lca_menu
-
-    for (t, u, w) in map:
-        if url.startswith('/' + w):
-            where = w
+    where = '/' + url.split('/')[1]
 
     def cls(part):
         if part == where:

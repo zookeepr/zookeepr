@@ -10,14 +10,26 @@ from zk.model.attachment import Attachment
 from zk.model.stream import Stream
 from zk.model.review import Review
 from zk.model.role import Role
+from zk.model.config import Config
 
 import factory
 from factory.alchemy import SQLAlchemyModelFactory
 
+from faker import Factory as FakerFactory
+faker = FakerFactory.create()
+
 class _ModelFactory(SQLAlchemyModelFactory):
     class Meta:
-        sqlalchemy_session = Session
         abstract = True
+
+    # Override _create to get correct session object
+    # Passing through Meta didn't work as Session had not yet been initialised
+    @classmethod
+    def _create(cls, model_class, *args, **kwargs):
+        """Create an instance of the model, and save it to the database."""
+        obj = model_class(*args, **kwargs)
+        Session.add(obj)
+        return obj
 
 class _NameIdFactory(_ModelFactory):
     id   = factory.Sequence(lambda n: n)
@@ -46,6 +58,13 @@ class ProposalTypeFactory(_NameIdFactory):
 class StreamFactory(_NameIdFactory):
     class Meta: model = Stream
 
+class ConfigFactory(_ModelFactory):
+    class Meta: model = Config
+
+    category    = 'general'
+    key         = factory.Sequence(lambda n: "autokey %03d" % n)
+    value       = factory.LazyAttribute(lambda x: faker.word())
+    description = factory.LazyAttribute(lambda x: faker.sentence(nb_words=15))
 
 class ProposalFactory(_ModelFactory):
     class Meta: model = Proposal
@@ -91,6 +110,12 @@ class PersonFactory(_ModelFactory):
         for key in override:
             if key in attrs:
                 attrs["post__"+key] = attrs.pop(key)
+
+        # Person __init__ function uses Config.get('password_salt')
+        try:
+            Config.get('password_salt')
+        except:
+            ConfigFactory.create(key="password_salt", value=23)
         return super(PersonFactory, cls)._generate(create, attrs)
 
     # post_generation extracts named (post__) elements, presents them after creation

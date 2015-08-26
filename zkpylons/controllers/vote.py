@@ -27,8 +27,6 @@ from zkpylons.model.event_type import EventType
 from zkpylons.model.schedule import Schedule
 from zkpylons.model.time_slot import TimeSlot
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class VoteSchema(BaseSchema):

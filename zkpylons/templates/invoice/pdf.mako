@@ -56,8 +56,8 @@
     <email>${ c.invoice.person.email_address | h }</email>
   </attn>
 
-  <event>${ h.event_name() }</event>
-  <contact>${ h.lca_info['contact_email'] }</contact>
+  <event>${ c.config.get('event_name') }</event>
+  <contact>${ c.config.get('contact_email') }</contact>
 
   <items>
 <% itemid = 0 %>

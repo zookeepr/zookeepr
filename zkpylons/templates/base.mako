@@ -1,4 +1,4 @@
-<%def name="title()">${ h.lca_info["event_byline"] }</%def>
+<%def name="title()">${ c.config.get("event_byline") }</%def>
 <%def name="short_title()">
    ## Defined in children
 </%def>
@@ -53,14 +53,14 @@
                 });
             });
         </script>
-%if len(h.lca_info['sponsors']['slideshow']):
+%if len(c.config.get('sponsors')['slideshow']):
         <script type="text/javascript">
             jQuery(function($) {
                 jQuery('#sponsorsother').crossSlide({
                     sleep: 5,
                     fade: 1,
                     shuffle: 1
-                }, ${ h.json.dumps(h.lca_info['sponsors']['slideshow']) |n }
+                }, ${ h.json.dumps(c.config.get('sponsors')['slideshow']) |n }
                 );
             });
         </script>
@@ -75,8 +75,8 @@
       </div>
       <div>
       </div>
-      <div id="page-title">${ h.lca_info['event_name'] }</div>
-      <div id="page-subtitle">A ${ h.lca_info['event_parent_organisation'] } Conference</div>
+      <div id="page-title">${ c.config.get('event_name') }</div>
+      <div id="page-subtitle">A ${ c.config.get('event_parent_organisation') } Conference</div>
     </div>
     <div id="columns">
       <div id="col-left">
@@ -96,18 +96,18 @@
             <%include file="/leftcol/in_the_press.mako" />
             <!-- /block-content -->
 
-%if len(h.lca_info['sponsors']['top']):
+%if len(c.config.get('sponsors')['top']):
           <h3>Our Emperor Sponsors</h3>
           <ul>
-% for sponsor in h.lca_info['sponsors']['top']:
+% for sponsor in c.config.get('sponsors')['top']:
             <li>${ h.link_to(h.image(sponsor['src'], alt=sponsor['alt']), sponsor['href']) }</li>
 % endfor
           </ul>
 %endif
-%if len(h.lca_info['sponsors']['slideshow']):
+%if len(c.config.get('sponsors')['slideshow']):
           <h3>Other Sponsors</h3>
           <div id="sponsorsother" style="width: 200px; height:200px; margin:5px;">
-<% sponsor = h.random.choice(h.lca_info['sponsors']['slideshow']) %>
+<% sponsor = h.random.choice(c.config.get('sponsors')['slideshow']) %>
             ${ h.link_to(h.image(sponsor['src'], alt=sponsor['alt']), sponsor['href']) }
           </div>
 %endif

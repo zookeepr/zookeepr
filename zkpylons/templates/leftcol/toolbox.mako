@@ -2,7 +2,7 @@
 <%namespace file="../bookmark_submit.mako" name="bookmark_submit" inheritable="True"/>
 <%
     this_url = h.url_for()
-    url=h.lca_info["event_permalink"] + this_url
+    url=c.config.get("event_permalink") + this_url
 %>
 <%def name="make_link(title, url)">
 <%
@@ -21,16 +21,16 @@
     <span class="menu-header">${ h.signed_in_person().firstname }'s Profile</span>
     <ul class="netv-vmenu">
 ${ parent.toolbox_extra() }
-%   if h.lca_info["cfp_status"] == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
+%   if c.config.get("cfp_status") == 'open' or h.auth.authorized(h.auth.has_late_submitter_role):
       ${ make_link('Submit a proposal', h.url_for(controller='proposal', action='new', id=None)) }
 %   endif
-%   if h.lca_info["cfmini_status"] == 'open':
+%   if c.config.get("cfmini_status") == 'open':
       ${ make_link('Submit a miniconf', h.url_for(controller='miniconf_proposal', action='new', id=None)) }
 %   endif
-%   if h.lca_info["funding_status"] == 'open':
+%   if c.config.get("funding_status") == 'open':
       ${ make_link('Submit a Funding Application', h.url_for(controller='funding', action='new', id=None)) }
 %   endif
-%   if h.lca_info['conference_status'] == 'open' or h.signed_in_person().registration:
+%   if c.config.get('conference_status') == 'open' or h.signed_in_person().registration:
       ${ make_link('Conference registration', '/register/status') }
 %   endif
 %   if h.signed_in_person().is_speaker():
@@ -75,7 +75,7 @@ ${ parent.toolbox_extra_reviewer() }
       ${ make_link('Reviewer summary', h.url_for(controller='review', action='summary', id=None)) }
       <span class="menu-header">List of proposals by:</span>
     <ul class="netv-vmenu">
-    %if h.lca_info['cfp_hide_scores'] == 'no':
+    %if c.config.get('cfp_hide_scores') == 'no':
         ${ make_link('number of certain score / number of reviewers', h.url_for(controller='admin', action='proposals_by_strong_rank', id=None)) }
         ${ make_link('max score, min score then average', h.url_for(controller='admin', action='proposals_by_max_rank', id=None)) }
         ${ make_link('stream and score', h.url_for(controller='admin', action='proposals_by_stream', id=None)) }

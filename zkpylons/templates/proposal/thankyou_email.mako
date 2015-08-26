@@ -1,10 +1,10 @@
-From: ${ h.lca_info['event_name'] } <${ h.lca_info['contact_email'] }>
+From: ${ c.config.get('event_name') } <${ c.config.get('contact_email') }>
 To: ${ c.person.firstname } ${ c.person.lastname } <${ c.person.email_address }>
-Subject: Confirmation of your ${ c.proposal.type.name.lower() } proposal for ${ h.lca_info['event_name'] }
+Subject: Confirmation of your ${ c.proposal.type.name.lower() } proposal for ${ c.config.get('event_name') }
 
 Dear ${ c.person.firstname },
 
-Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ h.lca_info['event_name'] }.
+Thank you for proposing a ${ c.proposal.type.name.lower() } for ${ c.config.get('event_name') }.
 
 If you have any queries about your proposed ${ c.proposal.type.name.lower()},
 please email ${ c.proposal.type.notify_email.lower() }
@@ -25,17 +25,17 @@ whether or not your ${ c.proposal.type.name.lower() } is accepted.
 
 Your ${ c.proposal.type.name.lower() } may be recorded by the conference.
 % if c.proposal.video_release and c.proposal.slides_release:
-You consent to ${ h.lca_info["event_parent_organisation"] } releasing both the video of your ${ c.proposal.type.name.lower() } and your slides, if you supply them to us, under the ${ h.lca_info["media_license_name"] }.
+You consent to ${ c.config.get("event_parent_organisation") } releasing both the video of your ${ c.proposal.type.name.lower() } and your slides, if you supply them to us, under the ${ c.config.get("media_license_name") }.
 % else:
 %   if c.proposal.video_release:
-You consent to ${ h.lca_info["event_parent_organisation"] } releasing the video of your ${ c.proposal.type.name.lower() } under the ${ h.lca_info["media_license_name"] }.
+You consent to ${ c.config.get("event_parent_organisation") } releasing the video of your ${ c.proposal.type.name.lower() } under the ${ c.config.get("media_license_name") }.
 %   else:
-You DO NOT consent to ${ h.lca_info["event_parent_organisation"] } releasing the video of your ${ c.proposal.type.name.lower() }.
+You DO NOT consent to ${ c.config.get("event_parent_organisation") } releasing the video of your ${ c.proposal.type.name.lower() }.
 %   endif
 %   if c.proposal.slides_release:
-You consent to ${ h.lca_info["event_parent_organisation"] } releasing your slides, if you supply them to us, under the ${ h.lca_info["media_license_name"] }.
+You consent to ${ c.config.get("event_parent_organisation") } releasing your slides, if you supply them to us, under the ${ c.config.get("media_license_name") }.
 %   else:
-You DO NOT consent to ${ h.lca_info["event_parent_organisation"] } releasing your slides.
+You DO NOT consent to ${ c.config.get("event_parent_organisation") } releasing your slides.
 %   endif
 % endif
 % if c.proposal.video_release or c.proposal.slides_release:
@@ -54,8 +54,8 @@ gain the maximum benefit from your ${c.proposal.type.name.lower()}!
 Should you need to update the details of this proposal, please use the follow
 URL:
 
-  http://${ h.host_name() }/proposal
+  http://${ c.config.get('event_host') }/proposal
 
 
-The ${ h.event_name() } team
-http://${ h.host_name() }/contact
+The ${ c.config.get('event_name') } team
+http://${ c.config.get('event_host') }/contact

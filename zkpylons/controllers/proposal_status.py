@@ -21,8 +21,6 @@ from zkpylons.lib.mail import email
 from zkpylons.model import meta
 from zkpylons.model.proposal import ProposalStatus
 
-from zkpylons.config.lca_info import lca_info
-
 log = logging.getLogger(__name__)
 
 class ProposalStatusSchema(BaseSchema):

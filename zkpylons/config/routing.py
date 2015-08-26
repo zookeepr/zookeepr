@@ -30,8 +30,6 @@ def make_map(config):
     map.connect('/about/map',          controller='map')
     map.connect('/brisbane/map',       controller='map')
 
-    map.connect('/sitemap',            controller='sitemap', action='view')
-
     # DB content
     map.connect('/db_content/list_files',    controller='db_content', action='list_files', id=None)
     map.connect('/db_content/delete_file',   controller='db_content', action='delete_file', id=None)
@@ -68,6 +66,7 @@ def make_map(config):
     map.connect('/invoice/{id}/pdf',               controller='invoice', action='pdf', id=None)
     map.connect('/invoice/remind',                 controller='invoice', action='remind', id=None)
     map.connect('/invoice/save_new_invoice',       controller='invoice', action='save_new_invoice', id=None)
+    map.connect('/invoice/product_list',           controller='invoice', action='product_list')
     map.connect('/registration/remind',            controller='registration', action='remind', id=None)
     map.connect('/register/status',                controller='registration', action='status')
     map.connect('/registration/silly_description', controller='registration', action='silly_description')

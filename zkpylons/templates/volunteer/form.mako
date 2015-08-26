@@ -1,11 +1,11 @@
-      <p>${ h.event_shortname() } is a grass-roots conference and needs enthusiastic people like you to make it a success! This is a great opportunity to be seen by your peers and give back to the community.</p>
+      <p>${ c.config.get('event_shortname') } is a grass-roots conference and needs enthusiastic people like you to make it a success! This is a great opportunity to be seen by your peers and give back to the community.</p>
 
       <p>Volunteers will be expected to attend a training course which will walk them thru tasks such as operating cameras, registering people, etc. Training courses will be held in mid-December, mid-January, and on the weekend before the conference.</p>
 
       <p>Please use the check-boxes below to indicate your category, your availability, and areas that you are able to assist with. Please use the "Other:" and "Experience:" text boxes to let us know about any restrictions on your time or special skills you have that might help at the conference.</p>
 
       <table>
-% for category in h.lca_rego['volunteer']:
+% for category in c.config.get('volunteer', category='rego'):
         <tr>
           <td colspan='2'><h3>${ category['title'] }</h3></td>
         </tr>
@@ -30,7 +30,7 @@
           </td>
           <td>
             <p>${ h.textarea('volunteer.other', cols="60", rows="4") }</p>
-            <p class="note">Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during ${ h.event_shortname() }, and any special requirements (dietary or otherwise).</p>
+            <p class="note">Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during ${ c.config.get('event_shortname') }, and any special requirements (dietary or otherwise).</p>
           </td>
         </tr>
 
