@@ -89,14 +89,12 @@ class TestProposal(object):
         resp = resp.click(description='New proposal')
         resp = resp.maybe_follow()
         f = resp.form
-        print resp
-        print f
         f['proposal.title']    = 'sub two'
-        f['proposal.type']     = type.id
+        f['proposal.type']     = str(type.id)
         f['proposal.abstract'] = "cubist"
-        f['proposal.accommodation_assistance'] = accm.id
-        f['proposal.travel_assistance'] = trav.id
-        f['proposal.audience'] = audc.id
+        f['proposal.accommodation_assistance'] = str(accm.id)
+        f['proposal.travel_assistance'] = str(trav.id)
+        f['proposal.audience'] = str(audc.id)
         f['person.experience'] = "n"
         f['attachment']        = "foo"
         f['person.mobile']     = "NONE"

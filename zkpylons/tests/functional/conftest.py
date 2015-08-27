@@ -51,6 +51,9 @@ class DoubleSession(object):
     def configure(self, engine):
         self.s1.configure(bind=engine)
         self.s2.configure(bind=engine)
+        self.s1.configure(autoflush=False)
+        self.s2.configure(autoflush=False)
+
 
     def commit(self):
         self.s1.commit()
@@ -84,6 +87,14 @@ def db_session():
     engine.execute("create schema public")
 
     zkmeta.Base.metadata.create_all(engine)
+
+    # Create basic config values, to allow basic pages to render
+    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'sponsors', '{\"top\":[],\"slideshow\":[]}', '')")
+    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('rego', 'personal_info', '{\"phone\":\"yes\",\"home_address\":\"yes\"}', '')")
+    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'account_creation', 'true', '')")
+    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'cfp_status', '\"open\"', '')")
+    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'conference_status', '\"open\"', '')")
+    engine.execute("COMMIT")
 
     dsess.configure(engine)
 

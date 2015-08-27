@@ -1,7 +1,7 @@
 from zk.model.invoice import Invoice
 from zk.model.product_category import ProductCategory
 from zkpylons.model.product_category import ProductCategory as pyProductCategory
-from .fixtures import PersonFactory, InvoiceFactory, URLHashFactory, InvoiceItemFactory, ProductCategoryFactory, ProductFactory, RegistrationFactory, RegistrationProductFactory, CeilingFactory
+from .fixtures import PersonFactory, InvoiceFactory, URLHashFactory, InvoiceItemFactory, ProductCategoryFactory, ProductFactory, RegistrationFactory, RegistrationProductFactory, CeilingFactory, ConfigFactory
 from .utils import do_login
 
 from routes import url_for
@@ -9,6 +9,9 @@ from routes import url_for
 
 class TestInvoiceController(object):
     def test_invoice_view(self, app, db_session):
+
+        ConfigFactory(key="event_parent_organisation", value="TEST-INVOICE-PARENT-ORG")
+        ConfigFactory(key="event_tax_number", value="TEST-INVOICE-ABN-NUMBER")
 
         i = InvoiceFactory()
         InvoiceItemFactory(invoice = i, description='line 1', qty = 2, cost = 100);
@@ -18,8 +21,8 @@ class TestInvoiceController(object):
 
         resp = app.get(url_for(controller='invoice', action='view', id=i.id, hash=u.url_hash))
 
-        resp.mustcontain("Linux Australia")
-        resp.mustcontain("ABN")
+        resp.mustcontain("TEST-INVOICE-PARENT-ORG")
+        resp.mustcontain("TEST-INVOICE-ABN-NUMBER")
         resp.mustcontain("line 1") # first entry description
         resp.mustcontain("$2.00")  # first entry subtotal (2x $1)
         resp.mustcontain("$4.50")  # Total

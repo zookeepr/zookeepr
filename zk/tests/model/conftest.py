@@ -24,11 +24,13 @@ def db_session(app_config):
     meta.engine = create_engine('postgresql://postgres@localhost/zktest')
     meta.Session.configure(bind=meta.engine)
     meta.Session.configure(autoflush=True)
-    meta.Base.metadata.create_all(meta.engine)
 
-    # Drop all data to establish known state, mostly to prevent conflicts with alembic loaded data
+    # Drop all data to establish known state
     meta.engine.execute("drop schema if exists public cascade")
     meta.engine.execute("create schema public")
+
+    # Recreate tables
+    meta.Base.metadata.create_all(meta.engine)
 
     # Also need to set zkpylons version of meta, hours of fun if you don't
     pymeta.engine = meta.engine

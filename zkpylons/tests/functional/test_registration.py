@@ -4,7 +4,7 @@ from routes import url_for
 
 from zk.model.registration import Registration
 
-from .fixtures import PersonFactory, ProductCategoryFactory, ProductFactory, CeilingFactory
+from .fixtures import PersonFactory, ProductCategoryFactory, ProductFactory, CeilingFactory, ConfigFactory
 from .utils import do_login
 
 
@@ -23,6 +23,7 @@ class TestRegistration(object):
                 },
             'registration' : {
                 'over18'       : '1',
+                'keyid'        : 'Bob', # TODO: Shouldn't be required with pgp_collection == "no" but fails sometimes
                 },
             }
 
@@ -49,6 +50,12 @@ class TestRegistration(object):
         CeilingFactory(name='conference-earlybird')
         CeilingFactory(name='conference-paid')
 
+        # Required for processing registration
+        ConfigFactory(category="rego", key="silly_description", value={"adverbs":['my'],"adjectives":['cat'],"nouns":["is"],"starts":["in"]})
+        # TODO: There are issues if pgp_collection is yes but lca_optional_stuff is no
+        ConfigFactory(category="rego", key="lca_optional_stuff", value="yes")
+        ConfigFactory(category="rego", key="pgp_collection", value="yes") # TODO: Try no, there are some issues
+
         ticket_cat = ProductCategoryFactory(name='Ticket', display_mode='accommodation', display='qty', min_qty=0, max_qty=55)
         shirt_cat  = ProductCategoryFactory(name='T-Shirt', display_mode='shirt', display='qty', min_qty=0, max_qty=55)
         dinner_cat = ProductCategoryFactory(name='Penguin Dinner Ticket', display_mode='accommodation', display='qty', min_qty=0, max_qty=55)
@@ -60,6 +67,8 @@ class TestRegistration(object):
         accom  = ProductFactory(category=accom_cat)
 
         db_session.commit()
+
+        # TODO: Test different conference_status values
 
         do_login(app, p)
         resp = app.get(url_for(controller='/registration', action='new'))

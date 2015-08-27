@@ -5,7 +5,7 @@ import re
 from zk.model import Person, PasswordResetConfirmation
 from routes import url_for
 
-from .fixtures import PersonFactory, PasswordResetConfirmationFactory
+from .fixtures import PersonFactory, PasswordResetConfirmationFactory, ConfigFactory
 from .utils import do_login, isSignedIn
 
 class TestPersonController(object):
@@ -30,6 +30,10 @@ class TestPersonController(object):
 
     def test_signin_signout(self, app, db_session):
         """Test person sign in"""
+
+        # create necessary base config
+        #ConfigFactory(key = 'sponsors', value = {'top':[],'slideshow':[]})
+
 
         # create a user
         p = PersonFactory()
@@ -374,6 +378,8 @@ class TestPersonController(object):
         assert 'details are incorrect' not in resp
         assert isSignedIn(app)
 
+    # TODO: Test Config.get('account_creation') == false
+
     def test_create_duplicate_person(self, app, db_session):
         
         # create a fake user
@@ -381,6 +387,7 @@ class TestPersonController(object):
         db_session.commit()
 
         resp = app.get('/person/new')
+        print resp
         f = resp.form
         f['person.email_address']    = p.email_address
         f['person.firstname']        = 'Testguy'
