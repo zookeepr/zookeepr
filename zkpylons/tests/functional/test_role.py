@@ -2,24 +2,14 @@ from routes import url_for
 
 from zk.model.role import Role
 
-from .fixtures import PersonFactory, RoleFactory
+from .fixtures import CompletePersonFactory, RoleFactory
 from .utils import do_login
 
 
 class TestRole(object):
 
     def test_create(self, app, db_session):
-        p = PersonFactory(
-                roles = [RoleFactory(name="organiser")],
-                # Set full set of detail to avoid incomplete profile flag
-                firstname = 'Testguy',
-                lastname  = 'McTest',
-                i_agree   = True,
-                activated = True,
-                address1  = 'Somewhere',
-                city      = 'Over the rainbow',
-                postcode  = 'Way up high',
-                )
+        p = CompletePersonFactory(roles = [RoleFactory(name="organiser")])
         db_session.commit()
 
         do_login(app, p)
@@ -48,17 +38,7 @@ class TestRole(object):
         assert new_role.display_order == 23
 
     def test_index(self, app, db_session):
-        p = PersonFactory(
-                roles = [RoleFactory(name="organiser")],
-                # Set full set of detail to avoid incomplete profile flag
-                firstname = 'Testguy',
-                lastname  = 'McTest',
-                i_agree   = True,
-                activated = True,
-                address1  = 'Somewhere',
-                city      = 'Over the rainbow',
-                postcode  = 'Way up high',
-                )
+        p = CompletePersonFactory(roles = [RoleFactory(name="organiser")])
         r2 = RoleFactory()
         r3 = RoleFactory()
         r4 = RoleFactory()

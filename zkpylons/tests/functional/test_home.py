@@ -1,6 +1,6 @@
 from routes import url_for
 
-from .fixtures import PersonFactory
+from .fixtures import CompletePersonFactory
 from .utils import do_login, isSignedIn
 
 class TestHomeController(object):
@@ -8,17 +8,7 @@ class TestHomeController(object):
         response = app.get(url_for(controller='home'))
 
     def test_index_logged_in_regos_open(self, app, db_session):
-        p = PersonFactory(
-                # Set full set of detail to avoid incomplete profile flag
-                firstname = 'Testguy',
-                lastname  = 'Testguy',
-                i_agree   = True,
-                activated = True,
-                address1  = 'Somewhere',
-                city      = 'Over the rainbow',
-                postcode  = 'Way up high',
-                )
-
+        p = CompletePersonFactory()
         db_session.commit()
 
         # Set redirect origin

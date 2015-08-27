@@ -4,7 +4,7 @@ from routes import url_for
 
 from zk.model.registration import Registration
 
-from .fixtures import PersonFactory, ProductCategoryFactory, ProductFactory, CeilingFactory, ConfigFactory
+from .fixtures import CompletePersonFactory, ProductCategoryFactory, ProductFactory, CeilingFactory, ConfigFactory
 from .utils import do_login
 
 
@@ -28,23 +28,13 @@ class TestRegistration(object):
             }
 
 
-        PersonFactory.reset_sequence()
+        CompletePersonFactory.reset_sequence()
         ProductCategoryFactory.reset_sequence()
         ProductFactory.reset_sequence()
         CeilingFactory.reset_sequence()
 
 
-        p = PersonFactory(
-                email_address = 'testguy@example.org',
-                # Set full set of detail to avoid incomplete profile flag
-                firstname = 'Testguy',
-                lastname  = 'McTest',
-                i_agree   = True,
-                activated = True,
-                address1  = 'Somewhere',
-                city      = 'Over the rainbow',
-                postcode  = 'Way up high',
-                )
+        p = CompletePersonFactory()
 
         # Required by templates
         CeilingFactory(name='conference-earlybird')
@@ -91,12 +81,12 @@ class TestRegistration(object):
 
         # Test we have an email that is suitable
         assert smtplib.existing is not None
-        assert "testguy@example.org" in smtplib.existing.to_addresses
+        assert p.email_address in smtplib.existing.to_addresses
 
 
         message = smtplib.existing.message
-        assert re.match(r'^.*To:.*testguy@example.org.*', message, re.DOTALL)
-        assert re.match(r'^.*Testguy McTest', message, re.DOTALL)
+        assert re.match(r'^.*To:.*%s.*'%p.email_address, message, re.DOTALL)
+        assert re.match(r'^.*%s %s'%(p.firstname, p.lastname), message, re.DOTALL)
         assert not re.match(r'^.*<!DOCTYPE', message, re.DOTALL) # No HTML
 
         # test that we have a registration

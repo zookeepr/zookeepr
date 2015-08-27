@@ -127,7 +127,17 @@ class PersonFactory(_ModelFactory):
         for key in kwargs:
             obj.__dict__[key] = kwargs[key]
 
+class CompletePersonFactory(PersonFactory):
+    # Set lots of additional detail to avoid the incomplete profile flag
+    firstname = factory.Sequence(lambda n: "jim%03d" % n)
+    lastname  = factory.Sequence(lambda n: "kibbles%03d" % n)
+    address1  = 'Somewhere',
+    city      = 'Over the rainbow',
+    postcode  = 'Way up high',
 
+    @classmethod
+    def reset_sequence(cls):
+        PersonFactory.reset_sequence()
 
 class FulfilmentStatusFactory(_ModelFactory):
     class Meta: model = FulfilmentStatus

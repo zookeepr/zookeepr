@@ -1,4 +1,3 @@
-import pytest
 from routes import url_for
 
 from zk.model.attachment import Attachment
@@ -8,7 +7,7 @@ from zk.model.review import Review
 
 from webtest.forms import Upload
 
-from .fixtures import PersonFactory, ProposalFactory, AttachmentFactory, RoleFactory, StreamFactory, ProposalStatusFactory, ProposalTypeFactory, TravelAssistanceTypeFactory, AccommodationAssistanceTypeFactory, TargetAudienceFactory
+from .fixtures import PersonFactory, ProposalFactory, AttachmentFactory, RoleFactory, StreamFactory, ProposalStatusFactory, ProposalTypeFactory, TravelAssistanceTypeFactory, AccommodationAssistanceTypeFactory, TargetAudienceFactory, ConfigFactory, CompletePersonFactory
 from .utils import do_login
 
 class TestProposal(object):
@@ -62,16 +61,7 @@ class TestProposal(object):
 
     def test_submit_another(self, app, db_session, smtplib):
         # created guy and proposal
-        pers = PersonFactory(
-                # Set detail to avoid incomplete profile flag
-                firstname = 'Testguy',
-                lastname  = 'Testguy',
-                i_agree   = True,
-                activated = True,
-                address1  = 'Somewhere',
-                city      = 'Over the rainbow',
-                postcode  = 'Way up high',
-                )
+        pers = CompletePersonFactory()
         prop = ProposalFactory(title='sub one', people=[pers])
         type = ProposalTypeFactory()
         stat = ProposalStatusFactory(name = 'Pending Review') # Required by code
@@ -232,21 +222,36 @@ class TestProposal(object):
         atts = Attachment.find_all();
         assert atts == []
 
+from zk.model.config import Config
 
-@pytest.mark.xfail # TODO: Need a way to set cfp_status at run time
 class TestCFPStates(object):
 
-    def test_not_open(self, app):
-        lca_info['cfp_status'] = 'not_open'
-        resp = app.get('/programme/submit_a_proposal')
-        assert "is not open!" in unicode(resp.body, 'utf-8')
+    def test_not_open(self, app, db_session):
+        # Entry created by init, update it
+        Config.find_by_pk(('general','cfp_status')).value = 'not_open'
+        pers = CompletePersonFactory()
+        db_session.commit()
 
-    def test_open(self, app):
-        lca_info['cfp_status'] = 'open'
+        resp = do_login(app, pers)
         resp = app.get('/programme/submit_a_proposal')
-        assert "is open!" in unicode(resp.body, 'utf-8')
+        assert "The call for proposals has not opened yet" in unicode(resp.body, 'utf-8')
 
-    def test_closed(self, app):
-        lca_info['cfp_status'] = 'open'
+    def test_open(self, app, db_session):
+        # Entry created by init, update it
+        Config.find_by_pk(('general','cfp_status')).value = 'open'
+        pers = CompletePersonFactory()
+        db_session.commit()
+
+        resp = do_login(app, pers)
         resp = app.get('/programme/submit_a_proposal')
-        assert "is closed!" in unicode(resp.body, 'utf-8')
+        assert "The name of your proposal" in unicode(resp.body, 'utf-8')
+
+    def test_closed(self, app, db_session):
+        # Entry created by init, update it
+        Config.find_by_pk(('general','cfp_status')).value = 'closed'
+        pers = CompletePersonFactory()
+        db_session.commit()
+
+        resp = do_login(app, pers)
+        resp = app.get('/programme/submit_a_proposal')
+        assert "The call for proposals is now closed" in unicode(resp.body, 'utf-8')
