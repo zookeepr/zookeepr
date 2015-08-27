@@ -24,13 +24,8 @@
     if url.startswith('/schedule'):
         url = '/programme' + url
 
-    where = '/' + url.split('/')[1]
+    where = url.split('/')[1]
 
-    def cls(part):
-        if part == where:
-            return 'class="now"'
-        else:
-            return 'class=""'
 
     def current(link):
         if url.startswith(link):
