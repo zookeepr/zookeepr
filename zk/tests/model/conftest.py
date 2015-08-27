@@ -9,6 +9,12 @@ from sqlalchemy import create_engine
 import zk.model.meta as meta
 import zkpylons.model.meta as pymeta
 
+from ConfigParser import ConfigParser
+
+# Get settings from config file, only need it once
+ini = ConfigParser()
+ini.read("test.ini")
+
 @pytest.yield_fixture
 def app_config():
     config = testing.setUp()
@@ -20,8 +26,7 @@ def app_config():
 @pytest.yield_fixture
 def db_session(app_config):
     # Set up SQLAlchemy to provide DB access
-    # TODO: engine config should be from config file
-    meta.engine = create_engine('postgresql://postgres@localhost/zktest')
+    meta.engine = create_engine(ini.get("app:main", "sqlalchemy.url"))
     meta.Session.configure(bind=meta.engine)
     meta.Session.configure(autoflush=True)
 

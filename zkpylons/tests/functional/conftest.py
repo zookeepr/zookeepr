@@ -13,6 +13,14 @@ from webtest import TestApp
 
 from paste.fixture import Dummy_smtplib
 
+from .fixtures import ConfigFactory
+
+from ConfigParser import ConfigParser
+
+# Get settings from config file, only need it once
+ini = ConfigParser()
+ini_filename = "test.ini"
+ini.read(ini_filename)
 
 # Logging displayed by passing -s to pytest
 #logging.basicConfig(level=logging.DEBUG, stream=sys.stdout)
@@ -27,7 +35,7 @@ def map():
 
 @pytest.yield_fixture
 def app():
-    wsgiapp = loadapp('config:test.ini', relative_to=".")
+    wsgiapp = loadapp('config:'+ini_filename, relative_to=".")
     app = TestApp(wsgiapp)
     yield app
 
@@ -67,20 +75,26 @@ class DoubleSession(object):
     def query(self, cls):
         return self.s1.query(cls)
 
+base_general_config = {
+        'sponsors'          : {"top":[],"slideshow":[]},
+        'account_creation'  : True,
+        'cfp_status'        : "open",
+        'conference_status' : "open",
+        }
+
+base_rego_config = {
+        'personal_info' : {"phone":"yes","home_address":"yes"}
+        }
 
 @pytest.yield_fixture
 def db_session():
     # Set up SQLAlchemy to provide DB access
-
     dsess = DoubleSession(zkmeta.Session, pymeta.Session)
-
 
     # Clean up old sessions if they exist
     dsess.remove()
 
-    # TODO: engine config should be from config file
-    engine = create_engine('postgresql://postgres@localhost/zktest')
-
+    engine = create_engine(ini.get("app:main", "sqlalchemy.url"))
 
     # Drop all data to establish known state, mostly to prevent primary-key conflicts
     engine.execute("drop schema if exists public cascade")
@@ -88,15 +102,14 @@ def db_session():
 
     zkmeta.Base.metadata.create_all(engine)
 
-    # Create basic config values, to allow basic pages to render
-    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'sponsors', '{\"top\":[],\"slideshow\":[]}', '')")
-    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('rego', 'personal_info', '{\"phone\":\"yes\",\"home_address\":\"yes\"}', '')")
-    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'account_creation', 'true', '')")
-    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'cfp_status', '\"open\"', '')")
-    engine.execute("INSERT INTO config (category, key, value, description) VALUES ('general', 'conference_status', '\"open\"', '')")
-    engine.execute("COMMIT")
-
     dsess.configure(engine)
+
+    # Create basic config values, to allow basic pages to render
+    for key, val in base_general_config.iteritems():
+        ConfigFactory(key=key, value=val)
+    for key, val in base_rego_config.iteritems():
+        ConfigFactory(category='rego', key=key, value=val)
+    dsess.commit()
 
     # Run the actual test
     yield dsess
