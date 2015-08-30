@@ -1,222 +1,107 @@
 import re
 
-from paste.fixture import Dummy_smtplib
+from routes import url_for
 
-from zkpylons.tests.functional import *
+from zk.model.registration import Registration
 
-class TestRegistrationController(CRUDControllerTest):
-    model = model.registration.Registration
-    url = '/registration'
-    param_name = 'registration'
-    samples = [dict(registration=dict(address1='a1',
-                                      address2='a2',
-                                      city='city',
-                                      state='state1',
-                                      country='country1',
-                                      postcode='postcode1',
-                                      phone='37',
-                                      company='company1',
-                                      shelltext='shelltext1',
-                                      editortext='editortext1',
-                                      distrotext='distrotext1',
-                                      silly_description='foo',
-                                      voucher_code='voucher_code1',
-                                      diet='diet1',
-                                      special='special1',
-                                      opendaydrag=1,
-                                      partner_email='partner@example.org',
-                                      kids_0_3=1,
-                                      kids_4_6=1,
-                                      kids_7_9=1,
-                                      kids_10=1,
-                                      lasignup=True,
-                                      announcesignup=True,
-                                      delegatesignup=False,
-                                      editor='-',
-                                      distro='-',
-                                      shell='-',
-                                      prevlca={'99': '1'},
-                                      miniconf={'Debian': '1'},
-                                      ),
-                    person=dict(email_address='testguy@example.org',
-                                password='test',
-                                password_confirm='test',
-                                handle='testguy',
-                                firstname='testguy',
-                                lastname='mctest',
-                                )
-                    )
-               ]
-    # FIXME: not testing accommodation object
-    no_test = ['password_confirm', 'person', 'accommodation']
-    crud = ['create']
-    mangles = dict(miniconf = lambda m: m.keys(),
-                   prevlca = lambda p: p.keys(),
-                   #accommodation = lambda p: None,
-                   )
+from .fixtures import CompletePersonFactory, ProductCategoryFactory, ProductFactory, CeilingFactory, ConfigFactory
+from .utils import do_login
 
-    def setUp(self):
-        super(TestRegistrationController, self).setUp()
-        Dummy_smtplib.install()
 
-        # create some accommodation
-        self.al = model.registration.AccommodationLocation(name='foo', beds=1)
-        self.ao = model.registration.AccommodationOption(name='', cost_per_night=1)
-        self.ao.location = self.al
-        self.dbsession.save(self.al)
-        self.dbsession.save(self.ao)
-        self.dbsession.flush()
+class TestRegistration(object):
+    def test_create(self, app, db_session, smtplib):
+        data = {
+            'person' : {
+                'address1' : 'Somewhere',
+                'address2' : 'Over the rainbow',
+                'city'     : 'Way up high',
+                'state'    : 'And the dreams that you dreamed of',
+                'postcode' : 'Once in', # a lullaby
+                'country'  : 'AUSTRALIA',
+                'phone'    : 123456789,
+                'mobile'   : 987654321,
+                },
+            'registration' : {
+                'over18'       : '1',
+                'keyid'        : 'Bob', # TODO: Shouldn't be required with pgp_collection == "no" but fails sometimes
+                },
+            }
 
-        self.alid = self.al.id
-        self.aoid = self.ao.id
-        
-    def tearDown(self):
-        self.dbsession.clear()
 
-        self.dbsession.delete(self.dbsession.query(model.Person).get_by(email_address='testguy@example.org'))
+        CompletePersonFactory.reset_sequence()
+        ProductCategoryFactory.reset_sequence()
+        ProductFactory.reset_sequence()
+        CeilingFactory.reset_sequence()
 
-        self.ao = self.dbsession.query(model.registration.AccommodationOption).get(self.aoid)
-        self.al = self.dbsession.query(model.registration.AccommodationLocation).get(self.alid)
-        self.dbsession.delete(self.ao)
-        self.dbsession.delete(self.al)
-        self.dbsession.flush()
-        
-        if Dummy_smtplib.existing:
-            Dummy_smtplib.existing.reset()
 
-        super(TestRegistrationController, self).tearDown()
+        p = CompletePersonFactory()
 
-class TestSignedInRegistrationController(SignedInCRUDControllerTest):
+        # Required by templates
+        CeilingFactory(name='conference-earlybird')
+        CeilingFactory(name='conference-paid')
 
-    def test_existing_person_registration(self):
-        """Test that someone with an existing person can register.
+        # Required for processing registration
+        ConfigFactory(category="rego", key="silly_description", value={"adverbs":['my'],"adjectives":['cat'],"nouns":["is"],"starts":["in"]})
+        # TODO: There are issues if pgp_collection is yes but lca_optional_stuff is no
+        ConfigFactory(category="rego", key="lca_optional_stuff", value="yes")
+        ConfigFactory(category="rego", key="pgp_collection", value="yes") # TODO: Try no, there are some issues
 
-        """
-        resp = self.app.get('/registration/new')
-        f = resp.form
-        print f.fields.keys()
-        self.failIf('person.firstname' in f.fields.keys(), "form asking for person details of signed in person")
-        sample_data = dict(address1='a1',
-            )
-        for k in sample_data.keys():
-            f['registration.' + k] = sample_data[k]
+        ticket_cat = ProductCategoryFactory(name='Ticket', display_mode='accommodation', display='qty', min_qty=0, max_qty=55)
+        shirt_cat  = ProductCategoryFactory(name='T-Shirt', display_mode='shirt', display='qty', min_qty=0, max_qty=55)
+        dinner_cat = ProductCategoryFactory(name='Penguin Dinner Ticket', display_mode='accommodation', display='qty', min_qty=0, max_qty=55)
+        accom_cat  = ProductCategoryFactory(name='Accommodation', display_mode='accommodation', display='qty', min_qty=0, max_qty=55)
+
+        ticket = ProductFactory(category=ticket_cat)
+        shirt  = ProductFactory(category=shirt_cat, description="Men's Small")
+        dinner = ProductFactory(category=dinner_cat)
+        accom  = ProductFactory(category=accom_cat)
+
+        db_session.commit()
+
+        # TODO: Test different conference_status values
+
+        do_login(app, p)
+        resp = app.get(url_for(controller='/registration', action='new'))
+        resp = resp.maybe_follow()
+        f = resp.forms[0]
+
+        for cat in data:
+            for elem in data[cat]:
+                f[cat+'.'+elem] = data[cat][elem]
+
+        f['products.product_T_Shirt_Mens Small_qty'] = 2
+        f['products.product_'+dinner_cat.name+'_'+dinner.description+'_qty'] = 3
+        f['products.product_'+ticket_cat.name+'_'+ticket.description+'_qty'] = 4
+        f['products.product_'+accom_cat.name+'_'+accom.description+'_qty'] = 5
+
         resp = f.submit()
-        self.failIf('Missing value' in resp, "form validation failed")
-        resp.mustcontain('testguy@example.org')
+        resp = resp.follow() # Failure indicates form validation error
 
-        self.failIfEqual(None, Dummy_smtplib.existing, "no message sent from registration")
+        assert 'Missing value' not in unicode(resp.body, 'utf-8')
 
-        message = Dummy_smtplib.existing
+        # Test we have an email that is suitable
+        assert smtplib.existing is not None
+        assert p.email_address in smtplib.existing.to_addresses
 
-        self.assertEqual("testguy@example.org", message.to_addresses)
 
-        # check that the message has the to address in it
-        to_match = re.match(r'^.*To:.*testguy@example.org.*', message.message, re.DOTALL)
-        self.failIfEqual(None, to_match, "to address not in headers")
-
-        # check that the message has the submitter's name
-        name_match = re.match(r'^.*Testguy McTest', message.message, re.DOTALL)
-        self.failIfEqual(None, name_match, "submitter's name not in headers")
-
-        # check that the message was renderered without HTML, i.e.
-        # as a fragment and thus no autohandler crap
-        html_match = re.match(r'^.*<!DOCTYPE', message.message, re.DOTALL)
-        self.failUnlessEqual(None, html_match, "HTML in message!")
+        message = smtplib.existing.message
+        assert re.match(r'^.*To:.*%s.*'%p.email_address, message, re.DOTALL)
+        assert re.match(r'^.*%s %s'%(p.firstname, p.lastname), message, re.DOTALL)
+        assert not re.match(r'^.*<!DOCTYPE', message, re.DOTALL) # No HTML
 
         # test that we have a registration
-        regs = self.dbsession.query(model.Registration).select()
-        self.failIfEqual([], regs)
-        self.assertEqual(self.person.id, regs[0].person.id)
-
-        # clean up
-        self.dbsession.delete(regs[0])
-        self.dbsession.flush()
-
-    def test_edit_registration(self):
-        # test that the rego edit form has the right things in it
-        al = model.registration.AccommodationLocation(name='FooPlex', beds=100)
-        ao = model.registration.AccommodationOption(name='snuh', cost_per_night=37.00)
-        ao.location = al
-        self.dbsession.save(al)
-        self.dbsession.save(ao)
-        self.dbsession.flush()
-        alid = al.id
-        aoid = ao.id
-
-        accom = self.dbsession.query(model.Accommodation).get(ao.id)
-        rego = model.Registration(
-                                  dinner=1,
-                                  partner_email='foo',
-                                  kids_0_3=9,
-                                  lasignup=True,
-                                  miniconf=['Debian', 'OpenOffice.org'],
-                                  prevlca=['06', '99'],
-                                  )
-        self.dbsession.save(rego)
-        rego.person = self.person
-        rego.accommodation = accom
-
-        self.dbsession.flush()
-        rid = rego.id
-        self.dbsession.clear()
-
-        resp = self.app.get('/registration/1/edit')
-
-        #print resp.form.fields
-
-        print "*** dumping field contents"
-        for k, v in resp.form.fields.items():
-            print "%s: %r" % (k, v[0].value)
-
-        print "registration.lasignup:", resp.form.fields['registration.lasignup'][0].value
-        self.assertEqual('1', resp.form.fields['registration.lasignup'][0].value)
-        self.assertEqual('1', resp.form.fields['registration.dinner'][0].value)
-        self.assertEqual('1', resp.form.fields['registration.miniconf.Debian'][0].value)
-        self.assertEqual('1', resp.form.fields['registration.miniconf.OpenOffice.org'][0].value)
-        self.assertEqual('1', resp.form.fields['registration.prevlca.06'][0].value)
-        self.assertEqual('1', resp.form.fields['registration.prevlca.99'][0].value)
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Registration).get(rid))
-        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationOption).get(aoid))
-        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationLocation).get(alid))
-        self.dbsession.flush()
-        
-
-class TestNotSignedInRegistrationController(ControllerTest):
-    def test_not_signed_in_existing_registration(self):
-        p = model.Person(email_address='testguy@example.org',
-            firstname='testguy',
-            lastname='mctest',
-            )
-        p.activated = True
-        self.dbsession.save(p)
-        self.dbsession.flush()
-
         pid = p.id
+        db_session.expunge_all()
 
-        resp = self.app.get('/registration/new')
-        f = resp.form
-        sample_data = dict(
-            nick='testguy',
-            )
-        for k in sample_data.keys():
-            f['registration.' + k] = sample_data[k]
-        f['person.email_address'] = 'testguy@example.org'
-        f['person.firstname'] = 'testguy'
-        f['person.lastname'] = 'mctest'
-        f['person.password'] = 'test'
-        f['person.password_confirm'] = 'test'
-        f['person.mobile'] = '123'
-        f['person.city'] = 'Tassie'
-        f['person.address1'] = 'Moo'
-        f['person.postcode'] = '1234'
-
-        resp = f.submit()
-
-        resp.mustcontain('A person with this email already exists.  Please try signing in first.')
-
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Person).get(pid))
-        self.dbsession.flush()
-
+        regs = Registration.find_all()
+        assert len(regs) == 1
+        assert regs[0].person.id       == pid
+        assert regs[0].over18          == (data['registration']['over18'] == '1')
+        assert regs[0].person.address1 == data['person']['address1']
+        assert regs[0].person.address2 == data['person']['address2']
+        assert regs[0].person.city     == data['person']['city']
+        assert regs[0].person.state    == data['person']['state']
+        assert regs[0].person.postcode == data['person']['postcode']
+        assert regs[0].person.country  == data['person']['country']
+        assert regs[0].person.phone    == str(data['person']['phone'])
+        assert regs[0].person.mobile   == str(data['person']['mobile'])

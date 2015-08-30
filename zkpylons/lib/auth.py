@@ -33,6 +33,7 @@ import hashlib
 log = logging.getLogger(__name__)
 
 def set_redirect():
+    # TODO: This function is called 30+ times per page when not logged in, more than seems needed
     if not session.get('redirect_to', None):
         session['redirect_to'] =  request.path_info
         session.save()
@@ -83,7 +84,7 @@ class HasZookeeprRole(HasAuthKitRole):
 
         for role in self.roles:
            if not self.role_exists(role):
-               raise Exception("No such role %r exists"%role)
+               raise NotAuthorizedError("No such role %r exists"%role)
 
         person = Person.find_by_email(environ['REMOTE_USER'])
         if person is None:

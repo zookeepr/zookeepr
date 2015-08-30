@@ -1,99 +1,70 @@
-import datetime
+from zk.model.invoice import Invoice
+from zk.model.product_category import ProductCategory
+from zkpylons.model.product_category import ProductCategory as pyProductCategory
+from .fixtures import PersonFactory, InvoiceFactory, URLHashFactory, InvoiceItemFactory, ProductCategoryFactory, ProductFactory, RegistrationFactory, RegistrationProductFactory, CeilingFactory, ConfigFactory
+from .utils import do_login
 
-from zkpylons.tests.functional import *
-
-class TestInvoiceController(SignedInCRUDControllerTest):
-    def setUp(self):
-        super(TestInvoiceController, self).setUp()
-                                                 
-        self.invoice = model.Invoice(issue_date=datetime.datetime(2006,11,21))
-        self.dbsession.save(self.invoice)
-        self.person.invoices.append(self.invoice)
-
-        ii1 = model.InvoiceItem(description='line 1', qty=2, cost=100)
-        self.invoice.items.append(ii1)
-        self.dbsession.save(ii1)
-        
-        ii2 = model.InvoiceItem(description="awesomeness", qty=1, cost=250)
-        self.invoice.items.append(ii2)
-        self.dbsession.save(ii2)
-        
-        self.dbsession.flush()
-        self.iid = self.invoice.id
-
-    def tearDown(self):
-        invoice = self.dbsession.query(model.Invoice).get(self.iid)
-        self.dbsession.delete(invoice)
-        self.dbsession.flush()
-
-        super(TestInvoiceController, self).tearDown()
-
-    def test_invoice_view(self):
-        resp = self.app.get('/invoice/%d' % self.iid)
-        print resp
-
-        resp.mustcontain("Linux Australia")
-        resp.mustcontain("ABN")
-        resp.mustcontain("line 1")
-        resp.mustcontain("$2.00")
-        resp.mustcontain("$4.50")
+from routes import url_for
 
 
-    def test_registration_invoice_gen(self):
-        # testing that we can generate an invoice from a registration
-        al = model.registration.AccommodationLocation(name='FooPlex', beds=100)
-        ao = model.registration.AccommodationOption(name='snuh', cost_per_night=37.00)
-        ao.location = al
-        self.dbsession.save(al)
-        self.dbsession.save(ao)
-        self.dbsession.flush()
-        alid = al.id
-        aoid = ao.id
+class TestInvoiceController(object):
+    def test_invoice_view(self, app, db_session):
 
-        accom = self.dbsession.query(model.Accommodation).get(ao.id)
-        rego = model.Registration(type='Professional',
-                                  checkin=14,
-                                  checkout=20,
-                                  dinner=1,
-                                  partner_email='foo',
-                                  kids_0_3=9,
-                                  )
-        self.dbsession.save(rego)
-        rego.person = self.person
-        rego.accommodation = accom
+        ConfigFactory(key="event_parent_organisation", value="TEST-INVOICE-PARENT-ORG")
+        ConfigFactory(key="event_tax_number", value="TEST-INVOICE-ABN-NUMBER")
 
-        self.dbsession.flush()
-        rid = rego.id
-        self.dbsession.clear()
+        i = InvoiceFactory()
+        InvoiceItemFactory(invoice = i, description='line 1', qty = 2, cost = 100);
+        InvoiceItemFactory(invoice = i, qty = 1, cost = 250);
+        u = URLHashFactory(url_hash = url_for(controller='invoice', action='view', id=i.id))
+        db_session.commit()
 
-        resp = self.app.get('/profile/%d' % self.person.id)
+        resp = app.get(url_for(controller='invoice', action='view', id=i.id, hash=u.url_hash))
 
-        resp = resp.click('(confirm invoice and pay)', index=1)
-
-        # get a redirect from confirm once invoice is built
-        resp = resp.follow()
-
-        print resp
-
-        invs = self.dbsession.query(model.Invoice).select_by(person_id=self.person.id)
-
-        print "invoice:", invs
-        inv = invs[0]
+        resp.mustcontain("TEST-INVOICE-PARENT-ORG")
+        resp.mustcontain("TEST-INVOICE-ABN-NUMBER")
+        resp.mustcontain("line 1") # first entry description
+        resp.mustcontain("$2.00")  # first entry subtotal (2x $1)
+        resp.mustcontain("$4.50")  # Total
 
 
-        print "items:", inv.items
-        
-        for d in ('Professional Registration', 'Accommodation - FooPlex (snuh)', 'Additional Penguin Dinner Tickets', "Partner's Programme - Adult", "Partner's Programme - Child"):
-            self.failUnless(d in [ii.description for ii in inv.items],
-                            "Can't find %r in items" % d)
-        
+    def test_registration_invoice_gen(self, app, db_session):
+        """ testing that we can generate an invoice from a registration """
 
+        cat = ProductCategoryFactory(name = 'Accommodation', note='', min_qty='10', max_qty='100')
+        bed = ProductFactory(category = cat, cost = '18500')
+        p   = PersonFactory()
+        reg = RegistrationFactory(person = p)
+        RegistrationProductFactory(registration=reg, product=bed, qty=1)
 
-        #self.fail("not really")
-        # clean up
-        # invoice gets deleted by tearDown, semantics of invoice creation, reuse
-        # existing invoice until paid
-        self.dbsession.delete(self.dbsession.query(model.Registration).get(rid))
-        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationOption).get(aoid))
-        self.dbsession.delete(self.dbsession.query(model.registration.AccommodationLocation).get(alid))
-        self.dbsession.flush()
+        # Required for templates
+        CeilingFactory(name='conference-earlybird')
+        CeilingFactory(name='conference-paid')
+
+        db_session.commit()
+
+        # Invoice is actually generated when looking at the status page
+        resp = do_login(app, p)
+        resp = app.get('/register/status')
+        resp = resp.maybe_follow()
+        assert "Tentatively registered" in unicode(resp.body, 'utf-8')
+
+        resp = resp.click('Pay invoice')
+        resp = resp.follow() # Generates then redirects to invoice
+        assert '/invoice/' in resp.request.path
+        assert bed.description in unicode(resp.body, 'utf-8')
+        assert str(bed.cost/100) in unicode(resp.body, 'utf-8')
+
+        # Need to forget the objects we created
+        bed_id = bed.id
+        cat_description = cat.name
+        bed_description = bed.description
+        db_session.expunge_all()
+        inv = Invoice.find_by_person(p.id)
+        assert len(inv.items) == 1
+        assert inv.items[0].product_id == bed_id
+        assert inv.items[0].qty == 1
+        assert inv.items[0].free_qty == 0
+        # description is category - product
+        assert bed_description in inv.items[0].description
+        assert cat_description in inv.items[0].description

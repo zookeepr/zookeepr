@@ -225,6 +225,10 @@ class Proposal(Base):
         return result
 
     @classmethod
+    def find_by_title(cls, title):
+        return Session.query(Proposal).filter_by(title=title).order_by(Proposal.title).all()
+
+    @classmethod
     def find_all(cls):
         return Session.query(Proposal).order_by(Proposal.id).all()
 

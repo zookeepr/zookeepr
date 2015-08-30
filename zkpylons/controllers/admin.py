@@ -607,7 +607,7 @@ class AdminController(BaseController):
             res.append(';'.join(consents))
 
             if p.registration:
-                res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
+                res.append('<br><br>'.join(["<b>Note by <i>" + n.by.fullname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
                 if p.registration.diet:
                     res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
                 if p.registration.special:
@@ -640,7 +640,7 @@ class AdminController(BaseController):
         volunteer_list = []
         for p in meta.Session.query(Person).all():
             if not p.is_volunteer(): continue
-            volunteer_list.append((p.lastname.lower()+' '+p.firstname, p))
+            volunteer_list.append(((p.lastname or '').lower()+' '+ (p.firstname or ''), p))
         volunteer_list.sort()
 
         for (sortkey, p) in volunteer_list:
@@ -677,7 +677,7 @@ class AdminController(BaseController):
                 res.append('No Invoice')
                 res.append('-')
 
-              res.append('<br><br>'.join(["<b>Note by <i>" + n.by.firstname + " " + n.by.lastname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
+              res.append('<br><br>'.join(["<b>Note by <i>" + n.by.fullname + "</i> at <i>" + n.last_modification_timestamp.strftime("%Y-%m-%d&nbsp;%H:%M") + "</i>:</b><br>" + h.line_break(n.note) for n in p.registration.notes]))
               if p.registration.diet:
                   res[-1] += '<br><br><b>Diet:</b> %s' % (p.registration.diet)
               if p.registration.special:
@@ -946,7 +946,7 @@ class AdminController(BaseController):
         count = 0
         for r in meta.Session.query(Registration).filter(Registration.signup.like("%announce%")).all():
             p = r.person
-            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            c.text += p.fullname + " &lt;" + p.email_address + "&gt;\n"
             count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
@@ -964,7 +964,7 @@ class AdminController(BaseController):
         count = 0
         for r in meta.Session.query(Registration).filter(Registration.signup.like('%chat%')).all():
             p = r.person
-            c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+            c.text += p.fullname + " &lt;" + p.email_address + "&gt;\n"
             count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
@@ -983,7 +983,7 @@ class AdminController(BaseController):
         for r in meta.Session.query(Registration).all():
             if r.person.is_volunteer():
                 p = r.person
-                c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+                c.text += p.fullname + " &lt;" + p.email_address + "&gt;\n"
                 count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
@@ -1002,7 +1002,7 @@ class AdminController(BaseController):
         for r in meta.Session.query(Registration).all():
             if r.person.is_speaker():
                 p = r.person
-                c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+                c.text += p.fullname + " &lt;" + p.email_address + "&gt;\n"
                 count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
@@ -1021,7 +1021,7 @@ class AdminController(BaseController):
         for r in meta.Session.query(Registration).all():
             if r.person.is_miniconf_org():
                 p = r.person
-                c.text += p.firstname + " " + p.lastname + " &lt;" + p.email_address + "&gt;\n"
+                c.text += p.fullname + " &lt;" + p.email_address + "&gt;\n"
                 count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
@@ -1126,7 +1126,7 @@ class AdminController(BaseController):
                 if invoice_item.invoice.is_paid and not invoice_item.invoice.is_void:
                     c.data.append([item.description,
                                    invoice_item.qty,
-                                   invoice_item.invoice.person.firstname + " " + invoice_item.invoice.person.lastname,
+                                   invoice_item.invoice.person.fullname,
                                    invoice_item.invoice.person.email_address,
                                    invoice_item.invoice.person.registration.partner_name,
                                    invoice_item.invoice.person.registration.partner_email,
@@ -1145,7 +1145,7 @@ class AdminController(BaseController):
         count = 0
         for r in meta.Session.query(Registration).filter(Registration.planetfeed != '').all():
             p = r.person
-            c.text += "[" + r.planetfeed + "] name = " + p.firstname + " " + p.lastname + "\n"
+            c.text += "[" + r.planetfeed + "] name = " + p.fullname + "\n"
             count += 1
         c.text += "</textarea></p>"
         c.text += "<p>Total addresses: " + str(count) + "</p>"
@@ -1239,7 +1239,7 @@ class AdminController(BaseController):
                             elif item.description.lower().endswith("ticket") or item.description.lower().startswith("press pass"):
                                 ticket_types.append(item.description + " x" + str(item.qty))
                 c.data.append([registration.person.id,
-                               registration.person.firstname + " " + registration.person.lastname,
+                               registration.person.fullname,
                                ", ".join(ticket_types),
                                ", ".join(shirts),
                                dinner_tickets,
@@ -1264,9 +1264,9 @@ class AdminController(BaseController):
                     else:
                         years[year] = 1
                 if len(registration.prevlca) == len(Config.get('past_confs', category='rego')):
-                    veterans.append(registration.person.firstname + " " + registration.person.lastname)
+                    veterans.append(registration.person.fullname)
                 elif len(registration.prevlca) == (len(Config.get('past_confs', category='rego')) - 1):
-                    veterans_lca.append(registration.person.firstname + " " + registration.person.lastname)
+                    veterans_lca.append(registration.person.fullname)
         for (year, value) in years.iteritems():
             c.data.append([year, value])
 
@@ -1417,7 +1417,7 @@ class AdminController(BaseController):
 
             c.speaker = p.is_speaker()
             c.firstname = p.firstname
-            c.fullname = p.firstname + ' ' + p.lastname
+            c.fullname = p.fullname
             c.company = p.company
             c.phone = p.phone
             c.mobile = p.mobile
@@ -1483,7 +1483,7 @@ class AdminController(BaseController):
     def rego_list(self):
         """ List of paid regos - for rego desk. [Registrations] """
         people = [
-           (r.person.lastname.lower(), r.person.firstname.lower(), r.id, r.person)
+           ((r.person.lastname or '').lower(), (r.person.firstname or '').lower(), r.id, r.person)
                                                  for r in Registration.find_all()]
         people.sort()
         people = [row[-1] for row in people]

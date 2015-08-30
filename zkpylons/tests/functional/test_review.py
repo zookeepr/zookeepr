@@ -1,182 +1,158 @@
-from zkpylons.tests.functional import *
+import pytest
+from routes import url_for
 
-class TestReviewController(SignedInCRUDControllerTest):
-#     model = model.Review
-#     name = 'review'
-#     url = '/review'
-#     samples = [dict(comment='a',
-#                     score=0),
-#                dict(comment='b',
-#                     score=1)
-#                ]
+from zk.model.review import Review
 
-#     def additional(self, obj):
-#         obj.stream = self.dbsession.query(model.Stream).get(1)
-#         obj.proposal = self.dbsession.query(model.Proposal).get(1)
-#         return obj
+from .fixtures import StreamFactory, PersonFactory, ProposalFactory, RoleFactory, ProposalStatusFactory, ReviewFactory
+from .utils import do_login
 
-    def setUp(self):
-        super(TestReviewController, self).setUp()
 
-        model.proposal.tables.proposal_type.insert().execute(
-            {'id': 1, 'name': 'presentation'}
-            )
-        model.core.tables.role.insert().execute(
-            {'id': 1, 'name': 'reviewer'}
-            )
-        model.core.tables.person_role_map.insert().execute(
-            {'person_id': self.person.id, 'role_id': 1}
-            )
-        model.schedule.tables.stream.insert().execute(
-            {'id': 1, 'name': 'streamy'}
-            )
+class TestReviewController(object):
 
-    def tearDown(self):
-        model.schedule.tables.stream.delete().execute()
-        model.core.tables.person_role_map.delete().execute()
-        model.core.tables.role.delete().execute()
-        model.proposal.tables.proposal_type.delete().execute()
-        
-        super(TestReviewController, self).tearDown()
+    def test_create(self, app, db_session):
 
-#     def test_review_feedback(self):
-#         """Test that one can put in optional feedback to the submitter from the review interface.
-#         """
-#         self.fail("untested")
+        StreamFactory(name='streamy')
+        prop1 = ProposalFactory()
+        prop2 = ProposalFactory()
+        p = PersonFactory(roles=[RoleFactory(name='reviewer')])
 
-#     def test_review_interface(self):
-#         """Test that the interface shows two lists, one of unreviewed proposals, and one of reviewed proposals"""
-#         self.fail("untested")
+        ProposalStatusFactory(name='Withdrawn') # Required by code
 
-#     def test_review_interface_sorted(self):
-#         """Test that the reviewed proposals are sorted by rank"""
-#         self.fail("untested")
 
-    def test_reviews_isolated(self):
-        """Test that a reviewer can only see their own reviews"""
-        p1 = model.Person(email_address='testgirl@example.org',
-                    firstname='Testgirl',
-                    lastname='Van der Test')
-        self.dbsession.save(p1)
-        p2 = model.Person(email_address='t2@example.org',
-                    firstname='submitter',
-                    lastname='submitter')
-        self.dbsession.save(p2)
-        p = model.Proposal(title='prop',
-                           type=self.dbsession.get(model.ProposalType, 1),
-                           )
-        self.dbsession.save(p)
-        p.people.append(p2)
-        r1 = model.Review(
-                    reviewer=self.person,
-                    score=1,
-                    stream=self.dbsession.get(model.Stream, 1),
-                    )
-        p.reviews.append(r1)
-        self.dbsession.save(r1)
-        r2 = model.Review(
-                    reviewer=p1,
-                    score=3,
-                    stream=self.dbsession.get(model.Stream, 1),
-                    )
-        p.reviews.append(r2)
-        self.dbsession.save(r2)
-        self.dbsession.flush()
-        p1id = p1.id
-        p2id = p2.id
-        pid = p.id
+        db_session.commit()
 
-        resp = self.app.get('/review')
-        resp.mustcontain(self.person.firstname)
-        self.failIf(p1.firstname in resp, "shouldn't be able to see other people's reviews")
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
-        self.dbsession.delete(self.dbsession.query(model.Person).get(p1id))
-        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
-        self.dbsession.flush()
+        do_login(app, p)
 
-#     def test_reviewer_name_hidden_from_submitter(self):
-#         """Test taht a revier is anonymouse to submitters"""
-#         self.fail("untested")
-
-#     def test_reviewer_cant_review_own_proposal(self):
-#         """Test that a reviewer can't review their own submissions."""
-#         self.fail("untedted")
-
-    def test_only_one_review_per_reviewer_per_proposal(self):
-        """test that reviewers can only do one review per proposal"""
-        p2 = model.Person(email_address='t2@example.org',
-                    firstname='submitter',
-                    lastname='submitter')
-        self.dbsession.save(p2)
-        p = model.Proposal(title='prop',
-                           abstract='abs',
-                           type=self.dbsession.get(model.ProposalType, 1),
-                           )
-        self.dbsession.save(p)
-        p.people.append(p2)
-        self.dbsession.flush()
-        p2id = p2.id
-        pid = p.id
-
-        resp = self.app.get(url_for(controller='proposal',
-                                    action='review',
-                                    id=p.id))
+        resp = app.get('/proposal/%d/review' % prop1.id)
+        resp = resp.maybe_follow()
         f = resp.form
+        f['review.score'] = -1
+        f['review.comment'] = 'a'
+        resp = f.submit()
+        resp = resp.follow() # Failure indicates form validation error
+
+        resp = app.get('/proposal/%d/review' % prop2.id)
+        resp = resp.maybe_follow()
+        f = resp.form
+        f['review.score'] = 2
+        f['review.comment'] = 'b'
+        resp = f.submit()
+        resp = resp.follow() # Failure indicates form validation error
+
+        db_session.expunge_all()
+
+        revs = Review.find_all()
+        assert len(revs) == 2
+        assert revs[0].score == -1
+        assert revs[0].comment == 'a'
+        assert revs[1].score == 2
+        assert revs[1].comment == 'b'
+
+
+    @pytest.mark.xfail # Test not yet written
+    def test_review_feedback(self):
+        """Test that one can put in optional feedback to the submitter from the review interface.
+        """
+        assert False
+
+    @pytest.mark.xfail # Test not yet written
+    def test_review_interface(self):
+        """Test that the interface shows two lists, one of unreviewed proposals, and one of reviewed proposals"""
+        assert False
+
+
+    @pytest.mark.xfail # Test not yet written
+    def test_review_interface_sorted(self):
+        """Test that the reviewed proposals are sorted by rank"""
+        assert False
+
+
+    def test_reviews_not_isolated(self, app, db_session):
+        """Test that a reviewer can see other reviews"""
+
+        p1 = PersonFactory(roles=[RoleFactory(name='reviewer')], firstname="Scrouge")
+        p2 = PersonFactory(firstname="Daffy")
+        p3 = PersonFactory()
+        prop = ProposalFactory(people=[p3])
+        stream = StreamFactory()
+        r1 = ReviewFactory(reviewer=p1, proposal=prop, score=-1, stream=stream)
+        r2 = ReviewFactory(reviewer=p2, proposal=prop, score=2, stream=stream)
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        db_session.commit()
+
+        do_login(app, p1)
+        resp = app.get('/proposal/%d' % prop.id)
+
+        # Page has list of reviews already set on proposal
+        assert p1.firstname in unicode(resp.body, 'utf-8')
+        assert p2.firstname in unicode(resp.body, 'utf-8')
+
+
+    @pytest.mark.xfail # Test not yet written
+    def test_reviewer_name_hidden_from_submitter(self):
+        """Test taht a revier is anonymouse to submitters"""
+        assert False
+
+
+    @pytest.mark.xfail # Test not yet written
+    def test_reviewer_cant_review_own_proposal(self):
+        """Test that a reviewer can't review their own submissions."""
+        assert False
+
+
+    def test_only_one_review_per_reviewer_per_proposal(self, app, db_session):
+        """test that reviewers can only do one review per proposal"""
+
+        p1 = PersonFactory(roles=[RoleFactory(name='reviewer')])
+        p2 = PersonFactory()
+        prop = ProposalFactory(people=[p2])
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        db_session.commit()
+
+        do_login(app, p1)
+        resp = app.get('/proposal/%d/review' % prop.id)
+        f = resp.form
+        f['review.comment'] = 'first_review_comment'
         resp = f.submit()
 
         # do it again 
+        f['review.comment'] = 'second_review_comment'
         resp = f.submit()
-        resp.mustcontain("already reviewed this proposal")
+        resp = resp.follow() # Failure linked to errors in form submission
+
+        # Old behaviour alerted that review had been performed
+        # New behaviour is that we simply update with the second result
+
+        db_session.expunge_all()
+
+        revs = Review.find_all()
+        assert len(revs) == 1
+        assert revs[0].comment == "second_review_comment"
+
         
-        # clean up
-        self.dbsession.delete(self.dbsession.query(model.Person).get(p2id))
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
-        self.dbsession.flush()
-
-    def test_edit_review(self):
+    def test_edit_review(self, app, db_session):
         """test that a reviewer can edit their review"""
-        s = model.Person(email_address='submitter@example.org',
-                    firstname='submitter',
-                    lastname='submitter')
-        self.dbsession.save(s)
-        p = model.Proposal(title='prop',
-                           abstract='abs',
-                           type=self.dbsession.query(model.ProposalType).get(1))
-        self.dbsession.save(p)
-        s.proposals.append(p)
-        r = model.Review(reviewer=self.person,
-                         score=0,
-                         stream=self.dbsession.query(model.Stream).get(1))
-        self.dbsession.save(r)
-        p.reviews.append(r)
-        self.dbsession.flush()
-        sid = s.id
-        pid = p.id
-        rid = r.id
 
-        # clear the session
-        self.dbsession.clear()
+        p1 = PersonFactory(roles=[RoleFactory(name='reviewer')])
+        p2 = PersonFactory()
+        prop = ProposalFactory(people=[p2])
+        r = ReviewFactory(proposal=prop, reviewer=p1, score=-2, comment="It's a hard luck life")
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        db_session.commit()
 
-        resp = self.app.get(url_for(controller='review',
-                                    action='edit',
-                                    id=rid))
+        do_login(app, p1)
+        resp = app.get(url_for(controller='review', action='edit', id=r.id))
+        resp = resp.maybe_follow()
+        assert r.comment in unicode(resp.body, 'utf-8')
         f = resp.form
         f['review.comment'] = 'hi!'
-        f['review.coolness'] = 1
+        f['review.score'] = 1
         resp = f.submit()
+        resp = resp.follow()
 
-        print resp
-        
+        rid = r.id
+        db_session.expunge_all()
+        r2 = Review.find_by_id(rid)
 
-        r = self.dbsession.query(model.Review).get(rid)
-        print r
-        print r.comment
-        self.assertEqual('hi!', r.comment)
-        self.assertEqual(1, r.coolness)
-
-        # clean up
-        self.dbsession.delete(r)
-        self.dbsession.delete(self.dbsession.query(model.Proposal).get(pid))
-        self.dbsession.delete(self.dbsession.query(model.Person).get(sid))
-        self.dbsession.flush()
+        assert r2.comment == 'hi!'
+        assert r2.score   == 1

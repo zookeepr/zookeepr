@@ -140,12 +140,9 @@ class Fulfilment(Base):
     __tablename__ = 'fulfilment'
 
     id = sa.Column(sa.types.Integer, primary_key=True)
-    person_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'),
-        nullable=False)
-    type_id = sa.Column(sa.types.Integer, sa.ForeignKey('fulfilment_type.id'),
-        nullable=False)
-    status_id = sa.Column(sa.types.Integer, sa.ForeignKey('fulfilment_status.id'),
-        nullable=False)
+    person_id = sa.Column(sa.types.Integer, sa.ForeignKey('person.id'), nullable=False)
+    type_id = sa.Column(sa.types.Integer, sa.ForeignKey('fulfilment_type.id'), nullable=False)
+    status_id = sa.Column(sa.types.Integer, sa.ForeignKey('fulfilment_status.id'), nullable=False)
     code = sa.Column(sa.types.Text, unique=True)
     creation_timestamp = sa.Column(sa.types.DateTime, nullable=False,
         default=sa.func.current_timestamp())
@@ -175,7 +172,7 @@ class Fulfilment(Base):
     )
 
     # relations
-    person = sa.orm.relation(Person, backref='fulfilments', lazy='subquery')
+    person = sa.orm.relation(Person)
     type = sa.orm.relation(FulfilmentType)
     status = sa.orm.relation(FulfilmentStatus)
     groups = sa.orm.relation(FulfilmentGroup, secondary=fulfilment_group_map, backref='fulfilments')

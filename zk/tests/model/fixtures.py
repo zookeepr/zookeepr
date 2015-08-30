@@ -6,11 +6,20 @@ from zk.model.proposal import Proposal, TravelAssistanceType, AccommodationAssis
 from zk.model.invoice import Invoice
 from zk.model.invoice_item import InvoiceItem
 from zk.model.registration import Registration
+from zk.model.registration_product import RegistrationProduct
 from zk.model.attachment import Attachment
 from zk.model.stream import Stream
 from zk.model.review import Review
 from zk.model.role import Role
 from zk.model.config import Config
+from zk.model.password_reset_confirmation import PasswordResetConfirmation
+from zk.model.url_hash import URLHash
+from zk.model.product_category import ProductCategory
+from zk.model.product import Product
+from zk.model.ceiling import Ceiling
+from zk.model.fulfilment import Fulfilment, FulfilmentItem, FulfilmentType, FulfilmentStatus
+
+from datetime import datetime
 
 import factory
 from factory.alchemy import SQLAlchemyModelFactory
@@ -66,6 +75,114 @@ class ConfigFactory(_ModelFactory):
     value       = factory.LazyAttribute(lambda x: faker.word())
     description = factory.LazyAttribute(lambda x: faker.sentence(nb_words=15))
 
+class CeilingFactory(_ModelFactory):
+    class Meta: model = Ceiling
+    name      = factory.Sequence(lambda n: "name%03d" % n)
+
+class URLHashFactory(_ModelFactory):
+    class Meta: model = URLHash
+    id        = factory.Sequence(lambda n: n)
+    url       = '/'
+    url_hash  = factory.Sequence(lambda n: "D00D%03d" % n)
+    timestamp = datetime.now()
+
+class PersonFactory(_ModelFactory):
+    class Meta: model = Person
+
+    id            = factory.Sequence(lambda n: n)
+    email_address = factory.Sequence(lambda n: "email%03d@personfactory.com" % n)
+
+    creation_timestamp          = '2000-01-01'
+    last_modification_timestamp = '2000-01-01'
+    url_hash                    = "A"*64
+    activated                   = True
+    i_agree                     = True
+
+    # Set default passwords
+    # password is set to an encrypted version of password
+    # raw_password is set to an unencrypted version of password, but not stored in DB
+    post__raw_password          = 'a_swell_password'
+    password                    = 'a_swell_password'
+
+    # Some fields are overriden by the Person constructor, so we can't set them
+    # So we stash them, generate the object, then override the value
+    # This technique takes advantage of the factory_boy post_generation hook
+    @classmethod
+    def _generate(cls, create, attrs):
+        override = ["creation_timestamp", "activated", "badge_printed", "url_hash"]
+        for key in override:
+            if key in attrs:
+                attrs["post__"+key] = attrs.pop(key)
+
+        # Person __init__ function uses Config.get('password_salt')
+        try:
+            Config.get('password_salt')
+        except:
+            ConfigFactory.create(key="password_salt", value=23)
+        return super(PersonFactory, cls)._generate(create, attrs)
+
+    # post_generation extracts named (post__) elements, presents them after creation
+    @factory.post_generation
+    def post(obj, create, extracted, **kwargs):
+        for key in kwargs:
+            obj.__dict__[key] = kwargs[key]
+
+class CompletePersonFactory(PersonFactory):
+    # Set lots of additional detail to avoid the incomplete profile flag
+    firstname = factory.Sequence(lambda n: "jim%03d" % n)
+    lastname  = factory.Sequence(lambda n: "kibbles%03d" % n)
+    address1  = 'Somewhere',
+    city      = 'Over the rainbow',
+    postcode  = 'Way up high',
+
+    @classmethod
+    def reset_sequence(cls):
+        PersonFactory.reset_sequence()
+
+class FulfilmentStatusFactory(_ModelFactory):
+    class Meta: model = FulfilmentStatus
+    id                     = factory.Sequence(lambda n: n)
+    name                   = factory.Sequence(lambda n: "status %03d" % n)
+
+class FulfilmentTypeFactory(_ModelFactory):
+    class Meta: model = FulfilmentType
+    id                     = factory.Sequence(lambda n: n)
+    initial_status         = factory.SubFactory(FulfilmentStatusFactory)
+    name                   = factory.Sequence(lambda n: "type %03d" % n)
+
+class FulfilmentFactory(_ModelFactory):
+    class Meta: model = Fulfilment
+    id                     = factory.Sequence(lambda n: n)
+    person                 = factory.SubFactory(PersonFactory)
+    type                   = factory.SubFactory(FulfilmentTypeFactory)
+    status                 = factory.SubFactory(FulfilmentStatusFactory)
+
+class ProductCategoryFactory(_ModelFactory):
+    class Meta: model = ProductCategory
+    id                     = factory.Sequence(lambda n: n)
+    name                   = factory.Sequence(lambda n: "product category %03d" % n)
+    description            = factory.Sequence(lambda n: "factory generated category %03d" % n)
+    display                = 'radio'
+    display_mode           = 'grid'
+    display_order          = 10
+    invoice_free_products  = True
+
+class ProductFactory(_ModelFactory):
+    class Meta: model = Product
+    id                     = factory.Sequence(lambda n: n)
+    fulfilment_type        = factory.SubFactory(FulfilmentTypeFactory)
+    category               = factory.SubFactory(ProductCategoryFactory)
+    active                 = True
+    description            = factory.Sequence(lambda n: "factory generated product %03d" % n)
+    cost                   = factory.Sequence(lambda n: n*100)
+
+class FulfilmentItemFactory(_ModelFactory):
+    class Meta: model = FulfilmentItem
+    id                     = factory.Sequence(lambda n: n)
+    fulfilment             = factory.SubFactory(FulfilmentFactory)
+    product                = factory.SubFactory(ProductFactory)
+    qty                    = factory.Sequence(lambda n: (n+1)*3)
+
 class ProposalFactory(_ModelFactory):
     class Meta: model = Proposal
     id                     = factory.Sequence(lambda n: n)
@@ -89,34 +206,23 @@ class ProposalFactory(_ModelFactory):
 #    last_modification_timestamp = default current_timestamp()
 
 
-class PersonFactory(_ModelFactory):
-    class Meta: model = Person
-
+class PasswordResetConfirmationFactory(_ModelFactory):
+    class Meta: model = PasswordResetConfirmation
     id            = factory.Sequence(lambda n: n)
-    email_address = factory.Sequence(lambda n: "email%03d@example.com" % n)
+    email_address = factory.Sequence(lambda n: "email%03d@passwordresetconfirmationfactory.com" % n)
+    url_hash      = "R"*64
+    timestamp     = factory.LazyAttribute(lambda o: datetime.now())
 
-    creation_timestamp          = '2000-01-01'
-    last_modification_timestamp = '2000-01-01'
-    url_hash                    = "A"*64
-    activated                   = True
-    i_agree                     = True
-
-    # Some fields are overriden by the Person constructor, so we can't set them
+    # Some fields are overriden by the constructor, so we can't set them
     # So we stash them, generate the object, then override the value
     # This technique takes advantage of the factory_boy post_generation hook
     @classmethod
     def _generate(cls, create, attrs):
-        override = ["creation_timestamp", "activated", "badge_printed", "url_hash"]
+        override = ["timestamp"]
         for key in override:
             if key in attrs:
                 attrs["post__"+key] = attrs.pop(key)
-
-        # Person __init__ function uses Config.get('password_salt')
-        try:
-            Config.get('password_salt')
-        except:
-            ConfigFactory.create(key="password_salt", value=23)
-        return super(PersonFactory, cls)._generate(create, attrs)
+        return super(PasswordResetConfirmationFactory, cls)._generate(create, attrs)
 
     # post_generation extracts named (post__) elements, presents them after creation
     @factory.post_generation
@@ -148,13 +254,14 @@ class ReviewFactory(_ModelFactory):
 
 class InvoiceFactory(_ModelFactory):
     class Meta: model = Invoice
+    id = factory.Sequence(lambda n: n)
     person = factory.SubFactory(PersonFactory)
 
 
 class InvoiceItemFactory(_ModelFactory):
     class Meta: model = InvoiceItem
     id = factory.Sequence(lambda n: n)
-    # TODO: invoice is required
+    invoice = factory.SubFactory(InvoiceFactory)
     description = factory.Sequence(lambda n: "factory generated item %03d" % n)
     qty         = factory.Sequence(lambda n: n+1)
     cost        = factory.Sequence(lambda n: (n+1)*10)
@@ -163,3 +270,10 @@ class InvoiceItemFactory(_ModelFactory):
 class RegistrationFactory(_ModelFactory):
     class Meta: model = Registration
     id = factory.Sequence(lambda n: n)
+
+
+class RegistrationProductFactory(_ModelFactory):
+    class Meta: model = RegistrationProduct
+    registration_id = factory.SubFactory(RegistrationFactory)
+    product_id = factory.SubFactory(ProductFactory)
+    qty = 1
