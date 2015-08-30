@@ -28,8 +28,6 @@ from zkpylons.model.payment import Payment
 from zkpylons.model.payment_received import PaymentReceived
 from zkpylons.model.config import Config
 
-from zkpylons.config.zkpylons_config import file_paths
-
 import zkpylons.lib.pdfgen as pdfgen
 import zkpylons.lib.pxpay as pxpay
 
@@ -255,7 +253,7 @@ class InvoiceController(BaseController):
         Returns a JSON representation of an existing invoice
         """
         invoice = Invoice.find_by_id(id, True)
-        obj = { 
+        obj = {
             'id': invoice.id,
             'person_id': invoice.person_id,
             'manual': invoice.manual,
@@ -403,7 +401,7 @@ class InvoiceController(BaseController):
         c.invoice = Invoice.find_by_id(id, True)
         xml_s = render('/invoice/pdf.mako')
 
-        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/invoice/pdf.xsl'
+        xsl_f = get_path('zk_root') + '/zkpylons/templates/invoice/pdf.xsl'
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
         filename = Config.get('event_shortname') + '_' + str(c.invoice.id) + '.pdf'

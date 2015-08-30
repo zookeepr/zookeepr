@@ -173,7 +173,7 @@ class PhotoCompEntry(object):
     from_filename = classmethod(from_filename)
 
     def get_db_dir(cls):
-        db_dir = zkpylons_config.file_paths['photocomp_path']
+        db_dir = zkpylons_config.get_path('photocomp_path')
         if not os.path.exists(db_dir):
             os.mkdir(db_dir, 0777)
         return db_dir

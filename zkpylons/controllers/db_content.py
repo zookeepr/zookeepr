@@ -26,7 +26,7 @@ from not_found import NotFoundController
 from webhelpers import paginate
 from pylons.controllers.util import abort
 
-from zkpylons.config.zkpylons_config import file_paths
+from zkpylons.config.zkpylons_config import get_path
 
 import os
 import re
@@ -60,7 +60,7 @@ class DbContentController(BaseController):
         return render('/db_content/list.mako')
 
     @authorize(h.auth.has_organiser_role)
-    @dispatch_on(POST="_new") 
+    @dispatch_on(POST="_new")
     def new(self):
         if len(c.db_content_types) is 0:
             h.flash("Configuration Error: Please make sure at least one content type exists.", 'error')
@@ -90,7 +90,7 @@ class DbContentController(BaseController):
             results['publish_timestamp'] = None
         del results['publish_date']
         del results['publish_time']
-        
+
         c.db_content = DbContent(**results)
         meta.Session.add(c.db_content)
         meta.Session.commit()
@@ -122,7 +122,7 @@ class DbContentController(BaseController):
         return NotFoundController().view()
 
     @authorize(h.auth.has_organiser_role)
-    @dispatch_on(POST="_edit") 
+    @dispatch_on(POST="_edit")
     def edit(self, id):
         c.db_content = DbContent.find_by_id(id)
 
@@ -207,20 +207,20 @@ class DbContentController(BaseController):
     def rss_news(self):
         news_id = DbContentType.find_by_name("News")
         c.db_content_collection = []
-        if news_id is not None: 
+        if news_id is not None:
             c.db_content_collection = meta.Session.query(DbContent).filter_by(type_id=news_id.id).filter(DbContent.publish_timestamp <= datetime.now()).order_by(DbContent.publish_timestamp.desc()).limit(20).all()
         response.headers['Content-type'] = 'application/rss+xml; charset=utf-8'
         return render('/db_content/rss_news.mako')
 
     @authorize(h.auth.has_organiser_role)
     def upload(self):
-        directory = file_paths['public_path']
+        directory = get_path('public_path')
         try:
             if request.GET['folder'] is not None:
                 directory += request.GET['folder']
                 c.current_folder = request.GET['folder']
         except KeyError:
-            directory = file_paths['public_path'] + "/"
+            directory = get_path('public_path') + "/"
             c.current_folder = '/'
 
         if hasattr(request.POST['myfile'], 'value'):
@@ -244,7 +244,7 @@ class DbContentController(BaseController):
         except KeyError:
            abort(404)
 
-        directory = file_paths['public_path']
+        directory = get_path('public_path')
         defaults = dict(request.POST)
         if defaults:
             c.no_theme = 'false'
@@ -273,7 +273,7 @@ class DbContentController(BaseController):
         except KeyError:
            abort(404)
 
-        directory = file_paths['public_path']
+        directory = get_path('public_path')
         defaults = dict(request.POST)
         if defaults:
             os.remove(directory + c.file)
@@ -302,8 +302,8 @@ class DbContentController(BaseController):
             tupleList.sort()
             return [x[1] for x in tupleList]
 
-        directory = file_paths['public_path']
-        download_path = file_paths['public_html']
+        directory = get_path('public_path')
+        download_path = get_path('public_html')
         current_path = "/"
         try:
             if request.GET['folder'] is not None:
@@ -322,7 +322,7 @@ class DbContentController(BaseController):
                 h.flash("Error creating folder. Check file permissions.", 'error')
             else:
                 h.flash("Folder Created")
-            
+
 
         files = []
         folders = []
