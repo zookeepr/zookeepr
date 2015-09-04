@@ -1,6 +1,10 @@
 # File for configuration specific to zkpylons
 
 import os
+import re
+
+from zkpylons.model.config import Config
+
 
 # File system paths that start with $xxx/ have file_paths['xxx'] prepended
 # to them.
@@ -11,7 +15,6 @@ file_paths = {
   'base_templates' :    '$zk_root/zkpylons/templates',
   'base_public':        '$zk_root/zkpylons/public',
   'theme_root' :        '$zk_root/zkpylons/themes',
-  'enabled_theme':      '$theme_root/zkpylons',
   'theme_templates':    '$enabled_theme/templates',
   'theme_public':       '$enabled_theme/public',
   'public_html':        '',
@@ -30,8 +33,30 @@ file_paths = {
 
 
 if file_paths.get('zk_root', None) is None:
-    file_paths['zk_root'] = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-for k in file_paths:
-    while file_paths[k].startswith("$"):
-        file_paths[k] = file_paths[file_paths[k][1:].split('/')[0]] + "/" + file_paths[k].split("/",1)[1]
+    file_paths['zk_root'] = os.path.normpath(os.path.join(os.path.dirname(os.path.abspath(__file__)), '../..'))
 
+
+def expand_variable(value):
+    for substitute in re.findall('\$([A-Za-z_]*)', value):
+        if substitute in file_paths:
+            value = re.sub('\$' + substitute, file_paths[substitute], value)
+            value = expand_variable(value)
+    return value
+
+
+for k in file_paths:
+    file_paths[k] = expand_variable(file_paths[k])
+
+
+def initialise_file_paths():
+    # Should be called after db is initialised
+    if 'enabled_theme' not in file_paths:
+        enabled_theme = Config.get('theme')
+        file_paths['enabled_theme'] = os.path.join(file_paths['theme_root'], enabled_theme)
+        for k in file_paths:
+            file_paths[k] = re.sub('\$enabled_theme', file_paths['enabled_theme'], file_paths[k])
+    return file_paths
+
+
+def get_path(key):
+    return initialise_file_paths()[key]

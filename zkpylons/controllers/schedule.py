@@ -33,8 +33,6 @@ from zkpylons.model.event import Event, EventValidator
 from zkpylons.model.event_type import EventType
 from zkpylons.model.config import Config
 
-from zkpylons.config.zkpylons_config import file_paths
-
 import os
 
 class NewScheduleFormSchema(BaseSchema):

@@ -35,7 +35,7 @@ from zkpylons.lib import auth
 from zkpylons.model import Person
 from zkpylons.model.config import Config
 
-from zkpylons.config.zkpylons_config import file_paths
+from zkpylons.config.zkpylons_config import get_path
 
 from sqlalchemy.orm.util import object_mapper
 
@@ -52,7 +52,7 @@ def iterdict(items):
     """
     Create a dictionary having a list of items and an iterator to cycle
     through them.
-    
+
     This is a helper function for cycle() (below).
     """
     return dict(items=items, iter=itertools.cycle(items))
@@ -127,16 +127,16 @@ def slideshow(set, small=None):
         if small == None or small == "":
             # Randomly select a smaller image, set the width of the div to be
             # the width of image.
-            small = random.choice(glob(file_paths["public_path"] + "/images/" + set + "/small/*"))
+            small = random.choice(glob(get_path('public_path') + "/images/" + set + "/small/*"))
         else:
-            small = file_paths["public_path"] + "/images/" + set + "/small/" + small
+            small = get_path('public_path') + "/images/" + set + "/small/" + small
 
         output = "<div class=\"slideshow\" id=\"%s\" style=\"width: %dpx\">" % (set, int(Image.open(small).size[0]))
         small = os.path.basename(small)
 
         # Optionally load up some captions for the images.
         caption = dict()
-        caption_file = file_paths['public_path'] + "/images/" + set + "/captions"
+        caption_file = get_path('public_path') + "/images/" + set + "/captions"
         if os.path.exists(caption_file):
             file = open(caption_file, 'r')
             captions = file.readlines()
@@ -147,14 +147,14 @@ def slideshow(set, small=None):
                 caption[str[0]] = str[2]
 
         # Load up all the images in the set directory.
-        files = glob(file_paths['public_path'] + "/images/" + set + '/*')
+        files = glob(get_path('public_path') + "/images/" + set + '/*')
         for file in files:
             if os.path.isfile(file):
                 short_file = os.path.basename(file)
                 if short_file == 'captions':
                     continue
 
-                output += "<a href=\"" + file_paths["public_html"] + "/images/" + set + "/" + short_file + "\" rel=\"lightbox[" + set + "]\""
+                output += "<a href=\"" + get_path('public_html') + "/images/" + set + "/" + short_file + "\" rel=\"lightbox[" + set + "]\""
                 if short_file in caption:
                     output += " title=\"" + caption[short_file] + "\""
                 output += ">"
@@ -162,7 +162,7 @@ def slideshow(set, small=None):
                 # If we're looking at the small one we've picked, display
                 # it as well.
                 if short_file == small:
-                    output += "<img src=\"" +  file_paths["public_html"] + "/images/" + set + "/small/" + short_file + "\">"
+                    output += "<img src=\"" +  get_path('public_html') + "/images/" + set + "/small/" + short_file + "\">"
 
                     # If there are more than one image in the slideshow
                     # then also display "more...".
@@ -248,8 +248,8 @@ def featured_image(title, big = False):
     big == True then find a directory
     """
 
-    fileprefix = file_paths['news_fileprefix']
-    htmlprefix = file_paths['news_htmlprefix']
+    fileprefix = get_path('news_fileprefix')
+    htmlprefix = get_path('news_htmlprefix')
 
     if big:
         # look for folder feature
@@ -312,8 +312,8 @@ def silly_description_checksum(desc):
         e = e * cion + c
         e = e * cion + b
         e = e * cion + a
-        e = 1.0 / e   
-        return e   
+        e = 1.0 / e
+        return e
 
     false = ""
     true = False
@@ -322,7 +322,7 @@ def silly_description_checksum(desc):
             false=false+(haiku[int(math.floor(fun(ny)+1))],haiku[int(math.ceil(fun(ny)+1))])[true]
         else:
             false=false+(haiku[int(math.floor(fun(ny)))],haiku[int(math.ceil(fun(ny)))])[true]
-        true = not true                                                                        
+        true = not true
     false=false.lower()+"("+")"
 
     # Some assistance provided here. All we're doing is taking the silly input string and hashing it with some mysterious salt. Mmmmmm salt

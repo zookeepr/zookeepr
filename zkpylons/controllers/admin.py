@@ -720,12 +720,12 @@ class AdminController(BaseController):
             WHERE (
                 (
                     invoice.void IS NULL AND (
-                        SELECT CASE WHEN (count(invoice_item.id) = 0) THEN 0 ELSE sum(invoice_item.cost * invoice_item.qty) END AS anon_7 
-                        FROM invoice_item 
+                        SELECT CASE WHEN (count(invoice_item.id) = 0) THEN 0 ELSE sum(invoice_item.cost * invoice_item.qty) END AS anon_7
+                        FROM invoice_item
                         WHERE invoice_item.invoice_id = invoice.id
                     ) = (
-                        SELECT CASE WHEN (count(payment_received.id) = 0) THEN 0 ELSE sum(payment_received.amount_paid) END AS anon_8 
-                        FROM payment_received 
+                        SELECT CASE WHEN (count(payment_received.id) = 0) THEN 0 ELSE sum(payment_received.amount_paid) END AS anon_8
+                        FROM payment_received
                         WHERE payment_received.invoice_id = invoice.id AND payment_received.approved = '1'
                     )
                 ) = 't'
@@ -760,12 +760,12 @@ class AdminController(BaseController):
             WHERE (
                 (
                     invoice.void IS NULL AND (
-                        SELECT CASE WHEN (count(invoice_item.id) = 0) THEN 0 ELSE sum(invoice_item.cost * invoice_item.qty) END AS anon_7 
-                        FROM invoice_item 
+                        SELECT CASE WHEN (count(invoice_item.id) = 0) THEN 0 ELSE sum(invoice_item.cost * invoice_item.qty) END AS anon_7
+                        FROM invoice_item
                         WHERE invoice_item.invoice_id = invoice.id
                     ) = (
-                        SELECT CASE WHEN (count(payment_received.id) = 0) THEN 0 ELSE sum(payment_received.amount_paid) END AS anon_8 
-                        FROM payment_received 
+                        SELECT CASE WHEN (count(payment_received.id) = 0) THEN 0 ELSE sum(payment_received.amount_paid) END AS anon_8
+                        FROM payment_received
                         WHERE payment_received.invoice_id = invoice.id AND payment_received.approved = '1'
                     )
                 ) = 't'
@@ -2008,7 +2008,7 @@ class AdminController(BaseController):
         """ For every fulfilment group, generate a boarding pass
             [Registration,Invoicing] """
         from zkpylons.lib import pdfgen
-        from zkpylons.config.zkpylons_config import file_paths
+        from zkpylons.config.zkpylons_config import get_path
         groups = FulfilmentGroup.find_all()
         for group in groups:
             c.fulfilment_group = group
@@ -2021,7 +2021,7 @@ class AdminController(BaseController):
                 filename = c.fulfilment_group.person.email_address + '.pdf'
             else:
                 filename = Config.get('event_shortname') + '_' + str(c.fulfilment_group.id) + '.pdf'
-            pdf = open(file_paths['zk_root'] + '/boardingpass/' + filename, 'w')
+            pdf = open(get_path('zk_root') + '/boardingpass/' + filename, 'w')
             pdf.write(pdf_data)
             pdf.close()
         return "Completed"
