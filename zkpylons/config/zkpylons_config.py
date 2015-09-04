@@ -48,7 +48,7 @@ for k in file_paths:
     file_paths[k] = expand_variable(file_paths[k])
 
 
-def get_file_paths():
+def initialise_file_paths():
     # Should be called after db is initialised
     if 'enabled_theme' not in file_paths:
         enabled_theme = Config.get('theme')
@@ -59,4 +59,4 @@ def get_file_paths():
 
 
 def get_path(key):
-    return get_file_paths()[key]
+    return initialise_file_paths()[key]

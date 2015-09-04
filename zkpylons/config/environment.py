@@ -13,7 +13,7 @@ from zkpylons.config.routing import make_map
 from zkpylons.model import init_model
 from zkpylons.model.config import Config
 
-from zkpylons.config.zkpylons_config import get_file_paths
+from zkpylons.config.zkpylons_config import initialise_file_paths
 
 from pylons.configuration import PylonsConfig
 
@@ -27,7 +27,7 @@ def load_environment(global_conf, app_conf):
     engine = sqlalchemy.create_engine(app_conf['sqlalchemy.url'])
     init_model(engine)
 
-    file_paths = get_file_paths()
+    file_paths = initialise_file_paths()
 
     # Pylons paths
     root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
