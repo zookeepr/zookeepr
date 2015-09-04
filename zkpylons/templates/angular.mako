@@ -3,6 +3,8 @@
 <%def name="short_title()"></%def>
 <%def name="toolbox_extra()"></%def>
 <%def name="toolbox_extra_admin()"></%def>
+<%def name="toolbox_extra_reviewer()"></%def>
+<%def name="toolbox_extra_funding_reviewer()"></%def>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang="en-us">
 	<head>
