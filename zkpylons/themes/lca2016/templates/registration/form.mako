@@ -123,16 +123,26 @@ ${ h.hidden('person.postcode') }
 %>
 
 %if h.lca_rego['personal_info']['phone'] == 'yes':
-          <p class="label"><label for="person.mobile">Phone number (International Format):</label></p>
-          <p class="entries">${ h.text('person.phone') }</p>
 
-          <p class="label">
-% if is_speaker:
-            <span class="mandatory">*</span>
-% endif
-            <label for="person.mobile">Mobile/Cell number (International Format):</label>
-          </p>
-          <p class="entries">${ h.text('person.mobile') }</p>
+    <div class="row form-group">
+        <label for="person.phone" class="col-sm-2 control-label">Phone number:</label>
+        <div class="input-group col-sm-10">
+%if is_speaker:
+            <input type="text" id="personphone" class="form-control" placeholder="Please use international Format" name="person.phone" required/>
+            <span class="input-group-addon" id="basic-addon2">required</span>
+%else:
+            <input type="text" id="personphone" class="form-control" placeholder="Please use international Format" name="person.phone" />
+%endif
+        </div>
+    </div>
+    
+    <div class="row form-group">
+        <label for="person.mobile" class="col-sm-2 control-label">Mobile/Cell number</label>
+        <div class="input-group col-sm-10">
+            <input type="text" id="personmobile" class="form-control" placeholder="Please use international Format" name="person.mobile" />
+        </div>
+    </div>
+    
 %else:
 ${ h.hidden('person.phone') }
 ${ h.hidden('person.mobile') }
