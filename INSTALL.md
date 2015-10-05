@@ -6,13 +6,14 @@ External dependencies
 
 Install these with your favourite package manager (eg apt-get).
 
+ * libjpeg-dev
  * libpq-dev
  * libpython-dev
  * libxslt1-dev
  * libxml2-dev
  * postgresql
  * python-virtualenv
-
+ * zlib1g-dev
 
 Creating a development environment
 ----------------------------------
