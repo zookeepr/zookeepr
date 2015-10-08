@@ -534,8 +534,9 @@ accommdisplay();
 %     for (year, desc) in h.lca_rego['past_confs']:
 <div class="checkbox">
       				<label>
-      				<% label = 'registration.prevlca.%s' % year %>
-        			<input type="checkbox" name="${ 'registration.prevlca.' + label }" id="${ 'registrationprevlca' + label }">
+      				<% label1 = 'registration.prevlca.%s' % year %>
+      				<% label2 = 'registrationprevlca%s' % year %>
+        			<input type="checkbox" name="${ label1 }" id="${ label2 }" value="1">
         			${ desc }
       				</label>
     			</div>
