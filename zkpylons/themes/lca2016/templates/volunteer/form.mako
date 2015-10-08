@@ -3,7 +3,7 @@
         <p>Please use the check-boxes below to indicate your category, your availability, and areas that you are able to assist with. Please use the "Other:" and "Experience:" text boxes to let us know about any restrictions on your time or special skills you have that might help at the conference.</p>
         <p>We thank you in advance for your enthusiasm and commitment to making linux.conf.au 2016 Geelong - LCA By the Bay - the best LCA ever!</p>
 
-% for category in c.config.get('volunteer', category='rego'):
+% for category in h.lca_rego['volunteer']:
         <h3>${ category['title'] }</h3>
 %   for area in category['questions']:
 <%    code = area['name'].replace(' ', '_').replace('.', '_') %>
