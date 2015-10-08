@@ -25,7 +25,7 @@
           <div class="textarea">
             <label for="volunteer.other" class="col-sm-2 control-label">Other</label>
             <div class="input-group col-sm-10">
-              <textarea class="form-control" id="proposalabstract" placeholder="Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during ${ c.config.get('event_shortname') }, and any special requirements (dietary or otherwise)." name="volunteer.other" rows="10" cols="80"></textarea>
+              <textarea class="form-control" id="proposalabstract" placeholder="Please provide any other relevant information such as your areas of interest, arrival and departure dates (if you're not local), your availability during linux.conf.au 2016, and any special requirements (dietary or otherwise)." name="volunteer.other" rows="10" cols="80"></textarea>
             </div>
           </div>
         </div>
