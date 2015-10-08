@@ -103,7 +103,7 @@ class AuthPersonValidator(validators.FancyValidator):
                              " 'Forgotten your password' link below or sign up"
                              " for a new person.")
             message = "Login failed"
-            error_dict = {'email_address': error_message}
+            error_dict = {'email_address_error': error_message}
             raise Invalid(message, values, state, error_dict=error_dict)
 
 
@@ -124,7 +124,7 @@ class PersonaValidator(validators.FancyValidator):
             if not lca_info['account_creation']:
                 error_message = "Your sign-in details are incorrect; try the 'Forgotten your password' link below."
                 message = "Login failed"
-                error_dict = {'email_address': error_message}
+                error_dict = {'email_address_error': error_message}
                 raise Invalid(message, values, state, error_dict=error_dict)
 
             # Create a new account for this email address
