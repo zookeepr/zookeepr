@@ -18,34 +18,47 @@
       <b>Earlybird</b> registrations are currently available! Only a limited number of Earlybird registrations are available however so be sure to pay before they're all gone.<br />
       Earlybird sales status:<br />
 
-      <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())}; text-align:center">
-% if c.ceilings['conference-earlybird'].percent_invoiced() > 10: #Only display the Sold text if there is enough room
-      Sold (${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced()) })
-% endif
+% if c.ceilings['conference-earlybird'].percent_invoiced() < 50: #blue progress bar
+      <div class="progress">
+        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())};">
+          ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced()) }
+        </div>
       </div>
-      <div class="graph-bar-available" style = "width:${ h.number_to_percentage(100-c.ceilings['conference-earlybird'].percent_invoiced()) }; text-align:center">
-% if c.ceilings['conference-earlybird'].percent_invoiced() < 85: #Only display the Available text if there is room
-      Available
-% endif
-      (${ h.number_to_percentage(100-c.ceilings['conference-earlybird'].percent_invoiced()) })
+% elif c.ceilings['conference-earlybird'].percent_invoiced() < 85: #orange progress bar
+      <div class="progress">
+        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())};">
+          ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced()) }
+        </div>
       </div>
+% else: #red progress bar
+      <div class="progress">
+        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced())};">
+          ${ h.number_to_percentage(c.ceilings['conference-earlybird'].percent_invoiced()) }
+        </div>
+      </div>
+% endif
 
 % elif h.lca_info['conference_status'] == 'open' and c.ceilings['conference-paid'].available() and not c.ceilings['conference-earlybird'].available():
 
-      <div class="graph-bar-sold" style = "width:${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}; text-align:center">
-% if c.ceilings['conference-paid'].percent_invoiced() > 10: #Only display the Sold text if there is enough room
-      Sold (${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced()) })
-% endif
+% if c.ceilings['conference-paid'].percent_invoiced() < 50: #blue progress bar
+      <div class="progress">
+        <div class="progress-bar progress-bar-info progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())};">
+          ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced()) }
+        </div>
       </div>
-
-     <div class="graph-bar-available" style = "width:${ h.number_to_percentage(100-c.ceilings['conference-paid'].percent_invoiced()) }; text-align:center">
-% if c.ceilings['conference-paid'].percent_invoiced() < 85: #Only display the Available text if there is room
-      Available
-% endif
-% if c.ceilings['conference-paid'].percent_invoiced() < 95: #Only display the Available text if there is room
-      (${ h.number_to_percentage(100-c.ceilings['conference-paid'].percent_invoiced()) })
-% endif
+% elif c.ceilings['conference-paid'].percent_invoiced() < 85: #orange progress bar
+      <div class="progress">
+        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())};">
+          ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced()) }
+        </div>
       </div>
+% else: #red progress bar
+      <div class="progress">
+        <div class="progress-bar progress-bar-warning progress-bar-striped" role="progressbar" aria-valuenow="${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())}" aria-valuemin="0" aria-valuemax="100" style="width: ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced())};">
+          ${ h.number_to_percentage(c.ceilings['conference-paid'].percent_invoiced()) }
+        </div>
+      </div>
+% endif
 
 
 % endif
