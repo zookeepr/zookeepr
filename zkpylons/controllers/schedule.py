@@ -19,7 +19,8 @@ from authkit.authorize.pylons_adaptors import authorize
 from authkit.permissions import ValidAuthKitUser
 
 from datetime import date, time, datetime, timedelta
-from pytz import timezone
+from dateutil.tz import *
+#from pytz import timezone
 
 from zkpylons.lib.mail import email
 from zkpylons.lib.ordereddict import OrderedDict
