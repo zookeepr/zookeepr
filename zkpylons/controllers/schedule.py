@@ -129,6 +129,7 @@ class ScheduleController(BaseController):
 
     def ical(self):
         c.schedule_collection = Schedule.find_all()
+        tz = gettz(h.lca_info['time_zone'])
 
         ical = vobject.iCalendar()
         for schedule in c.schedule_collection:
@@ -136,13 +137,13 @@ class ScheduleController(BaseController):
                 event = ical.add('vevent')
                 event.add('uid').value = str(schedule.id) + '@' + h.lca_info['event_host']
                 # Created
-                event.add('created').value = schedule.creation_timestamp.replace(tzinfo=h.lca_info['time_zone'])
+                event.add('created').value = schedule.creation_timestamp.replace(tzinfo=tz)
                 # Last Modified
-                event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=h.lca_info['time_zone'])
-                event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=h.lca_info['time_zone'])
+                event.add('dtstamp').value = schedule.last_modification_timestamp.replace(tzinfo=tz)
+                event.add('last-modified').value = schedule.last_modification_timestamp.replace(tzinfo=tz)
                 # Start and End Time
-                event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=h.lca_info['time_zone'])
-                event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=h.lca_info['time_zone'])
+                event.add('dtstart').value = schedule.time_slot.start_time.replace(tzinfo=tz)
+                event.add('dtend').value = schedule.time_slot.end_time.replace(tzinfo=tz)
                 # Title and Author (need to add Author here)
                 event.add('summary').value = schedule.event.computed_title() + '. ' + h.list_to_string(schedule.event.computed_speakers())
                 # Abstract, if we have one
