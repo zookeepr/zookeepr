@@ -377,7 +377,6 @@ accommdisplay();
 %              if category.name == "Ticket":
     			<div class="radio">
       				<label onclick="javascript: ticketWarning(' ${ product.description } ');">
-        			<input type="radio" name="${ 'products.category_' + category.clean_name()}" id="products.category_${ category.clean_name() + "_" + str(product.id) }" onclick = "">
         			${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.integer_to_currency(product.cost) }
 %                  if product.description.lower().find('student') > -1:
 <div id="warningDiv">
@@ -395,7 +394,6 @@ accommdisplay();
 %              else:
     			<div class="radio">
       				<label>
-        			<input type="radio" name="${ 'products.category_' + category.clean_name()}" id="products.category_${ category.clean_name() + "_" + str(product.id) }" onclick = "">
         			${ h.radio('products.category_' + category.clean_name(), str(product.id)) } ${ soldout |n}${ product.description } - ${ h.integer_to_currency(product.cost) }
       				</label>
     			</div>
