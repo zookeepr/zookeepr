@@ -129,7 +129,7 @@ class ScheduleController(BaseController):
 
     def ical(self):
         c.schedule_collection = Schedule.find_all()
-        tz = gettz(h.lca_info['time_zone'])
+        tz = gettz(str(h.lca_info['time_zone']))
 
         ical = vobject.iCalendar()
         for schedule in c.schedule_collection:
