@@ -167,8 +167,22 @@
             
 </%doc>
       <hr class="featurette-divider">
-
-      <!-- Three columns of text below the carousel -->
+<%doc>
+      <div class="row">
+        <div class="col-lg-8 col-md-offset-2">
+          <div class="panel panel-primary">
+            <div class="panel-heading">
+              <h3 class="panel-title" style="text-align: center;">Our Emperor Penguin Sponsors</h1>
+            </div>
+            <div class="panel-body">
+              <div class="col-lg-6">
+                <img width="100%" src="https://linux.conf.au/img/sponsors/IBM_logo.svg">
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+</%doc>
       <div class="row">
         <div class="col-lg-4">
           <img class="img-circle" src="/img/bollards2.jpg" alt="Geelong" width="140" height="140">
