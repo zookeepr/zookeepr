@@ -39,10 +39,10 @@ class FundingSchema(BaseSchema):
     allow_extra_fields = False
 
     male = validators.Int(min=0, max=1)
-    why_attend = validators.String(not_empty=True)
-    how_contribute = validators.String(not_empty=True)
-    financial_circumstances = validators.String(not_empty=True)
-    type = FundingTypeValidator()
+    why_attend = validators.String()
+    how_contribute = validators.String()
+    financial_circumstances = validators.String()
+    #type = FundingTypeValidator()
     diverse_groups = validators.String()
     supporting_information = validators.String()
     prevlca = DictSet(if_missing=None)
@@ -50,7 +50,6 @@ class FundingSchema(BaseSchema):
 class NewFundingSchema(BaseSchema):
     funding = FundingSchema()
     attachment1 = FileUploadValidator()
-    attachment2 = FileUploadValidator()
     pre_validators = [NestedVariables]
 
 class ExistingFundingSchema(BaseSchema):
