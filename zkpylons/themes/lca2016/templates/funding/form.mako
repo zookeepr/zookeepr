@@ -9,6 +9,7 @@
       </label>
 %  endif
 % endfor
+    </div>
 
     <div class="row form-group">
       <label for="fundingdiverse_groups" class="control-label">In what way to you enhance the diversity of the Open Source community?</label>
