@@ -1,29 +1,53 @@
 <%page args="editing" />
     <div class="row form-group">
-      <label for="fundingdiverse_groups" class="col-sm-2 control-label">In what way to you enhance the diversity of the Open Source community?</label>
-      <div class="input-group col-sm-10">
+      <label for="fundingdiverse_groups" class="control-label">In what way to you enhance the diversity of the Open Source community?</label>
+      <div class="input-group">
         <textarea class="form-control" id="fundingdiverse_groups" placeholder="Please indicate how you enhance the diversity of the Open Source Community." name="funding.diverse_groups" rows="10" cols="80"></textarea>
       </div>
     </div>
 
+    <div class="row form-group">
+      <label for="fundinghow_contribue" class="control-label">How do you contribute to the Open Source community?</label>
+      <div class="input-group">
+        <textarea class="form-control" id="fundinghow_contribute" placeholder="Please describe in what way you contribute to the open source community (for example, as a developer, documenter, QA/testing, bug submitter, Open Source advocate/community champion, or other leadership roles). Up to about 500 words." name="funding.how_contribute" rows="10" cols="80"></textarea>
+      </div>
+    </div>
 
-    <p class="label"><span class="mandatory">*</span><label for="funding.how_contribute">How do you contribute to the Open Source community?</label></p>
-    <p class="entries">${ h.textarea('funding.how_contribute', cols=70, rows=10) }</p>
-    <p class="note">Please describe in what way you contribute to the open source community (for example, as a developer, documenter, QA/testing, bug submitter, Open Source advocate/community champion, or other leadership roles). Up to about 500 words.</p>
+    <div class="row form-group">
+      <label for="fundingfinancial_circumstances" class="control-label">What assistance would you need to be able to attend the conference?</label>
+      <div class="input-group">
+        <textarea class="form-control" id="fundingfinancial_circumstances" placeholder="Please describe the financial circumstances that prevent you from otherwise attending linux.conf.au 2016." name="funding.financial_circumstances" rows="10" cols="80"></textarea>
+      </div>
+    </div>
 
-    <p class="label"><span class="mandatory">*</span><label for="funding.financial_circumstance">What
-assistance would you need to be able to attend the conference?</label></p>
-    <p class="entries">${ h.textarea('funding.financial_circumstances', cols=70, rows=10) }</p>
-    <p class="note">Please describe the financial circumstances that prevent you from otherwise attending linux.conf.au 2016.</p>
+    <div class="row form-group">
+      <label for="fundingsupporting_information" class="control-label">Any other supporting information?</label>
+      <div class="input-group">
+        <textarea class="form-control" id="fundingsupporting_information" placeholder="Please provide any additional information that may assist your application." name="funding.supporting_information" rows="10" cols="80"></textarea>
+      </div>
+    </div>
 
-    <p class="label"><label for="funding.supporting_information">Any other supporting information?</label></p>
-    <p class="entries">${ h.textarea('funding.supporting_information', cols=70, rows=10) }</p>
-    <p class="note">Please provide any additional information that may assist your application.</p>
+    <div class="row form-group">
+      <label for="fundingwhy_attend" class="control-label">Why would you like to attend linux.conf.au 2016?</label>
+      <div class="input-group">
+        <textarea class="form-control" id="fundingwhy_attend" placeholder="Please describe why you would like to attend linux.conf.au 2016 and indicate the talks that particularly interest you. Up to about 500 words." name="funding.why_attend" rows="10" cols="80"></textarea>
+      </div>
+    </div>
 
-
-    <p class="label"><span class="mandatory">*</span><label for="funding.why_attend">Why would you like to attend linux.conf.au 2016?</label></p>
-    <p class="entries">${ h.textarea('funding.why_attend', cols=70, rows=10) }</p>
-    <p class="note">Please describe why you would like to attend linux.conf.au 2016 and indicate the talks that particularly interest you. Up to about 500 words.</p>
+    <div class=row form-group">
+      <label for="fundingprevlca" class="control-label">Have you attended linux.conf.au before?</label>
+      <div class="input-group">
+%     for (year, desc) in h.lca_rego['past_confs']:
+        <div class="checkbox">
+          <label>
+            <% label1 = 'registration.prevlca.%s' % year %>
+            <% label2 = 'registrationprevlca%s' % year %>
+            <input type="checkbox" name="${ label1 }" id="${ label2 }" value="1">
+            ${ desc }
+          </label>
+        </div>
+%     endfor
+    </div>
 
 
     <p class="label"><label for="funding.prevlca">Have you attended linux.conf.au before?</label></p>
