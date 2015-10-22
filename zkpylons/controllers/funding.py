@@ -105,7 +105,6 @@ class FundingController(BaseController):
 
         funding_results = self.form_result['funding']
         attachment_results1 = self.form_result['attachment1']
-        attachment_results2 = self.form_result['attachment2']
 
         c.person = h.signed_in_person()
 
