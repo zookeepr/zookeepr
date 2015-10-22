@@ -38,7 +38,6 @@ class NewFundingReviewSchema(BaseSchema):
 class FundingSchema(BaseSchema):
     allow_extra_fields = False
 
-    #male = validators.Int(min=0, max=1)
     why_attend = validators.String()
     how_contribute = validators.String()
     financial_circumstances = validators.String()
@@ -103,11 +102,6 @@ class FundingController(BaseController):
             return render("funding/closed.mako")
         elif c.funding_status == 'not_open':
             return render("funding/not_open.mako")
-
-        if self.form_result['funding']['male'] == 1:
-            self.form_result['funding']['male'] = True
-        elif self.form_result['funding']['male'] == 0:
-            self.form_result['funding']['male'] = False
 
         funding_results = self.form_result['funding']
         attachment_results1 = self.form_result['attachment1']
@@ -196,10 +190,6 @@ class FundingController(BaseController):
         # This is horrible, don't know a better way to do it
         if c.funding.type:
             defaults['funding.type'] = defaults['funding.funding_type_id']
-        if c.funding.male:
-            defaults['funding.male'] = 1
-        else:
-            defaults['funding.male'] = 0
 
         form = render('/funding/edit.mako')
         return htmlfill.render(form, defaults)
@@ -217,11 +207,6 @@ class FundingController(BaseController):
                 return render("funding/editing_closed.mako")
             elif c.funding_editing == 'not_open':
                 return render("funding/editing_not_open.mako")
-
-        if self.form_result['funding']['male'] == 1:
-            self.form_result['funding']['male'] = True
-        elif self.form_result['funding']['male'] == 0:
-            self.form_result['funding']['male'] = False
 
         c.funding = Funding.find_by_id(id)
         for key in self.form_result['funding']:
