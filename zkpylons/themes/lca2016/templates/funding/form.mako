@@ -1,7 +1,10 @@
 <%page args="editing" />
-    <p class="label"><label for="funding.diverse_groups">In what way do you enhance the diversity of the Open Source community?</label></p>
-    <p class="entries">${ h.textarea('funding.diverse_groups', cols=70, rows=10) }</p>
-    <p class="note">Please indicate how you enhance the diversity of the Open Source Community.</p>
+    <div class="row form-group">
+      <label for="fundingdiverse_groups" class="col-sm-2 control-label">In what way to you enhance the diversity of the Open Source community?</label>
+      <div class="input-group col-sm-10">
+        <textarea class="form-control" id="fundingdiverse_groups" placeholder="Please indicate how you enhance the diversity of the Open Source Community." name="funding.diverse_groups" rows="10" cols="80"></textarea>
+      </div>
+    </div>
 
 
     <p class="label"><span class="mandatory">*</span><label for="funding.how_contribute">How do you contribute to the Open Source community?</label></p>
