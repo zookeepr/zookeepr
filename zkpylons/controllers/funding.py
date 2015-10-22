@@ -78,7 +78,6 @@ class FundingController(BaseController):
         c.form_fields = {
           'funding.why_attend': 'Why would you like to attend ' + h.lca_info['event_name'],
           'funding.how_contribute': 'How do you contribute to the Open Source community',
-          'funding.male': 'What is your gender',
           'funding.financial_circumstances': 'What are your financial circumstances',
         }
 
