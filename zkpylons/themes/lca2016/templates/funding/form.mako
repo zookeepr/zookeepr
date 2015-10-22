@@ -1,5 +1,16 @@
 <%page args="editing" />
     <div class="row form-group">
+      <label for="fundingtype" class="control-label">What funding programme are you applying for?</label>
+% for st in c.funding_types:
+%  if st.available():
+      <label>
+        <input type="radio" name="funding.type" id="funding.type_${ st.id }" value="${ st.id }">
+        ${ st.name }
+      </label>
+%  endif
+% endfor
+
+    <div class="row form-group">
       <label for="fundingdiverse_groups" class="control-label">In what way to you enhance the diversity of the Open Source community?</label>
       <div class="input-group">
         <textarea class="form-control" id="fundingdiverse_groups" placeholder="Please indicate how you enhance the diversity of the Open Source Community." name="funding.diverse_groups" rows="10" cols="80"></textarea>
