@@ -38,7 +38,7 @@ class NewFundingReviewSchema(BaseSchema):
 class FundingSchema(BaseSchema):
     allow_extra_fields = False
 
-    male = validators.Int(min=0, max=1)
+    #male = validators.Int(min=0, max=1)
     why_attend = validators.String()
     how_contribute = validators.String()
     financial_circumstances = validators.String()
