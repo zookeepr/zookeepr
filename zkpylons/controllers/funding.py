@@ -41,7 +41,7 @@ class FundingSchema(BaseSchema):
     why_attend = validators.String()
     how_contribute = validators.String()
     financial_circumstances = validators.String()
-    #type = FundingTypeValidator()
+    type = FundingTypeValidator()
     diverse_groups = validators.String()
     supporting_information = validators.String()
     prevlca = DictSet(if_missing=None)
