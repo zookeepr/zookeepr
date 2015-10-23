@@ -1,6 +1,7 @@
 <%page args="editing" />
     <div class="row form-group">
-      <label for="fundingtype" class="control-label">What funding programme are you applying for?</label>
+      <label for="fundingtype" class="col-sm-2 control-label">What funding programme are you applying for?</label>
+      <div class="col-sm-10">
 % for st in c.funding_types:
 %  if st.available():
       <label>
@@ -9,6 +10,7 @@
       </label>
 %  endif
 % endfor
+      </div>
     </div>
 
     <div class="row form-group">
