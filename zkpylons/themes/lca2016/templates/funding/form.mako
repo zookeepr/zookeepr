@@ -66,10 +66,10 @@
     <h2>References</h2>
 
     <div class="row form-group">
-      <label for="attachment1" class="col-sm-2 control-label">Attachments</label>
+      <label for="attachment" class="col-sm-2 control-label">Attachments</label>
       <div class="col-sm-10">
 % if not editing:
-        <input type="file" id="attachment1" name="attachment1">
+        <input type="file" id="attachment" name="attachment">
         <p class="help-block">Any additional information, image, etc. You can attach and delete more files later by editing this submission.</p>
 % else:
 % if len(c.funding.attachments) > 0:

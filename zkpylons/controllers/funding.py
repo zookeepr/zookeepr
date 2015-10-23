@@ -48,12 +48,11 @@ class FundingSchema(BaseSchema):
 
 class NewFundingSchema(BaseSchema):
     funding = FundingSchema()
-    attachment1 = FileUploadValidator()
+    attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
 
 class ExistingFundingSchema(BaseSchema):
     funding = FundingSchema()
-    attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
 
 class NewAttachmentSchema(BaseSchema):
@@ -104,7 +103,7 @@ class FundingController(BaseController):
             return render("funding/not_open.mako")
 
         funding_results = self.form_result['funding']
-        attachment_results1 = self.form_result['attachment1']
+        attachment_results1 = self.form_result['attachment']
 
         c.person = h.signed_in_person()
 
