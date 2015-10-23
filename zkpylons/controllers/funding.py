@@ -121,10 +121,6 @@ class FundingController(BaseController):
             attachment = FundingAttachment(**attachment_results1)
             c.funding.attachments.append(attachment)
             meta.Session.add(attachment)
-        if attachment_results2 is not None:
-            attachment = FundingAttachment(**attachment_results2)
-            c.funding.attachments.append(attachment)
-            meta.Session.add(attachment)
 
         meta.Session.commit()
         email(c.funding.person.email_address, render('funding/thankyou_email.mako'))
