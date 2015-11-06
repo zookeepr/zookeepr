@@ -25,8 +25,8 @@ ${ h.hidden('return_url', h.url_for(qualified=True, controller='invoice', action
 ${ h.hidden('return_url_text', 'Return to ' + c.payment.event_name) }
 ${ h.hidden('callback_url', h.url_for(protocol='http', qualified=True, controller='payment', action='new')) }
 <input type="hidden" name="card_types" value="VISA|MASTERCARD|AMEX">
-<input type="hidden" name="page_header_image" value="https://vault.safepay.com.au/images/custom/linux/Geelong-Wave-Gradient-medium.png">
-${ h.hidden('page_style_url', h.url_for(protocol='http', controller='css', action='invoice.css', id='')) }
+${ h.hidden('page_header_image', h.url_for('/img/Geelong-Wave-Gradient-medium.png', protocol='http')) }
+${ h.hidden('page_header_image', h.url_for('/css/invoice.css', protocol='http')) }
 <p>${ h.submit('', 'Pay through SecurePay') }
 
 <p>Payment gateway kindly provided by:<br/>
