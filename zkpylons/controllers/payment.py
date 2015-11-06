@@ -39,21 +39,20 @@ class NewPaymentSchema(BaseSchema):
     payment = PaymentSchema()
 
 class SecurePayPingSchema(BaseSchema):
-    payment_id = validators.Int(not_empty=True)
-    invoice_id = validators.Int(not_empty=True)
-    summary_code = validators.String(not_empty=True)
-    response_amount = validators.Int(not_empty=True)
-    currency = validators.String(not_empty=True)
-    card_name = validators.String(not_empty=False)
-    card_type = validators.String(not_empty=False)
-    card_number = validators.String(not_empty=False)
-    card_expiry = validators.String(not_empty=False)
-    card_mac = validators.String(not_empty=False)
-    response_code = validators.String(not_empty=True)
-    bank_reference = validators.String(not_empty=True)
-    response_text = validators.String(not_empty=True)
-    remote_ip = validators.String(not_empty=True)
-    receipt_address = validators.String(not_empty=False, if_empty="")
+    #Field names match those of SecurePay
+    summarycode = validators.String(not_empty=True)
+    rescode = validators.String(not_empty=True)
+    restext = validators.String(not_empty=True)
+    refid = validators.String(not_empty=True)
+    txnid = validators.Int(not_empty=True)
+    settdate = validators.String(not_empty=True) #Bank settlement date
+    pan = validators.String(not_empty=False) #The masked card number of format first six.
+    expirydate = validators.String(not_empty=False)
+    merchant = validators.String(not_empty=False)
+    timestamp = validators.Int(not_empty=True)
+    amount = validators.Int(not_empty=True)
+    fingerprint = validators.String(not_empty=True)
+    cardtype = validators.String(not_empty=False)
 
 class PaymentController(BaseController):
     """This controller receives payment advice from the payment gateway.
@@ -99,7 +98,7 @@ class PaymentController(BaseController):
     def new(self):
         schema = SecurePayPingSchema()
         try:
-            form_result = schema.to_python(request.params)
+            form_result = schema.to_python(dict(request.params))
         except validators.Invalid, error:
             return 'Invalid: %s' % error
 
@@ -108,25 +107,22 @@ class PaymentController(BaseController):
 
         fields = form_result
         c.response = {
-            'payment_id': fields['payment_id'],
-            'invoice_id': fields['invoice_id'],
-            'success_code': fields['summary_code'],
-            'amount_paid': fields['response_amount'],
-            'currency_used': fields['currency'],
-            'card_name': fields['card_name'],
-            'card_type': fields['card_type'],
-            'card_number': fields['card_number'],
-            'card_expiry': fields['card_number'],
-            'card_mac': fields['card_mac'],
-            'auth_code': fields['response_code'],
-            'gateway_ref': fields['bank_reference'],
-            'response_text': fields['response_text'],
-            'client_ip_gateway': fields['remote_ip'],
+            #Names are remapped to the old PaymentReceived names from new SecureFrame names
+            'success_code': fields['summarycode'],
+            'response_text': fields['restext'],
+            'gateway_ref': fields['txnid'],
+            'card_number': fields['pan'],
+            'card_expiry': fields['expirydate'],
+            'amount_paid': fields['amount'],
+            'auth_code': fields['fingerprint'],
+            'card_type': fields['cardtype'],
             'client_ip_zookeepr': request.environ.get('REMOTE_ADDR'),
-            'email_address': fields['receipt_address']
+            'client_ip_gateway': '',
+            'email_address': ''
        }
 
-        if 'Approved' in c.response['response_text'] or 'success' in c.response['response_text']:
+        #if 'Approved' in c.response['response_text'] or 'success' in c.response['response_text']:
+        if c.response['success_code'] == 1 or c.response['success_code'] == '1':
             c.response['approved'] = True
         else:
             c.response['approved'] = False
@@ -141,7 +137,9 @@ class PaymentController(BaseController):
                 #validation_errors.append('Mismatch in IP addresses: zkpylons=' + c.response['client_ip_zookeepr'] + ' gateway=' + c.response['client_ip_gateway'])
 
             # Get the payment object associated with this transaction
+            c.response['payment_id'] = fields['refid'].split("-")[2]
             payment = Payment.find_by_id(c.response['payment_id'])
+            c.response['invoice_id'] = int(fields['refid'].split("-")[1].split()[0])
 
         if payment is None:
             validation_errors.append('Invalid payment ID from the payment gateway')
@@ -155,6 +153,10 @@ class PaymentController(BaseController):
                 return redirect_to(action='view', id=payment.id)
 
             # Extra validation
+            import hashlib
+            fingerprint_valid = [payment.merchant_id, lca_info['payment_merchant_key'], payment.transaction_reference, str(payment.amount), str(fields['timestamp']), str(c.response['success_code'])]
+            if c.response['auth_code'] != hashlib.sha1("|".join(fingerprint_valid)).hexdigest():
+                validation_errors.append('Payment fingerprint did not match expected value.')
             if c.response['amount_paid'] != payment.amount:
                 validation_errors.append('Mismatch between amounts paid and invoiced')
             if c.response['invoice_id'] != payment.invoice.id:
