@@ -222,7 +222,10 @@ class InvoiceController(BaseController):
         c.payment.invoice = invoice
 
         meta.Session.commit()
-        return render("/invoice/payment.mako")
+        if c.payment.gateway == 'securepay':
+            return render("/invoice/securepay.mako")
+        else:
+            return render("/invoice/payment.mako")
 
     @authorize(h.auth.has_organiser_role)
     @jsonify
