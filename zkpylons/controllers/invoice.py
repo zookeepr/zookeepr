@@ -32,6 +32,7 @@ from zkpylons.config.zkpylons_config import file_paths
 
 import zkpylons.lib.pdfgen as pdfgen
 import zkpylons.lib.pxpay as pxpay
+import os.path
 
 log = logging.getLogger(__name__)
 
@@ -221,7 +222,10 @@ class InvoiceController(BaseController):
         c.payment.invoice = invoice
 
         meta.Session.commit()
-        return render("/invoice/payment.mako")
+        if c.payment.gateway == 'securepay':
+            return render("/invoice/securepay.mako")
+        else:
+            return render("/invoice/payment.mako")
 
     @authorize(h.auth.has_organiser_role)
     @jsonify
@@ -378,7 +382,11 @@ class InvoiceController(BaseController):
         c.invoice = Invoice.find_by_id(id, True)
         xml_s = render('/invoice/pdf.mako')
 
-        xsl_f = file_paths['zk_root'] + '/zkpylons/templates/invoice/pdf.xsl'
+        template_path = file_paths['theme_templates'] + '/invoice/pdf.xsl'
+        if(os.path.isfile(template_path)):
+            xsl_f = template_path
+        else:
+            xsl_f = file_paths['zk_root'] + '/zkpylons/templates/invoice/pdf.xsl'
         pdf_data = pdfgen.generate_pdf(xml_s, xsl_f)
 
         filename = lca_info['event_shortname'] + '_' + str(c.invoice.id) + '.pdf'

@@ -57,7 +57,7 @@
 %       else:
               <font color="red">DECLINED</font>
 %       endif
-              Payment Received ${ h.link_to(str(pr.id), url=h.url_for(controller='payment', action='view', id=pr.payment.id)) } (${ pr.email_address })
+              Payment Received ${ h.link_to(str(pr.id), url=h.url_for(controller='payment', action='view', id=str(pr.payment_id))) } (${ pr.email_address })
 %       if pr.validation_errors:
               -- <font color="red">Validation errors</font>
 %       endif
