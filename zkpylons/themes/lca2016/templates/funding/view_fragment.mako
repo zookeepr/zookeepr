@@ -37,7 +37,7 @@ ${ h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' %
 ${ h.line_break(h.util.html_escape(c.funding.diverse_groups)) | n}
 </blockquote></p>
 
-<em>How do you contribute to the Open Source community?</em>
+<em>How do you contribute to the Open Source community, directly or indirectly?</em>
 <p><blockquote>
 ${ h.line_break(h.util.html_escape(c.funding.how_contribute)) | n}
 </blockquote></p>
