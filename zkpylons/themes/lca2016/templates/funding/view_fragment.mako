@@ -34,11 +34,7 @@ ${ h.link_to('(email address only stalk)', url='http://google.com/search?q=%s' %
 <em>In what way to you enhance the diversity of the Open Source community?</em>
 <p>
 <blockquote>
-% if c.funding.diverse_groups:
 ${ h.line_break(h.util.html_escape(c.funding.diverse_groups)) | n}
-% else:
-Not specified
-% endif
 </blockquote></p>
 
 <em>How do you contribute to the Open Source community?</em>
@@ -53,11 +49,7 @@ ${ h.line_break(h.util.html_escape(c.funding.financial_circumstances)) | n}
 
 <em>Any other supporting information?</em>
 <p><blockquote>
-% if c.funding.supporting_information:
 ${ h.line_break(h.util.html_escape(c.funding.supporting_information)) | n}
-% else:
-Not specified
-% endif
 </blockquote></p>
 
 <em>Why would you like to attend linux.conf.au 2016?</em>
