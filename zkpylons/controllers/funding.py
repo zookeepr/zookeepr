@@ -38,10 +38,9 @@ class NewFundingReviewSchema(BaseSchema):
 class FundingSchema(BaseSchema):
     allow_extra_fields = False
 
-    male = validators.Int(min=0, max=1)
-    why_attend = validators.String(not_empty=True)
-    how_contribute = validators.String(not_empty=True)
-    financial_circumstances = validators.String(not_empty=True)
+    why_attend = validators.String()
+    how_contribute = validators.String()
+    financial_circumstances = validators.String()
     type = FundingTypeValidator()
     diverse_groups = validators.String()
     supporting_information = validators.String()
@@ -49,13 +48,11 @@ class FundingSchema(BaseSchema):
 
 class NewFundingSchema(BaseSchema):
     funding = FundingSchema()
-    attachment1 = FileUploadValidator()
-    attachment2 = FileUploadValidator()
+    attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
 
 class ExistingFundingSchema(BaseSchema):
     funding = FundingSchema()
-    attachment = FileUploadValidator()
     pre_validators = [NestedVariables]
 
 class NewAttachmentSchema(BaseSchema):
@@ -79,7 +76,6 @@ class FundingController(BaseController):
         c.form_fields = {
           'funding.why_attend': 'Why would you like to attend ' + h.lca_info['event_name'],
           'funding.how_contribute': 'How do you contribute to the Open Source community',
-          'funding.male': 'What is your gender',
           'funding.financial_circumstances': 'What are your financial circumstances',
         }
 
@@ -106,14 +102,8 @@ class FundingController(BaseController):
         elif c.funding_status == 'not_open':
             return render("funding/not_open.mako")
 
-        if self.form_result['funding']['male'] == 1:
-            self.form_result['funding']['male'] = True
-        elif self.form_result['funding']['male'] == 0:
-            self.form_result['funding']['male'] = False
-
         funding_results = self.form_result['funding']
-        attachment_results1 = self.form_result['attachment1']
-        attachment_results2 = self.form_result['attachment2']
+        attachment_results1 = self.form_result['attachment']
 
         c.person = h.signed_in_person()
 
@@ -128,10 +118,6 @@ class FundingController(BaseController):
 
         if attachment_results1 is not None:
             attachment = FundingAttachment(**attachment_results1)
-            c.funding.attachments.append(attachment)
-            meta.Session.add(attachment)
-        if attachment_results2 is not None:
-            attachment = FundingAttachment(**attachment_results2)
             c.funding.attachments.append(attachment)
             meta.Session.add(attachment)
 
@@ -198,10 +184,6 @@ class FundingController(BaseController):
         # This is horrible, don't know a better way to do it
         if c.funding.type:
             defaults['funding.type'] = defaults['funding.funding_type_id']
-        if c.funding.male:
-            defaults['funding.male'] = 1
-        else:
-            defaults['funding.male'] = 0
 
         form = render('/funding/edit.mako')
         return htmlfill.render(form, defaults)
@@ -219,11 +201,6 @@ class FundingController(BaseController):
                 return render("funding/editing_closed.mako")
             elif c.funding_editing == 'not_open':
                 return render("funding/editing_not_open.mako")
-
-        if self.form_result['funding']['male'] == 1:
-            self.form_result['funding']['male'] = True
-        elif self.form_result['funding']['male'] == 0:
-            self.form_result['funding']['male'] = False
 
         c.funding = Funding.find_by_id(id)
         for key in self.form_result['funding']:
