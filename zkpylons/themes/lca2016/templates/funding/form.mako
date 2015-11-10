@@ -21,7 +21,7 @@
     </div>
 
     <div class="row form-group">
-      <label for="fundinghow_contribue" class="control-label">How do you contribute to the Open Source community?</label>
+      <label for="fundinghow_contribue" class="control-label">How do you contribute to the Open Source community, directly or indirectly?</label>
       <div class="input-group">
         <textarea class="form-control" id="fundinghow_contribute" placeholder="Please describe in what way you contribute to the open source community (for example, as a developer, documenter, QA/testing, bug submitter, Open Source advocate/community champion, or other leadership roles). Up to about 500 words." name="funding.how_contribute" rows="10" cols="80"></textarea>
       </div>
