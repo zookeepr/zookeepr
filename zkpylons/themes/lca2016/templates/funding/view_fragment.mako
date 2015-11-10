@@ -1,7 +1,7 @@
 <div id="funding">
 
 <p class="submitted">
-Funding request for a
+Funding request for
 ${ c.funding.type.name } 
 submitted by
 ${ c.funding.person.fullname }
@@ -76,13 +76,15 @@ ${ desc }<br />
 <p class="label">Attachments:</p>
 
 % if len(c.funding.attachments) > 0:
-<table>
+<table class="table sortable">
+<thead>
 <tr>
 <th>Filename</th>
 <th>Size</th>
 <th>Date uploaded</th>
 <th>&nbsp;</th>
 </tr>
+</thead>
 
 %   for a in c.funding.attachments:
 <tr class="${ h.cycle('even', 'odd') }">
