@@ -175,6 +175,9 @@
             </div>
             <div class="panel-body">
               <div class="col-lg-4 col-lg-offset-4">
+                <img width="100%" src="/img/sponsors/HPE_logo.svg">
+              </div>
+              <div class="col-lg-4 col-lg-offset-4">
                 <img width="100%" src="/img/sponsors/IBM_logo.svg">
               </div>
             </div>
