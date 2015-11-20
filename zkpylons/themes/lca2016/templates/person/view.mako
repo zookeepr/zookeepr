@@ -171,7 +171,7 @@
 % if h.lca_info['funding_status'] in ('open', 'closed'):
 <h2>Submitted Funding Applications</h2>
 
-%   if len(c.person.funding) > 0 and ('open', 'closed') in h.lca_info['funding_status']:
+%   if len(c.person.funding) > 0 and h.lca_info['funding_status'] in ('open', 'closed'):
 <table class="table sortable">
   <tr class="odd">
     <th>Proposal Type</th>
