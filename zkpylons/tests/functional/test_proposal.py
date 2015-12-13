@@ -8,7 +8,7 @@ from zk.model.review import Review
 from webtest.forms import Upload
 
 from .fixtures import PersonFactory, ProposalFactory, AttachmentFactory, RoleFactory, StreamFactory, ProposalStatusFactory, ProposalTypeFactory, TravelAssistanceTypeFactory, AccommodationAssistanceTypeFactory, TargetAudienceFactory, ConfigFactory, CompletePersonFactory
-from .utils import do_login
+from .utils import do_login, isSignedIn
 
 class TestProposal(object):
 
@@ -255,3 +255,74 @@ class TestCFPStates(object):
         resp = do_login(app, pers)
         resp = app.get('/programme/submit_a_proposal')
         assert "The call for proposals is now closed" in unicode(resp.body, 'utf-8')
+
+class TestAttachment(object):
+
+    def test_permissions(self, app, db_session):
+        pers = PersonFactory()
+        sec_pers = PersonFactory()
+        rev_pers = PersonFactory(roles = [RoleFactory(name = 'reviewer')])
+        org_pers = PersonFactory(roles = [RoleFactory(name = 'organiser')])
+        other_pers = PersonFactory()
+        ProposalStatusFactory(name='Withdrawn') # Required by code
+        # Multiple attachments for deletion testing
+        prop = ProposalFactory(people = [pers, sec_pers])
+        att1 = AttachmentFactory(proposal=prop)
+        att2 = AttachmentFactory(proposal=prop)
+        att3 = AttachmentFactory(proposal=prop)
+        att4 = AttachmentFactory(proposal=prop)
+        db_session.commit()
+        
+        # we're logged in and this is ours
+        do_login(app, pers)
+        resp = app.get(url_for(controller='attachment', action='view', id=att1.id))
+        assert resp.content_type == "application/octet-stream"
+        resp = app.get(url_for(controller='attachment', action='delete', id=att1.id))
+        assert "Are you sure you want to delete this attachment" in unicode(resp.body, 'utf-8')
+        resp = app.post(url_for(controller='attachment', action='delete', id=att1.id), status=302)
+
+        # this is also ours
+        do_login(app, sec_pers)
+        resp = app.get(url_for(controller='attachment', action='view', id=att2.id))
+        assert resp.content_type == "application/octet-stream"
+        resp = app.get(url_for(controller='attachment', action='delete', id=att2.id))
+        assert "Are you sure you want to delete this attachment" in unicode(resp.body, 'utf-8')
+        resp = app.post(url_for(controller='attachment', action='delete', id=att2.id), status=302)
+
+        # we're organiser/admin
+        do_login(app, org_pers)
+        resp = app.get(url_for(controller='attachment', action='view', id=att3.id))
+        assert resp.content_type == "application/octet-stream"
+        resp = app.get(url_for(controller='attachment', action='delete', id=att3.id))
+        assert "Are you sure you want to delete this attachment" in unicode(resp.body, 'utf-8')
+        resp = app.post(url_for(controller='attachment', action='delete', id=att3.id), status=302)
+
+        # we're a reviewer
+        do_login(app, rev_pers)
+        resp = app.get(url_for(controller='attachment', action='view', id=att4.id), status=403)
+        assert resp.content_type == "text/html"
+        resp = app.get(url_for(controller='attachment', action='delete', id=att4.id), status=403)
+        resp = app.post(url_for(controller='attachment', action='delete', id=att4.id), status=403)
+
+        # we're logged in and this isn't ours
+        do_login(app, other_pers)
+        resp = app.get(url_for(controller='attachment', action='view', id=att4.id), status=403)
+        assert resp.content_type == "text/html"
+        resp = app.get(url_for(controller='attachment', action='delete', id=att4.id), status=403)
+        resp = app.post(url_for(controller='attachment', action='delete', id=att4.id), status=403)
+
+        # we're not logged in
+        app.get('/person/signout')
+        assert not isSignedIn(app)
+        resp = app.get(url_for(controller='attachment', action='view', id=att4.id))#, status=404)
+        assert resp.content_type == "text/html"
+        assert "User doesn't have any of the specified roles" in unicode(resp.body, 'utf-8')
+        resp = app.get(url_for(controller='attachment', action='delete', id=att4.id))
+        assert "Don't have an account?" in unicode(resp.body, 'utf-8')
+        resp = app.post(url_for(controller='attachment', action='delete', id=att4.id))
+        assert "Don't have an account?" in unicode(resp.body, 'utf-8')
+
+        db_session.expunge_all()
+        atts = Attachment.find_all();
+        assert len(atts) == 1
+        assert atts[0].id == att4.id
