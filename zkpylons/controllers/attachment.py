@@ -4,6 +4,7 @@ from pylons import request, response, session, tmpl_context as c
 from zkpylons.lib.helpers import redirect_to
 from pylons.decorators import validate
 from pylons.decorators.rest import dispatch_on
+from pylons.controllers.util import abort
 
 from formencode import validators, htmlfill, ForEach, Invalid
 from formencode.variabledecode import NestedVariables
@@ -30,55 +31,52 @@ class AttachmentController(BaseController):
     @dispatch_on(POST="_delete")
     @authorize(h.auth.is_activated_user)
     def delete(self, id):
-        c.attachment = Attachment.find_by_id(id)
-        c.proposal = Proposal.find_by_id(c.attachment.proposal_id)
-        
-        if not h.auth.authorized(h.auth.has_organiser_role):
-            authorized = False
-            for person in c.proposal.people:
-                if person.id == h.signed_in_person().id:
-                    authorized = True
-                    break
-            if not authorized:
-                # Raise a no_auth error
-                h.auth.no_role()
+        attachment = Attachment.find_by_id(id)
+        if(attachment == None): abort(400)
 
+        authorized = h.auth.authorized(h.auth.has_organiser_role)
+        for person in attachment.proposal.people:
+            if h.auth.authorized(h.auth.is_same_zkpylons_user(person.id)):
+                authorized = True
+        if not authorized:
+            # Raise a no_auth error
+            h.auth.no_role()
+
+        c.attachment = attachment
+        c.proposal = attachment.proposal
+        
         return render('/attachment/confirm_delete.mako')
 
     @validate(schema=None, form='delete', post_only=True, on_get=True, variable_decode=True)
     def _delete(self, id):
-        c.attachment = Attachment.find_by_id(id)
-        proposal = Proposal.find_by_id(c.attachment.proposal_id)
+        attachment = Attachment.find_by_id(id)
+        if(attachment == None): abort(400)
 
-        if not h.auth.authorized(h.auth.has_organiser_role):
-            authorized = False
-            for person in proposal.people:
-                if person.id == h.signed_in_person().id:
-                    authorized = True
-                    break
-            if not authorized:
-                # Raise a no_auth error
-                h.auth.no_role()
+        authorized = h.auth.authorized(h.auth.has_organiser_role)
+        for person in attachment.proposal.people:
+            if h.auth.authorized(h.auth.is_same_zkpylons_user(person.id)):
+                authorized = True
+        if not authorized:
+            # Raise a no_auth error
+            h.auth.no_role()
 
-        meta.Session.delete(c.attachment)
+        meta.Session.delete(attachment)
         meta.Session.commit()
 
         h.flash("Attachment Deleted")
-        redirect_to(controller='proposal', action='view', id=proposal.id)
+        redirect_to(controller='proposal', action='view', id=attachment.proposal.id)
 
     def view(self, id):
         attachment = Attachment.find_by_id(id)
-        proposal = Proposal.find_by_id(attachment.proposal_id)
+        if(attachment == None): abort(400)
 
-        if not h.auth.authorized(h.auth.has_organiser_role):
-            authorized = False
-            for person in proposal.people:
-                if h.auth.is_same_zkpylons_user(person.id):
-                    authorized = True
-                    break
-            if not authorized:
-                # Raise a no_auth error
-                h.auth.no_role()
+        authorized = h.auth.authorized(h.auth.has_organiser_role)
+        for person in attachment.proposal.people:
+            if h.auth.authorized(h.auth.is_same_zkpylons_user(person.id)):
+                authorized = True
+        if not authorized:
+            # Raise a no_auth error
+            h.auth.no_role()
 
         response.headers['content-type'] = attachment.content_type.encode('ascii','ignore')
         response.headers.add('content-transfer-encoding', 'binary')
